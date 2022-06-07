@@ -2,10 +2,9 @@
 import { ref, computed } from 'vue';
 import { getIpfsUrl } from '@/helpers/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space?: ExtendedSpace;
+  network?: string;
   input: string;
 }>();
 
@@ -20,10 +19,8 @@ const networks = computed(() => {
   }));
 
   //  Move spaceNetwork to the beginning of the list
-  if (props.space?.network) {
-    const spaceNetwork = filteredNetworks.find(
-      n => n.value === props.space?.network
-    );
+  if (props.network) {
+    const spaceNetwork = filteredNetworks.find(n => n.value === props.network);
     if (spaceNetwork) {
       const spaceNetworkIndex = filteredNetworks.indexOf(spaceNetwork);
       filteredNetworks.splice(spaceNetworkIndex, 1);

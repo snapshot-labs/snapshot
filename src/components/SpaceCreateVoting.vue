@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   dateStart: number;
   dateEnd: number;
@@ -13,11 +15,11 @@ defineProps<{
 const emit = defineEmits(['userSelectedDate']);
 
 const selectedDate = ref('');
-const userSelectedDateStart = ref(false);
 const modalDateSelectOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 
-const { form } = useSpaceCreateForm();
+const { form, sourceProposalLoaded, userSelectedDateStart } =
+  useSpaceCreateForm();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
@@ -57,6 +59,20 @@ watch(
   },
   { immediate: true }
 );
+
+onMounted(async () => {
+  // Initialize the start date to current
+  if (!sourceProposalLoaded.value && !userSelectedDateStart.value)
+    form.value.start = Number((Date.now() / 1e3).toFixed());
+  // Initialize the proposal type if set in space
+  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
+  // Initialize the snapshot block number
+  if (props.space?.network) {
+    form.value.snapshot = await getBlockNumber(
+      getProvider(props.space.network)
+    );
+  }
+});
 </script>
 
 <template>

@@ -4,7 +4,6 @@ import { usePlugins } from '@/composables/usePlugins';
 const props = defineProps({
   proposal: Object,
   space: Object,
-  preview: Boolean,
   modelValue: Object
 });
 
