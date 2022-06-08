@@ -14,7 +14,7 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
-import { shorten } from '@/helpers/utils';
+import { shorten, clearAvatarCache } from '@/helpers/utils';
 
 const props = defineProps<{
   web3Account: string;
@@ -124,6 +124,7 @@ async function handleSubmit() {
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();
+      await clearAvatarCache(route.params.ens as string);
       creatingSpace.value = false;
       console.log('Result', result);
 

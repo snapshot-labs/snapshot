@@ -5,7 +5,12 @@ import { getAddress } from '@ethersproject/address';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
-import { calcFromSeconds, calcToSeconds, shorten } from '@/helpers/utils';
+import {
+  calcFromSeconds,
+  calcToSeconds,
+  shorten,
+  clearAvatarCache
+} from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
@@ -116,10 +121,6 @@ const categoriesString = computed(() => {
   return form.value.categories ? form.value.categories.join(', ') : '';
 });
 
-async function clearAvatarCache() {
-  await fetch(`https://cdn.stamp.fyi/clear/space/${props.space.id}`);
-}
-
 async function handleSubmit() {
   if (isValid.value) {
     const formattedForm = formatSpace(form.value);
@@ -131,7 +132,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      await clearAvatarCache();
+      await clearAvatarCache(props.space.id);
       reloadSpace(props.space.id);
     }
   } else {
