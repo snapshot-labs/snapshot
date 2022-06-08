@@ -53,11 +53,7 @@ const networks = computed(() => {
           />
           <span v-text="option?.name" class="truncate mr-2" />
         </div>
-        <span
-          class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
-        >
-          #{{ option?.chainId }}
-        </span>
+        <BasePill> #{{ option?.chainId }} </BasePill>
       </div>
     </template>
   </BaseAutocomplete>
