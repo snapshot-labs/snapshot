@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { SpaceStrategy } from '@/helpers/interfaces';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 defineProps<{
   strategiesForm: SpaceStrategy[];
@@ -10,23 +9,19 @@ const emit = defineEmits(['removeStrategy', 'editStrategy']);
 </script>
 
 <template>
-  <div v-for="(strategy, i) in strategiesForm" :key="i" class="h-full flex">
+  <div
+    v-for="(strategy, i) in strategiesForm"
+    :key="i"
+    class="flex h-full truncate"
+  >
     <button
-      @click="emit('editStrategy', i)"
-      class="p-4 border rounded-md w-full flex justify-between items-center hover:border-skin-text"
+      class="flex w-full items-center justify-between rounded-md border p-4"
     >
-      <div class="text-left truncate">
+      <div class="flex items-center gap-2 truncate pr-[20px] text-left">
         <h4 class="truncate">{{ strategy.name }}</h4>
-        <div class="truncate">
-          <span>{{ networks[Number(strategy.network)].name }} </span>
-        </div>
-        <div>
-          <span>
-            {{ strategy.params?.symbol }}
-          </span>
-        </div>
+        <BasePill> ${{ strategy.params.symbol }} </BasePill>
       </div>
-      <BaseButtonIcon @click.stop="emit('removeStrategy', i)" class="-mr-2">
+      <BaseButtonIcon class="-mr-2" @click.stop="emit('removeStrategy', i)">
         <BaseIcon name="close" size="14" />
       </BaseButtonIcon>
     </button>

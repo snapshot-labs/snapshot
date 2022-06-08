@@ -18,7 +18,7 @@ const halLogoUrl = computed(
       <div>
         <a :href="halUrl" target="_blank">
           <img
-            class="rounded-full border-2 border-transparent hover:border-white mx-auto mb-2"
+            class="mx-auto mb-2 rounded-full border-2 border-transparent hover:border-white"
             :src="halLogoUrl"
             alt="Hal"
             width="100"
@@ -26,7 +26,7 @@ const halLogoUrl = computed(
           />
         </a>
       </div>
-      <div class="text-skin-link text-center mb-2">{{ $t('hal.text') }}</div>
+      <div class="mb-2 text-center text-skin-link">{{ $t('hal.text') }}</div>
       <a :href="halUrl" target="_blank">
         <BaseButton>Be notified</BaseButton>
       </a>

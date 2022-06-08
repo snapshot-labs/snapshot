@@ -233,7 +233,7 @@ onMounted(async () => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div class="mb-3 px-4 md:px-0">
         <router-link :to="{ path: '/' }" class="text-skin-text">
           <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('backToHome') }}
@@ -250,9 +250,9 @@ onMounted(async () => {
           })
         }}
         <BaseLink
-          class="whitespace-nowrap ml-1"
-          @click.stop
+          class="ml-1 whitespace-nowrap"
           :link="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+          @click.stop
         >
           {{ $t('learnMore') }}
         </BaseLink>
@@ -265,7 +265,7 @@ onMounted(async () => {
             :error="validateToInput"
             class="mt-2"
           >
-            <template v-slot:label>{{ $t('delegate.to') }}</template>
+            <template #label>{{ $t('delegate.to') }}</template>
           </UiInput>
           <div class="flex items-center space-x-2 px-2">
             <BaseCheckbox v-model="specifySpaceChecked" />
@@ -277,7 +277,7 @@ onMounted(async () => {
             placeholder="e.g. balancer.eth"
             :error="validateSpaceInput"
           >
-            <template v-slot:label>{{ $t('space') }}</template>
+            <template #label>{{ $t('space') }}</template>
           </UiInput>
         </BaseBlock>
         <BaseBlock
@@ -300,7 +300,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-t flex"
+            class="flex border-t px-4 py-3"
           >
             <BaseUser
               :address="delegate.delegate"
@@ -308,12 +308,12 @@ onMounted(async () => {
               :profile="profiles[delegate.delegate]"
             />
             <div
-              v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right text-skin-link"
+              v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
             />
             <a
+              class="-mr-2 ml-2 px-2"
               @click="revokeDelegate(delegate.space, delegate.delegate)"
-              class="px-2 -mr-2 ml-2"
             >
               <BaseIcon name="close" size="12" class="mb-1" />
             </a>
@@ -328,7 +328,7 @@ onMounted(async () => {
             v-for="(delegator, i) in delegators"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-t flex"
+            class="flex border-t px-4 py-3"
           >
             <BaseUser
               :address="delegator.delegator"
@@ -336,8 +336,8 @@ onMounted(async () => {
               :profile="profiles[delegator.delegator]"
             />
             <div
-              v-text="shorten(delegator.space || '-', 'choice')"
               class="flex-auto text-right text-skin-link"
+              v-text="shorten(delegator.space || '-', 'choice')"
             />
           </div>
         </BaseBlock>
@@ -351,7 +351,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegatesWithScore"
             :key="i"
             :style="i === 0 && 'border: 0 !important;'"
-            class="px-4 py-3 border-t flex"
+            class="flex border-t px-4 py-3"
           >
             <BaseUser
               :profile="profiles[delegate.delegate]"
@@ -360,7 +360,7 @@ onMounted(async () => {
               class="w-[160px]"
             />
             <div
-              class="flex-auto w-[160px] text-right text-skin-link"
+              class="w-[160px] flex-auto text-right text-skin-link"
               v-text="
                 `${
                   delegate.score >= 0.005
@@ -372,36 +372,36 @@ onMounted(async () => {
           </div>
           <div
             v-if="!delegatesLoading && delegatesWithScore.length < 1"
-            class="mx-4 py-3 flex items-center"
+            class="mx-4 flex items-center py-3"
           >
             {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
           </div>
         </BaseBlock>
       </div>
     </template>
-    <template #sidebar-right v-if="networkSupportsDelegate">
+    <template v-if="networkSupportsDelegate" #sidebar-right>
       <BaseBlock>
         <BaseButton
-          @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading || spaceLoading"
           class="block w-full"
           primary
+          @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
         >
           {{ $t('confirm') }}
         </BaseButton>
       </BaseBlock>
     </template>
   </TheLayout>
-  <teleport to="#modal" v-if="networkSupportsDelegate">
+  <teleport v-if="networkSupportsDelegate" to="#modal">
     <ModalRevokeDelegate
       v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="getDelegationsAndDelegates"
       :id="currentId"
+      :open="modalOpen"
       :delegate="currentDelegate"
       :profiles="profiles"
+      @close="modalOpen = false"
+      @reload="getDelegationsAndDelegates"
     />
   </teleport>
 </template>

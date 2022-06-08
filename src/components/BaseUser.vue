@@ -40,7 +40,7 @@ watchEffect(() => {
       >
         <div class="flex flex-nowrap items-center space-x-2">
           <AvatarUser v-if="!hideAvatar" :address="address" size="18" />
-          <span class="truncate w-full text-skin-link cursor-pointer">
+          <span class="w-full cursor-pointer truncate text-skin-link">
             {{ username }}
           </span>
           <BaseBadge :address="address" :members="space?.members" />

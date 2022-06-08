@@ -14,19 +14,19 @@ const { copyToClipboard } = useCopy();
 </script>
 
 <template>
-  <div class="flex space-x-2 leading-5 px-3">
+  <div class="flex space-x-2 px-3 leading-5">
     <div
       v-if="profile?.ens && profile?.name"
+      class="flex min-w-0 cursor-pointer items-center rounded-full text-xs"
       @click="copyToClipboard(profile.ens)"
-      class="flex items-center text-xs rounded-full cursor-pointer min-w-0"
     >
       <div class="truncate">
         {{ profile.ens }}
       </div>
     </div>
     <div
+      class="flex cursor-pointer items-center rounded border px-1 text-xs"
       @click="copyToClipboard(userAddress)"
-      class="flex items-center text-xs px-1 rounded border cursor-pointer"
     >
       {{ shorten(userAddress) }}
       <i-ho-duplicate class="ml-1 text-xs" />

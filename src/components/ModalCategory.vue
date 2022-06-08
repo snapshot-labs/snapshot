@@ -48,24 +48,23 @@ function handleClose() {
 
 <template>
   <BaseModal :open="open" @close="handleClose">
-    <template v-slot:header>
+    <template #header>
       <h3>
         {{ $t('settings.selectCategories') }}
       </h3>
     </template>
 
-    <div class="my-4 mx-0 md:mx-4 flex flex-col justify-between">
-      <div class="ml-4 md:ml-0 mb-4">
+    <div class="my-4 mx-0 flex flex-col justify-between md:mx-4">
+      <div class="ml-4 mb-4 md:ml-0">
         {{ $t('create.categorie(s)') }}
       </div>
       <div class="space-y-3">
         <BaseBlock
-          @click="selectCategoriesHandler(category)"
           v-for="(category, i) in categories"
           :key="i"
           :class="[
             {
-              'hover:border-skin-text cursor-pointer':
+              'cursor-pointer hover:border-skin-text':
                 hasCategory(category) || selectedCategories.length < 2,
               'opacity-50':
                 !hasCategory(category) && selectedCategories.length === 2,
@@ -73,6 +72,7 @@ function handleClose() {
             },
             'relative capitalize'
           ]"
+          @click="selectCategoriesHandler(category)"
         >
           <h3 v-text="category" />
           <i
@@ -82,19 +82,19 @@ function handleClose() {
         </BaseBlock>
       </div>
     </div>
-    <template v-slot:footer>
-      <div class="w-2/4 float-left pr-2">
-        <BaseButton @click="handleClose" type="button" class="w-full">
+    <template #footer>
+      <div class="float-left w-2/4 pr-2">
+        <BaseButton type="button" class="w-full" @click="handleClose">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
-      <div class="w-2/4 float-left pl-2">
+      <div class="float-left w-2/4 pl-2">
         <BaseButton
-          @click="handleSubmit"
           :disabled="!selectedCategories.length"
           type="submit"
           class="w-full"
           primary
+          @click="handleSubmit"
         >
           {{ $t('confirm') }}
         </BaseButton>

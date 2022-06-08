@@ -101,32 +101,32 @@ watch(visibleVotes, () => {
       v-for="(vote, i) in visibleVotes"
       :key="i"
       :style="i === 0 && 'border: 0 !important;'"
-      class="px-3 py-[14px] border-t flex items-center"
+      class="flex items-center border-t px-3 py-[14px]"
     >
       <BaseUser
+        :key="vote.voter"
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
-        :key="vote.voter"
         :proposal="proposal"
-        class="w-[110px] xs:w-[130px] min-w-[110px] xs:min-w-[130px]"
+        class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
       />
-      <div class="flex-auto text-center text-skin-link truncate px-2">
+      <div class="flex-auto truncate px-2 text-center text-skin-link">
         <div
-          class="text-center text-skin-link truncate"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
                 ? format(proposal, vote.choice)
                 : null
           }"
+          class="truncate text-center text-skin-link"
         >
           {{ format(proposal, vote.choice) }}
         </div>
       </div>
 
       <div
-        class="min-w-[110px] xs:min-w-[130px] text-right text-skin-link whitespace-nowrap flex justify-end items-center"
+        class="flex min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:min-w-[130px]"
       >
         <span
           v-tippy="{
@@ -156,8 +156,8 @@ watch(visibleVotes, () => {
           ? sortedVotes.length < voteCount
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
+      class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
-      class="px-4 py-3 border-t text-center block rounded-b-none md:rounded-b-md"
     >
       <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
@@ -165,8 +165,8 @@ watch(visibleVotes, () => {
     <teleport to="#modal">
       <ModalReceipt
         :open="modalReceiptOpen"
+        :author-ipfs-hash="authorIpfsHash"
         @close="modalReceiptOpen = false"
-        :authorIpfsHash="authorIpfsHash"
       />
     </teleport>
   </BaseBlock>

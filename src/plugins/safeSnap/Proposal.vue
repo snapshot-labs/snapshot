@@ -35,11 +35,11 @@ const safeSnapInput = computed(() => {
 <template>
   <Config
     v-if="proposal.plugins.safeSnap && loadedResults && safeSnapInput.safes"
-    :modelValue="safeSnapInput"
+    :model-value="safeSnapInput"
     :proposal="proposal"
     :preview="true"
     :config="space.plugins?.safeSnap"
     :network="space.network"
-    :spaceId="space.id"
+    :space-id="space.id"
   />
 </template>

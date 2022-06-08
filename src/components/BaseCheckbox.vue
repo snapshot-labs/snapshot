@@ -11,7 +11,7 @@ function handleToggle() {
 </script>
 
 <template>
-  <button @click="handleToggle" class="flex">
+  <button class="flex" @click="handleToggle">
     <BaseIcon
       :name="modelValue ? 'toggle-on' : 'toggle_off'"
       :class="modelValue ? 'text-green' : 'text-skin-border'"

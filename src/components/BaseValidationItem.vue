@@ -10,7 +10,7 @@ defineProps(['validation']);
 
 <template>
   <BaseBlock class="cursor-pointer hover:!border-skin-text">
-    <div class="flex items-center mb-1">
+    <div class="mb-1 flex items-center">
       <h3 class="mt-0" v-text="validation" />
     </div>
     <div class="text-skin-text">

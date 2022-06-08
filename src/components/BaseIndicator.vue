@@ -1,3 +1,3 @@
 <template>
-  <span class="h-[12px] w-[12px] rounded-full inline-block bg-primary" />
+  <span class="inline-block h-[12px] w-[12px] rounded-full bg-primary" />
 </template>

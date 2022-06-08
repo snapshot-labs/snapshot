@@ -14,7 +14,7 @@ defineProps<{
       <ProfileName :profile="profile" :address="userAddress" />
       <ProfileAddressCopy
         :profile="profile"
-        :userAddress="userAddress"
+        :user-address="userAddress"
         class="justify-center"
       />
     </div>

@@ -126,13 +126,13 @@ function selectState(e) {
       <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <router-link :to="{ name: 'timeline' }" v-slot="{ isExactActive }">
-              <BaseSidebarNavigationItem :isActive="isExactActive">
+            <router-link v-slot="{ isExactActive }" :to="{ name: 'timeline' }">
+              <BaseSidebarNavigationItem :is-active="isExactActive">
                 {{ $t('joinedSpaces') }}
               </BaseSidebarNavigationItem>
             </router-link>
-            <router-link :to="{ name: 'explore' }" v-slot="{ isExactActive }">
-              <BaseSidebarNavigationItem :isActive="isExactActive">
+            <router-link v-slot="{ isExactActive }" :to="{ name: 'explore' }">
+              <BaseSidebarNavigationItem :is-active="isExactActive">
                 {{ $t('allSpaces') }}
               </BaseSidebarNavigationItem>
             </router-link>
@@ -141,10 +141,9 @@ function selectState(e) {
       </div>
     </template>
     <template #content-left>
-      <div class="pb-4 px-4 md:px-0 flex justify-between">
-        <h2 v-text="$t('timeline')" class="mt-1" />
+      <div class="flex justify-between px-4 pb-4 md:px-0">
+        <h2 class="mt-1" v-text="$t('timeline')" />
         <BaseDropdown
-          @select="selectState"
           :items="[
             {
               text: $t('proposals.states.all'),
@@ -167,8 +166,9 @@ function selectState(e) {
               selected: timelineFilterBy === 'closed'
             }
           ]"
+          @select="selectState"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
@@ -176,7 +176,7 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
-      <div class="md:rounded-lg bg-skin-block-bg md:border border-skin-border">
+      <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow
           v-if="
             loading ||
@@ -188,7 +188,7 @@ function selectState(e) {
           v-else-if="
             (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
           "
-          class="text-center p-4"
+          class="p-4 text-center"
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
@@ -196,8 +196,8 @@ function selectState(e) {
           </router-link>
         </div>
         <BaseNoResults
-          class="py-4 mb-0"
           v-else-if="store.timeline.proposals.length < 1"
+          class="mb-0 py-4"
         />
         <div v-else>
           <BaseProposalPreviewItem
@@ -208,7 +208,7 @@ function selectState(e) {
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>
-        <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+        <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
         <div v-if="loadingMore && !loading" :slim="true">
           <LoadingRow class="border-t" />
         </div>

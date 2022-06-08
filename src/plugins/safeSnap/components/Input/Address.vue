@@ -7,13 +7,13 @@ export default {
   data() {
     return { input: '', isValid: false, dirty: false };
   },
-  mounted() {
-    if (this.modelValue) return (this.input = this.modelValue);
-  },
   watch: {
     modelValue(value) {
       this.input = value;
     }
+  },
+  mounted() {
+    if (this.modelValue) return (this.input = this.modelValue);
   },
   methods: {
     handleInput() {
@@ -36,6 +36,6 @@ export default {
     :error="dirty && !isValid && $t('safeSnap.invalidAddress')"
     @input="handleInput()"
   >
-    <template v-if="label" v-slot:label>{{ label }}</template>
+    <template v-if="label" #label>{{ label }}</template>
   </UiInput>
 </template>

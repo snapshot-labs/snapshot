@@ -30,7 +30,7 @@ function select(key) {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('skins') }}</h3>
     </template>
     <BaseSearch
@@ -38,14 +38,14 @@ function select(key) {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+    <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <LoadingRow v-if="loadingSkins" block />
       <div v-else class="space-y-3">
         <div
           v-if="!searchInput"
           key=""
+          class="default cursor-pointer rounded-none md:rounded-md"
           @click="select(undefined)"
-          class="default rounded-none md:rounded-md cursor-pointer"
         >
           <BaseBlock>
             <BaseButton class="mb-2" primary>{{
@@ -55,9 +55,9 @@ function select(key) {
         </div>
 
         <BaseSkinItem
-          :skin="skin"
           v-for="skin in filteredSkins"
           :key="skin"
+          :skin="skin"
           @click="select(skin)"
         />
 

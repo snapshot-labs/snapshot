@@ -90,17 +90,17 @@ watch(
 <template>
   <BaseModal
     :open="open"
-    :showClose="false"
-    @close="$emit('close')"
+    :show-close="false"
     class="flex"
+    @close="$emit('close')"
   >
-    <div class="flex flex-col flex-auto">
+    <div class="flex flex-auto flex-col">
       <h4 class="m-4 mb-0 text-center">
         {{ $tc('voteOverview') }}
       </h4>
       <BaseBlock slim class="m-4 p-4 text-skin-link">
         <div class="flex">
-          <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
+          <span class="mr-1 flex-auto text-skin-text" v-text="$t('options')" />
           <span
             v-tippy="{
               content:
@@ -108,13 +108,13 @@ watch(
                   ? format(proposal, selectedChoices)
                   : null
             }"
-            class="text-right ml-4 truncate"
+            class="ml-4 truncate text-right"
           >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
+          <span class="mr-1 flex-auto text-skin-text" v-text="$t('snapshot')" />
           <BaseLink
             :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
@@ -124,10 +124,10 @@ watch(
         </div>
         <div class="flex">
           <span
+            class="mr-1 flex-auto text-skin-text"
             v-text="$t('votingPower')"
-            class="flex-auto text-skin-text mr-1"
           />
-          <span v-if="vpLoadingFailed" class="flex item-center">
+          <span v-if="vpLoadingFailed" class="item-center flex">
             <BaseIcon name="warning" size="22" class="text-red" />
           </span>
           <span
@@ -156,20 +156,20 @@ watch(
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </BaseBlock>
     </div>
-    <template v-slot:footer>
-      <div class="w-2/4 float-left pr-2">
-        <BaseButton @click="$emit('close')" type="button" class="w-full">
+    <template #footer>
+      <div class="float-left w-2/4 pr-2">
+        <BaseButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
-      <div class="w-2/4 float-left pl-2">
+      <div class="float-left w-2/4 pl-2">
         <BaseButton
           :disabled="vp === 0 || clientLoading"
           :loading="clientLoading"
-          @click="handleSubmit"
           type="submit"
           class="w-full"
           primary
+          @click="handleSubmit"
         >
           {{ $t('proposal.vote') }}
         </BaseButton>

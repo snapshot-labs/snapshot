@@ -17,8 +17,8 @@
       class="my-4"
     >
       <BaseButton
-        @click="submitProposal"
         :loading="actionInProgress === 'submit-proposal'"
+        @click="submitProposal"
       >
         {{ $t('safeSnap.labels.request') }}
       </BaseButton>
@@ -31,19 +31,19 @@
       "
       class="my-4"
     >
-      <div class="text-base inline-block">
+      <div class="inline-block text-base">
         <h4 class="text-center text-skin-link">
           Reality oracle
-          <a @click="updateDetails" class="ml-2 text-skin-text">
+          <a class="ml-2 text-skin-text" @click="updateDetails">
             <BaseIcon name="refresh" size="22" />
           </a>
         </h4>
         <div
           v-if="questionState !== questionStates.questionNotSet"
-          class="flex items-center my-3 space-x-3"
+          class="my-3 flex items-center space-x-3"
           style="text-align: left"
         >
-          <div class="border rounded-lg p-3 self-stretch">
+          <div class="self-stretch rounded-lg border p-3">
             <div>
               <b class="pr-3"
                 >{{
@@ -66,7 +66,7 @@
 
           <div
             v-if="approvalData?.timeLeft"
-            class="border rounded-lg p-3 text-skin-link self-stretch items-center justify-center flex"
+            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
           >
             <b>{{ approvalData?.timeLeft }}</b>
           </div>
@@ -74,33 +74,33 @@
 
         <div v-if="questionState === questionStates.questionNotSet">
           <BaseButton
-            class="w-full mb-1 mt-3"
+            class="mb-1 mt-3 w-full"
+            :loading="actionInProgress === 'set-outcome'"
             @click="
               modalApproveDecisionOpen = true;
               actionInProgress = 'set-outcome';
             "
-            :loading="actionInProgress === 'set-outcome'"
           >
             {{ $t('safeSnap.labels.setOutcome') }}
           </BaseButton>
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
           <BaseButton
-            class="w-full my-1"
+            class="my-1 w-full"
+            :loading="actionInProgress === 'set-outcome'"
             @click="
               modalApproveDecisionOpen = true;
               actionInProgress = 'set-outcome';
             "
-            :loading="actionInProgress === 'set-outcome'"
           >
             {{ $t('safeSnap.labels.changeOutcome') }}
           </BaseButton>
         </div>
         <div v-if="bondData.canClaim">
           <BaseButton
-            class="w-full my-1"
-            @click="claimBond"
+            class="my-1 w-full"
             :loading="actionInProgress === 'claim-bond'"
+            @click="claimBond"
           >
             {{ $t('safeSnap.claimBond') }}
           </BaseButton>
@@ -110,8 +110,8 @@
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
       <BaseButton
-        @click="executeProposal"
         :loading="action2InProgress === 'execute-proposal'"
+        @click="executeProposal"
       >
         {{
           $t('safeSnap.labels.executeTxs', [
@@ -145,13 +145,13 @@
 
   <teleport to="#modal">
     <SafeSnapModalOptionApproval
-      :minimumBond="questionDetails?.minimumBond"
+      :minimum-bond="questionDetails?.minimumBond"
       :open="modalApproveDecisionOpen"
-      :isApproved="questionDetails?.isApproved"
+      :is-approved="questionDetails?.isApproved"
       :bond="questionDetails?.currentBond"
-      :questionId="questionDetails?.questionId"
-      :tokenSymbol="bondData?.tokenSymbol"
-      :tokenDecimals="bondData?.tokenDecimals"
+      :question-id="questionDetails?.questionId"
+      :token-symbol="bondData?.tokenSymbol"
+      :token-decimals="bondData?.tokenDecimals"
       :oracle="questionDetails?.oracle"
       @setApproval="voteOnQuestion"
       @close="modalApproveDecisionOpen = actionInProgress = false"

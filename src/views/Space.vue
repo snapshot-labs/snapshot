@@ -36,7 +36,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
 
 <template>
   <!-- Only loaded after space is available -->
-  <router-view v-if="space" :space="space" :sourceSpace="sourceSpace" />
+  <router-view v-if="space" :space="space" :source-space="sourceSpace" />
 
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->

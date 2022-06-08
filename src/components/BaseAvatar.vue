@@ -35,7 +35,7 @@ watch(
     <img
       v-show="previewFile"
       ref="avatarImage"
-      class="rounded-full object-cover bg-skin-border"
+      class="rounded-full bg-skin-border object-cover"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
@@ -47,7 +47,7 @@ watch(
     <img
       v-show="!previewFile && src"
       :src="src"
-      class="rounded-full object-cover bg-skin-border"
+      class="rounded-full bg-skin-border object-cover"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
@@ -57,7 +57,7 @@ watch(
     />
     <div
       v-if="!src && !previewFile"
-      class="bg-skin-border rounded-full"
+      class="rounded-full bg-skin-border"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,

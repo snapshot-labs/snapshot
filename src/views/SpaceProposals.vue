@@ -115,14 +115,13 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="px-3 md:px-0 mb-3 flex relative">
+      <div class="relative mb-3 flex px-3 md:px-0">
         <div class="flex-auto">
-          <div class="flex items-center flex-auto">
+          <div class="flex flex-auto items-center">
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <BaseDropdown
-          @select="selectState"
           :items="[
             {
               text: $t('proposals.states.all'),
@@ -150,8 +149,9 @@ onMounted(() => {
               selected: spaceFilterBy === 'core'
             }
           ]"
+          @select="selectState"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
@@ -161,8 +161,8 @@ onMounted(() => {
 
         <SpaceProposalsNotice
           v-if="store.space.proposals.length < 1 && !loadingData"
-          :spaceId="space.id"
-          :web3Account="web3Account"
+          :space-id="space.id"
+          :web3-account="web3Account"
         />
       </div>
 
@@ -175,7 +175,7 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else class="md:space-y-4 my-4">
+      <div v-else class="my-4 md:space-y-4">
         <BaseProposalItem
           v-for="(proposal, i) in store.space.proposals"
           :key="i"
@@ -185,7 +185,7 @@ onMounted(() => {
           class="border-b first:border-t"
         />
       </div>
-      <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+      <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
       <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>

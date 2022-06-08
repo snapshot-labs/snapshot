@@ -60,15 +60,15 @@ const handleDrop = e => {
     <div class="flex flex-col space-y-3">
       <h1
         v-if="preview"
-        v-text="form.name || $t('create.untitled')"
         class="w-full break-all"
+        v-text="form.name || $t('create.untitled')"
       />
       <BaseInput
         v-else
         v-model="form.name"
         :title="$t('create.proposalTitle')"
-        :maxLength="128"
-        focusOnMount
+        :max-length="128"
+        focus-on-mount
       />
 
       <div v-if="!preview">
@@ -87,24 +87,24 @@ const handleDrop = e => {
           @dragleave="imageDragging = false"
         >
           <div
-            class="min-h-[240px] peer border rounded-t-xl overflow-hidden focus-within:border-skin-text"
+            class="peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text"
           >
             <textarea
-              @paste="handlePaste"
               ref="textAreaEl"
-              class="s-input pt-0 w-full min-h-[240px] border-none !rounded-xl text-base h-full mt-0"
-              :maxlength="bodyLimit"
               v-model="form.body"
+              class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
+              :maxlength="bodyLimit"
+              @paste="handlePaste"
             />
           </div>
 
           <label
-            class="relative flex justify-between border border-skin-border rounded-b-xl py-1 px-2 items-center peer-focus-within:border-skin-text border-t-0"
+            class="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border py-1 px-2 peer-focus-within:border-skin-text"
           >
             <input
               accept="image/jpg, image/jpeg, image/png"
               type="file"
-              class="opacity-0 absolute p-[5px] top-0 right-0 bottom-0 left-0 w-full ml-0"
+              class="absolute top-0 right-0 bottom-0 left-0 ml-0 w-full p-[5px] opacity-0"
               @change="e => upload((e.target as HTMLInputElement)?.files?.[0])"
             />
 
@@ -121,9 +121,9 @@ const handleDrop = e => {
               </span>
             </span>
             <BaseLink
+              v-tippy="{ content: $t('create.markdown') }"
               class="relative inline"
               link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-              v-tippy="{ content: $t('create.markdown') }"
               hide-external-icon
             >
               <BaseIcon name="markdown" class="text-skin-text" />

@@ -31,14 +31,14 @@ function select(id) {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
-    <div class="my-4 mx-0 md:mx-4 space-y-3 flex flex-col">
+    <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
       <a v-if="allowAny" @click="select(undefined)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type hover:border-skin-text',
+            'voting-type relative transition-colors hover:border-skin-text',
             { '!border-skin-link': !selected }
           ]"
         >
@@ -54,7 +54,7 @@ function select(id) {
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type hover:border-skin-text',
+            'voting-type relative transition-colors hover:border-skin-text',
             { '!border-skin-link': type === selected }
           ]"
         >
@@ -62,10 +62,10 @@ function select(id) {
             v-if="type === selected"
             class="iconfont iconcheck1 absolute top-2 right-2 text-lg"
           />
-          <h3 v-text="$t(`voting.${type}`)" class="mt-0" />
+          <h3 class="mt-0" v-text="$t(`voting.${type}`)" />
           <div
-            v-text="$t(`voting.description.${type}`)"
             class="text-skin-text"
+            v-text="$t(`voting.description.${type}`)"
           />
         </BaseBlock>
       </a>

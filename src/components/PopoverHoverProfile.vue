@@ -31,12 +31,12 @@ const { domain } = useApp();
       placement: isXLargeScreen ? 'bottom' : 'bottom-start'
     }"
   >
-    <template v-slot:item>
+    <template #item>
       <slot />
     </template>
-    <template v-slot:content>
+    <template #content>
       <div
-        class="w-[400px] p-4 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg cursor-default"
+        class="w-[400px] min-w-[300px] cursor-default rounded-xl border border-skin-border bg-skin-header-bg p-4 shadow-lg"
       >
         <div class="flex">
           <div>
@@ -44,14 +44,14 @@ const { domain } = useApp();
           </div>
           <div>
             <ProfileName :profile="profile" :address="address" />
-            <ProfileAddressCopy :profile="profile" :userAddress="address" />
+            <ProfileAddressCopy :profile="profile" :user-address="address" />
           </div>
         </div>
         <p v-if="profile?.about" class="mt-4">
           {{ profile.about }}
         </p>
 
-        <div class="flex w-full mt-4">
+        <div class="mt-4 flex w-full">
           <div class="w-1/2 pr-2">
             <BaseLink
               :link="
@@ -69,11 +69,11 @@ const { domain } = useApp();
           </div>
           <div class="w-1/2 pl-2">
             <BaseLink
-              @click.stop
               :link="
                 explorerUrl(proposal?.network || space?.network || '1', address)
               "
               hide-external-icon
+              @click.stop
             >
               <BaseButton class="w-full">
                 {{ $t('seeInExplorer') }}

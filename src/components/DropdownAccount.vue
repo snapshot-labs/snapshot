@@ -37,10 +37,10 @@ function handleAction(e) {
       ]"
       @select="handleAction($event)"
     >
-      <template v-slot:button>
+      <template #button>
         <slot />
       </template>
-      <template v-slot:item="{ item }">
+      <template #item="{ item }">
         <div class="flex items-center space-x-2">
           <div class="w-[24px]">
             <i-ho-user-circle v-if="item.icon === 'profile'" />

@@ -1,8 +1,8 @@
 <template>
-  <div class="ml-4 h-full bg-skin-bg cursor-pointer text-skin-link">
+  <div class="ml-4 h-full cursor-pointer bg-skin-bg text-skin-link">
     <div class="flex justify-center">
       <div
-        class="h-[54px] w-[54px] rounded-full border flex items-center justify-center hover:border-skin-text"
+        class="flex h-[54px] w-[54px] items-center justify-center rounded-full border hover:border-skin-text"
       >
         <i-ho-dots-horizontal class="text-sm" />
       </div>

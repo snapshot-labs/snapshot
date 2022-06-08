@@ -41,7 +41,7 @@ watch(
   </div>
   <!-- @click.prevent.self is needed to prevent clicks inside the popover bubbling
    up to the parent -->
-  <div ref="contentref" v-show="open" @click.prevent.self class="z-50">
+  <div v-show="open" ref="contentref" class="z-50" @click.prevent.self>
     <slot name="content" />
   </div>
 </template>

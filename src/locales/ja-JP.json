@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
-    "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "より詳細については{documentation} をご覧ください。またはSnapshotの {discord} に参加してください。",
     "gotIt": "了解"
   },
@@ -179,7 +179,7 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "スペースはこの投票タイプを強制する",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
@@ -326,12 +326,24 @@
     "profile": "Profile"
   },
   "spaceProfile": {
-    "name": "Name",
-    "about": "About",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
     "categories": {
-      "label": "Categories",
-      "select": "Select categories"
-    }
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Edit profile",
