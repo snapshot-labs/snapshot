@@ -179,7 +179,7 @@
     "schedule": "Planifier une proposition",
     "delayEnforced": "L’espace impose un délai jusqu’à ce que le vote puisse commencer",
     "periodEnforced": "L’espace impose la durée de la période de vote",
-    "typeEnforced": "L’espace impose ce type de vote",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",

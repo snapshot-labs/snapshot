@@ -179,7 +179,7 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "スペースはこの投票タイプを強制する",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
