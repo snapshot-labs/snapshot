@@ -7,10 +7,10 @@ import { useIntl } from '@/composables/useIntl';
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 export default {
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   setup() {
     return { shorten, formatCompactNumber, formatPercentNumber };
   },
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,

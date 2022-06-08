@@ -80,9 +80,9 @@ export default {
         :proposal="proposal"
         :hash="safe.hash"
         :network="safe.network"
-        :realityAddress="safe.realityAddress"
-        :multiSendAddress="safe.multiSendAddress"
-        :modelValue="safe.txs"
+        :reality-address="safe.realityAddress"
+        :multi-send-address="safe.multiSendAddress"
+        :model-value="safe.txs"
         @update:modelValue="updateSafeTransactions(index, $event)"
       />
     </div>

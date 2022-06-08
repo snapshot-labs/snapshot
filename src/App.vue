@@ -23,29 +23,29 @@ onMounted(async () => {
   <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
   <div
     v-else
-    class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen"
+    class="flex min-h-screen bg-skin-bg font-sans text-base text-skin-text antialiased"
   >
     <div v-if="!domain" id="sidebar" class="flex flex-col">
       <div
-        class="h-screen sticky top-0 bg-skin-bg z-40 overflow-hidden max-w-[60px] sm:w-auto transition-all"
+        class="sticky top-0 z-40 h-screen max-w-[60px] overflow-hidden bg-skin-bg transition-all sm:w-auto"
         :class="{ 'max-w-0 sm:max-w-none': !showSidebar }"
       >
         <TheSidebar class="border-r border-skin-border" />
       </div>
     </div>
     <div
-      class="flex flex-col min-w-0 w-screen shrink-0 sm:w-auto sm:shrink sm:grow"
+      class="flex w-screen min-w-0 shrink-0 flex-col sm:w-auto sm:shrink sm:grow"
     >
       <div
         id="navbar"
-        class="sticky top-0 border-b border-skin-border bg-skin-bg z-40"
+        class="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
       >
         <TheNavbar />
       </div>
       <div id="content" class="pb-6 pt-4">
         <router-view :key="$route.path" />
       </div>
-      <footer class="mt-auto" v-if="route.name === 'home'">
+      <footer v-if="route.name === 'home'" class="mt-auto">
         <TheFooter />
       </footer>
     </div>

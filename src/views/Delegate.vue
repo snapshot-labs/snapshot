@@ -251,8 +251,8 @@ onMounted(async () => {
         }}
         <BaseLink
           class="ml-1 whitespace-nowrap"
-          @click.stop
           :link="`https://docs.snapshot.org/guides/delegation#supported-networks`"
+          @click.stop
         >
           {{ $t('learnMore') }}
         </BaseLink>
@@ -265,7 +265,7 @@ onMounted(async () => {
             :error="validateToInput"
             class="mt-2"
           >
-            <template v-slot:label>{{ $t('delegate.to') }}</template>
+            <template #label>{{ $t('delegate.to') }}</template>
           </UiInput>
           <div class="flex items-center space-x-2 px-2">
             <BaseCheckbox v-model="specifySpaceChecked" />
@@ -277,7 +277,7 @@ onMounted(async () => {
             placeholder="e.g. balancer.eth"
             :error="validateSpaceInput"
           >
-            <template v-slot:label>{{ $t('space') }}</template>
+            <template #label>{{ $t('space') }}</template>
           </UiInput>
         </BaseBlock>
         <BaseBlock
@@ -308,12 +308,12 @@ onMounted(async () => {
               :profile="profiles[delegate.delegate]"
             />
             <div
-              v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
               class="flex-auto text-right text-skin-link"
+              v-text="shorten(delegate.space || $t('allSpaces'), 'choice')"
             />
             <a
-              @click="revokeDelegate(delegate.space, delegate.delegate)"
               class="-mr-2 ml-2 px-2"
+              @click="revokeDelegate(delegate.space, delegate.delegate)"
             >
               <BaseIcon name="close" size="12" class="mb-1" />
             </a>
@@ -336,8 +336,8 @@ onMounted(async () => {
               :profile="profiles[delegator.delegator]"
             />
             <div
-              v-text="shorten(delegator.space || '-', 'choice')"
               class="flex-auto text-right text-skin-link"
+              v-text="shorten(delegator.space || '-', 'choice')"
             />
           </div>
         </BaseBlock>
@@ -379,29 +379,29 @@ onMounted(async () => {
         </BaseBlock>
       </div>
     </template>
-    <template #sidebar-right v-if="networkSupportsDelegate">
+    <template v-if="networkSupportsDelegate" #sidebar-right>
       <BaseBlock>
         <BaseButton
-          @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading || spaceLoading"
           class="block w-full"
           primary
+          @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
         >
           {{ $t('confirm') }}
         </BaseButton>
       </BaseBlock>
     </template>
   </TheLayout>
-  <teleport to="#modal" v-if="networkSupportsDelegate">
+  <teleport v-if="networkSupportsDelegate" to="#modal">
     <ModalRevokeDelegate
       v-if="loaded"
-      :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="getDelegationsAndDelegates"
       :id="currentId"
+      :open="modalOpen"
       :delegate="currentDelegate"
       :profiles="profiles"
+      @close="modalOpen = false"
+      @reload="getDelegationsAndDelegates"
     />
   </teleport>
 </template>

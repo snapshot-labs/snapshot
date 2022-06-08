@@ -21,7 +21,7 @@ defineEmits(['close', 'set']);
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('settings.editController') }}</h3>
       </div>
@@ -53,13 +53,13 @@ defineEmits(['close', 'set']);
       >
       </BaseInput>
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
         class="my-2 w-full"
         primary
         :disabled="!controllerInputIsValid"
-        @click="$emit('set'), $emit('close')"
         :loading="settingENSRecord"
+        @click="$emit('set'), $emit('close')"
       >
         {{ $t('settings.set') }}
       </BaseButton>

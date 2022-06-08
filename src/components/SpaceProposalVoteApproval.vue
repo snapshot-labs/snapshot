@@ -27,7 +27,6 @@ function selectChoice(i) {
     <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
-      @click="selectChoice(i + 1)"
       class="mb-2 block w-full"
       :class="{
         '!border-skin-link': selectedChoices.includes(i + 1),
@@ -35,6 +34,7 @@ function selectChoice(i) {
           i + 1
         )
       }"
+      @click="selectChoice(i + 1)"
     >
       {{ shorten(choice, 32) }}
     </BaseButton>

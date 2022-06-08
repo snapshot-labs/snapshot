@@ -18,8 +18,8 @@ const stateClass = computed(() => {
   <span
     v-else
     :class="stateClass"
-    v-text="$t(`proposals.states.${state}`)"
     class="State text-white"
+    v-text="$t(`proposals.states.${state}`)"
   />
 </template>
 

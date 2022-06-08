@@ -23,7 +23,7 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
 <template>
   <div>
     <BaseDropdown :items="localeItems" @select="selectLang($event)">
-      <template v-slot:button>
+      <template #button>
         <slot />
       </template>
     </BaseDropdown>

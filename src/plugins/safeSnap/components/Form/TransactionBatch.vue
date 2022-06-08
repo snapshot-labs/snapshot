@@ -112,20 +112,16 @@ export default {
 <template>
   <UiCollapsible
     borderless
-    :hideRemove="config.preview"
+    :hide-remove="config.preview"
     :number="nonce + 1"
     :open="open"
     :title="`${$t('safeSnap.batch')} (${transactions.length})`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
-    <div
-      v-for="(transaction, index) in transactions"
-      v-bind:key="index"
-      class="mb-2"
-    >
+    <div v-for="(transaction, index) in transactions" :key="index" class="mb-2">
       <SafeSnapFormTransaction
-        :modelValue="transaction"
+        :model-value="transaction"
         :config="config"
         :nonce="index"
         @remove="removeTransaction(index)"
@@ -133,31 +129,25 @@ export default {
       />
     </div>
     <UiCollapsibleText
-      v-if="this.modelValue.hash"
-      :showArrow="true"
+      v-if="modelValue.hash"
+      :show-arrow="true"
       :open="!hashHidden"
       class="collapsible-text mt-2"
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
     >
-      {{ this.modelValue.hash }}
+      {{ modelValue.hash }}
     </UiCollapsibleText>
     <UiCollapsibleText
-      v-if="this.modelValue.hash"
-      :showArrow="true"
+      v-if="modelValue.hash"
+      :show-arrow="true"
       :pre="true"
       :open="!jsonHidden"
       class="collapsible-text mt-2"
       title="Batch Transaction JSON"
       @toggle="jsonHidden = !jsonHidden"
     >
-      {{
-        JSON.stringify(
-          formatBatchJson(this.modelValue.transactions),
-          null,
-          '\t'
-        )
-      }}
+      {{ JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t') }}
     </UiCollapsibleText>
     <BaseBlock
       v-if="
@@ -172,7 +162,7 @@ export default {
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
     </BaseBlock>
 
-    <BaseButton class="mt-2" v-if="!config.preview" @click="addTransaction">
+    <BaseButton v-if="!config.preview" class="mt-2" @click="addTransaction">
       {{ $t('safeSnap.addTransaction') }}
     </BaseButton>
   </UiCollapsible>

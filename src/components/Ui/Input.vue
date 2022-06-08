@@ -60,9 +60,8 @@ onMounted(() => {
       </button>
       <input
         v-else
-        :value="modelValue"
-        @input="handleInput"
         ref="inputRef"
+        :value="modelValue"
         :placeholder="placeholder"
         :type="number ? 'number' : 'text'"
         :disabled="disabled"
@@ -71,6 +70,7 @@ onMounted(() => {
         :required="required"
         :readonly="readonly"
         :maxlength="maxlength"
+        @input="handleInput"
         @blur="emit('blur')"
       />
       <slot name="info" />

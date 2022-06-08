@@ -38,8 +38,8 @@ watch(open, (val, prev) => {
         </div>
         <a
           v-if="showClose"
-          @click="$emit('close')"
           class="absolute right-0 top-1 p-4 text-skin-text"
+          @click="$emit('close')"
         >
           <BaseIcon name="close" />
         </a>

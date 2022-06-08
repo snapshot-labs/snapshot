@@ -23,29 +23,29 @@ async function handleDelegate() {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.about.delegate') }}</h3>
       </div>
     </template>
     <div class="space-y-3 p-4">
       <BaseInput
-        :modelValue="userAddress"
+        :model-value="userAddress"
         :title="$t('profile.about.delegateTo')"
         readonly
       >
-        <template v-slot:label>{{ $t('delegate.to') }}</template>
+        <template #label>{{ $t('delegate.to') }}</template>
       </BaseInput>
-      <BaseInput :modelValue="spaceId" :title="$t('space')" readonly>
-        <template v-slot:label>{{ $t('space') }}</template>
+      <BaseInput :model-value="spaceId" :title="$t('space')" readonly>
+        <template #label>{{ $t('space') }}</template>
       </BaseInput>
     </div>
     <div class="p-4">
       <BaseButton
         primary
-        @click="handleDelegate"
         :loading="delegationLoading"
         class="w-full"
+        @click="handleDelegate"
       >
         {{ $t('confirm') }}
       </BaseButton>

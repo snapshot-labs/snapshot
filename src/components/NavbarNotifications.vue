@@ -27,12 +27,12 @@ onMounted(() => loadNotifications());
 
 <template>
   <BaseDropdown
-    @select="selectNotification"
-    @openChange="dropdownOpen = !dropdownOpen"
     :items="notificationsSortedByTime"
     placement="bottom-end"
+    @select="selectNotification"
+    @openChange="dropdownOpen = !dropdownOpen"
   >
-    <template v-slot:button>
+    <template #button>
       <ButtonSidebar
         class="relative !h-[46px] !w-[46px]"
         :class="{ '!border-skin-link': dropdownOpen }"
@@ -44,7 +44,7 @@ onMounted(() => loadNotifications());
         />
       </ButtonSidebar>
     </template>
-    <template v-slot:header>
+    <template #header>
       <div class="my-2 min-w-[320px] px-3 md:min-w-[400px]">
         <div class="mb-3 flex items-center justify-between">
           <h4>{{ $t('notifications.header') }}</h4>
@@ -55,17 +55,17 @@ onMounted(() => loadNotifications());
                 action: 'markAllAsRead'
               }
             ]"
-            @select="selectThreedotItem"
             placement="bottom-end"
+            @select="selectThreedotItem"
           >
-            <template v-slot:button>
+            <template #button>
               <BaseIcon
                 name="threedots"
                 size="25"
                 class="cursor-pointer hover:text-skin-link"
               />
             </template>
-            <template v-slot:item="{ item }">
+            <template #item="{ item }">
               <div class="flex items-center">
                 <BaseIcon name="check1" size="22" class="mr-2" />
                 {{ item.text }}
@@ -77,9 +77,9 @@ onMounted(() => loadNotifications());
           <BaseButton
             v-for="filter in filters"
             :key="filter"
-            @click="selectedFilter = filter"
             class="!h-[44px]"
             :class="{ '!border-skin-link': selectedFilter === filter }"
+            @click="selectedFilter = filter"
           >
             {{ $t(`notifications.${filter}`) }}
           </BaseButton>
@@ -97,7 +97,7 @@ onMounted(() => loadNotifications());
         </div>
       </div>
     </template>
-    <template v-slot:item="{ item }">
+    <template #item="{ item }">
       <div class="flex pt-2 pb-1">
         <div class="flex w-full">
           <div class="w-[78px]">

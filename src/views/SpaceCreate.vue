@@ -265,23 +265,23 @@ onMounted(() =>
       <SpaceCreateWarnings
         v-if="!validationLoading"
         :space="space"
-        :executingValidationFailed="executingValidationFailed"
-        :passValidation="passValidation"
+        :executing-validation-failed="executingValidationFailed"
+        :pass-validation="passValidation"
       />
 
       <!-- Step 1 -->
       <SpaceCreateContent
         v-if="currentStep === 1"
         :preview="preview"
-        :bodyLimit="BODY_LIMIT_CHARACTERS"
+        :body-limit="BODY_LIMIT_CHARACTERS"
       />
 
       <!-- Step 2 -->
       <SpaceCreateVoting
         v-else-if="currentStep === 2"
         :space="space"
-        :dateStart="dateStart"
-        :dateEnd="dateEnd"
+        :date-start="dateStart"
+        :date-end="dateEnd"
         @userSelectedDate="userSelectedDateEnd = true"
       />
 
@@ -291,9 +291,9 @@ onMounted(() =>
         class="space-y-3"
       >
         <PluginCreate
+          v-model="form.metadata.plugins"
           :proposal="proposal"
           :space="space"
-          v-model="form.metadata.plugins"
         />
       </div>
     </template>
@@ -301,32 +301,31 @@ onMounted(() =>
       <BaseBlock class="lg:fixed lg:w-[320px]">
         <BaseButton
           v-if="currentStep === 1"
-          @click="preview = !preview"
           class="mb-2 block w-full"
+          @click="preview = !preview"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="previosStep" class="mb-2 block w-full">
+        <BaseButton v-else class="mb-2 block w-full" @click="previosStep">
           {{ $t('back') }}
         </BaseButton>
 
         <BaseButton
           v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
+          :disabled="!isValid"
+          :loading="clientLoading || queryLoading"
+          class="block w-full"
+          primary
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
               : handleSubmit()
           "
-          :disabled="!isValid"
-          :loading="clientLoading || queryLoading"
-          class="block w-full"
-          primary
         >
           {{ $t('create.publish') }}
         </BaseButton>
         <BaseButton
           v-else
-          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
           class="block w-full"
           :loading="validationLoading"
           :disabled="
@@ -336,6 +335,7 @@ onMounted(() =>
             validationLoading
           "
           primary
+          @click="web3Account ? nextStep() : (modalAccountOpen = true)"
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
         </BaseButton>

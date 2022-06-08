@@ -92,13 +92,13 @@ onMounted(() => {
       </router-link>
     </div>
     <div
-      class="group relative mt-2 flex items-center px-2"
       v-tippy="{
         content: 'Timeline',
         placement: 'right',
         delay: [750, 0],
         touch: ['hold', 500]
       }"
+      class="group relative mt-2 flex items-center px-2"
     >
       <router-link :to="{ name: 'timeline' }">
         <ButtonSidebar
@@ -115,25 +115,25 @@ onMounted(() => {
         :component-data="{ type: 'transition-group' }"
         v-bind="{ animation: 200 }"
         item-key="id"
-        @update="saveSpaceOrder"
         class="mt-2 space-y-2"
         :delay="200"
         :delay-on-touch-only="true"
+        @update="saveSpaceOrder"
       >
         <template #item="{ element }">
           <div
             v-if="extentedSpacesObj[element]"
-            class="group relative flex items-center px-2"
             v-tippy="{
               content: extentedSpacesObj[element].name,
               placement: 'right',
               delay: [750, 0],
               touch: ['hold', 500]
             }"
+            class="group relative flex items-center px-2"
           >
             <SidebarUnreadIndicator
               :space="element"
-              :hasUnseen="hasUnseenProposalsBySpace(element)"
+              :has-unseen="hasUnseenProposalsBySpace(element)"
             />
             <div
               class="cursor-pointer"
@@ -145,9 +145,9 @@ onMounted(() => {
               "
             >
               <AvatarSpace
-                :space="extentedSpacesObj[element]"
                 :key="element"
-                symbolIndex="space"
+                :space="extentedSpacesObj[element]"
+                symbol-index="space"
                 size="44"
                 class="pointer-events-none"
               />
@@ -162,13 +162,13 @@ onMounted(() => {
       </draggable>
     </Transition>
     <div
-      class="mt-2 flex flex-col items-center space-y-2 px-2"
       v-tippy="{
         content: 'Create space',
         placement: 'right',
         delay: [750, 0],
         touch: ['hold', 500]
       }"
+      class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
       <router-link :to="{ name: 'setup' }">
         <ButtonSidebar

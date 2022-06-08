@@ -11,9 +11,9 @@ defineEmits(['remove', 'toggle']);
 </script>
 
 <template>
-  <div class="collapsible-container w-full" v-bind:class="{ borderless }">
+  <div class="collapsible-container w-full" :class="{ borderless }">
     <div class="collapsible-header flex items-center px-2">
-      <div class="header-number mr-4" v-if="number !== undefined">
+      <div v-if="number !== undefined" class="header-number mr-4">
         {{ number }}
       </div>
       <span
@@ -25,8 +25,8 @@ defineEmits(['remove', 'toggle']);
       </span>
       <span
         v-if="!hideRemove"
-        @click="$emit('remove')"
         class="ml-1 -mr-2 cursor-pointer px-3"
+        @click="$emit('remove')"
       >
         <BaseIcon name="close" size="12" />
       </span>

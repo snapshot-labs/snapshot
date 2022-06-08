@@ -153,7 +153,7 @@ function deleteItem(key) {
       :placeholder="$t('comment_box.add')"
       class="input h-full w-full text-left"
       style="font-size: 18px"
-      :minHeight="100"
+      :min-height="100"
     />
     <BaseBlock
       v-if="!togglePreview"
@@ -164,19 +164,19 @@ function deleteItem(key) {
     </BaseBlock>
 
     <BaseButton
-      @click="clickSubmit"
       :disabled="comment.length === 0"
       :loading="loading"
       class="mt-2"
       primary
+      @click="clickSubmit"
     >
       {{ $t(`comment_box.submit`) }}
     </BaseButton>
     <BaseButton
-      @click="togglePreview = !togglePreview"
       class="ml-2 mt-2"
       :disabled="comment.length === 0"
       primary
+      @click="togglePreview = !togglePreview"
     >
       {{
         togglePreview
@@ -184,7 +184,7 @@ function deleteItem(key) {
           : $t(`comment_box.continue_editing`)
       }}
     </BaseButton>
-    <div :key="index" v-for="(item, index) in allData">
+    <div v-for="(item, index) in allData" :key="index">
       <CommentBoxCommentBlock
         :proposal="proposal"
         :item="item"
@@ -194,7 +194,7 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div class="absolute bottom-0 h-[10px] w-[10px]" ref="endElement" />
+    <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
 
     <LoadingRow v-if="loadingMore" class="my-2" />
   </BaseBlock>

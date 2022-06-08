@@ -63,9 +63,6 @@ export default {
     SafeSnapHandleOutcome,
     SafeSnapFormTransactionBatch
   },
-  setup() {
-    return { shorten };
-  },
   props: [
     'modelValue',
     'proposal',
@@ -76,6 +73,9 @@ export default {
     'hash'
   ],
   emits: ['update:modelValue'],
+  setup() {
+    return { shorten };
+  },
   data() {
     return {
       input: formatBatches(
@@ -97,6 +97,25 @@ export default {
       }
     };
   },
+  computed: {
+    safeLink() {
+      const prefix = EIP3770_PREFIXES[this.network];
+      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
+    },
+    networkName() {
+      if (this.network === '1') return 'Mainnet';
+      const { shortName, name } = networks[this.network] || {};
+      return shortName || name || `#${this.network}`;
+    },
+    networkIcon() {
+      const { logo } = networks[this.network];
+      return getIpfsUrl(logo);
+    },
+    proposalResolved() {
+      const ts = (Date.now() / 1e3).toFixed();
+      return ts > this.proposal.end;
+    }
+  },
   async mounted() {
     try {
       const { dao } = await plugin.getModuleDetails(
@@ -115,25 +134,6 @@ export default {
       };
     } catch (e) {
       console.error(e);
-    }
-  },
-  computed: {
-    safeLink() {
-      const prefix = EIP3770_PREFIXES[this.network];
-      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
-    },
-    networkName() {
-      if (this.network === '1') return 'Mainnet';
-      const { shortName, name } = networks[this.network] || {};
-      return shortName || name || `#${this.network}`;
-    },
-    networkIcon() {
-      const { logo } = networks[this.network];
-      return getIpfsUrl(logo);
-    },
-    proposalResolved() {
-      const ts = (Date.now() / 1e3).toFixed();
-      return ts > this.proposal.end;
     }
   },
   methods: {
@@ -193,13 +193,13 @@ export default {
       </a>
       <div class="flex-grow"></div>
       <SafeSnapTooltip
-        :realityAddress="this.realityAddress"
-        :multiSendAddress="this.multiSendAddress"
+        :reality-address="realityAddress"
+        :multi-send-address="multiSendAddress"
       />
     </h4>
     <UiCollapsibleText
       v-if="hash"
-      :showArrow="true"
+      :show-arrow="true"
       :open="showHash"
       class="border-b"
       style="border-width: 0 0 1px 0 !important"
@@ -211,12 +211,12 @@ export default {
     <div class="text-center">
       <div
         v-for="(batch, index) in input"
-        v-bind:key="index"
+        :key="index"
         class="border-b last:border-b-0"
       >
         <SafeSnapFormTransactionBatch
           :config="transactionConfig"
-          :modelValue="batch"
+          :model-value="batch"
           :nonce="index"
           @remove="removeBatch(index)"
           @update:modelValue="updateTransactionBatch(index, $event)"
@@ -224,13 +224,13 @@ export default {
       </div>
 
       <div v-if="!preview || proposalResolved">
-        <BaseButton class="my-3" v-if="!preview" @click="addTransactionBatch">
+        <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
         </BaseButton>
 
         <SafeSnapFormImportTransactionsButton
           v-if="!preview"
-          :network="this.network"
+          :network="network"
           @import="handleImport($event)"
         />
 
@@ -238,8 +238,8 @@ export default {
           v-if="preview && proposalResolved"
           :batches="input"
           :proposal="proposal"
-          :realityAddress="realityAddress"
-          :multiSendAddress="transactionConfig.multiSendAddress"
+          :reality-address="realityAddress"
+          :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>

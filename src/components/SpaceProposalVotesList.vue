@@ -104,22 +104,22 @@ watch(visibleVotes, () => {
       class="flex items-center border-t px-3 py-[14px]"
     >
       <BaseUser
+        :key="vote.voter"
         :profile="profiles[vote.voter]"
         :address="vote.voter"
         :space="space"
-        :key="vote.voter"
         :proposal="proposal"
         class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
       />
       <div class="flex-auto truncate px-2 text-center text-skin-link">
         <div
-          class="truncate text-center text-skin-link"
           v-tippy="{
             content:
               format(proposal, vote.choice).length > 24
                 ? format(proposal, vote.choice)
                 : null
           }"
+          class="truncate text-center text-skin-link"
         >
           {{ format(proposal, vote.choice) }}
         </div>
@@ -156,8 +156,8 @@ watch(visibleVotes, () => {
           ? sortedVotes.length < voteCount
           : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
       "
-      @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+      @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
     >
       <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
@@ -165,8 +165,8 @@ watch(visibleVotes, () => {
     <teleport to="#modal">
       <ModalReceipt
         :open="modalReceiptOpen"
+        :author-ipfs-hash="authorIpfsHash"
         @close="modalReceiptOpen = false"
-        :authorIpfsHash="authorIpfsHash"
       />
     </teleport>
   </BaseBlock>

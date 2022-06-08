@@ -12,10 +12,10 @@ defineProps<{
 
 <template>
   <div
-    class="truncate px-3 text-lg font-semibold leading-10 text-skin-heading"
     v-tippy="{
       content: profile?.name || profile?.ens || address
     }"
+    class="truncate px-3 text-lg font-semibold leading-10 text-skin-heading"
   >
     {{ profile?.name || profile?.ens || shorten(address) }}
   </div>

@@ -55,8 +55,8 @@ label {
   <label v-else class="file-select">
     <input
       type="file"
-      @change="handleFileChange"
       accept="image/jpg, image/jpeg, image/png"
+      @change="handleFileChange"
     />
     <slot />
   </label>

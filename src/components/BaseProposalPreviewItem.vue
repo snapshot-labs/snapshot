@@ -62,8 +62,8 @@ const winningChoice = computed(() =>
             hide-avatar
           />
         </div>
-        <h3 v-text="proposal.title" class="mt-1 mb-1 break-words" />
-        <p v-text="shorten(body, 120)" class="mb-2 break-words text-md" />
+        <h3 class="mt-1 mb-1 break-words" v-text="proposal.title" />
+        <p class="mb-2 break-words text-md" v-text="shorten(body, 120)" />
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -79,10 +79,10 @@ const winningChoice = computed(() =>
           >
             <div class="absolute ml-3 leading-[43px] text-skin-link">
               <BaseIcon
+                v-if="i === winningChoice"
                 name="check1"
                 size="20"
                 class="mr-1 -ml-1 align-middle"
-                v-if="i === winningChoice"
               />
               {{ shorten(choice, 32) }}
               <span class="ml-1 text-skin-text">
@@ -91,12 +91,12 @@ const winningChoice = computed(() =>
               </span>
             </div>
             <div
+              class="absolute right-0 mr-3 leading-[40px] text-skin-link"
               v-text="
                 formatPercentNumber(
                   (1 / proposal.scores_total) * proposal.scores[i]
                 )
               "
-              class="absolute right-0 mr-3 leading-[40px] text-skin-link"
             />
             <div
               :style="`width: ${

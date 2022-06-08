@@ -26,7 +26,7 @@ defineProps<{
               </div>
               <IconVerifiedSpace
                 class="ml-1 flex text-primary"
-                :spaceId="space.id"
+                :space-id="space.id"
                 size="18"
               />
             </div>

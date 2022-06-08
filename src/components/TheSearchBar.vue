@@ -50,15 +50,15 @@ function redirectSearch(e) {
 <template>
   <div class="flex">
     <BaseSearch
-      :modelValue="routeQuery"
-      @update:modelValue="input => $emit('update:modelValue', input)"
+      :model-value="routeQuery"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
+      @update:modelValue="input => $emit('update:modelValue', input)"
     />
     <div class="flex items-center border-l" style="height: 44px">
-      <BaseDropdown @select="redirectSearch" :items="searchOptions">
-        <template v-slot:button>
-          <span v-text="searchSelectedOption" class="ml-3" />
+      <BaseDropdown :items="searchOptions" @select="redirectSearch">
+        <template #button>
+          <span class="ml-3" v-text="searchSelectedOption" />
           <BaseIcon name="arrow-down" class="ml-1 mr-2 pr-1" />
         </template>
       </BaseDropdown>

@@ -90,16 +90,16 @@ function handleChange(e) {
         ref="inputEl"
         type="text"
         :value="searchInput"
-        @input="handleChange"
         class="s-input !bg-skin-bg"
         :placeholder="placeholder ?? $t('select')"
+        @input="handleChange"
       />
       <!-- Fake Input to display the selected value -->
       <div
-        ref="selectedInputEl"
-        @click="openOptions"
         v-show="!displayDropdown"
+        ref="selectedInputEl"
         class="s-input !bg-skin-bg"
+        @click="openOptions"
       >
         <slot name="option" :option="getOption(value)?.option">
           {{ getOption(value)?.label ?? '' }}
@@ -118,9 +118,9 @@ function handleChange(e) {
     >
       <ul class="max-h-[200px] overflow-y-auto">
         <li
-          class="cursor-pointer bg-skin-bg py-2 px-3 hover:bg-skin-border hover:text-skin-link"
           v-for="option in options"
           :key="option.value"
+          class="cursor-pointer bg-skin-bg py-2 px-3 hover:bg-skin-border hover:text-skin-link"
           @click.stop="handleOptionSelect($event, option)"
         >
           <slot name="option" :option="option.option">

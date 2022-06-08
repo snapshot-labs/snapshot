@@ -32,7 +32,7 @@ function isDisabled(item: { id: number; name: string }) {
 </script>
 
 <template>
-  <Listbox as="div" v-model="selectedItems" multiple>
+  <Listbox v-model="selectedItems" as="div" multiple>
     <ListboxLabel>
       <LabelInput>{{ label }}</LabelInput>
     </ListboxLabel>
@@ -72,12 +72,12 @@ function isDisabled(item: { id: number; name: string }) {
         >
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
-              as="template"
               v-for="item in items"
               :key="item.id"
+              v-slot="{ active, selected, disabled }"
+              as="template"
               :value="item"
               :disabled="isDisabled(item)"
-              v-slot="{ active, selected, disabled }"
             >
               <li
                 :class="[

@@ -32,25 +32,25 @@ defineProps<{
       <div class="flex items-center">
         <div
           v-if="label"
-          class="cursor-help rounded-full border !border-skin-link px-3 text-xs text-skin-link"
           v-tippy="{ content: labelTooltip ? labelTooltip : null }"
+          class="cursor-help rounded-full border !border-skin-link px-3 text-xs text-skin-link"
         >
           {{ label }}
         </div>
         <BaseIcon
           v-else-if="icon && !iconHref"
+          v-tippy="{ content: iconTooltip ? iconTooltip : null }"
           :name="icon"
           size="22"
           :class="['float-right pt-1', iconClass]"
-          v-tippy="{ content: iconTooltip ? iconTooltip : null }"
         />
-        <BaseLink v-else-if="iconHref" :link="iconHref" hideExternalIcon>
+        <BaseLink v-else-if="iconHref" :link="iconHref" hide-external-icon>
           <BaseIcon
             v-if="icon"
+            v-tippy="{ content: iconTooltip ? iconTooltip : null }"
             :name="icon"
             size="22"
             :class="['float-right pt-1', iconClass]"
-            v-tippy="{ content: iconTooltip ? iconTooltip : null }"
           />
         </BaseLink>
       </div>

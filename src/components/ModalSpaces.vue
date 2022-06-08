@@ -14,7 +14,7 @@ defineEmits(['close']);
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('spaces') }}</h3>
       </div>

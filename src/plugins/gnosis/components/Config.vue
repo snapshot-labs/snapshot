@@ -68,22 +68,22 @@ const getChoices = () => {
     </div>
   </div>
   <div v-if="preview">
-    <GnosisCustomBlock :proposalConfig="input" :choices="getChoices()" />
+    <GnosisCustomBlock :proposal-config="input" :choices="getChoices()" />
   </div>
   <BaseButton
     v-if="!preview"
     :disabled="!isValid"
-    @click="preview = true"
     class="my-2 w-full"
     primary
+    @click="preview = true"
   >
     {{ $t('create.preview') }}
   </BaseButton>
   <BaseButton
     v-if="preview"
-    @click="preview = false"
     class="mb-2 w-full"
     primary
+    @click="preview = false"
   >
     {{ $t('back') }}
   </BaseButton>

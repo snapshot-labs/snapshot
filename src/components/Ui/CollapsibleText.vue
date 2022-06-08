@@ -13,12 +13,12 @@ export default {
     'pre'
   ],
   emits: ['toggle'],
-  data() {
-    return { chevronIcon };
-  },
   setup() {
     const { copyToClipboard } = useCopy();
     return { copyToClipboard };
+  },
+  data() {
+    return { chevronIcon };
   },
   methods: {
     copy() {
@@ -34,12 +34,12 @@ export default {
     :open="open"
     :title="title"
     :number="number"
-    :hideRemove="hideRemove"
-    :showArrow="showArrow"
+    :hide-remove="hideRemove"
+    :show-arrow="showArrow"
     :borderless="borderless"
     @toggle="$emit('toggle')"
   >
-    <template v-slot:icons>
+    <template #icons>
       <div
         v-if="!hideRemove"
         class="mr-2 flex cursor-pointer items-center"

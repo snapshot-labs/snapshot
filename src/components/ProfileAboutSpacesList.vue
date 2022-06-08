@@ -35,7 +35,7 @@ const numberOfSpacesByScreenSize = computed(() => {
   <BaseBlock
     :title="$t('profile.about.joinedSpaces')"
     :counter="followingSpaces.length"
-    hideBottomBorder
+    hide-bottom-border
     slim
   >
     <div
@@ -44,14 +44,14 @@ const numberOfSpacesByScreenSize = computed(() => {
     >
       <ProfileAboutSpacesListSkeleton
         v-if="loadingFollowedSpaces || !Object.keys(spaces).length"
-        :numberOfSpaces="numberOfSpacesByScreenSize"
+        :number-of-spaces="numberOfSpacesByScreenSize"
       />
       <div v-else class="flex justify-between">
         <div class="flex w-full overflow-x-hidden">
           <div
-            class="mx-2 min-w-[66px] max-w-[66px] text-center first:ml-0"
             v-for="space in followingSpaces.map((f: any) => f.space.id).slice(0, numberOfSpacesByScreenSize)"
             :key="space"
+            class="mx-2 min-w-[66px] max-w-[66px] text-center first:ml-0"
           >
             <ProfileAboutSpacesListItem
               v-if="spaces?.[space]"
@@ -71,7 +71,7 @@ const numberOfSpacesByScreenSize = computed(() => {
   </BaseBlock>
   <teleport to="#modal">
     <ModalSpaces
-      :followingSpaces="followingSpaces.map((f: any) => f.space.id)"
+      :following-spaces="followingSpaces.map((f: any) => f.space.id)"
       :open="modalSpacesOpen"
       @close="modalSpacesOpen = false"
     />

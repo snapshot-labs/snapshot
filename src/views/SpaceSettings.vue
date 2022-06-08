@@ -290,18 +290,18 @@ async function handleSetRecord() {
         </router-link>
       </div>
       <div class="px-4 md:px-0">
-        <h1 v-text="$t('settings.header')" class="mb-4" />
+        <h1 class="mb-4" v-text="$t('settings.header')" />
       </div>
       <LoadingRow v-if="!loaded" block />
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
           <BaseMessage
-            class="mx-4 mb-5 md:mx-0"
-            level="info"
             v-if="
               !(isSpaceController || isSpaceAdmin || ensOwner) &&
               currentTextRecord
             "
+            class="mx-4 mb-5 md:mx-0"
+            level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessage>
@@ -312,14 +312,14 @@ async function handleSetRecord() {
                 :error="inputError('name')"
                 @blur="visitedFields.push('name')"
               >
-                <template v-slot:label>{{ $t(`settings.name`) }}*</template>
+                <template #label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
               <UiInput
                 v-model="form.about"
                 :error="inputError('about')"
                 @blur="visitedFields.push('about')"
               >
-                <template v-slot:label> {{ $t(`settings.about`) }} </template>
+                <template #label> {{ $t(`settings.about`) }} </template>
               </UiInput>
               <UiInput
                 v-model="form.avatar"
@@ -327,10 +327,10 @@ async function handleSetRecord() {
                 :error="inputError('avatar')"
                 @blur="visitedFields.push('avatar')"
               >
-                <template v-slot:label>
+                <template #label>
                   {{ $t(`settings.avatar`) }}
                 </template>
-                <template v-slot:info>
+                <template #info>
                   <InputUploadImage
                     class="!ml-2"
                     @input="setAvatarUrl"
@@ -341,10 +341,10 @@ async function handleSetRecord() {
                 </template>
               </UiInput>
               <UiInput @click="modalCategoryOpen = true">
-                <template v-slot:label>
+                <template #label>
                   {{ $t(`settings.categories`) }}
                 </template>
-                <template v-slot:selected>
+                <template #selected>
                   <span class="capitalize">
                     {{ categoriesString }}
                   </span>
@@ -356,7 +356,7 @@ async function handleSetRecord() {
                 :error="inputError('twitter')"
                 @blur="visitedFields.push('twitter')"
               >
-                <template v-slot:label>
+                <template #label>
                   <BaseIcon name="twitter" />
                 </template>
               </UiInput>
@@ -366,7 +366,7 @@ async function handleSetRecord() {
                 :error="inputError('github')"
                 @blur="visitedFields.push('github')"
               >
-                <template v-slot:label>
+                <template #label>
                   <BaseIcon name="github" />
                 </template>
               </UiInput>
@@ -376,7 +376,7 @@ async function handleSetRecord() {
                 :error="inputError('website')"
                 @blur="visitedFields.push('website')"
               >
-                <template v-slot:label>
+                <template #label>
                   <BaseIcon name="earth" />
                 </template>
               </UiInput>
@@ -386,7 +386,7 @@ async function handleSetRecord() {
                 :error="inputError('terms')"
                 @blur="visitedFields.push('terms')"
               >
-                <template v-slot:label> {{ $t(`settings.terms`) }} </template>
+                <template #label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
                 <BaseCheckbox v-model="form.private" />
@@ -399,13 +399,13 @@ async function handleSetRecord() {
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
               :error="inputError('domain')"
-              @blur="visitedFields.push('domain')"
               class="mb-2"
+              @blur="visitedFields.push('domain')"
             >
-              <template v-slot:label>
+              <template #label>
                 {{ $t('settings.domain') }}
               </template>
-              <template v-slot:info>
+              <template #info>
                 <BaseLink
                   class="-mr-1 flex items-center"
                   link="https://docs.snapshot.org/spaces/add-custom-domain"
@@ -415,17 +415,17 @@ async function handleSetRecord() {
                 </BaseLink>
               </template>
             </UiInput>
-            <UiInput @click="modalSkinsOpen = true" :error="inputError('skin')">
-              <template v-slot:selected>
+            <UiInput :error="inputError('skin')" @click="modalSkinsOpen = true">
+              <template #selected>
                 {{ form.skin ? form.skin : $t('defaultSkin') }}
               </template>
-              <template v-slot:label>
+              <template #label>
                 {{ $t(`settings.skin`) }}
               </template>
             </UiInput>
           </BaseBlock>
-          <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
-            <BaseBlock class="mb-2 !border-red" v-if="inputError('admins')">
+          <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
+            <BaseBlock v-if="inputError('admins')" class="mb-2 !border-red">
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
@@ -437,7 +437,7 @@ async function handleSetRecord() {
             />
           </BaseBlock>
           <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock class="mb-2 !border-red" v-if="inputError('members')">
+            <BaseBlock v-if="inputError('members')" class="mb-2 !border-red">
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
             </BaseBlock>
@@ -462,13 +462,13 @@ async function handleSetRecord() {
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="space-y-2">
               <UiInput
-                @click="modalValidationOpen = true"
                 :error="inputError('settings.validation')"
+                @click="modalValidationOpen = true"
               >
-                <template v-slot:selected>
+                <template #selected>
                   {{ form.validation.name }}
                 </template>
-                <template v-slot:label>
+                <template #label>
                   {{ $t(`settings.validation`) }}
                 </template>
               </UiInput>
@@ -478,7 +478,7 @@ async function handleSetRecord() {
                   :error="inputError('minScore')"
                   :number="true"
                 >
-                  <template v-slot:label>{{
+                  <template #label>{{
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
@@ -496,10 +496,10 @@ async function handleSetRecord() {
                 :number="true"
                 placeholder="e.g. 1"
               >
-                <template v-slot:label>
+                <template #label>
                   {{ $t('settings.votingDelay') }}
                 </template>
-                <template v-slot:info>
+                <template #info>
                   <select
                     v-model="delayUnit"
                     class="input mr-[6px] ml-2 text-center"
@@ -515,10 +515,10 @@ async function handleSetRecord() {
                 :number="true"
                 placeholder="e.g. 5"
               >
-                <template v-slot:label>
+                <template #label>
                   {{ $t('settings.votingPeriod') }}
                 </template>
-                <template v-slot:info>
+                <template #info>
                   <select
                     v-model="periodUnit"
                     class="input mr-[6px] ml-2 text-center"
@@ -534,16 +534,16 @@ async function handleSetRecord() {
                 :number="true"
                 placeholder="1000"
               >
-                <template v-slot:label>
+                <template #label>
                   {{ $t('settings.quorum') }}
                 </template>
               </UiInput>
               <UiInput>
-                <template v-slot:label>
+                <template #label>
                   {{ $t('settings.type') }}
                 </template>
-                <template v-slot:selected>
-                  <div @click="modalVotingTypeOpen = true" class="w-full">
+                <template #selected>
+                  <div class="w-full" @click="modalVotingTypeOpen = true">
                     {{
                       form.voting?.type
                         ? $t(`voting.${form.voting?.type}`)
@@ -569,21 +569,21 @@ async function handleSetRecord() {
               >
                 <div v-if="pluginIndex[name].name">
                   <a
-                    @click="handleRemovePlugins(name)"
                     class="absolute right-0 p-4"
+                    @click="handleRemovePlugins(name)"
                   >
                     <BaseIcon name="close" size="12" />
                   </a>
                   <a
-                    @click="handleEditPlugins(name)"
                     class="block rounded-md border p-4"
+                    @click="handleEditPlugins(name)"
                   >
                     <h4 v-text="pluginIndex[name].name" />
                   </a>
                 </div>
               </div>
             </div>
-            <BaseButton @click="handleAddPlugins" class="block w-full">
+            <BaseButton class="block w-full" @click="handleAddPlugins">
               {{ $t('settings.addPlugin') }}
             </BaseButton>
           </BaseBlock>
@@ -602,22 +602,22 @@ async function handleSetRecord() {
         <BaseBlock>
           <BaseButton
             v-if="ensOwner"
-            @click="modalControllerEditOpen = true"
             :loading="settingENSRecord"
             class="mb-2 block w-full"
+            @click="modalControllerEditOpen = true"
           >
             {{ $t('settings.editController') }}
           </BaseButton>
           <div v-if="isSpaceAdmin || isSpaceController">
-            <BaseButton @click="handleReset" class="mb-2 block w-full">
+            <BaseButton class="mb-2 block w-full" @click="handleReset">
               {{ $t('reset') }}
             </BaseButton>
             <BaseButton
               :disabled="uploadLoading"
-              @click="handleSubmit"
               :loading="clientLoading"
               class="block w-full"
               primary
+              @click="handleSubmit"
             >
               {{ $t('save') }}
             </BaseButton>
@@ -651,16 +651,16 @@ async function handleSetRecord() {
       @add="handleSubmitAddValidation"
     />
     <ModalVotingType
-      :open="modalVotingTypeOpen"
-      @close="modalVotingTypeOpen = false"
       v-model:selected="form.voting.type"
-      allowAny
+      :open="modalVotingTypeOpen"
+      allow-any
+      @close="modalVotingTypeOpen = false"
     />
     <ModalControllerEdit
       :open="modalControllerEditOpen"
+      :current-text-record="currentTextRecord"
+      :ens-address="space.id"
       @close="modalControllerEditOpen = false"
-      :currentTextRecord="currentTextRecord"
-      :ensAddress="space.id"
       @set="confirmSetRecord()"
     />
     <ModalUnsupportedNetwork

@@ -19,7 +19,7 @@ onMounted(() => {
   <TheLayout>
     <template #content-left>
       <div class="px-4 md:px-0">
-        <h1 v-text="$t('setup.createASpace')" class="mb-4" />
+        <h1 class="mb-4" v-text="$t('setup.createASpace')" />
       </div>
       <template v-if="web3Account || web3.authLoading">
         <!-- Step one - setup ens domain -->
@@ -27,16 +27,16 @@ onMounted(() => {
         <!-- Step two - setup space controller -->
         <SetupController
           v-else-if="route.params.step === 'controller' && route.params.ens"
-          :web3Account="web3Account"
+          :web3-account="web3Account"
         />
         <!-- Step three - setup space profile -->
         <SetupProfile
           v-else-if="route.params.step === 'profile' && route.params.ens"
-          :web3Account="web3Account"
+          :web3-account="web3Account"
         />
       </template>
       <BaseBlock v-else>
-        <BaseButton @click="modalAccountOpen = true" class="w-full" primary>
+        <BaseButton class="w-full" primary @click="modalAccountOpen = true">
           {{ $t('connectWallet') }}
         </BaseButton>
       </BaseBlock>
@@ -49,7 +49,7 @@ onMounted(() => {
           class="pr-2 !align-middle text-skin-text"
         />
         <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span">
-          <template v-slot:docs>
+          <template #docs>
             <BaseLink link="https://docs.snapshot.org/spaces/create">
               documentation</BaseLink
             >

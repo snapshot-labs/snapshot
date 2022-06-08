@@ -128,7 +128,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
 </script>
 <template>
   <BaseModal :open="closeModal" @close="closeModal = false">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
     <div class="mt-4 text-center">
@@ -138,15 +138,15 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       class="mb-2 mt-3 flex content-center items-center justify-center text-center"
     >
       <BaseButton
-        @click="deleteItem"
         :loading="loading"
         class="!bg-primary !text-white"
+        @click="deleteItem"
         >{{ $t('comment_box.yes') }}</BaseButton
       >
       <BaseButton
         :disabled="loading"
-        @click="closeModal = false"
         class="ml-2"
+        @click="closeModal = false"
         >{{ $t('comment_box.no') }}</BaseButton
       >
     </div>
@@ -155,11 +155,11 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     <PluginCommentBoxComment
       :item="item"
       :space="space"
-      :buttonName="$t('comment_box.edit_button')"
+      :button-name="$t('comment_box.edit_button')"
       :placeholder="$t('comment_box.edit')"
+      method="edit"
       @dismissComment="toggleEditComment = true"
       @updateItem="$emit('updateItem', $event)"
-      method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
@@ -172,19 +172,19 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           class="inline-block"
         />
         <span
-          v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
             content: formatRelativeTime(item.timestamp / 1e3)
           }"
           class="ml-1"
+          v-text="$d(item.timestamp, 'short', 'en-US')"
         />
         <BaseDropdown
           v-if="isAdmin || isOwner || isCreator"
           class="float-right"
-          @select="selectFromThreedotDropdown"
           :items="threeDotItems"
+          @select="selectFromThreedotDropdown"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
@@ -192,24 +192,24 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>
     <BaseButton
-      @click="toggleComment = !toggleComment"
       class="rounded-0 mt-2 p-1"
       style="line-height: 0px; height: auto"
+      @click="toggleComment = !toggleComment"
     >
       <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </BaseButton>
     <PluginCommentBoxComment
       v-if="!toggleComment"
-      buttonName="Reply"
+      button-name="Reply"
       :space="space"
+      :item="item"
+      :main-thread="mainThread"
+      method="replyComment"
+      :placeholder="$t('comment_box.add_reply')"
       @dismissComment="toggleComment = true"
       @replyComment="$emit('replyComment', $event)"
       @updateItem="$emit('updateItem', $event)"
-      :item="item"
-      :mainThread="mainThread"
-      method="replyComment"
-      :placeholder="$t('comment_box.add_reply')"
     />
   </div>
 </template>

@@ -65,11 +65,11 @@ onMounted(() => {
         ref="BaseInputEL"
         :type="type"
         :value="modelValue"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         :class="['s-input', { '!border-red': error && showError }]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
       />
       <div
         v-if="$slots.after"

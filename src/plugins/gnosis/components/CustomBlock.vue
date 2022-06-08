@@ -4,10 +4,10 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { shorten } from '@/helpers/utils';
 
 export default {
+  props: ['proposalConfig', 'choices'],
   setup() {
     return { shorten };
   },
-  props: ['proposalConfig', 'choices'],
   data() {
     return {
       loading: false,

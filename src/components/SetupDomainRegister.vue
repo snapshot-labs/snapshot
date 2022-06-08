@@ -24,29 +24,29 @@ const isValidDomain = computed(() => {
 <template>
   <div>
     <BaseInput
-      :modelValue="modelValue"
-      @input="$emit('update:modelValue', $event.target.value.toLowerCase())"
+      :model-value="modelValue"
       :placeholder="$t('setup.example')"
       class="!pr-[44px]"
+      @input="$emit('update:modelValue', $event.target.value.toLowerCase())"
     >
       <template #after>
         <span
-          class="-mr-2 flex cursor-help items-center"
-          target="_blank"
           v-tippy="{
             content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(
               ', '
             )}`
           }"
+          class="-mr-2 flex cursor-help items-center"
+          target="_blank"
         >
           <BaseIcon name="info" size="24" class="-mr-1 text-skin-text" />
         </span>
       </template>
     </BaseInput>
     <BaseLink
-      @click="$emit('waitForRegistration')"
       :link="`https://app.ens.domains/name/${modelValue}/register`"
       hide-external-icon
+      @click="$emit('waitForRegistration')"
     >
       <BaseButton :disabled="!isValidDomain" class="mt-2 w-full" primary>
         {{ $t('setup.registerEnsButton') }}

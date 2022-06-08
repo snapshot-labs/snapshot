@@ -75,12 +75,12 @@ const isVisible = computed(() => {
       </div>
       <div class="flex justify-end space-x-2">
         <span
-          class="whitespace-nowrap"
           v-tippy="{
             content: results.resultsByStrategyScore[choice.i]
               .map((score, index) => `${formatNumber(score)} ${titles[index]}`)
               .join(' + ')
           }"
+          class="whitespace-nowrap"
         >
           {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
           {{ shorten(proposal.symbol || space.symbol, 'symbol') }}

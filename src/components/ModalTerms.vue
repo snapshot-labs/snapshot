@@ -15,7 +15,7 @@ function accept() {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('settings.terms') }}</h3>
     </template>
     <div class="my-2 p-4 text-center">
@@ -26,14 +26,14 @@ function accept() {
         <TextAutolinker :text="getIpfsUrl" :truncate="35" />
       </BaseLink>
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
       <div class="float-left w-2/4 pl-2">
-        <BaseButton @click="accept" type="submit" class="w-full" primary>
+        <BaseButton type="submit" class="w-full" primary @click="accept">
           {{ $t('agree') }}
         </BaseButton>
       </div>

@@ -49,7 +49,7 @@ const socials = [
       <ButtonSidebar @click="modalAboutOpen = true">
         <span class="text-skin-link">?</span>
       </ButtonSidebar>
-      <ButtonSidebar @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
+      <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
         <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </ButtonSidebar>
 

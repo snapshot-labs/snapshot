@@ -90,28 +90,28 @@ function isSelectable(year, month, day) {
     </div>
     <div class="overflow-hidden border-l border-t">
       <div
-        class="day border-b border-r text-skin-link"
         v-for="dayOfWeek in daysOfWeek"
-        v-text="dayOfWeek"
         :key="dayOfWeek"
+        class="day border-b border-r text-skin-link"
+        v-text="dayOfWeek"
       />
       <div
-        class="day border-b border-r"
         v-for="emptyDay in emptyDays"
         :key="`empty-${emptyDay}`"
+        class="day border-b border-r"
       />
       <div v-for="day in days" :key="day">
         <a
+          v-if="isSelectable(year, month, day)"
           class="day selectable border-b border-r"
           :class="{
             'bg-skin-header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))
           }"
-          v-if="isSelectable(year, month, day)"
-          v-text="day"
           @click="toggleDay(year, month, day)"
+          v-text="day"
         />
-        <div class="day border-b border-r" v-text="day" v-else />
+        <div v-else class="day border-b border-r" v-text="day" />
       </div>
     </div>
   </div>

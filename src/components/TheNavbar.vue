@@ -46,8 +46,8 @@ watchEffect(() => {
         <div class="ml-3 flex flex-auto items-center">
           <ButtonSidebar
             v-if="!domain"
-            @click="showSidebar = !showSidebar"
             class="-ml-3 border-0 sm:hidden"
+            @click="showSidebar = !showSidebar"
           >
             <BaseIcon v-if="showSidebar" name="close" size="20" />
             <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
@@ -79,13 +79,13 @@ watchEffect(() => {
                 />
                 <span
                   v-if="profile?.name || profile?.ens"
-                  v-text="profile.name || profile.ens"
                   class="hidden sm:block"
+                  v-text="profile.name || profile.ens"
                 />
                 <span
                   v-else
-                  v-text="shorten(web3Account)"
                   class="hidden sm:block"
+                  v-text="shorten(web3Account)"
                 />
               </BaseButton>
             </DropdownAccount>
@@ -93,9 +93,9 @@ watchEffect(() => {
 
           <BaseButton
             v-if="!auth.isAuthenticated.value"
-            @click="modalAccountOpen = true"
             :loading="loading || web3.authLoading"
             :aria-label="$t('connectWallet')"
+            @click="modalAccountOpen = true"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
             <i-ho-login
@@ -103,14 +103,14 @@ watchEffect(() => {
             />
           </BaseButton>
           <NavbarNotifications v-if="web3Account && !domain" />
-          <ButtonLanguage small v-if="domain" />
+          <ButtonLanguage v-if="domain" small />
         </div>
       </div>
     </BaseContainer>
   </nav>
   <div
-    class="flex justify-center bg-primary py-2 text-center text-white"
     v-if="pendingCount > 0"
+    class="flex justify-center bg-primary py-2 text-center text-white"
   >
     <LoadingSpinner fill-white class="mr-2" />
     {{ $tc('delegate.pendingTransaction', pendingCount) }}
@@ -118,9 +118,9 @@ watchEffect(() => {
   <teleport to="#modal">
     <ModalAccount
       :open="modalAccountOpen"
+      :profile="profile"
       @close="modalAccountOpen = false"
       @login="handleLogin"
-      :profile="profile"
     />
   </teleport>
 </template>

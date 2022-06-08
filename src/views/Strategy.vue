@@ -24,19 +24,19 @@ onMounted(async () => {
         </router-link>
       </div>
       <LoadingPage v-if="!strategy" />
-      <div class="px-4 md:px-0" v-else>
+      <div v-else class="px-4 md:px-0">
         <h1 class="mb-2">
           {{ strategy.id }}
         </h1>
         <span
-          v-text="`In ${strategy.spacesCount} space(s)`"
           class="text-skin-text"
+          v-text="`In ${strategy.spacesCount} space(s)`"
         />
         <BaseMarkdown :body="strategy.about" class="mb-6 mt-4" />
       </div>
     </template>
     <template #sidebar-right>
-      <BaseBlock :title="$t('information')" v-if="strategy">
+      <BaseBlock v-if="strategy" :title="$t('information')">
         <div class="mb-1">
           <b>{{ $t('author') }}</b>
           <BaseLink

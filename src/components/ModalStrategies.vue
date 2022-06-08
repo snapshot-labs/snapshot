@@ -15,14 +15,14 @@ defineEmits(['close']);
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('strategiesPage') }}</h3>
     </template>
     <div class="m-4">
       <BaseBlock
-        slim
         v-for="(strategy, i) in strategies"
         :key="i"
+        slim
         class="mb-3 p-4 text-skin-link"
       >
         <div class="flex items-center justify-between">
@@ -55,7 +55,7 @@ defineEmits(['close']);
             />
           </div>
           <div v-for="(param, key) in strategy.params" :key="key" class="flex">
-            <span v-text="key" class="mr-1 flex-auto text-skin-text" />
+            <span class="mr-1 flex-auto text-skin-text" v-text="key" />
             <BaseLink
               v-if="key === 'address' || isAddress(param)"
               :link="explorerUrl(strategy.network || proposal.network, param)"

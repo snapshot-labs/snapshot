@@ -18,14 +18,14 @@ onMounted(() => loadProfiles([userAddress.value]));
   <TheLayout>
     <template #sidebar-left>
       <ProfileSidebar
-        @edit="modalProfileFormOpen = true"
         :profiles="profiles"
-        :userAddress="userAddress"
+        :user-address="userAddress"
+        @edit="modalProfileFormOpen = true"
       />
     </template>
     <template #content-right>
       <router-view
-        :userAddress="userAddress"
+        :user-address="userAddress"
         :profile="profiles[userAddress]"
       />
     </template>
@@ -33,9 +33,9 @@ onMounted(() => loadProfiles([userAddress.value]));
   <teleport to="#modal">
     <ModalProfileForm
       :open="modalProfileFormOpen"
-      @close="modalProfileFormOpen = false"
       :address="userAddress"
       :profile="profiles[userAddress]"
+      @close="modalProfileFormOpen = false"
     />
   </teleport>
 </template>

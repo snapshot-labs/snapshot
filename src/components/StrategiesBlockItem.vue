@@ -21,7 +21,7 @@ const emit = defineEmits(['removeStrategy', 'editStrategy']);
         <h4 class="truncate">{{ strategy.name }}</h4>
         <BasePill> ${{ strategy.params.symbol }} </BasePill>
       </div>
-      <BaseButtonIcon @click.stop="emit('removeStrategy', i)" class="-mr-2">
+      <BaseButtonIcon class="-mr-2" @click.stop="emit('removeStrategy', i)">
         <BaseIcon name="close" size="14" />
       </BaseButtonIcon>
     </button>

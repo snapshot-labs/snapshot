@@ -36,22 +36,22 @@ const networks = computed(() => {
 
 <template>
   <BaseAutocomplete
-    :options="networks"
-    @update:value="input => emit('update:input', input)"
-    :value="input"
     v-model:search="searchNetwork"
+    :options="networks"
+    :value="input"
     label="Network"
     :placeholder="$t('selectNetwork')"
     class="mb-3 w-full"
+    @update:value="input => emit('update:input', input)"
   >
-    <template v-slot:option="{ option }">
+    <template #option="{ option }">
       <div class="group flex items-center justify-between">
         <div class="flex items-center truncate">
           <img
             class="mr-2 h-4 w-4 rounded-full"
             :src="getIpfsUrl(option?.logo)"
           />
-          <span v-text="option?.name" class="mr-2 truncate" />
+          <span class="mr-2 truncate" v-text="option?.name" />
         </div>
         <BasePill> #{{ option?.chainId }} </BasePill>
       </div>

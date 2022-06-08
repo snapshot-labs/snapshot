@@ -17,8 +17,8 @@ defineProps(['network']);
       <div class="overflow-hidden">
         <h3 class="my-0 truncate leading-5" v-text="network.name" />
         <div
-          v-text="'Chain #' + network.key"
           class="text-xs leading-4 text-skin-text"
+          v-text="'Chain #' + network.key"
         />
       </div>
     </div>

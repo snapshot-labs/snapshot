@@ -26,7 +26,7 @@ defineProps<{
               {{ spaces[space].name }}
             </h4>
             <IconVerifiedSpace
-              :spaceId="space"
+              :space-id="space"
               size="19"
               class="ml-1 flex text-primary"
             />
@@ -48,9 +48,9 @@ defineProps<{
 
         <BaseButton
           v-else-if="userAddress !== web3Account"
-          @click="$emit('delegate', space)"
           class="!h-[44px]"
           primary
+          @click="$emit('delegate', space)"
         >
           {{ $t('profile.about.delegate') }}
         </BaseButton>

@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <BaseBlock class="mb-4 !border-red" v-if="error">
+  <BaseBlock v-if="error" class="mb-4 !border-red">
     <BaseIcon name="warning" class="mr-2 !text-red" />
     <span class="!text-red"> {{ error }}&nbsp;</span>
     <BaseLink link="https://docs.snapshot.org/spaces/create#strategies">

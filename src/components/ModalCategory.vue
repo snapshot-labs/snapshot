@@ -48,7 +48,7 @@ function handleClose() {
 
 <template>
   <BaseModal :open="open" @close="handleClose">
-    <template v-slot:header>
+    <template #header>
       <h3>
         {{ $t('settings.selectCategories') }}
       </h3>
@@ -60,7 +60,6 @@ function handleClose() {
       </div>
       <div class="space-y-3">
         <BaseBlock
-          @click="selectCategoriesHandler(category)"
           v-for="(category, i) in categories"
           :key="i"
           :class="[
@@ -73,6 +72,7 @@ function handleClose() {
             },
             'relative capitalize'
           ]"
+          @click="selectCategoriesHandler(category)"
         >
           <h3 v-text="category" />
           <i
@@ -82,19 +82,19 @@ function handleClose() {
         </BaseBlock>
       </div>
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton @click="handleClose" type="button" class="w-full">
+        <BaseButton type="button" class="w-full" @click="handleClose">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          @click="handleSubmit"
           :disabled="!selectedCategories.length"
           type="submit"
           class="w-full"
           primary
+          @click="handleSubmit"
         >
           {{ $t('confirm') }}
         </BaseButton>

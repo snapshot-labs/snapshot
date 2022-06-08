@@ -206,7 +206,7 @@ function deleteItemReply(key) {
 </script>
 <template>
   <BaseModal :open="closeModal" @close="closeEvent">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
     <div class="mt-3 text-center">
@@ -221,7 +221,7 @@ function deleteItemReply(key) {
         @click="deleteItem"
         >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <BaseButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+      <BaseButton :disabled="loading" class="ml-2" @click="closeEvent">{{
         $t('comment_box.no')
       }}</BaseButton>
     </div>
@@ -230,11 +230,11 @@ function deleteItemReply(key) {
     <CommentBoxComment
       :space="space"
       :item="item"
-      :buttonName="$t('comment_box.edit_button')"
+      :button-name="$t('comment_box.edit_button')"
       :placeholder="$t('comment_box.edit')"
+      method="edit"
       @dismissComment="toggleEditComment = true"
       @updateItem="updateItem($event)"
-      method="edit"
     />
   </div>
   <div v-if="toggleEditComment">
@@ -246,20 +246,20 @@ function deleteItemReply(key) {
           :space="space"
           class="inline-block"
         /><span
-          v-text="$d(item.timestamp, 'short', 'en-US')"
           v-tippy="{
             content: formatRelativeTime(item.timestamp / 1e3)
           }"
           class="ml-1"
+          v-text="$d(item.timestamp, 'short', 'en-US')"
         />
 
         <BaseDropdown
           v-if="isAdmin || isOwner || isCreator"
           class="float-right"
-          @select="selectFromThreedotDropdown"
           :items="threeDotItems"
+          @select="selectFromThreedotDropdown"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
         </BaseDropdown>
@@ -268,33 +268,33 @@ function deleteItemReply(key) {
     </BaseBlock>
 
     <BaseButton
-      @click="toggleComment = !toggleComment"
       class="rounded-0 mt-2 p-1"
       style="line-height: 0px; height: auto"
+      @click="toggleComment = !toggleComment"
     >
       <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />
       <span class="ml-1">{{ $t('comment_box.reply') }}</span>
     </BaseButton>
     <CommentBoxComment
       v-if="!toggleComment"
-      buttonName="Reply"
+      button-name="Reply"
       :space="space"
-      @dismissComment="toggleComment = true"
-      @replyComment="allReply.push($event)"
       :item="item"
-      :mainThread="item.key"
+      :main-thread="item.key"
       method="replyComment"
       :placeholder="$t('comment_box.add_reply')"
+      @dismissComment="toggleComment = true"
+      @replyComment="allReply.push($event)"
     />
   </div>
   <CommentBoxListReply
     :proposal="proposal"
     :profiles="profiles"
     :space="space"
-    :allReply="allReply"
-    :lastPage="lastPage"
-    :mainThread="item.key"
-    :loadingMore="loadingMore"
+    :all-reply="allReply"
+    :last-page="lastPage"
+    :main-thread="item.key"
+    :loading-more="loadingMore"
     @replyComment="allReply.push($event)"
     @updateItem="updateItemReply($event)"
     @deleteItem="deleteItemReply($event)"

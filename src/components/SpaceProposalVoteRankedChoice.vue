@@ -49,8 +49,8 @@ function updateChoices() {
                 {{ proposal.choices[element - 1] }}
               </div>
               <div
-                @click="removeChoice(index)"
                 class="ml-[40px] min-w-[20px] text-right"
+                @click="removeChoice(index)"
               >
                 <BaseIcon name="close" size="12" />
               </div>
@@ -62,9 +62,9 @@ function updateChoices() {
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <BaseButton
         v-if="!selectedChoices.includes(i + 1)"
-        @click="selectChoice(i + 1)"
         class="mb-2 block w-full"
         :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
+        @click="selectChoice(i + 1)"
       >
         <span class="truncate">{{ choice }}</span>
       </BaseButton>

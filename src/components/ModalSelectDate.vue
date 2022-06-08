@@ -48,7 +48,7 @@ watch(open, () => {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3 v-if="step === 0">
         {{
           selectedDate === 'start'
@@ -76,19 +76,19 @@ watch(open, () => {
         <input v-model="form.m" max="60" class="input w-5/12 text-center" />
       </BaseButton>
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton @click="$emit('close')" type="button" class="w-full">
+        <BaseButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          @click="handleSubmit"
           type="submit"
           :disabled="!input"
           class="w-full"
           primary
+          @click="handleSubmit"
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>

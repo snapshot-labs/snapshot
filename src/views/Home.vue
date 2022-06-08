@@ -61,7 +61,6 @@ onMounted(() => {
       </BaseButton>
       <BaseDropdown
         class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
-        @select="selectCategory($event)"
         :items="[
           {
             text: $tc('explore.categories.all'),
@@ -78,8 +77,9 @@ onMounted(() => {
               selected: selectedCategory === c
             }))
         ]"
+        @select="selectCategory($event)"
       >
-        <template v-slot:button>
+        <template #button>
           <BaseButton
             class="w-full whitespace-nowrap pr-3"
             :disabled="!orderedSpaces.length"
@@ -94,7 +94,7 @@ onMounted(() => {
             <BaseIcon size="16" name="arrow-down" class="mx-1 mt-1" />
           </BaseButton>
         </template>
-        <template v-slot:item="{ item }">
+        <template #item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
             <span class="ml-auto mt-[-3px] flex">
@@ -135,14 +135,14 @@ onMounted(() => {
               <div class="relative mb-2 inline-block">
                 <AvatarSpace
                   :space="space"
-                  symbolIndex="space"
+                  symbol-index="space"
                   size="82"
                   class="mb-1"
                 />
               </div>
               <h3
-                v-text="shorten(space.name, 16)"
                 class="mb-0 mt-0 !h-[32px] overflow-hidden pb-0 text-[22px]"
+                v-text="shorten(space.name, 16)"
               />
               <div class="mb-[12px] text-skin-text">
                 {{
@@ -161,14 +161,14 @@ onMounted(() => {
         class="grid gap-4 opacity-40 md:grid-cols-3 lg:grid-cols-4"
       >
         <div
-          class="min-h-[266px] animate-pulse bg-skin-border md:rounded-xl"
           v-for="i in 12"
           :key="i"
+          class="min-h-[266px] animate-pulse bg-skin-border md:rounded-xl"
         ></div>
       </div>
       <BaseNoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
-        useBlock
+        use-block
       />
       <div class="px-4 text-center md:px-0">
         <BaseButton

@@ -15,7 +15,7 @@ defineProps<{
       <div
         class="flex justify-center rounded-full !border-[1px] !border-skin-text p-[2px]"
       >
-        <AvatarSpace :space="space" symbolIndex="space" size="48" />
+        <AvatarSpace :space="space" symbol-index="space" size="48" />
       </div>
     </div>
     <div class="flex items-center justify-center">
@@ -23,7 +23,7 @@ defineProps<{
         {{ space?.name }}
       </div>
       <IconVerifiedSpace
-        :spaceId="space.id"
+        :space-id="space.id"
         size="14"
         class="pl-1 text-primary"
       />

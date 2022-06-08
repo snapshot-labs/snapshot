@@ -62,10 +62,10 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
       />
       <BaseInput
         :model-value="symbol"
-        @update:model-value="value => emit('updateSymbol', value)"
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
         :error="getError('symbol')"
+        @update:model-value="value => emit('updateSymbol', value)"
       />
     </div>
     <div class="mb-4 grid gap-3">
@@ -78,7 +78,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
     <StrategiesBlockWarning :error="getError('strategies')" />
 
-    <BaseButton @click="handleAddStrategy" class="block w-full">
+    <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('spaceStrategies.addStrategy') }}
     </BaseButton>
   </BaseBlock>
@@ -87,7 +87,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
-      :defaultNetwork="network"
+      :default-network="network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitStrategy"
     />

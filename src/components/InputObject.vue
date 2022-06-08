@@ -37,12 +37,12 @@ const { validationErrorMessage } = useValidationErrors();
 <template>
   <div class="space-y-2">
     <component
+      :is="getComponent(property.type)"
       v-for="(property, key) in definition.properties"
       :key="key"
-      :is="getComponent(property.type)"
+      v-model="input[key]"
       :definition="property"
       :error="validationErrorMessage(key, props.errors)"
-      v-model="input[key]"
     />
   </div>
 </template>

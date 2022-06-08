@@ -42,11 +42,11 @@ function clearInput() {
     <input
       :value="modelValue"
       :placeholder="placeholder"
-      @input="handleInputDebounce"
       type="text"
       autocorrect="off"
       autocapitalize="none"
       class="input w-full flex-auto border-none"
+      @input="handleInputDebounce"
     />
     <a @click="clearInput">
       <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />

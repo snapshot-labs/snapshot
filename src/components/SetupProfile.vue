@@ -187,10 +187,10 @@ async function handleSubmit() {
                 @image-uploaded="url => (form.avatar = url)"
                 @image-remove="form.avatar = ''"
               >
-                <template v-slot:avatar="{ uploading, previewFile }">
+                <template #avatar="{ uploading, previewFile }">
                   <div class="relative">
                     <AvatarSpace
-                      :previewFile="previewFile"
+                      :preview-file="previewFile"
                       size="80"
                       :space="{ id: route.params.ens as string }"
                     />
@@ -213,21 +213,21 @@ async function handleSubmit() {
       :network="form.network"
       :symbol="form.symbol"
       :strategies="form.strategies"
+      :get-error="getError"
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"
       @update-symbol="val => (form.symbol = val)"
-      :get-error="getError"
     />
 
     <BaseBlock>
       <BaseButton
-        @click="handleSubmit"
         class="w-full"
         primary
         :disabled="
           !isValid || (uriAddress !== web3Account && !pendingENSRecord)
         "
         :loading="creatingSpace"
+        @click="handleSubmit"
       >
         {{ $t('createButton') }}
       </BaseButton>

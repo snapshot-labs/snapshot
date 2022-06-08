@@ -30,13 +30,6 @@ const canFollow = computed(() => {
   >
     <BaseButton
       v-bind="$attrs"
-      @click.stop.prevent="
-        loadingFollow !== ''
-          ? null
-          : canFollow
-          ? clickFollow(space.id)
-          : (modalTermsOpen = true)
-      "
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
       style="width: 120px"
@@ -45,6 +38,13 @@ const canFollow = computed(() => {
         'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
       }"
+      @click.stop.prevent="
+        loadingFollow !== ''
+          ? null
+          : canFollow
+          ? clickFollow(space.id)
+          : (modalTermsOpen = true)
+      "
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>
       <span v-else>

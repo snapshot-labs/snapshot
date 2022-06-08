@@ -49,8 +49,8 @@ const winningChoice = computed(() =>
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 v-text="proposal.title" class="my-1 break-words leading-7" />
-        <p v-text="shorten(body, 140)" class="mb-2 break-words sm:text-md" />
+        <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
+        <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"

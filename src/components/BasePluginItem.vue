@@ -15,7 +15,7 @@ defineProps({
   <BaseBlock class="cursor-pointer hover:border-skin-text">
     <div class="mb-2 flex items-center">
       <BaseAvatar class="mr-2" :src="getIpfsUrl(plugin.icon)" size="28" />
-      <h3 v-text="plugin.name" class="m-0 truncate" />
+      <h3 class="m-0 truncate" v-text="plugin.name" />
       <div class="ml-1">v{{ plugin.version }}</div>
     </div>
     <div class="flex items-end justify-between text-skin-text">
@@ -37,8 +37,8 @@ defineProps({
 
       <BaseLink
         class="flex items-center"
-        @click.stop
         :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
+        @click.stop
       >
         {{ $t('learnMore') }}
       </BaseLink>

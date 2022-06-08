@@ -36,9 +36,9 @@ const retry = async () => {
 </script>
 
 <template>
-  <BaseBlock icon="warning" iconClass="text-red">
+  <BaseBlock icon="warning" icon-class="text-red">
     <div>{{ t('resultsError') }}</div>
-    <BaseButton class="mt-3 w-full" @click="retry" :loading="retrying" primary>
+    <BaseButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
       <BaseIcon name="refresh" />
       {{ t('retry') }}
     </BaseButton>

@@ -59,31 +59,31 @@ watch(
 <template>
   <div
     v-if="allReply.length > 0"
-    @click="showIt = !showIt"
     class="d-inline-block ml-2 mt-2"
     style="color: blue; cursor: pointer"
+    @click="showIt = !showIt"
   >
     {{ showIt ? $t('comment_box.hide') : $t('comment_box.show') }}
     {{ $t('comment_box.replies') }} ({{ allReply.length }})
   </div>
 
   <div
+    v-for="(item, index) in allReply"
     v-show="showIt"
-    class="pl-4"
     :ref="
       el => {
         if (el) listReply[item.key] = el;
       }
     "
     :key="index"
-    v-for="(item, index) in allReply"
+    class="pl-4"
   >
     <CommentBoxReplyBlock
       :proposal="proposal"
       :item="item"
       :profiles="profiles"
       :space="space"
-      :mainThread="mainThread"
+      :main-thread="mainThread"
       @replyComment="$emit('replyComment', $event)"
       @updateItem="$emit('updateItem', $event)"
       @deleteItem="$emit('deleteItem', $event)"
@@ -92,13 +92,13 @@ watch(
   </div>
 
   <div
+    v-if="lastPage && showIt && !loadIt"
+    class="d-inline-block ml-5 mt-2"
+    style="color: blue; cursor: pointer"
     @click="
       $emit('loadMore');
       loadIt = true;
     "
-    v-if="lastPage && showIt && !loadIt"
-    class="d-inline-block ml-5 mt-2"
-    style="color: blue; cursor: pointer"
   >
     {{ $t('comment_box.load_more') }}...
   </div>

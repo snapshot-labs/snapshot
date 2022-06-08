@@ -31,7 +31,7 @@ function select(key) {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('networks') }}</h3>
     </template>
     <BaseSearch

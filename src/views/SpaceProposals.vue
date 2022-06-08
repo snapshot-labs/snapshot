@@ -122,7 +122,6 @@ onMounted(() => {
           </div>
         </div>
         <BaseDropdown
-          @select="selectState"
           :items="[
             {
               text: $t('proposals.states.all'),
@@ -150,8 +149,9 @@ onMounted(() => {
               selected: spaceFilterBy === 'core'
             }
           ]"
+          @select="selectState"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
@@ -161,8 +161,8 @@ onMounted(() => {
 
         <SpaceProposalsNotice
           v-if="store.space.proposals.length < 1 && !loadingData"
-          :spaceId="space.id"
-          :web3Account="web3Account"
+          :space-id="space.id"
+          :web3-account="web3Account"
         />
       </div>
 
@@ -185,7 +185,7 @@ onMounted(() => {
           class="border-b first:border-t"
         />
       </div>
-      <div class="absolute bottom-0 h-[10px] w-[10px]" ref="endElement" />
+      <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
       <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>

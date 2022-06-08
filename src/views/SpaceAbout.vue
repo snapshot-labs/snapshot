@@ -82,8 +82,8 @@ onMounted(() => {
         </div>
       </BaseBlock>
       <BaseBlock
-        :title="$t('settings.admins')"
         v-if="space?.admins?.length"
+        :title="$t('settings.admins')"
         :slim="true"
         class="mb-3"
       >
@@ -97,8 +97,8 @@ onMounted(() => {
         </div>
       </BaseBlock>
       <BaseBlock
-        :title="$t('settings.authors')"
         v-if="space?.members?.length"
+        :title="$t('settings.authors')"
         :slim="true"
         class="mb-3"
       >

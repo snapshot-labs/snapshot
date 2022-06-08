@@ -85,22 +85,22 @@ onMounted(async () => {
   <div class="space-y-4">
     <BaseBlock :title="$t('create.voting')">
       <UiInput
-        @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
-        :disabled="!!space.voting?.type"
         v-tippy="{
           content: !!space.voting?.type
             ? $t('create.typeEnforced', { type: $t(`voting.${form.type}`) })
             : null
         }"
+        :disabled="!!space.voting?.type"
         :class="[space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer']"
         class="!mb-4"
+        @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
       >
-        <template v-slot:selected>
+        <template #selected>
           <span class="w-full">
             {{ $t(`voting.${form.type}`) }}
           </span>
         </template>
-        <template v-slot:label>
+        <template #label>
           {{ $t(`create.votingSystem`) }}
         </template>
       </UiInput>
@@ -122,9 +122,9 @@ onMounted(async () => {
                 :disabled="disableChoiceEdit"
                 :placeholder="index > 0 ? $t('optional') : ''"
                 class="group"
-                :focusOnMount="index === 0"
+                :focus-on-mount="index === 0"
               >
-                <template v-slot:label>
+                <template #label>
                   <div
                     class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
                     :class="{
@@ -136,7 +136,7 @@ onMounted(async () => {
                     {{ $tc('create.choice', [index + 1]) }}
                   </div>
                 </template>
-                <template v-slot:info>
+                <template #info>
                   <span
                     class="hidden text-xs text-skin-text group-focus-within:block"
                   >
@@ -150,8 +150,8 @@ onMounted(async () => {
         <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
           <ButtonSidebar
             v-if="!disableChoiceEdit"
-            @click="addChoices(1)"
             class="!h-[42px] !w-[42px]"
+            @click="addChoices(1)"
           >
             <BaseIcon size="20" name="plus" class="text-skin-link" />
           </ButtonSidebar>
@@ -162,20 +162,20 @@ onMounted(async () => {
     <BaseBlock
       :title="$t('create.period')"
       icon="info"
-      :iconTooltip="$t('create.votingPeriodExplainer')"
+      :icon-tooltip="$t('create.votingPeriodExplainer')"
     >
       <div class="md:flex md:space-x-3">
         <UiInput
-          @click="!space.voting?.delay ? selectDate('start') : null"
-          :disabled="!!space.voting?.delay"
           v-tippy="{
             content: !!space.voting?.delay ? $t('create.delayEnforced') : null
           }"
+          :disabled="!!space.voting?.delay"
           :class="[
             space.voting?.delay ? 'cursor-not-allowed' : 'cursor-pointer'
           ]"
+          @click="!space.voting?.delay ? selectDate('start') : null"
         >
-          <template v-slot:selected>
+          <template #selected>
             <span
               v-text="
                 Math.round(dateStart / 10) ===
@@ -185,10 +185,10 @@ onMounted(async () => {
               "
             />
           </template>
-          <template v-slot:label>
+          <template #label>
             {{ $t(`create.start`) }}
           </template>
-          <template v-slot:info>
+          <template #info>
             <BaseIcon
               name="calendar"
               size="18"
@@ -198,23 +198,23 @@ onMounted(async () => {
         </UiInput>
 
         <UiInput
-          @click="!space.voting?.period ? selectDate('end') : null"
-          :disabled="!!space.voting?.period"
           v-tippy="{
             content: space.voting?.period ? $t('create.periodEnforced') : null
           }"
+          :disabled="!!space.voting?.period"
           class="mb-0 md:mb-2"
           :class="[
             space.voting?.period ? 'cursor-not-allowed' : 'cursor-pointer'
           ]"
+          @click="!space.voting?.period ? selectDate('end') : null"
         >
-          <template v-slot:selected>
+          <template #selected>
             <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
           </template>
-          <template v-slot:label>
+          <template #label>
             {{ $t(`create.end`) }}
           </template>
-          <template v-slot:info>
+          <template #info>
             <BaseIcon
               name="calendar"
               size="18"
@@ -232,22 +232,22 @@ onMounted(async () => {
         :number="true"
         :placeholder="$t('create.snapshotBlock')"
       >
-        <template v-slot:label>
+        <template #label>
           {{ $t('snapshot') }}
         </template>
       </UiInput>
     </BaseBlock>
     <teleport to="#modal">
       <ModalSelectDate
-        :selectedDate="selectedDate"
+        :selected-date="selectedDate"
         :open="modalDateSelectOpen"
         @close="modalDateSelectOpen = false"
         @input="setDate"
       />
       <ModalVotingType
+        v-model:selected="form.type"
         :open="modalVotingTypeOpen"
         @close="modalVotingTypeOpen = false"
-        v-model:selected="form.type"
       />
     </teleport>
   </div>

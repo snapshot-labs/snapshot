@@ -163,7 +163,7 @@ watch([modalOpen, closeModal], () => {
 </script>
 <template>
   <BaseModal :open="closeModal" @close="closeEvent">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('comment_box.edit_comment') }}</h3>
     </template>
     <div class="mt-3 text-center">
@@ -178,7 +178,7 @@ watch([modalOpen, closeModal], () => {
         @click="updateItems"
         >{{ $t('comment_box.yes') }}</BaseButton
       >
-      <BaseButton @click="closeEvent" :disabled="loading" class="ml-2">{{
+      <BaseButton :disabled="loading" class="ml-2" @click="closeEvent">{{
         $t('comment_box.no')
       }}</BaseButton>
     </div>
@@ -189,7 +189,7 @@ watch([modalOpen, closeModal], () => {
       v-model="comment"
       :placeholder="placeholder"
       class="input w-full text-left"
-      :minHeight="100"
+      :min-height="100"
       style="font-size: 18px"
     />
     <BaseBlock
@@ -203,16 +203,16 @@ watch([modalOpen, closeModal], () => {
       :disabled="comment.length === 0"
       :loading="loading"
       class="mt-2"
-      @click="chooseMethod[method]"
       primary
+      @click="chooseMethod[method]"
     >
       {{ buttonName }}
     </BaseButton>
     <BaseButton
-      @click="togglePreview = !togglePreview"
       :disabled="comment.length === 0"
       class="ml-2 mt-2"
       primary
+      @click="togglePreview = !togglePreview"
     >
       {{
         togglePreview
@@ -222,9 +222,9 @@ watch([modalOpen, closeModal], () => {
     </BaseButton>
     <BaseButton
       :disabled="loading"
-      @click="$emit('dismissComment')"
       type="text"
       class="button--text ml-2 mt-2 border-0"
+      @click="$emit('dismissComment')"
     >
       {{ $t('comment_box.dismiss') }}
     </BaseButton>

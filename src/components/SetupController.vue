@@ -64,14 +64,14 @@ watch(
     </div>
 
     <BaseInput
-      title="Controller address"
       v-model.trim="spaceControllerInput"
+      title="Controller address"
       :placeholder="
         $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
       "
       :readonly="fillConnectedWallet"
-      @keyup.delete="fillConnectedWallet = false"
       focus-on-mount
+      @keyup.delete="fillConnectedWallet = false"
     />
     <div class="flex items-center gap-2">
       <BaseCheckbox v-model="fillConnectedWallet" />
@@ -125,8 +125,8 @@ watch(
         <div class="flex justify-between pb-2">
           <span class="mr-3 whitespace-nowrap">Text record</span>
           <span
-            class="truncate text-skin-link"
             v-tippy="{ content: textRecord }"
+            class="truncate text-skin-link"
             >{{ textRecord }}</span
           >
         </div>

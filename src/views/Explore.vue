@@ -96,38 +96,38 @@ onMounted(() => {
   <BaseContainer :slim="true">
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
-        <LoadingRow block v-if="loadingStrategies" />
+        <LoadingRow v-if="loadingStrategies" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
-            :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            :to="`/strategy/${item.id}`"
           >
             <BaseStrategyItem :strategy="item" />
           </router-link>
         </div>
       </template>
       <template v-if="route.name === 'networks'">
-        <LoadingRow block v-if="loadingNetworksSpacesCount" />
+        <LoadingRow v-if="loadingNetworksSpacesCount" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
-            :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
             :key="item.key"
+            :to="`/?network=${item.key}`"
           >
             <BaseNetworkItem :network="item" />
           </router-link>
         </div>
       </template>
       <template v-if="route.name === 'plugins'">
-        <LoadingRow block v-if="loadingPluginsSpacesCount" />
+        <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div v-for="item in items.slice(0, limit)" :key="item.key">
             <BasePluginItem :plugin="item" />
           </div>
         </div>
       </template>
-      <BaseNoResults useBlock v-if="items.length < 1 && !loading" />
+      <BaseNoResults v-if="items.length < 1 && !loading" use-block />
     </div>
   </BaseContainer>
   <div ref="endElement" />

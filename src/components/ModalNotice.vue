@@ -7,19 +7,19 @@ export default {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ title }}</h3>
     </template>
     <div class="my-2 p-4 text-center">
       <slot />
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <div>
         <BaseButton
-          @click="$emit('close')"
           type="submit"
           class="w-full"
           primary
+          @click="$emit('close')"
         >
           {{ $t('continue') }}
         </BaseButton>

@@ -69,9 +69,9 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           <BaseButton
             v-for="(ens, i) in domainsWithoutExistingSpace"
             :key="i"
-            @click="nextStep(ens.name)"
             class="flex w-full items-center justify-between"
             :primary="domainsWithoutExistingSpace.length === 1"
+            @click="nextStep(ens.name)"
           >
             {{ ens.name }}
             <BaseIcon name="go" size="22" class="-mr-2" />

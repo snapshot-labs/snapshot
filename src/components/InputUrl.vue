@@ -23,10 +23,10 @@ function addUrlProtocol(url: string) {
     <BaseInput
       v-bind="props"
       :model-value="trimUrlProposal(modelValue as string)"
+      class="!pl-[66px]"
       @update:model-value="
         input => $emit('update:modelValue', addUrlProtocol(input))
       "
-      class="!pl-[66px]"
     >
       <template #before>
         <span class="text-gray-500 sm:text-sm"> https:// </span>

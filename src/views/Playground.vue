@@ -195,20 +195,20 @@ onMounted(async () => {
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
               <UiInput @click="modalNetworksOpen = true">
-                <template v-slot:selected>
+                <template #selected>
                   {{
                     form.network
                       ? networks[form.network].name
                       : $t('selectNetwork')
                   }}
                 </template>
-                <template v-slot:label> {{ $t(`settings.network`) }} </template>
+                <template #label> {{ $t(`settings.network`) }} </template>
               </UiInput>
               <UiInput
                 v-model="form.snapshot"
                 @update:modelValue="handleURLUpdate"
               >
-                <template v-slot:label>
+                <template #label>
                   {{ $t('snapshot') }}
                 </template>
               </UiInput>
@@ -232,9 +232,9 @@ onMounted(async () => {
             <TextareaJson
               v-else
               v-model="form.params"
-              @update:modelValue="handleURLUpdate"
               :placeholder="$t('strategyParameters')"
               class="input text-left"
+              @update:modelValue="handleURLUpdate"
             />
             <BaseBlock
               v-if="strategyError"
@@ -247,10 +247,10 @@ onMounted(async () => {
           <BaseBlock :title="$t('addresses')">
             <TextareaArray
               v-model="form.addresses"
-              @change:modelValue="handleURLUpdate"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
               class="input w-full text-left"
               style="font-size: 18px"
+              @change:modelValue="handleURLUpdate"
             />
           </BaseBlock>
         </div>
@@ -260,16 +260,16 @@ onMounted(async () => {
       <div class="space-y-3">
         <BaseBlock :title="$t('actions')">
           <BaseButton
-            @click="loadScores"
             :loading="loading"
             :disabled="loading || !strategy"
             class="w-full"
             :style="[loading ? '' : 'padding-top: 0.2rem']"
             primary
+            @click="loadScores"
           >
             <BaseIcon name="play" size="18" />
           </BaseButton>
-          <BaseButton @click="copyURL" class="mt-2 w-full">
+          <BaseButton class="mt-2 w-full" @click="copyURL">
             <BaseIcon
               name="insertlink"
               size="18"
@@ -280,9 +280,9 @@ onMounted(async () => {
         </BaseBlock>
         <BaseBlock v-if="scores" :title="$t('results')">
           <div
-            class="flex justify-between"
             v-for="(score, key) in scoresWithZeroBalanceAddresses"
             :key="score"
+            class="flex justify-between"
           >
             <BaseUser :address="key" :space="form" />
             <span>
@@ -296,9 +296,9 @@ onMounted(async () => {
   </TheLayout>
   <teleport to="#modal">
     <ModalNetworks
+      v-model="form.network"
       :open="modalNetworksOpen"
       @close="modalNetworksOpen = false"
-      v-model="form.network"
       @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
     />
   </teleport>

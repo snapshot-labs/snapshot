@@ -61,7 +61,7 @@ watch(
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.settings.header') }}</h3>
       </div>
@@ -74,11 +74,11 @@ watch(
           @image-uploaded="url => (form.avatar = url)"
           @image-remove="form.avatar = ''"
         >
-          <template v-slot:avatar="{ uploading, previewFile }">
+          <template #avatar="{ uploading, previewFile }">
             <div class="relative">
               <AvatarUser
                 :address="address"
-                :previewFile="previewFile"
+                :preview-file="previewFile"
                 size="80"
               />
               <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
@@ -97,25 +97,25 @@ watch(
         :title="$t('profile.settings.name')"
         type="text"
         :placeholder="$t('profile.settings.namePlaceholder')"
-        :maxLength="properties.name.maxLength"
-        focusOnMount
+        :max-length="properties.name.maxLength"
+        focus-on-mount
       />
       <div>
         <LabelInput> {{ $t('profile.settings.biography') }} </LabelInput>
         <TextareaAutosize
           v-model="form.about"
           class="s-input !rounded-3xl"
-          :maxLength="properties.about.maxLength"
+          :max-length="properties.about.maxLength"
           :placeholder="$t('profile.settings.bioPlaceholder')"
         />
       </div>
     </div>
     <div class="p-4">
       <BaseButton
-        @click="actionWithAlias(save)"
         :loading="actionLoading"
         class="w-full"
         primary
+        @click="actionWithAlias(save)"
       >
         {{ $t('save') }}
       </BaseButton>

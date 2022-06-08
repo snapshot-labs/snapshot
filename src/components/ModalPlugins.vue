@@ -44,7 +44,7 @@ watch(open, () => {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>
         {{
           selectedPlugin?.key
@@ -61,11 +61,11 @@ watch(open, () => {
     />
     <div class="my-4 mx-0 min-h-[300px] md:mx-4">
       <BaseBlock
-        slim
         v-if="selectedPlugin?.key"
+        slim
         class="mb-4 rounded-md p-4 text-skin-link"
       >
-        <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
+        <h4 class="mb-3 text-center" v-text="selectedPlugin.name" />
         <TextareaJson
           v-model="input"
           v-model:is-valid="isValid"
@@ -77,9 +77,9 @@ watch(open, () => {
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
           <BasePluginItem
-            :plugin="plugin"
             v-for="(plugin, i) in filterPlugins(searchInput)"
             :key="i"
+            :plugin="plugin"
             @click="selectPlugin(plugin)"
           />
 
@@ -89,12 +89,12 @@ watch(open, () => {
         </div>
       </div>
     </div>
-    <template v-if="selectedPlugin?.key" v-slot:footer>
+    <template v-if="selectedPlugin?.key" #footer>
       <BaseButton
-        @click="handleSubmit"
         :disabled="!isValid"
         class="w-full"
         primary
+        @click="handleSubmit"
       >
         {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
       </BaseButton>

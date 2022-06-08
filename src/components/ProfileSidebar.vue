@@ -20,7 +20,7 @@ const { web3Account } = useWeb3();
     <BaseBlock slim class="overflow-hidden">
       <ProfileSidebarHeader
         v-if="profiles[userAddress]"
-        :userAddress="userAddress"
+        :user-address="userAddress"
         :profile="profiles[userAddress]"
       />
       <ProfileSidebarHeaderSkeleton v-else />

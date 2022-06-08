@@ -60,15 +60,15 @@ const handleDrop = e => {
     <div class="flex flex-col space-y-3">
       <h1
         v-if="preview"
-        v-text="form.name || $t('create.untitled')"
         class="w-full break-all"
+        v-text="form.name || $t('create.untitled')"
       />
       <BaseInput
         v-else
         v-model="form.name"
         :title="$t('create.proposalTitle')"
-        :maxLength="128"
-        focusOnMount
+        :max-length="128"
+        focus-on-mount
       />
 
       <div v-if="!preview">
@@ -90,11 +90,11 @@ const handleDrop = e => {
             class="peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text"
           >
             <textarea
-              @paste="handlePaste"
               ref="textAreaEl"
+              v-model="form.body"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
-              v-model="form.body"
+              @paste="handlePaste"
             />
           </div>
 
@@ -121,9 +121,9 @@ const handleDrop = e => {
               </span>
             </span>
             <BaseLink
+              v-tippy="{ content: $t('create.markdown') }"
               class="relative inline"
               link="https://docs.github.com/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax"
-              v-tippy="{ content: $t('create.markdown') }"
               hide-external-icon
             >
               <BaseIcon name="markdown" class="text-skin-text" />

@@ -11,10 +11,7 @@ export default {
 </script>
 
 <template>
-  <div
-    class="collapsible-container w-full text-left"
-    v-bind:class="{ borderless }"
-  >
+  <div class="collapsible-container w-full text-left" :class="{ borderless }">
     <div class="collapsible-header flex items-stretch px-2">
       <div
         class="ml-2 flex flex-auto flex-nowrap items-center"
@@ -33,7 +30,7 @@ export default {
           :src="chevronIcon"
           alt="arrow"
           class="arrow"
-          v-bind:class="{ rotate: !open }"
+          :class="{ rotate: !open }"
         />
       </div>
       <slot name="icons"></slot>

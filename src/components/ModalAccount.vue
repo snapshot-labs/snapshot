@@ -15,7 +15,7 @@ const injected = computed(() => getInjected());
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>
         {{ $t('connectWallet') }}
       </h3>
@@ -25,8 +25,8 @@ const injected = computed(() => getInjected());
         <a
           v-for="(connector, id, i) in connectors"
           :key="i"
-          @click="$emit('login', connector.id)"
           class="block"
+          @click="$emit('login', connector.id)"
         >
           <BaseButton
             v-if="id === 'injected' && injected"

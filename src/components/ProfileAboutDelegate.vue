@@ -89,10 +89,10 @@ const networkString = computed(() => {
       <ProfileAboutDelegateListItem
         v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
         :spaces="spaces"
-        :delegatorsFilteredBySpaces="delegatorsFilteredBySpaces"
+        :delegators-filtered-by-spaces="delegatorsFilteredBySpaces"
         :delegators="delegators"
-        :userAddress="userAddress"
-        :web3Account="web3Account"
+        :user-address="userAddress"
+        :web3-account="web3Account"
         @delegate="clickDelegate"
       />
       <div v-else class="border-t p-4">
@@ -111,10 +111,10 @@ const networkString = computed(() => {
   <Teleport to="#modal">
     <ModalDelegate
       :open="modalDelegateOpen"
+      :user-address="userAddress"
+      :space-id="delegateSpaceId"
       @close="modalDelegateOpen = false"
       @reload="loadDelegatorsByNetwork"
-      :userAddress="userAddress"
-      :spaceId="delegateSpaceId"
     />
   </Teleport>
 </template>

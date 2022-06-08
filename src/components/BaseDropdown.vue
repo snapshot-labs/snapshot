@@ -40,8 +40,8 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     <BasePopover :options="{ offset: [0, 12], placement }" :open="open">
       <template #item>
         <div
-          @click="open = !open"
           class="inline-flex h-full w-full cursor-pointer items-center"
+          @click="open = !open"
         >
           <slot name="button" />
         </div>
@@ -57,8 +57,8 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           leave-to-class="transform opacity-0 scale-95"
         >
           <div
-            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg shadow-lg md:max-w-[400px]"
             v-if="open"
+            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg shadow-lg md:max-w-[400px]"
           >
             <ul
               class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
@@ -67,11 +67,11 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
               <li
                 v-for="item in items"
                 :key="item.text"
-                @click.stop="handleClick(item.action)"
                 :class="{ selected: item.selected }"
                 class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
+                @click.stop="handleClick(item.action)"
               >
-                <slot name="item" :item="item" :key="item">
+                <slot :key="item" name="item" :item="item">
                   {{ item.text }}
                 </slot>
               </li>
