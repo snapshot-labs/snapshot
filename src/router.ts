@@ -1,21 +1,24 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
-import Home from '@/views/Home.vue';
-import SpaceProposal from '@/views/SpaceProposal.vue';
-import SpaceCreate from '@/views/SpaceCreate.vue';
-import Setup from '@/views/Setup.vue';
-import SpaceSettings from '@/views/SpaceSettings.vue';
-import Explore from '@/views/Explore.vue';
-import Strategy from '@/views/Strategy.vue';
-import Playground from '@/views/Playground.vue';
-import Delegate from '@/views/Delegate.vue';
-import Timeline from '@/views/Timeline.vue';
-import Space from '@/views/Space.vue';
-import SpaceAbout from '@/views/SpaceAbout.vue';
-import SpaceProposals from '@/views/SpaceProposals.vue';
-import Profile from '@/views/Profile.vue';
+import { useApp } from '@/composables/useApp';
+
+import DelegateView from '@/views/DelegateView.vue';
+import ExploreView from '@/views/ExploreView.vue';
+import HomeView from '@/views/HomeView.vue';
+import PlaygroundView from '@/views/PlaygroundView.vue';
+import SetupView from '@/views/SetupView.vue';
+import StrategyView from '@/views/StrategyView.vue';
+import TimelineView from '@/views/TimelineView.vue';
+
+import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
 import ProfileActivity from '@/views/ProfileActivity.vue';
-import { useApp } from '@/composables/useApp';
+
+import SpaceView from '@/views/SpaceView.vue';
+import SpaceProposals from '@/views/SpaceProposals.vue';
+import SpaceProposal from '@/views/SpaceProposal.vue';
+import SpaceCreate from '@/views/SpaceCreate.vue';
+import SpaceSettings from '@/views/SpaceSettings.vue';
+import SpaceAbout from '@/views/SpaceAbout.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -71,9 +74,13 @@ const profileRoutes = [
 // E.g. /balancer/proposal/:proposalId becomes /proposal/:proposalId
 if (domain) {
   routes.push(
-    { path: '/', name: 'home', component: Space, children: spaceRoutes },
-    { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
-    { path: '/playground/:name', name: 'playground', component: Playground },
+    { path: '/', name: 'home', component: SpaceView, children: spaceRoutes },
+    { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
+    {
+      path: '/playground/:name',
+      name: 'playground',
+      component: PlaygroundView
+    },
     {
       path: `/${domain}`,
       alias: `/${domainAlias ?? domain}`,
@@ -91,23 +98,32 @@ if (domain) {
   // If accessed through localhost or snapshot.org, add all routes and
   // prefix space routes with space domain (/:key).
   routes.push(
-    { path: '/', name: 'home', component: Home },
-    { path: '/setup/:step?/:ens?', name: 'setup', component: Setup },
-    { path: '/networks', name: 'networks', component: Explore },
-    { path: '/strategies', name: 'strategies', component: Explore },
-    { path: '/plugins', name: 'plugins', component: Explore },
-    { path: '/delegate/:key?/:to?', name: 'delegate', component: Delegate },
-    { path: '/timeline', name: 'timeline', component: Timeline },
-    { path: '/explore', name: 'explore', component: Timeline },
-    { path: '/playground/:name', name: 'playground', component: Playground },
-    { path: '/strategy/:name', name: 'strategy', component: Strategy },
+    { path: '/', name: 'home', component: HomeView },
+    { path: '/setup/:step?/:ens?', name: 'setup', component: SetupView },
+    { path: '/networks', name: 'networks', component: ExploreView },
+    { path: '/strategies', name: 'strategies', component: ExploreView },
+    { path: '/plugins', name: 'plugins', component: ExploreView },
+    { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
+    { path: '/timeline', name: 'timeline', component: TimelineView },
+    { path: '/explore', name: 'explore', component: TimelineView },
+    {
+      path: '/playground/:name',
+      name: 'playground',
+      component: PlaygroundView
+    },
+    { path: '/strategy/:name', name: 'strategy', component: StrategyView },
     {
       path: '/profile/:address',
       name: 'profile',
-      component: Profile,
+      component: ProfileView,
       children: profileRoutes
     },
-    { path: '/:key', name: 'space', component: Space, children: spaceRoutes }
+    {
+      path: '/:key',
+      name: 'space',
+      component: SpaceView,
+      children: spaceRoutes
+    }
   );
 }
 
