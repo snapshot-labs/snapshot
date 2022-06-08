@@ -135,7 +135,7 @@
   "changeWallet": "更换钱包",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
-    "mainText": "默认情况下，每个投票者都有一个投票权。 您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "在 {documentation} 获得更多信息，或加入Snapshot {discord} 寻求帮助。",
     "gotIt": "了解！"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "关于",
-      "placeholder": "介绍一下您的空间"
+      "placeholder": "What is your organisation about?"
     },
     "categories": {
       "label": "类别",
