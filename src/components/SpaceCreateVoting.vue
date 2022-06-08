@@ -48,7 +48,13 @@ function setDate(ts) {
 
 watch(
   () => form.value.type,
-  () => {
+  (newType, oldType) => {
+    if (newType !== 'basic' && oldType === 'basic') {
+      form.value.choices = [
+        { key: 0, text: '' },
+        { key: 1, text: '' }
+      ];
+    }
     if (form.value.type === 'basic') {
       form.value.choices = [
         { key: 1, text: 'For' },

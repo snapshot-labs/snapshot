@@ -33,8 +33,15 @@ async function update(val) {
         class="flex items-center border rounded-xl hover:border-skin-text hover:cursor-pointer"
       >
         <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
-          <div class="w-[32px]">
+          <div>
+            <div
+              v-if="preview.links.icon[0].href.includes('discord.com')"
+              class="bg-[#5865F2] p-2 rounded-full"
+            >
+              <i-s-discord class="h-[26px] w-[26px]" />
+            </div>
             <img
+              v-else
               :src="preview.links.icon[0].href"
               width="32"
               height="32"
