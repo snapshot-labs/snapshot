@@ -28,7 +28,7 @@
   "timeline": "时间线",
   "ended": "已结束",
   "started": "已开始",
-  "filters": "筛选器",
+  "filters": "过滤器",
   "allSpaces": "所有空间",
   "submitOnchain": "链上提交",
   "inSpaces": "在 {0} 空间中",
@@ -135,7 +135,7 @@
   "changeWallet": "更换钱包",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
-    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "您可以通过设置中的策略更改投票权的计算方式。 更改您的设置只会影响新提案，无法更改现有提案。",
     "learnMore": "在 {documentation} 获得更多信息，或加入Snapshot {discord} 寻求帮助。",
     "gotIt": "了解！"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "关于",
-      "placeholder": "What is your organisation about?"
+      "placeholder": "您的组织是关于什么？"
     },
     "categories": {
       "label": "类别",
