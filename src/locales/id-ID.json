@@ -179,7 +179,7 @@
     "schedule": "Jadwal proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Sunting",
     "continue": "Lanjut",
     "now": "Sekarang",

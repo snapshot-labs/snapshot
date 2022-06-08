@@ -179,7 +179,7 @@
     "schedule": "Vorschlag planen",
     "delayEnforced": "Der Space verlangt eine Verzögerung bevor die Abstimmung beginnen kann",
     "periodEnforced": "Dieser Space benötigt eine Abstimmungsdauer",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Bearbeiten",
     "continue": "Weiter",
     "now": "Jetzt",

@@ -179,7 +179,7 @@
     "schedule": "일정 제안",
     "delayEnforced": "투표가 시작될 때까지 공간이 지연됩니다.",
     "periodEnforced": "공간은 투표 기간을 적용합니다.",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "편집",
     "continue": "계속",
     "now": "현재",
