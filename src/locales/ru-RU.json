@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Ваше сообщество запущено!",
-    "mainText": "По умолчанию каждый участник имеет право голоса. Вы можете изменить способ расчета силы голоса с помощью стратегий в ваших {настройках}. Изменения повлияют только на новые предложения, существующие предложения не могут быть изменены.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Узнайте больше в {documentation} или присоединитесь к {discord} Snapshot для получения помощи.",
     "gotIt": "Понятно!"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "About",
-      "placeholder": "Tell us about your space"
+      "placeholder": "What is your organisation about?"
     },
     "categories": {
       "label": "Categorie(s)",
