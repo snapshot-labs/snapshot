@@ -135,7 +135,7 @@
   "changeWallet": "更换钱包",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
-    "mainText": "您可以通过设置中的策略更改投票权的计算方式。 更改您的设置只会影响新提案，无法更改现有提案。",
+    "mainText": "您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
     "learnMore": "在 {documentation} 获得更多信息，或加入Snapshot {discord} 寻求帮助。",
     "gotIt": "了解！"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "关于",
-      "placeholder": "您的组织是关于什么？"
+      "placeholder": "介绍您的组织"
     },
     "categories": {
       "label": "类别",
