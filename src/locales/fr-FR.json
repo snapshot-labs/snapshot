@@ -179,7 +179,7 @@
     "schedule": "Planifier une proposition",
     "delayEnforced": "L’espace impose un délai jusqu’à ce que le vote puisse commencer",
     "periodEnforced": "L’espace impose la durée de la période de vote",
-    "typeEnforced": "L’espace impose ce type de vote",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",
@@ -326,12 +326,24 @@
     "profile": "Profile"
   },
   "spaceProfile": {
-    "name": "Name",
-    "about": "About",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "Tell us about your space"
+    },
     "categories": {
-      "label": "Categories",
-      "select": "Select categories"
-    }
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",

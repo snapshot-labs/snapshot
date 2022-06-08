@@ -54,7 +54,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.strategies')">
+  <BaseBlock :title="$t('spaceStrategies.title')">
     <div class="sm:flex sm:space-x-4 w-full mb-4 sm:mb-2">
       <AutocompleteNetwork
         :input="network"
@@ -63,7 +63,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
       <BaseInput
         :model-value="symbol"
         @update:model-value="value => emit('updateSymbol', value)"
-        :title="$t(`settings.symbol`)"
+        :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
         :error="getError('symbol')"
       />
@@ -79,7 +79,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
     <StrategiesBlockWarning :error="getError('strategies')" />
 
     <BaseButton @click="handleAddStrategy" class="block w-full">
-      {{ $t('settings.addStrategy') }}
+      {{ $t('spaceStrategies.addStrategy') }}
     </BaseButton>
   </BaseBlock>
 

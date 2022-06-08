@@ -179,7 +179,7 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "スペースはこの投票タイプを強制する",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
@@ -326,12 +326,24 @@
     "profile": "Profile"
   },
   "spaceProfile": {
-    "name": "Name",
-    "about": "About",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "Tell us about your space"
+    },
     "categories": {
-      "label": "Categories",
-      "select": "Select categories"
-    }
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Edit profile",

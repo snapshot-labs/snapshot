@@ -82,7 +82,9 @@ onMounted(async () => {
         @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
         :disabled="!!space.voting?.type"
         v-tippy="{
-          content: !!space.voting?.type ? $t('create.typeEnforced') : null
+          content: !!space.voting?.type
+            ? $t('create.typeEnforced', { type: $t(`voting.${form.type}`) })
+            : null
         }"
         :class="[space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer']"
         class="!mb-4"

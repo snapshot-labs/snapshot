@@ -37,8 +37,6 @@ const choicePercentage = computed(() => {
         props.results.resultsByVoteBalance[0] +
           props.results.resultsByVoteBalance[1]
       );
-
-    if (props.choice.i === 2) return false;
   }
 
   return getPercentage(
@@ -53,10 +51,17 @@ const isTruncated = computed(() => {
   if (!choiceString.value) return false;
   return choiceString.value.scrollWidth > choiceString.value.clientWidth;
 });
+
+const isVisible = computed(() => {
+  if (props.proposal.type === 'basic' && hideAbstain) {
+    if (props.choice.i === 2) return false;
+  }
+  return true;
+});
 </script>
 
 <template>
-  <div v-if="choicePercentage">
+  <div v-if="isVisible">
     <div class="text-skin-link mb-1 flex justify-between">
       <div class="flex overflow-hidden">
         <span
