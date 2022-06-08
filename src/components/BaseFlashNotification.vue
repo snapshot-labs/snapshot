@@ -6,7 +6,7 @@ const { items } = useFlashNotification();
 
 <template>
   <div
-    class="fixed left-0 right-0 bottom-0 z-[60] flex flex-col items-center mb-4 space-y-2 pointer-events-none"
+    class="pointer-events-none fixed left-0 right-0 bottom-0 z-[60] mb-4 flex flex-col items-center space-y-2"
   >
     <TransitionGroup name="fade">
       <div v-for="item in items" :key="item.id" class="pointer-events-auto">

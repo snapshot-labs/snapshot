@@ -36,17 +36,17 @@ function clearInput() {
 <template>
   <div
     class="flex items-center"
-    :class="{ 'bg-skin-bg border-b py-3 px-4': modal }"
+    :class="{ 'border-b bg-skin-bg py-3 px-4': modal }"
   >
     <BaseIcon name="search" size="22" class="mr-2" />
     <input
       :value="modelValue"
       :placeholder="placeholder"
-      @input="handleInputDebounce"
       type="text"
       autocorrect="off"
       autocapitalize="none"
-      class="border-none input flex-auto w-full"
+      class="input w-full flex-auto border-none"
+      @input="handleInputDebounce"
     />
     <a @click="clearInput">
       <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />

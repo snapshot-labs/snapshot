@@ -256,7 +256,7 @@ const truncateMarkdownBody = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-3 md:px-0 mb-3">
+      <div class="mb-3 px-3 md:px-0">
         <a
           class="text-skin-text"
           @click="
@@ -274,15 +274,15 @@ const truncateMarkdownBody = computed(() => {
       <div class="px-3 md:px-0">
         <template v-if="proposal">
           <h1
-            v-text="proposal.title"
             class="mb-3 break-words text-xl leading-8 sm:text-2xl"
+            v-text="proposal.title"
           />
 
-          <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
-            <div class="flex items-center mb-1 sm:mb-0">
+          <div class="mb-4 flex flex-col sm:flex-row sm:space-x-1">
+            <div class="mb-1 flex items-center sm:mb-0">
               <LabelProposalState :state="proposal.state" class="mr-2" />
               <router-link
-                class="text-skin-text group"
+                class="group text-skin-text"
                 :to="{
                   name: 'spaceProposals',
                   params: { key: space.id }
@@ -312,29 +312,29 @@ const truncateMarkdownBody = computed(() => {
               />
               <BaseDropdown
                 v-else
-                class="pl-3 !ml-auto"
-                @select="selectFromShareDropdown"
+                class="!ml-auto pl-3"
                 :items="sharingItems"
+                @select="selectFromShareDropdown"
               >
-                <template v-slot:button>
+                <template #button>
                   <ButtonShare />
                 </template>
-                <template v-slot:item="{ item }">
+                <template #item="{ item }">
                   <BaseIcon
                     v-if="item.icon"
                     :name="item.icon"
                     size="21"
-                    class="align-middle mr-2 !leading-[0]"
+                    class="mr-2 align-middle !leading-[0]"
                   />
                   {{ item.text }}
                 </template>
               </BaseDropdown>
               <BaseDropdown
                 class="md:ml-2"
-                @select="selectFromThreedotDropdown"
                 :items="threeDotItems"
+                @select="selectFromThreedotDropdown"
               >
-                <template v-slot:button>
+                <template #button>
                   <div>
                     <BaseButtonIcon :loading="clientLoading">
                       <i-ho-dots-horizontal />
@@ -348,19 +348,19 @@ const truncateMarkdownBody = computed(() => {
           <div v-if="proposal.body.length" class="relative">
             <div
               v-if="!showFullMarkdownBody && truncateMarkdownBody"
-              class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"
+              class="absolute bottom-0 h-[80px] w-full bg-gradient-to-t from-skin-bg"
             />
             <div
               v-if="truncateMarkdownBody"
-              class="absolute w-full flex justify-center"
+              class="absolute flex w-full justify-center"
               :class="{
                 '-bottom-[64px]': showFullMarkdownBody,
                 '-bottom-[14px]': !showFullMarkdownBody
               }"
             >
               <BaseButton
+                class="z-10 !bg-skin-bg"
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
-                class="!bg-skin-bg z-10"
               >
                 {{
                   showFullMarkdownBody
@@ -387,27 +387,27 @@ const truncateMarkdownBody = computed(() => {
       </div>
       <div class="space-y-4">
         <SpaceProposalDiscussionLink
-          class="px-3 md:px-0"
           v-if="proposal?.discussion"
-          :discussionLink="proposal.discussion"
+          class="px-3 md:px-0"
+          :discussion-link="proposal.discussion"
         />
         <SpaceProposalVote
           v-if="proposal?.state === 'active'"
-          :proposal="proposal"
           v-model="selectedChoices"
+          :proposal="proposal"
           @open="modalOpen = true"
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
-          @loadVotes="loadMore(loadMoreVotes)"
           v-if="proposal && !loadingResultsFailed"
           :loaded="loadedVotes"
           :space="space"
           :proposal="proposal"
           :votes="votes"
           :strategies="strategies"
-          :userVote="userVote"
-          :loadingMore="loadingMore"
+          :user-vote="userVote"
+          :loading-more="loadingMore"
+          @loadVotes="loadMore(loadMoreVotes)"
         />
         <PluginProposal
           v-if="proposal?.plugins && loadedResults"
@@ -415,21 +415,21 @@ const truncateMarkdownBody = computed(() => {
           :space="space"
           :proposal="proposal"
           :results="results"
-          :loadedResults="loadedResults"
+          :loaded-results="loadedResults"
           :votes="votes"
           :strategies="strategies"
         />
       </div>
     </template>
-    <template #sidebar-right v-if="proposal">
-      <div class="space-y-4 mt-4 lg:mt-0">
+    <template v-if="proposal" #sidebar-right>
+      <div class="mt-4 space-y-4 lg:mt-0">
         <BaseBlock :title="$t('information')">
           <div class="space-y-1">
             <div>
               <b>{{ $t('strategies') }}</b>
               <span
+                class="float-right flex text-skin-link"
                 @click="modalStrategiesOpen = true"
-                class="float-right text-skin-link flex"
               >
                 <span
                   v-for="(symbol, symbolIndex) of symbols.slice(0, 5)"
@@ -441,7 +441,7 @@ const truncateMarkdownBody = computed(() => {
                       content: symbol
                     }"
                   >
-                    <AvatarSpace :space="space" :symbolIndex="symbolIndex" />
+                    <AvatarSpace :space="space" :symbol-index="symbolIndex" />
                   </span>
                   <span
                     v-show="symbolIndex !== symbols.length - 1"
@@ -466,21 +466,21 @@ const truncateMarkdownBody = computed(() => {
             <div>
               <b>{{ $t('proposal.startDate') }}</b>
               <span
-                v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
                 v-tippy="{
                   content: formatRelativeTime(proposal.start)
                 }"
                 class="float-right text-skin-link"
+                v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
               />
             </div>
             <div>
               <b>{{ $t('proposal.endDate') }}</b>
               <span
-                v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
                 v-tippy="{
                   content: formatRelativeTime(proposal.end)
                 }"
-                class="text-skin-link float-right"
+                class="float-right text-skin-link"
+                v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
               />
             </div>
             <div>
@@ -498,9 +498,9 @@ const truncateMarkdownBody = computed(() => {
         </BaseBlock>
         <SpaceProposalResultsError
           v-if="loadingResultsFailed"
-          :isAdmin="isAdmin"
-          :proposalId="proposal.id"
-          :proposalState="proposal.scores_state"
+          :is-admin="isAdmin"
+          :proposal-id="proposal.id"
+          :proposal-state="proposal.scores_state"
           @retry="loadProposal()"
         />
         <ProposalResults
@@ -517,30 +517,30 @@ const truncateMarkdownBody = computed(() => {
           :space="space"
           :proposal="proposal"
           :results="results"
-          :loadedResults="loadedResults"
+          :loaded-results="loadedResults"
           :votes="votes"
           :strategies="strategies"
         />
       </div>
     </template>
   </TheLayout>
-  <teleport to="#modal" v-if="proposal">
+  <teleport v-if="proposal" to="#modal">
     <ModalConfirm
+      :id="id"
       :open="modalOpen"
-      @close="modalOpen = false"
-      @reload="loadProposal()"
       :space="space"
       :proposal="proposal"
-      :id="id"
-      :selectedChoices="selectedChoices"
+      :selected-choices="selectedChoices"
       :snapshot="proposal.snapshot"
       :strategies="strategies"
+      @close="modalOpen = false"
+      @reload="loadProposal()"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
-      @close="modalStrategiesOpen = false"
       :proposal="proposal"
       :strategies="strategies"
+      @close="modalStrategiesOpen = false"
     />
     <ModalTerms
       :open="modalTermsOpen"

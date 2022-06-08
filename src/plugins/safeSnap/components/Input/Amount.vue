@@ -7,11 +7,6 @@ export default {
   data() {
     return { input: '0', isValid: true, dirty: false };
   },
-  mounted() {
-    if (this.modelValue) {
-      this.input = formatUnits(this.modelValue, this.decimals);
-    }
-  },
   watch: {
     modelValue(value) {
       if (value && this.disabled) {
@@ -20,6 +15,11 @@ export default {
     },
     decimals() {
       this.handleInput();
+    }
+  },
+  mounted() {
+    if (this.modelValue) {
+      this.input = formatUnits(this.modelValue, this.decimals);
     }
   },
   methods: {
@@ -48,6 +48,6 @@ export default {
     :error="dirty && !isValid && $t('safeSnap.invalidAmount')"
     @input="handleInput()"
   >
-    <template v-if="label" v-slot:label>{{ label }}</template>
+    <template v-if="label" #label>{{ label }}</template>
   </UiInput>
 </template>

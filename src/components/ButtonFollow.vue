@@ -30,6 +30,14 @@ const canFollow = computed(() => {
   >
     <BaseButton
       v-bind="$attrs"
+      :loading="loadingFollow === space.id"
+      :disabled="isGnosisSafe"
+      style="width: 120px"
+      class="group mb-4"
+      :class="{
+        'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
+          isFollowing
+      }"
       @click.stop.prevent="
         loadingFollow !== ''
           ? null
@@ -37,19 +45,11 @@ const canFollow = computed(() => {
           ? clickFollow(space.id)
           : (modalTermsOpen = true)
       "
-      :loading="loadingFollow === space.id"
-      :disabled="isGnosisSafe"
-      style="width: 120px"
-      class="mb-4 group"
-      :class="{
-        'hover:!border-red hover:!text-red hover:!bg-opacity-5 hover:!bg-red':
-          isFollowing
-      }"
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>
       <span v-else>
         <span class="group-hover:hidden"> {{ $t('joined') }} </span>
-        <span class="group-hover:block hidden">
+        <span class="hidden group-hover:block">
           {{ $t('leave') }}
         </span>
       </span>

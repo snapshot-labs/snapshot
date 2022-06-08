@@ -11,13 +11,13 @@ defineEmits(['remove', 'toggle']);
 </script>
 
 <template>
-  <div class="w-full collapsible-container" v-bind:class="{ borderless }">
-    <div class="px-2 collapsible-header flex items-center">
-      <div class="mr-4 header-number" v-if="number !== undefined">
+  <div class="collapsible-container w-full" :class="{ borderless }">
+    <div class="collapsible-header flex items-center px-2">
+      <div v-if="number !== undefined" class="header-number mr-4">
         {{ number }}
       </div>
       <span
-        class="flex-auto text-center flex flex-nowrap justify-center overflow-hidden"
+        class="flex flex-auto flex-nowrap justify-center overflow-hidden text-center"
         style="min-height: 24px"
         @click="$emit('toggle')"
       >
@@ -25,8 +25,8 @@ defineEmits(['remove', 'toggle']);
       </span>
       <span
         v-if="!hideRemove"
+        class="ml-1 -mr-2 cursor-pointer px-3"
         @click="$emit('remove')"
-        class="ml-1 cursor-pointer -mr-2 px-3"
       >
         <BaseIcon name="close" size="12" />
       </span>

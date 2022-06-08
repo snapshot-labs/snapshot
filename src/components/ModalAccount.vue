@@ -15,7 +15,7 @@ const injected = computed(() => getInjected());
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>
         {{ $t('connectWallet') }}
       </h3>
@@ -25,12 +25,12 @@ const injected = computed(() => getInjected());
         <a
           v-for="(connector, id, i) in connectors"
           :key="i"
-          @click="$emit('login', connector.id)"
           class="block"
+          @click="$emit('login', connector.id)"
         >
           <BaseButton
             v-if="id === 'injected' && injected"
-            class="w-full flex justify-center items-center"
+            class="flex w-full items-center justify-center"
           >
             <img
               :src="getIpfsUrl(injected.icon)"
@@ -43,7 +43,7 @@ const injected = computed(() => getInjected());
           </BaseButton>
           <BaseButton
             v-else-if="id !== 'gnosis' && id !== 'injected'"
-            class="w-full flex justify-center items-center gap-2"
+            class="flex w-full items-center justify-center gap-2"
           >
             <img
               :src="getIpfsUrl(connector.icon)"

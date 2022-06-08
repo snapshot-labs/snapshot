@@ -10,7 +10,7 @@ defineProps({
 
 <template>
   <CommentBoxCustomBlock
-    :proposalId="proposal.id"
+    :proposal-id="proposal.id"
     :proposal="proposal"
     :space="space"
   />

@@ -32,18 +32,6 @@ export default {
       return this.tokens.find(token => token.address === this.tokenAddress);
     }
   },
-  mounted() {
-    this.setTokens();
-    if (this.modelValue) {
-      const { recipient = '', token, amount = '0' } = this.modelValue;
-      this.to = recipient;
-      this.value = amount;
-      if (token) {
-        this.tokenAddress = token.address;
-        this.tokens = [token];
-      }
-    }
-  },
   watch: {
     to() {
       this.updateTransaction();
@@ -56,6 +44,18 @@ export default {
     },
     config() {
       this.setTokens();
+    }
+  },
+  mounted() {
+    this.setTokens();
+    if (this.modelValue) {
+      const { recipient = '', token, amount = '0' } = this.modelValue;
+      this.to = recipient;
+      this.value = amount;
+      if (token) {
+        this.tokenAddress = token.address;
+        this.tokens = [token];
+      }
     }
   },
   methods: {
@@ -100,8 +100,8 @@ export default {
 
 <template>
   <UiSelect v-model="tokenAddress" :disabled="config.preview">
-    <template v-slot:label>{{ $t('safeSnap.asset') }}</template>
-    <template v-slot:image v-if="selectedToken">
+    <template #label>{{ $t('safeSnap.asset') }}</template>
+    <template v-if="selectedToken" #image>
       <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
     </template>
     <option
@@ -116,15 +116,15 @@ export default {
     <SafeSnapInputAddress
       v-model="to"
       :disabled="config.preview"
-      :inputProps="{
+      :input-props="{
         required: true
       }"
       :label="$t('safeSnap.to')"
     />
     <SafeSnapInputAmount
-      :label="$t('safeSnap.amount')"
-      v-model="value"
       :key="selectedToken?.decimals"
+      v-model="value"
+      :label="$t('safeSnap.amount')"
       :decimals="selectedToken?.decimals"
       :disabled="config.preview"
     />

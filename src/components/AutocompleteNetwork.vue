@@ -8,6 +8,8 @@ const props = defineProps<{
   input: string;
 }>();
 
+const emit = defineEmits(['update:input']);
+
 const { filterNetworks } = useNetworksFilter();
 
 const searchNetwork = ref('');
@@ -34,28 +36,24 @@ const networks = computed(() => {
 
 <template>
   <BaseAutocomplete
-    :options="networks"
-    @update:value="input => $emit('update:input', input)"
-    :value="input"
     v-model:search="searchNetwork"
+    :options="networks"
+    :value="input"
     label="Network"
     :placeholder="$t('selectNetwork')"
-    class="mb-3"
+    class="mb-3 w-full"
+    @update:value="input => emit('update:input', input)"
   >
-    <template v-slot:option="{ option }">
+    <template #option="{ option }">
       <div class="group flex items-center justify-between">
         <div class="flex items-center truncate">
           <img
-            class="mr-2 w-4 h-4 rounded-full"
+            class="mr-2 h-4 w-4 rounded-full"
             :src="getIpfsUrl(option?.logo)"
           />
-          <span v-text="option?.name" class="truncate mr-2" />
+          <span class="mr-2 truncate" v-text="option?.name" />
         </div>
-        <span
-          class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
-        >
-          #{{ option?.chainId }}
-        </span>
+        <BasePill> #{{ option?.chainId }} </BasePill>
       </div>
     </template>
   </BaseAutocomplete>

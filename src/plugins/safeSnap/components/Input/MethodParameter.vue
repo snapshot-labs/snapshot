@@ -8,9 +8,6 @@ export default {
   components: { SafeSnapInputAddress, SafeSnapInputArrayType },
   props: ['modelValue', 'disabled', 'parameter'],
   emits: ['update:modelValue', 'isValid'],
-  mounted() {
-    if (this.modelValue) this.value = this.modelValue;
-  },
   data() {
     const placeholder = this.parameter.name
       ? `${this.parameter.name} (${this.parameter.type})`
@@ -25,18 +22,21 @@ export default {
       dirty: false
     };
   },
-  created() {
-    if (this.modelValue) this.input = this.modelValue;
+  computed: {
+    isValid() {
+      return isParameterValue(this.parameter.baseType, this.value);
+    }
   },
   watch: {
     modelValue(value) {
       this.input = value;
     }
   },
-  computed: {
-    isValid() {
-      return isParameterValue(this.parameter.baseType, this.value);
-    }
+  mounted() {
+    if (this.modelValue) this.value = this.modelValue;
+  },
+  created() {
+    if (this.modelValue) this.input = this.modelValue;
   },
   methods: {
     handleInput(value) {
@@ -56,10 +56,10 @@ export default {
   <UiSelect
     v-if="parameter.type === 'bool'"
     :disabled="disabled"
-    :modelValue="value"
+    :model-value="value"
     @update:modelValue="handleInput($event)"
   >
-    <template v-slot:label>{{ placeholder }}</template>
+    <template #label>{{ placeholder }}</template>
     <option :value="true">true</option>
     <option :value="false">false</option>
   </UiSelect>
@@ -68,16 +68,16 @@ export default {
   <SafeSnapInputAddress
     v-else-if="parameter.type === 'address'"
     :disabled="disabled"
-    :inputProps="{ required: true }"
-    :label="this.placeholder"
-    :modelValue="value"
+    :input-props="{ required: true }"
+    :label="placeholder"
+    :model-value="value"
     @update:modelValue="handleInput($event)"
   />
   <!-- Array of X type -->
   <SafeSnapInputArrayType
     v-else-if="isArrayType()"
     :disabled="disabled"
-    :modelValue="value"
+    :model-value="value"
     :parameter="parameter"
     @update:modelValue="handleInput($event)"
   />
@@ -86,9 +86,9 @@ export default {
     v-else
     :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${parameter.type}`"
-    :modelValue="value"
+    :model-value="value"
     @update:modelValue="handleInput($event)"
   >
-    <template v-slot:label>{{ placeholder }}</template>
+    <template #label>{{ placeholder }}</template>
   </UiInput>
 </template>

@@ -34,19 +34,6 @@ export default {
       type
     };
   },
-  watch: {
-    modelValue() {
-      if (this.modelValue?.type) {
-        this.type = this.modelValue.type;
-      }
-    }
-  },
-  mounted() {
-    if (!this.config.preview) this.$emit('update:modelValue', undefined);
-    if (this.config.preview && !this.modelValue.type) {
-      this.type = 'raw';
-    }
-  },
   computed: {
     title() {
       if (this.open) {
@@ -93,6 +80,19 @@ export default {
       return this.getLabel(this.type);
     }
   },
+  watch: {
+    modelValue() {
+      if (this.modelValue?.type) {
+        this.type = this.modelValue.type;
+      }
+    }
+  },
+  mounted() {
+    if (!this.config.preview) this.$emit('update:modelValue', undefined);
+    if (this.config.preview && !this.modelValue.type) {
+      this.type = 'raw';
+    }
+  },
   methods: {
     getLabel(type) {
       return labels[type];
@@ -107,7 +107,7 @@ export default {
 
 <template>
   <UiCollapsible
-    :hideRemove="config.preview"
+    :hide-remove="config.preview"
     :number="nonce + 1"
     :open="open"
     :title="title"
@@ -116,10 +116,10 @@ export default {
   >
     <UiSelect
       :disabled="config.preview"
-      :modelValue="type"
+      :model-value="type"
       @update:modelValue="handleTypeChange($event)"
     >
-      <template v-slot:label>{{ $t('safeSnap.type') }}</template>
+      <template #label>{{ $t('safeSnap.type') }}</template>
       <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
       <option value="transferNFT">{{ $t('safeSnap.transferNFT') }}</option>
       <option value="contractInteraction">
@@ -131,7 +131,7 @@ export default {
     <SafeSnapFormContractInteraction
       v-if="type === 'contractInteraction'"
       :config="config"
-      :modelValue="modelValue"
+      :model-value="modelValue"
       :nonce="nonce"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
@@ -139,7 +139,7 @@ export default {
     <SafeSnapFormTransferFunds
       v-if="type === 'transferFunds'"
       :config="config"
-      :modelValue="modelValue"
+      :model-value="modelValue"
       :nonce="nonce"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
@@ -147,14 +147,14 @@ export default {
     <SafeSnapFormSendAsset
       v-if="type === 'transferNFT'"
       :config="config"
-      :modelValue="modelValue"
+      :model-value="modelValue"
       :nonce="nonce"
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
     <SafeSnapFormRawTransaction
       v-if="type === 'raw'"
-      :modelValue="modelValue"
+      :model-value="modelValue"
       :nonce="nonce"
       :config="config"
       @update:modelValue="$emit('update:modelValue', $event)"

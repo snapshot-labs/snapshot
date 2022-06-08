@@ -31,13 +31,13 @@ const showChoice = computed(() => {
         <div class="relative min-w-[52px]">
           <AvatarSpace size="44" :space="activity.space" />
           <div
-            class="absolute text-[9px] right-0 top-[24px] bg-primary rounded-full p-[6px] pr-[5px] text-white"
+            class="absolute right-0 top-[24px] rounded-full bg-primary p-[6px] pr-[5px] text-[9px] text-white"
           >
             <i-s-signature />
           </div>
         </div>
-        <div class="w-[calc(100%-64px)] ml-4">
-          <div class="text-xs text-skin-text leading-5">
+        <div class="ml-4 w-[calc(100%-64px)]">
+          <div class="text-xs leading-5 text-skin-text">
             {{
               $t('profile.activity.votedFor', {
                 choice: showChoice ? `"${activity.vote?.choice}"` : ''

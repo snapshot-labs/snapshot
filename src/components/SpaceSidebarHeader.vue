@@ -36,23 +36,23 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-center h-[253px]">
+  <div class="h-[253px] text-center">
     <AvatarSpace
       :space="space"
-      symbolIndex="space"
+      symbol-index="space"
       size="80"
       class="mt-3 mb-2"
     />
-    <h3 class="mb-[2px] mx-3 flex justify-center items-center">
+    <h3 class="mx-3 mb-[2px] flex items-center justify-center">
       <div
-        class="truncate mr-1"
         v-tippy="{
           content: space.name.length > 16 ? space.name : null
         }"
+        class="mr-1 truncate"
       >
         {{ space.name }}
       </div>
-      <IconVerifiedSpace :spaceId="props.space.id" />
+      <IconVerifiedSpace :space-id="props.space.id" />
     </h3>
     <div class="mb-[12px] text-skin-text">
       {{
@@ -65,8 +65,8 @@ watchEffect(() => {
     <div class="flex justify-center gap-x-2">
       <ButtonFollow :space="space" />
       <ButtonSidebar
-        class="inline"
         v-if="isFollowing"
+        class="inline"
         @click="toggleSubscription()"
       >
         <LoadingSpinner v-if="loading" />

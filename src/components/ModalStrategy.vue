@@ -93,7 +93,7 @@ watch(open, () => {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3 v-text="input.name ? input.name : $t('settings.addStrategy')" />
     </template>
     <BaseSearch
@@ -127,21 +127,20 @@ watch(open, () => {
       </div>
     </div>
 
-    <div v-else class="my-4 mx-0 md:mx-4 min-h-[300px]">
+    <div v-else class="my-4 mx-0 min-h-[300px] md:mx-4">
       <LoadingRow v-if="loadingStrategies" block />
       <div v-else class="space-y-3">
         <BaseStrategyItem
-          :strategy="strategy"
           v-for="strategy in strategiesResults"
           :key="strategy.id"
+          :strategy="strategy"
           @click="selectStrategy(strategy.id)"
         />
         <BaseNoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
-    <template v-if="input.name" v-slot:footer>
+    <template v-if="input.name" #footer>
       <BaseButton
-        @click="handleSubmit"
         :disabled="
           !textAreaJsonIsValid ||
           (strategyDefinition && !strategyIsValid) ||
@@ -149,6 +148,7 @@ watch(open, () => {
         "
         class="w-full"
         primary
+        @click="handleSubmit"
       >
         {{ strategy.name ? $t('save') : $t('add') }}
       </BaseButton>

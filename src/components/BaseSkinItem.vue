@@ -10,7 +10,7 @@ defineProps(['skin']);
 </script>
 
 <template>
-  <BaseBlock class="hover:border-skin-text cursor-pointer">
+  <BaseBlock class="cursor-pointer hover:border-skin-text">
     <BaseButton :class="['mb-2', skin]" primary>{{ skin }}</BaseButton>
     <div class="text-skin-text">
       {{ $tc('inSpaces', [formatCompactNumber(skinsSpacesCount[skin] ?? 0)]) }}

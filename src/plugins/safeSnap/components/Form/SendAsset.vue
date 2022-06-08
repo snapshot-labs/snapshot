@@ -9,11 +9,11 @@ import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
   components: { SafeSnapInputAddress },
+  props: ['modelValue', 'nonce', 'config'],
+  emits: ['update:modelValue'],
   setup() {
     return { shorten };
   },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
   data() {
     return {
       plugin: new Plugin(),
@@ -32,17 +32,6 @@ export default {
       );
     }
   },
-  mounted() {
-    this.setCollectables();
-    if (this.modelValue) {
-      const { recipient = '', collectable } = this.modelValue;
-      this.to = recipient;
-      if (collectable) {
-        this.collectableAddress = collectable.address;
-        this.collectables = [collectable];
-      }
-    }
-  },
   watch: {
     to() {
       this.updateTransaction();
@@ -52,6 +41,17 @@ export default {
     },
     config() {
       this.setCollectables();
+    }
+  },
+  mounted() {
+    this.setCollectables();
+    if (this.modelValue) {
+      const { recipient = '', collectable } = this.modelValue;
+      this.to = recipient;
+      if (collectable) {
+        this.collectableAddress = collectable.address;
+        this.collectables = [collectable];
+      }
     }
   },
   methods: {
@@ -96,11 +96,8 @@ export default {
 
 <template>
   <UiSelect v-model="collectableAddress" :disabled="config.preview">
-    <template v-slot:label>{{ $t('safeSnap.asset') }}</template>
-    <template
-      v-slot:image
-      v-if="selectedCollectable && selectedCollectable.logoUri"
-    >
+    <template #label>{{ $t('safeSnap.asset') }}</template>
+    <template v-if="selectedCollectable && selectedCollectable.logoUri" #image>
       <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
     </template>
     <option v-if="!collectables.length" disabled selected>
@@ -118,7 +115,7 @@ export default {
   <SafeSnapInputAddress
     v-model="to"
     :disabled="config.preview"
-    :inputProps="{
+    :input-props="{
       required: true
     }"
     :label="$t('safeSnap.to')"

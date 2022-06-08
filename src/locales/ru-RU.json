@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Ваше сообщество запущено!",
-    "mainText": "По умолчанию каждый участник имеет право голоса. Вы можете изменить способ расчета силы голоса с помощью стратегий в ваших {настройках}. Изменения повлияют только на новые предложения, существующие предложения не могут быть изменены.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Узнайте больше в {documentation} или присоединитесь к {discord} Snapshot для получения помощи.",
     "gotIt": "Понятно!"
   },
@@ -179,7 +179,7 @@
     "schedule": "График предложения",
     "delayEnforced": "Сообщество вводит отсрочку до начала голосования",
     "periodEnforced": "Сообщество устанавливает продолжительность периода голосования",
-    "typeEnforced": "Сообщество вводит этот тип голосования",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Изменить",
     "continue": "Продолжить",
     "now": "Сейчас",
@@ -324,6 +324,26 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
+  },
+  "spaceProfile": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Edit profile",

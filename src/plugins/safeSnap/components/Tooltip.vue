@@ -72,7 +72,7 @@ const { copyToClipboard } = useCopy();
         stroke-width="2"
       />
     </svg>
-    <div v-if="open" class="tooltip bg-skin-bg p-3 border md:rounded-lg">
+    <div v-if="open" class="tooltip border bg-skin-bg p-3 md:rounded-lg">
       <span class="tooltip-text">Multisend address</span>
       <span class="tooltip-text mt-1 text-skin-text">
         {{ shorten(multiSendAddress) }}

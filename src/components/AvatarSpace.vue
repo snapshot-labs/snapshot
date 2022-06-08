@@ -22,7 +22,7 @@ const avatarHash = computed(() => {
 
 <template>
   <BaseAvatar
-    :previewFile="previewFile"
+    :preview-file="previewFile"
     :size="size"
     :src="`https://cdn.stamp.fyi/space/${space.id}?s=${
       Number(size) * 2

@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -179,7 +179,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -324,6 +324,26 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
+  },
+  "spaceProfile": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "avatar": "Avatar"
+  },
+  "spaceStrategies": {
+    "title": "Strategie(s)",
+    "symbol": "Symbol",
+    "addStrategy": "Add strategy"
   },
   "profile": {
     "buttonEdit": "Edit profile",
