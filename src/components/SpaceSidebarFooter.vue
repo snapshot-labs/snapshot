@@ -28,7 +28,7 @@ const socials = computed(() => {
 
 <template>
   <div class="text-center">
-    <div class="my-3 mx-2 flex justify-center items-center space-x-3">
+    <div class="my-3 mx-2 flex items-center justify-center space-x-3">
       <IconSocial
         v-for="social in socials"
         :key="social.icon"

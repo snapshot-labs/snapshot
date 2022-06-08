@@ -14,7 +14,7 @@ const stateClass = computed(() => {
 </script>
 
 <template>
-  <span v-if="slim" :class="stateClass" class="State text-white slim" />
+  <span v-if="slim" :class="stateClass" class="State slim text-white" />
   <span
     v-else
     :class="stateClass"

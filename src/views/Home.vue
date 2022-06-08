@@ -52,15 +52,15 @@ onMounted(() => {
 <template>
   <div class="relative">
     <BaseContainer
-      class="flex items-center mb-4 flex-col xs:flex-row flex-wrap md:flex-nowrap"
+      class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
       <BaseButton
-        class="pl-3 pr-0 w-full md:max-w-[420px] focus-within:!border-skin-link"
+        class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
       >
         <TheSearchBar />
       </BaseButton>
       <BaseDropdown
-        class="w-full xs:w-auto md:ml-2 sm:mr-2 mt-2 md:mt-0"
+        class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
         @select="selectCategory($event)"
         :items="[
           {
@@ -81,7 +81,7 @@ onMounted(() => {
       >
         <template v-slot:button>
           <BaseButton
-            class="w-full pr-3 whitespace-nowrap"
+            class="w-full whitespace-nowrap pr-3"
             :disabled="!orderedSpaces.length"
           >
             <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
@@ -91,13 +91,13 @@ onMounted(() => {
             <span v-else>
               {{ $tc('explore.categories.all') }}
             </span>
-            <BaseIcon size="16" name="arrow-down" class="mt-1 mx-1" />
+            <BaseIcon size="16" name="arrow-down" class="mx-1 mt-1" />
           </BaseButton>
         </template>
         <template v-slot:item="{ item }">
           <div class="flex">
             <span class="mr-3">{{ item.text }}</span>
-            <span class="flex ml-auto mt-[-3px]">
+            <span class="ml-auto mt-[-3px] flex">
               <BaseCounter :counter="item.count" class="my-auto" />
             </span>
           </div>
@@ -105,7 +105,7 @@ onMounted(() => {
       </BaseDropdown>
       <div
         v-if="spacesLoaded"
-        class="mt-2 xs:mt-0 xs:ml-auto text-right whitespace-nowrap text-skin-text"
+        class="mt-2 whitespace-nowrap text-right text-skin-text xs:mt-0 xs:ml-auto"
       >
         {{
           $tc('spaceCount', [
@@ -118,7 +118,7 @@ onMounted(() => {
       <TransitionGroup
         name="fade"
         tag="div"
-        class="grid lg:grid-cols-4 md:grid-cols-3 gap-4"
+        class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
       >
         <div
           v-for="space in orderedSpacesByCategory.slice(0, limit)"
@@ -129,10 +129,10 @@ onMounted(() => {
           >
             <!-- Added mb-0 to remove mb-4 added by block component -->
             <BaseBlock
-              class="text-center mb-0 hover:border-skin-text transition-all flex justify-center items-center"
+              class="mb-0 flex items-center justify-center text-center transition-all hover:border-skin-text"
               style="height: 266px"
             >
-              <div class="relative inline-block mb-2">
+              <div class="relative mb-2 inline-block">
                 <AvatarSpace
                   :space="space"
                   symbolIndex="space"
@@ -142,7 +142,7 @@ onMounted(() => {
               </div>
               <h3
                 v-text="shorten(space.name, 16)"
-                class="mb-0 pb-0 mt-0 text-[22px] !h-[32px] overflow-hidden"
+                class="mb-0 mt-0 !h-[32px] overflow-hidden pb-0 text-[22px]"
               />
               <div class="mb-[12px] text-skin-text">
                 {{
@@ -158,10 +158,10 @@ onMounted(() => {
       </TransitionGroup>
       <div
         v-if="!spacesLoaded"
-        class="opacity-40 grid lg:grid-cols-4 md:grid-cols-3 gap-4"
+        class="grid gap-4 opacity-40 md:grid-cols-3 lg:grid-cols-4"
       >
         <div
-          class="bg-skin-border animate-pulse min-h-[266px] md:rounded-xl"
+          class="min-h-[266px] animate-pulse bg-skin-border md:rounded-xl"
           v-for="i in 12"
           :key="i"
         ></div>
@@ -170,7 +170,7 @@ onMounted(() => {
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         useBlock
       />
-      <div class="text-center px-4 md:px-0">
+      <div class="px-4 text-center md:px-0">
         <BaseButton
           v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
           class="mt-4 w-full"

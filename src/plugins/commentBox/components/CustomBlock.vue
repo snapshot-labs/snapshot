@@ -151,14 +151,14 @@ function deleteItem(key) {
       v-if="togglePreview"
       v-model="comment"
       :placeholder="$t('comment_box.add')"
-      class="input text-left w-full h-full"
+      class="input h-full w-full text-left"
       style="font-size: 18px"
       :minHeight="100"
     />
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
-      class="p-4 h6 text-skin-text mt-2 mb-0"
+      class="h6 mt-2 mb-0 p-4 text-skin-text"
     >
       <div>{{ comment }}</div>
     </BaseBlock>
@@ -194,7 +194,7 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+    <div class="absolute bottom-0 h-[10px] w-[10px]" ref="endElement" />
 
     <LoadingRow v-if="loadingMore" class="my-2" />
   </BaseBlock>

@@ -60,7 +60,7 @@ watch(
   <div
     v-if="allReply.length > 0"
     @click="showIt = !showIt"
-    class="ml-2 mt-2 d-inline-block"
+    class="d-inline-block ml-2 mt-2"
     style="color: blue; cursor: pointer"
   >
     {{ showIt ? $t('comment_box.hide') : $t('comment_box.show') }}
@@ -97,7 +97,7 @@ watch(
       loadIt = true;
     "
     v-if="lastPage && showIt && !loadIt"
-    class="ml-5 mt-2 d-inline-block"
+    class="d-inline-block ml-5 mt-2"
     style="color: blue; cursor: pointer"
   >
     {{ $t('comment_box.load_more') }}...

@@ -9,7 +9,7 @@ defineEmits(['close', 'confirm']);
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('confirmAction') }}</h3>
       </div>
     </template>

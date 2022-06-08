@@ -195,7 +195,7 @@ export default {
             class="tx-textarea outline-none"
           ></textarea>
         </div>
-        <div class="mt-3 flex flex-col justify-center items-center">
+        <div class="mt-3 flex flex-col items-center justify-center">
           <BaseButton @click="importFromText">Parse JSON</BaseButton>
           <a
             class="mt-2 mb-1"

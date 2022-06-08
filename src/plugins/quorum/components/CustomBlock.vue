@@ -51,7 +51,7 @@ export default {
 
 <template>
   <BaseBlock title="Quorum" :loading="!loaded">
-    <div class="text-skin-link mb-1">
+    <div class="mb-1 text-skin-link">
       <span class="mr-1">
         {{ formatCompactNumber(totalScore) }} /
         {{ formatCompactNumber(totalVotingPower) }}

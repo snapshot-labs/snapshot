@@ -131,11 +131,11 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     <template v-slot:header>
       <h3>{{ $t('comment_box.delete_comment') }}</h3>
     </template>
-    <div class="text-center mt-4">
+    <div class="mt-4 text-center">
       <p>{{ $t('comment_box.delete_modal') }}</p>
     </div>
     <div
-      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
+      class="mb-2 mt-3 flex content-center items-center justify-center text-center"
     >
       <BaseButton
         @click="deleteItem"
@@ -163,7 +163,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     />
   </div>
   <div v-if="toggleEditComment">
-    <BaseBlock :slim="true" class="p-4 text-skin-text mt-2 mb-0">
+    <BaseBlock :slim="true" class="mt-2 mb-0 p-4 text-skin-text">
       <div>
         <BaseUser
           :address="item.author"
@@ -193,7 +193,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
     </BaseBlock>
     <BaseButton
       @click="toggleComment = !toggleComment"
-      class="p-1 rounded-0 mt-2"
+      class="rounded-0 mt-2 p-1"
       style="line-height: 0px; height: auto"
     >
       <BaseIcon :name="'receipt-outlined'" class="v-align-middle" size="15" />

@@ -11,14 +11,14 @@ defineProps(['network']);
 </script>
 
 <template>
-  <BaseBlock class="hover:border-skin-text cursor-pointer">
-    <div class="flex items-start mb-3">
+  <BaseBlock class="cursor-pointer hover:border-skin-text">
+    <div class="mb-3 flex items-start">
       <BaseAvatar class="mr-2" :src="getIpfsUrl(network.logo)" size="28" />
       <div class="overflow-hidden">
-        <h3 class="truncate my-0 leading-5" v-text="network.name" />
+        <h3 class="my-0 truncate leading-5" v-text="network.name" />
         <div
           v-text="'Chain #' + network.key"
-          class="text-skin-text text-xs leading-4"
+          class="text-xs leading-4 text-skin-text"
         />
       </div>
     </div>

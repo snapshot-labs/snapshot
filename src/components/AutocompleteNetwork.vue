@@ -48,10 +48,10 @@ const networks = computed(() => {
       <div class="group flex items-center justify-between">
         <div class="flex items-center truncate">
           <img
-            class="mr-2 w-4 h-4 rounded-full"
+            class="mr-2 h-4 w-4 rounded-full"
             :src="getIpfsUrl(option?.logo)"
           />
-          <span v-text="option?.name" class="truncate mr-2" />
+          <span v-text="option?.name" class="mr-2 truncate" />
         </div>
         <BasePill> #{{ option?.chainId }} </BasePill>
       </div>

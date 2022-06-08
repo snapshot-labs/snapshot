@@ -176,15 +176,15 @@ export default {
 <template>
   <div>
     <h4
-      class="px-4 pt-3 border-b rounded-t-none md:rounded-t-md flex"
+      class="flex rounded-t-none border-b px-4 pt-3 md:rounded-t-md"
       style="padding-bottom: 12px"
     >
-      <BaseAvatar class="mr-2 float-left" :src="networkIcon" size="28" />
+      <BaseAvatar class="float-left mr-2" :src="networkIcon" size="28" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="text-skin-text ml-2"
+        class="ml-2 text-skin-text"
         style="font-weight: normal"
         target="_blank"
       >

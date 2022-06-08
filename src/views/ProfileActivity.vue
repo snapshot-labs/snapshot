@@ -124,6 +124,6 @@ async function loadVotes(skip = 0) {
         {{ $t('profile.activity.noActivity') }}
       </BaseBlock>
     </div>
-    <div class="w-[10px] h-[10px]" ref="endElement" />
+    <div class="h-[10px] w-[10px]" ref="endElement" />
   </div>
 </template>

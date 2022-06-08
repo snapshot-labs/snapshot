@@ -12,12 +12,12 @@ export default {
 
 <template>
   <div
-    class="w-full text-left collapsible-container"
+    class="collapsible-container w-full text-left"
     v-bind:class="{ borderless }"
   >
-    <div class="px-2 collapsible-header flex items-stretch">
+    <div class="collapsible-header flex items-stretch px-2">
       <div
-        class="flex items-center flex-auto flex-nowrap ml-2"
+        class="ml-2 flex flex-auto flex-nowrap items-center"
         @click="$emit('toggle')"
       >
         <span class="overflow-hidden" style="line-height: 1">
@@ -26,7 +26,7 @@ export default {
       </div>
       <div
         v-if="showArrow"
-        class="flex items-center cursor-pointer mr-3"
+        class="mr-3 flex cursor-pointer items-center"
         @click="$emit('toggle')"
       >
         <img

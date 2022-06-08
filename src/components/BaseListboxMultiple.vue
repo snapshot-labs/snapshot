@@ -36,9 +36,9 @@ function isDisabled(item: { id: number; name: string }) {
     <ListboxLabel>
       <LabelInput>{{ label }}</LabelInput>
     </ListboxLabel>
-    <div class="mt-1 relative">
+    <div class="relative mt-1">
       <ListboxButton
-        class="relative w-full text-left pl-3 pr-[40px] border truncate border-skin-border text-skin-link h-[42px] rounded-full hover:border-skin-text"
+        class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
       >
         <span v-if="selectedItems.length < 1" class="text-skin-text opacity-60">
           {{ placeholder }}
@@ -54,9 +54,9 @@ function isDisabled(item: { id: number; name: string }) {
           {{ selectedItems.map(item => item.name).join(', ') }}
         </span>
         <span
-          class="absolute inset-y-0 right-0 flex items-center pr-[12px] pointer-events-none"
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
         >
-          <i-ho-chevron-down class="text-skin-text text-[14px]" />
+          <i-ho-chevron-down class="text-[14px] text-skin-text" />
         </span>
       </ListboxButton>
       <transition
@@ -68,7 +68,7 @@ function isDisabled(item: { id: number; name: string }) {
         leave-to-class="transform scale-95 opacity-0"
       >
         <ListboxOptions
-          class="absolute z-40 mt-1 w-full overflow-hidden bg-skin-bg shadow-lg rounded-md text-base border border-skin-border focus:outline-none sm:text-sm"
+          class="absolute z-40 mt-1 w-full overflow-hidden rounded-md border border-skin-border bg-skin-bg text-base shadow-lg focus:outline-none sm:text-sm"
         >
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
@@ -82,7 +82,7 @@ function isDisabled(item: { id: number; name: string }) {
               <li
                 :class="[
                   { 'bg-skin-border': active },
-                  'cursor-default select-none relative py-2 pl-3 pr-9'
+                  'pr-9 relative cursor-default select-none py-2 pl-3'
                 ]"
               >
                 <span

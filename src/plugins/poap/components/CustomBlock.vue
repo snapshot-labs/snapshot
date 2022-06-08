@@ -160,7 +160,7 @@ export default {
   <BaseBlock title="I voted POAP" :loading="loading">
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-skin-link text-center mb-2">{{ $t(header) }}</div>
+      <div class="mb-2 text-center text-skin-link">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""
@@ -174,7 +174,7 @@ export default {
       />
       <BaseButton
         v-if="currentState !== 'NO_POAP'"
-        class="w-full mb-2 mt-3"
+        class="mb-2 mt-3 w-full"
         @click="action"
         :disabled="!actionEnabled"
         :loading="actionLoading"

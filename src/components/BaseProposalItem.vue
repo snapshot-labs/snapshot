@@ -26,14 +26,14 @@ const winningChoice = computed(() =>
 <template>
   <BaseBlock slim class="transition-colors md:hover:border-skin-text">
     <router-link
-      class="p-3 sm:p-4 block text-skin-text"
+      class="block p-3 text-skin-text sm:p-4"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
       }"
     >
       <div>
-        <div class="mb-2 flex justify-between items-center">
+        <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
             <AvatarSpace :space="proposal.space" size="28" />
             <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
@@ -49,8 +49,8 @@ const winningChoice = computed(() =>
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 v-text="proposal.title" class="my-1 leading-7 break-words" />
-        <p v-text="shorten(body, 140)" class="break-words mb-2 sm:text-md" />
+        <h3 v-text="proposal.title" class="my-1 break-words leading-7" />
+        <p v-text="shorten(body, 140)" class="mb-2 break-words sm:text-md" />
         <div>
           <span
             v-if="proposal.scores_state !== 'final'"
@@ -64,7 +64,7 @@ const winningChoice = computed(() =>
           />
           <span
             v-if="proposal.scores_state === 'final'"
-            class="mt-2 flex space-x-1 items-center"
+            class="mt-2 flex items-center space-x-1"
           >
             <BaseIcon size="20" name="check1" class="text-green" />
             <span

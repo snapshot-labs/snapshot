@@ -36,7 +36,7 @@ const { domain } = useApp();
     </template>
     <template v-slot:content>
       <div
-        class="w-[400px] p-4 min-w-[300px] bg-skin-header-bg border border-skin-border rounded-xl shadow-lg cursor-default"
+        class="w-[400px] min-w-[300px] cursor-default rounded-xl border border-skin-border bg-skin-header-bg p-4 shadow-lg"
       >
         <div class="flex">
           <div>
@@ -51,7 +51,7 @@ const { domain } = useApp();
           {{ profile.about }}
         </p>
 
-        <div class="flex w-full mt-4">
+        <div class="mt-4 flex w-full">
           <div class="w-1/2 pr-2">
             <BaseLink
               :link="

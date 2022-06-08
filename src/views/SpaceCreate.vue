@@ -252,7 +252,7 @@ onMounted(() =>
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div v-if="currentStep === 1" class="px-4 md:px-0 overflow-hidden mb-3">
+      <div v-if="currentStep === 1" class="mb-3 overflow-hidden px-4 md:px-0">
         <router-link
           :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
           class="text-skin-text"
@@ -302,11 +302,11 @@ onMounted(() =>
         <BaseButton
           v-if="currentStep === 1"
           @click="preview = !preview"
-          class="block w-full mb-2"
+          class="mb-2 block w-full"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else @click="previosStep" class="block w-full mb-2">
+        <BaseButton v-else @click="previosStep" class="mb-2 block w-full">
           {{ $t('back') }}
         </BaseButton>
 

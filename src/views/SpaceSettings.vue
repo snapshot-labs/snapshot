@@ -283,7 +283,7 @@ async function handleSetRecord() {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div class="mb-3 px-4 md:px-0">
         <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
           <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('back') }}
@@ -296,7 +296,7 @@ async function handleSetRecord() {
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
           <BaseMessage
-            class="mx-4 md:mx-0 mb-5"
+            class="mx-4 mb-5 md:mx-0"
             level="info"
             v-if="
               !(isSpaceController || isSpaceAdmin || ensOwner) &&
@@ -306,7 +306,7 @@ async function handleSetRecord() {
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessage>
           <BaseBlock :title="$t('settings.profile')">
-            <div class="space-y-2 mb-2">
+            <div class="mb-2 space-y-2">
               <UiInput
                 v-model="form.name"
                 :error="inputError('name')"
@@ -407,7 +407,7 @@ async function handleSetRecord() {
               </template>
               <template v-slot:info>
                 <BaseLink
-                  class="flex items-center -mr-1"
+                  class="-mr-1 flex items-center"
                   link="https://docs.snapshot.org/spaces/add-custom-domain"
                   hide-external-icon
                 >
@@ -425,7 +425,7 @@ async function handleSetRecord() {
             </UiInput>
           </BaseBlock>
           <BaseBlock :title="$t('settings.admins')" v-if="isSpaceController">
-            <BaseBlock class="!border-red mb-2" v-if="inputError('admins')">
+            <BaseBlock class="mb-2 !border-red" v-if="inputError('admins')">
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
             </BaseBlock>
@@ -437,7 +437,7 @@ async function handleSetRecord() {
             />
           </BaseBlock>
           <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock class="!border-red mb-2" v-if="inputError('members')">
+            <BaseBlock class="mb-2 !border-red" v-if="inputError('members')">
               <BaseIcon name="warning" class="mr-2 !text-red" />
               <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
             </BaseBlock>
@@ -482,7 +482,7 @@ async function handleSetRecord() {
                     $t('settings.proposalThreshold')
                   }}</template>
                 </UiInput>
-                <div class="flex items-center space-x-2 pr-2 mt-2">
+                <div class="mt-2 flex items-center space-x-2 pr-2">
                   <BaseCheckbox v-model="form.filters.onlyMembers" />
                   <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
@@ -502,7 +502,7 @@ async function handleSetRecord() {
                 <template v-slot:info>
                   <select
                     v-model="delayUnit"
-                    class="input text-center mr-[6px] ml-2"
+                    class="input mr-[6px] ml-2 text-center"
                     required
                   >
                     <option value="h" selected>hours</option>
@@ -521,7 +521,7 @@ async function handleSetRecord() {
                 <template v-slot:info>
                   <select
                     v-model="periodUnit"
-                    class="input text-center mr-[6px] ml-2"
+                    class="input mr-[6px] ml-2 text-center"
                     required
                   >
                     <option value="h" selected>hours</option>
@@ -565,18 +565,18 @@ async function handleSetRecord() {
                   key => pluginIndex[key]
                 )"
                 :key="index"
-                class="mb-3 relative"
+                class="relative mb-3"
               >
                 <div v-if="pluginIndex[name].name">
                   <a
                     @click="handleRemovePlugins(name)"
-                    class="absolute p-4 right-0"
+                    class="absolute right-0 p-4"
                   >
                     <BaseIcon name="close" size="12" />
                   </a>
                   <a
                     @click="handleEditPlugins(name)"
-                    class="p-4 block border rounded-md"
+                    class="block rounded-md border p-4"
                   >
                     <h4 v-text="pluginIndex[name].name" />
                   </a>
@@ -604,12 +604,12 @@ async function handleSetRecord() {
             v-if="ensOwner"
             @click="modalControllerEditOpen = true"
             :loading="settingENSRecord"
-            class="block w-full mb-2"
+            class="mb-2 block w-full"
           >
             {{ $t('settings.editController') }}
           </BaseButton>
           <div v-if="isSpaceAdmin || isSpaceController">
-            <BaseButton @click="handleReset" class="block w-full mb-2">
+            <BaseButton @click="handleReset" class="mb-2 block w-full">
               {{ $t('reset') }}
             </BaseButton>
             <BaseButton
@@ -673,7 +673,7 @@ async function handleSetRecord() {
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="space-y-4 m-4 text-skin-link">
+      <div class="m-4 space-y-4 text-skin-link">
         <p>
           {{
             $t('setup.confirmToSetAddress', {

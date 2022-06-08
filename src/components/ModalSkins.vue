@@ -38,14 +38,14 @@ function select(key) {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+    <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <LoadingRow v-if="loadingSkins" block />
       <div v-else class="space-y-3">
         <div
           v-if="!searchInput"
           key=""
           @click="select(undefined)"
-          class="default rounded-none md:rounded-md cursor-pointer"
+          class="default cursor-pointer rounded-none md:rounded-md"
         >
           <BaseBlock>
             <BaseButton class="mb-2" primary>{{

@@ -136,7 +136,7 @@ export default {
       v-if="this.modelValue.hash"
       :showArrow="true"
       :open="!hashHidden"
-      class="mt-2 collapsible-text"
+      class="collapsible-text mt-2"
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
     >
@@ -147,7 +147,7 @@ export default {
       :showArrow="true"
       :pre="true"
       :open="!jsonHidden"
-      class="mt-2 collapsible-text"
+      class="collapsible-text mt-2"
       title="Batch Transaction JSON"
       @toggle="jsonHidden = !jsonHidden"
     >

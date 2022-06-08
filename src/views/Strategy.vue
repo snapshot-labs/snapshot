@@ -17,7 +17,7 @@ onMounted(async () => {
 <template>
   <TheLayout>
     <template #content-left>
-      <div class="px-4 md:px-0 mb-3">
+      <div class="mb-3 px-4 md:px-0">
         <router-link :to="{ path: '/strategies' }" class="text-skin-text">
           <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
@@ -60,7 +60,7 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <BaseButton class="w-full mt-2">{{ $t('playground') }}</BaseButton>
+          <BaseButton class="mt-2 w-full">{{ $t('playground') }}</BaseButton>
         </router-link>
       </BaseBlock>
     </template>

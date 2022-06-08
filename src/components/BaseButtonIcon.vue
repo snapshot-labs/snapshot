@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <button
-    class="text-skin-text hover:text-skin-link text-md flex items-center rounded-full p-[6px] transition-colors duration-200"
+    class="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link"
   >
     <LoadingSpinner v-if="loading" />
     <slot v-else />

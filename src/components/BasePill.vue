@@ -2,7 +2,7 @@
 
 <template>
   <span
-    class="h-[20px] rounded-full leading-normal text-xs text-white bg-skin-text text-center px-2"
+    class="h-[20px] rounded-full bg-skin-text px-2 text-center text-xs leading-normal text-white"
   >
     <slot />
   </span>

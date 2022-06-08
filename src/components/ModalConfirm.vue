@@ -85,13 +85,13 @@ watch(
     @close="$emit('close')"
     class="flex"
   >
-    <div class="flex flex-col flex-auto">
+    <div class="flex flex-auto flex-col">
       <h4 class="m-4 mb-0 text-center">
         {{ $tc('voteOverview') }}
       </h4>
       <BaseBlock slim class="m-4 p-4 text-skin-link">
         <div class="flex">
-          <span v-text="$t('options')" class="flex-auto text-skin-text mr-1" />
+          <span v-text="$t('options')" class="mr-1 flex-auto text-skin-text" />
           <span
             v-tippy="{
               content:
@@ -99,13 +99,13 @@ watch(
                   ? format(proposal, selectedChoices)
                   : null
             }"
-            class="text-right ml-4 truncate"
+            class="ml-4 truncate text-right"
           >
             {{ format(proposal, selectedChoices) }}
           </span>
         </div>
         <div class="flex">
-          <span v-text="$t('snapshot')" class="flex-auto text-skin-text mr-1" />
+          <span v-text="$t('snapshot')" class="mr-1 flex-auto text-skin-text" />
           <BaseLink
             :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
@@ -116,9 +116,9 @@ watch(
         <div class="flex">
           <span
             v-text="$t('votingPower')"
-            class="flex-auto text-skin-text mr-1"
+            class="mr-1 flex-auto text-skin-text"
           />
-          <span v-if="vpLoadingFailed" class="flex item-center">
+          <span v-if="vpLoadingFailed" class="item-center flex">
             <BaseIcon name="warning" size="22" class="text-red" />
           </span>
           <span
@@ -148,12 +148,12 @@ watch(
       </BaseBlock>
     </div>
     <template v-slot:footer>
-      <div class="w-2/4 float-left pr-2">
+      <div class="float-left w-2/4 pr-2">
         <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
-      <div class="w-2/4 float-left pl-2">
+      <div class="float-left w-2/4 pl-2">
         <BaseButton
           :disabled="vp === 0 || clientLoading"
           :loading="clientLoading"

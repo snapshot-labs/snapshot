@@ -49,7 +49,7 @@ const numberOfSpacesByScreenSize = computed(() => {
       <div v-else class="flex justify-between">
         <div class="flex w-full overflow-x-hidden">
           <div
-            class="text-center max-w-[66px] min-w-[66px] mx-2 first:ml-0"
+            class="mx-2 min-w-[66px] max-w-[66px] text-center first:ml-0"
             v-for="space in followingSpaces.map((f: any) => f.space.id).slice(0, numberOfSpacesByScreenSize)"
             :key="space"
           >
@@ -65,7 +65,7 @@ const numberOfSpacesByScreenSize = computed(() => {
         />
       </div>
     </div>
-    <div v-else class="p-4 border-t">
+    <div v-else class="border-t p-4">
       {{ $t('profile.about.notJoinSpacesYet') }}
     </div>
   </BaseBlock>

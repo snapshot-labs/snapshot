@@ -106,7 +106,7 @@ export default {
         </a>
       </div>
 
-      <div class="border rounded-lg p-3 my-3">
+      <div class="my-3 rounded-lg border p-3">
         <div>
           <b class="pr-3">{{ $t('safeSnap.currentOutcome') }}:</b>
           <span class="float-right text-skin-link">

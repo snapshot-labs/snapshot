@@ -28,9 +28,9 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <div class="transition-colors md:border-b last:border-b-0 border-skin-border">
+  <div class="border-skin-border transition-colors last:border-b-0 md:border-b">
     <router-link
-      class="p-4 block text-skin-text"
+      class="block p-4 text-skin-text"
       :to="{
         name: 'spaceProposal',
         params: { key: proposal.space.id, id: proposal.id }
@@ -39,7 +39,7 @@ const winningChoice = computed(() =>
       <div>
         <div class="mb-2 flex items-center space-x-1">
           <router-link
-            class="text-skin-text group"
+            class="group text-skin-text"
             :to="{
               name: 'spaceProposals',
               params: { key: proposal.space.id }
@@ -63,7 +63,7 @@ const winningChoice = computed(() =>
           />
         </div>
         <h3 v-text="proposal.title" class="mt-1 mb-1 break-words" />
-        <p v-text="shorten(body, 120)" class="break-words mb-2 text-md" />
+        <p v-text="shorten(body, 120)" class="mb-2 break-words text-md" />
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -75,9 +75,9 @@ const winningChoice = computed(() =>
           <div
             v-for="(choice, i) in proposal.choices"
             :key="i"
-            class="mt-1 w-full relative"
+            class="relative mt-1 w-full"
           >
-            <div class="absolute leading-[43px] ml-3 text-skin-link">
+            <div class="absolute ml-3 leading-[43px] text-skin-link">
               <BaseIcon
                 name="check1"
                 size="20"
@@ -85,7 +85,7 @@ const winningChoice = computed(() =>
                 v-if="i === winningChoice"
               />
               {{ shorten(choice, 32) }}
-              <span class="text-skin-text ml-1">
+              <span class="ml-1 text-skin-text">
                 {{ formatCompactNumber(proposal.scores[i]) }}
                 {{ proposal.symbol || proposal.space.symbol }}
               </span>
@@ -96,13 +96,13 @@ const winningChoice = computed(() =>
                   (1 / proposal.scores_total) * proposal.scores[i]
                 )
               "
-              class="absolute right-0 leading-[40px] mr-3 text-skin-link"
+              class="absolute right-0 mr-3 leading-[40px] text-skin-link"
             />
             <div
               :style="`width: ${
                 (100 / proposal.scores_total) * proposal.scores[i]
               }%;`"
-              class="bg-skin-border rounded-md h-[40px]"
+              class="h-[40px] rounded-md bg-skin-border"
             />
           </div>
         </div>

@@ -40,17 +40,17 @@ function updateChoices() {
         <template #item="{ element, index }">
           <div class="mb-2">
             <BaseButton
-              class="flex justify-between items-center w-full !border-skin-link !px-3"
+              class="flex w-full items-center justify-between !border-skin-link !px-3"
             >
               <div class="min-w-[60px] text-left">
                 ({{ getNumberWithOrdinal(index + 1) }})
               </div>
-              <div class="truncate w-full mx-2 text-center">
+              <div class="mx-2 w-full truncate text-center">
                 {{ proposal.choices[element - 1] }}
               </div>
               <div
                 @click="removeChoice(index)"
-                class="min-w-[20px] ml-[40px] text-right"
+                class="ml-[40px] min-w-[20px] text-right"
               >
                 <BaseIcon name="close" size="12" />
               </div>
@@ -63,7 +63,7 @@ function updateChoices() {
       <BaseButton
         v-if="!selectedChoices.includes(i + 1)"
         @click="selectChoice(i + 1)"
-        class="block w-full mb-2"
+        class="mb-2 block w-full"
         :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
       >
         <span class="truncate">{{ choice }}</span>

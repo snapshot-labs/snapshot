@@ -166,11 +166,11 @@ watch([modalOpen, closeModal], () => {
     <template v-slot:header>
       <h3>{{ $t('comment_box.edit_comment') }}</h3>
     </template>
-    <div class="text-center mt-3">
+    <div class="mt-3 text-center">
       <p>{{ $t('comment_box.edit_modal') }}</p>
     </div>
     <div
-      class="mb-2 mt-3 text-center flex items-center content-center justify-center"
+      class="mb-2 mt-3 flex content-center items-center justify-center text-center"
     >
       <BaseButton
         class="!bg-primary !text-white"
@@ -195,7 +195,7 @@ watch([modalOpen, closeModal], () => {
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
-      class="p-4 h6 text-skin-text mt-2 mb-0"
+      class="h6 mt-2 mb-0 p-4 text-skin-text"
     >
       <div>{{ comment }}</div>
     </BaseBlock>
@@ -224,7 +224,7 @@ watch([modalOpen, closeModal], () => {
       :disabled="loading"
       @click="$emit('dismissComment')"
       type="text"
-      class="border-0 ml-2 mt-2 button--text"
+      class="button--text ml-2 mt-2 border-0"
     >
       {{ $t('comment_box.dismiss') }}
     </BaseButton>

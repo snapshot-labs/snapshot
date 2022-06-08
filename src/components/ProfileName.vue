@@ -12,7 +12,7 @@ defineProps<{
 
 <template>
   <div
-    class="text-skin-heading text-lg leading-10 font-semibold truncate px-3"
+    class="truncate px-3 text-lg font-semibold leading-10 text-skin-heading"
     v-tippy="{
       content: profile?.name || profile?.ens || address
     }"

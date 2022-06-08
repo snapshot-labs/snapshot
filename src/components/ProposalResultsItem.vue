@@ -62,7 +62,7 @@ const isVisible = computed(() => {
 
 <template>
   <div v-if="isVisible">
-    <div class="text-skin-link mb-1 flex justify-between">
+    <div class="mb-1 flex justify-between text-skin-link">
       <div class="flex overflow-hidden">
         <span
           ref="choiceString"

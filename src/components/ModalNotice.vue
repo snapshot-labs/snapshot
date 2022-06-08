@@ -10,7 +10,7 @@ export default {
     <template v-slot:header>
       <h3>{{ title }}</h3>
     </template>
-    <div class="text-center my-2 p-4">
+    <div class="my-2 p-4 text-center">
       <slot />
     </div>
     <template v-slot:footer>

@@ -19,7 +19,7 @@ withDefaults(defineProps<SocialProps>(), {
     <BaseIcon
       :size="size"
       :name="social.icon"
-      :class="social.link ? 'hover:opacity-80 text-skin-text' : 'opacity-10'"
+      :class="social.link ? 'text-skin-text hover:opacity-80' : 'opacity-10'"
     />
   </BaseLink>
 </template>

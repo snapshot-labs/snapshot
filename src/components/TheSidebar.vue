@@ -82,9 +82,9 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
+    class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
   >
-    <div v-if="!domain" class="flex items-center relative px-2">
+    <div v-if="!domain" class="relative flex items-center px-2">
       <router-link :to="{ name: 'home' }">
         <ButtonSidebar class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
@@ -92,7 +92,7 @@ onMounted(() => {
       </router-link>
     </div>
     <div
-      class="flex items-center relative px-2 group mt-2"
+      class="group relative mt-2 flex items-center px-2"
       v-tippy="{
         content: 'Timeline',
         placement: 'right',
@@ -116,14 +116,14 @@ onMounted(() => {
         v-bind="{ animation: 200 }"
         item-key="id"
         @update="saveSpaceOrder"
-        class="space-y-2 mt-2"
+        class="mt-2 space-y-2"
         :delay="200"
         :delay-on-touch-only="true"
       >
         <template #item="{ element }">
           <div
             v-if="extentedSpacesObj[element]"
-            class="flex items-center relative px-2 group"
+            class="group relative flex items-center px-2"
             v-tippy="{
               content: extentedSpacesObj[element].name,
               placement: 'right',
@@ -154,7 +154,7 @@ onMounted(() => {
               <BaseCounter
                 v-if="spaces?.[element]?.activeProposals"
                 :counter="spaces[element].activeProposals"
-                class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
+                class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
               />
             </div>
           </div>
@@ -162,7 +162,7 @@ onMounted(() => {
       </draggable>
     </Transition>
     <div
-      class="flex flex-col items-center px-2 space-y-2 mt-2"
+      class="mt-2 flex flex-col items-center space-y-2 px-2"
       v-tippy="{
         content: 'Create space',
         placement: 'right',

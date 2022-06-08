@@ -3,14 +3,14 @@
     <slot />
     <div
       v-if="$slots['sidebar-left']"
-      class="w-1/4 float-left hidden lg:block"
+      class="float-left hidden w-1/4 lg:block"
       id="sidebar-left"
     >
       <slot name="sidebar-left" />
     </div>
     <div
       v-if="$slots['content-right']"
-      class="w-full lg:w-3/4 float-right pl-0 lg:pl-5 relative"
+      class="relative float-right w-full pl-0 lg:w-3/4 lg:pl-5"
       id="content-right"
     >
       <slot name="content-right" />
@@ -18,7 +18,7 @@
     <div class="lg:flex">
       <div
         v-if="$slots['content-left']"
-        class="w-full lg:w-8/12 lg:pr-5 relative"
+        class="relative w-full lg:w-8/12 lg:pr-5"
         id="content-left"
       >
         <slot name="content-left" />

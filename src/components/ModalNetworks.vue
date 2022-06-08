@@ -40,7 +40,7 @@ function select(key) {
       modal
     />
 
-    <div class="my-4 mx-0 md:mx-4 min-h-[339px]">
+    <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <LoadingRow v-if="loadingNetworksSpacesCount" block />
       <div v-else class="space-y-3">
         <div

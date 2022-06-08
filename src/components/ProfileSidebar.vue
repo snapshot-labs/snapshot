@@ -27,7 +27,7 @@ const { web3Account } = useWeb3();
 
       <div
         v-if="userAddress === web3Account"
-        class="flex justify-center mt-3 pt-1"
+        class="mt-3 flex justify-center pt-1"
       >
         <BaseButton :disabled="!profiles[userAddress]" @click="$emit('edit')">
           {{ $t('profile.buttonEdit') }}

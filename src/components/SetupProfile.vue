@@ -156,7 +156,7 @@ async function handleSubmit() {
     <BaseBlock :title="$t('setup.profile')">
       <div class="space-y-2">
         <div class="flex flex-col-reverse sm:flex-row">
-          <div class="sm:w-2/3 mt-3 sm:mt-0 space-y-2">
+          <div class="mt-3 space-y-2 sm:mt-0 sm:w-2/3">
             <BaseInput
               v-model="form.name"
               :title="$t(`spaceProfile.name.label`)"
@@ -177,7 +177,7 @@ async function handleSubmit() {
               @update-categories="value => (form.categories = value)"
             />
           </div>
-          <div class="flex w-full sm:w-1/3 justify-center">
+          <div class="flex w-full justify-center sm:w-1/3">
             <div>
               <LabelInput>
                 {{ $t('spaceProfile.avatar') }}
@@ -196,9 +196,9 @@ async function handleSubmit() {
                     />
                     <AvatarOverlayEdit :loading="uploading" />
                     <div
-                      class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
+                      class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
                     >
-                      <i-ho-pencil class="text-skin-bg text-[12px]" />
+                      <i-ho-pencil class="text-[12px] text-skin-bg" />
                     </div>
                   </div>
                 </template>

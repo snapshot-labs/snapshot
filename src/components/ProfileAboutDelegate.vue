@@ -95,7 +95,7 @@ const networkString = computed(() => {
         :web3Account="web3Account"
         @delegate="clickDelegate"
       />
-      <div v-else class="p-4 border-t">
+      <div v-else class="border-t p-4">
         {{
           loadingDelegators === 'notSupportedNetwork'
             ? $t('profile.about.notSupportedNetwork', {

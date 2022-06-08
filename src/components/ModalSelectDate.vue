@@ -69,20 +69,20 @@ watch(open, () => {
         <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="flex m-4 mx-auto" style="max-width: 160px">
-      <BaseButton class="!px-0 w-max">
-        <input v-model="form.h" max="24" class="input text-center w-5/12" />
+    <div v-else class="m-4 mx-auto flex" style="max-width: 160px">
+      <BaseButton class="w-max !px-0">
+        <input v-model="form.h" max="24" class="input w-5/12 text-center" />
         <span class="w-2/12">:</span>
-        <input v-model="form.m" max="60" class="input text-center w-5/12" />
+        <input v-model="form.m" max="60" class="input w-5/12 text-center" />
       </BaseButton>
     </div>
     <template v-slot:footer>
-      <div class="w-2/4 float-left pr-2">
+      <div class="float-left w-2/4 pr-2">
         <BaseButton @click="$emit('close')" type="button" class="w-full">
           {{ $t('cancel') }}
         </BaseButton>
       </div>
-      <div class="w-2/4 float-left pl-2">
+      <div class="float-left w-2/4 pl-2">
         <BaseButton
           @click="handleSubmit"
           type="submit"

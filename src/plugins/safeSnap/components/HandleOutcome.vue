@@ -31,7 +31,7 @@
       "
       class="my-4"
     >
-      <div class="text-base inline-block">
+      <div class="inline-block text-base">
         <h4 class="text-center text-skin-link">
           Reality oracle
           <a @click="updateDetails" class="ml-2 text-skin-text">
@@ -40,10 +40,10 @@
         </h4>
         <div
           v-if="questionState !== questionStates.questionNotSet"
-          class="flex items-center my-3 space-x-3"
+          class="my-3 flex items-center space-x-3"
           style="text-align: left"
         >
-          <div class="border rounded-lg p-3 self-stretch">
+          <div class="self-stretch rounded-lg border p-3">
             <div>
               <b class="pr-3"
                 >{{
@@ -66,7 +66,7 @@
 
           <div
             v-if="approvalData?.timeLeft"
-            class="border rounded-lg p-3 text-skin-link self-stretch items-center justify-center flex"
+            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
           >
             <b>{{ approvalData?.timeLeft }}</b>
           </div>
@@ -74,7 +74,7 @@
 
         <div v-if="questionState === questionStates.questionNotSet">
           <BaseButton
-            class="w-full mb-1 mt-3"
+            class="mb-1 mt-3 w-full"
             @click="
               modalApproveDecisionOpen = true;
               actionInProgress = 'set-outcome';
@@ -86,7 +86,7 @@
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
           <BaseButton
-            class="w-full my-1"
+            class="my-1 w-full"
             @click="
               modalApproveDecisionOpen = true;
               actionInProgress = 'set-outcome';
@@ -98,7 +98,7 @@
         </div>
         <div v-if="bondData.canClaim">
           <BaseButton
-            class="w-full my-1"
+            class="my-1 w-full"
             @click="claimBond"
             :loading="actionInProgress === 'claim-bond'"
           >

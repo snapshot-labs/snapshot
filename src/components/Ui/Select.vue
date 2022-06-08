@@ -10,11 +10,11 @@ function handleChange(event) {
 </script>
 
 <template>
-  <BaseButton class="w-full mb-2 !px-3 flex items-center overflow-hidden">
-    <div class="text-skin-text mr-2 no-shrink">
+  <BaseButton class="mb-2 flex w-full items-center overflow-hidden !px-3">
+    <div class="no-shrink mr-2 text-skin-text">
       <slot name="label" />
     </div>
-    <div v-if="$slots.image" class="text-skin-text mr-2 no-shrink">
+    <div v-if="$slots.image" class="no-shrink mr-2 text-skin-text">
       <slot name="image" />
     </div>
     <select
@@ -22,7 +22,7 @@ function handleChange(event) {
       :value="modelValue"
       @change="handleChange($event)"
       v-bind:class="{ disabled }"
-      class="input flex-auto h-full w-full"
+      class="input h-full w-full flex-auto"
     >
       <slot />
     </select>

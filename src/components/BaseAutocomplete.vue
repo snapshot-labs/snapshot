@@ -109,16 +109,16 @@ function handleChange(e) {
 
     <div
       ref="optionsEl"
-      class="border border-skin-link rounded-b-lg z-20 mt-2 absolute w-full bg-skin-bg transition-all pt-[19px] overflow-hidden shadow-lg"
+      class="absolute z-20 mt-2 w-full overflow-hidden rounded-b-lg border border-skin-link bg-skin-bg pt-[19px] shadow-lg transition-all"
       :class="
         displayDropdown && options.length
           ? '-mt-[19px] opacity-100'
-          : '-mt-[48px] opacity-0 pointer-events-none'
+          : 'pointer-events-none -mt-[48px] opacity-0'
       "
     >
       <ul class="max-h-[200px] overflow-y-auto">
         <li
-          class="hover:bg-skin-border hover:text-skin-link py-2 px-3 bg-skin-bg cursor-pointer"
+          class="cursor-pointer bg-skin-bg py-2 px-3 hover:bg-skin-border hover:text-skin-link"
           v-for="option in options"
           :key="option.value"
           @click.stop="handleOptionSelect($event, option)"

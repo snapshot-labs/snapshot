@@ -8,14 +8,14 @@ defineProps<{
 <template>
   <transition name="fade">
     <div
-      class="absolute right-0 left-0 top-0 bottom-0 cursor-pointer rounded-full group hover:opacity-80 hover:bg-skin-border transition-colors ease-out flex items-center justify-center"
+      class="group absolute right-0 left-0 top-0 bottom-0 flex cursor-pointer items-center justify-center rounded-full transition-colors ease-out hover:bg-skin-border hover:opacity-80"
       :class="{
-        'opacity-80 bg-skin-border': loading
+        'bg-skin-border opacity-80': loading
       }"
     >
       <div
         v-if="!loading"
-        class="group-hover:block hidden transition-all ease-out"
+        class="hidden transition-all ease-out group-hover:block"
       >
         {{ avatar ? $t('edit') : $t('upload') }}
       </div>

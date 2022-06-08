@@ -127,7 +127,7 @@ watch(open, () => {
       </div>
     </div>
 
-    <div v-else class="my-4 mx-0 md:mx-4 min-h-[300px]">
+    <div v-else class="my-4 mx-0 min-h-[300px] md:mx-4">
       <LoadingRow v-if="loadingStrategies" block />
       <div v-else class="space-y-3">
         <BaseStrategyItem

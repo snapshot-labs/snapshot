@@ -179,7 +179,7 @@ onMounted(async () => {
     <template #content-left>
       <LoadingPage v-if="!strategy" />
       <div v-else>
-        <div class="px-4 md:px-0 mb-3">
+        <div class="mb-3 px-4 md:px-0">
           <router-link
             :to="`/strategy/${$route.params.name}`"
             class="text-skin-text"
@@ -269,11 +269,11 @@ onMounted(async () => {
           >
             <BaseIcon name="play" size="18" />
           </BaseButton>
-          <BaseButton @click="copyURL" class="w-full mt-2">
+          <BaseButton @click="copyURL" class="mt-2 w-full">
             <BaseIcon
               name="insertlink"
               size="18"
-              class="align-text-bottom mr-1"
+              class="mr-1 align-text-bottom"
             />
             {{ t('copyLink') }}
           </BaseButton>

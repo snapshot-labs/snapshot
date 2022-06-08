@@ -41,7 +41,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
       <template #item>
         <div
           @click="open = !open"
-          class="inline-flex items-center w-full h-full cursor-pointer"
+          class="inline-flex h-full w-full cursor-pointer items-center"
         >
           <slot name="button" />
         </div>
@@ -57,11 +57,11 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
           leave-to-class="transform opacity-0 scale-95"
         >
           <div
-            class="z-20 max-w-[320px] md:max-w-[400px] rounded-2xl bg-skin-header-bg overflow-hidden shadow-lg border border-skin-border"
+            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg shadow-lg md:max-w-[400px]"
             v-if="open"
           >
             <ul
-              class="max-h-[85vh] overflow-y-auto no-scrollbar overscroll-contain"
+              class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
             >
               <slot name="header" />
               <li
@@ -69,7 +69,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
                 :key="item.text"
                 @click.stop="handleClick(item.action)"
                 :class="{ selected: item.selected }"
-                class="list-none block whitespace-nowrap px-3 py-2 cursor-pointer select-none group"
+                class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
               >
                 <slot name="item" :item="item" :key="item">
                   {{ item.text }}

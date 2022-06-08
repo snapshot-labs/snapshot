@@ -110,7 +110,7 @@ export default {
         <!-- TODO: use tooltip component -->
         <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
           <img
-            class="inline-block !align-middle leading-none circle border"
+            class="circle inline-block border !align-middle leading-none"
             :src="baseTokenUrl"
             :alt="baseToken.name"
             width="22"
@@ -132,7 +132,7 @@ export default {
     </div>
     <div
       :title="choices[1]"
-      class="mb-1 border-b bg-skin-header-bg rounded-t-none md:rounded-t-md"
+      class="mb-1 rounded-t-none border-b bg-skin-header-bg md:rounded-t-md"
       style="padding-bottom: 12px"
     >
       <b>{{ shorten(choices[1], 'name') }}</b>

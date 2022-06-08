@@ -43,17 +43,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="rounded-3xl w-full">
+  <div class="w-full rounded-3xl">
     <div
-      class="border border-skin-border transition-colors rounded-3xl outline-none leading-[42px] text-left w-full flex px-3 focus-within:border-skin-text bg-skin-bg relative z-10"
+      class="relative z-10 flex w-full rounded-3xl border border-skin-border bg-skin-bg px-3 text-left leading-[42px] outline-none transition-colors focus-within:border-skin-text"
       :class="{ '!border-red': !!error }"
     >
-      <div class="text-skin-text mr-2 whitespace-nowrap">
+      <div class="mr-2 whitespace-nowrap text-skin-text">
         <slot name="label" />
       </div>
       <button
         v-if="$slots.selected"
-        class="flex-auto whitespace-nowrap overflow-x-auto text-skin-link outline-none text-left"
+        class="flex-auto overflow-x-auto whitespace-nowrap text-left text-skin-link outline-none"
         :class="{ 'cursor-not-allowed text-skin-border': disabled }"
       >
         <slot name="selected" />
@@ -66,7 +66,7 @@ onMounted(() => {
         :placeholder="placeholder"
         :type="number ? 'number' : 'text'"
         :disabled="disabled"
-        class="input flex-auto w-full"
+        class="input w-full flex-auto"
         :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
         :required="required"
         :readonly="readonly"

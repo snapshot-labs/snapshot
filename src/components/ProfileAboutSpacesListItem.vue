@@ -13,19 +13,19 @@ defineProps<{
   >
     <div class="flex justify-center">
       <div
-        class="flex justify-center !border-[1px] rounded-full !border-skin-text p-[2px]"
+        class="flex justify-center rounded-full !border-[1px] !border-skin-text p-[2px]"
       >
         <AvatarSpace :space="space" symbolIndex="space" size="48" />
       </div>
     </div>
     <div class="flex items-center justify-center">
-      <div class="text-xs truncate">
+      <div class="truncate text-xs">
         {{ space?.name }}
       </div>
       <IconVerifiedSpace
         :spaceId="space.id"
         size="14"
-        class="text-primary pl-1"
+        class="pl-1 text-primary"
       />
     </div>
   </router-link>

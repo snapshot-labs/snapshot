@@ -78,7 +78,7 @@ watch(
       {{ $t('setup.fillCurrentAccount') }}
     </div>
     <BaseButton
-      class="w-full mt-4"
+      class="mt-4 w-full"
       primary
       :disabled="!controllerInputIsValid"
       :loading="settingENSRecord"
@@ -109,7 +109,7 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="space-y-1 m-4 text-skin-text">
+      <div class="m-4 space-y-1 text-skin-text">
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -123,7 +123,7 @@ watch(
           </BaseLink>
         </div>
         <div class="flex justify-between pb-2">
-          <span class="whitespace-nowrap mr-3">Text record</span>
+          <span class="mr-3 whitespace-nowrap">Text record</span>
           <span
             class="truncate text-skin-link"
             v-tippy="{ content: textRecord }"

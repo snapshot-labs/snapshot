@@ -30,13 +30,13 @@ async function update(val) {
     <h3>{{ $t('discussion') }}</h3>
     <BaseLink :link="getIpfsUrl(discussionLink)" hide-external-icon>
       <div
-        class="flex items-center border rounded-xl hover:border-skin-text hover:cursor-pointer"
+        class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
       >
         <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
           <div>
             <div
               v-if="preview.links.icon[0].href.includes('discord.com')"
-              class="bg-[#5865F2] p-2 rounded-full"
+              class="rounded-full bg-[#5865F2] p-2"
             >
               <i-s-discord class="h-[26px] w-[26px]" />
             </div>
@@ -45,15 +45,15 @@ async function update(val) {
               :src="preview.links.icon[0].href"
               width="32"
               height="32"
-              class="bg-white rounded"
+              class="rounded bg-white"
             />
           </div>
         </div>
-        <div class="px-4 py-3 overflow-hidden">
-          <div class="text-skin-link truncate">{{ preview.meta.title }}</div>
+        <div class="overflow-hidden px-4 py-3">
+          <div class="truncate text-skin-link">{{ preview.meta.title }}</div>
           <div
             v-if="preview.meta.description"
-            class="text-sm text-skin-text truncate"
+            class="truncate text-sm text-skin-text"
           >
             {{ preview.meta.description }}
           </div>

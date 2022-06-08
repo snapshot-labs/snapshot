@@ -12,12 +12,12 @@ const emit = defineEmits(['removeStrategy', 'editStrategy']);
   <div
     v-for="(strategy, i) in strategiesForm"
     :key="i"
-    class="h-full flex truncate"
+    class="flex h-full truncate"
   >
     <button
-      class="p-4 border rounded-md w-full flex justify-between items-center"
+      class="flex w-full items-center justify-between rounded-md border p-4"
     >
-      <div class="text-left truncate flex items-center gap-2 pr-[20px]">
+      <div class="flex items-center gap-2 truncate pr-[20px] text-left">
         <h4 class="truncate">{{ strategy.name }}</h4>
         <BasePill> ${{ strategy.params.symbol }} </BasePill>
       </div>

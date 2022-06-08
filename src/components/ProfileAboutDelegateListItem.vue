@@ -13,7 +13,7 @@ defineProps<{
     <div
       v-for="space in delegatorsFilteredBySpaces"
       :key="space"
-      class="border-b last:border-b-0 px-4 py-2 first:border-t"
+      class="border-b px-4 py-2 first:border-t last:border-b-0"
     >
       <div class="flex justify-between">
         <router-link
@@ -28,7 +28,7 @@ defineProps<{
             <IconVerifiedSpace
               :spaceId="space"
               size="19"
-              class="text-primary ml-1 flex"
+              class="ml-1 flex text-primary"
             />
           </div>
         </router-link>
@@ -40,7 +40,7 @@ defineProps<{
                 d.delegator === web3Account.toLowerCase() && d.space === space
             )
           "
-          class="flex items-center space-x-2 rounded-full px-4 border h-[44px]"
+          class="flex h-[44px] items-center space-x-2 rounded-full border px-4"
         >
           <i-ho-check />
           <div>{{ $t('profile.about.delegated') }}</div>

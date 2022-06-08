@@ -256,7 +256,7 @@ const truncateMarkdownBody = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="px-3 md:px-0 mb-3">
+      <div class="mb-3 px-3 md:px-0">
         <a
           class="text-skin-text"
           @click="
@@ -278,11 +278,11 @@ const truncateMarkdownBody = computed(() => {
             class="mb-3 break-words text-xl leading-8 sm:text-2xl"
           />
 
-          <div class="flex flex-col sm:flex-row sm:space-x-1 mb-4">
-            <div class="flex items-center mb-1 sm:mb-0">
+          <div class="mb-4 flex flex-col sm:flex-row sm:space-x-1">
+            <div class="mb-1 flex items-center sm:mb-0">
               <LabelProposalState :state="proposal.state" class="mr-2" />
               <router-link
-                class="text-skin-text group"
+                class="group text-skin-text"
                 :to="{
                   name: 'spaceProposals',
                   params: { key: space.id }
@@ -312,7 +312,7 @@ const truncateMarkdownBody = computed(() => {
               />
               <BaseDropdown
                 v-else
-                class="pl-3 !ml-auto"
+                class="!ml-auto pl-3"
                 @select="selectFromShareDropdown"
                 :items="sharingItems"
               >
@@ -324,7 +324,7 @@ const truncateMarkdownBody = computed(() => {
                     v-if="item.icon"
                     :name="item.icon"
                     size="21"
-                    class="align-middle mr-2 !leading-[0]"
+                    class="mr-2 align-middle !leading-[0]"
                   />
                   {{ item.text }}
                 </template>
@@ -348,11 +348,11 @@ const truncateMarkdownBody = computed(() => {
           <div v-if="proposal.body.length" class="relative">
             <div
               v-if="!showFullMarkdownBody && truncateMarkdownBody"
-              class="absolute w-full h-[80px] bottom-0 bg-gradient-to-t from-skin-bg"
+              class="absolute bottom-0 h-[80px] w-full bg-gradient-to-t from-skin-bg"
             />
             <div
               v-if="truncateMarkdownBody"
-              class="absolute w-full flex justify-center"
+              class="absolute flex w-full justify-center"
               :class="{
                 '-bottom-[64px]': showFullMarkdownBody,
                 '-bottom-[14px]': !showFullMarkdownBody
@@ -360,7 +360,7 @@ const truncateMarkdownBody = computed(() => {
             >
               <BaseButton
                 @click="showFullMarkdownBody = !showFullMarkdownBody"
-                class="!bg-skin-bg z-10"
+                class="z-10 !bg-skin-bg"
               >
                 {{
                   showFullMarkdownBody
@@ -422,14 +422,14 @@ const truncateMarkdownBody = computed(() => {
       </div>
     </template>
     <template #sidebar-right v-if="proposal">
-      <div class="space-y-4 mt-4 lg:mt-0">
+      <div class="mt-4 space-y-4 lg:mt-0">
         <BaseBlock :title="$t('information')">
           <div class="space-y-1">
             <div>
               <b>{{ $t('strategies') }}</b>
               <span
                 @click="modalStrategiesOpen = true"
-                class="float-right text-skin-link flex"
+                class="float-right flex text-skin-link"
               >
                 <span
                   v-for="(symbol, symbolIndex) of symbols.slice(0, 5)"
@@ -480,7 +480,7 @@ const truncateMarkdownBody = computed(() => {
                 v-tippy="{
                   content: formatRelativeTime(proposal.end)
                 }"
-                class="text-skin-link float-right"
+                class="float-right text-skin-link"
               />
             </div>
             <div>

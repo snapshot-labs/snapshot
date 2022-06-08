@@ -88,7 +88,7 @@ function isSelectable(year, month, day) {
         />
       </div>
     </div>
-    <div class="border-l border-t overflow-hidden">
+    <div class="overflow-hidden border-l border-t">
       <div
         class="day border-b border-r text-skin-link"
         v-for="dayOfWeek in daysOfWeek"
@@ -102,7 +102,7 @@ function isSelectable(year, month, day) {
       />
       <div v-for="day in days" :key="day">
         <a
-          class="day border-b border-r selectable"
+          class="day selectable border-b border-r"
           :class="{
             'bg-skin-header-bg': formatDate(year, month, day) === today,
             selected: input.includes(formatDate(year, month, day))

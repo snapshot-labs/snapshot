@@ -34,7 +34,7 @@ onMounted(() => loadNotifications());
   >
     <template v-slot:button>
       <ButtonSidebar
-        class="!h-[46px] !w-[46px] relative"
+        class="relative !h-[46px] !w-[46px]"
         :class="{ '!border-skin-link': dropdownOpen }"
       >
         <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
@@ -45,8 +45,8 @@ onMounted(() => loadNotifications());
       </ButtonSidebar>
     </template>
     <template v-slot:header>
-      <div class="px-3 my-2 min-w-[320px] md:min-w-[400px]">
-        <div class="flex justify-between items-center mb-3">
+      <div class="my-2 min-w-[320px] px-3 md:min-w-[400px]">
+        <div class="mb-3 flex items-center justify-between">
           <h4>{{ $t('notifications.header') }}</h4>
           <BaseDropdown
             :items="[
@@ -89,7 +89,7 @@ onMounted(() => loadNotifications());
         </div>
         <div
           v-else-if="!notificationsSortedByTime.length"
-          class="text-center pb-3 pt-4"
+          class="pb-3 pt-4 text-center"
         >
           <h4 class="text-skin-text">
             {{ $t('notifications.noNotifications') }}
@@ -104,13 +104,13 @@ onMounted(() => loadNotifications());
             <AvatarSpace :space="item.space" size="44" />
           </div>
           <div class="w-full">
-            <div class="leading-tight flex">
+            <div class="flex leading-tight">
               <div
-                class="text-skin-link max-w-[60px] md:max-w-[120px] truncate"
+                class="max-w-[60px] truncate text-skin-link md:max-w-[120px]"
               >
                 {{ item.space.name }}
               </div>
-              <div class="text-skin-text ml-1">
+              <div class="ml-1 text-skin-text">
                 <span v-if="item.event === NotificationEvents.ProposalStart">
                   {{ $t('notifications.proposalStarted') }}
                 </span>
@@ -124,13 +124,13 @@ onMounted(() => loadNotifications());
             >
               "{{ item.text }}"
             </div>
-            <div class="text-skin-text leading-normal">
+            <div class="leading-normal text-skin-text">
               <span>
                 {{ formatRelativeTime(item.time, longRelativeTimeFormatter) }}
               </span>
             </div>
           </div>
-          <div class="flex items-center w-[12px] ml-2">
+          <div class="ml-2 flex w-[12px] items-center">
             <BaseIndicator v-if="!item.seen" />
           </div>
         </div>

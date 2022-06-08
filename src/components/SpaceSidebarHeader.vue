@@ -36,16 +36,16 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-center h-[253px]">
+  <div class="h-[253px] text-center">
     <AvatarSpace
       :space="space"
       symbolIndex="space"
       size="80"
       class="mt-3 mb-2"
     />
-    <h3 class="mb-[2px] mx-3 flex justify-center items-center">
+    <h3 class="mx-3 mb-[2px] flex items-center justify-center">
       <div
-        class="truncate mr-1"
+        class="mr-1 truncate"
         v-tippy="{
           content: space.name.length > 16 ? space.name : null
         }"

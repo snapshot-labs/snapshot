@@ -24,11 +24,11 @@ async function handleDelegate() {
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.about.delegate') }}</h3>
       </div>
     </template>
-    <div class="p-4 space-y-3">
+    <div class="space-y-3 p-4">
       <BaseInput
         :modelValue="userAddress"
         :title="$t('profile.about.delegateTo')"

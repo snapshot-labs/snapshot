@@ -70,13 +70,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseContainer class="flex items-center mb-4">
+  <BaseContainer class="mb-4 flex items-center">
     <BaseButton
-      class="mr-auto pl-3 pr-0 w-full max-w-[420px] focus-within:!border-skin-link"
+      class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
     >
       <TheSearchBar />
     </BaseButton>
-    <div class="ml-3 hidden sm:flex text-right items-center whitespace-nowrap">
+    <div class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex">
       <div class="flex flex-col">
         {{ formatCompactNumber(items.length) }} {{ resultsStr }}
       </div>
@@ -84,7 +84,7 @@ onMounted(() => {
       <BaseLink
         v-if="buttonStr"
         link="https://discord.gg/snapshot"
-        class="hidden md:block ml-3"
+        class="ml-3 hidden md:block"
         hide-external-icon
       >
         <BaseButton>
@@ -97,7 +97,7 @@ onMounted(() => {
     <div class="overflow-hidden">
       <template v-if="route.name === 'strategies'">
         <LoadingRow block v-if="loadingStrategies" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
             :to="`/strategy/${item.id}`"
             v-for="item in items.slice(0, limit)"
@@ -109,7 +109,7 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'networks'">
         <LoadingRow block v-if="loadingNetworksSpacesCount" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
             :to="`/?network=${item.key}`"
             v-for="item in items.slice(0, limit)"
@@ -121,7 +121,7 @@ onMounted(() => {
       </template>
       <template v-if="route.name === 'plugins'">
         <LoadingRow block v-if="loadingPluginsSpacesCount" />
-        <div v-else class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div v-for="item in items.slice(0, limit)" :key="item.key">
             <BasePluginItem :plugin="item" />
           </div>

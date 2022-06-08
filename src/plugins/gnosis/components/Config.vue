@@ -74,7 +74,7 @@ const getChoices = () => {
     v-if="!preview"
     :disabled="!isValid"
     @click="preview = true"
-    class="w-full my-2"
+    class="my-2 w-full"
     primary
   >
     {{ $t('create.preview') }}
@@ -82,7 +82,7 @@ const getChoices = () => {
   <BaseButton
     v-if="preview"
     @click="preview = false"
-    class="w-full mb-2"
+    class="mb-2 w-full"
     primary
   >
     {{ $t('back') }}

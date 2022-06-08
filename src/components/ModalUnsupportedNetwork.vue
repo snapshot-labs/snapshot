@@ -56,12 +56,12 @@ const switchToDefaultNetwork = async () => {
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
       </div>
     </template>
 
-    <div class="space-y-4 m-4">
+    <div class="m-4 space-y-4">
       <BaseMessage v-if="defaultNetwork === '1'" level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
@@ -77,7 +77,7 @@ const switchToDefaultNetwork = async () => {
         }}
       </BaseMessage>
     </div>
-    <div class="space-y-4 m-4"></div>
+    <div class="m-4 space-y-4"></div>
     <div class="m-4 space-y-2" v-if="usingMetaMask">
       <BaseButton
         :loading="switchingChain"

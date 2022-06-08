@@ -62,12 +62,12 @@ watch(
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.settings.header') }}</h3>
       </div>
     </template>
 
-    <div class="p-4 space-y-2">
+    <div class="space-y-2 p-4">
       <div class="flex justify-center">
         <InputUploadAvatar
           :avatar="form.avatar"
@@ -83,9 +83,9 @@ watch(
               />
               <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
               <div
-                class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
+                class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
               >
-                <i-ho-pencil class="text-skin-bg text-[12px]" />
+                <i-ho-pencil class="text-[12px] text-skin-bg" />
               </div>
             </div>
           </template>

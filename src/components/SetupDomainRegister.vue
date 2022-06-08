@@ -31,7 +31,7 @@ const isValidDomain = computed(() => {
     >
       <template #after>
         <span
-          class="-mr-2 flex items-center cursor-help"
+          class="-mr-2 flex cursor-help items-center"
           target="_blank"
           v-tippy="{
             content: `${$t('setup.supportedEnsTLDs')}: ${validEnsTlds.join(
@@ -39,7 +39,7 @@ const isValidDomain = computed(() => {
             )}`
           }"
         >
-          <BaseIcon name="info" size="24" class="text-skin-text -mr-1" />
+          <BaseIcon name="info" size="24" class="-mr-1 text-skin-text" />
         </span>
       </template>
     </BaseInput>
@@ -48,7 +48,7 @@ const isValidDomain = computed(() => {
       :link="`https://app.ens.domains/name/${modelValue}/register`"
       hide-external-icon
     >
-      <BaseButton :disabled="!isValidDomain" class="w-full mt-2" primary>
+      <BaseButton :disabled="!isValidDomain" class="mt-2 w-full" primary>
         {{ $t('setup.registerEnsButton') }}
       </BaseButton>
     </BaseLink>

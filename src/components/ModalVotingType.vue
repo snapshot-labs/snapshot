@@ -33,11 +33,11 @@ function select(id) {
     <template v-slot:header>
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
-    <div class="mt-4 mx-0 md:mx-4 space-y-3 flex flex-col">
+    <div class="mx-0 mt-4 flex flex-col space-y-3 md:mx-4">
       <a v-if="allowAny" @click="select(undefined)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type hover:border-skin-text',
+            'voting-type relative transition-colors hover:border-skin-text',
             { '!border-skin-link': !selected }
           ]"
         >
@@ -53,7 +53,7 @@ function select(id) {
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
         <BaseBlock
           :class="[
-            'transition-colors relative voting-type hover:border-skin-text',
+            'voting-type relative transition-colors hover:border-skin-text',
             { '!border-skin-link': type === selected }
           ]"
         >

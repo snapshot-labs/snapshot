@@ -54,11 +54,11 @@ watch(selectedChoices.value, currentValue => {
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <BaseButton
-        class="mb-2 flex justify-between items-center w-full overflow-hidden"
+        class="mb-2 flex w-full items-center justify-between overflow-hidden"
         :class="selectedChoices[i + 1] > 0 && '!border-skin-link'"
       >
         <div
-          class="text-left pr-3 truncate"
+          class="truncate pr-3 text-left"
           v-tippy="{
             content: choice.length > 20 && isSmallScreen ? choice : null
           }"

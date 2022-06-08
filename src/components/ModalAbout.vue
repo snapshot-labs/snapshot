@@ -21,7 +21,7 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
     </template>
     <div class="m-4 space-y-1 text-skin-link">
       <div class="flex">
-        <span v-text="$t('version')" class="flex-auto text-skin-text mr-1" />
+        <span v-text="$t('version')" class="mr-1 flex-auto text-skin-text" />
         <BaseLink
           v-if="commitSha"
           :link="`https://github.com/${pkg.repository}/tree/${commitSha}`"
@@ -31,21 +31,21 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
         <span v-else v-text="pkg.version" />
       </div>
       <div class="flex">
-        <span v-text="$t('license')" class="flex-auto text-skin-text mr-1" />
+        <span v-text="$t('license')" class="mr-1 flex-auto text-skin-text" />
         {{ pkg.license }}
       </div>
       <div class="flex">
-        <span v-text="$t('network')" class="flex-auto text-skin-text mr-1" />
+        <span v-text="$t('network')" class="mr-1 flex-auto text-skin-text" />
         <BaseLink :link="web3.network.explorer" hide-external-icon>
           {{ web3.network.network }} ({{ web3.network.key }})
         </BaseLink>
       </div>
       <div class="flex">
-        <span v-text="$t('ipfsServer')" class="flex-auto text-skin-text mr-1" />
+        <span v-text="$t('ipfsServer')" class="mr-1 flex-auto text-skin-text" />
         {{ gateway }}
       </div>
       <div class="flex">
-        <span v-text="$t('hub')" class="flex-auto text-skin-text mr-1" />
+        <span v-text="$t('hub')" class="mr-1 flex-auto text-skin-text" />
         {{ hubUrl }}
       </div>
     </div>

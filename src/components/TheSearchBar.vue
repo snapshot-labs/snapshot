@@ -55,7 +55,7 @@ function redirectSearch(e) {
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
     />
-    <div class="border-l flex items-center" style="height: 44px">
+    <div class="flex items-center border-l" style="height: 44px">
       <BaseDropdown @select="redirectSearch" :items="searchOptions">
         <template v-slot:button>
           <span v-text="searchSelectedOption" class="ml-3" />

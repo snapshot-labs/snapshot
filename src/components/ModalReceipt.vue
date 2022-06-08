@@ -17,13 +17,13 @@ defineEmits(['close']);
     <div class="m-4 space-y-4">
       <BaseBlock slim class="p-4 text-skin-link">
         <div class="flex">
-          <span v-text="$t('author')" class="flex-auto text-skin-text mr-1" />
+          <span v-text="$t('author')" class="mr-1 flex-auto text-skin-text" />
           <BaseLink :link="getIpfsUrl(authorIpfsHash)" class="text-skin-link">
             #{{ authorIpfsHash.slice(0, 7) }}
           </BaseLink>
         </div>
         <div v-if="relayerIpfsHash" class="flex">
-          <span v-text="$t('relayer')" class="flex-auto text-skin-text mr-1" />
+          <span v-text="$t('relayer')" class="mr-1 flex-auto text-skin-text" />
           <BaseLink :link="getIpfsUrl(relayerIpfsHash)" class="text-skin-link">
             #{{ relayerIpfsHash.slice(0, 7) }}
           </BaseLink>

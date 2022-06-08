@@ -42,11 +42,11 @@ onMounted(() => {
       </BaseBlock>
     </template>
     <template #sidebar-right>
-      <BaseBlock class="text-skin-text mt-4">
+      <BaseBlock class="mt-4 text-skin-text">
         <BaseIcon
           name="gitbook"
           size="24"
-          class="text-skin-text pr-2 !align-middle"
+          class="pr-2 !align-middle text-skin-text"
         />
         <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span">
           <template v-slot:docs>

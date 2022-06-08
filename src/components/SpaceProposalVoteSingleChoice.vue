@@ -25,7 +25,7 @@ function selectChoice(i) {
       v-for="(choice, i) in proposal.choices"
       :key="i"
       @click="selectChoice(i + 1)"
-      class="block w-full mb-2"
+      class="mb-2 block w-full"
       :class="selectedChoice === i + 1 && '!border-skin-link'"
     >
       {{ shorten(choice, 32) }}

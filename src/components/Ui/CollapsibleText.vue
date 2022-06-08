@@ -42,7 +42,7 @@ export default {
     <template v-slot:icons>
       <div
         v-if="!hideRemove"
-        class="flex items-center cursor-pointer mr-2"
+        class="mr-2 flex cursor-pointer items-center"
         @click="copy"
       >
         <BaseIcon style="color: #b2b5b2" name="copy" size="20" />
@@ -50,7 +50,7 @@ export default {
     </template>
     <div
       :class="{ pre }"
-      class="bg-gray-200 text-black border-gray-400 border"
+      class="border border-gray-400 bg-gray-200 text-black"
       style="
         border-radius: 8px;
         margin: 0 12px 12px;

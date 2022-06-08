@@ -70,7 +70,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             v-for="(ens, i) in domainsWithoutExistingSpace"
             :key="i"
             @click="nextStep(ens.name)"
-            class="w-full flex items-center justify-between"
+            class="flex w-full items-center justify-between"
             :primary="domainsWithoutExistingSpace.length === 1"
           >
             {{ ens.name }}

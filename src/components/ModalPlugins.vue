@@ -59,11 +59,11 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 md:mx-4 min-h-[300px]">
+    <div class="my-4 mx-0 min-h-[300px] md:mx-4">
       <BaseBlock
         slim
         v-if="selectedPlugin?.key"
-        class="p-4 mb-4 rounded-md text-skin-link"
+        class="mb-4 rounded-md p-4 text-skin-link"
       >
         <h4 v-text="selectedPlugin.name" class="mb-3 text-center" />
         <TextareaJson

@@ -15,12 +15,12 @@ defineEmits(['close']);
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('spaces') }}</h3>
       </div>
     </template>
 
-    <div class="py-4 md:px-4 space-y-3">
+    <div class="space-y-3 py-4 md:px-4">
       <div v-for="space in followingSpaces" :key="space">
         <ModalSpacesListItem v-if="spaces[space]" :space="spaces[space]" />
       </div>

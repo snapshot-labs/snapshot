@@ -105,7 +105,7 @@ onMounted(async () => {
         </template>
       </UiInput>
       <div class="flex">
-        <div class="overflow-hidden w-full">
+        <div class="w-full overflow-hidden">
           <draggable
             v-model="form.choices"
             v-bind="{ animation: 200 }"
@@ -126,7 +126,7 @@ onMounted(async () => {
               >
                 <template v-slot:label>
                   <div
-                    class="flex items-center cursor-grab active:cursor-grabbing drag-handle"
+                    class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
                     :class="{
                       'cursor-not-allowed active:cursor-not-allowed':
                         disableChoiceEdit
@@ -138,7 +138,7 @@ onMounted(async () => {
                 </template>
                 <template v-slot:info>
                   <span
-                    class="text-skin-text text-xs hidden group-focus-within:block"
+                    class="hidden text-xs text-skin-text group-focus-within:block"
                   >
                     {{ `${element.text.length}/32` }}
                   </span>
@@ -147,11 +147,11 @@ onMounted(async () => {
             </template>
           </draggable>
         </div>
-        <div v-if="!disableChoiceEdit" class="w-[48px] flex items-end ml-2">
+        <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
           <ButtonSidebar
             v-if="!disableChoiceEdit"
             @click="addChoices(1)"
-            class="!w-[42px] !h-[42px]"
+            class="!h-[42px] !w-[42px]"
           >
             <BaseIcon size="20" name="plus" class="text-skin-link" />
           </ButtonSidebar>
