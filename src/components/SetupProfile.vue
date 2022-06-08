@@ -83,8 +83,10 @@ async function checkIfSpaceExists() {
 function formatForm(form) {
   if (!form) return;
   const formattedForm = clone(form);
+  const notRequiredFields = ['avatar', 'about', 'categories'];
   Object.entries(formattedForm).forEach(([key, value]) => {
-    if (value === null || value === '') delete formattedForm[key];
+    if (notRequiredFields.includes(key) && (value === null || value === ''))
+      delete formattedForm[key];
   });
   return formattedForm;
 }
