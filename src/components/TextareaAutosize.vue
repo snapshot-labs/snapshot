@@ -1,13 +1,5 @@
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  nextTick,
-  toRefs,
-  watch,
-  onMounted,
-  withDefaults
-} from 'vue';
+import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
 
 const props = withDefaults(
   defineProps<{

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue';
-
 interface SocialProps {
   social: {
     icon: string;
