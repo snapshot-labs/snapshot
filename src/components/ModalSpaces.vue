@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue';
 import { useSpaces } from '@/composables/useSpaces';
 
 const { spaces } = useSpaces();

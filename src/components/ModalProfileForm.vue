@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, defineEmits } from 'vue';
+import { watch, ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
