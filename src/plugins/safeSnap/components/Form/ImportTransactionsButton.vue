@@ -192,7 +192,7 @@ export default {
             id="tx_json"
             v-model="json"
             placeholder="You can also paste in JSON here."
-            class="tx-textarea"
+            class="tx-textarea outline-none"
           ></textarea>
         </div>
         <div class="mt-3 flex flex-col justify-center items-center">
