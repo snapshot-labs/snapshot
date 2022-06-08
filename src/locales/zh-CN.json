@@ -179,7 +179,7 @@
     "schedule": "计划提案",
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
-    "typeEnforced": "{type} is enforced by the space",
+    "typeEnforced": "{type}由空间强制执行",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
