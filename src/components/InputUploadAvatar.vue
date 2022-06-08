@@ -48,7 +48,7 @@ function handleSelect(e) {
       ]"
       @select="handleSelect"
     >
-      <template v-slot:button>
+      <template #button>
         <slot
           name="avatar"
           :uploading="uploading"
@@ -61,7 +61,7 @@ function handleSelect(e) {
     ref="fileInput"
     type="file"
     accept="image/jpg, image/jpeg, image/png"
-    @change="onFileChange"
     style="display: none"
+    @change="onFileChange"
   />
 </template>

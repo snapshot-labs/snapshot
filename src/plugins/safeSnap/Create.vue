@@ -20,8 +20,8 @@ const update = form => {
     :config="space.plugins.safeSnap"
     :network="space.network"
     :preview="false"
+    :model-value="modelValue?.safeSnap || {}"
+    :space-id="space.id"
     @update:modelValue="update"
-    :modelValue="modelValue?.safeSnap || {}"
-    :spaceId="space.id"
   />
 </template>

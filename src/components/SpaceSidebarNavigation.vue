@@ -26,13 +26,13 @@ const isAdmin = computed(() => {
 
 <template>
   <div>
-    <router-link :to="{ name: 'spaceProposals' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link :to="{ name: 'spaceCreate' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceCreate' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.new') }}
       </BaseSidebarNavigationItem>
     </router-link>
@@ -41,24 +41,24 @@ const isAdmin = computed(() => {
         space &&
         space.strategies?.find(strategy => strategy.name === 'delegation')
       "
-      :to="{ name: 'delegate', params: { key: space.id } }"
       v-slot="{ isExactActive }"
+      :to="{ name: 'delegate', params: { key: space.id } }"
     >
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('delegate.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link :to="{ name: 'spaceAbout' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceAbout' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('about') }}
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link
       v-if="isAdmin"
-      :to="{ name: 'spaceSettings' }"
       v-slot="{ isExactActive }"
+      :to="{ name: 'spaceSettings' }"
     >
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>
     </router-link>

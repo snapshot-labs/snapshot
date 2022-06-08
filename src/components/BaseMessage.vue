@@ -7,14 +7,14 @@ defineProps<{
 <template>
   <BaseBlock
     :class="[
-      'text-skin-text border rounded-xl',
+      'rounded-xl border text-skin-text',
       { '!border-skin-text ': level === 'warning' }
     ]"
   >
     <BaseIcon
       :name="level"
       :size="level === 'info' ? '20' : '16'"
-      class="mr-1 float-left"
+      class="float-left mr-1"
       :class="{ 'text-skin-link ': level === 'warning' }"
     />
     <div :class="[' leading-5', { '-mt-[2px]': level === 'warning' }]">

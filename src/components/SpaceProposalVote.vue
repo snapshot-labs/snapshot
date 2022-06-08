@@ -57,9 +57,9 @@ function emitChoice(c) {
         (selectedChoices < proposal.choices.length &&
           proposal.type === 'ranked-choice')
       "
-      @click="$emit('clickVote')"
       class="block w-full"
       primary
+      @click="$emit('clickVote')"
     >
       {{ $t('proposal.vote') }}
     </BaseButton>

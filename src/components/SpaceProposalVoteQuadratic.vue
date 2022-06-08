@@ -54,14 +54,14 @@ watch(selectedChoices.value, currentValue => {
   <div class="mb-3">
     <div v-for="(choice, i) in proposal.choices" :key="i">
       <BaseButton
-        class="mb-2 flex justify-between items-center w-full overflow-hidden"
+        class="mb-2 flex w-full items-center justify-between overflow-hidden"
         :class="selectedChoices[i + 1] > 0 && '!border-skin-link'"
       >
         <div
-          class="text-left pr-3 truncate"
           v-tippy="{
             content: choice.length > 20 && isSmallScreen ? choice : null
           }"
+          class="truncate pr-3 text-left"
         >
           {{ choice }}
         </div>
@@ -75,12 +75,12 @@ watch(selectedChoices.value, currentValue => {
           </button>
           <input
             v-if="!isSmallScreen"
+            v-model.number="selectedChoices[i + 1]"
             class="input text-center"
             :class="{ 'btn-choice': isSmallScreen }"
             style="width: 40px; height: 44px"
             placeholder="0"
             type="number"
-            v-model.number="selectedChoices[i + 1]"
           />
           <div v-if="isSmallScreen" style="min-width: 56px">
             {{ percentage(i) }}%

@@ -16,7 +16,7 @@ const createdSpaces = useStorage(
 <template>
   <BaseBlock
     v-if="createdSpaces?.[spaceId]?.showMessage"
-    class="absolute z-10 left-0 !bg-skin-bg"
+    class="absolute left-0 z-10 !bg-skin-bg"
   >
     <div>
       <div>
@@ -25,7 +25,7 @@ const createdSpaces = useStorage(
           <div class="text-skin-text">
             <BaseIcon name="info" size="24" class="float-left mr-1" />
             <i18n-t keypath="newSpaceNotice.mainText" tag="p">
-              <template v-slot:settings>
+              <template #settings>
                 <BaseLink
                   :link="{ name: 'spaceSettings', params: { key: spaceId } }"
                 >
@@ -40,14 +40,14 @@ const createdSpaces = useStorage(
             tag="p"
             class="mt-2 text-skin-text"
           >
-            <template v-slot:documentation>
+            <template #documentation>
               <BaseLink
                 link="https://docs.snapshot.org/strategies/what-is-a-strategy"
               >
                 documentation</BaseLink
               >
             </template>
-            <template v-slot:discord>
+            <template #discord>
               <BaseLink link="https://discord.gg/snapshot"> Discord</BaseLink>
             </template>
           </i18n-t>

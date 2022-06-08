@@ -62,7 +62,7 @@ const isVisible = computed(() => {
 
 <template>
   <div v-if="isVisible">
-    <div class="text-skin-link mb-1 flex justify-between">
+    <div class="mb-1 flex justify-between text-skin-link">
       <div class="flex overflow-hidden">
         <span
           ref="choiceString"
@@ -75,12 +75,12 @@ const isVisible = computed(() => {
       </div>
       <div class="flex justify-end space-x-2">
         <span
-          class="whitespace-nowrap"
           v-tippy="{
             content: results.resultsByStrategyScore[choice.i]
               .map((score, index) => `${formatNumber(score)} ${titles[index]}`)
               .join(' + ')
           }"
+          class="whitespace-nowrap"
         >
           {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
           {{ shorten(proposal.symbol || space.symbol, 'symbol') }}

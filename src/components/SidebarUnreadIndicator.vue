@@ -6,11 +6,11 @@ defineProps<{ space: string; hasUnseen: boolean }>();
   <div
     :class="[
       $route.params.key === space
-        ? 'bg-skin-link !h-[20px]'
+        ? '!h-[20px] bg-skin-link'
         : hasUnseen
         ? 'bg-skin-text group-hover:h-[10px]'
         : 'group-hover:h-[10px] '
     ]"
-    class="w-[8px] h-[8px] transition-all duration-300 absolute left-[-4px] rounded-full group-hover:bg-skin-link"
+    class="absolute left-[-4px] h-[8px] w-[8px] rounded-full transition-all duration-300 group-hover:bg-skin-link"
   />
 </template>

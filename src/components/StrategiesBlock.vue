@@ -55,20 +55,20 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
 <template>
   <BaseBlock :title="$t('spaceStrategies.title')">
-    <div class="sm:flex sm:space-x-4 w-full mb-4 sm:mb-2">
+    <div class="mb-4 w-full sm:mb-2 sm:flex sm:space-x-4">
       <AutocompleteNetwork
         :input="network"
         @update:input="value => emit('updateNetwork', value)"
       />
       <BaseInput
         :model-value="symbol"
-        @update:model-value="value => emit('updateSymbol', value)"
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
         :error="getError('symbol')"
+        @update:model-value="value => emit('updateSymbol', value)"
       />
     </div>
-    <div class="grid gap-3 mb-4">
+    <div class="mb-4 grid gap-3">
       <StrategiesBlockItem
         :strategies-form="strategiesClone"
         @edit-strategy="i => handleEditStrategy(i)"
@@ -78,7 +78,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
     <StrategiesBlockWarning :error="getError('strategies')" />
 
-    <BaseButton @click="handleAddStrategy" class="block w-full">
+    <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('spaceStrategies.addStrategy') }}
     </BaseButton>
   </BaseBlock>
@@ -87,7 +87,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
-      :defaultNetwork="network"
+      :default-network="network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitStrategy"
     />

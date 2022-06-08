@@ -35,7 +35,7 @@ watchEffect(() => {
 <template>
   <div
     v-if="env === 'develop'"
-    class="p-3 text-center bg-primary"
+    class="bg-primary p-3 text-center"
     style="color: white; font-size: 20px"
   >
     {{ $t('demoSite') }}
@@ -43,11 +43,11 @@ watchEffect(() => {
   <nav id="topnav">
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
-        <div class="flex-auto flex items-center ml-3">
+        <div class="ml-3 flex flex-auto items-center">
           <ButtonSidebar
             v-if="!domain"
+            class="-ml-3 border-0 sm:hidden"
             @click="showSidebar = !showSidebar"
-            class="border-0 sm:hidden -ml-3"
           >
             <BaseIcon v-if="showSidebar" name="close" size="20" />
             <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
@@ -75,17 +75,17 @@ watchEffect(() => {
                 <AvatarUser
                   :address="web3Account"
                   size="18"
-                  class="-mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2 -ml-1"
+                  class="-mr-1 -ml-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
                 />
                 <span
                   v-if="profile?.name || profile?.ens"
-                  v-text="profile.name || profile.ens"
                   class="hidden sm:block"
+                  v-text="profile.name || profile.ens"
                 />
                 <span
                   v-else
-                  v-text="shorten(web3Account)"
                   class="hidden sm:block"
+                  v-text="shorten(web3Account)"
                 />
               </BaseButton>
             </DropdownAccount>
@@ -93,24 +93,24 @@ watchEffect(() => {
 
           <BaseButton
             v-if="!auth.isAuthenticated.value"
-            @click="modalAccountOpen = true"
             :loading="loading || web3.authLoading"
             :aria-label="$t('connectWallet')"
+            @click="modalAccountOpen = true"
           >
             <span class="hidden sm:block" v-text="$t('connectWallet')" />
             <i-ho-login
-              class="sm:hidden -ml-2 -mr-[11px] block align-text-bottom"
+              class="-ml-2 -mr-[11px] block align-text-bottom sm:hidden"
             />
           </BaseButton>
           <NavbarNotifications v-if="web3Account && !domain" />
-          <ButtonLanguage small v-if="domain" />
+          <ButtonLanguage v-if="domain" small />
         </div>
       </div>
     </BaseContainer>
   </nav>
   <div
-    class="flex justify-center bg-primary text-white text-center py-2"
     v-if="pendingCount > 0"
+    class="flex justify-center bg-primary py-2 text-center text-white"
   >
     <LoadingSpinner fill-white class="mr-2" />
     {{ $tc('delegate.pendingTransaction', pendingCount) }}
@@ -118,9 +118,9 @@ watchEffect(() => {
   <teleport to="#modal">
     <ModalAccount
       :open="modalAccountOpen"
+      :profile="profile"
       @close="modalAccountOpen = false"
       @login="handleLogin"
-      :profile="profile"
     />
   </teleport>
 </template>

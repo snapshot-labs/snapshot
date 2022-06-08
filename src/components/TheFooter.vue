@@ -33,14 +33,14 @@ const socials = [
 
 <template>
   <BaseContainer
-    class="flex flex-col md:flex-row items-center py-4 space-y-3 md:space-y-0 md:space-x-3"
+    class="flex flex-col items-center space-y-3 py-4 md:flex-row md:space-y-0 md:space-x-3"
   >
     <div class="space-x-3 md:ml-auto">
       <span v-for="social in socials" :key="social">
         <BaseLink :link="social.link" hide-external-icon>
           <BaseIcon
             size="30"
-            class="opacity-40 hover:opacity-80 text-skin-text transition-opacity"
+            class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
             :name="social.icon"
           />
         </BaseLink>
@@ -50,7 +50,7 @@ const socials = [
       <ButtonSidebar @click="modalAboutOpen = true">
         <span class="text-skin-link">?</span>
       </ButtonSidebar>
-      <ButtonSidebar @click="toggleUserTheme" :aria-label="$t('toggleSkin')">
+      <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
         <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
       </ButtonSidebar>
 
@@ -58,7 +58,7 @@ const socials = [
     </div>
     <div @click="modalNewsletterOpen = true">Newsletter</div>
     <div
-      class="pt-3 md:pt-0 md:pr-2 md:order-first whitespace-nowrap opacity-40"
+      class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
     >
       © {{ yearNow }} Snapshot Labs.
     </div>

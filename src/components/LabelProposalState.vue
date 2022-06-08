@@ -14,12 +14,12 @@ const stateClass = computed(() => {
 </script>
 
 <template>
-  <span v-if="slim" :class="stateClass" class="State text-white slim" />
+  <span v-if="slim" :class="stateClass" class="State slim text-white" />
   <span
     v-else
     :class="stateClass"
-    v-text="$t(`proposals.states.${state}`)"
     class="State text-white"
+    v-text="$t(`proposals.states.${state}`)"
   />
 </template>
 

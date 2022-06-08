@@ -61,6 +61,26 @@ export default {
       parameters
     };
   },
+  watch: {
+    to() {
+      this.updateTransaction();
+    },
+    abi() {
+      this.updateTransaction();
+    },
+    value() {
+      this.updateTransaction();
+    },
+    selectedMethod() {
+      this.updateTransaction();
+    },
+    parameters() {
+      this.updateTransaction();
+    },
+    nonce() {
+      this.updateTransaction();
+    }
+  },
   mounted() {
     if (this.modelValue) {
       const { to = '', abi = '', value = '0', data } = this.modelValue;
@@ -82,26 +102,6 @@ export default {
       } else {
         setTimeout(() => this.updateTransaction(), 1000);
       }
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    abi() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    selectedMethod() {
-      this.updateTransaction();
-    },
-    parameters() {
-      this.updateTransaction();
-    },
-    nonce() {
-      this.updateTransaction();
     }
   },
   methods: {
@@ -184,7 +184,7 @@ export default {
     <SafeSnapInputAddress
       v-model="to"
       :disabled="config.preview"
-      :inputProps="{
+      :input-props="{
         required: true
       }"
       :label="$t('safeSnap.to')"
@@ -194,19 +194,19 @@ export default {
     <UiInput
       :disabled="config.preview"
       :error="!validValue && $t('safeSnap.invalidValue')"
-      :modelValue="value"
+      :model-value="value"
       @update:modelValue="handleValueChange($event)"
     >
-      <template v-slot:label>{{ $t('safeSnap.value') }}</template>
+      <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
 
     <UiInput
       :disabled="config.preview"
       :error="!validAbi && $t('safeSnap.invalidAbi')"
-      :modelValue="abi"
+      :model-value="abi"
       @update:modelValue="handleABIChanged($event)"
     >
-      <template v-slot:label>ABI</template>
+      <template #label>ABI</template>
     </UiInput>
 
     <div v-if="methods.length">
@@ -215,7 +215,7 @@ export default {
         :disabled="config.preview"
         @change="handleMethodChanged()"
       >
-        <template v-slot:label>function</template>
+        <template #label>function</template>
         <option v-for="(method, i) in methods" :key="i" :value="i">
           {{ method.name }}()
         </option>
@@ -228,7 +228,7 @@ export default {
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
           :disabled="config.preview"
-          :modelValue="parameters[index]"
+          :model-value="parameters[index]"
           :parameter="input"
           @update:modelValue="handleParameterChanged(index, $event)"
         />

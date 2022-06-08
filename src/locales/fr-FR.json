@@ -135,7 +135,7 @@
   "changeWallet": "Changer de wallet",
   "newSpaceNotice": {
     "header": "Votre espace est live !",
-    "mainText": "Par défaut, chaque votant a un voting power de un. Vous pouvez changer comment le voting power est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Apprenez-en plus dans la {documentation} ou joignez-vous au {discord} Snapshot pour obtenir de l’aide.",
     "gotIt": "Compris !"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "About",
-      "placeholder": "Tell us about your space"
+      "placeholder": "What is your organisation about?"
     },
     "categories": {
       "label": "Categorie(s)",

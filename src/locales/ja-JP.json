@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
-    "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "より詳細については{documentation} をご覧ください。またはSnapshotの {discord} に参加してください。",
     "gotIt": "了解"
   },
@@ -332,7 +332,7 @@
     },
     "about": {
       "label": "About",
-      "placeholder": "Tell us about your space"
+      "placeholder": "What is your organisation about?"
     },
     "categories": {
       "label": "Categorie(s)",

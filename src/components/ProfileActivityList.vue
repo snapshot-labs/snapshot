@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div>
-    <span class="text-skin-link text-xs px-4 md:px-0">{{
+    <span class="px-4 text-xs text-skin-link md:px-0">{{
       title.toUpperCase()
     }}</span>
     <BaseBlock slim class="my-1">

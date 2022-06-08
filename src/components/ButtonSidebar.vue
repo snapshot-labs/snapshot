@@ -1,6 +1,6 @@
 <template>
   <button
-    class="border w-[44px] h-[44px] rounded-full flex justify-center items-center cursor-pointer hover:border-skin-text select-none"
+    class="flex h-[44px] w-[44px] cursor-pointer select-none items-center justify-center rounded-full border hover:border-skin-text"
   >
     <slot />
   </button>

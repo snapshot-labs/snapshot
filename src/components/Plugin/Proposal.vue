@@ -20,9 +20,9 @@ const components = getPluginComponents(
 
 <template>
   <component
+    :is="component"
     v-for="(component, key) in components"
     :key="key"
-    :is="component"
     v-bind="props"
   />
 </template>

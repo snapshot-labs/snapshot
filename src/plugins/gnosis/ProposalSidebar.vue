@@ -13,7 +13,7 @@ defineProps({ proposal: Object });
     :title="pluginIndex.gnosis.name"
   >
     <GnosisCustomBlock
-      :proposalConfig="proposal.plugins.gnosis"
+      :proposal-config="proposal.plugins.gnosis"
       :choices="proposal.choices"
     />
   </BaseBlock>
