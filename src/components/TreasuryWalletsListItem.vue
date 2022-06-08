@@ -46,15 +46,15 @@ onMounted(() => loadFilteredTokenBalances(props.wallet.address));
         <div>
           <div
             data-testid="wallet-name"
-            class="text-md text-skin-heading font-semibold"
+            class="text-md font-semibold text-skin-heading"
           >
             {{ wallet.name }}
           </div>
-          <div class="flex items-center text-sm text-skin-text space-x-[6px]">
+          <div class="flex items-center space-x-[6px] text-sm text-skin-text">
             <span v-if="wallet.ensAddress" data-testid="wallet-ens-address">
               {{ wallet.ensAddress }}
             </span>
-            <div class="h-1 w-1 bg-skin-text rounded-full" />
+            <div class="h-1 w-1 rounded-full bg-skin-text" />
             <BaseLink
               :link="explorerUrl(wallet.network, wallet.address)"
               class="!text-skin-text hover:!text-skin-link"
@@ -67,7 +67,7 @@ onMounted(() => loadFilteredTokenBalances(props.wallet.address));
       </div>
       <div
         v-if="loadingBalances"
-        class="space-y-[12px] flex flex-col items-end"
+        class="flex flex-col items-end space-y-[12px]"
       >
         <div class="lazy-loading h-3 w-[100px] rounded-md" />
         <div class="lazy-loading h-3 w-[120px] rounded-md" />
