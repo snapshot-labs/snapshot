@@ -209,7 +209,7 @@ async function handleSubmit() {
       </div>
     </BaseBlock>
 
-    <StrategiesBlock
+    <BlockStrategies
       :form="form"
       :get-error="getError"
       @update-strategies="val => (form.strategies = val)"
