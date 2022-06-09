@@ -58,7 +58,7 @@ const spaceValidation = computed(() => {
   return validateSchema(schemas.space, formattedForm) ?? [];
 });
 
-function getError(field) {
+function getErrorMessage(field) {
   return validationErrorMessage(field, spaceValidation.value);
 }
 
@@ -160,7 +160,7 @@ async function handleSubmit() {
             <BaseInput
               v-model="form.name"
               :title="$t(`spaceProfile.name.label`)"
-              :error="getError('name')"
+              :error="getErrorMessage('name')"
               :max-length="schemas.space.properties.name.maxLength"
               :placeholder="$t('spaceProfile.name.placeholder')"
               focus-on-mount
@@ -209,9 +209,16 @@ async function handleSubmit() {
       </div>
     </BaseBlock>
 
+    <BlockLinks
+      v-model:twitter="form.twitter"
+      v-model:github="form.github"
+      v-model:website="form.website"
+      :get-error-message="getErrorMessage"
+    />
+
     <BlockStrategies
       :form="form"
-      :get-error="getError"
+      :get-error-message="getErrorMessage"
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"
       @update-symbol="val => (form.symbol = val)"

@@ -443,7 +443,7 @@ async function handleSetRecord() {
 
           <BlockStrategies
             :form="form"
-            :get-error="getErrorMessage"
+            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"

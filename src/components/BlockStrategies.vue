@@ -5,7 +5,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
-  getError: (field: string) => string;
+  getErrorMessage: (field: string) => string;
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
@@ -68,7 +68,7 @@ watch(
         :model-value="form.symbol"
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
-        :error="getError('symbol')"
+        :error="getErrorMessage('symbol')"
         @update:model-value="value => emit('updateSymbol', value)"
       />
     </div>
@@ -80,7 +80,7 @@ watch(
       />
     </div>
 
-    <StrategiesBlockWarning :error="getError('strategies')" />
+    <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('spaceStrategies.addStrategy') }}
