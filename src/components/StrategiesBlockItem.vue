@@ -13,7 +13,7 @@ const emit = defineEmits(['removeStrategy', 'editStrategy']);
     v-for="(strategy, i) in strategiesForm"
     :key="i"
     class="flex h-full truncate"
-    @click.stop="emit('editStrategy', i)"
+    @click="emit('editStrategy', i)"
   >
     <button
       class="flex w-full items-center justify-between rounded-md border p-4"

@@ -450,9 +450,7 @@ async function handleSetRecord() {
           </BaseBlock>
 
           <StrategiesBlock
-            :network="form.network"
-            :symbol="form.symbol"
-            :strategies="form.strategies"
+            :form="form"
             :get-error="inputError"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
