@@ -4,15 +4,13 @@ import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
-  strategies: SpaceStrategy[];
-  network: string;
-  symbol: string;
+  form: { network: string; symbol: string; strategies: SpaceStrategy[] };
   getError: (field: string) => string;
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
 
-const strategiesClone = ref<SpaceStrategy[]>(clone(props.strategies));
+const strategiesClone = ref<SpaceStrategy[]>(clone(props.form.strategies));
 
 const strategyObj = {
   name: '',
@@ -55,13 +53,13 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
 
 <template>
   <BaseBlock :title="$t('spaceStrategies.title')">
-    <div class="mb-4 w-full sm:mb-2 sm:flex sm:space-x-4">
-      <AutocompleteNetwork
-        :input="network"
-        @update:input="value => emit('updateNetwork', value)"
+    <div class="mb-4 w-full space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
+      <ComboboxNetwork
+        :network="form.network"
+        @select="value => emit('updateNetwork', value)"
       />
       <BaseInput
-        :model-value="symbol"
+        :model-value="form.symbol"
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
         :error="getError('symbol')"
@@ -87,7 +85,7 @@ watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
     <ModalStrategy
       :open="modalStrategyOpen"
       :strategy="currentStrategy"
-      :default-network="network"
+      :default-network="form.network"
       @close="modalStrategyOpen = false"
       @add="handleSubmitStrategy"
     />
