@@ -48,7 +48,13 @@ function handleSubmitStrategy(strategy) {
   }
 }
 
-watch(strategiesClone, () => emit('updateStrategies', strategiesClone.value));
+watch(
+  strategiesClone,
+  () => {
+    emit('updateStrategies', strategiesClone.value);
+  },
+  { deep: true }
+);
 </script>
 
 <template>
