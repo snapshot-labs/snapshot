@@ -40,6 +40,7 @@ watch(
       <ComboboxButton class="w-full">
         <ComboboxInput
           class="s-input w-full py-2 pl-3 !pr-[30px] focus:outline-none"
+          spellcheck="false"
           :display-value="(item: any) => item.name"
           @change="emit('search', $event.target.value)"
         />
