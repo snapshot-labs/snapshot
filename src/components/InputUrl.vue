@@ -3,6 +3,7 @@ const props = defineProps<{
   modelValue?: string;
   placeholder?: string;
   title?: string;
+  error?: string;
 }>();
 
 function trimUrlProposal(url: string) {
@@ -23,6 +24,7 @@ function addUrlProtocol(url: string) {
     <BaseInput
       v-bind="props"
       :model-value="trimUrlProposal(modelValue as string)"
+      :error="error"
       class="!pl-[66px]"
       @update:model-value="
         input => $emit('update:modelValue', addUrlProtocol(input))

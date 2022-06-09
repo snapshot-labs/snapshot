@@ -163,7 +163,7 @@ function formatSpace(spaceRaw) {
   return space;
 }
 
-function inputError(field) {
+function getErrorMessage(field) {
   if (
     !isValid.value &&
     !clientLoading.value &&
@@ -309,14 +309,14 @@ async function handleSetRecord() {
             <div class="mb-2 space-y-2">
               <UiInput
                 v-model="form.name"
-                :error="inputError('name')"
+                :error="getErrorMessage('name')"
                 @blur="visitedFields.push('name')"
               >
                 <template #label>{{ $t(`settings.name`) }}*</template>
               </UiInput>
               <UiInput
                 v-model="form.about"
-                :error="inputError('about')"
+                :error="getErrorMessage('about')"
                 @blur="visitedFields.push('about')"
               >
                 <template #label> {{ $t(`settings.about`) }} </template>
@@ -324,7 +324,7 @@ async function handleSetRecord() {
               <UiInput
                 v-model="form.avatar"
                 placeholder="e.g. https://example.com/space.png"
-                :error="inputError('avatar')"
+                :error="getErrorMessage('avatar')"
                 @blur="visitedFields.push('avatar')"
               >
                 <template #label>
@@ -350,40 +350,11 @@ async function handleSetRecord() {
                   </span>
                 </template>
               </UiInput>
-              <UiInput
-                v-model="form.twitter"
-                placeholder="e.g. elonmusk"
-                :error="inputError('twitter')"
-                @blur="visitedFields.push('twitter')"
-              >
-                <template #label>
-                  <BaseIcon name="twitter" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.github"
-                placeholder="e.g. vbuterin"
-                :error="inputError('github')"
-                @blur="visitedFields.push('github')"
-              >
-                <template #label>
-                  <BaseIcon name="github" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.website"
-                placeholder="e.g. https://example.com"
-                :error="inputError('website')"
-                @blur="visitedFields.push('website')"
-              >
-                <template #label>
-                  <BaseIcon name="earth" />
-                </template>
-              </UiInput>
+
               <UiInput
                 v-model="form.terms"
                 placeholder="e.g. https://example.com/terms"
-                :error="inputError('terms')"
+                :error="getErrorMessage('terms')"
                 @blur="visitedFields.push('terms')"
               >
                 <template #label> {{ $t(`settings.terms`) }} </template>
@@ -394,11 +365,19 @@ async function handleSetRecord() {
               </div>
             </div>
           </BaseBlock>
+
+          <BlockLinks
+            v-model:twitter="form.twitter"
+            v-model:github="form.github"
+            v-model:website="form.website"
+            :get-error-message="getErrorMessage"
+          />
+
           <BaseBlock :title="$t('settings.customDomain')">
             <UiInput
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
-              :error="inputError('domain')"
+              :error="getErrorMessage('domain')"
               class="mb-2"
               @blur="visitedFields.push('domain')"
             >
@@ -415,7 +394,10 @@ async function handleSetRecord() {
                 </BaseLink>
               </template>
             </UiInput>
-            <UiInput :error="inputError('skin')" @click="modalSkinsOpen = true">
+            <UiInput
+              :error="getErrorMessage('skin')"
+              @click="modalSkinsOpen = true"
+            >
               <template #selected>
                 {{ form.skin ? form.skin : $t('defaultSkin') }}
               </template>
@@ -425,9 +407,14 @@ async function handleSetRecord() {
             </UiInput>
           </BaseBlock>
           <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
-            <BaseBlock v-if="inputError('admins')" class="mb-2 !border-red">
+            <BaseBlock
+              v-if="getErrorMessage('admins')"
+              class="mb-2 !border-red"
+            >
               <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
+              <span class="!text-red">
+                {{ getErrorMessage('admins') }}&nbsp;</span
+              >
             </BaseBlock>
             <TextareaArray
               v-model="form.admins"
@@ -437,9 +424,14 @@ async function handleSetRecord() {
             />
           </BaseBlock>
           <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock v-if="inputError('members')" class="mb-2 !border-red">
+            <BaseBlock
+              v-if="getErrorMessage('members')"
+              class="mb-2 !border-red"
+            >
               <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+              <span class="!text-red">
+                {{ getErrorMessage('members') }}&nbsp;</span
+              >
             </BaseBlock>
             <TextareaArray
               v-model="form.members"
@@ -451,7 +443,7 @@ async function handleSetRecord() {
 
           <BlockStrategies
             :form="form"
-            :get-error="inputError"
+            :get-error="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
@@ -460,7 +452,7 @@ async function handleSetRecord() {
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="space-y-2">
               <UiInput
-                :error="inputError('settings.validation')"
+                :error="getErrorMessage('settings.validation')"
                 @click="modalValidationOpen = true"
               >
                 <template #selected>
@@ -473,7 +465,7 @@ async function handleSetRecord() {
               <div v-if="form.validation.name === 'basic'">
                 <UiInput
                   v-model="form.filters.minScore"
-                  :error="inputError('minScore')"
+                  :error="getErrorMessage('minScore')"
                   :number="true"
                 >
                   <template #label>{{
