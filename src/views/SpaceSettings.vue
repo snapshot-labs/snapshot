@@ -2,8 +2,6 @@
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
 import {
   calcFromSeconds,
@@ -15,11 +13,7 @@ import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
-import {
-  validateSchema,
-  getSpaceUri,
-  clone
-} from '@snapshot-labs/snapshot.js/src/utils';
+import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
@@ -29,14 +23,12 @@ const props = defineProps<{
   sourceSpace: ExtendedSpace;
 }>();
 
-const basicValidation = { name: 'basic', params: {} };
-
 const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form } = useSpaceSettingsForm();
+const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
 const notify: any = inject('notify');
 
 const currentSettings = ref({});
@@ -50,17 +42,10 @@ const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
 const visitedFields = ref<string[]>([]);
-const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const validate = computed(() => {
-  const formattedForm = formatSpace(form.value);
-
-  return validateSchema(schemas.space, formattedForm);
-});
 
 const isValid = computed(() => {
   return (
@@ -137,55 +122,7 @@ async function handleSubmit() {
     }
   } else {
     console.log('Invalid schema', validate.value);
-    validateAllFields.value = true;
   }
-}
-
-function formatSpace(spaceRaw) {
-  if (!spaceRaw) return;
-  const space = clone(spaceRaw);
-  if (!space) return;
-  delete space.id;
-  delete space.followersCount;
-  if (form.value.filters.invalids) delete form.value.filters.invalids;
-  Object.entries(space).forEach(([key, value]) => {
-    if (value === null || value === '') delete space[key];
-  });
-  space.strategies = space.strategies || [];
-  space.plugins = space.plugins || {};
-  space.validation = space.validation || basicValidation;
-  space.filters = space.filters || {};
-  space.voting = space.voting || {};
-  space.voting.delay = space.voting?.delay || undefined;
-  space.voting.period = space.voting?.period || undefined;
-  space.voting.type = space.voting?.type || undefined;
-  space.voting.quorum = space.voting?.quorum || undefined;
-  return space;
-}
-
-function getErrorMessage(field) {
-  if (
-    !isValid.value &&
-    !clientLoading.value &&
-    (visitedFields.value.includes(field) || validateAllFields.value) &&
-    Array.isArray(validate.value)
-  ) {
-    const errors = Object.keys(defaults.errors);
-    const errorFound = validate.value.find(
-      error =>
-        (errors.includes(error.keyword) &&
-          error.params.missingProperty === field) ||
-        (errors.includes(error.keyword) && error.instancePath.includes(field))
-    );
-
-    if (errorFound?.instancePath.includes('strategies'))
-      return t('errors.minStrategy');
-    else if (errorFound?.instancePath.includes('website'))
-      return t('errors.website');
-    else if (errorFound)
-      return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
-  }
-  return '';
 }
 
 function handleReset() {

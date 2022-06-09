@@ -1,12 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
+import { ref, computed, inject, onMounted } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import {
-  sleep,
-  validateSchema,
-  clone
-} from '@snapshot-labs/snapshot.js/src/utils';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter, useRoute } from 'vue-router';
@@ -15,6 +10,7 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
 import { shorten, clearAvatarCache } from '@/helpers/utils';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
   web3Account: string;
@@ -23,47 +19,16 @@ const props = defineProps<{
 const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
+const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
 
 const creatingSpace = ref(false);
 
-// Space setup form
-const form = ref({
-  name: '',
-  about: '',
-  symbol: '',
-  avatar: '',
-  network: '1',
-  admins: [] as string[],
-  categories: [],
-  // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
-  strategies: [
-    {
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    }
-  ]
-});
-
-const { validationErrorMessage } = useValidationErrors();
 const { t } = useI18n();
 const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
-const spaceValidation = computed(() => {
-  const formattedForm = formatForm(form.value);
-
-  return validateSchema(schemas.space, formattedForm) ?? [];
-});
-
-function getErrorMessage(field) {
-  return validationErrorMessage(field, spaceValidation.value);
-}
-
 const isValid = computed(() => {
-  return spaceValidation.value === true;
+  return validate.value === true;
 });
 
 const { send } = useClient();
@@ -78,17 +43,6 @@ async function checkIfSpaceExists() {
     await sleep(5000);
     await checkIfSpaceExists();
   }
-}
-
-function formatForm(form) {
-  if (!form) return;
-  const formattedForm = clone(form);
-  const notRequiredFields = ['avatar', 'about', 'categories'];
-  Object.entries(formattedForm).forEach(([key, value]) => {
-    if (notRequiredFields.includes(key) && (value === null || value === ''))
-      delete formattedForm[key];
-  });
-  return formattedForm;
 }
 
 const showPleaseWaitMessage = ref(false);
@@ -114,7 +68,7 @@ async function handleSubmit() {
     // in the sidebar after space creation
     form.value.admins = [props.web3Account];
 
-    const formattedForm = formatForm(form.value);
+    const formattedForm = formatSpace(form.value);
     // Create the space
     const result = await send(
       { id: route.params.ens },
@@ -149,6 +103,25 @@ async function handleSubmit() {
     creatingSpace.value = false;
   }
 }
+
+function addDefaultStrategy() {
+  form.value.strategies.push({
+    name: 'ticket',
+    network: '1',
+    params: {
+      symbol: 'VOTE'
+    }
+  });
+}
+
+function addDefaultNetwork() {
+  form.value.network = '1';
+}
+
+onMounted(() => {
+  addDefaultStrategy();
+  addDefaultNetwork();
+});
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
 
-const strategiesClone = ref<SpaceStrategy[]>(clone(props.form.strategies));
+const strategiesClone = computed(() => props.form.strategies);
 
 const strategyObj = {
   name: '',
@@ -23,8 +23,9 @@ const currentStrategyIndex = ref<number | null>(null);
 const currentStrategy = ref<SpaceStrategy>(clone(strategyObj));
 
 function handleRemoveStrategy(i) {
-  strategiesClone.value = strategiesClone.value.filter(
-    (strategy, index) => index !== i
+  emit(
+    'updateStrategies',
+    strategiesClone.value.filter((strategy, index) => index !== i)
   );
 }
 
@@ -42,19 +43,13 @@ function handleAddStrategy() {
 
 function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
-    strategiesClone.value[currentStrategyIndex.value] = strategy;
+    const strategies = clone(strategiesClone.value);
+    strategies[currentStrategyIndex.value] = strategy;
+    emit('updateStrategies', strategies);
   } else {
-    strategiesClone.value = strategiesClone.value.concat(strategy);
+    emit('updateStrategies', strategiesClone.value.concat(strategy));
   }
 }
-
-watch(
-  strategiesClone,
-  () => {
-    emit('updateStrategies', strategiesClone.value);
-  },
-  { deep: true }
-);
 </script>
 
 <template>
