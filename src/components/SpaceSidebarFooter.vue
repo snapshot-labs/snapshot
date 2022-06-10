@@ -4,25 +4,32 @@ import { sanitizeUrl } from '@braintree/sanitize-url';
 
 const props = defineProps<{ space?: Record<string, any> }>();
 
-const socials = computed(() => {
-  return [
-    {
+type SocialLink = { icon: string, link: string };
+const socials = computed<SocialLink[]>(() => {
+  const socials: SocialLink[] = [];
+
+  if (props.space?.twitter) {
+    socials.push({
       icon: 'twitter',
-      link: props.space?.twitter
-        ? `https://twitter.com/${props.space?.twitter}`
-        : ''
-    },
-    {
+      link: `https://twitter.com/${props.space?.twitter}`
+    });
+  }
+
+  if (props.space?.github) {
+    socials.push({
       icon: 'github',
-      link: props.space?.github
-        ? `https://github.com/${props.space?.github}`
-        : ''
-    },
-    {
+      link: `https://github.com/${props.space?.github}`
+    });
+  }
+
+  if (props.space?.website) {
+    socials.push({
       icon: 'earth',
-      link: props.space?.website ? sanitizeUrl(props.space?.website) : ''
-    }
-  ];
+      link: sanitizeUrl(props.space?.website)
+    });
+  }
+
+  return socials;
 });
 </script>
 
