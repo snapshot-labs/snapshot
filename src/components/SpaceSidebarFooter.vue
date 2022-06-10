@@ -4,7 +4,7 @@ import { sanitizeUrl } from '@braintree/sanitize-url';
 
 const props = defineProps<{ space?: Record<string, any> }>();
 
-type SocialLink = { icon: string, link: string };
+type SocialLink = { icon: string; link: string };
 const socials = computed<SocialLink[]>(() => {
   const socials: SocialLink[] = [];
 
