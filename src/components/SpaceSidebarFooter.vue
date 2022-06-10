@@ -34,14 +34,12 @@ const socials = computed<SocialLink[]>(() => {
 </script>
 
 <template>
-  <div class="text-center">
-    <div class="my-3 mx-2 flex items-center justify-center space-x-3">
-      <IconSocial
-        v-for="social in socials"
-        :key="social.icon"
-        :social="social"
-        class="flex"
-      />
-    </div>
+  <div class="my-3 flex items-center space-x-3 px-4">
+    <IconSocial
+      v-for="social in socials"
+      :key="social.icon"
+      :social="social"
+      class="flex"
+    />
   </div>
 </template>
