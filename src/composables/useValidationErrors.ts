@@ -14,26 +14,34 @@ export function useValidationErrors() {
     const defaultErrors = Object.keys(defaults.errors);
 
     if (errors === true) return '';
-    else {
-      const errorFound = errors.find(
-        error =>
-          defaultErrors.includes(error.keyword) &&
-          error.instancePath.includes(key)
-      );
 
-      // Custom error messages for address fields (needed because minLength validation
-      // on the strategies schema would always show field required)
-      if (
-        errorFound &&
-        errorFound?.instancePath.includes('address') &&
-        errorFound?.keyword.includes('minLength')
-      )
-        return t('errors.invalidAddress');
+    const errorFound = errors.find(
+      error =>
+        (defaultErrors.includes(error.keyword) &&
+          error.params.missingProperty === key) ||
+        (defaultErrors.includes(error.keyword) &&
+          error.instancePath.includes(key))
+    );
 
-      return errorFound
-        ? t(`errors.${errorFound.keyword}`, [errorFound?.params.limit])
-        : '';
-    }
+    // Custom error messages for address fields (needed because minLength validation
+    // on the strategies schema would always show field required)
+    if (
+      errorFound &&
+      errorFound?.instancePath.includes('address') &&
+      errorFound?.keyword.includes('minLength')
+    )
+      return t('errors.invalidAddress');
+
+    if (errorFound?.instancePath.includes('strategies'))
+      return t('errors.minStrategy');
+
+    if (errorFound?.instancePath.includes('website'))
+      return t('errors.website');
+
+    return errorFound
+      ? t(`errors.${errorFound.keyword}`, [errorFound?.params.limit])
+      : '';
   }
+
   return { validationErrorMessage };
 }

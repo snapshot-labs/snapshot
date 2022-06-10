@@ -85,7 +85,7 @@ const isValid = computed(() => {
   );
 });
 
-const currentStep = computed(() => Number(route.params.step || 1));
+const currentStep = computed(() => Number(route.params.step));
 
 const stepIsValid = computed(() => {
   if (

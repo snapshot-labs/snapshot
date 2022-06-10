@@ -27,6 +27,7 @@ module.exports = {
   globals: {
     $ref: 'readonly',
     defineProps: 'readonly',
-    defineEmits: 'readonly'
+    defineEmits: 'readonly',
+    withDefaults: 'readonly',
   }
 };

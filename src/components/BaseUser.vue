@@ -9,7 +9,7 @@ const props = defineProps<{
   address: string;
   space?: { members: string[]; network: string };
   proposal?: { network: string };
-  profile?: { name: string; ens: string; about: string };
+  profile?: { ens: string; name?: string; about?: string };
   hideAvatar?: boolean;
 }>();
 
@@ -36,7 +36,7 @@ watchEffect(() => {
             : { name: 'profileActivity', params: { address } }
         "
         hide-external-icon
-        @click.stop
+        @click.stop=""
       >
         <div class="flex flex-nowrap items-center space-x-2">
           <AvatarUser v-if="!hideAvatar" :address="address" size="18" />

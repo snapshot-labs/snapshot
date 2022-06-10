@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useCopy } from '@/composables/useCopy';
 import { debouncedWatch } from '@vueuse/core';
 
-defineProps({
-  realityAddress: { type: String },
-  multiSendAddress: { type: String }
-});
+defineProps<{
+  realityAddress: string;
+  multiSendAddress: string;
+}>();
 
 const open = ref(false);
 const hovered = ref(false);
@@ -22,28 +22,6 @@ debouncedWatch(
 
 const { copyToClipboard } = useCopy();
 </script>
-
-<style scoped>
-.tooltip-box {
-  position: relative;
-}
-
-.tooltip {
-  width: 200px;
-  left: 40px;
-  top: -8px;
-  position: absolute;
-  z-index: 99999;
-  box-shadow: 0 1px 17px 0 rgba(233, 236, 240, 1);
-}
-
-.tooltip-text {
-  display: block;
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 16px;
-}
-</style>
 
 <template>
   <div
@@ -96,3 +74,25 @@ const { copyToClipboard } = useCopy();
     </div>
   </div>
 </template>
+
+<style scoped>
+.tooltip-box {
+  position: relative;
+}
+
+.tooltip {
+  width: 200px;
+  left: 40px;
+  top: -8px;
+  position: absolute;
+  z-index: 99999;
+  box-shadow: 0 1px 17px 0 rgba(233, 236, 240, 1);
+}
+
+.tooltip-text {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+}
+</style>

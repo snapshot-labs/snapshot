@@ -7,7 +7,9 @@ defineProps(['space']);
       <div class="mb-3">
         {{ $t('noResultsFound') }}
       </div>
-      <router-link :to="{ name: 'spaceCreate', params: { key: space.id } }">
+      <router-link
+        :to="{ name: 'spaceCreate', params: { key: space.id, step: 1 } }"
+      >
         <BaseButton>
           {{ $t('proposals.createProposal') }}
         </BaseButton>

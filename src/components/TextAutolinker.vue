@@ -1,13 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import Autolinker from 'autolinker';
 
-const props = defineProps({
-  text: String,
-  truncate: {
-    type: Number,
-    default: 0
-  }
+interface Props {
+  text: string;
+  truncate?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  truncate: 0
 });
 
 const textWithLinks = computed(() =>
