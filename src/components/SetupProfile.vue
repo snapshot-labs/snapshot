@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, inject, onMounted } from 'vue';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
@@ -126,61 +125,13 @@ onMounted(() => {
 
 <template>
   <div class="space-y-4">
-    <BaseBlock :title="$t('setup.profile')">
-      <div class="space-y-2">
-        <div class="flex flex-col-reverse sm:flex-row">
-          <div class="mt-3 space-y-2 sm:mt-0 sm:w-2/3">
-            <BaseInput
-              v-model="form.name"
-              :title="$t(`spaceProfile.name.label`)"
-              :error="getErrorMessage('name')"
-              :max-length="schemas.space.properties.name.maxLength"
-              :placeholder="$t('spaceProfile.name.placeholder')"
-              focus-on-mount
-            />
-            <LabelInput> {{ $t(`spaceProfile.about.label`) }} </LabelInput>
-            <TextareaAutosize
-              v-model="form.about"
-              class="s-input !rounded-3xl"
-              :max-length="schemas.space.properties.about.maxLength"
-              :placeholder="$t('spaceProfile.about.placeholder')"
-            />
-            <ListboxMultipleCategories
-              :categories="form.categories"
-              @update-categories="value => (form.categories = value)"
-            />
-          </div>
-          <div class="flex w-full justify-center sm:w-1/3">
-            <div>
-              <LabelInput>
-                {{ $t('spaceProfile.avatar') }}
-              </LabelInput>
-              <InputUploadAvatar
-                class="h-[80px]"
-                @image-uploaded="url => (form.avatar = url)"
-                @image-remove="form.avatar = ''"
-              >
-                <template #avatar="{ uploading, previewFile }">
-                  <div class="relative">
-                    <AvatarSpace
-                      :preview-file="previewFile"
-                      size="80"
-                      :space="{ id: route.params.ens as string }"
-                    />
-                    <AvatarOverlayEdit :loading="uploading" />
-                    <div
-                      class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
-                    >
-                      <i-ho-pencil class="text-[12px] text-skin-bg" />
-                    </div>
-                  </div>
-                </template>
-              </InputUploadAvatar>
-            </div>
-          </div>
-        </div>
-      </div>
-    </BaseBlock>
+    <BlockProfile
+      v-model:name="form.name"
+      v-model:about="form.about"
+      v-model:categories="form.categories"
+      v-model:avatar="form.avatar"
+      :get-error-message="getErrorMessage"
+    />
 
     <BlockLinks
       v-model:twitter="form.twitter"
