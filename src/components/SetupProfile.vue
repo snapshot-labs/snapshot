@@ -150,6 +150,12 @@ onMounted(() => {
       @update-symbol="val => (form.symbol = val)"
     />
 
+    <SettingsDomainBlock
+      v-model:domain="form.domain"
+      v-model:skin="form.skin"
+      :get-error-message="getErrorMessage"
+    />
+
     <BaseBlock>
       <BaseButton
         class="w-full"

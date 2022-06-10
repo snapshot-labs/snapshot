@@ -34,14 +34,12 @@ const notify: any = inject('notify');
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentPlugin = ref({});
-const modalSkinsOpen = ref(false);
 const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const visitedFields = ref<string[]>([]);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
@@ -248,7 +246,11 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
-          <BlockDomain />
+          <SettingsDomainBlock
+            v-model:domain="form.domain"
+            v-model:skin="form.skin"
+            :get-error-message="getErrorMessage"
+          />
 
           <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
             <BaseBlock
@@ -461,11 +463,6 @@ async function handleSetRecord() {
     </template>
   </TheLayout>
   <teleport to="#modal">
-    <ModalSkins
-      v-model="form.skin"
-      :open="modalSkinsOpen"
-      @close="modalSkinsOpen = false"
-    />
     <ModalCategory
       :open="modalCategoryOpen"
       :categories="form.categories"
