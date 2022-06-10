@@ -12,10 +12,13 @@ const emit = defineEmits(['select']);
     <LabelInput>{{ title }}</LabelInput>
     <BaseButton
       :class="$attrs.class"
-      class="!h-[42px] w-full pl-3 text-left"
+      class="relative !h-[42px] w-full truncate pl-3 pr-5 text-left"
       @click="emit('select')"
     >
       {{ modelValue }}
+      <i-ho-chevron-down
+        class="absolute inset-y-[12px] right-2 text-xs text-skin-text"
+      />
     </BaseButton>
   </div>
 </template>

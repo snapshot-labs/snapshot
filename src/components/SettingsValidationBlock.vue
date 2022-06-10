@@ -24,7 +24,7 @@ function handleSubmitAddValidation(validation) {
 <template>
   <BaseBlock :title="$t('settings.proposalValidation')">
     <div class="space-y-2">
-      <div class="flex space-x-4">
+      <div class="space-y-2 sm:flex sm:space-x-4 sm:space-y-0">
         <InputSelect
           class="w-full"
           :title="$t(`settings.validation`)"
