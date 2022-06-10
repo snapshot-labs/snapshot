@@ -10,9 +10,11 @@
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "test:e2e": "cypress run",
-    "test:e2e:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
-    "test:e2e:debug": "cypress open"
+    "test:e2e": "start-server-and-test test:e2e:serve http://localhost:3000 test:e2e:run",
+    "test:e2e:debug": "start-server-and-test test:e2e:serve http://localhost:3000 test:e2e:open",
+    "test:e2e:serve": "vite build && npx http-server dist -p 3000",
+    "test:e2e:run": "cypress run",
+    "test:e2e:open": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
@@ -77,6 +79,7 @@
     "rollup-plugin-visualizer": "^5.6.0",
     "sass": "~1.52.3",
     "sass-loader": "^13.0.0",
+    "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.2",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
