@@ -8,7 +8,7 @@ defineProps<{
   categories: string[];
   avatar: string;
   private: boolean;
-  terms: string;
+  terms?: string;
 }>();
 
 const emit = defineEmits([
@@ -80,7 +80,7 @@ const emit = defineEmits([
                   <AvatarSpace
                     :preview-file="previewFile"
                     size="80"
-                    :space="{ id: $route.params.ens as string }"
+                    :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar }"
                   />
                   <AvatarOverlayEdit :loading="uploading" />
                   <div

@@ -9,12 +9,12 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue']);
 
 function trimUrlProposal(url: string) {
-  if (!url) return url;
+  if (!url) return '';
   return url.replace(/^https?:\/\//, '');
 }
 
 function addUrlProtocol(url: string) {
-  if (!url) return url;
+  if (!url) return '';
   if (url.startsWith('ipfs://')) return url;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   return `https://${url}`;

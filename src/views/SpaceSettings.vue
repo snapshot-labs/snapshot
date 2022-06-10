@@ -102,10 +102,6 @@ const votingPeriod = computed({
       : undefined)
 });
 
-const categoriesString = computed(() => {
-  return form.value.categories ? form.value.categories.join(', ') : '';
-});
-
 async function handleSubmit() {
   if (isValid.value) {
     const formattedForm = formatSpace(form.value);
@@ -155,14 +151,6 @@ function handleSubmitAddPlugins(payload) {
 
 function handleSubmitAddValidation(validation) {
   form.value.validation = clone(validation);
-}
-
-function setUploadLoading(s) {
-  uploadLoading.value = s;
-}
-
-function setAvatarUrl(url) {
-  if (typeof url === 'string') form.value.avatar = url;
 }
 
 onMounted(async () => {
@@ -242,66 +230,16 @@ async function handleSetRecord() {
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessage>
-          <BaseBlock :title="$t('settings.profile')">
-            <div class="mb-2 space-y-2">
-              <UiInput
-                v-model="form.name"
-                :error="getErrorMessage('name')"
-                @blur="visitedFields.push('name')"
-              >
-                <template #label>{{ $t(`settings.name`) }}*</template>
-              </UiInput>
-              <UiInput
-                v-model="form.about"
-                :error="getErrorMessage('about')"
-                @blur="visitedFields.push('about')"
-              >
-                <template #label> {{ $t(`settings.about`) }} </template>
-              </UiInput>
-              <UiInput
-                v-model="form.avatar"
-                placeholder="e.g. https://example.com/space.png"
-                :error="getErrorMessage('avatar')"
-                @blur="visitedFields.push('avatar')"
-              >
-                <template #label>
-                  {{ $t(`settings.avatar`) }}
-                </template>
-                <template #info>
-                  <InputUploadImage
-                    class="!ml-2"
-                    @input="setAvatarUrl"
-                    @loading="setUploadLoading"
-                  >
-                    {{ $t('upload') }}
-                  </InputUploadImage>
-                </template>
-              </UiInput>
-              <UiInput @click="modalCategoryOpen = true">
-                <template #label>
-                  {{ $t(`settings.categories`) }}
-                </template>
-                <template #selected>
-                  <span class="capitalize">
-                    {{ categoriesString }}
-                  </span>
-                </template>
-              </UiInput>
 
-              <UiInput
-                v-model="form.terms"
-                placeholder="e.g. https://example.com/terms"
-                :error="getErrorMessage('terms')"
-                @blur="visitedFields.push('terms')"
-              >
-                <template #label> {{ $t(`settings.terms`) }} </template>
-              </UiInput>
-              <div class="flex items-center space-x-2 pr-2">
-                <BaseSwitch v-model="form.private" />
-                <span>{{ $t('settings.hideSpace') }}</span>
-              </div>
-            </div>
-          </BaseBlock>
+          <BlockProfile
+            v-model:name="form.name"
+            v-model:about="form.about"
+            v-model:categories="form.categories"
+            v-model:avatar="form.avatar"
+            v-model:private="form.private"
+            v-model:terms="form.terms"
+            :get-error-message="getErrorMessage"
+          />
 
           <BlockLinks
             v-model:twitter="form.twitter"
