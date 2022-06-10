@@ -289,7 +289,7 @@ async function handleSetRecord() {
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
           />
-          
+
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
