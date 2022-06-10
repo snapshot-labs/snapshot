@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
 
-const strategiesClone = computed(() => props.form.strategies);
+const strategies = computed(() => props.form.strategies);
 
 const strategyObj = {
   name: '',
@@ -25,13 +25,13 @@ const currentStrategy = ref<SpaceStrategy>(clone(strategyObj));
 function handleRemoveStrategy(i) {
   emit(
     'updateStrategies',
-    strategiesClone.value.filter((strategy, index) => index !== i)
+    strategies.value.filter((strategy, index) => index !== i)
   );
 }
 
 function handleEditStrategy(i) {
   currentStrategyIndex.value = i;
-  currentStrategy.value = clone(strategiesClone.value[i]);
+  currentStrategy.value = clone(strategies.value[i]);
   modalStrategyOpen.value = true;
 }
 
@@ -43,11 +43,11 @@ function handleAddStrategy() {
 
 function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
-    const strategies = clone(strategiesClone.value);
+    const strategiesClone = clone(strategies.value);
     strategies[currentStrategyIndex.value] = strategy;
-    emit('updateStrategies', strategies);
+    emit('updateStrategies', strategiesClone);
   } else {
-    emit('updateStrategies', strategiesClone.value.concat(strategy));
+    emit('updateStrategies', strategies.value.concat(strategy));
   }
 }
 </script>
@@ -69,7 +69,7 @@ function handleSubmitStrategy(strategy) {
     </div>
     <div class="mb-4 grid gap-3">
       <StrategiesBlockItem
-        :strategies-form="strategiesClone"
+        :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
         @remove-strategy="i => handleRemoveStrategy(i)"
       />
