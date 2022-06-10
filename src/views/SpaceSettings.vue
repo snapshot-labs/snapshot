@@ -297,7 +297,7 @@ async function handleSetRecord() {
                 <template #label> {{ $t(`settings.terms`) }} </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <BaseCheckbox v-model="form.private" />
+                <BaseSwitch v-model="form.private" />
                 <span>{{ $t('settings.hideSpace') }}</span>
               </div>
             </div>
@@ -410,7 +410,7 @@ async function handleSetRecord() {
                   }}</template>
                 </UiInput>
                 <div class="mt-2 flex items-center space-x-2 pr-2">
-                  <BaseCheckbox v-model="form.filters.onlyMembers" />
+                  <BaseSwitch v-model="form.filters.onlyMembers" />
                   <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
@@ -480,7 +480,7 @@ async function handleSetRecord() {
                 </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <BaseCheckbox v-model="form.voting.hideAbstain" />
+                <BaseSwitch v-model="form.voting.hideAbstain" />
                 <span>{{ $t('settings.hideAbstain') }}</span>
               </div>
             </div>
