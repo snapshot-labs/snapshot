@@ -3,3 +3,4 @@
 
 yarn lint
 yarn test:unit
+git add .
