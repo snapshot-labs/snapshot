@@ -25,7 +25,7 @@ const modalSkinsOpen = ref(false);
       </i18n-t>
     </BaseMessage>
 
-    <div class="flex space-x-3">
+    <div class="space-y-2 sm:flex sm:space-x-3">
       <BaseInput
         :title="$t('settings.domain.label')"
         :model-value="domain"
