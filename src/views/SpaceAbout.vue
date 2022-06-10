@@ -1,14 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { useI18n } from '@/composables/useI18n';
 import { useIntl } from '@/composables/useIntl';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: Object
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const network = computed(() => networks[props.space?.network]);
 
@@ -90,8 +91,7 @@ onMounted(() => {
         <div
           v-for="(user, i) in space.admins"
           :key="i"
-          :style="i === 0 && 'border: 0 !important;'"
-          class="flex border-t px-4 py-3"
+          class="flex border-t px-4 py-3 first:border-t-0"
         >
           <BaseUser :address="user" :profile="profiles[user]" />
         </div>
@@ -105,8 +105,7 @@ onMounted(() => {
         <div
           v-for="(user, i) in space.members"
           :key="i"
-          :style="i === 0 && 'border: 0 !important;'"
-          class="flex border-t px-4 py-3"
+          class="flex border-t px-4 py-3 first:border-t-0"
         >
           <BaseUser :address="user" :profile="profiles[user]" />
         </div>

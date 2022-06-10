@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { sha256 } from 'js-sha256';
-import { withDefaults, computed } from 'vue';
+import { computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -9,7 +9,8 @@ const props = withDefaults(
     previewFile?: File;
   }>(),
   {
-    size: '22'
+    size: '22',
+    previewFile: undefined
   }
 );
 

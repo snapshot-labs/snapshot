@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
@@ -15,10 +15,12 @@ import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
-const props = defineProps({
-  space: Object
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const route = useRoute();
 const router = useRouter();
@@ -27,21 +29,21 @@ const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
-const notify = inject('notify');
+const notify: any = inject('notify');
 const { formatRelativeTime, formatNumber } = useIntl();
 
-const id = route.params.id;
+const id: string = route.params.id as string;
 
 const modalOpen = ref(false);
-const selectedChoices = ref(null);
+const selectedChoices = ref<any>(null);
 const loadingProposal = ref(true);
 const loadedResults = ref(false);
 const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
-const proposal = ref(null);
+const proposal = ref<Proposal | null>(null);
 const votes = ref([]);
 const userVote = ref([]);
-const results = ref({});
+const results = ref<Results | null>(null);
 const modalStrategiesOpen = ref(false);
 
 const isCreator = computed(() => proposal.value?.author === web3Account.value);
@@ -51,11 +53,11 @@ const isAdmin = computed(() => {
 });
 const strategies = computed(
   // Needed for older proposal that are missing strategies
-  () => proposal.value?.strategies ?? props.space?.strategies
+  () => proposal.value?.strategies ?? props.space.strategies
 );
 
-const symbols = computed(() =>
-  strategies.value.map(strategy => strategy.params.symbol || '')
+const symbols = computed((): string[] =>
+  strategies.value.map(strategy => (strategy.params.symbol as string) || '')
 );
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
@@ -80,11 +82,8 @@ function clickVote() {
 async function loadProposal() {
   loadingProposal.value = true;
   proposal.value = await getProposal(id);
-  // Redirect to proposal space.id if it doesn't match route key
-  if (
-    route.name === 'spaceProposal' &&
-    props.space.id !== proposal.value.space.id
-  ) {
+  // Redirect to 404 page if proposal doesn't belong to current space
+  if (!proposal.value || props.space.id !== proposal.value.space.id) {
     router.push({ name: 'error-404' });
   }
   loadingProposal.value = false;
@@ -100,6 +99,7 @@ function formatProposalVotes(votes) {
 }
 
 async function loadResults() {
+  if (!proposal.value) return;
   loadingResultsFailed.value = false;
   const spaceShowPending = pending;
   const showPending =
@@ -181,16 +181,22 @@ const {
   sharingItems
 } = useSharing();
 
+const { resetForm } = useSpaceCreateForm();
+
 function selectFromThreedotDropdown(e) {
+  if (!proposal.value) return;
   if (e === 'delete') deleteProposal();
-  if (e === 'duplicate')
+  if (e === 'duplicate') {
+    resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
+        step: 1,
         sourceProposal: proposal.value.id
       }
     });
+  }
 }
 
 function selectFromShareDropdown(e) {
@@ -205,11 +211,12 @@ function selectFromShareDropdown(e) {
 const { profiles, loadProfiles } = useProfiles();
 
 watch(proposal, () => {
+  if (!proposal.value) return;
   loadProfiles([proposal.value.author]);
 });
 
 watch(web3Account, () => {
-  const choice = route.query.choice;
+  const choice = route.query.choice as string;
   if (proposal.value && choice) {
     selectedChoices.value = parseInt(choice);
     clickVote();
@@ -226,8 +233,8 @@ watchEffect(() => {
 
 onMounted(async () => {
   await loadProposal();
-  const choice = route.query.choice;
-  if (proposal.value.type === 'approval') selectedChoices.value = [];
+  const choice = route.query.choice as string;
+  if (proposal.value?.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {
     selectedChoices.value = parseInt(choice);
     clickVote();
@@ -242,7 +249,7 @@ watch(showFullMarkdownBody, () => {
 });
 
 // Ref to the proposal body element
-const markdownBody = ref(null);
+const markdownBody = ref<HTMLElement | null>(null);
 
 // Detect if the proposal body is too long and should be shortened
 const truncateMarkdownBody = computed(() => {
@@ -410,7 +417,7 @@ const truncateMarkdownBody = computed(() => {
           @loadVotes="loadMore(loadMoreVotes)"
         />
         <PluginProposal
-          v-if="proposal?.plugins && loadedResults"
+          v-if="proposal?.plugins && loadedResults && results"
           :id="id"
           :space="space"
           :proposal="proposal"
@@ -421,8 +428,8 @@ const truncateMarkdownBody = computed(() => {
         />
       </div>
     </template>
-    <template v-if="proposal" #sidebar-right>
-      <div class="mt-4 space-y-4 lg:mt-0">
+    <template #sidebar-right>
+      <div v-if="proposal" class="mt-4 space-y-4 lg:mt-0">
         <BaseBlock :title="$t('information')">
           <div class="space-y-1">
             <div>
@@ -491,7 +498,7 @@ const truncateMarkdownBody = computed(() => {
                 "
                 class="float-right"
               >
-                {{ formatNumber(proposal.snapshot) }}
+                {{ formatNumber(Number(proposal.snapshot)) }}
               </BaseLink>
             </div>
           </div>
@@ -504,7 +511,7 @@ const truncateMarkdownBody = computed(() => {
           @retry="loadProposal()"
         />
         <ProposalResults
-          v-else
+          v-else-if="results"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
@@ -512,7 +519,7 @@ const truncateMarkdownBody = computed(() => {
           :strategies="strategies"
         />
         <PluginProposalSidebar
-          v-if="proposal.plugins && loadedResults"
+          v-if="proposal.plugins && loadedResults && results"
           :id="id"
           :space="space"
           :proposal="proposal"

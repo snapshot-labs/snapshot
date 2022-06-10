@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref, withDefaults } from 'vue';
+import { watch, ref } from 'vue';
 
 interface Props {
   size?: string;

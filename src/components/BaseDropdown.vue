@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount, withDefaults } from 'vue';
+import { ref, onBeforeUnmount } from 'vue';
 import { Placement } from '@popperjs/core';
 
 withDefaults(
