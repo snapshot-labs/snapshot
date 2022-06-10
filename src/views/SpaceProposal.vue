@@ -16,6 +16,7 @@ import { useStore } from '@/composables/useStore';
 import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -180,10 +181,13 @@ const {
   sharingItems
 } = useSharing();
 
+const { resetForm } = useSpaceCreateForm();
+
 function selectFromThreedotDropdown(e) {
   if (!proposal.value) return;
   if (e === 'delete') deleteProposal();
-  if (e === 'duplicate')
+  if (e === 'duplicate') {
+    resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
@@ -192,6 +196,7 @@ function selectFromThreedotDropdown(e) {
         sourceProposal: proposal.value.id
       }
     });
+  }
 }
 
 function selectFromShareDropdown(e) {
