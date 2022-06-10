@@ -241,46 +241,15 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
-          <BlockLinks
+          <SettingsLinkBlock
             v-model:twitter="form.twitter"
             v-model:github="form.github"
             v-model:website="form.website"
             :get-error-message="getErrorMessage"
           />
 
-          <BaseBlock :title="$t('settings.customDomain')">
-            <UiInput
-              v-model="form.domain"
-              placeholder="e.g. vote.balancer.fi"
-              :error="getErrorMessage('domain')"
-              class="mb-2"
-              @blur="visitedFields.push('domain')"
-            >
-              <template #label>
-                {{ $t('settings.domain') }}
-              </template>
-              <template #info>
-                <BaseLink
-                  class="-mr-1 flex items-center"
-                  link="https://docs.snapshot.org/spaces/add-custom-domain"
-                  hide-external-icon
-                >
-                  <BaseIcon name="info" size="24" class="text-skin-text" />
-                </BaseLink>
-              </template>
-            </UiInput>
-            <UiInput
-              :error="getErrorMessage('skin')"
-              @click="modalSkinsOpen = true"
-            >
-              <template #selected>
-                {{ form.skin ? form.skin : $t('defaultSkin') }}
-              </template>
-              <template #label>
-                {{ $t(`settings.skin`) }}
-              </template>
-            </UiInput>
-          </BaseBlock>
+          <BlockDomain />
+
           <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
             <BaseBlock
               v-if="getErrorMessage('admins')"

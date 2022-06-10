@@ -135,7 +135,7 @@ onMounted(() => {
       :get-error-message="getErrorMessage"
     />
 
-    <BlockLinks
+    <SettingsLinkBlock
       v-model:twitter="form.twitter"
       v-model:github="form.github"
       v-model:website="form.website"
