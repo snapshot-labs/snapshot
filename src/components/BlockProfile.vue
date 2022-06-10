@@ -7,13 +7,17 @@ defineProps<{
   about: string;
   categories: string[];
   avatar: string;
+  private: boolean;
+  terms: string;
 }>();
 
 const emit = defineEmits([
   'update:name',
   'update:about',
   'update:categories',
-  'update:avatar'
+  'update:avatar',
+  'update:private',
+  'update:terms'
 ]);
 </script>
 
@@ -31,6 +35,7 @@ const emit = defineEmits([
             focus-on-mount
             @update:model-value="value => emit('update:name', value)"
           />
+
           <LabelInput> {{ $t(`spaceProfile.about.label`) }} </LabelInput>
           <TextareaAutosize
             :model-value="about"
@@ -39,9 +44,25 @@ const emit = defineEmits([
             :placeholder="$t('spaceProfile.about.placeholder')"
             @update:model-value="value => emit('update:about', value)"
           />
+
           <ListboxMultipleCategories
             :categories="categories"
             @update-categories="value => emit('update:categories', value)"
+          />
+
+          <InputUrl
+            :title="$t(`settings.terms`)"
+            :model-value="terms"
+            :error="getErrorMessage('terms')"
+            placeholder="www.example.com/terms"
+            @update:model-value="value => emit('update:terms', value)"
+          />
+
+          <BaseSwitch
+            class="!mt-3"
+            :model-value="private"
+            :text-right="$t('settings.hideSpace')"
+            @update:model-value="value => emit('update:private', value)"
           />
         </div>
         <div class="flex w-full justify-center sm:w-1/3">

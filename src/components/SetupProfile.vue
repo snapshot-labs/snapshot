@@ -130,6 +130,8 @@ onMounted(() => {
       v-model:about="form.about"
       v-model:categories="form.categories"
       v-model:avatar="form.avatar"
+      v-model:private="form.private"
+      v-model:terms="form.terms"
       :get-error-message="getErrorMessage"
     />
 
