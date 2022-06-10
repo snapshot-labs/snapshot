@@ -60,7 +60,7 @@
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@vitejs/plugin-vue": "^2.3.2",
-    "@vitest/ui": "^0.14.1",
+    "@vitest/ui": "^0.14.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.0",
@@ -80,7 +80,7 @@
     "tailwindcss": "^3.1.2",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
-    "vite": "^2.9.10",
+    "vite": "^2.9.11",
     "vitest": "^0.14.1"
   },
   "resolutions": {
