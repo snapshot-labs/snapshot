@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
@@ -64,6 +65,7 @@ function handleSubmitStrategy(strategy) {
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
         :error="getErrorMessage('symbol')"
+        :max-length="schemas.space.properties.symbol.maxLength"
         @update:model-value="value => emit('updateSymbol', value)"
       />
     </div>

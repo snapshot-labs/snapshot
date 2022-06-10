@@ -3,6 +3,7 @@ defineProps<{
   modelValue?: string;
   error?: string;
   placeholder?: string;
+  maxLength?: number;
   title?: string;
   icon?: 'twitter' | 'github' | 'earth';
 }>();
@@ -16,6 +17,7 @@ const emit = defineEmits(['update:modelValue']);
     :model-value="modelValue"
     :error="error"
     :placeholder="placeholder"
+    :max-length="maxLength"
     class="!pl-[40px]"
     @update:model-value="value => emit('update:modelValue', value)"
   >
