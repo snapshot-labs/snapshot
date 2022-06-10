@@ -125,7 +125,7 @@ onMounted(() => {
 
 <template>
   <div class="space-y-4">
-    <BlockProfile
+    <SettingsProfileBlock
       v-model:name="form.name"
       v-model:about="form.about"
       v-model:categories="form.categories"

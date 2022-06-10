@@ -231,7 +231,7 @@ async function handleSetRecord() {
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessage>
 
-          <BlockProfile
+          <SettingsProfileBlock
             v-model:name="form.name"
             v-model:about="form.about"
             v-model:categories="form.categories"
