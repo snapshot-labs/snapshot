@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import { useProfiles } from '@/composables/useProfiles';
 
 const props = withDefaults(

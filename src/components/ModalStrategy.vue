@@ -28,7 +28,7 @@ const textAreaJsonIsValid = ref(true);
 const loading = ref(false);
 const input = ref({
   name: '',
-  network: '',
+  network: '1',
   params: {} as Record<string, any>
 });
 
@@ -84,7 +84,7 @@ watch(open, () => {
   } else {
     input.value = {
       name: '',
-      network: props.defaultNetwork ?? '',
+      network: props.defaultNetwork ?? '1',
       params: defaultParams
     };
   }
@@ -105,24 +105,26 @@ watch(open, () => {
     <div v-if="input.name" class="m-4">
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
-        <div class="min-h-[280px]">
-          <AutocompleteNetwork
-            v-model:input="input.network"
-            :network="defaultNetwork"
+        <div class="min-h-[280px] space-y-3">
+          <ComboboxNetwork
+            :network="input.network"
+            @select="value => (input.network = value)"
           />
-          <InputObject
-            v-if="strategyDefinition"
-            v-model="input.params"
-            :definition="strategyDefinition"
-            :errors="strategyValidationErrors"
-          />
-          <TextareaJson
-            v-else
-            v-model="input.params"
-            v-model:is-valid="textAreaJsonIsValid"
-            :placeholder="$t('strategyParameters')"
-            class="input text-left"
-          />
+          <div>
+            <InputObject
+              v-if="strategyDefinition"
+              v-model="input.params"
+              :definition="strategyDefinition"
+              :errors="strategyValidationErrors"
+            />
+            <TextareaJson
+              v-else
+              v-model="input.params"
+              v-model:is-valid="textAreaJsonIsValid"
+              :placeholder="$t('strategyParameters')"
+              class="input text-left"
+            />
+          </div>
         </div>
       </div>
     </div>

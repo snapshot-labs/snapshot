@@ -259,26 +259,27 @@ onMounted(async () => {
       </BaseBlock>
       <div v-else class="space-y-3">
         <BaseBlock>
-          <UiInput
-            v-model.trim="form.address"
-            :placeholder="$t('delegate.addressPlaceholder')"
-            :error="validateToInput"
-            class="mt-2"
-          >
-            <template #label>{{ $t('delegate.to') }}</template>
-          </UiInput>
-          <div class="flex items-center space-x-2 px-2">
-            <BaseCheckbox v-model="specifySpaceChecked" />
-            <span>{{ $t('setDelegationToSpace') }}</span>
+          <div class="space-y-2">
+            <UiInput
+              v-model.trim="form.address"
+              :placeholder="$t('delegate.addressPlaceholder')"
+              :error="validateToInput"
+            >
+              <template #label>{{ $t('delegate.to') }}</template>
+            </UiInput>
+            <div class="flex items-center space-x-2 px-2">
+              <BaseSwitch v-model="specifySpaceChecked" />
+              <span>{{ $t('setDelegationToSpace') }}</span>
+            </div>
+            <UiInput
+              v-show="specifySpaceChecked"
+              v-model.trim="form.id"
+              placeholder="e.g. balancer.eth"
+              :error="validateSpaceInput"
+            >
+              <template #label>{{ $t('space') }}</template>
+            </UiInput>
           </div>
-          <UiInput
-            v-show="specifySpaceChecked"
-            v-model.trim="form.id"
-            placeholder="e.g. balancer.eth"
-            :error="validateSpaceInput"
-          >
-            <template #label>{{ $t('space') }}</template>
-          </UiInput>
         </BaseBlock>
         <BaseBlock
           v-if="

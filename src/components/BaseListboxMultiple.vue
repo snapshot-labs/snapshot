@@ -82,7 +82,7 @@ function isDisabled(item: { id: number; name: string }) {
               <li
                 :class="[
                   { 'bg-skin-border': active },
-                  'pr-9 relative cursor-default select-none py-2 pl-3'
+                  'relative cursor-default select-none py-2 pr-[50px] pl-3'
                 ]"
               >
                 <span
@@ -100,7 +100,7 @@ function isDisabled(item: { id: number; name: string }) {
 
                 <span
                   v-if="selected"
-                  :class="['absolute inset-y-0 right-0 flex items-center pr-4']"
+                  :class="['absolute inset-y-0 right-0 flex items-center pr-3']"
                 >
                   <i-ho-check class="text-skin-text" />
                 </span>
