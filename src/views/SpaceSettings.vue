@@ -37,7 +37,6 @@ const currentPlugin = ref({});
 const modalCategoryOpen = ref(false);
 const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
-const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
 const delayUnit = ref('h');
@@ -145,10 +144,6 @@ function handleAddPlugins() {
 
 function handleSubmitAddPlugins(payload) {
   form.value.plugins[payload.key] = payload.input;
-}
-
-function handleSubmitAddValidation(validation) {
-  form.value.validation = clone(validation);
 }
 
 onMounted(async () => {
@@ -294,37 +289,15 @@ async function handleSetRecord() {
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
           />
+          
+          <SettingsValidationBlock
+            v-model:validation="form.validation"
+            :filters="form.filters"
+            :get-error-message="getErrorMessage"
+            @update:min-score="val => (form.filters.minScore = val)"
+            @update:only-members="val => (form.filters.onlyMembers = val)"
+          />
 
-          <BaseBlock :title="$t('settings.proposalValidation')">
-            <div class="space-y-2">
-              <UiInput
-                :error="getErrorMessage('settings.validation')"
-                @click="modalValidationOpen = true"
-              >
-                <template #selected>
-                  {{ form.validation.name }}
-                </template>
-                <template #label>
-                  {{ $t(`settings.validation`) }}
-                </template>
-              </UiInput>
-              <div v-if="form.validation.name === 'basic'">
-                <UiInput
-                  v-model="form.filters.minScore"
-                  :error="getErrorMessage('minScore')"
-                  :number="true"
-                >
-                  <template #label>{{
-                    $t('settings.proposalThreshold')
-                  }}</template>
-                </UiInput>
-                <div class="mt-2 flex items-center space-x-2 pr-2">
-                  <BaseSwitch v-model="form.filters.onlyMembers" />
-                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-                </div>
-              </div>
-            </div>
-          </BaseBlock>
           <BaseBlock :title="$t('settings.voting')">
             <div class="space-y-2">
               <UiInput
@@ -474,12 +447,6 @@ async function handleSetRecord() {
       :plugin="currentPlugin"
       @close="modalPluginsOpen = false"
       @add="handleSubmitAddPlugins"
-    />
-    <ModalValidation
-      :open="modalValidationOpen"
-      :validation="form.validation"
-      @close="modalValidationOpen = false"
-      @add="handleSubmitAddValidation"
     />
     <ModalVotingType
       v-model:selected="form.voting.type"

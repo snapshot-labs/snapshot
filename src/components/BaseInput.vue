@@ -10,7 +10,7 @@ import { ref, onMounted, watch } from 'vue';
 const props = withDefaults(
   defineProps<{
     type?: 'text' | 'number';
-    modelValue?: string;
+    modelValue?: string | number;
     definition?: any;
     error?: string;
     focusOnMount?: boolean;
