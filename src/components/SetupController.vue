@@ -73,8 +73,8 @@ watch(
       focus-on-mount
       @keyup.delete="fillConnectedWallet = false"
     />
-    <div class="flex items-center gap-2">
-      <BaseCheckbox v-model="fillConnectedWallet" />
+    <div class="mt-1 flex items-center gap-2">
+      <BaseSwitch v-model="fillConnectedWallet" />
       {{ $t('setup.fillCurrentAccount') }}
     </div>
     <BaseButton

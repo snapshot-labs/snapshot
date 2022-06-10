@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
-  getError: (field: string) => string;
+  getErrorMessage: (field: string) => string;
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
 
-const strategiesClone = ref<SpaceStrategy[]>(clone(props.form.strategies));
+const strategies = computed(() => props.form.strategies);
 
 const strategyObj = {
   name: '',
@@ -23,14 +24,15 @@ const currentStrategyIndex = ref<number | null>(null);
 const currentStrategy = ref<SpaceStrategy>(clone(strategyObj));
 
 function handleRemoveStrategy(i) {
-  strategiesClone.value = strategiesClone.value.filter(
-    (strategy, index) => index !== i
+  emit(
+    'updateStrategies',
+    strategies.value.filter((strategy, index) => index !== i)
   );
 }
 
 function handleEditStrategy(i) {
   currentStrategyIndex.value = i;
-  currentStrategy.value = clone(strategiesClone.value[i]);
+  currentStrategy.value = clone(strategies.value[i]);
   modalStrategyOpen.value = true;
 }
 
@@ -42,19 +44,13 @@ function handleAddStrategy() {
 
 function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
-    strategiesClone.value[currentStrategyIndex.value] = strategy;
+    const strategiesClone = clone(strategies.value);
+    strategies[currentStrategyIndex.value] = strategy;
+    emit('updateStrategies', strategiesClone);
   } else {
-    strategiesClone.value = strategiesClone.value.concat(strategy);
+    emit('updateStrategies', strategies.value.concat(strategy));
   }
 }
-
-watch(
-  strategiesClone,
-  () => {
-    emit('updateStrategies', strategiesClone.value);
-  },
-  { deep: true }
-);
 </script>
 
 <template>
@@ -68,19 +64,20 @@ watch(
         :model-value="form.symbol"
         :title="$t(`spaceStrategies.symbol`)"
         placeholder="e.g. BAL"
-        :error="getError('symbol')"
+        :error="getErrorMessage('symbol')"
+        :max-length="schemas.space.properties.symbol.maxLength"
         @update:model-value="value => emit('updateSymbol', value)"
       />
     </div>
     <div class="mb-4 grid gap-3">
       <StrategiesBlockItem
-        :strategies-form="strategiesClone"
+        :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
         @remove-strategy="i => handleRemoveStrategy(i)"
       />
     </div>
 
-    <StrategiesBlockWarning :error="getError('strategies')" />
+    <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('spaceStrategies.addStrategy') }}

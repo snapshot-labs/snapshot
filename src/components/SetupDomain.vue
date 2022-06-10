@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, computed } from 'vue';
+import { ref, watch, onUnmounted, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
+const { resetForm } = useSpaceSettingsForm();
 
 const router = useRouter();
 const route = useRoute();
@@ -23,13 +26,14 @@ watch(
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains();
     loadingOwnedEnsDomains.value = false;
-    await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
+    if (ownedEnsDomains.value.map(d => d.name).length)
+      await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
   },
   { immediate: true }
 );
 
 const domainsWithoutExistingSpace = computed(() => {
-  const spaces = extentedSpaces.value.map(space => space.id);
+  const spaces = clone(extentedSpaces.value.map(space => space.id));
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
@@ -49,6 +53,8 @@ const waitForRegistration = () => {
 
 // stop lookup when leaving
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
+
+onMounted(() => resetForm());
 </script>
 
 <template>

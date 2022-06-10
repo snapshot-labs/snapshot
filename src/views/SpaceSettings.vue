@@ -2,8 +2,6 @@
 import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import defaults from '@/locales/default.json';
 import { useWeb3 } from '@/composables/useWeb3';
 import {
   calcFromSeconds,
@@ -15,11 +13,7 @@ import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
-import {
-  validateSchema,
-  getSpaceUri,
-  clone
-} from '@snapshot-labs/snapshot.js/src/utils';
+import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
@@ -29,14 +23,12 @@ const props = defineProps<{
   sourceSpace: ExtendedSpace;
 }>();
 
-const basicValidation = { name: 'basic', params: {} };
-
 const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form } = useSpaceSettingsForm();
+const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
 const notify: any = inject('notify');
 
 const currentSettings = ref({});
@@ -50,17 +42,10 @@ const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
 const visitedFields = ref<string[]>([]);
-const validateAllFields = ref(false);
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const validate = computed(() => {
-  const formattedForm = formatSpace(form.value);
-
-  return validateSchema(schemas.space, formattedForm);
-});
 
 const isValid = computed(() => {
   return (
@@ -117,10 +102,6 @@ const votingPeriod = computed({
       : undefined)
 });
 
-const categoriesString = computed(() => {
-  return form.value.categories ? form.value.categories.join(', ') : '';
-});
-
 async function handleSubmit() {
   if (isValid.value) {
     const formattedForm = formatSpace(form.value);
@@ -137,55 +118,7 @@ async function handleSubmit() {
     }
   } else {
     console.log('Invalid schema', validate.value);
-    validateAllFields.value = true;
   }
-}
-
-function formatSpace(spaceRaw) {
-  if (!spaceRaw) return;
-  const space = clone(spaceRaw);
-  if (!space) return;
-  delete space.id;
-  delete space.followersCount;
-  if (form.value.filters.invalids) delete form.value.filters.invalids;
-  Object.entries(space).forEach(([key, value]) => {
-    if (value === null || value === '') delete space[key];
-  });
-  space.strategies = space.strategies || [];
-  space.plugins = space.plugins || {};
-  space.validation = space.validation || basicValidation;
-  space.filters = space.filters || {};
-  space.voting = space.voting || {};
-  space.voting.delay = space.voting?.delay || undefined;
-  space.voting.period = space.voting?.period || undefined;
-  space.voting.type = space.voting?.type || undefined;
-  space.voting.quorum = space.voting?.quorum || undefined;
-  return space;
-}
-
-function inputError(field) {
-  if (
-    !isValid.value &&
-    !clientLoading.value &&
-    (visitedFields.value.includes(field) || validateAllFields.value) &&
-    Array.isArray(validate.value)
-  ) {
-    const errors = Object.keys(defaults.errors);
-    const errorFound = validate.value.find(
-      error =>
-        (errors.includes(error.keyword) &&
-          error.params.missingProperty === field) ||
-        (errors.includes(error.keyword) && error.instancePath.includes(field))
-    );
-
-    if (errorFound?.instancePath.includes('strategies'))
-      return t('errors.minStrategy');
-    else if (errorFound?.instancePath.includes('website'))
-      return t('errors.website');
-    else if (errorFound)
-      return t(`errors.${errorFound.keyword}`, [errorFound?.params.limit]);
-  }
-  return '';
 }
 
 function handleReset() {
@@ -218,14 +151,6 @@ function handleSubmitAddPlugins(payload) {
 
 function handleSubmitAddValidation(validation) {
   form.value.validation = clone(validation);
-}
-
-function setUploadLoading(s) {
-  uploadLoading.value = s;
-}
-
-function setAvatarUrl(url) {
-  if (typeof url === 'string') form.value.avatar = url;
 }
 
 onMounted(async () => {
@@ -305,100 +230,29 @@ async function handleSetRecord() {
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessage>
-          <BaseBlock :title="$t('settings.profile')">
-            <div class="mb-2 space-y-2">
-              <UiInput
-                v-model="form.name"
-                :error="inputError('name')"
-                @blur="visitedFields.push('name')"
-              >
-                <template #label>{{ $t(`settings.name`) }}*</template>
-              </UiInput>
-              <UiInput
-                v-model="form.about"
-                :error="inputError('about')"
-                @blur="visitedFields.push('about')"
-              >
-                <template #label> {{ $t(`settings.about`) }} </template>
-              </UiInput>
-              <UiInput
-                v-model="form.avatar"
-                placeholder="e.g. https://example.com/space.png"
-                :error="inputError('avatar')"
-                @blur="visitedFields.push('avatar')"
-              >
-                <template #label>
-                  {{ $t(`settings.avatar`) }}
-                </template>
-                <template #info>
-                  <InputUploadImage
-                    class="!ml-2"
-                    @input="setAvatarUrl"
-                    @loading="setUploadLoading"
-                  >
-                    {{ $t('upload') }}
-                  </InputUploadImage>
-                </template>
-              </UiInput>
-              <UiInput @click="modalCategoryOpen = true">
-                <template #label>
-                  {{ $t(`settings.categories`) }}
-                </template>
-                <template #selected>
-                  <span class="capitalize">
-                    {{ categoriesString }}
-                  </span>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.twitter"
-                placeholder="e.g. elonmusk"
-                :error="inputError('twitter')"
-                @blur="visitedFields.push('twitter')"
-              >
-                <template #label>
-                  <BaseIcon name="twitter" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.github"
-                placeholder="e.g. vbuterin"
-                :error="inputError('github')"
-                @blur="visitedFields.push('github')"
-              >
-                <template #label>
-                  <BaseIcon name="github" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.website"
-                placeholder="e.g. https://example.com"
-                :error="inputError('website')"
-                @blur="visitedFields.push('website')"
-              >
-                <template #label>
-                  <BaseIcon name="earth" />
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.terms"
-                placeholder="e.g. https://example.com/terms"
-                :error="inputError('terms')"
-                @blur="visitedFields.push('terms')"
-              >
-                <template #label> {{ $t(`settings.terms`) }} </template>
-              </UiInput>
-              <div class="flex items-center space-x-2 pr-2">
-                <BaseCheckbox v-model="form.private" />
-                <span>{{ $t('settings.hideSpace') }}</span>
-              </div>
-            </div>
-          </BaseBlock>
+
+          <BlockProfile
+            v-model:name="form.name"
+            v-model:about="form.about"
+            v-model:categories="form.categories"
+            v-model:avatar="form.avatar"
+            v-model:private="form.private"
+            v-model:terms="form.terms"
+            :get-error-message="getErrorMessage"
+          />
+
+          <BlockLinks
+            v-model:twitter="form.twitter"
+            v-model:github="form.github"
+            v-model:website="form.website"
+            :get-error-message="getErrorMessage"
+          />
+
           <BaseBlock :title="$t('settings.customDomain')">
             <UiInput
               v-model="form.domain"
               placeholder="e.g. vote.balancer.fi"
-              :error="inputError('domain')"
+              :error="getErrorMessage('domain')"
               class="mb-2"
               @blur="visitedFields.push('domain')"
             >
@@ -415,7 +269,10 @@ async function handleSetRecord() {
                 </BaseLink>
               </template>
             </UiInput>
-            <UiInput :error="inputError('skin')" @click="modalSkinsOpen = true">
+            <UiInput
+              :error="getErrorMessage('skin')"
+              @click="modalSkinsOpen = true"
+            >
               <template #selected>
                 {{ form.skin ? form.skin : $t('defaultSkin') }}
               </template>
@@ -425,9 +282,14 @@ async function handleSetRecord() {
             </UiInput>
           </BaseBlock>
           <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
-            <BaseBlock v-if="inputError('admins')" class="mb-2 !border-red">
+            <BaseBlock
+              v-if="getErrorMessage('admins')"
+              class="mb-2 !border-red"
+            >
               <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('admins') }}&nbsp;</span>
+              <span class="!text-red">
+                {{ getErrorMessage('admins') }}&nbsp;</span
+              >
             </BaseBlock>
             <TextareaArray
               v-model="form.admins"
@@ -437,9 +299,14 @@ async function handleSetRecord() {
             />
           </BaseBlock>
           <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock v-if="inputError('members')" class="mb-2 !border-red">
+            <BaseBlock
+              v-if="getErrorMessage('members')"
+              class="mb-2 !border-red"
+            >
               <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ inputError('members') }}&nbsp;</span>
+              <span class="!text-red">
+                {{ getErrorMessage('members') }}&nbsp;</span
+              >
             </BaseBlock>
             <TextareaArray
               v-model="form.members"
@@ -449,9 +316,9 @@ async function handleSetRecord() {
             />
           </BaseBlock>
 
-          <StrategiesBlock
+          <BlockStrategies
             :form="form"
-            :get-error="inputError"
+            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
@@ -460,7 +327,7 @@ async function handleSetRecord() {
           <BaseBlock :title="$t('settings.proposalValidation')">
             <div class="space-y-2">
               <UiInput
-                :error="inputError('settings.validation')"
+                :error="getErrorMessage('settings.validation')"
                 @click="modalValidationOpen = true"
               >
                 <template #selected>
@@ -473,7 +340,7 @@ async function handleSetRecord() {
               <div v-if="form.validation.name === 'basic'">
                 <UiInput
                   v-model="form.filters.minScore"
-                  :error="inputError('minScore')"
+                  :error="getErrorMessage('minScore')"
                   :number="true"
                 >
                   <template #label>{{
@@ -481,7 +348,7 @@ async function handleSetRecord() {
                   }}</template>
                 </UiInput>
                 <div class="mt-2 flex items-center space-x-2 pr-2">
-                  <BaseCheckbox v-model="form.filters.onlyMembers" />
+                  <BaseSwitch v-model="form.filters.onlyMembers" />
                   <span>{{ $t('settings.allowOnlyAuthors') }}</span>
                 </div>
               </div>
@@ -551,7 +418,7 @@ async function handleSetRecord() {
                 </template>
               </UiInput>
               <div class="flex items-center space-x-2 pr-2">
-                <BaseCheckbox v-model="form.voting.hideAbstain" />
+                <BaseSwitch v-model="form.voting.hideAbstain" />
                 <span>{{ $t('settings.hideAbstain') }}</span>
               </div>
             </div>
