@@ -285,7 +285,7 @@ async function handleSetRecord() {
             />
           </BaseBlock>
 
-          <BlockStrategies
+          <SettingsStrategiesBlock
             :form="form"
             :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"

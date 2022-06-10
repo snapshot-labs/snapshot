@@ -142,7 +142,7 @@ onMounted(() => {
       :get-error-message="getErrorMessage"
     />
 
-    <BlockStrategies
+    <SettingsStrategiesBlock
       :form="form"
       :get-error-message="getErrorMessage"
       @update-strategies="val => (form.strategies = val)"
