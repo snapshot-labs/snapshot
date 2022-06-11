@@ -248,22 +248,35 @@
     "unread": "未読"
   },
   "settings": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "avatar": "アバター",
     "header": "設定",
     "setEnsTextRecord": "ENSテキストレコードを設定",
     "editController": "コントローラの編集",
     "needToSetEnsText": "スペースの設定はIPFS上のファイルに保存されます。スペースの設定を編集する前に、まずそのファイルを指定するENSテキストコードを設定する必要があります。",
     "profile": "プロフィール",
-    "avatar": "アバター",
-    "name": "名前",
-    "about": "概要",
     "terms": "利用規約",
     "network": "ネットワーク",
     "symbol": "シンボル",
     "skin": "スキン",
     "customDomain": "カスタムドメイン",
-    "domain": "ドメイン名",
     "strategies": "ストラテジー",
-    "categories": "カテゴリー",
     "selectCategories": "カテゴリーを選択する",
     "hideSpace": "ホームページからスペースを隠す",
     "addStrategy": "ストラテジーを追加する",
@@ -324,21 +337,6 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
   },
   "spaceStrategies": {
     "title": "Strategie(s)",
