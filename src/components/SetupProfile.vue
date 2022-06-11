@@ -164,6 +164,14 @@ onMounted(() => {
       @update:only-members="val => (form.filters.onlyMembers = val)"
     />
 
+    <SettingsVotingBlock
+      v-model:delay="form.voting.delay"
+      v-model:period="form.voting.period"
+      v-model:quorum="form.voting.quorum"
+      v-model:type="form.voting.type"
+      v-model:hideAbstain="form.voting.hideAbstain"
+    />
+
     <BaseBlock>
       <BaseButton
         class="w-full"

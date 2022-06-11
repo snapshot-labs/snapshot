@@ -3,12 +3,7 @@ import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
-import {
-  calcFromSeconds,
-  calcToSeconds,
-  shorten,
-  clearAvatarCache
-} from '@/helpers/utils';
+import { shorten, clearAvatarCache } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
@@ -35,12 +30,9 @@ const currentSettings = ref({});
 const currentTextRecord = ref('');
 const currentPlugin = ref({});
 const modalCategoryOpen = ref(false);
-const modalVotingTypeOpen = ref(false);
 const modalPluginsOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const delayUnit = ref('h');
-const periodUnit = ref('h');
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
@@ -81,22 +73,6 @@ const isSpaceAdmin = computed(() => {
   if (!props.space || !currentTextRecord.value) return false;
   const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
-});
-
-const votingDelay = computed({
-  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
-  set: newVal =>
-    (form.value.voting.delay = newVal
-      ? calcToSeconds(newVal, delayUnit.value)
-      : undefined)
-});
-
-const votingPeriod = computed({
-  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
-  set: newVal =>
-    (form.value.voting.period = newVal
-      ? calcToSeconds(newVal, periodUnit.value)
-      : undefined)
 });
 
 async function handleSubmit() {
@@ -298,75 +274,14 @@ async function handleSetRecord() {
             @update:only-members="val => (form.filters.onlyMembers = val)"
           />
 
-          <BaseBlock :title="$t('settings.voting')">
-            <div class="space-y-2">
-              <UiInput
-                v-model="votingDelay"
-                :number="true"
-                placeholder="e.g. 1"
-              >
-                <template #label>
-                  {{ $t('settings.votingDelay') }}
-                </template>
-                <template #info>
-                  <select
-                    v-model="delayUnit"
-                    class="input mr-[6px] ml-2 text-center"
-                    required
-                  >
-                    <option value="h" selected>hours</option>
-                    <option value="d">days</option>
-                  </select>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="votingPeriod"
-                :number="true"
-                placeholder="e.g. 5"
-              >
-                <template #label>
-                  {{ $t('settings.votingPeriod') }}
-                </template>
-                <template #info>
-                  <select
-                    v-model="periodUnit"
-                    class="input mr-[6px] ml-2 text-center"
-                    required
-                  >
-                    <option value="h" selected>hours</option>
-                    <option value="d">days</option>
-                  </select>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.voting.quorum"
-                :number="true"
-                placeholder="1000"
-              >
-                <template #label>
-                  {{ $t('settings.quorum') }}
-                </template>
-              </UiInput>
-              <UiInput>
-                <template #label>
-                  {{ $t('settings.type') }}
-                </template>
-                <template #selected>
-                  <div class="w-full" @click="modalVotingTypeOpen = true">
-                    {{
-                      form.voting?.type
-                        ? $t(`voting.${form.voting?.type}`)
-                        : $t('settings.anyType')
-                    }}
-                  </div>
-                </template>
-              </UiInput>
-              <div class="flex items-center space-x-2 pr-2">
-                <BaseSwitch v-model="form.voting.hideAbstain" />
-                <span>{{ $t('settings.hideAbstain') }}</span>
-              </div>
-            </div>
-          </BaseBlock>
+          <SettingsVotingBlock
+            v-model:delay="form.voting.delay"
+            v-model:period="form.voting.period"
+            v-model:quorum="form.voting.quorum"
+            v-model:type="form.voting.type"
+            v-model:hideAbstain="form.voting.hideAbstain"
+          />
+
           <BaseBlock :title="$t('plugins')">
             <div v-if="form?.plugins">
               <div
@@ -447,12 +362,6 @@ async function handleSetRecord() {
       :plugin="currentPlugin"
       @close="modalPluginsOpen = false"
       @add="handleSubmitAddPlugins"
-    />
-    <ModalVotingType
-      v-model:selected="form.voting.type"
-      :open="modalVotingTypeOpen"
-      allow-any
-      @close="modalVotingTypeOpen = false"
     />
     <ModalControllerEdit
       :open="modalControllerEditOpen"
