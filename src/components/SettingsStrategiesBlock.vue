@@ -55,7 +55,7 @@ function handleSubmitStrategy(strategy) {
 
 <template>
   <BaseBlock :title="$t('spaceStrategies.title')">
-    <div class="mb-4 w-full space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
+    <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
         @select="value => emit('updateNetwork', value)"
@@ -68,7 +68,8 @@ function handleSubmitStrategy(strategy) {
         :max-length="schemas.space.properties.symbol.maxLength"
         @update:model-value="value => emit('updateSymbol', value)"
       />
-    </div>
+    </ContainerParallelInput>
+
     <div class="mb-4 grid gap-3">
       <StrategiesBlockItem
         :strategies-form="strategies"
