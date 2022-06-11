@@ -91,7 +91,7 @@
     "tailwindcss": "^3.1.2",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
-    "vite": "^2.9.11",
+    "vite": "^2.9.12",
     "vitest": "^0.14.1"
   },
   "resolutions": {
