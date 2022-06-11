@@ -5,7 +5,7 @@
     "dev": "vite",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
-    "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
+    "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
@@ -15,6 +15,12 @@
     "test:e2e:serve": "vite build && npx http-server dist -p 3000",
     "test:e2e:run": "cypress run",
     "test:e2e:open": "cypress open"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,json}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
@@ -73,6 +79,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^5.2.0",
     "husky": "^8.0.1",
+    "lint-staged": "^13.0.1",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.11",
