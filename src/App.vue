@@ -11,13 +11,10 @@ const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 const route = useRoute();
 
-console.log('Just a test!');
 provide('web3', web3);
 provide('notify', notify);
 
-onMounted(async () => {
-  init();
-});
+onMounted(async () => init());
 </script>
 
 <template>

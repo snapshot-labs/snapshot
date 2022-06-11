@@ -40,8 +40,7 @@ const symbols = computed(() =>
 async function handleSubmit() {
   const result = await send(props.space, 'vote', {
     proposal: props.proposal,
-    choice: props.selectedChoices,
-    metadata: {}
+    choice: props.selectedChoices
   });
   console.log('Result', result);
   if (result.id) {
