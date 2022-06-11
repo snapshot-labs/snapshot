@@ -248,22 +248,35 @@
     "unread": "Non lus"
   },
   "settings": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "avatar": "Avatar",
     "header": "Réglages",
     "setEnsTextRecord": "Définir ENS text record",
     "editController": "Modifier le controller",
     "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un ENS text record pointant vers ce fichier.",
     "profile": "Profil",
-    "avatar": "Avatar",
-    "name": "Nom",
-    "about": "À propos",
     "terms": "Conditions générales",
     "network": "Réseau",
     "symbol": "Symbole",
     "skin": "Thème",
     "customDomain": "Nom de domaine personnalisé",
-    "domain": "Nom de domaine",
     "strategies": "Stratégie(s)",
-    "categories": "Catégorie(s)",
     "selectCategories": "Sélectionner les catégories",
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "addStrategy": "Ajouter une stratégie",
@@ -324,21 +337,6 @@
     "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
   },
   "spaceStrategies": {
     "title": "Strategie(s)",
