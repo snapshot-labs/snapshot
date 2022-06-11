@@ -249,19 +249,19 @@
   },
   "settings": {
     "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
+      "label": "名称",
+      "placeholder": "例如 Yam Network"
     },
     "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
+      "label": "关于",
+      "placeholder": "介绍您的组织"
     },
     "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
+      "label": "类别",
+      "select": "选择类别"
     },
     "domain": {
-      "label": "Domain name",
+      "label": "域名",
       "placeholder": "例如 vote.balancer.fi",
       "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
     },
