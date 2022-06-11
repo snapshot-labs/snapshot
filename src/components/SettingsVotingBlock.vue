@@ -53,58 +53,60 @@ const votingPeriod = computed({
 <template>
   <BaseBlock :title="$t('settings.voting')">
     <div class="space-y-2">
-      <ContainerParallelInput>
-        <BaseInput
-          v-model="votingDelay"
-          :title="$t('settings.votingDelay')"
-          type="number"
-          placeholder="e.g. 1"
-        >
-          <template #after>
-            <select
-              v-model="delayUnit"
-              class="input ml-2 -mr-2 text-center !text-skin-text"
-              required
-            >
-              <option value="h" selected>hours</option>
-              <option value="d">days</option>
-            </select>
-          </template>
-        </BaseInput>
+      <div class="space-y-2 sm:flex sm:space-x-4 sm:space-y-0">
+        <div class="w-full space-y-2">
+          <BaseInput
+            v-model="votingDelay"
+            :title="$t('settings.votingDelay')"
+            type="number"
+            placeholder="e.g. 1"
+          >
+            <template #after>
+              <select
+                v-model="delayUnit"
+                class="input ml-2 -mr-2 text-center !text-skin-text"
+                required
+              >
+                <option value="h" selected>hours</option>
+                <option value="d">days</option>
+              </select>
+            </template>
+          </BaseInput>
 
-        <BaseInput
-          v-model="votingPeriod"
-          :title="$t('settings.votingPeriod')"
-          type="number"
-          placeholder="e.g. 5"
-        >
-          <template #after>
-            <select
-              v-model="periodUnit"
-              class="input ml-2 -mr-2 text-center !text-skin-text"
-              required
-            >
-              <option value="h" selected>hours</option>
-              <option value="d">days</option>
-            </select>
-          </template>
-        </BaseInput>
-      </ContainerParallelInput>
+          <BaseInput
+            v-model="votingPeriod"
+            :title="$t('settings.votingPeriod')"
+            type="number"
+            placeholder="e.g. 5"
+          >
+            <template #after>
+              <select
+                v-model="periodUnit"
+                class="input ml-2 -mr-2 text-center !text-skin-text"
+                required
+              >
+                <option value="h" selected>hours</option>
+                <option value="d">days</option>
+              </select>
+            </template>
+          </BaseInput>
+        </div>
 
-      <ContainerParallelInput>
-        <InputNumber
-          :model-value="quorum"
-          :title="$t('settings.quorum')"
-          placeholder="1000"
-          @update:model-value="emit('update:quorum', $event)"
-        />
+        <div class="w-full space-y-2">
+          <InputNumber
+            :model-value="quorum"
+            :title="$t('settings.quorum')"
+            placeholder="1000"
+            @update:model-value="emit('update:quorum', $event)"
+          />
 
-        <InputSelect
-          :title="$t(`settings.type`)"
-          :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
-          @select="modalVotingTypeOpen = true"
-        />
-      </ContainerParallelInput>
+          <InputSelect
+            :title="$t(`settings.type`)"
+            :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
+            @select="modalVotingTypeOpen = true"
+          />
+        </div>
+      </div>
 
       <BaseSwitch
         :model-value="hideAbstain"
