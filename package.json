@@ -74,7 +74,7 @@
     "@vue/test-utils": "^2.0.0",
     "autoprefixer": "^10.4.7",
     "c8": "^7.11.3",
-    "cypress": "^10.0.3",
+    "cypress": "^10.1.0",
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-vue": "^7.15.1",
@@ -91,8 +91,8 @@
     "tailwindcss": "^3.1.2",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
-    "vite": "^2.9.11",
-    "vitest": "^0.14.1"
+    "vite": "^2.9.12",
+    "vitest": "^0.14.2"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
