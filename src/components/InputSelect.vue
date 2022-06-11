@@ -2,6 +2,7 @@
 defineProps<{
   modelValue: string;
   title: string;
+  information?: string;
 }>();
 
 const emit = defineEmits(['select']);
@@ -9,7 +10,7 @@ const emit = defineEmits(['select']);
 
 <template>
   <div class="w-full">
-    <LabelInput>{{ title }}</LabelInput>
+    <LabelInput :information="information">{{ title }}</LabelInput>
     <BaseButton
       :class="$attrs.class"
       class="relative !h-[42px] w-full truncate pl-3 pr-5 text-left"

@@ -254,7 +254,6 @@
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "set": "Set",
-    "network": "Network",
 
     "profile": "Profile",
     "avatar": "Avatar",
@@ -270,22 +269,44 @@
       "label": "Categorie(s)",
       "select": "Select categorie(s)"
     },
-    "terms": "Terms",
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
     "hideSpace": "Hide space from homepage",
 
     "links": "Links",
     "website": "Website",
 
-    "strategies": "Strategie(s)",
-    "symbol": "Symbol",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal. Strategies can have a different network than the space."
+    },
+    "network": {
+      "label": "Network",
+      "information": "This is the defaul network used for this space. Networks can also be specified in the individual strategy settings."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "This is the default symbol used for this space. It is usually the token symbol f.e. BAL for Balancer."
+    },
     "addStrategy": "Add strategy",
 
-    "admins": "Admins",
-    "authors": "Authors",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
 
     "proposalValidation": "Proposal validation",
     "validation": "Validation",
-    "proposalThreshold": "Proposal threshold",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum number of voting power required to create a proposal."
+    },
     "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
@@ -296,8 +317,14 @@
     "votingPeriod": "Voting period",
     "hours": "Hours",
     "days": "Days",
-    "quorum": "Quorum",
-    "type": "Type",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum number of votes voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
 

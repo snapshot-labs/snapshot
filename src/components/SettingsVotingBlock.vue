@@ -86,7 +86,7 @@ const votingPeriod = computed({
                 required
               >
                 <option value="h" selected>
-                  ho{{ $t('settings.hours') }}urs
+                  {{ $t('settings.hours') }}
                 </option>
                 <option value="d">{{ $t('settings.days') }}</option>
               </select>
@@ -95,15 +95,18 @@ const votingPeriod = computed({
         </div>
 
         <div class="w-full space-y-2">
-          <InputNumber
+          <BaseInput
             :model-value="quorum"
-            :title="$t('settings.quorum')"
+            :title="$t('settings.quorum.label')"
+            :information="$t('settings.quorum.information')"
+            type="number"
             placeholder="1000"
             @update:model-value="emit('update:quorum', $event)"
           />
 
           <InputSelect
-            :title="$t(`settings.type`)"
+            :title="$t(`settings.type.label`)"
+            :information="$t(`settings.type.information`)"
             :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
             @select="modalVotingTypeOpen = true"
           />

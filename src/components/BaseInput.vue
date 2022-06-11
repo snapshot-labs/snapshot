@@ -19,6 +19,7 @@ const props = withDefaults(
     title?: string;
     maxLength?: number;
     readonly?: boolean;
+    information?: string;
   }>(),
   {
     type: 'text',
@@ -49,7 +50,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full">
-    <LabelInput v-if="title || definition?.title">
+    <LabelInput v-if="title || definition?.title" :information="information">
       {{ title ?? definition.title }}
     </LabelInput>
 

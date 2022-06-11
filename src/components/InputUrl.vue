@@ -4,6 +4,7 @@ const props = defineProps<{
   placeholder?: string;
   title?: string;
   error?: string;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -27,6 +28,7 @@ function addUrlProtocol(url: string) {
       v-bind="props"
       :model-value="trimUrlProposal(modelValue as string)"
       :error="error"
+      :information="information"
       class="!pl-[70px]"
       @update:model-value="
         input => emit('update:modelValue', addUrlProtocol(input))

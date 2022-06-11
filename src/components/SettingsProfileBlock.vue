@@ -51,7 +51,8 @@ const emit = defineEmits([
           />
 
           <InputUrl
-            :title="$t(`settings.terms`)"
+            :title="$t(`settings.terms.label`)"
+            :information="$t('settings.terms.information')"
             :model-value="terms"
             :error="getErrorMessage('terms')"
             placeholder="www.example.com/terms"

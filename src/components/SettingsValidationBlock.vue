@@ -33,9 +33,10 @@ function handleSubmitAddValidation(validation) {
           @click="modalValidationOpen = true"
         />
 
-        <InputNumber
+        <BaseInput
           v-if="validation.name === 'basic'"
-          :title="$t('settings.proposalThreshold')"
+          :title="$t('settings.proposalThreshold.label')"
+          :information="$t('settings.proposalThreshold.information')"
           :model-value="filters.minScore"
           :error="getErrorMessage('minScore')"
           placeholder="1000"

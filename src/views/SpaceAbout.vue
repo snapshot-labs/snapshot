@@ -36,7 +36,9 @@ onMounted(() => {
       </div>
       <BaseBlock class="mb-3">
         <div class="mb-3">
-          <h4 class="mb-2 text-skin-link">{{ $t('settings.network') }}</h4>
+          <h4 class="mb-2 text-skin-link">
+            {{ $t('settings.network.label') }}
+          </h4>
           <div>{{ network.name }}</div>
         </div>
 
@@ -69,7 +71,9 @@ onMounted(() => {
         </div>
 
         <div v-if="space.strategies" class="mb-3 last:mb-0">
-          <h4 class="mb-2 text-skin-link">{{ $t('settings.strategies') }}</h4>
+          <h4 class="mb-2 text-skin-link">
+            {{ $t('settings.strategies.label') }}
+          </h4>
           <div v-for="(strategy, i) in space.strategies" :key="i">
             <div>{{ strategy.name }}</div>
           </div>
@@ -84,7 +88,7 @@ onMounted(() => {
       </BaseBlock>
       <BaseBlock
         v-if="space?.admins?.length"
-        :title="$t('settings.admins')"
+        :title="$t('settings.admins.label')"
         :slim="true"
         class="mb-3"
       >
@@ -98,7 +102,7 @@ onMounted(() => {
       </BaseBlock>
       <BaseBlock
         v-if="space?.members?.length"
-        :title="$t('settings.authors')"
+        :title="$t('settings.authors.label')"
         :slim="true"
         class="mb-3"
       >
