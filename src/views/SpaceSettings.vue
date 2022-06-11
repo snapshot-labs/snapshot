@@ -5,7 +5,6 @@ import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
 import { shorten, clearAvatarCache } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -18,7 +17,6 @@ const props = defineProps<{
   sourceSpace: ExtendedSpace;
 }>();
 
-const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
@@ -28,9 +26,6 @@ const notify: any = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
-const currentPlugin = ref({});
-const modalCategoryOpen = ref(false);
-const modalPluginsOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
 
@@ -97,29 +92,6 @@ async function handleSubmit() {
 function handleReset() {
   if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
-}
-
-function handleSubmitAddCategories(categories) {
-  form.value.categories = categories;
-}
-
-function handleEditPlugins(name) {
-  currentPlugin.value = {};
-  currentPlugin.value[name] = clone(form.value.plugins[name]);
-  modalPluginsOpen.value = true;
-}
-
-function handleRemovePlugins(plugin) {
-  delete form.value.plugins[plugin];
-}
-
-function handleAddPlugins() {
-  currentPlugin.value = {};
-  modalPluginsOpen.value = true;
-}
-
-function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.input;
 }
 
 onMounted(async () => {
@@ -260,35 +232,10 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
-          <BaseBlock :title="$t('plugins')">
-            <div v-if="form?.plugins">
-              <div
-                v-for="(name, index) in Object.keys(form.plugins).filter(
-                  key => pluginIndex[key]
-                )"
-                :key="index"
-                class="relative mb-3"
-              >
-                <div v-if="pluginIndex[name].name">
-                  <a
-                    class="absolute right-0 p-4"
-                    @click="handleRemovePlugins(name)"
-                  >
-                    <BaseIcon name="close" size="12" />
-                  </a>
-                  <a
-                    class="block rounded-md border p-4"
-                    @click="handleEditPlugins(name)"
-                  >
-                    <h4 v-text="pluginIndex[name].name" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <BaseButton class="block w-full" @click="handleAddPlugins">
-              {{ $t('settings.addPlugin') }}
-            </BaseButton>
-          </BaseBlock>
+          <SettingsPluginsBlock
+            :plugins="form.plugins"
+            @update:plugins="val => (form.plugins = val)"
+          />
         </div>
       </template>
     </template>
@@ -329,18 +276,6 @@ async function handleSetRecord() {
     </template>
   </TheLayout>
   <teleport to="#modal">
-    <ModalCategory
-      :open="modalCategoryOpen"
-      :categories="form.categories"
-      @close="modalCategoryOpen = false"
-      @add="handleSubmitAddCategories"
-    />
-    <ModalPlugins
-      :open="modalPluginsOpen"
-      :plugin="currentPlugin"
-      @close="modalPluginsOpen = false"
-      @add="handleSubmitAddPlugins"
-    />
     <ModalControllerEdit
       :open="modalControllerEditOpen"
       :current-text-record="currentTextRecord"
