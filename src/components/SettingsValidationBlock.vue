@@ -24,7 +24,7 @@ function handleSubmitAddValidation(validation) {
 <template>
   <BaseBlock :title="$t('settings.proposalValidation')">
     <div class="space-y-2">
-      <div class="space-y-2 sm:flex sm:space-x-4 sm:space-y-0">
+      <ContainerParallelInput>
         <InputSelect
           class="w-full"
           :title="$t(`settings.validation`)"
@@ -42,7 +42,7 @@ function handleSubmitAddValidation(validation) {
           type="number"
           @update:model-value="emit('update:minScore', Number($event))"
         />
-      </div>
+      </ContainerParallelInput>
 
       <BaseSwitch
         v-if="validation.name === 'basic'"

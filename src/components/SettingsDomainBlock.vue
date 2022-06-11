@@ -25,7 +25,7 @@ const modalSkinsOpen = ref(false);
       </i18n-t>
     </BaseMessage>
 
-    <div class="space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
+    <ContainerParallelInput>
       <BaseInput
         :title="$t('settings.domain.label')"
         :model-value="domain"
@@ -40,7 +40,7 @@ const modalSkinsOpen = ref(false);
         :model-value="skin ? skin : $t('defaultSkin')"
         @select="modalSkinsOpen = true"
       />
-    </div>
+    </ContainerParallelInput>
 
     <teleport to="#modal">
       <ModalSkins

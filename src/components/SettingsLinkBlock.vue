@@ -14,7 +14,7 @@ const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
 <template>
   <BaseBlock title="Links">
     <div class="space-y-2">
-      <div class="space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
+      <ContainerParallelInput>
         <InputSocial
           title="Twitter"
           :model-value="twitter"
@@ -33,7 +33,8 @@ const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
           placeholder="e.g. vbuterin"
           @update:model-value="value => emit('update:github', value)"
         />
-      </div>
+      </ContainerParallelInput>
+
       <InputUrl
         title="Website"
         :model-value="website"
