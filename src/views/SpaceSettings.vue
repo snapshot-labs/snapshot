@@ -217,10 +217,12 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
-          <SettingsDomainBlock
-            v-model:domain="form.domain"
-            v-model:skin="form.skin"
+          <SettingsStrategiesBlock
+            :form="form"
             :get-error-message="getErrorMessage"
+            @update-strategies="val => (form.strategies = val)"
+            @update-network="val => (form.network = val)"
+            @update-symbol="val => (form.symbol = val)"
           />
 
           <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
@@ -258,14 +260,6 @@ async function handleSetRecord() {
             />
           </BaseBlock>
 
-          <SettingsStrategiesBlock
-            :form="form"
-            :get-error-message="getErrorMessage"
-            @update-strategies="val => (form.strategies = val)"
-            @update-network="val => (form.network = val)"
-            @update-symbol="val => (form.symbol = val)"
-          />
-
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
@@ -280,6 +274,12 @@ async function handleSetRecord() {
             v-model:quorum="form.voting.quorum"
             v-model:type="form.voting.type"
             v-model:hideAbstain="form.voting.hideAbstain"
+          />
+
+          <SettingsDomainBlock
+            v-model:domain="form.domain"
+            v-model:skin="form.skin"
+            :get-error-message="getErrorMessage"
           />
 
           <BaseBlock :title="$t('plugins')">
