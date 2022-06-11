@@ -225,40 +225,18 @@ async function handleSetRecord() {
             @update-symbol="val => (form.symbol = val)"
           />
 
-          <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
-            <BaseBlock
-              v-if="getErrorMessage('admins')"
-              class="mb-2 !border-red"
-            >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ getErrorMessage('admins') }}&nbsp;</span
-              >
-            </BaseBlock>
-            <TextareaArray
-              v-model="form.admins"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </BaseBlock>
-          <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock
-              v-if="getErrorMessage('members')"
-              class="mb-2 !border-red"
-            >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ getErrorMessage('members') }}&nbsp;</span
-              >
-            </BaseBlock>
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </BaseBlock>
+          <SettingsAdminsBlock
+            :admins="form.admins"
+            :is-space-controller="isSpaceController"
+            :get-error-message="getErrorMessage"
+            @update:admins="val => (form.admins = val)"
+          />
+
+          <SettingsAuthorsBlock
+            :members="form.members"
+            :get-error-message="getErrorMessage"
+            @update:members="val => (form.members = val)"
+          />
 
           <SettingsValidationBlock
             v-model:validation="form.validation"
