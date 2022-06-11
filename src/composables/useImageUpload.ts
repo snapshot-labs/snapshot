@@ -1,4 +1,5 @@
 import { ref } from 'vue';
+import { upload as pin } from '@snapshot-labs/pineapple';
 import { useI18n } from './useI18n';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 
@@ -38,14 +39,8 @@ export function useImageUpload({
     }
     formData.append('file', file);
     try {
-      const url = `${import.meta.env.VITE_HUB_URL}/api/upload`;
-      const init = {
-        method: 'POST',
-        body: formData
-      };
-      const result = await fetch(url, init);
-      const output = await result.json();
-      imageUrl.value = `ipfs://${output.file.ipfs_hash}`;
+      const receipt = await pin(formData);
+      imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
     } catch (err) {
