@@ -262,8 +262,8 @@
     },
     "domain": {
       "label": "Domain name",
-      "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+      "placeholder": "例如 vote.balancer.fi",
+      "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
     },
     "avatar": "头像",
     "header": "设置",
