@@ -2,7 +2,7 @@
   "name": "snapshot",
   "version": "0.1.4",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port=8080",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
@@ -23,7 +23,7 @@
     ]
   },
   "dependencies": {
-    "@apollo/client": "^3.6.6",
+    "@apollo/client": "^3.6.7",
     "@braintree/sanitize-url": "^6.0.0",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.6.3",
@@ -64,7 +64,7 @@
     "@iconify-json/heroicons-outline": "^1.1.1",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
-    "@types/node": "^17.0.41",
+    "@types/node": "^17.0.42",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@vitejs/plugin-vue": "^2.3.2",
