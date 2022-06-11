@@ -57,14 +57,14 @@ onMounted(() => {
           class="mb-3 last:mb-0"
         >
           <h4 class="mb-2 text-skin-link">
-            {{ $t('settings.proposalThreshold') }}
+            {{ $t('settings.proposalThreshold.label') }}
           </h4>
           {{ formatCompactNumber(space.filters.minScore) }}
           {{ space.symbol }}
         </div>
 
         <div v-if="space.terms" class="mb-3 last:mb-0">
-          <h4 class="mb-2 text-skin-link">{{ $t('settings.terms') }}</h4>
+          <h4 class="mb-2 text-skin-link">{{ $t('settings.terms.label') }}</h4>
           <BaseLink :link="space.terms">
             <TextAutolinker :text="getUrl(space.terms)" :truncate="35" />
           </BaseLink>
