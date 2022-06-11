@@ -120,7 +120,7 @@ function getFormattedForm() {
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
   clonedForm.metadata.network = props.space.network;
-  clonedForm.metadata.strategies = props.space.strategies;
+  clonedForm.metadata.strategies = [];
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
