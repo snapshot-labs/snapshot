@@ -248,22 +248,35 @@
     "unread": "Непрочитанные"
   },
   "settings": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "avatar": "Аватар",
     "header": "Настройки",
     "setEnsTextRecord": "Установить текстовую запись ENS",
     "editController": "Изменить виджеты",
     "needToSetEnsText": "Настройки сообщества будут храниться в файле на IPFS. Перед редактированием необходимо установить текстовую запись ENS, которая указывает на данный файл.",
     "profile": "Профиль",
-    "avatar": "Аватар",
-    "name": "Название",
-    "about": "О проекте",
     "terms": "Условия",
     "network": "Сеть",
     "symbol": "Символ",
     "skin": "Тема",
     "customDomain": "Пользовательский домен",
-    "domain": "Название домена",
     "strategies": "Стратегия(и)",
-    "categories": "Категория(и)",
     "selectCategories": "Выбрать категории",
     "hideSpace": "Скрыть сообщество с главной страницы",
     "addStrategy": "Добавить стратегию",
@@ -324,21 +337,6 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
   },
   "spaceStrategies": {
     "title": "Strategie(s)",
