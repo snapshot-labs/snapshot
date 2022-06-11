@@ -267,6 +267,7 @@ onMounted(() =>
         :space="space"
         :executing-validation-failed="executingValidationFailed"
         :pass-validation="passValidation"
+        data-testid="create-proposal-connect-wallet-warning"
       />
 
       <!-- Step 1 -->
@@ -335,6 +336,11 @@ onMounted(() =>
             validationLoading
           "
           primary
+          :data-testid="
+            web3Account
+              ? 'create-proposal-continue-button'
+              : 'create-proposal-connect-wallet-button'
+          "
           @click="web3Account ? nextStep() : (modalAccountOpen = true)"
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}

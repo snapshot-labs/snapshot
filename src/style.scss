@@ -150,13 +150,6 @@ a,
   @apply border-skin-border;
 }
 
-.sidenav-item {
-  &.router-link-exact-active {
-    border-left: 3px solid;
-    padding-left: 21px;
-  }
-}
-
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
