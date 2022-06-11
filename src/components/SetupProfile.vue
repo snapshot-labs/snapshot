@@ -125,7 +125,7 @@ onMounted(() => {
 
 <template>
   <div class="space-y-4">
-    <BlockProfile
+    <SettingsProfileBlock
       v-model:name="form.name"
       v-model:about="form.about"
       v-model:categories="form.categories"
@@ -135,14 +135,14 @@ onMounted(() => {
       :get-error-message="getErrorMessage"
     />
 
-    <BlockLinks
+    <SettingsLinkBlock
       v-model:twitter="form.twitter"
       v-model:github="form.github"
       v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
-    <BlockStrategies
+    <SettingsStrategiesBlock
       :form="form"
       :get-error-message="getErrorMessage"
       @update-strategies="val => (form.strategies = val)"

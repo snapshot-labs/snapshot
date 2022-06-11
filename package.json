@@ -5,14 +5,22 @@
     "dev": "vite",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
-    "lint": "eslint \"./src/*/**/*.{ts,vue,json}\" --fix",
+    "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "test:e2e": "cypress run",
-    "test:e2e:mobile": "cypress run --config viewportWidth=375,viewportHeight=667",
-    "test:e2e:debug": "cypress open"
+    "test:e2e": "start-server-and-test test:e2e:serve http://localhost:3000 test:e2e:run",
+    "test:e2e:debug": "start-server-and-test test:e2e:serve http://localhost:3000 test:e2e:open",
+    "test:e2e:serve": "vite build && npx http-server dist -p 3000",
+    "test:e2e:run": "cypress run",
+    "test:e2e:open": "cypress open"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue,json}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^3.6.6",
@@ -49,7 +57,7 @@
     "typescript": "^4.7.3",
     "vue": "^3.2.37",
     "vue-i18n": "^9.1.10",
-    "vue-router": "^4.0.15",
+    "vue-router": "^4.0.16",
     "vue-tippy": "^6.0.0-alpha.58",
     "vuedraggable": "^4.0.2"
   },
@@ -61,7 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "@vitejs/plugin-vue": "^2.3.2",
-    "@vitest/ui": "^0.14.1",
+    "@vitest/ui": "^0.14.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.0",
@@ -72,16 +80,18 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^5.2.0",
     "husky": "^8.0.1",
+    "lint-staged": "^13.0.1",
     "postcss": "^8.4.14",
     "prettier": "^2.6.2",
     "prettier-plugin-tailwindcss": "^0.1.11",
     "rollup-plugin-visualizer": "^5.6.0",
     "sass": "~1.52.3",
     "sass-loader": "^13.0.0",
-    "tailwindcss": "^3.1.0",
+    "start-server-and-test": "^1.14.0",
+    "tailwindcss": "^3.1.2",
     "unplugin-icons": "^0.14.3",
     "unplugin-vue-components": "^0.19.6",
-    "vite": "^2.9.10",
+    "vite": "^2.9.11",
     "vitest": "^0.14.1"
   },
   "resolutions": {
