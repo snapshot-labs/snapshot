@@ -184,6 +184,11 @@ onMounted(() => {
       v-model:hideAbstain="form.voting.hideAbstain"
     />
 
+    <SettingsPluginsBlock
+      :plugins="form.plugins"
+      @update:plugins="val => (form.plugins = val)"
+    />
+
     <BaseBlock>
       <BaseButton
         class="w-full"
