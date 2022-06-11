@@ -3,14 +3,8 @@ import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
-import {
-  calcFromSeconds,
-  calcToSeconds,
-  shorten,
-  clearAvatarCache
-} from '@/helpers/utils';
+import { shorten, clearAvatarCache } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
-import { usePlugins } from '@/composables/usePlugins';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -23,7 +17,6 @@ const props = defineProps<{
   sourceSpace: ExtendedSpace;
 }>();
 
-const { pluginIndex } = usePlugins();
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
@@ -33,17 +26,8 @@ const notify: any = inject('notify');
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
-const currentPlugin = ref({});
-const modalSkinsOpen = ref(false);
-const modalCategoryOpen = ref(false);
-const modalVotingTypeOpen = ref(false);
-const modalPluginsOpen = ref(false);
-const modalValidationOpen = ref(false);
 const loaded = ref(false);
 const uploadLoading = ref(false);
-const visitedFields = ref<string[]>([]);
-const delayUnit = ref('h');
-const periodUnit = ref('h');
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
@@ -86,22 +70,6 @@ const isSpaceAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
-const votingDelay = computed({
-  get: () => calcFromSeconds(form.value.voting?.delay, delayUnit.value),
-  set: newVal =>
-    (form.value.voting.delay = newVal
-      ? calcToSeconds(newVal, delayUnit.value)
-      : undefined)
-});
-
-const votingPeriod = computed({
-  get: () => calcFromSeconds(form.value.voting?.period, periodUnit.value),
-  set: newVal =>
-    (form.value.voting.period = newVal
-      ? calcToSeconds(newVal, periodUnit.value)
-      : undefined)
-});
-
 async function handleSubmit() {
   if (isValid.value) {
     const formattedForm = formatSpace(form.value);
@@ -124,33 +92,6 @@ async function handleSubmit() {
 function handleReset() {
   if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
   if (currentSettings.value) return (form.value = clone(currentSettings.value));
-}
-
-function handleSubmitAddCategories(categories) {
-  form.value.categories = categories;
-}
-
-function handleEditPlugins(name) {
-  currentPlugin.value = {};
-  currentPlugin.value[name] = clone(form.value.plugins[name]);
-  modalPluginsOpen.value = true;
-}
-
-function handleRemovePlugins(plugin) {
-  delete form.value.plugins[plugin];
-}
-
-function handleAddPlugins() {
-  currentPlugin.value = {};
-  modalPluginsOpen.value = true;
-}
-
-function handleSubmitAddPlugins(payload) {
-  form.value.plugins[payload.key] = payload.input;
-}
-
-function handleSubmitAddValidation(validation) {
-  form.value.validation = clone(validation);
 }
 
 onMounted(async () => {
@@ -248,43 +189,6 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
-          <BlockDomain />
-
-          <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
-            <BaseBlock
-              v-if="getErrorMessage('admins')"
-              class="mb-2 !border-red"
-            >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ getErrorMessage('admins') }}&nbsp;</span
-              >
-            </BaseBlock>
-            <TextareaArray
-              v-model="form.admins"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </BaseBlock>
-          <BaseBlock :title="$t('settings.authors')">
-            <BaseBlock
-              v-if="getErrorMessage('members')"
-              class="mb-2 !border-red"
-            >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red">
-                {{ getErrorMessage('members') }}&nbsp;</span
-              >
-            </BaseBlock>
-            <TextareaArray
-              v-model="form.members"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
-            />
-          </BaseBlock>
-
           <SettingsStrategiesBlock
             :form="form"
             :get-error-message="getErrorMessage"
@@ -293,134 +197,45 @@ async function handleSetRecord() {
             @update-symbol="val => (form.symbol = val)"
           />
 
-          <BaseBlock :title="$t('settings.proposalValidation')">
-            <div class="space-y-2">
-              <UiInput
-                :error="getErrorMessage('settings.validation')"
-                @click="modalValidationOpen = true"
-              >
-                <template #selected>
-                  {{ form.validation.name }}
-                </template>
-                <template #label>
-                  {{ $t(`settings.validation`) }}
-                </template>
-              </UiInput>
-              <div v-if="form.validation.name === 'basic'">
-                <UiInput
-                  v-model="form.filters.minScore"
-                  :error="getErrorMessage('minScore')"
-                  :number="true"
-                >
-                  <template #label>{{
-                    $t('settings.proposalThreshold')
-                  }}</template>
-                </UiInput>
-                <div class="mt-2 flex items-center space-x-2 pr-2">
-                  <BaseSwitch v-model="form.filters.onlyMembers" />
-                  <span>{{ $t('settings.allowOnlyAuthors') }}</span>
-                </div>
-              </div>
-            </div>
-          </BaseBlock>
-          <BaseBlock :title="$t('settings.voting')">
-            <div class="space-y-2">
-              <UiInput
-                v-model="votingDelay"
-                :number="true"
-                placeholder="e.g. 1"
-              >
-                <template #label>
-                  {{ $t('settings.votingDelay') }}
-                </template>
-                <template #info>
-                  <select
-                    v-model="delayUnit"
-                    class="input mr-[6px] ml-2 text-center"
-                    required
-                  >
-                    <option value="h" selected>hours</option>
-                    <option value="d">days</option>
-                  </select>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="votingPeriod"
-                :number="true"
-                placeholder="e.g. 5"
-              >
-                <template #label>
-                  {{ $t('settings.votingPeriod') }}
-                </template>
-                <template #info>
-                  <select
-                    v-model="periodUnit"
-                    class="input mr-[6px] ml-2 text-center"
-                    required
-                  >
-                    <option value="h" selected>hours</option>
-                    <option value="d">days</option>
-                  </select>
-                </template>
-              </UiInput>
-              <UiInput
-                v-model="form.voting.quorum"
-                :number="true"
-                placeholder="1000"
-              >
-                <template #label>
-                  {{ $t('settings.quorum') }}
-                </template>
-              </UiInput>
-              <UiInput>
-                <template #label>
-                  {{ $t('settings.type') }}
-                </template>
-                <template #selected>
-                  <div class="w-full" @click="modalVotingTypeOpen = true">
-                    {{
-                      form.voting?.type
-                        ? $t(`voting.${form.voting?.type}`)
-                        : $t('settings.anyType')
-                    }}
-                  </div>
-                </template>
-              </UiInput>
-              <div class="flex items-center space-x-2 pr-2">
-                <BaseSwitch v-model="form.voting.hideAbstain" />
-                <span>{{ $t('settings.hideAbstain') }}</span>
-              </div>
-            </div>
-          </BaseBlock>
-          <BaseBlock :title="$t('plugins')">
-            <div v-if="form?.plugins">
-              <div
-                v-for="(name, index) in Object.keys(form.plugins).filter(
-                  key => pluginIndex[key]
-                )"
-                :key="index"
-                class="relative mb-3"
-              >
-                <div v-if="pluginIndex[name].name">
-                  <a
-                    class="absolute right-0 p-4"
-                    @click="handleRemovePlugins(name)"
-                  >
-                    <BaseIcon name="close" size="12" />
-                  </a>
-                  <a
-                    class="block rounded-md border p-4"
-                    @click="handleEditPlugins(name)"
-                  >
-                    <h4 v-text="pluginIndex[name].name" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <BaseButton class="block w-full" @click="handleAddPlugins">
-              {{ $t('settings.addPlugin') }}
-            </BaseButton>
-          </BaseBlock>
+          <SettingsAdminsBlock
+            :admins="form.admins"
+            :is-space-controller="isSpaceController"
+            :get-error-message="getErrorMessage"
+            @update:admins="val => (form.admins = val)"
+          />
+
+          <SettingsAuthorsBlock
+            :members="form.members"
+            :get-error-message="getErrorMessage"
+            @update:members="val => (form.members = val)"
+          />
+
+          <SettingsValidationBlock
+            v-model:validation="form.validation"
+            :filters="form.filters"
+            :get-error-message="getErrorMessage"
+            @update:min-score="val => (form.filters.minScore = val)"
+            @update:only-members="val => (form.filters.onlyMembers = val)"
+          />
+
+          <SettingsVotingBlock
+            v-model:delay="form.voting.delay"
+            v-model:period="form.voting.period"
+            v-model:quorum="form.voting.quorum"
+            v-model:type="form.voting.type"
+            v-model:hideAbstain="form.voting.hideAbstain"
+          />
+
+          <SettingsDomainBlock
+            v-model:domain="form.domain"
+            v-model:skin="form.skin"
+            :get-error-message="getErrorMessage"
+          />
+
+          <SettingsPluginsBlock
+            :plugins="form.plugins"
+            @update:plugins="val => (form.plugins = val)"
+          />
         </div>
       </template>
     </template>
@@ -461,35 +276,6 @@ async function handleSetRecord() {
     </template>
   </TheLayout>
   <teleport to="#modal">
-    <ModalSkins
-      v-model="form.skin"
-      :open="modalSkinsOpen"
-      @close="modalSkinsOpen = false"
-    />
-    <ModalCategory
-      :open="modalCategoryOpen"
-      :categories="form.categories"
-      @close="modalCategoryOpen = false"
-      @add="handleSubmitAddCategories"
-    />
-    <ModalPlugins
-      :open="modalPluginsOpen"
-      :plugin="currentPlugin"
-      @close="modalPluginsOpen = false"
-      @add="handleSubmitAddPlugins"
-    />
-    <ModalValidation
-      :open="modalValidationOpen"
-      :validation="form.validation"
-      @close="modalValidationOpen = false"
-      @add="handleSubmitAddValidation"
-    />
-    <ModalVotingType
-      v-model:selected="form.voting.type"
-      :open="modalVotingTypeOpen"
-      allow-any
-      @close="modalVotingTypeOpen = false"
-    />
     <ModalControllerEdit
       :open="modalControllerEditOpen"
       :current-text-record="currentTextRecord"

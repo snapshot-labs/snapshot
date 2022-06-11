@@ -150,6 +150,45 @@ onMounted(() => {
       @update-symbol="val => (form.symbol = val)"
     />
 
+    <SettingsAdminsBlock
+      :admins="form.admins"
+      :get-error-message="getErrorMessage"
+      @update:admins="val => (form.admins = val)"
+    />
+
+    <SettingsAuthorsBlock
+      :members="form.members"
+      :get-error-message="getErrorMessage"
+      @update:members="val => (form.members = val)"
+    />
+
+    <SettingsDomainBlock
+      v-model:domain="form.domain"
+      v-model:skin="form.skin"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsValidationBlock
+      v-model:validation="form.validation"
+      :filters="form.filters"
+      :get-error-message="getErrorMessage"
+      @update:min-score="val => (form.filters.minScore = val)"
+      @update:only-members="val => (form.filters.onlyMembers = val)"
+    />
+
+    <SettingsVotingBlock
+      v-model:delay="form.voting.delay"
+      v-model:period="form.voting.period"
+      v-model:quorum="form.voting.quorum"
+      v-model:type="form.voting.type"
+      v-model:hideAbstain="form.voting.hideAbstain"
+    />
+
+    <SettingsPluginsBlock
+      :plugins="form.plugins"
+      @update:plugins="val => (form.plugins = val)"
+    />
+
     <BaseBlock>
       <BaseButton
         class="w-full"
