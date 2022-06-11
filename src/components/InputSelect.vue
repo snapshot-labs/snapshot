@@ -17,7 +17,7 @@ const emit = defineEmits(['select']);
     >
       {{ modelValue }}
       <i-ho-chevron-down
-        class="absolute inset-y-[12px] right-2 text-xs text-skin-text"
+        class="absolute inset-y-[12px] right-[14px] text-xs text-skin-text"
       />
     </BaseButton>
   </div>

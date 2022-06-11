@@ -63,7 +63,7 @@ const votingPeriod = computed({
           <template #after>
             <select
               v-model="delayUnit"
-              class="input ml-2 text-center !text-skin-text"
+              class="input ml-2 -mr-2 text-center !text-skin-text"
               required
             >
               <option value="h" selected>hours</option>
@@ -81,7 +81,7 @@ const votingPeriod = computed({
           <template #after>
             <select
               v-model="periodUnit"
-              class="input ml-2 text-center !text-skin-text"
+              class="input ml-2 -mr-2 text-center !text-skin-text"
               required
             >
               <option value="h" selected>hours</option>
