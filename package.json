@@ -2,7 +2,7 @@
   "name": "snapshot",
   "version": "0.1.4",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port=8080",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
