@@ -248,22 +248,35 @@
     "unread": "未读"
   },
   "settings": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "avatar": "头像",
     "header": "设置",
     "setEnsTextRecord": "设置 ENS 文本记录",
     "editController": "编辑控制人",
     "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
     "profile": "用户信息",
-    "avatar": "头像",
-    "name": "名称",
-    "about": "关于",
     "terms": "使用条款",
     "network": "网络",
     "symbol": "符号",
     "skin": "皮肤",
     "customDomain": "自定义域名",
-    "domain": "域名",
     "strategies": "策略",
-    "categories": "分类",
     "selectCategories": "选择分类",
     "hideSpace": "从主页隐藏空间",
     "addStrategy": "添加策略",
@@ -324,21 +337,6 @@
     "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
     "fillCurrentAccount": "使用当前登录的帐户",
     "profile": "用户信息"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "名称",
-      "placeholder": "例如 Yam Network"
-    },
-    "about": {
-      "label": "关于",
-      "placeholder": "介绍您的组织"
-    },
-    "categories": {
-      "label": "类别",
-      "select": "选择类别"
-    },
-    "avatar": "头像"
   },
   "spaceStrategies": {
     "title": "策略",
