@@ -22,7 +22,7 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <BaseBlock :title="$t('setup.profile')">
+  <BaseBlock :title="$t('settings.profile')">
     <div class="space-y-2">
       <div class="flex flex-col-reverse sm:flex-row">
         <div class="mt-3 space-y-2 sm:mt-0 sm:w-2/3">

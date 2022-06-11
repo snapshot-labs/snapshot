@@ -67,8 +67,8 @@ const votingPeriod = computed({
                 class="input ml-2 -mr-2 text-center !text-skin-text"
                 required
               >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
+                <option value="h" selected>{{ $t('settings.hours') }}</option>
+                <option value="d">{{ $t('settings.days') }}</option>
               </select>
             </template>
           </BaseInput>
@@ -85,8 +85,10 @@ const votingPeriod = computed({
                 class="input ml-2 -mr-2 text-center !text-skin-text"
                 required
               >
-                <option value="h" selected>hours</option>
-                <option value="d">days</option>
+                <option value="h" selected>
+                  ho{{ $t('settings.hours') }}urs
+                </option>
+                <option value="d">{{ $t('settings.days') }}</option>
               </select>
             </template>
           </BaseInput>
