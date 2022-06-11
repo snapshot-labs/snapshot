@@ -150,6 +150,18 @@ onMounted(() => {
       @update-symbol="val => (form.symbol = val)"
     />
 
+    <SettingsAdminsBlock
+      :admins="form.admins"
+      :get-error-message="getErrorMessage"
+      @update:admins="val => (form.admins = val)"
+    />
+
+    <SettingsAuthorsBlock
+      :members="form.members"
+      :get-error-message="getErrorMessage"
+      @update:members="val => (form.members = val)"
+    />
+
     <SettingsDomainBlock
       v-model:domain="form.domain"
       v-model:skin="form.skin"

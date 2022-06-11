@@ -1,9 +1,14 @@
 <script setup lang="ts">
-defineProps<{
-  admins: string[];
-  isSpaceController: boolean;
-  getErrorMessage: (field: string) => string;
-}>();
+withDefaults(
+  defineProps<{
+    admins: string[];
+    isSpaceController?: boolean;
+    getErrorMessage: (field: string) => string;
+  }>(),
+  {
+    isSpaceController: true
+  }
+);
 
 const emit = defineEmits(['update:admins']);
 </script>
