@@ -12,7 +12,7 @@ const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
 </script>
 
 <template>
-  <BaseBlock title="Links">
+  <BaseBlock :title="$t('settings.links')">
     <div class="space-y-2">
       <ContainerParallelInput>
         <InputSocial
@@ -36,7 +36,7 @@ const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
       </ContainerParallelInput>
 
       <InputUrl
-        title="Website"
+        :title="$t('settings.website')"
         :model-value="website"
         :error="getErrorMessage('website')"
         :max-length="schemas.space.properties.website.maxLength"

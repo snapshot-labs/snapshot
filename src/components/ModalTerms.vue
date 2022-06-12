@@ -16,7 +16,7 @@ function accept() {
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <h3>{{ $t('settings.terms') }}</h3>
+      <h3>{{ $t('settings.terms.label') }}</h3>
     </template>
     <div class="my-2 p-4 text-center">
       <h4 class="mb-3">

@@ -22,7 +22,7 @@ const emit = defineEmits([
 </script>
 
 <template>
-  <BaseBlock :title="$t('setup.profile')">
+  <BaseBlock :title="$t('settings.profile')">
     <div class="space-y-2">
       <div class="flex flex-col-reverse sm:flex-row">
         <div class="mt-3 space-y-2 sm:mt-0 sm:w-2/3">
@@ -50,11 +50,12 @@ const emit = defineEmits([
             @update-categories="value => emit('update:categories', value)"
           />
 
-          <InputUrl
-            :title="$t(`settings.terms`)"
+          <BaseInput
+            :title="$t(`settings.terms.label`)"
+            :information="$t('settings.terms.information')"
             :model-value="terms"
             :error="getErrorMessage('terms')"
-            placeholder="www.example.com/terms"
+            placeholder="e.g. https://example.com/terms"
             @update:model-value="value => emit('update:terms', value)"
           />
 
