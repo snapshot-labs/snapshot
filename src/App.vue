@@ -14,9 +14,7 @@ const route = useRoute();
 provide('web3', web3);
 provide('notify', notify);
 
-onMounted(async () => {
-  init();
-});
+onMounted(async () => init());
 </script>
 
 <template>
