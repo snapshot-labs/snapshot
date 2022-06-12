@@ -14,7 +14,11 @@ const emit = defineEmits(['update:admins']);
 </script>
 
 <template>
-  <BaseBlock v-if="isSpaceController" :title="$t('settings.admins')">
+  <BaseBlock
+    v-if="isSpaceController"
+    :title="$t('settings.admins.label')"
+    :information="$t('settings.admins.information')"
+  >
     <BaseBlock v-if="getErrorMessage('admins')" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> {{ getErrorMessage('admins') }}&nbsp;</span>

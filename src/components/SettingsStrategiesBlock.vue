@@ -54,7 +54,10 @@ function handleSubmitStrategy(strategy) {
 </script>
 
 <template>
-  <BaseBlock :title="$t('spaceStrategies.title')">
+  <BaseBlock
+    :title="$t('settings.strategies.label')"
+    :information="$t('settings.strategies.information')"
+  >
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
@@ -62,7 +65,8 @@ function handleSubmitStrategy(strategy) {
       />
       <BaseInput
         :model-value="form.symbol"
-        :title="$t(`spaceStrategies.symbol`)"
+        :title="$t(`settings.symbol.label`)"
+        :information="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
         :error="getErrorMessage('symbol')"
         :max-length="schemas.space.properties.symbol.maxLength"
@@ -71,7 +75,7 @@ function handleSubmitStrategy(strategy) {
     </ContainerParallelInput>
 
     <div class="mb-4 grid gap-3">
-      <StrategiesBlockItem
+      <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
         @remove-strategy="i => handleRemoveStrategy(i)"
@@ -81,7 +85,7 @@ function handleSubmitStrategy(strategy) {
     <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
-      {{ $t('spaceStrategies.addStrategy') }}
+      {{ $t('settings.addStrategy') }}
     </BaseButton>
   </BaseBlock>
 

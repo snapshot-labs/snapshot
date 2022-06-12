@@ -47,21 +47,23 @@ function handleSubmitPlugins(payload) {
           key => pluginIndex[key]
         )"
         :key="index"
-        class="relative mb-3"
+        class="mb-3"
       >
-        <div v-if="pluginIndex[name].name">
-          <a class="absolute right-0 p-4" @click="handleRemovePlugins(name)">
-            <BaseIcon name="close" size="12" />
-          </a>
-          <a
-            class="block rounded-md border p-4"
-            @click="handleEditPlugins(name)"
-          >
-            <h4 v-text="pluginIndex[name].name" />
-          </a>
-        </div>
+        <button
+          v-if="pluginIndex[name].name"
+          class="flex w-full items-center justify-between rounded-md border p-4"
+          @click="handleEditPlugins(name)"
+        >
+          <div class="flex items-center gap-2 truncate pr-[20px] text-left">
+            <h4 class="truncate">{{ pluginIndex[name].name }}</h4>
+          </div>
+          <BaseButtonIcon class="-mr-2" @click.stop="handleRemovePlugins(name)">
+            <BaseIcon name="close" size="14" />
+          </BaseButtonIcon>
+        </button>
       </div>
     </div>
+
     <BaseButton class="block w-full" @click="handleAddPlugins">
       {{ $t('settings.addPlugin') }}
     </BaseButton>
