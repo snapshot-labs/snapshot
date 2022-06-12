@@ -24,7 +24,7 @@ const domainAlias = Object.keys(aliases).find(
 
 const { login } = useWeb3();
 
-const ready = ref(false);
+const isReady = ref(false);
 
 // only affects small screens
 const showSidebar = ref(false);
@@ -38,26 +38,27 @@ export function useApp() {
     await loadLocale();
     const auth = getInstance();
     await getSkin(domain);
-    ready.value = true;
+    isReady.value = true;
     getSpaces();
 
     // Auto connect if previous session was connected
     if (window?.parent === window)
       auth.getConnector().then(connector => {
-        if (connector) login(connector);
+        if (connector) return login(connector);
       });
     // Auto connect when on web3 browser
     const injected = computed(() => getInjected());
+    if (injected.value?.id === 'metamask') return login('injected');
     if (injected.value?.id === 'web3') return login('injected');
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
-    login('gnosis');
+    return login('gnosis');
   }
 
   return {
     domain,
     domainAlias,
     env,
-    ready,
+    isReady,
     init,
     showSidebar
   };

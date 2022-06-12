@@ -6,7 +6,7 @@ import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useRoute } from 'vue-router';
 
 const { domain } = useApp();
-const { init, ready, showSidebar } = useApp();
+const { init, isReady, showSidebar } = useApp();
 const { web3 } = useWeb3();
 const { notify } = useFlashNotification();
 const route = useRoute();
@@ -18,7 +18,7 @@ onMounted(async () => init());
 </script>
 
 <template>
-  <LoadingSpinner v-if="!ready" class="overlay big animate-fade-in" />
+  <LoadingSpinner v-if="!isReady" class="overlay big animate-fade-in" />
   <div
     v-else
     class="flex min-h-screen bg-skin-bg font-sans text-base text-skin-text antialiased"
