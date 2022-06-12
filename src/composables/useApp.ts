@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -6,6 +6,7 @@ import { useSkin } from '@/composables/useSkin';
 import { useSpaces } from '@/composables/useSpaces';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 const domainName = window.location.hostname;
 let env = 'master';
@@ -23,7 +24,7 @@ const domainAlias = Object.keys(aliases).find(
 
 const { login } = useWeb3();
 
-const ready = ref(false);
+const isReady = ref(false);
 
 // only affects small screens
 const showSidebar = ref(false);
@@ -33,26 +34,34 @@ export function useApp() {
   const { getSkin } = useSkin();
   const { getSpaces } = useSpaces();
 
-  async function init() {
-    await loadLocale();
+  function connectWallet() {
     const auth = getInstance();
-    await getSkin(domain);
-    ready.value = true;
-    getSpaces();
 
-    // Auto connect with gnosis-connector when inside gnosis-safe iframe
+    // Auto connect if previous session was connected
     if (window?.parent === window)
       auth.getConnector().then(connector => {
-        if (connector) login(connector);
+        if (connector) return login(connector);
       });
-    else login('gnosis');
+    // Auto connect when coinbase wallet is detected
+    const injected = computed(() => getInjected());
+    if (injected.value?.id === 'coinbase') return login('injected');
+    // Auto connect with gnosis-connector when gnosis safe is detected
+    return login('gnosis');
+  }
+
+  async function init() {
+    await loadLocale();
+    await getSkin(domain);
+    isReady.value = true;
+    getSpaces();
+    connectWallet();
   }
 
   return {
     domain,
     domainAlias,
     env,
-    ready,
+    isReady,
     init,
     showSidebar
   };
