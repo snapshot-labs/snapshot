@@ -46,7 +46,7 @@ watch(
         />
       </ComboboxButton>
       <ComboboxButton
-        class="absolute inset-y-0 right-0 flex items-center px-2 focus:outline-none"
+        class="absolute inset-y-0 right-1 flex items-center px-2 focus:outline-none"
       >
         <i-ho-chevron-down class="text-[14px] text-skin-text" />
       </ComboboxButton>

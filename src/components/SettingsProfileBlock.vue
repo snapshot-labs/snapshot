@@ -28,20 +28,20 @@ const emit = defineEmits([
         <div class="mt-3 space-y-2 sm:mt-0 sm:w-2/3">
           <BaseInput
             :model-value="name"
-            :title="$t(`spaceProfile.name.label`)"
+            :title="$t(`settings.name.label`)"
             :error="getErrorMessage('name')"
             :max-length="schemas.space.properties.name.maxLength"
-            :placeholder="$t('spaceProfile.name.placeholder')"
+            :placeholder="$t('settings.name.placeholder')"
             focus-on-mount
             @update:model-value="value => emit('update:name', value)"
           />
 
-          <LabelInput> {{ $t(`spaceProfile.about.label`) }} </LabelInput>
+          <LabelInput> {{ $t(`settings.about.label`) }} </LabelInput>
           <TextareaAutosize
             :model-value="about"
             class="s-input !rounded-3xl"
             :max-length="schemas.space.properties.about.maxLength"
-            :placeholder="$t('spaceProfile.about.placeholder')"
+            :placeholder="$t('settings.about.placeholder')"
             @update:model-value="value => emit('update:about', value)"
           />
 
@@ -68,7 +68,7 @@ const emit = defineEmits([
         <div class="flex w-full justify-center sm:w-1/3">
           <div>
             <LabelInput>
-              {{ $t('spaceProfile.avatar') }}
+              {{ $t('settings.avatar') }}
             </LabelInput>
             <InputUploadAvatar
               class="h-[80px]"

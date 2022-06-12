@@ -248,22 +248,35 @@
     "unread": "Unread"
   },
   "settings": {
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "avatar": "Avatar",
     "header": "Settings",
     "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
     "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
     "profile": "Profile",
-    "avatar": "Avatar",
-    "name": "Name",
-    "about": "About",
     "terms": "Terms",
     "network": "Network",
     "symbol": "Symbol",
     "skin": "Skin",
     "customDomain": "Custom domain",
-    "domain": "Domain name",
     "strategies": "Strategie(s)",
-    "categories": "Categorie(s)",
     "selectCategories": "Select categories",
     "hideSpace": "Hide space from homepage",
     "addStrategy": "Add strategy",
@@ -324,21 +337,6 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
     "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
   },
   "spaceStrategies": {
     "title": "Strategie(s)",
