@@ -248,6 +248,15 @@
     "unread": "Unread"
   },
   "settings": {
+    "header": "Settings",
+    "editController": "Edit controller",
+    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "currentSpaceControllerIs": "The current space controller is {address}",
+    "newController": "New controller",
+    "set": "Set",
+
+    "profile": "Profile",
+    "avatar": "Avatar",
     "name": {
       "label": "Name",
       "placeholder": "e.g. Yam Network"
@@ -260,51 +269,76 @@
       "label": "Categorie(s)",
       "select": "Select categorie(s)"
     },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Hide space from homepage",
+
+    "links": "Links",
+    "website": "Website",
+
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Add strategy",
+
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+
+    "proposalValidation": "Proposal validation",
+    "validation": "Validation",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Allow only authors to submit a proposal",
+    "editValidation": "Edit validation",
+    "selectValidation": "Select validation",
+    "validationParameters": "Validation parameters",
+
+    "voting": "Voting",
+    "votingDelay": "Voting delay",
+    "votingPeriod": "Voting period",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Any",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+
+    "customDomain": "Custom domain",
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
       "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
     },
-    "avatar": "Avatar",
-    "header": "Settings",
-    "setEnsTextRecord": "Set ENS text record",
-    "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profile",
-    "terms": "Terms",
-    "network": "Network",
-    "symbol": "Symbol",
     "skin": "Skin",
-    "customDomain": "Custom domain",
-    "strategies": "Strategie(s)",
-    "selectCategories": "Select categories",
-    "hideSpace": "Hide space from homepage",
-    "addStrategy": "Add strategy",
-    "authors": "Authors",
-    "admins": "Admins",
-    "defaultTab": "Default tab",
-    "proposalThreshold": "Proposal threshold",
-    "allowOnlyAuthors": "Allow only authors to submit a proposal",
-    "editPlugin": "Edit plugin",
+
     "addPlugin": "Add plugin",
-    "pluginParameters": "Plugin parameters",
-    "proposalValidation": "Proposal validation",
-    "validation": "Validation",
-    "editValidation": "Edit validation",
-    "selectValidation": "Select validation",
-    "validationParameters": "Validation parameters",
-    "warningTextRecord": "You must set a text record on the ENS domain.",
-    "votingDelay": "Voting delay",
-    "votingPeriod": "Voting period",
-    "voting": "Voting",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Any",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
-    "currentSpaceControllerIs": "The current space controller is {address}",
-    "newController": "New controller",
-    "set": "Set"
+    "editPlugin": "Edit plugin",
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -335,14 +369,9 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
+    "fillCurrentAccount": "Use currently logged in account"
   },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
-  },
+
   "profile": {
     "buttonEdit": "Edit profile",
     "viewProfile": "View profile",

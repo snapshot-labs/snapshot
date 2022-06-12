@@ -202,7 +202,7 @@ onMounted(async () => {
                       : $t('selectNetwork')
                   }}
                 </template>
-                <template #label> {{ $t(`settings.network`) }} </template>
+                <template #label> {{ $t(`settings.network.label`) }} </template>
               </UiInput>
               <UiInput
                 v-model="form.snapshot"

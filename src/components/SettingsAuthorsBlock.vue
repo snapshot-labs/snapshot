@@ -8,7 +8,10 @@ const emit = defineEmits(['update:members']);
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.authors')">
+  <BaseBlock
+    :title="$t('settings.authors.label')"
+    :information="$t('settings.authors.information')"
+  >
     <BaseBlock v-if="getErrorMessage('members')" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> {{ getErrorMessage('members') }}&nbsp;</span>

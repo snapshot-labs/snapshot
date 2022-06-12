@@ -13,6 +13,7 @@ const props = defineProps<{
   label: string;
   items: { id: number | string; name: string }[];
   selectedId?: number | string;
+  information?: string;
 }>();
 
 const emit = defineEmits(['select', 'search']);
@@ -34,7 +35,7 @@ watch(
 <template>
   <Combobox v-model="selectedItem" as="div" class="w-full">
     <ComboboxLabel class="block">
-      <LabelInput>{{ label }}</LabelInput>
+      <LabelInput :information="information">{{ label }}</LabelInput>
     </ComboboxLabel>
     <div class="relative">
       <ComboboxButton class="w-full">
