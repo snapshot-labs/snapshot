@@ -4,17 +4,9 @@ import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 function ensReverseRecordRequest(addresses) {
   const network = '1';
-  const provider = getProvider(network, 'light');
+  const provider = getProvider(network, 'brovider');
   const abi = [
-    {
-      inputs: [
-        { internalType: 'address[]', name: 'addresses', type: 'address[]' }
-      ],
-      name: 'getNames',
-      outputs: [{ internalType: 'string[]', name: 'r', type: 'string[]' }],
-      stateMutability: 'view',
-      type: 'function'
-    }
+    'function getNames(address[] addresses) view returns (string[] r)'
   ];
   return call(
     provider,
