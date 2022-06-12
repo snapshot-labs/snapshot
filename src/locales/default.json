@@ -280,15 +280,15 @@
 
     "strategies": {
       "label": "Strategie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal. Strategies can have a different network than the space."
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
       "label": "Network",
-      "information": "This is the defaul network used for this space. Networks can also be specified in the individual strategy settings."
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
     },
     "symbol": {
       "label": "Symbol",
-      "information": "This is the default symbol used for this space. It is usually the token symbol f.e. BAL for Balancer."
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
     "addStrategy": "Add strategy",
 
@@ -305,7 +305,7 @@
     "validation": "Validation",
     "proposalThreshold": {
       "label": "Proposal threshold",
-      "information": "The minimum number of voting power required to create a proposal."
+      "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "Allow only authors to submit a proposal",
     "editValidation": "Edit validation",
@@ -319,7 +319,7 @@
     "days": "Days",
     "quorum": {
       "label": "Quorum",
-      "information": "The minimum number of votes voting power required for the proposal to pass."
+      "information": "The minimum amount of voting power required for the proposal to pass."
     },
     "type": {
       "label": "Type",
