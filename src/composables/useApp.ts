@@ -48,7 +48,6 @@ export function useApp() {
       });
     // Auto connect when on web3 browser
     const injected = computed(() => getInjected());
-    if (injected.value?.id === 'metamask') return login('injected');
     if (injected.value?.id === 'web3') return login('injected');
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     return login('gnosis');
