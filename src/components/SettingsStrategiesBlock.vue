@@ -75,7 +75,7 @@ function handleSubmitStrategy(strategy) {
     </ContainerParallelInput>
 
     <div class="mb-4 grid gap-3">
-      <StrategiesBlockItem
+      <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
         @remove-strategy="i => handleRemoveStrategy(i)"
