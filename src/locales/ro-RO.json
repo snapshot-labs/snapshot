@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "Setări",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profil",
-    "avatar": "Avatar",
-    "name": "Nume",
-    "about": "Despre",
-    "terms": "Termeni",
-    "network": "Rețea",
-    "symbol": "Simbol",
-    "skin": "Skin",
-    "customDomain": "Domeniu personalizat",
-    "domain": "Nume de domeniu",
-    "strategies": "Strategie(i)",
-    "categories": "Categorii(e)",
-    "selectCategories": "Selectează categorii",
-    "hideSpace": "Ascunde spațiu de pe pagina principală",
-    "addStrategy": "Adaugă strategie",
-    "authors": "Autori",
-    "admins": "Administratori",
-    "defaultTab": "Tab implicit",
-    "proposalThreshold": "Prag propunere",
-    "allowOnlyAuthors": "Permite doar autorilor să înregistreze o propunere",
-    "editPlugin": "Modifică extensie",
-    "addPlugin": "Adaugă extensie",
-    "pluginParameters": "Parametrii extensie",
-    "proposalValidation": "Validare propunere",
-    "validation": "Validare",
-    "editValidation": "Modifică validarea",
-    "selectValidation": "Selectează validarea",
-    "validationParameters": "Parametrii de validare",
-    "warningTextRecord": "Trebuie sa setezi o inrînregistrare de text pe domeniul ENS.",
-    "votingDelay": "Intârziere vot",
-    "votingPeriod": "Perioada de vot",
-    "voting": "Votare",
-    "quorum": "Cvorum",
-    "type": "Tip",
-    "anyType": "Oricare",
-    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profil",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Ascunde spațiu de pe pagina principală",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Adaugă strategie",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Validare propunere",
+    "validation": "Validare",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Permite doar autorilor să înregistreze o propunere",
+    "editValidation": "Modifică validarea",
+    "selectValidation": "Selectează validarea",
+    "validationParameters": "Parametrii de validare",
+    "voting": "Votare",
+    "votingDelay": "Intârziere vot",
+    "votingPeriod": "Perioada de vot",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Oricare",
+    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
+    "customDomain": "Domeniu personalizat",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "addPlugin": "Adaugă extensie",
+    "editPlugin": "Modifică extensie",
+    "pluginParameters": "Parametrii extensie"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",

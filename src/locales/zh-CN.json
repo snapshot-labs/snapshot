@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "设置",
-    "setEnsTextRecord": "设置 ENS 文本记录",
     "editController": "编辑控制人",
-    "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
-    "profile": "用户信息",
-    "avatar": "头像",
-    "name": "名称",
-    "about": "关于",
-    "terms": "使用条款",
-    "network": "网络",
-    "symbol": "符号",
-    "skin": "皮肤",
-    "customDomain": "自定义域名",
-    "domain": "域名",
-    "strategies": "策略",
-    "categories": "分类",
-    "selectCategories": "选择分类",
-    "hideSpace": "从主页隐藏空间",
-    "addStrategy": "添加策略",
-    "authors": "作者",
-    "admins": "管理员",
-    "defaultTab": "默认标签页",
-    "proposalThreshold": "提案阈值",
-    "allowOnlyAuthors": "仅允许作者提交提案",
-    "editPlugin": "编辑插件",
-    "addPlugin": "添加插件",
-    "pluginParameters": "插件参数",
-    "proposalValidation": "提案验证",
-    "validation": "验证",
-    "editValidation": "编辑验证",
-    "selectValidation": "选择验证",
-    "validationParameters": "验证参数",
-    "warningTextRecord": "您必须给ENS域名设置TXT记录。",
-    "votingDelay": "投票延迟开始",
-    "votingPeriod": "投票时长",
-    "voting": "投票",
-    "quorum": "提案生效阈值",
-    "type": "类型",
-    "anyType": "任意",
-    "hideAbstain": "忽略基本投票结果中的弃权票",
     "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
-    "set": "设置"
+    "set": "设置",
+    "profile": "用户信息",
+    "avatar": "头像",
+    "name": {
+      "label": "名称",
+      "placeholder": "例如 Yam Network"
+    },
+    "about": {
+      "label": "关于",
+      "placeholder": "介绍您的组织"
+    },
+    "categories": {
+      "label": "类别",
+      "select": "选择类别"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "从主页隐藏空间",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "添加策略",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "提案验证",
+    "validation": "验证",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "仅允许作者提交提案",
+    "editValidation": "编辑验证",
+    "selectValidation": "选择验证",
+    "validationParameters": "验证参数",
+    "voting": "投票",
+    "votingDelay": "投票延迟开始",
+    "votingPeriod": "投票时长",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "任意",
+    "hideAbstain": "忽略基本投票结果中的弃权票",
+    "customDomain": "自定义域名",
+    "domain": {
+      "label": "域名",
+      "placeholder": "例如 vote.balancer.fi",
+      "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
+    },
+    "skin": "皮肤",
+    "addPlugin": "添加插件",
+    "editPlugin": "编辑插件",
+    "pluginParameters": "插件参数"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
     "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
     "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
-    "fillCurrentAccount": "使用当前登录的帐户",
-    "profile": "用户信息"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "名称",
-      "placeholder": "例如 Yam Network"
-    },
-    "about": {
-      "label": "关于",
-      "placeholder": "介绍您的组织"
-    },
-    "categories": {
-      "label": "类别",
-      "select": "选择类别"
-    },
-    "avatar": "头像"
-  },
-  "spaceStrategies": {
-    "title": "策略",
-    "symbol": "符号",
-    "addStrategy": "添加策略"
+    "fillCurrentAccount": "使用当前登录的帐户"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",

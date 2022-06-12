@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "Mga Setting",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profile",
-    "avatar": "Avatar",
-    "name": "Pangalan",
-    "about": "Tungkol Dito",
-    "terms": "Mga tuntunin",
-    "network": "Network",
-    "symbol": "Sagisag",
-    "skin": "Skin",
-    "customDomain": "Custom na domain",
-    "domain": "Domain name",
-    "strategies": "\t\nMga estratehiya",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
-    "hideSpace": "Itago ang espasyo sa homepage",
-    "addStrategy": "Add strategy",
-    "authors": "Mga may-akda",
-    "admins": "Admin",
-    "defaultTab": "Default tab",
-    "proposalThreshold": "Hangganan ng panukala",
-    "allowOnlyAuthors": "Pahintulutan lamang ang mga may-akda na magsumite ng isang panukala",
-    "editPlugin": "I-edit ang plugin",
-    "addPlugin": "Magdagdag ng Plugin",
-    "pluginParameters": "Plugin parameters",
-    "proposalValidation": "Pagpapatunay ng panukala",
-    "validation": "Pagpapatunay",
-    "editValidation": "I-edit ang pagpapatunay",
-    "selectValidation": "Piliin ang pagpapatunay",
-    "validationParameters": "Mga parameter ng pagpapatunay",
-    "warningTextRecord": "Dapat kang magtakda ng text record sa ENS domain.",
-    "votingDelay": "Pagkaantala ng pagboto",
-    "votingPeriod": "Panahon ng pagboto",
-    "voting": "Pagboto",
-    "quorum": "Quorum",
-    "type": "Uri",
-    "anyType": "Kahit Ano",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profile",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Itago ang espasyo sa homepage",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Add strategy",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Pagpapatunay ng panukala",
+    "validation": "Pagpapatunay",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Pahintulutan lamang ang mga may-akda na magsumite ng isang panukala",
+    "editValidation": "I-edit ang pagpapatunay",
+    "selectValidation": "Piliin ang pagpapatunay",
+    "validationParameters": "Mga parameter ng pagpapatunay",
+    "voting": "Pagboto",
+    "votingDelay": "Pagkaantala ng pagboto",
+    "votingPeriod": "Panahon ng pagboto",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Kahit Ano",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "customDomain": "Custom na domain",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "addPlugin": "Magdagdag ng Plugin",
+    "editPlugin": "I-edit ang plugin",
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",

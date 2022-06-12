@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "設定",
-    "setEnsTextRecord": "ENSテキストレコードを設定",
     "editController": "コントローラの編集",
-    "needToSetEnsText": "スペースの設定はIPFS上のファイルに保存されます。スペースの設定を編集する前に、まずそのファイルを指定するENSテキストコードを設定する必要があります。",
-    "profile": "プロフィール",
-    "avatar": "アバター",
-    "name": "名前",
-    "about": "概要",
-    "terms": "利用規約",
-    "network": "ネットワーク",
-    "symbol": "シンボル",
-    "skin": "スキン",
-    "customDomain": "カスタムドメイン",
-    "domain": "ドメイン名",
-    "strategies": "ストラテジー",
-    "categories": "カテゴリー",
-    "selectCategories": "カテゴリーを選択する",
-    "hideSpace": "ホームページからスペースを隠す",
-    "addStrategy": "ストラテジーを追加する",
-    "authors": "作成者",
-    "admins": "管理者",
-    "defaultTab": "デフォルトのタブ",
-    "proposalThreshold": "提案の閾値",
-    "allowOnlyAuthors": "作成者のみ提案を提出可能",
-    "editPlugin": "プラグインを編集する",
-    "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ",
-    "proposalValidation": "提案のバリデーション",
-    "validation": "バリデーション",
-    "editValidation": "バリデーションを編集",
-    "selectValidation": "バリデーションを選択",
-    "validationParameters": "バリデーションのパラメータ",
-    "warningTextRecord": "ENSドメインにテキストレコードを設定する必要があります。",
-    "votingDelay": "投票の遅延",
-    "votingPeriod": "投票期間",
-    "voting": "投票",
-    "quorum": "定足数",
-    "type": "タイプ",
-    "anyType": "すべて",
-    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
     "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
-    "set": "設定する"
+    "set": "設定する",
+    "profile": "プロフィール",
+    "avatar": "アバター",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "ホームページからスペースを隠す",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "ストラテジーを追加する",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "提案のバリデーション",
+    "validation": "バリデーション",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "作成者のみ提案を提出可能",
+    "editValidation": "バリデーションを編集",
+    "selectValidation": "バリデーションを選択",
+    "validationParameters": "バリデーションのパラメータ",
+    "voting": "投票",
+    "votingDelay": "投票の遅延",
+    "votingPeriod": "投票期間",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "すべて",
+    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
+    "customDomain": "カスタムドメイン",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "スキン",
+    "addPlugin": "プラグインを追加する",
+    "editPlugin": "プラグインを編集する",
+    "pluginParameters": "プラグインのパラメータ"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
     "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",

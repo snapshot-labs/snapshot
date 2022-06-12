@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "Definições",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Perfil",
-    "avatar": "Imagem de Perfil",
-    "name": "Nome",
-    "about": "Sobre nós",
-    "terms": "Termos e Condições",
-    "network": "Rede",
-    "symbol": "Símbolo",
-    "skin": "Skin",
-    "customDomain": "Domínio Personalizado",
-    "domain": "Nome do domínio",
-    "strategies": "Estratégia(s)",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
-    "hideSpace": "Ocultar comunidade da página inicial",
-    "addStrategy": "Adicionar estratégia",
-    "authors": "Autores",
-    "admins": "Administradores",
-    "defaultTab": "Separador padrão",
-    "proposalThreshold": "Limite da proposta",
-    "allowOnlyAuthors": "Permitir apenas autores para submeter a proposta",
-    "editPlugin": "Editar plugin",
-    "addPlugin": "Adicionar plugin",
-    "pluginParameters": "Parâmetros do plugin",
-    "proposalValidation": "Validação da proposta",
-    "validation": "Validação",
-    "editValidation": "Editar validação",
-    "selectValidation": "Selecionar validação",
-    "validationParameters": "Parâmetros de validação",
-    "warningTextRecord": "Você deve definir um registro de texto no domínio ENS.",
-    "votingDelay": "Atraso na votação",
-    "votingPeriod": "Período de votação",
-    "voting": "Votar",
-    "quorum": "Quorum",
-    "type": "Modelo",
-    "anyType": "Qualquer",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Perfil",
+    "avatar": "Imagem de Perfil",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Ocultar comunidade da página inicial",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Adicionar estratégia",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Validação da proposta",
+    "validation": "Validação",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Permitir apenas autores para submeter a proposta",
+    "editValidation": "Editar validação",
+    "selectValidation": "Selecionar validação",
+    "validationParameters": "Parâmetros de validação",
+    "voting": "Votar",
+    "votingDelay": "Atraso na votação",
+    "votingPeriod": "Período de votação",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Qualquer",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "customDomain": "Domínio Personalizado",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "addPlugin": "Adicionar plugin",
+    "editPlugin": "Editar plugin",
+    "pluginParameters": "Parâmetros do plugin"
   },
   "setup": {
     "example": "p. ex. yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
