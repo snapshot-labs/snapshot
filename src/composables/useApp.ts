@@ -42,9 +42,9 @@ export function useApp() {
       auth.getConnector().then(connector => {
         if (connector) return login(connector);
       });
-    // Auto connect when on web3 browser
+    // Auto connect when coinbase wallet is detected
     const injected = computed(() => getInjected());
-    if (injected.value?.id === 'web3') return login('injected');
+    if (injected.value?.id === 'coinbase') return login('injected');
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     return login('gnosis');
   }
