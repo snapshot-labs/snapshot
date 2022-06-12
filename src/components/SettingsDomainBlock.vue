@@ -3,8 +3,8 @@ import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
 defineProps<{
-  domain: string;
-  skin: string;
+  domain?: string;
+  skin?: string;
   getErrorMessage: (field: string) => string;
 }>();
 
