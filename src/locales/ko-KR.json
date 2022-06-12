@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "설정",
-    "setEnsTextRecord": "ENS 텍스트 레코드 설정",
     "editController": "관리자 설정",
-    "needToSetEnsText": "공간 설정은 IPFS의 파일에 저장됩니다. 편집하기 전에 해당 파일을 가리키는 ENS 텍스트 레코드를 설정해야 합니다.",
-    "profile": "프로필",
-    "avatar": "아바타",
-    "name": "이름",
-    "about": "정보",
-    "terms": "약관",
-    "network": "네트워크",
-    "symbol": "심볼",
-    "skin": "스킨",
-    "customDomain": "사용자 도메인",
-    "domain": "도메인 이름",
-    "strategies": "전략(에스)",
-    "categories": "카테고리:",
-    "selectCategories": "카테고리 선택",
-    "hideSpace": "홈페이지에서 공간 숨기기",
-    "addStrategy": "전략 추가",
-    "authors": "작성자",
-    "admins": "관리자",
-    "defaultTab": "기본 탭",
-    "proposalThreshold": "제안 임계값",
-    "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
-    "editPlugin": "편집 플러그인",
-    "addPlugin": "플러그인 추가",
-    "pluginParameters": "플러그인 매개변수",
-    "proposalValidation": "제안 검증",
-    "validation": "확인",
-    "editValidation": "유효성 검사 편집",
-    "selectValidation": "유효성 검사 선택",
-    "validationParameters": "검증 매개변수",
-    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다.",
-    "votingDelay": "투표 지연",
-    "votingPeriod": "투표 기간",
-    "voting": "투표",
-    "quorum": "정족수",
-    "type": "유형",
-    "anyType": "어떤",
-    "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
     "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "프로필",
+    "avatar": "아바타",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "홈페이지에서 공간 숨기기",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "전략 추가",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "제안 검증",
+    "validation": "확인",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
+    "editValidation": "유효성 검사 편집",
+    "selectValidation": "유효성 검사 선택",
+    "validationParameters": "검증 매개변수",
+    "voting": "투표",
+    "votingDelay": "투표 지연",
+    "votingPeriod": "투표 기간",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "어떤",
+    "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
+    "customDomain": "사용자 도메인",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "스킨",
+    "addPlugin": "플러그인 추가",
+    "editPlugin": "편집 플러그인",
+    "pluginParameters": "플러그인 매개변수"
   },
   "setup": {
     "example": "예시 yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",

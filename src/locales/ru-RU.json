@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "Настройки",
-    "setEnsTextRecord": "Установить текстовую запись ENS",
     "editController": "Изменить виджеты",
-    "needToSetEnsText": "Настройки сообщества будут храниться в файле на IPFS. Перед редактированием необходимо установить текстовую запись ENS, которая указывает на данный файл.",
-    "profile": "Профиль",
-    "avatar": "Аватар",
-    "name": "Название",
-    "about": "О проекте",
-    "terms": "Условия",
-    "network": "Сеть",
-    "symbol": "Символ",
-    "skin": "Тема",
-    "customDomain": "Пользовательский домен",
-    "domain": "Название домена",
-    "strategies": "Стратегия(и)",
-    "categories": "Категория(и)",
-    "selectCategories": "Выбрать категории",
-    "hideSpace": "Скрыть сообщество с главной страницы",
-    "addStrategy": "Добавить стратегию",
-    "authors": "Авторы",
-    "admins": "Администраторы",
-    "defaultTab": "Вкладка по умолчанию",
-    "proposalThreshold": "Порог предложения",
-    "allowOnlyAuthors": "Разрешить подавать предложения только авторам",
-    "editPlugin": "Редактировать плагин",
-    "addPlugin": "Добавить плагин",
-    "pluginParameters": "Настройки плагина",
-    "proposalValidation": "Проверка предложения",
-    "validation": "Проверка",
-    "editValidation": "Редактировать проверку",
-    "selectValidation": "Выбрать проверку",
-    "validationParameters": "Параметры проверки",
-    "warningTextRecord": "Необходимо установить текстовую запись в домене ENS.",
-    "votingDelay": "Задержка голосования",
-    "votingPeriod": "Период голосования",
-    "voting": "Голосование",
-    "quorum": "Кворум",
-    "type": "Тип",
-    "anyType": "Любой",
-    "hideAbstain": "Игнорировать голоса воздержавшихся в основных результатах голосования",
     "connectWithSpaceOwner": "Чтобы изменить настройки сообщества, подключитесь к контроллеру или кошельку администратора.",
     "currentSpaceControllerIs": "Текущий контроллер сообщества - {адрес}",
     "newController": "Новый контроллер",
-    "set": "Установить"
+    "set": "Установить",
+    "profile": "Профиль",
+    "avatar": "Аватар",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Скрыть сообщество с главной страницы",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Добавить стратегию",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Проверка предложения",
+    "validation": "Проверка",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Разрешить подавать предложения только авторам",
+    "editValidation": "Редактировать проверку",
+    "selectValidation": "Выбрать проверку",
+    "validationParameters": "Параметры проверки",
+    "voting": "Голосование",
+    "votingDelay": "Задержка голосования",
+    "votingPeriod": "Период голосования",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Любой",
+    "hideAbstain": "Игнорировать голоса воздержавшихся в основных результатах голосования",
+    "customDomain": "Пользовательский домен",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Тема",
+    "addPlugin": "Добавить плагин",
+    "editPlugin": "Редактировать плагин",
+    "pluginParameters": "Настройки плагина"
   },
   "setup": {
     "example": "например, yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "Подтвердите транзакцию, чтобы создать свое сообщество.{txUrl}",
     "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, подтверждения трансакции",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
