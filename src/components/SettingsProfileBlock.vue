@@ -50,12 +50,12 @@ const emit = defineEmits([
             @update-categories="value => emit('update:categories', value)"
           />
 
-          <InputUrl
+          <BaseInput
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
             :model-value="terms"
             :error="getErrorMessage('terms')"
-            placeholder="www.example.com/terms"
+            placeholder="e.g. https://example.com/terms"
             @update:model-value="value => emit('update:terms', value)"
           />
 
