@@ -34,12 +34,8 @@ export function useApp() {
   const { getSkin } = useSkin();
   const { getSpaces } = useSpaces();
 
-  async function init() {
-    await loadLocale();
+  function connectWallet() {
     const auth = getInstance();
-    await getSkin(domain);
-    isReady.value = true;
-    getSpaces();
 
     // Auto connect if previous session was connected
     if (window?.parent === window)
@@ -51,6 +47,14 @@ export function useApp() {
     if (injected.value?.id === 'web3') return login('injected');
     // Auto connect with gnosis-connector when inside gnosis-safe iframe
     return login('gnosis');
+  }
+
+  async function init() {
+    await loadLocale();
+    await getSkin(domain);
+    isReady.value = true;
+    getSpaces();
+    connectWallet();
   }
 
   return {
