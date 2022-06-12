@@ -45,7 +45,7 @@ export function useApp() {
     // Auto connect when coinbase wallet is detected
     const injected = computed(() => getInjected());
     if (injected.value?.id === 'coinbase') return login('injected');
-    // Auto connect with gnosis-connector when inside gnosis-safe iframe
+    // Auto connect with gnosis-connector when gnosis safe is detected
     return login('gnosis');
   }
 
