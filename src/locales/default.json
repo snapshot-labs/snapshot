@@ -275,11 +275,11 @@
     },
     "hideSpace": "Hide space from homepage",
 
-    "links": "Links",
+    "links": "Social accounts",
     "website": "Website",
 
     "strategies": {
-      "label": "Strategie(s)",
+      "label": "Voting strategy",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -290,6 +290,7 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
+    "strategiesList": "Strategies",
     "addStrategy": "Add strategy",
 
     "admins": {

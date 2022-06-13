@@ -132,13 +132,13 @@ onMounted(() => {
       v-model:avatar="form.avatar"
       v-model:private="form.private"
       v-model:terms="form.terms"
+      v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
     <SettingsLinkBlock
       v-model:twitter="form.twitter"
       v-model:github="form.github"
-      v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
@@ -189,7 +189,7 @@ onMounted(() => {
       @update:plugins="val => (form.plugins = val)"
     />
 
-    <BaseBlock>
+    <div class="mx-4 md:mx-0">
       <BaseButton
         class="w-full"
         primary
@@ -224,6 +224,6 @@ onMounted(() => {
           {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessage>
       </div>
-    </BaseBlock>
+    </div>
   </div>
 </template>

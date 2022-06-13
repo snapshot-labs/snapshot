@@ -33,15 +33,14 @@ function handleSubmitAddValidation(validation) {
           @click="modalValidationOpen = true"
         />
 
-        <BaseInput
+        <InputNumber
           v-if="validation.name === 'basic'"
           :title="$t('settings.proposalThreshold.label')"
           :information="$t('settings.proposalThreshold.information')"
           :model-value="filters.minScore"
           :error="getErrorMessage('minScore')"
           placeholder="1000"
-          type="number"
-          @update:model-value="emit('update:minScore', Number($event))"
+          @update:model-value="emit('update:minScore', $event)"
         />
       </ContainerParallelInput>
 

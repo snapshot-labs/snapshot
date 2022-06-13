@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const props = defineProps<{
-  modelValue?: number;
+  modelValue?: number | string;
   definition?: any;
   error?: string;
   placeholder?: string;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -15,6 +16,7 @@ const emit = defineEmits(['update:modelValue']);
     :definition="definition"
     :error="error"
     :placeholder="placeholder"
+    :information="information"
     type="number"
     @update:model-value="emit('update:modelValue', Number($event))"
   />
