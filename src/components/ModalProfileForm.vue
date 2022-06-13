@@ -7,6 +7,7 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
+import { clearStampCache } from '@/helpers/utils';
 
 const props = defineProps<{
   address: string;
@@ -30,17 +31,13 @@ const form = ref({
   about: ''
 });
 
-async function clearAvatarCache() {
-  await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${props.address}`);
-}
-
 async function save() {
   await client.profile(aliasWallet.value, aliasWallet.value.address, {
     from: web3Account.value,
     timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
-  await clearAvatarCache();
+  await clearStampCache(props.address, 'avatar');
   reloadProfile(props.address);
   emit('close');
   return notify(['green', t('notify.saved')]);
