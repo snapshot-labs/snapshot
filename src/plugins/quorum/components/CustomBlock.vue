@@ -39,7 +39,7 @@ export default {
     this.loading = true;
 
     this.totalVotingPower = await this.plugin.getTotalVotingPower(
-      getProvider(this.space.network),
+      getProvider(this.space.network, 'brovider'),
       this.space.plugins.quorum,
       this.proposal.snapshot
     );
