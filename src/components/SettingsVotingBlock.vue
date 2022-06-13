@@ -95,11 +95,10 @@ const votingPeriod = computed({
         </div>
 
         <div class="w-full space-y-2">
-          <BaseInput
+          <InputNumber
             :model-value="quorum"
             :title="$t('settings.quorum.label')"
             :information="$t('settings.quorum.information')"
-            type="number"
             placeholder="1000"
             @update:model-value="emit('update:quorum', $event)"
           />
