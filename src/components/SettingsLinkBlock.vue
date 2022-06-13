@@ -4,11 +4,10 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 defineProps<{
   twitter?: string;
   github?: string;
-  website?: string;
   getErrorMessage: (field: string) => string;
 }>();
 
-const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
+const emit = defineEmits(['update:twitter', 'update:github']);
 </script>
 
 <template>
@@ -34,15 +33,6 @@ const emit = defineEmits(['update:twitter', 'update:github', 'update:website']);
           @update:model-value="value => emit('update:github', value)"
         />
       </ContainerParallelInput>
-
-      <InputUrl
-        :title="$t('settings.website')"
-        :model-value="website"
-        :error="getErrorMessage('website')"
-        :max-length="schemas.space.properties.website.maxLength"
-        placeholder="www.example.com"
-        @update:model-value="value => emit('update:website', value)"
-      />
     </div>
   </BaseBlock>
 </template>

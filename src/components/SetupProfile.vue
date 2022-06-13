@@ -132,13 +132,13 @@ onMounted(() => {
       v-model:avatar="form.avatar"
       v-model:private="form.private"
       v-model:terms="form.terms"
+      v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
     <SettingsLinkBlock
       v-model:twitter="form.twitter"
       v-model:github="form.github"
-      v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
