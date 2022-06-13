@@ -3,7 +3,7 @@ import { computed, ref, inject, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
-import { shorten, clearAvatarCache } from '@/helpers/utils';
+import { shorten, clearStampCache } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
@@ -81,7 +81,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
-      await clearAvatarCache(props.space.id);
+      await clearStampCache(props.space.id);
       reloadSpace(props.space.id);
     }
   } else {

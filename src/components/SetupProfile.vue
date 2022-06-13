@@ -8,7 +8,7 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
-import { shorten, clearAvatarCache } from '@/helpers/utils';
+import { shorten, clearStampCache } from '@/helpers/utils';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
@@ -77,7 +77,7 @@ async function handleSubmit() {
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();
-      await clearAvatarCache(route.params.ens as string);
+      await clearStampCache(route.params.ens as string);
       creatingSpace.value = false;
       console.log('Result', result);
 
