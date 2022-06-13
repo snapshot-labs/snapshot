@@ -42,11 +42,15 @@ export function useApp() {
       auth.getConnector().then(connector => {
         if (connector) return login(connector);
       });
-    // Auto connect when coinbase wallet is detected
-    const injected = computed(() => getInjected());
-    if (injected.value?.id === 'coinbase') return login('injected');
+
     // Auto connect with gnosis-connector when gnosis safe is detected
-    return login('gnosis');
+    login('gnosis');
+
+    const injected = computed(() => getInjected());
+    // edge case if MM and CBW are both installed
+    if (injected.value?.id === 'metamask') return;
+    // Auto connect when coinbase wallet is detected
+    if (injected.value?.id === 'coinbase') return login('injected');
   }
 
   async function init() {
