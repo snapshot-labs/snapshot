@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
-defineProps<{
+const props = defineProps<{
   getErrorMessage: (field: string) => string;
   name: string;
   about: string;
@@ -10,6 +11,8 @@ defineProps<{
   private: boolean;
   terms?: string;
 }>();
+
+const avatarNotReactive = ref(props.avatar);
 
 const emit = defineEmits([
   'update:name',
@@ -81,7 +84,7 @@ const emit = defineEmits([
                   <AvatarSpace
                     :preview-file="previewFile"
                     size="80"
-                    :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar }"
+                    :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar: avatarNotReactive }"
                   />
                   <AvatarOverlayEdit :loading="uploading" />
                   <div
