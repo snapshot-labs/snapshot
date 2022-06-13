@@ -45,7 +45,7 @@ function handleAddStrategy() {
 function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
     const strategiesClone = clone(strategies.value);
-    strategies[currentStrategyIndex.value] = strategy;
+    strategiesClone[currentStrategyIndex.value] = strategy;
     emit('updateStrategies', strategiesClone);
   } else {
     emit('updateStrategies', strategies.value.concat(strategy));
