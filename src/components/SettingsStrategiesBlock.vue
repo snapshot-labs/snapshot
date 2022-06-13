@@ -75,6 +75,7 @@ function handleSubmitStrategy(strategy) {
       <div class="flex items-center gap-1">
         <h4>{{ $t('settings.strategiesList') }}</h4>
         <IconInformationTooltip
+          class="text-sm"
           :information="$t('settings.strategies.information')"
         />
       </div>
