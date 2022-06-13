@@ -1445,10 +1445,10 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@snapshot-labs/lock@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.8.tgz#36a26513701185af0d293e5436e09b2919c68d84"
-  integrity sha512-YpnGB2t+IMIjQfg+gYHonKUTCU7lo/oXkJENgW9wC4wOZ4XMI/uLZEO2fHKN4r8iP7gerxUMSTT5VGKMV4T0+w==
+"@snapshot-labs/lock@^0.1.9":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.9.tgz#b2504c456b950c250232f414f1f1d01565cf161d"
+  integrity sha512-tc/6EmM/g2AVFnlpCWV1nhpJwomWNHzl5v+L3VbrKwLHH5m2aiT8vJWJqZJInAraRxP8d5S1uUhzz4zRLiU5vA==
   dependencies:
     "@coinbase/wallet-sdk" "^3.0.11"
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
@@ -1458,10 +1458,17 @@
     "@walletconnect/web3-provider" "1.4.1"
     fortmatic "^2.2.1"
 
-"@snapshot-labs/snapshot.js@^0.3.95":
-  version "0.3.95"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.95.tgz#afa3cf4a1a72db4b089802f01b7551134cd6ae79"
-  integrity sha512-7GPFmgnV2zYVyBS/gBP6q/ECXLyLSX2YTRgtIueMw0UZ3IIqClrm229dbrgwMnvk8gcNsuVdQYAapasZiZaeWQ==
+"@snapshot-labs/pineapple@^0.1.0-beta.1":
+  version "0.1.0-beta.1"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/pineapple/-/pineapple-0.1.0-beta.1.tgz#4b136b778bff741c85df474ebfa202e8b1c9969a"
+  integrity sha512-oWqABbp/AM7rP/DmbAwx+eoOU77xa6JaQBXnLLuTB0/Vka9a7w0ti1IlVM6qbILMvjfttCHKPXVYvre6jNB7lw==
+  dependencies:
+    cross-fetch "^3.1.5"
+
+"@snapshot-labs/snapshot.js@^0.3.97":
+  version "0.3.97"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.97.tgz#1fadc45a83abf9e0bce93f178201f828cd1c4a5a"
+  integrity sha512-QMR2C0gvJtlCSPDOn6UqyyLVcOE+KR7awt5wo3j8HM4+VOwRXPV9KCxQEUfLxK96yCG03wgt9rVKCT9xysnPbw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -3068,7 +3075,7 @@ cross-fetch@^2.1.0:
     node-fetch "2.6.1"
     whatwg-fetch "2.0.4"
 
-cross-fetch@^3.0.6:
+cross-fetch@^3.0.6, cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
@@ -7823,10 +7830,10 @@ vite@^2.9.12, vite@^2.9.9:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest@^0.14.1:
-  version "0.14.1"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.14.1.tgz#f2fd8b31abdbbadb9ee895f8fde35a068ea2a5f5"
-  integrity sha512-2UUm6jYgkwh7Y3VKSRR8OuaNCm+iA5LPDnal7jyITN39maZK9L+JVxqjtQ39PSFo5Fl3/BgaJvER6GGHX9JLxg==
+vitest@^0.14.2:
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.14.2.tgz#ac07b46d3cd3b5667d2bb803962f759a1b8f3f89"
+  integrity sha512-vXQUl8OUCqHmxKWscMGL+6Xl1pBJmYHZ8N85iNpLGrirAC2vhspu7b73ShRcLonmZT44BYZW+LBAVvn0L4jyVA==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"

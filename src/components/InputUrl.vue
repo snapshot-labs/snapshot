@@ -4,36 +4,24 @@ const props = defineProps<{
   placeholder?: string;
   title?: string;
   error?: string;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
-
-function trimUrlProposal(url: string) {
-  if (!url) return '';
-  return url.replace(/^https?:\/\//, '');
-}
-
-function addUrlProtocol(url: string) {
-  if (!url) return '';
-  if (url.startsWith('ipfs://')) return url;
-  if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  return `https://${url}`;
-}
 </script>
 
 <template>
   <div>
     <BaseInput
       v-bind="props"
-      :model-value="trimUrlProposal(modelValue as string)"
+      :model-value="modelValue as string"
       :error="error"
-      class="!pl-[70px]"
-      @update:model-value="
-        input => emit('update:modelValue', addUrlProtocol(input))
-      "
+      :information="information"
+      class="!pl-[40px]"
+      @update:model-value="input => emit('update:modelValue', input)"
     >
       <template #before>
-        <span class="text-skin-text"> https:// </span>
+        <i-ho-globe-alt class="text-xs" />
       </template>
     </BaseInput>
   </div>

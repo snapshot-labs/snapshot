@@ -99,7 +99,7 @@ export default class Plugin {
     proposalId: string,
     txHashes: string[]
   ): Promise<Omit<ProposalDetails, 'transactions'>> {
-    const provider: StaticJsonRpcProvider = getProvider(network);
+    const provider: StaticJsonRpcProvider = getProvider(network, 'brovider');
     const question = await buildQuestion(proposalId, txHashes);
     const questionHash = solidityKeccak256(['string'], [question]);
 
@@ -138,7 +138,7 @@ export default class Plugin {
   }
 
   async getModuleDetails(network: string, moduleAddress: string) {
-    const provider: StaticJsonRpcProvider = getProvider(network);
+    const provider: StaticJsonRpcProvider = getProvider(network, 'brovider');
     return getModuleDetails(provider, network, moduleAddress);
   }
 
@@ -168,7 +168,7 @@ export default class Plugin {
     block: string
   ) {
     const contract = new Contract(oracleAddress, ORACLE_ABI, web3);
-    const provider: StaticJsonRpcProvider = getProvider(network);
+    const provider: StaticJsonRpcProvider = getProvider(network, 'brovider');
     const account = (await web3.listAccounts())[0];
 
     const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =

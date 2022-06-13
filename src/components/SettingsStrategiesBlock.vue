@@ -45,7 +45,7 @@ function handleAddStrategy() {
 function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
     const strategiesClone = clone(strategies.value);
-    strategies[currentStrategyIndex.value] = strategy;
+    strategiesClone[currentStrategyIndex.value] = strategy;
     emit('updateStrategies', strategiesClone);
   } else {
     emit('updateStrategies', strategies.value.concat(strategy));
@@ -54,23 +54,32 @@ function handleSubmitStrategy(strategy) {
 </script>
 
 <template>
-  <BaseBlock :title="$t('spaceStrategies.title')">
-    <div class="mb-4 w-full space-y-2 sm:flex sm:space-y-0 sm:space-x-4">
+  <BaseBlock :title="$t('settings.strategies.label')">
+    <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
         @select="value => emit('updateNetwork', value)"
       />
       <BaseInput
         :model-value="form.symbol"
-        :title="$t(`spaceStrategies.symbol`)"
+        :title="$t(`settings.symbol.label`)"
+        :information="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
         :error="getErrorMessage('symbol')"
         :max-length="schemas.space.properties.symbol.maxLength"
         @update:model-value="value => emit('updateSymbol', value)"
       />
-    </div>
+    </ContainerParallelInput>
+
     <div class="mb-4 grid gap-3">
-      <StrategiesBlockItem
+      <div class="flex items-center gap-1">
+        <h4>{{ $t('settings.strategiesList') }}</h4>
+        <IconInformationTooltip
+          class="text-sm"
+          :information="$t('settings.strategies.information')"
+        />
+      </div>
+      <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
         @remove-strategy="i => handleRemoveStrategy(i)"
@@ -80,7 +89,7 @@ function handleSubmitStrategy(strategy) {
     <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
-      {{ $t('spaceStrategies.addStrategy') }}
+      {{ $t('settings.addStrategy') }}
     </BaseButton>
   </BaseBlock>
 

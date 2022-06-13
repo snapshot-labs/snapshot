@@ -75,7 +75,7 @@ onMounted(async () => {
   // Initialize the snapshot block number
   if (props.space?.network) {
     form.value.snapshot = await getBlockNumber(
-      getProvider(props.space.network)
+      getProvider(props.space.network, 'brovider')
     );
   }
 });

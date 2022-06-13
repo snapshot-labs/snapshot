@@ -119,8 +119,6 @@ function getFormattedForm() {
   clonedForm.choices = form.value.choices
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
-  clonedForm.metadata.network = props.space.network;
-  clonedForm.metadata.strategies = [];
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
@@ -147,7 +145,7 @@ async function handleSubmit() {
 }
 
 function setSourceProposal(proposal) {
-  const { network, strategies, plugins } = proposal;
+  const { plugins } = proposal;
 
   form.value = {
     name: proposal.title,
@@ -158,7 +156,7 @@ function setSourceProposal(proposal) {
     end: proposal.end,
     snapshot: proposal.snapshot,
     type: proposal.type,
-    metadata: { network, strategies, plugins }
+    metadata: { plugins }
   };
 
   form.value.choices = proposal.choices.map((text, key) => ({

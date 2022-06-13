@@ -249,49 +249,88 @@
   },
   "settings": {
     "header": "Pengaturan",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profil",
-    "avatar": "Avatar",
-    "name": "Nama",
-    "about": "Tentang",
-    "terms": "Ketentuan",
-    "network": "Jaringan",
-    "symbol": "Simbol",
-    "skin": "Skin",
-    "customDomain": "Domain khusus",
-    "domain": "Nama domain",
-    "strategies": "Strategi",
-    "categories": "Kategori",
-    "selectCategories": "Pilih kategori",
-    "hideSpace": "Sembunyikan ruang dari halaman beranda",
-    "addStrategy": "Tambahkan strategi",
-    "authors": "Pengarang",
-    "admins": "Admin",
-    "defaultTab": "Tab bawaan",
-    "proposalThreshold": "Ambang batas proposal",
-    "allowOnlyAuthors": "Izinkan hanya penulis yang bisa membuat proposal",
-    "editPlugin": "Edit plugin",
-    "addPlugin": "Tambahkan plugin",
-    "pluginParameters": "Parameter plugin",
-    "proposalValidation": "Validasi proposal",
-    "validation": "Validitas",
-    "editValidation": "Sunting validitas",
-    "selectValidation": "Pilih validitas",
-    "validationParameters": "Parameter validitas",
-    "warningTextRecord": "Anda harus mengatur catatan teks pada domain ENS.",
-    "votingDelay": "Penundaan pemungutan suara",
-    "votingPeriod": "Periode pemungutan suara",
-    "voting": "Pemungutan suara",
-    "quorum": "Kuorum",
-    "type": "Tipe",
-    "anyType": "Apa saja",
-    "hideAbstain": "Abaikan suara abstain pada hasil pemungutan suara",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profil",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Sembunyikan ruang dari halaman beranda",
+    "links": "Links",
+    "website": "Website",
+    "strategies": {
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "addStrategy": "Tambahkan strategi",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Validasi proposal",
+    "validation": "Validitas",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Izinkan hanya penulis yang bisa membuat proposal",
+    "editValidation": "Sunting validitas",
+    "selectValidation": "Pilih validitas",
+    "validationParameters": "Parameter validitas",
+    "voting": "Pemungutan suara",
+    "votingDelay": "Penundaan pemungutan suara",
+    "votingPeriod": "Periode pemungutan suara",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Apa saja",
+    "hideAbstain": "Abaikan suara abstain pada hasil pemungutan suara",
+    "customDomain": "Domain khusus",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "addPlugin": "Tambahkan plugin",
+    "editPlugin": "Edit plugin",
+    "pluginParameters": "Parameter plugin"
   },
   "setup": {
     "example": "misalnya yam.eth",
@@ -322,28 +361,7 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
-    "profile": "Profile"
-  },
-  "spaceProfile": {
-    "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
-    },
-    "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
-    },
-    "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
-    },
-    "avatar": "Avatar"
-  },
-  "spaceStrategies": {
-    "title": "Strategie(s)",
-    "symbol": "Symbol",
-    "addStrategy": "Add strategy"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
