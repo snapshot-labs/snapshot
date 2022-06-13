@@ -54,10 +54,7 @@ function handleSubmitStrategy(strategy) {
 </script>
 
 <template>
-  <BaseBlock
-    :title="$t('settings.strategies.label')"
-    :information="$t('settings.strategies.information')"
-  >
+  <BaseBlock :title="$t('settings.strategies.label')">
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
@@ -75,6 +72,12 @@ function handleSubmitStrategy(strategy) {
     </ContainerParallelInput>
 
     <div class="mb-4 grid gap-3">
+      <div class="flex items-center gap-1">
+        <h4>{{ $t('settings.strategiesList') }}</h4>
+        <IconInformationTooltip
+          :information="$t('settings.strategies.information')"
+        />
+      </div>
       <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
