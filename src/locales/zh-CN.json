@@ -269,7 +269,7 @@
       "select": "选择类别"
     },
     "terms": {
-      "label": "Terms",
+      "label": "条款",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
     },
     "hideSpace": "从主页隐藏空间",
