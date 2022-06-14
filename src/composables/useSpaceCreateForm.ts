@@ -13,12 +13,6 @@ interface ProposalForm {
   snapshot: number;
   type: string;
   metadata: {
-    strategies: {
-      name: string;
-      network: string;
-      params: Record<string, unknown>;
-    }[];
-    network: string;
     plugins: {
       safeSnap?: { valid: boolean };
     };
@@ -37,8 +31,6 @@ const EMPTY_PROPOSAL: ProposalForm = {
   end: 0,
   snapshot: 0,
   metadata: {
-    strategies: [],
-    network: '',
     plugins: {}
   },
   type: 'single-choice'

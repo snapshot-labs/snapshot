@@ -45,7 +45,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
         v-if="proposal.quorum || space.voting?.quorum"
         class="text-skin-link"
       >
-        {{ $t('settings.quorum') }}
+        {{ $t('settings.quorum.label') }}
         <span class="float-right">
           {{ formatCompactNumber(results.sumOfResultsBalance) }} /
           {{ formatCompactNumber(proposal.quorum || space.voting.quorum as number) }}

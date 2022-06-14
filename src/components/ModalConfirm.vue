@@ -49,8 +49,7 @@ async function handleSubmit() {
 
   const result = await send(props.space, 'vote', {
     proposal: props.proposal,
-    choice: choice ?? props.selectedChoices,
-    metadata: {}
+    choice: choice ?? props.selectedChoices
   });
   console.log('Result', result);
   if (result.id) {
