@@ -68,7 +68,7 @@ export function useSpaces() {
         };
       })
       .filter(space => !space.private && verified[space.id] !== -1)
-      .filter(space => space.network === network || !network)
+      .filter(space => space.networks.includes(network) || !network)
       .filter(space =>
         JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
       );

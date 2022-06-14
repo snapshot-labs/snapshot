@@ -11,6 +11,7 @@ defineProps<{
   hideBottomBorder?: boolean;
   label?: string;
   labelTooltip?: string;
+  information?: string;
 }>();
 </script>
 
@@ -27,7 +28,11 @@ defineProps<{
         <div>
           {{ title }}
         </div>
-        <BaseCounter :counter="counter" class="ml-2 inline-block" />
+        <IconInformationTooltip
+          :information="information"
+          class="ml-1 text-sm text-skin-text"
+        />
+        <BaseCounter :counter="counter" class="ml-3 inline-block" />
       </h4>
       <div class="flex items-center">
         <div

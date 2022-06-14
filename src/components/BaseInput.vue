@@ -10,7 +10,7 @@ import { ref, onMounted, watch } from 'vue';
 const props = withDefaults(
   defineProps<{
     type?: 'text' | 'number';
-    modelValue?: string;
+    modelValue?: string | number;
     definition?: any;
     error?: string;
     focusOnMount?: boolean;
@@ -19,6 +19,7 @@ const props = withDefaults(
     title?: string;
     maxLength?: number;
     readonly?: boolean;
+    information?: string;
   }>(),
   {
     type: 'text',
@@ -49,7 +50,7 @@ onMounted(() => {
 
 <template>
   <div class="w-full">
-    <LabelInput v-if="title || definition?.title">
+    <LabelInput v-if="title || definition?.title" :information="information">
       {{ title ?? definition.title }}
     </LabelInput>
 
@@ -65,7 +66,7 @@ onMounted(() => {
         ref="BaseInputEL"
         :type="type"
         :value="modelValue"
-        :class="['s-input', { '!border-red': error && showError }]"
+        :class="['s-input !h-[42px]', { '!border-red': error && showError }]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"

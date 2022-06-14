@@ -24,9 +24,10 @@ const networks = computed((): { id: string; name: string }[] => {
 
 <template>
   <BaseCombobox
-    label="Network"
+    :label="$t('settings.network.label')"
     :items="networks"
     :selected-id="network"
+    :information="$t('settings.network.information')"
     @select="value => emit('select', value.id)"
     @search="value => (query = value)"
   >

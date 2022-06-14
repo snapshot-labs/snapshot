@@ -119,8 +119,6 @@ function getFormattedForm() {
   clonedForm.choices = form.value.choices
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
-  clonedForm.metadata.network = props.space.network;
-  clonedForm.metadata.strategies = props.space.strategies;
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
@@ -147,7 +145,7 @@ async function handleSubmit() {
 }
 
 function setSourceProposal(proposal) {
-  const { network, strategies, plugins } = proposal;
+  const { plugins } = proposal;
 
   form.value = {
     name: proposal.title,
@@ -158,7 +156,7 @@ function setSourceProposal(proposal) {
     end: proposal.end,
     snapshot: proposal.snapshot,
     type: proposal.type,
-    metadata: { network, strategies, plugins }
+    metadata: { plugins }
   };
 
   form.value.choices = proposal.choices.map((text, key) => ({
@@ -267,6 +265,7 @@ onMounted(() =>
         :space="space"
         :executing-validation-failed="executingValidationFailed"
         :pass-validation="passValidation"
+        data-testid="create-proposal-connect-wallet-warning"
       />
 
       <!-- Step 1 -->
@@ -335,6 +334,11 @@ onMounted(() =>
             validationLoading
           "
           primary
+          :data-testid="
+            web3Account
+              ? 'create-proposal-continue-button'
+              : 'create-proposal-connect-wallet-button'
+          "
           @click="web3Account ? nextStep() : (modalAccountOpen = true)"
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}

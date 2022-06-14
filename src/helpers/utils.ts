@@ -133,6 +133,10 @@ export function getIpfsUrl(url) {
   return getUrl(url, gateway);
 }
 
-export async function clearAvatarCache(spaceId: string) {
-  await fetch(`https://cdn.stamp.fyi/clear/space/${spaceId}`);
+export async function clearStampCache(id: string, type = 'space') {
+  if (type === 'space')
+    return await fetch(`https://cdn.stamp.fyi/clear/space/${id}`);
+
+  if (type === 'avatar')
+    return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
 }

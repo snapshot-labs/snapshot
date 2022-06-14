@@ -115,7 +115,7 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
-    provider = await getProvider(form.value.network, 'light');
+    provider = await getProvider(form.value.network, 'brovider');
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
   } catch (e) {
@@ -202,7 +202,7 @@ onMounted(async () => {
                       : $t('selectNetwork')
                   }}
                 </template>
-                <template #label> {{ $t(`settings.network`) }} </template>
+                <template #label> {{ $t(`settings.network.label`) }} </template>
               </UiInput>
               <UiInput
                 v-model="form.snapshot"

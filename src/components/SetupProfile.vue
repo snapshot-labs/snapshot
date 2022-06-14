@@ -8,7 +8,7 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
-import { shorten, clearAvatarCache } from '@/helpers/utils';
+import { shorten, clearStampCache } from '@/helpers/utils';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
@@ -77,7 +77,7 @@ async function handleSubmit() {
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();
-      await clearAvatarCache(route.params.ens as string);
+      await clearStampCache(route.params.ens as string);
       creatingSpace.value = false;
       console.log('Result', result);
 
@@ -125,24 +125,24 @@ onMounted(() => {
 
 <template>
   <div class="space-y-4">
-    <BlockProfile
+    <SettingsProfileBlock
       v-model:name="form.name"
       v-model:about="form.about"
       v-model:categories="form.categories"
       v-model:avatar="form.avatar"
       v-model:private="form.private"
       v-model:terms="form.terms"
-      :get-error-message="getErrorMessage"
-    />
-
-    <BlockLinks
-      v-model:twitter="form.twitter"
-      v-model:github="form.github"
       v-model:website="form.website"
       :get-error-message="getErrorMessage"
     />
 
-    <BlockStrategies
+    <SettingsLinkBlock
+      v-model:twitter="form.twitter"
+      v-model:github="form.github"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsStrategiesBlock
       :form="form"
       :get-error-message="getErrorMessage"
       @update-strategies="val => (form.strategies = val)"
@@ -150,7 +150,46 @@ onMounted(() => {
       @update-symbol="val => (form.symbol = val)"
     />
 
-    <BaseBlock>
+    <SettingsAdminsBlock
+      :admins="form.admins"
+      :get-error-message="getErrorMessage"
+      @update:admins="val => (form.admins = val)"
+    />
+
+    <SettingsAuthorsBlock
+      :members="form.members"
+      :get-error-message="getErrorMessage"
+      @update:members="val => (form.members = val)"
+    />
+
+    <SettingsDomainBlock
+      v-model:domain="form.domain"
+      v-model:skin="form.skin"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsValidationBlock
+      v-model:validation="form.validation"
+      :filters="form.filters"
+      :get-error-message="getErrorMessage"
+      @update:min-score="val => (form.filters.minScore = val)"
+      @update:only-members="val => (form.filters.onlyMembers = val)"
+    />
+
+    <SettingsVotingBlock
+      v-model:delay="form.voting.delay"
+      v-model:period="form.voting.period"
+      v-model:quorum="form.voting.quorum"
+      v-model:type="form.voting.type"
+      v-model:hideAbstain="form.voting.hideAbstain"
+    />
+
+    <SettingsPluginsBlock
+      :plugins="form.plugins"
+      @update:plugins="val => (form.plugins = val)"
+    />
+
+    <div class="mx-4 md:mx-0">
       <BaseButton
         class="w-full"
         primary
@@ -185,6 +224,6 @@ onMounted(() => {
           {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessage>
       </div>
-    </BaseBlock>
+    </div>
   </div>
 </template>

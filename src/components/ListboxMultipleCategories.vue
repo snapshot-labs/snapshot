@@ -39,8 +39,8 @@ watch(selectedCategories, () => {
 <template>
   <BaseListboxMultiple
     v-model="selectedCategories"
-    :placeholder="$t('spaceProfile.categories.select')"
-    :label="$t(`spaceProfile.categories.label`)"
+    :placeholder="$t('settings.categories.select')"
+    :label="$t(`settings.categories.label`)"
     :items="categoriesItems"
     :limit="2"
   >

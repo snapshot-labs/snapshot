@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { upload as pin } from '@snapshot-labs/pineapple';
 
 const emit = defineEmits(['loading', 'input']);
 
@@ -17,14 +18,8 @@ async function handleFileChange(e) {
   }
   formData.append('file', file);
   try {
-    const url = `${import.meta.env.VITE_HUB_URL}/api/upload`;
-    const init = {
-      method: 'POST',
-      body: formData
-    };
-    const result = await fetch(url, init);
-    const output = await result.json();
-    emit('input', `ipfs://${output.file.ipfs_hash}`);
+    const receipt = await pin(formData);
+    emit('input', `ipfs://${receipt.cid}`);
     loading.value = false;
     emit('loading', loading.value);
   } catch (error) {

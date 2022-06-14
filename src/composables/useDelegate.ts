@@ -34,7 +34,7 @@ export function useDelegate() {
     try {
       let ethAddress = address;
       if (validEnsTlds.includes(address.split('.').pop()))
-        ethAddress = await getProvider('1', 'light').resolveName(address);
+        ethAddress = await getProvider('1', 'brovider').resolveName(address);
       const tx = await sendTransaction(
         auth.web3,
         contractAddress,
