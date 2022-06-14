@@ -273,10 +273,10 @@
       "information": "用户必须先接受这些条款才能创建提案或投票。"
     },
     "hideSpace": "从主页隐藏空间",
-    "links": "链接",
+    "links": "社交账户",
     "website": "网站",
     "strategies": {
-      "label": "策略",
+      "label": "投票策略",
       "information": "策略用于确定投票权或用户是否有资格创建提案。"
     },
     "network": {
@@ -287,6 +287,7 @@
       "label": "符号",
       "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
     },
+    "strategiesList": "策略",
     "addStrategy": "添加策略",
     "admins": {
       "label": "管理员",
