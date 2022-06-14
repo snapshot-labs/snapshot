@@ -18,11 +18,7 @@ export function useClient() {
   const connectorName = computed(() => auth.provider.value?.connectorName);
 
   const usePersonalSign = computed(() => {
-    return (
-      connectorName.value === 'walletlink' ||
-      connectorName.value === 'walletconnect' ||
-      connectorName.value === 'gnosis'
-    );
+    return false;
   });
 
   const isGnosisSafe = computed(
