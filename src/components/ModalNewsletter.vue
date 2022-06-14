@@ -18,7 +18,7 @@ const action =
 <!-- This modal needs to be styled -->
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
+    <template #header>
       <h3>{{ $t('newsletter.stayUpToDate') }}</h3>
     </template>
     <div class="my-2 p-4">
@@ -33,7 +33,7 @@ const action =
         <input
           type="email"
           name="EMAIL"
-          class="border rounded-full py-2 px-3 text-md w-full"
+          class="w-full rounded-full border py-2 px-3 text-md"
           placeholder="Your email"
           required
         />
@@ -41,15 +41,15 @@ const action =
         Tags
         <div>
           <!-- We need the actual tag names and values from mailchimp here -->
-          <input type="checkbox" :value="12345" v-model="form.tags" />
+          <input v-model="form.tags" type="checkbox" :value="12345" />
           <label for="12345">Tag 1</label>
         </div>
         <div>
-          <input type="checkbox" :value="23456" v-model="form.tags" />
+          <input v-model="form.tags" type="checkbox" :value="23456" />
           <label for="23456">Tag 2</label>
         </div>
         <div>
-          <input type="checkbox" :value="34567" v-model="form.tags" />
+          <input v-model="form.tags" type="checkbox" :value="34567" />
           <label for="34567">Tag 3</label>
         </div>
         <!-- WE will also need to handle errors and success messages -->

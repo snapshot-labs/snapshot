@@ -80,7 +80,7 @@ watch(
 <template>
   <BaseModal
     :open="open"
-    :show-close="false"
+    :hide-close="true"
     class="flex"
     @close="$emit('close')"
   >

@@ -13,7 +13,7 @@ import CommentBoxListReply from './ListReply.vue';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 const auth = getInstance();
-const { modalOpen, modalAccountOpen } = useModal();
+const { modalAccountOpen } = useModal();
 const { web3Account } = useWeb3();
 const props = defineProps({
   profiles: Object,
@@ -126,7 +126,7 @@ async function updateItem(e) {
   toggleEditComment.value = true;
   emit('updateItem', e);
 }
-watch([modalOpen, closeModal, () => props.item], (oldVal, newVal) => {
+watch([closeModal, () => props.item], (oldVal, newVal) => {
   if (oldVal[2].key !== newVal[2].key) {
     getDataAfterDelete(props.item.key);
   }
