@@ -7,7 +7,7 @@ import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import pending from '@/helpers/pending.json';
-import { extentedSpace, Proposal } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { encryptChoice } from '@/helpers/shutter';
 
 const { web3Account } = useWeb3();
@@ -20,7 +20,7 @@ const vpLoaded = ref(false);
 
 const props = defineProps<{
   open: boolean;
-  space: extentedSpace;
+  space: ExtendedSpace;
   proposal: Proposal;
   selectedChoices: number | number[] | Record<string, any> | null;
   snapshot: string;
