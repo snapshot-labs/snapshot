@@ -31,13 +31,16 @@ const sourceSpace = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
+onMounted(async () => {
+  await loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]);
+  if (!space.value) {
+    router.push('/');
+  }
+});
 </script>
 
 <template>
-  <!-- Only loaded after space is available -->
   <router-view v-if="space" :space="space" :source-space="sourceSpace" />
-
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout
