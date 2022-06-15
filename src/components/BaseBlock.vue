@@ -32,7 +32,7 @@ defineProps<{
           :information="information"
           class="ml-1 text-sm text-skin-text"
         />
-        <BaseCounter :counter="counter" class="ml-3 inline-block" />
+        <BaseCounter :counter="counter" class="ml-1 inline-block" />
       </h4>
       <div class="flex items-center">
         <div
