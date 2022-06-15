@@ -7,8 +7,11 @@ defineProps<{
 </script>
 
 <template>
+  <div class="mb-3 flex px-4 md:px-0">
+    <h2>{{ $t('treasury.title') }}</h2>
+  </div>
   <BaseBlock
-    :title="$t('treasury.wallets')"
+    :title="$t('treasury.wallets.title')"
     :counter="wallets.length"
     :label="$t('treasury.24hChange')"
     slim

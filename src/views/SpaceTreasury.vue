@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { TreasuryWallet } from '@/helpers/interfaces';
 
 defineProps<{
   space: { id: string };
@@ -21,6 +23,10 @@ const wallets = [
     ensAddress: 'gitcoindao.eth'
   }
 ];
+
+const wallet = computed(() =>
+  wallets.find(w => w.address === route.params.wallet)
+);
 </script>
 
 <template>
@@ -29,7 +35,7 @@ const wallets = [
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <TreasuryAssetsList v-if="route.params.wallet" />
+      <TreasuryAssetsList v-if="wallet" :wallet="wallet as TreasuryWallet" />
       <TreasuryWalletsList v-else :wallets="wallets" />
     </template>
   </TheLayout>

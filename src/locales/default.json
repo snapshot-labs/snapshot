@@ -592,7 +592,12 @@
   },
   "treasury": {
     "title": "Treasury",
-    "assets": "Assets",
+    "wallets": {
+      "title": "Wallets"
+    },
+    "assets": {
+      "title": "Assets"
+    },
     "24hChange": "24h change"
   }
 }
