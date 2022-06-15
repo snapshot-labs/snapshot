@@ -42,7 +42,7 @@ onMounted(() => loadFilteredTokenBalances(props.wallet.address));
       class="flex justify-between px-4 py-3"
     >
       <div class="flex items-center gap-3">
-        <BaseAvatar size="35" :address="wallet.address" />
+        <AvatarUser size="35" :address="wallet.address" />
         <div>
           <div
             data-testid="wallet-name"

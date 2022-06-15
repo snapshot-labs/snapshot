@@ -21,24 +21,27 @@ const { formatCompactNumber, formatNumber } = useIntl();
     />
     <div class="flex w-full justify-between">
       <div class="leading-6">
-        <div class="text-md font-semibold text-skin-heading">
+        <div
+          data-testid="asset-name"
+          class="text-md font-semibold text-skin-heading"
+        >
           {{ asset.contract_name }}
         </div>
         <div>
-          <span class="mr-1">
+          <span data-testid="asset-balance" class="mr-1">
             {{
               formatCompactNumber(
                 Number(formatUnits(asset.balance, asset.contract_decimals))
               )
             }}
           </span>
-          <span>
+          <span data-testid="asset-symbol">
             {{ asset.contract_ticker_symbol }}
           </span>
         </div>
       </div>
       <div class="text-right">
-        <div class="text-md text-skin-heading">
+        <div data-testid="asset-quote" class="text-md text-skin-heading">
           ${{ formatNumber(asset.quote) }}
         </div>
         <IndicatorAssetsChange
