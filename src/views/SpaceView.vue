@@ -41,10 +41,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout
-      v-if="
-        !space &&
-        ($route.name === 'spaceProposals' || $route.name === 'spaceAbout')
-      "
+      v-if="$route.name === 'spaceProposals' || $route.name === 'spaceAbout'"
     >
       <template #sidebar-left>
         <SpaceSidebarSkeleton />
@@ -55,7 +52,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
     </TheLayout>
 
     <!-- Default page loading for none sidebar left layout space pages -->
-    <TheLayout v-else-if="!space" class="!px-4">
+    <TheLayout v-else class="!px-4">
       <template #content-left>
         <LoadingPage />
       </template>
