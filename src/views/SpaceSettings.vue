@@ -150,9 +150,8 @@ async function handleSetRecord() {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="{ name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
       <div class="px-4 md:px-0">

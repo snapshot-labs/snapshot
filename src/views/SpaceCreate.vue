@@ -251,12 +251,8 @@ onMounted(() =>
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div v-if="currentStep === 1" class="mb-3 overflow-hidden px-4 md:px-0">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-skin-text"
-        >
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
 
