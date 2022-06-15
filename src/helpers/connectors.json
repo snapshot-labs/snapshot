@@ -47,5 +47,10 @@
     "id": "gnosis",
     "name": "Gnosis Safe",
     "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc"
+  },
+  "kaikas": {
+    "id": "kaikas",
+    "name": "Kaikas",
+    "icon": "ipfs://QmSws19FmuhcvmJxNSGiwHZS4Hjzpr3vV4BH9K8HFAwXPr"
   }
 }
