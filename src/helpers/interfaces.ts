@@ -68,8 +68,7 @@ export interface TreasuryAsset {
 export interface TreasuryWallet {
   name: string;
   address: string;
-  network: number;
-  ensAddress?: string;
+  network: string;
 }
 
 export interface ExtendedSpace {
@@ -94,6 +93,7 @@ export interface ExtendedSpace {
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: { name: string; params: Record<string, any> };
+  treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
     hideAbstain: boolean;

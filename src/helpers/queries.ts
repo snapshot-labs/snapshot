@@ -209,6 +209,11 @@ export const SPACES_QUERY = gql`
         minScore
         onlyMembers
       }
+      treasuries {
+        name
+        address
+        network
+      }
     }
   }
 `;

@@ -231,6 +231,11 @@ async function handleSetRecord() {
             :get-error-message="getErrorMessage"
           />
 
+          <SettingsTreasuriesBlock
+            :treasuries="form.treasuries"
+            @update-treasuries="value => (form.treasuries = value)"
+          />
+
           <SettingsPluginsBlock
             :plugins="form.plugins"
             @update:plugins="val => (form.plugins = val)"

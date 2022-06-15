@@ -6,6 +6,7 @@ import { useValidationErrors } from '@/composables/useValidationErrors';
 const SPACE_OBJECT = {
   strategies: [],
   categories: [],
+  treasuries: [],
   admins: [],
   members: [],
   plugins: {},
