@@ -57,6 +57,11 @@ const isAdmin = computed(() => {
         {{ $t('about') }}
       </BaseSidebarNavigationItem>
     </router-link>
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceTreasury' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
+        {{ $t('treasury') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
     <router-link
       v-if="isAdmin"
       v-slot="{ isExactActive }"
