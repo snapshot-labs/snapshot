@@ -5,7 +5,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { encode } from '@/helpers/b64';
+import { encodeJson } from '@/helpers/b64';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -56,18 +56,16 @@ const strategyIsValid = computed(() =>
 const router = useRouter();
 
 const playgroundLink = computed(() => {
-  const query = encode(
-    JSON.stringify({
-      params: input.value.params,
-      network: input.value.network,
-      snapshot: '',
-      addresses: extendedStrategy.value?.examples?.[0].addresses || []
-    })
-  );
-
   const route = router.resolve({
     name: 'playground',
-    query: { query },
+    query: {
+      query: encodeJson({
+        params: input.value.params,
+        network: input.value.network,
+        snapshot: '',
+        addresses: extendedStrategy.value?.examples?.[0].addresses || []
+      })
+    },
     params: { name: input.value.name }
   });
 
