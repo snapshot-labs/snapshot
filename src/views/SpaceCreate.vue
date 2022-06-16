@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, inject, watch, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -17,10 +17,13 @@ import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
+const BODY_LIMIT_CHARACTERS = 14400;
+
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const notify: any = inject('notify');
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
@@ -29,32 +32,37 @@ const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { pluginIndex } = usePlugins();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const {
   form,
   userSelectedDateEnd,
+  userSelectedDateStart,
   sourceProposalLoaded,
   sourceProposal,
   resetForm
 } = useSpaceCreateForm();
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
-const notify: any = inject('notify');
 
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
-const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
 
-const BODY_LIMIT_CHARACTERS = 14400;
-
-const proposal = computed(() =>
-  Object.assign(form.value, { choices: form.value.choices })
-);
+// Timestamp updated every second
+const currentTimeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
+function updateCurrentTime() {
+  currentTimeSeconds.value = Number((Date.now() / 1e3).toFixed());
+}
+const updateTimeInterval = setInterval(updateCurrentTime, 1000);
+onBeforeUnmount(() => {
+  clearInterval(updateTimeInterval);
+});
 
 const dateStart = computed(() => {
   return props.space?.voting?.delay
-    ? timeSeconds.value + props.space.voting.delay
-    : form.value.start;
+    ? currentTimeSeconds.value + props.space.voting.delay
+    : (userSelectedDateStart.value || sourceProposalLoaded.value) &&
+      form.value.start >= currentTimeSeconds.value
+    ? form.value.start
+    : currentTimeSeconds.value;
 });
 
 const dateEnd = computed(() => {
@@ -66,6 +74,10 @@ const dateEnd = computed(() => {
     : dateStart.value + threeDays;
 });
 
+const proposal = computed(() =>
+  Object.assign(form.value, { choices: form.value.choices })
+);
+
 const isValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
@@ -76,6 +88,7 @@ const isValid = computed(() => {
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
+    dateStart.value >= currentTimeSeconds.value &&
     form.value.snapshot &&
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
@@ -119,7 +132,6 @@ function getFormattedForm() {
   clonedForm.choices = form.value.choices
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
-  updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
   return clonedForm;
@@ -194,10 +206,6 @@ function previosStep() {
     params: { step: currentStep.value - 1 },
     query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
   });
-}
-
-function updateTime() {
-  timeSeconds.value = Number((Date.now() / 1e3).toFixed());
 }
 
 // Check if account passes space validation
