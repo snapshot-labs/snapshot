@@ -18,8 +18,7 @@ describe('TreasuryWalletsListItem', () => {
   const wallet = {
     name: 'Test Wallet',
     address: '0x0000000000000000000000000000000000000000',
-    network: 1,
-    ensAddress: 'test.eth'
+    network: 1
   };
 
   function createComponent(params = {}) {
@@ -29,7 +28,8 @@ describe('TreasuryWalletsListItem', () => {
         stubs: { AvatarUser, BaseLink, RouterLink: RouterLinkStub }
       },
       props: {
-        wallet
+        wallet,
+        ensAddress: 'test.eth'
       }
     });
   }
@@ -69,13 +69,13 @@ describe('TreasuryWalletsListItem', () => {
   it('should render wallet ens address', () => {
     createComponent();
 
-    expect(findWalletEnsAddress().text()).toBe(wallet.ensAddress);
+    expect(findWalletEnsAddress().text()).toBe('test.eth');
   });
 
   it('should not render ens address when not set', async () => {
     createComponent();
 
-    await wrapper.setProps({ wallet: { ...wallet, ensAddress: undefined } });
+    await wrapper.setProps({ ensAddress: undefined });
     expect(findWalletEnsAddress().exists()).toBe(false);
   });
 

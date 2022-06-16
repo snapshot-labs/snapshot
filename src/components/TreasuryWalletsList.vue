@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
+import { getEnsAddress } from '@/helpers/profile';
 
-defineProps<{
+const props = defineProps<{
   wallets: TreasuryWallet[];
 }>();
+
+const ensAddresses = ref<{ [k: string]: string } | null>(null);
+
+onMounted(async () => {
+  ensAddresses.value = await getEnsAddress(props.wallets.map(w => w.address));
+});
 </script>
 
 <template>
@@ -21,6 +29,7 @@ defineProps<{
         v-for="wallet in wallets"
         :key="wallet.address"
         :wallet="wallet"
+        :ens-address="ensAddresses?.[wallet.address]"
       />
     </ul>
   </BaseBlock>

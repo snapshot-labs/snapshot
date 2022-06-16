@@ -9,6 +9,7 @@ const { formatNumber } = useIntl();
 
 const props = defineProps<{
   wallet: TreasuryWallet;
+  ensAddress?: string;
 }>();
 
 const { loadFilteredTokenBalances, treasuryAssets, loadingBalances } =
@@ -51,10 +52,14 @@ onMounted(() => loadFilteredTokenBalances(props.wallet.address));
             {{ wallet.name }}
           </div>
           <div class="flex items-center space-x-[6px] text-sm text-skin-text">
-            <span v-if="wallet.ensAddress" data-testid="wallet-ens-address">
-              {{ wallet.ensAddress }}
+            <span
+              v-if="ensAddress"
+              data-testid="wallet-ens-address"
+              class="flex items-center"
+            >
+              {{ ensAddress }}
+              <div class="ml-1 h-1 w-1 rounded-full bg-skin-text" />
             </span>
-            <div class="h-1 w-1 rounded-full bg-skin-text" />
             <BaseLink
               :link="explorerUrl(wallet.network, wallet.address)"
               class="!text-skin-text hover:!text-skin-link"
