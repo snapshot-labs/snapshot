@@ -10,10 +10,10 @@
     execa "^5.1.1"
     find-up "^5.0.0"
 
-"@antfu/utils@^0.5.0", "@antfu/utils@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.5.1.tgz#7eb6764878adb715daff20019e5a15fd63d93342"
-  integrity sha512-8Afo0+xvYe1K8Wm4xHTymfTkpzy36aaqDvhXIayUwl+mecMG9Xzl3XjXa6swG6Bk8FBeQ646RyvmsYt6+2Be9g==
+"@antfu/utils@^0.5.0", "@antfu/utils@^0.5.1", "@antfu/utils@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.5.2.tgz#8c2d931ff927be0ebe740169874a3d4004ab414b"
+  integrity sha512-CQkeV+oJxUazwjlHD0/3ZD08QWKuGQkhnrKo3e6ly5pd48VUpXbb77q0xMU4+vc2CkJnDS02Eq/M9ugyX20XZA==
 
 "@apollo/client@^3.6.7":
   version "3.6.7"
@@ -1465,10 +1465,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.3.98":
-  version "0.3.98"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.98.tgz#1e8eb8d14a49fb689129c40af96d9e183786feb9"
-  integrity sha512-faUIsiF5oUPjVrWau5K4wD7GjKsoWIcjtzWY1PMtMIQm3EF7iHKazh3kMQyY0cEAcQvpnoCZOlbInM/ulgr+HA==
+"@snapshot-labs/snapshot.js@^0.3.100":
+  version "0.3.100"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.100.tgz#b68b7578ccee1ecbfe661665f2133206d0fc7abc"
+  integrity sha512-ji4/GZPvB+xByHY1PXunk7eTz0g256PHjsKU6WcNmgUJ2W/L23MBNpdX/pB+qJLudDKgofOqQk0fdr8yFEF8hQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
@@ -6447,10 +6447,10 @@ prettier@^1.19.1:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
   integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
-prettier@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.0.tgz#a4fdae07e5596c51c9857ea676cd41a0163879d6"
-  integrity sha512-nwoX4GMFgxoPC6diHvSwmK/4yU8FFH3V8XWtLQrbj4IBsK2pkYhG4kf/ljF/haaZ/aii+wNJqISrCDPgxGWDVQ==
+prettier@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
 
 pretty-bytes@^5.6.0:
   version "5.6.0"
@@ -7698,18 +7698,18 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unplugin-icons@^0.14.3:
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.3.tgz#11c49bfbc2f6e34c8b20523af61279ff71090a9c"
-  integrity sha512-PyyNMACpZ/EAiG3B6K1wPGZ151VGdlHIEx8/utgP546yVmPpV/xC1k1V2eEebf71fGm3WD6gzPrERNsbMgIVgg==
+unplugin-icons@^0.14.4:
+  version "0.14.4"
+  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.4.tgz#7e29037c1722212c2301c8037d002a0d659968ce"
+  integrity sha512-+5+U5MV/d1HU3rW9bHqPLCC+rikt6OCXwjW9gSbryE2qyezzOyJ7ZNnwWLksxf5A+cVj1D6pcAbpmSjojN8zCg==
   dependencies:
     "@antfu/install-pkg" "^0.1.0"
-    "@antfu/utils" "^0.5.1"
+    "@antfu/utils" "^0.5.2"
     "@iconify/utils" "^1.0.32"
     debug "^4.3.4"
     kolorist "^1.5.1"
     local-pkg "^0.4.1"
-    unplugin "^0.6.2"
+    unplugin "^0.7.0"
 
 unplugin-vue-components@^0.19.6:
   version "0.19.6"
@@ -7727,11 +7727,21 @@ unplugin-vue-components@^0.19.6:
     resolve "^1.22.0"
     unplugin "^0.6.3"
 
-unplugin@^0.6.2, unplugin@^0.6.3:
+unplugin@^0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-0.6.3.tgz#b8721e2b163a410a7efed726e6a0fc6fbadf975a"
   integrity sha512-CoW88FQfCW/yabVc4bLrjikN9HC8dEvMU4O7B6K2jsYMPK0l6iAnd9dpJwqGcmXJKRCU9vwSsy653qg+RK0G6A==
   dependencies:
+    chokidar "^3.5.3"
+    webpack-sources "^3.2.3"
+    webpack-virtual-modules "^0.4.3"
+
+unplugin@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-0.7.0.tgz#8c8e28a7ca454a13313483ddd4c1f9cc1809d966"
+  integrity sha512-OsiFrgybmqm5bGuaodvbLYhqUrvGuRHRMZDhddKEXTDbuQ1x+hR7M1WpQguXj03whVYjEYChhFo738cZH5RNig==
+  dependencies:
+    acorn "^8.7.1"
     chokidar "^3.5.3"
     webpack-sources "^3.2.3"
     webpack-virtual-modules "^0.4.3"
