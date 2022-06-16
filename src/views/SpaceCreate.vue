@@ -69,7 +69,8 @@ const dateEnd = computed(() => {
   const threeDays = 259200;
   return props.space?.voting?.period
     ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value || sourceProposalLoaded.value
+    : (userSelectedDateEnd.value || sourceProposalLoaded.value) &&
+      form.value.end > dateStart.value
     ? form.value.end
     : dateStart.value + threeDays;
 });
