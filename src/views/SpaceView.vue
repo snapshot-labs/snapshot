@@ -31,21 +31,23 @@ const sourceSpace = computed(() =>
   formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
 );
 
-onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
+onMounted(async () => {
+  await loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]);
+  if (!space.value) {
+    router.push('/');
+  }
+});
 </script>
 
 <template>
-  <!-- Only loaded after space is available -->
   <router-view v-if="space" :space="space" :source-space="sourceSpace" />
-
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout
       v-if="
-        !space &&
-        ($route.name === 'spaceProposals' ||
-          $route.name === 'spaceAbout' ||
-          $route.name === 'spaceTreasury')
+        $route.name === 'spaceProposals' ||
+        $route.name === 'spaceAbout' ||
+        $route.name === 'spaceTreasury'
       "
     >
       <template #sidebar-left>
@@ -57,7 +59,7 @@ onMounted(() => loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]));
     </TheLayout>
 
     <!-- Default page loading for none sidebar left layout space pages -->
-    <TheLayout v-else-if="!space" class="!px-4">
+    <TheLayout v-else class="!px-4">
       <template #content-left>
         <LoadingPage />
       </template>
