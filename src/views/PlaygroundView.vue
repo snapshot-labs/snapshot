@@ -164,8 +164,7 @@ onMounted(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-
-  if (queryParams.query) {
+  if (queryParams.query && strategyExample.value.snapshot) {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
