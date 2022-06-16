@@ -51,7 +51,7 @@ function handleSubmitTreasury(treasury) {
 
 <template>
   <BaseBlock :title="$t('settings.treasuries.label')">
-    <div class="mb-4 grid gap-3">
+    <div v-if="treasuries.length" class="mb-3 grid gap-3">
       <SettingsTreasuriesBlockItem
         :treasuries="treasuries"
         @edit-treasury="i => handleEditTreasury(i)"
@@ -60,7 +60,7 @@ function handleSubmitTreasury(treasury) {
     </div>
 
     <BaseButton class="block w-full" @click="handleAddTreasury">
-      {{ $t('settings.addTreasury') }}
+      {{ $t('settings.treasuries.add') }}
     </BaseButton>
     <teleport to="#modal">
       <ModalTreasury

@@ -58,14 +58,14 @@ watch(open, () => {
       <h3
         v-text="
           treasury.name
-            ? $t('settings.editTreasury')
-            : $t('settings.addTreasury')
+            ? $t('settings.treasuries.edit')
+            : $t('settings.treasuries.add')
         "
       />
     </template>
     <div class="m-4">
       <div>
-        <div class="min-h-[280px] space-y-3">
+        <div class="space-y-3">
           <ComboboxNetwork
             :network="input.network"
             @select="value => (input.network = value)"
@@ -75,6 +75,7 @@ watch(open, () => {
             :title="treasuryProperties.name?.title"
             :placeholder="treasuryProperties?.name.examples[0]"
             :error="validationErrorMessage('name', treasuryValidationErrors)"
+            focus-on-mount
           />
           <BaseInput
             v-model="input.address"

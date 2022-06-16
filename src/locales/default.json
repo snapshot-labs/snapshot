@@ -337,6 +337,13 @@
     },
     "skin": "Skin",
 
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+
     "addPlugin": "Add plugin",
     "editPlugin": "Edit plugin",
     "pluginParameters": "Plugin parameters"
