@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { encode } from '@/helpers/b64';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -50,6 +52,27 @@ const strategyValidationErrors = computed(
 const strategyIsValid = computed(() =>
   strategyValidationErrors.value === true ? true : false
 );
+
+const router = useRouter();
+
+const playgroundLink = computed(() => {
+  const query = encode(
+    JSON.stringify({
+      params: input.value.params,
+      network: input.value.network,
+      snapshot: '',
+      addresses: extendedStrategy.value?.examples?.[0].addresses || []
+    })
+  );
+
+  const route = router.resolve({
+    name: 'playground',
+    query: { query },
+    params: { name: input.value.name }
+  });
+
+  return new URL(route.href, window.location.origin).href;
+});
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -142,6 +165,12 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="input.name" #footer>
+      <BaseLink :link="playgroundLink" hide-external-icon class="mb-2 block">
+        <BaseButton class="w-full">
+          {{ $t('settings.testInPlayground') }}
+          <BaseIcon name="external-link ml-1" />
+        </BaseButton>
+      </BaseLink>
       <BaseButton
         :disabled="
           !textAreaJsonIsValid ||

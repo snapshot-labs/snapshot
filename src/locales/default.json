@@ -292,6 +292,7 @@
     },
     "strategiesList": "Strategies",
     "addStrategy": "Add strategy",
+    "testInPlayground": "Test in playground",
 
     "admins": {
       "label": "Admins",
