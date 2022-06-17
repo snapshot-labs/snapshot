@@ -23,6 +23,7 @@ onMounted(async () => {
     :title="$t('treasury.wallets.title')"
     :counter="wallets.length"
     :label="$t('treasury.24hChange')"
+    data-testid="treasury-wallets-block"
     slim
   >
     <ul>
@@ -34,7 +35,11 @@ onMounted(async () => {
       />
     </ul>
   </BaseBlock>
-  <BaseBlock v-else class="text-center">
+  <BaseBlock
+    v-else
+    class="text-center"
+    data-testid="treasury-wallets-message-block"
+  >
     <div>
       <div class="mb-3">
         {{ $t('treasury.wallets.noTreasury') }}
