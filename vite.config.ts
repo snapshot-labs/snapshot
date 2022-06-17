@@ -6,7 +6,6 @@ import visualizer from 'rollup-plugin-visualizer';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
-import VueTypeImports from 'vite-plugin-vue-type-imports';
 
 export default defineConfig({
   define: {
@@ -38,8 +37,7 @@ export default defineConfig({
           svg.replace(/^<svg /, '<svg fill="currentColor" ')
         )
       }
-    }),
-    VueTypeImports()
+    })
   ],
   resolve: {
     alias: {
