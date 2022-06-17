@@ -42,7 +42,7 @@ onMounted(async () => {
   >
     <div>
       <div class="mb-3">
-        {{ $t('treasury.wallets.noTreasury') }}
+        {{ $t('treasury.wallets.empty') }}
       </div>
       <BaseButton @click="$router.push({ name: 'spaceSettings' })">
         {{ $t('treasury.wallets.addTreasury') }}

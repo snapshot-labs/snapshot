@@ -11,6 +11,7 @@ import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useTreasury } from '@/composables/useTreasury';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -22,6 +23,7 @@ const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const { resetTreasuryAssets } = useTreasury();
 const notify: any = inject('notify');
 
 const currentSettings = ref({});
@@ -81,6 +83,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
+      resetTreasuryAssets();
       await clearStampCache(props.space.id);
       reloadSpace(props.space.id);
     }

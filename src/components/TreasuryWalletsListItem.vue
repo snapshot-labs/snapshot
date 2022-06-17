@@ -17,7 +17,7 @@ const { loadFilteredTokenBalances, treasuryAssets, loadingBalances } =
 
 const walletQuote = computed(() => {
   const assets = treasuryAssets.value[props.wallet.address];
-  if (!assets) return null;
+  if (!assets?.length) return null;
   const sumOfAssetsQuote = assets.reduce((sum, asset) => {
     return sum + asset.quote;
   }, 0);
@@ -30,7 +30,9 @@ const walletQuote = computed(() => {
   };
 });
 
-onMounted(() => loadFilteredTokenBalances(props.wallet.address));
+onMounted(() =>
+  loadFilteredTokenBalances(props.wallet.address, props.wallet.network)
+);
 </script>
 
 <template>

@@ -20,7 +20,7 @@ export function useTreasury() {
 
   const loading = ref(false);
 
-  async function loadFilteredTokenBalances(address: string) {
+  async function loadFilteredTokenBalances(address: string, chainId: string) {
     loading.value = true;
     try {
       await loadTokenList();
@@ -28,7 +28,7 @@ export function useTreasury() {
         throw new Error('Token list not found');
 
       if (treasuryAssets.value[address]) return;
-      const balances = await getTokenBalances(address)
+      const balances = await getTokenBalances(address, chainId)
         .then(balances =>
           balances?.filter(balance =>
             tokenListContractAddresses.value?.includes(balance.contract_address)
@@ -43,8 +43,13 @@ export function useTreasury() {
     }
   }
 
+  function resetTreasuryAssets() {
+    treasuryAssets.value = {};
+  }
+
   return {
     loadFilteredTokenBalances,
+    resetTreasuryAssets,
     treasuryAssets: computed(() => treasuryAssets.value),
     loadingBalances: computed(() => loading.value)
   };

@@ -1,23 +1,22 @@
 <script setup lang="ts">
 import { useTreasury } from '@/composables/useTreasury';
 import { onMounted, computed } from 'vue';
-import { useRoute } from 'vue-router';
 import { TreasuryWallet } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   wallet: TreasuryWallet;
 }>();
-
-const route = useRoute();
 
 const { loadFilteredTokenBalances, treasuryAssets, loadingBalances } =
   useTreasury();
 
 const walletAssets = computed(
-  () => treasuryAssets.value?.[route.params.wallet as string] ?? []
+  () => treasuryAssets.value?.[props.wallet.address] ?? []
 );
 
-onMounted(() => loadFilteredTokenBalances(route.params.wallet as string));
+onMounted(() =>
+  loadFilteredTokenBalances(props.wallet.address, props.wallet.network)
+);
 </script>
 
 <template>
@@ -35,12 +34,17 @@ onMounted(() => loadFilteredTokenBalances(route.params.wallet as string));
     :loading="loadingBalances"
     slim
   >
-    <ul>
+    <ul v-if="walletAssets.length">
       <TreasuryAssetsListItem
         v-for="asset in walletAssets"
         :key="asset.contract_address"
         :asset="asset"
       />
     </ul>
+    <div v-else>
+      <p class="p-4 text-center">
+        {{ $t('treasury.assets.empty') }}
+      </p>
+    </div>
   </BaseBlock>
 </template>

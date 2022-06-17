@@ -601,11 +601,12 @@
     "title": "Treasury",
     "wallets": {
       "title": "Wallets",
-      "noTreasury": "This space doesn't have a treasury yet",
+      "empty": "This space doesn't have a treasury yet",
       "addTreasury": "Add a treasury"
     },
     "assets": {
-      "title": "Assets"
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
     },
     "24hChange": "24h change"
   }
