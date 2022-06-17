@@ -289,7 +289,7 @@
     },
     "strategiesList": "策略",
     "addStrategy": "添加策略",
-    "testInPlayground": "Test in playground",
+    "testInPlayground": " Playground 中的文本",
     "admins": {
       "label": "管理员",
       "information": "管理员能够修改空间设置和管理空间提案。"
