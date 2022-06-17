@@ -19,6 +19,7 @@ onMounted(async () => {
     <h2>{{ $t('treasury.title') }}</h2>
   </div>
   <BaseBlock
+    v-if="wallets.length"
     :title="$t('treasury.wallets.title')"
     :counter="wallets.length"
     :label="$t('treasury.24hChange')"
@@ -32,5 +33,15 @@ onMounted(async () => {
         :ens-address="ensAddresses?.[wallet.address]"
       />
     </ul>
+  </BaseBlock>
+  <BaseBlock v-else class="text-center">
+    <div>
+      <div class="mb-3">
+        {{ $t('treasury.wallets.noTreasury') }}
+      </div>
+      <BaseButton @click="$router.push({ name: 'spaceSettings' })">
+        {{ $t('treasury.wallets.addTreasury') }}
+      </BaseButton>
+    </div>
   </BaseBlock>
 </template>
