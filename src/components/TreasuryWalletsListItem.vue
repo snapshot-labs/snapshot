@@ -40,7 +40,7 @@ onMounted(() => loadFilteredTokenBalances(props.wallet.address));
         name: 'spaceTreasury',
         params: { wallet: wallet.address }
       }"
-      class="flex justify-between px-4 py-3"
+      class="flex justify-between px-4 py-[12px]"
     >
       <div class="flex items-center gap-2">
         <AvatarUser size="35" :address="wallet.address" />

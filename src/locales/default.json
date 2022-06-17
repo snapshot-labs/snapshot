@@ -600,7 +600,9 @@
   "treasury": {
     "title": "Treasury",
     "wallets": {
-      "title": "Wallets"
+      "title": "Wallets",
+      "noTreasury": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
     },
     "assets": {
       "title": "Assets"
