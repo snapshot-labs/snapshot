@@ -12,13 +12,12 @@ const { formatCompactNumber, formatNumber } = useIntl();
 
 <template>
   <li
-    class="flex items-center gap-3 border-b border-skin-border px-4 py-3 last:border-b-0"
+    class="flex items-center gap-2 border-b border-skin-border px-4 py-[12px] last:border-b-0"
   >
-    <img
-      alt="Asset logo"
-      :src="asset.logo_url"
-      class="h-[35px] w-[35px] rounded-full"
-    />
+    <div class="w-[38px]">
+      <img alt="Asset logo" :src="asset.logo_url" class="w-full rounded-full" />
+    </div>
+
     <div class="flex w-full justify-between">
       <div class="leading-6">
         <div
