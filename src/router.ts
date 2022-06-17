@@ -161,4 +161,6 @@ const router = createRouter({
   }
 });
 
+export { routes };
+
 export default router;

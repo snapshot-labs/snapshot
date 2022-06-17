@@ -49,6 +49,9 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
-    setupFiles: ['vitest.ts']
+    setupFiles: ['vitest.ts'],
+    deps: {
+      inline: ['@pusher/push-notifications-web']
+    }
   }
 });
