@@ -289,6 +289,7 @@
     },
     "strategiesList": "Strategies",
     "addStrategy": "إضافة استراتيجية",
+    "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
       "information": "Admins are able to modify the space settings and manage the space's proposals."
