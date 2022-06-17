@@ -48,6 +48,21 @@ describe('TreasuryWalletsList', () => {
     expect(findComponentWalletsBlock().exists()).toBe(false);
   });
 
+  it('should not render message block when wallets is not empty', () => {
+    createComponent({
+      props: {
+        wallets: [
+          {
+            address: '0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f',
+            name: 'Test wallet',
+            network: '1'
+          }
+        ]
+      }
+    });
+    expect(findComponentWalletsMessageBlock().exists()).toBe(false);
+  });
+
   it('should render message block when wallets is empty', () => {
     createComponent({
       props: {
