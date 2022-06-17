@@ -7,7 +7,7 @@ export default defineConfig({
   video: false,
   defaultCommandTimeout: 10000,
   e2e: {
-    baseUrl: 'http://localhost:8080',
+    baseUrl: 'http://localhost:8081',
     supportFile: false
   }
 });
