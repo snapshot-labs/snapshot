@@ -92,7 +92,9 @@ const stepIsValid = computed(() => {
     currentStep.value === 1 &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
-    passValidation.value[0]
+    passValidation.value[0] &&
+    !getErrorMessage('name').message &&
+    !getErrorMessage('discussion').message
   )
     return true;
   else if (

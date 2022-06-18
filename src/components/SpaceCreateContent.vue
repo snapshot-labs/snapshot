@@ -69,6 +69,7 @@ const handleDrop = e => {
         v-model="form.name"
         :title="$t('create.proposalTitle')"
         :max-length="128"
+        :error="getErrorMessage('name')"
         focus-on-mount
       />
 
