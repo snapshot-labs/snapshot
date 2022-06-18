@@ -20,7 +20,7 @@ const wallet = computed(() =>
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <TreasuryAssetsList v-if="wallet" :wallet="wallet as TreasuryWallet" />
+      <TreasuryAssetsList v-if="wallet" :wallet="wallet" />
       <TreasuryWalletsList
         v-else
         :wallets="space.treasuries"
