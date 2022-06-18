@@ -38,7 +38,7 @@ defineProps<{
         <div
           v-if="label"
           v-tippy="{ content: labelTooltip ? labelTooltip : null }"
-          class="rounded-full border !border-skin-border px-3 text-xs text-skin-link"
+          class="text-xs text-skin-link"
           :class="{ 'cursor-help': labelTooltip }"
         >
           {{ label }}
