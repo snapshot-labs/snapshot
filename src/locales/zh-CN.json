@@ -289,6 +289,7 @@
     },
     "strategiesList": "策略",
     "addStrategy": "添加策略",
+    "testInPlayground": "在playground中测试",
     "admins": {
       "label": "管理员",
       "information": "管理员能够修改空间设置和管理空间提案。"
@@ -329,6 +330,12 @@
       "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
     },
     "skin": "皮肤",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
     "pluginParameters": "插件参数"
@@ -580,5 +587,18 @@
     "switchNetworkToNetwork": "若要继续，您需要将钱包中的网络更改为 {network}。",
     "switchToNetwork": "切换到 {network}",
     "goToDemoSite": "前往演示网站"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }
