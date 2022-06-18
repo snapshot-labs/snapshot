@@ -17,7 +17,11 @@ const { loadFilteredTokenBalances, treasuryAssets, loadingBalances } =
 
 const walletQuote = computed(() => {
   const assets = treasuryAssets.value[props.wallet.address];
-  if (!assets?.length) return null;
+  if (!assets?.length)
+    return {
+      quote: 0,
+      quote_24h: 0
+    };
   const sumOfAssetsQuote = assets.reduce((sum, asset) => {
     return sum + asset.quote;
   }, 0);

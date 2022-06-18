@@ -12,7 +12,7 @@ const { formatPercentNumber, formatNumber } = useIntl();
 </script>
 
 <template>
-  <div>
+  <div v-if="quote.quote_24h || quote.quote">
     <span
       data-testid="asset-quote-change"
       :class="[quote.quote_24h > quote.quote ? 'text-red' : 'text-green']"
