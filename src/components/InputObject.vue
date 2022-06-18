@@ -42,7 +42,7 @@ const { validationErrorMessage } = useValidationErrors();
       :key="key"
       v-model="input[key]"
       :definition="property"
-      :error="validationErrorMessage(key, props.errors)"
+      :error="{ message: validationErrorMessage(key, props.errors) }"
     />
   </div>
 </template>

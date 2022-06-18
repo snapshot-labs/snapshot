@@ -40,6 +40,8 @@ const BASIC_VALIDATION = { name: 'basic', params: {} };
 const form = ref(clone(SPACE_OBJECT));
 
 export function useSpaceSettingsForm() {
+  const showAllValidationErrors = ref(false);
+
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
@@ -70,17 +72,23 @@ export function useSpaceSettingsForm() {
 
   const { validationErrorMessage } = useValidationErrors();
 
-  function getErrorMessage(field) {
-    return validationErrorMessage(field, validate.value);
+  function getErrorMessage(field: string): { message: string; push: boolean } {
+    const message = validationErrorMessage(field, validate.value);
+    return {
+      message: message || '',
+      push: showAllValidationErrors.value
+    };
   }
 
   function resetForm() {
     form.value = clone(SPACE_OBJECT);
+    showAllValidationErrors.value = false;
   }
 
   return {
     form,
     validate,
+    showAllValidationErrors,
     formatSpace,
     getErrorMessage,
     resetForm
