@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -13,6 +13,7 @@ const props = withDefaults(
     modelValue?: string | number;
     definition?: any;
     error?: string;
+    showError?: boolean;
     focusOnMount?: boolean;
     hideInput?: boolean;
     placeholder?: string;
@@ -23,23 +24,27 @@ const props = withDefaults(
   }>(),
   {
     type: 'text',
+    modelValue: undefined,
+    definition: undefined,
+    error: undefined,
+    showError: false,
     focusOnMount: false,
     hideInput: false,
-    readonly: false
+    placeholder: undefined,
+    title: undefined,
+    maxLength: undefined,
+    readonly: false,
+    information: undefined
   }
 );
 
 defineEmits(['update:modelValue']);
 
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
-const showError = ref(false);
 
-watch(
-  () => props.modelValue,
-  () => {
-    showError.value = true;
-  }
-);
+const visited = ref(false);
+
+const showErrorMessage = computed(() => visited.value || props.showError);
 
 onMounted(() => {
   if (props.focusOnMount) {
@@ -66,11 +71,17 @@ onMounted(() => {
         ref="BaseInputEL"
         :type="type"
         :value="modelValue"
-        :class="['s-input !h-[42px]', { '!border-red': error && showError }]"
+        :class="[
+          's-input !h-[42px]',
+          { '!border-red': error && showErrorMessage }
+        ]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+        @blur="visited = true"
+        @input="
+          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
+        "
       />
       <div
         v-if="$slots.after"
@@ -82,13 +93,13 @@ onMounted(() => {
     <div
       :class="[
         's-error',
-        !!error && showError
+        !!error && showErrorMessage
           ? '-mt-[21px] opacity-100'
           : '-mt-[38px] h-6 opacity-0'
       ]"
     >
       <BaseIcon
-        v-if="error && showError"
+        v-if="error && showErrorMessage"
         name="warning"
         class="mr-2 text-white"
       />

@@ -11,6 +11,7 @@ import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useTreasury } from '@/composables/useTreasury';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -22,6 +23,7 @@ const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const { resetTreasuryAssets } = useTreasury();
 const notify: any = inject('notify');
 
 const currentSettings = ref({});
@@ -81,6 +83,7 @@ async function handleSubmit() {
     console.log('Result', result);
     if (result.id) {
       notify(['green', t('notify.saved')]);
+      resetTreasuryAssets();
       await clearStampCache(props.space.id);
       reloadSpace(props.space.id);
     }
@@ -150,9 +153,8 @@ async function handleSetRecord() {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="{ name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
       <div class="px-4 md:px-0">
@@ -230,6 +232,11 @@ async function handleSetRecord() {
             v-model:domain="form.domain"
             v-model:skin="form.skin"
             :get-error-message="getErrorMessage"
+          />
+
+          <SettingsTreasuriesBlock
+            :treasuries="form.treasuries"
+            @update-treasuries="value => (form.treasuries = value)"
           />
 
           <SettingsPluginsBlock
