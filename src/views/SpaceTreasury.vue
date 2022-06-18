@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router';
 import { TreasuryWallet } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: { id: string; treasuries: TreasuryWallet[] };
+  space: { id: string; treasuries: TreasuryWallet[]; admins: string[] };
 }>();
 
 const route = useRoute();
@@ -21,7 +21,11 @@ const wallet = computed(() =>
     </template>
     <template #content-right>
       <TreasuryAssetsList v-if="wallet" :wallet="wallet as TreasuryWallet" />
-      <TreasuryWalletsList v-else :wallets="props.space.treasuries" />
+      <TreasuryWalletsList
+        v-else
+        :wallets="space.treasuries"
+        :admins="space.admins"
+      />
     </template>
   </TheLayout>
 </template>

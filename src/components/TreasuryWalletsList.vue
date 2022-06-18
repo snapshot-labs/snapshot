@@ -2,10 +2,14 @@
 import { ref, onMounted } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { getEnsAddress } from '@/helpers/profile';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const props = defineProps<{
   wallets: TreasuryWallet[];
+  admins: string[];
 }>();
+
+const { web3Account } = useWeb3();
 
 const ensAddresses = ref<{ [k: string]: string } | null>(null);
 
@@ -41,10 +45,14 @@ onMounted(async () => {
     data-testid="treasury-wallets-message-block"
   >
     <div>
-      <div class="mb-3">
+      <div>
         {{ $t('treasury.wallets.empty') }}
       </div>
-      <BaseButton @click="$router.push({ name: 'spaceSettings' })">
+      <BaseButton
+        v-if="admins?.includes(web3Account)"
+        class="mt-3"
+        @click="$router.push({ name: 'spaceSettings' })"
+      >
         {{ $t('treasury.wallets.addTreasury') }}
       </BaseButton>
     </div>
