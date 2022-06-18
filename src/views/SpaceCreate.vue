@@ -17,10 +17,13 @@ import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 
+const BODY_LIMIT_CHARACTERS = 14400;
+
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const notify: any = inject('notify');
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
@@ -29,23 +32,20 @@ const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { pluginIndex } = usePlugins();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const {
   form,
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
-  resetForm
+  resetForm,
+  getErrorMessage
 } = useSpaceCreateForm();
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
-const notify: any = inject('notify');
 
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
-
-const BODY_LIMIT_CHARACTERS = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -92,7 +92,7 @@ const stepIsValid = computed(() => {
     currentStep.value === 1 &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
-    passValidation.value[0] === true
+    passValidation.value[0]
   )
     return true;
   else if (
@@ -178,7 +178,6 @@ async function loadSourceProposal() {
   );
 
   setSourceProposal(proposal);
-
   sourceProposalLoaded.value = true;
 }
 
@@ -269,6 +268,7 @@ onMounted(() =>
         v-if="currentStep === 1"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
+        :get-error-message="getErrorMessage"
       />
 
       <!-- Step 2 -->

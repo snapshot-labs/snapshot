@@ -37,7 +37,8 @@ export function useValidationErrors() {
 
     if (
       errorFound?.instancePath.includes('website') ||
-      errorFound?.instancePath.includes('terms')
+      errorFound?.instancePath.includes('terms') ||
+      errorFound?.instancePath.includes('discussion')
     )
       return t('errors.website');
 
