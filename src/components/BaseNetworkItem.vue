@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useIntl } from '@/composables/useIntl';
 import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { getIpfsUrl } from '@/helpers/utils';
@@ -7,7 +7,9 @@ const { formatCompactNumber } = useIntl();
 
 const { networksSpacesCount } = useNetworksFilter();
 
-defineProps(['network']);
+defineProps<{
+  network: { logo: string; name: string; key: string };
+}>();
 </script>
 
 <template>
@@ -25,7 +27,7 @@ defineProps(['network']);
     <div class="text-skin-text">
       {{
         $tc('inSpaces', [
-          formatCompactNumber(networksSpacesCount[network.key] ?? 0)
+          formatCompactNumber(networksSpacesCount?.[network.key] ?? 0)
         ])
       }}
     </div>
