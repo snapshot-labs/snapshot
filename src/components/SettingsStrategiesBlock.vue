@@ -58,6 +58,7 @@ function handleSubmitStrategy(strategy) {
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
+        :information="$t('settings.network.information')"
         @select="value => emit('updateNetwork', value)"
       />
       <BaseInput

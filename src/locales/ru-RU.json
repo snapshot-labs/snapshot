@@ -273,10 +273,10 @@
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
     },
     "hideSpace": "Скрыть сообщество с главной страницы",
-    "links": "Links",
+    "links": "Social accounts",
     "website": "Website",
     "strategies": {
-      "label": "Strategie(s)",
+      "label": "Voting strategy",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -287,7 +287,9 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
+    "strategiesList": "Strategies",
     "addStrategy": "Добавить стратегию",
+    "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
       "information": "Admins are able to modify the space settings and manage the space's proposals."
@@ -328,6 +330,12 @@
       "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
     },
     "skin": "Тема",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
     "addPlugin": "Добавить плагин",
     "editPlugin": "Редактировать плагин",
     "pluginParameters": "Настройки плагина"
@@ -579,5 +587,18 @@
     "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

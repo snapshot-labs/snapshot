@@ -273,10 +273,10 @@
       "information": "用户必须先接受这些条款才能创建提案或投票。"
     },
     "hideSpace": "从主页隐藏空间",
-    "links": "链接",
+    "links": "社交账户",
     "website": "网站",
     "strategies": {
-      "label": "策略",
+      "label": "投票策略",
       "information": "策略用于确定投票权或用户是否有资格创建提案。"
     },
     "network": {
@@ -287,7 +287,9 @@
       "label": "符号",
       "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
     },
+    "strategiesList": "策略",
     "addStrategy": "添加策略",
+    "testInPlayground": "在playground中测试",
     "admins": {
       "label": "管理员",
       "information": "管理员能够修改空间设置和管理空间提案。"
@@ -328,6 +330,12 @@
       "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
     },
     "skin": "皮肤",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
     "pluginParameters": "插件参数"
@@ -579,5 +587,18 @@
     "switchNetworkToNetwork": "若要继续，您需要将钱包中的网络更改为 {network}。",
     "switchToNetwork": "切换到 {network}",
     "goToDemoSite": "前往演示网站"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

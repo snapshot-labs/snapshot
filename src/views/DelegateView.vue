@@ -234,10 +234,7 @@ onMounted(async () => {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ path: '/' }" class="text-skin-text">
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('backToHome') }}
-        </router-link>
+        <ButtonBack @click="$router.go(-1)" />
         <h1 v-if="loaded" v-text="$t('delegate.header')" />
       </div>
       <LoadingPage v-if="!loaded" />

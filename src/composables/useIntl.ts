@@ -95,7 +95,10 @@ export function useIntl() {
     style: 'long',
     numeric: 'always'
   });
-  const defaultNumberFormatter = getNumberFormatter();
+  const defaultNumberFormatter = getNumberFormatter(
+    // format with two decimal places
+    { maximumFractionDigits: 2 }
+  );
   const compactNumberFormatter = getNumberFormatter({
     notation: 'compact',
     compactDisplay: 'short'
@@ -130,8 +133,6 @@ export function useIntl() {
   };
 
   const formatNumber = (number: number, formatter?: Intl.NumberFormat) => {
-    if (number < 0.00001) number = 0;
-
     formatter = formatter || defaultNumberFormatter.value;
 
     return formatter.format(number);
