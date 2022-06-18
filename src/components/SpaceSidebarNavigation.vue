@@ -52,6 +52,11 @@ const isAdmin = computed(() => {
         {{ $t('delegate.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
+    <router-link v-slot="{ isActive }" :to="{ name: 'spaceTreasury' }">
+      <BaseSidebarNavigationItem :is-active="isActive">
+        {{ $t('treasury.title') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
     <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceAbout' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('about') }}

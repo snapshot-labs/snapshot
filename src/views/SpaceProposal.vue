@@ -264,8 +264,7 @@ const truncateMarkdownBody = computed(() => {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-3 md:px-0">
-        <a
-          class="text-skin-text"
+        <ButtonBack
           @click="
             browserHasHistory?.includes('timeline')
               ? $router.go(-1)
@@ -273,10 +272,7 @@ const truncateMarkdownBody = computed(() => {
                   domain ? { path: '/' } : { name: 'spaceProposals' }
                 )
           "
-        >
-          <BaseIcon name="back" size="22" class="align-middle" />
-          {{ $t('back') }}
-        </a>
+        />
       </div>
       <div class="px-3 md:px-0">
         <template v-if="proposal">

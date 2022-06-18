@@ -93,7 +93,8 @@
     "unplugin-icons": "^0.14.4",
     "unplugin-vue-components": "^0.19.6",
     "vite": "^2.9.12",
-    "vitest": "^0.14.2"
+    "vitest": "^0.14.2",
+    "vitest-fetch-mock": "^0.1.0"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",

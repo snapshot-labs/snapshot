@@ -177,12 +177,8 @@ onMounted(async () => {
       <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="mb-3 px-4 md:px-0">
-          <router-link
-            :to="`/strategy/${$route.params.name}`"
-            class="text-skin-text"
-          >
-            <BaseIcon name="back" size="22" class="!align-middle" />
-            {{ $t('back') }}
+          <router-link :to="{ path: `/strategy/${$route.params.name}` }">
+            <ButtonBack />
           </router-link>
         </div>
         <h1 class="mb-2 px-4 md:px-0">

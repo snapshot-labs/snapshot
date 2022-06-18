@@ -32,13 +32,14 @@ defineProps<{
           :information="information"
           class="ml-1 text-sm text-skin-text"
         />
-        <BaseCounter :counter="counter" class="ml-3 inline-block" />
+        <BaseCounter :counter="counter" class="ml-1 inline-block" />
       </h4>
       <div class="flex items-center">
         <div
           v-if="label"
           v-tippy="{ content: labelTooltip ? labelTooltip : null }"
-          class="cursor-help rounded-full border !border-skin-link px-3 text-xs text-skin-link"
+          class="text-xs text-skin-link"
+          :class="{ 'cursor-help': labelTooltip }"
         >
           {{ label }}
         </div>

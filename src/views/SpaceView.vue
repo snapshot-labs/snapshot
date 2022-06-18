@@ -44,7 +44,11 @@ onMounted(async () => {
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout
-      v-if="$route.name === 'spaceProposals' || $route.name === 'spaceAbout'"
+      v-if="
+        $route.name === 'spaceProposals' ||
+        $route.name === 'spaceAbout' ||
+        $route.name === 'spaceTreasury'
+      "
     >
       <template #sidebar-left>
         <SpaceSidebarSkeleton />

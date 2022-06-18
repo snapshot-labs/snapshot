@@ -16,7 +16,9 @@ function ensReverseRecordRequest(addresses) {
   );
 }
 
-function lookupAddresses(addresses) {
+function lookupAddresses(
+  addresses: string[]
+): Promise<{ [k: string]: string }> {
   return new Promise((resolove, reject) => {
     ensReverseRecordRequest(addresses)
       .then(reverseRecords => {
@@ -37,11 +39,14 @@ function lookupAddresses(addresses) {
   });
 }
 
-export async function getEnsAddress(addresses) {
+export async function getEnsAddress(
+  addresses: string[]
+): Promise<{ [k: string]: string } | null> {
   addresses = addresses.slice(0, 250);
   try {
     return await lookupAddresses(addresses);
   } catch (e) {
     console.log(e);
+    return null;
   }
 }

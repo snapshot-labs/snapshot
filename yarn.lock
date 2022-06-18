@@ -7822,6 +7822,13 @@ vite@^2.9.12, vite@^2.9.9:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vitest-fetch-mock@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/vitest-fetch-mock/-/vitest-fetch-mock-0.1.0.tgz#076768ff0979743fca385ff642f7d9910f983682"
+  integrity sha512-HpabFgokq0Q/cLwYNCTxwH6jV1TTUNg6IZxnLW4mFXgtDWcUQPJoiKS+LiOSf5cllXj2iCkIA8Cmuq5jU4oZQg==
+  dependencies:
+    cross-fetch "^3.0.6"
+
 vitest@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.14.2.tgz#ac07b46d3cd3b5667d2bb803962f759a1b8f3f89"
