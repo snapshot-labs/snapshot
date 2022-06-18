@@ -53,6 +53,24 @@ export interface ProfileActivity {
   vote?: { proposalId: string; choice: string; type: string };
 }
 
+export interface TreasuryAsset {
+  contract_name: string;
+  contract_ticker_symbol: string;
+  contract_address: string;
+  contract_decimals: number;
+  logo_url: string;
+  balance: string;
+  balance_24h: string;
+  quote: number;
+  quote_24h: number;
+}
+
+export interface TreasuryWallet {
+  name: string;
+  address: string;
+  network: string;
+}
+
 export interface ExtendedSpace {
   id: string;
   name: string;
@@ -75,6 +93,7 @@ export interface ExtendedSpace {
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: { name: string; params: Record<string, any> };
+  treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
     hideAbstain: boolean;

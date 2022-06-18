@@ -289,6 +289,7 @@
     },
     "strategiesList": "Strategies",
     "addStrategy": "إضافة استراتيجية",
+    "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
       "information": "Admins are able to modify the space settings and manage the space's proposals."
@@ -329,6 +330,12 @@
       "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
     },
     "skin": "المظهر",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
     "addPlugin": "أضف إضافة",
     "editPlugin": "تعديل إضافة",
     "pluginParameters": "إعدادات الإضافة"
@@ -580,5 +587,18 @@
     "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

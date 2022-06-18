@@ -10,9 +10,6 @@ describe('createProposal', () => {
 
   it('shows warning and connect button when not connected', () => {
     cy.get('[data-testid="create-proposal-button"]').click();
-    cy.get('[data-testid="create-proposal-connect-wallet-warning"]').should(
-      'exist'
-    );
     cy.get('[data-testid="create-proposal-connect-wallet-button"]').should(
       'exist'
     );

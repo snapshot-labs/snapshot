@@ -19,6 +19,7 @@ import SpaceProposal from '@/views/SpaceProposal.vue';
 import SpaceCreate from '@/views/SpaceCreate.vue';
 import SpaceSettings from '@/views/SpaceSettings.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
+import SpaceTreasury from './views/SpaceTreasury.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -53,6 +54,11 @@ const spaceRoutes = [
     path: 'settings/:sourceSpace?',
     name: 'spaceSettings',
     component: SpaceSettings
+  },
+  {
+    path: 'treasury/:wallet?',
+    name: 'spaceTreasury',
+    component: SpaceTreasury
   }
 ];
 
@@ -154,5 +160,7 @@ const router = createRouter({
     return { top: 0 };
   }
 });
+
+export { routes };
 
 export default router;

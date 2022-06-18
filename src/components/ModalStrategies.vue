@@ -1,7 +1,7 @@
 <script setup>
 import { isAddress } from '@ethersproject/address';
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { encode } from '@/helpers/b64';
+import { encodeJson } from '@/helpers/b64';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 defineProps({
@@ -33,13 +33,11 @@ defineEmits(['close']);
               name: 'playground',
               params: { name: strategy.name },
               query: {
-                query: encode(
-                  JSON.stringify({
-                    network: strategy.network || proposal.network,
-                    snapshot: proposal.snapshot,
-                    params: strategy.params
-                  })
-                )
+                query: encodeJson({
+                  network: strategy.network || proposal.network,
+                  snapshot: proposal.snapshot,
+                  params: strategy.params
+                })
               }
             }"
           >

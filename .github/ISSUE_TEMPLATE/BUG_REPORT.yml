@@ -1,0 +1,57 @@
+name: Bug Report
+description: File a bug report
+title: "[BUG] - "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for making Snapshot awesome for everyone. 
+  - type: input
+    id: title
+    attributes:
+      label: Briefly describe the bug.
+      description: A clear and concise description of what the bug is.
+      placeholder: ex. Unable to vote using metamask wallet on chrome.
+    validations: 
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: How can we reproduce the bug?
+      placeholder: Steps to reproduce the behaviour.
+      value: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expectation
+    attributes:
+      label: What is the expected behaviour?
+      description: A clear and concise description of what you expected to happen. 
+      placeholder: ex. I should be able to vote using metamask wallet on chrome. 
+    validations:
+      required: false
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Can you attach screenshots?
+      description: Please attach all the screenshots that can help us visually see the problem. 
+      placeholder: You can drag-and-drop the image, copy paste the image in the field below. 
+    validations:
+      required: false
+  - type: textarea
+    id: device
+    attributes:
+      label: Can you provide your device specific details below? 
+      value: |
+        1. Device Type - [ex. Desktop or Mobile]
+        2. Device OS - [ex. Android, MacOS, Windows, iOS]
+        3. OS Version - [ex. iOS 11, Windows 10]
+        4. Browser - [ex. chrome, safari]
+        5. Browser Version - [ex. 101]
+        6. Wallet - [metamask, portis, walletconnect]
+        7. Space - [ex. ENS, Gitcoin]
+        8. Any additional information we should know - 
