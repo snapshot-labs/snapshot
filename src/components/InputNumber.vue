@@ -2,7 +2,7 @@
 const props = defineProps<{
   modelValue?: number | string;
   definition?: any;
-  error?: string;
+  error?: { message: string; push?: boolean };
   placeholder?: string;
   information?: string;
 }>();

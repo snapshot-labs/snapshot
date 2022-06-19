@@ -3,7 +3,7 @@ const props = defineProps<{
   modelValue?: string;
   placeholder?: string;
   title?: string;
-  error?: string;
+  error?: { message: string; push: boolean };
   information?: string;
 }>();
 

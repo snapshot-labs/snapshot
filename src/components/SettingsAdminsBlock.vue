@@ -3,10 +3,14 @@ withDefaults(
   defineProps<{
     admins: string[];
     isSpaceController?: boolean;
-    getErrorMessage: (field: string) => string;
+    error?: { message: string; push: boolean };
   }>(),
   {
-    isSpaceController: true
+    isSpaceController: true,
+    error: () => ({
+      message: '',
+      push: false
+    })
   }
 );
 
@@ -19,9 +23,9 @@ const emit = defineEmits(['update:admins']);
     :title="$t('settings.admins.label')"
     :information="$t('settings.admins.information')"
   >
-    <BaseBlock v-if="getErrorMessage('admins')" class="mb-2 !border-red">
+    <BaseBlock v-if="error.message" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
-      <span class="!text-red"> {{ getErrorMessage('admins') }}&nbsp;</span>
+      <span class="!text-red"> {{ error.message }}&nbsp;</span>
     </BaseBlock>
     <TextareaArray
       :model-value="admins"

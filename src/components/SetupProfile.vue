@@ -18,7 +18,13 @@ const props = defineProps<{
 const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
-const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const {
+  form,
+  validate,
+  showAllValidationErrors,
+  formatSpace,
+  getErrorMessage
+} = useSpaceSettingsForm();
 
 const creatingSpace = ref(false);
 
@@ -51,6 +57,7 @@ const debouncedShowPleaseWaitMessage = refDebounced(
 );
 
 async function handleSubmit() {
+  if (!isValid.value) return (showAllValidationErrors.value = true);
   creatingSpace.value = true;
   showPleaseWaitMessage.value = true;
 
@@ -104,6 +111,7 @@ async function handleSubmit() {
 }
 
 function addDefaultStrategy() {
+  if (form.value.strategies.length) return;
   form.value.strategies.push({
     name: 'ticket',
     network: '1',
@@ -152,13 +160,13 @@ onMounted(() => {
 
     <SettingsAdminsBlock
       :admins="form.admins"
-      :get-error-message="getErrorMessage"
+      :error="getErrorMessage('admins')"
       @update:admins="val => (form.admins = val)"
     />
 
     <SettingsAuthorsBlock
       :members="form.members"
-      :get-error-message="getErrorMessage"
+      :error="getErrorMessage('members')"
       @update:members="val => (form.members = val)"
     />
 
@@ -193,9 +201,7 @@ onMounted(() => {
       <BaseButton
         class="w-full"
         primary
-        :disabled="
-          !isValid || (uriAddress !== web3Account && !pendingENSRecord)
-        "
+        :disabled="uriAddress !== web3Account && !pendingENSRecord"
         :loading="creatingSpace"
         @click="handleSubmit"
       >

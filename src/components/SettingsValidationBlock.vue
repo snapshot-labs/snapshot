@@ -5,7 +5,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 defineProps<{
   validation: { name: string };
   filters: { minScore: number; onlyMembers: boolean };
-  getErrorMessage: (field: string) => string;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits([

@@ -154,10 +154,10 @@ watch(open, () => {
       <LoadingRow v-if="loadingStrategies" block />
       <div v-else class="space-y-3">
         <BaseStrategyItem
-          v-for="strategy in strategiesResults"
-          :key="strategy.id"
-          :strategy="strategy"
-          @click="selectStrategy(strategy.id)"
+          v-for="str in strategiesResults"
+          :key="str.id"
+          :strategy="str"
+          @click="selectStrategy(str.id)"
         />
         <BaseNoResults v-if="strategiesResults.length < 1" />
       </div>

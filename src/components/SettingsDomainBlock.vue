@@ -5,7 +5,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 defineProps<{
   domain?: string;
   skin?: string;
-  getErrorMessage: (field: string) => string;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits(['update:domain', 'update:skin']);
