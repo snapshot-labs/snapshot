@@ -73,22 +73,16 @@ const isSpaceAdmin = computed(() => {
 });
 
 async function handleSubmit() {
-  if (isValid.value) {
-    const formattedForm = formatSpace(form.value);
-    const result = await send(
-      { id: props.space.id },
-      'settings',
-      formattedForm
-    );
-    console.log('Result', result);
-    if (result.id) {
-      notify(['green', t('notify.saved')]);
-      resetTreasuryAssets();
-      await clearStampCache(props.space.id);
-      reloadSpace(props.space.id);
-    }
-  } else {
-    console.log('Invalid schema', validate.value);
+  if (!isValid.value) return console.log('Invalid schema', validate.value);
+
+  const formattedForm = formatSpace(form.value);
+  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  console.log('Result', result);
+  if (result.id) {
+    notify(['green', t('notify.saved')]);
+    resetTreasuryAssets();
+    await clearStampCache(props.space.id);
+    reloadSpace(props.space.id);
   }
 }
 
@@ -202,13 +196,13 @@ async function handleSetRecord() {
           <SettingsAdminsBlock
             :admins="form.admins"
             :is-space-controller="isSpaceController"
-            :get-error-message="getErrorMessage"
+            :error="getErrorMessage('admins')"
             @update:admins="val => (form.admins = val)"
           />
 
           <SettingsAuthorsBlock
             :members="form.members"
-            :get-error-message="getErrorMessage"
+            :error="getErrorMessage('members')"
             @update:members="val => (form.members = val)"
           />
 

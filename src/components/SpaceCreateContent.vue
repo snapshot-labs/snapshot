@@ -7,6 +7,7 @@ import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 defineProps<{
   preview: boolean;
   bodyLimit: number;
+  getErrorMessage: (error: any) => { message: string; push: boolean };
 }>();
 
 const { formatNumber } = useIntl();
@@ -68,6 +69,7 @@ const handleDrop = e => {
         v-model="form.name"
         :title="$t('create.proposalTitle')"
         :max-length="128"
+        :error="getErrorMessage('name')"
         focus-on-mount
       />
 
@@ -139,8 +141,9 @@ const handleDrop = e => {
       <InputUrl
         v-if="!preview"
         v-model.trim="form.discussion"
-        placeholder="forum.balancer.fi/proposal..."
+        placeholder="https://forum.balancer.fi/proposal"
         :title="$t('create.discussion')"
+        :error="getErrorMessage('discussion')"
       />
     </div>
   </div>

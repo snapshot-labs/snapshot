@@ -12,8 +12,7 @@ const props = withDefaults(
     type?: 'text' | 'number';
     modelValue?: string | number;
     definition?: any;
-    error?: string;
-    showError?: boolean;
+    error?: { message: string; push?: boolean };
     focusOnMount?: boolean;
     hideInput?: boolean;
     placeholder?: string;
@@ -26,8 +25,7 @@ const props = withDefaults(
     type: 'text',
     modelValue: undefined,
     definition: undefined,
-    error: undefined,
-    showError: false,
+    error: () => ({ message: '', push: false }),
     focusOnMount: false,
     hideInput: false,
     placeholder: undefined,
@@ -44,7 +42,7 @@ const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 const visited = ref(false);
 
-const showErrorMessage = computed(() => visited.value || props.showError);
+const showErrorMessage = computed(() => visited.value || props.error.push);
 
 onMounted(() => {
   if (props.focusOnMount) {
@@ -73,7 +71,7 @@ onMounted(() => {
         :value="modelValue"
         :class="[
           's-input !h-[42px]',
-          { '!border-red': error && showErrorMessage }
+          { '!border-red': error.message && showErrorMessage }
         ]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
@@ -93,17 +91,17 @@ onMounted(() => {
     <div
       :class="[
         's-error',
-        !!error && showErrorMessage
+        !!error.message && showErrorMessage
           ? '-mt-[21px] opacity-100'
           : '-mt-[38px] h-6 opacity-0'
       ]"
     >
       <BaseIcon
-        v-if="error && showErrorMessage"
+        v-if="error.message && showErrorMessage"
         name="warning"
         class="mr-2 text-white"
       />
-      {{ error }}
+      {{ error.message }}
     </div>
   </div>
 </template>
