@@ -11,7 +11,7 @@ const { spaces, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
 
-const limit = 100;
+const limit = 200;
 
 const spacesSorted = computed(() => {
   const spacesArr = Object.values(spaces.value)
@@ -29,6 +29,7 @@ const spacesSorted = computed(() => {
       space.followers_1d = space.followers_1d || 0;
       space.followers_7d = space.followers_7d || 0;
       space.ranking =
+        space.voters / 20 +
         space.votes_7d +
         space.voters_7d +
         space.proposals_7d * 50 +
