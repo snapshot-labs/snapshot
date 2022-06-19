@@ -38,10 +38,9 @@ const SPACE_OBJECT = {
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
 const form = ref(clone(SPACE_OBJECT));
+const showAllValidationErrors = ref(false);
 
 export function useSpaceSettingsForm() {
-  const showAllValidationErrors = ref(false);
-
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
