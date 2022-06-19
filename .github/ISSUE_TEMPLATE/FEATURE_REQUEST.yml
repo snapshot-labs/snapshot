@@ -1,0 +1,45 @@
+name: Feature request
+description: Suggest an idea for this project
+title: "[NEW FEATURE] - "
+labels: ["feature-request"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for making Snapshot awesome for everyone. 
+  - type: input
+    id: title
+    attributes:
+      label: Briefly describe the feature.
+      description: A clear and concise description of the feature you are requesting.
+    validations: 
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Which problem is this feature trying to solve?
+      description: A clear description of the problem or frustration that will be solved with this feature.
+      placeholder: ex. I'm always frustrated when I am viewing the proposal metrics
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What is the expected solution?
+      description: A clear and concise description of what you expected to happen. 
+      placeholder: ex. Having a chart to read the votes on the proposal will make it very easy to read the proposal metrics. 
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: How do you currently handle this problem?
+      description: A clear and concise description of any alternative solutions or features you've considered. 
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Anything else you'd like to mention?
+      description: Please mention any technical details, screenshots, mock-ups that you might have for us to better understand the feature.   
+    validations:
+      required: false
