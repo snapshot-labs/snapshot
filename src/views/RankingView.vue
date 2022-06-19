@@ -18,16 +18,21 @@ const spacesSorted = computed(() => {
     .map(space => {
       space.proposals = space.proposals || 0;
       space.proposals_1d = space.proposals_1d || 0;
+      space.proposals_7d = space.proposals_7d || 0;
       space.votes = space.votes || 0;
       space.votes_1d = space.votes_1d || 0;
+      space.votes_7d = space.votes_7d || 0;
       space.voters = space.voters || 0;
       space.voters_1d = space.voters_1d || 0;
+      space.voters_7d = space.voters_7d || 0;
       space.followers = space.followers || 0;
       space.followers_1d = space.followers_1d || 0;
+      space.followers_7d = space.followers_7d || 0;
       space.ranking =
-        space.votes_1d +
-        space.proposals_1d * 10 +
-        (space.followers_1d / 2) * space.voters;
+        space.votes_7d +
+        space.voters_7d +
+        space.proposals_7d * 50 +
+        space.followers_7d;
       return space;
     })
     .filter(space => verified[space.id] !== -1);
@@ -64,25 +69,25 @@ onMounted(() => setPageTitle('page.title.ranking'));
           <div class="w-[120px]">
             <div v-text="formatCompactNumber(space.proposals)" />
             <div
-              v-if="space.proposals_1d"
+              v-if="space.proposals_7d"
               class="text-green"
-              v-text="`+${space.proposals_1d}`"
+              v-text="`+${formatCompactNumber(space.proposals_7d)}`"
             />
           </div>
           <div class="w-[120px]">
             <div v-text="formatCompactNumber(space.votes)" />
             <div
-              v-if="space.votes_1d"
+              v-if="space.votes_7d"
               class="text-green"
-              v-text="`+${space.votes_1d}`"
+              v-text="`+${formatCompactNumber(space.votes_7d)}`"
             />
           </div>
           <div class="w-[120px]">
             <div v-text="formatCompactNumber(space.followers)" />
             <div
-              v-if="space.followers_1d"
+              v-if="space.followers_7d"
               class="text-green"
-              v-text="`+${space.followers_1d}`"
+              v-text="`+${formatCompactNumber(space.followers_7d)}`"
             />
           </div>
         </router-link>
