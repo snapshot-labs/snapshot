@@ -1,7 +1,7 @@
-name: Bug Report
+name: Bug report
 description: File a bug report
 title: "[BUG] - "
-labels: ["bug"]
+labels: ["bug-report"]
 body:
   - type: markdown
     attributes:
@@ -55,3 +55,5 @@ body:
         6. Wallet - [metamask, portis, walletconnect]
         7. Space - [ex. ENS, Gitcoin]
         8. Any additional information we should know - 
+    validations:
+      required: true
