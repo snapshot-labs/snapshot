@@ -5,6 +5,7 @@ import { useSpaces } from '@/composables/useSpaces';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
+import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const { spaces, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
@@ -13,21 +14,23 @@ const { setPageTitle } = useI18n();
 const limit = 100;
 
 const spacesSorted = computed(() => {
-  const spacesArr = Object.values(spaces.value).map(space => {
-    space.proposals = space.proposals || 0;
-    space.proposals_1d = space.proposals_1d || 0;
-    space.votes = space.votes || 0;
-    space.votes_1d = space.votes_1d || 0;
-    space.voters = space.voters || 0;
-    space.voters_1d = space.voters_1d || 0;
-    space.followers = space.followers || 0;
-    space.followers_1d = space.followers_1d || 0;
-    space.ranking =
-      space.votes_1d +
-      space.proposals_1d * 10 +
-      (space.followers_1d / 2) * space.voters;
-    return space;
-  });
+  const spacesArr = Object.values(spaces.value)
+    .map(space => {
+      space.proposals = space.proposals || 0;
+      space.proposals_1d = space.proposals_1d || 0;
+      space.votes = space.votes || 0;
+      space.votes_1d = space.votes_1d || 0;
+      space.voters = space.voters || 0;
+      space.voters_1d = space.voters_1d || 0;
+      space.followers = space.followers || 0;
+      space.followers_1d = space.followers_1d || 0;
+      space.ranking =
+        space.votes_1d +
+        space.proposals_1d * 10 +
+        (space.followers_1d / 2) * space.voters;
+      return space;
+    })
+    .filter(space => verified[space.id] !== -1);
   return orderBy(spacesArr, ['ranking'], ['desc']).slice(0, limit);
 });
 onMounted(() => setPageTitle('page.title.ranking'));
