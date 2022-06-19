@@ -596,9 +596,9 @@
       "addTreasury": "Add a treasury"
     },
     "assets": {
-      "title": "Assets",
-      "empty": "There are no assets in this contract"
+      "title": "资产",
+      "empty": "该合约中没有资产"
     },
-    "24hChange": "24h change"
+    "24hChange": "24小时变化"
   }
 }
