@@ -1,6 +1,5 @@
-Fixes # .
+Fixes Issue #
 
-Changes proposed in this pull request:
-- 
-- 
-- 
+Changes in this PR:
+
+How to test and review this PR?
