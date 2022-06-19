@@ -150,8 +150,8 @@ onMounted(() => {
                 class="pointer-events-none"
               />
               <BaseCounter
-                v-if="spaces?.[element]?.activeProposals"
-                :counter="spaces[element].activeProposals"
+                v-if="spaces?.[element]?.proposals_active"
+                :counter="spaces[element].proposals_active"
                 class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
               />
             </div>
