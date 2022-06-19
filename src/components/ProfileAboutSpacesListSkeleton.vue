@@ -8,11 +8,11 @@ defineProps<{
   <div class="flex justify-between">
     <div v-for="n in numberOfSpaces + 1" :key="n" class="animate-pulse">
       <div class="flex justify-center">
-        <div class="flex border p-[2px] rounded-full">
-          <div class="w-[48px] h-[48px] bg-skin-border rounded-full" />
+        <div class="flex rounded-full border p-[2px]">
+          <div class="h-[48px] w-[48px] rounded-full bg-skin-border" />
         </div>
       </div>
-      <div class="w-[66px] h-[14px] mt-[6px] bg-skin-border rounded" />
+      <div class="mt-[6px] h-[14px] w-[66px] rounded bg-skin-border" />
     </div>
   </div>
 </template>

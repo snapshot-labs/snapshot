@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
 import { useStore } from '@/composables/useStore';
 import { useI18n } from '@/composables/useI18n';
@@ -11,7 +11,14 @@ import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 
-const props = defineProps({ space: Object });
+const props = defineProps<{
+  space: {
+    id: string;
+    name: string;
+    members: string[];
+    about: string;
+  };
+}>();
 
 const { store } = useStore();
 const { setPageTitle } = useI18n();
@@ -22,11 +29,7 @@ const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { apolloQuery } = useApolloQuery();
 
 const spaceMembers = computed(() =>
-  props.space?.members
-    ? props.space.members.length < 1
-      ? ['none']
-      : props.space.members
-    : null
+  props.space.members.length < 1 ? ['none'] : props.space.members
 );
 
 const spaceFilterBy = computed(() => store.space.filterBy);
@@ -83,7 +86,7 @@ const { profiles, loadProfiles } = useProfiles();
 watch(
   () => store.space.proposals,
   () => {
-    loadProfiles(store.space.proposals.map(proposal => proposal.author));
+    loadProfiles(store.space.proposals.map((proposal: any) => proposal.author));
   }
 );
 
@@ -98,10 +101,9 @@ function selectState(e) {
 }
 
 onMounted(() => {
-  if (props.space?.name)
-    setPageTitle('page.title.space.proposals', { space: props.space.name });
+  setPageTitle('page.title.space.proposals', { space: props.space.name });
 
-  const firstProposal = store.space.proposals[0];
+  const firstProposal: any = store.space.proposals[0];
   if (firstProposal && firstProposal?.space.id !== props.space.id) {
     store.space.proposals = [];
     load();
@@ -115,14 +117,13 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="px-3 md:px-0 mb-3 flex relative">
+      <div class="relative mb-3 flex px-3 md:px-0">
         <div class="flex-auto">
-          <div class="flex items-center flex-auto">
+          <div class="flex flex-auto items-center">
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
         <BaseDropdown
-          @select="selectState"
           :items="[
             {
               text: $t('proposals.states.all'),
@@ -150,28 +151,34 @@ onMounted(() => {
               selected: spaceFilterBy === 'core'
             }
           ]"
+          @select="selectState"
         >
-          <template v-slot:button>
+          <template #button>
             <BaseButton class="pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
               <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
             </BaseButton>
           </template>
         </BaseDropdown>
+
         <SpaceProposalsNotice
           v-if="store.space.proposals.length < 1 && !loadingData"
-          :spaceId="space.id"
-          :web3Account="web3Account"
+          :space-id="space.id"
+          :web3-account="web3Account"
         />
       </div>
 
-      <NoProposals
+      <BaseBlock v-if="space.about && spaceFilterBy == 'all'" class="mb-3">
+        <TextAutolinker :text="space.about" />
+      </BaseBlock>
+
+      <SpaceProposalsNoProposals
         v-if="!loadingData && store.space.proposals.length < 1"
         class="mt-2"
         :space="space"
       />
-      <div v-else class="md:space-y-4 my-4">
-        <TimelineProposal
+      <div v-else class="my-4 md:space-y-4">
+        <BaseProposalItem
           v-for="(proposal, i) in store.space.proposals"
           :key="i"
           :proposal="proposal"
@@ -180,7 +187,7 @@ onMounted(() => {
           class="border-b first:border-t"
         />
       </div>
-      <div class="w-[10px] h-[10px] absolute bottom-0" ref="endElement" />
+      <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
       <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>

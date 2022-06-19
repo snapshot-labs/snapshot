@@ -4,7 +4,7 @@ export function useInfiniteLoader(loadBy = 6) {
   const loadingMore = ref(false);
   const stopLoadingMore = ref(false);
 
-  async function loadMore(loadFn, loading) {
+  async function loadMore(loadFn, loading = false) {
     if (!stopLoadingMore.value && !loading) {
       loadingMore.value = true;
       await loadFn();

@@ -7,10 +7,10 @@ import { useIntl } from '@/composables/useIntl';
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 export default {
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   setup() {
     return { shorten, formatCompactNumber, formatPercentNumber };
   },
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,
@@ -39,7 +39,7 @@ export default {
     this.loading = true;
 
     this.totalVotingPower = await this.plugin.getTotalVotingPower(
-      getProvider(this.space.network),
+      getProvider(this.space.network, 'brovider'),
       this.space.plugins.quorum,
       this.proposal.snapshot
     );
@@ -51,7 +51,7 @@ export default {
 
 <template>
   <BaseBlock title="Quorum" :loading="!loaded">
-    <div class="text-skin-link mb-1">
+    <div class="mb-1 text-skin-link">
       <span class="mr-1">
         {{ formatCompactNumber(totalScore) }} /
         {{ formatCompactNumber(totalVotingPower) }}

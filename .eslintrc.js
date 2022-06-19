@@ -4,11 +4,11 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/vue3-essential',
+    'plugin:cypress/recommended',
+    'plugin:vue/vue3-recommended',
     'eslint:recommended',
-    '@vue/typescript/recommended',
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint'
+    '@vue/eslint-config-typescript/recommended',
+    '@vue/eslint-config-prettier'
   ],
   ignorePatterns: ['/node_modules/**/*.*'],
   parserOptions: {
@@ -28,6 +28,7 @@ module.exports = {
   globals: {
     $ref: 'readonly',
     defineProps: 'readonly',
-    defineEmits: 'readonly'
+    defineEmits: 'readonly',
+    withDefaults: 'readonly'
   }
 };

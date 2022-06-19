@@ -58,8 +58,7 @@
   "confirmRemove": "以下のアドレスへの投票権の委任を削除してもよろしいですか？",
   "removeSpace": "for the space {0}",
   "confirmVote": "投票内容の確認",
-  "sureToVote": "この投票を実行してよろしいですか。",
-  "cannotBeUndone": "このアクションは取り消すことができません。",
+  "voteOverview": "Vote overview",
   "options": "オプション",
   "votingPower": "あなたの投票力",
   "receipt": "レシート",
@@ -136,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
-    "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "より詳細については{documentation} をご覧ください。またはSnapshotの {discord} に参加してください。",
     "gotIt": "了解"
   },
@@ -180,7 +179,7 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "スペースはこの投票タイプを強制する",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
@@ -250,49 +249,96 @@
   },
   "settings": {
     "header": "設定",
-    "setEnsTextRecord": "ENSテキストレコードを設定",
     "editController": "コントローラの編集",
-    "needToSetEnsText": "スペースの設定はIPFS上のファイルに保存されます。スペースの設定を編集する前に、まずそのファイルを指定するENSテキストコードを設定する必要があります。",
-    "profile": "プロフィール",
-    "avatar": "アバター",
-    "name": "名前",
-    "about": "概要",
-    "terms": "利用規約",
-    "network": "ネットワーク",
-    "symbol": "シンボル",
-    "skin": "スキン",
-    "customDomain": "カスタムドメイン",
-    "domain": "ドメイン名",
-    "strategies": "ストラテジー",
-    "categories": "カテゴリー",
-    "selectCategories": "カテゴリーを選択する",
-    "hideSpace": "ホームページからスペースを隠す",
-    "addStrategy": "ストラテジーを追加する",
-    "authors": "作成者",
-    "admins": "管理者",
-    "defaultTab": "デフォルトのタブ",
-    "proposalThreshold": "提案の閾値",
-    "allowOnlyAuthors": "作成者のみ提案を提出可能",
-    "editPlugin": "プラグインを編集する",
-    "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ",
-    "proposalValidation": "提案のバリデーション",
-    "validation": "バリデーション",
-    "editValidation": "バリデーションを編集",
-    "selectValidation": "バリデーションを選択",
-    "validationParameters": "バリデーションのパラメータ",
-    "warningTextRecord": "ENSドメインにテキストレコードを設定する必要があります。",
-    "votingDelay": "投票の遅延",
-    "votingPeriod": "投票期間",
-    "voting": "投票",
-    "quorum": "定足数",
-    "type": "タイプ",
-    "anyType": "すべて",
-    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
     "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
-    "set": "設定する"
+    "set": "設定する",
+    "profile": "プロフィール",
+    "avatar": "アバター",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "ホームページからスペースを隠す",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "ストラテジーを追加する",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "提案のバリデーション",
+    "validation": "バリデーション",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "作成者のみ提案を提出可能",
+    "editValidation": "バリデーションを編集",
+    "selectValidation": "バリデーションを選択",
+    "validationParameters": "バリデーションのパラメータ",
+    "voting": "投票",
+    "votingDelay": "投票の遅延",
+    "votingPeriod": "投票期間",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "すべて",
+    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
+    "customDomain": "カスタムドメイン",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "スキン",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "プラグインを追加する",
+    "editPlugin": "プラグインを編集する",
+    "pluginParameters": "プラグインのパラメータ"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -303,23 +349,27 @@
     "createASpace": "スペースを作成する",
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "サポートされているドメインの拡張子",
-    "helpDocsAndDiscordLinks": "スペースを作成する方法がわかりませんか？詳細は <a target='_blank' href='https://docs.snapshot.org/spaces/create'> ドキュメント </a> をご参照ください。またはSnapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a> に参加してください。",
-    "setSpaceController": "ENSでスペースコントローラのアドレスを設定する",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENSのコントローラを編集する",
     "setController": "コントローラを設定する",
-    "explainControllerAndEns": "このアクションには、イーサリアムのメインネット上での取引が必要です。これにより、ENSドメインに「スナップショット」TEXTレコードが追加されます。",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "{address} をスペースのコントローラとして設定してもよろしいですか？",
     "controllerHasAuthority": "コントローラはスペースの設定に対して完全な権限を持っています",
     "controller": "コントローラ",
     "selectEnsForSpace": "ENSアドレスを選ぶ",
-    "spaceOwnerAddressPlaceHolder": "例: 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "コントローラのアドレス",
     "updateController": "コントローラをアップデートする",
     "seeOnEns": "ENS上で見る",
     "goToSettings": "設定に移動する",
     "setSpaceProfile": "スペースをカスタマイズする",
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
-    "pleaseWaitMessage": "取引が確定されるまで少々お待ちください"
+    "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -334,14 +384,16 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +455,6 @@
       "ranked-choice": "各投票者は、任意の数の選択肢を選択してランク付けすることができます。結果は、インスタント流出カウント法によって計算されます。",
       "weighted": "各投票者は、任意の数の選択肢に投票力を分散させることができます。",
       "basic": "3つの選択肢（賛成または 反対または棄権）の中から一つを選択する投票"
-    },
-    "choices": {
-      "for": "賛成",
-      "against": "反対",
-      "abstain": "棄権"
     }
   },
   "safeSnap": {
@@ -457,7 +504,8 @@
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "この提案が合格し、それを満たしています",
       "criteria": "受け入れ基準?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
@@ -536,8 +584,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "対応していないネットワーク",
-    "ensOnlyMainnet": "SnapshotはEthereumのMainnet上でENSのみをサポートします。一度スペースが作成されると、複数のチェーン上で使用することができます。",
-    "switchNetworkToMainnet": "続行するには、ウォレット内のネットワークをEthereum Mainnetに変更する必要があります。",
-    "switchToMainnet": "メインネットに切り替え"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

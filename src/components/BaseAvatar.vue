@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { watch, ref, withDefaults } from 'vue';
+import { watch, ref } from 'vue';
 
 interface Props {
-  address?: string;
   size?: string;
-  imgsrc?: string;
-  space?: Record<string, any>;
+  src?: string;
   previewFile?: File | undefined;
 }
 
@@ -13,29 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
   size: '22'
 });
 
-const imgUrl = ref<string>('');
-const showImg = ref(false);
 const avatarImage = ref<HTMLImageElement | null>(null);
-
-function loadImage() {
-  imgUrl.value = '';
-  if (props.imgsrc) {
-    const img = new Image();
-    img.src = props.imgsrc as string;
-    img.onload = () => {
-      imgUrl.value = img.src;
-      showImg.value = true;
-    };
-  }
-}
-
-watch(
-  () => props.imgsrc,
-  () => {
-    loadImage();
-  },
-  { immediate: true }
-);
 
 watch(
   () => props.previewFile,
@@ -59,30 +35,34 @@ watch(
     <img
       v-show="previewFile"
       ref="avatarImage"
-      class="rounded-full object-cover"
-      :class="'bg-[color:var(--border-color)]'"
+      class="rounded-full bg-skin-border object-cover"
       :style="{
-        width: `${parseInt(size)}px`,
-        height: `${parseInt(size)}px`,
-        minWidth: `${parseInt(size)}px`
+        width: `${Number(size)}px`,
+        height: `${Number(size)}px`,
+        minWidth: `${Number(size)}px`
       }"
-      :alt="space?.name"
+      alt="avatar"
     />
     <!-- else show image from ipfs or stamp -->
     <img
-      v-show="!previewFile"
-      :src="
-        imgUrl ||
-        `https://stamp.fyi/avatar/eth:${address}?s=${parseInt(size) * 2}`
-      "
-      class="rounded-full object-cover"
-      :class="'bg-[color:var(--border-color)]'"
+      v-show="!previewFile && src"
+      :src="src"
+      class="rounded-full bg-skin-border object-cover"
       :style="{
-        width: `${parseInt(size)}px`,
-        height: `${parseInt(size)}px`,
-        minWidth: `${parseInt(size)}px`
+        width: `${Number(size)}px`,
+        height: `${Number(size)}px`,
+        minWidth: `${Number(size)}px`
       }"
-      :alt="space?.name"
+      alt="avatar"
+    />
+    <div
+      v-if="!src && !previewFile"
+      class="rounded-full bg-skin-border"
+      :style="{
+        width: `${Number(size)}px`,
+        height: `${Number(size)}px`,
+        minWidth: `${Number(size)}px`
+      }"
     />
   </span>
 </template>

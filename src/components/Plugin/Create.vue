@@ -4,7 +4,6 @@ import { usePlugins } from '@/composables/usePlugins';
 const props = defineProps({
   proposal: Object,
   space: Object,
-  preview: Boolean,
   modelValue: Object
 });
 
@@ -24,9 +23,9 @@ const update = data => {
 
 <template>
   <component
+    :is="component"
     v-for="(component, key) in components"
     :key="key"
-    :is="component"
     v-bind="props"
     @update="update"
   />

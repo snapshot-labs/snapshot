@@ -21,14 +21,14 @@ defineEmits(['close', 'set']);
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+    <template #header>
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('settings.editController') }}</h3>
       </div>
     </template>
 
     <div class="p-4">
-      <BaseMessageBlock level="info" class="mb-3">
+      <BaseMessage level="info" class="mb-3">
         {{
           $tc('settings.currentSpaceControllerIs', {
             address: shorten(currentSpaceController)
@@ -39,25 +39,27 @@ defineEmits(['close', 'set']);
             {{ $t('setup.seeOnEns') }}
           </BaseLink>
         </div>
-      </BaseMessageBlock>
+      </BaseMessage>
 
-      {{ $t('settings.newController') }}
-
-      <UiInput
+      <BaseInput
         v-model.trim="spaceControllerInput"
-        :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
-        class="mt-1"
+        :title="$t('settings.newController')"
+        :placeholder="
+          $t('setup.spaceOwnerAddressPlaceHolder', {
+            address: currentSpaceController
+          })
+        "
         focus-on-mount
       >
-      </UiInput>
+      </BaseInput>
     </div>
-    <template v-slot:footer>
+    <template #footer>
       <BaseButton
-        class="button-outline w-full my-2"
+        class="my-2 w-full"
         primary
         :disabled="!controllerInputIsValid"
-        @click="$emit('set'), $emit('close')"
         :loading="settingENSRecord"
+        @click="$emit('set'), $emit('close')"
       >
         {{ $t('settings.set') }}
       </BaseButton>

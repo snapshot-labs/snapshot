@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { watch, ref, defineEmits } from 'vue';
+import { watch, ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { getIpfsUrl } from '@/helpers/utils';
 import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
 import { useProfiles } from '@/composables/useProfiles';
+import { clearStampCache } from '@/helpers/utils';
 
 const props = defineProps<{
   address: string;
@@ -37,6 +37,7 @@ async function save() {
     timestamp: Number((Date.now() / 1e3).toFixed()),
     profile: JSON.stringify(form.value)
   });
+  await clearStampCache(props.address, 'avatar');
   reloadProfile(props.address);
   emit('close');
   return notify(['green', t('notify.saved')]);
@@ -57,62 +58,61 @@ watch(
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+    <template #header>
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.settings.header') }}</h3>
       </div>
     </template>
 
-    <div class="p-4 space-y-2">
+    <div class="space-y-2 p-4">
       <div class="flex justify-center">
         <InputUploadAvatar
           :avatar="form.avatar"
           @image-uploaded="url => (form.avatar = url)"
           @image-remove="form.avatar = ''"
         >
-          <template v-slot:avatar="{ uploading, previewFile }">
+          <template #avatar="{ uploading, previewFile }">
             <div class="relative">
-              <BaseAvatar
+              <AvatarUser
                 :address="address"
-                :imgsrc="form.avatar ? getIpfsUrl(form?.avatar) : ''"
-                :previewFile="previewFile"
+                :preview-file="previewFile"
                 size="80"
               />
               <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
               <div
-                class="bg-skin-heading absolute rounded-full p-1 right-0 bottom-[2px]"
+                class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
               >
-                <i-ho-pencil class="text-skin-bg text-[12px]" />
+                <i-ho-pencil class="text-[12px] text-skin-bg" />
               </div>
             </div>
           </template>
         </InputUploadAvatar>
       </div>
 
-      <SBaseInput
+      <BaseInput
         v-model="form.name"
         :title="$t('profile.settings.name')"
         type="text"
         :placeholder="$t('profile.settings.namePlaceholder')"
-        :maxLength="properties.name.maxLength"
-        focusOnMount
+        :max-length="properties.name.maxLength"
+        focus-on-mount
       />
       <div>
-        <SBaseLabel> {{ $t('profile.settings.biography') }} </SBaseLabel>
+        <LabelInput> {{ $t('profile.settings.biography') }} </LabelInput>
         <TextareaAutosize
           v-model="form.about"
           class="s-input !rounded-3xl"
-          :maxLength="properties.about.maxLength"
+          :max-length="properties.about.maxLength"
           :placeholder="$t('profile.settings.bioPlaceholder')"
         />
       </div>
     </div>
     <div class="p-4">
       <BaseButton
-        @click="actionWithAlias(save)"
         :loading="actionLoading"
         class="w-full"
         primary
+        @click="actionWithAlias(save)"
       >
         {{ $t('save') }}
       </BaseButton>

@@ -28,7 +28,7 @@
   "timeline": "时间线",
   "ended": "已结束",
   "started": "已开始",
-  "filters": "筛选器",
+  "filters": "过滤器",
   "allSpaces": "所有空间",
   "submitOnchain": "链上提交",
   "inSpaces": "在 {0} 空间中",
@@ -58,8 +58,7 @@
   "confirmRemove": "您确定要移除对的委托吗？",
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
-  "sureToVote": "您确定要投此票吗？",
-  "cannotBeUndone": "此操作无法撤消。",
+  "voteOverview": "投票总览",
   "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "凭证",
@@ -136,7 +135,7 @@
   "changeWallet": "更换钱包",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
-    "mainText": "默认情况下，每个投票者都有一个投票权。 您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
+    "mainText": "您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
     "learnMore": "在 {documentation} 获得更多信息，或加入Snapshot {discord} 寻求帮助。",
     "gotIt": "了解！"
   },
@@ -180,7 +179,7 @@
     "schedule": "计划提案",
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
-    "typeEnforced": "该空间执行此投票类型",
+    "typeEnforced": "{type}由空间强制执行",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
@@ -250,49 +249,96 @@
   },
   "settings": {
     "header": "设置",
-    "setEnsTextRecord": "设置 ENS 文本记录",
     "editController": "编辑控制人",
-    "needToSetEnsText": "您的空间设置将保存在IPFS文件中。 在您可以编辑他们之前，您需要设置一个 ENS 文本记录指向该文件。",
-    "profile": "用户信息",
-    "avatar": "头像",
-    "name": "名称",
-    "about": "关于",
-    "terms": "使用条款",
-    "network": "网络",
-    "symbol": "符号",
-    "skin": "皮肤",
-    "customDomain": "自定义域名",
-    "domain": "域名",
-    "strategies": "策略",
-    "categories": "分类",
-    "selectCategories": "选择分类",
-    "hideSpace": "从主页隐藏空间",
-    "addStrategy": "添加策略",
-    "authors": "作者",
-    "admins": "管理员",
-    "defaultTab": "默认标签页",
-    "proposalThreshold": "提案阈值",
-    "allowOnlyAuthors": "仅允许作者提交提案",
-    "editPlugin": "编辑插件",
-    "addPlugin": "添加插件",
-    "pluginParameters": "插件参数",
-    "proposalValidation": "提案验证",
-    "validation": "验证",
-    "editValidation": "编辑验证",
-    "selectValidation": "选择验证",
-    "validationParameters": "验证参数",
-    "warningTextRecord": "您必须给ENS域名设置TXT记录。",
-    "votingDelay": "投票延迟开始",
-    "votingPeriod": "投票时长",
-    "voting": "投票",
-    "quorum": "提案生效阈值",
-    "type": "类型",
-    "anyType": "任意",
-    "hideAbstain": "忽略基本投票结果中的弃权票",
     "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
-    "set": "设置"
+    "set": "设置",
+    "profile": "用户信息",
+    "avatar": "头像",
+    "name": {
+      "label": "名称",
+      "placeholder": "例如 Yam Network"
+    },
+    "about": {
+      "label": "关于",
+      "placeholder": "介绍您的组织"
+    },
+    "categories": {
+      "label": "类别",
+      "select": "选择类别"
+    },
+    "terms": {
+      "label": "条款",
+      "information": "用户必须先接受这些条款才能创建提案或投票。"
+    },
+    "hideSpace": "从主页隐藏空间",
+    "links": "社交账户",
+    "website": "网站",
+    "strategies": {
+      "label": "投票策略",
+      "information": "策略用于确定投票权或用户是否有资格创建提案。"
+    },
+    "network": {
+      "label": "网络",
+      "information": "用于此空间的 defaul网络。网络也可以在个别策略中指定。"
+    },
+    "symbol": {
+      "label": "符号",
+      "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
+    },
+    "strategiesList": "策略",
+    "addStrategy": "添加策略",
+    "testInPlayground": "在playground中测试",
+    "admins": {
+      "label": "管理员",
+      "information": "管理员能够修改空间设置和管理空间提案。"
+    },
+    "authors": {
+      "label": "作者",
+      "information": "作者可以创建提案而不必通过验证。"
+    },
+    "proposalValidation": "提案验证",
+    "validation": "验证",
+    "proposalThreshold": {
+      "label": "提案门槛",
+      "information": "创建提案所需的最低投票权。"
+    },
+    "allowOnlyAuthors": "仅允许作者提交提案",
+    "editValidation": "编辑验证",
+    "selectValidation": "选择验证",
+    "validationParameters": "验证参数",
+    "voting": "投票",
+    "votingDelay": "投票延迟开始",
+    "votingPeriod": "投票时长",
+    "hours": "小时",
+    "days": "天",
+    "quorum": {
+      "label": "提案人数",
+      "information": "提案获得通过所需的最低投票权数。"
+    },
+    "type": {
+      "label": "类型",
+      "information": "这个空间采用的投票方式。该类型的投票方式将应用到所有的提案当中。"
+    },
+    "anyType": "任意",
+    "hideAbstain": "忽略基本投票结果中的弃权票",
+    "customDomain": "自定义域名",
+    "domain": {
+      "label": "域名",
+      "placeholder": "例如 vote.balancer.fi",
+      "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
+    },
+    "skin": "皮肤",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "添加插件",
+    "editPlugin": "编辑插件",
+    "pluginParameters": "插件参数"
   },
   "setup": {
     "example": "例如 yam.eth",
@@ -303,23 +349,27 @@
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
-    "helpDocsAndDiscordLinks": "不知道如何创建空间？ 在 <a target='_blank' href='https://docs.snapshot.org/spaces/create'> 文档中了解更多信息</a> 或加入 Snapshot <a target='_blank' href='https:// /discord.gg/snapshot'>Discord</a>。",
-    "setSpaceController": "在 ENS 上设置空间控制人地址",
+    "helpDocsAndDiscordLinks": "不知道如何创建空间？在 {docs} 了解更多信息或加入Snapshot {discord}。",
+    "setSpaceController": "空间控制人",
+    "setSpaceControllerInfo": " 空间控制人是能够管理空间设置的帐户。 稍后可以添加其他空间控制人（管理员）。",
+    "setSpaceControllerInfoGnosisSafe": "使用Gnosis Safe创建空间时，建议将安全地址设置为空间控制人。 如果您不这样做，则需要遵循一些额外的步骤。{link}",
     "editSpaceController": "在 ENS 上编辑控制人",
     "setController": "设置控制人",
-    "explainControllerAndEns": "此操作需要在Ethereum Mainnet上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
+    "explainControllerAndEns": "设置控制人需要在 {network} 上进行交易，该交易会将“snapshot”文本记录添加到您的 ENS 域。",
     "confirmToSetAddress": "您确定要设置 {address} 作为空间的控制人吗？",
     "controllerHasAuthority": "管理员对空间设置拥有所有权限",
     "controller": "控制人",
     "selectEnsForSpace": "选择ENS地址",
-    "spaceOwnerAddressPlaceHolder": "例如：0xF78108c9BAF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "例如： {address}",
     "controllerAddress": "控制人地址",
     "updateController": "更新控制人",
     "seeOnEns": "在 ENS 上查看",
     "goToSettings": "前往设置",
     "setSpaceProfile": "自定义您的空间",
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
-    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认"
+    "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
+    "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
+    "fillCurrentAccount": "使用当前登录的帐户"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
@@ -334,14 +384,16 @@
       "delegated": "已委托",
       "delegateTo": "委托给",
       "delegateFor": "代表",
-      "noDelegatorsMessage": "{network} 上没有代表"
+      "noDelegatorsMessage": "{network} 上没有代表",
+      "notSupportedNetwork": "目前在 {network} 上不支持委托 "
     },
     "activity": {
       "header": "活动",
       "votedFor": "投了 {choice}",
       "today": "今天",
       "thisWeek": "本周",
-      "older": "更早的"
+      "older": "更早的",
+      "noActivity": "暂无动态"
     },
     "settings": {
       "header": "编辑个人资料",
@@ -403,11 +455,6 @@
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
       "weighted": "每个选民都可以在任何选择中分散投票权。",
       "basic": "有三种投票单选项：支持，反对，和弃权"
-    },
-    "choices": {
-      "for": "支持",
-      "against": "反对",
-      "abstain": "弃权"
     }
   },
   "safeSnap": {
@@ -457,7 +504,8 @@
       "switchChain": "将你的钱包切换到 {0} 以请求执行",
       "question": "该提案是否通过并且是否符合",
       "criteria": "接收标准？",
-      "proposalPassed": "该提案通过了吗？"
+      "proposalPassed": "该提案通过了吗？",
+      "expired": "提案已过期"
     }
   },
   "poap": {
@@ -536,8 +584,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "不支持的网络",
-    "ensOnlyMainnet": "Snapshot仅支持以太坊主网上的 ENS。 创建空间后，您可以跨链使用它。",
-    "switchNetworkToMainnet": "若要继续，您需要将你钱包中的网络更改为Ethereum Mainnet。",
-    "switchToMainnet": "切换到Mainnet"
+    "switchNetworkToNetwork": "若要继续，您需要将钱包中的网络更改为 {network}。",
+    "switchToNetwork": "切换到 {network}",
+    "goToDemoSite": "前往演示网站"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

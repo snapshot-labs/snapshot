@@ -6,6 +6,8 @@ import uniqBy from 'lodash/uniqBy';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useDelegate } from '@/composables/useDelegate';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
+import { useI18n } from '@/composables/useI18n';
 
 const props = defineProps<{
   userAddress: string;
@@ -16,6 +18,7 @@ const props = defineProps<{
 const { spaces, spacesLoaded } = useSpaces();
 const { web3Account } = useWeb3();
 const { networkKey } = useDelegate();
+const { t } = useI18n();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
@@ -31,9 +34,16 @@ const delegatorsFilteredBySpaces = computed(() => {
   return uniqBy(delegatorSpaceIds.filter(d => followingSpaceIds.includes(d)));
 });
 
+const loadingDelegators = ref<boolean | 'notSupportedNetwork'>(false);
+
 async function loadDelegatorsByNetwork() {
-  const res = await getDelegators(networkKey.value, props.userAddress);
-  delegators.value = res.delegations ?? [];
+  loadingDelegators.value = true;
+  if (SNAPSHOT_SUBGRAPH_URL[networkKey.value]) {
+    const res = await getDelegators(networkKey.value, props.userAddress);
+    delegators.value = res.delegations ?? [];
+    return (loadingDelegators.value = false);
+  }
+  loadingDelegators.value = 'notSupportedNetwork';
 }
 
 watch(
@@ -53,19 +63,25 @@ function clickDelegate(id) {
   delegateSpaceId.value = id;
   modalDelegateOpen.value = true;
 }
+
+const networkString = computed(() => {
+  return (
+    networks?.[networkKey.value]?.shortName ??
+    networks?.[networkKey.value]?.name ??
+    t('theCurrentNetwork')
+  );
+});
 </script>
 
 <template>
   <div>
     <BaseBlock
-      :loading="!spacesLoaded || loadingFollowedSpaces"
+      :loading="
+        !spacesLoaded || loadingFollowedSpaces || loadingDelegators === true
+      "
       :title="$t('profile.about.delegateFor')"
       :counter="delegatorsFilteredBySpaces.length"
-      :label="
-        networks?.[networkKey]?.shortName ??
-        networks?.[networkKey]?.name ??
-        $t('theCurrentNetwork')
-      "
+      :label="networkString"
       :label-tooltip="$t('profile.about.delegatorNetworkInfo')"
       hide-bottom-border
       slim
@@ -73,20 +89,21 @@ function clickDelegate(id) {
       <ProfileAboutDelegateListItem
         v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
         :spaces="spaces"
-        :delegatorsFilteredBySpaces="delegatorsFilteredBySpaces"
+        :delegators-filtered-by-spaces="delegatorsFilteredBySpaces"
         :delegators="delegators"
-        :userAddress="userAddress"
-        :web3Account="web3Account"
+        :user-address="userAddress"
+        :web3-account="web3Account"
         @delegate="clickDelegate"
       />
-      <div v-else class="p-4 border-t">
+      <div v-else class="border-t p-4">
         {{
-          $t('profile.about.noDelegatorsMessage', {
-            network:
-              networks?.[networkKey]?.shortName ??
-              networks?.[networkKey]?.name ??
-              $t('theCurrentNetwork')
-          })
+          loadingDelegators === 'notSupportedNetwork'
+            ? $t('profile.about.notSupportedNetwork', {
+                network: networkString
+              })
+            : $t('profile.about.noDelegatorsMessage', {
+                network: networkString
+              })
         }}
       </div>
     </BaseBlock>
@@ -94,10 +111,10 @@ function clickDelegate(id) {
   <Teleport to="#modal">
     <ModalDelegate
       :open="modalDelegateOpen"
+      :user-address="userAddress"
+      :space-id="delegateSpaceId"
       @close="modalDelegateOpen = false"
       @reload="loadDelegatorsByNetwork"
-      :userAddress="userAddress"
-      :spaceId="delegateSpaceId"
     />
   </Teleport>
 </template>

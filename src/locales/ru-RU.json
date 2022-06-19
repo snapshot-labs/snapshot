@@ -58,8 +58,7 @@
   "confirmRemove": "Вы уверены, что хотите отменить свое делегирование в",
   "removeSpace": "для сообщества {0}",
   "confirmVote": "Подтвердите голосование",
-  "sureToVote": "Вы уверены, что хотите проголосовать?",
-  "cannotBeUndone": "Это действие невозможно отменить.",
+  "voteOverview": "Vote overview",
   "options": "Вариант(ы)",
   "votingPower": "Ваше право голоса",
   "receipt": "Квитанция",
@@ -136,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Ваше сообщество запущено!",
-    "mainText": "По умолчанию каждый участник имеет право голоса. Вы можете изменить способ расчета силы голоса с помощью стратегий в ваших {настройках}. Изменения повлияют только на новые предложения, существующие предложения не могут быть изменены.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Узнайте больше в {documentation} или присоединитесь к {discord} Snapshot для получения помощи.",
     "gotIt": "Понятно!"
   },
@@ -180,7 +179,7 @@
     "schedule": "График предложения",
     "delayEnforced": "Сообщество вводит отсрочку до начала голосования",
     "periodEnforced": "Сообщество устанавливает продолжительность периода голосования",
-    "typeEnforced": "Сообщество вводит этот тип голосования",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Изменить",
     "continue": "Продолжить",
     "now": "Сейчас",
@@ -250,49 +249,96 @@
   },
   "settings": {
     "header": "Настройки",
-    "setEnsTextRecord": "Установить текстовую запись ENS",
     "editController": "Изменить виджеты",
-    "needToSetEnsText": "Настройки сообщества будут храниться в файле на IPFS. Перед редактированием необходимо установить текстовую запись ENS, которая указывает на данный файл.",
-    "profile": "Профиль",
-    "avatar": "Аватар",
-    "name": "Название",
-    "about": "О проекте",
-    "terms": "Условия",
-    "network": "Сеть",
-    "symbol": "Символ",
-    "skin": "Тема",
-    "customDomain": "Пользовательский домен",
-    "domain": "Название домена",
-    "strategies": "Стратегия(и)",
-    "categories": "Категория(и)",
-    "selectCategories": "Выбрать категории",
-    "hideSpace": "Скрыть сообщество с главной страницы",
-    "addStrategy": "Добавить стратегию",
-    "authors": "Авторы",
-    "admins": "Администраторы",
-    "defaultTab": "Вкладка по умолчанию",
-    "proposalThreshold": "Порог предложения",
-    "allowOnlyAuthors": "Разрешить подавать предложения только авторам",
-    "editPlugin": "Редактировать плагин",
-    "addPlugin": "Добавить плагин",
-    "pluginParameters": "Настройки плагина",
-    "proposalValidation": "Проверка предложения",
-    "validation": "Проверка",
-    "editValidation": "Редактировать проверку",
-    "selectValidation": "Выбрать проверку",
-    "validationParameters": "Параметры проверки",
-    "warningTextRecord": "Необходимо установить текстовую запись в домене ENS.",
-    "votingDelay": "Задержка голосования",
-    "votingPeriod": "Период голосования",
-    "voting": "Голосование",
-    "quorum": "Кворум",
-    "type": "Тип",
-    "anyType": "Любой",
-    "hideAbstain": "Игнорировать голоса воздержавшихся в основных результатах голосования",
     "connectWithSpaceOwner": "Чтобы изменить настройки сообщества, подключитесь к контроллеру или кошельку администратора.",
     "currentSpaceControllerIs": "Текущий контроллер сообщества - {адрес}",
     "newController": "Новый контроллер",
-    "set": "Установить"
+    "set": "Установить",
+    "profile": "Профиль",
+    "avatar": "Аватар",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Скрыть сообщество с главной страницы",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "Добавить стратегию",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Проверка предложения",
+    "validation": "Проверка",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Разрешить подавать предложения только авторам",
+    "editValidation": "Редактировать проверку",
+    "selectValidation": "Выбрать проверку",
+    "validationParameters": "Параметры проверки",
+    "voting": "Голосование",
+    "votingDelay": "Задержка голосования",
+    "votingPeriod": "Период голосования",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Любой",
+    "hideAbstain": "Игнорировать голоса воздержавшихся в основных результатах голосования",
+    "customDomain": "Пользовательский домен",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Тема",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "Добавить плагин",
+    "editPlugin": "Редактировать плагин",
+    "pluginParameters": "Настройки плагина"
   },
   "setup": {
     "example": "например, yam.eth",
@@ -303,23 +349,27 @@
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
     "supportedEnsTLDs": "Поддерживаемые доменные окончания",
-    "helpDocsAndDiscordLinks": "Не уверены, как создать сообщество? Узнайте больше в <a target='_blank' href='https://docs.snapshot.org/spaces/create'> документации </a> или присоединитесь к Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
-    "setSpaceController": "Установите адрес контроллера сообщества на ENS",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Изменить контроллер на ENS",
     "setController": "Настроить виджеты",
-    "explainControllerAndEns": "Это действие требует транзакции в сети Ethereum Mainnet, которая добавит запись TEXT \"snapshot\" к вашему домену ENS.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Вы уверены, что хотите установить {address} в качестве управляющего сообществом?",
     "controllerHasAuthority": "Контроллер имеет полное право управлять настройками сообщества",
     "controller": "Контроллер",
     "selectEnsForSpace": "Выберите ENS-адрес",
-    "spaceOwnerAddressPlaceHolder": "например, 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "Адрес контроллера",
     "updateController": "Обновить контроллер",
     "seeOnEns": "Смотреть на ENS",
     "goToSettings": "Перейти в настройки",
     "setSpaceProfile": "Настроить свое сообщество",
     "waitForTransaction": "Подтвердите транзакцию, чтобы создать свое сообщество.{txUrl}",
-    "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, подтверждения трансакции"
+    "pleaseWaitMessage": "Это может занять несколько минут, пожалуйста, подождите, подтверждения трансакции",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -334,14 +384,16 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +455,6 @@
       "ranked-choice": "Каждый участник может выбрать и расставить любое количество вариантов. Результаты вычисляются методом мгновенного подсчета голосов.",
       "weighted": "Каждый участник голосования может распределить право голоса между любым количеством вариантов.",
       "basic": "Голосование с одним вариантом выбора с тремя вариантами: За, Против или Воздержался"
-    },
-    "choices": {
-      "for": "За",
-      "against": "Против",
-      "abstain": "Воздержаться"
     }
   },
   "safeSnap": {
@@ -457,7 +504,8 @@
       "switchChain": "Переключите ваш кошелек на {0} для выполнения запроса",
       "question": "Принято ли это предложение и соответствует ли оно",
       "criteria": "Критерии одобрения?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
@@ -536,8 +584,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Неподдерживаемая сеть",
-    "ensOnlyMainnet": "Snapshot поддерживает только ENS в главной сети ethereum. После создания сообщества вы можете использовать его в нескольких цепочках.",
-    "switchNetworkToMainnet": "Чтобы продолжить, необходимо изменить сеть в кошельке на Ethereum Mainnet.",
-    "switchToMainnet": "Переключиться на основную сеть"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

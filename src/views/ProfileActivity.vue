@@ -40,7 +40,7 @@ const activityOlder = computed(() => {
 });
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } =
-  useInfiniteLoader(10);
+  useInfiniteLoader(20);
 const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadVotes(activities.value.length), loadingMore.value)
 );
@@ -84,13 +84,10 @@ async function loadVotes(skip = 0) {
 
 <template>
   <div>
-    <BaseBlock v-if="!activities.length" class="text-center">
-      No activity yet
-    </BaseBlock>
-    <div v-else class="space-y-3">
+    <div class="space-y-3">
       <ProfileActivityList
-        :title="$t('profile.activity.today')"
         v-if="activityToday.length"
+        :title="$t('profile.activity.today')"
       >
         <ProfileActivityListItem
           v-for="activity in activityToday"
@@ -100,8 +97,8 @@ async function loadVotes(skip = 0) {
       </ProfileActivityList>
 
       <ProfileActivityList
-        :title="$t('profile.activity.thisWeek')"
         v-if="activityOneWeek.length"
+        :title="$t('profile.activity.thisWeek')"
       >
         <ProfileActivityListItem
           v-for="activity in activityOneWeek"
@@ -111,8 +108,8 @@ async function loadVotes(skip = 0) {
       </ProfileActivityList>
 
       <ProfileActivityList
-        :title="$t('profile.activity.older')"
         v-if="activityOlder.length"
+        :title="$t('profile.activity.older')"
       >
         <ProfileActivityListItem
           v-for="activity in activityOlder"
@@ -122,7 +119,11 @@ async function loadVotes(skip = 0) {
       </ProfileActivityList>
 
       <LoadingRow v-if="loadingMore" block />
+
+      <BaseBlock v-else-if="!activities.length" class="text-center">
+        {{ $t('profile.activity.noActivity') }}
+      </BaseBlock>
     </div>
-    <div class="w-[10px] h-[10px]" ref="endElement" />
+    <div ref="endElement" class="h-[10px] w-[10px]" />
   </div>
 </template>

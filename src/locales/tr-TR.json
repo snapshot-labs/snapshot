@@ -58,8 +58,7 @@
   "confirmRemove": "Yetkilendirmenizi kaldırmak istediğinizden emin misiniz",
   "removeSpace": "{0} alanı için",
   "confirmVote": "Oyu Onayla",
-  "sureToVote": "Are you sure you want to cast this vote?",
-  "cannotBeUndone": "Bu işlem geri alınamaz.",
+  "voteOverview": "Vote overview",
   "options": "Seçenekler",
   "votingPower": "Oy Verme Gücünüz",
   "receipt": "Dekont",
@@ -136,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -180,7 +179,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -250,49 +249,96 @@
   },
   "settings": {
     "header": "Ayarlar",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profil",
-    "avatar": "Profil Resmi",
-    "name": "İsim",
-    "about": "Hakkında",
-    "terms": "Koşullar",
-    "network": "Ağ",
-    "symbol": "Sembol",
-    "skin": "Birim",
-    "customDomain": "Özel alanadı",
-    "domain": "Domain adı",
-    "strategies": "Strateji",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
-    "hideSpace": "Ana sayfadan alanı gizle",
-    "addStrategy": "Strateji ekle",
-    "authors": "Yazarlar",
-    "admins": "Admin",
-    "defaultTab": "Varsayılan sekme",
-    "proposalThreshold": "Teklif eşiği",
-    "allowOnlyAuthors": "Yalnızca yazarların teklif göndermesine izin ver",
-    "editPlugin": "Eklentiyi düzenle",
-    "addPlugin": "Eklenti ekle",
-    "pluginParameters": "Eklenti Parametreleri",
-    "proposalValidation": "Teklif doğrulama",
-    "validation": "Doğrulama",
-    "editValidation": "Doğrulamaları düzenle",
-    "selectValidation": "Doğrulamayı seçin",
-    "validationParameters": "Doğrulama parametreleri",
-    "warningTextRecord": "ENS alanında bir metin kaydı ayarlamalısınız.",
-    "votingDelay": "Oylama gecikmesi",
-    "votingPeriod": "Oylama periyodu",
-    "voting": "Oylama",
-    "quorum": "Yetersayı (Quorum)",
-    "type": "Tür",
-    "anyType": "Hiç",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profil",
+    "avatar": "Profil Resmi",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Ana sayfadan alanı gizle",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "Strateji ekle",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Teklif doğrulama",
+    "validation": "Doğrulama",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Yalnızca yazarların teklif göndermesine izin ver",
+    "editValidation": "Doğrulamaları düzenle",
+    "selectValidation": "Doğrulamayı seçin",
+    "validationParameters": "Doğrulama parametreleri",
+    "voting": "Oylama",
+    "votingDelay": "Oylama gecikmesi",
+    "votingPeriod": "Oylama periyodu",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Hiç",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "customDomain": "Özel alanadı",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Birim",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "Eklenti ekle",
+    "editPlugin": "Eklentiyi düzenle",
+    "pluginParameters": "Eklenti Parametreleri"
   },
   "setup": {
     "example": "örneğin. yam.eth",
@@ -303,23 +349,27 @@
     "createASpace": "Oluştur",
     "registerEnsButton": "Kaydol",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
-    "setSpaceController": "Set space controller address on ENS",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "Choose ENS address",
-    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -334,14 +384,16 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older"
+      "older": "Older",
+      "noActivity": "No activity yet"
     },
     "settings": {
       "header": "Edit profile",
@@ -403,11 +455,6 @@
       "ranked-choice": "Her seçmen istediği sayıda seçeneği seçebilir ve sıralayabilir. Sonuçlar anlık akış sayma yöntemiyle hesaplanır.",
       "weighted": "Her seçmen, oy verme gücünü herhangi bir sayıda seçeneğe yayabilir.",
       "basic": "Single choice voting with three choices: For, Against or Abstain"
-    },
-    "choices": {
-      "for": "For",
-      "against": "Against",
-      "abstain": "Abstain"
     }
   },
   "safeSnap": {
@@ -457,7 +504,8 @@
       "switchChain": "Switch your wallet to {0} to request execution",
       "question": "Bu teklif kabul edildi mi ve beklentileri karşılıyor mu",
       "criteria": "kabul şartları?",
-      "proposalPassed": "Did the proposal pass?"
+      "proposalPassed": "Did the proposal pass?",
+      "expired": "The proposal has expired"
     }
   },
   "poap": {
@@ -536,8 +584,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Unsupported network",
-    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
-    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

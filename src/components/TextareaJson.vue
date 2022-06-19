@@ -27,6 +27,6 @@ if (props.modelValue) input.value = JSON.stringify(props.modelValue, null, 2);
 <template>
   <TextareaAutosize
     v-model="input"
-    class="font-mono text-sm whitespace-pre w-full !overflow-x-scroll no-scrollbar"
+    class="no-scrollbar w-full !overflow-x-scroll whitespace-pre font-mono text-sm"
   />
 </template>

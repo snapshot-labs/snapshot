@@ -1,5 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export default class Plugin {
   public author = 'lbeder';
@@ -32,6 +34,35 @@ export default class Plugin {
         return BigNumber.from(totalVotingPower)
           .div(BigNumber.from(10).pow(decimals))
           .toNumber();
+      }
+
+      case 'multichainBalance': {
+        const { network, strategies, quorumModifier } = quorumOptions;
+        const blocks = await getSnapshots(
+          network,
+          parseInt(snapshot),
+          web3,
+          strategies.map(s => s.network || network)
+        );
+        const requests: Promise<any>[] = strategies.map(s =>
+          call(
+            getProvider(s.network, 'brovider'),
+            [s.methodABI],
+            [s.address, s.methodABI.name],
+            { blockTag: blocks[s.network] }
+          )
+        );
+        const results = await Promise.all(requests);
+        const totalBalance = results.reduce((total, ele, index) => {
+          const eleDecimals = strategies[index].decimals;
+          if (index === 1) {
+            const eleDecimals = strategies[0].decimals;
+            total = total.div(BigNumber.from(10).pow(eleDecimals));
+          }
+          return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
+        });
+        const modifier = quorumModifier ? quorumModifier : 1;
+        return totalBalance.toNumber() * modifier;
       }
 
       default:

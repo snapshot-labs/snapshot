@@ -132,3 +132,11 @@ export function getIpfsUrl(url) {
     import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
   return getUrl(url, gateway);
 }
+
+export async function clearStampCache(id: string, type = 'space') {
+  if (type === 'space')
+    return await fetch(`https://cdn.stamp.fyi/clear/space/${id}`);
+
+  if (type === 'avatar')
+    return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
+}
