@@ -507,11 +507,10 @@ const truncateMarkdownBody = computed(() => {
           @retry="loadProposal()"
         />
         <ProposalResults
-          v-else-if="results"
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
-          :results="results"
+          :results="(results as Results)"
           :strategies="strategies"
         />
         <PluginProposalSidebar
