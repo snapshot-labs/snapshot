@@ -327,7 +327,7 @@
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
     },
     "skin": "Skin",
     "treasuries": {
