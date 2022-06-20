@@ -331,10 +331,10 @@
     },
     "skin": "皮肤",
     "treasuries": {
-      "label": "Treasuries",
-      "add": "Add treasury",
-      "edit": "Edit treasury",
-      "information": "Add treasuries of your organization to show them in your space."
+      "label": "金库",
+      "add": "添加金库",
+      "edit": "编辑金库",
+      "information": "为您的您组织添加金库以在您的空间中展示它们。"
     },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
@@ -589,16 +589,16 @@
     "goToDemoSite": "前往演示网站"
   },
   "treasury": {
-    "title": "Treasury",
+    "title": "金库",
     "wallets": {
-      "title": "Wallets",
-      "empty": "This space doesn't have a treasury yet",
-      "addTreasury": "Add a treasury"
+      "title": "钱包",
+      "empty": "此空间还没有金库",
+      "addTreasury": "添加一个金库"
     },
     "assets": {
-      "title": "Assets",
-      "empty": "There are no assets in this contract"
+      "title": "资产",
+      "empty": "该合约中没有资产"
     },
-    "24hChange": "24h change"
+    "24hChange": "24小时变化"
   }
 }
