@@ -58,6 +58,7 @@ function handleSelect(e) {
     </BaseDropdown>
   </div>
   <input
+    v-bind="$attrs"
     ref="fileInput"
     type="file"
     accept="image/jpg, image/jpeg, image/png"
