@@ -22,11 +22,11 @@ export default {
     totalScore() {
       const basicCount = this.space.plugins?.quorum?.basicCount;
       if (basicCount && this.proposal.type === 'basic') {
-        return this.results.resultsByVoteBalance
+        return this.results.getProposalResults
           .filter((score, i) => basicCount.includes(i))
           .reduce((a, b) => a + b, 0);
       }
-      return this.results.resultsByVoteBalance.reduce((a, b) => a + b, 0);
+      return this.results.getProposalResults.reduce((a, b) => a + b, 0);
     },
     quorum() {
       return this.totalVotingPower === 0

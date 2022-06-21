@@ -26,22 +26,22 @@ const choicePercentage = computed(() => {
   if (props.proposal.type === 'basic' && hideAbstain) {
     if (props.choice.i === 0)
       return getPercentage(
-        props.results.resultsByVoteBalance[0],
-        props.results.resultsByVoteBalance[0] +
-          props.results.resultsByVoteBalance[1]
+        props.results.getProposalResults[0],
+        props.results.getProposalResults[0] +
+          props.results.getProposalResults[1]
       );
 
     if (props.choice.i === 1)
       return getPercentage(
-        props.results.resultsByVoteBalance[1],
-        props.results.resultsByVoteBalance[0] +
-          props.results.resultsByVoteBalance[1]
+        props.results.getProposalResults[1],
+        props.results.getProposalResults[0] +
+          props.results.getProposalResults[1]
       );
   }
 
   return getPercentage(
-    props.results.resultsByVoteBalance[props.choice.i],
-    props.results.sumOfResultsBalance
+    props.results.getProposalResults[props.choice.i],
+    props.results.getProposalResultsSum
   );
 });
 
@@ -76,13 +76,13 @@ const isVisible = computed(() => {
       <div class="flex justify-end space-x-2">
         <span
           v-tippy="{
-            content: results.resultsByStrategyScore[choice.i]
+            content: results.getProposalResultsByStrategy[choice.i]
               .map((score, index) => `${formatNumber(score)} ${titles[index]}`)
               .join(' + ')
           }"
           class="whitespace-nowrap"
         >
-          {{ formatCompactNumber(results.resultsByVoteBalance[choice.i]) }}
+          {{ formatCompactNumber(results.getProposalResults[choice.i]) }}
           {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
         </span>
         <span v-text="formatPercentNumber(choicePercentage)" />
@@ -90,11 +90,11 @@ const isVisible = computed(() => {
     </div>
 
     <ProposalResultsProgressBar
-      :value="results.resultsByStrategyScore[choice.i]"
+      :value="results.getProposalResultsByStrategy[choice.i]"
       :max="
         proposal.type === 'basic' && hideAbstain
-          ? results.resultsByVoteBalance[0] + results.resultsByVoteBalance[1]
-          : results.sumOfResultsBalance
+          ? results.getProposalResults[0] + results.getProposalResults[1]
+          : results.getProposalResultsSum
       "
     />
   </div>
