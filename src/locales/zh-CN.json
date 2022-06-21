@@ -327,7 +327,7 @@
     "domain": {
       "label": "域名",
       "placeholder": "例如 vote.balancer.fi",
-      "info": "要设置一个自定义域名，您需要在github上开启一个pull request。 {docs}"
+      "info": "要设置一个自定义域名，您另外需要在github上开启一个pull request。 docs"
     },
     "skin": "皮肤",
     "treasuries": {
