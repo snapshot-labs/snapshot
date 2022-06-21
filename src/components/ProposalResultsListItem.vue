@@ -26,22 +26,20 @@ const choicePercentage = computed(() => {
   if (props.proposal.type === 'basic' && hideAbstain) {
     if (props.choice.i === 0)
       return getPercentage(
-        props.results.getProposalResults[0],
-        props.results.getProposalResults[0] +
-          props.results.getProposalResults[1]
+        props.results.scores[0],
+        props.results.scores[0] + props.results.scores[1]
       );
 
     if (props.choice.i === 1)
       return getPercentage(
-        props.results.getProposalResults[1],
-        props.results.getProposalResults[0] +
-          props.results.getProposalResults[1]
+        props.results.scores[1],
+        props.results.scores[0] + props.results.scores[1]
       );
   }
 
   return getPercentage(
-    props.results.getProposalResults[props.choice.i],
-    props.results.getProposalResultsSum
+    props.results.scores[props.choice.i],
+    props.results.scoresTotal
   );
 });
 
@@ -76,13 +74,13 @@ const isVisible = computed(() => {
       <div class="flex justify-end space-x-2">
         <span
           v-tippy="{
-            content: results.getProposalResultsByStrategy[choice.i]
+            content: results.scoresByStrategy[choice.i]
               .map((score, index) => `${formatNumber(score)} ${titles[index]}`)
               .join(' + ')
           }"
           class="whitespace-nowrap"
         >
-          {{ formatCompactNumber(results.getProposalResults[choice.i]) }}
+          {{ formatCompactNumber(results.scores[choice.i]) }}
           {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
         </span>
         <span v-text="formatPercentNumber(choicePercentage)" />
@@ -90,11 +88,11 @@ const isVisible = computed(() => {
     </div>
 
     <ProposalResultsProgressBar
-      :value="results.getProposalResultsByStrategy[choice.i]"
+      :value="results.scoresByStrategy[choice.i]"
       :max="
         proposal.type === 'basic' && hideAbstain
-          ? results.getProposalResults[0] + results.getProposalResults[1]
-          : results.getProposalResultsSum
+          ? results.scores[0] + results.scores[1]
+          : results.scoresTotal
       "
     />
   </div>

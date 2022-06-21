@@ -112,9 +112,9 @@ async function loadResults() {
     loadingResultsFailed.value = true;
   } else if (proposal.value.scores_state === 'final' || showPending) {
     results.value = {
-      getProposalResults: proposal.value.scores,
-      getProposalResultsByStrategy: proposal.value.scores_by_strategy,
-      getProposalResultsSum: proposal.value.scores_total
+      scores: proposal.value.scores,
+      scoresByStrategy: proposal.value.scores_by_strategy,
+      scoresTotal: proposal.value.scores_total
     };
     loadedResults.value = true;
     loadingResultsFailed.value = false;
