@@ -8,6 +8,7 @@ import PlaygroundView from '@/views/PlaygroundView.vue';
 import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
 import TimelineView from '@/views/TimelineView.vue';
+import RankingView from '@/views/RankingView.vue';
 
 import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
@@ -118,6 +119,7 @@ if (domain) {
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
     { path: '/explore', name: 'explore', component: TimelineView },
+    { path: '/ranking', name: 'ranking', component: RankingView },
     {
       path: '/playground/:name',
       name: 'playground',
