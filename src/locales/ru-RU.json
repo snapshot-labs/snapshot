@@ -566,7 +566,8 @@
         "settings": "Настройки {space}"
       },
       "strategy": "{key} стратегия",
-      "delegate": "Делегировать"
+      "delegate": "Делегировать",
+      "ranking": "Ranking"
     }
   },
   "hal": {
