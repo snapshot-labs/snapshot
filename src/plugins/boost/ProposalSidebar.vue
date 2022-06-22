@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted } from 'vue';
+import { formatEther } from '@ethersproject/units';
 import { usePlugins } from '@/composables/usePlugins';
 import { useBoost } from './useBoost';
 
@@ -20,7 +21,7 @@ onMounted(() => {
   <BaseBlock v-if="space.plugins.boost" :title="pluginIndex.boost.name">
     <div v-if="boosts.length">
       <div v-for="boost in boosts" :key="boost.id">
-        {{ JSON.stringify(boost) }}
+        Boost balance: {{ formatEther(boost.balance) }}
       </div>
     </div>
     <div v-else>No boosts for this proposal.</div>
