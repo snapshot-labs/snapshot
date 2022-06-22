@@ -1,13 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted } from 'vue';
 import { formatEther } from '@ethersproject/units';
 import { usePlugins } from '@/composables/usePlugins';
 import { useBoost } from './useBoost';
 
-const props = defineProps({
-  proposal: Object,
-  space: Object
-});
+const props = defineProps<{
+  space: Record<string, any>;
+  proposal: Record<string, any>;
+}>();
 
 const { pluginIndex } = usePlugins();
 const { loadBoosts, boosts } = useBoost();
@@ -18,12 +18,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseBlock v-if="space.plugins.boost" :title="pluginIndex.boost.name">
-    <div v-if="boosts.length">
-      <div v-for="boost in boosts" :key="boost.id">
-        Boost balance: {{ formatEther(boost.balance) }}
-      </div>
+  <BaseBlock v-if="boosts.length" :title="pluginIndex.boost.name">
+    <div v-for="boost in boosts" :key="boost.id">
+      Boost balance: {{ formatEther(boost.balance) }}
     </div>
-    <div v-else>No boosts for this proposal.</div>
   </BaseBlock>
 </template>

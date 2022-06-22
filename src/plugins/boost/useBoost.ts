@@ -27,7 +27,7 @@ export function useBoost() {
   const { apolloQuery } = useApolloQuery();
   const { pendingCount } = useTxStatus();
 
-  const boosts = ref([]);
+  const boosts = ref<Record<string, any>>([]);
   const loadingBoosts = ref(true);
 
   async function loadBoosts(proposalId: string) {
