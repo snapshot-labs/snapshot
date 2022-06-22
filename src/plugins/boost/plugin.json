@@ -1,14 +1,7 @@
 {
-  "name": "Snapshot Boost",
+  "name": "Boost",
   "version": "0.0.1",
   "author": "mktcode",
   "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/boost",
-  "icon": "ipfs://QmPhmL1jPjaYKeKeEzyetAueNHCsGgrUVqSJasiTrcPWvx",
-  "defaults": {
-    "space": {
-      "mode": "voting-power",
-      "token": "0xa0d9EDc42126542C23DD6E28a467bdE5260Fbb43"
-    },
-    "proposal": {}
-  }
+  "icon": "ipfs://QmPhmL1jPjaYKeKeEzyetAueNHCsGgrUVqSJasiTrcPWvx"
 }
