@@ -42,7 +42,13 @@ const spaceRoutes = [
   {
     path: 'create/:step?/:sourceProposal?',
     name: 'spaceCreate',
-    component: SpaceCreate
+    component: SpaceCreate,
+    beforeEnter: to => {
+      // set step to 1 if it is not set
+      if (!to.params.step) {
+        to.params.step = 1;
+      }
+    }
   },
 
   {
