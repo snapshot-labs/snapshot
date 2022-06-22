@@ -36,7 +36,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="h-[253px] text-center">
+  <div class="text-center">
     <AvatarSpace
       :space="space"
       symbol-index="space"
