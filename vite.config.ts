@@ -46,7 +46,10 @@ export default defineConfig({
     dedupe: ['@popperjs/core']
   },
   test: {
-    open: true,
-    environment: 'happy-dom'
+    environment: 'happy-dom',
+    setupFiles: ['vitest.ts'],
+    deps: {
+      inline: ['@pusher/push-notifications-web']
+    }
   }
 });

@@ -60,7 +60,7 @@ yarn run lint
 
 ### Development Guide
 
-Use `http://localhost:3000/#/fabien.eth` for testing your code.
+Use `http://localhost:8080/#/fabien.eth` for testing your code.
 
 By default your instance will connect to the hub at `https://testnet.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
 

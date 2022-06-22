@@ -58,25 +58,27 @@ watch(
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <div class="mb-4">
-      <BaseMessageBlock level="info">
+      <BaseMessage level="info">
         {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessageBlock>
+      </BaseMessage>
     </div>
-    <div class="flex items-center gap-2">
-      <BaseCheckbox v-model="fillConnectedWallet" />
-      {{ $t('setup.fillCurrentAccount') }}
-    </div>
-    <UiInput
+
+    <BaseInput
       v-model.trim="spaceControllerInput"
+      title="Controller address"
       :placeholder="
         $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
       "
       :readonly="fillConnectedWallet"
       focus-on-mount
-    >
-    </UiInput>
+      @keyup.delete="fillConnectedWallet = false"
+    />
+    <div class="mt-1 flex items-center gap-2">
+      <BaseSwitch v-model="fillConnectedWallet" />
+      {{ $t('setup.fillCurrentAccount') }}
+    </div>
     <BaseButton
-      class="button-outline w-full my-2"
+      class="mt-4 w-full"
       primary
       :disabled="!controllerInputIsValid"
       :loading="settingENSRecord"
@@ -85,10 +87,7 @@ watch(
       {{ $t('setup.setController') }}
     </BaseButton>
 
-    <BaseMessageBlock
-      v-if="isGnosisSafe && !fillConnectedWallet"
-      level="warning"
-    >
+    <BaseMessage v-if="isGnosisSafe && !fillConnectedWallet" level="warning">
       <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
         <template #link>
           <BaseLink link="https://docs.snapshot.org/spaces/create">
@@ -96,7 +95,7 @@ watch(
           </BaseLink>
         </template>
       </i18n-t>
-    </BaseMessageBlock>
+    </BaseMessage>
   </BaseBlock>
 
   <teleport to="#modal">
@@ -110,7 +109,7 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="space-y-1 m-4 text-skin-text">
+      <div class="m-4 space-y-1 text-skin-text">
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -124,20 +123,20 @@ watch(
           </BaseLink>
         </div>
         <div class="flex justify-between pb-2">
-          <span class="whitespace-nowrap mr-3">Text record</span>
+          <span class="mr-3 whitespace-nowrap">Text record</span>
           <span
-            class="truncate text-skin-link"
             v-tippy="{ content: textRecord }"
+            class="truncate text-skin-link"
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessageBlock level="info">
+        <BaseMessage level="info">
           {{
             $t('setup.explainControllerAndEns', {
               network: networks[defaultNetwork].name
             })
           }}
-        </BaseMessageBlock>
+        </BaseMessage>
       </div>
     </ModalConfirmAction>
   </teleport>

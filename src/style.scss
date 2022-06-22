@@ -45,10 +45,6 @@
     font-style: normal;
   }
 
-  * {
-    @apply outline-none;
-  }
-
   body {
     overflow-x: hidden;
   }
@@ -154,13 +150,6 @@ a,
   @apply border-skin-border;
 }
 
-.sidenav-item {
-  &.router-link-exact-active {
-    border-left: 3px solid;
-    padding-left: 21px;
-  }
-}
-
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -264,7 +253,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply outline-none text-skin-heading border border-skin-border focus-within:border-skin-text block rounded-full py-2 px-3 w-full bg-skin-bg;
+  @apply outline-none text-skin-link border border-skin-border focus-within:border-skin-text block rounded-full py-2 px-3 w-full bg-skin-bg;
 }
 
 .s-error {

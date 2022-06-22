@@ -20,7 +20,7 @@ function handleInput(input) {
 
 <template>
   <TextareaAutosize
-    :modelValue="modelValue?.join('\n')"
+    :model-value="modelValue?.join('\n')"
     @update:modelValue="handleInput($event)"
   />
 </template>

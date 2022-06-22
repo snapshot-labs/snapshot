@@ -20,14 +20,14 @@ const { web3Account } = useWeb3();
     <BaseBlock slim class="overflow-hidden">
       <ProfileSidebarHeader
         v-if="profiles[userAddress]"
-        :userAddress="userAddress"
+        :user-address="userAddress"
         :profile="profiles[userAddress]"
       />
       <ProfileSidebarHeaderSkeleton v-else />
 
       <div
         v-if="userAddress === web3Account"
-        class="flex justify-center mt-3 pt-1"
+        class="mt-3 flex justify-center pt-1"
       >
         <BaseButton :disabled="!profiles[userAddress]" @click="$emit('edit')">
           {{ $t('profile.buttonEdit') }}

@@ -154,8 +154,8 @@ export default {
     <UiCollapsibleContent
       title="Add Transaction Batch with JSON"
       class="import-transactions"
-      :hideRemove="true"
-      :showArrow="true"
+      :hide-remove="true"
+      :show-arrow="true"
       :open="open"
       @toggle="open = !open"
       @remove="$emit('remove')"
@@ -163,16 +163,16 @@ export default {
       <div style="padding: 8px 16px">
         <label
           for="files"
-          @dragenter.prevent="toggleDropping"
-          @dragleave.prevent="toggleDropping"
-          @drop.prevent="drop"
-          @dragover.prevent
           :class="{
             box: true,
             'file-import': true,
             'active-dropzone': dropping
           }"
           class="box file-import"
+          @dragenter.prevent="toggleDropping"
+          @dragleave.prevent="toggleDropping"
+          @drop.prevent="drop"
+          @dragover.prevent
         >
           Click to select file <br />
           or drag and drop
@@ -181,9 +181,9 @@ export default {
           id="files"
           ref="files"
           accept="application/json, text/plain"
-          @change="handleFileUpload"
           style="display: none"
           type="file"
+          @change="handleFileUpload"
         />
         <div v-if="error" class="error mt-3">Error: {{ error }}.</div>
         <div class="box tx-content mt-3">
@@ -192,10 +192,10 @@ export default {
             id="tx_json"
             v-model="json"
             placeholder="You can also paste in JSON here."
-            class="tx-textarea"
+            class="tx-textarea outline-none"
           ></textarea>
         </div>
-        <div class="mt-3 flex flex-col justify-center items-center">
+        <div class="mt-3 flex flex-col items-center justify-center">
           <BaseButton @click="importFromText">Parse JSON</BaseButton>
           <a
             class="mt-2 mb-1"

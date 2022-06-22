@@ -19,7 +19,7 @@ module.exports = {
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+          '100%': { opacity: '1' }
         }
       },
       animation: {
@@ -62,5 +62,8 @@ module.exports = {
       lg: '2px 4px 9px var(--shadow-color)'
     }
   },
-  plugins: [require('@tailwindcss/line-clamp')]
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+    require('prettier-plugin-tailwindcss')
+  ]
 };

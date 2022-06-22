@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { sleep, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import { useValidationErrors } from '@/composables/useValidationErrors';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { ref, computed, inject, onMounted } from 'vue';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter, useRoute } from 'vue-router';
@@ -11,7 +8,8 @@ import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
-import { shorten } from '@/helpers/utils';
+import { shorten, clearStampCache } from '@/helpers/utils';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
   web3Account: string;
@@ -20,43 +18,22 @@ const props = defineProps<{
 const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
+const {
+  form,
+  validate,
+  showAllValidationErrors,
+  formatSpace,
+  getErrorMessage
+} = useSpaceSettingsForm();
 
-const visitedFields = ref<string[]>([]);
-const modalNetworksOpen = ref(false);
 const creatingSpace = ref(false);
 
-// Space setup form
-const form = ref({
-  name: '',
-  symbol: '',
-  network: '',
-  admins: [] as string[],
-  // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
-  strategies: [
-    {
-      name: 'ticket',
-      params: {}
-    }
-  ]
-});
-
-const { validationErrorMessage } = useValidationErrors();
 const { t } = useI18n();
 const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
   useSpaceController();
 
-const spaceValidationErrors = computed(
-  () => validateSchema(schemas.space, form.value) ?? []
-);
-
-function errorIfVisited(field) {
-  return visitedFields.value.includes(field)
-    ? validationErrorMessage(field, spaceValidationErrors.value)
-    : '';
-}
-
 const isValid = computed(() => {
-  return spaceValidationErrors.value === true;
+  return validate.value === true;
 });
 
 const { send } = useClient();
@@ -80,6 +57,7 @@ const debouncedShowPleaseWaitMessage = refDebounced(
 );
 
 async function handleSubmit() {
+  if (!isValid.value) return (showAllValidationErrors.value = true);
   creatingSpace.value = true;
   showPleaseWaitMessage.value = true;
 
@@ -95,11 +73,18 @@ async function handleSubmit() {
     // Adds connected wallet as admin so that the settings will show
     // in the sidebar after space creation
     form.value.admins = [props.web3Account];
+
+    const formattedForm = formatSpace(form.value);
     // Create the space
-    const result = await send({ id: route.params.ens }, 'settings', form.value);
+    const result = await send(
+      { id: route.params.ens },
+      'settings',
+      formattedForm
+    );
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();
+      await clearStampCache(route.params.ens as string);
       creatingSpace.value = false;
       console.log('Result', result);
 
@@ -124,80 +109,127 @@ async function handleSubmit() {
     creatingSpace.value = false;
   }
 }
+
+function addDefaultStrategy() {
+  if (form.value.strategies.length) return;
+  form.value.strategies.push({
+    name: 'ticket',
+    network: '1',
+    params: {
+      symbol: 'VOTE'
+    }
+  });
+}
+
+function addDefaultNetwork() {
+  form.value.network = '1';
+}
+
+onMounted(() => {
+  addDefaultStrategy();
+  addDefaultNetwork();
+});
 </script>
 
 <template>
-  <div>
-    <BaseBlock>
-      <div class="space-y-2">
-        <UiInput
-          v-model="form.name"
-          :error="errorIfVisited('name')"
-          @blur="visitedFields.push('name')"
-          focus-on-mount
-        >
-          <template v-slot:label>{{ $t(`settings.name`) }}*</template>
-        </UiInput>
-        <UiInput
-          v-model="form.symbol"
-          placeholder="e.g. BAL"
-          :error="errorIfVisited('symbol')"
-          @blur="visitedFields.push('symbol')"
-        >
-          <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
-        </UiInput>
-        <UiInput
-          @click="modalNetworksOpen = true"
-          :error="errorIfVisited('network')"
-          @blur="visitedFields.push('network')"
-        >
-          <template v-slot:selected>
-            {{
-              form.network ? networks[form.network].name : $t('selectNetwork')
-            }}
-          </template>
-          <template v-slot:label> {{ $t(`settings.network`) }}* </template>
-        </UiInput>
-        <BaseButton
-          @click="handleSubmit"
-          class="w-full !mt-4"
-          primary
-          :disabled="
-            !isValid || (uriAddress !== web3Account && !pendingENSRecord)
-          "
-          :loading="creatingSpace"
-        >
-          {{ $t('createButton') }}
-        </BaseButton>
-        <div class="!mt-3">
-          <BaseMessageBlock
-            v-if="
-              uriAddress &&
-              uriAddress !== web3Account &&
-              !loadingTextRecord &&
-              !pendingENSRecord
-            "
-            level="warning"
-          >
-            {{
-              $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
-            }}
-          </BaseMessageBlock>
-          <BaseMessageBlock
-            v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
-            level="info"
-          >
-            {{ $t('setup.pleaseWaitMessage') }}
-          </BaseMessageBlock>
-        </div>
-      </div>
-    </BaseBlock>
-  </div>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
+  <div class="space-y-4">
+    <SettingsProfileBlock
+      v-model:name="form.name"
+      v-model:about="form.about"
+      v-model:categories="form.categories"
+      v-model:avatar="form.avatar"
+      v-model:private="form.private"
+      v-model:terms="form.terms"
+      v-model:website="form.website"
+      :get-error-message="getErrorMessage"
     />
-  </teleport>
+
+    <SettingsLinkBlock
+      v-model:twitter="form.twitter"
+      v-model:github="form.github"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsStrategiesBlock
+      :form="form"
+      :get-error-message="getErrorMessage"
+      @update-strategies="val => (form.strategies = val)"
+      @update-network="val => (form.network = val)"
+      @update-symbol="val => (form.symbol = val)"
+    />
+
+    <SettingsAdminsBlock
+      :admins="form.admins"
+      :error="getErrorMessage('admins')"
+      @update:admins="val => (form.admins = val)"
+    />
+
+    <SettingsAuthorsBlock
+      :members="form.members"
+      :error="getErrorMessage('members')"
+      @update:members="val => (form.members = val)"
+    />
+
+    <SettingsDomainBlock
+      v-model:domain="form.domain"
+      v-model:skin="form.skin"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsValidationBlock
+      v-model:validation="form.validation"
+      :filters="form.filters"
+      :get-error-message="getErrorMessage"
+      @update:min-score="val => (form.filters.minScore = val)"
+      @update:only-members="val => (form.filters.onlyMembers = val)"
+    />
+
+    <SettingsVotingBlock
+      v-model:delay="form.voting.delay"
+      v-model:period="form.voting.period"
+      v-model:quorum="form.voting.quorum"
+      v-model:type="form.voting.type"
+      v-model:hideAbstain="form.voting.hideAbstain"
+    />
+
+    <SettingsPluginsBlock
+      :plugins="form.plugins"
+      @update:plugins="val => (form.plugins = val)"
+    />
+
+    <div class="mx-4 md:mx-0">
+      <BaseButton
+        class="w-full"
+        primary
+        :disabled="uriAddress !== web3Account && !pendingENSRecord"
+        :loading="creatingSpace"
+        @click="handleSubmit"
+      >
+        {{ $t('createButton') }}
+      </BaseButton>
+      <div>
+        <BaseMessage
+          v-if="
+            uriAddress &&
+            uriAddress !== web3Account &&
+            !loadingTextRecord &&
+            !pendingENSRecord
+          "
+          level="warning"
+          class="!mt-4"
+        >
+          {{
+            $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
+          }}
+        </BaseMessage>
+        <BaseMessage
+          v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
+          level="info"
+          class="!mt-4"
+        >
+          {{ $t('setup.pleaseWaitMessage') }}
+        </BaseMessage>
+      </div>
+    </div>
+  </div>
 </template>

@@ -53,16 +53,30 @@ export interface ProfileActivity {
   vote?: { proposalId: string; choice: string; type: string };
 }
 
-export interface extentedSpace {
+export interface TreasuryAsset {
+  contract_name: string;
+  contract_ticker_symbol: string;
+  contract_address: string;
+  contract_decimals: number;
+  logo_url: string;
+  balance: string;
+  balance_24h: string;
+  quote: number;
+  quote_24h: number;
+}
+
+export interface TreasuryWallet {
+  name: string;
+  address: string;
+  network: string;
+}
+
+export interface ExtendedSpace {
   id: string;
   name: string;
   symbol: string;
   network: string;
-  strategies: {
-    name: string;
-    network: string;
-    params: Record<string, unknown>;
-  }[];
+  strategies: SpaceStrategy[];
   about: string;
   avatar: string;
   skin: string;
@@ -79,6 +93,7 @@ export interface extentedSpace {
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: { name: string; params: Record<string, any> };
+  treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
     hideAbstain: boolean;
@@ -86,6 +101,12 @@ export interface extentedSpace {
     quorum: number | null;
     type: string | null;
   };
+}
+
+export interface SpaceStrategy {
+  name: string;
+  network: string;
+  params: Record<string, unknown>;
 }
 
 export interface Proposal {
@@ -112,7 +133,7 @@ export interface Proposal {
   votes: number;
   plugins: Record<string, any>;
   space: { id: string; name: string };
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
 }
 
 export interface Results {

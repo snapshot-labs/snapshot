@@ -76,10 +76,10 @@ export default {
   <UiInput
     :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${type}`"
-    :modelValue="value"
+    :model-value="value"
     :placeholder="placeholder"
     @update:modelValue="handleInput($event)"
   >
-    <template v-slot:label>{{ label }}</template>
+    <template #label>{{ label }}</template>
   </UiInput>
 </template>

@@ -1,25 +1,32 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue';
+import { sha256 } from 'js-sha256';
+import { computed } from 'vue';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
-    space: { id: string };
-    size: number;
+    space: { id: string; avatar?: string };
+    size?: string;
+    previewFile?: File;
   }>(),
   {
-    size: 22
+    size: '22',
+    previewFile: undefined
   }
 );
+
+const avatarHash = computed(() => {
+  if (!props.space?.avatar) return '';
+  const hash = sha256(props.space.avatar).slice(0, 16);
+  return `&cb=${hash}`;
+});
 </script>
 
 <template>
-  <img
-    :src="`https://stamp.fyi/space/${space.id}?s=${size * 2}`"
-    class="rounded-full inline-block align-middle leading-none"
-    :class="'bg-[color:var(--border-color)]'"
-    :style="{
-      width: `${size}px`,
-      height: `${size}px`
-    }"
+  <BaseAvatar
+    :preview-file="previewFile"
+    :size="size"
+    :src="`https://cdn.stamp.fyi/space/${space.id}?s=${
+      Number(size) * 2
+    }${avatarHash}`"
   />
 </template>

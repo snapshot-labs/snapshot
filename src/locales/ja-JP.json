@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
-    "mainText": "デフォルトでは、各投票者が一つの投票権を持っています。{settings}　にあるストラテジーに基づき、投票権が計算される方法を変更することができます。設定の変更は新しい提案にしか適用されません。既存の提案には適用されません。",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "より詳細については{documentation} をご覧ください。またはSnapshotの {discord} に参加してください。",
     "gotIt": "了解"
   },
@@ -179,7 +179,7 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "スペースはこの投票タイプを強制する",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
@@ -249,49 +249,96 @@
   },
   "settings": {
     "header": "設定",
-    "setEnsTextRecord": "ENSテキストレコードを設定",
     "editController": "コントローラの編集",
-    "needToSetEnsText": "スペースの設定はIPFS上のファイルに保存されます。スペースの設定を編集する前に、まずそのファイルを指定するENSテキストコードを設定する必要があります。",
-    "profile": "プロフィール",
-    "avatar": "アバター",
-    "name": "名前",
-    "about": "概要",
-    "terms": "利用規約",
-    "network": "ネットワーク",
-    "symbol": "シンボル",
-    "skin": "スキン",
-    "customDomain": "カスタムドメイン",
-    "domain": "ドメイン名",
-    "strategies": "ストラテジー",
-    "categories": "カテゴリー",
-    "selectCategories": "カテゴリーを選択する",
-    "hideSpace": "ホームページからスペースを隠す",
-    "addStrategy": "ストラテジーを追加する",
-    "authors": "作成者",
-    "admins": "管理者",
-    "defaultTab": "デフォルトのタブ",
-    "proposalThreshold": "提案の閾値",
-    "allowOnlyAuthors": "作成者のみ提案を提出可能",
-    "editPlugin": "プラグインを編集する",
-    "addPlugin": "プラグインを追加する",
-    "pluginParameters": "プラグインのパラメータ",
-    "proposalValidation": "提案のバリデーション",
-    "validation": "バリデーション",
-    "editValidation": "バリデーションを編集",
-    "selectValidation": "バリデーションを選択",
-    "validationParameters": "バリデーションのパラメータ",
-    "warningTextRecord": "ENSドメインにテキストレコードを設定する必要があります。",
-    "votingDelay": "投票の遅延",
-    "votingPeriod": "投票期間",
-    "voting": "投票",
-    "quorum": "定足数",
-    "type": "タイプ",
-    "anyType": "すべて",
-    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
     "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
-    "set": "設定する"
+    "set": "設定する",
+    "profile": "プロフィール",
+    "avatar": "アバター",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "ホームページからスペースを隠す",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "ストラテジーを追加する",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "提案のバリデーション",
+    "validation": "バリデーション",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "作成者のみ提案を提出可能",
+    "editValidation": "バリデーションを編集",
+    "selectValidation": "バリデーションを選択",
+    "validationParameters": "バリデーションのパラメータ",
+    "voting": "投票",
+    "votingDelay": "投票の遅延",
+    "votingPeriod": "投票期間",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "すべて",
+    "hideAbstain": "基本的な投票結果において棄権投票を無視する",
+    "customDomain": "カスタムドメイン",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+    },
+    "skin": "スキン",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "プラグインを追加する",
+    "editPlugin": "プラグインを編集する",
+    "pluginParameters": "プラグインのパラメータ"
   },
   "setup": {
     "example": "例 yam.eth",
@@ -304,7 +351,7 @@
     "supportedEnsTLDs": "サポートされているドメインの拡張子",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Space controller",
-    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings.",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENSのコントローラを編集する",
     "setController": "コントローラを設定する",
@@ -322,7 +369,7 @@
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
     "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use current account"
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -537,8 +584,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "対応していないネットワーク",
-    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}, or go to snapshot demo website.",
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }
