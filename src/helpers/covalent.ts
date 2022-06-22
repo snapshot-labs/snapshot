@@ -19,11 +19,15 @@ export async function getTokenBalances(
       item.quote
   );
 
-  // If there is an ether item, add it to the top of the list
+  // If there is an ether item, move it to the top of the list
   const etherItem = validTokenBalances.find(
     item => item.contract_address === ETHER_CONTRACT
   );
   if (etherItem) {
+    const index = validTokenBalances.findIndex(
+      item => item.contract_address === ETHER_CONTRACT
+    );
+    validTokenBalances.splice(index, 1);
     validTokenBalances.unshift(etherItem);
   }
 
