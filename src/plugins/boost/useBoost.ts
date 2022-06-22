@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { pin } from '@snapshot-labs/pineapple';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
@@ -12,6 +13,7 @@ const BOOSTS_QUERY = gql`
   query Boosts($ref: String!) {
     boosts(ref: $ref) {
       id
+      balance
       ref
       strategyURI
       token
@@ -71,10 +73,16 @@ export function useBoost() {
     pendingCount.value--;
   }
 
+  async function pinStrategy(strategy: any) {
+    const receipt = await pin(strategy);
+    console.log(receipt);
+  }
+
   return {
     loadBoosts,
     boosts,
     depositTokens,
-    claimTokens
+    claimTokens,
+    pinStrategy
   };
 }
