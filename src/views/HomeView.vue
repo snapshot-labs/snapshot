@@ -84,14 +84,16 @@ onMounted(() => {
             class="w-full whitespace-nowrap pr-3"
             :disabled="!orderedSpaces.length"
           >
-            <BaseIcon size="16" name="apps" class="mt-1 mr-2" />
-            <span v-if="selectedCategory">
-              {{ $tc('explore.categories.' + selectedCategory) }}
-            </span>
-            <span v-else>
-              {{ $tc('explore.categories.all') }}
-            </span>
-            <BaseIcon size="16" name="arrow-down" class="mx-1 mt-1" />
+            <div class="leading-2 flex items-center leading-3">
+              <BaseIcon size="16" name="apps" class="mb-[2px] mr-2" />
+              <span v-if="selectedCategory">
+                {{ $tc('explore.categories.' + selectedCategory) }}
+              </span>
+              <span v-else>
+                {{ $tc('explore.categories.all') }}
+              </span>
+              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
+            </div>
           </BaseButton>
         </template>
         <template #item="{ item }">
