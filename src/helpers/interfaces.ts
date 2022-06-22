@@ -132,7 +132,7 @@ export interface Proposal {
   scores_by_strategy: number[][];
   votes: number;
   plugins: Record<string, any>;
-  space: { id: string; name: string };
+  space: ExtendedSpace;
   strategies: SpaceStrategy[];
 }
 

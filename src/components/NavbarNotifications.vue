@@ -67,7 +67,8 @@ onMounted(() => loadNotifications());
             </template>
             <template #item="{ item }">
               <div class="flex items-center">
-                <BaseIcon name="check1" size="22" class="mr-2" />
+                <i-ho-check class="mr-2 text-sm" />
+
                 {{ item.text }}
               </div>
             </template>
