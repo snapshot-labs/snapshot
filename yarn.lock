@@ -7472,10 +7472,10 @@ tinypool@^0.1.3:
   resolved "https://registry.yarnpkg.com/tinypool/-/tinypool-0.1.3.tgz#b5570b364a1775fd403de5e7660b325308fee26b"
   integrity sha512-2IfcQh7CP46XGWGGbdyO4pjcKqsmVqFAPcXfPxcPXmOWt9cYkTP9HcDmGgsfijYoAEc4z9qcpM/BaBz46Y9/CQ==
 
-tinyspy@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-0.3.2.tgz#2f95cb14c38089ca690385f339781cd35faae566"
-  integrity sha512-2+40EP4D3sFYy42UkgkFFB+kiX2Tg3URG/lVvAZFfLxgGpnWl5qQJuBw1gaLttq8UOS+2p3C0WrhJnQigLTT2Q==
+tinyspy@^0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/tinyspy/-/tinyspy-0.3.3.tgz#8b57f8aec7fe1bf583a3a49cb9ab30c742f69237"
+  integrity sha512-gRiUR8fuhUf0W9lzojPf1N1euJYA30ISebSfgca8z76FOvXtVXqd5ojEIaKLWbDQhAaC3ibxZIjqbyi4ybjcTw==
 
 tippy.js@^6.3.7:
   version "6.3.7"
@@ -7810,7 +7810,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.9.12, vite@^2.9.9:
+vite@^2.9.12:
   version "2.9.12"
   resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.12.tgz#b1d636b0a8ac636afe9d83e3792d4895509a941b"
   integrity sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==
@@ -7829,19 +7829,20 @@ vitest-fetch-mock@^0.1.0:
   dependencies:
     cross-fetch "^3.0.6"
 
-vitest@^0.14.2:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.14.2.tgz#ac07b46d3cd3b5667d2bb803962f759a1b8f3f89"
-  integrity sha512-vXQUl8OUCqHmxKWscMGL+6Xl1pBJmYHZ8N85iNpLGrirAC2vhspu7b73ShRcLonmZT44BYZW+LBAVvn0L4jyVA==
+vitest@^0.15.2:
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.15.2.tgz#3931c390685ff03331298c7719d27d691f79e782"
+  integrity sha512-cMabuUqu+nNHafkdN7H8Z20+UZTrrUfqjGwAoLwUwrqFGWBz3gXwxndjbLf6mgSFs9lF/JWjKeNM1CXKwtk26w==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
+    "@types/node" "*"
     chai "^4.3.6"
     debug "^4.3.4"
     local-pkg "^0.4.1"
     tinypool "^0.1.3"
-    tinyspy "^0.3.2"
-    vite "^2.9.9"
+    tinyspy "^0.3.3"
+    vite "^2.9.12"
 
 vue-demi@*, vue-demi@^0.12.5:
   version "0.12.5"
