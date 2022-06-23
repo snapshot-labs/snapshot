@@ -25,13 +25,12 @@ const boostApolloClient = new ApolloClient({
 });
 
 const GUARD_URL = 'https://boost-guard.mktcode.uber.space';
-const CONTRACT_ADDRESS = '0xec5ba34cf4a473e0254f9d33ca532930755f9615';
+const CONTRACT_ADDRESS = '0xaf8b6af86044821eed74e49057de62fb5c48e061';
 const BOOSTS_QUERY = gql`
-  query Boosts($ref: String!) {
-    boosts(where: { ref: $ref }) {
+  query Boosts($tag: String!) {
+    boosts(where: { tag: $tag }) {
       id
       balance
-      ref
       strategyURI
       token
       start
@@ -90,7 +89,7 @@ export function useBoost() {
 
     const res = await queryBoostSubgraph(
       BOOSTS_QUERY,
-      { ref: proposalId },
+      { tag: proposalId },
       chainId
     );
 
