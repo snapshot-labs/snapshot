@@ -40,7 +40,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     <BasePopover :options="{ offset: [0, 12], placement }" :open="open">
       <template #item>
         <div
-          class="inline-flex h-full w-full cursor-pointer items-center"
+          class="flex h-full w-full cursor-pointer items-center"
           @click="open = !open"
         >
           <slot name="button" />

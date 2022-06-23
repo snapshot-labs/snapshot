@@ -77,7 +77,7 @@ const { domain } = useApp();
             >
               <BaseButton class="w-full">
                 {{ $t('seeInExplorer') }}
-                <BaseIcon name="external-link" class="ml-1" />
+                <i-ho-external-link class="mb-[2px] inline-block text-xs" />
               </BaseButton>
             </BaseLink>
           </div>

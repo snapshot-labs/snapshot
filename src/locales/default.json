@@ -576,7 +576,8 @@
         "settings": "{space} Settings"
       },
       "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "delegate": "Delegate",
+      "ranking": "Ranking"
     }
   },
   "hal": {
