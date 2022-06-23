@@ -137,9 +137,9 @@ export interface Proposal {
 }
 
 export interface Results {
-  resultsByStrategyScore: number[][];
-  resultsByVoteBalance: number[];
-  sumOfResultsBalance: number;
+  scoresByStrategy: number[][];
+  scores: number[];
+  scoresTotal: number;
 }
 
 export interface Vote {
