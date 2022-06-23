@@ -10,12 +10,13 @@ const props = defineProps<{
   proposal: Record<string, any>;
 }>();
 
-const { web3Account } = useWeb3();
+const { web3Account, web3 } = useWeb3();
 const { pluginIndex } = usePlugins();
-const { loadBoosts, boosts, claimTokens } = useBoost();
-
+const { loadBoosts, boosts, claimTokens, hasClaimed } = useBoost();
 const load = async () => {
-  await loadBoosts(props.proposal.id, web3Account.value);
+  const chainId =
+    web3.value.network.chainId || import.meta.env.VITE_DEFAULT_NETWORK;
+  await loadBoosts(props.proposal.id, chainId, web3Account.value);
 };
 
 onMounted(load);
@@ -27,7 +28,7 @@ watch(web3Account, load);
     <div v-for="boost in boosts" :key="boost.id">
       Boost balance: {{ formatEther(boost.balance) }}<br />
       Token: {{ boost.token }}<br />
-      <div v-if="boost.claimed">Already claimed!<br /></div>
+      <div v-if="hasClaimed(boost, web3Account)">Already claimed!</div>
       <BaseButton
         v-else-if="boost.receipt"
         class="w-100"

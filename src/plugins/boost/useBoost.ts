@@ -1,18 +1,34 @@
 import gql from 'graphql-tag';
+import {
+  ApolloClient,
+  createHttpLink,
+  DocumentNode,
+  InMemoryCache
+} from '@apollo/client/core';
+import { ref } from 'vue';
 import { pin } from '@snapshot-labs/pineapple';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { useTxStatus } from '@/composables/useTxStatus';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import ABI from './abi.json';
-import { ref } from 'vue';
+
+const boostApolloClient = new ApolloClient({
+  cache: new InMemoryCache({
+    addTypename: false
+  }),
+  defaultOptions: {
+    query: {
+      fetchPolicy: 'no-cache'
+    }
+  }
+});
 
 const GUARD_URL = 'https://boost-guard.mktcode.uber.space';
 const CONTRACT_ADDRESS = '0xec5ba34cf4a473e0254f9d33ca532930755f9615';
 const BOOSTS_QUERY = gql`
   query Boosts($ref: String!) {
-    boosts(ref: $ref) {
+    boosts(where: { ref: $ref }) {
       id
       balance
       ref
@@ -20,12 +36,16 @@ const BOOSTS_QUERY = gql`
       token
       start
       end
+      claims {
+        id
+        recipient
+        amount
+      }
     }
   }
 `;
 
 export function useBoost() {
-  const { apolloQuery } = useApolloQuery();
   const { pendingCount } = useTxStatus();
 
   const boosts = ref<Record<string, any>[]>([]);
@@ -61,24 +81,20 @@ export function useBoost() {
     return null;
   }
 
-  async function loadClaimedStatus(boostId: BigNumberish, account: string) {
-    return await call(
-      getInstance().web3,
-      ABI,
-      [CONTRACT_ADDRESS, 'claimed', [account, boostId]],
-      { blockTag: 'latest' }
-    );
-  }
-
-  async function loadBoosts(proposalId: string, account: string) {
+  async function loadBoosts(
+    proposalId: string,
+    chainId: number,
+    account: string
+  ) {
     loadingBoosts.value = true;
-    boosts.value = await apolloQuery(
-      {
-        query: BOOSTS_QUERY,
-        variables: { ref: proposalId }
-      },
-      'boosts'
+
+    const res = await queryBoostSubgraph(
+      BOOSTS_QUERY,
+      { ref: proposalId },
+      chainId
     );
+
+    boosts.value = res.data.boosts;
 
     if (account) {
       for (const boost of boosts.value) {
@@ -87,7 +103,6 @@ export function useBoost() {
           account,
           '1000000000000000000'
         );
-        boost.claimed = await loadClaimedStatus(boost.id, account);
       }
     }
 
@@ -120,9 +135,30 @@ export function useBoost() {
     pendingCount.value--;
   }
 
+  function hasClaimed(boost, account) {
+    return !!boost.claims.find(
+      c => c.recipient.toLowerCase() === account.toLowerCase()
+    );
+  }
+
   async function pinStrategy(strategy: any) {
     const receipt = await pin(strategy);
     console.log(receipt);
+  }
+
+  async function queryBoostSubgraph(
+    query: DocumentNode,
+    variables: any,
+    chainId: number
+  ) {
+    const apiUrls: string[] = [];
+    apiUrls[4] = `https://api.studio.thegraph.com/query/12054/boost/0.1.3`;
+
+    boostApolloClient.setLink(createHttpLink({ uri: apiUrls[chainId] }));
+
+    const res = await boostApolloClient.query({ query, variables });
+
+    return res;
   }
 
   return {
@@ -131,6 +167,8 @@ export function useBoost() {
     loadingBoosts,
     depositTokens,
     claimTokens,
-    pinStrategy
+    hasClaimed,
+    pinStrategy,
+    queryBoostSubgraph
   };
 }
