@@ -12,29 +12,14 @@ const props = defineProps<{
 
 const { web3Account } = useWeb3();
 const { pluginIndex } = usePlugins();
-const {
-  loadBoosts,
-  boosts,
-  requestClaimReceipt,
-  hasReceiptForBoost,
-  claimTokens
-} = useBoost();
+const { loadBoosts, boosts, claimTokens } = useBoost();
 
-onMounted(async () => {
-  await loadBoosts(props.proposal.id);
+const load = async () => {
+  await loadBoosts(props.proposal.id, web3Account.value);
+};
 
-  if (web3Account.value) {
-    for (const boost of boosts.value) {
-      requestClaimReceipt(boost.id, web3Account.value, '1000000000000000000');
-    }
-  }
-});
-
-watch(web3Account, () => {
-  if (web3Account.value) {
-    requestClaimReceipt(1, web3Account.value, '1000000000000000000');
-  }
-});
+onMounted(load);
+watch(web3Account, load);
 </script>
 
 <template>
@@ -42,12 +27,13 @@ watch(web3Account, () => {
     <div v-for="boost in boosts" :key="boost.id">
       Boost balance: {{ formatEther(boost.balance) }}<br />
       Token: {{ boost.token }}<br />
+      <div v-if="boost.claimed">Already claimed!<br /></div>
       <BaseButton
-        v-if="hasReceiptForBoost(boost.id)"
+        v-else-if="boost.receipt"
         class="w-100"
-        @click="claimTokens(boost.id)"
+        @click="claimTokens(boost)"
       >
-        Claim
+        Claim {{ formatEther(boost.receipt.data.message.amount) }} tokens
       </BaseButton>
       <div v-else>Can't claim</div>
     </div>

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 import { pin } from '@snapshot-labs/pineapple';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { useTxStatus } from '@/composables/useTxStatus';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import ABI from './abi.json';
@@ -29,52 +29,7 @@ export function useBoost() {
   const { pendingCount } = useTxStatus();
 
   const boosts = ref<Record<string, any>[]>([]);
-  const receipts = ref<Record<string, any>[]>([]);
   const loadingBoosts = ref(true);
-
-  async function loadBoosts(proposalId: string) {
-    loadingBoosts.value = true;
-    boosts.value = await apolloQuery(
-      {
-        query: BOOSTS_QUERY,
-        variables: { ref: proposalId }
-      },
-      'boosts'
-    );
-    loadingBoosts.value = false;
-  }
-
-  async function depositTokens(boostId: BigNumberish, amount: BigNumberish) {
-    const tx = await sendTransaction(
-      getInstance().web3,
-      CONTRACT_ADDRESS,
-      ABI,
-      'depositTokens',
-      [boostId, amount]
-    );
-    pendingCount.value++;
-    await tx.wait();
-    pendingCount.value--;
-  }
-
-  async function claimTokens(boostId: BigNumberish) {
-    const receipt = getReceiptForBoost(boostId);
-    const tx = await sendTransaction(
-      getInstance().web3,
-      CONTRACT_ADDRESS,
-      ABI,
-      'claimTokens',
-      [receipt.data.message, receipt.sig]
-    );
-    pendingCount.value++;
-    await tx.wait();
-    pendingCount.value--;
-  }
-
-  async function pinStrategy(strategy: any) {
-    const receipt = await pin(strategy);
-    console.log(receipt);
-  }
 
   async function requestClaimReceipt(
     boostId: BigNumberish,
@@ -98,31 +53,84 @@ export function useBoost() {
         id: null
       })
     };
+
     const res = await fetch(GUARD_URL, init).then(res => res.json());
-    if (res.result.sig) {
-      receipts.value[BigNumber.from(boostId).toString()] = res.result;
-      console.log('Receipt:', receipts.value);
+
+    if (res.result.sig) return res.result;
+
+    return null;
+  }
+
+  async function loadClaimedStatus(boostId: BigNumberish, account: string) {
+    return await call(
+      getInstance().web3,
+      ABI,
+      [CONTRACT_ADDRESS, 'claimed', [account, boostId]],
+      { blockTag: 'latest' }
+    );
+  }
+
+  async function loadBoosts(proposalId: string, account: string) {
+    loadingBoosts.value = true;
+    boosts.value = await apolloQuery(
+      {
+        query: BOOSTS_QUERY,
+        variables: { ref: proposalId }
+      },
+      'boosts'
+    );
+
+    if (account) {
+      for (const boost of boosts.value) {
+        boost.receipt = await requestClaimReceipt(
+          boost.id,
+          account,
+          '1000000000000000000'
+        );
+        boost.claimed = await loadClaimedStatus(boost.id, account);
+      }
     }
+
+    loadingBoosts.value = false;
   }
 
-  function hasReceiptForBoost(boostId: BigNumberish) {
-    return !!receipts.value[BigNumber.from(boostId).toString()];
+  async function depositTokens(boostId: BigNumberish, amount: BigNumberish) {
+    const tx = await sendTransaction(
+      getInstance().web3,
+      CONTRACT_ADDRESS,
+      ABI,
+      'depositTokens',
+      [boostId, amount]
+    );
+    pendingCount.value++;
+    await tx.wait();
+    pendingCount.value--;
   }
 
-  function getReceiptForBoost(boostId: BigNumberish) {
-    return receipts.value[BigNumber.from(boostId).toString()];
+  async function claimTokens(boost: any) {
+    const tx = await sendTransaction(
+      getInstance().web3,
+      CONTRACT_ADDRESS,
+      ABI,
+      'claimTokens',
+      [boost.receipt.data.message, boost.receipt.sig]
+    );
+    pendingCount.value++;
+    await tx.wait();
+    pendingCount.value--;
+  }
+
+  async function pinStrategy(strategy: any) {
+    const receipt = await pin(strategy);
+    console.log(receipt);
   }
 
   return {
     loadBoosts,
     boosts,
-    receipts,
     loadingBoosts,
     depositTokens,
     claimTokens,
-    pinStrategy,
-    requestClaimReceipt,
-    hasReceiptForBoost,
-    getReceiptForBoost
+    pinStrategy
   };
 }
