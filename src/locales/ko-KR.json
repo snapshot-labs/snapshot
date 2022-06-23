@@ -566,7 +566,8 @@
         "settings": "{space} 설정"
       },
       "strategy": "{key} 전략",
-      "delegate": "위임"
+      "delegate": "위임",
+      "ranking": "Ranking"
     }
   },
   "hal": {

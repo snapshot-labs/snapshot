@@ -566,7 +566,8 @@
         "settings": "Setări {space}"
       },
       "strategy": "Strategie {key}",
-      "delegate": "Deleghează"
+      "delegate": "Deleghează",
+      "ranking": "Ranking"
     }
   },
   "hal": {

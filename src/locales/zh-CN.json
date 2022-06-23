@@ -566,7 +566,8 @@
         "settings": "{space} 设置"
       },
       "strategy": "{key} 策略",
-      "delegate": "委托"
+      "delegate": "委托",
+      "ranking": "Ranking"
     }
   },
   "hal": {

@@ -566,7 +566,8 @@
         "settings": "Paramètres {space}"
       },
       "strategy": "Stratégie {key}",
-      "delegate": "Déléguer"
+      "delegate": "Déléguer",
+      "ranking": "Ranking"
     }
   },
   "hal": {
