@@ -85,7 +85,7 @@ onMounted(() => {
             :disabled="!orderedSpaces.length"
           >
             <div class="leading-2 flex items-center leading-3">
-              <BaseIcon size="16" name="apps" class="mb-[2px] mr-2" />
+              <i-ho-view-grid class="mr-2 text-xs" />
               <span v-if="selectedCategory">
                 {{ $tc('explore.categories.' + selectedCategory) }}
               </span>

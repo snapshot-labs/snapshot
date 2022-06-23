@@ -172,7 +172,7 @@ onMounted(() => {
         <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <BaseIcon size="20" name="plus" />
+          <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>
     </div>
