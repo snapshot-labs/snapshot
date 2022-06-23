@@ -647,7 +647,7 @@
   dependencies:
     "@ethersproject/logger" "^5.5.0"
 
-"@ethersproject/bytes@^5.0.4", "@ethersproject/bytes@^5.0.8", "@ethersproject/bytes@^5.4.0", "@ethersproject/bytes@^5.5.0", "@ethersproject/bytes@^5.6.0", "@ethersproject/bytes@^5.6.1":
+"@ethersproject/bytes@^5.0.4", "@ethersproject/bytes@^5.4.0", "@ethersproject/bytes@^5.5.0", "@ethersproject/bytes@^5.6.0", "@ethersproject/bytes@^5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/bytes/-/bytes-5.6.1.tgz#24f916e411f82a8a60412344bf4a813b917eefe7"
   integrity sha512-NwQt7cKn5+ZE4uDn+X5RAXLp46E1chXoaMmrxAyA0rblpxz8t58lVkrHXoRIn0lz1joQElQ8410GqhTqMOwc6g==
@@ -698,7 +698,7 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
-"@ethersproject/hash@^5.0.4", "@ethersproject/hash@^5.0.9", "@ethersproject/hash@^5.5.0", "@ethersproject/hash@^5.6.0", "@ethersproject/hash@^5.6.1":
+"@ethersproject/hash@^5.0.4", "@ethersproject/hash@^5.5.0", "@ethersproject/hash@^5.6.0", "@ethersproject/hash@^5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@ethersproject/hash/-/hash-5.6.1.tgz#224572ea4de257f05b4abf8ae58b03a67e99b0f4"
   integrity sha512-L1xAHurbaxG8VVul4ankNX5HgQ8PNCTrnVXEiFnE9xoRnaUcgfD12tZINtDinSllxPLCtGwguQxJ5E6keE84pA==
@@ -1465,16 +1465,16 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.3.102":
-  version "0.3.102"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.102.tgz#92f7ace63f044a9a7302894810e8983f0b457ebf"
-  integrity sha512-1qKLn9831zqGygq4vmT+uRW2zGg0JnXKOwEaEsyS5fH+oqHjlvCrF8/PFvdg3zjv3X/gj3Vi83sGznMGcLr+iw==
+"@snapshot-labs/snapshot.js@^0.3.104":
+  version "0.3.104"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.3.104.tgz#f61dca2e228e4c6e984a1a4313811678d09e30c9"
+  integrity sha512-zfLLUIZuCfKr8iRcS+sZL/Qr5I0kwfDIniQvB1On5taH58s5YKWEt/QFWK9U2oGw008x/A5Md0lnZJ6aNdS01Q==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.0.4"
-    "@ethersproject/bytes" "^5.0.8"
+    "@ethersproject/bytes" "^5.6.1"
     "@ethersproject/contracts" "^5.0.3"
-    "@ethersproject/hash" "^5.0.9"
+    "@ethersproject/hash" "^5.6.1"
     "@ethersproject/providers" "^5.3.1"
     "@ethersproject/wallet" "^5.4.0"
     ajv "^8.6.0"
