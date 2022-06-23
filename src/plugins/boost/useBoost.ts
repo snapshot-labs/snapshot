@@ -152,7 +152,7 @@ export function useBoost() {
     chainId: number
   ) {
     const apiUrls: string[] = [];
-    apiUrls[4] = `https://api.studio.thegraph.com/query/12054/boost/0.1.3`;
+    apiUrls[4] = `https://api.thegraph.com/subgraphs/name/mktcode/boost`;
 
     boostApolloClient.setLink(createHttpLink({ uri: apiUrls[chainId] }));
 
