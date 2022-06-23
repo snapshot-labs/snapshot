@@ -93,11 +93,6 @@
             "type": "string"
           },
           {
-            "internalType": "bytes32",
-            "name": "ref",
-            "type": "bytes32"
-          },
-          {
             "internalType": "address",
             "name": "token",
             "type": "address"
@@ -227,11 +222,6 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
-        "name": "ref",
-        "type": "bytes32"
-      },
-      {
         "internalType": "address",
         "name": "token",
         "type": "address"
@@ -332,11 +322,6 @@
             "internalType": "string",
             "name": "strategyURI",
             "type": "string"
-          },
-          {
-            "internalType": "bytes32",
-            "name": "ref",
-            "type": "bytes32"
           },
           {
             "internalType": "address",
