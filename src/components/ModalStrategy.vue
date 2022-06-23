@@ -166,7 +166,7 @@ watch(open, () => {
       <BaseLink :link="playgroundLink" hide-external-icon class="mb-2 block">
         <BaseButton class="w-full">
           {{ $t('settings.testInPlayground') }}
-          <BaseIcon name="external-link ml-1" />
+          <i-ho-external-link class="mb-[2px] inline-block text-xs" />
         </BaseButton>
       </BaseLink>
       <BaseButton

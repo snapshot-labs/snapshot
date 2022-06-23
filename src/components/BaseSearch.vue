@@ -38,7 +38,7 @@ function clearInput() {
     class="flex items-center"
     :class="{ 'border-b bg-skin-bg py-3 px-4': modal }"
   >
-    <BaseIcon name="search" size="22" class="mr-2" />
+    <i-ho-search class="mr-2 text-[19px]" />
     <input
       :value="modelValue"
       :placeholder="placeholder"
