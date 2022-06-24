@@ -68,6 +68,7 @@ export function useClient() {
       return clientEIP712.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
+        privacy: payload.privacy,
         title: payload.name,
         body: payload.body,
         discussion: payload.discussion,

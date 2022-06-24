@@ -14,6 +14,7 @@ interface ProposalForm {
   end: number;
   snapshot: number;
   type: string;
+  privacy: string;
   metadata: {
     plugins: {
       safeSnap?: { valid: boolean };
@@ -35,7 +36,8 @@ const EMPTY_PROPOSAL: ProposalForm = {
   metadata: {
     plugins: {}
   },
-  type: 'single-choice'
+  type: 'single-choice',
+  privacy: ''
 };
 
 const form = ref<ProposalForm>(clone(EMPTY_PROPOSAL));
