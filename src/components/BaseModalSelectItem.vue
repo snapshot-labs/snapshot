@@ -14,9 +14,9 @@ defineProps<{
     ]"
   >
     <div class="relative inset-y-0 flex items-center">
-      <div class="w-full pr-[44px]">
+      <div :class="['w-full', { 'pr-[44px]': selected }]">
         <h3 class="truncate" v-text="title" />
-        <span class="text-skin-text line-clamp-2" v-text="description" />
+        <span class="text-skin-text" v-text="description" />
       </div>
       <i-ho-check v-if="selected" class="absolute right-0 text-md" />
     </div>
