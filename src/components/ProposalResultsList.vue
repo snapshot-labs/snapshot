@@ -15,11 +15,7 @@ const props = defineProps<{
 const choices = computed<{ i: number; choice: string }[]>(() =>
   props.proposal.choices
     .map((choice, i) => ({ i, choice }))
-    .sort(
-      (a, b) =>
-        props.results.resultsByVoteBalance[b.i] -
-        props.results.resultsByVoteBalance[a.i]
-    )
+    .sort((a, b) => props.results.scores[b.i] - props.results.scores[a.i])
 );
 </script>
 
@@ -37,7 +33,7 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
     <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
       {{ $t('settings.quorum.label') }}
       <span class="float-right">
-        {{ formatCompactNumber(results.sumOfResultsBalance) }} /
+        {{ formatCompactNumber(results.scoresTotal) }} /
         {{
           formatCompactNumber(
             proposal.quorum || (space.voting.quorum as number)

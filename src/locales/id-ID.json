@@ -566,7 +566,8 @@
         "settings": "{space} Pengaturan"
       },
       "strategy": "Strategi {key}",
-      "delegate": "Delegasikan"
+      "delegate": "Delegasikan",
+      "ranking": "Ranking"
     }
   },
   "hal": {
