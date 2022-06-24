@@ -8,6 +8,7 @@ const props = withDefaults(
     period?: number;
     quorum?: number;
     type?: string;
+    privacy?: string;
     hideAbstain?: boolean;
   }>(),
   {
@@ -15,6 +16,7 @@ const props = withDefaults(
     period: 0,
     quorum: 0,
     type: '',
+    privacy: '',
     hideAbstain: false
   }
 );
@@ -24,6 +26,7 @@ const emit = defineEmits([
   'update:period',
   'update:quorum',
   'update:type',
+  'update:privacy',
   'update:hideAbstain'
 ]);
 
@@ -108,6 +111,11 @@ const votingPeriod = computed({
             :information="$t(`settings.type.information`)"
             :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
             @select="modalVotingTypeOpen = true"
+          />
+
+          <InputSelectPrivacy
+            :privacy="privacy"
+            @update:privacy="emit('update:privacy', $event)"
           />
         </div>
       </div>

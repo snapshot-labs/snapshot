@@ -124,6 +124,7 @@ export interface Proposal {
   end: number;
   state: string;
   symbol: string;
+  privacy: string;
   discussion: string;
   quorum: number;
   scores: number[];

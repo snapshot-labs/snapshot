@@ -19,7 +19,8 @@ const SPACE_OBJECT = {
     hideAbstain: false,
     period: 0,
     quorum: 0,
-    type: ''
+    type: '',
+    privacy: ''
   },
   validation: { name: 'basic', params: {} },
   name: '',
@@ -59,6 +60,7 @@ export function useSpaceSettingsForm() {
     space.voting.delay = space.voting?.delay || undefined;
     space.voting.period = space.voting?.period || undefined;
     space.voting.type = space.voting?.type || undefined;
+    space.voting.privacy = space.voting?.privacy || undefined;
     space.voting.quorum = space.voting?.quorum || undefined;
     return space;
   }

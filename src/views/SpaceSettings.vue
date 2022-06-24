@@ -219,6 +219,7 @@ async function handleSetRecord() {
             v-model:period="form.voting.period"
             v-model:quorum="form.voting.quorum"
             v-model:type="form.voting.type"
+            v-model:privacy="form.voting.privacy"
             v-model:hideAbstain="form.voting.hideAbstain"
           />
 

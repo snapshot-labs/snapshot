@@ -467,6 +467,16 @@
       "basic": "Single choice voting with three choices: For, Against or Abstain"
     }
   },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Choices are encrypted and only visible once the voting period is over"
+    }
+  },
   "safeSnap": {
     "currentOutcome": "Current outcome",
     "currentBond": "Current bond",
