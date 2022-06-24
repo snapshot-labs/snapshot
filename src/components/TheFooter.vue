@@ -31,41 +31,43 @@ const socials = [
 </script>
 
 <template>
-  <BaseContainer
-    class="flex flex-col items-center space-y-3 py-4 md:flex-row md:space-y-0 md:space-x-3"
-  >
-    <div class="space-x-3 md:ml-auto">
-      <span v-for="social in socials" :key="social">
-        <BaseLink :link="social.link" hide-external-icon>
-          <BaseIcon
-            size="30"
-            class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
-            :name="social.icon"
-          />
-        </BaseLink>
-      </span>
-    </div>
-    <div class="flex space-x-2">
-      <ButtonSidebar @click="modalAboutOpen = true">
-        <span class="text-skin-link">?</span>
-      </ButtonSidebar>
-      <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
-        <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
-      </ButtonSidebar>
-
-      <ButtonLanguage />
-    </div>
-    <div
-      class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
+  <div class="border-t">
+    <BaseContainer
+      class="flex flex-col items-center space-y-3 py-4 md:flex-row md:space-y-0 md:space-x-3"
     >
-      © {{ yearNow }} Snapshot Labs.
-    </div>
-  </BaseContainer>
-  <teleport to="#modal">
-    <ModalAbout
-      :open="modalAboutOpen"
-      @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true"
-    />
-  </teleport>
+      <div class="space-x-3 md:ml-auto">
+        <span v-for="social in socials" :key="social">
+          <BaseLink :link="social.link" hide-external-icon>
+            <BaseIcon
+              size="30"
+              class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
+              :name="social.icon"
+            />
+          </BaseLink>
+        </span>
+      </div>
+      <div class="flex space-x-2">
+        <ButtonSidebar @click="modalAboutOpen = true">
+          <span class="text-skin-link">?</span>
+        </ButtonSidebar>
+        <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
+          <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
+        </ButtonSidebar>
+
+        <ButtonLanguage />
+      </div>
+      <div
+        class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
+      >
+        © {{ yearNow }} Snapshot Labs.
+      </div>
+    </BaseContainer>
+    <teleport to="#modal">
+      <ModalAbout
+        :open="modalAboutOpen"
+        @close="modalAboutOpen = false"
+        @openLang="modalLangOpen = true"
+      />
+    </teleport>
+  </div>
 </template>
