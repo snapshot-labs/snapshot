@@ -1804,14 +1804,14 @@
   dependencies:
     sirv "^2.0.2"
 
-"@vue/apollo-composable@4.0.0-alpha.17":
-  version "4.0.0-alpha.17"
-  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.17.tgz#c6976ef922267a559103489041ec7aa4e65bd45e"
-  integrity sha512-Wsx73CSEbk4EqlpxV+5S4u0gZH4V4oCqy6Q0IS8JR7Wn8PjrM8mIKNL1JtRErUOzkQHgVHbBftzDMt0Fi39QFA==
+"@vue/apollo-composable@4.0.0-alpha.18":
+  version "4.0.0-alpha.18"
+  resolved "https://registry.yarnpkg.com/@vue/apollo-composable/-/apollo-composable-4.0.0-alpha.18.tgz#e79fbea5bc4477bf6e305a52c5a2c41a030a27eb"
+  integrity sha512-AasMZnAOG9fH+vcnQu6C3eyBMWXCsjdF0Njh7gGzQYBdo/CG9g9OKtrmHizq5AbgR2KJe/0RHE9yLBj7SZrcdQ==
   dependencies:
     throttle-debounce "^3.0.1"
-    ts-essentials "^9.0.0"
-    vue-demi "^0.12.5"
+    ts-essentials "^9.1.2"
+    vue-demi "^0.13.1"
 
 "@vue/compiler-core@3.2.37":
   version "3.2.37"
@@ -7538,7 +7538,7 @@ trim-newlines@^3.0.0:
   resolved "https://registry.yarnpkg.com/trim-newlines/-/trim-newlines-3.0.1.tgz#260a5d962d8b752425b32f3a7db0dcacd176c144"
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
-ts-essentials@^9.0.0:
+ts-essentials@^9.1.2:
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-9.1.2.tgz#46db6944b73b4cd603f3d959ef1123c16ba56f59"
   integrity sha512-EaSmXsAhEiirrTY1Oaa7TSpei9dzuCuFPmjKRJRPamERYtfaGS8/KpOSbjergLz/Y76/aZlV9i/krgzsuWEBbg==
@@ -7844,10 +7844,10 @@ vitest@^0.15.2:
     tinyspy "^0.3.3"
     vite "^2.9.12"
 
-vue-demi@*, vue-demi@^0.12.5:
-  version "0.12.5"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.12.5.tgz#8eeed566a7d86eb090209a11723f887d28aeb2d1"
-  integrity sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==
+vue-demi@*, vue-demi@^0.13.1:
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.1.tgz#7604904c88be338418a10abbc94d5b8caa14cb8c"
+  integrity sha512-xmkJ56koG3ptpLnpgmIzk9/4nFf4CqduSJbUM0OdPoU87NwRuZ6x49OLhjSa/fC15fV+5CbEnrxU4oyE022svg==
 
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
