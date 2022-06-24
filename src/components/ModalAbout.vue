@@ -17,9 +17,9 @@ const hubUrl = import.meta.env.VITE_HUB_URL;
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <h3>{{ $t('about') }}</h3>
+      <h3 v-text="$t('about')" />
     </template>
-    <div class="m-4 space-y-1 text-skin-link">
+    <div class="m-4 space-y-1 text-base text-skin-link">
       <div class="flex">
         <span class="mr-1 flex-auto text-skin-text" v-text="$t('version')" />
         <BaseLink

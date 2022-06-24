@@ -59,15 +59,14 @@ onMounted(() => loadNotifications());
             @select="selectThreedotItem"
           >
             <template #button>
-              <BaseIcon
-                name="threedots"
-                size="25"
-                class="cursor-pointer hover:text-skin-link"
+              <i-ho-dots-horizontal
+                class="cursor-pointer text-[22px] hover:text-skin-link"
               />
             </template>
             <template #item="{ item }">
               <div class="flex items-center">
-                <BaseIcon name="check1" size="22" class="mr-2" />
+                <i-ho-check class="mr-2 text-sm" />
+
                 {{ item.text }}
               </div>
             </template>

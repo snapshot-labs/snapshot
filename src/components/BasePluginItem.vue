@@ -36,7 +36,6 @@ defineProps({
       </div>
 
       <BaseLink
-        class="flex items-center"
         :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
         @click.stop
       >

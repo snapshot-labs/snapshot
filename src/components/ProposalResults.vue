@@ -16,6 +16,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
   <BaseBlock
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
+    class="pb-2"
   >
     <ProposalResultsList v-if="results" v-bind="props" />
   </BaseBlock>

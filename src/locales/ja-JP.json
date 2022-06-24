@@ -566,7 +566,8 @@
         "settings": "{space} の設定"
       },
       "strategy": "{key} のストラテジー",
-      "delegate": "委任"
+      "delegate": "委任",
+      "ranking": "Ranking"
     }
   },
   "hal": {
