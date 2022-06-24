@@ -11,7 +11,7 @@ defineProps<{
   <button
     :type="type || 'button'"
     :class="[
-      'button px-[24px] ',
+      'button px-[22px] ',
       {
         'button--primary hover:brightness-95': primary
       }
