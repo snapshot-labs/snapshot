@@ -10,7 +10,7 @@ module.exports = {
     '@vue/eslint-config-typescript/recommended',
     '@vue/eslint-config-prettier'
   ],
-  ignorePatterns: ['/node_modules/**/*.*'],
+  ignorePatterns: ['/node_modules/**/*.*', 'wasm_exec.js'],
   parserOptions: {
     ecmaVersion: 2020
   },
