@@ -84,26 +84,21 @@ onMounted(async () => {
 <template>
   <div class="space-y-4">
     <BaseBlock :title="$t('create.voting')">
-      <UiInput
-        v-tippy="{
-          content: !!space.voting?.type
-            ? $t('create.typeEnforced', { type: $t(`voting.${form.type}`) })
-            : null
-        }"
-        :disabled="!!space.voting?.type"
-        :class="[space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer']"
-        class="!mb-4"
-        @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
-      >
-        <template #selected>
-          <span class="w-full">
-            {{ $t(`voting.${form.type}`) }}
-          </span>
-        </template>
-        <template #label>
-          {{ $t(`create.votingSystem`) }}
-        </template>
-      </UiInput>
+      <div class="mb-4 space-y-2">
+        <InputSelectVotingtype
+          :type="form.type"
+          @update:type="value => (form.type = value)"
+        />
+
+        <InputSelectPrivacy
+          :privacy="form.privacy"
+          allow-none
+          @update:privacy="value => (form.privacy = value)"
+        />
+      </div>
+      <h4 class="mb-2">
+        {{ $t('create.choices') }}
+      </h4>
       <div class="flex">
         <div class="w-full overflow-hidden">
           <draggable
@@ -153,17 +148,13 @@ onMounted(async () => {
             class="!h-[42px] !w-[42px]"
             @click="addChoices(1)"
           >
-            <BaseIcon size="20" name="plus" class="text-skin-link" />
+            <i-ho-plus-sm class="text-skin-link" />
           </ButtonSidebar>
         </div>
       </div>
     </BaseBlock>
 
-    <BaseBlock
-      :title="$t('create.period')"
-      icon="info"
-      :icon-tooltip="$t('create.votingPeriodExplainer')"
-    >
+    <BaseBlock :title="$t('create.period')">
       <div class="md:flex md:space-x-3">
         <UiInput
           v-tippy="{

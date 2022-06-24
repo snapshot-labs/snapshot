@@ -32,7 +32,6 @@ const emit = defineEmits([
 
 const delayUnit = ref('h');
 const periodUnit = ref('h');
-const modalVotingTypeOpen = ref(false);
 
 const votingDelay = computed({
   get: () => calcFromSeconds(props.delay, delayUnit.value),
@@ -106,15 +105,17 @@ const votingPeriod = computed({
             @update:model-value="emit('update:quorum', $event)"
           />
 
-          <InputSelect
-            :title="$t(`settings.type.label`)"
+          <InputSelectVotingtype
+            :type="type"
             :information="$t(`settings.type.information`)"
-            :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
-            @select="modalVotingTypeOpen = true"
+            allow-any
+            @update:type="emit('update:type', $event)"
           />
 
           <InputSelectPrivacy
             :privacy="privacy"
+            :information="$t(`privacy.information`)"
+            allow-any
             @update:privacy="emit('update:privacy', $event)"
           />
         </div>
@@ -126,14 +127,5 @@ const votingPeriod = computed({
         @update:model-value="emit('update:hideAbstain', $event)"
       />
     </div>
-    <teleport to="#modal">
-      <ModalVotingType
-        :selected="type"
-        :open="modalVotingTypeOpen"
-        allow-any
-        @update:selected="emit('update:type', $event)"
-        @close="modalVotingTypeOpen = false"
-      />
-    </teleport>
   </BaseBlock>
 </template>

@@ -4,9 +4,15 @@ import { ref } from 'vue';
 withDefaults(
   defineProps<{
     privacy?: string;
+    information?: string;
+    allowAny?: boolean;
+    allowNone?: boolean;
   }>(),
   {
-    privacy: ''
+    privacy: '',
+    information: '',
+    allowAny: false,
+    allowNone: false
   }
 );
 
@@ -19,19 +25,25 @@ const modalVotingPrivacyOpen = ref(false);
   <div>
     <InputSelect
       :title="$t(`privacy.label`)"
-      :information="$t(`privacy.information`)"
+      :information="information"
       :model-value="
-        privacy ? $t(`privacy.${privacy}.label`) : $t('privacy.any')
+        privacy
+          ? $t(`privacy.${privacy}.label`)
+          : allowNone
+          ? $t('privacy.none')
+          : $t('privacy.any')
       "
       @select="modalVotingPrivacyOpen = true"
     />
-
-    <ModalVotingPrivacy
-      :selected="privacy"
-      :open="modalVotingPrivacyOpen"
-      allow-any
-      @update:selected="emit('update:privacy', $event)"
-      @close="modalVotingPrivacyOpen = false"
-    />
+    <teleport to="#modal">
+      <ModalVotingPrivacy
+        :selected="privacy"
+        :open="modalVotingPrivacyOpen"
+        :allow-any="allowAny"
+        :allow-none="allowNone"
+        @update:selected="emit('update:privacy', $event)"
+        @close="modalVotingPrivacyOpen = false"
+      />
+    </teleport>
   </div>
 </template>
