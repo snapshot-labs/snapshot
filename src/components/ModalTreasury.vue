@@ -74,14 +74,21 @@ watch(open, () => {
             v-model="input.name"
             :title="treasuryProperties.name?.title"
             :placeholder="treasuryProperties?.name.examples[0]"
-            :error="validationErrorMessage('name', treasuryValidationErrors)"
+            :error="{
+              message: validationErrorMessage('name', treasuryValidationErrors)
+            }"
             focus-on-mount
           />
           <BaseInput
             v-model="input.address"
             :title="treasuryProperties.address?.title"
             :placeholder="treasuryProperties.address?.examples[0]"
-            :error="validationErrorMessage('address', treasuryValidationErrors)"
+            :error="{
+              message: validationErrorMessage(
+                'address',
+                treasuryValidationErrors
+              )
+            }"
           />
         </div>
       </div>

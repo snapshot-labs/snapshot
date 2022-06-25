@@ -169,9 +169,9 @@ function selectState(e) {
           @select="selectState"
         >
           <template #button>
-            <BaseButton class="pr-3">
+            <BaseButton class="flex items-center pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
+              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
             </BaseButton>
           </template>
         </BaseDropdown>

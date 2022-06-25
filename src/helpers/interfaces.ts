@@ -132,14 +132,14 @@ export interface Proposal {
   scores_by_strategy: number[][];
   votes: number;
   plugins: Record<string, any>;
-  space: { id: string; name: string };
+  space: ExtendedSpace;
   strategies: SpaceStrategy[];
 }
 
 export interface Results {
-  resultsByStrategyScore: number[][];
-  resultsByVoteBalance: number[];
-  sumOfResultsBalance: number;
+  scoresByStrategy: number[][];
+  scores: number[];
+  scoresTotal: number;
 }
 
 export interface Vote {
