@@ -6,11 +6,13 @@ withDefaults(
     type?: string;
     information?: string;
     allowAny?: boolean;
+    disabled?: boolean;
   }>(),
   {
     type: '',
     information: '',
-    allowAny: false
+    allowAny: false,
+    disabled: false
   }
 );
 
@@ -25,6 +27,12 @@ const modalVotingTypeOpen = ref(false);
       :title="$t(`settings.type.label`)"
       :information="information"
       :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
+      :disabled="disabled"
+      :tooltip="
+        disabled
+          ? $t('create.typeEnforced', { type: $t(`voting.${type}`) })
+          : null
+      "
       @select="modalVotingTypeOpen = true"
     />
     <teleport to="#modal">

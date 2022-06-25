@@ -7,12 +7,14 @@ withDefaults(
     information?: string;
     allowAny?: boolean;
     allowNone?: boolean;
+    disabled?: boolean;
   }>(),
   {
     privacy: '',
     information: '',
     allowAny: false,
-    allowNone: false
+    allowNone: false,
+    disabled: false
   }
 );
 
@@ -32,6 +34,14 @@ const modalVotingPrivacyOpen = ref(false);
           : allowNone
           ? $t('privacy.none')
           : $t('privacy.any')
+      "
+      :disabled="disabled"
+      :tooltip="
+        disabled
+          ? $t('create.privacyEnforced', {
+              type: $t(`privacy.${privacy}.label`)
+            })
+          : null
       "
       @select="modalVotingPrivacyOpen = true"
     />

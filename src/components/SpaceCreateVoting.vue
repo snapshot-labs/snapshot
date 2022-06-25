@@ -132,15 +132,15 @@ onMounted(async () => {
 
     <BaseBlock :title="$t('create.voting')">
       <div class="space-y-2">
-        <!-- TODO: add disabled  -->
         <InputSelectVotingtype
-          :type="form.type"
+          :type="space.voting?.type ? space.voting.type : form.type"
+          :disabled="!!space.voting?.type"
           @update:type="value => (form.type = value)"
         />
 
-        <!-- TODO: add disabled  -->
         <InputSelectPrivacy
-          :privacy="form.privacy"
+          :privacy="space.voting?.privacy ? space.voting.privacy : form.privacy"
+          :disabled="!!space.voting?.privacy"
           allow-none
           @update:privacy="value => (form.privacy = value)"
         />

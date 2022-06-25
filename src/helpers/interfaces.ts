@@ -100,6 +100,7 @@ export interface ExtendedSpace {
     period: number | null;
     quorum: number | null;
     type: string | null;
+    privacy: string | null;
   };
 }
 
