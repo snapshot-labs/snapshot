@@ -3,11 +3,6 @@ const API_BASE_URL = 'https://graphigo.stg.galaxy.eco/query';
 // const API_BASE_URL = 'https://graphigo.prd.galaxy.eco/query';
 
 export default class Plugin {
-  public author = 'ProjectGalaxy';
-  public version = '1.0.0';
-  public name = 'Project Galaxy Module';
-  public options: any;
-
   async fetchGQL({ query, variables }) {
     return await fetch(API_BASE_URL, {
       method: 'POST',
