@@ -13,7 +13,7 @@ defineProps({
 
 <template>
   <ProjectGalaxyCustomBlock
-    v-if="space.plugins?.ProjectGalaxy"
+    v-if="space.plugins?.projectGalaxy"
     :space="space"
     :proposal="proposal"
     :results="results"

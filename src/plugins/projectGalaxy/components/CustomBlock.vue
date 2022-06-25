@@ -1,8 +1,5 @@
 <script>
 import Plugin from '../index';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-
-const { notify } = useFlashNotification();
 
 const APP_URL = 'https://galaxy.eco';
 const NO_OAT_IMAGE =
@@ -45,14 +42,12 @@ const STATES = {
 // STATES
 const NO_OAT = 'NO_OAT';
 const WAIT_TO_START = 'WAIT_TO_START';
-const VOTE_TO_CLAIM = 'VOTE_TO_CLAIM'; // NOT_VOTED
 const CLAIM = 'CLAIM';
 const CLAIMING = 'CLAIMING';
 const CLAIMED = 'CLAIMED';
-const ENDED = 'ENDED'; // CAMPAIGN ENDED
 
 export default {
-  inject: ['web3', 'notify'],
+  inject: ['web3'],
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
@@ -96,23 +91,20 @@ export default {
     }
   },
   watch: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    currentState: async function (newCurrentState, oldCurrentState) {
+    currentState: async function (newCurrentState) {
       if (newCurrentState === CLAIMING) {
         // If the state is loading: start updating the state
         this.checkStateLoop(this.updateState);
       }
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    web3Account: async function (newAccount, preAccount) {
+    web3Account: async function (newAccount) {
       // Update the state if the address
       this.loading = true;
       this.address = newAccount;
       await this.updateState();
       this.loading = false;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    votes: async function (newCurrentState, oldCurrentState) {
+    votes: async function () {
       // Update the state if the votes change
       this.loading = true;
       await this.updateState();
