@@ -280,7 +280,6 @@ onMounted(() =>
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
-        @userSelectedDate="userSelectedDateEnd = true"
       />
 
       <!-- Step 3 (only when plugins) -->
