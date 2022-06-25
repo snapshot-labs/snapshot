@@ -375,7 +375,7 @@ const truncateMarkdownBody = computed(() => {
             <div
               class="overflow-hidden"
               :class="{
-                'h-[360px]': !showFullMarkdownBody && truncateMarkdownBody,
+                'h-[420px]': !showFullMarkdownBody && truncateMarkdownBody,
                 'mb-[92px]': showFullMarkdownBody,
                 'mb-[56px]': !showFullMarkdownBody
               }"
