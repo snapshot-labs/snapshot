@@ -1,6 +1,6 @@
 // URLS
-const API_BASE_URL = 'https://graphigo.stg.galaxy.eco/query';
-// const API_BASE_URL = 'https://graphigo.prd.galaxy.eco/query';
+// const API_BASE_URL = 'https://graphigo.stg.galaxy.eco/query';
+const API_BASE_URL = 'https://graphigo.prd.galaxy.eco/query';
 
 export default class Plugin {
   async fetchGQL({ query, variables }) {
