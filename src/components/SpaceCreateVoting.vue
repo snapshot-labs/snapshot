@@ -83,22 +83,7 @@ onMounted(async () => {
 
 <template>
   <div class="space-y-4">
-    <BaseBlock :title="$t('create.voting')">
-      <div class="mb-4 space-y-2">
-        <InputSelectVotingtype
-          :type="form.type"
-          @update:type="value => (form.type = value)"
-        />
-
-        <InputSelectPrivacy
-          :privacy="form.privacy"
-          allow-none
-          @update:privacy="value => (form.privacy = value)"
-        />
-      </div>
-      <h4 class="mb-2">
-        {{ $t('create.choices') }}
-      </h4>
+    <BaseBlock :title="$t('create.choices')">
       <div class="flex">
         <div class="w-full overflow-hidden">
           <draggable
@@ -151,6 +136,21 @@ onMounted(async () => {
             <i-ho-plus-sm class="text-skin-link" />
           </ButtonSidebar>
         </div>
+      </div>
+    </BaseBlock>
+
+    <BaseBlock :title="$t('create.voting')">
+      <div class="space-y-2">
+        <InputSelectVotingtype
+          :type="form.type"
+          @update:type="value => (form.type = value)"
+        />
+
+        <InputSelectPrivacy
+          :privacy="form.privacy"
+          allow-none
+          @update:privacy="value => (form.privacy = value)"
+        />
       </div>
     </BaseBlock>
 
