@@ -16,7 +16,6 @@ const emit = defineEmits(['userSelectedDate']);
 
 const selectedDate = ref('');
 const modalDateSelectOpen = ref(false);
-const modalVotingTypeOpen = ref(false);
 
 const { form, sourceProposalLoaded, userSelectedDateStart } =
   useSpaceCreateForm();
@@ -234,11 +233,6 @@ onMounted(async () => {
         :open="modalDateSelectOpen"
         @close="modalDateSelectOpen = false"
         @input="setDate"
-      />
-      <ModalVotingType
-        v-model:selected="form.type"
-        :open="modalVotingTypeOpen"
-        @close="modalVotingTypeOpen = false"
       />
     </teleport>
   </div>
