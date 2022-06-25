@@ -74,7 +74,14 @@ onMounted(async () => {
 
 <template>
   <div class="mb-5 space-y-4">
-    <BaseBlock :title="$t('create.choices')">
+    <BaseBlock :title="$t('create.voting')">
+      <InputSelectVotingtype
+        :type="space.voting?.type ? space.voting.type : form.type"
+        :disabled="!!space.voting?.type"
+        @update:type="value => (form.type = value)"
+      />
+
+      <h4 class="mt-3 mb-1" v-text="$t('create.choices')" />
       <div class="flex">
         <div class="w-full overflow-hidden">
           <draggable
@@ -127,23 +134,6 @@ onMounted(async () => {
             <i-ho-plus-sm class="text-skin-link" />
           </ButtonSidebar>
         </div>
-      </div>
-    </BaseBlock>
-
-    <BaseBlock :title="$t('create.voting')">
-      <div class="space-y-2">
-        <InputSelectVotingtype
-          :type="space.voting?.type ? space.voting.type : form.type"
-          :disabled="!!space.voting?.type"
-          @update:type="value => (form.type = value)"
-        />
-
-        <InputSelectPrivacy
-          :privacy="space.voting?.privacy ? space.voting.privacy : form.privacy"
-          :disabled="!!space.voting?.privacy"
-          allow-none
-          @update:privacy="value => (form.privacy = value)"
-        />
       </div>
     </BaseBlock>
 

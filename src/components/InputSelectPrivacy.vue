@@ -6,14 +6,12 @@ withDefaults(
     privacy?: string;
     information?: string;
     allowAny?: boolean;
-    allowNone?: boolean;
     disabled?: boolean;
   }>(),
   {
     privacy: '',
     information: '',
     allowAny: false,
-    allowNone: false,
     disabled: false
   }
 );
@@ -29,11 +27,7 @@ const modalVotingPrivacyOpen = ref(false);
       :title="$t(`privacy.label`)"
       :information="information"
       :model-value="
-        privacy
-          ? $t(`privacy.${privacy}.label`)
-          : allowNone
-          ? $t('privacy.none')
-          : $t('privacy.any')
+        privacy ? $t(`privacy.${privacy}.label`) : $t('privacy.any')
       "
       :disabled="disabled"
       :tooltip="
@@ -50,7 +44,6 @@ const modalVotingPrivacyOpen = ref(false);
         :selected="privacy"
         :open="modalVotingPrivacyOpen"
         :allow-any="allowAny"
-        :allow-none="allowNone"
         @update:selected="emit('update:privacy', $event)"
         @close="modalVotingPrivacyOpen = false"
       />
