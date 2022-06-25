@@ -158,7 +158,6 @@ function setSourceProposal(proposal) {
     end: proposal.end,
     snapshot: proposal.snapshot,
     type: proposal.type,
-    privacy: proposal.privacy,
     metadata: { plugins }
   };
 
