@@ -56,4 +56,4 @@ body:
         7. Space - [ex. ENS, Gitcoin]
         8. Any additional information we should know - 
     validations:
-      required: true
+      required: false
