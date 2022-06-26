@@ -14,11 +14,11 @@ const emit = defineEmits(['update:modelValue']);
     :focus-on-mount="focusOnMount"
     type="email"
     placeholder="you@example.com"
-    class="!pl-[42px]"
+    class="!pl-[44px]"
     @update:model-value="emit('update:modelValue', $event)"
   >
     <template #before>
-      <i-ho-mail class="text-skin-text" />
+      <i-ho-mail class="-mb-[1px] text-base text-skin-text" />
     </template>
   </BaseInput>
 </template>
