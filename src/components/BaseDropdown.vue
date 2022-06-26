@@ -40,7 +40,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
     <BasePopover :options="{ offset: [0, 12], placement }" :open="open">
       <template #item>
         <div
-          class="inline-flex h-full w-full cursor-pointer items-center"
+          class="flex h-full w-full cursor-pointer items-center"
           @click="open = !open"
         >
           <slot name="button" />
@@ -58,7 +58,7 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
         >
           <div
             v-if="open"
-            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg shadow-lg md:max-w-[400px]"
+            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg text-left shadow-lg md:max-w-[400px]"
           >
             <ul
               class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"

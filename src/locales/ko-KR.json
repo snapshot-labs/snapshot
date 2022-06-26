@@ -327,7 +327,7 @@
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
     },
     "skin": "스킨",
     "treasuries": {
@@ -566,7 +566,8 @@
         "settings": "{space} 설정"
       },
       "strategy": "{key} 전략",
-      "delegate": "위임"
+      "delegate": "위임",
+      "ranking": "Ranking"
     }
   },
   "hal": {
