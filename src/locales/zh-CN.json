@@ -345,7 +345,7 @@
     "chooseExistingEns": "选择您现有的一个ENS域名来创建空间：",
     "useSingleExistingEns": "使用您现有的ENS域名：",
     "orReigsterNewEns": "或者注册一个新的域名：",
-    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
+    "demoTestnetEnsMessage": "若要创建测试空间，您需要在 network 上的 ENS 域名。",
     "toCreateASpace": "要创建空间，您首先需要一个ENS域名。在下面输入一个，并按照ENS的注册说明进行操作。",
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
