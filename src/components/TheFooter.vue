@@ -73,6 +73,7 @@ const socials = [
       <!-- This needs to be styled too  -->
       <ModalNewsletter
         :open="modalNewsletterOpen"
+        tag="6449077"
         @close="modalNewsletterOpen = false"
       />
     </teleport>
