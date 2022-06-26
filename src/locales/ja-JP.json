@@ -345,6 +345,7 @@
     "chooseExistingEns": "作成するスペースと紐付ける既存のENSドメインを選択してください。",
     "useSingleExistingEns": "既存のENSドメインを使用してください:",
     "orReigsterNewEns": "または新しいドメインを登録する：",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "スペースを作成するためには、まずENSドメインが必要です。ドメインを入力し、ENS登録の指示に従ってください。",
     "createASpace": "スペースを作成する",
     "registerEnsButton": "登録する",
