@@ -42,11 +42,11 @@ watch(web3Account, load);
         class="border-b p-4 last:border-b-0"
       >
         <div v-if="getClaim(boost, web3Account)">
-          {{ $t('alreadyClaimed') }}
+          {{ $t('boost.alreadyClaimed') }}<br />
           <BaseLink
             :link="getClaimTxLink(getClaim(boost, web3Account), chainId)"
           >
-            {{ $t('viewTx') }}
+            {{ $t('boost.viewTx') }}
           </BaseLink>
         </div>
         <BaseButton
