@@ -52,6 +52,7 @@ watch(web3Account, load);
         <BaseButton
           v-else-if="boost.receipt"
           class="w-full"
+          primary
           @click="claimTokens(boost)"
         >
           {{
