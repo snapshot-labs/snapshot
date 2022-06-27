@@ -49,7 +49,7 @@ async function signShutter() {
 
   return await send(props.space, 'vote', {
     proposal: props.proposal,
-    choice: choice,
+    choice,
     privacy: 'shutter'
   });
 }
