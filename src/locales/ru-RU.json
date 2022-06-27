@@ -345,6 +345,7 @@
     "chooseExistingEns": "Выберите один из существующих доменов ENS для создания сообщества:",
     "useSingleExistingEns": "Используйте свой существующий домен ENS:",
     "orReigsterNewEns": "Или зарегистрируйте новый домен:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Чтобы создать сообщество, вам сначала нужен домен ENS. Введите его ниже и следуйте инструкциям по регистрации ENS.",
     "createASpace": "Создать сообщество",
     "registerEnsButton": "Зарегистрироваться",
