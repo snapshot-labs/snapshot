@@ -91,7 +91,7 @@
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.4",
     "unplugin-icons": "^0.14.5",
-    "unplugin-vue-components": "^0.19.9",
+    "unplugin-vue-components": "^0.20.1",
     "vite": "^2.9.12",
     "vitest": "^0.16.0",
     "vitest-fetch-mock": "^0.1.0"
