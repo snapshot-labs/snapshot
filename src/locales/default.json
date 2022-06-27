@@ -354,6 +354,7 @@
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "Or register a new domain:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
