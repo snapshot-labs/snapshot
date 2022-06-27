@@ -345,6 +345,7 @@
     "chooseExistingEns": "Alege unul dintre domeniile tale ENS existente pentru a crea un spațiu:",
     "useSingleExistingEns": "Utilizează domeniul tău ENS existent:",
     "orReigsterNewEns": "Sau înregistrează un nou domeniu:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Pentru a crea un spațiu, ai nevoie mai întâi de un domeniu ENS. Introdu unul mai jos și urmează instrucțiunile de înregistrare ENS.",
     "createASpace": "Crează un spațiu",
     "registerEnsButton": "Înregistrează-te",

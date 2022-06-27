@@ -6,6 +6,9 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
@@ -60,46 +63,55 @@ onMounted(() => resetForm());
 <template>
   <div>
     <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
-    <BaseBlock v-else>
-      <div v-if="domainsWithoutExistingSpace.length">
-        <div class="mb-3">
-          {{
-            $t(
-              domainsWithoutExistingSpace.length > 1
-                ? 'setup.chooseExistingEns'
-                : 'setup.useSingleExistingEns'
-            )
-          }}
+    <div v-else>
+      <BaseMessage v-if="defaultNetwork === '4'" level="info" class="mb-3">
+        {{
+          $t('setup.demoTestnetEnsMessage', {
+            network: networks[defaultNetwork].name
+          })
+        }}
+      </BaseMessage>
+      <BaseBlock>
+        <div v-if="domainsWithoutExistingSpace.length">
+          <div class="mb-3">
+            {{
+              $t(
+                domainsWithoutExistingSpace.length > 1
+                  ? 'setup.chooseExistingEns'
+                  : 'setup.useSingleExistingEns'
+              )
+            }}
+          </div>
+          <div class="space-y-2">
+            <BaseButton
+              v-for="(ens, i) in domainsWithoutExistingSpace"
+              :key="i"
+              class="flex w-full items-center justify-between"
+              :primary="domainsWithoutExistingSpace.length === 1"
+              @click="nextStep(ens.name)"
+            >
+              {{ ens.name }}
+              <BaseIcon name="go" size="22" class="-mr-2" />
+            </BaseButton>
+          </div>
+          <div class="my-3">
+            {{ $t('setup.orReigsterNewEns') }}
+          </div>
+          <SetupDomainRegister
+            v-model.trim="inputDomain"
+            @waitForRegistration="waitForRegistration"
+          />
         </div>
-        <div class="space-y-2">
-          <BaseButton
-            v-for="(ens, i) in domainsWithoutExistingSpace"
-            :key="i"
-            class="flex w-full items-center justify-between"
-            :primary="domainsWithoutExistingSpace.length === 1"
-            @click="nextStep(ens.name)"
-          >
-            {{ ens.name }}
-            <BaseIcon name="go" size="22" class="-mr-2" />
-          </BaseButton>
+        <div v-else>
+          <div class="mb-3">
+            {{ $t('setup.toCreateASpace') }}
+          </div>
+          <SetupDomainRegister
+            v-model.trim="inputDomain"
+            @waitForRegistration="waitForRegistration"
+          />
         </div>
-        <div class="my-3">
-          {{ $t('setup.orReigsterNewEns') }}
-        </div>
-        <SetupDomainRegister
-          v-model.trim="inputDomain"
-          @waitForRegistration="waitForRegistration"
-        />
-      </div>
-      <div v-else>
-        <div class="mb-3">
-          {{ $t('setup.toCreateASpace') }}
-        </div>
-        <SetupDomainRegister
-          v-model.trim="inputDomain"
-          @waitForRegistration="waitForRegistration"
-        />
-      </div>
-    </BaseBlock>
+      </BaseBlock>
+    </div>
   </div>
 </template>
