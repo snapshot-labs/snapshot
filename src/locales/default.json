@@ -616,6 +616,7 @@
   "boost": {
     "claimTokens": "Claim {0} {1}",
     "viewTx": "View transaction",
-    "alreadyClaimed": "Already claimed"
+    "alreadyClaimed": "Already claimed",
+    "nothingToClaim": "Nothing to claim"
   }
 }

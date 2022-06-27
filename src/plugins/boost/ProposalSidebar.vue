@@ -64,7 +64,7 @@ watch(web3Account, load);
             ])
           }}
         </BaseButton>
-        <div v-else>Nothing to claim.</div>
+        <div v-else>{{ $t('boost.nothingToClaim') }}</div>
       </div>
     </div>
   </BaseBlock>
