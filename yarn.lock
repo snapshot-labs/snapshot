@@ -1802,10 +1802,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.2.tgz#12ea7a42e6c83d5ea48e14dc41fd2bbb5806ee37"
   integrity sha512-umyypfSHS4kQLdYAnJHhaASq7FRzNCdvcRoQ3uYGNk1/M4a+hXUd7ysN7BLhCrWH6uBokyCkFeUAaFDzSaaSrQ==
 
-"@vitest/ui@^0.15.2":
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.15.2.tgz#8fc752446ad94d6a05620357982f8f349de3368e"
-  integrity sha512-0L5Hhk7j6MPkMK3WONpbCLRFlbOZC8w/C5/LAU66iSBhahg3nJOXNuSxnr+l0KFNKYf10SNlZZ/E2H1vb2s7WQ==
+"@vitest/ui@^0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.16.0.tgz#0bf730a26460c1703aaf27ab64b0917f86ac1fe3"
+  integrity sha512-RwXYTFA2tVwUhuuTcdAaK5kIq+I3pnvNQUojPThZPZhS7ttKXkCgWwud0KXwnR04ofKc3HXEuzWPf6s7JD1vgw==
   dependencies:
     sirv "^2.0.2"
 
@@ -7686,10 +7686,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unplugin-icons@^0.14.5:
-  version "0.14.5"
-  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.5.tgz#baaeff3cb0c63ec53c770385e48bf3a77d8d18e8"
-  integrity sha512-fxi/fuBZXtZu64L8iAPj+ecu/rnSvTbfR14RO44xIWdsI/Ohpzs9Gve7+nHIgD6JFrdtCfzGnXWBEVPbMGWX3A==
+unplugin-icons@^0.14.6:
+  version "0.14.6"
+  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.6.tgz#578e0a4253d212fa044623d85251c442086075fe"
+  integrity sha512-8sxDiL4l+TV4zufZfrskgHZZSDFoGOCBgYsefRMM4inQ3Z6KhgMSuNyew7U7D/xG//rwxgD7bN+Dv+YAZEEfEw==
   dependencies:
     "@antfu/install-pkg" "^0.1.0"
     "@antfu/utils" "^0.5.2"
