@@ -62,14 +62,14 @@
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
-    "@iconify-json/heroicons-outline": "^1.1.1",
+    "@iconify-json/heroicons-outline": "^1.1.2",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
     "@vitejs/plugin-vue": "^2.3.2",
-    "@vitest/ui": "^0.15.2",
+    "@vitest/ui": "^0.16.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.1",
