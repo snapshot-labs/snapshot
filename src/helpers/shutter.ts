@@ -35,7 +35,7 @@ async function init() {
     );
 }
 
-export async function encryptChoice(
+export default async function encryptChoice(
   choice: string,
   id: string
 ): Promise<string | null> {

@@ -8,7 +8,7 @@ import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { encryptChoice } from '@/helpers/shutter';
+import shutterEncryptChoice from '@/helpers/shutter';
 
 const { web3Account } = useWeb3();
 
@@ -41,11 +41,11 @@ const symbols = computed(() =>
 
 async function handleSubmit() {
   let choice: string | null = null;
-  // if (props.proposal.privacy === 'shutter')
-  choice = await encryptChoice(
-    JSON.stringify(props.selectedChoices),
-    '0x000000000000000A'
-  );
+  if (props.space.voting.privacy === 'shutter')
+    choice = await shutterEncryptChoice(
+      JSON.stringify(props.selectedChoices),
+      '0x000000000000000A'
+    );
   console.log(
     '🚀 ~ file: ModalConfirm.vue ~ line 49 ~ handleSubmit ~ choice',
     choice
