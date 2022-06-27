@@ -32,7 +32,11 @@ const BOOSTS_QUERY = gql`
       id
       balance
       strategyURI
-      token
+      token {
+        name
+        symbol
+        decimals
+      }
       start
       end
       claims {
@@ -134,10 +138,20 @@ export function useBoost() {
     pendingCount.value--;
   }
 
-  function hasClaimed(boost, account) {
-    return !!boost.claims.find(
+  function getClaim(boost: any, account: string) {
+    return boost.claims.find(
       c => c.recipient.toLowerCase() === account.toLowerCase()
     );
+  }
+
+  function getClaimTxLink(claim: any, chainId: number) {
+    const txId = claim.id.split('-')[0];
+
+    const explorerUrls: string[] = [];
+    explorerUrls[1] = `https://etherscan.io/tx/${txId}`;
+    explorerUrls[4] = `https://rinkeby.etherscan.io/tx/${txId}`;
+
+    return explorerUrls[chainId];
   }
 
   async function pinStrategy(strategy: any) {
@@ -151,6 +165,7 @@ export function useBoost() {
     chainId: number
   ) {
     const apiUrls: string[] = [];
+    apiUrls[1] = `https://api.thegraph.com/subgraphs/name/mktcode/boost`;
     apiUrls[4] = `https://api.thegraph.com/subgraphs/name/mktcode/boost`;
 
     boostApolloClient.setLink(createHttpLink({ uri: apiUrls[chainId] }));
@@ -166,7 +181,8 @@ export function useBoost() {
     loadingBoosts,
     depositTokens,
     claimTokens,
-    hasClaimed,
+    getClaim,
+    getClaimTxLink,
     pinStrategy,
     queryBoostSubgraph
   };

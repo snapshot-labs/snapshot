@@ -612,5 +612,10 @@
       "empty": "There are no assets in this contract"
     },
     "24hChange": "24h change"
+  },
+  "boost": {
+    "claimTokens": "Claim {0} {1}",
+    "viewTx": "View transaction",
+    "alreadyClaimed": "Already claimed"
   }
 }
