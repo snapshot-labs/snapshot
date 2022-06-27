@@ -39,24 +39,35 @@ const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
-async function handleSubmit() {
-  let choice: string | null = null;
-  if (props.space.voting.privacy === 'shutter')
-    choice = await shutterEncryptChoice(
-      JSON.stringify(props.selectedChoices),
-      '0x000000000000000A'
-    );
-  console.log(
-    '🚀 ~ file: ModalConfirm.vue ~ line 49 ~ handleSubmit ~ choice',
-    choice
+async function signShutter() {
+  const choice = await shutterEncryptChoice(
+    JSON.stringify(props.selectedChoices),
+    '0x000000000000000A'
   );
 
-  const result = await send(props.space, 'vote', {
+  if (!choice) return null;
+
+  return await send(props.space, 'vote', {
     proposal: props.proposal,
-    choice: choice ?? props.selectedChoices
+    choice: choice,
+    privacy: 'shutter'
   });
+}
+
+async function sign() {
+  return await send(props.space, 'vote', {
+    proposal: props.proposal,
+    choice: props.selectedChoices
+  });
+}
+
+async function handleSubmit() {
+  let result: { id: string } | null = null;
+  if (props.space.voting.privacy === 'shutter') result = await signShutter();
+  else result = await sign();
+
   console.log('Result', result);
-  if (result.id) {
+  if (result?.id) {
     notify(['green', t('notify.voteSuccessful')]);
     if (!pending.includes(props.space.id)) {
       emit('reload');

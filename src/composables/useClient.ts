@@ -82,7 +82,8 @@ export function useClient() {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
-        choice: payload.choice
+        choice: payload.choice,
+        privacy: payload.privacy
       });
     } else if (type === 'delete-proposal') {
       return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
