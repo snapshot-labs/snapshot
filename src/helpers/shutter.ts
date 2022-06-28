@@ -2,8 +2,8 @@ import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
 import { arrayify } from '@ethersproject/bytes';
 import { toUtf8Bytes } from '@ethersproject/strings';
-
-const WASM_URL: any = '@/../both.wasm';
+import wasm from '../../wasm_exec.js?url';
+import shutter from '../../both.wasm?url';
 
 declare global {
   interface Window {
@@ -14,18 +14,18 @@ declare const Go: any;
 
 let shcryptoWasm;
 async function init() {
-  await import('@/../wasm_exec');
+  await import(wasm);
   const go = new Go();
   if ('instantiateStreaming' in WebAssembly) {
     return await WebAssembly.instantiateStreaming(
-      fetch(WASM_URL),
+      fetch(shutter),
       go.importObject
     ).then(obj => {
       shcryptoWasm = obj.instance;
       go.run(shcryptoWasm);
     });
   }
-  return await fetch(WASM_URL)
+  return await fetch(shutter)
     .then(resp => resp.arrayBuffer())
     .then(bytes =>
       WebAssembly.instantiate(bytes, go.importObject).then(obj => {
