@@ -58,9 +58,9 @@ watch(
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <div class="mb-4">
-      <BaseMessage level="info">
+      <BaseMessageBlock level="info">
         {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessage>
+      </BaseMessageBlock>
     </div>
 
     <BaseInput
@@ -87,7 +87,10 @@ watch(
       {{ $t('setup.setController') }}
     </BaseButton>
 
-    <BaseMessage v-if="isGnosisSafe && !fillConnectedWallet" level="warning">
+    <BaseMessageBlock
+      v-if="isGnosisSafe && !fillConnectedWallet"
+      level="warning"
+    >
       <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
         <template #link>
           <BaseLink link="https://docs.snapshot.org/spaces/create">
@@ -95,7 +98,7 @@ watch(
           </BaseLink>
         </template>
       </i18n-t>
-    </BaseMessage>
+    </BaseMessageBlock>
   </BaseBlock>
 
   <teleport to="#modal">
@@ -130,13 +133,13 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessage level="info">
+        <BaseMessageBlock level="info">
           {{
             $t('setup.explainControllerAndEns', {
               network: networks[defaultNetwork].name
             })
           }}
-        </BaseMessage>
+        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>

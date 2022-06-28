@@ -15,7 +15,7 @@ const modalSkinsOpen = ref(false);
 
 <template>
   <BaseBlock :title="$t('settings.customDomain')">
-    <BaseMessage level="info" class="mb-4">
+    <BaseMessageBlock level="info" class="mb-4">
       <i18n-t keypath="settings.domain.info" tag="span">
         <template #docs>
           <BaseLink link="https://docs.snapshot.org/spaces/add-custom-domain">
@@ -23,7 +23,7 @@ const modalSkinsOpen = ref(false);
           </BaseLink>
         </template>
       </i18n-t>
-    </BaseMessage>
+    </BaseMessageBlock>
 
     <ContainerParallelInput>
       <BaseInput

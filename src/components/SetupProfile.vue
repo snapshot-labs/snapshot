@@ -209,7 +209,7 @@ onMounted(() => {
         {{ $t('createButton') }}
       </BaseButton>
       <div>
-        <BaseMessage
+        <BaseMessageBlock
           v-if="
             uriAddress &&
             uriAddress !== web3Account &&
@@ -222,14 +222,14 @@ onMounted(() => {
           {{
             $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
           }}
-        </BaseMessage>
-        <BaseMessage
+        </BaseMessageBlock>
+        <BaseMessageBlock
           v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
           level="info"
           class="!mt-4"
         >
           {{ $t('setup.pleaseWaitMessage') }}
-        </BaseMessage>
+        </BaseMessageBlock>
       </div>
     </div>
   </div>

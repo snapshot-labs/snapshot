@@ -157,7 +157,7 @@ async function handleSetRecord() {
       <LoadingRow v-if="!loaded" block />
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
-          <BaseMessage
+          <BaseMessageBlock
             v-if="
               !(isSpaceController || isSpaceAdmin || ensOwner) &&
               currentTextRecord
@@ -166,7 +166,7 @@ async function handleSetRecord() {
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
-          </BaseMessage>
+          </BaseMessageBlock>
 
           <SettingsProfileBlock
             v-model:name="form.name"
