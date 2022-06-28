@@ -1,6 +1,6 @@
 # Project Galaxy Plugin
 
-**Project Galaxy Pugin is a plugin for Project Galaxy Campaign OATs**
+**Project Galaxy Plugin is a plugin for Project Galaxy Campaign OATs**
 
 ### 1. Preparation
 
