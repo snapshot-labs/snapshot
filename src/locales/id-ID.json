@@ -345,6 +345,7 @@
     "chooseExistingEns": "Pilih satu domain ENS anda untuk membuat ruang:",
     "useSingleExistingEns": "Pakai domain ENS anda:",
     "orReigsterNewEns": "Atau daftarkan domain yang baru:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Untuk membuat ruang, anda harus punya ENS domain. Masukan satu dibawah dan ikuti instruksi pendaftaran ENS.",
     "createASpace": "Buat sebuah ruang",
     "registerEnsButton": "Daftar",
