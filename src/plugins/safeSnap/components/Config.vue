@@ -72,7 +72,7 @@ export default {
     <div
       v-for="(safe, index) in input.safes"
       :key="index"
-      class="border-b-4 last:border-b-0"
+      class="border-b last:border-b-0"
     >
       <SafeTransactions
         v-if="!preview || safe.txs.length > 0"

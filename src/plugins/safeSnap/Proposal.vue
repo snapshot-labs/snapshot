@@ -34,7 +34,11 @@ const safeSnapInput = computed(() => {
 
 <template>
   <Config
-    v-if="proposal.plugins.safeSnap && loadedResults && safeSnapInput.safes"
+    v-if="
+      proposal.plugins.safeSnap &&
+      loadedResults &&
+      safeSnapInput.safes?.some(s => s.txs.length > 0)
+    "
     :model-value="safeSnapInput"
     :proposal="proposal"
     :preview="true"
