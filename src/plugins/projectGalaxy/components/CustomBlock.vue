@@ -179,7 +179,7 @@ export default {
 
 <template>
   <BaseBlock
-    v-if="disabled || currentState"
+    v-if="!disabled && currentState"
     title="OAT for Vote"
     :loading="loading"
     :slim="true"
