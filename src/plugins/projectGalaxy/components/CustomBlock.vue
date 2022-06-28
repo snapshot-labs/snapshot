@@ -51,6 +51,7 @@ export default {
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
+      disabled: false,
       oats: {},
       loading: false,
       plugin: new Plugin(),
@@ -124,8 +125,8 @@ export default {
   },
   methods: {
     getCampainInfo() {
-      if (this.space.plugins.ProjectGalaxy?.oats) {
-        this.oats = this.space.plugins.ProjectGalaxy.oats;
+      if (this.space.plugins.projectGalaxy?.oats) {
+        this.oats = this.space.plugins.projectGalaxy.oats;
         this.currentCampaignUrl = this.oats[this.proposal.id];
         if (this.currentCampaignUrl) {
           this.currentCampaignId = this.currentCampaignUrl.match(/[^/]\w+/g)[2];
@@ -149,20 +150,28 @@ export default {
     },
     // update state
     async updateState() {
-      const response = await this.plugin.getCurrentState(
-        this.proposal.id,
-        this.address,
-        this.currentCampaignId
-      );
+      try {
+        const response = await this.plugin.getCurrentState(
+          this.proposal.id,
+          this.address,
+          this.currentCampaignId
+        );
 
-      const { currentState } = response;
+        const { currentState } = response;
 
-      this.currentState = currentState;
-      this.loading = false;
+        this.currentState = currentState;
+        this.loading = false;
+      } catch (e) {
+        this.disabled = true;
+      }
     },
     // get oat image
     async getOAT(campainId) {
-      this.oatImg = await this.plugin.getOATImage(campainId);
+      try {
+        this.oatImg = await this.plugin.getOATImage(campainId);
+      } catch (e) {
+        this.disabled = true;
+      }
     }
   }
 };
@@ -170,7 +179,7 @@ export default {
 
 <template>
   <BaseBlock
-    v-if="currentState"
+    v-if="disabled || currentState"
     title="OAT for Vote"
     :loading="loading"
     :slim="true"

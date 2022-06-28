@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "author": "Project-Galaxy",
   "description": "Project Galaxy OAT",
-  "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/ProjectGalaxy",
-  "icon": "ipfs://QmSH2PsJUSpHUwS9XAoqLKRvF7qibrsqmBTdmM9Mmyv5fb"
+  "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/projectGalaxy",
+  "icon": "https://ipfs.io/ipfs/bafkreibcmyqzyltbo5flwdrezyadm7zi66ka2oidwa22g4g7z6t6r4v4ui"
 }
