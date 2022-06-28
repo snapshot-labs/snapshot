@@ -226,6 +226,7 @@ export const SPACES_QUERY = gql`
         parent {
           id
         }
+      }
       treasuries {
         name
         address
