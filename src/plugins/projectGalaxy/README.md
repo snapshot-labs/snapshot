@@ -25,7 +25,7 @@ Add JSON string to your space
 	}
 }
 ```
-notice: The domain is not incluede in <Space Name>.
+notice: The domain should not included in <Space Name>.
 
 *Here is a Demo JSON:* 
 ```javascript
