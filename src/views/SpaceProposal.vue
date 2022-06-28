@@ -510,7 +510,7 @@ const truncateMarkdownBody = computed(() => {
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
-          :results="(results as Results)"
+          :results="results"
           :strategies="strategies"
         />
         <PluginProposalSidebar
