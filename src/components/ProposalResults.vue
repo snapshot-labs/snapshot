@@ -18,20 +18,11 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
     class="pb-2"
   >
-    <BaseMessage
+    <ProposalMessageShutter
       v-if="
-        proposal.scores_state !== 'final' && space.voting.privacy === 'shutter'
+        space.voting.privacy === 'shutter' && proposal.scores_state !== 'final'
       "
-      level="info"
-    >
-      {{ $t('resultsShutter') }}
-      <div class="mt-3">
-        <BaseLink link="https://shutter.network/" hide-external-icon>
-          <span class="text-sm"> {{ $t('poweredBy') }} </span>
-          <i-s-shutter class="-mt-1 h-[40px] w-[130px]" />
-        </BaseLink>
-      </div>
-    </BaseMessage>
+    />
     <ProposalResultsList
       v-else-if="results"
       :space="space"
