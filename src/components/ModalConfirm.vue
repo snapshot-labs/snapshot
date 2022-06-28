@@ -39,14 +39,17 @@ const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
+const isLoadingShutter = ref(false);
+
 async function signShutter() {
+  isLoadingShutter.value = true;
   const choice = await shutterEncryptChoice(
     JSON.stringify(props.selectedChoices),
     '0x000000000000000A'
   );
+  isLoadingShutter.value = false;
 
   if (!choice) return null;
-
   return await send(props.space, 'vote', {
     proposal: props.proposal,
     choice,
@@ -178,8 +181,8 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || clientLoading"
-          :loading="clientLoading"
+          :disabled="vp === 0 || clientLoading || isLoadingShutter"
+          :loading="clientLoading || isLoadingShutter"
           type="submit"
           class="w-full"
           primary
