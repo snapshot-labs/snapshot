@@ -178,7 +178,7 @@ export default {
   >
     <div class="relative overflow-hidden">
       <!-- background image -->
-      <div class="absolute bottom-0 top-0 right-0 left-0 z-0 w-full">
+      <div class="absolute bottom-0 top-0 right-0 left-0 z-0 w-full blur-3xl">
         <img
           :src="mainImg"
           alt=""
@@ -194,7 +194,7 @@ export default {
       </div>
       <!-- main content -->
       <div
-        class="relative bottom-0 top-0 right-0 left-0 z-10 flex flex-col items-center py-6 px-6 backdrop-blur-3xl"
+        class="relative bottom-0 top-0 right-0 left-0 z-10 flex flex-col items-center py-6 px-6"
       >
         <img :src="imgLogoGalaxy" alt="" class="mb-3 h-auto w-full" style="" />
         <img
