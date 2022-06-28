@@ -19,12 +19,13 @@ Add JSON string to your space
 ```javascript
 {
 	"oats": {
-		"proposal ID 1": "Space Name/Campain ID(without domain)",
-		"proposal ID 2": "Space Name/Campain ID(without domain)",
-		"proposal ID 3": "Space Name/Campain ID(without domain)"
+		"<proposal ID 1>": "<Space Name>/campain/<Campaign ID>",
+		"<proposal ID 2>": "<Space Name>/campain/<Campaign ID>",
+		"<proposal ID 3>": "<Space Name>/campain/<Campaign ID>",
 	}
 }
 ```
+notice: The domain is not incluede in <Space Name>.
 
 *Here is a Demo JSON:* 
 ```javascript
