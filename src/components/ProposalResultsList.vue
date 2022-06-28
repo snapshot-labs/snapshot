@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { useIntl } from '@/composables/useIntl';
-
-const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -30,16 +27,5 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
       :results="results"
       :strategies="strategies"
     />
-    <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
-      {{ $t('settings.quorum.label') }}
-      <span class="float-right">
-        {{ formatCompactNumber(results.scoresTotal) }} /
-        {{
-          formatCompactNumber(
-            proposal.quorum || (space.voting.quorum as number)
-          )
-        }}
-      </span>
-    </div>
   </div>
 </template>
