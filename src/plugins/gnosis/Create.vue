@@ -22,7 +22,7 @@ const update = form => {
       v-if="space.plugins.gnosis"
       :proposal="proposal"
       :network="space.network"
-      :modelValue="
+      :model-value="
         modelValue?.gnosis || {
           network: '1',
           conditionId: '',

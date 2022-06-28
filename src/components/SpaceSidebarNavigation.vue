@@ -43,13 +43,17 @@ const isChild = computed(() => {
 
 <template>
   <div>
-    <router-link :to="{ name: 'spaceProposals' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link :to="{ name: 'spaceCreate' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link
+      v-slot="{ isExactActive }"
+      :to="{ name: 'spaceCreate', params: { step: 1 } }"
+      data-testid="create-proposal-button"
+    >
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.new') }}
       </BaseSidebarNavigationItem>
     </router-link>
@@ -58,24 +62,29 @@ const isChild = computed(() => {
         space &&
         space.strategies?.find(strategy => strategy.name === 'delegation')
       "
-      :to="{ name: 'delegate', params: { key: space.id } }"
       v-slot="{ isExactActive }"
+      :to="{ name: 'delegate', params: { key: space.id } }"
     >
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('delegate.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link :to="{ name: 'spaceAbout' }" v-slot="{ isExactActive }">
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+    <router-link v-slot="{ isActive }" :to="{ name: 'spaceTreasury' }">
+      <BaseSidebarNavigationItem :is-active="isActive">
+        {{ $t('treasury.title') }}
+      </BaseSidebarNavigationItem>
+    </router-link>
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceAbout' }">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('about') }}
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link
       v-if="isAdmin"
-      :to="{ name: 'spaceSettings' }"
       v-slot="{ isExactActive }"
+      :to="{ name: 'spaceSettings' }"
     >
-      <BaseSidebarNavigationItem :isActive="isExactActive">
+      <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
@@ -86,10 +95,10 @@ const isChild = computed(() => {
     </div>
     <router-link
       :to="{ name: 'spaceProposals', params: { key: space.parent.id } }"
-      class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
+      class="sidenav-item flex items-center px-4 py-2 hover:bg-skin-bg"
     >
       <AvatarSpace :space="space.parent" size="28" />
-      <span class="truncate mx-2">
+      <span class="mx-2 truncate">
         {{ space.parent.name }}
       </span>
       <BaseCounter
@@ -103,13 +112,15 @@ const isChild = computed(() => {
       {{ $t('subSpaces.subSpaces') }}
     </div>
     <router-link
-      v-for="child in space.children.filter(child => child.parent?.id === space.id).sort((a, b) => b.followersCount - a.followersCount)"
+      v-for="child in space.children
+        .filter(child => child.parent?.id === space.id)
+        .sort((a, b) => b.followersCount - a.followersCount)"
       :key="child.id"
       :to="{ name: 'spaceProposals', params: { key: child.id } }"
-      class="flex items-center px-4 py-2 sidenav-item hover:bg-skin-bg"
+      class="sidenav-item flex items-center px-4 py-2 hover:bg-skin-bg"
     >
       <AvatarSpace :space="child" size="28" />
-      <span class="truncate mx-2">
+      <span class="mx-2 truncate">
         {{ child.name }}
       </span>
       <BaseCounter

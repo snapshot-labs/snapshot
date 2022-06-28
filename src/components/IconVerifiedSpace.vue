@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue';
+import { computed } from 'vue';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const props = withDefaults(

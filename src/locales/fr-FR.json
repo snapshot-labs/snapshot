@@ -5,8 +5,8 @@
   "backToHome": "Accueil",
   "actions": "Actions",
   "results": "Résultats",
-  "resultsError": "Les résultats n’ont pas pu être calculés. C’est souvent dû à une stratégie mal configurée ou à un nœud RPC non-répondant impliqué dans la stratégie.",
-  "vpError": "Votre pouvoir de vote n’a pas pu être calculé. C’est souvent dû à une stratégie mal configurée ou à un nœud RPC non-répondant impliqué dans la stratégie.",
+  "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
+  "vpError": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
   "getHelp": "Obtenir de l’aide",
   "retry": "Réessayer",
   "currentResults": "Résultats actuels",
@@ -30,7 +30,7 @@
   "started": "commencé",
   "filters": "Filtres",
   "allSpaces": "Tous les espaces",
-  "submitOnchain": "Envoyer sur la chaîne",
+  "submitOnchain": "Envoyer on-chain",
   "inSpaces": "Dans {0} espace(s)",
   "votes": "Votes",
   "seeMore": "Voir plus",
@@ -53,16 +53,16 @@
   "hub": "Hub",
   "cancel": "Annuler",
   "deleteProposal": "Supprimer la proposition",
-  "demoSite": "C'est le site de démonstration, testez-le !",
-  "removeDelegation": "Révoquer délégation",
-  "confirmRemove": "Êtes-vous sûr de vouloir supprimer votre délégation à",
+  "demoSite": "Ceci est le site de démonstration, testez-le !",
+  "removeDelegation": "Révoquer la délégation",
+  "confirmRemove": "Êtes-vous sûr de vouloir révoquer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "voteOverview": "Vote overview",
+  "voteOverview": "Aperçu du vote",
   "options": "Option(s)",
-  "votingPower": "Votre pouvoir de vote",
+  "votingPower": "Votre voting power",
   "receipt": "Reçu",
-  "relayer": "Relayeur",
+  "relayer": "Relayer",
   "verifyOnMycrypto": "Vérifier le reçu sur MyCrypto",
   "verifyOnSignatorio": "Vérifier sur Signator.io",
   "isCore": "Core",
@@ -101,7 +101,7 @@
   "createdBy": "Par {0}",
   "startIn": "début {0}",
   "endIn": "fin {1}",
-  "proposalTimeLeft": "{0} gauche",
+  "proposalTimeLeft": "{0} restant(s)",
   "endedAgo": "terminé {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
@@ -134,9 +134,9 @@
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
   "newSpaceNotice": {
-    "header": "Votre espace est en ligne !",
-    "mainText": "Par défaut, chaque électeur(trice) a un droit de vote de un. Vous pouvez changer comment le pouvoir de vote est calculé par des stratégies dans vos {settings}. Les changements aux paramètres affecteront les nouvelles propositions uniquement, les propositions existantes ne peuvent pas être changées.",
-    "learnMore": "Apprenez-en plus dans la {documentation} ou devenez membre du {discord} Snapshot pour obtenir de l’aide.",
+    "header": "Votre espace est live !",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "learnMore": "Apprenez-en plus dans la {documentation} ou joignez-vous au {discord} Snapshot pour obtenir de l’aide.",
     "gotIt": "Compris !"
   },
   "errors": {
@@ -161,7 +161,7 @@
     "choices": "Choix",
     "addChoice": "Ajouter un choix",
     "startDate": "Sélectionnez la date de début",
-    "endDate": "Sélectionnez la date de fin de",
+    "endDate": "Sélectionnez la date de fin",
     "startTime": "Sélectionnez l’heure de début",
     "endTime": "Sélectionnez l'heure de fin",
     "publish": "Publier",
@@ -179,11 +179,11 @@
     "schedule": "Planifier une proposition",
     "delayEnforced": "L’espace impose un délai jusqu’à ce que le vote puisse commencer",
     "periodEnforced": "L’espace impose la durée de la période de vote",
-    "typeEnforced": "L’espace impose ce type de vote",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",
-    "votingPeriodExplainer": "Ceci représente la période pendant laquelle les utilisateurs(trices) pourront voter. La proposition sera visible et en attente avant le début de la période de vote.",
+    "votingPeriodExplainer": "Ceci représente la période pendant laquelle les utilisateurs pourront voter. La proposition sera visible et en attente avant le début de la période de vote.",
     "uploadImageExplainer": "Ajouter des images en les glissant-déposant, en les sélectionnant, ou en les collant.",
     "uploading": "Image en cours d’envoi",
     "markdown": "Le style de Markdown est compatible",
@@ -249,76 +249,128 @@
   },
   "settings": {
     "header": "Réglages",
-    "setEnsTextRecord": "Enregistrement de texte ENS",
     "editController": "Modifier le controller",
-    "needToSetEnsText": "Vos paramètres d’espace seront stockés dans un fichier sur IPFS. Avant de pouvoir les modifier, vous devez définir un enregistrement texte ENS pointant vers ce fichier.",
-    "profile": "Profil",
-    "avatar": "Avatar",
-    "name": "Nom",
-    "about": "À propos",
-    "terms": "Conditions générales",
-    "network": "Réseau",
-    "symbol": "Symbole",
-    "skin": "Thème",
-    "customDomain": "Nom de domaine personnalisé",
-    "domain": "Nom de domaine",
-    "strategies": "Stratégie(s)",
-    "categories": "Catégorie(s)",
-    "selectCategories": "Sélectionner les catégories",
-    "hideSpace": "Cacher l'espace de la page d'accueil",
-    "addStrategy": "Ajouter une stratégie",
-    "authors": "Auteurs",
-    "admins": "Administrateurs",
-    "defaultTab": "Onglet par défaut",
-    "proposalThreshold": "Seuil pour soumettre une proposition",
-    "allowOnlyAuthors": "Permettre uniquement aux auteurs de soumettre une proposition",
-    "editPlugin": "Modifier le plugin",
-    "addPlugin": "Ajouter un plugin",
-    "pluginParameters": "Paramètres du plugin",
-    "proposalValidation": "Validation de la proposition",
-    "validation": "Validation",
-    "editValidation": "Modifier la validation",
-    "selectValidation": "Sélectionner la validation",
-    "validationParameters": "Paramètres de validation",
-    "warningTextRecord": "Vous devez définir un enregistrement TXT sur le domaine ENS.",
-    "votingDelay": "Délai avant vote",
-    "votingPeriod": "Période de vote",
-    "voting": "Vote",
-    "quorum": "Quorum",
-    "type": "Type",
-    "anyType": "Tous",
-    "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
     "connectWithSpaceOwner": "Pour modifier les paramètres de l’espace, connectez-vous avec un controller ou un wallet admin.",
     "currentSpaceControllerIs": "Le controller de l’espace actuel est {address}",
     "newController": "Nouveau controller",
-    "set": "Appliquer"
+    "set": "Appliquer",
+    "profile": "Profil",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Cacher l'espace de la page d'accueil",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "Ajouter une stratégie",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Validation de la proposition",
+    "validation": "Validation",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Permettre uniquement aux auteurs de soumettre une proposition",
+    "editValidation": "Modifier la validation",
+    "selectValidation": "Sélectionner la validation",
+    "validationParameters": "Paramètres de validation",
+    "voting": "Vote",
+    "votingDelay": "Délai avant vote",
+    "votingPeriod": "Période de vote",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Tous",
+    "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
+    "customDomain": "Nom de domaine personnalisé",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Thème",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "Ajouter un plugin",
+    "editPlugin": "Modifier le plugin",
+    "pluginParameters": "Paramètres du plugin"
   },
   "setup": {
     "example": "ex : yam.eth",
     "chooseExistingEns": "Choisissez un de vos domaines ENS existants pour créer un espace avec :",
     "useSingleExistingEns": "Utiliser votre domaine ENS existant :",
     "orReigsterNewEns": "Ou enregistrer un nouveau domaine :",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Pour créer un espace, premièrement vous avez besoin d’un domaine ENS. En saisir un ci-dessous et suivre les instructions d’enregistrement ENS.",
     "createASpace": "Créer un espace",
     "registerEnsButton": "Enregistrer",
     "supportedEnsTLDs": "Extensions de domaine prises en charge",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "Définir l'adresse du controller de l'espace sur ENS",
+    "helpDocsAndDiscordLinks": "Vous ne savez pas comment créer un espace ? Apprenez-en plus dans le {docs} ou joignez-vous au {discord} Snapshot.",
+    "setSpaceController": "Controller de l’espace",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
-    "explainControllerAndEns": "Cette action nécessite une transaction sur Ethereum Mainnet qui ajoutera un enregistrement TEXT «snapshot» à votre domaine ENS.",
+    "explainControllerAndEns": "Cette action nécessite une transaction sur {network} qui ajoutera un \"snapshot\" TEXT record à votre domaine ENS.",
     "confirmToSetAddress": "Êtes-vous sûr de vouloir choisir {address} comme le controller de l’espace?",
     "controllerHasAuthority": "Le controller a toute autorité sur les paramètres de l’espace",
     "controller": "Controller",
     "selectEnsForSpace": "Choisir l’adresse ENS",
-    "spaceOwnerAddressPlaceHolder": "par ex. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "ex : {address}",
     "controllerAddress": "L’adresse du controller",
     "updateController": "Mettre à jour le controller",
     "seeOnEns": "Voir sur ENS",
     "goToSettings": "Accéder les paramètres",
     "setSpaceProfile": "Personnaliser votre espace",
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
-    "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée"
+    "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
+    "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
@@ -333,7 +385,8 @@
       "delegated": "Délégué",
       "delegateTo": "Déléguer à",
       "delegateFor": "Délégue à",
-      "noDelegatorsMessage": "Aucune délégation sur {network}"
+      "noDelegatorsMessage": "Aucune délégation sur {network}",
+      "notSupportedNetwork": "Actuellement, la délégation n’est pas compatible sur {network} "
     },
     "activity": {
       "header": "Activité",
@@ -341,7 +394,7 @@
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
       "older": "Plus ancien",
-      "noActivity": "No activity yet"
+      "noActivity": "Pas encore d'activité"
     },
     "settings": {
       "header": "Modifier le profil",
@@ -363,7 +416,7 @@
     "delegationRemoved": "Délégation retirée",
     "proposalCreated": "Proposition créée",
     "voteSuccessful": "Votre vote est enregistré !",
-    "ensSet": "L’enregistrement de texte ENS a été défini avec succès",
+    "ensSet": "ENS text record défini avec succès",
     "transactionSent": "Transaction envoyée"
   },
   "explore": {
@@ -453,7 +506,7 @@
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
       "criteria": "critères d'acceptation ?",
       "proposalPassed": "Did the proposal pass?",
-      "expired": "The proposal has expired"
+      "expired": "La proposition a expiré"
     }
   },
   "poap": {
@@ -465,14 +518,14 @@
     "button_claim": "Mint",
     "button_show": "Parcourir la collection",
     "success_claim": "Le POAP a été réclamé à votre collection",
-    "error_claim": "Un problème est survenu lors de la création du jeton"
+    "error_claim": "Un problème est survenu lors de la création du token"
   },
   "charts": {
     "charts": "Tableaux",
     "noVotesYet": "Il n’y a pas encore de votes à visualiser.",
     "totalVotesPerDay": "Nombre total de votes par jour",
-    "shareOfVotingPower": "Partage du pouvoir de vote",
-    "votingPowerPerDay": "Pouvoir de vote par jour"
+    "shareOfVotingPower": "Partage du voting power",
+    "votingPowerPerDay": "Voting power par jour"
   },
   "comment_box": {
     "title": "Boîte de commentaires",
@@ -514,7 +567,8 @@
         "settings": "Paramètres {space}"
       },
       "strategy": "Stratégie {key}",
-      "delegate": "Déléguer"
+      "delegate": "Déléguer",
+      "ranking": "Ranking"
     }
   },
   "hal": {
@@ -532,8 +586,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Réseau incompatible",
-    "ensOnlyMainnet": "Snapshot n’est compatible qu’avec ENS sur ethereum mainnet. Une fois que l’espace est créé, vous pouvez l’utiliser sur plusieurs chaînes.",
-    "switchNetworkToMainnet": "Pour continuer, vous devez changer le réseau de votre wallet à Ethereum Mainnet.",
-    "switchToMainnet": "Passer au réseau Mainnet"
+    "switchNetworkToNetwork": "Pour continuer, vous devez changer le réseau de votre wallet à {network}.",
+    "switchToNetwork": "Passer au réseau {network}",
+    "goToDemoSite": "Accéder le site démo"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

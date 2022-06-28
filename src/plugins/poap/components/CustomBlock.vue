@@ -43,8 +43,8 @@ const UNCLAIMED = 'UNCLAIMED';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   inject: ['web3', 'notify'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
       loading: false,
@@ -78,11 +78,6 @@ export default {
       return this.currentState === LOADING || this.loadButton;
     }
   },
-  async created() {
-    this.address = this.web3Account;
-    this.loading = true;
-    await this.updateState();
-  },
   watch: {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     currentState: async function (newCurrentState, oldCurrentState) {
@@ -106,6 +101,11 @@ export default {
       await this.updateState();
       this.loading = false;
     }
+  },
+  async created() {
+    this.address = this.web3Account;
+    this.loading = true;
+    await this.updateState();
   },
   methods: {
     async action() {
@@ -160,7 +160,7 @@ export default {
   <BaseBlock title="I voted POAP" :loading="loading">
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
-      <div class="text-skin-link text-center mb-2">{{ $t(header) }}</div>
+      <div class="mb-2 text-center text-skin-link">{{ $t(header) }}</div>
       <img
         :src="mainImg"
         alt=""
@@ -174,10 +174,10 @@ export default {
       />
       <BaseButton
         v-if="currentState !== 'NO_POAP'"
-        class="w-full mb-2 mt-3"
-        @click="action"
+        class="mb-2 mt-3 w-full"
         :disabled="!actionEnabled"
         :loading="actionLoading"
+        @click="action"
       >
         {{ $t(buttonText) }}
       </BaseButton>

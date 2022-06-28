@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useImageUpload } from '@/composables/useImageUpload';
 
 defineProps<{
-  avatar: string;
+  avatar?: string;
 }>();
 
 const emit = defineEmits(['image-uploaded', 'image-remove']);
@@ -48,7 +48,7 @@ function handleSelect(e) {
       ]"
       @select="handleSelect"
     >
-      <template v-slot:button>
+      <template #button>
         <slot
           name="avatar"
           :uploading="uploading"
@@ -58,10 +58,11 @@ function handleSelect(e) {
     </BaseDropdown>
   </div>
   <input
+    v-bind="$attrs"
     ref="fileInput"
     type="file"
     accept="image/jpg, image/jpeg, image/png"
-    @change="onFileChange"
     style="display: none"
+    @change="onFileChange"
   />
 </template>

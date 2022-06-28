@@ -1,23 +1,35 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect } from 'vue';
+import { watch, onMounted, ref, watchEffect, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useSpaces } from '@/composables/useSpaces';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 
 const router = useRouter();
-const { spaces } = useSpaces();
+
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
 const { domain } = useApp();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { spaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
+
+const extentedSpacesObj = computed(() => {
+  return (
+    extentedSpaces.value?.reduce(
+      (acc, space) => ({ ...acc, [space.id]: space }),
+      {}
+    ) ?? {}
+  );
+});
 
 function saveSpaceOrder() {
   if (web3Account.value)
@@ -34,11 +46,6 @@ const hasUnseenProposalsBySpace = space => {
   });
 };
 
-watch(web3Account, () => {
-  loadFollows();
-  updateLastSeenProposal(web3Account.value);
-});
-
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
   const sidebarSpaceOrder = lsGet(
@@ -47,17 +54,24 @@ watch(followingSpaces, () => {
   );
   // Order side bar and add new spaces to the end of the sidebar
   draggableSpaces.value.sort((a, b) => {
-    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(a)))
-      return 1;
-    if (!draggableSpaces.value.some(() => sidebarSpaceOrder.includes(b)))
-      return -1;
+    if (!sidebarSpaceOrder.includes(a)) return -1;
+    if (!sidebarSpaceOrder.includes(b)) return 1;
     return sidebarSpaceOrder.indexOf(a) - sidebarSpaceOrder.indexOf(b);
   });
 
   saveSpaceOrder();
 });
 
+watch(followingSpaces, () => {
+  loadExtentedSpaces(followingSpaces.value);
+});
+
 watchEffect(() => getProposals(followingSpaces.value));
+
+watch(web3Account, () => {
+  loadFollows();
+  updateLastSeenProposal(web3Account.value);
+});
 
 onMounted(() => {
   loadFollows();
@@ -66,30 +80,30 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end"
+    class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
   >
-    <div v-if="!domain" class="flex items-center relative px-2">
+    <div v-if="!domain" class="relative flex items-center px-2">
       <router-link :to="{ name: 'home' }">
-        <UiSidebarButton class="!border-0">
+        <ButtonSidebar class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </UiSidebarButton>
+        </ButtonSidebar>
       </router-link>
     </div>
     <div
-      class="flex items-center relative px-2 group mt-2"
       v-tippy="{
         content: 'Timeline',
         placement: 'right',
         delay: [750, 0],
         touch: ['hold', 500]
       }"
+      class="group relative mt-2 flex items-center px-2"
     >
       <router-link :to="{ name: 'timeline' }">
-        <UiSidebarButton
+        <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'timeline' }"
         >
           <BaseIcon size="20" name="feed" />
-        </UiSidebarButton>
+        </ButtonSidebar>
       </router-link>
     </div>
     <Transition name="fade">
@@ -99,25 +113,25 @@ onMounted(() => {
         :component-data="{ type: 'transition-group' }"
         v-bind="{ animation: 200 }"
         item-key="id"
-        @update="saveSpaceOrder"
-        class="space-y-2 mt-2"
+        class="mt-2 space-y-2"
         :delay="200"
         :delay-on-touch-only="true"
+        @update="saveSpaceOrder"
       >
         <template #item="{ element }">
           <div
-            v-if="spaces[element]"
-            class="flex items-center relative px-2 group"
+            v-if="extentedSpacesObj[element]"
             v-tippy="{
-              content: spaces[element].name,
+              content: extentedSpacesObj[element].name,
               placement: 'right',
               delay: [750, 0],
               touch: ['hold', 500]
             }"
+            class="group relative flex items-center px-2"
           >
             <SidebarUnreadIndicator
               :space="element"
-              :hasUnseen="hasUnseenProposalsBySpace(element)"
+              :has-unseen="hasUnseenProposalsBySpace(element)"
             />
             <div
               class="cursor-pointer"
@@ -129,16 +143,16 @@ onMounted(() => {
               "
             >
               <AvatarSpace
-                :space="spaces[element]"
                 :key="element"
-                symbolIndex="space"
+                :space="extentedSpacesObj[element]"
+                symbol-index="space"
                 size="44"
                 class="pointer-events-none"
               />
               <BaseCounter
-                v-if="spaces[element].activeProposals"
-                :counter="spaces[element].activeProposals"
-                class="absolute -top-[1px] right-[9px] !bg-green !h-[16px] !leading-[16px] !min-w-[16px]"
+                v-if="spaces?.[element]?.proposals_active"
+                :counter="spaces[element].proposals_active"
+                class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
               />
             </div>
           </div>
@@ -146,20 +160,20 @@ onMounted(() => {
       </draggable>
     </Transition>
     <div
-      class="flex flex-col items-center px-2 space-y-2 mt-2"
       v-tippy="{
         content: 'Create space',
         placement: 'right',
         delay: [750, 0],
         touch: ['hold', 500]
       }"
+      class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
       <router-link :to="{ name: 'setup' }">
-        <UiSidebarButton
+        <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <BaseIcon size="20" name="plus" />
-        </UiSidebarButton>
+          <i-ho-plus-sm />
+        </ButtonSidebar>
       </router-link>
     </div>
   </div>

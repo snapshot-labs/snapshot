@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -179,7 +179,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -249,76 +249,128 @@
   },
   "settings": {
     "header": "Setări",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profil",
-    "avatar": "Avatar",
-    "name": "Nume",
-    "about": "Despre",
-    "terms": "Termeni",
-    "network": "Rețea",
-    "symbol": "Simbol",
-    "skin": "Skin",
-    "customDomain": "Domeniu personalizat",
-    "domain": "Nume de domeniu",
-    "strategies": "Strategie(i)",
-    "categories": "Categorii(e)",
-    "selectCategories": "Selectează categorii",
-    "hideSpace": "Ascunde spațiu de pe pagina principală",
-    "addStrategy": "Adaugă strategie",
-    "authors": "Autori",
-    "admins": "Administratori",
-    "defaultTab": "Tab implicit",
-    "proposalThreshold": "Prag propunere",
-    "allowOnlyAuthors": "Permite doar autorilor să înregistreze o propunere",
-    "editPlugin": "Modifică extensie",
-    "addPlugin": "Adaugă extensie",
-    "pluginParameters": "Parametrii extensie",
-    "proposalValidation": "Validare propunere",
-    "validation": "Validare",
-    "editValidation": "Modifică validarea",
-    "selectValidation": "Selectează validarea",
-    "validationParameters": "Parametrii de validare",
-    "warningTextRecord": "Trebuie sa setezi o inrînregistrare de text pe domeniul ENS.",
-    "votingDelay": "Intârziere vot",
-    "votingPeriod": "Perioada de vot",
-    "voting": "Votare",
-    "quorum": "Cvorum",
-    "type": "Tip",
-    "anyType": "Oricare",
-    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profil",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Ascunde spațiu de pe pagina principală",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "Adaugă strategie",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Validare propunere",
+    "validation": "Validare",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Permite doar autorilor să înregistreze o propunere",
+    "editValidation": "Modifică validarea",
+    "selectValidation": "Selectează validarea",
+    "validationParameters": "Parametrii de validare",
+    "voting": "Votare",
+    "votingDelay": "Intârziere vot",
+    "votingPeriod": "Perioada de vot",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Oricare",
+    "hideAbstain": "Ignoră voturile de abținere în rezultatele votului de bază",
+    "customDomain": "Domeniu personalizat",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "Adaugă extensie",
+    "editPlugin": "Modifică extensie",
+    "pluginParameters": "Parametrii extensie"
   },
   "setup": {
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Alege unul dintre domeniile tale ENS existente pentru a crea un spațiu:",
     "useSingleExistingEns": "Utilizează domeniul tău ENS existent:",
     "orReigsterNewEns": "Sau înregistrează un nou domeniu:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Pentru a crea un spațiu, ai nevoie mai întâi de un domeniu ENS. Introdu unul mai jos și urmează instrucțiunile de înregistrare ENS.",
     "createASpace": "Crează un spațiu",
     "registerEnsButton": "Înregistrează-te",
     "supportedEnsTLDs": "Sufix domenii suportate",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "Set space controller address on ENS",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "Choose ENS address",
-    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -333,7 +385,8 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
@@ -514,7 +567,8 @@
         "settings": "Setări {space}"
       },
       "strategy": "Strategie {key}",
-      "delegate": "Deleghează"
+      "delegate": "Deleghează",
+      "ranking": "Ranking"
     }
   },
   "hal": {
@@ -532,8 +586,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Unsupported network",
-    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
-    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

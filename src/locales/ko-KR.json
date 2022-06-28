@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -179,7 +179,7 @@
     "schedule": "일정 제안",
     "delayEnforced": "투표가 시작될 때까지 공간이 지연됩니다.",
     "periodEnforced": "공간은 투표 기간을 적용합니다.",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "편집",
     "continue": "계속",
     "now": "현재",
@@ -249,76 +249,128 @@
   },
   "settings": {
     "header": "설정",
-    "setEnsTextRecord": "ENS 텍스트 레코드 설정",
     "editController": "관리자 설정",
-    "needToSetEnsText": "공간 설정은 IPFS의 파일에 저장됩니다. 편집하기 전에 해당 파일을 가리키는 ENS 텍스트 레코드를 설정해야 합니다.",
-    "profile": "프로필",
-    "avatar": "아바타",
-    "name": "이름",
-    "about": "정보",
-    "terms": "약관",
-    "network": "네트워크",
-    "symbol": "심볼",
-    "skin": "스킨",
-    "customDomain": "사용자 도메인",
-    "domain": "도메인 이름",
-    "strategies": "전략(에스)",
-    "categories": "카테고리:",
-    "selectCategories": "카테고리 선택",
-    "hideSpace": "홈페이지에서 공간 숨기기",
-    "addStrategy": "전략 추가",
-    "authors": "작성자",
-    "admins": "관리자",
-    "defaultTab": "기본 탭",
-    "proposalThreshold": "제안 임계값",
-    "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
-    "editPlugin": "편집 플러그인",
-    "addPlugin": "플러그인 추가",
-    "pluginParameters": "플러그인 매개변수",
-    "proposalValidation": "제안 검증",
-    "validation": "확인",
-    "editValidation": "유효성 검사 편집",
-    "selectValidation": "유효성 검사 선택",
-    "validationParameters": "검증 매개변수",
-    "warningTextRecord": "ENS 도메인에 텍스트 레코드를 설정해야 합니다.",
-    "votingDelay": "투표 지연",
-    "votingPeriod": "투표 기간",
-    "voting": "투표",
-    "quorum": "정족수",
-    "type": "유형",
-    "anyType": "어떤",
-    "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
     "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "프로필",
+    "avatar": "아바타",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "홈페이지에서 공간 숨기기",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "전략 추가",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "제안 검증",
+    "validation": "확인",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
+    "editValidation": "유효성 검사 편집",
+    "selectValidation": "유효성 검사 선택",
+    "validationParameters": "검증 매개변수",
+    "voting": "투표",
+    "votingDelay": "투표 지연",
+    "votingPeriod": "투표 기간",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "어떤",
+    "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
+    "customDomain": "사용자 도메인",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+    },
+    "skin": "스킨",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "플러그인 추가",
+    "editPlugin": "편집 플러그인",
+    "pluginParameters": "플러그인 매개변수"
   },
   "setup": {
     "example": "예시 yam.eth",
     "chooseExistingEns": "공간을 만드는데 사용할 ENS 도메인 선택:",
     "useSingleExistingEns": "당신의 ENS 도메인을 사용하세요:",
     "orReigsterNewEns": "또는 새로운 도메인을 등록하세요:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "공간을 만들려면, 먼저 ENS 도메인이 필요합니다. 아래에 하나를 작성하고 ENS 등록 지침을 따라주세요.",
     "createASpace": "공간 만들기",
     "registerEnsButton": "등록",
     "supportedEnsTLDs": "지원되는 도메인 끝자리",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "ENS에서 공간 컨트롤러를 설정",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENS 관리자 수정",
     "setController": "관리자 설정",
-    "explainControllerAndEns": "이 액션은 ENS 도메인을 스냅샷 TEXT 레코드에 추가할 이더리움 메인넷 상의 트랜잭션을 요구한다.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "{address} 를 공간 관리자로 설정하겠습니까?",
     "controllerHasAuthority": "관리자는 공간 설정에 대한 전체 권한을 갖습니다.",
     "controller": "관리자",
     "selectEnsForSpace": "ENS 주소 선택",
-    "spaceOwnerAddressPlaceHolder": "예시 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "관리자 주소",
     "updateController": "관리자 업데이트",
     "seeOnEns": "ENS 보기",
     "goToSettings": "설정으로 이동",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -333,7 +385,8 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
@@ -514,7 +567,8 @@
         "settings": "{space} 설정"
       },
       "strategy": "{key} 전략",
-      "delegate": "위임"
+      "delegate": "위임",
+      "ranking": "Ranking"
     }
   },
   "hal": {
@@ -532,8 +586,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "지원되지 않는 네트워크",
-    "ensOnlyMainnet": "Snapshot은 이더리움 메인넷 상에서만 ENS를 지원합니다. 일단 공간이 생성되면 여러 체인에서 사용할 수 있습니다.",
-    "switchNetworkToMainnet": "계속하려면 지갑의 네트워크를 이더리움 메인넷으로 변경해야 합니다.",
-    "switchToMainnet": "메인넷으로 바꾸기"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

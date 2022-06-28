@@ -135,7 +135,7 @@
   "changeWallet": "Change wallet",
   "newSpaceNotice": {
     "header": "Your space is live!",
-    "mainText": "By default each voter has a voting power of one. You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
     "learnMore": "Learn more in the {documentation} or join Snapshot {discord} for help.",
     "gotIt": "Got it!"
   },
@@ -179,7 +179,7 @@
     "schedule": "Schedule proposal",
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
-    "typeEnforced": "The space enforces this voting type",
+    "typeEnforced": "{type} is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -249,76 +249,128 @@
   },
   "settings": {
     "header": "Mga Setting",
-    "setEnsTextRecord": "Set ENS text record",
     "editController": "Edit controller",
-    "needToSetEnsText": "Your space settings will be stored in a file on IPFS. Before you can edit them, you need to set an ENS text record pointing to that file.",
-    "profile": "Profile",
-    "avatar": "Avatar",
-    "name": "Pangalan",
-    "about": "Tungkol Dito",
-    "terms": "Mga tuntunin",
-    "network": "Network",
-    "symbol": "Sagisag",
-    "skin": "Skin",
-    "customDomain": "Custom na domain",
-    "domain": "Domain name",
-    "strategies": "\t\nMga estratehiya",
-    "categories": "Categorie(s)",
-    "selectCategories": "Select categories",
-    "hideSpace": "Itago ang espasyo sa homepage",
-    "addStrategy": "Add strategy",
-    "authors": "Mga may-akda",
-    "admins": "Admin",
-    "defaultTab": "Default tab",
-    "proposalThreshold": "Hangganan ng panukala",
-    "allowOnlyAuthors": "Pahintulutan lamang ang mga may-akda na magsumite ng isang panukala",
-    "editPlugin": "I-edit ang plugin",
-    "addPlugin": "Magdagdag ng Plugin",
-    "pluginParameters": "Plugin parameters",
-    "proposalValidation": "Pagpapatunay ng panukala",
-    "validation": "Pagpapatunay",
-    "editValidation": "I-edit ang pagpapatunay",
-    "selectValidation": "Piliin ang pagpapatunay",
-    "validationParameters": "Mga parameter ng pagpapatunay",
-    "warningTextRecord": "Dapat kang magtakda ng text record sa ENS domain.",
-    "votingDelay": "Pagkaantala ng pagboto",
-    "votingPeriod": "Panahon ng pagboto",
-    "voting": "Pagboto",
-    "quorum": "Quorum",
-    "type": "Uri",
-    "anyType": "Kahit Ano",
-    "hideAbstain": "Ignore abstain votes in basic voting results",
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
-    "set": "Set"
+    "set": "Set",
+    "profile": "Profile",
+    "avatar": "Avatar",
+    "name": {
+      "label": "Name",
+      "placeholder": "e.g. Yam Network"
+    },
+    "about": {
+      "label": "About",
+      "placeholder": "What is your organisation about?"
+    },
+    "categories": {
+      "label": "Categorie(s)",
+      "select": "Select categorie(s)"
+    },
+    "terms": {
+      "label": "Terms",
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+    },
+    "hideSpace": "Itago ang espasyo sa homepage",
+    "links": "Social accounts",
+    "website": "Website",
+    "strategies": {
+      "label": "Voting strategy",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+    },
+    "network": {
+      "label": "Network",
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+    },
+    "symbol": {
+      "label": "Symbol",
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+    },
+    "strategiesList": "Strategies",
+    "addStrategy": "Add strategy",
+    "testInPlayground": "Test in playground",
+    "admins": {
+      "label": "Admins",
+      "information": "Admins are able to modify the space settings and manage the space's proposals."
+    },
+    "authors": {
+      "label": "Authors",
+      "information": "Authors are able to create proposals without having to pass validation."
+    },
+    "proposalValidation": "Pagpapatunay ng panukala",
+    "validation": "Pagpapatunay",
+    "proposalThreshold": {
+      "label": "Proposal threshold",
+      "information": "The minimum amount of voting power required to create a proposal."
+    },
+    "allowOnlyAuthors": "Pahintulutan lamang ang mga may-akda na magsumite ng isang panukala",
+    "editValidation": "I-edit ang pagpapatunay",
+    "selectValidation": "Piliin ang pagpapatunay",
+    "validationParameters": "Mga parameter ng pagpapatunay",
+    "voting": "Pagboto",
+    "votingDelay": "Pagkaantala ng pagboto",
+    "votingPeriod": "Panahon ng pagboto",
+    "hours": "Hours",
+    "days": "Days",
+    "quorum": {
+      "label": "Quorum",
+      "information": "The minimum amount of voting power required for the proposal to pass."
+    },
+    "type": {
+      "label": "Type",
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+    },
+    "anyType": "Kahit Ano",
+    "hideAbstain": "Ignore abstain votes in basic voting results",
+    "customDomain": "Custom na domain",
+    "domain": {
+      "label": "Domain name",
+      "placeholder": "e.g. vote.balancer.fi",
+      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+    },
+    "skin": "Skin",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
+    "addPlugin": "Magdagdag ng Plugin",
+    "editPlugin": "I-edit ang plugin",
+    "pluginParameters": "Plugin parameters"
   },
   "setup": {
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
     "orReigsterNewEns": "Or register a new domain:",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
     "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "Set space controller address on ENS",
+    "setSpaceController": "Space controller",
+    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",
-    "explainControllerAndEns": "This action requires a transaction on the Ethereum Mainnet which will add a \"snapshot\" TEXT record to your ENS domain.",
+    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
     "confirmToSetAddress": "Are you sure you want to set {address} as the controller of the space?",
     "controllerHasAuthority": "The controller has full authority over the space settings",
     "controller": "Controller",
     "selectEnsForSpace": "Choose ENS address",
-    "spaceOwnerAddressPlaceHolder": "e.g. 0xF78108c9BBaF466dd96BE41be728Fe3220b37119",
+    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
     "controllerAddress": "Controller address",
     "updateController": "Update controller",
     "seeOnEns": "See on ENS",
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
-    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed"
+    "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
+    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
+    "fillCurrentAccount": "Use currently logged in account"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -333,7 +385,8 @@
       "delegated": "Delegated",
       "delegateTo": "Delegate to",
       "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}"
+      "noDelegatorsMessage": "No delegators on {network}",
+      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
     },
     "activity": {
       "header": "Activity",
@@ -514,7 +567,8 @@
         "settings": "{space} Settings"
       },
       "strategy": "{key} strategy",
-      "delegate": "Delegate"
+      "delegate": "Delegate",
+      "ranking": "Ranking"
     }
   },
   "hal": {
@@ -532,8 +586,21 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "Unsupported network",
-    "ensOnlyMainnet": "Snapshot only supports ENS on the ethereum mainnet. Once the space is created, you can use it across multiple chains.",
-    "switchNetworkToMainnet": "To continue, you need to change the network in your wallet to Ethereum Mainnet.",
-    "switchToMainnet": "Switch to Mainnet"
+    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
+    "switchToNetwork": "Switch to {network}",
+    "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
   }
 }

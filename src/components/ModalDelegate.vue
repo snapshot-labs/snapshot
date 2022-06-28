@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue';
 import { useDelegate } from '@/composables/useDelegate';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -23,29 +22,29 @@ async function handleDelegate() {
 
 <template>
   <BaseModal :open="open" @close="$emit('close')">
-    <template v-slot:header>
-      <div class="flex flex-row justify-center items-center">
+    <template #header>
+      <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('profile.about.delegate') }}</h3>
       </div>
     </template>
-    <div class="p-4 space-y-3">
-      <SBaseInput
-        :modelValue="userAddress"
+    <div class="space-y-3 p-4">
+      <BaseInput
+        :model-value="userAddress"
         :title="$t('profile.about.delegateTo')"
         readonly
       >
-        <template v-slot:label>{{ $t('delegate.to') }}</template>
-      </SBaseInput>
-      <SBaseInput :modelValue="spaceId" :title="$t('space')" readonly>
-        <template v-slot:label>{{ $t('space') }}</template>
-      </SBaseInput>
+        <template #label>{{ $t('delegate.to') }}</template>
+      </BaseInput>
+      <BaseInput :model-value="spaceId" :title="$t('space')" readonly>
+        <template #label>{{ $t('space') }}</template>
+      </BaseInput>
     </div>
     <div class="p-4">
       <BaseButton
         primary
-        @click="handleDelegate"
         :loading="delegationLoading"
         class="w-full"
+        @click="handleDelegate"
       >
         {{ $t('confirm') }}
       </BaseButton>

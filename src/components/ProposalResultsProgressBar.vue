@@ -9,13 +9,13 @@ const bars = computed(() =>
 </script>
 
 <template>
-  <div class="h-2 relative overflow-hidden rounded-full flex">
-    <div class="w-full h-full bg-[color:var(--border-color)] absolute z-5" />
+  <div class="relative flex h-2 overflow-hidden rounded-full">
+    <div class="z-5 absolute h-full w-full bg-[color:var(--border-color)]" />
     <div
       v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"
       :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
-      class="bg-primary h-full z-10"
+      class="z-10 h-full bg-primary"
       :class="{
         'opacity-80': i === 1,
         'opacity-60': i === 2,

@@ -39,14 +39,14 @@ onMounted(() => loadSpaces());
     <div class="space-y-4">
       <ProfileAboutBiography v-if="profile?.about" :about="profile.about" />
       <ProfileAboutSpacesList
-        :userAddress="userAddress"
-        :followingSpaces="followedSpaces"
-        :loadingFollowedSpaces="loadingFollowedSpaces"
+        :user-address="userAddress"
+        :following-spaces="followedSpaces"
+        :loading-followed-spaces="loadingFollowedSpaces"
       />
       <ProfileAboutDelegate
-        :userAddress="userAddress"
-        :followingSpaces="followedSpaces"
-        :loadingFollowedSpaces="loadingFollowedSpaces"
+        :user-address="userAddress"
+        :following-spaces="followedSpaces"
+        :loading-followed-spaces="loadingFollowedSpaces"
       />
     </div>
   </div>

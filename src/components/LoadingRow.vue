@@ -4,12 +4,12 @@ defineProps<{ block?: boolean }>();
 
 <template>
   <BaseLoading :block="block">
-    <div class="px-4 py-4 block">
+    <div class="block px-4 py-4">
       <div
-        class="rounded-md lazy-loading mb-2"
+        class="lazy-loading mb-2 rounded-md"
         style="width: 60%; height: 28px"
       />
-      <div class="rounded-md lazy-loading" style="width: 50%; height: 28px" />
+      <div class="lazy-loading rounded-md" style="width: 50%; height: 28px" />
     </div>
   </BaseLoading>
 </template>

@@ -1,81 +1,48 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue';
-import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { sleep, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import { useValidationErrors } from '@/composables/useValidationErrors';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { ref, computed, inject, onMounted } from 'vue';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useStorage } from '@vueuse/core';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
-import { useSpaces } from '@/composables/useSpaces';
-import { useDebounceFn } from '@vueuse/core';
+import { refDebounced } from '@vueuse/core';
+import { shorten, clearStampCache } from '@/helpers/utils';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const props = defineProps<{
-  ensAddress: string;
   web3Account: string;
 }>();
 
 const notify = inject<any>('notify');
 const router = useRouter();
+const route = useRoute();
+const {
+  form,
+  validate,
+  showAllValidationErrors,
+  formatSpace,
+  getErrorMessage
+} = useSpaceSettingsForm();
 
-const visitedFields = ref<string[]>([]);
-const modalNetworksOpen = ref(false);
 const creatingSpace = ref(false);
 
-// Space setup form
-const form = ref({
-  name: '',
-  symbol: '',
-  network: '',
-  admins: [] as string[],
-  // Adds "ticket" strategy with VOTE symbol as default/placeholder strategy
-  strategies: [
-    {
-      name: 'ticket',
-      params: {}
-    }
-  ]
-});
-
-const { validationErrorMessage } = useValidationErrors();
 const { t } = useI18n();
-const { pendingENSRecord } = useSpaceController();
-
-const strategyValidationErrors = computed(
-  () => validateSchema(schemas.space, form.value) ?? []
-);
-
-function errorIfVisited(field) {
-  return visitedFields.value.includes(field)
-    ? validationErrorMessage(field, strategyValidationErrors.value)
-    : '';
-}
+const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
+  useSpaceController();
 
 const isValid = computed(() => {
-  return strategyValidationErrors.value === true;
+  return validate.value === true;
 });
 
 const { send } = useClient();
 
-// Reactive local storage with help from vueuse package
-const createdSpaces = useStorage(
-  `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
-  {}
-);
-
-const { getSpaces, spaces, loadExtendedSpaces, extendedSpaces } = useSpaces();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 async function checkIfSpaceExists() {
-  Promise.all([
-    await getSpaces(),
-    await loadExtendedSpaces([props.ensAddress])
-  ]);
-  if (
-    extendedSpaces.value.some(space => space.id === props.ensAddress) &&
-    Object.keys(spaces.value).some(spaceId => spaceId === props.ensAddress)
-  ) {
+  await loadExtentedSpaces([route.params.ens as string]);
+  if (extentedSpaces.value?.some(space => space.id === route.params.ens)) {
     return;
   } else {
     await sleep(5000);
@@ -84,111 +51,185 @@ async function checkIfSpaceExists() {
 }
 
 const showPleaseWaitMessage = ref(false);
-const debouncePleaseWaitMessage = useDebounceFn(() => {
-  showPleaseWaitMessage.value = true;
-}, 8000);
+const debouncedShowPleaseWaitMessage = refDebounced(
+  showPleaseWaitMessage,
+  4000
+);
 
 async function handleSubmit() {
-  if (isValid.value) {
-    creatingSpace.value = true;
-    debouncePleaseWaitMessage();
-    // Wait for ENS text-record transaction to confirm
-    if (pendingENSRecord.value) {
-      await sleep(3000);
-      await handleSubmit();
-    } else {
-      // Adds connected wallet as admin so that the settings will show
-      // in the sidebar after space creation
-      form.value.admins = [props.web3Account];
-      // Create the space
-      const result = await send(
-        { id: props.ensAddress },
-        'settings',
-        form.value
-      );
-      if (result.id) {
-        // Wait for the space to be available on the HUB
-        await checkIfSpaceExists();
-        creatingSpace.value = false;
-        console.log('Result', result);
-        // Save created space to local storage
-        createdSpaces.value[props.ensAddress] = {
-          showMessage: true
-        };
-        // Redirect to the new space page
-        router.push({
-          name: 'spaceProposals',
-          params: {
-            key: props.ensAddress
-          }
-        });
-        notify(['green', t('notify.saved')]);
-      } else {
-        creatingSpace.value = false;
-      }
-    }
+  if (!isValid.value) return (showAllValidationErrors.value = true);
+  creatingSpace.value = true;
+  showPleaseWaitMessage.value = true;
+
+  // Wait for ENS text-record transaction to confirm
+  if (pendingENSRecord.value) {
+    await sleep(3000);
+    await handleSubmit();
   } else {
-    console.log('Invalid schema', strategyValidationErrors.value);
+    await loadUriAddress();
+    if (uriAddress.value !== props.web3Account)
+      return (creatingSpace.value = false);
+
+    // Adds connected wallet as admin so that the settings will show
+    // in the sidebar after space creation
+    form.value.admins = [props.web3Account];
+
+    const formattedForm = formatSpace(form.value);
+    // Create the space
+    const result = await send(
+      { id: route.params.ens },
+      'settings',
+      formattedForm
+    );
+    if (result.id) {
+      // Wait for the space to be available on the HUB
+      await checkIfSpaceExists();
+      await clearStampCache(route.params.ens as string);
+      creatingSpace.value = false;
+      console.log('Result', result);
+
+      // Save created space to local storage
+      const createdSpaces = useStorage(
+        `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
+        {}
+      );
+      createdSpaces.value[route.params.ens as string] = {
+        showMessage: true
+      };
+
+      // Redirect to the new space page
+      router.push({
+        name: 'spaceProposals',
+        params: {
+          key: route.params.ens
+        }
+      });
+      notify(['green', t('notify.saved')]);
+    }
+    creatingSpace.value = false;
   }
 }
+
+function addDefaultStrategy() {
+  if (form.value.strategies.length) return;
+  form.value.strategies.push({
+    name: 'ticket',
+    network: '1',
+    params: {
+      symbol: 'VOTE'
+    }
+  });
+}
+
+function addDefaultNetwork() {
+  form.value.network = '1';
+}
+
+onMounted(() => {
+  addDefaultStrategy();
+  addDefaultNetwork();
+});
 </script>
 
 <template>
-  <div>
-    <BaseBlock>
-      <div class="space-y-2">
-        <UiInput
-          v-model="form.name"
-          :error="errorIfVisited('name')"
-          @blur="visitedFields.push('name')"
-          focus-on-mount
+  <div class="space-y-4">
+    <SettingsProfileBlock
+      v-model:name="form.name"
+      v-model:about="form.about"
+      v-model:categories="form.categories"
+      v-model:avatar="form.avatar"
+      v-model:private="form.private"
+      v-model:terms="form.terms"
+      v-model:website="form.website"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsLinkBlock
+      v-model:twitter="form.twitter"
+      v-model:github="form.github"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsStrategiesBlock
+      :form="form"
+      :get-error-message="getErrorMessage"
+      @update-strategies="val => (form.strategies = val)"
+      @update-network="val => (form.network = val)"
+      @update-symbol="val => (form.symbol = val)"
+    />
+
+    <SettingsAdminsBlock
+      :admins="form.admins"
+      :error="getErrorMessage('admins')"
+      @update:admins="val => (form.admins = val)"
+    />
+
+    <SettingsAuthorsBlock
+      :members="form.members"
+      :error="getErrorMessage('members')"
+      @update:members="val => (form.members = val)"
+    />
+
+    <SettingsDomainBlock
+      v-model:domain="form.domain"
+      v-model:skin="form.skin"
+      :get-error-message="getErrorMessage"
+    />
+
+    <SettingsValidationBlock
+      v-model:validation="form.validation"
+      :filters="form.filters"
+      :get-error-message="getErrorMessage"
+      @update:min-score="val => (form.filters.minScore = val)"
+      @update:only-members="val => (form.filters.onlyMembers = val)"
+    />
+
+    <SettingsVotingBlock
+      v-model:delay="form.voting.delay"
+      v-model:period="form.voting.period"
+      v-model:quorum="form.voting.quorum"
+      v-model:type="form.voting.type"
+      v-model:hideAbstain="form.voting.hideAbstain"
+    />
+
+    <SettingsPluginsBlock
+      :plugins="form.plugins"
+      @update:plugins="val => (form.plugins = val)"
+    />
+
+    <div class="mx-4 md:mx-0">
+      <BaseButton
+        class="w-full"
+        primary
+        :disabled="uriAddress !== web3Account && !pendingENSRecord"
+        :loading="creatingSpace"
+        @click="handleSubmit"
+      >
+        {{ $t('createButton') }}
+      </BaseButton>
+      <div>
+        <BaseMessage
+          v-if="
+            uriAddress &&
+            uriAddress !== web3Account &&
+            !loadingTextRecord &&
+            !pendingENSRecord
+          "
+          level="warning"
+          class="!mt-4"
         >
-          <template v-slot:label>{{ $t(`settings.name`) }}*</template>
-        </UiInput>
-        <UiInput
-          v-model="form.symbol"
-          placeholder="e.g. BAL"
-          :error="errorIfVisited('symbol')"
-          @blur="visitedFields.push('symbol')"
-        >
-          <template v-slot:label> {{ $t(`settings.symbol`) }}* </template>
-        </UiInput>
-        <UiInput
-          @click="modalNetworksOpen = true"
-          :error="errorIfVisited('network')"
-          @blur="visitedFields.push('network')"
-        >
-          <template v-slot:selected>
-            {{
-              form.network ? networks[form.network].name : $t('selectNetwork')
-            }}
-          </template>
-          <template v-slot:label> {{ $t(`settings.network`) }}* </template>
-        </UiInput>
-        <BaseButton
-          @click="handleSubmit"
-          class="w-full !mt-4"
-          primary
-          :disabled="!isValid"
-          :loading="creatingSpace"
-        >
-          {{ $t('createButton') }}
-        </BaseButton>
-        <BaseMessageBlock
-          v-if="showPleaseWaitMessage"
+          {{
+            $t('setup.notControllerAddress', { wallet: shorten(uriAddress) })
+          }}
+        </BaseMessage>
+        <BaseMessage
+          v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
           level="info"
-          class="!mt-[22px]"
+          class="!mt-4"
         >
           {{ $t('setup.pleaseWaitMessage') }}
-        </BaseMessageBlock>
+        </BaseMessage>
       </div>
-    </BaseBlock>
+    </div>
   </div>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-    />
-  </teleport>
 </template>

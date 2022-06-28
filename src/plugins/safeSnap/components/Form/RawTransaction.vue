@@ -20,6 +20,31 @@ export default {
       data: ''
     };
   },
+  computed: {
+    isValidValue() {
+      if (!this.value.length) return true;
+      try {
+        parseAmount(this.value);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    isValidData() {
+      return !this.data.length || isHexString(this.data);
+    }
+  },
+  watch: {
+    to() {
+      this.updateTransaction();
+    },
+    value() {
+      this.updateTransaction();
+    },
+    data() {
+      this.updateTransaction();
+    }
+  },
   async mounted() {
     if (this.modelValue) {
       const { to = '', value = '0', data = '' } = this.modelValue;
@@ -41,31 +66,6 @@ export default {
           console.warn('raw-transaction: failed to decode transaction');
         }
       }
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    data() {
-      this.updateTransaction();
-    }
-  },
-  computed: {
-    isValidValue() {
-      if (!this.value.length) return true;
-      try {
-        parseAmount(this.value);
-        return true;
-      } catch (error) {
-        return false;
-      }
-    },
-    isValidData() {
-      return !this.data.length || isHexString(this.data);
     }
   },
   methods: {
@@ -94,7 +94,7 @@ export default {
     <SafeSnapInputAddress
       v-model="to"
       :disabled="config.preview"
-      :inputProps="{ required: false }"
+      :input-props="{ required: false }"
       :label="$t('safeSnap.to')"
     />
 
@@ -103,7 +103,7 @@ export default {
       :disabled="config.preview"
       :error="!isValidValue && $t('safeSnap.invalidValue')"
     >
-      <template v-slot:label>{{ $t('safeSnap.value') }}</template>
+      <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
 
     <UiInput
@@ -111,7 +111,7 @@ export default {
       :disabled="config.preview"
       :error="!isValidData && $t('safeSnap.invalidData')"
     >
-      <template v-slot:label>{{ $t('safeSnap.data') }}</template>
+      <template #label>{{ $t('safeSnap.data') }}</template>
     </UiInput>
   </div>
 </template>

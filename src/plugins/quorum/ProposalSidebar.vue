@@ -13,8 +13,8 @@ defineProps({
 
 <template>
   <QuorumCustomBlock
-    :loaded="loadedResults"
     v-if="space.plugins.quorum && !space.voting?.quorum"
+    :loaded="loadedResults"
     :space="space"
     :proposal="proposal"
     :results="results"

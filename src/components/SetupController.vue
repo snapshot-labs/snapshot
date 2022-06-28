@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { shorten } from '@/helpers/utils';
+import { ref, watch } from 'vue';
+import { shorten, explorerUrl } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
-import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
+import { useClient } from '@/composables/useClient';
+
+const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+const { isGnosisSafe } = useClient();
 
 const router = useRouter();
 const route = useRoute();
 
-const props = defineProps<{ ensAddress: string; web3Account: string }>();
+const props = defineProps<{ web3Account: string }>();
+
+const fillConnectedWallet = ref(true);
 
 const {
   spaceControllerInput,
@@ -16,8 +22,11 @@ const {
   modalUnsupportedNetworkOpen,
   modalConfirmSetTextRecordOpen,
   settingENSRecord,
+  loadingTextRecord,
   setRecord,
-  confirmSetRecord
+  confirmSetRecord,
+  ensAddress,
+  textRecord
 } = useSpaceController();
 
 async function handleSetRecord() {
@@ -26,50 +35,50 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile'
+        step: 'profile',
+        ens: route.params.ens
       }
     });
   }
 }
 
-// Checks if a text-record with the connected wallet address exists
-// and skips to step 3 if it does
-const loadingTextRecord = ref(false);
-onMounted(async () => {
-  try {
-    loadingTextRecord.value = true;
-    const uri = await getSpaceUri(
-      props.ensAddress,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    const uriAddress = uri?.split('/')[4] ?? '';
-    if (
-      uriAddress === props.web3Account &&
-      route.params.step === 'controller'
-    ) {
-      router.push({ name: 'setup', params: { step: 'profile' } });
-    }
-    loadingTextRecord.value = false;
-  } catch (e) {
-    console.log(e);
-    loadingTextRecord.value = false;
-  }
-});
+watch(
+  () => [fillConnectedWallet.value, props.web3Account],
+  () => {
+    if (fillConnectedWallet.value)
+      return (spaceControllerInput.value = props.web3Account);
+
+    spaceControllerInput.value = '';
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
-    <UiInput
+    <div class="mb-4">
+      <BaseMessage level="info">
+        {{ $t('setup.setSpaceControllerInfo') }}
+      </BaseMessage>
+    </div>
+
+    <BaseInput
       v-model.trim="spaceControllerInput"
-      :placeholder="$t('setup.spaceOwnerAddressPlaceHolder')"
-      class="mt-2"
+      title="Controller address"
+      :placeholder="
+        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+      "
+      :readonly="fillConnectedWallet"
       focus-on-mount
-    >
-    </UiInput>
+      @keyup.delete="fillConnectedWallet = false"
+    />
+    <div class="mt-1 flex items-center gap-2">
+      <BaseSwitch v-model="fillConnectedWallet" />
+      {{ $t('setup.fillCurrentAccount') }}
+    </div>
     <BaseButton
-      class="button-outline w-full my-2"
+      class="mt-4 w-full"
       primary
       :disabled="!controllerInputIsValid"
       :loading="settingENSRecord"
@@ -77,6 +86,16 @@ onMounted(async () => {
     >
       {{ $t('setup.setController') }}
     </BaseButton>
+
+    <BaseMessage v-if="isGnosisSafe && !fillConnectedWallet" level="warning">
+      <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
+        <template #link>
+          <BaseLink link="https://docs.snapshot.org/spaces/create">
+            {{ $t('learnMore') }}
+          </BaseLink>
+        </template>
+      </i18n-t>
+    </BaseMessage>
   </BaseBlock>
 
   <teleport to="#modal">
@@ -90,18 +109,34 @@ onMounted(async () => {
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="space-y-4 m-4 text-skin-link">
-        <p>
-          {{ $t('setup.explainControllerAndEns') }}
-        </p>
-        <p>
+      <div class="m-4 space-y-1 text-skin-text">
+        <div class="flex justify-between">
+          <span>ENS address</span>
+          <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
+            <span>{{ ensAddress }}</span>
+          </BaseLink>
+        </div>
+        <div class="flex justify-between">
+          <span>Controller</span>
+          <BaseLink :link="explorerUrl(defaultNetwork, spaceControllerInput)">
+            <span>{{ shorten(spaceControllerInput) }}</span>
+          </BaseLink>
+        </div>
+        <div class="flex justify-between pb-2">
+          <span class="mr-3 whitespace-nowrap">Text record</span>
+          <span
+            v-tippy="{ content: textRecord }"
+            class="truncate text-skin-link"
+            >{{ textRecord }}</span
+          >
+        </div>
+        <BaseMessage level="info">
           {{
-            $t('setup.confirmToSetAddress', {
-              address: shorten(spaceControllerInput)
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
             })
           }}
-          {{ $t('setup.controllerHasAuthority') + '.' }}
-        </p>
+        </BaseMessage>
       </div>
     </ModalConfirmAction>
   </teleport>

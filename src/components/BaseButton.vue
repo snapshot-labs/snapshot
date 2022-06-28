@@ -1,23 +1,17 @@
-<script setup>
-defineProps({
-  primary: {
-    type: Boolean,
-    default: false
-  },
-  loading: Boolean,
-  type: String,
-  disabled: {
-    type: Boolean,
-    default: false
-  }
-});
+<script setup lang="ts">
+defineProps<{
+  primary?: boolean;
+  loading?: boolean;
+  type?: 'button' | 'submit' | 'reset' | undefined;
+  disabled?: boolean;
+}>();
 </script>
 
 <template>
   <button
     :type="type || 'button'"
     :class="[
-      'button px-[24px] ',
+      'button px-[22px] ',
       {
         'button--primary hover:brightness-95': primary
       }
@@ -35,7 +29,6 @@ defineProps({
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  outline: none;
   height: 46px;
   font-size: 18px;
 
