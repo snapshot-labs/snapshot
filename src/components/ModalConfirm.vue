@@ -41,7 +41,7 @@ const symbols = computed(() =>
 
 const isLoadingShutter = ref(false);
 
-async function signShutter() {
+async function voteShutter() {
   isLoadingShutter.value = true;
   const choice = await shutterEncryptChoice(
     JSON.stringify(props.selectedChoices),
@@ -50,24 +50,25 @@ async function signShutter() {
   isLoadingShutter.value = false;
 
   if (!choice) return null;
-  return await send(props.space, 'vote', {
+  return await vote({
     proposal: props.proposal,
     choice,
     privacy: 'shutter'
   });
 }
 
-async function sign() {
-  return await send(props.space, 'vote', {
-    proposal: props.proposal,
-    choice: props.selectedChoices
-  });
+async function vote(payload) {
+  return await send(props.space, 'vote', payload);
 }
 
 async function handleSubmit() {
   let result: { id: string } | null = null;
-  if (props.space.voting.privacy === 'shutter') result = await signShutter();
-  else result = await sign();
+  if (props.space.voting.privacy === 'shutter') result = await voteShutter();
+  else
+    result = await vote({
+      proposal: props.proposal,
+      choice: props.selectedChoices
+    });
 
   console.log('Result', result);
   if (result?.id) {
