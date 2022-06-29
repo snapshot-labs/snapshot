@@ -12,7 +12,14 @@ defineProps<{
 
 <template>
   <div class="flex-auto truncate px-2 text-center text-skin-link">
+    <i-ho-lock-closed
+      v-if="proposal.privacy === 'shutter'"
+      v-tippy="{ content: $t('resultsShutter') }"
+      class="mx-auto cursor-help"
+    />
+
     <div
+      v-else
       v-tippy="{
         content:
           format(proposal, vote.choice).length > 24

@@ -116,7 +116,6 @@ watch(visibleVotes, () => {
         class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
       />
 
-      <i-ho-lock-closed v-if="space.voting.privacy === 'shutter'" />
       <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
       <div
         class="flex min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:min-w-[130px]"

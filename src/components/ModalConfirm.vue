@@ -63,7 +63,7 @@ async function vote(payload) {
 
 async function handleSubmit() {
   let result: { id: string } | null = null;
-  if (props.space.voting.privacy === 'shutter') result = await voteShutter();
+  if (props.proposal.privacy === 'shutter') result = await voteShutter();
   else
     result = await vote({
       proposal: props.proposal,

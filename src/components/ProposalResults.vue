@@ -18,34 +18,36 @@ const ts = Number((Date.now() / 1e3).toFixed());
   <BaseBlock
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
-    class="pb-2"
   >
-    <div
-      v-if="results && (proposal.quorum || space.voting?.quorum)"
-      class="text-skin-link"
-    >
-      {{ $t('settings.quorum.label') }}
-      <span class="float-right">
-        {{ formatCompactNumber(results.scoresTotal) }} /
-        {{
-          formatCompactNumber(
-            proposal.quorum || (space.voting.quorum as number)
-          )
-        }}
-      </span>
+    <div class="space-y-5">
+      <div
+        v-if="results && (proposal.quorum || space.voting?.quorum)"
+        class="text-skin-link"
+      >
+        {{ $t('settings.quorum.label') }}
+        <span class="float-right">
+          {{ formatCompactNumber(results.scoresTotal) }} /
+          {{
+            formatCompactNumber(
+              proposal.quorum || (space.voting.quorum as number)
+            )
+          }}
+        </span>
+      </div>
+
+      <ProposalResultsList
+        v-if="results"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :strategies="strategies"
+      />
+
+      <ProposalResultsShutter
+        v-if="
+          proposal.privacy === 'shutter' && proposal.scores_state !== 'final'
+        "
+      />
     </div>
-    <ProposalMessageShutter
-      v-if="
-        space.voting.privacy === 'shutter' && proposal.scores_state !== 'final'
-      "
-      class="mt-4"
-    />
-    <ProposalResultsList
-      v-else-if="results"
-      :space="space"
-      :proposal="proposal"
-      :results="results"
-      :strategies="strategies"
-    />
   </BaseBlock>
 </template>
