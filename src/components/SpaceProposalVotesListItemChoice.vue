@@ -13,7 +13,7 @@ defineProps<{
 <template>
   <div class="flex-auto truncate px-2 text-center text-skin-link">
     <i-ho-lock-closed
-      v-if="proposal.privacy === 'shutter'"
+      v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
       v-tippy="{ content: $t('resultsShutter') }"
       class="mx-auto cursor-help"
     />
