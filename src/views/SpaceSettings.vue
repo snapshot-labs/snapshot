@@ -8,7 +8,7 @@ import { useClient } from '@/composables/useClient';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { useTreasury } from '@/composables/useTreasury';
@@ -21,7 +21,7 @@ const props = defineProps<{
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
-const { reloadSpace } = useExtendedSpaces();
+const { loadExtendedSpaces } = useSpaces();
 const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
 const { resetTreasuryAssets } = useTreasury();
 const notify: any = inject('notify');
@@ -82,7 +82,7 @@ async function handleSubmit() {
     notify(['green', t('notify.saved')]);
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
-    reloadSpace(props.space.id);
+    loadExtendedSpaces([props.space.id], true);
   }
 }
 
@@ -138,7 +138,7 @@ async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
   if (receipt) {
-    reloadSpace(props.space.id);
+    loadExtendedSpaces([props.space.id], true);
   }
 }
 </script>

@@ -5,7 +5,7 @@ import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
 import { useRouter, useRoute } from 'vue-router';
 import { useStorage } from '@vueuse/core';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
 import { refDebounced } from '@vueuse/core';
 import { shorten, clearStampCache } from '@/helpers/utils';
@@ -38,11 +38,11 @@ const isValid = computed(() => {
 
 const { send } = useClient();
 
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useSpaces();
 
 async function checkIfSpaceExists() {
-  await loadExtentedSpaces([route.params.ens as string]);
-  if (extentedSpaces.value?.some(space => space.id === route.params.ens)) {
+  await loadExtendedSpaces([route.params.ens as string]);
+  if (extendedSpaces.value.some(space => space.id === route.params.ens)) {
     return;
   } else {
     await sleep(5000);

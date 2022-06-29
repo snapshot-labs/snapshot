@@ -7,7 +7,6 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { useApp } from '@/composables/useApp';
 import { lsSet, lsGet } from '@/helpers/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaces } from '@/composables/useSpaces';
 
 const router = useRouter();
@@ -17,14 +16,13 @@ const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
 const { domain } = useApp();
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
-const { spaces } = useSpaces();
+const { spaces, loadExtendedSpaces, extendedSpaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
 
-const extentedSpacesObj = computed(() => {
+const extendedSpacesObj = computed(() => {
   return (
-    extentedSpaces.value?.reduce(
+    extendedSpaces.value.reduce(
       (acc, space) => ({ ...acc, [space.id]: space }),
       {}
     ) ?? {}
@@ -63,7 +61,7 @@ watch(followingSpaces, () => {
 });
 
 watch(followingSpaces, () => {
-  loadExtentedSpaces(followingSpaces.value);
+  loadExtendedSpaces(followingSpaces.value);
 });
 
 watchEffect(() => getProposals(followingSpaces.value));
@@ -120,9 +118,9 @@ onMounted(() => {
       >
         <template #item="{ element }">
           <div
-            v-if="extentedSpacesObj[element]"
+            v-if="extendedSpacesObj[element]"
             v-tippy="{
-              content: extentedSpacesObj[element].name,
+              content: extendedSpacesObj[element].name,
               placement: 'right',
               delay: [750, 0],
               touch: ['hold', 500]
@@ -144,7 +142,7 @@ onMounted(() => {
             >
               <AvatarSpace
                 :key="element"
-                :space="extentedSpacesObj[element]"
+                :space="extendedSpacesObj[element]"
                 symbol-index="space"
                 size="44"
                 class="pointer-events-none"

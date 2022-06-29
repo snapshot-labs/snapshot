@@ -3,7 +3,7 @@ import { ref, watch, onUnmounted, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -12,8 +12,8 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
-  useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces, loadingExtendedSpaces } =
+  useSpaces();
 const { resetForm } = useSpaceSettingsForm();
 
 const router = useRouter();
@@ -30,13 +30,13 @@ watch(
     await loadOwnedEnsDomains();
     loadingOwnedEnsDomains.value = false;
     if (ownedEnsDomains.value.map(d => d.name).length)
-      await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
+      await loadExtendedSpaces(ownedEnsDomains.value.map(d => d.name));
   },
   { immediate: true }
 );
 
 const domainsWithoutExistingSpace = computed(() => {
-  const spaces = clone(extentedSpaces.value.map(space => space.id));
+  const spaces = clone(extendedSpaces.value.map(space => space.id));
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
@@ -62,7 +62,7 @@ onMounted(() => resetForm());
 
 <template>
   <div>
-    <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
+    <LoadingRow v-if="loadingOwnedEnsDomains || loadingExtendedSpaces" block />
     <div v-else>
       <BaseMessage v-if="defaultNetwork === '4'" level="info" class="mb-3">
         {{

@@ -4,15 +4,17 @@ import orderBy from 'lodash/orderBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
-import { SPACES_QUERY } from '@/helpers/queries';
+import { EXTENDED_SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-// holds all spaces but with reduced data
+// all spaces but with reduced data
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
 
-// holds visited spaces with extended data
-const extendedSpaces: any = ref([]);
+// visited and followed spaces, with extended data
+const extendedSpaces = ref<ExtendedSpace[]>([]);
+const loadingExtendedSpaces = ref(false);
 
 export function useSpaces() {
   const route = useRoute();
@@ -42,34 +44,48 @@ export function useSpaces() {
     return;
   }
 
-  async function loadExtendedSpaces(id_in: string[] = []) {
-    // remove falsy values
+  async function loadExtendedSpaces(
+    id_in: string[] = [],
+    updateExistingSpaces = false
+  ) {
     id_in = id_in.filter(id => id);
 
-    try {
-      const response = await apolloQuery(
-        {
-          query: SPACES_QUERY,
-          variables: {
-            id_in
-          }
-        },
-        'spaces'
+    if (!updateExistingSpaces) {
+      id_in = id_in.filter(
+        id => !extendedSpaces.value.find(space => space.id === id)
       );
+    }
 
-      // loop through response, add new spaces and update existing ones
-      for (const space of response) {
-        const existingSpaceIndex = extendedSpaces.value.findIndex(
-          s => s.id === space.id
+    if (id_in.length > 0) {
+      loadingExtendedSpaces.value = true;
+      try {
+        const response = await apolloQuery(
+          {
+            query: EXTENDED_SPACES_QUERY,
+            variables: {
+              id_in
+            }
+          },
+          'spaces'
         );
-        if (existingSpaceIndex !== -1) {
-          extendedSpaces.value[existingSpaceIndex] = space;
-        } else {
-          extendedSpaces.value.push(space);
+
+        for (const space of response) {
+          const existingSpaceIndex = extendedSpaces.value.findIndex(
+            s => s.id === space.id
+          );
+
+          if (existingSpaceIndex != -1) {
+            extendedSpaces.value[existingSpaceIndex] = space;
+          } else {
+            extendedSpaces.value.push(space);
+          }
         }
+      } catch (e) {
+        console.error(e);
+        return e;
+      } finally {
+        loadingExtendedSpaces.value = false;
       }
-    } catch (e) {
-      console.error(e);
     }
   }
 
@@ -130,6 +146,7 @@ export function useSpaces() {
     orderedSpacesByCategory,
     selectedCategory,
     loadExtendedSpaces,
-    extendedSpaces
+    extendedSpaces,
+    loadingExtendedSpaces
   };
 }

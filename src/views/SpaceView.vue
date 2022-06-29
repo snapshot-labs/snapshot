@@ -4,13 +4,13 @@ import { useApp } from '@/composables/useApp';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
 import { formatSpace } from '@/helpers/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaces } from '@/composables/useSpaces';
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key];
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -23,16 +23,16 @@ if (aliasedSpace) {
 
 const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === spaceKey.value))
+  formatSpace(extendedSpaces.value.find(s => s.id === spaceKey.value))
 );
 
 const sourceSpaceRoute = computed(() => route.params.sourceSpace);
 const sourceSpace = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
+  formatSpace(extendedSpaces.value.find(s => s.id === sourceSpaceRoute.value))
 );
 
 onMounted(async () => {
-  await loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]);
+  await loadExtendedSpaces([spaceKey.value, sourceSpaceRoute.value]);
   if (!space.value) {
     router.push('/');
   }

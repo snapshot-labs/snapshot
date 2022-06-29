@@ -167,7 +167,7 @@ export const ALIASES_QUERY = gql`
   }
 `;
 
-export const SPACES_QUERY = gql`
+export const EXTENDED_SPACES_QUERY = gql`
   query Spaces($id_in: [String]) {
     spaces(where: { id_in: $id_in }, first: 200) {
       id
