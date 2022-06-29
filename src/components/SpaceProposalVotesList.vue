@@ -1,26 +1,30 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, watch, toRefs } from 'vue';
-import { shorten, getChoiceString } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { useProfiles } from '@/composables/useProfiles';
 import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
 import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
+import {
+  Proposal,
+  ExtendedSpace,
+  Vote,
+  SpaceStrategy
+} from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: Object,
-  proposal: Object,
-  votes: Array,
-  loaded: Boolean,
-  strategies: Object,
-  userVote: Array,
-  loadingMore: Boolean
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: Proposal;
+  votes: Vote[];
+  loaded: boolean;
+  strategies: SpaceStrategy[];
+  userVote: Vote;
+  loadingMore: boolean;
+}>();
 
 defineEmits(['loadVotes']);
-
-const format = getChoiceString;
 
 const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
@@ -42,7 +46,7 @@ const voteCount = computed(() =>
 );
 const nbrVisibleVotes = ref(10);
 
-const sortedVotes = ref([]);
+const sortedVotes = ref<Vote[]>([]);
 
 const visibleVotes = computed(() =>
   isFinalProposal.value
@@ -100,8 +104,8 @@ watch(visibleVotes, () => {
     <div
       v-for="(vote, i) in visibleVotes"
       :key="i"
-      :style="i === 0 && 'border: 0 !important;'"
       class="flex items-center border-t px-3 py-[14px]"
+      :class="{ '!border: 0': i === 0 }"
     >
       <BaseUser
         :key="vote.voter"
@@ -111,20 +115,9 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
       />
-      <div class="flex-auto truncate px-2 text-center text-skin-link">
-        <div
-          v-tippy="{
-            content:
-              format(proposal, vote.choice).length > 24
-                ? format(proposal, vote.choice)
-                : null
-          }"
-          class="truncate text-center text-skin-link"
-        >
-          {{ format(proposal, vote.choice) }}
-        </div>
-      </div>
 
+      <i-ho-lock-closed v-if="space.voting.privacy === 'shutter'" />
+      <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
       <div
         class="flex min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:min-w-[130px]"
       >

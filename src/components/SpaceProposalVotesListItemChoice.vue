@@ -1,0 +1,27 @@
+<script setup lang="ts">
+import { Proposal, Vote } from '@/helpers/interfaces';
+import { getChoiceString } from '@/helpers/utils';
+
+const format = getChoiceString;
+
+defineProps<{
+  proposal: Proposal;
+  vote: Vote;
+}>();
+</script>
+
+<template>
+  <div class="flex-auto truncate px-2 text-center text-skin-link">
+    <div
+      v-tippy="{
+        content:
+          format(proposal, vote.choice).length > 24
+            ? format(proposal, vote.choice)
+            : null
+      }"
+      class="truncate text-center text-skin-link"
+    >
+      {{ format(proposal, vote.choice) }}
+    </div>
+  </div>
+</template>
