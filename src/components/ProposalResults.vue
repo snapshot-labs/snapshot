@@ -16,15 +16,15 @@ const props = defineProps<{
 const ts = Number((Date.now() / 1e3).toFixed());
 
 const quorumScore = computed(() => {
-  let totalScores = 0;
+  let scores = 0;
   if (
     props.proposal.privacy === 'shutter' &&
     props.proposal.scores_state !== 'final'
   )
-    totalScores = props.votes.reduce((a, b) => a + b.balance, 0);
-  else if (props.results) totalScores = props.results.scoresTotal;
+    scores = props.votes.reduce((a, b) => a + b.balance, 0);
+  else if (props.results) scores = props.results.scoresTotal;
 
-  return formatCompactNumber(totalScores);
+  return formatCompactNumber(scores);
 });
 </script>
 
