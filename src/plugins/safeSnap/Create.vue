@@ -3,6 +3,7 @@ import Config from './components/Config.vue';
 
 defineProps({
   space: Object,
+  proposal: Object,
   preview: Boolean,
   modelValue: Object
 });
