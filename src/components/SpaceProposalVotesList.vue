@@ -20,7 +20,7 @@ const props = defineProps<{
   votes: Vote[];
   loaded: boolean;
   strategies: SpaceStrategy[];
-  userVote: Vote;
+  userVote: Vote[];
   loadingMore: boolean;
 }>();
 
