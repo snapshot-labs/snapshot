@@ -92,7 +92,7 @@
     "tailwindcss": "^3.1.4",
     "unplugin-vue-components": "^0.20.1",
     "vite": "^2.9.13",
-    "unplugin-icons": "^0.14.6",
+    "unplugin-icons": "^0.14.7",
     "vitest": "^0.16.0",
     "vitest-fetch-mock": "^0.1.0"
   },
