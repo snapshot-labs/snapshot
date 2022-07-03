@@ -18,5 +18,11 @@
       </template>
     </i18n-t>
   </BaseBlock>
-  <BaseButton @click="$router.push({ query: { step: 2 } })"> Next</BaseButton>
+  <BaseButton
+    primary
+    class="float-right"
+    @click="$router.push({ query: { step: 2 } })"
+  >
+    Next</BaseButton
+  >
 </template>
