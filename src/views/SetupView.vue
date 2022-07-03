@@ -42,6 +42,8 @@ const currentStep = computed(() => Number(route.query.step));
           v-else-if="currentStep === 4 && route.params.ens"
           :web3-account="web3Account"
         />
+
+        <SetupVoting v-else-if="currentStep === 5 && route.params.ens" />
       </template>
       <BaseBlock v-else>
         <BaseButton class="w-full" primary @click="modalAccountOpen = true">
