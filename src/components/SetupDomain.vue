@@ -25,7 +25,7 @@ const loadingOwnedEnsDomains = ref(false);
 watch(
   web3Account,
   async () => {
-    if (route.params.step) return;
+    if (Number(route.query.step) !== 2) return;
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains();
     loadingOwnedEnsDomains.value = false;
@@ -43,7 +43,8 @@ const domainsWithoutExistingSpace = computed(() => {
 const nextStep = key => {
   router.push({
     name: 'setup',
-    params: { step: 'controller', ens: key }
+    params: { ens: key },
+    query: { step: 3 }
   });
 };
 

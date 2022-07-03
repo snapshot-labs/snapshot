@@ -35,8 +35,10 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile',
         ens: route.params.ens
+      },
+      query: {
+        step: 4
       }
     });
   }
