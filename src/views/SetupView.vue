@@ -22,7 +22,7 @@ const currentStep = computed(() => Number(route.query.step));
 <template>
   <TheLayout>
     <template #sidebar-left>
-      <SetupStepper class="mt-[62px]" :current-step="currentStep" />
+      <SetupSidebarStepper class="mt-[76px]" :current-step="currentStep" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0">

@@ -15,9 +15,9 @@ const steps = [
 </script>
 
 <template>
-  <div class="py-[12px]">
-    <nav class="ml-2 flex" aria-label="Progress">
-      <ol role="list" class="space-y-3">
+  <div>
+    <nav class="flex" aria-label="Progress">
+      <ol role="list" class="space-y-4">
         <li v-for="(step, i) in steps" :key="step.name">
           <div v-if="currentStep > i + 1">
             <span class="flex items-center">
@@ -27,11 +27,11 @@ const steps = [
                 <i-ho-check class="text-[14px] text-white" aria-hidden="true" />
                 <span
                   v-if="i > 0"
-                  class="absolute -top-3 h-3 w-[1px] bg-primary"
+                  class="absolute -top-4 h-4 w-[1px] bg-primary"
                 />
               </span>
 
-              <span class="ml-3 text-sm font-medium text-skin-text">
+              <span class="ml-4 text-sm font-medium text-skin-text">
                 {{ step.name }}
               </span>
             </span>
@@ -49,10 +49,10 @@ const steps = [
               <span class="relative block h-2 w-2 rounded-full bg-primary" />
               <span
                 v-if="i > 0"
-                class="absolute -top-[17px] h-3 w-[1px] bg-primary"
+                class="absolute -top-[25px] h-4 w-[1px] bg-primary"
               />
             </span>
-            <span class="ml-3 text-sm font-medium text-skin-link">
+            <span class="ml-4 text-sm font-medium text-skin-link">
               {{ step.name }}
             </span>
           </div>
@@ -63,10 +63,10 @@ const steps = [
             >
               <span
                 v-if="i > 0"
-                class="absolute -top-[17px] h-3 w-[1px] bg-skin-border"
+                class="absolute -top-[25px] h-4 w-[1px] bg-skin-border"
               />
             </div>
-            <span class="ml-3 text-sm font-medium text-skin-text">
+            <span class="ml-4 text-sm font-medium text-skin-text">
               {{ step.name }}
             </span>
           </div>
