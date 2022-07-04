@@ -34,43 +34,48 @@ const socials = [
 
 <template>
   <div>
-    <nav id="topnav" class="fixed z-10 w-full border-b bg-skin-bg">
-      <BaseContainer class="pl-0 pr-3 sm:!px-4">
-        <div class="flex items-center py-[12px]">
-          <div class="ml-3 flex flex-auto items-center">
-            <router-link
-              :to="{ path: '/' }"
-              class="flex items-center text-xl sm:-ml-3"
-              style="font-size: 24px"
-            >
-              <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-              snapshot
-            </router-link>
-          </div>
-        </div>
+    <img src="/about/main.png" class="absolute right-0 top-[225px]" />
+    <img
+      src="/about/big_planet.png"
+      class="absolute right-[570px] top-[270px]"
+    />
+
+    <nav
+      id="topnav"
+      class="fixed z-10 flex h-[90px] w-full items-center border-b bg-skin-bg"
+    >
+      <BaseContainer class="w-full !max-w-[1200px] pl-[60px]">
+        <router-link :to="{ path: '/' }" class="flex items-center text-[32px]">
+          <BaseIcon size="40" name="snapshot" class="text-snapshot" />
+          snapshot
+        </router-link>
       </BaseContainer>
     </nav>
-    <div id="content" class="flex bg-skin-bg pt-6">
+
+    <div id="content" class="flex bg-skin-bg pt-[90px]">
       <BaseContainer
-        class="grow border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
+        class="w-full !max-w-[1200px] border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
       >
-        <h1 class="relative mt-[80px] ml-6 text-2xl font-bold text-creme">
+        <h1
+          class="relative mt-[160px] ml-[60px] text-[64px] font-bold leading-[4.5rem] text-creme"
+        >
           <div
-            class="absolute top-[22px] -left-6 -ml-1 h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[30px] -left-[60px] -ml-[5px] h-[10px] w-[10px] rounded-full bg-creme"
           ></div>
-          Where decisions<br />get made
+          How decisions<br />get made
         </h1>
-        <p class="mt-4 mb-5 max-w-2xl pl-6 leading-5 text-gray-300">
-          Snapshot is a voting protocol for <strong>D</strong>ecentralized,
-          <strong>A</strong>utonomous <strong>O</strong>ganizations (DAOs). It
-          provides endless flexibility on how to distribute voting power to
-          voters and it supports a variety of different voting procedures.
-          Snapshot is designed to cater to the needs of organizations of all
-          forms and sizes.
+        <p class="mt-5 mb-[50px] max-w-3xl pl-[60px] text-lg text-gray-300">
+          Snapshot is a governance protocol for <strong>D</strong>ecentralized,
+          <strong>A</strong>utonomous <strong>O</strong>ganizations (DAOs).<br />
+          <br />It provides flexible solutions for distributing voting rights
+          and conducting all kinds of votes, such as elections or budget
+          allocation, with verifiable results and guaranteed execution.
         </p>
         <div class="flex items-center">
-          <hr class="w-6 border-skin-border" />
-          <BaseButton>Discover</BaseButton>
+          <hr class="w-[60px] border-skin-border" />
+          <BaseButton class="origin-left scale-125 transform"
+            >Discover</BaseButton
+          >
         </div>
 
         <h1 class="relative mt-[64px] ml-6 text-md font-bold text-creme">
@@ -147,6 +152,7 @@ const socials = [
         </p>
       </BaseContainer>
     </div>
+
     <footer class="fixed right-5 bottom-4 space-x-2">
       <BaseLink
         v-for="social in socials"
@@ -163,13 +169,3 @@ const socials = [
     </footer>
   </div>
 </template>
-
-<style scoped>
-#content {
-  background-image: url('/about/main.png'), url('/about/big_planet.png'),
-    url('/about/small_planet.png');
-  background-position: 100% 100px, calc(100% - 550px) 200px,
-    calc(100% - 450px) 800px;
-  background-repeat: no-repeat;
-}
-</style>
