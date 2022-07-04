@@ -15,6 +15,8 @@ const props = defineProps<{
   web3Account: string;
 }>();
 
+const emit = defineEmits(['next']);
+
 const notify = inject<any>('notify');
 const router = useRouter();
 const route = useRoute();
@@ -109,6 +111,11 @@ async function handleSubmit() {
     creatingSpace.value = false;
   }
 }
+
+function nextStep() {
+  if (!form.value.name) return (showAllValidationErrors.value = true);
+  emit('next');
+}
 </script>
 
 <template>
@@ -130,12 +137,11 @@ async function handleSubmit() {
       :get-error-message="getErrorMessage"
     />
 
-    <SettingsPluginsBlock
-      :plugins="form.plugins"
-      @update:plugins="val => (form.plugins = val)"
-    />
+    <BaseButton primary class="float-right !mt-4" @click="nextStep">
+      Next
+    </BaseButton>
 
-    <div class="mx-4 md:mx-0">
+    <!-- <div class="mx-4 md:mx-0">
       <BaseButton
         class="w-full"
         primary
@@ -168,6 +174,6 @@ async function handleSubmit() {
           {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessage>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

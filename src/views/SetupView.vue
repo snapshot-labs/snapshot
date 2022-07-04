@@ -49,6 +49,7 @@ function previousStep() {
         <SetupProfile
           v-else-if="currentStep === 4 && route.params.ens"
           :web3-account="web3Account"
+          @next="nextStep"
         />
 
         <SetupVoting
@@ -63,7 +64,11 @@ function previousStep() {
           @next="nextStep"
         />
 
-        <SetupValidation v-else-if="currentStep === 7 && route.params.ens" />
+        <SetupValidation
+          v-else-if="currentStep === 7 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
       </template>
       <BaseBlock v-else>
         <BaseButton class="w-full" primary @click="modalAccountOpen = true">

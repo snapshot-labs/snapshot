@@ -2,6 +2,8 @@
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const { form, getErrorMessage } = useSpaceSettingsForm();
+
+const emit = defineEmits(['next', 'back']);
 </script>
 
 <template>
@@ -25,4 +27,8 @@ const { form, getErrorMessage } = useSpaceSettingsForm();
       @update:members="val => (form.members = val)"
     />
   </div>
+  <BaseButton primary class="float-right !mt-4" @click="emit('next')">
+    Next
+  </BaseButton>
+  <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
 </template>
