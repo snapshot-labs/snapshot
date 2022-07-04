@@ -8,6 +8,7 @@ const emit = defineEmits(['next']);
 <template>
   <div>
     <SettingsStrategiesBlock
+      title="Setup your voting strategy"
       :form="form"
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"

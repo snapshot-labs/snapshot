@@ -290,7 +290,8 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
-    "strategiesList": "Strategies",
+    "strategiesList": "Select up to 8 strategies",
+    "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
 

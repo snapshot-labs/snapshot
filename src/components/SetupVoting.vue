@@ -14,6 +14,7 @@ function nextStep() {
 <template>
   <div>
     <div v-if="votingStep === 1" class="space-y-3">
+      <h4>How would you like to setup your voting strategy?</h4>
       <ButtonCard title="Basic token voting" @click="votingStep = 2">
         Just select a network and enter your token contract address and we will
         take care of the rest automatically
@@ -30,7 +31,7 @@ function nextStep() {
         any questions you have
       </ButtonCard>
 
-      <BaseButton primary class="float-right" @click="nextStep">
+      <BaseButton primary class="float-right !mt-4" @click="nextStep">
         Skip
       </BaseButton>
     </div>
