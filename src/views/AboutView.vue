@@ -7,11 +7,34 @@ const { setPageTitle } = useI18n();
 onMounted(() => {
   setPageTitle('Snapshot - Where decisions get made');
 });
+
+const socials = [
+  {
+    icon: 'twitter',
+    link: 'https://twitter.com/SnapshotLabs'
+  },
+  {
+    icon: 'discord',
+    link: 'https://discord.gg/snapshot'
+  },
+  {
+    icon: 'telegram',
+    link: 'https://t.me/snapshotlabs'
+  },
+  {
+    icon: 'github',
+    link: `https://github.com/snapshot-labs`
+  },
+  {
+    icon: 'gitbook',
+    link: 'https://docs.snapshot.org/'
+  }
+];
 </script>
 
 <template>
   <div>
-    <nav id="topnav" class="border-b">
+    <nav id="topnav" class="fixed z-10 w-full border-b bg-skin-bg">
       <BaseContainer class="pl-0 pr-3 sm:!px-4">
         <div class="flex items-center py-[12px]">
           <div class="ml-3 flex flex-auto items-center">
@@ -27,7 +50,7 @@ onMounted(() => {
         </div>
       </BaseContainer>
     </nav>
-    <div id="content" class="flex">
+    <div id="content" class="flex bg-skin-bg">
       <BaseContainer class="grow border-l pl-0 font-mono">
         <h1 class="relative mt-[80px] ml-6 text-2xl font-bold text-creme">
           <div
@@ -35,7 +58,7 @@ onMounted(() => {
           ></div>
           Where decisions<br />get made
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5">
+        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
           Snapshot is a voting protocol for DAOs. It provides flexibility on how
           voting power is calculated for a vote. Snapshot supports various
           voting types to cater to the needs of any group or organization.
@@ -51,7 +74,7 @@ onMounted(() => {
           ></div>
           For DAOs, voting should be a snap
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5">
+        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
           Creating proposals and voting on Snapshot is user-friendly and does
           not cost gas as the process is securely performed off-chain.
         </p>
@@ -66,7 +89,7 @@ onMounted(() => {
           ></div>
           Read
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5">
+        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
           What is Snapshot
           <BaseLink
             link="https://snapshot.org"
@@ -89,7 +112,7 @@ onMounted(() => {
           ></div>
           Explore
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5">
+        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
           Knowledge base
           <BaseLink
             link="https://snapshot.org"
@@ -114,5 +137,19 @@ onMounted(() => {
         </p>
       </BaseContainer>
     </div>
+    <footer class="fixed right-5 bottom-4 space-x-2">
+      <BaseLink
+        v-for="social in socials"
+        :key="social"
+        :link="social.link"
+        hide-external-icon
+      >
+        <BaseIcon
+          size="22"
+          class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
+          :name="social.icon"
+        />
+      </BaseLink>
+    </footer>
   </div>
 </template>
