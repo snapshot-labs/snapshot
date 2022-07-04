@@ -44,6 +44,8 @@ const currentStep = computed(() => Number(route.query.step));
         />
 
         <SetupVoting v-else-if="currentStep === 5 && route.params.ens" />
+
+        <SetupCustomdomain v-else-if="currentStep === 6 && route.params.ens" />
       </template>
       <BaseBlock v-else>
         <BaseButton class="w-full" primary @click="modalAccountOpen = true">

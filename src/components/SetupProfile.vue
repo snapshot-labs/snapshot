@@ -109,26 +109,6 @@ async function handleSubmit() {
     creatingSpace.value = false;
   }
 }
-
-function addDefaultStrategy() {
-  if (form.value.strategies.length) return;
-  form.value.strategies.push({
-    name: 'ticket',
-    network: '1',
-    params: {
-      symbol: 'VOTE'
-    }
-  });
-}
-
-function addDefaultNetwork() {
-  form.value.network = '1';
-}
-
-onMounted(() => {
-  addDefaultStrategy();
-  addDefaultNetwork();
-});
 </script>
 
 <template>
@@ -152,7 +132,6 @@ onMounted(() => {
 
     <SettingsStrategiesBlock
       :form="form"
-      :get-error-message="getErrorMessage"
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"
       @update-symbol="val => (form.symbol = val)"

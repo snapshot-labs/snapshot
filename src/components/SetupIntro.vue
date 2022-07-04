@@ -20,9 +20,9 @@
   </BaseBlock>
   <BaseButton
     primary
-    class="float-right"
+    class="float-right mt-4"
     @click="$router.push({ query: { step: 2 } })"
   >
-    Next</BaseButton
-  >
+    Next
+  </BaseButton>
 </template>

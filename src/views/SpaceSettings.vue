@@ -187,7 +187,6 @@ async function handleSetRecord() {
 
           <SettingsStrategiesBlock
             :form="form"
-            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
