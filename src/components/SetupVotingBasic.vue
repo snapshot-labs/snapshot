@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+
+const { form } = useSpaceSettingsForm();
 
 const input = ref({
   network: '1',
@@ -64,6 +67,12 @@ const strategy = computed(() => {
   return isSybil.value ? sybilObj : obj;
 });
 
+function nextStep() {
+  emit('next');
+  form.value.strategies = [];
+  form.value.strategies.push(strategy.value);
+}
+
 watch(
   input,
   async () => {
@@ -81,7 +90,7 @@ watch(
 
 <template>
   <div class="space-y-4">
-    <BaseBlock title="Token">
+    <BaseBlock title="Setup token voting">
       <div class="flex space-x-5">
         <div class="w-full space-y-3">
           <ComboboxNetwork
@@ -137,7 +146,7 @@ watch(
           </div> -->
         </div>
         <div>
-          <h4>Token info</h4>
+          <LabelInput>Token info</LabelInput>
           <div class="inline-block rounded-xl border p-2 px-3">
             <div class="flex w-[200px] justify-between">
               Type <span class="text-skin-link">{{ token?.type || '-' }}</span>
@@ -158,8 +167,8 @@ watch(
       </div>
     </BaseBlock>
 
-    <BaseButton class="float-right" primary @click="emit('next')">
-      Next
+    <BaseButton class="float-right" primary @click="nextStep">
+      {{ strategy.name ? 'Next' : 'Skip' }}
     </BaseButton>
   </div>
 </template>
