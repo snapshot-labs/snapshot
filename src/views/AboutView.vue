@@ -156,7 +156,7 @@ const socials = [
   </div>
 </template>
 
-<style>
+<style scoped>
 #content {
   background-image: url('/about/main.png'), url('/about/big_planet.png'),
     url('/about/small_planet.png');
