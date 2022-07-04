@@ -7889,10 +7889,10 @@ vue-router@^4.0.16:
   dependencies:
     "@vue/devtools-api" "^6.0.0"
 
-vue-tippy@^6.0.0-alpha.58:
-  version "6.0.0-alpha.58"
-  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.58.tgz#de69ff583ed920c205d1f9c2eeb2129a4020e203"
-  integrity sha512-kfpkFZMvua+nTn9Mqx3v5UrY8rlu3nHiOoGKO1bhSM0CUG8ISygfofSDwLDUW6wAcAHABkF7vcp5sPqhTb26CA==
+vue-tippy@^6.0.0-alpha.60:
+  version "6.0.0-alpha.60"
+  resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.0.0-alpha.60.tgz#8137eb6ae36cf9c1755d15b938b6f20f4baf812f"
+  integrity sha512-tORQ7/jOfrkhsJDBpgi9v7JERIen2GulkZekjNK9hSFWdwQFxxtnCjbGdjATbgxcyG3eckvjlWoh0bCk9ZoEhA==
   dependencies:
     tippy.js "^6.3.7"
 
