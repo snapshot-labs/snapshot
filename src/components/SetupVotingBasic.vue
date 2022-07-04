@@ -26,32 +26,39 @@ const emit = defineEmits(['next']);
 
 const token = ref(null);
 
-const strategyName = computed(() => {
-  if (token.value?.type === 'ERC-20') {
-    return 'erc20-balance-of';
-  }
-  if (token.value?.type === 'ERC-721') {
-    return 'erc721';
-  } else return '';
+const strategy = computed(() => {
+  if (token.value)
+    return generateStrategyFromToken(token.value, input.value.network);
+  return null;
 });
 
-const strategy = computed(() => {
-  const obj = {
-    name: strategyName.value,
-    network: input.value.network,
+function generateStrategyFromToken(token, network) {
+  const strategy: {
+    name: string;
+    network: string;
+    params: { decimals?: string; network: string; address: string };
+  } = {
+    name: '',
+    network,
     params: {
-      network: input.value.network,
-      address: input.value.address,
-      decimals: token.value?.decimals
+      network: network,
+      address: token.contractAddress
     }
   };
-  if (token.value?.type !== 'ERC-20') {
-    delete obj.params.decimals;
+
+  if (token.decimals) strategy.params.decimals = token.decimals;
+
+  if (token.type === 'ERC-20') {
+    strategy.name = 'erc20-balance-of';
   }
-  const sybilObj = {
+  if (token.type === 'ERC-721') {
+    strategy.name = 'erc721';
+  } else strategy.name = '';
+
+  const sybilStrategy = {
     name: 'sybil-protection',
     params: {
-      strategy: obj,
+      strategy,
       sybil: {
         poh: '0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb',
         brightId: 'v5'
@@ -61,11 +68,11 @@ const strategy = computed(() => {
   sybilItems.value.forEach(item => {
     // if poh or brightId isn't selected delete it from the sybil obj
     if (!selectedSybilItems.value.find(i => i.id === item.id)) {
-      delete sybilObj.params.sybil[item.name];
+      delete sybilStrategy.params.sybil[item.name];
     }
   });
-  return isSybil.value ? sybilObj : obj;
-});
+  return isSybil.value ? sybilStrategy : strategy;
+}
 
 function nextStep() {
   emit('next');
@@ -82,6 +89,10 @@ watch(
       .then(res => res.json())
       .then(data => {
         token.value = data.result;
+        console.log(
+          '🚀 ~ file: SetupVotingBasic.vue ~ line 85 ~ data.result;',
+          data.result
+        );
       });
   },
   { deep: true }
@@ -89,7 +100,9 @@ watch(
 </script>
 
 <template>
-  <div class="space-y-4">
+  <h4>Strategy (for demo purposes)</h4>
+  {{ strategy }}
+  <div class="mt-4 space-y-4">
     <BaseBlock title="Setup token voting">
       <div class="flex space-x-5">
         <div class="w-full space-y-3">
@@ -168,7 +181,7 @@ watch(
     </BaseBlock>
 
     <BaseButton class="float-right" primary @click="nextStep">
-      {{ strategy.name ? 'Next' : 'Skip' }}
+      {{ strategy?.name ? 'Next' : 'Skip' }}
     </BaseButton>
   </div>
 </template>

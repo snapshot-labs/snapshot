@@ -17,6 +17,14 @@ onMounted(() => {
 });
 
 const currentStep = computed(() => Number(route.query.step));
+
+function nextStep() {
+  router.push({ query: { step: currentStep.value + 1 } });
+}
+
+function previousStep() {
+  router.push({ query: { step: currentStep.value - 1 } });
+}
 </script>
 
 <template>
@@ -43,9 +51,19 @@ const currentStep = computed(() => Number(route.query.step));
           :web3-account="web3Account"
         />
 
-        <SetupVoting v-else-if="currentStep === 5 && route.params.ens" />
+        <SetupVoting
+          v-else-if="currentStep === 5 && route.params.ens"
+          @next="nextStep"
+          @back="previousStep"
+        />
 
-        <SetupCustomdomain v-else-if="currentStep === 6 && route.params.ens" />
+        <SetupCustomdomain
+          v-else-if="currentStep === 6 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupValidation v-else-if="currentStep === 7 && route.params.ens" />
       </template>
       <BaseBlock v-else>
         <BaseButton class="w-full" primary @click="modalAccountOpen = true">

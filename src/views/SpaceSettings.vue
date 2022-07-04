@@ -208,7 +208,6 @@ async function handleSetRecord() {
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
-            :get-error-message="getErrorMessage"
             @update:min-score="val => (form.filters.minScore = val)"
             @update:only-members="val => (form.filters.onlyMembers = val)"
           />

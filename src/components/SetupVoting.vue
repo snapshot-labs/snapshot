@@ -1,18 +1,29 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
-const router = useRouter();
+const { form } = useSpaceSettingsForm();
 
-const votingStep = ref(1);
+const emit = defineEmits(['next', 'back']);
 
-function nextStep() {
-  router.push({ query: { step: '6' } });
-}
+const votingStep = ref(0);
 </script>
 
 <template>
   <div>
+    <div v-if="votingStep === 0">
+      <SettingsVotingBlock
+        v-model:delay="form.voting.delay"
+        v-model:period="form.voting.period"
+        v-model:quorum="form.voting.quorum"
+        v-model:type="form.voting.type"
+        v-model:hideAbstain="form.voting.hideAbstain"
+      />
+      <BaseButton primary class="float-right !mt-4" @click="votingStep = 1">
+        Skip
+      </BaseButton>
+    </div>
+
     <div v-if="votingStep === 1" class="space-y-3">
       <h4>How would you like to setup your voting strategy?</h4>
       <ButtonCard title="Basic token voting" @click="votingStep = 2">
@@ -31,15 +42,18 @@ function nextStep() {
         any questions you have
       </ButtonCard>
 
-      <BaseButton primary class="float-right !mt-4" @click="nextStep">
+      <BaseButton primary class="float-right !mt-4" @click="emit('next')">
         Skip
       </BaseButton>
     </div>
     <div>
-      <SetupVotingBasic v-if="votingStep === 2" @next="nextStep" />
-      <SetupVotingStrategy v-if="votingStep === 3" @next="nextStep" />
+      <SetupVotingBasic v-if="votingStep === 2" @next="emit('next')" />
+      <SetupVotingStrategy v-if="votingStep === 3" @next="emit('next')" />
     </div>
-    <BaseButton v-if="votingStep !== 1" class="mt-4" @click="votingStep = 1">
+    <BaseButton
+      class="mt-4"
+      @click="votingStep !== 0 ? (votingStep = 0) : emit('back')"
+    >
       Back
     </BaseButton>
   </div>

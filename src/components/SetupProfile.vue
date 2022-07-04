@@ -130,41 +130,6 @@ async function handleSubmit() {
       :get-error-message="getErrorMessage"
     />
 
-    <SettingsStrategiesBlock
-      :form="form"
-      @update-strategies="val => (form.strategies = val)"
-      @update-network="val => (form.network = val)"
-      @update-symbol="val => (form.symbol = val)"
-    />
-
-    <SettingsAdminsBlock
-      :admins="form.admins"
-      :error="getErrorMessage('admins')"
-      @update:admins="val => (form.admins = val)"
-    />
-
-    <SettingsAuthorsBlock
-      :members="form.members"
-      :error="getErrorMessage('members')"
-      @update:members="val => (form.members = val)"
-    />
-
-    <SettingsValidationBlock
-      v-model:validation="form.validation"
-      :filters="form.filters"
-      :get-error-message="getErrorMessage"
-      @update:min-score="val => (form.filters.minScore = val)"
-      @update:only-members="val => (form.filters.onlyMembers = val)"
-    />
-
-    <SettingsVotingBlock
-      v-model:delay="form.voting.delay"
-      v-model:period="form.voting.period"
-      v-model:quorum="form.voting.quorum"
-      v-model:type="form.voting.type"
-      v-model:hideAbstain="form.voting.hideAbstain"
-    />
-
     <SettingsPluginsBlock
       :plugins="form.plugins"
       @update:plugins="val => (form.plugins = val)"
