@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, computed, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
@@ -17,7 +17,6 @@ const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
 const { resetForm } = useSpaceSettingsForm();
 
 const router = useRouter();
-const route = useRoute();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
@@ -25,7 +24,6 @@ const loadingOwnedEnsDomains = ref(false);
 watch(
   web3Account,
   async () => {
-    if (route.params.step) return;
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains();
     loadingOwnedEnsDomains.value = false;
@@ -43,7 +41,8 @@ const domainsWithoutExistingSpace = computed(() => {
 const nextStep = key => {
   router.push({
     name: 'setup',
-    params: { step: 'controller', ens: key }
+    params: { ens: key },
+    query: { step: 3 }
   });
 };
 

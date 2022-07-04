@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, inject, onMounted } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
@@ -14,6 +14,8 @@ import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 const props = defineProps<{
   web3Account: string;
 }>();
+
+const emit = defineEmits(['next']);
 
 const notify = inject<any>('notify');
 const router = useRouter();
@@ -110,25 +112,10 @@ async function handleSubmit() {
   }
 }
 
-function addDefaultStrategy() {
-  if (form.value.strategies.length) return;
-  form.value.strategies.push({
-    name: 'ticket',
-    network: '1',
-    params: {
-      symbol: 'VOTE'
-    }
-  });
+function nextStep() {
+  if (!form.value.name) return (showAllValidationErrors.value = true);
+  emit('next');
 }
-
-function addDefaultNetwork() {
-  form.value.network = '1';
-}
-
-onMounted(() => {
-  addDefaultStrategy();
-  addDefaultNetwork();
-});
 </script>
 
 <template>
@@ -150,54 +137,11 @@ onMounted(() => {
       :get-error-message="getErrorMessage"
     />
 
-    <SettingsStrategiesBlock
-      :form="form"
-      :get-error-message="getErrorMessage"
-      @update-strategies="val => (form.strategies = val)"
-      @update-network="val => (form.network = val)"
-      @update-symbol="val => (form.symbol = val)"
-    />
+    <BaseButton primary class="float-right !mt-4" @click="nextStep">
+      Next
+    </BaseButton>
 
-    <SettingsAdminsBlock
-      :admins="form.admins"
-      :error="getErrorMessage('admins')"
-      @update:admins="val => (form.admins = val)"
-    />
-
-    <SettingsAuthorsBlock
-      :members="form.members"
-      :error="getErrorMessage('members')"
-      @update:members="val => (form.members = val)"
-    />
-
-    <SettingsDomainBlock
-      v-model:domain="form.domain"
-      v-model:skin="form.skin"
-      :get-error-message="getErrorMessage"
-    />
-
-    <SettingsValidationBlock
-      v-model:validation="form.validation"
-      :filters="form.filters"
-      :get-error-message="getErrorMessage"
-      @update:min-score="val => (form.filters.minScore = val)"
-      @update:only-members="val => (form.filters.onlyMembers = val)"
-    />
-
-    <SettingsVotingBlock
-      v-model:delay="form.voting.delay"
-      v-model:period="form.voting.period"
-      v-model:quorum="form.voting.quorum"
-      v-model:type="form.voting.type"
-      v-model:hideAbstain="form.voting.hideAbstain"
-    />
-
-    <SettingsPluginsBlock
-      :plugins="form.plugins"
-      @update:plugins="val => (form.plugins = val)"
-    />
-
-    <div class="mx-4 md:mx-0">
+    <!-- <div class="mx-4 md:mx-0">
       <BaseButton
         class="w-full"
         primary
@@ -230,6 +174,6 @@ onMounted(() => {
           {{ $t('setup.pleaseWaitMessage') }}
         </BaseMessage>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>

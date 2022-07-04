@@ -114,7 +114,11 @@ if (domain) {
   routes.push(
     { path: '/', name: 'home', component: HomeView },
     { path: '/about', name: 'about', component: AboutView },
-    { path: '/setup/:step?/:ens?', name: 'setup', component: SetupView },
+    {
+      path: '/setup/:ens?',
+      name: 'setup',
+      component: SetupView
+    },
     { path: '/networks', name: 'networks', component: ExploreView },
     { path: '/strategies', name: 'strategies', component: ExploreView },
     { path: '/plugins', name: 'plugins', component: ExploreView },
