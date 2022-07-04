@@ -224,7 +224,6 @@ async function handleSetRecord() {
           <SettingsDomainBlock
             v-model:domain="form.domain"
             v-model:skin="form.skin"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsTreasuriesBlock

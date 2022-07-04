@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, inject, onMounted } from 'vue';
+import { ref, computed, inject } from 'vue';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useI18n } from '@/composables/useI18n';
@@ -147,12 +147,6 @@ async function handleSubmit() {
       :members="form.members"
       :error="getErrorMessage('members')"
       @update:members="val => (form.members = val)"
-    />
-
-    <SettingsDomainBlock
-      v-model:domain="form.domain"
-      v-model:skin="form.skin"
-      :get-error-message="getErrorMessage"
     />
 
     <SettingsValidationBlock
