@@ -50,8 +50,10 @@ const socials = [
         </div>
       </BaseContainer>
     </nav>
-    <div id="content" class="flex bg-skin-bg">
-      <BaseContainer class="grow border-l pl-0 font-mono">
+    <div id="content" class="flex bg-skin-bg pt-6">
+      <BaseContainer
+        class="grow border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
+      >
         <h1 class="relative mt-[80px] ml-6 text-2xl font-bold text-creme">
           <div
             class="absolute top-[22px] -left-6 -ml-1 h-2 w-2 rounded-full bg-creme"
@@ -153,3 +155,13 @@ const socials = [
     </footer>
   </div>
 </template>
+
+<style>
+#content {
+  background-image: url('/about/main.png'), url('/about/big_planet.png'),
+    url('/about/small_planet.png');
+  background-position: 100% 100px, calc(100% - 550px) 200px,
+    calc(100% - 450px) 800px;
+  background-repeat: no-repeat;
+}
+</style>
