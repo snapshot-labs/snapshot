@@ -60,10 +60,13 @@ const socials = [
           ></div>
           Where decisions<br />get made
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
-          Snapshot is a voting protocol for DAOs. It provides flexibility on how
-          voting power is calculated for a vote. Snapshot supports various
-          voting types to cater to the needs of any group or organization.
+        <p class="mt-4 mb-5 max-w-2xl pl-6 leading-5 text-gray-300">
+          Snapshot is a voting protocol for <strong>D</strong>ecentralized,
+          <strong>A</strong>utonomous <strong>O</strong>ganizations (DAOs). It
+          provides endless flexibility on how to distribute voting power to
+          voters and it supports a variety of different voting procedures.
+          Snapshot is designed to cater to the needs of organizations of all
+          forms and sizes.
         </p>
         <div class="flex items-center">
           <hr class="w-6 border-skin-border" />
@@ -77,12 +80,17 @@ const socials = [
           For DAOs, voting should be a snap
         </h1>
         <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
-          Creating proposals and voting on Snapshot is user-friendly and does
-          not cost gas as the process is securely performed off-chain.
+          Voting and creating proposals on Snapshot is user-friendly and free.
         </p>
+        <div class="mb-4 flex items-center">
+          <hr class="w-6 border-skin-border" />
+          <BaseButton>Try the demo!</BaseButton>
+        </div>
         <div class="flex items-center">
           <hr class="w-6 border-skin-border" />
-          <BaseButton>Create a space</BaseButton>
+          <BaseLink link="https://snapshot.org/#/setup" hide-external-icon>
+            <BaseButton>Create a space</BaseButton>
+          </BaseLink>
         </div>
 
         <h1 class="relative mt-[64px] ml-6 text-md font-bold text-creme">
