@@ -7807,7 +7807,7 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-vite@^2.9.12, vite@^2.9.13:
+"vite@^2.9.12 || ^3.0.0-0", vite@^2.9.13:
   version "2.9.13"
   resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.13.tgz#859cb5d4c316c0d8c6ec9866045c0f7858ca6abc"
   integrity sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==
@@ -7826,10 +7826,10 @@ vitest-fetch-mock@^0.1.0:
   dependencies:
     cross-fetch "^3.0.6"
 
-vitest@^0.16.0:
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.16.0.tgz#6858a864b25850d28252bc480b0c89014ff48ce8"
-  integrity sha512-Ntp6jrM8wf2NMtamMBLkRBBdeqHkgAH/WMh5Xryts1j2ft2D8QZQbiSVFkSl4WmEQzcPP0YM069g/Ga1vtnEtg==
+vitest@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.17.0.tgz#fc676db0e0dda7a8e22eb9f0176cb8fc6132c33d"
+  integrity sha512-5YO9ubHo0Zg35mea3+zZAr4sCku32C3usvIH5COeJB48TZV/R0J9aGNtGOOqEWZYfOKP0pGZUvTokne3x/QEFg==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
@@ -7839,7 +7839,7 @@ vitest@^0.16.0:
     local-pkg "^0.4.1"
     tinypool "^0.2.1"
     tinyspy "^0.3.3"
-    vite "^2.9.12"
+    vite "^2.9.12 || ^3.0.0-0"
 
 vue-demi@*, vue-demi@^0.13.1:
   version "0.13.1"
