@@ -10,17 +10,21 @@ const votingStep = ref(1);
   <div>
     <div v-if="votingStep === 1" class="space-y-3">
       <h4>How would you like to setup your voting strategy?</h4>
-      <ButtonCard title="Basic token voting" @click="votingStep = 2">
-        Just select a network and enter your token contract address and we will
-        take care of the rest automatically
+      <ButtonCard title="One person one vote" @click="votingStep = 2">
+        Manage a whitelist of people who can vote or set sybil protection rules.
+        Every vote is equal and there is no need for a token
       </ButtonCard>
-      <ButtonCard title="Lemme get creative" @click="votingStep = 3">
+      <ButtonCard title="Token weighted voting" @click="votingStep = 3">
+        Just select a network and enter your token contract address and we will
+        take care of the rest automaticall
+      </ButtonCard>
+      <ButtonCard title="Lemme get creative" @click="votingStep = 4">
         Select up to 8 strategies with a shit ton of options from simple
         whitelist to multi-chain and weighted voting power
       </ButtonCard>
       <ButtonCard
         title="It's complicated... I need help!"
-        @click="votingStep = 4"
+        @click="votingStep = 5"
       >
         Join our discord and get help from the community. Or fill out a quick
         form and get someone to build exactly what you need
@@ -31,9 +35,9 @@ const votingStep = ref(1);
       </BaseButton>
     </div>
     <div>
-      <SetupVotingBasic v-if="votingStep === 2" @next="emit('next')" />
-      <SetupVotingStrategy v-if="votingStep === 3" @next="emit('next')" />
-      <SetupVotingHelp v-if="votingStep === 4" @next="emit('next')" />
+      <SetupVotingBasic v-if="votingStep === 3" @next="emit('next')" />
+      <SetupVotingStrategy v-if="votingStep === 4" @next="emit('next')" />
+      <SetupVotingHelp v-if="votingStep === 5" @next="emit('next')" />
     </div>
     <BaseButton
       class="mt-4"
