@@ -23,8 +23,7 @@ const votingStep = ref(1);
         @click="votingStep = 4"
       >
         Join our discord and get help from the community. Or fill out a quick
-        form where you can tell us all about the voting strategy or token that
-        you need.
+        form and get someone to build exactly what you need
       </ButtonCard>
 
       <BaseButton primary class="float-right !mt-4" @click="emit('next')">

@@ -3,10 +3,15 @@ import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const { form, getErrorMessage } = useSpaceSettingsForm();
 
-const emit = defineEmits(['next', 'back']);
+defineProps<{
+  creatingSpace: boolean;
+}>();
+
+const emit = defineEmits(['create', 'back']);
 </script>
 
 <template>
+  <h4 class="mb-2">Who can manage this space and create proposals?</h4>
   <div class="space-y-4">
     <SettingsValidationBlock
       v-model:validation="form.validation"
@@ -27,8 +32,33 @@ const emit = defineEmits(['next', 'back']);
       @update:members="val => (form.members = val)"
     />
   </div>
-  <BaseButton primary class="float-right !mt-4" @click="emit('next')">
-    Next
-  </BaseButton>
+  <SetupButtonCreate
+    :creating-space="creatingSpace"
+    class="mt-4"
+    @create="emit('create')"
+  />
+  <!--   <div class="mx-4 md:mx-0">
+  <div>
+      <BaseMessage
+        v-if="
+          uriAddress &&
+          uriAddress !== web3Account &&
+          !loadingTextRecord &&
+          !pendingENSRecord
+        "
+        level="warning"
+        class="!mt-4"
+      >
+        {{ $t('setup.notControllerAddress', { wallet: shorten(uriAddress) }) }}
+      </BaseMessage>
+      <BaseMessage
+        v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
+        level="info"
+        class="!mt-4"
+      >
+        {{ $t('setup.pleaseWaitMessage') }}
+      </BaseMessage>
+    </div>
+  </div> -->
   <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
 </template>
