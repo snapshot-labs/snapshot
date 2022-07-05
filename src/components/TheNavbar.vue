@@ -34,7 +34,7 @@ watchEffect(() => {
 
 <template>
   <div
-    v-if="env === 'develop'"
+    v-if="env === 'demo'"
     class="bg-primary p-3 text-center"
     style="color: white; font-size: 20px"
   >
