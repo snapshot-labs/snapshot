@@ -35,6 +35,7 @@ const votingStep = ref(1);
       </BaseButton>
     </div>
     <div>
+      <SetupVotingVote v-if="votingStep === 2" @next="emit('next')" />
       <SetupVotingBasic v-if="votingStep === 3" @next="emit('next')" />
       <SetupVotingStrategy v-if="votingStep === 4" @next="emit('next')" />
       <SetupVotingHelp v-if="votingStep === 5" @next="emit('next')" />
