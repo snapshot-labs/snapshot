@@ -15,8 +15,8 @@ const votingStep = ref(1);
         Every vote is equal and there is no need for a token
       </ButtonCard>
       <ButtonCard title="Token weighted voting" @click="votingStep = 3">
-        Just select a network and enter your token contract address and we will
-        take care of the rest automaticall
+        Votes are weighted by a token. The token can be an ERC-20 or ERC-721
+        (NFT) and you can add sybil protection rules
       </ButtonCard>
       <ButtonCard title="Lemme get creative" @click="votingStep = 4">
         Select up to 8 strategies with a shit ton of options from simple
