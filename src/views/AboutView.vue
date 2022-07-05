@@ -39,6 +39,10 @@ const socials = [
       src="/about/big_planet.png"
       class="absolute right-[570px] top-[270px]"
     />
+    <img
+      src="/about/small_planet.png"
+      class="absolute right-[490px] top-[870px]"
+    />
 
     <nav
       id="topnav"
@@ -62,49 +66,59 @@ const socials = [
           <div
             class="absolute top-[30px] -left-[60px] -ml-[5px] h-[10px] w-[10px] rounded-full bg-creme"
           ></div>
-          How decisions<br />get made
+          Where decisions<br />get made
         </h1>
         <p class="mt-5 mb-[50px] max-w-3xl pl-[60px] text-lg text-gray-300">
-          Snapshot is a governance protocol for <strong>D</strong>ecentralized,
-          <strong>A</strong>utonomous <strong>O</strong>ganizations (DAOs).<br />
-          <br />It provides flexible solutions for distributing voting rights
-          and conducting all kinds of votes, such as elections or budget
-          allocation, with verifiable results and guaranteed execution.
+          Snapshot is a voting protocol for DAOs. It provides flexibility on how
+          voting power is calculated for a vote. Snapshot supports various
+          voting types to cater to the needs of any group or organization.
         </p>
         <div class="flex items-center">
           <hr class="w-[60px] border-skin-border" />
-          <BaseButton class="origin-left scale-125 transform"
-            >Discover</BaseButton
-          >
+          <router-link :to="{ path: '/' }">
+            <BaseButton class="origin-left scale-125 transform"
+              >Discover</BaseButton
+            >
+          </router-link>
         </div>
 
-        <h1 class="relative mt-[64px] ml-6 text-md font-bold text-creme">
+        <h1 class="relative mt-[64px] ml-[60px] text-2xl font-bold text-creme">
           <div
-            class="absolute top-[10px] -left-6 -ml-1 h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[20px] -left-[60px] -ml-[5px] h-[10px] w-[10px] rounded-full bg-creme"
           ></div>
-          For DAOs, voting should be a snap
+          For DAOs, Voting should be a snap.
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
-          Voting and creating proposals on Snapshot is user-friendly and free.
+        <p class="mt-5 mb-[50px] max-w-3xl pl-[60px] text-lg text-gray-300">
+          Creating proposals and voting on Snapshot is user-friendly and does
+          not cost gas as the process is securely performed off-chain.
         </p>
         <div class="mb-4 flex items-center">
-          <hr class="w-6 border-skin-border" />
-          <BaseButton>Try the demo!</BaseButton>
+          <hr class="w-[60px] border-skin-border" />
+          <BaseLink
+            link="https://demo.snapshot.org/#/hamsterdao.eth/proposal/0x0630b8672c4e1f2c38e2ca6046acfdd88cc2e888053a45b0511dff2fa54b4eb1"
+            hide-external-icon
+          >
+            <BaseButton class="origin-left scale-125 transform"
+              >Try the demo!</BaseButton
+            >
+          </BaseLink>
         </div>
         <div class="flex items-center">
-          <hr class="w-6 border-skin-border" />
+          <hr class="w-[60px] border-skin-border" />
           <BaseLink link="https://snapshot.org/#/setup" hide-external-icon>
-            <BaseButton>Create a space</BaseButton>
+            <BaseButton class="origin-left scale-125 transform"
+              >Create a space</BaseButton
+            >
           </BaseLink>
         </div>
 
-        <h1 class="relative mt-[64px] ml-6 text-md font-bold text-creme">
+        <h1 class="relative mt-[64px] ml-[60px] text-2xl font-bold text-creme">
           <div
-            class="absolute top-[10px] -left-6 -ml-1 h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[20px] -left-[60px] -ml-[5px] h-[10px] w-[10px] rounded-full bg-creme"
           ></div>
           Read
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
+        <p class="mt-4 mb-5 max-w-md pl-[60px] text-lg text-gray-300">
           What is Snapshot
           <BaseLink
             link="https://snapshot.org"
@@ -121,13 +135,13 @@ const socials = [
           >
         </p>
 
-        <h1 class="relative mt-[64px] ml-6 text-md font-bold text-creme">
+        <h1 class="relative mt-[64px] ml-[60px] text-2xl font-bold text-creme">
           <div
-            class="absolute top-[10px] -left-6 -ml-1 h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[20px] -left-[60px] -ml-[5px] h-[10px] w-[10px] rounded-full bg-creme"
           ></div>
           Explore
         </h1>
-        <p class="mt-4 mb-5 max-w-md pl-6 leading-5 text-gray-300">
+        <p class="mt-4 mb-5 max-w-md pl-[60px] text-lg text-gray-300">
           Knowledge base
           <BaseLink
             link="https://snapshot.org"
