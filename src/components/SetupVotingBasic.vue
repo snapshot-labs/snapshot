@@ -99,8 +99,6 @@ watch(
 </script>
 
 <template>
-  <BaseBlock> Demo: {{ strategy }} </BaseBlock>
-
   <div class="mt-4 space-y-4">
     <BaseBlock title="Setup token voting">
       <div class="flex space-x-5">
@@ -178,6 +176,8 @@ watch(
         </div>
       </div>
     </BaseBlock>
+
+    <BaseBlock> Demo: {{ strategy }} </BaseBlock>
 
     <BaseButton class="float-right" primary @click="nextStep">
       {{ strategy?.name ? 'Next' : 'Skip' }}
