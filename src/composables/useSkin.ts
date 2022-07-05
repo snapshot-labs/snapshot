@@ -7,8 +7,8 @@ import { useStorage, useMediaQuery } from '@vueuse/core';
  * Handle theme (dark/light mode)
  * - use local storage or fall back to OS preference
  */
-const DARK = 'dark';
-const LIGHT = 'light';
+export const DARK = 'dark';
+export const LIGHT = 'light';
 
 const osTheme = useMediaQuery('(prefers-color-scheme: dark)') ? DARK : LIGHT;
 

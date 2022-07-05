@@ -1,11 +1,20 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
+import { useSkin, DARK } from '@/composables/useSkin';
 
 const { setPageTitle } = useI18n();
+const { userTheme } = useSkin();
+
+const themeBefore = userTheme.value;
 
 onMounted(() => {
+  userTheme.value = DARK;
   setPageTitle('Snapshot - Where decisions get made');
+});
+
+onUnmounted(() => {
+  userTheme.value = themeBefore;
 });
 
 const socials = [
