@@ -1,29 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { form } = useSpaceSettingsForm();
 
 const emit = defineEmits(['next', 'back']);
 
-const votingStep = ref(0);
+const votingStep = ref(1);
 </script>
 
 <template>
   <div>
-    <div v-if="votingStep === 0">
-      <SettingsVotingBlock
-        v-model:delay="form.voting.delay"
-        v-model:period="form.voting.period"
-        v-model:quorum="form.voting.quorum"
-        v-model:type="form.voting.type"
-        v-model:hideAbstain="form.voting.hideAbstain"
-      />
-      <BaseButton primary class="float-right !mt-4" @click="votingStep = 1">
-        Skip
-      </BaseButton>
-    </div>
-
     <div v-if="votingStep === 1" class="space-y-3">
       <h4>How would you like to setup your voting strategy?</h4>
       <ButtonCard title="Basic token voting" @click="votingStep = 2">
@@ -38,8 +22,9 @@ const votingStep = ref(0);
         title="It's complicated... I need help!"
         @click="votingStep = 4"
       >
-        Have a Hamster DAO contributor guide you through the process and answer
-        any questions you have
+        Join our discord and get help from the community. Or fill out a quick
+        form where you can tell us all about the voting strategy or token that
+        you need.
       </ButtonCard>
 
       <BaseButton primary class="float-right !mt-4" @click="emit('next')">
@@ -49,10 +34,11 @@ const votingStep = ref(0);
     <div>
       <SetupVotingBasic v-if="votingStep === 2" @next="emit('next')" />
       <SetupVotingStrategy v-if="votingStep === 3" @next="emit('next')" />
+      <SetupVotingHelp v-if="votingStep === 4" @next="emit('next')" />
     </div>
     <BaseButton
       class="mt-4"
-      @click="votingStep !== 0 ? (votingStep = 0) : emit('back')"
+      @click="votingStep !== 1 ? (votingStep = 1) : emit('back')"
     >
       Back
     </BaseButton>

@@ -6,10 +6,10 @@ defineProps<{
 
 <template>
   <button
-    class="relative rounded-xl border p-4 py-[18px] pr-[80px] text-left hover:border-skin-text"
+    class="relative w-full rounded-xl border p-4 py-[18px] pr-[80px] text-left hover:border-skin-text"
   >
-    <h4 class="mt-0 leading-6">{{ title }}</h4>
+    <h4 class="leading-2 mt-0 mb-1">{{ title }}</h4>
     <slot />
-    <i-ho-chevron-right class="absolute top-[42px] right-4 text-xl" />
+    <i-ho-chevron-right class="absolute top-[calc(50%-17px)] right-4 text-xl" />
   </button>
 </template>

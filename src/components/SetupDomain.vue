@@ -63,6 +63,7 @@ onMounted(() => resetForm());
   <div>
     <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
     <div v-else>
+      <h4>Setup your space domain</h4>
       <BaseMessage v-if="defaultNetwork === '4'" level="info" class="mb-3">
         {{
           $t('setup.demoTestnetEnsMessage', {
