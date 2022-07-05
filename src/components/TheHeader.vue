@@ -17,8 +17,10 @@ const visible = useStorage('snapshot.showHomeHeader', true);
         commodo consequat.
       </p>
       <div class="mt-4 space-x-3">
-        <BaseButton primary>Create a space</BaseButton>
-        <BaseButton>Learn more</BaseButton>
+        <BaseButton primary @click="$router.push({ name: 'setup' })">
+          Create a space
+        </BaseButton>
+        <BaseButton> Learn more </BaseButton>
       </div>
       <BaseButtonIcon class="absolute right-3 top-3" @click="visible = false">
         <i-ho-x class="text-base" />
