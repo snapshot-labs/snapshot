@@ -20,7 +20,9 @@ const visible = useStorage('snapshot.showHomeHeader', true);
         <BaseButton primary @click="$router.push({ name: 'setup' })">
           Create a space
         </BaseButton>
-        <BaseButton> Learn more </BaseButton>
+        <BaseButton @click="$router.push({ name: 'about' })">
+          Learn more
+        </BaseButton>
       </div>
       <BaseButtonIcon class="absolute right-3 top-3" @click="visible = false">
         <i-ho-x class="text-base" />
