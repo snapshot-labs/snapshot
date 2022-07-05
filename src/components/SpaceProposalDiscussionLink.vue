@@ -34,9 +34,8 @@ async function update(val) {
       >
         <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
           <div class="w-[32px]">
-            <i-s-discord
+            <IconDiscord
               v-if="preview.links.icon[0].href.includes('discord.com')"
-              class="h-[32px] w-[32px] text-[#5865F2]"
             />
             <img
               v-else

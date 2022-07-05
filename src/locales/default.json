@@ -254,7 +254,6 @@
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "set": "Set",
-
     "profile": "Profile",
     "avatar": "Avatar",
     "name": {
@@ -274,10 +273,8 @@
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
     },
     "hideSpace": "Hide space from homepage",
-
     "links": "Social accounts",
     "website": "Website",
-
     "strategies": {
       "label": "Voting strategy",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
@@ -294,7 +291,6 @@
     "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
-
     "admins": {
       "label": "Admins",
       "information": "Admins are able to modify the space settings and manage the space's proposals."
@@ -303,7 +299,6 @@
       "label": "Authors",
       "information": "Authors are able to create proposals without having to pass validation."
     },
-
     "proposalValidation": "Proposal validation",
     "validation": "Validation",
     "proposalThreshold": {
@@ -314,7 +309,6 @@
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
-
     "voting": "Voting",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
@@ -330,22 +324,19 @@
     },
     "anyType": "Any",
     "hideAbstain": "Ignore abstain votes in basic voting results",
-
     "customDomain": "Custom domain",
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+      "info": "To setup a custom domain you additionally need to open a pull request on github after you have created the space. {docs}"
     },
     "skin": "Skin",
-
     "treasuries": {
       "label": "Treasuries",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
     },
-
     "addPlugin": "Add plugin",
     "editPlugin": "Edit plugin",
     "pluginParameters": "Plugin parameters"
@@ -382,7 +373,6 @@
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account"
   },
-
   "profile": {
     "buttonEdit": "Edit profile",
     "viewProfile": "View profile",

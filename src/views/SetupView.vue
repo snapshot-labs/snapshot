@@ -1,9 +1,18 @@
-<script setup>
-import { onMounted, computed } from 'vue';
+<script setup lang="ts">
+import { onMounted, computed, ref, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
+import {} from 'vue';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { useClient } from '@/composables/useClient';
+import { useStorage } from '@vueuse/core';
+import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { useSpaceController } from '@/composables/useSpaceController';
+import { refDebounced } from '@vueuse/core';
+import { clearStampCache } from '@/helpers/utils';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const route = useRoute();
 const router = useRouter();
@@ -11,8 +20,13 @@ const { web3, web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { setPageTitle } = useI18n();
 
+const notify = inject<any>('notify');
+const { form, validate, showAllValidationErrors, formatSpace } =
+  useSpaceSettingsForm();
+
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
+  if (Number(route.query.step) > 4) router.push({ query: { step: 4 } });
   setPageTitle('page.title.setup');
 });
 
@@ -24,6 +38,90 @@ function nextStep() {
 
 function previousStep() {
   router.push({ query: { step: currentStep.value - 1 } });
+}
+
+const creatingSpace = ref(false);
+
+const { t } = useI18n();
+const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
+  useSpaceController();
+
+const isValid = computed(() => {
+  return validate.value === true;
+});
+
+const { send } = useClient();
+
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
+async function checkIfSpaceExists() {
+  await loadExtentedSpaces([route.params.ens as string]);
+  if (extentedSpaces.value?.some(space => space.id === route.params.ens)) {
+    return;
+  } else {
+    await sleep(5000);
+    await checkIfSpaceExists();
+  }
+}
+
+const showPleaseWaitMessage = ref(false);
+const debouncedShowPleaseWaitMessage = refDebounced(
+  showPleaseWaitMessage,
+  4000
+);
+
+async function handleSubmit() {
+  if (!isValid.value) return (showAllValidationErrors.value = true);
+  creatingSpace.value = true;
+  showPleaseWaitMessage.value = true;
+
+  // Wait for ENS text-record transaction to confirm
+  if (pendingENSRecord.value) {
+    await sleep(3000);
+    await handleSubmit();
+  } else {
+    await loadUriAddress();
+    if (uriAddress.value !== web3Account.value)
+      return (creatingSpace.value = false);
+
+    // Adds connected wallet as admin so that the settings will show
+    // in the sidebar after space creation
+    form.value.admins = [web3Account.value];
+
+    const formattedForm = formatSpace(form.value);
+    // Create the space
+    const result = await send(
+      { id: route.params.ens },
+      'settings',
+      formattedForm
+    );
+    if (result.id) {
+      // Wait for the space to be available on the HUB
+      await checkIfSpaceExists();
+      await clearStampCache(route.params.ens as string);
+      creatingSpace.value = false;
+      console.log('Result', result);
+
+      // Save created space to local storage
+      const createdSpaces = useStorage(
+        `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
+        {}
+      );
+      createdSpaces.value[route.params.ens as string] = {
+        showMessage: true
+      };
+
+      // Redirect to the new space page
+      router.push({
+        name: 'spaceProposals',
+        params: {
+          key: route.params.ens
+        }
+      });
+      notify(['green', t('notify.saved')]);
+    }
+    creatingSpace.value = false;
+  }
 }
 </script>
 
@@ -66,8 +164,9 @@ function previousStep() {
 
         <SetupValidation
           v-else-if="currentStep === 7 && route.params.ens"
+          :creating-space="creatingSpace"
           @back="previousStep"
-          @next="nextStep"
+          @create="handleSubmit"
         />
       </template>
       <BaseBlock v-else>

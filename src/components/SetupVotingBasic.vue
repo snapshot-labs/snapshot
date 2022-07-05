@@ -50,8 +50,7 @@ function generateStrategyFromToken(token, network) {
 
   if (token.type === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
-  }
-  if (token.type === 'ERC-721') {
+  } else if (token.type === 'ERC-721') {
     strategy.name = 'erc721';
   } else strategy.name = '';
 
@@ -100,8 +99,6 @@ watch(
 </script>
 
 <template>
-  <h4>Strategy (for demo purposes)</h4>
-  {{ strategy }}
   <div class="mt-4 space-y-4">
     <BaseBlock title="Setup token voting">
       <div class="flex space-x-5">
@@ -179,6 +176,8 @@ watch(
         </div>
       </div>
     </BaseBlock>
+
+    <BaseBlock> Demo: {{ strategy }} </BaseBlock>
 
     <BaseButton class="float-right" primary @click="nextStep">
       {{ strategy?.name ? 'Next' : 'Skip' }}
