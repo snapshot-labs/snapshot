@@ -13,7 +13,7 @@ const visible = useStorage('snapshot.showHomeHeader', true);
       <p>
         Snapshot is the home of your community's governance. It's a place where
         you can create proposals, weigh voting power in flexable ways, vote
-        completely off-chain, and finally execute in a trustless manner.
+        completely off-chain, and finally execute decisions on-chain.
       </p>
       <div class="mt-4 space-x-3">
         <BaseButton primary @click="$router.push({ name: 'setup' })">
