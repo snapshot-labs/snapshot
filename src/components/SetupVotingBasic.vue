@@ -112,7 +112,7 @@ watch(
             focus-on-mount
           />
           <div>
-            <div class="flex">
+            <div class="mb-1 flex">
               <BaseSwitch v-model="isSybil" /> Enable sybil protection
             </div>
 
