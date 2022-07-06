@@ -9,9 +9,9 @@ const { web3Account } = useWeb3();
 <template>
   <div>
     <div class="space-y-4">
-      A snapshot space is the home of your community's governance. It's a place
-      where you can create proposals, calculate voting power and vote in various
-      ways, and finally execute them in a trustless manner.
+      A space is the home of your community's governance. It's a place where you
+      can create proposals, weigh voting power in flexable ways, vote completely
+      off-chain, and finally execute in a trustless manner.
 
       <SetupMessageHelp />
 
