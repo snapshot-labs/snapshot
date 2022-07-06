@@ -3,7 +3,6 @@ import { onMounted, computed, ref, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useI18n } from '@/composables/useI18n';
-import {} from 'vue';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useClient } from '@/composables/useClient';
 import { useStorage } from '@vueuse/core';
