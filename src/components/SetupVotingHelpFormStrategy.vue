@@ -43,6 +43,17 @@ const updateTokenTypes = selectedTypes => {
   <div class="space-y-3">
     <div>
       <LabelInput>
+        Try to explain briefly how you want to distribute voting power in your
+        organization.
+      </LabelInput>
+      <TextareaAutosize
+        v-model="form.message"
+        class="s-input !rounded-3xl"
+        :max-length="MESSAGE_MAX_LENGTH"
+      />
+    </div>
+    <div>
+      <LabelInput>
         What token standards you think will be relevant?
       </LabelInput>
       <BaseListboxMultiple
@@ -51,17 +62,6 @@ const updateTokenTypes = selectedTypes => {
           tokenStandards.map((t, i) => ({ id: i, name: t.toUpperCase() }))
         "
         @update:model-value="updateTokenTypes"
-      />
-    </div>
-    <div>
-      <LabelInput>
-        Try to explain briefly how you want to distribute voting power in your
-        organization.
-      </LabelInput>
-      <TextareaAutosize
-        v-model="form.message"
-        class="s-input !rounded-3xl"
-        :max-length="MESSAGE_MAX_LENGTH"
       />
     </div>
     <BaseInput v-model="form.email" title="Email" />
