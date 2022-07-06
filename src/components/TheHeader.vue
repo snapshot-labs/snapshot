@@ -9,12 +9,11 @@ const visible = useStorage('snapshot.showHomeHeader', true);
     <div
       class="relative w-full rounded-xl border border-skin-border p-4 pr-[50px]"
     >
-      <h3 class="mt-0 font-mono">Welcome to the home for thousands of DAOs.</h3>
+      <h3 class="mt-0 font-mono">Welcome to the governance portal for DAOs</h3>
       <p>
-        A snapshot space is your organization's decision-making feed. You set
-        rules for new proposals and how voting power gets distributed. People
-        can follow, receive notifications and vote. Explore the many existing
-        spaces, join the projects behind them or start your own right now.
+        Snapshot is the home of your community's governance. It's a place where
+        you can create proposals, weigh voting power in flexable ways, vote
+        completely off-chain, and finally execute in a trustless manner.
       </p>
       <div class="mt-4 space-x-3">
         <BaseButton primary @click="$router.push({ name: 'setup' })">
