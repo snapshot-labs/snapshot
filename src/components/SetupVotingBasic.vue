@@ -36,17 +36,24 @@ function generateStrategyFromToken(token, network) {
   const strategy: {
     name: string;
     network: string;
-    params: { decimals?: string; network: string; address: string };
+    params: {
+      decimals?: string;
+      network: string;
+      address: string;
+      symbol: string;
+    };
   } = {
     name: '',
     network,
     params: {
       network: network,
-      address: token.contractAddress
+      address: token.contractAddress,
+      symbol: ''
     }
   };
 
   if (token.decimals) strategy.params.decimals = token.decimals;
+  if (token.symbol) strategy.params.symbol = token.symbol;
 
   if (token.type === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
@@ -75,8 +82,14 @@ function generateStrategyFromToken(token, network) {
 
 function nextStep() {
   emit('next');
-  form.value.strategies = [];
-  form.value.strategies.push(strategy.value);
+  if (strategy.value?.name) {
+    form.value.strategies = [];
+    form.value.strategies.push(strategy.value);
+    const symbol =
+      strategy.value.params.symbol ||
+      strategy.value.params.strategy.params.symbol;
+    form.value.symbol = symbol;
+  }
 }
 
 watch(
@@ -88,10 +101,6 @@ watch(
       .then(res => res.json())
       .then(data => {
         token.value = data.result;
-        console.log(
-          '🚀 ~ file: SetupVotingBasic.vue ~ line 85 ~ data.result;',
-          data.result
-        );
       });
   },
   { deep: true }
@@ -114,7 +123,7 @@ watch(
             focus-on-mount
           />
           <div>
-            <div class="flex">
+            <div class="mb-1 flex">
               <BaseSwitch v-model="isSybil" /> Enable sybil protection
             </div>
 
