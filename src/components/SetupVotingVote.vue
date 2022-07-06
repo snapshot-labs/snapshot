@@ -99,6 +99,11 @@ function nextStep() {
   emit('next');
   form.value.strategies = [];
   form.value.strategies.push(strategy.value);
+  const symbol =
+    strategy.value.params.symbol ||
+    strategy.value.params.strategy.params.symbol ||
+    'VOTE';
+  form.value.symbol = symbol;
 }
 </script>
 

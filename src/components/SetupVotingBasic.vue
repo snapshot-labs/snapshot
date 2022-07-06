@@ -36,17 +36,24 @@ function generateStrategyFromToken(token, network) {
   const strategy: {
     name: string;
     network: string;
-    params: { decimals?: string; network: string; address: string };
+    params: {
+      decimals?: string;
+      network: string;
+      address: string;
+      symbol: string;
+    };
   } = {
     name: '',
     network,
     params: {
       network: network,
-      address: token.contractAddress
+      address: token.contractAddress,
+      symbol: ''
     }
   };
 
   if (token.decimals) strategy.params.decimals = token.decimals;
+  if (token.symbol) strategy.params.symbol = token.symbol;
 
   if (token.type === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
@@ -78,6 +85,10 @@ function nextStep() {
   if (strategy.value?.name) {
     form.value.strategies = [];
     form.value.strategies.push(strategy.value);
+    const symbol =
+      strategy.value.params.symbol ||
+      strategy.value.params.strategy.params.symbol;
+    form.value.symbol = symbol;
   }
 }
 
