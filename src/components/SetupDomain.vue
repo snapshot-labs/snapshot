@@ -81,8 +81,8 @@ onMounted(() => resetForm());
         <span v-if="domainsWithoutExistingSpace.length">
           <br /><br />
           You will have to update a text record on one of your ENS domains, in
-          order to create a space. You can try the demo on the Rinkeby test
-          network first.
+          order to create a space. You can try the demo on the Rinkeby test mess
+          with things network first.
         </span>
         <span v-if="!domainsWithoutExistingSpace.length">
           <br /><br />

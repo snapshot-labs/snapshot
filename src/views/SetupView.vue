@@ -2,7 +2,6 @@
 import { onMounted, computed, ref, inject } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useModal } from '@/composables/useModal';
 import { useI18n } from '@/composables/useI18n';
 import {} from 'vue';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -16,8 +15,7 @@ import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const route = useRoute();
 const router = useRouter();
-const { web3, web3Account } = useWeb3();
-const { modalAccountOpen } = useModal();
+const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 
 const notify = inject<any>('notify');
@@ -27,6 +25,7 @@ const { form, validate, showAllValidationErrors, formatSpace } =
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
   if (Number(route.query.step) > 4) router.push({ query: { step: 4 } });
+  if (!web3Account.value) router.push({ query: { step: 1 } });
   setPageTitle('page.title.setup');
 });
 
@@ -134,7 +133,7 @@ async function handleSubmit() {
       <div class="px-4 md:px-0">
         <h1 class="mb-4" v-text="$t('setup.createASpace')" />
       </div>
-      <template v-if="web3Account || web3.authLoading">
+      <template v-if="web3Account || currentStep === 1">
         <SetupDomain v-if="currentStep === 1" />
 
         <SetupController
@@ -167,11 +166,6 @@ async function handleSubmit() {
           @create="handleSubmit"
         />
       </template>
-      <BaseBlock v-else>
-        <BaseButton class="w-full" primary @click="modalAccountOpen = true">
-          {{ $t('connectWallet') }}
-        </BaseButton>
-      </BaseBlock>
     </template>
   </TheLayout>
 </template>

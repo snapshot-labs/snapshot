@@ -27,7 +27,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
     <ListboxLabel>
       <LabelInput>{{ label }}</LabelInput>
     </ListboxLabel>
-    <div class="relative mt-1">
+    <div class="relative">
       <ListboxButton
         class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
         :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
