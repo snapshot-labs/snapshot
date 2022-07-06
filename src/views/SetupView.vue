@@ -9,7 +9,6 @@ import { useClient } from '@/composables/useClient';
 import { useStorage } from '@vueuse/core';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceController } from '@/composables/useSpaceController';
-import { refDebounced } from '@vueuse/core';
 import { clearStampCache } from '@/helpers/utils';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
@@ -42,8 +41,7 @@ function previousStep() {
 const creatingSpace = ref(false);
 
 const { t } = useI18n();
-const { pendingENSRecord, loadingTextRecord, uriAddress, loadUriAddress } =
-  useSpaceController();
+const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
 
 const isValid = computed(() => {
   return validate.value === true;
@@ -64,10 +62,6 @@ async function checkIfSpaceExists() {
 }
 
 const showPleaseWaitMessage = ref(false);
-const debouncedShowPleaseWaitMessage = refDebounced(
-  showPleaseWaitMessage,
-  4000
-);
 
 async function handleSubmit() {
   if (!isValid.value) return (showAllValidationErrors.value = true);
