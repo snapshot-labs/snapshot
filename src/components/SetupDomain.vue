@@ -51,7 +51,7 @@ const nextStep = key => {
   router.push({
     name: 'setup',
     params: { ens: key },
-    query: { step: 2 }
+    query: { step: 3 }
   });
 };
 
