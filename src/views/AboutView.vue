@@ -55,7 +55,7 @@ const socials = [
 
     <nav
       id="topnav"
-      class="fixed z-10 flex h-[70px] w-full items-center border-b"
+      class="fixed z-10 flex h-[70px] w-full items-center border-b bg-skin-bg"
     >
       <BaseContainer class="w-full !max-w-[1200px] pl-[50px]">
         <router-link :to="{ path: '/' }" class="flex items-center text-lg">
