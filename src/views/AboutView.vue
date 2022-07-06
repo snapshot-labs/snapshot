@@ -132,7 +132,7 @@ const socials = [
         >
           What is Snapshot
           <BaseLink
-            link="https://snapshot.org"
+            link="https://decrypt.co/resources/what-is-snapshot-the-decentralized-voting-system"
             class="text-snapshot"
             hide-external-icon
           >
@@ -141,7 +141,7 @@ const socials = [
           <br />
           Overview
           <BaseLink
-            link="https://snapshot.org"
+            link="https://www.daomasters.xyz/tools/snapshot"
             class="text-snapshot"
             hide-external-icon
           >
@@ -160,21 +160,21 @@ const socials = [
         >
           Knowledge base
           <BaseLink
-            link="https://snapshot.org"
+            link="https://docs.snapshot.org/"
             class="text-snapshot"
             hide-external-icon
             >Gitbook</BaseLink
           ><br />
           FAQ
           <BaseLink
-            link="https://snapshot.org"
+            link="https://github.com/snapshot-labs/snapshot/discussions"
             class="text-snapshot"
             hide-external-icon
             >GitHub Discussions</BaseLink
           ><br />
           Source
           <BaseLink
-            link="https://snapshot.org"
+            link="https://github.com/snapshot-labs"
             class="text-snapshot"
             hide-external-icon
             >GitHub</BaseLink
