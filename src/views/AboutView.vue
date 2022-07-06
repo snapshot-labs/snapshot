@@ -45,22 +45,22 @@ const socials = [
   <div class="bg-skin-bg">
     <img
       src="/about/main.png"
-      class="absolute right-0 top-[170px] w-[33vw] min-w-[200px] max-w-[424px]"
+      class="absolute right-0 top-[170px] hidden w-[33vw] min-w-[200px] max-w-[424px] sm:block"
     />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[600px] top-[150px] w-[10vw] min-w-[100px] max-w-[135px] xl:right-[680px] xl:top-[230px]"
+      class="absolute right-[200px] top-[500px] hidden w-[10vw] min-w-[100px] max-w-[135px] sm:block md:right-[600px] md:top-[150px] xl:right-[680px] xl:top-[230px]"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[400px] top-[700px] xl:right-[490px] xl:top-[870px]"
+      class="absolute right-[150px] top-[850px] hidden sm:block md:right-[400px] md:top-[700px] xl:right-[490px] xl:top-[870px]"
     />
 
     <nav
       id="topnav"
       class="fixed z-10 flex h-[70px] w-full items-center border-b bg-skin-bg"
     >
-      <BaseContainer class="w-full !max-w-[1200px] pl-[50px]">
+      <BaseContainer class="w-full !max-w-[1200px] pl-4 sm:pl-[50px]">
         <router-link :to="{ path: '/' }" class="flex items-center text-lg">
           <BaseIcon size="32" name="snapshot" class="mr-1 text-snapshot" />
           snapshot
@@ -68,18 +68,18 @@ const socials = [
       </BaseContainer>
     </nav>
 
-    <div id="content" class="flex pt-[70px]">
+    <div id="content" class="flex pt-[70px] pl-0 sm:pl-6">
       <BaseContainer class="w-full !max-w-[1200px] border-l pl-0 font-mono">
         <h1
-          class="relative mt-[250px] ml-[50px] text-[50px] font-bold leading-[4rem] text-creme xl:mt-[135px]"
+          class="relative ml-4 mt-5 text-2xl font-bold leading-[2.75rem] text-creme sm:ml-[50px] sm:text-[50px] sm:leading-[4rem] md:mt-[250px] xl:mt-[135px]"
         >
           <div
-            class="absolute top-[30px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[20px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme sm:top-[30px]"
           ></div>
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-full pl-4 text-base leading-5 text-gray-300 sm:max-w-[60vw] sm:pl-[50px] sm:text-md sm:leading-6 md:max-w-3xl"
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
@@ -92,14 +92,16 @@ const socials = [
           </router-link>
         </div>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-4 text-lg font-bold text-creme sm:ml-[50px]"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           ></div>
           For DAOs, Voting should be a snap
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-full max-w-3xl pl-4 text-base leading-5 text-gray-300 sm:w-[600px] sm:pl-[50px] sm:text-md sm:leading-6"
         >
           Creating proposals and voting on Snapshot is user-friendly and does
           not cost gas as the process is securely performed off-chain.
@@ -122,14 +124,16 @@ const socials = [
           </BaseLink>
         </div>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-4 text-lg font-bold text-creme sm:ml-[50px]"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           ></div>
           Read
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] max-w-3xl pl-4 text-base leading-5 text-gray-300 sm:pl-[50px] sm:text-md sm:leading-6"
         >
           What is Snapshot
           <BaseLink
@@ -150,14 +154,16 @@ const socials = [
           </BaseLink>
         </p>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-4 text-lg font-bold text-creme sm:ml-[50px]"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           ></div>
           Explore
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[100px] max-w-3xl pl-4 text-base leading-5 text-gray-300 sm:mb-[50px] sm:pl-[50px] sm:text-md sm:leading-6"
         >
           Knowledge base
           <BaseLink
@@ -184,7 +190,7 @@ const socials = [
       </BaseContainer>
     </div>
 
-    <footer class="fixed right-5 bottom-4 space-x-2">
+    <footer class="space-x-2 p-4 sm:fixed sm:right-0 sm:bottom-0">
       <BaseLink
         v-for="social in socials"
         :key="social"
