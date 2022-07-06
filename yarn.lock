@@ -1894,10 +1894,10 @@
     "@vue/compiler-dom" "3.2.37"
     "@vue/shared" "3.2.37"
 
-"@vue/devtools-api@^6.0.0", "@vue/devtools-api@^6.0.0-beta.7":
-  version "6.0.12"
-  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.0.12.tgz#7b57cce215ae9f37a86984633b3aa3d595aa5b46"
-  integrity sha512-iO/4FIezHKXhiDBdKySCvJVh8/mZPxHpiQrTy+PXVqJZgpTPTdHy4q8GXulaY+UKEagdkBb0onxNQZ0LNiqVhw==
+"@vue/devtools-api@^6.0.0-beta.7", "@vue/devtools-api@^6.1.4":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@vue/devtools-api/-/devtools-api-6.2.0.tgz#e3dc98a0cce8e87292745e2d24c9ee8c274a023b"
+  integrity sha512-pF1G4wky+hkifDiZSWn8xfuLOJI1ZXtuambpBEYaf7Xaf6zC/pM29rvAGpd3qaGXnr4BAXU1Pxz/VfvBGwexGA==
 
 "@vue/eslint-config-prettier@^6.0.0":
   version "6.0.0"
@@ -1961,10 +1961,10 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.2.37.tgz#8e6adc3f2759af52f0e85863dfb0b711ecc5c702"
   integrity sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==
 
-"@vue/test-utils@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.1.tgz#7b0b0dff7b4fd3102d584c173f525eda2f8cfb9e"
-  integrity sha512-4kt7Sw1gzXeQOsMqrwrQbmEiG8El4MP8P4hfxkmfXdUHf7yHa3xC5CQc0x2YyuhT41w2d4K4O0ZdRvZhGdZlow==
+"@vue/test-utils@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@vue/test-utils/-/test-utils-2.0.2.tgz#0b5edd683366153d5bc5a91edc62f292118710eb"
+  integrity sha512-E2P4oXSaWDqTZNbmKZFVLrNN/siVN78YkEqs7pHryWerrlZR9bBFLWdJwRoguX45Ru6HxIflzKl4vQvwRMwm5g==
 
 "@vueuse/core@^8.8.0":
   version "8.8.0"
@@ -7916,12 +7916,12 @@ vue-i18n@^9.1.10:
     "@intlify/vue-devtools" "9.1.10"
     "@vue/devtools-api" "^6.0.0-beta.7"
 
-vue-router@^4.0.16:
-  version "4.0.16"
-  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.0.16.tgz#9477beeeef36e80e04d041a1738801a55e6e862e"
-  integrity sha512-JcO7cb8QJLBWE+DfxGUL3xUDOae/8nhM1KVdnudadTAORbuxIC/xAydC5Zr/VLHUDQi1ppuTF5/rjBGzgzrJNA==
+vue-router@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-4.1.1.tgz#90cc533efafdcf90d157bdc20a376760cdb59c10"
+  integrity sha512-Wp1mEf2xCwT0ez7o9JvgpfBp9JGnVb+dPERzXDbugTatzJAJ60VWOhJKifQty85k+jOreoFHER4r5fu062PhPw==
   dependencies:
-    "@vue/devtools-api" "^6.0.0"
+    "@vue/devtools-api" "^6.1.4"
 
 vue-tippy@^6.0.0-alpha.60:
   version "6.0.0-alpha.60"
