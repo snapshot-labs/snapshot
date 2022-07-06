@@ -19,10 +19,6 @@ const { web3Account } = useWeb3();
       To create a space, you need to have a ENS domain name. This domain will be
       the unique name to your space and allow you to set the space controller.
 
-      <h4>Controller</h4>
-      The controller is the ethereum account that will be used to control the
-      space. You will be able to set it in your ENS domain as a text record.
-
       <h4>Voting types and stategies</h4>
       There are two main settings you can use to control how results are
       calculated. The first is the voting strategy. This is how the weight of
