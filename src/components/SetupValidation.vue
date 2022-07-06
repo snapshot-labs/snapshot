@@ -37,28 +37,5 @@ const emit = defineEmits(['create', 'back']);
     class="mt-4"
     @create="emit('create')"
   />
-  <!--   <div class="mx-4 md:mx-0">
-  <div>
-      <BaseMessage
-        v-if="
-          uriAddress &&
-          uriAddress !== web3Account &&
-          !loadingTextRecord &&
-          !pendingENSRecord
-        "
-        level="warning"
-        class="!mt-4"
-      >
-        {{ $t('setup.notControllerAddress', { wallet: shorten(uriAddress) }) }}
-      </BaseMessage>
-      <BaseMessage
-        v-else-if="debouncedShowPleaseWaitMessage && creatingSpace"
-        level="info"
-        class="!mt-4"
-      >
-        {{ $t('setup.pleaseWaitMessage') }}
-      </BaseMessage>
-    </div>
-  </div> -->
   <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
 </template>

@@ -8,14 +8,8 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useStorage } from '@vueuse/core';
 
 const { env } = useApp();
-
-const showSetupDomainDismissable = useStorage(
-  'snapshot.showSetupDomainDismissable',
-  true
-);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
@@ -72,40 +66,17 @@ onMounted(() => resetForm());
   <div>
     <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
     <div v-else>
-      <h4>Setup your space domain</h4>
-      <BaseBlock v-if="showSetupDomainDismissable" class="relative my-3">
-        <h3 class="mt-0 font-mono">ENS domain</h3>
-        One thing you need, before you can create your own space, is an ENS
-        domain. It is required to store information about your space as well as
-        a matter of bot protection.
-        <span v-if="domainsWithoutExistingSpace.length">
-          <br /><br />
-          You will have to update a text record on one of your ENS domains, in
-          order to create a space. You can try the demo on the Rinkeby test
-          network first.
+      <h4 class="mb-2">Setup your space domain</h4>
+      <BaseMessage class="mb-3" level="info">
+        One thing you need before you can create your own space, is an ENS
+        domain on Ethreum mainnet.
+
+        <span v-if="env !== 'demo'">
+          You can also
+          <BaseLink link="https://demo.snapshot.org"> try the demo </BaseLink>
+          on the Rinkeby testnet and mess with things there first.
         </span>
-        <span v-if="!domainsWithoutExistingSpace.length">
-          <br /><br />
-          An ENS domain is a human readable name for an address. Registering one
-          <u>costs ETH</u>. If you are not familiar with ENS yet, take a moment
-          to read about it and try the demo on the Rinkeby test network first.
-        </span>
-        <div class="mt-4 space-x-3">
-          <BaseButton v-if="env !== 'demo'" primary> Try demo </BaseButton>
-          <BaseButton
-            v-if="!domainsWithoutExistingSpace.length"
-            @click="$router.push({ name: 'about' })"
-          >
-            About ENS
-          </BaseButton>
-        </div>
-        <BaseButtonIcon
-          class="absolute right-3 top-3"
-          @click="showSetupDomainDismissable = false"
-        >
-          <i-ho-x class="text-base" />
-        </BaseButtonIcon>
-      </BaseBlock>
+      </BaseMessage>
       <BaseMessage v-if="defaultNetwork === '4'" level="info" class="my-3">
         {{
           $t('setup.demoTestnetEnsMessage', {

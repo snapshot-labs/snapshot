@@ -22,8 +22,6 @@ const selectedSybilItems = ref<{ id: number; name: string }[]>(
 
 const emit = defineEmits(['next']);
 
-// const isMultiplier = ref(false);
-
 const token = ref(null);
 
 const strategy = computed(() => {
@@ -150,19 +148,6 @@ watch(
               </template>
             </BaseListboxMultiple>
           </div>
-          <!-- <div>
-            <div class="flex">
-              <BaseSwitch v-model="isMultiplier" /> Enable multiplier
-            </div>
-            <BaseInput
-              class="mt-1"
-              :class="{
-                'cursor-not-allowed placeholder:text-skin-border': !isMultiplier
-              }"
-              :disabled="!isMultiplier"
-              placeholder="Enter multiplier"
-            />
-          </div> -->
         </div>
         <div>
           <LabelInput>Token info</LabelInput>

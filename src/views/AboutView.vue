@@ -78,13 +78,11 @@ const socials = [
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
         >
-          Snapshot is a voting protocol for DAOs.<br />
-          It provides flexibility on how voting power<br />
-          is calculated for a vote. Snapshot supports<br />
-          various voting types to cater to the needs<br />
-          of any group or organization.
+          Snapshot is the home of your community's governance. It's a place
+          where you can create proposals, weigh voting power in flexable ways,
+          vote completely off-chain, and finally execute decisions on-chain.
         </p>
         <div class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
@@ -100,18 +98,17 @@ const socials = [
           For DAOs, Voting should be a snap
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
         >
-          Creating proposals and voting on Snapshot<br />
-          is user-friendly and does not cost gas as<br />
-          the process is securely performed off-chain.
+          Creating proposals and voting on Snapshot is user-friendly and does
+          not cost gas as the process is securely performed off-chain.
         </p>
         <div class="mb-4 flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <router-link :to="{ path: '/setup' }">
-            <BaseButton class="origin-left scale-110"
-              >Create a space</BaseButton
-            >
+            <BaseButton class="origin-left scale-110">
+              Create a space
+            </BaseButton>
           </router-link>
         </div>
         <div class="flex items-center">
@@ -135,18 +132,21 @@ const socials = [
         >
           What is Snapshot
           <BaseLink
-            link="https://snapshot.org"
+            link="https://decrypt.co/resources/what-is-snapshot-the-decentralized-voting-system"
             class="text-snapshot"
             hide-external-icon
-            >Decrypt</BaseLink
-          ><br />
+          >
+            Decrypt
+          </BaseLink>
+          <br />
           Overview
           <BaseLink
-            link="https://snapshot.org"
+            link="https://www.daomasters.xyz/tools/snapshot"
             class="text-snapshot"
             hide-external-icon
-            >Daomasters</BaseLink
           >
+            Daomasters
+          </BaseLink>
         </p>
 
         <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
@@ -160,21 +160,21 @@ const socials = [
         >
           Knowledge base
           <BaseLink
-            link="https://snapshot.org"
+            link="https://docs.snapshot.org/"
             class="text-snapshot"
             hide-external-icon
             >Gitbook</BaseLink
           ><br />
           FAQ
           <BaseLink
-            link="https://snapshot.org"
+            link="https://github.com/snapshot-labs/snapshot/discussions"
             class="text-snapshot"
             hide-external-icon
             >GitHub Discussions</BaseLink
           ><br />
           Source
           <BaseLink
-            link="https://snapshot.org"
+            link="https://github.com/snapshot-labs"
             class="text-snapshot"
             hide-external-icon
             >GitHub</BaseLink
