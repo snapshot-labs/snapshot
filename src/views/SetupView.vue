@@ -134,33 +134,35 @@ async function handleSubmit() {
         <h1 class="mb-4" v-text="$t('setup.createASpace')" />
       </div>
       <template v-if="web3Account || currentStep === 1">
-        <SetupDomain v-if="currentStep === 1" />
+        <SetupIntro v-if="currentStep === 1" />
+
+        <SetupDomain v-if="currentStep === 2" />
 
         <SetupController
-          v-else-if="currentStep === 2 && route.params.ens"
+          v-else-if="currentStep === 3 && route.params.ens"
           :web3-account="web3Account"
         />
 
         <SetupProfile
-          v-else-if="currentStep === 3 && route.params.ens"
+          v-else-if="currentStep === 4 && route.params.ens"
           :web3-account="web3Account"
           @next="nextStep"
         />
 
         <SetupVoting
-          v-else-if="currentStep === 4 && route.params.ens"
+          v-else-if="currentStep === 5 && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupCustomdomain
-          v-else-if="currentStep === 5 && route.params.ens"
+          v-else-if="currentStep === 6 && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
         <SetupValidation
-          v-else-if="currentStep === 6 && route.params.ens"
+          v-else-if="currentStep === 7 && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
           @create="handleSubmit"
