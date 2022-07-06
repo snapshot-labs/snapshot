@@ -75,8 +75,10 @@ function generateStrategyFromToken(token, network) {
 
 function nextStep() {
   emit('next');
-  form.value.strategies = [];
-  form.value.strategies.push(strategy.value);
+  if (strategy.value?.name) {
+    form.value.strategies = [];
+    form.value.strategies.push(strategy.value);
+  }
 }
 
 watch(
@@ -88,10 +90,6 @@ watch(
       .then(res => res.json())
       .then(data => {
         token.value = data.result;
-        console.log(
-          '🚀 ~ file: SetupVotingBasic.vue ~ line 85 ~ data.result;',
-          data.result
-        );
       });
   },
   { deep: true }

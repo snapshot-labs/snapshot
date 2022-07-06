@@ -11,8 +11,8 @@ const votingStep = ref(1);
     <div v-if="votingStep === 1" class="space-y-3">
       <h4>How would you like to setup your voting strategy?</h4>
       <ButtonCard title="One person one vote" @click="votingStep = 2">
-        Manage a whitelist of people who can vote or set sybil protection rules.
-        Every vote is equal and there is no need for a token
+        Manage a whitelist of people who can vote or simply set sybil protection
+        rules. Every vote is equal and there is no need for a token
       </ButtonCard>
       <ButtonCard title="Token weighted voting" @click="votingStep = 3">
         Votes are weighted by a token. The token can be an ERC-20 or ERC-721
