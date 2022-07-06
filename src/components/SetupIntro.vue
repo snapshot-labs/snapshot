@@ -14,19 +14,6 @@ const { web3Account } = useWeb3();
       off-chain, and finally execute decisions on-chain.
 
       <SetupMessageHelp />
-
-      <h4>Voting types and stategies</h4>
-      There are two main settings you can use to control how results are
-      calculated. The first is the voting strategy. This is how the weight of
-      each vote is set before it is calculated by the voting type. The second is
-      the voting type. This is how the vote is casted and the results are
-      calculated.
-
-      <h4>Validation</h4>
-      Valiadtion allows you to determine who can create a proposal in your
-      space. The default is to allow anyone to create a proposal. You can also
-      set a whitelist of accounts that can create proposals or a minimum
-      threshold of tokens that must be held to create a proposal.
     </div>
     <BaseButton
       primary
