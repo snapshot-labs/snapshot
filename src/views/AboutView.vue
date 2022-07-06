@@ -43,14 +43,17 @@ const socials = [
 
 <template>
   <div class="bg-skin-bg">
-    <img src="/about/main.png" class="absolute right-0 top-[170px] z-10" />
+    <img
+      src="/about/main.png"
+      class="absolute right-0 top-[170px] w-[33vw] min-w-[200px] max-w-[424px]"
+    />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[680px] top-[230px] z-10"
+      class="absolute right-[600px] top-[150px] w-[10vw] min-w-[100px] max-w-[135px] xl:right-[680px] xl:top-[230px]"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[490px] top-[870px] z-10"
+      class="absolute right-[400px] top-[700px] xl:right-[490px] xl:top-[870px]"
     />
 
     <nav
@@ -66,11 +69,9 @@ const socials = [
     </nav>
 
     <div id="content" class="flex pt-[70px]">
-      <BaseContainer
-        class="z-20 w-full !max-w-[1200px] border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
-      >
+      <BaseContainer class="w-full !max-w-[1200px] border-l pl-0 font-mono">
         <h1
-          class="relative mt-[135px] ml-[50px] text-[50px] font-bold leading-[4rem] text-creme"
+          class="relative mt-[250px] ml-[50px] text-[50px] font-bold leading-[4rem] text-creme xl:mt-[135px]"
         >
           <div
             class="absolute top-[30px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
