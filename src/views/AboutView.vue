@@ -42,20 +42,20 @@ const socials = [
 </script>
 
 <template>
-  <div>
-    <img src="/about/main.png" class="absolute right-0 top-[170px]" />
+  <div class="bg-skin-bg">
+    <img src="/about/main.png" class="absolute right-0 top-[170px] z-10" />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[680px] top-[230px]"
+      class="absolute right-[680px] top-[230px] z-10"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[490px] top-[870px]"
+      class="absolute right-[490px] top-[870px] z-10"
     />
 
     <nav
       id="topnav"
-      class="fixed z-10 flex h-[70px] w-full items-center border-b bg-skin-bg"
+      class="fixed z-10 flex h-[70px] w-full items-center border-b"
     >
       <BaseContainer class="w-full !max-w-[1200px] pl-[50px]">
         <router-link :to="{ path: '/' }" class="flex items-center text-lg">
@@ -65,9 +65,9 @@ const socials = [
       </BaseContainer>
     </nav>
 
-    <div id="content" class="flex bg-skin-bg pt-[70px]">
+    <div id="content" class="flex pt-[70px]">
       <BaseContainer
-        class="w-full !max-w-[1200px] border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
+        class="z-20 w-full !max-w-[1200px] border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
       >
         <h1
           class="relative mt-[135px] ml-[50px] text-[50px] font-bold leading-[4rem] text-creme"
