@@ -43,22 +43,28 @@ const socials = [
 
 <template>
   <div>
-    <img src="/about/main.png" class="absolute right-0 top-[170px]" />
+    <img
+      src="/about/main.png"
+      class="absolute -right-[54px] top-[60px] scale-75"
+    />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[680px] top-[230px]"
+      class="absolute right-[440px] top-[190px] scale-75"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[490px] top-[870px]"
+      class="absolute right-[400px] top-[650px] scale-75"
     />
 
     <nav
       id="topnav"
       class="fixed z-10 flex h-[70px] w-full items-center border-b bg-skin-bg"
     >
-      <BaseContainer class="w-full !max-w-[1200px] pl-[50px]">
-        <router-link :to="{ path: '/' }" class="flex items-center text-lg">
+      <BaseContainer class="w-full pl-[50px]">
+        <router-link
+          :to="{ path: '/' }"
+          class="flex items-center text-lg font-normal"
+        >
           <BaseIcon size="32" name="snapshot" class="mr-1 text-snapshot" />
           snapshot
         </router-link>
@@ -67,18 +73,18 @@ const socials = [
 
     <div id="content" class="flex bg-skin-bg pt-[70px]">
       <BaseContainer
-        class="w-full !max-w-[1200px] border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
+        class="w-full border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
       >
         <h1
-          class="relative mt-[135px] ml-[50px] text-[50px] font-bold leading-[4rem] text-creme"
+          class="relative mt-[135px] ml-[50px] text-[40px] font-bold leading-[3rem] tracking-wider text-creme"
         >
           <div
             class="absolute top-[30px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          ></div>
+          />
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[610px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-[501px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
@@ -91,14 +97,16 @@ const socials = [
           </router-link>
         </div>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          ></div>
+          />
           For DAOs, Voting should be a snap
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
         >
           Creating proposals and voting on Snapshot is user-friendly and does
           not cost gas as the process is securely performed off-chain.
@@ -121,14 +129,16 @@ const socials = [
           </BaseLink>
         </div>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          ></div>
+          />
           Read
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-sm leading-6 text-gray-300 !text-skin-text"
         >
           What is Snapshot
           <BaseLink
@@ -149,14 +159,16 @@ const socials = [
           </BaseLink>
         </p>
 
-        <h1 class="relative mt-[96px] ml-[50px] text-lg font-bold text-creme">
+        <h1
+          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
+        >
           <div
             class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          ></div>
+          />
           Explore
         </h1>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-sm leading-6 text-gray-300 !text-skin-text"
         >
           Knowledge base
           <BaseLink
