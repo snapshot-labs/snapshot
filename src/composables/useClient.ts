@@ -49,6 +49,7 @@ export function useClient() {
       }
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
+      console.log(e);
       const errorMessage =
         e && e.error_description
           ? `Oops, ${e.error_description}`
@@ -61,6 +62,7 @@ export function useClient() {
   }
 
   async function sendEIP712(space, type, payload) {
+    console.log('sendEIP712', space, type);
     if (type === 'proposal') {
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)
@@ -94,6 +96,48 @@ export function useClient() {
         space: space.id,
         settings: JSON.stringify(payload)
       });
+    } else if (type === 'newDelegationRequest') {
+      console.log('sending to sign');
+      console.log(payload);
+      return clientEIP712.sign(
+        auth.web3,
+        web3.value.account,
+        {
+          ...payload
+        },
+        {
+          NewDelegationRequest: [
+            { name: 'from', type: 'address' },
+            { name: 'timestamp', type: 'uint64' },
+            { name: 'space', type: 'string' },
+            { name: 'iam', type: 'string' },
+            { name: 'title', type: 'string' },
+            { name: 'description', type: 'string' },
+            { name: 'rewardPriceOffer', type: 'string' },
+            { name: 'maxReward', type: 'string' },
+            { name: 'expires', type: 'uint64' }
+          ]
+        }
+      );
+    } else if (type === 'delegateTo') {
+      console.log('sending to sign');
+      console.log(payload);
+      return clientEIP712.sign(
+        auth.web3,
+        web3.value.account,
+        {
+          ...payload
+        },
+        {
+          DelegateTo: [
+            { name: 'from', type: 'address' },
+            { name: 'timestamp', type: 'uint64' },
+            { name: 'delegate', type: 'string' },
+            { name: 'space', type: 'string' },
+            { name: 'requestID', type: 'string' }
+          ]
+        }
+      );
     }
   }
 

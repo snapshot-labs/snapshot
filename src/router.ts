@@ -2,6 +2,9 @@ import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 import { useApp } from '@/composables/useApp';
 
 import DelegateView from '@/views/DelegateView.vue';
+import DelegationPortalView from '@/views/DelegationPortalView.vue';
+import LobbyView from '@/views/LobbyView.vue';
+import LobotView from '@/views/LobotView.vue';
 import ExploreView from '@/views/ExploreView.vue';
 import HomeView from '@/views/HomeView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
@@ -90,6 +93,21 @@ if (domain) {
     { path: '/', name: 'home', component: SpaceView, children: spaceRoutes },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     {
+      path: '/delegationPortal/:key?/',
+      name: 'delegationPortal',
+      component: DelegationPortalView
+    },
+    {
+      path: '/lobby/:key?/',
+      name: 'lobby',
+      component: LobbyView
+    },
+    {
+      path: '/lobot/:key?/',
+      name: 'lobot',
+      component: LobotView
+    },
+    {
       path: '/playground/:name',
       name: 'playground',
       component: PlaygroundView
@@ -117,6 +135,21 @@ if (domain) {
     { path: '/strategies', name: 'strategies', component: ExploreView },
     { path: '/plugins', name: 'plugins', component: ExploreView },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
+    {
+      path: '/delegationPortal/:key?/',
+      name: 'delegationPortal',
+      component: DelegationPortalView
+    },
+    {
+      path: '/lobby/:key?/',
+      name: 'lobby',
+      component: LobbyView
+    },
+    {
+      path: '/lobot/:key?/',
+      name: 'lobot',
+      component: LobotView
+    },
     { path: '/timeline', name: 'timeline', component: TimelineView },
     { path: '/explore', name: 'explore', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },

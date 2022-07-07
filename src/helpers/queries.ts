@@ -366,3 +366,62 @@ export const PROFILES_QUERY = gql`
     }
   }
 `;
+
+export const SPACE_DELEGATIONS_REQUEST = gql`
+  query DelegationRequests($space: String!, $first: Int, $skip: Int) {
+    delegationRequests(first: $first, skip: $skip, where: { space: $space }) {
+      id
+      iam
+      space
+      user
+      created
+      expires
+      title
+      description
+    }
+  }
+`;
+
+export const MY_DELEGATIONS_QUERY = gql`
+  query delegations(
+    $delegator: String!
+    $space: String!
+    $first: Int
+    $skip: Int
+  ) {
+    delegations(
+      first: $first
+      skip: $skip
+      where: { space: $space, delegator: $delegator }
+    ) {
+      id
+      currentDelegate
+      space
+      delegator
+      delegate
+      created
+    }
+  }
+`;
+
+export const MY_DELEGATORS_QUERY = gql`
+  query delegations(
+    $delegate: String!
+    $space: String!
+    $first: Int
+    $skip: Int
+  ) {
+    delegations(
+      first: $first
+      skip: $skip
+      where: { space: $space, currentDelegate: $delegate }
+    ) {
+      id
+      currentDelegate
+      space
+      delegator
+      delegate
+      created
+    }
+  }
+`;

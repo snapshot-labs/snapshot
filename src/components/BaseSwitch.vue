@@ -5,6 +5,7 @@ defineProps<{
   modelValue: boolean;
   label?: string;
   textRight?: string;
+  textLeft?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -12,6 +13,8 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <div class="flex items-center space-x-2 pr-2">
+    <span v-if="textLeft">{{ textLeft }}</span>
+
     <Switch
       :model-value="modelValue"
       :class="modelValue ? 'bg-green' : 'bg-skin-border'"
