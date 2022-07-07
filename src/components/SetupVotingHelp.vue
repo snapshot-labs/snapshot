@@ -1,24 +1,22 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-const helpStep = ref(1);
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <SetupMessageHelp v-if="helpStep === 1" class="mb-4" />
+  <SetupMessageHelp class="mb-4" />
 
   <div class="space-y-3">
-    <template v-if="helpStep === 1">
-      <h4>Get consulting from an expert</h4>
-      <ButtonCard title="I need a token" @click="helpStep = 2">
-        Fill out a quick form where you can tell us all about the token that you
-        need and we will get back to you soon
+    <h4 class="mb-2">Get consulting</h4>
+    <BaseLink
+      link="https://docs.google.com/forms/d/e/1FAIpQLSeFzedMEFPWctHPV8nDNpMWSea3MB0GrIgrILxELyHNAD76zA/viewform"
+      hide-external-icon
+    >
+      <ButtonCard
+        title="HamsterDAO consulting"
+        class="whitespace-normal text-skin-text"
+      >
+        HamsterDAO offers consulting services for companies and communities that
+        want to become a DAO. Fill out a quick form, so we can get in touch with
+        you.
       </ButtonCard>
-      <ButtonCard title="I need a strategy" @click="helpStep = 3">
-        Fill out a quick form where you can tell us all about the voting
-        strategy that you need and we will get back to you soon
-      </ButtonCard>
-    </template>
-    <SetupVotingHelpFormToken v-if="helpStep === 2" />
-    <SetupVotingHelpFormStrategy v-if="helpStep === 3" />
+    </BaseLink>
   </div>
 </template>
