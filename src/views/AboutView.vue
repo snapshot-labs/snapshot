@@ -45,15 +45,15 @@ const socials = [
   <div>
     <img
       src="/about/main.png"
-      class="absolute -right-[54px] top-[56px] scale-75"
+      class="absolute -right-[54px] top-[56px] scale-75 2xl:top-[136px] 2xl:scale-100"
     />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[440px] top-[180px] scale-75"
+      class="absolute right-[440px] top-[180px] scale-75 2xl:right-[640px] 2xl:scale-100"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[370px] top-[650px] scale-75"
+      class="absolute right-[370px] top-[650px] scale-75 2xl:right-[470px] 2xl:scale-100"
     />
 
     <nav

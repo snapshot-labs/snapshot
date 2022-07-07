@@ -42,7 +42,8 @@ module.exports = {
       sm: '544px',
       md: '768px',
       lg: '1012px',
-      xl: '1280px'
+      xl: '1280px',
+      '2xl': '1536px'
     },
     fontFamily: {
       sans: [
