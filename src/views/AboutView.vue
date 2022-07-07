@@ -65,7 +65,11 @@ const socials = [
           :to="{ path: '/' }"
           class="flex items-center text-lg font-normal"
         >
-          <BaseIcon size="32" name="snapshot" class="mr-1 text-snapshot" />
+          <BaseIcon
+            size="32"
+            name="snapshot"
+            class="absolute left-[147px] mr-1 text-snapshot"
+          />
           snapshot
         </router-link>
       </BaseContainer>
@@ -79,7 +83,7 @@ const socials = [
           class="relative mt-[135px] ml-[50px] text-[40px] font-bold leading-[3rem] tracking-wider text-creme"
         >
           <div
-            class="absolute top-[30px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           />
           Where decisions<br />get made
         </h1>
@@ -101,9 +105,9 @@ const socials = [
           class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
         >
           <div
-            class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           />
-          For DAOs, Voting should be a snap
+          For DAOs, voting should be a snap
         </h1>
         <p
           class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
@@ -133,7 +137,7 @@ const socials = [
           class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
         >
           <div
-            class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           />
           Read
         </h1>
@@ -163,7 +167,7 @@ const socials = [
           class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
         >
           <div
-            class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           />
           Explore
         </h1>
