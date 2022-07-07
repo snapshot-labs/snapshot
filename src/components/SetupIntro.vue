@@ -24,7 +24,7 @@ const { web3Account } = useWeb3();
           : $router.push({ query: { step: 2 } })
       "
     >
-      Next
+      Get started
     </BaseButton>
   </div>
 </template>
