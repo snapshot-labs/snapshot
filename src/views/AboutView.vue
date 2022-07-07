@@ -78,7 +78,7 @@ const socials = [
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[600px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
+          class="mt-4 mb-[50px] w-[610px] max-w-3xl pl-[50px] text-md leading-6 text-gray-300"
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
