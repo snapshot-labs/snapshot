@@ -65,12 +65,14 @@ const socials = [
           :to="{ path: '/' }"
           class="flex items-center text-lg font-normal"
         >
-          <BaseIcon
-            size="32"
-            name="snapshot"
-            class="absolute left-[147px] mr-1 text-snapshot"
-          />
-          snapshot
+          <span class="relative">
+            snapshot
+            <BaseIcon
+              size="32"
+              name="snapshot"
+              class="absolute right-[124px] mr-1 text-snapshot"
+            />
+          </span>
         </router-link>
       </BaseContainer>
     </nav>
