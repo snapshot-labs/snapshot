@@ -70,7 +70,7 @@ const socials = [
             <BaseIcon
               size="32"
               name="snapshot"
-              class="absolute right-[124px] mr-1 text-snapshot"
+              class="absolute right-[118px] mr-1 text-snapshot"
             />
           </span>
         </router-link>
