@@ -195,7 +195,7 @@ const socials = [
       </BaseContainer>
     </div>
 
-    <footer class="fixed right-5 bottom-4 space-x-2">
+    <footer class="space-x-2 p-4 sm:fixed sm:right-0 sm:bottom-0">
       <BaseLink
         v-for="social in socials"
         :key="social"
