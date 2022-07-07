@@ -4,7 +4,7 @@ defineProps<{
 }>();
 
 const steps = [
-  { name: 'Introduction' },
+  { name: 'Getting started' },
   { name: 'ENS' },
   { name: 'Controller' },
   { name: 'Profile' },
