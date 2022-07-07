@@ -92,7 +92,7 @@ const socials = [
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
-          vote completely off-chain, and finally execute decisions on-chain.
+          vote completely off-chain.
         </p>
         <div class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
@@ -107,7 +107,7 @@ const socials = [
           <div
             class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
           />
-          For DAOs, voting should be a snap
+          For DAOs, governance should be a snap
         </h1>
         <p
           class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
