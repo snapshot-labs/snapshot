@@ -133,7 +133,7 @@ function nextStep() {
             </template>
           </BaseListbox>
           <div v-if="input.name === 'whitelist'">
-            <LabelInput> Whitelist addresses </LabelInput>
+            <LabelInput> Whitelisted addresses </LabelInput>
             <TextareaArray
               v-model="whitelist"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
