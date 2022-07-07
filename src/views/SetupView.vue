@@ -22,8 +22,8 @@ const { form, validate, showAllValidationErrors, formatSpace } =
 
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
-  if (Number(route.query.step) > 4) router.push({ query: { step: 4 } });
-  if (!web3Account.value) router.push({ query: { step: 1 } });
+  else if (Number(route.query.step) > 3) router.push({ query: { step: 4 } });
+  else if (!web3Account.value) router.push({ query: { step: 1 } });
   setPageTitle('page.title.setup');
 });
 
