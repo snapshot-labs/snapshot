@@ -53,7 +53,7 @@ const socials = [
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[400px] top-[650px] scale-75"
+      class="absolute right-[370px] top-[650px] scale-75"
     />
 
     <nav
