@@ -1,3 +1,5 @@
+import { getProposalVotes } from '../../helpers/snapshot';
+
 // URLS
 const API_BASE_URL = 'https://api.poap.tech';
 const APP_BASE_URL = 'https://app.poap.xyz';
@@ -28,6 +30,14 @@ export default class Plugin {
       return { image_url, currentState: 'NOT_VOTED' };
     }
 
+    // Fetch the vote
+    const votes = await getProposalVotes(snapshot, { voter: address });
+    const voted = votes.length > 0;
+    if (!voted) {
+      // Address did not vote proposal
+      return { image_url, currentState: 'NOT_VOTED' };
+    }
+
     // Fetch the claim info for the address
     const addressResponse = await fetch(
       `${API_BASE_URL}/snapshot/proposal/${snapshot}/${address}`
@@ -37,10 +47,10 @@ export default class Plugin {
     if (!addressResponse.ok) {
       return { image_url, currentState: 'NOT_VOTED' };
     }
-    const { claimed, status, voted } = await addressResponse.json();
+    const { claimed, status } = await addressResponse.json();
 
     if (claimed) {
-      // If the address claim the token but the status is not passed
+      // If the address claimed the token but the status is not passed
       // it means that the token is being minted
       if (claimed && status !== 'passed') {
         return { image_url, currentState: 'LOADING' };
@@ -51,6 +61,7 @@ export default class Plugin {
       // The token is not claimed but the address voted
       return { image_url, currentState: 'UNCLAIMED' };
     }
+
     return { image_url, currentState: 'NOT_VOTED' };
   }
   async claim(snapshot, address) {
