@@ -1836,10 +1836,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.2.tgz#12ea7a42e6c83d5ea48e14dc41fd2bbb5806ee37"
   integrity sha512-umyypfSHS4kQLdYAnJHhaASq7FRzNCdvcRoQ3uYGNk1/M4a+hXUd7ysN7BLhCrWH6uBokyCkFeUAaFDzSaaSrQ==
 
-"@vitest/ui@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.17.0.tgz#eae811b4a95d58c2e882306789959261b101d055"
-  integrity sha512-R8Lhx865qG288eWuzzZQ1PSUmiU4kiU1/rvQ9K2o0jSREbAqN9oss37dDdbCHr2Y4WRmZ/u9BuuwrppbjVfuiA==
+"@vitest/ui@^0.17.1":
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.17.1.tgz#05cc2d5dae2467f215fadaa595331a87978b616b"
+  integrity sha512-B4PGDk5IZ10HT9GzR0NQ96VEphWY9dTf1yqBGNjPk2c7wQnhZJdHzv3tgFQiyFK5YR1cjtOV918QHCnptV4r5w==
   dependencies:
     sirv "^2.0.2"
 
