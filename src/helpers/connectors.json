@@ -9,9 +9,10 @@
     "network": "1",
     "options": {
       "rpc": {
-        "1": "https://cloudflare-eth.com",
-        "4": "https://eth-rinkeby.alchemyapi.io/v2/twReQE9Px03E-E_N_Fbb3OVF7YgHxoGq",
-        "42": "https://eth-kovan.alchemyapi.io/v2/QCsM2iU0bQ49eGDmZ7-Y--Wpu0lVWXSO"
+        "1": "https://rpc.brovider.xyz/1",
+        "4": "https://rpc.brovider.xyz/4",
+        "42": "https://rpc.brovider.xyz/42",
+        "10": "https://rpc.brovider.xyz/10"
       }
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
@@ -29,7 +30,7 @@
       "appName": "Snapshot",
       "darkMode": false,
       "chainId": 1,
-      "ethJsonrpcUrl": "https://cloudflare-eth.com"
+      "ethJsonrpcUrl": "https://rpc.brovider.xyz/1"
     },
     "icon": "ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q"
   },
