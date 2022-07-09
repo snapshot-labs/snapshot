@@ -1836,10 +1836,10 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.2.tgz#12ea7a42e6c83d5ea48e14dc41fd2bbb5806ee37"
   integrity sha512-umyypfSHS4kQLdYAnJHhaASq7FRzNCdvcRoQ3uYGNk1/M4a+hXUd7ysN7BLhCrWH6uBokyCkFeUAaFDzSaaSrQ==
 
-"@vitest/ui@^0.17.0":
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.17.0.tgz#eae811b4a95d58c2e882306789959261b101d055"
-  integrity sha512-R8Lhx865qG288eWuzzZQ1PSUmiU4kiU1/rvQ9K2o0jSREbAqN9oss37dDdbCHr2Y4WRmZ/u9BuuwrppbjVfuiA==
+"@vitest/ui@^0.17.1":
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.17.1.tgz#05cc2d5dae2467f215fadaa595331a87978b616b"
+  integrity sha512-B4PGDk5IZ10HT9GzR0NQ96VEphWY9dTf1yqBGNjPk2c7wQnhZJdHzv3tgFQiyFK5YR1cjtOV918QHCnptV4r5w==
   dependencies:
     sirv "^2.0.2"
 
@@ -7841,10 +7841,10 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-"vite@^2.9.12 || ^3.0.0-0", vite@^2.9.13:
-  version "2.9.13"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.13.tgz#859cb5d4c316c0d8c6ec9866045c0f7858ca6abc"
-  integrity sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==
+"vite@^2.9.12 || ^3.0.0-0", vite@^2.9.14:
+  version "2.9.14"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-2.9.14.tgz#c438324c6594afd1050df3777da981dee988bb1b"
+  integrity sha512-P/UCjSpSMcE54r4mPak55hWAZPlyfS369svib/gpmz8/01L822lMPOJ/RYW6tLCe1RPvMvOsJ17erf55bKp4Hw==
   dependencies:
     esbuild "^0.14.27"
     postcss "^8.4.13"
@@ -7860,10 +7860,10 @@ vitest-fetch-mock@^0.1.0:
   dependencies:
     cross-fetch "^3.0.6"
 
-vitest@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.17.0.tgz#fc676db0e0dda7a8e22eb9f0176cb8fc6132c33d"
-  integrity sha512-5YO9ubHo0Zg35mea3+zZAr4sCku32C3usvIH5COeJB48TZV/R0J9aGNtGOOqEWZYfOKP0pGZUvTokne3x/QEFg==
+vitest@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.17.1.tgz#0387535624538bfc1fe1a69fac617cca059428e2"
+  integrity sha512-d6NsFC6FPmZ5XdiSYfW5rwJ/b8060wqe2steNNlVbhO69HWma6CucIm5g7PXlCSkmKvrdEbUsZHPAarlH83VGw==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
