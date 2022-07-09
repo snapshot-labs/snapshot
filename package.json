@@ -69,7 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.0",
     "@vitejs/plugin-vue": "^2.3.2",
-    "@vitest/ui": "^0.17.0",
+    "@vitest/ui": "^0.17.1",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.2",
@@ -89,11 +89,11 @@
     "sass": "~1.53.0",
     "sass-loader": "^13.0.1",
     "start-server-and-test": "^1.14.0",
-    "tailwindcss": "^3.1.4",
+    "tailwindcss": "^3.1.5",
     "unplugin-vue-components": "^0.21.1",
     "vite": "^2.9.13",
     "unplugin-icons": "^0.14.7",
-    "vitest": "^0.17.0",
+    "vitest": "^0.17.1",
     "vitest-fetch-mock": "^0.1.0"
   },
   "resolutions": {
