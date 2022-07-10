@@ -136,7 +136,10 @@ export const NOTIFICATION_PROPOSALS_QUERY = gql`
 
 export const FOLLOWS_QUERY = gql`
   query Follows($space_in: [String], $follower_in: [String]) {
-    follows(where: { space_in: $space_in, follower_in: $follower_in }) {
+    follows(
+      where: { space_in: $space_in, follower_in: $follower_in }
+      first: 500
+    ) {
       id
       follower
       space {
