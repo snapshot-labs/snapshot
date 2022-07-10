@@ -94,7 +94,7 @@
     "vite": "^2.9.14",
     "unplugin-icons": "^0.14.7",
     "vitest": "^0.17.1",
-    "vitest-fetch-mock": "^0.1.0"
+    "vitest-fetch-mock": "^0.2.1"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
