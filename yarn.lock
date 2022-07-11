@@ -1217,10 +1217,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui/vue@^1.6.5":
-  version "1.6.5"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.6.5.tgz#d34005e7a19cac5cc95df82420a20bee529b65a1"
-  integrity sha512-C/BeTVuowTDLkGgUd6UfiPZVDLdR7OTnd8o4wF37Ub9Js1uhQ3XSTfitdZvlJALUqeQ30j+5Hk3KyjVDLQ3GYQ==
+"@headlessui/vue@^1.6.6":
+  version "1.6.6"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.6.6.tgz#cf0313286503b10be99da5a93c910272cbed2b40"
+  integrity sha512-WyTqb9V0lVUrObdcmSks+21wOy+JsJw8tAiw7Yy5qInOgKVfIVa7EwldtURkA5cgo9ycZRrzcWluFEeabvI0MQ==
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"
@@ -1646,10 +1646,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
-"@types/node@*", "@types/node@^18.0.0":
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.0.tgz#67c7b724e1bcdd7a8821ce0d5ee184d3b4dd525a"
-  integrity sha512-cHlGmko4gWLVI27cGJntjs/Sj8th9aYwplmZFwmmgYQQvL5NUsgVJG7OddLvNfLqYS31KFN0s3qlaD9qCaxACA==
+"@types/node@*", "@types/node@^18.0.3":
+  version "18.0.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.0.3.tgz#463fc47f13ec0688a33aec75d078a0541a447199"
+  integrity sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==
 
 "@types/node@^10.0.3":
   version "10.17.60"
@@ -6464,10 +6464,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier-plugin-tailwindcss@^0.1.11:
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.1.11.tgz#6112da68d9d022b7f896d35c070464931c99c35f"
-  integrity sha512-a28+1jvpIZQdZ/W97wOXb6VqI762MKE/TxMMuibMEHhyYsSxQA8Ek30KObd5kJI2HF1ldtSYprFayXJXi3pz8Q==
+prettier-plugin-tailwindcss@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-tailwindcss/-/prettier-plugin-tailwindcss-0.1.12.tgz#d002a0e25d76a06fdccb6f3c6c52dd9f85e3ccd8"
+  integrity sha512-pEZ6tppwknCeq3ObR9g8t61AhWtVRRR3I0EQNeiRrrJ3D42FJGeUDxiFc/LJRYEeAx5JOxagsF0MICwuWOJa+w==
 
 prettier@^1.19.1:
   version "1.19.1"
@@ -7858,10 +7858,10 @@ verror@1.10.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitest-fetch-mock@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/vitest-fetch-mock/-/vitest-fetch-mock-0.1.0.tgz#076768ff0979743fca385ff642f7d9910f983682"
-  integrity sha512-HpabFgokq0Q/cLwYNCTxwH6jV1TTUNg6IZxnLW4mFXgtDWcUQPJoiKS+LiOSf5cllXj2iCkIA8Cmuq5jU4oZQg==
+vitest-fetch-mock@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/vitest-fetch-mock/-/vitest-fetch-mock-0.2.1.tgz#54fb75138f4546ad113e45138b2840492cda6f00"
+  integrity sha512-u6wjTy3huKLx9VDzChOpt3BS9jIhCTbruqLIlkhXZ8dRMzNAsmiTIskI39+uqNegkFMQeEefBqKYZ3UC142AJA==
   dependencies:
     cross-fetch "^3.0.6"
 
