@@ -1465,10 +1465,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.8":
-  version "0.4.8"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.8.tgz#392482b441dc4d855c200a9ea566c06abc1e6886"
-  integrity sha512-bfyKJOghuKUfHyTIVLQZxqjEcR2vwvAmRoPyOZhpTXk6bU00iDaSqoqWykW6MBIP23SGIlxBPT1kD1PMbve+fw==
+"@snapshot-labs/snapshot.js@^0.4.9":
+  version "0.4.9"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.9.tgz#fdac2800d57e52b201aa8e5fc1f5db2bbd15402c"
+  integrity sha512-5y5sM34tZm1VVxHzwJ5nnm4kb1eRI6CDcBRu0if9gK2H+qadG+yWH9f/boPIB6cskPvH760chRR8bdjseAB25Q==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1479,7 +1479,7 @@
     "@ethersproject/wallet" "^5.4.0"
     ajv "^8.6.0"
     ajv-formats "^2.1.0"
-    cross-fetch "^3.0.6"
+    cross-fetch "^3.1.5"
     json-to-graphql-query "^2.0.0"
     lodash.set "^4.3.2"
 
