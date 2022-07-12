@@ -129,7 +129,8 @@ export default {
         this.oats = this.space.plugins.projectGalaxy.oats;
         this.currentCampaignUrl = this.oats[this.proposal.id];
         if (this.currentCampaignUrl) {
-          this.currentCampaignId = this.currentCampaignUrl.match(/[^/]\w+/g)[2];
+          this.currentCampaignId =
+            this.currentCampaignUrl.match(/[^/]+(?=\/$|$)/g)[0];
           this.currentState = WAIT_TO_START;
         } else {
           this.currentState = NO_OAT;
