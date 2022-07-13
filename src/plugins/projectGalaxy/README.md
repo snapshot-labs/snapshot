@@ -5,6 +5,7 @@
 ### 1. Preparation
 
 Create a snapshot proposal in [https://snapshot.org/](https://snapshot.org/ "https://snapshot.org/")
+
 Create a campain in [https://galaxy.eco/](https://galaxy.eco/ "https://galaxy.eco/")
 
 ### 2. Add Project Galaxy Plugin to your space
@@ -27,9 +28,19 @@ Add JSON string to your space
 ```
 notice: The domain should not included in <Space Name>.
 
+#### Usually you don't need to change api part unless you know which api you are using.
+```javascript
+{
+	"api": "https://graphigo.stg.galaxy.eco/query",
+	"oats": {
+		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "jokey/campaign/GCixQUUqfE"
+	}
+}
+
 *Here is a Demo JSON:* 
 ```javascript
 {
+	"api": "https://graphigo.prd.galaxy.eco/query",
 	"oats": {
 		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "jokey/campaign/GCixQUUqfE"
 	}
