@@ -7,7 +7,7 @@
   "poweredBy": "Powered by",
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "resultsShutter": "This proposal has shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated.",
+  "resultsShutter": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated.",
   "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
   "retry": "Retry",
