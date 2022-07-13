@@ -136,7 +136,13 @@ if (domain) {
       path: '/:key',
       name: 'space',
       component: SpaceView,
-      children: spaceRoutes
+      children: spaceRoutes,
+      beforeEnter: to => {
+        // Make sure key is lowercase
+        if (to.params.key) {
+          to.params.key = to.params.key.toLowerCase();
+        }
+      }
     }
   );
 }
