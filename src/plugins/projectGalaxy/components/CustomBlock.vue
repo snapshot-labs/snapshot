@@ -54,7 +54,7 @@ export default {
       disabled: false,
       oats: {},
       loading: false,
-      plugin: new Plugin(),
+      plugin: new Plugin(this.space.plugins.projectGalaxy.api),
       currentState: NO_OAT,
       currentCampaignUrl: '',
       currentCampaignId: '',
@@ -139,7 +139,7 @@ export default {
     },
     async action() {
       if (this.currentState === CLAIM) {
-        window.open(this.urlOAT, '_blank');
+        await this.claimOAT();
       }
     },
     // Check the state if the current state is loading
@@ -172,6 +172,22 @@ export default {
         this.oatImg = await this.plugin.getOATImage(campainId);
       } catch (e) {
         this.disabled = true;
+      }
+    },
+    // claim OAT
+    async claimOAT() {
+      try {
+        const success = await this.plugin.claim(
+          this.address,
+          this.currentCampaignId
+        );
+        if (success) {
+          this.currentState = CLAIMING;
+        } else {
+          await this.updateState();
+        }
+      } catch (e) {
+        await this.updateState();
       }
     }
   }
