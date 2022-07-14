@@ -4,7 +4,7 @@ import { useSkin } from '@/composables/useSkin';
 const { toggleUserTheme, getThemeIcon } = useSkin();
 
 const modalAboutOpen = ref(false);
-const modalNewsletterOpen = ref(false);
+
 const yearNow = new Date().getFullYear();
 
 const socials = [
@@ -37,19 +37,21 @@ const socials = [
       class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
     >
       <div class="md:w-1/3">
-        <div class="mb-2">Get the latest Snapshot updates</div>
+        <div class="mb-2 text-skin-link">Get the latest Snapshot updates</div>
 
         <InputNewsletter tag="6449077" />
       </div>
 
       <div class="">
-        <div class="hidden pb-1 md:block">Join Snapshot community</div>
+        <div class="hidden pb-1 text-skin-link md:block">
+          Join Snapshot community
+        </div>
         <div class="flex justify-center space-x-3 pt-2">
           <span v-for="social in socials" :key="social">
             <BaseLink :link="social.link" hide-external-icon>
               <BaseIcon
                 size="30"
-                class="text-skin-text opacity-40 transition-opacity hover:opacity-100"
+                class="text-skin-text opacity-80 transition-opacity hover:opacity-100"
                 :name="social.icon"
               />
             </BaseLink>
