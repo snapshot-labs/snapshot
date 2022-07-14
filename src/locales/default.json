@@ -133,6 +133,7 @@
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
+  "createASpace": "Create a space",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -603,5 +604,9 @@
       "empty": "There are no assets in this contract"
     },
     "24hChange": "24h change"
+  },
+  "header": {
+    "title": "Where descisions get made",
+    "description": "Snapshot is the free and open-source home of your community's governance. Create your own space now, and start making decisions with your community."
   }
 }
