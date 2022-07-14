@@ -44,17 +44,12 @@ watchEffect(() => {
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
         <div class="ml-3 flex flex-auto items-center">
-          <ButtonSidebar
-            v-if="!domain"
-            class="-ml-3 border-0 sm:hidden"
-            @click="showSidebar = !showSidebar"
-          >
-            <BaseIcon v-if="showSidebar" name="close" size="20" />
-            <BaseIcon v-else class="rotate-90" name="threedots" size="20" />
+          <ButtonSidebar class="sm:hidden" @click="showSidebar = !showSidebar">
+            <i-ho-dots-vertical class="text-skin-link" />
           </ButtonSidebar>
           <router-link
             :to="{ path: '/' }"
-            class="flex items-center sm:-ml-3"
+            class="hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot

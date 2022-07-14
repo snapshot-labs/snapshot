@@ -1217,10 +1217,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui/vue@^1.6.6":
-  version "1.6.6"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.6.6.tgz#cf0313286503b10be99da5a93c910272cbed2b40"
-  integrity sha512-WyTqb9V0lVUrObdcmSks+21wOy+JsJw8tAiw7Yy5qInOgKVfIVa7EwldtURkA5cgo9ycZRrzcWluFEeabvI0MQ==
+"@headlessui/vue@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.6.7.tgz#433b86e5f86203606e7ac4851777173a327dd8c4"
+  integrity sha512-5sTCBpkUoFE7zhANn/6Z+pf3PUA7MD6BBaTsJcQybq9E4fnNiMM9agOJI9meXbtcawE6Dm8EeB5A8HAJEnZCbQ==
 
 "@humanwhocodes/config-array@^0.9.2":
   version "0.9.5"

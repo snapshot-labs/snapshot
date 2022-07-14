@@ -16,7 +16,7 @@ const isVerified = computed(() => verified[props.spaceId] || 0);
 </script>
 
 <template>
-  <div>
+  <div class="cursor-help">
     <BaseIcon
       v-if="isVerified === 1"
       v-tippy="{
@@ -28,6 +28,10 @@ const isVerified = computed(() => verified[props.spaceId] || 0);
     />
     <BaseIcon
       v-if="isVerified === -1"
+      v-tippy="{
+        content: $t('warningSpace'),
+        placement: 'right'
+      }"
       name="warning"
       size="20"
       class="text-red"
