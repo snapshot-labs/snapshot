@@ -6,6 +6,8 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
 import { useClient } from '@/composables/useClient';
 
+const emit = defineEmits(['next']);
+
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
@@ -15,6 +17,7 @@ const route = useRoute();
 const props = defineProps<{ web3Account: string }>();
 
 const fillConnectedWallet = ref(true);
+const isEditController = ref(false);
 
 const {
   spaceControllerInput,
@@ -26,7 +29,8 @@ const {
   setRecord,
   confirmSetRecord,
   ensAddress,
-  textRecord
+  textRecord,
+  uriAddress
 } = useSpaceController();
 
 async function handleSetRecord() {
@@ -58,6 +62,20 @@ watch(
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
+  <div v-else-if="uriAddress && !isEditController" class="space-y-3">
+    <BaseMessage level="info">
+      The snapshot text-record for this domain has already been set. Choose edit
+      to change it, otherwise you can skip to the next step. The current space
+      controller is
+      <BaseLink :link="explorerUrl(defaultNetwork, spaceControllerInput)">
+        <span>{{ shorten(spaceControllerInput) }}</span>
+      </BaseLink>
+    </BaseMessage>
+    <div class="mt-3 flex items-center justify-between">
+      <BaseButton @click="isEditController = true"> Edit </BaseButton>
+      <BaseButton @click="emit('next')"> Skip </BaseButton>
+    </div>
+  </div>
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <div class="mb-4">
       <BaseMessage level="info">

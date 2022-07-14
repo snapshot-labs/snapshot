@@ -117,15 +117,6 @@ export function useSpaceController() {
     try {
       loadingTextRecord.value = true;
       await loadUriAddress();
-      if (uriAddress.value && route.query.step === '3') {
-        router.push({
-          name: 'setup',
-          params: { ens: ensAddress.value },
-          query: {
-            step: '4'
-          }
-        });
-      }
       loadingTextRecord.value = false;
     } catch (e) {
       console.log(e);

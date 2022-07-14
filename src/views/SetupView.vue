@@ -137,6 +137,7 @@ async function handleSubmit() {
         <SetupController
           v-else-if="currentStep === 3 && route.params.ens"
           :web3-account="web3Account"
+          @next="nextStep"
         />
 
         <SetupProfile
