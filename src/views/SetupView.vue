@@ -120,7 +120,10 @@ async function handleSubmit() {
 <template>
   <TheLayout>
     <template #sidebar-left>
-      <SetupSidebarStepper :current-step="currentStep" />
+      <SetupSidebarStepper
+        :current-step="currentStep"
+        @change-step="value => router.push({ query: { step: value + 1 } })"
+      />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0">

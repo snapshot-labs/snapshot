@@ -3,6 +3,8 @@ defineProps<{
   currentStep: number;
 }>();
 
+const emit = defineEmits(['changeStep']);
+
 const steps = [
   { name: 'Getting started' },
   { name: 'ENS' },
@@ -31,9 +33,12 @@ const steps = [
                 />
               </span>
 
-              <span class="ml-4 text-sm font-medium text-skin-text">
+              <button
+                class="ml-4 text-base font-medium text-skin-text"
+                @click="emit('changeStep', i)"
+              >
                 {{ step.name }}
-              </span>
+              </button>
             </span>
           </div>
           <div
@@ -52,7 +57,7 @@ const steps = [
                 class="absolute -top-[25px] h-4 w-[1px] bg-primary"
               />
             </span>
-            <span class="ml-4 text-sm font-medium text-skin-link">
+            <span class="ml-4 text-base font-medium text-skin-link">
               {{ step.name }}
             </span>
           </div>
@@ -66,7 +71,7 @@ const steps = [
                 class="absolute -top-[25px] h-4 w-[1px] bg-skin-border"
               />
             </div>
-            <span class="ml-4 text-sm font-medium text-skin-text">
+            <span class="ml-4 text-base font-medium text-skin-text">
               {{ step.name }}
             </span>
           </div>
