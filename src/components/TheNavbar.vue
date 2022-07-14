@@ -40,7 +40,7 @@ watchEffect(() => {
   >
     {{ $t('demoSite') }}
   </div>
-  <nav id="topnav">
+  <div>
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
         <div class="ml-3 flex flex-auto items-center">
@@ -107,7 +107,7 @@ watchEffect(() => {
         </div>
       </div>
     </BaseContainer>
-  </nav>
+  </div>
   <div
     v-if="pendingCount > 0"
     class="flex justify-center bg-primary py-2 text-center text-white"
