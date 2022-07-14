@@ -9,9 +9,7 @@ const { web3Account } = useWeb3();
 <template>
   <div>
     <div class="space-y-4">
-      A space is the home of your community's governance. It's a place where you
-      can create proposals, weigh voting power in flexable ways, vote completely
-      off-chain.
+      {{ $t('header.description') }}
 
       <SetupMessageHelp />
     </div>
@@ -24,7 +22,7 @@ const { web3Account } = useWeb3();
           : $router.push({ query: { step: 2 } })
       "
     >
-      Get started
+      {{ $t('getStarted') }}
     </BaseButton>
   </div>
 </template>

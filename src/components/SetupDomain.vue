@@ -66,16 +66,16 @@ onMounted(() => resetForm());
   <div>
     <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
     <div v-else>
-      <h4 class="mb-2">Setup your space domain</h4>
-      <BaseMessage class="mb-3" level="info">
-        One thing you need before you can create your own space, is an ENS
-        domain on Ethreum mainnet.
-
-        <span v-if="env !== 'demo'">
-          You can also
-          <BaseLink link="https://demo.snapshot.org"> try the demo </BaseLink>
-          on the Rinkeby testnet and mess with things there first.
-        </span>
+      <h4 class="mb-2">{{ $t('setup.domain.title') }}</h4>
+      <BaseMessage v-if="env !== 'demo'" class="mb-3" level="info">
+        {{ $t('setup.domain.ensMessage') }}
+        <i18n-t keypath="setup.domain.ensMessageTestnet" tag="span">
+          <template #link>
+            <BaseLink link="https://demo.snapshot.org">
+              {{ $t('setup.domain.tryDemo') }}
+            </BaseLink>
+          </template>
+        </i18n-t>
       </BaseMessage>
       <BaseMessage v-if="defaultNetwork === '4'" level="info" class="my-3">
         {{
