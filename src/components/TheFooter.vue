@@ -40,8 +40,8 @@ const socials = [
         <span v-for="social in socials" :key="social">
           <BaseLink :link="social.link" hide-external-icon>
             <BaseIcon
-              size="30"
-              class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
+              size="26"
+              class="text-skin-text opacity-40 transition-opacity hover:opacity-100"
               :name="social.icon"
             />
           </BaseLink>
@@ -56,7 +56,7 @@ const socials = [
         </ButtonSidebar>
 
         <ButtonLanguage />
-        <div @click="modalNewsletterOpen = true">Newsletter</div>
+        <!-- <div @click="modalNewsletterOpen = true">Newsletter</div> -->
       </div>
       <div
         class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
@@ -70,7 +70,7 @@ const socials = [
         @close="modalAboutOpen = false"
         @openLang="modalLangOpen = true"
       />
-      <!-- This needs to be styled too  -->
+
       <ModalNewsletter
         :open="modalNewsletterOpen"
         tag="6449077"
