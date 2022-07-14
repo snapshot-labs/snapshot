@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
-const emit = defineEmits(['next']);
+const emit = defineEmits(['next', 'back']);
 
 const { form, showAllValidationErrors, getErrorMessage } =
   useSpaceSettingsForm();
@@ -30,7 +30,7 @@ function nextStep() {
       v-model:github="form.github"
       :get-error-message="getErrorMessage"
     />
-
+    <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
     <BaseButton primary class="float-right !mt-4" @click="nextStep">
       Next
     </BaseButton>

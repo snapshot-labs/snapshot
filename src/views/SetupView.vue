@@ -144,6 +144,7 @@ async function handleSubmit() {
           v-else-if="currentStep === 4 && route.params.ens"
           :web3-account="web3Account"
           @next="nextStep"
+          @back="previousStep"
         />
 
         <SetupVoting

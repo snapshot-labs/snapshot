@@ -62,14 +62,15 @@ watch(
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
-  <div v-else-if="uriAddress && !isEditController" class="space-y-3">
+  <div v-else-if="uriAddress && !isEditController">
     <BaseMessage level="info">
       {{ $t('setup.setSpaceControllerExists') }}
-      <BaseLink :link="explorerUrl(defaultNetwork, spaceControllerInput)">
-        <span>{{ shorten(spaceControllerInput) }}</span>
+
+      <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
+        {{ $t('setup.seeOnEns') }}
       </BaseLink>
     </BaseMessage>
-    <div class="mt-3 flex items-center justify-between">
+    <div class="mt-4 flex items-center justify-between">
       <BaseButton @click="isEditController = true">
         {{ $t('edit') }}
       </BaseButton>
