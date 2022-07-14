@@ -36,17 +36,17 @@ const socials = [
     <BaseContainer
       class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
     >
-      <div class="md:w-1/3">
+      <div class="mx-auto md:mx-0">
         <div class="mb-2 text-md text-skin-link">
-          Get the latest Snapshot updates
+          {{ $t('footer.newsletter.title') }}
         </div>
 
-        <InputNewsletter tag="6449077" />
+        <InputNewsletter tag="6449077" class="relative w-[300px]" />
       </div>
 
       <div class="">
         <div class="hidden pb-1 text-md text-skin-link md:block">
-          Join Snapshot community
+          {{ $t('footer.joinCommunity') }}
         </div>
         <div class="flex justify-center space-x-3 pt-2">
           <span v-for="social in socials" :key="social">

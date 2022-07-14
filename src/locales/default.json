@@ -616,5 +616,12 @@
       "empty": "There are no assets in this contract"
     },
     "24hChange": "24h change"
+  },
+  "footer": {
+    "newsletter": {
+      "yourEmail": "Your email",
+      "title": "Get the latest Snapshot updates"
+    },
+    "joinCommunity": "Join Snapshot community"
   }
 }

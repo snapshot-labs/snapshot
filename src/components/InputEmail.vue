@@ -13,7 +13,12 @@ const emit = defineEmits(['update:modelValue']);
     :model-value="modelValue"
     :focus-on-mount="focusOnMount"
     type="email"
-    placeholder="Your email"
+    :placeholder="$t('footer.newsletter.yourEmail')"
+    class="!pr-[66px]"
     @update:model-value="emit('update:modelValue', $event)"
-  />
+  >
+    <template #after>
+      <slot />
+    </template>
+  </BaseInput>
 </template>

@@ -19,16 +19,14 @@ const action =
   >
     <input type="hidden" name="tags" :value="tag" />
 
-    <InputEmail name="EMAIL" focus-on-mount required />
-
-    <!-- WE will also need to handle errors and success messages -->
-    <BaseButton
-      type="submit"
-      name="subscribe"
-      class="ml-2 !h-[42px] px-3 !text-sm"
-      primary
-    >
-      {{ $t('submit') }}
-    </BaseButton>
+    <InputEmail name="EMAIL" focus-on-mount required>
+      <button
+        type="submit"
+        name="subscribe"
+        class="absolute right-0 h-[42px] rounded-r-full bg-primary px-3"
+      >
+        <i-ho-paper-airplane class="rotate-90 text-white" />
+      </button>
+    </InputEmail>
   </form>
 </template>
