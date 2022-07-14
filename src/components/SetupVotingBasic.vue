@@ -174,7 +174,7 @@ watch(
     <BaseBlock> Demo: {{ strategy }} </BaseBlock>
 
     <BaseButton class="float-right" primary @click="nextStep">
-      {{ strategy?.name ? 'Next' : 'Skip' }}
+      {{ strategy?.name ? $t('next') : $t('skip') }}
     </BaseButton>
   </div>
 </template>

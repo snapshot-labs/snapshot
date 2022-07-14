@@ -31,7 +31,7 @@ const votingStep = ref(1);
       </ButtonCard>
 
       <BaseButton primary class="float-right !mt-4" @click="emit('next')">
-        Skip
+        {{ $t('skip') }}
       </BaseButton>
     </div>
     <div>
@@ -44,7 +44,7 @@ const votingStep = ref(1);
       class="mt-4"
       @click="votingStep !== 1 ? (votingStep = 1) : emit('back')"
     >
-      Back
+      {{ $t('back') }}
     </BaseButton>
   </div>
 </template>

@@ -8,8 +8,8 @@ const emit = defineEmits(['back', 'next']);
 
 <template>
   <SettingsDomainBlock v-model:domain="form.domain" v-model:skin="form.skin" />
-  <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
+  <BaseButton class="mt-4" @click="emit('back')"> {{ $t('back') }} </BaseButton>
   <BaseButton primary class="float-right mt-4" @click="emit('next')">
-    {{ form.domain ? 'Next' : 'Skip' }}
+    {{ form.domain ? $t('next') : $t('skip') }}
   </BaseButton>
 </template>

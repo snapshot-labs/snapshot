@@ -37,5 +37,5 @@ const emit = defineEmits(['create', 'back']);
     class="mt-4"
     @create="emit('create')"
   />
-  <BaseButton class="mt-4" @click="emit('back')"> Back </BaseButton>
+  <BaseButton class="mt-4" @click="emit('back')"> {{ $t('back') }} </BaseButton>
 </template>

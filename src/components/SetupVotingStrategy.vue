@@ -15,7 +15,7 @@ const emit = defineEmits(['next']);
       @update-symbol="val => (form.symbol = val)"
     />
     <BaseButton primary class="float-right mt-4" @click="emit('next')">
-      Next
+      {{ $t('next') }}
     </BaseButton>
   </div>
 </template>

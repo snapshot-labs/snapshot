@@ -172,7 +172,7 @@ function nextStep() {
     </BaseBlock>
     <BaseBlock class="mt-4"> Demo: {{ strategy }} </BaseBlock>
     <BaseButton class="float-right mt-4" primary @click="nextStep">
-      {{ 'Next' }}
+      {{ $t('next') }}
     </BaseButton>
   </div>
 </template>
