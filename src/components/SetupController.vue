@@ -64,16 +64,16 @@ watch(
   <LoadingRow v-if="loadingTextRecord" block />
   <div v-else-if="uriAddress && !isEditController" class="space-y-3">
     <BaseMessage level="info">
-      The snapshot text-record for this domain has already been set. Choose edit
-      to change it, otherwise you can skip to the next step. The current space
-      controller is
+      {{ $t('setup.setSpaceControllerExists') }}
       <BaseLink :link="explorerUrl(defaultNetwork, spaceControllerInput)">
         <span>{{ shorten(spaceControllerInput) }}</span>
       </BaseLink>
     </BaseMessage>
     <div class="mt-3 flex items-center justify-between">
-      <BaseButton @click="isEditController = true"> Edit </BaseButton>
-      <BaseButton @click="emit('next')"> Skip </BaseButton>
+      <BaseButton @click="isEditController = true">
+        {{ $t('edit') }}
+      </BaseButton>
+      <BaseButton primary @click="emit('next')"> {{ $t('skip') }} </BaseButton>
     </div>
   </div>
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
