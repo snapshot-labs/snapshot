@@ -7,17 +7,26 @@ const visible = useStorage('snapshot.showHomeHeader', true);
 <template>
   <BaseContainer v-if="visible" class="mb-4">
     <div
-      class="relative w-full rounded-xl border border-skin-border p-4 pr-[280px]"
+      class="relative w-full rounded-xl border border-skin-border p-4 md:pr-[200px]"
     >
-      <h3 class="mt-0 font-mono">{{ $t('header.title') }}</h3>
+      <h3 class="mt-0 pr-6 font-mono sm:pr-0">{{ $t('header.title') }}</h3>
       <p>
         {{ $t('header.description') }}
       </p>
-      <div class="mt-4 space-x-3">
-        <BaseButton primary @click="$router.push({ name: 'setup' })">
+      <div
+        class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3"
+      >
+        <BaseButton
+          class="w-full sm:w-[160px]"
+          primary
+          @click="$router.push({ name: 'setup' })"
+        >
           {{ $t('createASpace') }}
         </BaseButton>
-        <BaseButton @click="$router.push({ name: 'about' })">
+        <BaseButton
+          class="w-full sm:w-[140px]"
+          @click="$router.push({ name: 'about' })"
+        >
           {{ $t('learnMore') }}
         </BaseButton>
       </div>
