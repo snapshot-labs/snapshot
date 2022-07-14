@@ -43,18 +43,20 @@ const socials = [
 
 <template>
   <div class="font-sans text-base text-skin-text antialiased">
-    <img
-      src="/about/main.png"
-      class="absolute -right-[54px] top-[36px] scale-75 2xl:top-[136px] 2xl:scale-100"
-    />
-    <img
-      src="/about/big_planet.png"
-      class="absolute right-[440px] top-[160px] scale-75 2xl:right-[640px] 2xl:scale-100"
-    />
-    <img
-      src="/about/small_planet.png"
-      class="absolute right-[370px] top-[620px] scale-75 2xl:right-[470px] 2xl:scale-100"
-    />
+    <div class="hidden md:block">
+      <img
+        src="/about/main.png"
+        class="absolute -top-[0px] -right-[108px] scale-50 lg:top-[36px] lg:-right-[54px] lg:scale-75 2xl:top-[136px] 2xl:scale-100"
+      />
+      <img
+        src="/about/big_planet.png"
+        class="absolute top-[160px] right-[240px] scale-50 lg:right-[440px] lg:top-[160px] lg:scale-75 2xl:right-[640px] 2xl:scale-100"
+      />
+      <img
+        src="/about/small_planet.png"
+        class="absolute right-[250px] top-[460px] scale-50 lg:right-[370px] lg:top-[620px] lg:scale-75 2xl:right-[470px] 2xl:scale-100"
+      />
+    </div>
 
     <nav
       id="topnav"
@@ -65,24 +67,18 @@ const socials = [
           :to="{ path: '/' }"
           class="flex items-center text-lg font-normal"
         >
-          <span class="relative">
-            snapshot
-            <BaseIcon
-              size="32"
-              name="snapshot"
-              class="absolute right-[118px] mr-1 text-snapshot"
-            />
-          </span>
+          <BaseIcon size="32" name="snapshot" class="mr-2 text-snapshot" />
+          snapshot
         </router-link>
       </BaseContainer>
     </nav>
 
-    <div id="content" class="flex bg-skin-bg pt-[40px]">
+    <div id="content" class="flex h-full min-h-screen bg-skin-bg pt-[40px]">
       <BaseContainer
         class="w-full border-l bg-gradient-to-r from-skin-bg to-transparent pl-0"
       >
         <h1
-          class="relative mt-[135px] ml-[50px] font-mono text-[40px] font-bold leading-[3rem] tracking-wider text-creme"
+          class="relative ml-[50px] mt-[100px] font-mono text-[40px] font-bold leading-[3rem] tracking-wider text-creme md:mt-[135px]"
         >
           <div
             class="absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
@@ -90,7 +86,7 @@ const socials = [
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[501px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[501px]"
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
@@ -105,7 +101,7 @@ const socials = [
 
         <AboutSubheader> Web3 governance should be a snap </AboutSubheader>
         <p
-          class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[500px]"
         >
           Creating proposals and voting on Snapshot is user-friendly and does
           not cost gas as the process is securely performed off-chain.
@@ -129,9 +125,7 @@ const socials = [
         </div>
 
         <AboutSubheader> Read </AboutSubheader>
-        <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
-        >
+        <p class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text">
           What is Snapshot
           <BaseLink
             link="https://decrypt.co/resources/what-is-snapshot-the-decentralized-voting-system"
@@ -151,9 +145,7 @@ const socials = [
           </BaseLink>
         </p>
         <AboutSubheader> Explore </AboutSubheader>
-        <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
-        >
+        <p class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text">
           Knowledge base
           <BaseLink
             link="https://docs.snapshot.org/"
@@ -179,7 +171,9 @@ const socials = [
       </BaseContainer>
     </div>
 
-    <footer class="space-x-3 p-4 sm:fixed sm:right-0 sm:bottom-0">
+    <footer
+      class="space-x-3 bg-skin-bg pb-[50px] pl-[50px] md:fixed md:right-0 md:bottom-0 md:bg-transparent md:p-4 2xl:pr-6"
+    >
       <BaseLink
         v-for="social in socials"
         :key="social"
