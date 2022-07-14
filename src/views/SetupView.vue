@@ -120,7 +120,7 @@ async function handleSubmit() {
 <template>
   <TheLayout>
     <template #sidebar-left>
-      <SetupSidebarStepper class="mt-[76px]" :current-step="currentStep" />
+      <SetupSidebarStepper :current-step="currentStep" />
     </template>
     <template #content-right>
       <div class="px-4 md:px-0">

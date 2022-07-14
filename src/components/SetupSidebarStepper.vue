@@ -17,7 +17,7 @@ const steps = [
 <template>
   <div>
     <nav class="flex" aria-label="Progress">
-      <ol role="list" class="space-y-4">
+      <ol role="list" class="space-y-4 pt-3">
         <li v-for="(step, i) in steps" :key="step.name">
           <div v-if="currentStep > i + 1">
             <span class="flex items-center">
