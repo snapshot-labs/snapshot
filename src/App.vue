@@ -47,19 +47,14 @@ onMounted(async () => init());
           id="navbar"
           class="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
         >
-          <div
-            id="navbar"
-            class="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
-          >
-            <TheNavbar />
-          </div>
-          <div id="content" class="pb-6 pt-4">
-            <router-view :key="$route.path" />
-          </div>
-          <footer v-if="route.name === 'home'" class="mt-auto">
-            <TheFooter />
-          </footer>
+          <TheNavbar />
         </div>
+        <div id="content" class="pb-6 pt-4">
+          <router-view :key="$route.path" />
+        </div>
+        <footer v-if="route.name === 'home'" class="mt-auto">
+          <TheFooter />
+        </footer>
       </div>
     </div>
   </template>
