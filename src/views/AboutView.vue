@@ -42,18 +42,18 @@ const socials = [
 </script>
 
 <template>
-  <div>
+  <div class="font-sans text-base text-skin-text antialiased">
     <img
       src="/about/main.png"
-      class="absolute -right-[54px] top-[56px] scale-75 2xl:top-[136px] 2xl:scale-100"
+      class="absolute -right-[54px] top-[36px] scale-75 2xl:top-[136px] 2xl:scale-100"
     />
     <img
       src="/about/big_planet.png"
-      class="absolute right-[440px] top-[180px] scale-75 2xl:right-[640px] 2xl:scale-100"
+      class="absolute right-[440px] top-[160px] scale-75 2xl:right-[640px] 2xl:scale-100"
     />
     <img
       src="/about/small_planet.png"
-      class="absolute right-[370px] top-[650px] scale-75 2xl:right-[470px] 2xl:scale-100"
+      class="absolute right-[370px] top-[620px] scale-75 2xl:right-[470px] 2xl:scale-100"
     />
 
     <nav
@@ -77,12 +77,12 @@ const socials = [
       </BaseContainer>
     </nav>
 
-    <div id="content" class="flex bg-skin-bg pt-[70px]">
+    <div id="content" class="flex bg-skin-bg pt-[40px]">
       <BaseContainer
-        class="w-full border-l bg-gradient-to-r from-skin-bg to-transparent pl-0 font-mono"
+        class="w-full border-l bg-gradient-to-r from-skin-bg to-transparent pl-0"
       >
         <h1
-          class="relative mt-[135px] ml-[50px] text-[40px] font-bold leading-[3rem] tracking-wider text-creme"
+          class="relative mt-[135px] ml-[50px] font-mono text-[40px] font-bold leading-[3rem] tracking-wider text-creme"
         >
           <div
             class="absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
@@ -90,7 +90,7 @@ const socials = [
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] w-[501px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] w-[501px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
         >
           Snapshot is the home of your community's governance. It's a place
           where you can create proposals, weigh voting power in flexable ways,
@@ -103,16 +103,9 @@ const socials = [
           </router-link>
         </div>
 
-        <h1
-          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
-        >
-          <div
-            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          />
-          For DAOs, governance should be a snap
-        </h1>
+        <AboutSubheader> Web3 governance should be a snap </AboutSubheader>
         <p
-          class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-sm leading-5 text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] w-[500px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
         >
           Creating proposals and voting on Snapshot is user-friendly and does
           not cost gas as the process is securely performed off-chain.
@@ -135,16 +128,9 @@ const socials = [
           </BaseLink>
         </div>
 
-        <h1
-          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
-        >
-          <div
-            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          />
-          Read
-        </h1>
+        <AboutSubheader> Read </AboutSubheader>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-sm leading-6 text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
         >
           What is Snapshot
           <BaseLink
@@ -164,17 +150,9 @@ const socials = [
             Daomasters
           </BaseLink>
         </p>
-
-        <h1
-          class="relative mt-[96px] ml-[50px] text-md font-bold tracking-wide text-creme"
-        >
-          <div
-            class="absolute top-[10px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
-          />
-          Explore
-        </h1>
+        <AboutSubheader> Explore </AboutSubheader>
         <p
-          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-sm leading-6 text-gray-300 !text-skin-text"
+          class="mt-4 mb-[50px] max-w-3xl pl-[50px] text-gray-300 !text-skin-text"
         >
           Knowledge base
           <BaseLink
@@ -201,7 +179,7 @@ const socials = [
       </BaseContainer>
     </div>
 
-    <footer class="space-x-2 p-4 sm:fixed sm:right-0 sm:bottom-0">
+    <footer class="space-x-3 p-4 sm:fixed sm:right-0 sm:bottom-0">
       <BaseLink
         v-for="social in socials"
         :key="social"
@@ -209,7 +187,7 @@ const socials = [
         hide-external-icon
       >
         <BaseIcon
-          size="22"
+          size="28"
           class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
           :name="social.icon"
         />
