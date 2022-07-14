@@ -32,22 +32,35 @@ const socials = [
 </script>
 
 <template>
-  <div class="border-t">
+  <div class="space-y-4 border-t py-4">
     <BaseContainer
-      class="flex flex-col items-center space-y-3 py-4 md:flex-row md:space-y-0 md:space-x-3"
+      class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
     >
-      <div class="space-x-3 md:ml-auto">
-        <span v-for="social in socials" :key="social">
-          <BaseLink :link="social.link" hide-external-icon>
-            <BaseIcon
-              size="26"
-              class="text-skin-text opacity-40 transition-opacity hover:opacity-100"
-              :name="social.icon"
-            />
-          </BaseLink>
-        </span>
+      <div class="md:w-1/3">
+        <div class="mb-2">Get the latest Snapshot updates</div>
+
+        <InputNewsletter tag="6449077" />
       </div>
-      <div class="flex space-x-2">
+
+      <div class="">
+        <div class="hidden pb-1 md:block">Join Snapshot community</div>
+        <div class="flex justify-center space-x-3 pt-2">
+          <span v-for="social in socials" :key="social">
+            <BaseLink :link="social.link" hide-external-icon>
+              <BaseIcon
+                size="30"
+                class="text-skin-text opacity-40 transition-opacity hover:opacity-100"
+                :name="social.icon"
+              />
+            </BaseLink>
+          </span>
+        </div>
+      </div>
+    </BaseContainer>
+    <BaseContainer
+      class="flex flex-col items-center space-y-4 md:flex-row md:space-y-0 md:space-x-3"
+    >
+      <div class="flex space-x-2 md:ml-auto">
         <ButtonSidebar @click="modalAboutOpen = true">
           <span class="text-skin-link">?</span>
         </ButtonSidebar>
@@ -55,26 +68,21 @@ const socials = [
           <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
         </ButtonSidebar>
 
-        <ButtonLanguage />
+        <ButtonLanguage class="!h-[42px]" />
         <!-- <div @click="modalNewsletterOpen = true">Newsletter</div> -->
       </div>
       <div
-        class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
+        class="!ml-0 whitespace-nowrap opacity-40 md:order-first md:pt-0 md:pr-2"
       >
         © {{ yearNow }} Snapshot Labs.
       </div>
     </BaseContainer>
+
     <teleport to="#modal">
       <ModalAbout
         :open="modalAboutOpen"
         @close="modalAboutOpen = false"
         @openLang="modalLangOpen = true"
-      />
-
-      <ModalNewsletter
-        :open="modalNewsletterOpen"
-        tag="6449077"
-        @close="modalNewsletterOpen = false"
       />
     </teleport>
   </div>
