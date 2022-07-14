@@ -37,13 +37,15 @@ const socials = [
       class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
     >
       <div class="md:w-1/3">
-        <div class="mb-2 text-skin-link">Get the latest Snapshot updates</div>
+        <div class="mb-2 text-md text-skin-link">
+          Get the latest Snapshot updates
+        </div>
 
         <InputNewsletter tag="6449077" />
       </div>
 
       <div class="">
-        <div class="hidden pb-1 text-skin-link md:block">
+        <div class="hidden pb-1 text-md text-skin-link md:block">
           Join Snapshot community
         </div>
         <div class="flex justify-center space-x-3 pt-2">
