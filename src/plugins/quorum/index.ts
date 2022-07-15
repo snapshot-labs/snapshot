@@ -46,7 +46,7 @@ export default class Plugin {
         );
         const requests: Promise<any>[] = strategies.map(s =>
           call(
-            getProvider(s.network, 'brovider'),
+            getProvider(s.network),
             [s.methodABI],
             [s.address, s.methodABI.name],
             { blockTag: blocks[s.network] }
