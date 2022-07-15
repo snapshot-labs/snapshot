@@ -35,10 +35,10 @@ const votingStep = ref(1);
       </BaseButton>
     </div>
     <div>
-      <SetupVotingVote v-if="votingStep === 2" @next="emit('next')" />
-      <SetupVotingBasic v-if="votingStep === 3" @next="emit('next')" />
-      <SetupVotingStrategy v-if="votingStep === 4" @next="emit('next')" />
-      <SetupVotingHelp v-if="votingStep === 5" @next="emit('next')" />
+      <SetupStrategyVote v-if="votingStep === 2" @next="emit('next')" />
+      <SetupStrategyBasic v-if="votingStep === 3" @next="emit('next')" />
+      <SetupStrategyAdvanced v-if="votingStep === 4" @next="emit('next')" />
+      <SetupStrategyHelp v-if="votingStep === 5" @next="emit('next')" />
     </div>
     <BaseButton
       class="mt-4"
