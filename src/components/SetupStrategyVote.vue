@@ -7,7 +7,7 @@ const emit = defineEmits(['next']);
 const { form } = useSpaceSettingsForm();
 
 const votingItems = computed(() => {
-  return ['whitelist', 'sybil'].map((name, i) => ({
+  return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
     name: name
   }));
@@ -16,81 +16,27 @@ const votingItems = computed(() => {
 const input = ref(votingItems.value[0]);
 const symbol = ref('VOTE');
 
-const sybilItems = computed(() => {
-  return ['poh', 'brightId'].map((name, i) => ({
-    id: i + 1,
-    name: name
-  }));
-});
-
-const selectedSybilItems = ref<{ id: number; name: string }[]>(
-  sybilItems.value
-);
-
 const whitelist = ref([]);
 
-function generateStrategy(type) {
+const strategy = computed(() => {
   const strategy: {
     name: string;
     params: {
       symbol: string;
-      addresses: string[];
+      addresses?: string[];
     };
   } = {
     name: 'whitelist',
     params: {
-      symbol: '',
-      addresses: []
+      symbol: ''
     }
   };
 
-  const sybilStrategy: {
-    name: string;
-    params: {
-      strategy: {
-        name: string;
-        params: {
-          symbol: string;
-        };
-      };
-      sybil: {
-        [key: string]: string;
-      };
-    };
-  } = {
-    name: 'sybil-protection',
-    params: {
-      strategy: {
-        name: 'ticket',
-        params: {
-          symbol: ''
-        }
-      },
-      sybil: {
-        poh: '0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb',
-        brightId: 'v5'
-      }
-    }
-  };
+  strategy.name = input.value.name;
+  strategy.params.symbol = symbol.value;
 
-  return type === 'sybil' ? sybilStrategy : strategy;
-}
-
-const strategy = computed(() => {
-  const strategy = generateStrategy(input.value.name);
-
-  if (input.value.name === 'whitelist') {
+  if (strategy.name === 'whitelist')
     strategy.params.addresses = whitelist.value;
-    strategy.params.symbol = symbol.value;
-  } else if (input.value.name === 'sybil') {
-    strategy.params.strategy.params.symbol = symbol.value;
-    sybilItems.value.forEach(item => {
-      // if poh or brightId isn't selected delete it from the sybil obj
-      if (!selectedSybilItems.value.find(i => i.id === item.id)) {
-        delete strategy.params.sybil[item.name];
-      }
-    });
-  }
 
   return strategy;
 });
@@ -99,10 +45,7 @@ function nextStep() {
   emit('next');
   form.value.strategies = [];
   form.value.strategies.push(strategy.value);
-  const symbol =
-    strategy.value.params.symbol ||
-    strategy.value.params.strategy.params.symbol ||
-    'VOTE';
+  const symbol = strategy.value.params.symbol || 'VOTE';
   form.value.symbol = symbol;
 }
 </script>
@@ -118,7 +61,7 @@ function nextStep() {
                 {{
                   selectedItem.name === 'whitelist'
                     ? 'Whitelist voting'
-                    : 'Sybil protected voting'
+                    : 'Ticket voting'
                 }}
               </span>
             </template>
@@ -127,7 +70,7 @@ function nextStep() {
                 {{
                   item.name === 'whitelist'
                     ? 'Whitelist voting'
-                    : 'Sybil protected voting'
+                    : 'Ticket voting'
                 }}
               </span>
             </template>
@@ -140,37 +83,13 @@ function nextStep() {
               class="s-input !rounded-3xl"
             />
           </div>
-          <div v-else-if="input.name === 'sybil'">
-            <BaseListboxMultiple
-              v-model="selectedSybilItems"
-              :items="sybilItems"
-              label="Select protection"
-            >
-              <template #item="{ item }">
-                <span>
-                  {{ item.name === 'poh' ? 'Proof of humanity' : 'BrightID' }}
-                </span>
-              </template>
-              <template #selected="{ selectedItems }">
-                <span>
-                  {{
-                    selectedItems
-                      .map(item =>
-                        item.name === 'poh' ? 'Proof of humanity' : 'BrightID'
-                      )
-                      .join(', ')
-                  }}
-                </span>
-              </template>
-            </BaseListboxMultiple>
-          </div>
         </div>
         <div>
           <BaseInput v-model="symbol" title="Symbol" />
         </div>
       </div>
     </BaseBlock>
-    <BaseBlock class="mt-4"> Demo: {{ strategy }} </BaseBlock>
+
     <BaseButton class="float-right mt-4" primary @click="nextStep">
       {{ $t('next') }}
     </BaseButton>
