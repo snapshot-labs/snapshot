@@ -68,7 +68,7 @@ onMounted(() => resetForm());
     <div v-else>
       <div class="px-4 md:px-0">
         <h4 class="mb-2">{{ $t('setup.domain.title') }}</h4>
-        <BaseMessage v-if="env !== 'demo'" class="mb-3" level="info">
+        <BaseMessageBlock v-if="env !== 'demo'" class="mb-3" level="info">
           {{ $t('setup.domain.ensMessage') }}
           <i18n-t keypath="setup.domain.ensMessageTestnet" tag="span">
             <template #link>
@@ -77,14 +77,18 @@ onMounted(() => resetForm());
               </BaseLink>
             </template>
           </i18n-t>
-        </BaseMessage>
-        <BaseMessage v-if="defaultNetwork === '4'" level="info" class="my-3">
+        </BaseMessageBlock>
+        <BaseMessageBlock
+          v-if="defaultNetwork === '4'"
+          level="info"
+          class="my-3"
+        >
           {{
             $t('setup.demoTestnetEnsMessage', {
               network: networks[defaultNetwork].name
             })
           }}
-        </BaseMessage>
+        </BaseMessageBlock>
       </div>
       <BaseBlock>
         <div v-if="domainsWithoutExistingSpace.length">

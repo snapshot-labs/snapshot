@@ -5,20 +5,14 @@ defineProps<{
 </script>
 
 <template>
-  <BaseBlock
-    :class="[
-      'rounded-xl border text-skin-text',
-      { '!border-skin-text ': level === 'warning' }
-    ]"
-  >
-    <BaseIcon
-      :name="level"
-      :size="level === 'info' ? '20' : '16'"
-      class="float-left mr-1"
-      :class="{ 'text-skin-link ': level === 'warning' }"
+  <div>
+    <i-ho-information-circle
+      v-if="level === 'info'"
+      class="float-left mr-1 text-sm"
     />
-    <div :class="[' leading-5', { '-mt-[2px]': level === 'warning' }]">
+    <i-ho-exclamation-circle v-else class="float-left mr-1 text-sm" />
+    <div class="leading-5">
       <slot />
     </div>
-  </BaseBlock>
+  </div>
 </template>
