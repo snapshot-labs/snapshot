@@ -9,25 +9,24 @@ const votingStep = ref(1);
 <template>
   <div>
     <div v-if="votingStep === 1" class="space-y-3">
-      <h4>How would you like to setup your voting strategy?</h4>
-      <ButtonCard title="One person one vote" @click="votingStep = 2">
-        Manage a whitelist of people who can vote or simply set sybil protection
-        rules. Every vote is equal and there is no need for a token
-      </ButtonCard>
-      <ButtonCard title="Token weighted voting" @click="votingStep = 3">
-        Votes are weighted by a token. The token can be an ERC-20 or ERC-721
-        (NFT) and you can add sybil protection rules
-      </ButtonCard>
-      <ButtonCard title="Lemme get creative" @click="votingStep = 4">
-        Select up to 8 strategies with a shit ton of options from simple
-        whitelist to multi-chain and weighted voting power
+      <h4>{{ $t('setup.strategy.title') }}</h4>
+      <ButtonCard
+        :title="$t('setup.strategy.onePersonOneVote.title')"
+        @click="votingStep = 2"
+      >
+        {{ $t('setup.strategy.onePersonOneVote.description') }}
       </ButtonCard>
       <ButtonCard
-        title="It's complicated... I need help!"
-        @click="votingStep = 5"
+        :title="$t('setup.strategy.tokenVoting.title')"
+        @click="votingStep = 3"
       >
-        Join our discord and get help from the community. Or fill out a quick
-        form and get someone to build exactly what you need
+        {{ $t('setup.strategy.tokenVoting.description') }}
+      </ButtonCard>
+      <ButtonCard
+        :title="$t('setup.strategy.advanced.title')"
+        @click="votingStep = 4"
+      >
+        {{ $t('setup.strategy.advanced.description') }}
       </ButtonCard>
 
       <BaseButton primary class="float-right !mt-4" @click="emit('next')">
@@ -38,7 +37,6 @@ const votingStep = ref(1);
       <SetupStrategyVote v-if="votingStep === 2" @next="emit('next')" />
       <SetupStrategyBasic v-if="votingStep === 3" @next="emit('next')" />
       <SetupStrategyAdvanced v-if="votingStep === 4" @next="emit('next')" />
-      <SetupStrategyHelp v-if="votingStep === 5" @next="emit('next')" />
     </div>
     <BaseButton
       class="mt-4"
