@@ -32,8 +32,13 @@ onMounted(async () => init());
       </div>
     </div>
     <div
-      class="flex w-screen min-w-0 shrink-0 flex-col sm:w-auto sm:shrink sm:grow"
+      class="relative flex w-screen min-w-0 shrink-0 flex-col sm:w-auto sm:shrink sm:grow"
     >
+      <div
+        class="absolute top-0 right-0 left-0 bottom-0 z-50 bg-skin-bg opacity-60"
+        :class="{ hidden: !showSidebar }"
+        @click="showSidebar = false"
+      />
       <div
         id="navbar"
         class="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
