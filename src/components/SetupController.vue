@@ -62,7 +62,7 @@ watch(
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
-  <div v-else-if="uriAddress && !isEditController">
+  <div v-else-if="uriAddress && !isEditController" class="px-4 md:px-0">
     <BaseMessage level="info">
       {{ $t('setup.setSpaceControllerExists') }}
 

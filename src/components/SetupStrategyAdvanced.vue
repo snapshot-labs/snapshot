@@ -14,8 +14,10 @@ const emit = defineEmits(['next']);
       @update-network="val => (form.network = val)"
       @update-symbol="val => (form.symbol = val)"
     />
-    <BaseButton primary class="float-right mt-4" @click="emit('next')">
-      {{ $t('next') }}
-    </BaseButton>
+    <div class="mx-4 md:mx-0">
+      <BaseButton primary class="float-right mt-4" @click="emit('next')">
+        {{ $t('next') }}
+      </BaseButton>
+    </div>
   </div>
 </template>

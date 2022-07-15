@@ -30,11 +30,13 @@ function nextStep() {
       v-model:github="form.github"
       :get-error-message="getErrorMessage"
     />
-    <BaseButton class="mt-4" @click="emit('back')">
-      {{ $t('back') }}
-    </BaseButton>
-    <BaseButton primary class="float-right !mt-4" @click="nextStep">
-      {{ $t('next') }}
-    </BaseButton>
+    <div class="px-4 md:px-0">
+      <BaseButton class="mt-4" @click="emit('back')">
+        {{ $t('back') }}
+      </BaseButton>
+      <BaseButton primary class="float-right !mt-4" @click="nextStep">
+        {{ $t('next') }}
+      </BaseButton>
+    </div>
   </div>
 </template>

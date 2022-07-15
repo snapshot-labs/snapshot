@@ -66,24 +66,26 @@ onMounted(() => resetForm());
   <div>
     <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
     <div v-else>
-      <h4 class="mb-2">{{ $t('setup.domain.title') }}</h4>
-      <BaseMessage v-if="env !== 'demo'" class="mb-3" level="info">
-        {{ $t('setup.domain.ensMessage') }}
-        <i18n-t keypath="setup.domain.ensMessageTestnet" tag="span">
-          <template #link>
-            <BaseLink link="https://demo.snapshot.org">
-              {{ $t('setup.domain.tryDemo') }}
-            </BaseLink>
-          </template>
-        </i18n-t>
-      </BaseMessage>
-      <BaseMessage v-if="defaultNetwork === '4'" level="info" class="my-3">
-        {{
-          $t('setup.demoTestnetEnsMessage', {
-            network: networks[defaultNetwork].name
-          })
-        }}
-      </BaseMessage>
+      <div class="px-4 md:px-0">
+        <h4 class="mb-2">{{ $t('setup.domain.title') }}</h4>
+        <BaseMessage v-if="env !== 'demo'" class="mb-3" level="info">
+          {{ $t('setup.domain.ensMessage') }}
+          <i18n-t keypath="setup.domain.ensMessageTestnet" tag="span">
+            <template #link>
+              <BaseLink link="https://demo.snapshot.org">
+                {{ $t('setup.domain.tryDemo') }}
+              </BaseLink>
+            </template>
+          </i18n-t>
+        </BaseMessage>
+        <BaseMessage v-if="defaultNetwork === '4'" level="info" class="my-3">
+          {{
+            $t('setup.demoTestnetEnsMessage', {
+              network: networks[defaultNetwork].name
+            })
+          }}
+        </BaseMessage>
+      </div>
       <BaseBlock>
         <div v-if="domainsWithoutExistingSpace.length">
           <div class="mb-3">

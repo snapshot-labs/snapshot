@@ -11,7 +11,9 @@ const emit = defineEmits(['create', 'back']);
 </script>
 
 <template>
-  <h4 class="mb-2">Who can manage this space and create proposals?</h4>
+  <h4 class="mb-2 px-4 md:px-0">
+    Who can manage this space and create proposals?
+  </h4>
   <div class="space-y-4">
     <SettingsValidationBlock
       v-model:validation="form.validation"
@@ -32,10 +34,14 @@ const emit = defineEmits(['create', 'back']);
       @update:members="val => (form.members = val)"
     />
   </div>
-  <SetupButtonCreate
-    :creating-space="creatingSpace"
-    class="mt-4"
-    @create="emit('create')"
-  />
-  <BaseButton class="mt-4" @click="emit('back')"> {{ $t('back') }} </BaseButton>
+  <div class="px-4 md:px-0">
+    <SetupButtonCreate
+      :creating-space="creatingSpace"
+      class="mt-4"
+      @create="emit('create')"
+    />
+    <BaseButton class="mt-4" @click="emit('back')">
+      {{ $t('back') }}
+    </BaseButton>
+  </div>
 </template>

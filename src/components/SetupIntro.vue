@@ -8,21 +8,24 @@ const { web3Account } = useWeb3();
 
 <template>
   <div>
-    <div class="space-y-4">
+    <div class="px-4 md:px-0">
       {{ $t('header.description') }}
-
-      <SetupMessageHelp />
     </div>
-    <BaseButton
-      primary
-      class="float-right mt-4"
-      @click="
-        !web3Account
-          ? (modalAccountOpen = true)
-          : $router.push({ query: { step: 2 } })
-      "
-    >
-      {{ $t('getStarted') }}
-    </BaseButton>
+
+    <SetupMessageHelp />
+
+    <div class="px-4 md:px-0">
+      <BaseButton
+        primary
+        class="float-right mt-4 w-full"
+        @click="
+          !web3Account
+            ? (modalAccountOpen = true)
+            : $router.push({ query: { step: 2 } })
+        "
+      >
+        {{ $t('getStarted') }}
+      </BaseButton>
+    </div>
   </div>
 </template>

@@ -53,9 +53,14 @@ function nextStep() {
 <template>
   <div>
     <BaseBlock title="Setup voting">
-      <div class="flex space-x-4">
-        <div class="w-2/3 space-y-3">
-          <BaseListbox v-model="input" :items="votingItems" label="Strategy">
+      <div class="space-y-3">
+        <div class="space-y-3 md:flex md:w-2/3 md:space-y-0 md:space-x-4">
+          <BaseListbox
+            v-model="input"
+            :items="votingItems"
+            label="Strategy"
+            class="w-full"
+          >
             <template #selected="{ selectedItem }">
               <span>
                 {{
@@ -75,23 +80,22 @@ function nextStep() {
               </span>
             </template>
           </BaseListbox>
-          <div v-if="input.name === 'whitelist'">
-            <LabelInput> Whitelisted addresses </LabelInput>
-            <TextareaArray
-              v-model="whitelist"
-              :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="s-input !rounded-3xl"
-            />
-          </div>
-        </div>
-        <div>
           <BaseInput v-model="symbol" title="Symbol" />
+        </div>
+        <div v-if="input.name === 'whitelist'" class="md:w-2/3">
+          <LabelInput> Whitelisted addresses </LabelInput>
+          <TextareaArray
+            v-model="whitelist"
+            :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+            class="s-input !rounded-3xl"
+          />
         </div>
       </div>
     </BaseBlock>
-
-    <BaseButton class="float-right mt-4" primary @click="nextStep">
-      {{ $t('next') }}
-    </BaseButton>
+    <div class="float-right mx-4 mt-4 md:mx-0">
+      <BaseButton primary @click="nextStep">
+        {{ $t('next') }}
+      </BaseButton>
+    </div>
   </div>
 </template>

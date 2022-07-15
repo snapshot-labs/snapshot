@@ -91,7 +91,7 @@ watch(
 <template>
   <div class="mt-4 space-y-4">
     <BaseBlock title="Setup token voting">
-      <div class="flex w-2/3">
+      <div class="flex md:w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork
             :network="input.network"
@@ -123,8 +123,10 @@ watch(
       </div>
     </BaseBlock>
 
-    <BaseButton class="float-right" primary @click="nextStep">
-      {{ strategy?.params?.symbol ? $t('next') : $t('skip') }}
-    </BaseButton>
+    <div class="float-right mx-4 md:mx-0">
+      <BaseButton primary @click="nextStep">
+        {{ strategy?.params?.symbol ? $t('next') : $t('skip') }}
+      </BaseButton>
+    </div>
   </div>
 </template>
