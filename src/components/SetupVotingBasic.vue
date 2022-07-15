@@ -1,105 +1,88 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { getTokenPrices } from '@/helpers/covalent';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+
+const emit = defineEmits(['next']);
 
 const { form } = useSpaceSettingsForm();
 
-const input = ref({
-  network: '1',
-  address: ''
-});
-const isSybil = ref(false);
-const sybilItems = computed(() => {
-  return ['poh', 'brightId'].map((name, i) => ({
+const tokenStandards = computed(() => {
+  return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
     id: i + 1,
     name: name
   }));
 });
 
-const selectedSybilItems = ref<{ id: number; name: string }[]>(
-  sybilItems.value
-);
-
-const emit = defineEmits(['next']);
-
-const token = ref(null);
-
-const strategy = computed(() => {
-  if (token.value)
-    return generateStrategyFromToken(token.value, input.value.network);
-  return null;
+const input = ref({
+  network: '1',
+  address: ''
 });
 
-function generateStrategyFromToken(token, network) {
+const defaultToken = {
+  standard: tokenStandards.value[0],
+  symbol: '',
+  decimals: null
+};
+
+const token = ref(clone(defaultToken));
+
+const strategy = computed(() => {
+  if (!token.value) return null;
+
   const strategy: {
     name: string;
     network: string;
     params: {
-      decimals?: string;
       network: string;
       address: string;
-      symbol: string;
+      decimals?: string;
+      symbol?: string;
     };
   } = {
     name: '',
-    network,
+    network: input.value.network,
     params: {
-      network: network,
-      address: token.contractAddress,
-      symbol: ''
+      network: input.value.network,
+      address: input.value.address
     }
   };
 
-  if (token.decimals) strategy.params.decimals = token.decimals;
-  if (token.symbol) strategy.params.symbol = token.symbol;
+  if (token.value.decimals) strategy.params.decimals = token.value.decimals;
+  if (token.value.symbol) strategy.params.symbol = token.value.symbol;
 
-  if (token.type === 'ERC-20') {
+  if (token.value.standard.name === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
-  } else if (token.type === 'ERC-721') {
+  } else if (token.value.standard.name === 'ERC-721') {
     strategy.name = 'erc721';
+  } else if (token.value.standard.name === 'ERC-1155') {
+    strategy.name = 'erc1155-balance-of';
   } else strategy.name = '';
 
-  const sybilStrategy = {
-    name: 'sybil-protection',
-    params: {
-      strategy,
-      sybil: {
-        poh: '0xC5E9dDebb09Cd64DfaCab4011A0D5cEDaf7c9BDb',
-        brightId: 'v5'
-      }
-    }
-  };
-  sybilItems.value.forEach(item => {
-    // if poh or brightId isn't selected delete it from the sybil obj
-    if (!selectedSybilItems.value.find(i => i.id === item.id)) {
-      delete sybilStrategy.params.sybil[item.name];
-    }
-  });
-  return isSybil.value ? sybilStrategy : strategy;
-}
+  return strategy;
+});
 
 function nextStep() {
   emit('next');
-  if (strategy.value?.name) {
+  if (strategy.value?.params?.symbol) {
     form.value.strategies = [];
     form.value.strategies.push(strategy.value);
-    const symbol =
-      strategy.value.params.symbol ||
-      strategy.value.params.strategy.params.symbol;
-    form.value.symbol = symbol;
+    form.value.symbol = strategy.value.params.symbol;
   }
+}
+
+async function getTokenInfo() {
+  const res = await getTokenPrices(input.value.address, input.value.network);
+  if (!res.data) return (token.value = clone(defaultToken));
+  token.value.decimals = res.data[0].contract_decimals;
+  token.value.symbol = res.data[0].contract_ticker_symbol;
 }
 
 watch(
   input,
   async () => {
-    await fetch(
-      `https://blockscout.com/eth/mainnet/api?module=token&action=getToken&contractaddress=${input.value.address}&apikey=4f8b5f8f-f8f8f8f8f-f8f8f8f8f-f8f8f8f8f`
-    )
-      .then(res => res.json())
-      .then(data => {
-        token.value = data.result;
-      });
+    getTokenInfo();
   },
   { deep: true }
 );
@@ -108,11 +91,16 @@ watch(
 <template>
   <div class="mt-4 space-y-4">
     <BaseBlock title="Setup token voting">
-      <div class="flex space-x-5">
+      <div class="flex w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork
             :network="input.network"
             @select="value => (input.network = value)"
+          />
+          <BaseListbox
+            v-model="token.standard"
+            :items="tokenStandards"
+            label="Token standard"
           />
           <BaseInput
             v-model.trim="input.address"
@@ -120,53 +108,17 @@ watch(
             placeholder="Enter address"
             focus-on-mount
           />
-          <div>
-            <div class="mb-1 flex">
-              <BaseSwitch v-model="isSybil" /> Enable sybil protection
-            </div>
 
-            <BaseListboxMultiple
-              v-model="selectedSybilItems"
-              :items="sybilItems"
-              :disable-input="!isSybil"
-            >
-              <template #item="{ item }">
-                <span>{{
-                  item.name === 'poh' ? 'Proof of humanity' : 'BrightID'
-                }}</span>
-              </template>
-              <template #selected="{ selectedItems }">
-                <span>
-                  {{
-                    selectedItems
-                      .map(item =>
-                        item.name === 'poh' ? 'Proof of humanity' : 'BrightID'
-                      )
-                      .join(', ')
-                  }}
-                </span>
-              </template>
-            </BaseListboxMultiple>
-          </div>
-        </div>
-        <div>
-          <LabelInput>Token info</LabelInput>
-          <div class="inline-block rounded-xl border p-2 px-3">
-            <div class="flex w-[200px] justify-between">
-              Type <span class="text-skin-link">{{ token?.type || '-' }}</span>
-            </div>
-            <div class="flex w-[200px] justify-between">
-              Name <span class="text-skin-link">{{ token?.name || '-' }}</span>
-            </div>
-            <div class="flex w-[200px] justify-between">
-              Symbol
-              <span class="text-skin-link">{{ token?.symbol || '-' }}</span>
-            </div>
-            <div class="flex w-[200px] justify-between">
-              Decimals
-              <span class="text-skin-link">{{ token?.decimals || '-' }}</span>
-            </div>
-          </div>
+          <BaseInput
+            v-if="token.symbol"
+            v-model="token.symbol"
+            title="Symbol"
+          />
+          <BaseInput
+            v-if="token.decimals"
+            v-model="token.decimals"
+            title="Decimals"
+          />
         </div>
       </div>
     </BaseBlock>
@@ -174,7 +126,7 @@ watch(
     <BaseBlock> Demo: {{ strategy }} </BaseBlock>
 
     <BaseButton class="float-right" primary @click="nextStep">
-      {{ strategy?.name ? $t('next') : $t('skip') }}
+      {{ strategy?.params?.symbol ? $t('next') : $t('skip') }}
     </BaseButton>
   </div>
 </template>

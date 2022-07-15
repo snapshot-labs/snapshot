@@ -33,3 +33,11 @@ export async function getTokenBalances(
 
   return validTokenBalances;
 }
+
+export async function getTokenPrices(
+  contract: string,
+  chainId: string
+): Promise<any> {
+  const tokenPricesUrl = `${API_URL}/pricing/historical_by_addresses_v2/${chainId}/USD/${contract}/?quote-currency=USD&format=JSON&key=${API_KEY}`;
+  return await snapshot.utils.getJSON(tokenPricesUrl);
+}
