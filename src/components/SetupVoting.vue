@@ -16,9 +16,7 @@ const { form } = useSpaceSettingsForm();
       v-model:hideAbstain="form.voting.hideAbstain"
     />
     <div class="px-4 md:px-0">
-      <BaseButton class="mt-4" @click="emit('back')">
-        {{ $t('back') }}
-      </BaseButton>
+      <SetupButtonBack @click="emit('back')" />
       <BaseButton primary class="float-right !mt-4" @click="emit('next')">
         {{ $t('next') }}
       </BaseButton>

@@ -43,12 +43,9 @@ const votingStep = ref(1);
       <SetupStrategyAdvanced v-if="votingStep === 4" @next="emit('next')" />
     </div>
     <div class="px-4 md:px-0">
-      <BaseButton
-        class="mt-4"
+      <SetupButtonBack
         @click="votingStep !== 1 ? (votingStep = 1) : emit('back')"
-      >
-        {{ $t('back') }}
-      </BaseButton>
+      />
     </div>
   </div>
 </template>
