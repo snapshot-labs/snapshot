@@ -14,7 +14,7 @@ const { web3, web3Account } = useWeb3();
 </script>
 
 <template>
-  <div class="mx-4 md:mx-0">
+  <div>
     <!-- Shows when no wallet is connected and the space has any sort
       of validation set -->
     <BaseMessageBlock
@@ -27,6 +27,7 @@ const { web3, web3Account } = useWeb3();
       "
       class="mb-4"
       level="warning"
+      is-responsive
     >
       <span v-if="space?.filters.onlyMembers">
         {{ $t('create.validationWarning.basic.member') }}
@@ -57,6 +58,7 @@ const { web3, web3Account } = useWeb3();
       level="warning"
       :route-object="{ name: 'spaceAbout', params: { key: space.id } }"
       class="mb-4"
+      is-responsive
     >
       {{ $t('create.validationWarning.executionError') }}
     </BaseMessageBlock>
@@ -66,6 +68,7 @@ const { web3, web3Account } = useWeb3();
       v-else-if="passValidation[0] === false"
       level="warning"
       class="mb-4"
+      is-responsive
     >
       <span v-if="passValidation[1] === 'basic'">
         <span v-if="space?.filters.onlyMembers">
