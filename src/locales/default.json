@@ -397,7 +397,8 @@
         "title": "Advanced settings",
         "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
       }
-    }
+    },
+    "validationTitle": "Who can manage this space and create proposals?"
   },
   "profile": {
     "buttonEdit": "Edit profile",

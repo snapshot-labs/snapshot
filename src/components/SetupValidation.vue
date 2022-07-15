@@ -12,7 +12,7 @@ const emit = defineEmits(['create', 'back']);
 
 <template>
   <h4 class="mb-2 px-4 md:px-0">
-    Who can manage this space and create proposals?
+    {{ $t('setup.validationTitle') }}
   </h4>
   <div class="space-y-4">
     <SettingsValidationBlock
