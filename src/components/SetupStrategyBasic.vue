@@ -123,8 +123,6 @@ watch(
       </div>
     </BaseBlock>
 
-    <BaseBlock> Demo: {{ strategy }} </BaseBlock>
-
     <BaseButton class="float-right" primary @click="nextStep">
       {{ strategy?.params?.symbol ? $t('next') : $t('skip') }}
     </BaseButton>
