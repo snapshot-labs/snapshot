@@ -32,9 +32,7 @@ const votingStep = ref(1);
       </div>
 
       <div class="px-4 md:px-0">
-        <BaseButton primary class="float-right !mt-4" @click="emit('next')">
-          {{ $t('skip') }}
-        </BaseButton>
+        <SetupButtonNext text="skip" @click="emit('next')" />
       </div>
     </div>
     <div>

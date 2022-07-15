@@ -124,9 +124,11 @@ watch(
     </BaseBlock>
 
     <div class="float-right mx-4 md:mx-0">
-      <BaseButton primary @click="nextStep">
-        {{ strategy?.params?.symbol ? $t('next') : $t('skip') }}
-      </BaseButton>
+      <SetupButtonNext
+        class="!mt-0"
+        :text="strategy?.params?.symbol ? $t('next') : $t('skip')"
+        @click="nextStep"
+      />
     </div>
   </div>
 </template>

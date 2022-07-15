@@ -33,8 +33,6 @@ function nextStep() {
   </div>
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />
-    <BaseButton primary class="float-right !mt-4" @click="nextStep">
-      {{ $t('next') }}
-    </BaseButton>
+    <SetupButtonNext @click="nextStep" />
   </div>
 </template>

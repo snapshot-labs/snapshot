@@ -17,9 +17,7 @@ const { form } = useSpaceSettingsForm();
     />
     <div class="px-4 md:px-0">
       <SetupButtonBack @click="emit('back')" />
-      <BaseButton primary class="float-right !mt-4" @click="emit('next')">
-        {{ $t('next') }}
-      </BaseButton>
+      <SetupButtonNext @click="emit('next')" />
     </div>
   </div>
 </template>

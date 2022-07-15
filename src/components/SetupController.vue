@@ -74,7 +74,7 @@ watch(
       <BaseButton @click="isEditController = true">
         {{ $t('edit') }}
       </BaseButton>
-      <BaseButton primary @click="emit('next')"> {{ $t('skip') }} </BaseButton>
+      <SetupButtonNext class="!mt-0" @click="emit('next')" />
     </div>
   </div>
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
