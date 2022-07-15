@@ -10,6 +10,7 @@ const steps = [
   { name: 'ENS' },
   { name: 'Controller' },
   { name: 'Profile' },
+  { name: 'Strategy' },
   { name: 'Voting' },
   { name: 'Custom domain' },
   { name: 'Validation' }
