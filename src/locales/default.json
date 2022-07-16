@@ -636,8 +636,8 @@
     "description": "Snapshot is a free and open-source home for your community's governance. Create your own space now and start making decisions"
   },
   "aboutPage": {
-    "description": "Make democratic decisions that affect your web3 community. Snapshots is a free, open source and inclusive platform for managing your community.",
-    "subHeader": "Web3 governance should be a snap",
-    "subDescription": "Creating proposals and voting on Snapshot is user-friendly and instant, this is made possible by off-chain signing technology."
+    "description": "Snapshot is a decentralized voting system that allows users to easily create and vote on proposals. The process is gasless and off-chain, making it user-friendly and affordable. The system is also flexible, supporting various voting types and strategies.",
+    "subHeader": "Governance should be a snap",
+    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
   }
 }
