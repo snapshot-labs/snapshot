@@ -49,7 +49,7 @@ watchEffect(() => {
           </ButtonSidebar>
           <router-link
             :to="{ path: '/' }"
-            class="hidden items-center sm:block"
+            class="-ml-3 hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot
