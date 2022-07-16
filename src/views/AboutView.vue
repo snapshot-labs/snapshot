@@ -88,9 +88,7 @@ const socials = [
         <p
           class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[501px]"
         >
-          Snapshot is the home of your community's governance. It's a place
-          where you can create proposals, weigh voting power in flexable ways,
-          vote completely off-chain.
+          {{ $t('aboutPage.description') }}
         </p>
         <div class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
@@ -99,12 +97,13 @@ const socials = [
           </router-link>
         </div>
 
-        <AboutSubheader> Web3 governance should be a snap </AboutSubheader>
+        <AboutSubheader>
+          {{ $t('aboutPage.subHeader') }}
+        </AboutSubheader>
         <p
           class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[500px]"
         >
-          Creating proposals and voting on Snapshot is user-friendly and does
-          not cost gas as the process is securely performed off-chain.
+          {{ $t('aboutPage.subDescription') }}
         </p>
         <div class="mb-4 flex items-center">
           <hr class="w-[50px] border-skin-border" />
@@ -151,22 +150,27 @@ const socials = [
             link="https://docs.snapshot.org/"
             class="text-snapshot"
             hide-external-icon
-            >Gitbook</BaseLink
-          ><br />
+          >
+            Gitbook
+          </BaseLink>
+          <br />
           FAQ
           <BaseLink
             link="https://github.com/snapshot-labs/snapshot/discussions"
             class="text-snapshot"
             hide-external-icon
-            >GitHub Discussions</BaseLink
-          ><br />
+          >
+            GitHub Discussions
+          </BaseLink>
+          <br />
           Source
           <BaseLink
             link="https://github.com/snapshot-labs"
             class="text-snapshot"
             hide-external-icon
-            >GitHub</BaseLink
           >
+            GitHub
+          </BaseLink>
         </p>
       </BaseContainer>
     </div>

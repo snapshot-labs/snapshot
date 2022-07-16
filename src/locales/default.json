@@ -632,7 +632,12 @@
     "24hChange": "24h change"
   },
   "header": {
-    "title": "Where descisions get made",
-    "description": "Snapshot is a free and open-source home for your community's governance. Create your own space now and start making decisions."
+    "title": "Where decisions get made",
+    "description": "Snapshot is a free and open-source home for your community's governance. Create your own space now and start making decisions"
+  },
+  "aboutPage": {
+    "description": "Make democratic decisions that affect your web3 community. Snapshots is a free, open source and inclusive platform for managing your community.",
+    "subHeader": "Web3 governance should be a snap",
+    "subDescription": "Creating proposals and voting on Snapshot is user-friendly and does not cost gas as the process is securely performed off-chain"
   }
 }
