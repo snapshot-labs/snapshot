@@ -9,7 +9,7 @@ const visible = useStorage('snapshot.showHomeHeader', true);
     <div
       class="relative w-full rounded-xl border border-skin-border p-4 md:pr-[200px]"
     >
-      <h3 class="mt-0 pr-6 font-mono sm:pr-0">{{ $t('header.title') }}</h3>
+      <h3 class="mt-0 pr-6 font-space sm:pr-0">{{ $t('header.title') }}</h3>
       <p>
         {{ $t('header.description') }}
       </p>

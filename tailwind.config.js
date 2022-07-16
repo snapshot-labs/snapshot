@@ -49,7 +49,8 @@ module.exports = {
       sans: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
       ],
-      mono: ['Space Mono, monospace']
+      mono: ['monospace'],
+      space: ['Space Mono']
     },
     fontSize: {
       '2xl': ['36px', '50px'],
