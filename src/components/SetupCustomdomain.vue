@@ -11,7 +11,7 @@ const emit = defineEmits(['back', 'next']);
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />
     <SetupButtonNext
-      :text="form.domain ? $t('next') : $t('skip')"
+      :text="form.domain ? 'next' : 'skip'"
       @click="emit('next')"
     />
   </div>

@@ -126,7 +126,7 @@ watch(
     <div class="float-right mx-4 md:mx-0">
       <SetupButtonNext
         class="!mt-0"
-        :text="strategy?.params?.symbol ? $t('next') : $t('skip')"
+        :text="strategy?.params?.symbol ? 'next' : 'skip'"
         @click="nextStep"
       />
     </div>
