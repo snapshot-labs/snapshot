@@ -270,6 +270,15 @@ async function handleSetRecord() {
             </BaseButton>
           </div>
         </BaseBlock>
+
+        <BaseBlock class="mt-5">
+          <div>
+            <div class="mb-2">
+              {{ $t('footer.newsletter.title') }}
+            </div>
+            <InputNewsletter tag="6449077" />
+          </div>
+        </BaseBlock>
       </div>
     </template>
   </TheLayout>
