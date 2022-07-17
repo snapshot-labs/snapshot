@@ -114,16 +114,9 @@ export function useSpaceController() {
   // and skips to step 3 if it does
   const loadingTextRecord = ref(false);
   onMounted(async () => {
-    if (!route.params.step) return;
     try {
       loadingTextRecord.value = true;
       await loadUriAddress();
-      if (uriAddress.value && route.params.step === 'controller') {
-        router.push({
-          name: 'setup',
-          params: { step: 'profile', ens: ensAddress.value }
-        });
-      }
       loadingTextRecord.value = false;
     } catch (e) {
       console.log(e);

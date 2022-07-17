@@ -157,7 +157,7 @@ async function handleSetRecord() {
       <LoadingRow v-if="!loaded" block />
       <template v-else-if="currentTextRecord">
         <div class="space-y-3">
-          <BaseMessage
+          <BaseMessageBlock
             v-if="
               !(isSpaceController || isSpaceAdmin || ensOwner) &&
               currentTextRecord
@@ -166,7 +166,7 @@ async function handleSetRecord() {
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
-          </BaseMessage>
+          </BaseMessageBlock>
 
           <SettingsProfileBlock
             v-model:name="form.name"
@@ -187,7 +187,6 @@ async function handleSetRecord() {
 
           <SettingsStrategiesBlock
             :form="form"
-            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
@@ -209,7 +208,6 @@ async function handleSetRecord() {
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
-            :get-error-message="getErrorMessage"
             @update:min-score="val => (form.filters.minScore = val)"
             @update:only-members="val => (form.filters.onlyMembers = val)"
           />
@@ -225,7 +223,6 @@ async function handleSetRecord() {
           <SettingsDomainBlock
             v-model:domain="form.domain"
             v-model:skin="form.skin"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsTreasuriesBlock

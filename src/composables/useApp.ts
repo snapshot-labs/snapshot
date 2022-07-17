@@ -10,11 +10,11 @@ import { getInjected } from '@snapshot-labs/lock/src/utils';
 
 const domainName = window.location.hostname;
 let env = 'master';
-if (domainName.includes('localhost')) env = 'local';
-if (domainName === 'demo.snapshot.org') env = 'develop';
+if (domainName.includes('localhost')) env = 'develop';
+if (domainName === 'demo.snapshot.org') env = 'demo';
 let domain = domains[domainName];
 
-if (env === 'local') {
+if (env === 'develop') {
   domain = import.meta.env.VITE_VIEW_AS_SPACE ?? domain;
 }
 

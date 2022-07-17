@@ -116,6 +116,8 @@ onMounted(() => {
         }}
       </div>
     </BaseContainer>
+    <TheHeader />
+
     <BaseContainer :slim="true">
       <TransitionGroup
         name="fade"
