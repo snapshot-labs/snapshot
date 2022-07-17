@@ -51,6 +51,7 @@ onMounted(() => {
 
 <template>
   <div class="relative">
+    <TheHeader />
     <BaseContainer
       class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
@@ -116,7 +117,6 @@ onMounted(() => {
         }}
       </div>
     </BaseContainer>
-    <TheHeader />
 
     <BaseContainer :slim="true">
       <TransitionGroup

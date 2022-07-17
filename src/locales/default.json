@@ -631,6 +631,11 @@
     },
     "24hChange": "24h change"
   },
+  "newsletter": {
+    "yourEmail": "Your email",
+    "title": "Get the latest Snapshot updates"
+  },
+  "joinCommunity": "Join Snapshot community",
   "header": {
     "title": "Where decisions get made",
     "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"

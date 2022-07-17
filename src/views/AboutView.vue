@@ -172,6 +172,13 @@ const socials = [
             GitHub
           </BaseLink>
         </p>
+        <AboutSubheader> Newsletter </AboutSubheader>
+        <div class="mt-4 mb-[50px] pl-[50px]">
+          <div class="mb-2">
+            {{ $t('newsletter.title') }}
+          </div>
+          <InputNewsletter tag="6449077" class="relative w-[300px]" />
+        </div>
       </BaseContainer>
     </div>
 
