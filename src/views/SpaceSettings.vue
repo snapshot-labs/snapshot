@@ -274,7 +274,7 @@ async function handleSetRecord() {
         <BaseBlock class="mt-3">
           <div>
             <div class="mb-2">
-              {{ $t('footer.newsletter.title') }}
+              {{ $t('newsletter.title') }}
             </div>
             <InputNewsletter tag="6449077" />
           </div>

@@ -219,9 +219,6 @@
     "noDelegationsAndDelegates": "Can't find your delegations and delegates? Make sure you are connected to the correct network.",
     "delegateNotSupported": "Delegation is currently not supported for {network}."
   },
-  "newsletter": {
-    "stayUpToDate": "Stay up to date"
-  },
   "proposal": {
     "castVote": "Cast your vote",
     "vote": "Vote",
@@ -634,13 +631,11 @@
     },
     "24hChange": "24h change"
   },
-  "footer": {
-    "newsletter": {
-      "yourEmail": "Your email",
-      "title": "Get the latest Snapshot updates"
-    },
-    "joinCommunity": "Join Snapshot community"
+  "newsletter": {
+    "yourEmail": "Your email",
+    "title": "Get the latest Snapshot updates"
   },
+  "joinCommunity": "Join Snapshot community",
   "header": {
     "title": "Where decisions get made",
     "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"

@@ -38,7 +38,7 @@ const socials = [
     >
       <div class="mx-auto md:mx-0">
         <div class="mb-2 text-md text-skin-link">
-          {{ $t('footer.newsletter.title') }}
+          {{ $t('newsletter.title') }}
         </div>
 
         <InputNewsletter tag="6449077" class="relative w-[300px]" />
@@ -46,7 +46,7 @@ const socials = [
 
       <div class="">
         <div class="hidden pb-1 text-md text-skin-link md:block">
-          {{ $t('footer.joinCommunity') }}
+          {{ $t('joinCommunity') }}
         </div>
         <div class="flex justify-center space-x-3 pt-2">
           <span v-for="social in socials" :key="social">

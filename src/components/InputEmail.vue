@@ -13,7 +13,7 @@ const emit = defineEmits(['update:modelValue']);
     :model-value="modelValue"
     :focus-on-mount="focusOnMount"
     type="email"
-    :placeholder="$t('footer.newsletter.yourEmail')"
+    :placeholder="$t('newsletter.yourEmail')"
     class="!pr-[66px]"
     @update:model-value="emit('update:modelValue', $event)"
   >
