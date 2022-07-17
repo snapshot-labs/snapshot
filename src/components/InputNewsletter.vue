@@ -23,7 +23,7 @@ const action =
       <button
         type="submit"
         name="subscribe"
-        class="absolute right-0 h-[42px] rounded-r-full bg-primary px-3"
+        class="absolute right-0 h-[42px] rounded-r-full px-3"
       >
         <i-ho-paper-airplane class="rotate-90 text-white" />
       </button>
