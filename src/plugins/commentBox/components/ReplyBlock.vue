@@ -11,7 +11,7 @@ import { useIntl } from '@/composables/useIntl';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 const auth = getInstance();
-const { modalOpen, modalAccountOpen } = useModal();
+const { modalAccountOpen } = useModal();
 const { web3Account } = useWeb3();
 const props = defineProps({
   item: Object,
@@ -105,7 +105,7 @@ async function deleteItem() {
     notify(['primary', t('comment_box.error')]);
   }
 }
-watch([modalOpen, closeModal], () => {
+watch([closeModal], () => {
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
