@@ -60,12 +60,9 @@ async function checkIfSpaceExists() {
   }
 }
 
-const showPleaseWaitMessage = ref(false);
-
 async function handleSubmit() {
   if (!isValid.value) return (showAllValidationErrors.value = true);
   creatingSpace.value = true;
-  showPleaseWaitMessage.value = true;
 
   // Wait for ENS text-record transaction to confirm
   if (pendingENSRecord.value) {
