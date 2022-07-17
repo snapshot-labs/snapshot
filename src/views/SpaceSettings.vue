@@ -271,7 +271,7 @@ async function handleSetRecord() {
           </div>
         </BaseBlock>
 
-        <BaseBlock class="mt-5">
+        <BaseBlock class="mt-3">
           <div>
             <div class="mb-2">
               {{ $t('footer.newsletter.title') }}
