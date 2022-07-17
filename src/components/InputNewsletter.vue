@@ -25,7 +25,7 @@ const action =
         name="subscribe"
         class="absolute right-0 h-[42px] rounded-r-full px-3"
       >
-        <i-ho-paper-airplane class="rotate-90 text-white" />
+        <i-ho-paper-airplane class="rotate-90 text-skin-link" />
       </button>
     </InputEmail>
   </form>
