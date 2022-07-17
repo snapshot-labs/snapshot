@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       colors: {
         snapshot: '#f3b04e',
+        creme: '#ffefd7',
         primary: 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
@@ -41,13 +42,15 @@ module.exports = {
       sm: '544px',
       md: '768px',
       lg: '1012px',
-      xl: '1280px'
+      xl: '1280px',
+      '2xl': '1536px'
     },
     fontFamily: {
       sans: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
       ],
-      mono: ['monospace']
+      mono: ['monospace'],
+      space: ['Space Mono']
     },
     fontSize: {
       '2xl': ['36px', '50px'],

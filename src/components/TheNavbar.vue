@@ -34,13 +34,13 @@ watchEffect(() => {
 
 <template>
   <div
-    v-if="env === 'develop'"
+    v-if="env === 'demo'"
     class="bg-primary p-3 text-center"
     style="color: white; font-size: 20px"
   >
     {{ $t('demoSite') }}
   </div>
-  <nav id="topnav">
+  <div>
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
         <div class="ml-3 flex flex-auto items-center">
@@ -49,7 +49,7 @@ watchEffect(() => {
           </ButtonSidebar>
           <router-link
             :to="{ path: '/' }"
-            class="hidden items-center sm:block"
+            class="-ml-3 hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot
@@ -102,7 +102,7 @@ watchEffect(() => {
         </div>
       </div>
     </BaseContainer>
-  </nav>
+  </div>
   <div
     v-if="pendingCount > 0"
     class="flex justify-center bg-primary py-2 text-center text-white"

@@ -10,30 +10,20 @@ import {
 
 const props = defineProps<{
   items: { id: number; name: string }[];
+  modelValue: { id: number; name: string };
   label?: string;
-  placeholder?: string;
-  modelValue?: { id: number; name: string }[];
-  limit?: number;
   disableInput?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItems = ref<{ id: number; name: string }[]>(
-  props.modelValue ?? []
-);
+const selectedItem = ref<{ id: number; name: string }>(props.modelValue);
 
-watch(selectedItems, () => emit('update:modelValue', selectedItems.value));
-
-function isDisabled(item: { id: number; name: string }) {
-  if (!props.limit) return false;
-  if (selectedItems.value.length < props.limit) return false;
-  return !selectedItems.value.some(selectedItem => selectedItem.id === item.id);
-}
+watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
 </script>
 
 <template>
-  <Listbox v-model="selectedItems" as="div" :disabled="disableInput" multiple>
+  <Listbox v-model="selectedItem" as="div" :disabled="disableInput">
     <ListboxLabel>
       <LabelInput>{{ label }}</LabelInput>
     </ListboxLabel>
@@ -42,18 +32,14 @@ function isDisabled(item: { id: number; name: string }) {
         class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
         :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
       >
-        <span v-if="selectedItems.length < 1" class="text-skin-text opacity-60">
-          {{ placeholder }}
-        </span>
-
         <slot
-          v-else-if="$slots.selected"
+          v-if="$slots.selected"
           name="selected"
-          :selectedItems="selectedItems"
+          :selectedItem="selectedItem"
         />
 
         <span v-else>
-          {{ selectedItems.map(item => item.name).join(', ') }}
+          {{ selectedItem.name }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -79,7 +65,6 @@ function isDisabled(item: { id: number; name: string }) {
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"
-              :disabled="isDisabled(item)"
             >
               <li
                 :class="[
