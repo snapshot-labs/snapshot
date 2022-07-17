@@ -641,8 +641,8 @@
     "description": "Snapshot是一个用于社区治理的免费开放源码平台。现在您可以创建自己的空间并开始决策！"
   },
   "aboutPage": {
-    "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
-    "subHeader": "Governance should be a snap",
-    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+    "description": "Snapshot是一个去中心化的治理平台，这使得用户很容易创建提案并就其进行表决，所有这些提案都不需要花费gas！ 此外，我们的灵活系统支持各种投票类型和策略，以便您可以根据您的需要调整投票过程。",
+    "subHeader": "治理应该是一种快照",
+    "subDescription": "Web3管理不一定要复杂。 Snapshot是各组织寻求一种简单有效的方法来管理其社区或组织的完美解决办法。"
   }
 }
