@@ -19,7 +19,7 @@ const action =
   >
     <input type="hidden" name="tags" :value="tag" />
 
-    <InputEmail name="EMAIL" focus-on-mount required>
+    <InputEmail name="EMAIL" required>
       <button
         type="submit"
         name="subscribe"
