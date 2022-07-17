@@ -4,9 +4,12 @@ import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+const { getErrorMessage } = useSpaceSettingsForm();
+
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
-  getErrorMessage: (field: string) => { message: string; push: boolean };
+  title?: string;
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
@@ -54,7 +57,7 @@ function handleSubmitStrategy(strategy) {
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.strategies.label')">
+  <BaseBlock :title="title || $t('settings.strategies.label')">
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
@@ -80,6 +83,9 @@ function handleSubmitStrategy(strategy) {
           :information="$t('settings.strategies.information')"
         />
       </div>
+      <sub class="-mt-[10px] text-sm">
+        ({{ $t('settings.votingPowerIsCumulative') }})
+      </sub>
       <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"

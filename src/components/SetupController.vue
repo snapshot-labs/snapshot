@@ -6,6 +6,8 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
 import { useClient } from '@/composables/useClient';
 
+const emit = defineEmits(['next']);
+
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
@@ -15,6 +17,7 @@ const route = useRoute();
 const props = defineProps<{ web3Account: string }>();
 
 const fillConnectedWallet = ref(true);
+const isEditController = ref(false);
 
 const {
   spaceControllerInput,
@@ -26,7 +29,8 @@ const {
   setRecord,
   confirmSetRecord,
   ensAddress,
-  textRecord
+  textRecord,
+  uriAddress
 } = useSpaceController();
 
 async function handleSetRecord() {
@@ -35,8 +39,10 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile',
         ens: route.params.ens
+      },
+      query: {
+        step: 4
       }
     });
   }
@@ -56,11 +62,26 @@ watch(
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
+  <div v-else-if="uriAddress && !isEditController">
+    <BaseMessageBlock level="info" is-responsive>
+      {{ $t('setup.setSpaceControllerExists') }}
+
+      <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
+        {{ $t('setup.seeOnEns') }}
+      </BaseLink>
+    </BaseMessageBlock>
+    <div class="mt-4 flex items-center justify-between px-4 md:px-0">
+      <BaseButton @click="isEditController = true">
+        {{ $t('edit') }}
+      </BaseButton>
+      <SetupButtonNext class="!mt-0" @click="emit('next')" />
+    </div>
+  </div>
   <BaseBlock v-else :title="$t('setup.setSpaceController')">
     <div class="mb-4">
-      <BaseMessage level="info">
+      <BaseMessageBlock level="info">
         {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessage>
+      </BaseMessageBlock>
     </div>
 
     <BaseInput
@@ -87,7 +108,10 @@ watch(
       {{ $t('setup.setController') }}
     </BaseButton>
 
-    <BaseMessage v-if="isGnosisSafe && !fillConnectedWallet" level="warning">
+    <BaseMessageBlock
+      v-if="isGnosisSafe && !fillConnectedWallet"
+      level="warning"
+    >
       <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
         <template #link>
           <BaseLink link="https://docs.snapshot.org/spaces/create">
@@ -95,7 +119,7 @@ watch(
           </BaseLink>
         </template>
       </i18n-t>
-    </BaseMessage>
+    </BaseMessageBlock>
   </BaseBlock>
 
   <teleport to="#modal">
@@ -130,13 +154,13 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessage level="info">
+        <BaseMessageBlock level="info">
           {{
             $t('setup.explainControllerAndEns', {
               network: networks[defaultNetwork].name
             })
           }}
-        </BaseMessage>
+        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>

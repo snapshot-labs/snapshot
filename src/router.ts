@@ -4,6 +4,7 @@ import { useApp } from '@/composables/useApp';
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
 import HomeView from '@/views/HomeView.vue';
+import AboutView from '@/views/AboutView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
 import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
@@ -112,7 +113,12 @@ if (domain) {
   // prefix space routes with space domain (/:key).
   routes.push(
     { path: '/', name: 'home', component: HomeView },
-    { path: '/setup/:step?/:ens?', name: 'setup', component: SetupView },
+    { path: '/about', name: 'about', component: AboutView },
+    {
+      path: '/setup/:ens?',
+      name: 'setup',
+      component: SetupView
+    },
     { path: '/networks', name: 'networks', component: ExploreView },
     { path: '/strategies', name: 'strategies', component: ExploreView },
     { path: '/plugins', name: 'plugins', component: ExploreView },
