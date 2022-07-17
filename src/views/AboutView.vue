@@ -2,9 +2,11 @@
 import { onMounted, onUnmounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { useSkin, DARK } from '@/composables/useSkin';
+import { useApp } from '@/composables/useApp';
 
 const { setPageTitle } = useI18n();
 const { userTheme } = useSkin();
+const { env } = useApp();
 
 const themeBefore = userTheme.value;
 
@@ -113,7 +115,7 @@ const socials = [
             </BaseButton>
           </router-link>
         </div>
-        <div class="flex items-center">
+        <div v-if="env !== 'demo'" class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <BaseLink
             link="https://demo.snapshot.org/#/hamsterdao.eth/proposal/0x0630b8672c4e1f2c38e2ca6046acfdd88cc2e888053a45b0511dff2fa54b4eb1"
