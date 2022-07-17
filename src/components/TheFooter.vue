@@ -73,7 +73,6 @@ const socials = [
         </ButtonSidebar>
 
         <ButtonLanguage class="!h-[42px]" />
-        <!-- <div @click="modalNewsletterOpen = true">Newsletter</div> -->
       </div>
       <div
         class="!ml-0 whitespace-nowrap opacity-40 md:order-first md:pt-0 md:pr-2"
