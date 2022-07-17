@@ -134,6 +134,9 @@
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
+  "createASpace": "Create a space",
+  "getStarted": "Get started",
+  "skip": "Skip",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -288,7 +291,8 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
-    "strategiesList": "Strategies",
+    "strategiesList": "Select up to 8 strategies",
+    "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Strategie hinzufügen",
     "testInPlayground": "Test in playground",
     "admins": {
@@ -328,7 +332,7 @@
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you additionally need to open a pull request on github. {docs}"
+      "info": "To setup a custom domain you additionally need to open a pull request on github after you have created the space. {docs}"
     },
     "skin": "Skin",
     "treasuries": {
@@ -351,8 +355,9 @@
     "createASpace": "Bereich erstellen",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
+    "helpDocsAndDiscordLinks": "Not sure how to setup your space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Space controller",
+    "setSpaceControllerExists": "The snapshot text-record for this domain has already been set. Choose edit to change it, otherwise you can skip to the next step.",
     "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "Edit controller on ENS",
@@ -371,7 +376,29 @@
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account"
+    "fillCurrentAccount": "Use currently logged in account",
+    "domain": {
+      "title": "Setup your space domain",
+      "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
+      "ensMessageTestnet": "You can also {link} on the Rinkeby testnet and mess with things there first.",
+      "tryDemo": "try the demo"
+    },
+    "strategy": {
+      "title": "How would you like to setup your voting strategy?",
+      "onePersonOneVote": {
+        "title": "One person, one vote",
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
+      },
+      "tokenVoting": {
+        "title": "Token weighted voting",
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
+      },
+      "advanced": {
+        "title": "Advanced settings",
+        "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
+      }
+    },
+    "validationTitle": "Who can manage this space and create proposals?"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -603,5 +630,14 @@
       "empty": "There are no assets in this contract"
     },
     "24hChange": "24h change"
+  },
+  "header": {
+    "title": "Where decisions get made",
+    "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
+  },
+  "aboutPage": {
+    "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
+    "subHeader": "Governance should be a snap",
+    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
   }
 }
