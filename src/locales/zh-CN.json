@@ -134,9 +134,9 @@
   "createButton": "创建",
   "discussion": "讨论",
   "changeWallet": "更换钱包",
-  "createASpace": "Create a space",
-  "getStarted": "Get started",
-  "skip": "Skip",
+  "createASpace": "创建空间",
+  "getStarted": "开始",
+  "skip": "略过",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
     "mainText": "您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
@@ -291,8 +291,8 @@
       "label": "符号",
       "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
     },
-    "strategiesList": "Select up to 8 strategies",
-    "votingPowerIsCumulative": "Voting power is cumulative",
+    "strategiesList": "最多选择 8 个策略",
+    "votingPowerIsCumulative": "投票权是累积的",
     "addStrategy": "添加策略",
     "testInPlayground": "在playground中测试",
     "admins": {
@@ -631,6 +631,11 @@
     },
     "24hChange": "24小时变化"
   },
+  "newsletter": {
+    "yourEmail": "Your email",
+    "title": "Get the latest Snapshot updates"
+  },
+  "joinCommunity": "Join Snapshot community",
   "header": {
     "title": "Where decisions get made",
     "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
