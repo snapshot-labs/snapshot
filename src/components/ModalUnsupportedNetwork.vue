@@ -62,20 +62,20 @@ const switchToDefaultNetwork = async () => {
     </template>
 
     <div class="m-4 space-y-4">
-      <BaseMessage v-if="defaultNetwork === '1'" level="warning">
+      <BaseMessageBlock v-if="defaultNetwork === '1'" level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
             network: 'Ethereum Mainnet'
           })
         }}
-      </BaseMessage>
-      <BaseMessage v-if="defaultNetwork === '4'" level="warning">
+      </BaseMessageBlock>
+      <BaseMessageBlock v-if="defaultNetwork === '4'" level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
             network: 'Rinkeby Network'
           })
         }}
-      </BaseMessage>
+      </BaseMessageBlock>
     </div>
     <div class="m-4 space-y-4"></div>
     <div v-if="usingMetaMask" class="m-4 space-y-2">

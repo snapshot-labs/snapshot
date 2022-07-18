@@ -24,6 +24,7 @@
   "space": "空间",
   "spaces": "空间",
   "verifiedSpace": "已认证的空间",
+  "warningSpace": "这不是一个官方空间，请谨慎行事！",
   "version": "版本",
   "timeline": "时间线",
   "ended": "已结束",
@@ -133,6 +134,9 @@
   "createButton": "创建",
   "discussion": "讨论",
   "changeWallet": "更换钱包",
+  "createASpace": "创建空间",
+  "getStarted": "开始",
+  "skip": "略过",
   "newSpaceNotice": {
     "header": "您的空间已经上线了！",
     "mainText": "您可以通过 {settings} 中的策略更改投票权的计算方式。 更改您的设置只会影响新的提案，不会更改现有的提案。",
@@ -287,7 +291,8 @@
       "label": "符号",
       "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
     },
-    "strategiesList": "策略",
+    "strategiesList": "最多选择 8 个策略",
+    "votingPowerIsCumulative": "投票权是累积的",
     "addStrategy": "添加策略",
     "testInPlayground": "在playground中测试",
     "admins": {
@@ -350,8 +355,9 @@
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
     "supportedEnsTLDs": "支持的域名结尾",
-    "helpDocsAndDiscordLinks": "不知道如何创建空间？在 {docs} 了解更多信息或加入Snapshot {discord}。",
+    "helpDocsAndDiscordLinks": "不知道如何创建空间？在 docs了解更多信息或加入Snapshot的Discord。",
     "setSpaceController": "空间控制人",
+    "setSpaceControllerExists": "此域名的snapshot文本记录已被设置。您可以来编辑更改它，您也可以跳到下一步。",
     "setSpaceControllerInfo": " 空间控制人是能够管理空间设置的帐户。 稍后可以添加其他空间控制人（管理员）。",
     "setSpaceControllerInfoGnosisSafe": "使用Gnosis Safe创建空间时，建议将安全地址设置为空间控制人。 如果您不这样做，则需要遵循一些额外的步骤。{link}",
     "editSpaceController": "在 ENS 上编辑控制人",
@@ -370,7 +376,29 @@
     "waitForTransaction": "您需要先确认交易才能创建您的空间。 {txUrl}",
     "pleaseWaitMessage": "这可能需要几分钟，请等待交易确认",
     "notControllerAddress": "请连接控制人地址 {wallet} 以创建空间。",
-    "fillCurrentAccount": "使用当前登录的帐户"
+    "fillCurrentAccount": "使用当前登录的帐户",
+    "domain": {
+      "title": "设置空间域名",
+      "ensMessage": " 在创建自己的空间之前您需要设置Ethereum mainnet上的 ENS 域名。",
+      "ensMessageTestnet": "你也可以在 Rinkeby 测试网上进行测试，先在那里处理一切。",
+      "tryDemo": "尝试这个 demo"
+    },
+    "strategy": {
+      "title": "您想如何设置您的投票策略？",
+      "onePersonOneVote": {
+        "title": "一人，一票",
+        "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。"
+      },
+      "tokenVoting": {
+        "title": "代币加权投票",
+        "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准"
+      },
+      "advanced": {
+        "title": "高级设置",
+        "description": "选择最多8个具有多种选项的策略。 如果你找不到正确的策略，你可以创建自己的策略"
+      }
+    },
+    "validationTitle": "谁可以管理这个空间并创建提案？"
   },
   "profile": {
     "buttonEdit": "编辑个人资料",
@@ -568,7 +596,7 @@
       },
       "strategy": "{key} 策略",
       "delegate": "委托",
-      "ranking": "Ranking"
+      "ranking": "排名"
     }
   },
   "hal": {
@@ -602,5 +630,19 @@
       "empty": "该合约中没有资产"
     },
     "24hChange": "24小时变化"
+  },
+  "newsletter": {
+    "yourEmail": "您的电子邮件地址",
+    "title": "获取最近的Snapshot更新"
+  },
+  "joinCommunity": "加入Snapshot社区",
+  "header": {
+    "title": "在哪里作出决定",
+    "description": "Snapshot是一个用于社区治理的免费开放源码平台。现在您可以创建自己的空间并开始决策！"
+  },
+  "aboutPage": {
+    "description": "Snapshot是一个去中心化的治理平台，这使得用户很容易创建提案并就其进行表决，所有这些提案都不需要花费gas！ 此外，我们的灵活系统支持各种投票类型和策略，以便您可以根据您的需要调整投票过程。",
+    "subHeader": "治理应该是一种快照",
+    "subDescription": "Web3管理不一定要复杂。 Snapshot是各组织寻求一种简单有效的方法来管理其社区或组织的完美解决办法。"
   }
 }
