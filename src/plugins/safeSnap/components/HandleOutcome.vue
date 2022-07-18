@@ -240,7 +240,10 @@ const ensureRightNetwork = async chainId => {
             {
               chainId: chainIdHex,
               chainName: network.name,
-              rpcUrls: [`https://brovider.xyz/${chainId}`],
+              rpcUrls: [
+                'https://rpc.ankr.com/eth',
+                'https://cloudflare-eth.com'
+              ],
               blockExplorerUrls: [network.explorer]
             }
           ]
