@@ -1,62 +1,64 @@
-<script>
+<script setup lang="ts">
+import { computed, ref, onMounted, watch, toRef } from 'vue';
 import { isParameterValue } from '../../utils/validator';
 import { isArrayParameter } from '../../index';
 import SafeSnapInputAddress from './Address.vue';
 import SafeSnapInputArrayType from './ArrayType.vue';
 
-export default {
-  components: { SafeSnapInputAddress, SafeSnapInputArrayType },
-  props: ['modelValue', 'disabled', 'parameter'],
-  emits: ['update:modelValue', 'isValid'],
-  data() {
-    const placeholder = this.parameter.name
-      ? `${this.parameter.name} (${this.parameter.type})`
-      : this.parameter.type;
+const props = defineProps<{
+  modelValue: string;
+  disabled: boolean;
+  parameter: { name: string; type: string; baseType: string };
+}>();
 
-    let value;
-    if (this.parameter.type === 'bool') value = false;
+const emit = defineEmits(['update:modelValue', 'isValid']);
 
-    return {
-      placeholder,
-      value,
-      dirty: false
-    };
-  },
-  computed: {
-    isValid() {
-      return isParameterValue(this.parameter.baseType, this.value);
-    }
-  },
-  watch: {
-    modelValue(value) {
-      this.input = value;
-    }
-  },
-  mounted() {
-    if (this.modelValue) this.value = this.modelValue;
-  },
-  created() {
-    if (this.modelValue) this.input = this.modelValue;
-  },
-  methods: {
-    handleInput(value) {
-      this.value = value;
-      this.dirty = true;
-      this.$emit('update:modelValue', value);
-      this.$emit('isValid', this.isValid);
-    },
-    isArrayType() {
-      return isArrayParameter(this.parameter.baseType);
-    }
-  }
+const placeholder = computed(() => {
+  return props.parameter.name
+    ? `${props.parameter.name} (${props.parameter.type})`
+    : props.parameter.type;
+});
+
+let input = ref<string>('');
+if (props.modelValue) input = toRef(props, 'modelValue');
+
+const value = ref<string | boolean>(false);
+const dirty = ref(false);
+
+const isValid = computed(() => {
+  if (typeof value.value === 'boolean') return true;
+  return isParameterValue(props.parameter.baseType, value.value);
+});
+
+const handleInput = value => {
+  value.value = value;
+  dirty.value = true;
+  emit('update:modelValue', value);
+  emit('isValid', isValid.value);
 };
+
+const isArrayType = () => {
+  return isArrayParameter(props.parameter.baseType);
+};
+
+onMounted(() => {
+  if (props.modelValue) value.value = props.modelValue;
+  if (props.parameter.type === 'bool') value.value = false;
+});
+
+watch(
+  () => props.modelValue,
+  value => {
+    input.value = value;
+  }
+);
 </script>
 
 <template>
   <UiSelect
     v-if="parameter.type === 'bool'"
     :disabled="disabled"
-    :model-value="value"
+    :model-value="(value as string)"
     @update:modelValue="handleInput($event)"
   >
     <template #label>{{ placeholder }}</template>
@@ -86,7 +88,7 @@ export default {
     v-else
     :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${parameter.type}`"
-    :model-value="value"
+    :model-value="(value as string)"
     @update:modelValue="handleInput($event)"
   >
     <template #label>{{ placeholder }}</template>
