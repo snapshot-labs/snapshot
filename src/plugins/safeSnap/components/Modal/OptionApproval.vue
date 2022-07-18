@@ -1,78 +1,72 @@
-<script>
+<script setup lang="ts">
+import { computed, ref, onMounted } from 'vue';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';
 import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
-export default {
-  props: [
-    'open',
-    'isApproved',
-    'bond',
-    'questionId',
-    'minimumBond',
-    'tokenSymbol',
-    'tokenDecimals',
-    'oracle'
-  ],
-  emits: ['close', 'setApproval'],
-  setup() {
-    const { safesnap } = useSafesnap();
-    const { isValidEnsDomain } = useEns();
-    return { safesnap, isValidEnsDomain };
-  },
-  data() {
-    return { criteriaLink: '' };
-  },
-  computed: {
-    answer() {
-      return this.isApproved ? 'Yes' : 'No';
-    },
-    bondData() {
-      const bondNotSet = BigNumber.from(this.bond).eq(0);
-      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? BigNumber.from(10).pow(this.tokenDecimals)
-        : this.minimumBond;
-      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
-      return {
-        toSet: formatUnits(toSet, this.tokenDecimals),
-        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
-        tokenSymbol: this.tokenSymbol
-      };
-    },
-    questionLink() {
-      if (this.tokenSymbol && this.tokenSymbol !== 'ETH') {
-        return `https://reality.eth.link/app/#!/token/${this.tokenSymbol}/question/${this.oracle}-${this.questionId}`;
-      }
-      return `https://reality.eth.link/app/#!/question/${this.oracle}-${this.questionId}`;
-    }
-  },
-  mounted() {
-    setTimeout(this.getCriteriaLink, 800);
-  },
-  methods: {
-    async handleSetApproval(option) {
-      await this.$emit('setApproval', option);
-      this.$emit('close');
-    },
-    async getCriteriaLink() {
-      const { spaceId } = this.safesnap.config;
-      if (this.isValidEnsDomain(spaceId)) {
-        try {
-          this.criteriaLink = await getEnsTextRecord(
-            spaceId,
-            'daorequirements'
-          );
-        } catch (err) {
-          console.warn(
-            '[safesnap] failed to get the "daorequirements" text record'
-          );
-        }
-      }
+const props = defineProps<{
+  open: boolean;
+  isApproved: boolean;
+  bond: BigNumber;
+  questionId: string;
+  minimumBond: string;
+  tokenSymbol: string;
+  tokenDecimals: number;
+  oracle: string;
+}>();
+
+const emit = defineEmits(['close', 'setApproval']);
+
+const { safesnap } = useSafesnap();
+const { isValidEnsDomain } = useEns();
+
+const handleSetApproval = async (option: any) => {
+  emit('setApproval', option);
+  emit('close');
+};
+
+const criteriaLink = ref('');
+
+const getCriteriaLink = async () => {
+  const { spaceId } = safesnap.value.config;
+  if (isValidEnsDomain(spaceId)) {
+    try {
+      criteriaLink.value = await getEnsTextRecord(spaceId, 'daorequirements');
+    } catch (err) {
+      console.warn(
+        '[safesnap] failed to get the "daorequirements" text record'
+      );
     }
   }
 };
+
+const answer = computed(() => (props.isApproved ? 'Yes' : 'No'));
+
+const bondData = computed(() => {
+  const bondNotSet = BigNumber.from(props.bond).eq(0);
+  const minimumBond = BigNumber.from(props.minimumBond).eq(0)
+    ? BigNumber.from(10).pow(props.tokenDecimals)
+    : props.minimumBond;
+  const toSet = bondNotSet ? minimumBond : BigNumber.from(props.bond).mul(2);
+  return {
+    toSet: formatUnits(toSet, props.tokenDecimals),
+    current: bondNotSet ? '--' : formatUnits(props.bond, props.tokenDecimals),
+    tokenSymbol: props.tokenSymbol
+  };
+});
+
+const questionLink = computed(() => {
+  if (props.tokenSymbol && props.tokenSymbol !== 'ETH') {
+    return `https://reality.eth.link/app/#!/token/${props.tokenSymbol}/question/${props.oracle}-${props.questionId}`;
+  }
+  return `https://reality.eth.link/app/#!/question/${props.oracle}-${props.questionId}`;
+});
+
+onMounted(() => {
+  setTimeout(getCriteriaLink, 800);
+});
 </script>
 
 <template>
