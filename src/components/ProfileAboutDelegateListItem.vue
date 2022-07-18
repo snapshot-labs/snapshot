@@ -6,6 +6,8 @@ defineProps<{
   userAddress: string;
   web3Account: string;
 }>();
+
+defineEmits(['delegate']);
 </script>
 
 <template>

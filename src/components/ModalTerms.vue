@@ -3,7 +3,7 @@ import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
 
 const props = defineProps({ open: Boolean, space: Object });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['accept', 'close']);
 
 const getIpfsUrl = getUrl(props.space.terms ?? '');
 
