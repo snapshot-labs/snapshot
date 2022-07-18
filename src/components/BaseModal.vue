@@ -1,31 +1,24 @@
-<script setup>
+<script setup lang="ts">
 import { watch, toRefs } from 'vue';
-import { useModal } from '@/composables/useModal';
 
-const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
-  showClose: {
-    type: Boolean,
-    required: false,
-    default: true
-  }
-});
+const props = defineProps<{
+  open: boolean;
+  hideClose?: boolean;
+}>();
+
+const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
-const { modalOpen } = useModal();
 
-watch(open, (val, prev) => {
-  if (val !== prev) modalOpen.value = !modalOpen.value;
+watch(open, () => {
+  document.body.classList[open ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
 
 <template>
   <Transition name="fade">
     <div v-if="open" class="modal z-50 mx-auto w-screen">
-      <div class="backdrop" @click="$emit('close')" />
+      <div class="backdrop" @click="emit('close')" />
       <div class="shell relative overflow-hidden rounded-none md:rounded-3xl">
         <div v-if="$slots.header" class="pt-3 text-center">
           <slot name="header" />
@@ -37,9 +30,9 @@ watch(open, (val, prev) => {
           <slot name="footer" />
         </div>
         <a
-          v-if="showClose"
+          v-if="!hideClose"
           class="absolute right-0 top-1 p-4 text-skin-text"
-          @click="$emit('close')"
+          @click="emit('close')"
         >
           <BaseIcon name="close" />
         </a>

@@ -169,7 +169,14 @@ onMounted(() => {
       }"
       class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
-      <router-link :to="{ name: 'setup' }">
+      <router-link
+        :to="{
+          name: 'setup',
+          query: {
+            step: 1
+          }
+        }"
+      >
         <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >

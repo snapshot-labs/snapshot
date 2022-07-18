@@ -4,7 +4,15 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const SPACE_OBJECT = {
-  strategies: [],
+  strategies: [
+    {
+      name: 'ticket',
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
+    }
+  ],
   categories: [],
   treasuries: [],
   admins: [],
@@ -25,8 +33,8 @@ const SPACE_OBJECT = {
   name: '',
   about: '',
   avatar: '',
-  network: '',
-  symbol: '',
+  network: '1',
+  symbol: 'VOTE',
   terms: '',
   website: '',
   twitter: '',
