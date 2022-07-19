@@ -12,6 +12,7 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { useTreasury } from '@/composables/useTreasury';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -155,7 +156,18 @@ async function handleSetRecord() {
         <h1 class="mb-4" v-text="$t('settings.header')" />
       </div>
       <LoadingRow v-if="!loaded" block />
-      <template v-else-if="currentTextRecord">
+      <BaseMessageBlock v-else-if="!currentTextRecord" level="warning">
+        {{
+          $t('settings.noRecord', {
+            id: space.id,
+            network: networks[defaultNetwork].name
+          })
+        }}
+        <BaseLink :link="`https://app.ens.domains/name/${space.id}`">
+          {{ $t('setup.seeOnEns') }}
+        </BaseLink>
+      </BaseMessageBlock>
+      <template v-else>
         <div class="space-y-3">
           <BaseMessageBlock
             v-if="
@@ -246,28 +258,30 @@ async function handleSetRecord() {
         "
       />
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock>
-          <BaseButton
-            v-if="ensOwner"
-            :loading="settingENSRecord"
-            class="mb-2 block w-full"
-            @click="modalControllerEditOpen = true"
-          >
-            {{ $t('settings.editController') }}
-          </BaseButton>
-          <div v-if="isSpaceAdmin || isSpaceController">
-            <BaseButton class="mb-2 block w-full" @click="handleReset">
-              {{ $t('reset') }}
-            </BaseButton>
+        <BaseBlock v-if="ensOwner || isSpaceAdmin || isSpaceController">
+          <div class="space-y-2">
             <BaseButton
-              :disabled="uploadLoading"
-              :loading="clientLoading"
+              v-if="ensOwner"
+              :loading="settingENSRecord"
               class="block w-full"
-              primary
-              @click="handleSubmit"
+              @click="modalControllerEditOpen = true"
             >
-              {{ $t('save') }}
+              {{ $t('settings.editController') }}
             </BaseButton>
+            <div v-if="isSpaceAdmin || isSpaceController">
+              <BaseButton class="mb-2 block w-full" @click="handleReset">
+                {{ $t('reset') }}
+              </BaseButton>
+              <BaseButton
+                :disabled="uploadLoading"
+                :loading="clientLoading"
+                class="block w-full"
+                primary
+                @click="handleSubmit"
+              >
+                {{ $t('save') }}
+              </BaseButton>
+            </div>
           </div>
         </BaseBlock>
 
