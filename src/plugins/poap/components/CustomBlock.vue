@@ -86,7 +86,6 @@ export default {
       }
     },
     web3Account: async function (newAccount) {
-      console.log('newAccount', newAccount);
       // Update the state if the address
       this.loading = true;
       this.address = newAccount;
