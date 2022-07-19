@@ -79,23 +79,21 @@ export default {
     }
   },
   watch: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    currentState: async function (newCurrentState, oldCurrentState) {
+    currentState: async function (newCurrentState) {
       if (newCurrentState === LOADING) {
         // If the state is loading: start updating the state
         this.checkStateLoop(this.updateState);
       }
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    web3Account: async function (newAccount, preAccount) {
+    web3Account: async function (newAccount) {
+      console.log('newAccount', newAccount);
       // Update the state if the address
       this.loading = true;
       this.address = newAccount;
       await this.updateState();
       this.loading = false;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    votes: async function (newCurrentState, oldCurrentState) {
+    votes: async function () {
       // Update the state if the votes change
       this.loading = true;
       await this.updateState();
