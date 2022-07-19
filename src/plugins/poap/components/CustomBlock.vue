@@ -1,8 +1,10 @@
 <script>
 import Plugin from '../index';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useWeb3 } from '@/composables/useWeb3';
 
 const { notify } = useFlashNotification();
+const { web3Account } = useWeb3();
 
 const STATES = {
   NO_POAP: {
@@ -43,7 +45,6 @@ const UNCLAIMED = 'UNCLAIMED';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  inject: ['web3'],
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
@@ -57,7 +58,7 @@ export default {
   },
   computed: {
     web3Account() {
-      return this.web3.value.account;
+      return web3Account.value;
     },
     header() {
       return STATES[this.currentState].header;
@@ -100,7 +101,7 @@ export default {
     }
   },
   async created() {
-    this.address = this.web3Account;
+    this.address = web3Account.value;
     this.loading = true;
     await this.updateState();
   },

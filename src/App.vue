@@ -1,16 +1,11 @@
 <script setup>
-import { onMounted, provide } from 'vue';
+import { onMounted } from 'vue';
 import { useApp } from '@/composables/useApp';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import { useRoute } from 'vue-router';
 
 const { domain } = useApp();
 const { init, isReady, showSidebar } = useApp();
-const { web3 } = useWeb3();
 const route = useRoute();
-
-provide('web3', web3);
 
 onMounted(async () => init());
 </script>
