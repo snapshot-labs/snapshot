@@ -17,14 +17,14 @@ const visible = useStorage('snapshot.showHomeHeader', true);
         class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3"
       >
         <BaseButton
-          class="w-full sm:w-[160px]"
+          class="w-full sm:w-auto"
           primary
           @click="$router.push({ name: 'setup' })"
         >
           {{ $t('createASpace') }}
         </BaseButton>
         <BaseButton
-          class="w-full sm:w-[140px]"
+          class="w-full sm:w-auto"
           @click="$router.push({ name: 'about' })"
         >
           {{ $t('learnMore') }}
