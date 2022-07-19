@@ -1,46 +1,16 @@
 import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
 import { arrayify } from '@ethersproject/bytes';
-import { toUtf8Bytes } from '@ethersproject/strings';
-import wasm from '../../wasm_exec.js?url';
+import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import shutter from '../../both.wasm?url';
-
-declare global {
-  interface Window {
-    shcrypto_encrypt: any;
-  }
-}
-declare const Go: any;
-
-let shcryptoWasm;
-async function init() {
-  await import(wasm);
-  const go = new Go();
-  if ('instantiateStreaming' in WebAssembly) {
-    return await WebAssembly.instantiateStreaming(
-      fetch(shutter),
-      go.importObject
-    ).then(obj => {
-      shcryptoWasm = obj.instance;
-      go.run(shcryptoWasm);
-    });
-  }
-  return await fetch(shutter)
-    .then(resp => resp.arrayBuffer())
-    .then(bytes =>
-      WebAssembly.instantiate(bytes, go.importObject).then(obj => {
-        shcryptoWasm = obj.instance;
-        go.run(shcryptoWasm);
-      })
-    );
-}
+import { init, encrypt, decrypt } from '@shutter-network/shutter-crypto';
 
 export default async function encryptChoice(
   choice: string,
   id: string
 ): Promise<string | null> {
   console.log('🚀 ~ file: shutter.ts ~ line 42 ~ choice', choice);
-  await init();
+  await init(shutter);
 
   const bytesChoice = toUtf8Bytes(choice);
   console.log('🚀 ~ file: shutter.ts ~ line 45 ~ bytesChoice', bytesChoice);
@@ -54,25 +24,25 @@ export default async function encryptChoice(
   // to decrypt the message.
   const sigma = arrayify(BigNumber.from(randomBytes(32)));
 
-  const encryptedMessage = window.shcrypto_encrypt(
+  const encryptedMessage = await encrypt(
     message,
     eonPublicKey,
     proposalId,
     sigma
   );
 
-  //   // This key has been generated for above eon key and proposal id.
-  //   const decryptionKey = arrayify(
-  //     '0x219BA688C8505178E50E7E4FEAEFA21BDA69172E71B980A365F6F873DC9B3AAA20076B6D92CB58B24D14B70789A0B37418A0508624C83A7C8E35ED0A8DBB0E4B'
-  //   );
-  //   const decryptedMessage = window.shcrypto_decrypt(
-  //     arrayify(encryptedMessage),
-  //     decryptionKey
-  //   );
+  // This key has been generated for above eon key and proposal id.
+  const decryptionKey = arrayify(
+    '0x219BA688C8505178E50E7E4FEAEFA21BDA69172E71B980A365F6F873DC9B3AAA20076B6D92CB58B24D14B70789A0B37418A0508624C83A7C8E35ED0A8DBB0E4B'
+  );
+  const decryptedMessage = await decrypt(
+    arrayify(encryptedMessage),
+    decryptionKey
+  );
 
-  //   console.log('message:', message);
-  //   console.log('encrypted:', encryptedMessage);
-  //   console.log('decrypted:', toUtf8String(decryptedMessage));
+  console.log('message:', message);
+  console.log('encrypted:', encryptedMessage);
+  console.log('decrypted:', toUtf8String(decryptedMessage));
 
   return encryptedMessage ?? null;
 }
