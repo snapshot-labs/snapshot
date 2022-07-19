@@ -258,7 +258,7 @@ async function handleSetRecord() {
         "
       />
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock>
+        <BaseBlock v-if="ensOwner || isSpaceAdmin || isSpaceController">
           <div class="space-y-2">
             <BaseButton
               v-if="ensOwner"
