@@ -8,7 +8,7 @@ import { useI18n } from '@/composables/useI18n';
 import { useWeb3 } from '@/composables/useWeb3';
 import { isAddress } from '@ethersproject/address';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
 
@@ -26,7 +26,6 @@ export function useSpaceController() {
   const auth = getInstance();
   const { t } = useI18n();
   const route = useRoute();
-  const router = useRouter();
   const { domain } = useApp();
 
   const notify: any = inject('notify');

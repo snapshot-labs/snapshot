@@ -270,7 +270,6 @@ onMounted(() =>
         v-if="currentStep === 1"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
-        :get-error-message="getErrorMessage"
       />
 
       <!-- Step 2 -->

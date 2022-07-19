@@ -7,11 +7,10 @@ import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
 defineProps<{
   preview: boolean;
   bodyLimit: number;
-  getErrorMessage: (error: any) => { message: string; push: boolean };
 }>();
 
 const { formatNumber } = useIntl();
-const { form } = useSpaceCreateForm();
+const { form, getErrorMessage } = useSpaceCreateForm();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
