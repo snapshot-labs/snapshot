@@ -188,13 +188,11 @@ async function handleSetRecord() {
             v-model:private="form.private"
             v-model:terms="form.terms"
             v-model:website="form.website"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsLinkBlock
             v-model:twitter="form.twitter"
             v-model:github="form.github"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsStrategiesBlock
