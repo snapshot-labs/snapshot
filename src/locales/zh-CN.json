@@ -257,6 +257,7 @@
     "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
+    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
     "set": "设置",
     "profile": "用户信息",
     "avatar": "头像",
