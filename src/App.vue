@@ -8,11 +8,9 @@ import { useRoute } from 'vue-router';
 const { domain } = useApp();
 const { init, isReady, showSidebar } = useApp();
 const { web3 } = useWeb3();
-const { notify } = useFlashNotification();
 const route = useRoute();
 
 provide('web3', web3);
-provide('notify', notify);
 
 onMounted(async () => init());
 </script>

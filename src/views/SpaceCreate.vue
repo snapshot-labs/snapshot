@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -16,6 +16,7 @@ import { useStore } from '@/composables/useStore';
 import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const BODY_LIMIT_CHARACTERS = 14400;
 
@@ -23,7 +24,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const notify: any = inject('notify');
+const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();

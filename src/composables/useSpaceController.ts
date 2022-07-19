@@ -1,4 +1,4 @@
-import { computed, ref, inject, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import { useTxStatus } from '../composables/useTxStatus';
@@ -11,6 +11,7 @@ import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
 import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { useApp } from '@/composables/useApp';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);
@@ -27,8 +28,7 @@ export function useSpaceController() {
   const { t } = useI18n();
   const route = useRoute();
   const { domain } = useApp();
-
-  const notify: any = inject('notify');
+  const { notify } = useFlashNotification();
 
   const ensAbi = ['function setText(bytes32 node, string key, string value)'];
 

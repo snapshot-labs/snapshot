@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, inject, watch, onMounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -12,6 +12,7 @@ import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { useTreasury } from '@/composables/useTreasury';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const props = defineProps<{
@@ -25,7 +26,7 @@ const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
 const { resetTreasuryAssets } = useTreasury();
-const notify: any = inject('notify');
+const { notify } = useFlashNotification();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');

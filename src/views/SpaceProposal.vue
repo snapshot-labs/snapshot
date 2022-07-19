@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
@@ -17,6 +17,7 @@ import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -29,7 +30,7 @@ const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { store } = useStore();
-const notify: any = inject('notify');
+const { notify } = useFlashNotification();
 const { formatRelativeTime, formatNumber } = useIntl();
 
 const id: string = route.params.id as string;

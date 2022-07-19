@@ -43,7 +43,7 @@ const UNCLAIMED = 'UNCLAIMED';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  inject: ['web3', 'notify'],
+  inject: ['web3'],
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
