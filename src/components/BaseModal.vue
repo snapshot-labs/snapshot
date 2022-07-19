@@ -10,8 +10,8 @@ const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
 
-watch(open, () => {
-  document.body.classList[open ? 'add' : 'remove']('overflow-hidden');
+watch(open, isOpen => {
+  document.body.classList[isOpen ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
 
