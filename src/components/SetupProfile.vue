@@ -27,6 +27,11 @@ function nextStep() {
       v-model:twitter="form.twitter"
       v-model:github="form.github"
     />
+
+    <!-- WIP: <SettingsSubSpacesBlock
+      v-model:parent="form.parent"
+      v-model:children="form.children"
+    /> -->
   </div>
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />
