@@ -1,6 +1,6 @@
 import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
-import { arrayify } from '@ethersproject/bytes';
+import { arrayify, hexlify } from '@ethersproject/bytes';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import shutterWasm from '@shutter-network/shutter-crypto/dist/shutter-crypto.wasm?url';
 import { init, encrypt, decrypt } from '@shutter-network/shutter-crypto';
@@ -35,18 +35,15 @@ export default async function encryptChoice(
     encryptedMessage
   );
 
-  // This key has been generated for above eon key and proposal id.
-  const decryptionKey = arrayify(
-    '0x219BA688C8505178E50E7E4FEAEFA21BDA69172E71B980A365F6F873DC9B3AAA20076B6D92CB58B24D14B70789A0B37418A0508624C83A7C8E35ED0A8DBB0E4B'
-  );
-  const decryptedMessage = await decrypt(
-    arrayify(encryptedMessage),
-    decryptionKey
-  );
+  // // This key has been generated for above eon key and proposal id.
+  // const decryptionKey = arrayify(
+  //   '0x219BA688C8505178E50E7E4FEAEFA21BDA69172E71B980A365F6F873DC9B3AAA20076B6D92CB58B24D14B70789A0B37418A0508624C83A7C8E35ED0A8DBB0E4B'
+  // );
+  // const decryptedMessage = await decrypt(encryptedMessage, decryptionKey);
 
-  console.log('message:', message);
-  console.log('encrypted:', encryptedMessage);
-  console.log('decrypted:', toUtf8String(decryptedMessage));
+  // console.log('message:', message);
+  // console.log('encrypted:', encryptedMessage);
+  // console.log('decrypted:', toUtf8String(decryptedMessage));
 
-  return encryptedMessage ?? null;
+  return hexlify(encryptedMessage) ?? null;
 }
