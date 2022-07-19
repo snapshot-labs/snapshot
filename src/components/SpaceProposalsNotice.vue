@@ -24,7 +24,7 @@ const createdSpaces = useStorage(
           <h3 class="mt-0">{{ $t('newSpaceNotice.header') }}</h3>
           <div class="text-skin-text">
             <BaseIcon name="info" size="24" class="float-left mr-1" />
-            <i18n-t keypath="newSpaceNotice.mainText" tag="p">
+            <i18n-t keypath="newSpaceNotice.mainText" tag="p" scope="global">
               <template #settings>
                 <BaseLink
                   :link="{ name: 'spaceSettings', params: { key: spaceId } }"
@@ -39,6 +39,7 @@ const createdSpaces = useStorage(
             keypath="newSpaceNotice.learnMore"
             tag="p"
             class="mt-2 text-skin-text"
+            scope="global"
           >
             <template #documentation>
               <BaseLink

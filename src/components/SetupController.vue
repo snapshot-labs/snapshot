@@ -112,7 +112,11 @@ watch(
       v-if="isGnosisSafe && !fillConnectedWallet"
       level="warning"
     >
-      <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
+      <i18n-t
+        keypath="setup.setSpaceControllerInfoGnosisSafe"
+        tag="span"
+        scope="global"
+      >
         <template #link>
           <BaseLink link="https://docs.snapshot.org/spaces/create">
             {{ $t('learnMore') }}
