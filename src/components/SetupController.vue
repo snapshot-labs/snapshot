@@ -4,6 +4,7 @@ import { shorten, explorerUrl } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
+import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
 const emit = defineEmits(['next']);
@@ -13,8 +14,7 @@ const { isGnosisSafe } = useClient();
 
 const router = useRouter();
 const route = useRoute();
-
-const props = defineProps<{ web3Account: string }>();
+const { web3Account } = useWeb3();
 
 const fillConnectedWallet = ref(true);
 const isEditController = ref(false);
@@ -49,10 +49,10 @@ async function handleSetRecord() {
 }
 
 watch(
-  () => [fillConnectedWallet.value, props.web3Account],
+  () => [fillConnectedWallet.value, web3Account.value],
   () => {
     if (fillConnectedWallet.value)
-      return (spaceControllerInput.value = props.web3Account);
+      return (spaceControllerInput.value = web3Account.value);
 
     spaceControllerInput.value = '';
   },
