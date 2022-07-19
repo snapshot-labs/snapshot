@@ -45,7 +45,7 @@ async function voteShutter() {
   isLoadingShutter.value = true;
   const choice = await shutterEncryptChoice(
     JSON.stringify(props.selectedChoices),
-    '0x000000000000000A'
+    props.proposal.id
   );
   isLoadingShutter.value = false;
 

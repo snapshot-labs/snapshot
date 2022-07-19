@@ -2,15 +2,15 @@ import { randomBytes } from '@ethersproject/random';
 import { BigNumber } from '@ethersproject/bignumber';
 import { arrayify } from '@ethersproject/bytes';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
-import shutter from '../../both.wasm?url';
+import shutterWasm from '@shutter-network/shutter-crypto/dist/shutter-crypto.wasm?url';
 import { init, encrypt, decrypt } from '@shutter-network/shutter-crypto';
 
 export default async function encryptChoice(
   choice: string,
   id: string
 ): Promise<string | null> {
-  console.log('🚀 ~ file: shutter.ts ~ line 42 ~ choice', choice);
-  await init(shutter);
+  console.log('🚀 ~ file: shutter.ts ~ line 42 ~ choice', choice, id);
+  await init(shutterWasm);
 
   const bytesChoice = toUtf8Bytes(choice);
   console.log('🚀 ~ file: shutter.ts ~ line 45 ~ bytesChoice', bytesChoice);
@@ -29,6 +29,10 @@ export default async function encryptChoice(
     eonPublicKey,
     proposalId,
     sigma
+  );
+  console.log(
+    '🚀 ~ file: shutter.ts ~ line 33 ~ encryptedMessage',
+    encryptedMessage
   );
 
   // This key has been generated for above eon key and proposal id.
