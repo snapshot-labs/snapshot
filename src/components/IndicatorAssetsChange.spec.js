@@ -1,9 +1,6 @@
 import { describe, expect, it, afterEach } from 'vitest';
 import { shallowMount } from '@vue/test-utils';
 import IndicatorAssetsChange from './IndicatorAssetsChange.vue';
-import { useIntl } from '@/composables/useIntl';
-
-const { formatPercentNumber, formatNumber } = useIntl();
 
 describe('IndicatorAssetsChange', () => {
   let wrapper;
