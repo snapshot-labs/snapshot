@@ -14,7 +14,8 @@ const props = defineProps<{
 
 const currentSpaceController = computed(() => {
   if (!props.currentTextRecord) return null;
-  return props.currentTextRecord?.split('/')[4] ?? '';
+  const position = props.currentTextRecord.includes('testnet') ? 5 : 4;
+  return props.currentTextRecord?.split('/')[position] ?? '';
 });
 
 defineEmits(['close', 'set']);
