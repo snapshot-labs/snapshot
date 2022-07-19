@@ -105,7 +105,7 @@ export function useSpaceController() {
     if (defaultNetwork === '1') {
       return (uriAddress.value = uriArray[4] ?? '');
     }
-    if (uriArray[4] === 'testnet') {
+    if (uriArray[4] === '/testnet/') {
       return (uriAddress.value = uriArray[5] ?? '');
     }
   }
