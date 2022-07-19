@@ -156,7 +156,7 @@ async function handleSetRecord() {
         <h1 class="mb-4" v-text="$t('settings.header')" />
       </div>
       <LoadingRow v-if="!loaded" block />
-      <BaseMessageBlock v-else-if="!currentTextRecord" level="info">
+      <BaseMessageBlock v-else-if="!currentTextRecord" level="warning">
         {{
           $t('settings.noRecord', {
             id: space.id,
