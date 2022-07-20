@@ -4,8 +4,17 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const SPACE_OBJECT = {
-  strategies: [],
+  strategies: [
+    {
+      name: 'ticket',
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
+    }
+  ],
   categories: [],
+  treasuries: [],
   admins: [],
   members: [],
   plugins: {},
@@ -24,12 +33,14 @@ const SPACE_OBJECT = {
   name: '',
   about: '',
   avatar: '',
-  network: '',
-  symbol: '',
+  network: '1',
+  symbol: 'VOTE',
   terms: '',
   website: '',
   twitter: '',
   github: '',
+  parent: null,
+  children: [],
   private: false,
   domain: '',
   skin: ''
@@ -37,6 +48,7 @@ const SPACE_OBJECT = {
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
 const form = ref(clone(SPACE_OBJECT));
+const showAllValidationErrors = ref(false);
 
 export function useSpaceSettingsForm() {
   function formatSpace(spaceRaw) {
@@ -69,17 +81,23 @@ export function useSpaceSettingsForm() {
 
   const { validationErrorMessage } = useValidationErrors();
 
-  function getErrorMessage(field) {
-    return validationErrorMessage(field, validate.value);
+  function getErrorMessage(field: string): { message: string; push: boolean } {
+    const message = validationErrorMessage(field, validate.value);
+    return {
+      message: message || '',
+      push: showAllValidationErrors.value
+    };
   }
 
   function resetForm() {
     form.value = clone(SPACE_OBJECT);
+    showAllValidationErrors.value = false;
   }
 
   return {
     form,
     validate,
+    showAllValidationErrors,
     formatSpace,
     getErrorMessage,
     resetForm

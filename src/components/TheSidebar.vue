@@ -16,7 +16,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
 const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
   useUnseenProposals();
-const { domain } = useApp();
+const { domain, showSidebar } = useApp();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 const { spaces } = useSpaces();
 
@@ -81,6 +81,7 @@ onMounted(() => {
 <template>
   <div
     class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
+    @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
       <router-link :to="{ name: 'home' }">
@@ -150,8 +151,8 @@ onMounted(() => {
                 class="pointer-events-none"
               />
               <BaseCounter
-                v-if="spaces?.[element]?.activeProposals"
-                :counter="spaces[element].activeProposals"
+                v-if="spaces?.[element]?.proposals_active"
+                :counter="spaces[element].proposals_active"
                 class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
               />
             </div>
@@ -168,11 +169,18 @@ onMounted(() => {
       }"
       class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
-      <router-link :to="{ name: 'setup' }">
+      <router-link
+        :to="{
+          name: 'setup',
+          query: {
+            step: 1
+          }
+        }"
+      >
         <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >
-          <BaseIcon size="20" name="plus" />
+          <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>
     </div>

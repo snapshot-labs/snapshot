@@ -10,7 +10,7 @@ import { useI18n } from '@/composables/useI18n';
 
 const { t } = useI18n();
 const auth = getInstance();
-const { modalOpen, modalAccountOpen } = useModal();
+const { modalAccountOpen } = useModal();
 const props = defineProps({
   placeholder: String,
   buttonName: String,
@@ -152,7 +152,7 @@ function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
 }
-watch([modalOpen, closeModal], () => {
+watch([closeModal], () => {
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');

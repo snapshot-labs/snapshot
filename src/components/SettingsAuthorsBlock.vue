@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   members: string[];
-  getErrorMessage: (field: string) => string;
+  error?: { message: string; push: boolean };
 }>();
 
 const emit = defineEmits(['update:members']);
@@ -12,9 +12,9 @@ const emit = defineEmits(['update:members']);
     :title="$t('settings.authors.label')"
     :information="$t('settings.authors.information')"
   >
-    <BaseBlock v-if="getErrorMessage('members')" class="mb-2 !border-red">
+    <BaseBlock v-if="error?.message" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
-      <span class="!text-red"> {{ getErrorMessage('members') }}&nbsp;</span>
+      <span class="!text-red"> {{ error.message }}&nbsp;</span>
     </BaseBlock>
     <TextareaArray
       :model-value="members"

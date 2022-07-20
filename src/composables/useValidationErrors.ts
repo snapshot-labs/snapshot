@@ -35,7 +35,11 @@ export function useValidationErrors() {
     if (errorFound?.instancePath.includes('strategies'))
       return t('errors.minStrategy');
 
-    if (errorFound?.instancePath.includes('website'))
+    if (
+      errorFound?.instancePath.includes('website') ||
+      errorFound?.instancePath.includes('terms') ||
+      errorFound?.instancePath.includes('discussion')
+    )
       return t('errors.website');
 
     return errorFound

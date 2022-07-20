@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -16,11 +16,15 @@ import { useStore } from '@/composables/useStore';
 import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+
+const BODY_LIMIT_CHARACTERS = 14400;
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
@@ -29,23 +33,20 @@ const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { pluginIndex } = usePlugins();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const {
   form,
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
-  resetForm
+  resetForm,
+  getErrorMessage
 } = useSpaceCreateForm();
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
-const notify: any = inject('notify');
 
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
-
-const BODY_LIMIT_CHARACTERS = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -92,7 +93,9 @@ const stepIsValid = computed(() => {
     currentStep.value === 1 &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
-    passValidation.value[0] === true
+    passValidation.value[0] &&
+    !getErrorMessage('name').message &&
+    !getErrorMessage('discussion').message
   )
     return true;
   else if (
@@ -178,7 +181,6 @@ async function loadSourceProposal() {
   );
 
   setSourceProposal(proposal);
-
   sourceProposalLoaded.value = true;
 }
 
@@ -251,12 +253,8 @@ onMounted(() =>
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div v-if="currentStep === 1" class="mb-3 overflow-hidden px-4 md:px-0">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-skin-text"
-        >
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
 

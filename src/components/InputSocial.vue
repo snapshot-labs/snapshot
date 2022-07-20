@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   modelValue?: string;
-  error?: string;
+  error?: { message: string; push: boolean };
   placeholder?: string;
   maxLength?: number;
   title?: string;

@@ -9,7 +9,7 @@ import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { useI18n } from '@/composables/useI18n';
 import { useCopy } from '@/composables/useCopy';
-import { decode, encode } from '@/helpers/b64';
+import { decodeJson, encodeJson } from '@/helpers/b64';
 import { useIntl } from '@/composables/useIntl';
 import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
@@ -37,8 +37,8 @@ let provider;
 const strategyExample = computed(() => {
   if (queryParams.query) {
     try {
-      const { params, network, snapshot, addresses } = JSON.parse(
-        decode(queryParams.query)
+      const { params, network, snapshot, addresses } = decodeJson(
+        queryParams.query
       );
       return {
         ...strategy.value?.examples?.[0],
@@ -115,7 +115,7 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
-    provider = await getProvider(form.value.network, 'brovider');
+    provider = await getProvider(form.value.network);
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
   } catch (e) {
@@ -127,7 +127,7 @@ async function loadSnapshotBlockNumber() {
 
 async function handleURLUpdate(_, paramName) {
   router.replace({
-    query: { query: encode(JSON.stringify(form.value)) },
+    query: { query: encodeJson(form.value) },
     params: { retainScrollPosition: true }
   });
 
@@ -141,9 +141,7 @@ async function handleURLUpdate(_, paramName) {
 
 function copyURL() {
   copyToClipboard(
-    `${window.location.origin}/#${route.path}?query=${encode(
-      JSON.stringify(form.value)
-    )}`
+    `${window.location.origin}/#${route.path}?query=${encodeJson(form.value)}`
   );
 }
 
@@ -164,8 +162,7 @@ onMounted(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-
-  if (queryParams.query) {
+  if (queryParams.query && strategyExample.value.snapshot) {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
@@ -180,12 +177,8 @@ onMounted(async () => {
       <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="mb-3 px-4 md:px-0">
-          <router-link
-            :to="`/strategy/${$route.params.name}`"
-            class="text-skin-text"
-          >
-            <BaseIcon name="back" size="22" class="!align-middle" />
-            {{ $t('back') }}
+          <router-link :to="{ path: `/strategy/${$route.params.name}` }">
+            <ButtonBack />
           </router-link>
         </div>
         <h1 class="mb-2 px-4 md:px-0">

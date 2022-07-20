@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, inject, watch, onMounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -11,6 +11,9 @@ import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useTreasury } from '@/composables/useTreasury';
+import { useFlashNotification } from '@/composables/useFlashNotification';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -22,7 +25,8 @@ const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
-const notify: any = inject('notify');
+const { resetTreasuryAssets } = useTreasury();
+const { notify } = useFlashNotification();
 
 const currentSettings = ref({});
 const currentTextRecord = ref('');
@@ -71,21 +75,16 @@ const isSpaceAdmin = computed(() => {
 });
 
 async function handleSubmit() {
-  if (isValid.value) {
-    const formattedForm = formatSpace(form.value);
-    const result = await send(
-      { id: props.space.id },
-      'settings',
-      formattedForm
-    );
-    console.log('Result', result);
-    if (result.id) {
-      notify(['green', t('notify.saved')]);
-      await clearStampCache(props.space.id);
-      reloadSpace(props.space.id);
-    }
-  } else {
-    console.log('Invalid schema', validate.value);
+  if (!isValid.value) return console.log('Invalid schema', validate.value);
+
+  const formattedForm = formatSpace(form.value);
+  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  console.log('Result', result);
+  if (result.id) {
+    notify(['green', t('notify.saved')]);
+    resetTreasuryAssets();
+    await clearStampCache(props.space.id);
+    reloadSpace(props.space.id);
   }
 }
 
@@ -150,18 +149,28 @@ async function handleSetRecord() {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ name: 'spaceProposals' }" class="text-skin-text">
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="{ name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
       <div class="px-4 md:px-0">
         <h1 class="mb-4" v-text="$t('settings.header')" />
       </div>
       <LoadingRow v-if="!loaded" block />
-      <template v-else-if="currentTextRecord">
+      <BaseMessageBlock v-else-if="!currentTextRecord" level="warning">
+        {{
+          $t('settings.noRecord', {
+            id: space.id,
+            network: networks[defaultNetwork].name
+          })
+        }}
+        <BaseLink :link="`https://app.ens.domains/name/${space.id}`">
+          {{ $t('setup.seeOnEns') }}
+        </BaseLink>
+      </BaseMessageBlock>
+      <template v-else>
         <div class="space-y-3">
-          <BaseMessage
+          <BaseMessageBlock
             v-if="
               !(isSpaceController || isSpaceAdmin || ensOwner) &&
               currentTextRecord
@@ -170,7 +179,7 @@ async function handleSetRecord() {
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
-          </BaseMessage>
+          </BaseMessageBlock>
 
           <SettingsProfileBlock
             v-model:name="form.name"
@@ -180,18 +189,15 @@ async function handleSetRecord() {
             v-model:private="form.private"
             v-model:terms="form.terms"
             v-model:website="form.website"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsLinkBlock
             v-model:twitter="form.twitter"
             v-model:github="form.github"
-            :get-error-message="getErrorMessage"
           />
 
           <SettingsStrategiesBlock
             :form="form"
-            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
@@ -200,20 +206,19 @@ async function handleSetRecord() {
           <SettingsAdminsBlock
             :admins="form.admins"
             :is-space-controller="isSpaceController"
-            :get-error-message="getErrorMessage"
+            :error="getErrorMessage('admins')"
             @update:admins="val => (form.admins = val)"
           />
 
           <SettingsAuthorsBlock
             :members="form.members"
-            :get-error-message="getErrorMessage"
+            :error="getErrorMessage('members')"
             @update:members="val => (form.members = val)"
           />
 
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
-            :get-error-message="getErrorMessage"
             @update:min-score="val => (form.filters.minScore = val)"
             @update:only-members="val => (form.filters.onlyMembers = val)"
           />
@@ -229,7 +234,11 @@ async function handleSetRecord() {
           <SettingsDomainBlock
             v-model:domain="form.domain"
             v-model:skin="form.skin"
-            :get-error-message="getErrorMessage"
+          />
+
+          <SettingsTreasuriesBlock
+            :treasuries="form.treasuries"
+            @update-treasuries="value => (form.treasuries = value)"
           />
 
           <SettingsPluginsBlock
@@ -248,28 +257,39 @@ async function handleSetRecord() {
         "
       />
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock>
-          <BaseButton
-            v-if="ensOwner"
-            :loading="settingENSRecord"
-            class="mb-2 block w-full"
-            @click="modalControllerEditOpen = true"
-          >
-            {{ $t('settings.editController') }}
-          </BaseButton>
-          <div v-if="isSpaceAdmin || isSpaceController">
-            <BaseButton class="mb-2 block w-full" @click="handleReset">
-              {{ $t('reset') }}
-            </BaseButton>
+        <BaseBlock v-if="ensOwner || isSpaceAdmin || isSpaceController">
+          <div class="space-y-2">
             <BaseButton
-              :disabled="uploadLoading"
-              :loading="clientLoading"
+              v-if="ensOwner"
+              :loading="settingENSRecord"
               class="block w-full"
-              primary
-              @click="handleSubmit"
+              @click="modalControllerEditOpen = true"
             >
-              {{ $t('save') }}
+              {{ $t('settings.editController') }}
             </BaseButton>
+            <div v-if="isSpaceAdmin || isSpaceController">
+              <BaseButton class="mb-2 block w-full" @click="handleReset">
+                {{ $t('reset') }}
+              </BaseButton>
+              <BaseButton
+                :disabled="uploadLoading"
+                :loading="clientLoading"
+                class="block w-full"
+                primary
+                @click="handleSubmit"
+              >
+                {{ $t('save') }}
+              </BaseButton>
+            </div>
+          </div>
+        </BaseBlock>
+
+        <BaseBlock class="mt-3">
+          <div>
+            <div class="mb-2 text-skin-link">
+              {{ $t('newsletter.title') }}
+            </div>
+            <InputNewsletter tag="6449077" />
           </div>
         </BaseBlock>
       </div>

@@ -15,18 +15,9 @@ const { items } = useFlashNotification();
           :class="`!bg-${item.type}`"
           @click="item.remove()"
         >
-          <BaseIcon
-            v-if="item.type === 'red'"
-            name="close1"
-            size="20"
-            class="align-middle"
-          />
-          <BaseIcon
-            v-if="item.type === 'green'"
-            name="check1"
-            size="20"
-            class="align-middle"
-          />
+          <i-ho-x v-if="item.type === 'red'" class="text-sm" />
+
+          <i-ho-check v-if="item.type === 'green'" class="text-sm" />
           <span>{{ item.message }}</span>
         </BaseButton>
       </div>

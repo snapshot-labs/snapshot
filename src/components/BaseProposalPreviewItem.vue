@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { useIntl } from '@/composables/useIntl';
+import { Proposal } from '@/helpers/interfaces';
 
 const {
   formatNumber,
@@ -11,10 +12,10 @@ const {
   getRelativeProposalPeriod
 } = useIntl();
 
-const props = defineProps({
-  proposal: Object,
-  profiles: Object
-});
+const props = defineProps<{
+  proposal: Proposal;
+  profiles: { [key: string]: { ens: string; name?: string; about?: string } };
+}>();
 
 // shortening to twice the allowed character limit (140*2) before removing markdown
 // due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
@@ -77,12 +78,12 @@ const winningChoice = computed(() =>
             :key="i"
             class="relative mt-1 w-full"
           >
-            <div class="absolute ml-3 leading-[43px] text-skin-link">
-              <BaseIcon
+            <div
+              class="absolute ml-3 flex items-center leading-[43px] text-skin-link"
+            >
+              <i-ho-check
                 v-if="i === winningChoice"
-                name="check1"
-                size="20"
-                class="mr-1 -ml-1 align-middle"
+                class="mr-2 -ml-1 text-sm"
               />
               {{ shorten(choice, 32) }}
               <span class="ml-1 text-skin-text">

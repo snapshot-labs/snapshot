@@ -10,7 +10,7 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form } = useSpaceCreateForm();
+const { form, getErrorMessage } = useSpaceCreateForm();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
@@ -68,6 +68,7 @@ const handleDrop = e => {
         v-model="form.name"
         :title="$t('create.proposalTitle')"
         :max-length="128"
+        :error="getErrorMessage('name')"
         focus-on-mount
       />
 
@@ -139,8 +140,9 @@ const handleDrop = e => {
       <InputUrl
         v-if="!preview"
         v-model.trim="form.discussion"
-        placeholder="forum.balancer.fi/proposal..."
+        placeholder="https://forum.balancer.fi/proposal"
         :title="$t('create.discussion')"
+        :error="getErrorMessage('discussion')"
       />
     </div>
   </div>

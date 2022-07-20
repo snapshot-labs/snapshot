@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watchEffect, inject } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { useUsername } from '@/composables/useUsername';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -7,6 +7,7 @@ import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
 import { useTxStatus } from '@/composables/useTxStatus';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const props = defineProps({
   open: Boolean,
@@ -22,7 +23,7 @@ const emit = defineEmits(['close', 'reload']);
 const auth = getInstance();
 const { t } = useI18n();
 const { username, setProfile, setAddress } = useUsername();
-const notify = inject('notify');
+const { notify } = useFlashNotification();
 
 const loading = ref(false);
 const { pendingCount } = useTxStatus();
