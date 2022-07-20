@@ -7,7 +7,6 @@
   "poweredBy": "Powered by",
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "resultsShutter": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated.",
   "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
   "retry": "Retry",
@@ -499,7 +498,8 @@
     "none": "None",
     "shutter": {
       "label": "Shutter",
-      "description": "Choices are encrypted and only visible once the voting period is over"
+      "description": "Choices are encrypted and only visible once the voting period is over",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated"
     }
   },
   "safeSnap": {

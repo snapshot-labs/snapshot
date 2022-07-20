@@ -76,7 +76,7 @@ const isVisible = computed(() => {
           v-if="
             proposal.privacy === 'shutter' && proposal.scores_state !== 'final'
           "
-          v-tippy="{ content: $t('resultsShutter') }"
+          v-tippy="{ content: $t('privacy.shutter.tooltip') }"
           class="mx-auto cursor-help"
         />
         <div v-else class="space-x-2">

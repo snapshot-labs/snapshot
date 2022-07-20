@@ -5,8 +5,7 @@
     <div class="flex items-center">
       <div
         v-tippy="{
-          content:
-            'This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated.'
+          content: $t('privacy.shutter.tooltip')
         }"
         class="inline-block cursor-help"
       >
