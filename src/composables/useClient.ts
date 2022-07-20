@@ -19,9 +19,7 @@ export function useClient() {
 
   const usePersonalSign = computed(() => {
     return (
-      connectorName.value === 'walletlink' ||
-      connectorName.value === 'walletconnect' ||
-      connectorName.value === 'gnosis'
+      connectorName.value === 'walletlink' || connectorName.value === 'gnosis'
     );
   });
 
