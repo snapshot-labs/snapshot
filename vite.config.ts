@@ -8,6 +8,11 @@ import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
 export default defineConfig({
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true
+    }
+  },
   define: {
     'process.env': process.env
   },
