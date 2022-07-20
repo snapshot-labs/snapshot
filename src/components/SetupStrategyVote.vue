@@ -16,8 +16,18 @@ const votingItems = computed(() => {
 
 const input = ref(votingItems.value[0].value);
 const symbol = ref('VOTE');
-
 const whitelist = ref([]);
+
+if (
+  form.value.strategies.length === 1 &&
+  ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+) {
+  input.value = form.value.strategies[0].name;
+  symbol.value = form.value.strategies[0].params.symbol;
+  if (form.value.strategies[0].name === 'whitelist') {
+    whitelist.value = form.value.strategies[0].params.addresses || [];
+  }
+}
 
 const strategy = computed(() => {
   const strategy: {

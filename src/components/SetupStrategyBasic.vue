@@ -29,6 +29,25 @@ const defaultToken = {
 
 const token = ref(clone(defaultToken));
 
+if (
+  form.value.strategies.length === 1 &&
+  !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+) {
+  input.value = {
+    network: form.value.strategies[0].params.network,
+    address: form.value.strategies[0].params.address
+  };
+
+  if (form.value.strategies[0].name === 'erc721') {
+    token.value.standard === 'ERC-721';
+  } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
+    token.value.standard = 'ERC-1155';
+  }
+
+  token.value.symbol = form.value.strategies[0].params.symbol;
+  token.value.decimals = form.value.strategies[0].params.decimals;
+}
+
 const strategy = computed(() => {
   if (!token.value) return null;
 
@@ -103,23 +122,20 @@ watch(
             :items="tokenStandards"
             label="Token standard"
           />
-          <BaseInput
-            v-model.trim="input.address"
-            title="Token contract"
-            placeholder="Enter address"
-            focus-on-mount
-          />
-
-          <BaseInput
-            v-if="token.symbol"
-            v-model="token.symbol"
-            title="Symbol"
-          />
-          <BaseInput
-            v-if="token.decimals"
-            v-model="token.decimals"
-            title="Decimals"
-          />
+          <div>
+            <BaseInput
+              v-model.trim="input.address"
+              title="Token contract"
+              placeholder="Enter address"
+              focus-on-mount
+            />
+            <div v-if="token.symbol" class="text-right text-sm">
+              {{ token.symbol }}
+              <span v-if="token.standard === 'ERC-20'"
+                >({{ token.decimals }} decimals)</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </BaseBlock>
