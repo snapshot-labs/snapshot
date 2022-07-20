@@ -74,7 +74,11 @@ onMounted(() => resetForm());
         is-responsive
       >
         {{ $t('setup.domain.ensMessage') }}
-        <i18n-t keypath="setup.domain.ensMessageTestnet" tag="span">
+        <i18n-t
+          keypath="setup.domain.ensMessageTestnet"
+          tag="span"
+          scope="global"
+        >
           <template #link>
             <BaseLink link="https://demo.snapshot.org">
               {{ $t('setup.domain.tryDemo') }}

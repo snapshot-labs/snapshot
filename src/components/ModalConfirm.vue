@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
@@ -30,7 +31,7 @@ const props = defineProps<{
 const emit = defineEmits(['reload', 'close']);
 
 const { t } = useI18n();
-const notify: any = inject('notify');
+const { notify } = useFlashNotification();
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
