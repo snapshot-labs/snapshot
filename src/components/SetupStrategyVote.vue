@@ -9,11 +9,12 @@ const { form } = useSpaceSettingsForm();
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
-    name: name
+    name: name,
+    value: name
   }));
 });
 
-const input = ref(votingItems.value[0]);
+const input = ref(votingItems.value[0].value);
 const symbol = ref('VOTE');
 
 const whitelist = ref([]);
@@ -32,7 +33,7 @@ const strategy = computed(() => {
     }
   };
 
-  strategy.name = input.value.name;
+  strategy.name = input.value;
   strategy.params.symbol = symbol.value;
 
   if (strategy.name === 'whitelist')
@@ -64,7 +65,7 @@ function nextStep() {
             <template #selected="{ selectedItem }">
               <span>
                 {{
-                  selectedItem.name === 'whitelist'
+                  selectedItem?.name === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
@@ -82,7 +83,7 @@ function nextStep() {
           </BaseListbox>
           <BaseInput v-model="symbol" title="Symbol" />
         </div>
-        <div v-if="input.name === 'whitelist'" class="md:w-2/3">
+        <div v-if="input === 'whitelist'" class="md:w-2/3">
           <LabelInput> Whitelisted addresses </LabelInput>
           <TextareaArray
             v-model="whitelist"

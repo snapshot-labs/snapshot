@@ -11,7 +11,8 @@ const { form } = useSpaceSettingsForm();
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
     id: i + 1,
-    name: name
+    name: name,
+    value: name
   }));
 });
 
@@ -21,7 +22,7 @@ const input = ref({
 });
 
 const defaultToken = {
-  standard: tokenStandards.value[0],
+  standard: tokenStandards.value[0].value,
   symbol: '',
   decimals: null
 };
@@ -52,11 +53,11 @@ const strategy = computed(() => {
   if (token.value.decimals) strategy.params.decimals = token.value.decimals;
   if (token.value.symbol) strategy.params.symbol = token.value.symbol;
 
-  if (token.value.standard.name === 'ERC-20') {
+  if (token.value.standard === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
-  } else if (token.value.standard.name === 'ERC-721') {
+  } else if (token.value.standard === 'ERC-721') {
     strategy.name = 'erc721';
-  } else if (token.value.standard.name === 'ERC-1155') {
+  } else if (token.value.standard === 'ERC-1155') {
     strategy.name = 'erc1155-balance-of';
   } else strategy.name = '';
 
