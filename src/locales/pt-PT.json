@@ -257,6 +257,7 @@
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
+    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
     "set": "Set",
     "profile": "Perfil",
     "avatar": "Imagem de Perfil",
@@ -278,6 +279,7 @@
     },
     "hideSpace": "Ocultar comunidade da página inicial",
     "links": "Social accounts",
+    "subspaces": "Sub-Spaces",
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",
