@@ -36,3 +36,4 @@ export { useUsername } from './useUsername';
 export { useValidationErrors } from './useValidationErrors';
 export { useValidationsFilter } from './useValidationsFilter';
 export { useWeb3 } from './useWeb3';
+export { useQuorum } from './useQuorum';

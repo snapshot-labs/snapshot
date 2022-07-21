@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-import { useIntl } from '@/composables/useIntl';
-const { formatCompactNumber } = useIntl();
 
-const props = defineProps<{
+import { useIntl, useQuorum } from '@/composables';
+
+defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results | null;
@@ -13,19 +12,10 @@ const props = defineProps<{
   loaded: boolean;
 }>();
 
+const { formatCompactNumber } = useIntl();
+const { quorumScore } = useQuorum();
+
 const ts = Number((Date.now() / 1e3).toFixed());
-
-const quorumScore = computed(() => {
-  let scores = 0;
-  if (
-    props.proposal.privacy === 'shutter' &&
-    props.proposal.scores_state !== 'final'
-  )
-    scores = props.votes.reduce((a, b) => a + b.balance, 0);
-  else if (props.results) scores = props.results.scoresTotal;
-
-  return formatCompactNumber(scores);
-});
 </script>
 
 <template>
@@ -48,7 +38,14 @@ const quorumScore = computed(() => {
       >
         {{ $t('settings.quorum.label') }}
         <span class="float-right">
-          {{ quorumScore }} /
+          {{
+            quorumScore({
+              proposal,
+              results,
+              votes
+            })
+          }}
+          /
           {{
             formatCompactNumber(
               proposal.quorum || (space.voting.quorum as number)

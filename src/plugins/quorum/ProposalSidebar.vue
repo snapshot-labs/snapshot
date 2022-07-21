@@ -19,5 +19,6 @@ defineProps({
     :proposal="proposal"
     :results="results"
     :strategies="strategies"
+    :votes="votes"
   />
 </template>

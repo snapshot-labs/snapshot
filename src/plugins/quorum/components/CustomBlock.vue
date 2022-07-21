@@ -2,12 +2,13 @@
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '../index';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
+import { useIntl, useQuorum } from '@/composables';
 
 const { formatCompactNumber, formatPercentNumber } = useIntl();
+const { quorumScore } = useQuorum();
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   setup() {
     return { shorten, formatCompactNumber, formatPercentNumber };
   },
@@ -21,12 +22,15 @@ export default {
   computed: {
     totalScore() {
       const basicCount = this.space.plugins?.quorum?.basicCount;
-      if (basicCount && this.proposal.type === 'basic') {
-        return this.results.scores
-          .filter((score, i) => basicCount.includes(i))
-          .reduce((a, b) => a + b, 0);
-      }
-      return this.results.scores.reduce((a, b) => a + b, 0);
+      const votes =
+        basicCount && this.proposal.type === 'basic'
+          ? this.votes.filter(vote => basicCount.includes(vote.choice - 1))
+          : this.votes;
+      return quorumScore({
+        proposal: this.proposal,
+        results: this.results,
+        votes
+      });
     },
     quorum() {
       return this.totalVotingPower === 0
