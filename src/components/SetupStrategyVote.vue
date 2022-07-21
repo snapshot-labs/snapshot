@@ -103,10 +103,8 @@ function nextStep() {
         </div>
       </div>
     </BaseBlock>
-    <div class="float-right mx-4 mt-4 md:mx-0">
-      <BaseButton primary @click="nextStep">
-        {{ $t('next') }}
-      </BaseButton>
+    <div class="float-right mx-4 md:mx-0">
+      <SetupButtonNext text="next" @click="nextStep" />
     </div>
   </div>
 </template>

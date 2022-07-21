@@ -10,14 +10,16 @@ const emit = defineEmits(['next']);
     <SettingsStrategiesBlock
       title="Setup your voting strategy"
       :form="form"
+      hide-error
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"
       @update-symbol="val => (form.symbol = val)"
     />
     <div class="mx-4 md:mx-0">
-      <BaseButton primary class="float-right mt-4" @click="emit('next')">
-        {{ $t('next') }}
-      </BaseButton>
+      <SetupButtonNext
+        :text="form.strategies.length ? 'next' : 'skip'"
+        @click="emit('next')"
+      />
     </div>
   </div>
 </template>
