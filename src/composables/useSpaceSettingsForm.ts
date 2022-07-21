@@ -57,7 +57,7 @@ export function useSpaceSettingsForm() {
     if (!space) return;
     delete space.id;
     delete space.followersCount;
-    if (form.value.filters.invalids) delete form.value.filters.invalids;
+    if (space.filters.invalids) delete space.filters.invalids;
     Object.entries(space).forEach(([key, value]) => {
       if (value === null || value === '') delete space[key];
     });
