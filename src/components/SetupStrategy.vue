@@ -12,16 +12,16 @@ const votingStep = ref(1);
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.strategy.title') }}</h4>
       <div class="space-y-3">
         <ButtonCard
-          :title="$t('setup.strategy.onePersonOneVote.title')"
-          @click="votingStep = 2"
-        >
-          {{ $t('setup.strategy.onePersonOneVote.description') }}
-        </ButtonCard>
-        <ButtonCard
           :title="$t('setup.strategy.tokenVoting.title')"
           @click="votingStep = 3"
         >
           {{ $t('setup.strategy.tokenVoting.description') }}
+        </ButtonCard>
+        <ButtonCard
+          :title="$t('setup.strategy.onePersonOneVote.title')"
+          @click="votingStep = 2"
+        >
+          {{ $t('setup.strategy.onePersonOneVote.description') }}
         </ButtonCard>
         <ButtonCard
           :title="$t('setup.strategy.advanced.title')"
