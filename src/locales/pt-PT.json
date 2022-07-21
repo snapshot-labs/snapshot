@@ -396,7 +396,7 @@
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
       },
       "advanced": {
-        "title": "Advanced settings",
+        "title": "Custom setup",
         "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
       }
     },
