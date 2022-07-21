@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { getTokenPrices } from '@/helpers/covalent';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -28,25 +28,6 @@ const defaultToken = {
 };
 
 const token = ref(clone(defaultToken));
-
-if (
-  form.value.strategies.length === 1 &&
-  !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
-) {
-  input.value = {
-    network: form.value.strategies[0].params.network,
-    address: form.value.strategies[0].params.address
-  };
-
-  if (form.value.strategies[0].name === 'erc721') {
-    token.value.standard === 'ERC-721';
-  } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
-    token.value.standard = 'ERC-1155';
-  }
-
-  token.value.symbol = form.value.strategies[0].params.symbol;
-  token.value.decimals = form.value.strategies[0].params.decimals;
-}
 
 const strategy = computed(() => {
   if (!token.value) return null;
@@ -83,6 +64,27 @@ const strategy = computed(() => {
   return strategy;
 });
 
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = {
+      network: form.value.strategies[0].params.network,
+      address: form.value.strategies[0].params.address
+    };
+
+    if (form.value.strategies[0].name === 'erc721') {
+      token.value.standard === 'ERC-721';
+    } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
+      token.value.standard = 'ERC-1155';
+    }
+
+    token.value.symbol = form.value.strategies[0].params.symbol;
+    token.value.decimals = form.value.strategies[0].params.decimals;
+  }
+}
+
 function nextStep() {
   emit('next');
   if (!strategy.value?.params?.symbol) return setDefaultStrategy();
@@ -106,6 +108,8 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(() => setFormValues());
 </script>
 
 <template>

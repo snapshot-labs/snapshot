@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const emit = defineEmits(['next']);
@@ -17,17 +17,6 @@ const votingItems = computed(() => {
 const input = ref(votingItems.value[0].value);
 const symbol = ref('VOTE');
 const whitelist = ref([]);
-
-if (
-  form.value.strategies.length === 1 &&
-  ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
-) {
-  input.value = form.value.strategies[0].name;
-  symbol.value = form.value.strategies[0].params.symbol;
-  if (form.value.strategies[0].name === 'whitelist') {
-    whitelist.value = form.value.strategies[0].params.addresses || [];
-  }
-}
 
 const strategy = computed(() => {
   const strategy: {
@@ -52,6 +41,19 @@ const strategy = computed(() => {
   return strategy;
 });
 
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = form.value.strategies[0].name;
+    symbol.value = form.value.strategies[0].params.symbol;
+    if (form.value.strategies[0].name === 'whitelist') {
+      whitelist.value = form.value.strategies[0].params.addresses || [];
+    }
+  }
+}
+
 function nextStep() {
   emit('next');
   form.value.strategies = [];
@@ -59,6 +61,8 @@ function nextStep() {
   const symbol = strategy.value.params.symbol || 'VOTE';
   form.value.symbol = symbol;
 }
+
+onMounted(() => setFormValues());
 </script>
 
 <template>
