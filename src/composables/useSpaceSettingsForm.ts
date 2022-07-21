@@ -4,15 +4,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const SPACE_OBJECT = {
-  strategies: [
-    {
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    }
-  ],
+  strategies: [],
   categories: [],
   treasuries: [],
   admins: [],
@@ -34,7 +26,7 @@ const SPACE_OBJECT = {
   about: '',
   avatar: '',
   network: '1',
-  symbol: 'VOTE',
+  symbol: '',
   terms: '',
   website: '',
   twitter: '',
@@ -94,12 +86,25 @@ export function useSpaceSettingsForm() {
     showAllValidationErrors.value = false;
   }
 
+  function setDefaultStrategy() {
+    form.value.strategies = [];
+    form.value.strategies.push({
+      name: 'ticket',
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
+    });
+    form.value.symbol = 'VOTE';
+  }
+
   return {
     form,
     validate,
     showAllValidationErrors,
     formatSpace,
     getErrorMessage,
-    resetForm
+    resetForm,
+    setDefaultStrategy
   };
 }

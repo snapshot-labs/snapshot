@@ -6,7 +6,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceSettingsForm();
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
@@ -85,11 +85,11 @@ const strategy = computed(() => {
 
 function nextStep() {
   emit('next');
-  if (strategy.value?.params?.symbol) {
-    form.value.strategies = [];
-    form.value.strategies.push(strategy.value);
-    form.value.symbol = strategy.value.params.symbol;
-  }
+  if (!strategy.value?.params?.symbol) return setDefaultStrategy();
+
+  form.value.strategies = [];
+  form.value.strategies.push(strategy.value);
+  form.value.symbol = strategy.value.params.symbol;
 }
 
 async function getTokenInfo() {

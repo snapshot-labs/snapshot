@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-const { form } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceSettingsForm();
 
 const emit = defineEmits(['next']);
+
+function nextStep() {
+  emit('next');
+  if (!form.value.strategies.length) return setDefaultStrategy();
+}
 </script>
 
 <template>
@@ -18,7 +23,7 @@ const emit = defineEmits(['next']);
     <div class="mx-4 md:mx-0">
       <SetupButtonNext
         :text="form.strategies.length ? 'next' : 'skip'"
-        @click="emit('next')"
+        @click="nextStep"
       />
     </div>
   </div>
