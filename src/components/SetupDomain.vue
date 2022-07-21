@@ -5,7 +5,6 @@ import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
@@ -17,7 +16,6 @@ const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
-const { resetForm } = useSpaceSettingsForm();
 
 const router = useRouter();
 
@@ -58,8 +56,6 @@ const waitForRegistration = () => {
 
 // stop lookup when leaving
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
-
-onMounted(() => resetForm());
 </script>
 
 <template>

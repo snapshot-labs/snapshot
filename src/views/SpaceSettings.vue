@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue';
+import { computed, ref, watch, onMounted, onUnmounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -24,7 +24,8 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const { form, validate, formatSpace, getErrorMessage, resetForm } =
+  useSpaceSettingsForm();
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
@@ -123,6 +124,12 @@ onMounted(async () => {
 
 onMounted(() => {
   setPageTitle('page.title.space.settings', { space: props.space.name });
+});
+
+onUnmounted(() => {
+  resetForm();
+  // not to confuse with the handleReset function above
+  // maybe find better names for these functions
 });
 
 const {
