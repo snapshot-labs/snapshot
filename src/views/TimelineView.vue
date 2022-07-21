@@ -176,6 +176,9 @@ function selectState(e) {
           </template>
         </BaseDropdown>
       </div>
+
+      <TimelineOnboarding class="mb-4" />
+
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow
           v-if="
