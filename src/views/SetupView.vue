@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useI18n } from '@/composables/useI18n';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { useClient } from '@/composables/useClient';
 import { useStorage } from '@vueuse/core';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaceController } from '@/composables/useSpaceController';
 import { clearStampCache } from '@/helpers/utils';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+
+import {
+  useWeb3,
+  useI18n,
+  useClient,
+  useExtendedSpaces,
+  useSpaceController,
+  useSpaceSettingsForm,
+  useFlashNotification
+} from '@/composables';
 
 const route = useRoute();
 const router = useRouter();

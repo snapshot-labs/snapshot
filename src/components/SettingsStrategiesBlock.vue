@@ -10,6 +10,7 @@ const { getErrorMessage } = useSpaceSettingsForm();
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
   title?: string;
+  hideError?: boolean;
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
@@ -93,7 +94,10 @@ function handleSubmitStrategy(strategy) {
       />
     </div>
 
-    <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
+    <StrategiesBlockWarning
+      v-if="!hideError"
+      :error="getErrorMessage('strategies')"
+    />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('settings.addStrategy') }}

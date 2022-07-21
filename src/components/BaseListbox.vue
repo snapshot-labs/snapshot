@@ -8,18 +8,22 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
+type ListboxItem = { id: number | string; name: string; value?: any };
+
 const props = defineProps<{
-  items: { id: number; name: string }[];
-  modelValue: { id: number; name: string };
+  items: ListboxItem[];
+  modelValue: any;
   label?: string;
   disableInput?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItem = ref<{ id: number; name: string }>(props.modelValue);
+const selectedItem = ref<ListboxItem | undefined>(
+  props.items.find(item => item.value === props.modelValue)
+);
 
-watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
+watch(selectedItem, () => emit('update:modelValue', selectedItem.value?.value));
 </script>
 
 <template>
@@ -38,7 +42,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
           :selectedItem="selectedItem"
         />
 
-        <span v-else>
+        <span v-else-if="selectedItem">
           {{ selectedItem.name }}
         </span>
         <span

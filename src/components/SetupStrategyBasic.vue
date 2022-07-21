@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { getTokenPrices } from '@/helpers/covalent';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceSettingsForm();
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
     id: i + 1,
-    name: name
+    name: name,
+    value: name
   }));
 });
 
@@ -21,7 +22,7 @@ const input = ref({
 });
 
 const defaultToken = {
-  standard: tokenStandards.value[0],
+  standard: tokenStandards.value[0].value,
   symbol: '',
   decimals: null
 };
@@ -52,24 +53,45 @@ const strategy = computed(() => {
   if (token.value.decimals) strategy.params.decimals = token.value.decimals;
   if (token.value.symbol) strategy.params.symbol = token.value.symbol;
 
-  if (token.value.standard.name === 'ERC-20') {
+  if (token.value.standard === 'ERC-20') {
     strategy.name = 'erc20-balance-of';
-  } else if (token.value.standard.name === 'ERC-721') {
+  } else if (token.value.standard === 'ERC-721') {
     strategy.name = 'erc721';
-  } else if (token.value.standard.name === 'ERC-1155') {
+  } else if (token.value.standard === 'ERC-1155') {
     strategy.name = 'erc1155-balance-of';
   } else strategy.name = '';
 
   return strategy;
 });
 
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = {
+      network: form.value.strategies[0].params.network,
+      address: form.value.strategies[0].params.address
+    };
+
+    if (form.value.strategies[0].name === 'erc721') {
+      token.value.standard === 'ERC-721';
+    } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
+      token.value.standard = 'ERC-1155';
+    }
+
+    token.value.symbol = form.value.strategies[0].params.symbol;
+    token.value.decimals = form.value.strategies[0].params.decimals;
+  }
+}
+
 function nextStep() {
   emit('next');
-  if (strategy.value?.params?.symbol) {
-    form.value.strategies = [];
-    form.value.strategies.push(strategy.value);
-    form.value.symbol = strategy.value.params.symbol;
-  }
+  if (!strategy.value?.params?.symbol) return setDefaultStrategy();
+
+  form.value.strategies = [];
+  form.value.strategies.push(strategy.value);
+  form.value.symbol = strategy.value.params.symbol;
 }
 
 async function getTokenInfo() {
@@ -86,6 +108,8 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(() => setFormValues());
 </script>
 
 <template>
@@ -102,23 +126,20 @@ watch(
             :items="tokenStandards"
             label="Token standard"
           />
-          <BaseInput
-            v-model.trim="input.address"
-            title="Token contract"
-            placeholder="Enter address"
-            focus-on-mount
-          />
-
-          <BaseInput
-            v-if="token.symbol"
-            v-model="token.symbol"
-            title="Symbol"
-          />
-          <BaseInput
-            v-if="token.decimals"
-            v-model="token.decimals"
-            title="Decimals"
-          />
+          <div>
+            <BaseInput
+              v-model.trim="input.address"
+              title="Token contract"
+              placeholder="Enter address"
+              focus-on-mount
+            />
+            <div v-if="token.symbol" class="text-right text-sm">
+              {{ token.symbol }}
+              <span v-if="token.standard === 'ERC-20'"
+                >({{ token.decimals }} decimals)</span
+              >
+            </div>
+          </div>
         </div>
       </div>
     </BaseBlock>
