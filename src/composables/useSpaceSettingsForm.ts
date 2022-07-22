@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
+import { refDebounced } from '@vueuse/core';
 
 const SPACE_OBJECT = {
   strategies: [],
@@ -40,6 +41,8 @@ const SPACE_OBJECT = {
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
 const form = ref(clone(SPACE_OBJECT));
+const debouncedForm = refDebounced(form, 1000);
+
 const showAllValidationErrors = ref(false);
 
 export function useSpaceSettingsForm() {
@@ -66,7 +69,7 @@ export function useSpaceSettingsForm() {
   }
 
   const validate = computed(() => {
-    const formattedForm = formatSpace(form.value);
+    const formattedForm = formatSpace(debouncedForm.value);
 
     return validateSchema(schemas.space, formattedForm);
   });
