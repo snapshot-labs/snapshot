@@ -3,8 +3,6 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from '@/composables/useI18n';
 
-defineEmits(['update:modelValue']);
-
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -53,7 +51,6 @@ function redirectSearch(e) {
       :model-value="routeQuery"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
-      @update:modelValue="input => $emit('update:modelValue', input)"
     />
     <div class="flex items-center border-l" style="height: 44px">
       <BaseDropdown :items="searchOptions" @select="redirectSearch">

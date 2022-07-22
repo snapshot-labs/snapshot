@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+
+const { getErrorMessage } = useSpaceSettingsForm();
 
 const props = defineProps<{
-  getErrorMessage: (field: string) => { message: string; push: boolean };
   name: string;
   about?: string;
   categories: string[];

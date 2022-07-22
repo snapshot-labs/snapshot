@@ -13,7 +13,9 @@ const props = defineProps<{
 }>();
 
 const currentSpaceController = computed(() => {
-  return props.currentTextRecord?.split('/')[4] ?? '';
+  if (!props.currentTextRecord) return null;
+  const position = props.currentTextRecord.includes('/testnet/') ? 5 : 4;
+  return props.currentTextRecord?.split('/')[position] ?? '';
 });
 
 defineEmits(['close', 'set']);
@@ -28,7 +30,7 @@ defineEmits(['close', 'set']);
     </template>
 
     <div class="p-4">
-      <BaseMessageBlock level="info" class="mb-3">
+      <BaseMessageBlock v-if="currentSpaceController" level="info" class="mb-3">
         {{
           $tc('settings.currentSpaceControllerIs', {
             address: shorten(currentSpaceController)
@@ -46,7 +48,9 @@ defineEmits(['close', 'set']);
         :title="$t('settings.newController')"
         :placeholder="
           $t('setup.spaceOwnerAddressPlaceHolder', {
-            address: currentSpaceController
+            address:
+              currentSpaceController ??
+              '0x3901D0fDe202aF1427216b79f5243f8A022d68cf'
           })
         "
         focus-on-mount
