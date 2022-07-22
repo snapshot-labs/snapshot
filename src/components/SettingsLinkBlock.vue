@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
 
 defineProps<{
   twitter?: string;
   github?: string;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits(['update:twitter', 'update:github']);

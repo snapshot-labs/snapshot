@@ -21,7 +21,7 @@ const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
 const { form, validate, showAllValidationErrors, formatSpace } =
-  useSpaceSettingsForm();
+  useSpaceSettingsForm('setup');
 
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });

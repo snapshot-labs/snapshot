@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
 
 defineProps<{
   validation: { name: string };
   filters: { minScore: number; onlyMembers: boolean };
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits([

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-const { form, setDefaultStrategy } = useSpaceSettingsForm();
+const { form, setDefaultStrategy, getErrorMessage } =
+  useSpaceSettingsForm('setup');
 
 const emit = defineEmits(['next']);
 
@@ -15,6 +16,7 @@ function nextStep() {
     <SettingsStrategiesBlock
       title="Setup your voting strategy"
       :form="form"
+      :get-error-message="getErrorMessage"
       hide-error
       @update-strategies="val => (form.strategies = val)"
       @update-network="val => (form.network = val)"

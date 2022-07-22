@@ -4,7 +4,7 @@ import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm();
+const { form } = useSpaceSettingsForm('setup');
 
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({

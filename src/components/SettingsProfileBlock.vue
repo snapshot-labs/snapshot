@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
 
 const props = defineProps<{
   name: string;
@@ -13,6 +10,7 @@ const props = defineProps<{
   private: boolean;
   terms?: string;
   website?: string;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const avatarNotReactive = ref(props.avatar);

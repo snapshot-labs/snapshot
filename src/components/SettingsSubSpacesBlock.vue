@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
-
 defineProps<{
   parent?: string;
   children?: string[];
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
-const emit = defineEmits(['update:parent', 'update:children']);
+defineEmits(['update:parent', 'update:children']);
 </script>
 
 <template>

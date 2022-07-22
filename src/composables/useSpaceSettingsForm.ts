@@ -39,10 +39,25 @@ const SPACE_OBJECT = {
 };
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
-const form = ref(clone(SPACE_OBJECT));
+const formSetup = ref(clone(SPACE_OBJECT));
+const formSettings = ref(clone(SPACE_OBJECT));
 const showAllValidationErrors = ref(false);
 
-export function useSpaceSettingsForm() {
+export function useSpaceSettingsForm(formName: 'setup' | 'settings') {
+  const form = computed({
+    get: () => (formName === 'setup' ? formSetup.value : formSettings.value),
+    set: newVal =>
+      formName === 'setup'
+        ? (formSetup.value = newVal)
+        : (formSettings.value = newVal)
+  });
+
+  const validate = computed(() => {
+    const formattedForm = formatSpace(form.value);
+
+    return validateSchema(schemas.space, formattedForm);
+  });
+
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
@@ -65,14 +80,7 @@ export function useSpaceSettingsForm() {
     return space;
   }
 
-  const validate = computed(() => {
-    const formattedForm = formatSpace(form.value);
-
-    return validateSchema(schemas.space, formattedForm);
-  });
-
   const { validationErrorMessage } = useValidationErrors();
-
   function getErrorMessage(field: string): { message: string; push: boolean } {
     const message = validationErrorMessage(field, validate.value);
     return {

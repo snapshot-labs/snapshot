@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
 
 defineProps<{
   domain?: string;
   skin?: string;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits(['update:domain', 'update:skin']);

@@ -3,7 +3,7 @@ import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const emit = defineEmits(['next', 'back']);
 
-const { form } = useSpaceSettingsForm();
+const { form } = useSpaceSettingsForm('setup');
 </script>
 
 <template>

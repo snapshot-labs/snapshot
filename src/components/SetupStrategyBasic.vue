@@ -6,7 +6,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const emit = defineEmits(['next']);
 
-const { form, setDefaultStrategy } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceSettingsForm('setup');
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({

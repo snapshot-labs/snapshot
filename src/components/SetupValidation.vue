@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
-const { form, getErrorMessage } = useSpaceSettingsForm();
+const { form, getErrorMessage } = useSpaceSettingsForm('setup');
 
 defineProps<{
   creatingSpace: boolean;
@@ -17,6 +17,7 @@ const emit = defineEmits(['create', 'back']);
   <div class="space-y-4">
     <SettingsValidationBlock
       v-model:validation="form.validation"
+      :get-error-message="getErrorMessage"
       :filters="form.filters"
       @update:min-score="val => (form.filters.minScore = val)"
       @update:only-members="val => (form.filters.onlyMembers = val)"

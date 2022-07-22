@@ -24,8 +24,8 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace, getErrorMessage, resetForm } =
-  useSpaceSettingsForm();
+const { form, validate, formatSpace, getErrorMessage } =
+  useSpaceSettingsForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
@@ -126,12 +126,6 @@ onMounted(() => {
   setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
-onUnmounted(() => {
-  resetForm();
-  // not to confuse with the handleReset function above
-  // maybe find better names for these functions
-});
-
 const {
   settingENSRecord,
   modalUnsupportedNetworkOpen,
@@ -196,15 +190,18 @@ async function handleSetRecord() {
             v-model:private="form.private"
             v-model:terms="form.terms"
             v-model:website="form.website"
+            :get-error-message="getErrorMessage"
           />
 
           <SettingsLinkBlock
             v-model:twitter="form.twitter"
             v-model:github="form.github"
+            :get-error-message="getErrorMessage"
           />
 
           <SettingsStrategiesBlock
             :form="form"
+            :get-error-message="getErrorMessage"
             @update-strategies="val => (form.strategies = val)"
             @update-network="val => (form.network = val)"
             @update-symbol="val => (form.symbol = val)"
@@ -226,6 +223,7 @@ async function handleSetRecord() {
           <SettingsValidationBlock
             v-model:validation="form.validation"
             :filters="form.filters"
+            :get-error-message="getErrorMessage"
             @update:min-score="val => (form.filters.minScore = val)"
             @update:only-members="val => (form.filters.onlyMembers = val)"
           />
@@ -241,6 +239,7 @@ async function handleSetRecord() {
           <SettingsDomainBlock
             v-model:domain="form.domain"
             v-model:skin="form.skin"
+            :get-error-message="getErrorMessage"
           />
 
           <SettingsTreasuriesBlock

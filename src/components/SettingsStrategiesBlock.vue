@@ -4,13 +4,11 @@ import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-const { getErrorMessage } = useSpaceSettingsForm();
-
 const props = defineProps<{
   form: { network: string; symbol: string; strategies: SpaceStrategy[] };
   title?: string;
   hideError?: boolean;
+  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
 const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
