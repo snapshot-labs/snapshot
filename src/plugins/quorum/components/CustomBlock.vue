@@ -22,14 +22,15 @@ export default {
   computed: {
     totalScore() {
       const basicCount = this.space.plugins?.quorum?.basicCount;
-      const votes =
-        basicCount && this.proposal.type === 'basic'
-          ? this.votes.filter(vote => basicCount.includes(vote.choice - 1))
-          : this.votes;
+      if (basicCount && this.proposal.type === 'basic')
+        return this.votes
+          .filter(vote => basicCount.includes(vote.choice - 1))
+          .reduce((a, b) => a + b.balance, 0);
+
       return quorumScore({
         proposal: this.proposal,
         results: this.results,
-        votes
+        votes: this.votes
       });
     },
     quorum() {
