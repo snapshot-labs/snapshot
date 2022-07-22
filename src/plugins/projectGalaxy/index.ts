@@ -44,6 +44,7 @@ export default class Plugin {
       query: `mutation claimOAT($input: PrepareParticipateInput!) {
         prepareParticipate(input: $input) {
           allow
+          disallowReason
         }
       }`,
       variables: {
