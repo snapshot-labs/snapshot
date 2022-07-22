@@ -39,6 +39,9 @@ const STATES = {
   },
   ENDED: {
     buttonText: 'Campaign Ended'
+  },
+  REACHED_MINTING_CAP: {
+    buttonText: 'Reached Minting Cap'
   }
 };
 
