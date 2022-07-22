@@ -56,6 +56,7 @@ watch(
   }
 }
 </style>
+
 <template>
   <div
     v-if="allReply.length > 0"
@@ -104,4 +105,3 @@ watch(
   </div>
   <LoadingRow v-if="loadingMore" class="my-2" />
 </template>
-<style></style>

@@ -59,13 +59,13 @@ watch(
     vpLoading.value = true;
     vpLoadingFailed.value = false;
     try {
-      const response = await getPower(
+      const result = await getPower(
         props.space,
         web3Account.value,
         props.proposal
       );
-      vp.value = response.totalScore;
-      vpByStrategy.value = response.scoresByStrategy;
+      vp.value = result.vp;
+      vpByStrategy.value = result.vp_by_strategy;
     } catch (e) {
       vpLoadingFailed.value = true;
       console.log(e);
@@ -80,7 +80,7 @@ watch(
 <template>
   <BaseModal
     :open="open"
-    :show-close="false"
+    :hide-close="true"
     class="flex"
     @close="$emit('close')"
   >

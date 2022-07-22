@@ -14,6 +14,7 @@ const props = defineProps<{
   placeholder?: string;
   modelValue?: { id: number; name: string }[];
   limit?: number;
+  disableInput?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -32,13 +33,14 @@ function isDisabled(item: { id: number; name: string }) {
 </script>
 
 <template>
-  <Listbox v-model="selectedItems" as="div" multiple>
+  <Listbox v-model="selectedItems" as="div" :disabled="disableInput" multiple>
     <ListboxLabel>
       <LabelInput>{{ label }}</LabelInput>
     </ListboxLabel>
-    <div class="relative mt-1">
+    <div class="relative">
       <ListboxButton
         class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
+        :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
       >
         <span v-if="selectedItems.length < 1" class="text-skin-text opacity-60">
           {{ placeholder }}

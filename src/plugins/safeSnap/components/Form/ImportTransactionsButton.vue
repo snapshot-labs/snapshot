@@ -7,7 +7,7 @@ import { FunctionFragment, Interface } from '@ethersproject/abi';
 export default {
   name: 'ImportTransactionsButton',
   props: ['network'],
-  emits: ['import'],
+  emits: ['import', 'remove'],
   data() {
     return {
       json: '',

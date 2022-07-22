@@ -9,7 +9,7 @@ import { ref, onMounted, computed } from 'vue';
 
 const props = withDefaults(
   defineProps<{
-    type?: 'text' | 'number';
+    type?: 'text' | 'number' | 'email';
     modelValue?: string | number;
     definition?: any;
     error?: { message: string; push?: boolean };
