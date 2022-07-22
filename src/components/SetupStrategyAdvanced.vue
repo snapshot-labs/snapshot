@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-const { form, setDefaultStrategy, getErrorMessage } =
-  useSpaceSettingsForm('setup');
+import { useSpaceForm } from '@/composables/useSpaceForm';
+const { form, setDefaultStrategy, getErrorMessage } = useSpaceForm('setup');
 
 const emit = defineEmits(['next']);
 

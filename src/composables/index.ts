@@ -23,7 +23,7 @@ export { useSkinsFilter } from './useSkinsFilter';
 export { useSkin } from './useSkin';
 export { useSpaceController } from './useSpaceController';
 export { useSpaceCreateForm } from './useSpaceCreateForm';
-export { useSpaceSettingsForm } from './useSpaceSettingsForm';
+export { useSpaceForm } from './useSpaceForm';
 export { useSpaces } from './useSpaces';
 export { useSpaceSubscription } from './useSpaceSubscription';
 export { useStore } from './useStore';

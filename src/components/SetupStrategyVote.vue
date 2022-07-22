@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables/useSpaceForm';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm('setup');
+const { form } = useSpaceForm('setup');
 
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({

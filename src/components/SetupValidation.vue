@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables/useSpaceForm';
 
-const { form, getErrorMessage } = useSpaceSettingsForm('setup');
+const { form, getErrorMessage } = useSpaceForm('setup');
 
 defineProps<{
   creatingSpace: boolean;

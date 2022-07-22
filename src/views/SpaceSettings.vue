@@ -10,7 +10,7 @@ import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables/useSpaceForm';
 import { useTreasury } from '@/composables/useTreasury';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -25,7 +25,7 @@ const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validate, formatSpace, getErrorMessage } =
-  useSpaceSettingsForm('settings');
+  useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 

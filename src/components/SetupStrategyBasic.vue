@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables/useSpaceForm';
 import { getTokenPrices } from '@/helpers/covalent';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const emit = defineEmits(['next']);
 
-const { form, setDefaultStrategy } = useSpaceSettingsForm('setup');
+const { form, setDefaultStrategy } = useSpaceForm('setup');
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
