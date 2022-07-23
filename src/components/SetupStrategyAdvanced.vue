@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useSpaceForm } from '@/composables/useSpaceForm';
-const { form, setDefaultStrategy, getErrorMessage } = useSpaceForm('setup');
+const { form, setDefaultStrategy } = useSpaceForm('setup');
 
 const emit = defineEmits(['next']);
 
@@ -13,13 +13,9 @@ function nextStep() {
 <template>
   <div>
     <SettingsStrategiesBlock
+      context="setup"
       title="Setup your voting strategy"
-      :form="form"
-      :get-error-message="getErrorMessage"
       hide-error
-      @update-strategies="val => (form.strategies = val)"
-      @update-network="val => (form.network = val)"
-      @update-symbol="val => (form.symbol = val)"
     />
     <div class="mx-4 md:mx-0">
       <SetupButtonNext

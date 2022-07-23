@@ -24,8 +24,7 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace, getErrorMessage } =
-  useSpaceForm('settings');
+const { form, validate, formatSpace } = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
@@ -182,65 +181,24 @@ async function handleSetRecord() {
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
 
-          <SettingsProfileBlock
-            v-model:name="form.name"
-            v-model:about="form.about"
-            v-model:categories="form.categories"
-            v-model:avatar="form.avatar"
-            v-model:private="form.private"
-            v-model:terms="form.terms"
-            v-model:website="form.website"
-            :get-error-message="getErrorMessage"
-          />
+          <SettingsProfileBlock context="settings" />
 
-          <SettingsLinkBlock
-            v-model:twitter="form.twitter"
-            v-model:github="form.github"
-            :get-error-message="getErrorMessage"
-          />
+          <SettingsLinkBlock context="settings" />
 
-          <SettingsStrategiesBlock
-            :form="form"
-            :get-error-message="getErrorMessage"
-            @update-strategies="val => (form.strategies = val)"
-            @update-network="val => (form.network = val)"
-            @update-symbol="val => (form.symbol = val)"
-          />
+          <SettingsStrategiesBlock context="settings" />
 
           <SettingsAdminsBlock
-            :admins="form.admins"
+            context="settings"
             :is-space-controller="isSpaceController"
-            :error="getErrorMessage('admins')"
-            @update:admins="val => (form.admins = val)"
           />
 
-          <SettingsAuthorsBlock
-            :members="form.members"
-            :error="getErrorMessage('members')"
-            @update:members="val => (form.members = val)"
-          />
+          <SettingsAuthorsBlock context="settings" />
 
-          <SettingsValidationBlock
-            v-model:validation="form.validation"
-            :filters="form.filters"
-            :get-error-message="getErrorMessage"
-            @update:min-score="val => (form.filters.minScore = val)"
-            @update:only-members="val => (form.filters.onlyMembers = val)"
-          />
+          <SettingsValidationBlock context="settings" />
 
-          <SettingsVotingBlock
-            v-model:delay="form.voting.delay"
-            v-model:period="form.voting.period"
-            v-model:quorum="form.voting.quorum"
-            v-model:type="form.voting.type"
-            v-model:hideAbstain="form.voting.hideAbstain"
-          />
+          <SettingsVotingBlock context="settings" />
 
-          <SettingsDomainBlock
-            v-model:domain="form.domain"
-            v-model:skin="form.skin"
-            :get-error-message="getErrorMessage"
-          />
+          <SettingsDomainBlock context="settings" />
 
           <SettingsTreasuriesBlock
             :treasuries="form.treasuries"

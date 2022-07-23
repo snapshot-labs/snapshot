@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { useSpaceForm } from '@/composables/useSpaceForm';
-
-const { form, getErrorMessage } = useSpaceForm('setup');
-
 defineProps<{
   creatingSpace: boolean;
 }>();
@@ -15,25 +11,11 @@ const emit = defineEmits(['create', 'back']);
     {{ $t('setup.validationTitle') }}
   </h4>
   <div class="space-y-4">
-    <SettingsValidationBlock
-      v-model:validation="form.validation"
-      :get-error-message="getErrorMessage"
-      :filters="form.filters"
-      @update:min-score="val => (form.filters.minScore = val)"
-      @update:only-members="val => (form.filters.onlyMembers = val)"
-    />
+    <SettingsValidationBlock context="setup" />
 
-    <SettingsAdminsBlock
-      :admins="form.admins"
-      :error="getErrorMessage('admins')"
-      @update:admins="val => (form.admins = val)"
-    />
+    <SettingsAdminsBlock context="setup" />
 
-    <SettingsAuthorsBlock
-      :members="form.members"
-      :error="getErrorMessage('members')"
-      @update:members="val => (form.members = val)"
-    />
+    <SettingsAuthorsBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">
     <SetupButtonCreate

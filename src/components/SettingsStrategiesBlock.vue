@@ -3,17 +3,17 @@ import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { useSpaceForm } from '@/composables';
 
 const props = defineProps<{
-  form: { network: string; symbol: string; strategies: SpaceStrategy[] };
+  context: 'setup' | 'settings';
   title?: string;
   hideError?: boolean;
-  getErrorMessage: (field: string) => { message: string; push: boolean };
 }>();
 
-const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
+const { form, getErrorMessage } = useSpaceForm(props.context);
 
-const strategies = computed(() => props.form.strategies);
+const strategies = computed(() => form.value.strategies);
 
 const strategyObj = {
   name: '',
@@ -26,9 +26,8 @@ const currentStrategyIndex = ref<number | null>(null);
 const currentStrategy = ref<SpaceStrategy>(clone(strategyObj));
 
 function handleRemoveStrategy(i) {
-  emit(
-    'updateStrategies',
-    strategies.value.filter((strategy, index) => index !== i)
+  form.value.strategies = strategies.value.filter(
+    (strategy, index) => index !== i
   );
 }
 
@@ -48,9 +47,9 @@ function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
     const strategiesClone = clone(strategies.value);
     strategiesClone[currentStrategyIndex.value] = strategy;
-    emit('updateStrategies', strategiesClone);
+    form.value.strategies = strategiesClone;
   } else {
-    emit('updateStrategies', strategies.value.concat(strategy));
+    form.value.strategies = strategies.value.concat(strategy);
   }
 }
 </script>
@@ -61,16 +60,15 @@ function handleSubmitStrategy(strategy) {
       <ComboboxNetwork
         :network="form.network"
         :information="$t('settings.network.information')"
-        @select="value => emit('updateNetwork', value)"
+        @select="value => (form.network = value)"
       />
       <BaseInput
-        :model-value="form.symbol"
+        v-model="form.symbol"
         :title="$t(`settings.symbol.label`)"
         :information="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
         :error="getErrorMessage('symbol')"
         :max-length="schemas.space.properties.symbol.maxLength"
-        @update:model-value="value => emit('updateSymbol', value)"
       />
     </ContainerParallelInput>
 

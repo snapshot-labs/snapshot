@@ -14,22 +14,9 @@ function nextStep() {
 
 <template>
   <div class="space-y-4">
-    <SettingsProfileBlock
-      v-model:name="form.name"
-      v-model:about="form.about"
-      v-model:categories="form.categories"
-      v-model:avatar="form.avatar"
-      v-model:private="form.private"
-      v-model:terms="form.terms"
-      v-model:website="form.website"
-      :get-error-message="getErrorMessage"
-    />
+    <SettingsProfileBlock context="setup" />
 
-    <SettingsLinkBlock
-      v-model:twitter="form.twitter"
-      v-model:github="form.github"
-      :get-error-message="getErrorMessage"
-    />
+    <SettingsLinkBlock context="setup" />
 
     <!-- WIP: <SettingsSubSpacesBlock
       v-model:parent="form.parent"

@@ -1,29 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { useSpaceForm } from '@/composables';
 
 const props = defineProps<{
-  name: string;
-  about?: string;
-  categories: string[];
-  avatar?: string;
-  private: boolean;
-  terms?: string;
-  website?: string;
-  getErrorMessage: (field: string) => { message: string; push: boolean };
+  context: 'setup' | 'settings';
 }>();
 
-const avatarNotReactive = ref(props.avatar);
+const { form, getErrorMessage } = useSpaceForm(props.context);
 
-const emit = defineEmits([
-  'update:name',
-  'update:about',
-  'update:categories',
-  'update:avatar',
-  'update:private',
-  'update:terms',
-  'update:website'
-]);
+const avatarNotReactive = ref(form.value.avatar);
 </script>
 
 <template>
@@ -38,8 +24,8 @@ const emit = defineEmits([
               </LabelInput>
               <InputUploadAvatar
                 class="h-[80px]"
-                @image-uploaded="url => emit('update:avatar', url)"
-                @image-remove="() => emit('update:avatar', '')"
+                @image-uploaded="url => (form.avatar = url)"
+                @image-remove="() => (form.avatar = '')"
               >
                 <template #avatar="{ uploading, previewFile }">
                   <div class="relative">
@@ -61,52 +47,47 @@ const emit = defineEmits([
           </div>
 
           <BaseInput
-            :model-value="name"
+            v-model="form.name"
             :title="$t(`settings.name.label`)"
             :error="getErrorMessage('name')"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
             focus-on-mount
-            @update:model-value="value => emit('update:name', value)"
           />
 
           <LabelInput> {{ $t(`settings.about.label`) }} </LabelInput>
           <TextareaAutosize
-            :model-value="about"
+            v-model="form.about"
             class="s-input !rounded-3xl"
             :max-length="schemas.space.properties.about.maxLength"
             :placeholder="$t('settings.about.placeholder')"
-            @update:model-value="value => emit('update:about', value)"
           />
 
           <ListboxMultipleCategories
-            :categories="categories"
-            @update-categories="value => emit('update:categories', value)"
+            :categories="form.categories"
+            @update-categories="value => (form.categories = value)"
           />
 
           <InputUrl
+            v-model="form.website"
             :title="$t('settings.website')"
-            :model-value="website"
             :error="getErrorMessage('website')"
             :max-length="schemas.space.properties.website.maxLength"
             placeholder="e.g. https://www.example.com"
-            @update:model-value="value => emit('update:website', value)"
           />
 
           <InputUrl
+            v-model="form.terms"
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
-            :model-value="terms"
             :error="getErrorMessage('terms')"
             placeholder="e.g. https://example.com/terms"
-            @update:model-value="value => emit('update:terms', value)"
           />
 
           <BaseSwitch
+            v-model="form.private"
             class="!mt-3"
-            :model-value="private"
             :text-right="$t('settings.hideSpace')"
-            @update:model-value="value => emit('update:private', value)"
           />
         </div>
       </div>
