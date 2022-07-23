@@ -62,7 +62,7 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     validationResult.value = validateSchema(schemas.space, formattedForm);
   };
 
-  watchDebounced(form, validate, { debounce: 500, maxWait: 1000, deep: true });
+  watchDebounced(form, validate, { debounce: 200, maxWait: 1000, deep: true });
 
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
