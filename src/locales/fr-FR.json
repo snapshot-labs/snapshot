@@ -387,6 +387,7 @@
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
+      "subtitle": "You can change your strategy settings any time.",
       "onePersonOneVote": {
         "title": "One person, one vote",
         "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
