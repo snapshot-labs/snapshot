@@ -200,15 +200,9 @@ async function handleSetRecord() {
 
           <SettingsDomainBlock context="settings" />
 
-          <SettingsTreasuriesBlock
-            :treasuries="form.treasuries"
-            @update-treasuries="value => (form.treasuries = value)"
-          />
+          <SettingsTreasuriesBlock context="settings" />
 
-          <SettingsPluginsBlock
-            :plugins="form.plugins"
-            @update:plugins="val => (form.plugins = val)"
-          />
+          <SettingsPluginsBlock context="settings" />
         </div>
       </template>
     </template>
