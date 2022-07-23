@@ -6,6 +6,7 @@ export default {
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import debounce from 'lodash/debounce';
 
 const props = withDefaults(
   defineProps<{
@@ -36,13 +37,18 @@ const props = withDefaults(
   }
 );
 
-defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue']);
 
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 const visited = ref(false);
 
 const showErrorMessage = computed(() => visited.value || props.error.push);
+
+const handleInputDebounce = debounce((e: InputEvent) => {
+  const input = (e.target as HTMLInputElement).value;
+  emit('update:modelValue', input);
+}, 200);
 
 onMounted(() => {
   if (props.focusOnMount) {
@@ -78,9 +84,7 @@ onMounted(() => {
         :readonly="readonly"
         @blur="error.message ? (visited = true) : null"
         @focus="error.message ? null : (visited = false)"
-        @input="
-          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
-        "
+        @input="handleInputDebounce"
       />
       <div
         v-if="$slots.after"
