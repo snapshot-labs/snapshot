@@ -154,17 +154,29 @@ async function handleSubmit() {
           @back="previousStep"
         />
 
-        <SetupCustomdomain
+        <SetupModeration
           v-else-if="currentStep === 7 && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
-        <SetupValidation
+        <SetupCustomdomain
           v-else-if="currentStep === 8 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupTreasury
+          v-else-if="currentStep === 9 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupPlugins
+          v-else-if="currentStep === 10 && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
-          @create="handleSubmit"
+          @next="handleSubmit"
         />
       </template>
     </template>

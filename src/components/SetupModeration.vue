@@ -1,9 +1,5 @@
 <script setup lang="ts">
-defineProps<{
-  creatingSpace: boolean;
-}>();
-
-const emit = defineEmits(['create', 'back']);
+const emit = defineEmits(['next', 'back']);
 </script>
 
 <template>
@@ -18,11 +14,7 @@ const emit = defineEmits(['create', 'back']);
     <SettingsAuthorsBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">
-    <SetupButtonCreate
-      :creating-space="creatingSpace"
-      class="mt-4"
-      @create="emit('create')"
-    />
+    <SetupButtonNext text="next" @click="emit('next')" />
     <SetupButtonBack @click="emit('back')" />
   </div>
 </template>
