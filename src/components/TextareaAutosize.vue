@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, nextTick, toRefs, watch, onMounted } from 'vue';
-import debounce from 'lodash/debounce';
 
 const props = withDefaults(
   defineProps<{
@@ -63,12 +62,9 @@ watch(modelValue, v => {
   val.value = v;
 });
 
-const handleInputDebounce = debounce((v: string) => {
-  emit('update:modelValue', v);
-}, 200);
 watch(val, v => {
   nextTick(resize);
-  handleInputDebounce(v);
+  emit('update:modelValue', v);
   if (v) resize();
 });
 
@@ -82,7 +78,7 @@ onMounted(() => resize());
 <template>
   <textarea
     ref="textarea"
-    v-model="val"
+    v-model.lazy="val"
     class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"
     :style="computedStyles"
     :maxlength="maxLength"
