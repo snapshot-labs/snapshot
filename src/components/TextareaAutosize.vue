@@ -78,7 +78,7 @@ onMounted(() => resize());
 <template>
   <textarea
     ref="textarea"
-    v-model.lazy="val"
+    v-model="val"
     class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"
     :style="computedStyles"
     :maxlength="maxLength"
