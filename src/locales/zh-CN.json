@@ -387,7 +387,7 @@
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
-      "subtitle": "You can change your strategy settings any time.",
+      "subtitle": "您可以随时改变您的策略设置。",
       "onePersonOneVote": {
         "title": "一人，一票",
         "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。"
