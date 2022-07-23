@@ -5,7 +5,7 @@ const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 </script>
 
 <template>
@@ -13,13 +13,10 @@ const { form, getErrorMessage } = useSpaceForm(props.context);
     :title="$t('settings.authors.label')"
     :information="$t('settings.authors.information')"
   >
-    <BaseBlock
-      v-if="getErrorMessage('members').message"
-      class="mb-2 !border-red"
-    >
+    <BaseBlock v-if="getValidation('members').message" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red">
-        {{ getErrorMessage('members').message }}&nbsp;</span
+        {{ getValidation('members').message }}&nbsp;</span
       >
     </BaseBlock>
     <TextareaArray

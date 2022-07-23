@@ -11,7 +11,7 @@ const props = withDefaults(
   }
 );
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 </script>
 
 <template>
@@ -20,13 +20,10 @@ const { form, getErrorMessage } = useSpaceForm(props.context);
     :title="$t('settings.admins.label')"
     :information="$t('settings.admins.information')"
   >
-    <BaseBlock
-      v-if="getErrorMessage('admins').message"
-      class="mb-2 !border-red"
-    >
+    <BaseBlock v-if="getValidation('admins').message" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red">
-        {{ getErrorMessage('admins').message }}&nbsp;</span
+        {{ getValidation('admins').message }}&nbsp;</span
       >
     </BaseBlock>
     <TextareaArray

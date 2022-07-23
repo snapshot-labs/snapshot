@@ -1,8 +1,7 @@
 import { ref, computed } from 'vue';
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useValidationErrors } from '@/composables/useValidationErrors';
-import { watchDebounced } from '@vueuse/core';
+import { useFormValidation } from '@/composables';
 
 const SPACE_OBJECT = {
   strategies: [],
@@ -53,17 +52,6 @@ export function useSpaceForm(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
-  const validationResult = ref<ReturnType<typeof validateSchema>>(null);
-  const isValid = computed(() => validationResult.value === true);
-
-  const validate = () => {
-    const formattedForm = formatSpace(form.value);
-
-    validationResult.value = validateSchema(schemas.space, formattedForm);
-  };
-
-  watchDebounced(form, validate, { debounce: 200, maxWait: 1000, deep: true });
-
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
@@ -86,10 +74,17 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     return space;
   }
 
-  const { validationErrorMessage } = useValidationErrors();
+  const formattedForm = computed(() => formatSpace(form.value));
 
-  function getErrorMessage(field: string): { message: string; push: boolean } {
-    const message = validationErrorMessage(field, validationResult.value);
+  const { getValidationMessage, validationResult } = useFormValidation(
+    schemas.space,
+    formattedForm
+  );
+
+  const isValid = computed(() => validationResult.value === true);
+
+  function getValidation(field: string): { message: string; push: boolean } {
+    const message = getValidationMessage(field);
     return {
       message: message || '',
       push: showAllValidationErrors.value
@@ -119,7 +114,7 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     isValid,
     showAllValidationErrors,
     formatSpace,
-    getErrorMessage,
+    getValidation,
     resetForm,
     setDefaultStrategy
   };

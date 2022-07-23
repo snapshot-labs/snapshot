@@ -4,18 +4,34 @@
  * TODO: Extent and use this hook to validate the settings form and all future forms.
  */
 
+import { ref, computed } from 'vue';
 import defaults from '@/locales/default.json';
-import { useI18n } from '@/composables/useI18n';
+import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { watchDebounced } from '@vueuse/core';
+import { useI18n } from '@/composables';
 
-export function useValidationErrors() {
+export function useFormValidation(schema, form) {
   const { t } = useI18n();
 
-  function validationErrorMessage(key, errors) {
+  const validationResult = ref<ReturnType<typeof validateSchema>>(null);
+  const validate = () => {
+    validationResult.value = validateSchema(schema, form.value);
+  };
+
+  watchDebounced(form, validate, {
+    debounce: 200,
+    maxWait: 1000,
+    deep: true
+  });
+
+  const isValid = computed(() => validationResult.value === true);
+
+  function getValidationMessage(key: string): string {
     const defaultErrors = Object.keys(defaults.errors);
 
-    if (errors === true || errors === null) return '';
+    if (validationResult.value === true || !validationResult.value) return '';
 
-    const errorFound = errors.find(
+    const errorFound = validationResult.value.find(
       error =>
         (defaultErrors.includes(error.keyword) &&
           error.params.missingProperty === key) ||
@@ -47,5 +63,5 @@ export function useValidationErrors() {
       : '';
   }
 
-  return { validationErrorMessage };
+  return { getValidationMessage, validationResult, isValid };
 }

@@ -8,7 +8,7 @@ const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const modalSkinsOpen = ref(false);
 </script>
@@ -29,7 +29,7 @@ const modalSkinsOpen = ref(false);
       <BaseInput
         v-model="form.domain"
         :title="$t('settings.domain.label')"
-        :error="getErrorMessage('domain')"
+        :error="getValidation('domain')"
         :max-length="schemas.space.properties.domain.maxLength"
         placeholder="e.g. vote.balancer.fi"
       />

@@ -11,7 +11,7 @@ const props = defineProps<{
   hideError?: boolean;
 }>();
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const strategies = computed(() => form.value.strategies);
 
@@ -67,7 +67,7 @@ function handleSubmitStrategy(strategy) {
         :title="$t(`settings.symbol.label`)"
         :information="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
-        :error="getErrorMessage('symbol')"
+        :error="getValidation('symbol')"
         :max-length="schemas.space.properties.symbol.maxLength"
       />
     </ContainerParallelInput>
@@ -92,7 +92,7 @@ function handleSubmitStrategy(strategy) {
 
     <StrategiesBlockWarning
       v-if="!hideError"
-      :error="getErrorMessage('strategies')"
+      :error="getValidation('strategies')"
     />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">

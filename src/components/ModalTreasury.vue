@@ -4,7 +4,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { useFormValidation } from '@/composables';
 
 const props = defineProps<{
   open: boolean;
@@ -12,7 +12,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['add', 'close']);
-const { validationErrorMessage } = useValidationErrors();
 const { open } = toRefs(props);
 
 const input = ref({
@@ -20,6 +19,11 @@ const input = ref({
   address: '',
   network: ''
 });
+
+const { getValidationMessage } = useFormValidation(
+  schemas.space.properties.treasuries.items,
+  input
+);
 
 const treasuryProperties = computed(
   () => schemas.space.properties.treasuries.items.properties
@@ -74,21 +78,14 @@ watch(open, () => {
             v-model="input.name"
             :title="treasuryProperties.name?.title"
             :placeholder="treasuryProperties?.name.examples[0]"
-            :error="{
-              message: validationErrorMessage('name', treasuryValidationErrors)
-            }"
+            :error="{ message: getValidationMessage('name') }"
             focus-on-mount
           />
           <BaseInput
             v-model="input.address"
             :title="treasuryProperties.address?.title"
             :placeholder="treasuryProperties.address?.examples[0]"
-            :error="{
-              message: validationErrorMessage(
-                'address',
-                treasuryValidationErrors
-              )
-            }"
+            :error="{ message: getValidationMessage('address') }"
           />
         </div>
       </div>

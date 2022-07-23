@@ -7,7 +7,7 @@ const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const avatarNotReactive = ref(form.value.avatar);
 </script>
@@ -49,7 +49,7 @@ const avatarNotReactive = ref(form.value.avatar);
           <BaseInput
             v-model="form.name"
             :title="$t(`settings.name.label`)"
-            :error="getErrorMessage('name')"
+            :error="getValidation('name')"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
             focus-on-mount
@@ -71,7 +71,7 @@ const avatarNotReactive = ref(form.value.avatar);
           <InputUrl
             v-model="form.website"
             :title="$t('settings.website')"
-            :error="getErrorMessage('website')"
+            :error="getValidation('website')"
             :max-length="schemas.space.properties.website.maxLength"
             placeholder="e.g. https://www.example.com"
           />
@@ -80,7 +80,7 @@ const avatarNotReactive = ref(form.value.avatar);
             v-model="form.terms"
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
-            :error="getErrorMessage('terms')"
+            :error="getValidation('terms')"
             placeholder="e.g. https://example.com/terms"
           />
 

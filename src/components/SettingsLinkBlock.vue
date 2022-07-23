@@ -6,7 +6,7 @@ const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getErrorMessage } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 </script>
 
 <template>
@@ -16,7 +16,7 @@ const { form, getErrorMessage } = useSpaceForm(props.context);
         <InputSocial
           v-model="form.twitter"
           title="Twitter"
-          :error="getErrorMessage('twitter')"
+          :error="getValidation('twitter')"
           :max-length="schemas.space.properties.twitter.maxLength"
           icon="twitter"
           placeholder="e.g. elonmusk"
@@ -24,7 +24,7 @@ const { form, getErrorMessage } = useSpaceForm(props.context);
         <InputSocial
           v-model="form.github"
           title="Github"
-          :error="getErrorMessage('github')"
+          :error="getValidation('github')"
           :max-length="schemas.space.properties.github.maxLength"
           icon="github"
           placeholder="e.g. vbuterin"

@@ -33,6 +33,6 @@ export { useTreasury } from './useTreasury';
 export { useTxStatus } from './useTxStatus';
 export { useUnseenProposals } from './useUnseenProposals';
 export { useUsername } from './useUsername';
-export { useValidationErrors } from './useValidationErrors';
+export { useFormValidation } from './useFormValidation';
 export { useValidationsFilter } from './useValidationsFilter';
 export { useWeb3 } from './useWeb3';
