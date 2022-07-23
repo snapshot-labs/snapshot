@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
+import { watchDebounced } from '@vueuse/core';
 
 const SPACE_OBJECT = {
   strategies: [],
@@ -52,11 +53,16 @@ export function useSpaceForm(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
-  const validate = computed(() => {
+  const validationResult = ref<ReturnType<typeof validateSchema>>(null);
+  const isValid = computed(() => validationResult.value === true);
+
+  const validate = () => {
     const formattedForm = formatSpace(form.value);
 
-    return validateSchema(schemas.space, formattedForm);
-  });
+    validationResult.value = validateSchema(schemas.space, formattedForm);
+  };
+
+  watchDebounced(form, validate, { debounce: 500, maxWait: 1000, deep: true });
 
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
@@ -81,8 +87,9 @@ export function useSpaceForm(context: 'setup' | 'settings') {
   }
 
   const { validationErrorMessage } = useValidationErrors();
+
   function getErrorMessage(field: string): { message: string; push: boolean } {
-    const message = validationErrorMessage(field, validate.value);
+    const message = validationErrorMessage(field, validationResult.value);
     return {
       message: message || '',
       push: showAllValidationErrors.value
@@ -108,7 +115,8 @@ export function useSpaceForm(context: 'setup' | 'settings') {
 
   return {
     form,
-    validate,
+    validationResult,
+    isValid,
     showAllValidationErrors,
     formatSpace,
     getErrorMessage,

@@ -3,8 +3,7 @@ import { useSpaceForm } from '@/composables/useSpaceForm';
 
 const emit = defineEmits(['next', 'back']);
 
-const { form, showAllValidationErrors, getErrorMessage } =
-  useSpaceForm('setup');
+const { form, showAllValidationErrors } = useSpaceForm('setup');
 
 function nextStep() {
   if (!form.value.name) return (showAllValidationErrors.value = true);
@@ -21,7 +20,6 @@ function nextStep() {
     <!-- WIP: <SettingsSubSpacesBlock
       v-model:parent="form.parent"
       v-model:children="form.children"
-      :get-error-message="getErrorMessage"
     /> -->
   </div>
   <div class="px-4 md:px-0">

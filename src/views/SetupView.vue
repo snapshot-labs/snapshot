@@ -20,7 +20,7 @@ const router = useRouter();
 const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
-const { form, validate, showAllValidationErrors, formatSpace } =
+const { form, isValid, showAllValidationErrors, formatSpace } =
   useSpaceForm('setup');
 
 onMounted(() => {
@@ -44,10 +44,6 @@ const creatingSpace = ref(false);
 
 const { t } = useI18n();
 const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
-
-const isValid = computed(() => {
-  return validate.value === true;
-});
 
 const { send } = useClient();
 

@@ -13,7 +13,7 @@ export function useValidationErrors() {
   function validationErrorMessage(key, errors) {
     const defaultErrors = Object.keys(defaults.errors);
 
-    if (errors === true) return '';
+    if (errors === true || errors === null) return '';
 
     const errorFound = errors.find(
       error =>

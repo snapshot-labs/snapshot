@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted, onUnmounted } from 'vue';
+import { computed, ref, watch, onMounted } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -24,7 +24,8 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace } = useSpaceForm('settings');
+const { form, validationResult, isValid, formatSpace } =
+  useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
@@ -35,11 +36,9 @@ const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
-const isValid = computed(() => {
-  return (
-    !clientLoading.value && validate.value === true && !uploadLoading.value
-  );
-});
+const isReadyToSubmit = computed(
+  () => !uploadLoading.value && !clientLoading.value && isValid.value
+);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);
@@ -75,7 +74,8 @@ const isSpaceAdmin = computed(() => {
 });
 
 async function handleSubmit() {
-  if (!isValid.value) return console.log('Invalid schema', validate.value);
+  if (!isValid.value)
+    return console.log('Invalid schema', validationResult.value);
 
   const formattedForm = formatSpace(form.value);
   const result = await send({ id: props.space.id }, 'settings', formattedForm);
@@ -236,7 +236,7 @@ async function handleSetRecord() {
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
-                :disabled="uploadLoading"
+                :disabled="!isReadyToSubmit"
                 :loading="clientLoading"
                 class="block w-full"
                 primary
