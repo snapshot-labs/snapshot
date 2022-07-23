@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
+import { useApp } from '@/composables';
+
+const { env } = useApp();
 
 const visible = useStorage('snapshot.showHomeHeader', true);
 </script>
 
 <template>
-  <BaseContainer v-if="visible" class="mb-4">
+  <BaseContainer v-if="visible && env === 'develop'" class="mb-4">
     <div class="relative w-full rounded-xl border border-skin-border p-4">
       <h3 class="mt-0 pr-6 font-space text-[29px]">
         {{ $t('header.title') }}
