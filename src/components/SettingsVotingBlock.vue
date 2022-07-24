@@ -1,52 +1,32 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { useSpaceForm } from '@/composables';
 
-const props = withDefaults(
-  defineProps<{
-    delay?: number;
-    period?: number;
-    quorum?: number;
-    type?: string;
-    hideAbstain?: boolean;
-  }>(),
-  {
-    delay: 0,
-    period: 0,
-    quorum: 0,
-    type: '',
-    hideAbstain: false
-  }
-);
+const props = defineProps<{
+  context: 'setup' | 'settings';
+}>();
 
-const emit = defineEmits([
-  'update:delay',
-  'update:period',
-  'update:quorum',
-  'update:type',
-  'update:hideAbstain'
-]);
+const { form } = useSpaceForm(props.context);
 
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 const modalVotingTypeOpen = ref(false);
 
 const votingDelay = computed({
-  get: () => calcFromSeconds(props.delay, delayUnit.value),
+  get: () => calcFromSeconds(form.value.voting.delay, delayUnit.value),
   set: newVal =>
-    emit(
-      'update:delay',
-      newVal ? calcToSeconds(newVal, delayUnit.value) : undefined
-    )
+    (form.value.voting.delay = newVal
+      ? calcToSeconds(newVal, delayUnit.value)
+      : undefined)
 });
 
 const votingPeriod = computed({
-  get: () => calcFromSeconds(props.period, periodUnit.value),
+  get: () => calcFromSeconds(form.value.voting.period, periodUnit.value),
   set: newVal =>
-    emit(
-      'update:period',
-      newVal ? calcToSeconds(newVal, periodUnit.value) : undefined
-    )
+    (form.value.voting.period = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
 });
 </script>
 
@@ -96,34 +76,36 @@ const votingPeriod = computed({
 
         <div class="w-full space-y-2">
           <InputNumber
-            :model-value="quorum"
+            v-model="form.voting.quorum"
             :title="$t('settings.quorum.label')"
             :information="$t('settings.quorum.information')"
             placeholder="1000"
-            @update:model-value="emit('update:quorum', $event)"
           />
 
           <InputSelect
             :title="$t(`settings.type.label`)"
             :information="$t(`settings.type.information`)"
-            :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
+            :model-value="
+              form.voting.type
+                ? $t(`voting.${form.voting.type}`)
+                : $t('settings.anyType')
+            "
             @select="modalVotingTypeOpen = true"
           />
         </div>
       </div>
 
       <BaseSwitch
-        :model-value="hideAbstain"
+        v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
-        @update:model-value="emit('update:hideAbstain', $event)"
       />
     </div>
     <teleport to="#modal">
       <ModalVotingType
-        :selected="type"
+        :selected="form.voting.type"
         :open="modalVotingTypeOpen"
         allow-any
-        @update:selected="emit('update:type', $event)"
+        @update:selected="form.voting.type = $event"
         @close="modalVotingTypeOpen = false"
       />
     </teleport>

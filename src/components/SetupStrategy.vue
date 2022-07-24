@@ -1,15 +1,26 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useSpaceForm } from '@/composables';
 
 const emit = defineEmits(['next', 'back']);
 
 const votingStep = ref(1);
+
+const { form, setDefaultStrategy } = useSpaceForm('setup');
+
+function nextStep() {
+  emit('next');
+  if (!form.value.strategies.length) return setDefaultStrategy();
+}
 </script>
 
 <template>
   <div>
     <div v-if="votingStep === 1">
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.strategy.title') }}</h4>
+      <p class="mb-3">
+        {{ $t('setup.strategy.subtitle') }}
+      </p>
       <div class="space-y-3">
         <ButtonCard
           :title="$t('setup.strategy.tokenVoting.title')"
@@ -32,7 +43,10 @@ const votingStep = ref(1);
       </div>
 
       <div class="px-4 md:px-0">
-        <SetupButtonNext text="skip" @click="emit('next')" />
+        <SetupButtonNext
+          :text="form.strategies.length ? 'Keep current settings' : 'skip'"
+          @click="nextStep"
+        />
       </div>
     </div>
     <div>

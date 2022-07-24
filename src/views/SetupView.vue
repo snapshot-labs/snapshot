@@ -11,7 +11,7 @@ import {
   useClient,
   useExtendedSpaces,
   useSpaceController,
-  useSpaceSettingsForm,
+  useSpaceForm,
   useFlashNotification
 } from '@/composables';
 
@@ -20,8 +20,8 @@ const router = useRouter();
 const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
-const { form, validate, showAllValidationErrors, formatSpace } =
-  useSpaceSettingsForm();
+const { form, isValid, showAllValidationErrors, formatSpace } =
+  useSpaceForm('setup');
 
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
@@ -44,10 +44,6 @@ const creatingSpace = ref(false);
 
 const { t } = useI18n();
 const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
-
-const isValid = computed(() => {
-  return validate.value === true;
-});
 
 const { send } = useClient();
 
@@ -158,17 +154,29 @@ async function handleSubmit() {
           @back="previousStep"
         />
 
-        <SetupCustomdomain
+        <SetupModeration
           v-else-if="currentStep === 7 && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
-        <SetupValidation
+        <SetupCustomdomain
           v-else-if="currentStep === 8 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupTreasury
+          v-else-if="currentStep === 9 && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupPlugins
+          v-else-if="currentStep === 10 && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
-          @create="handleSubmit"
+          @next="handleSubmit"
         />
       </template>
     </template>

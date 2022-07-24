@@ -10,7 +10,7 @@ import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables/useSpaceForm';
 import { useTreasury } from '@/composables/useTreasury';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -24,7 +24,8 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, clientLoading } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const { form, validationResult, isValid, formatSpace } =
+  useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
@@ -35,11 +36,9 @@ const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
-const isValid = computed(() => {
-  return (
-    !clientLoading.value && validate.value === true && !uploadLoading.value
-  );
-});
+const isReadyToSubmit = computed(
+  () => !uploadLoading.value && !clientLoading.value && isValid.value
+);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);
@@ -75,7 +74,8 @@ const isSpaceAdmin = computed(() => {
 });
 
 async function handleSubmit() {
-  if (!isValid.value) return console.log('Invalid schema', validate.value);
+  if (!isValid.value)
+    return console.log('Invalid schema', validationResult.value);
 
   const formattedForm = formatSpace(form.value);
   const result = await send({ id: props.space.id }, 'settings', formattedForm);
@@ -181,70 +181,28 @@ async function handleSetRecord() {
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
 
-          <SettingsProfileBlock
-            v-model:name="form.name"
-            v-model:about="form.about"
-            v-model:categories="form.categories"
-            v-model:avatar="form.avatar"
-            v-model:private="form.private"
-            v-model:terms="form.terms"
-            v-model:website="form.website"
-          />
+          <SettingsProfileBlock context="settings" />
 
-          <SettingsLinkBlock
-            v-model:twitter="form.twitter"
-            v-model:github="form.github"
-          />
+          <SettingsLinkBlock context="settings" />
 
-          <SettingsStrategiesBlock
-            :form="form"
-            @update-strategies="val => (form.strategies = val)"
-            @update-network="val => (form.network = val)"
-            @update-symbol="val => (form.symbol = val)"
-          />
+          <SettingsStrategiesBlock context="settings" />
 
           <SettingsAdminsBlock
-            :admins="form.admins"
+            context="settings"
             :is-space-controller="isSpaceController"
-            :error="getErrorMessage('admins')"
-            @update:admins="val => (form.admins = val)"
           />
 
-          <SettingsAuthorsBlock
-            :members="form.members"
-            :error="getErrorMessage('members')"
-            @update:members="val => (form.members = val)"
-          />
+          <SettingsAuthorsBlock context="settings" />
 
-          <SettingsValidationBlock
-            v-model:validation="form.validation"
-            :filters="form.filters"
-            @update:min-score="val => (form.filters.minScore = val)"
-            @update:only-members="val => (form.filters.onlyMembers = val)"
-          />
+          <SettingsValidationBlock context="settings" />
 
-          <SettingsVotingBlock
-            v-model:delay="form.voting.delay"
-            v-model:period="form.voting.period"
-            v-model:quorum="form.voting.quorum"
-            v-model:type="form.voting.type"
-            v-model:hideAbstain="form.voting.hideAbstain"
-          />
+          <SettingsVotingBlock context="settings" />
 
-          <SettingsDomainBlock
-            v-model:domain="form.domain"
-            v-model:skin="form.skin"
-          />
+          <SettingsDomainBlock context="settings" />
 
-          <SettingsTreasuriesBlock
-            :treasuries="form.treasuries"
-            @update-treasuries="value => (form.treasuries = value)"
-          />
+          <SettingsTreasuriesBlock context="settings" />
 
-          <SettingsPluginsBlock
-            :plugins="form.plugins"
-            @update:plugins="val => (form.plugins = val)"
-          />
+          <SettingsPluginsBlock context="settings" />
         </div>
       </template>
     </template>
@@ -272,7 +230,7 @@ async function handleSetRecord() {
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
-                :disabled="uploadLoading"
+                :disabled="!isReadyToSubmit"
                 :loading="clientLoading"
                 class="block w-full"
                 primary
