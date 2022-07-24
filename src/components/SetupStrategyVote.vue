@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useSpaceForm } from '@/composables/useSpaceForm';
+import { useSpaceForm, useI18n } from '@/composables';
 
 const emit = defineEmits(['next']);
 
 const { form } = useSpaceForm('setup');
+const { t } = useI18n();
 
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
     name: name,
-    value: name
+    value: name,
+    information:
+      name === 'whitelist'
+        ? t('setup.strategy.onePersonOneVote.whitelistInformation')
+        : t('setup.strategy.onePersonOneVote.ticketInformation')
   }));
 });
 
-const input = ref(votingItems.value[0].value);
+const input = ref('whitelist');
 const symbol = ref('VOTE');
 const whitelist = ref([]);
 
@@ -67,9 +72,12 @@ onMounted(setFormValues);
 
 <template>
   <div>
-    <BaseBlock title="Setup voting">
+    <BaseMessageBlock level="info" class="mb-3" is-responsive>
+      {{ t('setup.strategy.onePersonOneVote.votesEqualInfo') }}
+    </BaseMessageBlock>
+    <BaseBlock :title="t('setup.strategy.blockTitle')">
       <div class="space-y-3">
-        <div class="space-y-3 md:flex md:w-2/3 md:space-y-0 md:space-x-4">
+        <div class="space-y-3 md:w-2/3">
           <BaseListbox
             v-model="input"
             :items="votingItems"
@@ -86,12 +94,16 @@ onMounted(setFormValues);
               </span>
             </template>
             <template #item="{ item }">
-              <span>
+              <span class="flex items-center gap-1">
                 {{
                   item.name === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
+                <IconInformationTooltip
+                  :information="item.information"
+                  class="text-skin-text"
+                />
               </span>
             </template>
           </BaseListbox>

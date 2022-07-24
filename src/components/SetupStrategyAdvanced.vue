@@ -14,7 +14,7 @@ function nextStep() {
   <div>
     <SettingsStrategiesBlock
       context="setup"
-      title="Setup your voting strategy"
+      :title="$t('setup.strategy.blockTitle')"
       hide-error
     />
     <div class="mx-4 md:mx-0">

@@ -114,7 +114,7 @@ onMounted(setFormValues);
 
 <template>
   <div class="mt-4 space-y-4">
-    <BaseBlock title="Setup token voting">
+    <BaseBlock :title="$t('setup.strategy.blockTitle')">
       <div class="flex md:w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork

@@ -8,7 +8,12 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
-type ListboxItem = { id: number | string; name: string; value?: any };
+type ListboxItem = {
+  id: number | string;
+  name: string;
+  value?: any;
+  information?: string;
+};
 
 const props = defineProps<{
   items: ListboxItem[];
