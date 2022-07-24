@@ -1,22 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
-import { useApp } from '@/composables/useApp';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
-import { useStore } from '@/composables/useStore';
-import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import {
+  useFlashNotification,
+  useSpaceCreateForm,
+  useStore,
+  usePlugins,
+  useI18n,
+  useModal,
+  useTerms,
+  useApp,
+  useApolloQuery,
+  useWeb3,
+  useClient
+} from '@/composables';
 
 const BODY_LIMIT_CHARACTERS = 14400;
 
@@ -41,7 +43,7 @@ const {
   sourceProposalLoaded,
   sourceProposal,
   resetForm,
-  getErrorMessage
+  getValidation
 } = useSpaceCreateForm();
 
 const passValidation = ref([false, '']);
@@ -94,8 +96,8 @@ const stepIsValid = computed(() => {
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     passValidation.value[0] &&
-    !getErrorMessage('name').message &&
-    !getErrorMessage('discussion').message
+    !getValidation('name').message &&
+    !getValidation('discussion').message
   )
     return true;
   else if (

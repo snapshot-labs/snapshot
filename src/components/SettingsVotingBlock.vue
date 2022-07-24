@@ -1,54 +1,31 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
+import { useSpaceForm } from '@/composables';
 
-const props = withDefaults(
-  defineProps<{
-    delay?: number;
-    period?: number;
-    quorum?: number;
-    type?: string;
-    privacy?: string;
-    hideAbstain?: boolean;
-  }>(),
-  {
-    delay: 0,
-    period: 0,
-    quorum: 0,
-    type: '',
-    privacy: '',
-    hideAbstain: false
-  }
-);
+const props = defineProps<{
+  context: 'setup' | 'settings';
+}>();
 
-const emit = defineEmits([
-  'update:delay',
-  'update:period',
-  'update:quorum',
-  'update:type',
-  'update:privacy',
-  'update:hideAbstain'
-]);
+const { form } = useSpaceForm(props.context);
 
 const delayUnit = ref('h');
 const periodUnit = ref('h');
 
 const votingDelay = computed({
-  get: () => calcFromSeconds(props.delay, delayUnit.value),
+  get: () => calcFromSeconds(form.value.voting.delay, delayUnit.value),
   set: newVal =>
-    emit(
-      'update:delay',
-      newVal ? calcToSeconds(newVal, delayUnit.value) : undefined
-    )
+    (form.value.voting.delay = newVal
+      ? calcToSeconds(newVal, delayUnit.value)
+      : undefined)
 });
 
 const votingPeriod = computed({
-  get: () => calcFromSeconds(props.period, periodUnit.value),
+  get: () => calcFromSeconds(form.value.voting.period, periodUnit.value),
   set: newVal =>
-    emit(
-      'update:period',
-      newVal ? calcToSeconds(newVal, periodUnit.value) : undefined
-    )
+    (form.value.voting.period = newVal
+      ? calcToSeconds(newVal, periodUnit.value)
+      : undefined)
 });
 </script>
 
@@ -98,33 +75,31 @@ const votingPeriod = computed({
 
         <div class="w-full space-y-2">
           <InputNumber
-            :model-value="quorum"
+            v-model="form.voting.quorum"
             :title="$t('settings.quorum.label')"
             :information="$t('settings.quorum.information')"
             placeholder="1000"
-            @update:model-value="emit('update:quorum', $event)"
           />
 
           <InputSelectVotingtype
-            :type="type"
+            :type="form.voting.type"
             :information="$t(`settings.type.information`)"
             allow-any
-            @update:type="emit('update:type', $event)"
+            @update:type="value => (form.voting.type = value)"
           />
 
           <InputSelectPrivacy
-            :privacy="privacy"
+            :privacy="form.voting.privacy"
             :information="$t(`privacy.information`)"
             allow-any
-            @update:privacy="emit('update:privacy', $event)"
+            @update:privacy="value => (form.voting.privacy = value)"
           />
         </div>
       </div>
 
       <BaseSwitch
-        :model-value="hideAbstain"
+        v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
-        @update:model-value="emit('update:hideAbstain', $event)"
       />
     </div>
   </BaseBlock>

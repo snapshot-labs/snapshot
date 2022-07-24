@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { useFormValidation } from '@/composables';
 
 const SPACE_OBJECT = {
   strategies: [],
@@ -40,10 +40,19 @@ const SPACE_OBJECT = {
 };
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
-const form = ref(clone(SPACE_OBJECT));
+const formSetup = ref(clone(SPACE_OBJECT));
+const formSettings = ref(clone(SPACE_OBJECT));
 const showAllValidationErrors = ref(false);
 
-export function useSpaceSettingsForm() {
+export function useSpaceForm(context: 'setup' | 'settings') {
+  const form = computed({
+    get: () => (context === 'setup' ? formSetup.value : formSettings.value),
+    set: newVal =>
+      context === 'setup'
+        ? (formSetup.value = newVal)
+        : (formSettings.value = newVal)
+  });
+
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
@@ -67,16 +76,15 @@ export function useSpaceSettingsForm() {
     return space;
   }
 
-  const validate = computed(() => {
-    const formattedForm = formatSpace(form.value);
+  const formattedForm = computed(() => formatSpace(form.value));
 
-    return validateSchema(schemas.space, formattedForm);
-  });
+  const { getValidationMessage, validationResult, isValid } = useFormValidation(
+    schemas.space,
+    formattedForm
+  );
 
-  const { validationErrorMessage } = useValidationErrors();
-
-  function getErrorMessage(field: string): { message: string; push: boolean } {
-    const message = validationErrorMessage(field, validate.value);
+  function getValidation(field: string): { message: string; push: boolean } {
+    const message = getValidationMessage(field);
     return {
       message: message || '',
       push: showAllValidationErrors.value
@@ -102,10 +110,11 @@ export function useSpaceSettingsForm() {
 
   return {
     form,
-    validate,
+    validationResult,
+    isValid,
     showAllValidationErrors,
     formatSpace,
-    getErrorMessage,
+    getValidation,
     resetForm,
     setDefaultStrategy
   };

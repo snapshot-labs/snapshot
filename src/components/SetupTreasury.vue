@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useSpaceForm } from '@/composables/useSpaceForm';
+import { useSpaceForm } from '@/composables';
 
 const { form } = useSpaceForm('setup');
 
-const emit = defineEmits(['back', 'next']);
+const emit = defineEmits(['next', 'back']);
 </script>
 
 <template>
-  <SettingsDomainBlock context="setup" />
+  <SettingsTreasuriesBlock context="setup" />
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />
     <SetupButtonNext
-      :text="form.domain ? 'next' : 'skip'"
+      :text="form.treasuries.length ? 'next' : 'skip'"
       @click="emit('next')"
     />
   </div>

@@ -6,11 +6,11 @@ const props = withDefaults(
   defineProps<{
     address: string;
     size?: string;
-    space?: { members: string[]; network: string };
     previewFile?: File | undefined;
   }>(),
   {
-    size: '22'
+    size: '22',
+    previewFile: undefined
   }
 );
 
