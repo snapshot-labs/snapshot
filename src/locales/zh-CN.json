@@ -387,16 +387,21 @@
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
+      "subtitle": "您可以随时改变您的策略设置。",
+      "blockTitle": "设置投票策略",
       "onePersonOneVote": {
         "title": "一人，一票",
-        "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。"
+        "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。",
+        "whitelistInformation": "指定一些可以投票的账户",
+        "ticketInformation": "任何帐户都可以投票",
+        "votesEqualInfo": "每次投票都是平等的，无代币限制"
       },
       "tokenVoting": {
         "title": "代币加权投票",
         "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准"
       },
       "advanced": {
-        "title": "高级设置",
+        "title": "自定义设置",
         "description": "选择最多8个具有多种选项的策略。 如果你找不到正确的策略，你可以创建自己的策略"
       }
     },
