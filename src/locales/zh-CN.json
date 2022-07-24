@@ -388,13 +388,13 @@
     "strategy": {
       "title": "您想如何设置您的投票策略？",
       "subtitle": "您可以随时改变您的策略设置。",
-      "blockTitle": "Setup voting strategy",
+      "blockTitle": "设置投票策略",
       "onePersonOneVote": {
         "title": "一人，一票",
         "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。",
-        "whitelistInformation": "Specify a number of accounts that can vote",
-        "ticketInformation": "Any account can vote",
-        "votesEqualInfo": "Each vote is equal and no token is required"
+        "whitelistInformation": "指定一些可以投票的账户",
+        "ticketInformation": "任何帐户都可以投票",
+        "votesEqualInfo": "每次投票都是平等的，无代币限制"
       },
       "tokenVoting": {
         "title": "代币加权投票",
