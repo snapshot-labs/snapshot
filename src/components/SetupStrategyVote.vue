@@ -62,7 +62,7 @@ function nextStep() {
   form.value.symbol = symbol;
 }
 
-onMounted(() => setFormValues());
+onMounted(setFormValues);
 </script>
 
 <template>

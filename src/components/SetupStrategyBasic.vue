@@ -109,7 +109,7 @@ watch(
   { deep: true }
 );
 
-onMounted(() => setFormValues());
+onMounted(setFormValues);
 </script>
 
 <template>

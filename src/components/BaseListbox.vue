@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import {
   Listbox,
   ListboxButton,
@@ -19,11 +19,10 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItem = ref<ListboxItem | undefined>(
-  props.items.find(item => item.value === props.modelValue)
-);
-
-watch(selectedItem, () => emit('update:modelValue', selectedItem.value?.value));
+const selectedItem = computed({
+  get: () => props.items.find(item => item.value === props.modelValue),
+  set: newVal => emit('update:modelValue', newVal?.value)
+});
 </script>
 
 <template>
