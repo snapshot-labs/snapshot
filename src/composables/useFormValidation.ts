@@ -21,7 +21,8 @@ export function useFormValidation(schema, form) {
   watchDebounced(form, validate, {
     debounce: 200,
     maxWait: 1000,
-    deep: true
+    deep: true,
+    immediate: true
   });
 
   const isValid = computed(() => validationResult.value === true);

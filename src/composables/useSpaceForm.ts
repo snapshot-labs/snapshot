@@ -76,12 +76,10 @@ export function useSpaceForm(context: 'setup' | 'settings') {
 
   const formattedForm = computed(() => formatSpace(form.value));
 
-  const { getValidationMessage, validationResult } = useFormValidation(
+  const { getValidationMessage, validationResult, isValid } = useFormValidation(
     schemas.space,
     formattedForm
   );
-
-  const isValid = computed(() => validationResult.value === true);
 
   function getValidation(field: string): { message: string; push: boolean } {
     const message = getValidationMessage(field);
