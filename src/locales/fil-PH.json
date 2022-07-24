@@ -388,9 +388,13 @@
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
       "subtitle": "You can change your strategy settings any time.",
+      "blockTitle": "Setup voting strategy",
       "onePersonOneVote": {
         "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "whitelistInformation": "Specify a number of accounts that can vote",
+        "ticketInformation": "Any account can vote",
+        "votesEqualInfo": "Each vote is equal and no token is required"
       },
       "tokenVoting": {
         "title": "Token weighted voting",
