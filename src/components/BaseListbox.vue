@@ -10,9 +10,8 @@ import {
 
 type ListboxItem = {
   id: number | string;
-  name: string;
-  value?: any;
-  information?: string;
+  value: any;
+  options?: any;
 };
 
 const props = defineProps<{
@@ -25,8 +24,10 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue']);
 
 const selectedItem = computed({
-  get: () => props.items.find(item => item.value === props.modelValue),
-  set: newVal => emit('update:modelValue', newVal?.value)
+  get: () =>
+    props.items.find(item => item.value === props.modelValue) ||
+    props.items[0].value,
+  set: newVal => emit('update:modelValue', newVal.value)
 });
 </script>
 
@@ -47,7 +48,7 @@ const selectedItem = computed({
         />
 
         <span v-else-if="selectedItem">
-          {{ selectedItem.name }}
+          {{ selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -89,7 +90,7 @@ const selectedItem = computed({
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item.name }}
+                    {{ item.value }}
                   </span>
                 </span>
 
