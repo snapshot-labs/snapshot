@@ -398,7 +398,8 @@
       },
       "tokenVoting": {
         "title": "代币加权投票",
-        "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准"
+        "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准",
+        "tokenNotFound": "未找到代币"
       },
       "advanced": {
         "title": "自定义设置",
