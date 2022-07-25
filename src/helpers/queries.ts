@@ -193,6 +193,22 @@ export const SPACES_QUERY = gql`
       categories
       plugins
       followersCount
+      parent {
+        id
+        name
+        followersCount
+        children {
+          id
+        }
+      }
+      children {
+        id
+        name
+        followersCount
+        parent {
+          id
+        }
+      }
       voting {
         delay
         period

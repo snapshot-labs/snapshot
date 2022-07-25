@@ -279,7 +279,20 @@
     },
     "hideSpace": "Hide space from homepage",
     "links": "Social accounts",
-    "subspaces": "Sub-Spaces",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "e.g. fabien.eth",
+        "information": "The main space of your DAO, which this space is a sub-space of. It will be displayed in the space's sidebar menu."
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "e.g. fabien.eth, balancer.eth, ...",
+        "information": "If this is the main space of your DAO, enter related sub-spaces here. They will be listed in the space's sidebar menu."
+      }
+    },
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",

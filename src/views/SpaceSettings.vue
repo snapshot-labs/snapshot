@@ -185,6 +185,8 @@ async function handleSetRecord() {
 
           <SettingsLinkBlock context="settings" />
 
+          <SettingsSubSpacesBlock context="settings" />
+
           <SettingsStrategiesBlock context="settings" />
 
           <SettingsAdminsBlock
