@@ -161,10 +161,12 @@ onMounted(setFormValues);
             >
               <div class="flex justify-between">
                 <div class="flex items-center gap-1">
-                  <img
-                    alt="Contract logo"
+                  <AvatarToken
+                    v-if="token.logo"
                     :src="token.logo"
-                    class="mr-2 h-4 w-4 rounded-full"
+                    :address="token.address"
+                    class="mr-1"
+                    size="30"
                   />
 
                   <span class="text-skin-link"> {{ token.name }} </span>
