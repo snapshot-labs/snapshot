@@ -36,37 +36,41 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="flex px-4 pt-4 text-center lg:block lg:px-0 lg:pt-0">
-    <AvatarSpace
-      :space="space"
-      symbol-index="space"
-      size="80"
-      class="lg:my-3"
-    />
-    <div
-      class="mx-3 flex flex-col justify-center text-left lg:block lg:text-center"
-    >
-      <h3 class="mb-[2px] flex items-center lg:justify-center">
-        <div
-          v-tippy="{
-            content: space.name.length > 16 ? space.name : null
-          }"
-          class="mr-1 truncate"
-        >
-          {{ space.name }}
+  <div class="block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0">
+    <div class="flex lg:block">
+      <AvatarSpace
+        :space="space"
+        symbol-index="space"
+        size="80"
+        class="lg:my-3"
+      />
+      <div
+        class="mx-3 flex flex-col justify-center truncate text-left lg:block lg:text-center"
+      >
+        <h3 class="mb-[2px] flex items-center lg:justify-center">
+          <div
+            v-tippy="{
+              content: space.name.length > 16 ? space.name : null
+            }"
+            class="mr-1 truncate"
+          >
+            {{ space.name }}
+          </div>
+          <IconVerifiedSpace :space-id="props.space.id" />
+        </h3>
+        <div class="mb-[12px] text-skin-text">
+          {{
+            $tc('members', space.followersCount, {
+              count: formatCompactNumber(space.followersCount)
+            })
+          }}
         </div>
-        <IconVerifiedSpace :space-id="props.space.id" />
-      </h3>
-      <div class="mb-[12px] text-skin-text">
-        {{
-          $tc('members', space.followersCount, {
-            count: formatCompactNumber(space.followersCount)
-          })
-        }}
       </div>
     </div>
 
-    <div class="flex items-center justify-center gap-x-2 lg:mb-4">
+    <div
+      class="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center"
+    >
       <ButtonFollow :space="space" />
       <ButtonSidebar
         v-if="isFollowing"
