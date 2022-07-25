@@ -46,10 +46,13 @@ const subSpaces = computed(() => {
         :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
       >
         <BaseSidebarNavigationItem class="flex items-center justify-between">
-          {{ mainSpace.name }}
+          <AvatarSpace :space="mainSpace" size="22" />
+          <span class="mx-2 truncate">
+            {{ mainSpace.name }}
+          </span>
           <BaseCounter
             :counter="mainSpace.followersCount"
-            class="ml-1 inline-block"
+            class="ml-auto inline-block"
           />
         </BaseSidebarNavigationItem>
       </router-link>
@@ -107,10 +110,13 @@ const subSpaces = computed(() => {
         :to="{ name: 'spaceProposals', params: { key: subSpace.id } }"
       >
         <BaseSidebarNavigationItem class="flex items-center justify-between">
-          {{ subSpace.name }}
+          <AvatarSpace :space="subSpace" size="22" />
+          <span class="mx-2 truncate">
+            {{ subSpace.name }}
+          </span>
           <BaseCounter
             :counter="subSpace.followersCount"
-            class="ml-1 inline-block"
+            class="ml-auto inline-block"
           />
         </BaseSidebarNavigationItem>
       </router-link>
