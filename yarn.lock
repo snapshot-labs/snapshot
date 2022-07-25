@@ -7932,10 +7932,10 @@ vitest-fetch-mock@^0.2.1:
   dependencies:
     cross-fetch "^3.0.6"
 
-vitest@^0.18.1:
-  version "0.18.1"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.18.1.tgz#33c5003fc8c4b296801897ae1a3f142f57015574"
-  integrity sha512-4F/1K/Vn4AvJwe7i2YblR02PT5vMKcw9KN4unDq2KD0YcSxX0B/6D6Qu9PJaXwVuxXMFTQ5ovd4+CQaW3bwofA==
+vitest@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.19.0.tgz#d526bc3ca18b279110de0c2f33004a105bb21059"
+  integrity sha512-nU80Gm95tMchigHpAMukxv1LoWbBGgknX/1MqrXCOoJoJL7/wfq4h2aow61o2jwf5szQrahoNqBqaGb+fYdYrQ==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
