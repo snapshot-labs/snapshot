@@ -25,7 +25,7 @@ const isAdmin = computed(() => {
 </script>
 
 <template>
-  <div class="flex overflow-y-auto lg:block">
+  <div class="no-scrollbar flex overflow-y-auto lg:block">
     <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
