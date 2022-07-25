@@ -36,33 +36,37 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="text-center">
+  <div class="flex px-4 pt-4 text-center lg:block lg:px-0 lg:pt-0">
     <AvatarSpace
       :space="space"
       symbol-index="space"
       size="80"
-      class="mt-3 mb-2"
+      class="lg:my-3"
     />
-    <h3 class="mx-3 mb-[2px] flex items-center justify-center">
-      <div
-        v-tippy="{
-          content: space.name.length > 16 ? space.name : null
-        }"
-        class="mr-1 truncate"
-      >
-        {{ space.name }}
+    <div
+      class="mx-3 flex flex-col justify-center text-left lg:block lg:text-center"
+    >
+      <h3 class="mb-[2px] flex items-center lg:justify-center">
+        <div
+          v-tippy="{
+            content: space.name.length > 16 ? space.name : null
+          }"
+          class="mr-1 truncate"
+        >
+          {{ space.name }}
+        </div>
+        <IconVerifiedSpace :space-id="props.space.id" />
+      </h3>
+      <div class="mb-[12px] text-skin-text">
+        {{
+          $tc('members', space.followersCount, {
+            count: formatCompactNumber(space.followersCount)
+          })
+        }}
       </div>
-      <IconVerifiedSpace :space-id="props.space.id" />
-    </h3>
-    <div class="mb-[12px] text-skin-text">
-      {{
-        $tc('members', space.followersCount, {
-          count: formatCompactNumber(space.followersCount)
-        })
-      }}
     </div>
 
-    <div class="flex justify-center gap-x-2">
+    <div class="flex items-center justify-center gap-x-2 lg:mb-4">
       <ButtonFollow :space="space" />
       <ButtonSidebar
         v-if="isFollowing"

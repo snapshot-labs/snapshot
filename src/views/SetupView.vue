@@ -117,7 +117,7 @@ async function handleSubmit() {
   <TheLayout>
     <template #sidebar-left>
       <SetupSidebarStepper
-        class="fixed"
+        class="fixed hidden lg:block"
         :current-step="currentStep"
         @change-step="value => router.push({ query: { step: value + 1 } })"
       />
