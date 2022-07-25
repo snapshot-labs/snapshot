@@ -22,10 +22,38 @@ const isAdmin = computed(() => {
     admins?.includes(web3Account.value.toLowerCase())
   );
 });
+
+const mainSpace = computed(() => {
+  return props.space?.parent?.children?.find(
+    child => child.id === props.space?.id
+  )
+    ? props.space?.parent
+    : null;
+});
+
+const subSpaces = computed(() => {
+  return props.space?.children?.filter(
+    space => space.parent?.id === props.space?.id
+  );
+});
 </script>
 
 <template>
   <div>
+    <div v-if="mainSpace" class="mb-3">
+      <h5 class="px-4 text-skin-text">{{ $t('mainspace') }}</h5>
+      <router-link
+        :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
+      >
+        <BaseSidebarNavigationItem class="flex items-center justify-between">
+          {{ mainSpace.name }}
+          <BaseCounter
+            :counter="mainSpace.followersCount"
+            class="ml-1 inline-block"
+          />
+        </BaseSidebarNavigationItem>
+      </router-link>
+    </div>
     <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
@@ -71,5 +99,21 @@ const isAdmin = computed(() => {
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
+    <div v-if="subSpaces?.length">
+      <h5 class="mt-3 px-4 text-skin-text">{{ $t('subspaces') }}</h5>
+      <router-link
+        v-for="subSpace in subSpaces"
+        :key="subSpace.id"
+        :to="{ name: 'spaceProposals', params: { key: subSpace.id } }"
+      >
+        <BaseSidebarNavigationItem class="flex items-center justify-between">
+          {{ subSpace.name }}
+          <BaseCounter
+            :counter="subSpace.followersCount"
+            class="ml-1 inline-block"
+          />
+        </BaseSidebarNavigationItem>
+      </router-link>
+    </div>
   </div>
 </template>

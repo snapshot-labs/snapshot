@@ -196,6 +196,7 @@ export const SPACES_QUERY = gql`
       parent {
         id
         name
+        avatar
         followersCount
         children {
           id
@@ -204,6 +205,7 @@ export const SPACES_QUERY = gql`
       children {
         id
         name
+        avatar
         followersCount
         parent {
           id

@@ -120,6 +120,8 @@
   "join": "Join",
   "joined": "Joined",
   "leave": "Leave",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "Copy link",
   "duplicateProposal": "Duplicate proposal",
   "joinedSpaces": "Joined spaces",
