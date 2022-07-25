@@ -150,7 +150,7 @@ onMounted(setFormValues);
               v-model.trim="input.address"
               title="Token contract"
               placeholder="Enter address"
-              :error="{ message: tokenError, push: true }"
+              :error="{ message: !token.name ? tokenError : '', push: true }"
               :loading="isTokenLoading"
               focus-on-mount
             />

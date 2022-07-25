@@ -2,11 +2,12 @@
 withDefaults(
   defineProps<{
     src: string;
-    address: string;
+    address?: string;
     size?: string;
   }>(),
   {
-    size: '22'
+    size: '22',
+    address: '0x0000000000000000000000000000000000000000'
   }
 );
 </script>
