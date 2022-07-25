@@ -257,6 +257,7 @@
     "connectWithSpaceOwner": "Pour modifier les paramètres de l’espace, connectez-vous avec un controller ou un wallet admin.",
     "currentSpaceControllerIs": "Le controller de l’espace actuel est {address}",
     "newController": "Nouveau controller",
+    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
     "set": "Appliquer",
     "profile": "Profil",
     "avatar": "Avatar",
@@ -278,6 +279,7 @@
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "links": "Social accounts",
+    "subspaces": "Sub-Spaces",
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",

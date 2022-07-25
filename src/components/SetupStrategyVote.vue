@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
 const emit = defineEmits(['next']);
@@ -9,13 +9,13 @@ const { form } = useSpaceSettingsForm();
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
-    name: name
+    name: name,
+    value: name
   }));
 });
 
-const input = ref(votingItems.value[0]);
+const input = ref(votingItems.value[0].value);
 const symbol = ref('VOTE');
-
 const whitelist = ref([]);
 
 const strategy = computed(() => {
@@ -32,7 +32,7 @@ const strategy = computed(() => {
     }
   };
 
-  strategy.name = input.value.name;
+  strategy.name = input.value;
   strategy.params.symbol = symbol.value;
 
   if (strategy.name === 'whitelist')
@@ -41,6 +41,19 @@ const strategy = computed(() => {
   return strategy;
 });
 
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = form.value.strategies[0].name;
+    symbol.value = form.value.strategies[0].params.symbol;
+    if (form.value.strategies[0].name === 'whitelist') {
+      whitelist.value = form.value.strategies[0].params.addresses || [];
+    }
+  }
+}
+
 function nextStep() {
   emit('next');
   form.value.strategies = [];
@@ -48,6 +61,8 @@ function nextStep() {
   const symbol = strategy.value.params.symbol || 'VOTE';
   form.value.symbol = symbol;
 }
+
+onMounted(() => setFormValues());
 </script>
 
 <template>
@@ -64,7 +79,7 @@ function nextStep() {
             <template #selected="{ selectedItem }">
               <span>
                 {{
-                  selectedItem.name === 'whitelist'
+                  selectedItem?.name === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
@@ -82,7 +97,7 @@ function nextStep() {
           </BaseListbox>
           <BaseInput v-model="symbol" title="Symbol" />
         </div>
-        <div v-if="input.name === 'whitelist'" class="md:w-2/3">
+        <div v-if="input === 'whitelist'" class="md:w-2/3">
           <LabelInput> Whitelisted addresses </LabelInput>
           <TextareaArray
             v-model="whitelist"
@@ -92,10 +107,8 @@ function nextStep() {
         </div>
       </div>
     </BaseBlock>
-    <div class="float-right mx-4 mt-4 md:mx-0">
-      <BaseButton primary @click="nextStep">
-        {{ $t('next') }}
-      </BaseButton>
+    <div class="float-right mx-4 md:mx-0">
+      <SetupButtonNext text="next" @click="nextStep" />
     </div>
   </div>
 </template>

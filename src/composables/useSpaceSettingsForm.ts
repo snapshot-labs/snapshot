@@ -4,15 +4,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useValidationErrors } from '@/composables/useValidationErrors';
 
 const SPACE_OBJECT = {
-  strategies: [
-    {
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    }
-  ],
+  strategies: [],
   categories: [],
   treasuries: [],
   admins: [],
@@ -34,11 +26,13 @@ const SPACE_OBJECT = {
   about: '',
   avatar: '',
   network: '1',
-  symbol: 'VOTE',
+  symbol: '',
   terms: '',
   website: '',
   twitter: '',
   github: '',
+  parent: null,
+  children: [],
   private: false,
   domain: '',
   skin: ''
@@ -55,7 +49,7 @@ export function useSpaceSettingsForm() {
     if (!space) return;
     delete space.id;
     delete space.followersCount;
-    if (form.value.filters.invalids) delete form.value.filters.invalids;
+    if (space.filters.invalids) delete space.filters.invalids;
     Object.entries(space).forEach(([key, value]) => {
       if (value === null || value === '') delete space[key];
     });
@@ -92,12 +86,25 @@ export function useSpaceSettingsForm() {
     showAllValidationErrors.value = false;
   }
 
+  function setDefaultStrategy() {
+    form.value.strategies = [];
+    form.value.strategies.push({
+      name: 'ticket',
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
+    });
+    form.value.symbol = 'VOTE';
+  }
+
   return {
     form,
     validate,
     showAllValidationErrors,
     formatSpace,
     getErrorMessage,
-    resetForm
+    resetForm,
+    setDefaultStrategy
   };
 }

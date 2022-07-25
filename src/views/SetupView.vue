@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { onMounted, computed, ref, inject } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useI18n } from '@/composables/useI18n';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { useClient } from '@/composables/useClient';
 import { useStorage } from '@vueuse/core';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaceController } from '@/composables/useSpaceController';
 import { clearStampCache } from '@/helpers/utils';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+
+import {
+  useWeb3,
+  useI18n,
+  useClient,
+  useExtendedSpaces,
+  useSpaceController,
+  useSpaceSettingsForm,
+  useFlashNotification
+} from '@/composables';
 
 const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
-
-const notify = inject<any>('notify');
+const { notify } = useFlashNotification();
 const { form, validate, showAllValidationErrors, formatSpace } =
   useSpaceSettingsForm();
 
@@ -134,13 +137,11 @@ async function handleSubmit() {
 
         <SetupController
           v-else-if="currentStep === 3 && route.params.ens"
-          :web3-account="web3Account"
           @next="nextStep"
         />
 
         <SetupProfile
           v-else-if="currentStep === 4 && route.params.ens"
-          :web3-account="web3Account"
           @next="nextStep"
           @back="previousStep"
         />
