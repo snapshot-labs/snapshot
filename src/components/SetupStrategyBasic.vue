@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const emit = defineEmits(['next']);
 
-const { form, setDefaultStrategy } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceForm('setup');
+const { t } = useI18n();
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
@@ -22,6 +23,8 @@ const input = ref({
 });
 
 const defaultToken = {
+  name: '',
+  logo: '',
   standard: tokenStandards.value[0].value,
   symbol: '',
   decimals: null
@@ -94,11 +97,27 @@ function nextStep() {
   form.value.symbol = strategy.value.params.symbol;
 }
 
+const isTokenLoading = ref(false);
+const tokenError = ref('');
 async function getTokenInfo() {
-  const res = await getTokenPrices(input.value.address, input.value.network);
-  if (!res.data) return (token.value = clone(defaultToken));
-  token.value.decimals = res.data[0].contract_decimals;
-  token.value.symbol = res.data[0].contract_ticker_symbol;
+  tokenError.value = '';
+  isTokenLoading.value = true;
+  const { data } = await getTokenPrices(
+    input.value.address,
+    input.value.network
+  );
+  isTokenLoading.value = false;
+
+  if (!data?.[0]?.contract_name) {
+    tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
+    token.value = clone(defaultToken);
+    return;
+  }
+
+  token.value.name = data[0].contract_name;
+  token.value.logo = data[0].logo_url;
+  token.value.symbol = data[0].contract_ticker_symbol;
+  token.value.decimals = data[0].contract_decimals;
 }
 
 watch(
@@ -109,12 +128,12 @@ watch(
   { deep: true }
 );
 
-onMounted(() => setFormValues());
+onMounted(setFormValues);
 </script>
 
 <template>
   <div class="mt-4 space-y-4">
-    <BaseBlock title="Setup token voting">
+    <BaseBlock :title="$t('setup.strategy.blockTitle')">
       <div class="flex md:w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork
@@ -131,14 +150,37 @@ onMounted(() => setFormValues());
               v-model.trim="input.address"
               title="Token contract"
               placeholder="Enter address"
+              :error="{ message: !token.name ? tokenError : '', push: true }"
+              :loading="isTokenLoading"
               focus-on-mount
             />
-            <div v-if="token.symbol" class="text-right text-sm">
-              {{ token.symbol }}
-              <span v-if="token.standard === 'ERC-20'"
-                >({{ token.decimals }} decimals)</span
-              >
-            </div>
+
+            <BaseBlock
+              v-if="token.name"
+              class="mt-3 space-x-1 text-left text-sm"
+            >
+              <div class="flex justify-between">
+                <div class="flex items-center gap-1">
+                  <AvatarToken
+                    v-if="token.logo"
+                    :src="token.logo"
+                    :address="token.address"
+                    class="mr-1"
+                    size="30"
+                  />
+
+                  <span class="text-skin-link"> {{ token.name }} </span>
+                  <span> ${{ token.symbol }} </span>
+                </div>
+                <BaseLink
+                  v-if="input.network == '1'"
+                  class="text-skin-text hover:text-skin-link"
+                  :link="`https://etherscan.io/token/${input.address}`"
+                >
+                  {{ $t('learnMore') }}
+                </BaseLink>
+              </div>
+            </BaseBlock>
           </div>
         </div>
       </div>

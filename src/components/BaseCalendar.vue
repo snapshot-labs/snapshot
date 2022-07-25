@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 
-const props = defineProps({ modelValue: String });
+const props = defineProps<{
+  modelValue: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -15,8 +17,8 @@ const [
 ] = props.modelValue ? props.modelValue.split('-') : [];
 
 const input = ref(props.modelValue);
-const year = ref(yearNow);
-const month = ref(monthNow - 1);
+const year = ref(Number(yearNow));
+const month = ref(Number(monthNow) - 1);
 // const day = ref(dayNow);
 
 const fullYear = computed(() =>
@@ -66,7 +68,7 @@ function toggleDay(year, month, day) {
 function isSelectable(year, month, day) {
   const date = new Date(year, month, day);
   const dateNow = new Date().setHours(0, 0, 0, 0);
-  return !(dateNow - date > 0);
+  return !(dateNow - Number(date) > 0);
 }
 </script>
 
