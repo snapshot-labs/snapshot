@@ -51,12 +51,12 @@ function closeOnboarding() {
       <div class="p-4">
         <div class="flex">
           <div class="flex-grow">
-            <h3 class="text-bold">
+            <h3 class="text-bold mt-0">
               {{ t('onboarding.title') }}
             </h3>
             <p>{{ t('onboarding.subtitle') }}</p>
           </div>
-          <div class="mt-2">
+          <div>
             <BaseButtonIcon @click="closeOnboarding">
               <i-ho-x class="text-base" />
             </BaseButtonIcon>
