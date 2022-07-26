@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useIntl } from '@/composables/useIntl';
-import { useImageUpload } from '@/composables/useImageUpload';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import { useIntl, useImageUpload, useSpaceCreateForm } from '@/composables';
 
 defineProps<{
   preview: boolean;
   bodyLimit: number;
-  getErrorMessage: (error: any) => { message: string; push: boolean };
 }>();
 
 const { formatNumber } = useIntl();
-const { form } = useSpaceCreateForm();
+const { form, getValidation } = useSpaceCreateForm();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
@@ -69,7 +66,7 @@ const handleDrop = e => {
         v-model="form.name"
         :title="$t('create.proposalTitle')"
         :max-length="128"
-        :error="getErrorMessage('name')"
+        :error="getValidation('name')"
         focus-on-mount
       />
 
@@ -143,7 +140,7 @@ const handleDrop = e => {
         v-model.trim="form.discussion"
         placeholder="https://forum.balancer.fi/proposal"
         :title="$t('create.discussion')"
-        :error="getErrorMessage('discussion')"
+        :error="getValidation('discussion')"
       />
     </div>
   </div>

@@ -1,4 +1,4 @@
-import { computed, inject, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useEns } from './useEns';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { contractAddress } from '@/helpers/delegation';
@@ -9,12 +9,13 @@ import { useTxStatus } from '@/composables/useTxStatus';
 import { useI18n } from '@/composables/useI18n';
 import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 export function useDelegate() {
   const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
   const auth = getInstance();
-  const notify: any = inject('notify');
+  const { notify } = useFlashNotification();
   const { pendingCount } = useTxStatus();
   const { validEnsTlds } = useEns();
   const { t } = useI18n();

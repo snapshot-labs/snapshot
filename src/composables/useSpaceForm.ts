@@ -1,18 +1,10 @@
 import { ref, computed } from 'vue';
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { useFormValidation } from '@/composables';
 
 const SPACE_OBJECT = {
-  strategies: [
-    {
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    }
-  ],
+  strategies: [],
   categories: [],
   treasuries: [],
   admins: [],
@@ -34,28 +26,39 @@ const SPACE_OBJECT = {
   about: '',
   avatar: '',
   network: '1',
-  symbol: 'VOTE',
+  symbol: '',
   terms: '',
   website: '',
   twitter: '',
   github: '',
+  parent: null,
+  children: [],
   private: false,
   domain: '',
   skin: ''
 };
 const BASIC_VALIDATION = { name: 'basic', params: {} };
 
-const form = ref(clone(SPACE_OBJECT));
+const formSetup = ref(clone(SPACE_OBJECT));
+const formSettings = ref(clone(SPACE_OBJECT));
 const showAllValidationErrors = ref(false);
 
-export function useSpaceSettingsForm() {
+export function useSpaceForm(context: 'setup' | 'settings') {
+  const form = computed({
+    get: () => (context === 'setup' ? formSetup.value : formSettings.value),
+    set: newVal =>
+      context === 'setup'
+        ? (formSetup.value = newVal)
+        : (formSettings.value = newVal)
+  });
+
   function formatSpace(spaceRaw) {
     if (!spaceRaw) return;
     const space = clone(spaceRaw);
     if (!space) return;
     delete space.id;
     delete space.followersCount;
-    if (form.value.filters.invalids) delete form.value.filters.invalids;
+    if (space.filters.invalids) delete space.filters.invalids;
     Object.entries(space).forEach(([key, value]) => {
       if (value === null || value === '') delete space[key];
     });
@@ -71,16 +74,15 @@ export function useSpaceSettingsForm() {
     return space;
   }
 
-  const validate = computed(() => {
-    const formattedForm = formatSpace(form.value);
+  const formattedForm = computed(() => formatSpace(form.value));
 
-    return validateSchema(schemas.space, formattedForm);
-  });
+  const { getValidationMessage, validationResult, isValid } = useFormValidation(
+    schemas.space,
+    formattedForm
+  );
 
-  const { validationErrorMessage } = useValidationErrors();
-
-  function getErrorMessage(field: string): { message: string; push: boolean } {
-    const message = validationErrorMessage(field, validate.value);
+  function getValidation(field: string): { message: string; push: boolean } {
+    const message = getValidationMessage(field);
     return {
       message: message || '',
       push: showAllValidationErrors.value
@@ -92,12 +94,26 @@ export function useSpaceSettingsForm() {
     showAllValidationErrors.value = false;
   }
 
+  function setDefaultStrategy() {
+    form.value.strategies = [];
+    form.value.strategies.push({
+      name: 'ticket',
+      network: '1',
+      params: {
+        symbol: 'VOTE'
+      }
+    });
+    form.value.symbol = 'VOTE';
+  }
+
   return {
     form,
-    validate,
+    validationResult,
+    isValid,
     showAllValidationErrors,
     formatSpace,
-    getErrorMessage,
-    resetForm
+    getValidation,
+    resetForm,
+    setDefaultStrategy
   };
 }

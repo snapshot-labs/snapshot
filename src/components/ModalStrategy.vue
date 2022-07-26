@@ -2,10 +2,9 @@
 import { ref, computed, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useStrategies } from '@/composables/useStrategies';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { encodeJson } from '@/helpers/b64';
+import { useNetworksFilter, useStrategies } from '@/composables';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -46,11 +45,8 @@ const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
 const { getNetworksSpacesCount } = useNetworksFilter();
 
-const strategyValidationErrors = computed(
-  () => validateSchema(strategyDefinition.value, input.value.params) ?? []
-);
-const strategyIsValid = computed(() =>
-  strategyValidationErrors.value === true ? true : false
+const isValid = computed(
+  () => validateSchema(strategyDefinition.value, input.value.params) === true
 );
 
 const router = useRouter();
@@ -136,7 +132,6 @@ watch(open, () => {
               v-if="strategyDefinition"
               v-model="input.params"
               :definition="strategyDefinition"
-              :errors="strategyValidationErrors"
             />
             <TextareaJson
               v-else
@@ -171,9 +166,7 @@ watch(open, () => {
       </BaseLink>
       <BaseButton
         :disabled="
-          !textAreaJsonIsValid ||
-          (strategyDefinition && !strategyIsValid) ||
-          loading
+          !textAreaJsonIsValid || (strategyDefinition && !isValid) || loading
         "
         class="w-full"
         primary

@@ -1,10 +1,14 @@
-// URLS
-// const API_BASE_URL = 'https://graphigo.stg.galaxy.eco/query';
-const API_BASE_URL = 'https://graphigo.prd.galaxy.eco/query';
-
 export default class Plugin {
+  API_BASE_URL = 'https://graphigo.prd.galaxy.eco/query';
+
+  constructor(apiBaseUrl) {
+    if (apiBaseUrl) {
+      this.API_BASE_URL = apiBaseUrl;
+    }
+  }
+
   async fetchGQL({ query, variables }) {
-    return await fetch(API_BASE_URL, {
+    return await fetch(this.API_BASE_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -33,6 +37,31 @@ export default class Plugin {
     const resultJSON = await response.json();
     const { thumbnail } = resultJSON.data.campaign;
     return thumbnail;
+  }
+
+  async claim(address, campaignID) {
+    const eventResponse = await this.fetchGQL({
+      query: `mutation claimOAT($input: PrepareParticipateInput!) {
+        prepareParticipate(input: $input) {
+          allow
+          disallowReason
+        }
+      }`,
+      variables: {
+        input: {
+          signature: '',
+          campaignID,
+          address
+        }
+      }
+    });
+
+    if (!eventResponse.ok) {
+      return false;
+    }
+
+    const responseJSON = await eventResponse.json();
+    return responseJSON.data.prepareParticipate.allow;
   }
 
   async getCurrentState(snapshot, address, campaign) {

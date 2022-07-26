@@ -59,6 +59,7 @@ export const PROPOSAL_QUERY = gql`
       scores_by_strategy
       scores_total
       votes
+      # delegation
     }
   }
 `;

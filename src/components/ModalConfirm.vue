@@ -1,11 +1,12 @@
 <script setup>
-import { computed, inject, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
@@ -28,7 +29,7 @@ const props = defineProps({
 const emit = defineEmits(['reload', 'close']);
 
 const { t } = useI18n();
-const notify = inject('notify');
+const { notify } = useFlashNotification();
 const { send, clientLoading } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
@@ -59,13 +60,13 @@ watch(
     vpLoading.value = true;
     vpLoadingFailed.value = false;
     try {
-      const response = await getPower(
+      const result = await getPower(
         props.space,
         web3Account.value,
         props.proposal
       );
-      vp.value = response.totalScore;
-      vpByStrategy.value = response.scoresByStrategy;
+      vp.value = result.vp;
+      vpByStrategy.value = result.vp_by_strategy;
     } catch (e) {
       vpLoadingFailed.value = true;
       console.log(e);
