@@ -21,6 +21,7 @@ const props = withDefaults(
     readonly?: boolean;
     information?: string;
     loading?: boolean;
+    isDisabled?: boolean;
   }>(),
   {
     type: 'text',
@@ -34,7 +35,8 @@ const props = withDefaults(
     maxLength: undefined,
     readonly: false,
     information: undefined,
-    loading: false
+    loading: false,
+    isDisabled: false
   }
 );
 
@@ -73,11 +75,13 @@ onMounted(() => {
         :value="modelValue"
         :class="[
           's-input !h-[42px]',
-          { '!border-red': error.message && showErrorMessage }
+          { '!border-red': error.message && showErrorMessage },
+          { 'cursor-not-allowed placeholder:!opacity-30': isDisabled }
         ]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
+        :disabled="isDisabled"
         @blur="error.message ? (visited = true) : null"
         @focus="error.message ? null : (visited = false)"
         @input="
