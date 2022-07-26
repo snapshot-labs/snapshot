@@ -1,14 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useWeb3 } from '@/composables/useWeb3';
+import { useWeb3 } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: {
-    type: Object,
-    default: null
-  }
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const auth = getInstance();
 const { web3Account } = useWeb3();
@@ -22,41 +20,10 @@ const isAdmin = computed(() => {
     admins?.includes(web3Account.value.toLowerCase())
   );
 });
-
-const mainSpace = computed(() => {
-  return props.space?.parent?.children?.find(
-    child => child.id === props.space?.id
-  )
-    ? props.space?.parent
-    : null;
-});
-
-const subSpaces = computed(() => {
-  return props.space?.children?.filter(
-    space => space.parent?.id === props.space?.id
-  );
-});
 </script>
 
 <template>
   <div>
-    <div v-if="mainSpace" class="mb-3">
-      <h5 class="px-4 text-skin-text">{{ $t('mainspace') }}</h5>
-      <router-link
-        :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
-      >
-        <BaseSidebarNavigationItem class="flex items-center">
-          <AvatarSpace :space="mainSpace" size="22" />
-          <span class="mx-2 truncate">
-            {{ mainSpace.name }}
-          </span>
-          <BaseCounter
-            :counter="mainSpace.followersCount"
-            class="ml-auto inline-block"
-          />
-        </BaseSidebarNavigationItem>
-      </router-link>
-    </div>
     <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
@@ -102,24 +69,5 @@ const subSpaces = computed(() => {
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <div v-if="subSpaces?.length">
-      <h5 class="mt-3 px-4 text-skin-text">{{ $t('subspaces') }}</h5>
-      <router-link
-        v-for="subSpace in subSpaces"
-        :key="subSpace.id"
-        :to="{ name: 'spaceProposals', params: { key: subSpace.id } }"
-      >
-        <BaseSidebarNavigationItem class="flex items-center">
-          <AvatarSpace :space="subSpace" size="22" />
-          <span class="mx-2 truncate">
-            {{ subSpace.name }}
-          </span>
-          <BaseCounter
-            :counter="subSpace.followersCount"
-            class="ml-auto inline-block"
-          />
-        </BaseSidebarNavigationItem>
-      </router-link>
-    </div>
   </div>
 </template>
