@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { useOnboardingChecklist } from '@/composables/useOnboardingChecklist';
-import { lsSet, lsGet } from '@/helpers/utils';
+import { useStorage } from '@vueuse/core';
+
+const props = defineProps<{
+  web3Account: string;
+}>();
 
 const { t } = useI18n();
-
 const { onboardingChecklist } = useOnboardingChecklist();
 
-const showOnboarding = ref(true);
+const hideOnboarding = useStorage(
+  `snapshot.hideOnboarding.${props.web3Account.slice(0, 8).toLowerCase()}`,
+  false
+);
 
 const checkListCompleted = computed(() => {
   let completed = true;
@@ -23,48 +29,37 @@ const checkListCompleted = computed(() => {
   return completed;
 });
 
-if (lsGet('timelineOnboarding') == 'hidden') {
-  showOnboarding.value = false;
-}
-
 watch(checkListCompleted, completed => {
-  if (completed) lsSet('timelineOnboarding', 'hidden');
+  if (completed) {
+    setTimeout(() => {
+      hideOnboarding.value = true;
+    }, 2000);
+  }
 });
 
 function closeOnboarding() {
-  lsSet('timelineOnboarding', 'hidden');
-  showOnboarding.value = false;
+  hideOnboarding.value = true;
 }
 </script>
 
 <template>
   <transition name="fade">
     <div
-      v-if="showOnboarding"
+      v-if="!hideOnboarding"
       class="border-skin-border bg-skin-block-bg text-white md:rounded-lg md:border"
     >
       <div class="p-4">
         <div class="flex">
           <div class="flex-grow">
-            <h3 class="text-bold">{{ t('onboarding.title') }}</h3>
+            <h3 class="text-bold">
+              {{ t('onboarding.title') }}
+            </h3>
             <p>{{ t('onboarding.subtitle') }}</p>
           </div>
           <div class="mt-2">
-            <button
-              class="opacity-50 transition-opacity hover:opacity-100"
-              :aria-label="t('onboarding.close')"
-              @click="closeOnboarding"
-            >
-              <svg class="h-[24px] w-[24px]" fill="none" viewBox="0 0 12 12">
-                <path
-                  d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
-                  stroke="currentColor"
-                  stroke-width="1"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
-            </button>
+            <BaseButtonIcon @click="closeOnboarding">
+              <i-ho-x class="text-base" />
+            </BaseButtonIcon>
           </div>
         </div>
 

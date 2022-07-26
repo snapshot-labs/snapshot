@@ -606,7 +606,6 @@
   "onboarding": {
     "title": "Nouveau sur Snapshot ?",
     "subtitle": "Voici une checklist rapide pour commencer :",
-    "close": "Cacher la checklist",
     "profile": "Définir votre profil public",
     "space": "Rejoindre votre espace préféré",
     "vote": "Votre premier vote",

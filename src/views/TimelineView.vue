@@ -177,7 +177,11 @@ function selectState(e) {
         </BaseDropdown>
       </div>
 
-      <TimelineOnboarding class="mb-4" />
+      <TimelineOnboarding
+        v-if="web3Account"
+        class="mb-4"
+        :web3-account="web3Account"
+      />
 
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow

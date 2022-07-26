@@ -616,7 +616,6 @@
   "onboarding": {
     "title": "New to Snapshot?",
     "subtitle": "Here is a quick check list to get started:",
-    "close": "Hide onboarding cheklist",
     "profile": "Set your public profile",
     "space": "Join your favorite space",
     "vote": "Cast your first vote",
