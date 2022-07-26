@@ -45,7 +45,7 @@ const subSpaces = computed(() => {
       <router-link
         :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
       >
-        <BaseSidebarNavigationItem class="flex items-center justify-between">
+        <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="mainSpace" size="22" />
           <span class="mx-2 truncate">
             {{ mainSpace.name }}
@@ -109,7 +109,7 @@ const subSpaces = computed(() => {
         :key="subSpace.id"
         :to="{ name: 'spaceProposals', params: { key: subSpace.id } }"
       >
-        <BaseSidebarNavigationItem class="flex items-center justify-between">
+        <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="subSpace" size="22" />
           <span class="mx-2 truncate">
             {{ subSpace.name }}
