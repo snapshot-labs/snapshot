@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import {
   Listbox,
   ListboxButton,
@@ -8,7 +8,11 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
-type ListboxItem = { id: number | string; name: string; value?: any };
+type ListboxItem = {
+  id: number | string;
+  value: any;
+  options?: any;
+};
 
 const props = defineProps<{
   items: ListboxItem[];
@@ -19,11 +23,12 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItem = ref<ListboxItem | undefined>(
-  props.items.find(item => item.value === props.modelValue)
-);
-
-watch(selectedItem, () => emit('update:modelValue', selectedItem.value?.value));
+const selectedItem = computed({
+  get: () =>
+    props.items.find(item => item.value === props.modelValue) ||
+    props.items[0].value,
+  set: newVal => emit('update:modelValue', newVal.value)
+});
 </script>
 
 <template>
@@ -43,7 +48,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value?.value));
         />
 
         <span v-else-if="selectedItem">
-          {{ selectedItem.name }}
+          {{ selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -85,7 +90,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value?.value));
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item.name }}
+                    {{ item.value }}
                   </span>
                 </span>
 

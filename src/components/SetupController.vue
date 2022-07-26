@@ -145,7 +145,14 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="m-4 space-y-1 text-skin-text">
+      <div class="m-4 mt-0 space-y-1 text-skin-text">
+        <BaseMessageBlock level="info" class="mb-3">
+          {{
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
+            })
+          }}
+        </BaseMessageBlock>
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -166,13 +173,6 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessageBlock level="info">
-          {{
-            $t('setup.explainControllerAndEns', {
-              network: networks[defaultNetwork].name
-            })
-          }}
-        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>

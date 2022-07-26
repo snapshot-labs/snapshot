@@ -26,6 +26,15 @@ const resultsStr = computed(() => {
   return t('explore.results');
 });
 
+const createLink = computed(() => {
+  if (route.name === 'strategies')
+    return 'https://docs.snapshot.org/strategies/create';
+  if (route.name === 'networks') return 'https://docs.snapshot.org/networks';
+  if (route.name === 'plugins')
+    return 'https://docs.snapshot.org/plugins/create';
+  return 'https://docs.snapshot.org/strategies/create';
+});
+
 const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
   useNetworksFilter();
 
@@ -83,7 +92,7 @@ onMounted(() => {
 
       <BaseLink
         v-if="buttonStr"
-        link="https://discord.gg/snapshot"
+        :link="createLink"
         class="ml-3 hidden md:block"
         hide-external-icon
       >

@@ -20,6 +20,7 @@ const props = withDefaults(
     maxLength?: number;
     readonly?: boolean;
     information?: string;
+    loading?: boolean;
   }>(),
   {
     type: 'text',
@@ -32,7 +33,8 @@ const props = withDefaults(
     title: undefined,
     maxLength: undefined,
     readonly: false,
-    information: undefined
+    information: undefined,
+    loading: false
   }
 );
 
@@ -83,7 +85,13 @@ onMounted(() => {
         "
       />
       <div
-        v-if="$slots.after"
+        v-if="loading"
+        class="absolute inset-y-0 right-0 top-[1px] mr-1 flex h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pr-2 pl-2"
+      >
+        <LoadingSpinner class="pb-[3px]" />
+      </div>
+      <div
+        v-else-if="$slots.after"
         class="absolute inset-y-0 right-0 flex items-center pr-4"
       >
         <slot name="after" />

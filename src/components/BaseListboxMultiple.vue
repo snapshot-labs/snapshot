@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import {
   Listbox,
   ListboxButton,
@@ -19,11 +19,10 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItems = ref<{ id: number; name: string }[]>(
-  props.modelValue ?? []
-);
-
-watch(selectedItems, () => emit('update:modelValue', selectedItems.value));
+const selectedItems = computed({
+  get: () => props.modelValue ?? [],
+  set: newVal => emit('update:modelValue', newVal)
+});
 
 function isDisabled(item: { id: number; name: string }) {
   if (!props.limit) return false;

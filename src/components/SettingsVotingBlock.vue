@@ -13,7 +13,8 @@ const delayUnit = ref('h');
 const periodUnit = ref('h');
 
 const votingDelay = computed({
-  get: () => calcFromSeconds(form.value.voting.delay, delayUnit.value),
+  get: () =>
+    calcFromSeconds(form.value.voting.delay, delayUnit.value) || undefined,
   set: newVal =>
     (form.value.voting.delay = newVal
       ? calcToSeconds(newVal, delayUnit.value)
@@ -21,7 +22,8 @@ const votingDelay = computed({
 });
 
 const votingPeriod = computed({
-  get: () => calcFromSeconds(form.value.voting.period, periodUnit.value),
+  get: () =>
+    calcFromSeconds(form.value.voting.period, periodUnit.value) || undefined,
   set: newVal =>
     (form.value.voting.period = newVal
       ? calcToSeconds(newVal, periodUnit.value)
