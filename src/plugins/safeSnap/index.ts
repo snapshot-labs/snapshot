@@ -57,7 +57,7 @@ export default class Plugin {
       isBigNumberish(transaction.value) &&
       addressEmptyOrValidate &&
       (!transaction.data || isHexString(transaction.data)) &&
-      transaction.operation in ['0', '1'] &&
+      ['0', '1'].includes(transaction.operation) &&
       isBigNumberish(transaction.nonce)
     );
   }
@@ -218,7 +218,8 @@ export default class Plugin {
     const answers: Result[] = [];
 
     // We need to send the information from last to first
-    events.reverse().forEach(({ args }) => {
+    events.reverse();
+    events.forEach(({ args }) => {
       users.push(args?.user.toLowerCase());
       historyHashes.push(args?.history_hash);
       bonds.push(args?.bond);
@@ -278,7 +279,7 @@ export default class Plugin {
     ]);
 
     if (BigNumber.from(currentHistoryHash).eq(0)) {
-      const tx = await sendTransaction(
+      const withdrawTx = await sendTransaction(
         web3,
         oracleAddress,
         ORACLE_ABI,
@@ -286,8 +287,8 @@ export default class Plugin {
         []
       );
       yield;
-      const receipt = await tx.wait();
-      console.log('[Realitio] executed withdraw:', receipt);
+      const withdrawReceipt = await withdrawTx.wait();
+      console.log('[Realitio] executed withdraw:', withdrawReceipt);
       return;
     }
 
