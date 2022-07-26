@@ -292,7 +292,7 @@
       "children": {
         "label": "Sub-spaces",
         "placeholder": "e.g. fabien.eth, balancer.eth, ...",
-        "information": "If this is the main space of your DAO, enter related sub-spaces here. They will be listed in the space's sidebar menu."
+        "information": "Related sub-spaces listed here will be displayed on the space page"
       }
     },
     "website": "Website",
