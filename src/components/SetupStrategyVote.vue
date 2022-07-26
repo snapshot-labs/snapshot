@@ -10,12 +10,13 @@ const { t } = useI18n();
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
-    name: name,
     value: name,
-    information:
-      name === 'whitelist'
-        ? t('setup.strategy.onePersonOneVote.whitelistInformation')
-        : t('setup.strategy.onePersonOneVote.ticketInformation')
+    options: {
+      information:
+        name === 'whitelist'
+          ? t('setup.strategy.onePersonOneVote.whitelistInformation')
+          : t('setup.strategy.onePersonOneVote.ticketInformation')
+    }
   }));
 });
 
@@ -87,7 +88,7 @@ onMounted(setFormValues);
             <template #selected="{ selectedItem }">
               <span>
                 {{
-                  selectedItem?.name === 'whitelist'
+                  selectedItem.value === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
@@ -96,12 +97,12 @@ onMounted(setFormValues);
             <template #item="{ item }">
               <span class="flex items-center gap-1">
                 {{
-                  item.name === 'whitelist'
+                  item.value === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
                 <IconInformationTooltip
-                  :information="item.information"
+                  :information="item.options.information"
                   class="text-skin-text"
                 />
               </span>
