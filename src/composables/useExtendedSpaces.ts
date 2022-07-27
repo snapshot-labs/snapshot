@@ -40,8 +40,8 @@ export function useExtendedSpaces() {
   }
 
   const reloadSpace = (id: string) => {
-    const space = extentedSpaces.value?.find(space => space.id === id);
-    if (space) {
+    const spaceToReload = extentedSpaces.value?.find(space => space.id === id);
+    if (spaceToReload) {
       extentedSpaces.value = extentedSpaces.value.filter(
         space => space.id !== id
       );
