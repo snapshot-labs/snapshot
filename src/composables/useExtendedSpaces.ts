@@ -2,6 +2,7 @@ import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { mapOldPluginNames } from '@/helpers/utils';
 
 const extentedSpaces = ref<ExtendedSpace[]>([]);
 const loading = ref(false);
@@ -26,7 +27,10 @@ export function useExtendedSpaces() {
         'spaces'
       );
 
-      extentedSpaces.value = [...extentedSpaces.value, ...response];
+      extentedSpaces.value = [
+        ...extentedSpaces.value,
+        ...response.map(mapOldPluginNames)
+      ];
       loading.value = false;
     } catch (e) {
       loading.value = false;
