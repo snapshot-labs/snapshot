@@ -13,11 +13,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-// shortening to twice the allowed character limit (140*2) before removing markdown
-// due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
-// until this is fixed we need to avoid applying that function to very long texts with a lot of markdown
-// see also: BaseProposalPreviewItem.vue
-const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
+const body = computed(() => removeMd(props.proposal.body));
 
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
