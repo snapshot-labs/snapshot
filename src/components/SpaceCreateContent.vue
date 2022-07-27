@@ -25,20 +25,14 @@ const injectImageToBody = image => {
   form.value.body = currentBodyWithImage;
 };
 
-const {
-  upload,
-  error: imageUploadError,
-  uploading
-} = useImageUpload({
-  onSuccess: injectImageToBody
-});
+const { upload, error: imageUploadError, uploading } = useImageUpload();
 
 const handlePaste = e => {
   for (let i = 0; i < e.clipboardData.items.length; ++i) {
     let item = e.clipboardData.items[i];
     if (item.kind == 'file' && item.type.startsWith('image/')) {
       const file = item.getAsFile();
-      upload(new File([file], 'image', { type: file.type }));
+      upload(new File([file], 'image', { type: file.type }), injectImageToBody);
     }
   }
 };
@@ -47,7 +41,7 @@ const handleDrop = e => {
   for (let i = 0; i < e.dataTransfer.files.length; i++) {
     let item = e.dataTransfer.files[i];
     if (item.type.startsWith('image/')) {
-      upload(item);
+      upload(item, injectImageToBody);
     }
   }
 };
@@ -104,7 +98,7 @@ const handleDrop = e => {
               accept="image/jpg, image/jpeg, image/png"
               type="file"
               class="absolute top-0 right-0 bottom-0 left-0 ml-0 w-full p-[5px] opacity-0"
-              @change="e => upload((e.target as HTMLInputElement)?.files?.[0])"
+              @change="e => upload((e.target as HTMLInputElement)?.files?.[0], injectImageToBody)"
             />
 
             <span class="pointer-events-none relative pl-1 text-sm">

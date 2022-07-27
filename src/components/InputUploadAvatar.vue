@@ -17,17 +17,15 @@ function openFilePicker() {
 const uploadSuccess = ref(false);
 const previewFile = ref<File | undefined>(undefined);
 
-const { upload, uploading } = useImageUpload({
-  onSuccess: image => {
-    uploadSuccess.value = true;
-    emit('image-uploaded', image.url);
-  }
-});
+const { upload, uploading } = useImageUpload();
 
 function onFileChange(e) {
   uploadSuccess.value = false;
   previewFile.value = (e.target as HTMLInputElement).files?.[0];
-  upload(previewFile.value);
+  upload(previewFile.value, image => {
+    uploadSuccess.value = true;
+    emit('image-uploaded', image.url);
+  });
 }
 
 function handleSelect(e) {

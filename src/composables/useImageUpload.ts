@@ -3,11 +3,7 @@ import { upload as pin } from '@snapshot-labs/pineapple';
 import { useI18n } from './useI18n';
 import { useFlashNotification } from '@/composables/useFlashNotification';
 
-export function useImageUpload({
-  onSuccess
-}: {
-  onSuccess: (image: { name: string; url: string }) => void;
-}) {
+export function useImageUpload() {
   const uploading = ref(false);
   const error = ref('');
   const imageUrl = ref('');
@@ -23,7 +19,10 @@ export function useImageUpload({
     imageName.value = '';
   };
 
-  const upload = async file => {
+  const upload = async (
+    file,
+    onSuccess: (image: { name: string; url: string }) => void
+  ) => {
     reset();
     if (!file) return;
     uploading.value = true;
