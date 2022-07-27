@@ -94,6 +94,8 @@ function handleReset() {
 }
 
 onMounted(async () => {
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+
   if (props.space) {
     const spaceClone = clone(props.space);
     if (spaceClone) {
@@ -119,10 +121,6 @@ onMounted(async () => {
   }
 
   loaded.value = true;
-});
-
-onMounted(() => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
