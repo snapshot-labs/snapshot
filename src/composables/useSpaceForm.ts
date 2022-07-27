@@ -6,7 +6,8 @@ import { useClient, useFormValidation, useImageUpload } from '@/composables';
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
 
-const SPACE_OBJECT = {
+const BASIC_VALIDATION = { name: 'basic', params: {} };
+const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
   treasuries: [],
@@ -24,7 +25,7 @@ const SPACE_OBJECT = {
     quorum: 0,
     type: ''
   },
-  validation: { name: 'basic', params: {} },
+  validation: BASIC_VALIDATION,
   name: '',
   about: '',
   avatar: '',
@@ -40,10 +41,9 @@ const SPACE_OBJECT = {
   domain: '',
   skin: ''
 };
-const BASIC_VALIDATION = { name: 'basic', params: {} };
 
-const formSetup = ref(clone(SPACE_OBJECT));
-const formSettings = ref(clone(SPACE_OBJECT));
+const formSetup = ref(clone(EMPTY_SPACE_FORM));
+const formSettings = ref(clone(EMPTY_SPACE_FORM));
 const showAllValidationErrors = ref(false);
 
 export function useSpaceForm(context: 'setup' | 'settings') {
@@ -97,7 +97,7 @@ export function useSpaceForm(context: 'setup' | 'settings') {
   );
 
   function resetForm() {
-    form.value = clone(SPACE_OBJECT);
+    form.value = clone(EMPTY_SPACE_FORM);
     showAllValidationErrors.value = false;
   }
 
