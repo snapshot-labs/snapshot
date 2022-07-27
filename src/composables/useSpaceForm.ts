@@ -31,7 +31,7 @@ const SPACE_OBJECT = {
   website: '',
   twitter: '',
   github: '',
-  parent: null,
+  parent: '',
   children: [],
   private: false,
   domain: '',
