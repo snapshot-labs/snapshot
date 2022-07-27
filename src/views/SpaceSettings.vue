@@ -25,7 +25,7 @@ const props = defineProps<{
 
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const { form, validationResult, isValid, formatSpace } =
   useSpaceForm('settings');
@@ -40,7 +40,7 @@ const uploadLoading = ref(false);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const isReadyToSubmit = computed(
-  () => !uploadLoading.value && !clientLoading.value && isValid.value
+  () => !uploadLoading.value && !isSending.value && isValid.value
 );
 
 const textRecord = computed(() => {
@@ -237,7 +237,7 @@ async function handleSetRecord() {
               </BaseButton>
               <BaseButton
                 :disabled="!isReadyToSubmit"
-                :loading="clientLoading"
+                :loading="isSending"
                 class="block w-full"
                 primary
                 @click="handleSubmit"
