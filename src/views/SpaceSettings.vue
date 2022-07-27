@@ -27,7 +27,7 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validationResult, isValid, formatSpace } =
+const { form, validationResult, isValid, isReadyToSubmit, formatSpace } =
   useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
@@ -35,13 +35,8 @@ const { notify } = useFlashNotification();
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
-const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const isReadyToSubmit = computed(
-  () => !uploadLoading.value && !isSending.value && isValid.value
-);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);

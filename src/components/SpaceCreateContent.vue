@@ -25,7 +25,7 @@ const injectImageToBody = image => {
   form.value.body = currentBodyWithImage;
 };
 
-const { upload, error: imageUploadError, uploading } = useImageUpload();
+const { upload, imageUploadError, isUploadingImage } = useImageUpload();
 
 const handlePaste = e => {
   for (const item of e.clipboardData.items) {
@@ -100,7 +100,7 @@ const handleDrop = e => {
             />
 
             <span class="pointer-events-none relative pl-1 text-sm">
-              <span v-if="uploading" class="flex">
+              <span v-if="isUploadingImage" class="flex">
                 <LoadingSpinner small class="mr-2 -mt-[2px]" />
                 {{ $t('create.uploading') }}
               </span>

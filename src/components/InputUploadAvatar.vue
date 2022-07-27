@@ -17,7 +17,7 @@ function openFilePicker() {
 const uploadSuccess = ref(false);
 const previewFile = ref<File | undefined>(undefined);
 
-const { upload, uploading } = useImageUpload();
+const { upload, isUploadingImage } = useImageUpload();
 
 function onFileChange(e) {
   uploadSuccess.value = false;
@@ -49,7 +49,7 @@ function handleSelect(e): void {
       <template #button>
         <slot
           name="avatar"
-          :uploading="uploading"
+          :uploading="isUploadingImage"
           :previewFile="uploadSuccess ? previewFile : undefined"
         />
       </template>

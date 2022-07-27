@@ -1,7 +1,10 @@
 import { ref, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormValidation } from '@/composables';
+import { useClient, useFormValidation, useImageUpload } from '@/composables';
+
+const { isSending } = useClient();
+const { isUploadingImage } = useImageUpload();
 
 const SPACE_OBJECT = {
   strategies: [],
@@ -89,6 +92,10 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     };
   }
 
+  const isReadyToSubmit = computed(
+    () => !isUploadingImage.value && !isSending.value && isValid.value
+  );
+
   function resetForm() {
     form.value = clone(SPACE_OBJECT);
     showAllValidationErrors.value = false;
@@ -110,6 +117,7 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     form,
     validationResult,
     isValid,
+    isReadyToSubmit,
     showAllValidationErrors,
     formatSpace,
     getValidation,
