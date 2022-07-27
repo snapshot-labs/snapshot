@@ -28,11 +28,11 @@ function onFileChange(e) {
   });
 }
 
-function handleSelect(e) {
-  if (e === 'change') return openFilePicker();
-  if (e === 'remove') {
-    emit('image-remove', '');
-    return (previewFile.value = undefined);
+function handleSelect(e): void {
+  if (e === 'change') openFilePicker();
+  else if (e === 'remove') {
+    emit('image-remove');
+    previewFile.value = undefined;
   }
 }
 </script>
