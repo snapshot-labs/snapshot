@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { useSpaceController } from '@/composables/useSpaceController';
-import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceForm } from '@/composables/useSpaceForm';
-import { useTreasury } from '@/composables/useTreasury';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+import {
+  useI18n,
+  useWeb3,
+  useClient,
+  useSpaceController,
+  useEns,
+  useExtendedSpaces,
+  useSpaceForm,
+  useTreasury,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
