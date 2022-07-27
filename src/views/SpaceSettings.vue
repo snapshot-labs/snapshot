@@ -88,9 +88,9 @@ async function handleSubmit() {
   }
 }
 
-function handleReset() {
-  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
-  if (currentSettings.value) return (form.value = clone(currentSettings.value));
+function handleReset(): void {
+  if (props.sourceSpace) form.value = clone(props.sourceSpace);
+  if (currentSettings.value) form.value = clone(currentSettings.value);
 }
 
 onMounted(async () => {
