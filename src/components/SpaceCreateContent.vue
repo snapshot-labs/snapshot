@@ -28,9 +28,8 @@ const injectImageToBody = image => {
 const { upload, error: imageUploadError, uploading } = useImageUpload();
 
 const handlePaste = e => {
-  for (let i = 0; i < e.clipboardData.items.length; ++i) {
-    let item = e.clipboardData.items[i];
-    if (item.kind == 'file' && item.type.startsWith('image/')) {
+  for (const item of e.clipboardData.items) {
+    if (item.kind === 'file' && item.type.startsWith('image/')) {
       const file = item.getAsFile();
       upload(new File([file], 'image', { type: file.type }), injectImageToBody);
     }
@@ -38,8 +37,7 @@ const handlePaste = e => {
 };
 
 const handleDrop = e => {
-  for (let i = 0; i < e.dataTransfer.files.length; i++) {
-    let item = e.dataTransfer.files[i];
+  for (const item of e.dataTransfer.files) {
     if (item.type.startsWith('image/')) {
       upload(item, injectImageToBody);
     }
