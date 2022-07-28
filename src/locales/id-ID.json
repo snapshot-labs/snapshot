@@ -398,7 +398,8 @@
       },
       "tokenVoting": {
         "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
+        "tokenNotFound": "Token not found"
       },
       "advanced": {
         "title": "Custom setup",

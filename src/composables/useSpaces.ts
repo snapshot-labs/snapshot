@@ -4,6 +4,7 @@ import orderBy from 'lodash/orderBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
+import { mapOldPluginNames } from '@/helpers/utils';
 
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
@@ -20,11 +21,15 @@ export function useSpaces() {
       Object.entries(exploreObj.spaces).map(([id, space]: any) => {
         // map manually selected categories for verified spaces that don't have set their categories yet
         // set to empty array if space.categories is missing
-        space.categories = space.categories?.length
-          ? space.categories
-          : verifiedSpacesCategories[id]?.length
-          ? verifiedSpacesCategories[id]
-          : [];
+        if (!space.categories?.length) {
+          if (verifiedSpacesCategories[id]?.length) {
+            space.categories = verifiedSpacesCategories[id];
+          } else {
+            space.categories = [];
+          }
+        }
+
+        space = mapOldPluginNames(space);
 
         return [id, { id, ...space }];
       })
@@ -32,7 +37,6 @@ export function useSpaces() {
 
     spaces.value = exploreObj.spaces;
     spacesLoaded.value = true;
-    return;
   }
 
   const selectedCategory = ref('');
@@ -47,9 +51,7 @@ export function useSpaces() {
     const list = Object.keys(spaces.value)
       .map(key => {
         const followers = spaces.value[key].followers ?? 0;
-        // const voters1d = spaces.value[key].voters_1d ?? 0;
         const followers1d = spaces.value[key].followers_1d ?? 0;
-        // const proposals1d = spaces.value[key].proposals_1d ?? 0;
         const isVerified = verified[key] || 0;
         let score = followers1d + followers / 4;
         if (isVerified === 1) score = score * 2;

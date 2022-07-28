@@ -47,7 +47,7 @@ export function createBatch(
 ) {
   const mainTransaction = formatBatchTransaction(txs, nonce, multiSendAddress);
   const hash = mainTransaction
-    ? getBatchHash(module, chainId, nonce, mainTransaction)
+    ? getBatchHash(module, chainId, mainTransaction)
     : null;
   return {
     hash,
@@ -60,7 +60,6 @@ export function createBatch(
 export function getBatchHash(
   module: string,
   chainId: number,
-  nonce: number,
   transaction: ModuleTransaction
 ) {
   try {

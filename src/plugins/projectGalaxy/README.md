@@ -1,20 +1,24 @@
 # Project Galaxy Plugin
 
-**Project Galaxy Plugin is a plugin for Project Galaxy Campaign OATs**
+Created time: July 21, 2022 5:51 PM
+
+The **Project Galaxy Plugin is designed for Snapshot.org. This will incentive communities to participate in the proposal vote by rewarding them with OATs (On-Chain Achievement Tokens). Space Admin can add this plugin into your space. After users vote, they can claim an OAT directly from the Project Galaxy Plugin section on the proposal page.**
 
 ### 1. Preparation
 
-Create a snapshot proposal in [https://snapshot.org/](https://snapshot.org/ "https://snapshot.org/")
-
-Create a campain in [https://galaxy.eco/](https://galaxy.eco/ "https://galaxy.eco/")
+1. Create a Snapshot proposal on [https://snapshot.org/](https://snapshot.org/)
+2. Create a Snapshot Credential with the proposal ID created from step1 on [https://galaxy.eco/](https://galaxy.eco/)
+3. Create an OAT campaign ONLY with the credential created from step2 on [https://galaxy.eco/](https://galaxy.eco/)
 
 ### 2. Add Project Galaxy Plugin to your space
 
-In snapshot space setting, you can find Project Galaxy Plugin in plugins section, and add it to your space.
+In Snapshot space setting, you can search and find the Project Galaxy Plugin in the plugins section, and add it to your space.
 
 ### 3. Set config JSON
 
-Add JSON string to your space
+Add campaign and proposal info to your plugin.
+
+First, click the plugin, then you will see an editor section. See example below: 
 
 *Specific JSON format like this, and you could use more than 1 OAT in your space:* 
 ```javascript
@@ -37,12 +41,15 @@ notice: The domain should not included in <Space Name>.
 	}
 }
 
-*Here is a Demo JSON:* 
+Second, fill it with the proposal ID and the information of the Campaign which you would like to link with the proposal. If you have multiple proposals which all distribute OATs to voters, you can also add multiple proposalID-campaignInfo pairs at one time.
+
+**Notice:** if you delete a proposalID-campaignInfo pair, people won’t see the OAT information on the page of your proposal even if the proposal ends or the OATs have already been distributed.
+
+*Here is a Demo:*
 ```javascript
 {
-	"api": "https://graphigo.prd.galaxy.eco/query",
 	"oats": {
-		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "jokey/campaign/GCixQUUqfE"
+		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galaxy/campaign/GCcqvUtDaM"
 	}
 }
 ```

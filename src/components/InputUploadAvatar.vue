@@ -17,24 +17,22 @@ function openFilePicker() {
 const uploadSuccess = ref(false);
 const previewFile = ref<File | undefined>(undefined);
 
-const { upload, uploading } = useImageUpload({
-  onSuccess: image => {
-    uploadSuccess.value = true;
-    emit('image-uploaded', image.url);
-  }
-});
+const { upload, isUploadingImage } = useImageUpload();
 
 function onFileChange(e) {
   uploadSuccess.value = false;
   previewFile.value = (e.target as HTMLInputElement).files?.[0];
-  upload(previewFile.value);
+  upload(previewFile.value, image => {
+    uploadSuccess.value = true;
+    emit('image-uploaded', image.url);
+  });
 }
 
-function handleSelect(e) {
-  if (e === 'change') return openFilePicker();
-  if (e === 'remove') {
-    emit('image-remove', '');
-    return (previewFile.value = undefined);
+function handleSelect(e): void {
+  if (e === 'change') openFilePicker();
+  else if (e === 'remove') {
+    emit('image-remove');
+    previewFile.value = undefined;
   }
 }
 </script>
@@ -51,7 +49,7 @@ function handleSelect(e) {
       <template #button>
         <slot
           name="avatar"
-          :uploading="uploading"
+          :uploading="isUploadingImage"
           :previewFile="uploadSuccess ? previewFile : undefined"
         />
       </template>

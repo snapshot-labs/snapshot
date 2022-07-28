@@ -12,7 +12,6 @@ const { t } = useI18n();
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
     id: i + 1,
-    name: name,
     value: name
   }));
 });

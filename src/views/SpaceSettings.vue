@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { useSpaceController } from '@/composables/useSpaceController';
-import { useEns } from '@/composables/useEns';
 import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceForm } from '@/composables/useSpaceForm';
-import { useTreasury } from '@/composables/useTreasury';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+import {
+  useI18n,
+  useWeb3,
+  useClient,
+  useSpaceController,
+  useEns,
+  useExtendedSpaces,
+  useSpaceForm,
+  useTreasury,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -22,9 +25,9 @@ const props = defineProps<{
 
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validationResult, isValid, formatSpace } =
+const { form, validationResult, isValid, isReadyToSubmit, formatSpace } =
   useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
@@ -32,13 +35,8 @@ const { notify } = useFlashNotification();
 const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
-const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const isReadyToSubmit = computed(
-  () => !uploadLoading.value && !clientLoading.value && isValid.value
-);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);
@@ -89,8 +87,11 @@ async function handleSubmit() {
 }
 
 function handleReset() {
-  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
-  if (currentSettings.value) return (form.value = clone(currentSettings.value));
+  if (props.sourceSpace) {
+    form.value = clone(props.sourceSpace);
+  } else {
+    form.value = clone(currentSettings.value);
+  }
 }
 
 onMounted(async () => {
@@ -231,7 +232,7 @@ async function handleSetRecord() {
               </BaseButton>
               <BaseButton
                 :disabled="!isReadyToSubmit"
-                :loading="clientLoading"
+                :loading="isSending"
                 class="block w-full"
                 primary
                 @click="handleSubmit"
