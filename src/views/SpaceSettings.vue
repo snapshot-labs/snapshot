@@ -20,7 +20,6 @@ import {
 
 const props = defineProps<{
   space: ExtendedSpace;
-  sourceSpace: ExtendedSpace;
 }>();
 
 const { t, setPageTitle } = useI18n();
@@ -87,29 +86,18 @@ async function handleSubmit() {
 }
 
 function handleReset(): void {
-  if (props.sourceSpace) {
-    form.value = clone(props.sourceSpace);
-  } else {
-    form.value = clone(currentSettings.value);
-  }
+  form.value = clone(currentSettings.value);
 }
 
 onMounted(async () => {
   setPageTitle('page.title.space.settings', { space: props.space.name });
 
-  if (props.space) {
-    const spaceClone = clone(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
+  const spaceClone = clone(props.space);
+  if (spaceClone) {
+    form.value = spaceClone;
+    currentSettings.value = clone(spaceClone);
   }
-  if (props.sourceSpace) {
-    const fromClone = clone(props.sourceSpace);
-    if (fromClone) {
-      form.value = fromClone;
-    }
-  }
+
   try {
     const uri = await getSpaceUri(
       props.space.id,

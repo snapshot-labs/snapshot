@@ -59,7 +59,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:sourceSpace?',
+    path: 'settings',
     name: 'spaceSettings',
     component: SpaceSettings
   },
