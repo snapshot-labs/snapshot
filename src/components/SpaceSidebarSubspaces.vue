@@ -24,7 +24,7 @@ const subSpaces = computed(() => {
 <template>
   <div class="mt-3">
     <div v-if="mainSpace">
-      <h5 class="px-4 text-skin-text">{{ $t('mainspace') }}</h5>
+      <h5 class="px-4 font-normal text-skin-text">{{ $t('mainspace') }}</h5>
       <router-link
         :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
       >
@@ -37,7 +37,7 @@ const subSpaces = computed(() => {
       </router-link>
     </div>
     <div v-if="subSpaces?.length">
-      <h5 class="px-4 text-skin-text">{{ $t('subspaces') }}</h5>
+      <h5 class="px-4 font-normal text-skin-text">{{ $t('subspaces') }}</h5>
       <router-link
         v-for="subSpace in subSpaces"
         :key="subSpace.id"
