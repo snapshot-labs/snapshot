@@ -35,7 +35,7 @@ const EMPTY_SPACE_FORM = {
   website: '',
   twitter: '',
   github: '',
-  parent: '',
+  parent: null,
   children: [],
   private: false,
   domain: '',
@@ -74,6 +74,8 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     space.voting.period = space.voting?.period || undefined;
     space.voting.type = space.voting?.type || undefined;
     space.voting.quorum = space.voting?.quorum || undefined;
+    space.children = space.children.map(child => child.id) || [];
+    space.parent = space.parent?.id || undefined;
     return space;
   }
 
