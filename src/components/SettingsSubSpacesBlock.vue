@@ -10,12 +10,31 @@ const props = defineProps<{
 const { form } = useSpaceForm(props.context);
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
+const lookingUpParent = ref(false);
+const foundParent = ref(false);
+const parentNotFound = ref(false);
 watchDebounced(
-  form.value.parent,
+  () => form.value.parent,
   async () => {
-    await loadExtentedSpaces(form.value.parent);
+    foundParent.value = false;
+    parentNotFound.value = false;
+
+    if (!form.value.parent) return;
+
+    lookingUpParent.value = true;
+    await loadExtentedSpaces([form.value.parent]);
+
+    const found = extentedSpaces.value?.some(
+      space => space.id === form.value.parent
+    );
+    if (found) {
+      foundParent.value = true;
+    } else {
+      parentNotFound.value = true;
+    }
+    lookingUpParent.value = false;
   },
-  { debounce: 500, deep: true }
+  { debounce: 500, immediate: true }
 );
 
 const childInput = ref('');
@@ -29,8 +48,8 @@ watchDebounced(
     childNotFound.value = false;
 
     if (!childInput.value) return;
-    lookingUpChild.value = true;
 
+    lookingUpChild.value = true;
     await loadExtentedSpaces([childInput.value]);
 
     const found = extentedSpaces.value?.some(
@@ -48,6 +67,7 @@ watchDebounced(
 
 const addChild = () => {
   if (foundChild.value) {
+    form.value.parent = '';
     form.value.children.push(childInput.value);
     childInput.value = '';
     foundChild.value = false;
@@ -82,10 +102,18 @@ const removeChild = (child: string) => {
         :title="$t(`settings.subspaces.parent.label`)"
         :information="$t(`settings.subspaces.parent.information`)"
         :placeholder="$t('settings.subspaces.parent.placeholder')"
-        @update:model-value="
-          value => (form.parent = value ? { id: value } : null)
-        "
-      />
+      >
+        <template #after>
+          <LoadingSpinner v-if="lookingUpParent" />
+          <i-ho-check
+            v-if="foundParent && !lookingUpParent"
+            class="text-skin-text text-green"
+          />
+          <span v-if="parentNotFound" class="text-skin-border">{{
+            $t('settings.subspaces.parentNotFound')
+          }}</span>
+        </template>
+      </BaseInput>
 
       <div class="flex items-end space-x-2">
         <BaseInput
