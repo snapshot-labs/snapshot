@@ -59,7 +59,10 @@ async function checkIfSpaceExists() {
 }
 
 async function handleSubmit() {
-  if (!isValid.value) return (showAllValidationErrors.value = true);
+  if (!isValid.value) {
+    showAllValidationErrors.value = true;
+    return;
+  }
   creatingSpace.value = true;
 
   // Wait for ENS text-record transaction to confirm
@@ -68,8 +71,10 @@ async function handleSubmit() {
     await handleSubmit();
   } else {
     await loadUriAddress();
-    if (uriAddress.value !== web3Account.value)
-      return (creatingSpace.value = false);
+    if (uriAddress.value !== web3Account.value) {
+      creatingSpace.value = false;
+      return;
+    }
 
     // Adds connected wallet as admin so that the settings will show
     // in the sidebar after space creation
