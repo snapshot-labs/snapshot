@@ -33,10 +33,6 @@ const subSpaces = computed(() => {
           <span class="mx-2 truncate">
             {{ mainSpace.name }}
           </span>
-          <BaseCounter
-            :counter="mainSpace.followersCount"
-            class="ml-auto inline-block"
-          />
         </BaseSidebarNavigationItem>
       </router-link>
     </div>
@@ -52,10 +48,6 @@ const subSpaces = computed(() => {
           <span class="mx-2 truncate">
             {{ subSpace.name }}
           </span>
-          <BaseCounter
-            :counter="subSpace.followersCount"
-            class="ml-auto inline-block"
-          />
         </BaseSidebarNavigationItem>
       </router-link>
     </div>
