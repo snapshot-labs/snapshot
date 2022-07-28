@@ -2,7 +2,7 @@
 import { computed, ref, watch, onMounted } from 'vue';
 import { getAddress } from '@ethersproject/address';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
@@ -26,12 +26,17 @@ const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validationResult, isValid, isReadyToSubmit, formatSpace } =
-  useSpaceForm('settings');
+const {
+  form,
+  validationResult,
+  isValid,
+  isReadyToSubmit,
+  populateForm,
+  resetForm
+} = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
-const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
 
@@ -84,18 +89,10 @@ async function handleSubmit() {
   }
 }
 
-function handleReset(): void {
-  form.value = clone(currentSettings.value);
-}
-
 onMounted(async () => {
   setPageTitle('page.title.space.settings', { space: props.space.name });
 
-  const spaceClone = formatSpace(clone(props.space));
-  if (spaceClone) {
-    form.value = spaceClone;
-    currentSettings.value = clone(spaceClone);
-  }
+  populateForm(props.space);
 
   try {
     const uri = await getSpaceUri(
@@ -214,7 +211,7 @@ async function handleSetRecord() {
               {{ $t('settings.editController') }}
             </BaseButton>
             <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="handleReset">
+              <BaseButton class="mb-2 block w-full" @click="resetForm">
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
