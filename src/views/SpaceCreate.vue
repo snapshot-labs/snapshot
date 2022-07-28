@@ -33,7 +33,7 @@ const { t, setPageTitle } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
@@ -75,7 +75,7 @@ const isValid = computed(() => {
     : true;
 
   return (
-    !clientLoading.value &&
+    !isSending.value &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
@@ -312,7 +312,7 @@ onMounted(() =>
         <BaseButton
           v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
           :disabled="!isValid"
-          :loading="clientLoading || queryLoading"
+          :loading="isSending || queryLoading"
           class="block w-full"
           primary
           @click="
