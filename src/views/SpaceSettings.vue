@@ -74,8 +74,7 @@ async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const formattedForm = formatSpace(form.value);
-  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  const result = await send({ id: props.space.id }, 'settings', form.value);
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
@@ -92,7 +91,7 @@ function handleReset(): void {
 onMounted(async () => {
   setPageTitle('page.title.space.settings', { space: props.space.name });
 
-  const spaceClone = clone(props.space);
+  const spaceClone = formatSpace(clone(props.space));
   if (spaceClone) {
     form.value = spaceClone;
     currentSettings.value = clone(spaceClone);

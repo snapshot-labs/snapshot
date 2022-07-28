@@ -80,10 +80,10 @@ const socials = [
         class="w-full border-l bg-gradient-to-r from-skin-bg to-transparent pl-0"
       >
         <h1
-          class="relative ml-[50px] mt-[100px] font-space text-[40px] font-bold leading-[3rem] text-creme md:mt-[135px]"
+          class="text-creme relative ml-[50px] mt-[100px] font-space text-[40px] font-bold leading-[3rem] md:mt-[135px]"
         >
           <div
-            class="absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-creme"
+            class="bg-creme absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full"
           />
           Where decisions<br />get made
         </h1>

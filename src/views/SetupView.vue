@@ -20,8 +20,7 @@ const router = useRouter();
 const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors, formatSpace } =
-  useSpaceForm('setup');
+const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
 
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
@@ -76,13 +75,8 @@ async function handleSubmit() {
     // in the sidebar after space creation
     form.value.admins = [web3Account.value];
 
-    const formattedForm = formatSpace(form.value);
     // Create the space
-    const result = await send(
-      { id: route.params.ens },
-      'settings',
-      formattedForm
-    );
+    const result = await send({ id: route.params.ens }, 'settings', form.value);
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();

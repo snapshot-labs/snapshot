@@ -1,11 +1,63 @@
 <script setup lang="ts">
-import { useSpaceForm } from '@/composables';
+import { ref } from 'vue';
+import { useSpaceForm, useExtendedSpaces } from '@/composables';
+import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getValidation } = useSpaceForm(props.context);
+const { form } = useSpaceForm(props.context);
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
+watchDebounced(
+  form.value.parent,
+  async () => {
+    await loadExtentedSpaces(form.value.parent);
+  },
+  { debounce: 500, deep: true }
+);
+
+const childInput = ref('');
+const lookingUpChild = ref(false);
+const foundChild = ref(false);
+const childNotFound = ref(false);
+watchDebounced(
+  childInput,
+  async () => {
+    foundChild.value = false;
+    childNotFound.value = false;
+
+    if (!childInput.value) return;
+    lookingUpChild.value = true;
+
+    await loadExtentedSpaces([childInput.value]);
+
+    const found = extentedSpaces.value?.some(
+      space => space.id === childInput.value
+    );
+    if (found) {
+      foundChild.value = true;
+    } else {
+      childNotFound.value = true;
+    }
+    lookingUpChild.value = false;
+  },
+  { debounce: 500 }
+);
+
+const addChild = () => {
+  if (foundChild.value) {
+    form.value.children.push(childInput.value);
+    childInput.value = '';
+    foundChild.value = false;
+    childNotFound.value = false;
+  }
+};
+
+const removeChild = (child: string) => {
+  form.value.children = form.value.children.filter(c => c !== child);
+};
 </script>
 
 <template>
@@ -25,31 +77,49 @@ const { form, getValidation } = useSpaceForm(props.context);
         </i18n-t>
       </BaseMessageBlock>
       <BaseInput
-        :model-value="form.parent?.id || ''"
+        v-model="form.parent"
         :is-disabled="!!form.children?.length"
         :title="$t(`settings.subspaces.parent.label`)"
         :information="$t(`settings.subspaces.parent.information`)"
-        :error="getValidation('parent')"
         :placeholder="$t('settings.subspaces.parent.placeholder')"
         @update:model-value="
           value => (form.parent = value ? { id: value } : null)
         "
       />
 
-      <BaseInput
-        :model-value="form.children?.map(c => c.id).join(', ') || ''"
-        :is-disabled="!!form.parent"
-        :title="$t(`settings.subspaces.children.label`)"
-        :information="$t(`settings.subspaces.children.information`)"
-        :error="getValidation('children')"
-        :placeholder="$t('settings.subspaces.children.placeholder')"
-        @update:model-value="
-          value =>
-            (form.children = value
-              ? value.split(', ').map(c => ({ id: c.trim() }))
-              : [])
-        "
-      />
+      <div class="flex items-end space-x-2">
+        <BaseInput
+          v-model="childInput"
+          :is-disabled="!!form.parent"
+          :title="$t(`settings.subspaces.children.label`)"
+          :information="$t(`settings.subspaces.children.information`)"
+          :placeholder="$t('settings.subspaces.children.placeholder')"
+        />
+        <BaseButton
+          :disabled="!foundChild || lookingUpChild"
+          :loading="lookingUpChild"
+          class="whitespace-nowrap"
+          @click="addChild()"
+        >
+          {{
+            childInput && childNotFound
+              ? $t('settings.subspaces.childNotFound')
+              : $t('settings.subspaces.addSubspace')
+          }}
+        </BaseButton>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <div
+          v-for="child in form.children"
+          :key="child"
+          class="rounded-3xl border px-3 py-2"
+        >
+          {{ child }}
+          <a class="p-1 text-skin-text" @click="removeChild(child)">
+            <BaseIcon name="close" />
+          </a>
+        </div>
+      </div>
     </div>
   </BaseBlock>
 </template>
