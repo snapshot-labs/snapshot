@@ -1,25 +1,31 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
-import { useStore } from '@/composables/useStore';
-import { useI18n } from '@/composables/useI18n';
-
-const { store } = useStore();
+import {
+  useInfiniteLoader,
+  useUnseenProposals,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useFollowSpace,
+  useWeb3,
+  useProposals,
+  useI18n
+} from '@/composables';
 
 const loading = ref(false);
 
 const route = useRoute();
+const {
+  store,
+  userVotedProposalIds,
+  resetTimelineProposals,
+  setTimelineFilter
+} = useProposals();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
@@ -35,7 +41,7 @@ const spaces = computed(() => {
 
 watch(spaces, () => {
   if (route.name === 'timeline' || route.name === 'explore') {
-    store.timeline.proposals = [];
+    resetTimelineProposals();
     load();
   }
 });
@@ -114,8 +120,7 @@ const timelineFilterBy = computed(() => store.timeline.filterBy);
 
 // Change filter
 function selectState(e) {
-  store.timeline.filterBy = e;
-  store.timeline.proposals = [];
+  setTimelineFilter(e);
   load();
 }
 </script>
@@ -205,6 +210,7 @@ function selectState(e) {
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
+            :voted="userVotedProposalIds.includes(proposal.id)"
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>

@@ -9,7 +9,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import {
   useFlashNotification,
   useSpaceCreateForm,
-  useStore,
+  useProposals,
   usePlugins,
   useI18n,
   useModal,
@@ -130,13 +130,13 @@ function getFormattedForm() {
   return clonedForm;
 }
 
-const { store } = useStore();
+const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
   console.log('Result', result);
   if (result.id) {
-    store.space.proposals = [];
+    resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
     resetForm();
     router.push({
