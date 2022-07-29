@@ -6,7 +6,6 @@ import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
@@ -29,7 +28,6 @@ const props = defineProps({
 const emit = defineEmits(['reload', 'close']);
 
 const { t } = useI18n();
-const { notify } = useFlashNotification();
 const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
@@ -45,7 +43,6 @@ async function handleSubmit() {
   });
   console.log('Result', result);
   if (result.id) {
-    notify(['green', t('notify.voteSuccessful')]);
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }

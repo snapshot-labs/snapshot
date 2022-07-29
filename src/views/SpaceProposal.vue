@@ -36,6 +36,7 @@ const { formatRelativeTime, formatNumber } = useIntl();
 const id: string = route.params.id as string;
 
 const modalOpen = ref(false);
+const isModalPostVoteOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadingProposal = ref(true);
 const loadedResults = ref(false);
@@ -89,6 +90,11 @@ async function loadProposal() {
   }
   loadingProposal.value = false;
   loadResults();
+}
+
+function reloadProposal() {
+  isModalPostVoteOpen.value = true;
+  loadProposal();
 }
 
 function formatProposalVotes(votes) {
@@ -174,10 +180,10 @@ async function deleteProposal() {
 }
 
 const {
-  shareToTwitter,
+  shareProposalTwitter,
   shareToFacebook,
   shareToClipboard,
-  startShare,
+  shareProposal,
   sharingIsSupported,
   sharingItems
 } = useSharing();
@@ -201,10 +207,10 @@ function selectFromThreedotDropdown(e) {
 }
 
 function selectFromShareDropdown(e) {
-  if (e === 'shareToTwitter')
-    shareToTwitter(props.space, proposal.value, window);
+  if (e === 'shareProposalTwitter')
+    shareProposalTwitter(props.space, proposal.value);
   else if (e === 'shareToFacebook')
-    shareToFacebook(props.space, proposal.value, window);
+    shareToFacebook(props.space, proposal.value);
   else if (e === 'shareToClipboard')
     shareToClipboard(props.space, proposal.value);
 }
@@ -312,7 +318,7 @@ const truncateMarkdownBody = computed(() => {
               />
               <ButtonShare
                 v-if="sharingIsSupported"
-                @click="startShare(space, proposal)"
+                @click="shareProposal(space, proposal)"
               />
               <BaseDropdown
                 v-else
@@ -537,7 +543,7 @@ const truncateMarkdownBody = computed(() => {
       :snapshot="proposal.snapshot"
       :strategies="strategies"
       @close="modalOpen = false"
-      @reload="loadProposal()"
+      @reload="reloadProposal()"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
@@ -550,6 +556,13 @@ const truncateMarkdownBody = computed(() => {
       :space="space"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), (modalOpen = true)"
+    />
+    <ModalPostVote
+      :open="isModalPostVoteOpen"
+      :space="space"
+      :proposal="proposal"
+      :selected-choices="selectedChoices"
+      @close="isModalPostVoteOpen = false"
     />
   </teleport>
 </template>

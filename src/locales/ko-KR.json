@@ -120,6 +120,8 @@
   "join": "참여",
   "joined": "참여함",
   "leave": "나가기",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "링크 복사",
   "duplicateProposal": "제안 복사",
   "joinedSpaces": "참여한 공간",
@@ -279,7 +281,20 @@
     },
     "hideSpace": "홈페이지에서 공간 숨기기",
     "links": "Social accounts",
-    "subspaces": "Sub-Spaces",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "fabien.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "fabien.eth",
+        "information": "Related sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",
