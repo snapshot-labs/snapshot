@@ -1,14 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useWeb3 } from '@/composables/useWeb3';
+import { useWeb3 } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  space: {
-    type: Object,
-    default: null
-  }
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const auth = getInstance();
 const { web3Account } = useWeb3();

@@ -2,7 +2,7 @@
 import { computed, ref, watch, onMounted } from 'vue';
 import { getAddress } from '@ethersproject/address';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
@@ -20,19 +20,23 @@ import {
 
 const props = defineProps<{
   space: ExtendedSpace;
-  sourceSpace: ExtendedSpace;
 }>();
 
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validationResult, isValid, isReadyToSubmit, formatSpace } =
-  useSpaceForm('settings');
+const {
+  form,
+  validationResult,
+  isValid,
+  isReadyToSubmit,
+  populateForm,
+  resetForm
+} = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
-const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
 
@@ -75,8 +79,7 @@ async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const formattedForm = formatSpace(form.value);
-  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  const result = await send({ id: props.space.id }, 'settings', form.value);
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
@@ -86,28 +89,11 @@ async function handleSubmit() {
   }
 }
 
-function handleReset() {
-  if (props.sourceSpace) {
-    form.value = clone(props.sourceSpace);
-  } else {
-    form.value = clone(currentSettings.value);
-  }
-}
-
 onMounted(async () => {
-  if (props.space) {
-    const spaceClone = clone(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-  }
-  if (props.sourceSpace) {
-    const fromClone = clone(props.sourceSpace);
-    if (fromClone) {
-      form.value = fromClone;
-    }
-  }
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+
+  populateForm(props.space);
+
   try {
     const uri = await getSpaceUri(
       props.space.id,
@@ -120,10 +106,6 @@ onMounted(async () => {
   }
 
   loaded.value = true;
-});
-
-onMounted(() => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
@@ -186,6 +168,8 @@ async function handleSetRecord() {
 
           <SettingsLinkBlock context="settings" />
 
+          <SettingsSubSpacesBlock context="settings" />
+
           <SettingsStrategiesBlock context="settings" />
 
           <SettingsAdminsBlock
@@ -227,7 +211,7 @@ async function handleSetRecord() {
               {{ $t('settings.editController') }}
             </BaseButton>
             <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="handleReset">
+              <BaseButton class="mb-2 block w-full" @click="resetForm">
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
