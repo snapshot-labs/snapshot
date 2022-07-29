@@ -114,19 +114,21 @@ const removeChild = (child: string) => {
           :title="$t(`settings.subspaces.children.label`)"
           :information="$t(`settings.subspaces.children.information`)"
           :placeholder="$t('settings.subspaces.children.placeholder')"
-        />
-        <BaseButton
-          :disabled="!foundChild || lookingUpChild"
           :loading="lookingUpChild"
-          class="whitespace-nowrap"
-          @click="addChild()"
-        >
-          {{
-            childInput && childNotFound
-              ? $t('settings.subspaces.childNotFound')
-              : $t('settings.subspaces.addSubspace')
-          }}
-        </BaseButton>
+          :failed="!!childInput && childNotFound"
+        />
+        <div>
+          <ButtonSidebar
+            class="!h-[42px] !w-[42px] whitespace-nowrap text-skin-link"
+            :class="{
+              'cursor-not-allowed !text-skin-text hover:border-skin-border':
+                !foundChild || lookingUpChild
+            }"
+            @click="addChild()"
+          >
+            <i-ho-plus class="text-sm" />
+          </ButtonSidebar>
+        </div>
       </div>
       <div class="flex flex-wrap gap-2">
         <div

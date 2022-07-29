@@ -112,7 +112,7 @@ onMounted(() => {
         's-error',
         !!error.message && showErrorMessage
           ? '-mt-[21px] opacity-100'
-          : '-mt-[38px] h-6 opacity-0'
+          : '-mt-[40px] h-6 opacity-0'
       ]"
     >
       <BaseIcon
