@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables/useIntl';
+import { useIntl } from '@/composables';
 import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
 
 const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
@@ -44,33 +44,23 @@ const winningChoice = computed(() =>
               hide-avatar
             />
           </div>
-          <LabelProposalState :state="proposal.state" />
         </div>
         <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
         <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />
-        <div>
-          <span
-            v-if="proposal.scores_state !== 'final'"
-            v-text="
-              getRelativeProposalPeriod(
-                proposal.state,
-                proposal.start,
-                proposal.end
-              )
-            "
-          />
+        <div class="mb-3">
           <span
             v-if="proposal.scores_state === 'final'"
-            class="mt-2 flex items-center space-x-1"
+            class="mt-2 flex items-center space-x-2"
           >
-            <i-ho-check class="mr-1 text-[17px] text-green" />
-            <span
-              >{{ shorten(proposal.choices[winningChoice], 64) }} -
+            <i-ho-check class="text-[17px] text-green" />
+            <span>
+              {{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.symbol || proposal.space.symbol }}</span
-            >
+              {{ proposal.symbol || proposal.space.symbol }}
+            </span>
           </span>
         </div>
+        <ProposalItemState :proposal="proposal" />
       </div>
     </router-link>
   </BaseBlock>

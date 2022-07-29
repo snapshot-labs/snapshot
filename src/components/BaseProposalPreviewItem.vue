@@ -2,15 +2,10 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables/useIntl';
+import { useIntl } from '@/composables';
 import { Proposal } from '@/helpers/interfaces';
 
-const {
-  formatNumber,
-  formatCompactNumber,
-  formatPercentNumber,
-  getRelativeProposalPeriod
-} = useIntl();
+const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
@@ -103,22 +98,7 @@ const winningChoice = computed(() =>
             />
           </div>
         </div>
-        <div class="flex items-center">
-          <LabelProposalState :state="proposal.state" slim class="mr-2" />
-          {{ $t(`proposals.states.${proposal.state}`)
-          }}<span v-if="proposal.scores_state !== 'final'"
-            >,
-            {{
-              getRelativeProposalPeriod(
-                proposal.state,
-                proposal.start,
-                proposal.end
-              )
-            }}</span
-          ><span v-if="proposal.scores_state === 'final'"
-            >, {{ formatNumber(proposal.votes) }} votes
-          </span>
-        </div>
+        <ProposalItemState :proposal="proposal" />
       </div>
     </router-link>
   </div>
