@@ -33,7 +33,7 @@ const canFollow = computed(() => {
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
       style="width: 120px"
-      class="group mb-4"
+      class="group"
       :class="{
         'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing

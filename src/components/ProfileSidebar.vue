@@ -12,29 +12,37 @@ defineProps<{
   };
 }>();
 
+const emit = defineEmits(['edit']);
+
 const { web3Account } = useWeb3();
 </script>
 
 <template>
-  <div class="fixed w-[240px]">
+  <div class="lg:fixed lg:w-[240px]">
     <BaseBlock slim class="overflow-hidden">
-      <ProfileSidebarHeader
-        v-if="profiles[userAddress]"
-        :user-address="userAddress"
-        :profile="profiles[userAddress]"
-      />
-      <ProfileSidebarHeaderSkeleton v-else />
+      <div class="mt-4 flex px-4 lg:mt-0 lg:block lg:px-0">
+        <ProfileSidebarHeader
+          v-if="profiles[userAddress]"
+          :user-address="userAddress"
+          :profile="profiles[userAddress]"
+        />
+        <ProfileSidebarHeaderSkeleton v-else />
 
-      <div
-        v-if="userAddress === web3Account"
-        class="mt-3 flex justify-center pt-1"
-      >
-        <BaseButton :disabled="!profiles[userAddress]" @click="$emit('edit')">
-          {{ $t('profile.buttonEdit') }}
-        </BaseButton>
+        <div
+          v-if="userAddress === web3Account"
+          class="flex flex-grow justify-end lg:mt-3 lg:flex-auto lg:justify-center"
+        >
+          <BaseButton
+            :disabled="!profiles[userAddress]"
+            class="whitespace-nowrap"
+            @click="emit('edit')"
+          >
+            {{ $t('profile.buttonEdit') }}
+          </BaseButton>
+        </div>
       </div>
 
-      <ProfileSidebarNavigation class="mt-3" />
+      <ProfileSidebarNavigation />
     </BaseBlock>
   </div>
 </template>

@@ -6,12 +6,12 @@ defineProps<{ space: ExtendedSpace }>();
 </script>
 
 <template>
-  <div style="position: fixed; width: 240px">
-    <BaseBlock :slim="true" class="overflow-hidden">
+  <div class="mb-4 lg:fixed lg:mb-0 lg:w-[240px]">
+    <BaseBlock slim class="overflow-hidden">
       <SpaceSidebarHeader :space="space" />
-      <SpaceSidebarNavigation :space="space" />
-      <SpaceSidebarSubspaces :space="space" />
-      <SpaceSidebarFooter :space="space" />
+      <SpaceSidebarNavigation :space="space" class="mt-4 lg:mt-0" />
+      <SpaceSidebarSubspaces :space="space" class="hidden lg:flex" />
+      <SpaceSidebarFooter :space="space" class="hidden lg:flex" />
     </BaseBlock>
   </div>
 </template>
