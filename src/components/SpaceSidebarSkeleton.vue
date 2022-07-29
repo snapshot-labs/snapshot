@@ -22,7 +22,6 @@
           </BaseButton>
         </div>
       </div>
-      <SpaceSidebarNavigation />
     </BaseBlock>
   </div>
 </template>
