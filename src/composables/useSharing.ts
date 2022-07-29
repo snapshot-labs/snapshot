@@ -40,7 +40,7 @@ export function useSharing() {
     });
   }
 
-  function shareVote(space, proposal, choices: string, window) {
+  function shareVote(space, proposal, choices: string) {
     const text = `I just voted "${choices}" for`;
     if (isSupported.value)
       share({
@@ -54,32 +54,30 @@ export function useSharing() {
           proposal.title
         )}"%20${encodedProposalUrl(space.id, proposal)}%20@${
           space.twitter || space.name
-        }`,
-        window
+        }`
       );
     }
   }
 
-  function shareTwitter(text, window) {
+  function shareTwitter(text) {
     const url = `https://twitter.com/intent/tweet?text=${text}`;
-    window.open(url, '_blank').focus();
+    window.open(url, '_blank')?.focus();
   }
 
-  function shareProposalTwitter(space, proposal, window) {
+  function shareProposalTwitter(space, proposal) {
     shareTwitter(
       `@${space.twitter || space.name}%20${encodeURIComponent(
         proposal.title
-      )}%20${encodedProposalUrl(space.id, proposal)}`,
-      window
+      )}%20${encodedProposalUrl(space.id, proposal)}`
     );
   }
 
-  function shareToFacebook(space, proposal, window) {
+  function shareToFacebook(space, proposal) {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
       space.id,
       proposal
     )}&quote=${encodeURIComponent(proposal.title)}`;
-    window.open(url, '_blank').focus();
+    window.open(url, '_blank')?.focus();
   }
 
   const { copyToClipboard } = useCopy();

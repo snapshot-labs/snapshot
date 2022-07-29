@@ -27,8 +27,7 @@ function share() {
   shareVote(
     props.space,
     props.proposal,
-    getChoiceString(props.proposal, props.selectedChoices),
-    window
+    getChoiceString(props.proposal, props.selectedChoices)
   );
 }
 </script>
