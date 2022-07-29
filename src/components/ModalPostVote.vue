@@ -66,7 +66,7 @@ function share() {
           <BaseButton class="w-full">
             <div class="flex flex-grow items-center justify-center gap-1">
               {{ $t('proposal.postVoteModal.seeQueue') }}
-              <i-ho-external-link />
+              <i-ho-external-link class="text-sm" />
             </div>
           </BaseButton>
         </BaseLink>
