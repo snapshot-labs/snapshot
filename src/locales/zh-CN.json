@@ -293,10 +293,7 @@
         "label": "子空间",
         "placeholder": "fabien.eth",
         "information": "此处列出的相关子空间将显示在空间页面上"
-      },
-      "addSubspace": "添加",
-      "childNotFound": "未找到",
-      "parentNotFound": "未找到"
+      }
     },
     "website": "网站",
     "strategies": {
