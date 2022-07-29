@@ -11,6 +11,7 @@
   "retry": "重试",
   "currentResults": "当前结果",
   "reset": "重置",
+  "close": "Close",
   "save": "保存",
   "author": "作者",
   "next": "下一页",
@@ -133,6 +134,7 @@
   "confirmAction": "确认操作",
   "or": "或者",
   "share": "分享",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "创建",
   "discussion": "讨论",
   "changeWallet": "更换钱包",
@@ -226,7 +228,16 @@
     "vote": "投票",
     "startDate": "开始日期",
     "endDate": "结束日期",
-    "votingSystem": "投票制度"
+    "votingSystem": "投票制度",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "提案",
