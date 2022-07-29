@@ -131,16 +131,16 @@ const removeChild = (child: string) => {
         </div>
       </div>
       <div class="flex flex-wrap gap-2">
-        <div
+        <BasePill
           v-for="child in form.children"
           :key="child"
-          class="rounded-3xl border px-3 py-2"
+          class="flex gap-1 rounded-3xl border py-1 pl-2 pr-1 text-sm text-white"
         >
           {{ child }}
-          <a class="p-1 text-skin-text" @click="removeChild(child)">
-            <BaseIcon name="close" />
-          </a>
-        </div>
+          <BaseButtonIcon class="p-0" @click="removeChild(child)">
+            <i-ho-x class="text-xs text-white" />
+          </BaseButtonIcon>
+        </BasePill>
       </div>
     </div>
   </BaseBlock>
