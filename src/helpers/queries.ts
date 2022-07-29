@@ -388,3 +388,13 @@ export const PROFILES_QUERY = gql`
     }
   }
 `;
+
+export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
+  query Votes($voter: String!, $proposals: [String]!) {
+    votes(where: { voter: $voter, proposal_in: $proposals }) {
+      proposal {
+        id
+      }
+    }
+  }
+`;
