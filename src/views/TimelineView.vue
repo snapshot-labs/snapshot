@@ -1,25 +1,26 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
-import { useProposals } from '@/composables/useProposals';
-import { useI18n } from '@/composables/useI18n';
-
-const { store, resetTimelineProposals, setTimelineFilter } = useProposals();
+import {
+  useInfiniteLoader,
+  useUnseenProposals,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useFollowSpace,
+  useWeb3,
+  useProposals,
+  useI18n
+} from '@/composables';
 
 const loading = ref(false);
 
 const route = useRoute();
+const { store, resetTimelineProposals, setTimelineFilter } = useProposals();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
