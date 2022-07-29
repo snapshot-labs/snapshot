@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
-import { useProposals } from '@/composables/useProposals';
-import { useI18n } from '@/composables/useI18n';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import {
+  useProposals,
+  useI18n,
+  useInfiniteLoader,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useUnseenProposals
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;

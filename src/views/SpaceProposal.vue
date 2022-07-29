@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
 import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
-import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
-import { useProfiles } from '@/composables/useProfiles';
-import { useApp } from '@/composables/useApp';
-import { useSharing } from '@/composables/useSharing';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useProposals } from '@/composables/useProposals';
-import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import {
+  useI18n,
+  useModal,
+  useTerms,
+  useProfiles,
+  useApp,
+  useSharing,
+  useWeb3,
+  useClient,
+  useInfiniteLoader,
+  useProposals,
+  useIntl,
+  useSpaceCreateForm,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
