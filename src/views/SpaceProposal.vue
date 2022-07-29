@@ -92,9 +92,9 @@ async function loadProposal() {
   loadResults();
 }
 
-async function reloadProposal() {
-  await loadProposal();
+function reloadProposal() {
   isModalPostVoteOpen.value = true;
+  loadProposal();
 }
 
 function formatProposalVotes(votes) {
