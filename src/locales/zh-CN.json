@@ -120,8 +120,8 @@
   "join": "加入",
   "joined": "已加入",
   "leave": "离开",
-  "subspaces": "Sub-spaces",
-  "mainspace": "Main space",
+  "subspaces": "子空间",
+  "mainspace": "主空间",
   "copyLink": "复制链接",
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
@@ -282,21 +282,21 @@
     "hideSpace": "从主页隐藏空间",
     "links": "社交账户",
     "subspaces": {
-      "label": "Sub-spaces",
-      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "label": "子空间",
+      "information": "子空格仅在主空格和子空格配置后才会显示。 {docs}",
       "parent": {
-        "label": "Main space",
+        "label": "主空间",
         "placeholder": "fabien.eth",
-        "information": "The space that this space is a sub-space of will be displayed on the space page"
+        "information": "此空间作为子空间的空间将显示在空间页面上"
       },
       "children": {
-        "label": "Sub-spaces",
+        "label": "子空间",
         "placeholder": "fabien.eth",
-        "information": "Related sub-spaces listed here will be displayed on the space page"
+        "information": "此处列出的相关子空间将显示在空间页面上"
       },
-      "addSubspace": "Add",
-      "childNotFound": "not found",
-      "parentNotFound": "not found"
+      "addSubspace": "添加",
+      "childNotFound": "未找到",
+      "parentNotFound": "未找到"
     },
     "website": "网站",
     "strategies": {
