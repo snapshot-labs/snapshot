@@ -37,7 +37,10 @@ const { web3Account } = useWeb3();
             class="whitespace-nowrap"
             @click="emit('edit')"
           >
-            {{ $t('profile.buttonEdit') }}
+            <i-ho-pencil class="sm:hidden" />
+            <span class="hidden sm:block">
+              {{ $t('profile.buttonEdit') }}
+            </span>
           </BaseButton>
         </div>
       </div>
