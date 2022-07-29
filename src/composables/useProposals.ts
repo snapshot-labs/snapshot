@@ -24,5 +24,11 @@ const store = reactive<ProposalsStore>({
 });
 
 export function useProposals() {
-  return { store };
+  function removeSpaceProposal(id: string) {
+    store.space.proposals = store.space.proposals.filter(
+      proposal => proposal.id !== id
+    );
+  }
+
+  return { store, removeSpaceProposal };
 }

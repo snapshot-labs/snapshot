@@ -29,7 +29,7 @@ const { domain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { store } = useProposals();
+const { removeSpaceProposal } = useProposals();
 const { notify } = useFlashNotification();
 const { formatRelativeTime, formatNumber } = useIntl();
 
@@ -173,7 +173,7 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
-    store.space.proposals = [];
+    removeSpaceProposal(id);
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
   }
