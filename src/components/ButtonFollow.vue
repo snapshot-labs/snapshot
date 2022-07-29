@@ -1,25 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useTerms } from '@/composables/useTerms';
-import { useClient } from '@/composables/useClient';
+import { useFollowSpace, useTerms, useClient } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({ space: Object });
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const { isGnosisSafe } = useClient();
-
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
 const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(
   props.space.id
 );
 
-const canFollow = computed(() => {
-  if (props.space.terms) {
-    if (termsAccepted.value || isFollowing.value) return true;
-    else return false;
-  } else return true;
-});
+const canFollow = computed(() =>
+  props.space.terms ? termsAccepted.value || isFollowing.value : true
+);
 </script>
 
 <template>
