@@ -30,5 +30,30 @@ export function useProposals() {
     );
   }
 
-  return { store, removeSpaceProposal };
+  function resetSpaceProposals() {
+    store.space.proposals = [];
+  }
+
+  function resetTimelineProposals() {
+    store.timeline.proposals = [];
+  }
+
+  function setSpaceFilter(filter: string) {
+    store.space.filterBy = filter;
+    resetSpaceProposals();
+  }
+
+  function setTimelineFilter(filter: string) {
+    store.timeline.filterBy = filter;
+    resetTimelineProposals();
+  }
+
+  return {
+    store,
+    removeSpaceProposal,
+    resetSpaceProposals,
+    resetTimelineProposals,
+    setSpaceFilter,
+    setTimelineFilter
+  };
 }

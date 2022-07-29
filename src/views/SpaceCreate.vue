@@ -130,13 +130,13 @@ function getFormattedForm() {
   return clonedForm;
 }
 
-const { store } = useProposals();
+const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
   console.log('Result', result);
   if (result.id) {
-    store.space.proposals = [];
+    resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
     resetForm();
     router.push({

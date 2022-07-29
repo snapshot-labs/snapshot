@@ -15,7 +15,7 @@ import zipObject from 'lodash/zipObject';
 import { useProposals } from '@/composables/useProposals';
 import { useI18n } from '@/composables/useI18n';
 
-const { store } = useProposals();
+const { store, resetTimelineProposals, setTimelineFilter } = useProposals();
 
 const loading = ref(false);
 
@@ -35,7 +35,7 @@ const spaces = computed(() => {
 
 watch(spaces, () => {
   if (route.name === 'timeline' || route.name === 'explore') {
-    store.timeline.proposals = [];
+    resetTimelineProposals();
     load();
   }
 });
@@ -114,8 +114,7 @@ const timelineFilterBy = computed(() => store.timeline.filterBy);
 
 // Change filter
 function selectState(e) {
-  store.timeline.filterBy = e;
-  store.timeline.proposals = [];
+  setTimelineFilter(e);
   load();
 }
 </script>

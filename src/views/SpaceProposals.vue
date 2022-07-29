@@ -16,7 +16,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { store } = useProposals();
+const { store, setSpaceFilter } = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -91,8 +91,7 @@ const loadingData = computed(() => {
 });
 
 function selectState(e) {
-  store.space.filterBy = e;
-  store.space.proposals = [];
+  setSpaceFilter(e);
   load();
 }
 
