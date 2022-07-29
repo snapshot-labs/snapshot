@@ -1,9 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import pkg from '@/../package.json';
 import gateways from '@snapshot-labs/snapshot.js/src/gateways.json';
 import { useWeb3 } from '@/composables/useWeb3';
 
-defineProps(['open']);
+defineProps<{
+  open: boolean;
+}>();
 
 defineEmits(['close', 'openLang']);
 

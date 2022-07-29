@@ -8,7 +8,7 @@ export function useSharing() {
   const sharingItems = [
     {
       text: 'Twitter',
-      action: 'shareToTwitter',
+      action: 'shareProposalTwitter',
       icon: 'twitter'
     },
     {
@@ -32,7 +32,7 @@ export function useSharing() {
 
   const { share, isSupported } = useShare();
 
-  function startShare(space, proposal) {
+  function shareProposal(space, proposal) {
     share({
       title: '',
       text: `${space.name} - ${proposal.title}`,
@@ -40,22 +40,44 @@ export function useSharing() {
     });
   }
 
-  function shareToTwitter(space, proposal, window) {
-    const url = `https://twitter.com/intent/tweet?text=@${
-      space.twitter || space.name
-    }%20${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
-      space.id,
-      proposal
-    )}`;
-    window.open(url, '_blank').focus();
+  function shareVote(space, proposal, choices: string) {
+    const text = `I just voted "${choices}" for`;
+    if (isSupported.value)
+      share({
+        title: '',
+        text: `${text} "${proposal.title}" @${space.twitter || space.name}`,
+        url: proposalUrl(space.id, proposal)
+      });
+    else if (window) {
+      shareTwitter(
+        `${encodeURIComponent(text)}%20"${encodeURIComponent(
+          proposal.title
+        )}"%20${encodedProposalUrl(space.id, proposal)}%20@${
+          space.twitter || space.name
+        }`
+      );
+    }
   }
 
-  function shareToFacebook(space, proposal, window) {
+  function shareTwitter(text) {
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank')?.focus();
+  }
+
+  function shareProposalTwitter(space, proposal) {
+    shareTwitter(
+      `@${space.twitter || space.name}%20${encodeURIComponent(
+        proposal.title
+      )}%20${encodedProposalUrl(space.id, proposal)}`
+    );
+  }
+
+  function shareToFacebook(space, proposal) {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
       space.id,
       proposal
     )}&quote=${encodeURIComponent(proposal.title)}`;
-    window.open(url, '_blank').focus();
+    window.open(url, '_blank')?.focus();
   }
 
   const { copyToClipboard } = useCopy();
@@ -65,11 +87,12 @@ export function useSharing() {
   }
 
   return {
-    shareToTwitter,
+    shareProposalTwitter,
     shareToFacebook,
     shareToClipboard,
     proposalUrl,
-    startShare,
+    shareProposal,
+    shareVote,
     sharingIsSupported: isSupported,
     sharingItems
   };

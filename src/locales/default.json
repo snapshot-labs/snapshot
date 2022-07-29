@@ -12,6 +12,7 @@
   "retry": "Retry",
   "currentResults": "Current results",
   "reset": "Reset",
+  "close": "Close",
   "save": "Save",
   "author": "Author",
   "next": "Next",
@@ -134,6 +135,7 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -228,7 +230,16 @@
     "vote": "Vote",
     "startDate": "Start date",
     "endDate": "End date",
-    "votingSystem": "Voting system"
+    "votingSystem": "Voting system",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",
@@ -295,10 +306,7 @@
         "label": "Sub-spaces",
         "placeholder": "fabien.eth",
         "information": "Related sub-spaces listed here will be displayed on the space page"
-      },
-      "addSubspace": "Add",
-      "childNotFound": "not found",
-      "parentNotFound": "not found"
+      }
     },
     "website": "Website",
     "strategies": {

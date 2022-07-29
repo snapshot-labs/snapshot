@@ -4,7 +4,7 @@
     <div
       v-if="$slots['sidebar-left']"
       id="sidebar-left"
-      class="float-left hidden w-1/4 lg:block"
+      class="float-left w-full lg:w-1/4"
     >
       <slot name="sidebar-left" />
     </div>

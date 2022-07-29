@@ -13,7 +13,7 @@ const validationsSpacesCount: any = ref(null);
 export function useValidationsFilter() {
   const loading = ref(false);
 
-  const filterValidations = (q = '') =>
+  const filterValidations = (q = ''): string[] =>
     Object.keys(validations)
       .filter(v => JSON.stringify(v).toLowerCase().includes(q.toLowerCase()))
       .sort(
@@ -38,8 +38,8 @@ export function useValidationsFilter() {
       {}
     );
     loading.value = false;
-    return;
   }
+
   return {
     filterValidations,
     getValidationsSpacesCount,

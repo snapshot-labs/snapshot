@@ -134,7 +134,7 @@ const removeChild = (child: string) => {
         <BasePill
           v-for="child in form.children"
           :key="child"
-          class="flex gap-1 rounded-3xl border py-1 pl-2 pr-1 text-sm text-white"
+          class="flex gap-1 rounded-3xl py-1 pl-2 pr-1 text-sm text-white"
         >
           {{ child }}
           <BaseButtonIcon class="p-0" @click="removeChild(child)">
