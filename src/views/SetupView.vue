@@ -20,8 +20,7 @@ const router = useRouter();
 const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors, formatSpace } =
-  useSpaceForm('setup');
+const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
 
 onMounted(() => {
   if (!route.query.step) router.push({ query: { step: 1 } });
@@ -60,7 +59,10 @@ async function checkIfSpaceExists() {
 }
 
 async function handleSubmit() {
-  if (!isValid.value) return (showAllValidationErrors.value = true);
+  if (!isValid.value) {
+    showAllValidationErrors.value = true;
+    return;
+  }
   creatingSpace.value = true;
 
   // Wait for ENS text-record transaction to confirm
@@ -69,20 +71,17 @@ async function handleSubmit() {
     await handleSubmit();
   } else {
     await loadUriAddress();
-    if (uriAddress.value !== web3Account.value)
-      return (creatingSpace.value = false);
+    if (uriAddress.value !== web3Account.value) {
+      creatingSpace.value = false;
+      return;
+    }
 
     // Adds connected wallet as admin so that the settings will show
     // in the sidebar after space creation
     form.value.admins = [web3Account.value];
 
-    const formattedForm = formatSpace(form.value);
     // Create the space
-    const result = await send(
-      { id: route.params.ens },
-      'settings',
-      formattedForm
-    );
+    const result = await send({ id: route.params.ens }, 'settings', form.value);
     if (result.id) {
       // Wait for the space to be available on the HUB
       await checkIfSpaceExists();

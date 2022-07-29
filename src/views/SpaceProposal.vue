@@ -28,7 +28,7 @@ const router = useRouter();
 const { domain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { store } = useStore();
 const { notify } = useFlashNotification();
 const { formatRelativeTime, formatNumber } = useIntl();
@@ -340,7 +340,7 @@ const truncateMarkdownBody = computed(() => {
               >
                 <template #button>
                   <div>
-                    <BaseButtonIcon :loading="clientLoading">
+                    <BaseButtonIcon :loading="isSending">
                       <i-ho-dots-horizontal />
                     </BaseButtonIcon>
                   </div>

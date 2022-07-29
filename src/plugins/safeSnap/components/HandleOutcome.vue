@@ -1,164 +1,3 @@
-<template>
-  <div v-if="questionState === questionStates.error" class="my-4">
-    {{ $t('safeSnap.labels.error') }}
-  </div>
-
-  <div v-if="questionState === questionStates.noWalletConnection" class="my-4">
-    {{ $t('safeSnap.labels.connectWallet') }}
-  </div>
-
-  <div v-if="questionState === questionStates.loading" class="my-4">
-    <LoadingSpinner />
-  </div>
-
-  <div v-if="connectedToRightChain || usingMetaMask">
-    <div
-      v-if="questionState === questionStates.waitingForQuestion"
-      class="my-4"
-    >
-      <BaseButton
-        :loading="actionInProgress === 'submit-proposal'"
-        @click="submitProposal"
-      >
-        {{ $t('safeSnap.labels.request') }}
-      </BaseButton>
-    </div>
-
-    <div
-      v-if="
-        (showOracleInfo || bondData.canClaim) &&
-        questionState !== questionStates.loading
-      "
-      class="my-4"
-    >
-      <div class="inline-block text-base">
-        <h4 class="text-center text-skin-link">
-          Reality oracle
-          <a class="ml-2 text-skin-text" @click="updateDetails">
-            <BaseIcon name="refresh" size="22" />
-          </a>
-        </h4>
-        <div
-          v-if="questionState !== questionStates.questionNotSet"
-          class="my-3 flex items-center space-x-3"
-          style="text-align: left"
-        >
-          <div class="self-stretch rounded-lg border p-3">
-            <div>
-              <b class="pr-3"
-                >{{
-                  questionDetails?.finalizedAt
-                    ? $t('safeSnap.finalOutcome')
-                    : $t('safeSnap.currentOutcome')
-                }}:</b
-              >
-              <span class="float-right text-skin-link">
-                {{ approvalData?.decision }}
-              </span>
-            </div>
-            <div v-if="!questionDetails?.finalizedAt" mt-3>
-              <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
-              <span class="float-right text-skin-link">
-                {{ approvalData?.currentBond }}
-              </span>
-            </div>
-          </div>
-
-          <div
-            v-if="approvalData?.timeLeft"
-            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
-          >
-            <b>{{ approvalData?.timeLeft }}</b>
-          </div>
-        </div>
-
-        <div v-if="questionState === questionStates.questionNotSet">
-          <BaseButton
-            class="mb-1 mt-3 w-full"
-            :loading="actionInProgress === 'set-outcome'"
-            @click="
-              modalApproveDecisionOpen = true;
-              actionInProgress = 'set-outcome';
-            "
-          >
-            {{ $t('safeSnap.labels.setOutcome') }}
-          </BaseButton>
-        </div>
-        <div v-if="questionState === questionStates.questionNotResolved">
-          <BaseButton
-            class="my-1 w-full"
-            :loading="actionInProgress === 'set-outcome'"
-            @click="
-              modalApproveDecisionOpen = true;
-              actionInProgress = 'set-outcome';
-            "
-          >
-            {{ $t('safeSnap.labels.changeOutcome') }}
-          </BaseButton>
-        </div>
-        <div v-if="bondData.canClaim">
-          <BaseButton
-            class="my-1 w-full"
-            :loading="actionInProgress === 'claim-bond'"
-            @click="claimBond"
-          >
-            {{ $t('safeSnap.claimBond') }}
-          </BaseButton>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <BaseButton
-        :loading="action2InProgress === 'execute-proposal'"
-        @click="executeProposal"
-      >
-        {{
-          $t('safeSnap.labels.executeTxs', [
-            questionDetails.nextTxIndex + 1,
-            batches.length
-          ])
-        }}
-      </BaseButton>
-    </div>
-  </div>
-  <div
-    v-else-if="
-      questionState !== questionStates.loading &&
-      questionState !== questionStates.noWalletConnection
-    "
-    class="my-4"
-  >
-    {{ $t('safeSnap.labels.switchChain', [networkName]) }}
-  </div>
-
-  <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
-    {{ $t('safeSnap.labels.executed') }}
-  </div>
-
-  <div v-if="questionState === questionStates.proposalRejected" class="my-4">
-    {{ $t('safeSnap.labels.rejected') }}
-  </div>
-  <div v-if="questionState === questionStates.timeExpired" class="my-4">
-    {{ $t('safeSnap.labels.expired') }}
-  </div>
-
-  <teleport to="#modal">
-    <SafeSnapModalOptionApproval
-      :minimum-bond="questionDetails?.minimumBond"
-      :open="modalApproveDecisionOpen"
-      :is-approved="questionDetails?.isApproved"
-      :bond="questionDetails?.currentBond"
-      :question-id="questionDetails?.questionId"
-      :token-symbol="bondData?.tokenSymbol"
-      :token-decimals="bondData?.tokenDecimals"
-      :oracle="questionDetails?.oracle"
-      @setApproval="voteOnQuestion"
-      @close="modalApproveDecisionOpen = actionInProgress = false"
-    />
-  </teleport>
-</template>
-
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import Plugin from '../index';
@@ -168,11 +7,14 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useTxStatus } from '@/composables/useTxStatus';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useIntl } from '@/composables/useIntl';
-import { useI18n } from '@/composables/useI18n';
+
+import {
+  useWeb3,
+  useI18n,
+  useIntl,
+  useFlashNotification,
+  useTxStatus
+} from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 
@@ -529,3 +371,164 @@ onMounted(async () => {
   await updateDetails();
 });
 </script>
+
+<template>
+  <div v-if="questionState === questionStates.error" class="my-4">
+    {{ $t('safeSnap.labels.error') }}
+  </div>
+
+  <div v-if="questionState === questionStates.noWalletConnection" class="my-4">
+    {{ $t('safeSnap.labels.connectWallet') }}
+  </div>
+
+  <div v-if="questionState === questionStates.loading" class="my-4">
+    <LoadingSpinner />
+  </div>
+
+  <div v-if="connectedToRightChain || usingMetaMask">
+    <div
+      v-if="questionState === questionStates.waitingForQuestion"
+      class="my-4"
+    >
+      <BaseButton
+        :loading="actionInProgress === 'submit-proposal'"
+        @click="submitProposal"
+      >
+        {{ $t('safeSnap.labels.request') }}
+      </BaseButton>
+    </div>
+
+    <div
+      v-if="
+        (showOracleInfo || bondData.canClaim) &&
+        questionState !== questionStates.loading
+      "
+      class="my-4"
+    >
+      <div class="inline-block text-base">
+        <h4 class="text-center text-skin-link">
+          Reality oracle
+          <a class="ml-2 text-skin-text" @click="updateDetails">
+            <BaseIcon name="refresh" size="22" />
+          </a>
+        </h4>
+        <div
+          v-if="questionState !== questionStates.questionNotSet"
+          class="my-3 flex items-center space-x-3"
+          style="text-align: left"
+        >
+          <div class="self-stretch rounded-lg border p-3">
+            <div>
+              <strong class="pr-3"
+                >{{
+                  questionDetails?.finalizedAt
+                    ? $t('safeSnap.finalOutcome')
+                    : $t('safeSnap.currentOutcome')
+                }}:</strong
+              >
+              <span class="float-right text-skin-link">
+                {{ approvalData?.decision }}
+              </span>
+            </div>
+            <div v-if="!questionDetails?.finalizedAt" mt-3>
+              <strong class="pr-3">{{ $t('safeSnap.currentBond') }}:</strong>
+              <span class="float-right text-skin-link">
+                {{ approvalData?.currentBond }}
+              </span>
+            </div>
+          </div>
+
+          <div
+            v-if="approvalData?.timeLeft"
+            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
+          >
+            <strong>{{ approvalData?.timeLeft }}</strong>
+          </div>
+        </div>
+
+        <div v-if="questionState === questionStates.questionNotSet">
+          <BaseButton
+            class="mb-1 mt-3 w-full"
+            :loading="actionInProgress === 'set-outcome'"
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+          >
+            {{ $t('safeSnap.labels.setOutcome') }}
+          </BaseButton>
+        </div>
+        <div v-if="questionState === questionStates.questionNotResolved">
+          <BaseButton
+            class="my-1 w-full"
+            :loading="actionInProgress === 'set-outcome'"
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+          >
+            {{ $t('safeSnap.labels.changeOutcome') }}
+          </BaseButton>
+        </div>
+        <div v-if="bondData.canClaim">
+          <BaseButton
+            class="my-1 w-full"
+            :loading="actionInProgress === 'claim-bond'"
+            @click="claimBond"
+          >
+            {{ $t('safeSnap.claimBond') }}
+          </BaseButton>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="questionState === questionStates.proposalApproved" class="my-4">
+      <BaseButton
+        :loading="action2InProgress === 'execute-proposal'"
+        @click="executeProposal"
+      >
+        {{
+          $t('safeSnap.labels.executeTxs', [
+            questionDetails.nextTxIndex + 1,
+            batches.length
+          ])
+        }}
+      </BaseButton>
+    </div>
+  </div>
+  <div
+    v-else-if="
+      questionState !== questionStates.loading &&
+      questionState !== questionStates.noWalletConnection
+    "
+    class="my-4"
+  >
+    {{ $t('safeSnap.labels.switchChain', [networkName]) }}
+  </div>
+
+  <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
+    {{ $t('safeSnap.labels.executed') }}
+  </div>
+
+  <div v-if="questionState === questionStates.proposalRejected" class="my-4">
+    {{ $t('safeSnap.labels.rejected') }}
+  </div>
+  <div v-if="questionState === questionStates.timeExpired" class="my-4">
+    {{ $t('safeSnap.labels.expired') }}
+  </div>
+
+  <teleport to="#modal">
+    <SafeSnapModalOptionApproval
+      :minimum-bond="questionDetails?.minimumBond"
+      :open="modalApproveDecisionOpen"
+      :is-approved="questionDetails?.isApproved"
+      :bond="questionDetails?.currentBond"
+      :question-id="questionDetails?.questionId"
+      :token-symbol="bondData?.tokenSymbol"
+      :token-decimals="bondData?.tokenDecimals"
+      :oracle="questionDetails?.oracle"
+      @setApproval="voteOnQuestion"
+      @close="modalApproveDecisionOpen = actionInProgress = false"
+    />
+  </teleport>
+</template>

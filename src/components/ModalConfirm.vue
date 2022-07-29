@@ -32,7 +32,7 @@ const emit = defineEmits(['reload', 'close']);
 
 const { t } = useI18n();
 const { notify } = useFlashNotification();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
 
@@ -183,8 +183,8 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || clientLoading || isLoadingShutter"
-          :loading="clientLoading || isLoadingShutter"
+          :disabled="vp === 0 || isSending || isLoadingShutter"
+          :loading="isSending || isLoadingShutter"
           type="submit"
           class="w-full"
           primary
