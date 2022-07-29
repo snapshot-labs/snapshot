@@ -1,29 +1,33 @@
-<script>
+<script setup lang="ts">
+import { onMounted, ref, watch } from 'vue';
 import { mustBeEthereumAddress } from '../../index';
 
-export default {
-  props: ['modelValue', 'inputProps', 'label', 'disabled'],
-  emits: ['update:modelValue', 'validAddress'],
-  data() {
-    return { input: '', isValid: false, dirty: false };
-  },
-  watch: {
-    modelValue(value) {
-      this.input = value;
-    }
-  },
-  mounted() {
-    if (this.modelValue) return (this.input = this.modelValue);
-  },
-  methods: {
-    handleInput() {
-      this.dirty = this.input !== '';
-      this.$emit('update:modelValue', this.input);
-      this.isValid = mustBeEthereumAddress(this.input);
-      if (this.isValid) {
-        this.$emit('validAddress', this.input);
-      }
-    }
+const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
+const emit = defineEmits(['update:modelValue', 'validAddress']);
+
+const input = ref('');
+const isValid = ref(false);
+const dirty = ref(false);
+
+watch(
+  () => props.modelValue,
+  value => {
+    input.value = value;
+  }
+);
+
+onMounted(() => {
+  if (props.modelValue) {
+    input.value = props.modelValue;
+  }
+});
+
+const handleInput = () => {
+  dirty.value = input.value !== '';
+  emit('update:modelValue', input.value);
+  isValid.value = mustBeEthereumAddress(input.value);
+  if (isValid.value) {
+    emit('validAddress', input.value);
   }
 };
 </script>

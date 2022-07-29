@@ -1,11 +1,12 @@
-<script setup>
+<script setup lang="ts">
+import { ExtendedSpace } from '@/helpers/interfaces';
 import Config from './components/Config.vue';
 
-defineProps({
-  space: Object,
-  preview: Boolean,
-  modelValue: Object
-});
+defineProps<{
+  space: ExtendedSpace;
+  proposal: any;
+  modelValue: any;
+}>();
 
 const emit = defineEmits(['update']);
 const update = form => {
