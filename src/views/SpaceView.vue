@@ -24,13 +24,8 @@ const space = computed(() =>
   extentedSpaces.value?.find(s => s.id === spaceKey.value)
 );
 
-const sourceSpaceRoute = computed(() => route.params.sourceSpace);
-const sourceSpace = computed(() =>
-  extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value)
-);
-
 onMounted(async () => {
-  await loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]);
+  await loadExtentedSpaces([spaceKey.value]);
   if (!space.value) {
     router.push('/');
   }
@@ -38,7 +33,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <router-view v-if="space" :space="space" :source-space="sourceSpace" />
+  <router-view v-if="space" :space="space" />
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout

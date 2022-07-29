@@ -59,7 +59,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:sourceSpace?',
+    path: 'settings',
     name: 'spaceSettings',
     component: SpaceSettings
   },
@@ -163,7 +163,7 @@ routes.push({
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     }

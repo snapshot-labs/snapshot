@@ -85,11 +85,13 @@ export interface ExtendedSpace {
   terms: string | null;
   github: string | null;
   twitter: string | null;
-  followerCount: number;
+  followersCount: number;
   private: boolean;
   admins: string[];
   members: string[];
   categories: string[];
+  parent: ExtendedSpace | null;
+  children: ExtendedSpace[];
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: { name: string; params: Record<string, any> };

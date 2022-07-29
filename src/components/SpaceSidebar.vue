@@ -1,5 +1,8 @@
 <script setup lang="ts">
-defineProps<{ space: Record<string, any> }>();
+import { ExtendedSpace } from '@/helpers/interfaces';
+import SpaceSidebarSubspaces from './SpaceSidebarSubspaces.vue';
+
+defineProps<{ space: ExtendedSpace }>();
 </script>
 
 <template>
@@ -7,6 +10,7 @@ defineProps<{ space: Record<string, any> }>();
     <BaseBlock slim class="overflow-hidden">
       <SpaceSidebarHeader :space="space" />
       <SpaceSidebarNavigation :space="space" class="mt-4 lg:mt-0" />
+      <SpaceSidebarSubspaces :space="space" class="hidden lg:flex" />
       <SpaceSidebarFooter :space="space" class="hidden lg:flex" />
     </BaseBlock>
   </div>

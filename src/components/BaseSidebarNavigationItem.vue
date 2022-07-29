@@ -1,7 +1,11 @@
 <script setup lang="ts">
-defineProps<{
-  isActive: boolean;
-}>();
+export interface Props {
+  isActive?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  isActive: false
+});
 </script>
 
 <template>

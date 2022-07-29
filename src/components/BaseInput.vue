@@ -21,6 +21,9 @@ const props = withDefaults(
     readonly?: boolean;
     information?: string;
     loading?: boolean;
+    isDisabled?: boolean;
+    success?: boolean;
+    failed?: boolean;
   }>(),
   {
     type: 'text',
@@ -34,7 +37,10 @@ const props = withDefaults(
     maxLength: undefined,
     readonly: false,
     information: undefined,
-    loading: false
+    loading: false,
+    isDisabled: false,
+    success: false,
+    failed: false
   }
 );
 
@@ -59,7 +65,7 @@ onMounted(() => {
       {{ title ?? definition.title }}
     </LabelInput>
 
-    <div class="relative z-10">
+    <div class="group relative z-10">
       <div
         v-if="$slots.before"
         class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
@@ -73,11 +79,13 @@ onMounted(() => {
         :value="modelValue"
         :class="[
           's-input !h-[42px]',
-          { '!border-red': error.message && showErrorMessage }
+          { '!border-red': error.message && showErrorMessage },
+          { 'cursor-not-allowed placeholder:!opacity-30': isDisabled }
         ]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
+        :disabled="isDisabled"
         @blur="error.message ? (visited = true) : null"
         @focus="error.message ? null : (visited = false)"
         @input="
@@ -85,10 +93,12 @@ onMounted(() => {
         "
       />
       <div
-        v-if="loading"
-        class="absolute inset-y-0 right-0 top-[1px] mr-1 flex h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pr-2 pl-2"
+        v-if="loading || success || failed"
+        class="absolute inset-y-0 right-0 top-[1px] mr-1 hidden h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pr-2 pl-2 group-focus-within:flex"
       >
-        <LoadingSpinner class="pb-[3px]" />
+        <LoadingSpinner v-if="loading" class="pb-[3px]" />
+        <i-ho-check v-if="success" class="text-md text-green" />
+        <i-ho-x v-if="failed" class="text-sm text-red" />
       </div>
       <div
         v-else-if="$slots.after"
@@ -102,7 +112,7 @@ onMounted(() => {
         's-error',
         !!error.message && showErrorMessage
           ? '-mt-[21px] opacity-100'
-          : '-mt-[38px] h-6 opacity-0'
+          : '-mt-[40px] h-6 opacity-0'
       ]"
     >
       <BaseIcon

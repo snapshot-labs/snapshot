@@ -17,10 +17,7 @@ function nextStep() {
 
     <SettingsLinkBlock context="setup" />
 
-    <!-- WIP: <SettingsSubSpacesBlock
-      v-model:parent="form.parent"
-      v-model:children="form.children"
-    /> -->
+    <SettingsSubSpacesBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />
