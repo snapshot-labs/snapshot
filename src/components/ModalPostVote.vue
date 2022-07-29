@@ -43,17 +43,16 @@ function share() {
         />
         <div class="mt-4 text-center">
           <template v-if="isGnosisSafe">
-            <h3>Your vote is pending...</h3>
-            <p class="italic">
-              Votes with a Safe require additional signers and will be visible
-              once the transaction is confirmed
-            </p>
+            <h3 v-text="$t('proposal.postVoteModal.gnosisSafeTitle')" />
+            <p
+              class="italic"
+              v-text="$t('proposal.postVoteModal.gnosisSafeDescription')"
+            />
           </template>
+
           <template v-else>
-            <h3>Your vote is in!</h3>
-            <p class="italic">
-              Votes can be changed while the proposal is active
-            </p>
+            <h3 v-text="$t('proposal.postVoteModal.defaultTitle')" />
+            <p class="italic" v-text="$t('proposal.postVoteModal.tips.1')" />
           </template>
         </div>
       </div>

@@ -228,7 +228,15 @@
     "vote": "Vote",
     "startDate": "Start date",
     "endDate": "End date",
-    "votingSystem": "Voting system"
+    "votingSystem": "Voting system",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",
