@@ -45,14 +45,14 @@ export function useSharing() {
     if (isSupported.value)
       share({
         title: '',
-        text: `${text} ${proposal.title} @${space.twitter || space.name}`,
+        text: `${text} "${proposal.title}" @${space.twitter || space.name}`,
         url: proposalUrl(space.id, proposal)
       });
     else if (window) {
       shareTwitter(
-        `${encodeURIComponent(text)}%20${encodeURIComponent(
+        `${encodeURIComponent(text)}%20"${encodeURIComponent(
           proposal.title
-        )}%20${encodedProposalUrl(space.id, proposal)}%20@${
+        )}"%20${encodedProposalUrl(space.id, proposal)}%20@${
           space.twitter || space.name
         }`,
         window
