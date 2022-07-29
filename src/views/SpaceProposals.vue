@@ -10,14 +10,10 @@ import { useProfiles } from '@/composables/useProfiles';
 import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: {
-    id: string;
-    name: string;
-    members: string[];
-    about: string;
-  };
+  space: ExtendedSpace;
 }>();
 
 const { store } = useStore();
