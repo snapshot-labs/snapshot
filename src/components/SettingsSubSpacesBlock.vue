@@ -102,18 +102,10 @@ const removeChild = (child: string) => {
         :title="$t(`settings.subspaces.parent.label`)"
         :information="$t(`settings.subspaces.parent.information`)"
         :placeholder="$t('settings.subspaces.parent.placeholder')"
-      >
-        <template #after>
-          <LoadingSpinner v-if="lookingUpParent" />
-          <i-ho-check
-            v-if="foundParent && !lookingUpParent"
-            class="text-skin-text text-green"
-          />
-          <span v-if="parentNotFound" class="text-skin-border">{{
-            $t('settings.subspaces.parentNotFound')
-          }}</span>
-        </template>
-      </BaseInput>
+        :loading="lookingUpParent"
+        :success="foundParent && !lookingUpParent"
+        :failed="parentNotFound"
+      />
 
       <div class="flex items-end space-x-2">
         <BaseInput

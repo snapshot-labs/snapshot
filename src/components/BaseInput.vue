@@ -22,6 +22,8 @@ const props = withDefaults(
     information?: string;
     loading?: boolean;
     isDisabled?: boolean;
+    success?: boolean;
+    failed?: boolean;
   }>(),
   {
     type: 'text',
@@ -36,7 +38,9 @@ const props = withDefaults(
     readonly: false,
     information: undefined,
     loading: false,
-    isDisabled: false
+    isDisabled: false,
+    success: false,
+    failed: false
   }
 );
 
@@ -89,10 +93,12 @@ onMounted(() => {
         "
       />
       <div
-        v-if="loading"
+        v-if="loading || success || failed"
         class="absolute inset-y-0 right-0 top-[1px] mr-1 flex h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pr-2 pl-2"
       >
-        <LoadingSpinner class="pb-[3px]" />
+        <LoadingSpinner v-if="loading" class="pb-[3px]" />
+        <i-ho-check v-if="success" class="text-md text-green" />
+        <i-ho-x v-if="failed" class="text-sm text-red" />
       </div>
       <div
         v-else-if="$slots.after"
