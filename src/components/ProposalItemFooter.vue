@@ -11,7 +11,7 @@ const { formatNumber, getRelativeProposalPeriod } = useIntl();
 
 <template>
   <div class="flex items-center pl-[3px]">
-    <LabelProposalState :state="proposal.state" slim class="mr-[13px]" />
+    <LabelProposalState :state="proposal.state" slim class="mr-[8px]" />
     {{ $t(`proposals.states.${proposal.state}`) }}
     <span v-if="proposal.scores_state !== 'final'"
       >,

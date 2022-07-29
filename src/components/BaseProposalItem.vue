@@ -50,7 +50,7 @@ const winningChoice = computed(() =>
         <div class="mb-3">
           <span
             v-if="proposal.scores_state === 'final'"
-            class="mt-2 flex items-center space-x-2"
+            class="mt-2 flex items-center space-x-1"
           >
             <i-ho-check class="text-[17px] text-green" />
             <span>
@@ -60,7 +60,7 @@ const winningChoice = computed(() =>
             </span>
           </span>
         </div>
-        <ProposalItemState :proposal="proposal" />
+        <ProposalItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </BaseBlock>

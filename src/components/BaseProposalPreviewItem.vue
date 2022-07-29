@@ -98,7 +98,7 @@ const winningChoice = computed(() =>
             />
           </div>
         </div>
-        <ProposalItemState :proposal="proposal" />
+        <ProposalItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </div>
