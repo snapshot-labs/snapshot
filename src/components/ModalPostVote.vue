@@ -17,7 +17,9 @@ const props = defineProps<{
 const emit = defineEmits(['close']);
 
 const imgPath = computed(() => {
-  return isGnosisSafe.value ? '/stickers/signed.png' : '/stickers/hooray.png';
+  return isGnosisSafe.value
+    ? '/stickers/just_signed.png'
+    : '/stickers/hooray.png';
 });
 
 function share() {
@@ -32,22 +34,28 @@ function share() {
 
 <template>
   <BaseModal :open="open" max-height="550px" @close="emit('close')">
-    <div class="p-4">
-      <img :src="imgPath" class="mx-auto mt-5 h-[220px]" alt="hooray sticker" />
-      <div class="mt-4 text-center">
-        <template v-if="isGnosisSafe">
-          <h3>Your vote is pending...</h3>
-          <p class="italic">
-            Votes with a Safe require additional signers and will be visible
-            once the transaction is confirmed
-          </p>
-        </template>
-        <template v-else>
-          <h3>Your vote is in!</h3>
-          <p class="italic">
-            Votes can be changed while the proposal is active
-          </p>
-        </template>
+    <div class="flex h-screen flex-col justify-between p-4 md:h-auto">
+      <div>
+        <img
+          :src="imgPath"
+          class="mx-auto mt-5 h-[220px] sm:h-[300px] md:h-[220px]"
+          alt="hooray sticker"
+        />
+        <div class="mt-4 text-center">
+          <template v-if="isGnosisSafe">
+            <h3>Your vote is pending...</h3>
+            <p class="italic">
+              Votes with a Safe require additional signers and will be visible
+              once the transaction is confirmed
+            </p>
+          </template>
+          <template v-else>
+            <h3>Your vote is in!</h3>
+            <p class="italic">
+              Votes can be changed while the proposal is active
+            </p>
+          </template>
+        </div>
       </div>
 
       <div class="mt-6 space-y-2">
