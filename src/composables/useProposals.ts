@@ -11,6 +11,6 @@ const store = reactive({
   }
 });
 
-export function useStore() {
+export function useProposals() {
   return { store };
 }

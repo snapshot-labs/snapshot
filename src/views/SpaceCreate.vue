@@ -9,7 +9,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import {
   useFlashNotification,
   useSpaceCreateForm,
-  useStore,
+  useProposals,
   usePlugins,
   useI18n,
   useModal,
@@ -130,7 +130,7 @@ function getFormattedForm() {
   return clonedForm;
 }
 
-const { store } = useStore();
+const { store } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);

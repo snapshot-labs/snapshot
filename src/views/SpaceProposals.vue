@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
-import { useStore } from '@/composables/useStore';
+import { useProposals } from '@/composables/useProposals';
 import { useI18n } from '@/composables/useI18n';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { useScrollMonitor } from '@/composables/useScrollMonitor';
@@ -16,7 +16,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { store } = useStore();
+const { store } = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);

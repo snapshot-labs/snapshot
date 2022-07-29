@@ -12,7 +12,7 @@ import { useSharing } from '@/composables/useSharing';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useStore } from '@/composables/useStore';
+import { useProposals } from '@/composables/useProposals';
 import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
@@ -29,7 +29,7 @@ const { domain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { store } = useStore();
+const { store } = useProposals();
 const { notify } = useFlashNotification();
 const { formatRelativeTime, formatNumber } = useIntl();
 
