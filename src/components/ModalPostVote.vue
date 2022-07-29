@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useClient, useSharing } from '@/composables';
+import { useClient, useSharing, useWeb3 } from '@/composables';
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { isGnosisSafe } = useClient();
 const { shareVote } = useSharing();
+const { web3Account } = useWeb3();
 
 const props = defineProps<{
   open: boolean;
@@ -58,7 +59,20 @@ function share() {
       </div>
 
       <div class="mt-6 space-y-2">
+        <BaseLink
+          v-if="isGnosisSafe"
+          :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
+          hide-external-icon
+        >
+          <BaseButton class="w-full">
+            <div class="flex flex-grow items-center justify-center gap-1">
+              {{ $t('proposal.postVoteModal.seeQueue') }}
+              <i-ho-external-link />
+            </div>
+          </BaseButton>
+        </BaseLink>
         <BaseButton
+          v-else
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="share"
         >
