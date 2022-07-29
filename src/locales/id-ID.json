@@ -293,10 +293,7 @@
         "label": "Sub-spaces",
         "placeholder": "fabien.eth",
         "information": "Related sub-spaces listed here will be displayed on the space page"
-      },
-      "addSubspace": "Add",
-      "childNotFound": "not found",
-      "parentNotFound": "not found"
+      }
     },
     "website": "Website",
     "strategies": {
