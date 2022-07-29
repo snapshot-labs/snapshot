@@ -11,6 +11,7 @@ const props = defineProps<{
   proposal: Proposal;
   profiles: { [key: string]: { ens: string; name?: string; about?: string } };
   space: ExtendedSpace;
+  voted: boolean;
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
@@ -44,6 +45,7 @@ const winningChoice = computed(() =>
               hide-avatar
             />
           </div>
+          <LabelProposalVoted v-if="voted" />
         </div>
         <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
         <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />

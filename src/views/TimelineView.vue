@@ -20,7 +20,12 @@ import {
 const loading = ref(false);
 
 const route = useRoute();
-const { store, resetTimelineProposals, setTimelineFilter } = useProposals();
+const {
+  store,
+  userVotedProposalIds,
+  resetTimelineProposals,
+  setTimelineFilter
+} = useProposals();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
@@ -205,6 +210,7 @@ function selectState(e) {
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
+            :voted="userVotedProposalIds.includes(proposal.id)"
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>

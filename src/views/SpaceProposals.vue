@@ -18,7 +18,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { store, setSpaceFilter } = useProposals();
+const { store, userVotedProposalIds, setSpaceFilter } = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -181,6 +181,7 @@ onMounted(() => {
           :proposal="proposal"
           :profiles="profiles"
           :space="space"
+          :voted="userVotedProposalIds.includes(proposal.id)"
           class="border-b first:border-t"
         />
       </div>

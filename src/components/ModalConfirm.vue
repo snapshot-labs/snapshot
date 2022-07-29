@@ -6,6 +6,7 @@ import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useProposals } from '@/composables';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
@@ -31,6 +32,7 @@ const { t } = useI18n();
 const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
+const { addVotedProposalId } = useProposals();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -46,6 +48,7 @@ async function handleSubmit() {
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }
+    addVotedProposalId(props.proposal.id);
     emit('close');
   }
 }

@@ -1,4 +1,4 @@
-import { reactive, watch, ref } from 'vue';
+import { reactive, watch, ref, computed } from 'vue';
 import { Proposal } from '@/helpers/interfaces';
 import { USER_VOTED_PROPOSAL_IDS_QUERY } from '@/helpers/queries';
 import { useApolloQuery, useWeb3 } from '@/composables';
@@ -52,6 +52,10 @@ export function useProposals() {
     resetTimelineProposals();
   }
 
+  function addVotedProposalId(id: string) {
+    userVotedProposalIds.value.push(id);
+  }
+
   const { apolloQuery } = useApolloQuery();
   async function getUserVotedProposalIds(voter: string, proposals: string[]) {
     const votes = await apolloQuery(
@@ -71,16 +75,24 @@ export function useProposals() {
     ];
   }
 
+  const proposalIds = computed(() =>
+    store.space.proposals
+      .map(proposal => proposal.id)
+      .concat(store.timeline.proposals.map(proposal => proposal.id))
+  );
+
   const { web3Account } = useWeb3();
   watch(
     () => [store.space.proposals, store.timeline.proposals],
-    value => {
-      const proposalIds = value[0]
-        .map(proposal => proposal.id)
-        .concat(value[1].map(proposal => proposal.id));
-      getUserVotedProposalIds(web3Account.value, proposalIds);
+    () => {
+      getUserVotedProposalIds(web3Account.value, proposalIds.value);
     }
   );
+
+  watch(web3Account, () => {
+    userVotedProposalIds.value = [];
+    getUserVotedProposalIds(web3Account.value, proposalIds.value);
+  });
 
   return {
     store,
@@ -89,6 +101,7 @@ export function useProposals() {
     resetSpaceProposals,
     resetTimelineProposals,
     setSpaceFilter,
-    setTimelineFilter
+    setTimelineFilter,
+    addVotedProposalId
   };
 }
