@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { watch, toRefs } from 'vue';
 
-const props = defineProps<{
-  open: boolean;
-  hideClose?: boolean;
-}>();
+const props = withDefaults(
+  defineProps<{
+    open: boolean;
+    hideClose?: boolean;
+    maxHeight?: string;
+  }>(),
+  {
+    hideClose: false,
+    maxHeight: '420px'
+  }
+);
 
 const emit = defineEmits(['close']);
 
@@ -17,7 +24,10 @@ watch(open, isOpen => {
 
 <template>
   <Transition name="fade">
-    <div v-if="open" class="modal z-50 mx-auto w-screen text-base">
+    <div
+      v-if="open"
+      class="modal z-50 mx-auto w-screen font-sans text-base text-skin-text antialiased"
+    >
       <div class="backdrop" @click="emit('close')" />
       <div class="shell relative overflow-hidden rounded-none md:rounded-3xl">
         <div v-if="$slots.header" class="pt-3 text-center">
@@ -29,13 +39,13 @@ watch(open, isOpen => {
         <div v-if="$slots.footer" class="border-t p-4 text-center">
           <slot name="footer" />
         </div>
-        <a
+        <BaseButtonIcon
           v-if="!hideClose"
-          class="absolute right-0 top-1 p-4 text-skin-text"
+          class="absolute right-3 top-[20px]"
           @click="emit('close')"
         >
-          <BaseIcon name="close" />
-        </a>
+          <i-ho-x />
+        </BaseButtonIcon>
       </div>
     </div>
   </Transition>
@@ -90,7 +100,7 @@ watch(open, isOpen => {
     }
 
     .modal-body {
-      max-height: 420px;
+      max-height: v-bind(maxHeight);
       flex: auto;
       text-align: initial;
       overflow-y: auto;
