@@ -11,6 +11,7 @@
   "retry": "Retry",
   "currentResults": "Güncel Sonuçlar",
   "reset": "Sıfırla",
+  "close": "Close",
   "save": "Kaydet",
   "author": "Yazar",
   "next": "Sonraki",
@@ -133,6 +134,7 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -226,7 +228,16 @@
     "vote": "Oyla",
     "startDate": "Başlangıç tarihi",
     "endDate": "Bitiş tarihi",
-    "votingSystem": "Oylama sistemi"
+    "votingSystem": "Oylama sistemi",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "Teklifler",

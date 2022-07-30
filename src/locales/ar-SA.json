@@ -11,6 +11,7 @@
   "retry": "Retry",
   "currentResults": "إعرض النتائج الحالية",
   "reset": "إعادة ضبط",
+  "close": "Close",
   "save": "حفظ",
   "author": "المؤلف",
   "next": "التالي",
@@ -133,6 +134,7 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -226,7 +228,16 @@
     "vote": "صوت",
     "startDate": "تاريخ البدء",
     "endDate": "تاريخ الانتهاء",
-    "votingSystem": "نظام التصويت"
+    "votingSystem": "نظام التصويت",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "المقترحات",
