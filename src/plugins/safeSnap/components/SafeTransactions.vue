@@ -176,20 +176,18 @@ export default {
 <template>
   <div>
     <h4
-      class="flex rounded-t-none border-b px-4 pt-3 md:rounded-t-md"
-      style="padding-bottom: 12px"
+      class="flex rounded-t-none border-b px-4 pt-3 pb-[12px] md:rounded-t-md"
     >
       <BaseAvatar class="float-left mr-2" :src="networkIcon" size="28" />
       {{ networkName }} Safe
       <a
         v-if="gnosisSafeAddress"
         :href="safeLink"
-        class="ml-2 text-skin-text"
-        style="font-weight: normal"
+        class="ml-2 flex font-normal text-skin-text"
         target="_blank"
       >
         {{ shorten(gnosisSafeAddress) }}
-        <i class="iconfont iconexternal-link" />
+        <i-ho-external-link class="ml-1" />
       </a>
       <div class="flex-grow"></div>
       <SafeSnapTooltip
