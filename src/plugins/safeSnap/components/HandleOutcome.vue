@@ -6,14 +6,14 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 
 import {
   useWeb3,
   useI18n,
   useIntl,
   useFlashNotification,
-  useTxStatus
+  useTxStatus,
+  useSafesnap
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';

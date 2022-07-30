@@ -1,6 +1,6 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
+import { useSafesnap } from '@/composables';
 import chevronIcon from '@/assets/icons/chevron.svg';
 import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
