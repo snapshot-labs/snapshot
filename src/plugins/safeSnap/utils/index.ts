@@ -5,7 +5,7 @@ import memoize from 'lodash/memoize';
 
 import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
-import { ModuleTransaction, SafeData } from '../models';
+import { SafeTransaction, SafeExecutionData } from '../models';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export const mustBeEthereumAddress = memoize((address: string) => {
@@ -27,10 +27,10 @@ export const mustBeEthereumContractAddress = memoize(
 );
 
 export function formatBatchTransaction(
-  batch: ModuleTransaction[],
+  batch: SafeTransaction[],
   nonce: number,
   multiSendAddress: string
-): ModuleTransaction | null {
+): SafeTransaction | null {
   if (!batch.every(x => x)) return null;
   if (batch.length === 1) {
     return { ...batch[0], nonce: nonce.toString() };
@@ -42,7 +42,7 @@ export function createBatch(
   module: string,
   chainId: number,
   nonce: number,
-  txs: ModuleTransaction[],
+  txs: SafeTransaction[],
   multiSendAddress: string
 ) {
   const mainTransaction = formatBatchTransaction(txs, nonce, multiSendAddress);
@@ -60,7 +60,7 @@ export function createBatch(
 export function getBatchHash(
   module: string,
   chainId: number,
-  transaction: ModuleTransaction
+  transaction: SafeTransaction
 ) {
   try {
     const safeSnap = new SafeSnapPlugin();
@@ -74,7 +74,7 @@ export function getBatchHash(
   }
 }
 
-export function getSafeHash(safe: SafeData) {
+export function getSafeHash(safe: SafeExecutionData) {
   const hashes = safe.txs.map(batch => batch.hash);
   const valid = hashes.every(hash => hash);
   if (!valid || !hashes.length) return null;

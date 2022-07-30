@@ -1,6 +1,6 @@
-import { Token } from '../models';
+import { TokenAsset } from '../models';
 
-export const ETHEREUM_COIN: Token = {
+export const ETHEREUM_COIN: TokenAsset = {
   name: 'Ether',
   decimals: 18,
   symbol: 'ETH',
@@ -8,7 +8,7 @@ export const ETHEREUM_COIN: Token = {
     'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png',
   address: 'main'
 };
-export const MATIC_COIN: Token = {
+export const MATIC_COIN: TokenAsset = {
   name: 'MATIC',
   decimals: 18,
   symbol: 'MATIC',
@@ -16,7 +16,7 @@ export const MATIC_COIN: Token = {
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/137/currency_logo.png'
 };
-const EWC_COIN: Token = {
+const EWC_COIN: TokenAsset = {
   name: 'Energy Web Token',
   symbol: 'EWT',
   address: 'main',
@@ -24,7 +24,7 @@ const EWC_COIN: Token = {
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/246/currency_logo.png'
 };
-const XDAI_COIN: Token = {
+const XDAI_COIN: TokenAsset = {
   name: 'XDAI',
   symbol: 'XDAI',
   address: 'main',
@@ -32,7 +32,7 @@ const XDAI_COIN: Token = {
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/100/currency_logo.png'
 };
-const BNB_COIN: Token = {
+const BNB_COIN: TokenAsset = {
   name: 'BNB',
   symbol: 'BNB',
   address: 'main',

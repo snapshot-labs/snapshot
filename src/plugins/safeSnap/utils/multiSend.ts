@@ -2,7 +2,7 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 
-import { ModuleTransaction } from '../models';
+import { SafeTransaction } from '../models';
 import { MULTI_SEND_ABI, MULTI_SEND_VERSIONS } from '../constants';
 
 export enum MULTI_SEND_VERSION {
@@ -18,7 +18,7 @@ export function getMultiSend(
   return MULTI_SEND_VERSIONS[version][network.toString()];
 }
 
-export function encodeTransactions(transactions: ModuleTransaction[]) {
+export function encodeTransactions(transactions: SafeTransaction[]) {
   const values = transactions.map(tx => [
     tx.operation,
     tx.to,
@@ -39,7 +39,7 @@ export function encodeTransactions(transactions: ModuleTransaction[]) {
 }
 
 export function createMultiSendTx(
-  txs: ModuleTransaction[],
+  txs: SafeTransaction[],
   nonce: number,
   multiSendAddress: string
 ) {

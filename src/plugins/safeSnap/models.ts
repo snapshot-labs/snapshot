@@ -3,7 +3,7 @@ import { Fragment, JsonFragment } from '@ethersproject/abi';
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
 
-export interface ModuleTransaction {
+export interface SafeTransaction {
   to: string;
   value: string;
   data: string;
@@ -11,7 +11,7 @@ export interface ModuleTransaction {
   nonce: string;
 }
 
-export interface ProposalDetails {
+export interface RealityOracleProposal {
   dao: string;
   oracle: string;
   cooldown: number;
@@ -21,56 +21,55 @@ export interface ProposalDetails {
   executionApproved: boolean;
   finalizedAt: number | undefined;
   nextTxIndex: number | undefined;
-  transactions: ModuleTransaction[];
+  transactions: SafeTransaction[];
   txHashes: string[];
   currentBond: BigNumber | undefined;
   isApproved: boolean;
   endTime: number | undefined;
 }
 
-export interface Collectable {
-  id: string;
-  name: string;
+export interface SafeAsset {
   address: string;
-  tokenName?: string;
+  name: string;
   logoUri?: string;
 }
 
-export interface Token {
-  address: string;
-  name: string;
+export interface CollectableAsset extends SafeAsset {
+  id: string;
+  tokenName?: string;
+}
+
+export interface TokenAsset extends SafeAsset {
   symbol: string;
   decimals: number;
-  logoUri: string;
 }
 
-export interface SendAssetModuleTransaction extends ModuleTransaction {
+export interface CollectableAssetTransaction extends SafeTransaction {
   type: 'transferNFT';
   recipient: string;
-  collectable: Collectable;
+  collectable: CollectableAsset;
 }
 
-export interface TransferFundsModuleTransaction extends ModuleTransaction {
+export interface TokenAssetTransaction extends SafeTransaction {
   type: 'transferFunds';
   amount: string;
   recipient: any;
-  token: Token;
+  token: TokenAsset;
 }
 
-export interface ContractInteractionModuleTransaction
-  extends ModuleTransaction {
+export interface CustomContractTransaction extends SafeTransaction {
   type: 'contractInteraction';
   abi: string[];
 }
 
-export interface Batch {
+export interface SafeModuleTransactionBatch {
   hash: string;
-  transactions: ModuleTransaction[];
+  transactions: SafeTransaction[];
 }
 
-export interface SafeData {
+export interface SafeExecutionData {
   hash: string | null;
-  txs: Batch[];
+  txs: SafeModuleTransactionBatch[];
   network: string;
   realityModule: string;
 }
