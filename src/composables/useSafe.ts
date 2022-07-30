@@ -19,7 +19,7 @@ const state = reactive<SafesnapState>({
   batchError: undefined
 });
 
-export function useSafesnap() {
+export function useSafe() {
   function setBatchError(num: number, message: string) {
     state.batchError = { num, message };
   }

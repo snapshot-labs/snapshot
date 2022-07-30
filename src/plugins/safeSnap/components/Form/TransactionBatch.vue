@@ -1,6 +1,6 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSafesnap } from '@/composables';
+import { useSafe } from '@/composables';
 import chevronIcon from '@/assets/icons/chevron.svg';
 import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
@@ -12,7 +12,7 @@ export default {
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue', 'remove'],
   setup() {
-    const { safesnap } = useSafesnap();
+    const { safesnap } = useSafe();
     return { safesnap };
   },
   data() {

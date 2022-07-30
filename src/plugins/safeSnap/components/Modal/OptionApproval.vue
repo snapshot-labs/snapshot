@@ -2,7 +2,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';
-import { useSafesnap } from '@/composables';
+import { useSafe } from '@/composables';
 import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
@@ -18,7 +18,7 @@ export default {
   ],
   emits: ['close', 'setApproval'],
   setup() {
-    const { safesnap } = useSafesnap();
+    const { safesnap } = useSafe();
     const { isValidEnsDomain } = useEns();
     return { safesnap, isValidEnsDomain };
   },

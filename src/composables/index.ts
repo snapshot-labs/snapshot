@@ -28,7 +28,7 @@ export { useSpaces } from './useSpaces';
 export { useSpaceSubscription } from './useSpaceSubscription';
 export { useProposals } from './useProposals';
 export { useStrategies } from './useStrategies';
-export { useSafesnap } from './useSafesnap';
+export { useSafe } from './useSafe';
 export { useTerms } from './useTerms';
 export { useTreasury } from './useTreasury';
 export { useTxStatus } from './useTxStatus';

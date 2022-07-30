@@ -13,7 +13,7 @@ import {
   useIntl,
   useFlashNotification,
   useTxStatus,
-  useSafesnap
+  useSafe
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
@@ -21,7 +21,7 @@ import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
-const { clearBatchError, setBatchError } = useSafesnap();
+const { clearBatchError, setBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
