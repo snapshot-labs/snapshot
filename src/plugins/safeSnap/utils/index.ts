@@ -5,7 +5,7 @@ import memoize from 'lodash/memoize';
 
 import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
-import { SafeTransaction, SafeExecutionData } from '../models';
+import { SafeTransaction, SafeExecutionData } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export const mustBeEthereumAddress = memoize((address: string) => {

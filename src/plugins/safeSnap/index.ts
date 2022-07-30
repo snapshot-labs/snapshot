@@ -14,7 +14,7 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, RealityOracleProposal } from './models';
+import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -31,7 +31,6 @@ import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export * from './constants';
-export * from './models';
 
 export * from './utils/abi';
 export * from './utils/safe';

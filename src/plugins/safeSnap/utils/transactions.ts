@@ -7,7 +7,7 @@ import {
   SafeTransaction,
   CollectableAssetTransaction,
   TokenAssetTransaction
-} from '../models';
+} from '@/helpers/interfaces';
 import { InterfaceDecoder } from './decoder';
 import { getNativeAsset } from './coins';
 import { ERC20_ABI, ERC721_ABI } from '../constants';

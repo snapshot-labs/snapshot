@@ -2,7 +2,7 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 
-import { SafeTransaction } from '../models';
+import { SafeTransaction } from '@/helpers/interfaces';
 import { MULTI_SEND_ABI, MULTI_SEND_VERSIONS } from '../constants';
 
 export enum MULTI_SEND_VERSION {

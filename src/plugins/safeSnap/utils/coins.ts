@@ -1,4 +1,4 @@
-import { TokenAsset } from '../models';
+import { TokenAsset } from '@/helpers/interfaces';
 
 export const ETHEREUM_COIN: TokenAsset = {
   name: 'Ether',
