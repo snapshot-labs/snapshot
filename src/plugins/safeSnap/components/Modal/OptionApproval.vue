@@ -102,25 +102,25 @@ export default {
           style="font-size: 16px"
         >
           Question
-          <i style="font-size: 14px" class="iconfont iconexternal-link" />
+          <em style="font-size: 14px" class="iconfont iconexternal-link" />
         </a>
       </div>
 
       <div class="my-3 rounded-lg border p-3">
         <div>
-          <b class="pr-3">{{ $t('safeSnap.currentOutcome') }}:</b>
+          <strong class="pr-3">{{ $t('safeSnap.currentOutcome') }}:</strong>
           <span class="float-right text-skin-link">
             {{ answer }}
           </span>
         </div>
         <div>
-          <b class="pr-3">{{ $t('safeSnap.currentBond') }}:</b>
+          <strong class="pr-3">{{ $t('safeSnap.currentBond') }}:</strong>
           <span class="float-right text-skin-link">
             {{ bondData.current + ' ' + tokenSymbol }}
           </span>
         </div>
         <div>
-          <b class="pr-3">{{ $t('safeSnap.nextBond') }}:</b>
+          <strong class="pr-3">{{ $t('safeSnap.nextBond') }}:</strong>
           <span class="float-right text-skin-link">
             {{ bondData.toSet + ' ' + bondData.tokenSymbol }}
           </span>
