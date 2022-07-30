@@ -1,70 +1,103 @@
-<script setup>
-import { ref } from 'vue';
-import { useSkin } from '@/composables/useSkin';
-const { toggleUserTheme, getThemeIcon } = useSkin();
+<script setup lang="ts">
+// import { useSkin } from '@/composables/useSkin';
+// const { toggleUserTheme, getThemeIcon } = useSkin();
 
-const modalAboutOpen = ref(false);
+// const modalAboutOpen = ref(false);
 
 const yearNow = new Date().getFullYear();
 
-const socials = [
+const snapshotTextLinks = [
   {
-    icon: 'twitter',
-    link: 'https://twitter.com/SnapshotLabs'
+    text: 'about',
+    link: {
+      name: 'about'
+    }
   },
   {
-    icon: 'discord',
-    link: 'https://discord.gg/snapshot'
+    text: 'blog',
+    link: 'https://snapshot.mirror.xyz/'
   },
   {
-    icon: 'telegram',
-    link: 'https://t.me/snapshotlabs'
+    text: 'jobs',
+    link: 'https://angel.co/company/snapshot-labs_/jobs'
+  }
+];
+
+const resourcesTextLinks = [
+  {
+    text: 'discussions',
+    link: 'https://github.com/snapshot-labs/snapshot/discussions'
   },
   {
-    icon: 'github',
-    link: `https://github.com/snapshot-labs`
+    text: 'github',
+    link: 'https://github.com/snapshot-labs'
   },
   {
-    icon: 'gitbook',
+    text: 'docs',
     link: 'https://docs.snapshot.org/'
+  },
+  {
+    text: 'support',
+    link: 'https://discord.snapshot.org/'
   }
 ];
 </script>
 
 <template>
-  <div class="-mt-3 space-y-4 border-t py-6">
-    <BaseContainer
-      class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
-    >
-      <div class="mx-auto md:mx-0">
-        <div class="mb-2 text-md text-skin-link">
-          {{ $t('newsletter.title') }}
+  <div class="-mt-3 border-t" />
+  <BaseContainer class="space-y-5 py-[40px]">
+    <div class="space-y-5 md:flex md:space-y-0">
+      <div>
+        <div class="mx-auto md:mx-0">
+          <FooterTitle class="mb-2 text-center md:text-left">
+            {{ $t('newsletter.title') }}
+          </FooterTitle>
+
+          <InputNewsletter tag="6449077" class="relative mx-auto w-[300px]" />
         </div>
 
-        <InputNewsletter tag="6449077" class="relative w-[300px]" />
+        <div class="hidden md:block lg:hidden">
+          <FooterSocials />
+        </div>
       </div>
+      <div
+        class="flex justify-center space-x-[70px] text-center md:w-full md:text-left lg:ml-[60px] lg:justify-start"
+      >
+        <FooterLinks>
+          <FooterTitle> Snapshot </FooterTitle>
+          <FooterLinksItem
+            v-for="item in snapshotTextLinks"
+            :key="item.text"
+            :link="item.link"
+          >
+            {{ $t(`footerView.${item.text}`) }}
+            <BasePill
+              v-if="item.text === 'jobs'"
+              class="ml-1 inline-block !rounded px-1 py-0 text-xs"
+            >
+              {{ $t('footerView.hiring') }}
+            </BasePill>
+          </FooterLinksItem>
+        </FooterLinks>
 
-      <div class="">
-        <div class="hidden pb-1 text-md text-skin-link md:block">
-          {{ $t('joinCommunity') }}
-        </div>
-        <div class="flex justify-center space-x-3 pt-2">
-          <span v-for="social in socials" :key="social">
-            <BaseLink :link="social.link" hide-external-icon>
-              <BaseIcon
-                size="30"
-                class="text-skin-text opacity-80 transition-opacity hover:opacity-100"
-                :name="social.icon"
-              />
-            </BaseLink>
-          </span>
-        </div>
+        <FooterLinks>
+          <FooterTitle> {{ $t('footerView.resources') }} </FooterTitle>
+
+          <FooterLinksItem
+            v-for="item in resourcesTextLinks"
+            :key="item.text"
+            :link="item.link"
+          >
+            {{ $t(`footerView.${item.text}`) }}
+          </FooterLinksItem>
+        </FooterLinks>
       </div>
-    </BaseContainer>
-    <BaseContainer
-      class="flex flex-col items-center space-y-4 md:flex-row md:space-y-0 md:space-x-3"
-    >
-      <div class="flex space-x-2 md:ml-auto">
+      <div class="pb-1 md:hidden lg:mt-0 lg:block">
+        <FooterSocials />
+      </div>
+    </div>
+
+    <!-- <div class="flex space-x-2 md:ml-auto">
         <ButtonSidebar @click="modalAboutOpen = true">
           <span class="text-skin-link">?</span>
         </ButtonSidebar>
@@ -73,20 +106,11 @@ const socials = [
         </ButtonSidebar>
 
         <ButtonLanguage class="!h-[42px]" />
-      </div>
-      <div
-        class="!ml-0 whitespace-nowrap opacity-40 md:order-first md:pt-0 md:pr-2"
-      >
-        © {{ yearNow }} Snapshot Labs.
-      </div>
-    </BaseContainer>
-
-    <teleport to="#modal">
-      <ModalAbout
-        :open="modalAboutOpen"
-        @close="modalAboutOpen = false"
-        @openLang="modalLangOpen = true"
-      />
-    </teleport>
-  </div>
+      </div> -->
+    <div
+      class="whitespace-nowrap text-center opacity-40 md:text-left lg:!-mt-4"
+    >
+      © {{ yearNow }} Snapshot Labs.
+    </div>
+  </BaseContainer>
 </template>
