@@ -144,7 +144,7 @@ export async function decodeContractTransaction(
 }
 
 function getMethodSignature(data: string) {
-  const methodSignature = data.substr(0, 10);
+  const methodSignature = data.slice(0, 10);
   if (isHexString(methodSignature) && methodSignature.length === 10) {
     return methodSignature;
   }
