@@ -333,9 +333,9 @@
       "information": "Authors are able to create proposals without having to pass validation."
     },
     "proposalValidation": "Validação da proposta",
-    "validation": "Validação",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "Permitir apenas autores para submeter a proposta",
