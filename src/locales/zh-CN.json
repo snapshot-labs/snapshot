@@ -11,7 +11,7 @@
   "retry": "重试",
   "currentResults": "当前结果",
   "reset": "重置",
-  "close": "Close",
+  "close": "关闭",
   "save": "保存",
   "author": "作者",
   "next": "下一页",
@@ -51,6 +51,7 @@
   "toggleSkin": "切换皮肤",
   "about": "关于",
   "license": "许可证",
+  "voted": "已投票",
   "ipfsServer": "IPFS 服务器",
   "hub": "中心",
   "cancel": "取消",
@@ -134,7 +135,7 @@
   "confirmAction": "确认操作",
   "or": "或者",
   "share": "分享",
-  "shareOnTwitter": "Share on Twitter",
+  "shareOnTwitter": "分享到 Twitter",
   "createButton": "创建",
   "discussion": "讨论",
   "changeWallet": "更换钱包",
@@ -230,12 +231,12 @@
     "endDate": "结束日期",
     "votingSystem": "投票制度",
     "postVoteModal": {
-      "defaultTitle": "Your vote is in!",
-      "gnosisSafeTitle": "Your vote is pending...",
-      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
-      "seeQueue": "See queued transactions",
+      "defaultTitle": "投票成功！",
+      "gnosisSafeTitle": "您的投票正在等待...",
+      "gnosisSafeDescription": " 安全投票需要额外的签名者并在确认交易后可见",
+      "seeQueue": "查看队列中的交易",
       "tips": {
-        "1": "Votes can be changed while the proposal is active"
+        "1": "投票可以在提案处于活动状态时更改"
       }
     }
   },
@@ -297,13 +298,13 @@
       "information": "子空格仅在主空格和子空格配置后才会显示。 {docs}",
       "parent": {
         "label": "主空间",
-        "placeholder": "fabien.eth",
+        "placeholder": "pistachiodao.eth",
         "information": "此空间作为子空间的空间将显示在空间页面上"
       },
       "children": {
         "label": "子空间",
-        "placeholder": "fabien.eth",
-        "information": "此处列出的相关子空间将显示在空间页面上"
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
       }
     },
     "website": "网站",

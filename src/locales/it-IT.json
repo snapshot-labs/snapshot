@@ -51,6 +51,7 @@
   "toggleSkin": "Toggle skin",
   "about": "Chi siamo",
   "license": "Licenza",
+  "voted": "Voted",
   "ipfsServer": "Server IPFS",
   "hub": "Hub",
   "cancel": "Annulla",
@@ -297,13 +298,13 @@
       "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
       "parent": {
         "label": "Main space",
-        "placeholder": "fabien.eth",
+        "placeholder": "pistachiodao.eth",
         "information": "The space that this space is a sub-space of will be displayed on the space page"
       },
       "children": {
         "label": "Sub-spaces",
-        "placeholder": "fabien.eth",
-        "information": "Related sub-spaces listed here will be displayed on the space page"
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
       }
     },
     "website": "Website",
