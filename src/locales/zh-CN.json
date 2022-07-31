@@ -298,12 +298,12 @@
       "information": "子空格仅在主空格和子空格配置后才会显示。 {docs}",
       "parent": {
         "label": "主空间",
-        "placeholder": "fabien.eth",
+        "placeholder": "pistachiodao.eth",
         "information": "此空间作为子空间的空间将显示在空间页面上"
       },
       "children": {
         "label": "子空间",
-        "placeholder": "fabien.eth",
+        "placeholder": "pistachiodao.eth",
         "information": "Related Sub-spaces listed here will be displayed on the space page"
       }
     },
