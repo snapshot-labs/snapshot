@@ -130,7 +130,6 @@ onMounted(() => {
 
 <template>
   <TheLayout>
-    {{ currentStep }}
     <template #sidebar-left>
       <SetupSidebarStepper
         class="fixed hidden lg:block"
