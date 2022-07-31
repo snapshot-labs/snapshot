@@ -23,7 +23,9 @@ const isCollapsed = ref(true);
     <div
       v-if="title"
       class="flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
-      :class="{ 'border-b-0': hideBottomBorder || isCollapsed }"
+      :class="{
+        'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)
+      }"
     >
       <h4 class="flex items-center">
         <div>
