@@ -38,7 +38,7 @@ function handleSubmitPlugins(payload) {
 </script>
 
 <template>
-  <BaseBlock :title="$t('plugins')">
+  <BaseBlock :title="$t('plugins')" :is-collapsable="context === 'setup'">
     <div v-if="form.plugins">
       <div
         v-for="(name, index) in Object.keys(form.plugins).filter(

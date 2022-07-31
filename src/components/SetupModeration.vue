@@ -6,11 +6,8 @@ const emit = defineEmits(['next', 'back']);
   <h4 class="mb-2 px-4 md:px-0">
     {{ $t('setup.validationTitle') }}
   </h4>
-  <div class="space-y-4">
+  <div class="space-y-3">
     <SettingsValidationBlock context="setup" />
-
-    <SettingsAdminsBlock context="setup" />
-
     <SettingsAuthorsBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">

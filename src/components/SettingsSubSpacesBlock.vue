@@ -81,7 +81,10 @@ const removeChild = (child: string) => {
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.subspaces.label')">
+  <BaseBlock
+    :title="$t('settings.subspaces.label')"
+    :is-collapsable="context === 'setup'"
+  >
     <div class="space-y-2">
       <BaseMessageBlock level="info" class="mb-4">
         <i18n-t

@@ -50,7 +50,10 @@ function handleSubmitTreasury(treasury) {
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.treasuries.label')">
+  <BaseBlock
+    :title="$t('settings.treasuries.label')"
+    :is-collapsable="context === 'setup'"
+  >
     <div v-if="form.treasuries.length" class="mb-3 grid gap-3">
       <SettingsTreasuriesBlockItem
         :treasuries="form.treasuries"

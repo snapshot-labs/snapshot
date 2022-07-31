@@ -13,9 +13,7 @@ const steps = [
   { name: 'Strategy' },
   { name: 'Voting' },
   { name: 'Moderation' },
-  { name: 'Custom domain' },
-  { name: 'Treasury' },
-  { name: 'Plugins' }
+  { name: 'Accessory' }
 ];
 </script>
 

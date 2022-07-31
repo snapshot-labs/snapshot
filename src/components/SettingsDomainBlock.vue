@@ -14,7 +14,10 @@ const modalSkinsOpen = ref(false);
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.customDomain')">
+  <BaseBlock
+    :title="$t('settings.customDomain')"
+    :is-collapsable="context === 'setup'"
+  >
     <BaseMessageBlock level="info" class="mb-4">
       <i18n-t keypath="settings.domain.info" tag="span" scope="global">
         <template #docs>

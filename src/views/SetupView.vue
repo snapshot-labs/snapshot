@@ -23,9 +23,7 @@ enum Step {
   STRATEGY,
   VOTING,
   MODERATION,
-  CUSTOM_DOMAIN,
-  TREASURY,
-  PLUGINS
+  ACCESSORY
 }
 
 const route = useRoute();
@@ -178,23 +176,11 @@ onMounted(() => {
           @next="nextStep"
         />
 
-        <SetupCustomdomain
-          v-else-if="currentStep === Step.CUSTOM_DOMAIN && route.params.ens"
-          @back="previousStep"
-          @next="nextStep"
-        />
-
-        <SetupTreasury
-          v-else-if="currentStep === Step.TREASURY && route.params.ens"
-          @back="previousStep"
-          @next="nextStep"
-        />
-
-        <SetupPlugins
-          v-else-if="currentStep === Step.PLUGINS && route.params.ens"
+        <SetupAccessory
+          v-else-if="currentStep === Step.ACCESSORY && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
-          @next="handleSubmit"
+          @next="nextStep"
         />
       </template>
     </template>
