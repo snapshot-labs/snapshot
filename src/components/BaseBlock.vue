@@ -13,7 +13,7 @@ defineProps<{
   isCollapsable?: boolean;
 }>();
 
-const isCollapsed = ref(false);
+const isCollapsed = ref(true);
 </script>
 
 <template>
@@ -61,7 +61,7 @@ const isCollapsed = ref(false);
       <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
     </div>
     <div
-      v-else-if="!isCollapsed"
+      v-else-if="!isCollapsed || !isCollapsable"
       :class="!slim && 'p-4'"
       class="leading-5 sm:leading-6"
     >
