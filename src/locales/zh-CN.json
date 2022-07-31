@@ -304,7 +304,7 @@
       "children": {
         "label": "子空间",
         "placeholder": "fabien.eth",
-        "information": "此处列出的相关子空间将显示在空间页面上"
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
       }
     },
     "website": "网站",
