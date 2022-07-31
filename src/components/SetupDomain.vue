@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
@@ -16,8 +15,6 @@ const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
-
-const router = useRouter();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
@@ -39,13 +36,7 @@ const domainsWithoutExistingSpace = computed(() => {
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
-const nextStep = key => {
-  router.push({
-    name: 'setup',
-    params: { ens: key },
-    query: { step: 3 }
-  });
-};
+const emit = defineEmits(['next']);
 
 // handle periodic lookup (every 5s) while registering new domain
 let waitingForRegistrationInterval;
@@ -113,7 +104,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               :key="i"
               class="flex w-full items-center justify-between"
               :primary="domainsWithoutExistingSpace.length === 1"
-              @click="nextStep(ens.name)"
+              @click="emit('next', ens.name)"
             >
               {{ ens.name }}
               <BaseIcon name="go" size="22" class="-mr-2" />

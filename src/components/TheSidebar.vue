@@ -171,10 +171,7 @@ onMounted(() => {
     >
       <router-link
         :to="{
-          name: 'setup',
-          query: {
-            step: 1
-          }
+          name: 'setup'
         }"
       >
         <ButtonSidebar

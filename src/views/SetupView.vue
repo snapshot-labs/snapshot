@@ -15,6 +15,19 @@ import {
   useFlashNotification
 } from '@/composables';
 
+enum Step {
+  GETTING_STARTED,
+  ENS,
+  CONTROLLER,
+  PROFILE,
+  STRATEGY,
+  VOTING,
+  MODERATION,
+  CUSTOM_DOMAIN,
+  TREASURY,
+  PLUGINS
+}
+
 const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
@@ -22,31 +35,14 @@ const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
 const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
 
-onMounted(() => {
-  if (!route.query.step) router.push({ query: { step: 1 } });
-  else if (Number(route.query.step) > 3) router.push({ query: { step: 4 } });
-  else if (!web3Account.value) router.push({ query: { step: 1 } });
-  setPageTitle('page.title.setup');
-});
-
-const currentStep = computed(() => Number(route.query.step));
-
-function nextStep() {
-  router.push({ query: { step: currentStep.value + 1 } });
-}
-
-function previousStep() {
-  router.push({ query: { step: currentStep.value - 1 } });
-}
-
 const creatingSpace = ref(false);
 
 const { t } = useI18n();
 const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
-
 const { send } = useClient();
-
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
+const currentStep = computed(() => Number(route.query.step));
 
 async function checkIfSpaceExists() {
   await loadExtentedSpaces([route.params.ens as string]);
@@ -110,15 +106,36 @@ async function handleSubmit() {
     creatingSpace.value = false;
   }
 }
+
+function nextStep(ensKey = '') {
+  router.push({
+    params: ensKey ? { ens: ensKey } : {},
+    query: { step: currentStep.value + 1 }
+  });
+}
+
+function previousStep() {
+  router.push({ query: { step: currentStep.value - 1 } });
+}
+
+function pushStepOne() {
+  router.push({ query: { step: Step.GETTING_STARTED } });
+}
+
+onMounted(() => {
+  if (!route.query.step || !web3Account.value) pushStepOne();
+  setPageTitle('page.title.setup');
+});
 </script>
 
 <template>
   <TheLayout>
+    {{ currentStep }}
     <template #sidebar-left>
       <SetupSidebarStepper
         class="fixed hidden lg:block"
         :current-step="currentStep"
-        @change-step="value => router.push({ query: { step: value + 1 } })"
+        @change-step="value => router.push({ query: { step: value } })"
       />
     </template>
     <template #content-right>
@@ -126,53 +143,56 @@ async function handleSubmit() {
         <h1 class="mb-4" v-text="$t('setup.createASpace')" />
       </div>
       <template v-if="web3Account || currentStep === 1">
-        <SetupIntro v-if="currentStep === 1" />
+        <SetupIntro
+          v-if="currentStep === Step.GETTING_STARTED"
+          @next="nextStep"
+        />
 
-        <SetupDomain v-if="currentStep === 2" />
+        <SetupDomain v-if="currentStep === Step.ENS" @next="nextStep" />
 
         <SetupController
-          v-else-if="currentStep === 3 && route.params.ens"
+          v-else-if="currentStep === Step.CONTROLLER && route.params.ens"
           @next="nextStep"
         />
 
         <SetupProfile
-          v-else-if="currentStep === 4 && route.params.ens"
+          v-else-if="currentStep === Step.PROFILE && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupStrategy
-          v-else-if="currentStep === 5 && route.params.ens"
+          v-else-if="currentStep === Step.STRATEGY && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupVoting
-          v-else-if="currentStep === 6 && route.params.ens"
+          v-else-if="currentStep === Step.VOTING && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupModeration
-          v-else-if="currentStep === 7 && route.params.ens"
+          v-else-if="currentStep === Step.MODERATION && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
         <SetupCustomdomain
-          v-else-if="currentStep === 8 && route.params.ens"
+          v-else-if="currentStep === Step.CUSTOM_DOMAIN && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
         <SetupTreasury
-          v-else-if="currentStep === 9 && route.params.ens"
+          v-else-if="currentStep === Step.TREASURY && route.params.ens"
           @back="previousStep"
           @next="nextStep"
         />
 
         <SetupPlugins
-          v-else-if="currentStep === 10 && route.params.ens"
+          v-else-if="currentStep === Step.PLUGINS && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
           @next="handleSubmit"

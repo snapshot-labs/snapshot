@@ -4,6 +4,8 @@ import { useModal } from '@/composables/useModal';
 
 const { modalAccountOpen } = useModal();
 const { web3Account } = useWeb3();
+
+const emit = defineEmits(['next']);
 </script>
 
 <template>
@@ -18,11 +20,7 @@ const { web3Account } = useWeb3();
       <BaseButton
         primary
         class="float-right mt-4 w-full"
-        @click="
-          !web3Account
-            ? (modalAccountOpen = true)
-            : $router.push({ query: { step: 2 } })
-        "
+        @click="!web3Account ? (modalAccountOpen = true) : emit('next')"
       >
         {{ $t('getStarted') }}
       </BaseButton>
