@@ -8,6 +8,7 @@ const emit = defineEmits(['next', 'back']);
   </h4>
   <div class="space-y-3">
     <SettingsValidationBlock context="setup" />
+    <SettingsAdminsBlock context="setup" />
     <SettingsAuthorsBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">

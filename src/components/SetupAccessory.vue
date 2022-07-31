@@ -8,7 +8,6 @@ const emit = defineEmits(['back', 'next']);
 
 <template>
   <div class="space-y-3">
-    <SettingsAdminsBlock context="setup" />
     <SettingsDomainBlock context="setup" />
     <SettingsSubSpacesBlock context="setup" />
     <SettingsTreasuriesBlock context="setup" />

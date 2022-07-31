@@ -12,6 +12,7 @@ const { form, getValidation } = useSpaceForm(props.context);
   <BaseBlock
     :title="$t('settings.authors.label')"
     :information="$t('settings.authors.information')"
+    :is-collapsable="context === 'setup'"
   >
     <BaseBlock v-if="getValidation('members').message" class="mb-2 !border-red">
       <BaseIcon name="warning" class="mr-2 !text-red" />
