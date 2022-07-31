@@ -22,10 +22,14 @@ const isCollapsed = ref(true);
   >
     <div
       v-if="title"
-      class="flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
-      :class="{
-        'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)
-      }"
+      class="group flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
+      :class="[
+        {
+          'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)
+        },
+        { 'cursor-pointer': isCollapsable }
+      ]"
+      @click="isCollapsable ? (isCollapsed = !isCollapsed) : null"
     >
       <h4 class="flex items-center">
         <div>
@@ -49,8 +53,7 @@ const isCollapsed = ref(true);
       </div>
       <BaseButtonIcon
         v-if="isCollapsable"
-        class="pr-0"
-        @click="isCollapsed = !isCollapsed"
+        class="pr-0 group-hover:text-skin-link"
       >
         <i-ho-chevron-up :class="[{ 'rotate-180': isCollapsed }]" />
       </BaseButtonIcon>
@@ -62,12 +65,14 @@ const isCollapsed = ref(true);
       />
       <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
     </div>
-    <div
-      v-else-if="!isCollapsed || !isCollapsable"
-      :class="!slim && 'p-4'"
-      class="leading-5 sm:leading-6"
-    >
-      <slot />
-    </div>
+    <Transition name="fade">
+      <div
+        v-if="!loading && (!isCollapsed || !isCollapsable)"
+        :class="!slim && 'p-4'"
+        class="leading-5 sm:leading-6"
+      >
+        <slot />
+      </div>
+    </Transition>
   </div>
 </template>
