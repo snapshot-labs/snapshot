@@ -54,7 +54,6 @@ const isCollapsed = ref(true);
       <BaseButtonIcon
         v-if="isCollapsable"
         class="pr-0 group-hover:text-skin-link"
-        @click="isCollapsed = !isCollapsed"
       >
         <i-ho-chevron-up :class="[{ 'rotate-180': isCollapsed }]" />
       </BaseButtonIcon>
