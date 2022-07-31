@@ -333,9 +333,9 @@
       "information": "Authors are able to create proposals without having to pass validation."
     },
     "proposalValidation": "Validasi proposal",
-    "validation": "Validitas",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "Izinkan hanya penulis yang bisa membuat proposal",
