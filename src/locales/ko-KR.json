@@ -11,6 +11,7 @@
   "retry": "다시하기",
   "currentResults": "현재 결과",
   "reset": "초기화",
+  "close": "Close",
   "save": "저장",
   "author": "저자",
   "next": "다음",
@@ -133,6 +134,7 @@
   "confirmAction": "액션 확인",
   "or": "또는",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -226,7 +228,16 @@
     "vote": "투표",
     "startDate": "시작일",
     "endDate": "종료일",
-    "votingSystem": "투표 유형"
+    "votingSystem": "투표 유형",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "제안",

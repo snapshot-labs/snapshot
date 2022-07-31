@@ -11,6 +11,7 @@
   "retry": "リトライ",
   "currentResults": "現在の投票状況",
   "reset": "リセット",
+  "close": "Close",
   "save": "保存",
   "author": "作成者",
   "next": "次へ",
@@ -133,6 +134,7 @@
   "confirmAction": "アクションを確定する",
   "or": "または",
   "share": "共有する",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "作成する",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -226,7 +228,16 @@
     "vote": "投票する",
     "startDate": "開始日",
     "endDate": "終了日",
-    "votingSystem": "投票のシステム"
+    "votingSystem": "投票のシステム",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "提案",
