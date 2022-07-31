@@ -519,6 +519,7 @@ onMounted(async () => {
 
   <teleport to="#modal">
     <SafeSnapModalOptionApproval
+      :space-id="proposal.space.id"
       :minimum-bond="questionDetails?.minimumBond"
       :open="modalApproveDecisionOpen"
       :is-approved="questionDetails?.isApproved"

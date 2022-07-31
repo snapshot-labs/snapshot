@@ -7,6 +7,7 @@ import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
 
 export default {
   props: [
+    'spaceId',
     'open',
     'isApproved',
     'bond',
@@ -57,11 +58,10 @@ export default {
       this.$emit('close');
     },
     async getCriteriaLink() {
-      const { spaceId } = this.safesnap.config;
-      if (this.isValidEnsDomain(spaceId)) {
+      if (this.isValidEnsDomain(this.spaceId)) {
         try {
           this.criteriaLink = await getEnsTextRecord(
-            spaceId,
+            this.spaceId,
             'daorequirements'
           );
         } catch (err) {
