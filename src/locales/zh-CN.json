@@ -333,9 +333,9 @@
       "information": "作者可以创建提案而不必通过验证。"
     },
     "proposalValidation": "提案验证",
-    "validation": "验证",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "提案门槛",
+      "label": "Threshold",
       "information": "创建提案所需的最低投票权。"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
