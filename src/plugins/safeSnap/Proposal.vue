@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import Config from './components/Config.vue';
 import { computed } from 'vue';
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
-  proposal: any;
-  loadedResults: boolean;
+  proposal: Proposal;
 }>();
 
 const mapLegacyConfig = (config: Record<string, any>): Record<string, any> => {
@@ -38,7 +37,6 @@ const safeSnapInput = computed(
   <Config
     v-if="
       proposal.plugins.safeSnap &&
-      loadedResults &&
       safeSnapInput.safes.some(s => s.txs.length > 0)
     "
     :model-value="safeSnapInput"
