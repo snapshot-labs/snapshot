@@ -24,7 +24,7 @@ const steps = [
     <nav class="flex" aria-label="Progress">
       <ol role="list" class="space-y-4 pt-3">
         <li v-for="(step, i) in steps" :key="step.name">
-          <div v-if="currentStep > i + 1">
+          <div v-if="currentStep > i">
             <span class="flex items-center">
               <span
                 class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary"
@@ -45,7 +45,7 @@ const steps = [
             </span>
           </div>
           <div
-            v-else-if="currentStep === i + 1"
+            v-else-if="currentStep === i"
             class="flex items-center"
             aria-current="step"
           >

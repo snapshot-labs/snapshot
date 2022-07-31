@@ -136,7 +136,10 @@ onMounted(async () => {
       </div>
     </BaseBlock>
 
-    <BaseBlock :title="$t('create.period')">
+    <BaseBlock
+      :title="$t('create.period')"
+      :information="$t('create.votingPeriodExplainer')"
+    >
       <div class="space-y-2 md:flex md:space-x-3 md:space-y-0">
         <SpaceCreateVotingDateStart
           :delay="space.voting?.delay"

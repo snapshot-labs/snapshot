@@ -14,7 +14,7 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { ModuleTransaction, ProposalDetails } from './models';
+import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -31,7 +31,6 @@ import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export * from './constants';
-export * from './models';
 
 export * from './utils/abi';
 export * from './utils/safe';
@@ -50,7 +49,7 @@ export default class Plugin {
   public website = 'https://safe.gnosis.io';
   public options: any;
 
-  validateTransaction(transaction: ModuleTransaction) {
+  validateTransaction(transaction: SafeTransaction) {
     const addressEmptyOrValidate =
       transaction.to === '' || isAddress(transaction.to);
     return (
@@ -65,7 +64,7 @@ export default class Plugin {
   calcTransactionHash(
     network: string,
     moduleAddress: string,
-    transaction: ModuleTransaction
+    transaction: SafeTransaction
   ) {
     const chainId = parseInt(network);
     const domain = {
@@ -78,7 +77,7 @@ export default class Plugin {
   calcTransactionHashes(
     chainId: number,
     moduleAddress: string,
-    transactions: ModuleTransaction[]
+    transactions: SafeTransaction[]
   ) {
     const domain = {
       chainId: chainId,
@@ -98,7 +97,7 @@ export default class Plugin {
     moduleAddress: string,
     proposalId: string,
     txHashes: string[]
-  ): Promise<Omit<ProposalDetails, 'transactions'>> {
+  ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
     const provider: StaticJsonRpcProvider = getProvider(network);
     const question = await buildQuestion(proposalId, txHashes);
     const questionHash = solidityKeccak256(['string'], [question]);
@@ -312,7 +311,7 @@ export default class Plugin {
     moduleAddress: string,
     proposalId: string,
     txHashes: string[],
-    moduleTx: ModuleTransaction,
+    moduleTx: SafeTransaction,
     transactionIndex: number
   ) {
     const tx = await sendTransaction(

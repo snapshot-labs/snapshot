@@ -6,14 +6,14 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
-import { useSafesnap } from '@/plugins/safeSnap/composables/useSafesnap';
 
 import {
   useWeb3,
   useI18n,
   useIntl,
   useFlashNotification,
-  useTxStatus
+  useTxStatus,
+  useSafe
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
@@ -21,7 +21,7 @@ import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
-const { clearBatchError, setBatchError } = useSafesnap();
+const { clearBatchError, setBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
@@ -519,6 +519,7 @@ onMounted(async () => {
 
   <teleport to="#modal">
     <SafeSnapModalOptionApproval
+      :space-id="proposal.space.id"
       :minimum-bond="questionDetails?.minimumBond"
       :open="modalApproveDecisionOpen"
       :is-approved="questionDetails?.isApproved"

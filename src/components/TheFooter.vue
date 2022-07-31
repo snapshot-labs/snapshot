@@ -32,7 +32,7 @@ const socials = [
 </script>
 
 <template>
-  <div class="space-y-4 border-t py-6">
+  <div class="-mt-3 space-y-4 border-t py-6">
     <BaseContainer
       class="flex flex-col space-y-4 md:flex-row md:justify-between md:space-y-0 md:space-x-3"
     >

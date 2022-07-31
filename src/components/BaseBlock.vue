@@ -3,10 +3,6 @@ defineProps<{
   title?: string;
   counter?: number;
   slim?: boolean;
-  icon?: string;
-  iconClass?: string;
-  iconTooltip?: string;
-  iconHref?: string;
   loading?: boolean;
   hideBottomBorder?: boolean;
   label?: string;
@@ -43,22 +39,6 @@ defineProps<{
         >
           {{ label }}
         </div>
-        <BaseIcon
-          v-else-if="icon && !iconHref"
-          v-tippy="{ content: iconTooltip ? iconTooltip : null }"
-          :name="icon"
-          size="22"
-          :class="['float-right pt-1', iconClass]"
-        />
-        <BaseLink v-else-if="iconHref" :link="iconHref" hide-external-icon>
-          <BaseIcon
-            v-if="icon"
-            v-tippy="{ content: iconTooltip ? iconTooltip : null }"
-            :name="icon"
-            size="22"
-            :class="['float-right pt-1', iconClass]"
-          />
-        </BaseLink>
       </div>
     </div>
     <div v-if="loading" class="block px-4 py-4">
