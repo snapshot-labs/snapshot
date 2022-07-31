@@ -3,7 +3,6 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import mapKeys from 'lodash/fp/mapKeys';
 import { getAddress } from '@ethersproject/address';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
@@ -50,14 +49,13 @@ const strategyExample = computed(() => {
   return strategy.value?.examples?.[0];
 });
 
-const modalNetworksOpen = ref(false);
 const loading = ref(false);
 const strategyError = ref(null);
 const networkError = ref(null);
 const scores = ref(null);
 const form = ref({
   params: {},
-  network: 1,
+  network: '1',
   snapshot: '',
   addresses: []
 });
@@ -92,7 +90,7 @@ async function loadScores() {
     scores.value = await getScores(
       '',
       [strategyParams],
-      form.value.network.toString(),
+      form.value.network,
       form.value.addresses,
       parseInt(form.value.snapshot),
       import.meta.env.VITE_SCORES_URL + '/api/scores'
@@ -141,7 +139,7 @@ watch(
   strategyExample,
   () => {
     form.value.params = strategyExample.value?.strategy.params ?? defaultParams;
-    form.value.network = strategyExample.value?.network ?? 1;
+    form.value.network = strategyExample.value?.network ?? '1';
     form.value.addresses = strategyExample.value?.addresses ?? [];
   },
   { immediate: true }
@@ -179,24 +177,15 @@ onMounted(async () => {
         <div class="space-y-3">
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
-              <UiInput @click="modalNetworksOpen = true">
-                <template #selected>
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : $t('selectNetwork')
-                  }}
-                </template>
-                <template #label> {{ $t(`settings.network.label`) }} </template>
-              </UiInput>
-              <UiInput
+              <ComboboxNetwork
+                :network="form.network"
+                @select="value => (form.network = value)"
+              />
+              <BaseInput
                 v-model="form.snapshot"
+                :title="$t('snapshot')"
                 @update:modelValue="handleURLUpdate"
-              >
-                <template #label>
-                  {{ $t('snapshot') }}
-                </template>
-              </UiInput>
+              />
             </div>
             <BaseBlock
               v-if="networkError"
@@ -278,12 +267,4 @@ onMounted(async () => {
       </div>
     </template>
   </TheLayout>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-      @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
-    />
-  </teleport>
 </template>
