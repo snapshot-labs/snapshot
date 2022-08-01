@@ -73,7 +73,7 @@ const resourcesTextLinks = [
             {{ $t(`footerView.${item.text}`) }}
             <BasePill
               v-if="item.text === 'jobs'"
-              class="ml-1 inline-block !rounded px-1 py-0 text-xs"
+              class="ml-2 inline-block !rounded px-1 py-0 text-xs"
             >
               {{ $t('footerView.hiring') }}
             </BasePill>
