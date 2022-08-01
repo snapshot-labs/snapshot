@@ -299,12 +299,12 @@
       "parent": {
         "label": "Main space",
         "placeholder": "pistachiodao.eth",
-        "information": "The space that this space is a sub-space of will be displayed on the space page"
+        "information": "The the main space will be displayed on the space page"
       },
       "children": {
         "label": "Sub-spaces",
         "placeholder": "pistachiodao.eth",
-        "information": "Related Sub-spaces listed here will be displayed on the space page"
+        "information": "The sub-space(s) will be displayed on the space page"
       }
     },
     "website": "Website",
