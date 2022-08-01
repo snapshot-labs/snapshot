@@ -2,7 +2,10 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import { useSpaceForm, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { ERC20ABI } from '@/helpers/abi';
 
 const emit = defineEmits(['next']);
 
@@ -98,6 +101,7 @@ function nextStep() {
 
 const isTokenLoading = ref(false);
 const tokenError = ref('');
+
 async function getTokenInfo() {
   tokenError.value = '';
   isTokenLoading.value = true;
@@ -107,16 +111,37 @@ async function getTokenInfo() {
   );
   isTokenLoading.value = false;
 
-  if (!data?.[0]?.contract_name) {
-    tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
-    token.value = clone(defaultToken);
-    return;
+  if (data?.[0]?.contract_name) {
+    token.value.name = data[0].contract_name;
+    token.value.logo = data[0].logo_url;
+    token.value.symbol = data[0].contract_ticker_symbol;
+    token.value.decimals = data[0].contract_decimals;
+  } else {
+    try {
+      // TODO: use brovider(?)
+      const provider = new JsonRpcProvider(
+        networks[input.value.network].rpc[0]
+      );
+      token.value.name = await call(provider, ERC20ABI, [
+        input.value.address,
+        'name',
+        []
+      ]);
+      token.value.symbol = await call(provider, ERC20ABI, [
+        input.value.address,
+        'symbol',
+        []
+      ]);
+      token.value.decimals = await call(provider, ERC20ABI, [
+        input.value.address,
+        'decimals',
+        []
+      ]);
+    } catch {
+      tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
+      token.value = clone(defaultToken);
+    }
   }
-
-  token.value.name = data[0].contract_name;
-  token.value.logo = data[0].logo_url;
-  token.value.symbol = data[0].contract_ticker_symbol;
-  token.value.decimals = data[0].contract_decimals;
 }
 
 watch(
