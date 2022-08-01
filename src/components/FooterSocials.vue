@@ -39,7 +39,7 @@ const socials = [
             <i-s-discord class="text-[23px]" />
           </FooterSocialsItem>
           <FooterSocialsItem v-else-if="social.icon === 'telegram'">
-            <i-s-telegram class="text-[22px]" />
+            <i-s-telegram class="text-[21px]" />
           </FooterSocialsItem>
         </BaseLink>
       </span>
