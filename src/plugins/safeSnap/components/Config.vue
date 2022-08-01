@@ -1,11 +1,8 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { coerceConfig, isValidInput, getSafeHash } from '../index';
-import { useSafe } from '@/composables';
 
 import SafeTransactions from './SafeTransactions.vue';
-
-const { setConfig } = useSafe();
 
 export default {
   components: { SafeTransactions },
@@ -14,8 +11,7 @@ export default {
     'config', // the safeSnap plugin config of the current space
     'network', // network of the space (needed when mapping legacy plugin configs)
     'proposal',
-    'preview', // if true, renders a read-only view
-    'spaceId'
+    'preview' // if true, renders a read-only view
   ],
   emits: ['update:modelValue'],
   data() {
@@ -41,9 +37,6 @@ export default {
     }
 
     return { input };
-  },
-  mounted() {
-    setConfig({ spaceId: this.spaceId });
   },
   methods: {
     updateSafeTransactions() {

@@ -257,25 +257,24 @@ onMounted(async () => {
       <div v-else class="space-y-3">
         <BaseBlock>
           <div class="space-y-2">
-            <UiInput
+            <BaseInput
               v-model.trim="form.address"
+              :title="$t('delegate.to')"
               :placeholder="$t('delegate.addressPlaceholder')"
-              :error="validateToInput"
-            >
-              <template #label>{{ $t('delegate.to') }}</template>
-            </UiInput>
+              :error="{ message: validateToInput }"
+            />
             <div class="flex items-center space-x-2 px-2">
               <BaseSwitch v-model="specifySpaceChecked" />
               <span>{{ $t('setDelegationToSpace') }}</span>
             </div>
-            <UiInput
+            <BaseInput
               v-show="specifySpaceChecked"
               v-model.trim="form.id"
+              :title="$t('space')"
+              :loading="spaceLoading"
               placeholder="e.g. balancer.eth"
-              :error="validateSpaceInput"
-            >
-              <template #label>{{ $t('space') }}</template>
-            </UiInput>
+              :error="{ message: validateSpaceInput }"
+            />
           </div>
         </BaseBlock>
         <BaseBlock
@@ -381,7 +380,7 @@ onMounted(async () => {
       <BaseBlock>
         <BaseButton
           :disabled="!isValidForm && !!web3Account"
-          :loading="delegationLoading || spaceLoading"
+          :loading="delegationLoading"
           class="block w-full"
           primary
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
