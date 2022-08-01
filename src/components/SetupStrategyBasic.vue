@@ -35,38 +35,23 @@ const defaultToken = {
 const token = ref(clone(defaultToken));
 
 const strategy = computed(() => {
-  if (!token.value) return null;
+  let name = 'erc20-balance-of';
+  if (token.value.standard === 'ERC-721') {
+    name = 'erc721';
+  } else if (token.value.standard === 'ERC-1155') {
+    name = 'erc1155-balance-of';
+  }
 
-  const strategy: {
-    name: string;
-    network: string;
-    params: {
-      network: string;
-      address: string;
-      decimals?: string;
-      symbol?: string;
-    };
-  } = {
-    name: '',
+  return {
+    name,
     network: input.value.network,
     params: {
       network: input.value.network,
-      address: input.value.address
+      address: input.value.address,
+      decimals: token.value.decimals,
+      symbol: token.value.symbol
     }
   };
-
-  if (token.value.decimals) strategy.params.decimals = token.value.decimals;
-  if (token.value.symbol) strategy.params.symbol = token.value.symbol;
-
-  if (token.value.standard === 'ERC-20') {
-    strategy.name = 'erc20-balance-of';
-  } else if (token.value.standard === 'ERC-721') {
-    strategy.name = 'erc721';
-  } else if (token.value.standard === 'ERC-1155') {
-    strategy.name = 'erc1155-balance-of';
-  } else strategy.name = '';
-
-  return strategy;
 });
 
 function setFormValues() {
@@ -92,7 +77,10 @@ function setFormValues() {
 
 function nextStep() {
   emit('next');
-  if (!strategy.value?.params?.symbol) return setDefaultStrategy();
+  if (!strategy.value?.params?.symbol) {
+    setDefaultStrategy();
+    return;
+  }
 
   form.value.strategies = [];
   form.value.strategies.push(strategy.value);
