@@ -1504,10 +1504,10 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@snapshot-labs/lock@0.1.96":
-  version "0.1.96"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.96.tgz#729902e896422402319a414e985925a2fe791ccb"
-  integrity sha512-YbkpPAebVqMC46avlWysth6C7QK+5+QOVx75vqvh66bAQcNHUB3wY0J11Kno+VAANlr66WFWlSqbwcXNVf73wQ==
+"@snapshot-labs/lock@0.1.99":
+  version "0.1.99"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.99.tgz#0d888885e63390ade8921fc79bf19f7b43efb9b3"
+  integrity sha512-JnnSk7AHIJ0nSsBTUZVcLPw2Vwzf5yP/BfR2UKlTlkfEXT1wY7J9hactJKjcsi1qUg18LLXkpG8AYEdh9IWrwg==
   dependencies:
     "@coinbase/wallet-sdk" "^3.0.11"
     "@gnosis.pm/safe-apps-provider" "^0.8.0"
