@@ -80,7 +80,7 @@ function setFormValues() {
     };
 
     if (form.value.strategies[0].name === 'erc721') {
-      token.value.standard === 'ERC-721';
+      token.value.standard = 'ERC-721';
     } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
       token.value.standard = 'ERC-1155';
     }
