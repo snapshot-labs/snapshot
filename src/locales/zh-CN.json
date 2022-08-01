@@ -304,7 +304,7 @@
       "children": {
         "label": "子空间",
         "placeholder": "pistachiodao.eth",
-        "information": "Related Sub-spaces listed here will be displayed on the space page"
+        "information": "此处列出的相关子空间也将显示在空间页面上"
       }
     },
     "website": "网站",
@@ -333,9 +333,9 @@
       "information": "作者可以创建提案而不必通过验证。"
     },
     "proposalValidation": "提案验证",
-    "validation": "验证",
+    "validation": "类型",
     "proposalThreshold": {
-      "label": "提案门槛",
+      "label": "门槛",
       "information": "创建提案所需的最低投票权。"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
