@@ -98,7 +98,6 @@ watchEffect(() => {
             />
           </BaseButton>
           <NavbarNotifications v-if="web3Account && !domain" />
-          <ButtonLanguage v-if="domain" small />
         </div>
       </div>
     </BaseContainer>
