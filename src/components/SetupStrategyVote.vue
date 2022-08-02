@@ -1,21 +1,27 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { ref, computed, onMounted } from 'vue';
+import { useSpaceForm, useI18n } from '@/composables';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm();
+const { form } = useSpaceForm('setup');
+const { t } = useI18n();
 
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
-    name: name
+    value: name,
+    options: {
+      information:
+        name === 'whitelist'
+          ? t('setup.strategy.onePersonOneVote.whitelistInformation')
+          : t('setup.strategy.onePersonOneVote.ticketInformation')
+    }
   }));
 });
 
-const input = ref(votingItems.value[0]);
+const input = ref('whitelist');
 const symbol = ref('VOTE');
-
 const whitelist = ref([]);
 
 const strategy = computed(() => {
@@ -32,7 +38,7 @@ const strategy = computed(() => {
     }
   };
 
-  strategy.name = input.value.name;
+  strategy.name = input.value;
   strategy.params.symbol = symbol.value;
 
   if (strategy.name === 'whitelist')
@@ -41,6 +47,19 @@ const strategy = computed(() => {
   return strategy;
 });
 
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = form.value.strategies[0].name;
+    symbol.value = form.value.strategies[0].params.symbol;
+    if (form.value.strategies[0].name === 'whitelist') {
+      whitelist.value = form.value.strategies[0].params.addresses || [];
+    }
+  }
+}
+
 function nextStep() {
   emit('next');
   form.value.strategies = [];
@@ -48,13 +67,18 @@ function nextStep() {
   const symbol = strategy.value.params.symbol || 'VOTE';
   form.value.symbol = symbol;
 }
+
+onMounted(setFormValues);
 </script>
 
 <template>
   <div>
-    <BaseBlock title="Setup voting">
+    <BaseMessageBlock level="info" class="mb-3" is-responsive>
+      {{ t('setup.strategy.onePersonOneVote.votesEqualInfo') }}
+    </BaseMessageBlock>
+    <BaseBlock :title="t('setup.strategy.blockTitle')">
       <div class="space-y-3">
-        <div class="space-y-3 md:flex md:w-2/3 md:space-y-0 md:space-x-4">
+        <div class="space-y-3 md:w-2/3">
           <BaseListbox
             v-model="input"
             :items="votingItems"
@@ -64,25 +88,29 @@ function nextStep() {
             <template #selected="{ selectedItem }">
               <span>
                 {{
-                  selectedItem.name === 'whitelist'
+                  selectedItem.value === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
               </span>
             </template>
             <template #item="{ item }">
-              <span>
+              <span class="flex items-center gap-1">
                 {{
-                  item.name === 'whitelist'
+                  item.value === 'whitelist'
                     ? 'Whitelist voting'
                     : 'Ticket voting'
                 }}
+                <IconInformationTooltip
+                  :information="item.options.information"
+                  class="text-skin-text"
+                />
               </span>
             </template>
           </BaseListbox>
           <BaseInput v-model="symbol" title="Symbol" />
         </div>
-        <div v-if="input.name === 'whitelist'" class="md:w-2/3">
+        <div v-if="input === 'whitelist'" class="md:w-2/3">
           <LabelInput> Whitelisted addresses </LabelInput>
           <TextareaArray
             v-model="whitelist"
@@ -92,10 +120,8 @@ function nextStep() {
         </div>
       </div>
     </BaseBlock>
-    <div class="float-right mx-4 mt-4 md:mx-0">
-      <BaseButton primary @click="nextStep">
-        {{ $t('next') }}
-      </BaseButton>
+    <div class="float-right mx-4 md:mx-0">
+      <SetupButtonNext text="next" @click="nextStep" />
     </div>
   </div>
 </template>

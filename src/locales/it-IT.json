@@ -11,6 +11,7 @@
   "retry": "Retry",
   "currentResults": "Risultati Correnti",
   "reset": "Ripristina predefiniti",
+  "close": "Close",
   "save": "Salva",
   "author": "Autore",
   "next": "Avanti >",
@@ -50,6 +51,7 @@
   "toggleSkin": "Toggle skin",
   "about": "Chi siamo",
   "license": "Licenza",
+  "voted": "Voted",
   "ipfsServer": "Server IPFS",
   "hub": "Hub",
   "cancel": "Annulla",
@@ -120,6 +122,8 @@
   "join": "Entra",
   "joined": "Iscritto",
   "leave": "Abbandona",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "Copia link",
   "duplicateProposal": "Duplica proposta",
   "joinedSpaces": "Iscritto a uno spazio",
@@ -131,6 +135,7 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -224,7 +229,16 @@
     "vote": "Vota",
     "startDate": "Data di inizio",
     "endDate": "Data di fine",
-    "votingSystem": "Meccanismo di voto:"
+    "votingSystem": "Meccanismo di voto:",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "Proposte",
@@ -257,6 +271,7 @@
     "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
+    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
     "set": "Set",
     "profile": "Profilo",
     "avatar": "Avatar",
@@ -278,6 +293,20 @@
     },
     "hideSpace": "Nascondi lo spazio dalla pagina iniziale",
     "links": "Social accounts",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "pistachiodao.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",
@@ -304,9 +333,9 @@
       "information": "Authors are able to create proposals without having to pass validation."
     },
     "proposalValidation": "Validazione proposta",
-    "validation": "Validazione",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "Permetti solo ai membri di presentare una proposta",
@@ -385,16 +414,22 @@
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
+      "subtitle": "You can change your strategy settings any time.",
+      "blockTitle": "Setup voting strategy",
       "onePersonOneVote": {
         "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "whitelistInformation": "Specify a number of accounts that can vote",
+        "ticketInformation": "Any account can vote",
+        "votesEqualInfo": "Each vote is equal and no token is required"
       },
       "tokenVoting": {
         "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
+        "tokenNotFound": "Token not found"
       },
       "advanced": {
-        "title": "Advanced settings",
+        "title": "Custom setup",
         "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
       }
     },

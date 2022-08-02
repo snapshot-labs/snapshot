@@ -8,7 +8,7 @@ import {
 import { BigNumberish } from '@ethersproject/bignumber';
 import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
-import { ABI } from '../models';
+import { ABI } from '@/helpers/interfaces';
 import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './index';
 
 export function isArrayParameter(parameter: string): boolean {

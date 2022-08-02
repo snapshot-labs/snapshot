@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
-import { useStore } from '@/composables/useStore';
-import { useI18n } from '@/composables/useI18n';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { ExtendedSpace } from '@/helpers/interfaces';
+import {
+  useProposals,
+  useI18n,
+  useInfiniteLoader,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useUnseenProposals
+} from '@/composables';
 
 const props = defineProps<{
-  space: {
-    id: string;
-    name: string;
-    members: string[];
-    about: string;
-  };
+  space: ExtendedSpace;
 }>();
 
-const { store } = useStore();
+const { store, userVotedProposalIds, setSpaceFilter } = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -95,8 +93,7 @@ const loadingData = computed(() => {
 });
 
 function selectState(e) {
-  store.space.filterBy = e;
-  store.space.proposals = [];
+  setSpaceFilter(e);
   load();
 }
 
@@ -184,6 +181,7 @@ onMounted(() => {
           :proposal="proposal"
           :profiles="profiles"
           :space="space"
+          :voted="userVotedProposalIds.includes(proposal.id)"
           class="border-b first:border-t"
         />
       </div>

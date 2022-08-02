@@ -1,5 +1,8 @@
 <script>
 import Plugin from '../index';
+import { useWeb3 } from '@/composables/useWeb3';
+
+const { web3Account } = useWeb3();
 
 const APP_URL = 'https://galaxy.eco';
 const NO_OAT_IMAGE =
@@ -36,6 +39,9 @@ const STATES = {
   },
   ENDED: {
     buttonText: 'Campaign Ended'
+  },
+  REACHED_MINTING_CAP: {
+    buttonText: 'Reached Minting Cap'
   }
 };
 
@@ -47,14 +53,13 @@ const CLAIMING = 'CLAIMING';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  inject: ['web3'],
   props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
   data() {
     return {
       disabled: false,
       oats: {},
       loading: false,
-      plugin: new Plugin(),
+      plugin: new Plugin(this.space.plugins.projectGalaxy.api),
       currentState: NO_OAT,
       currentCampaignUrl: '',
       currentCampaignId: '',
@@ -67,7 +72,7 @@ export default {
   },
   computed: {
     web3Account() {
-      return this.web3.value.account;
+      return web3Account.value;
     },
     buttonText() {
       return STATES[this.currentState]
@@ -113,7 +118,7 @@ export default {
     }
   },
   async created() {
-    this.address = this.web3Account;
+    this.address = web3Account.value;
     this.loading = true;
     // get campain info from config
     this.getCampainInfo();
@@ -129,7 +134,8 @@ export default {
         this.oats = this.space.plugins.projectGalaxy.oats;
         this.currentCampaignUrl = this.oats[this.proposal.id];
         if (this.currentCampaignUrl) {
-          this.currentCampaignId = this.currentCampaignUrl.match(/[^/]\w+/g)[2];
+          this.currentCampaignId =
+            this.currentCampaignUrl.match(/[^/]+(?=\/$|$)/g)[0];
           this.currentState = WAIT_TO_START;
         } else {
           this.currentState = NO_OAT;
@@ -138,7 +144,7 @@ export default {
     },
     async action() {
       if (this.currentState === CLAIM) {
-        window.open(this.urlOAT, '_blank');
+        await this.claimOAT();
       }
     },
     // Check the state if the current state is loading
@@ -171,6 +177,22 @@ export default {
         this.oatImg = await this.plugin.getOATImage(campainId);
       } catch (e) {
         this.disabled = true;
+      }
+    },
+    // claim OAT
+    async claimOAT() {
+      try {
+        const success = await this.plugin.claim(
+          this.address,
+          this.currentCampaignId
+        );
+        if (success) {
+          this.currentState = CLAIMING;
+        } else {
+          await this.updateState();
+        }
+      } catch (e) {
+        await this.updateState();
       }
     }
   }

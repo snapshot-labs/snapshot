@@ -7,7 +7,7 @@
       size="24"
       class="pr-2 !align-middle text-skin-text"
     />
-    <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span">
+    <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span" scope="global">
       <template #docs>
         <BaseLink link="https://docs.snapshot.org/spaces/create">
           documentation</BaseLink

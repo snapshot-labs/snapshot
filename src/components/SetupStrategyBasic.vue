@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { ref, watch, computed, onMounted } from 'vue';
+import { useSpaceForm, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { ERC20ABI } from '@/helpers/abi';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceSettingsForm();
+const { form, setDefaultStrategy } = useSpaceForm('setup');
+const { t } = useI18n();
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
     id: i + 1,
-    name: name
+    value: name
   }));
 });
 
@@ -21,7 +25,9 @@ const input = ref({
 });
 
 const defaultToken = {
-  standard: tokenStandards.value[0],
+  name: '',
+  logo: '',
+  standard: tokenStandards.value[0].value,
   symbol: '',
   decimals: null
 };
@@ -29,54 +35,101 @@ const defaultToken = {
 const token = ref(clone(defaultToken));
 
 const strategy = computed(() => {
-  if (!token.value) return null;
+  let name = 'erc20-balance-of';
+  if (token.value.standard === 'ERC-721') {
+    name = 'erc721';
+  } else if (token.value.standard === 'ERC-1155') {
+    name = 'erc1155-balance-of';
+  }
 
-  const strategy: {
-    name: string;
-    network: string;
-    params: {
-      network: string;
-      address: string;
-      decimals?: string;
-      symbol?: string;
-    };
-  } = {
-    name: '',
+  return {
+    name,
     network: input.value.network,
     params: {
       network: input.value.network,
-      address: input.value.address
+      address: input.value.address,
+      decimals: token.value.decimals,
+      symbol: token.value.symbol
     }
   };
-
-  if (token.value.decimals) strategy.params.decimals = token.value.decimals;
-  if (token.value.symbol) strategy.params.symbol = token.value.symbol;
-
-  if (token.value.standard.name === 'ERC-20') {
-    strategy.name = 'erc20-balance-of';
-  } else if (token.value.standard.name === 'ERC-721') {
-    strategy.name = 'erc721';
-  } else if (token.value.standard.name === 'ERC-1155') {
-    strategy.name = 'erc1155-balance-of';
-  } else strategy.name = '';
-
-  return strategy;
 });
 
-function nextStep() {
-  emit('next');
-  if (strategy.value?.params?.symbol) {
-    form.value.strategies = [];
-    form.value.strategies.push(strategy.value);
-    form.value.symbol = strategy.value.params.symbol;
+function setFormValues() {
+  if (
+    form.value.strategies.length === 1 &&
+    !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
+  ) {
+    input.value = {
+      network: form.value.strategies[0].params.network,
+      address: form.value.strategies[0].params.address
+    };
+
+    if (form.value.strategies[0].name === 'erc721') {
+      token.value.standard = 'ERC-721';
+    } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
+      token.value.standard = 'ERC-1155';
+    }
+
+    token.value.symbol = form.value.strategies[0].params.symbol;
+    token.value.decimals = form.value.strategies[0].params.decimals;
   }
 }
 
+function nextStep() {
+  emit('next');
+  if (!strategy.value?.params?.symbol) {
+    setDefaultStrategy();
+    return;
+  }
+
+  form.value.strategies = [];
+  form.value.strategies.push(strategy.value);
+  form.value.symbol = strategy.value.params.symbol;
+}
+
+const isTokenLoading = ref(false);
+const tokenError = ref('');
+
 async function getTokenInfo() {
-  const res = await getTokenPrices(input.value.address, input.value.network);
-  if (!res.data) return (token.value = clone(defaultToken));
-  token.value.decimals = res.data[0].contract_decimals;
-  token.value.symbol = res.data[0].contract_ticker_symbol;
+  tokenError.value = '';
+  isTokenLoading.value = true;
+  const { data } = await getTokenPrices(
+    input.value.address,
+    input.value.network
+  );
+  isTokenLoading.value = false;
+
+  if (data?.[0]?.contract_name) {
+    token.value.name = data[0].contract_name;
+    token.value.logo = data[0].logo_url;
+    token.value.symbol = data[0].contract_ticker_symbol;
+    token.value.decimals = data[0].contract_decimals;
+  } else {
+    try {
+      // TODO: use brovider(?)
+      const provider = new JsonRpcProvider(
+        networks[input.value.network].rpc[0]
+      );
+      token.value.name = await call(provider, ERC20ABI, [
+        input.value.address,
+        'name',
+        []
+      ]);
+      token.value.symbol = await call(provider, ERC20ABI, [
+        input.value.address,
+        'symbol',
+        []
+      ]);
+      token.value.decimals = await call(provider, ERC20ABI, [
+        input.value.address,
+        'decimals',
+        []
+      ]);
+    } catch {
+      tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
+      token.value = clone(defaultToken);
+    }
+  }
 }
 
 watch(
@@ -86,11 +139,13 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(setFormValues);
 </script>
 
 <template>
   <div class="mt-4 space-y-4">
-    <BaseBlock title="Setup token voting">
+    <BaseBlock :title="$t('setup.strategy.blockTitle')">
       <div class="flex md:w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork
@@ -102,23 +157,43 @@ watch(
             :items="tokenStandards"
             label="Token standard"
           />
-          <BaseInput
-            v-model.trim="input.address"
-            title="Token contract"
-            placeholder="Enter address"
-            focus-on-mount
-          />
+          <div>
+            <BaseInput
+              v-model.trim="input.address"
+              title="Token contract"
+              placeholder="Enter address"
+              :error="{ message: !token.name ? tokenError : '', push: true }"
+              :loading="isTokenLoading"
+              focus-on-mount
+            />
 
-          <BaseInput
-            v-if="token.symbol"
-            v-model="token.symbol"
-            title="Symbol"
-          />
-          <BaseInput
-            v-if="token.decimals"
-            v-model="token.decimals"
-            title="Decimals"
-          />
+            <BaseBlock
+              v-if="token.name"
+              class="mt-3 space-x-1 text-left text-sm"
+            >
+              <div class="flex justify-between">
+                <div class="flex items-center gap-1">
+                  <AvatarToken
+                    v-if="token.logo"
+                    :src="token.logo"
+                    :address="token.address"
+                    class="mr-1"
+                    size="30"
+                  />
+
+                  <span class="text-skin-link"> {{ token.name }} </span>
+                  <span> ${{ token.symbol }} </span>
+                </div>
+                <BaseLink
+                  v-if="input.network == '1'"
+                  class="text-skin-text hover:text-skin-link"
+                  :link="`https://etherscan.io/token/${input.address}`"
+                >
+                  {{ $t('learnMore') }}
+                </BaseLink>
+              </div>
+            </BaseBlock>
+          </div>
         </div>
       </div>
     </BaseBlock>

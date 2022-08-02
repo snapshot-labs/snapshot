@@ -1,11 +1,12 @@
 <script setup>
-import { computed, inject, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
+import { useProposals } from '@/composables';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
@@ -28,10 +29,10 @@ const props = defineProps({
 const emit = defineEmits(['reload', 'close']);
 
 const { t } = useI18n();
-const notify = inject('notify');
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
+const { addVotedProposalId } = useProposals();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -44,10 +45,10 @@ async function handleSubmit() {
   });
   console.log('Result', result);
   if (result.id) {
-    notify(['green', t('notify.voteSuccessful')]);
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }
+    addVotedProposalId(props.proposal.id);
     emit('close');
   }
 }
@@ -59,13 +60,13 @@ watch(
     vpLoading.value = true;
     vpLoadingFailed.value = false;
     try {
-      const response = await getPower(
+      const result = await getPower(
         props.space,
         web3Account.value,
         props.proposal
       );
-      vp.value = response.totalScore;
-      vpByStrategy.value = response.scoresByStrategy;
+      vp.value = result.vp;
+      vpByStrategy.value = result.vp_by_strategy;
     } catch (e) {
       vpLoadingFailed.value = true;
       console.log(e);
@@ -154,8 +155,8 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || clientLoading"
-          :loading="clientLoading"
+          :disabled="vp === 0 || isSending"
+          :loading="isSending"
           type="submit"
           class="w-full"
           primary

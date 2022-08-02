@@ -1,9 +1,6 @@
 import { computed, reactive } from 'vue';
 
-interface SafesnapState {
-  config: {
-    spaceId: string;
-  };
+interface ExecutionStatus {
   batchError:
     | undefined
     | {
@@ -12,14 +9,11 @@ interface SafesnapState {
       };
 }
 
-const state = reactive<SafesnapState>({
-  config: {
-    spaceId: ''
-  },
+const state = reactive<ExecutionStatus>({
   batchError: undefined
 });
 
-export function useSafesnap() {
+export function useSafe() {
   function setBatchError(num: number, message: string) {
     state.batchError = { num, message };
   }
@@ -28,14 +22,9 @@ export function useSafesnap() {
     state.batchError = undefined;
   }
 
-  function setConfig(config: SafesnapState['config']) {
-    state.config = config;
-  }
-
   return {
     setBatchError,
     clearBatchError,
-    setConfig,
     safesnap: computed(() => state)
   };
 }
