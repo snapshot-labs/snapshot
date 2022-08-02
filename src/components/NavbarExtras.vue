@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
-import { useSkin } from '@/composables/useSkin';
+import { useApp } from '@/composables';
 
-const { toggleUserTheme, getThemeIcon } = useSkin();
+const { domain } = useApp();
 
 const commitSha = import.meta.env.VITE_COMMIT_SHA;
 
@@ -30,17 +30,11 @@ const navigationItems = [
       </ButtonSidebar>
     </template>
     <template #header>
-      <div class="w-[360px]">
+      <div class="w-[352px]">
         <div class="m-4 flex justify-between">
-          <ButtonSidebar
-            :aria-label="$t('toggleSkin')"
-            class="text-skin-link"
-            @click.stop="toggleUserTheme"
-          >
-            <i-ho-moon v-if="getThemeIcon() === 'moon'" />
-            <i-ho-sun v-if="getThemeIcon() === 'sun'" />
-          </ButtonSidebar>
-
+          <div>
+            <ButtonTheme v-if="!domain" />
+          </div>
           <ButtonLanguage class="!h-[42px]" />
         </div>
         <div class="group m-4 py-1">
@@ -57,8 +51,7 @@ const navigationItems = [
         <div class="mt-4 border-t">
           <div class="m-4 flex items-center justify-between">
             <FooterSocials class="inline-flex justify-start !pt-0" />
-            <div class="max-w-[100px] text-xs leading-4 opacity-40">
-              Snapshot
+            <div class="max-w-[100px] text-sm leading-4 opacity-40">
               <BaseLink
                 v-if="commitSha"
                 :link="`https://github.com/${pkg.repository}/tree/${commitSha}`"
