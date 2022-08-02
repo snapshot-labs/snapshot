@@ -13,8 +13,8 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
   return Object.keys(languages).map(locale => ({
     text:
       locale === 'en-US'
-        ? `${languages[locale].name} - ${locale.slice(3, 5)}`
-        : `${languages[locale].nativeName} - ${locale.slice(3, 5)}`,
+        ? languages[locale].name
+        : languages[locale].nativeName,
     action: locale
   }));
 });

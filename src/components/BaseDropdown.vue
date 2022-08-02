@@ -4,15 +4,16 @@ import { Placement } from '@popperjs/core';
 
 withDefaults(
   defineProps<{
-    items:
+    items?:
       | {
           action: string | any;
           text: string;
         }
-      | Record<string, any>[];
+      | Record<string, any>[]
+      | null;
     placement?: Placement;
   }>(),
-  { placement: 'bottom-end' }
+  { items: null, placement: 'bottom-end' }
 );
 
 const emit = defineEmits(['select']);
