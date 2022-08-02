@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// import { useSkin } from '@/composables/useSkin';
-// const { toggleUserTheme, getThemeIcon } = useSkin();
-
-// const modalAboutOpen = ref(false);
-
 const yearNow = new Date().getFullYear();
 
 const snapshotTextLinks = [
@@ -93,20 +88,13 @@ const resourcesTextLinks = [
         </FooterLinks>
       </div>
       <div class="pb-1 md:hidden lg:mt-0 lg:block">
+        <FooterTitle class="hidden whitespace-nowrap lg:block">
+          {{ $t('joinCommunity') }}
+        </FooterTitle>
         <FooterSocials />
       </div>
     </div>
 
-    <!-- <div class="flex space-x-2 md:ml-auto">
-        <ButtonSidebar @click="modalAboutOpen = true">
-          <span class="text-skin-link">?</span>
-        </ButtonSidebar>
-        <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
-          <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
-        </ButtonSidebar>
-
-        <ButtonLanguage class="!h-[42px]" />
-      </div> -->
     <div
       class="whitespace-nowrap text-center opacity-40 md:text-left lg:!-mt-4"
     >

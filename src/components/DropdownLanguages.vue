@@ -13,8 +13,8 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
   return Object.keys(languages).map(locale => ({
     text:
       locale === 'en-US'
-        ? languages[locale].name
-        : languages[locale].nativeName,
+        ? `${languages[locale].name} - ${locale.slice(3, 5)}`
+        : `${languages[locale].nativeName} - ${locale.slice(3, 5)}`,
     action: locale
   }));
 });
@@ -22,7 +22,11 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
 
 <template>
   <div>
-    <BaseDropdown :items="localeItems" @select="selectLang($event)">
+    <BaseDropdown
+      :items="localeItems"
+      placement="top-start"
+      @select="selectLang($event)"
+    >
       <template #button>
         <slot />
       </template>

@@ -17,6 +17,7 @@ const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
   useProfiles();
 
 const loading = ref(false);
+const isNavigationModalOpen = ref(false);
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
@@ -98,6 +99,12 @@ watchEffect(() => {
             />
           </BaseButton>
           <NavbarNotifications v-if="web3Account && !domain" />
+          <ButtonSidebar
+            class="relative !h-[46px] !w-[46px]"
+            @click="isNavigationModalOpen = true"
+          >
+            <i-ho-dots-horizontal class="text-skin-link" />
+          </ButtonSidebar>
         </div>
       </div>
     </BaseContainer>
@@ -115,6 +122,10 @@ watchEffect(() => {
       :profile="profile"
       @close="modalAccountOpen = false"
       @login="handleLogin"
+    />
+    <ModalNavigation
+      :open="isNavigationModalOpen"
+      @close="isNavigationModalOpen = false"
     />
   </teleport>
 </template>
