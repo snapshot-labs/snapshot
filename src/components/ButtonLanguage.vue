@@ -8,7 +8,7 @@ const modalLangOpen = ref(false);
 <template>
   <DropdownLanguages>
     <BaseButton
-      class="flex !h-[44px] w-full items-center"
+      class="flex !h-[44px] w-full items-center !text-skin-text"
       @click="modalLangOpen = true"
     >
       <i-ho-globe class="mr-2" />
