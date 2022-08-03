@@ -34,9 +34,13 @@ withDefaults(
         leave-from-class="transform opacity-100 scale-100"
         leave-to-class="transform opacity-0 scale-95"
       >
-        <PopoverPanel class="z-20 w-screen max-w-xs sm:max-w-sm">
+        <PopoverPanel class="z-20 w-screen max-w-xs outline-none sm:max-w-sm">
           <div class="overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg">
-            <slot name="content" />
+            <div
+              class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
+            >
+              <slot name="content" />
+            </div>
           </div>
         </PopoverPanel>
       </Transition>
