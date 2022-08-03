@@ -11,7 +11,7 @@ import {
 type ListboxItem = {
   id: number | string;
   value: any;
-  options?: any;
+  extras?: Record<string, any>;
 };
 
 const props = defineProps<{

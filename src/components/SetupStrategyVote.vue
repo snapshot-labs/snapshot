@@ -11,7 +11,7 @@ const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map((name, i) => ({
     id: i + 1,
     value: name,
-    options: {
+    extras: {
       information:
         name === 'whitelist'
           ? t('setup.strategy.onePersonOneVote.whitelistInformation')
@@ -102,7 +102,7 @@ onMounted(setFormValues);
                     : 'Ticket voting'
                 }}
                 <IconInformationTooltip
-                  :information="item.options.information"
+                  :information="item.extras?.information"
                   class="text-skin-text"
                 />
               </span>
