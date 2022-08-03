@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { usePointer, debouncedWatch } from '@vueuse/core';
-import { Placement } from '@popperjs/core';
+import { createPopper, Placement } from '@popperjs/core';
 
-defineProps<{
+const props = defineProps<{
   options: { placement: Placement; offset: number[] };
 }>();
 
@@ -21,22 +21,44 @@ debouncedWatch(
   },
   { debounce: 500 }
 );
+
+const itemref = ref<HTMLElement | null>(null);
+const contentref = ref(null);
+
+let popperInstance;
+
+onMounted(() => {
+  if (!itemref.value || !contentref.value) return;
+  popperInstance = createPopper(itemref.value, contentref.value, {
+    placement: props.options.placement,
+    modifiers: [
+      {
+        name: 'offset',
+        options: {
+          offset: props.options.offset
+        }
+      }
+    ]
+  });
+});
+
+watch(open, () => {
+  popperInstance.setOptions({ placement: props.options.placement });
+});
 </script>
 
 <template>
-  <BasePopover :options="options" :open="open">
-    <template #item>
-      <div @mouseenter="itemHovered = true" @mouseleave="itemHovered = false">
-        <slot name="item" />
-      </div>
-    </template>
-    <template #content>
-      <div
-        @mouseenter="contentHovered = true"
-        @mouseleave="contentHovered = false"
-      >
-        <slot name="content" />
-      </div>
-    </template>
-  </BasePopover>
+  <div ref="itemref" class="h-full">
+    <div @mouseenter="itemHovered = true" @mouseleave="itemHovered = false">
+      <slot name="item" />
+    </div>
+  </div>
+  <div v-show="open" ref="contentref" class="z-50" @click.prevent.self>
+    <div
+      @mouseenter="contentHovered = true"
+      @mouseleave="contentHovered = false"
+    >
+      <slot name="content" />
+    </div>
+  </div>
 </template>
