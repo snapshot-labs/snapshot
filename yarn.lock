@@ -7970,10 +7970,10 @@ vitest-fetch-mock@^0.2.1:
   dependencies:
     cross-fetch "^3.0.6"
 
-vitest@^0.20.2:
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.20.2.tgz#0c47f517fe8ede3f63d13b59b0a278364829863e"
-  integrity sha512-AFXTHrwG4d2OO6SAL8WP5ZkOwLtgeF4tlrHfXFqrHc+5chNegeR53pge0lv/C4316SqJ2DbYaUBH8vh3CdF+BQ==
+vitest@^0.20.3:
+  version "0.20.3"
+  resolved "https://registry.yarnpkg.com/vitest/-/vitest-0.20.3.tgz#24e0744fd1671a9a5d9cf8876281eae65e8d3be6"
+  integrity sha512-cXMjTbZxBBUUuIF3PUzEGPLJWtIMeURBDXVxckSHpk7xss4JxkiiWh5cnIlfGyfJne2Ii3QpbiRuFL5dMJtljw==
   dependencies:
     "@types/chai" "^4.3.1"
     "@types/chai-subset" "^1.3.3"
