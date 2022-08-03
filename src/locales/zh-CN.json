@@ -335,7 +335,7 @@
     "proposalValidation": "提案验证",
     "validation": "类型",
     "proposalThreshold": {
-      "label": "门槛",
+      "label": "阈值",
       "information": "创建提案所需的最低投票权。"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
@@ -679,5 +679,16 @@
     "description": "Snapshot是一个去中心化的治理平台，这使得用户很容易创建提案并就其进行表决，所有这些提案都不需要花费gas！ 此外，我们的灵活系统支持各种投票类型和策略，以便您可以根据您的需要调整投票过程。",
     "subHeader": "治理应该是一种快照",
     "subDescription": "Web3管理不一定要复杂。 Snapshot是各组织寻求一种简单有效的方法来管理其社区或组织的完美解决办法。"
+  },
+  "footerView": {
+    "resources": "资源",
+    "about": "关于",
+    "blog": "博客",
+    "jobs": "工作机会",
+    "discussions": "讨论",
+    "github": "GitHub",
+    "docs": "文档",
+    "support": "支持",
+    "hiring": "加入我们！"
   }
 }
