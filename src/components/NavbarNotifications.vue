@@ -16,8 +16,6 @@ const {
 
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 
-const dropdownOpen = ref(false);
-
 function selectThreedotItem(e) {
   if (e === 'markAllAsRead') markAllAsRead();
 }
@@ -30,14 +28,10 @@ onMounted(() => loadNotifications());
     :items="notificationsSortedByTime"
     placement="bottom-end"
     @select="selectNotification"
-    @openChange="dropdownOpen = !dropdownOpen"
   >
     <template #button>
-      <ButtonSidebar
-        class="relative !h-[46px] !w-[46px]"
-        :class="{ '!border-skin-link': dropdownOpen }"
-      >
-        <BaseIcon class="text-skin-link" size="20" name="notificationsnone" />
+      <ButtonSidebar class="relative !h-[46px] !w-[46px]">
+        <i-ho-bell class="text-skin-link" />
         <BaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
           class="absolute right-0 bottom-0 !bg-red"
