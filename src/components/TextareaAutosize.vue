@@ -52,7 +52,7 @@ function resize() {
         maxHeightScroll.value = false;
       }
     }
-    const heightVal = contentHeight + 'px';
+    const heightVal = `${contentHeight}px`;
     height.value = heightVal;
   });
   return;

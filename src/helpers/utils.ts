@@ -87,10 +87,10 @@ export function formatAmount(amount, maxDecimals) {
   if (maxDecimals && out.includes('.')) {
     const parts = out.split('.');
     if (parts[1].length > maxDecimals) {
-      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
+      out = `~${parts[0]}.${parts[1].slice(0, maxDecimals)}`;
     }
   }
-  return out + ' ETH';
+  return `${out} ETH`;
 }
 
 export function parseAmount(input) {

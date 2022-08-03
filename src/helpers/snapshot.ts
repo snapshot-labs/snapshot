@@ -71,7 +71,7 @@ export async function getResults(space, proposal, votes) {
       proposal.network,
       voters,
       parseInt(proposal.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
     console.timeEnd('getProposal.scores');
     console.log('Got scores');
