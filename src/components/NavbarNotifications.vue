@@ -24,11 +24,7 @@ onMounted(() => loadNotifications());
 </script>
 
 <template>
-  <BaseDropdown
-    :items="notificationsSortedByTime"
-    placement="bottom-end"
-    @select="selectNotification"
-  >
+  <BaseDropdown :items="notificationsSortedByTime" @select="selectNotification">
     <template #button>
       <ButtonSidebar class="relative !h-[46px] !w-[46px]">
         <i-ho-bell class="text-skin-link" />
@@ -49,7 +45,6 @@ onMounted(() => loadNotifications());
                 action: 'markAllAsRead'
               }
             ]"
-            placement="bottom-end"
             @select="selectThreedotItem"
           >
             <template #button>

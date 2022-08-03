@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
 import { useApp } from '@/composables';
+import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 
 const { domain } = useApp();
 
@@ -23,14 +24,14 @@ const navigationItems = [
 </script>
 
 <template>
-  <BaseDropdown :items="null" placement="bottom-end">
+  <BasePopover>
     <template #button>
       <ButtonSidebar class="relative !h-[46px] !w-[46px]">
         <i-ho-dots-horizontal class="text-skin-link" />
       </ButtonSidebar>
     </template>
-    <template #header>
-      <div class="w-[352px]">
+    <template #content>
+      <div>
         <div class="m-4 flex justify-between">
           <div>
             <ButtonTheme v-if="!domain" />
@@ -38,14 +39,15 @@ const navigationItems = [
           <ButtonLanguage class="!h-[42px]" />
         </div>
         <div class="group m-4 py-1">
-          <BaseLink
+          <PopoverButton
             v-for="item in navigationItems"
             :key="item.name"
-            :link="{ name: item.link }"
-            class="block py-1 pr-[100px] text-xl hover:!text-skin-link group-hover:text-skin-text"
+            as="div"
+            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link group-hover:text-skin-text"
+            @click="$router.push({ name: item.link })"
           >
             {{ item.name }}
-          </BaseLink>
+          </PopoverButton>
         </div>
 
         <div class="mt-4 border-t">
@@ -64,5 +66,5 @@ const navigationItems = [
         </div>
       </div>
     </template>
-  </BaseDropdown>
+  </BasePopover>
 </template>
