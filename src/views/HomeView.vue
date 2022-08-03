@@ -1,28 +1,19 @@
 <script setup>
 import { ref, watchEffect, onMounted } from 'vue';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useSpaces } from '@/composables/useSpaces';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useCategories } from '@/composables/useCategories';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
-import { useI18n } from '@/composables/useI18n';
+import {
+  useUnseenProposals,
+  useScrollMonitor,
+  useFollowSpace,
+  useSpaces,
+  useIntl,
+  useI18n
+} from '@/composables';
 
-const {
-  selectedCategory,
-  orderedSpaces,
-  orderedSpacesByCategory,
-  spacesLoaded
-} = useSpaces();
+const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { followingSpaces } = useFollowSpace();
-const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
-
-function selectCategory(c) {
-  selectedCategory.value = c === selectedCategory.value ? '' : c;
-}
 
 const { getProposals } = useUnseenProposals();
 watchEffect(() => getProposals(followingSpaces.value));
@@ -60,52 +51,9 @@ onMounted(() => {
       >
         <TheSearchBar />
       </BaseButton>
-      <BaseDropdown
-        class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
-        :items="[
-          {
-            text: $tc('explore.categories.all'),
-            action: '',
-            count: orderedSpaces.length,
-            selected: !selectedCategory
-          },
-          ...categoriesOrderedBySpaceCount
-            .filter(c => spacesPerCategory[c])
-            .map(c => ({
-              text: $tc('explore.categories.' + c),
-              action: c,
-              count: spacesPerCategory[c],
-              selected: selectedCategory === c
-            }))
-        ]"
-        @select="selectCategory($event)"
-      >
-        <template #button>
-          <BaseButton
-            class="w-full whitespace-nowrap pr-3"
-            :disabled="!orderedSpaces.length"
-          >
-            <div class="leading-2 flex items-center leading-3">
-              <i-ho-view-grid class="mr-2 text-xs" />
-              <span v-if="selectedCategory">
-                {{ $tc('explore.categories.' + selectedCategory) }}
-              </span>
-              <span v-else>
-                {{ $tc('explore.categories.all') }}
-              </span>
-              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
-            </div>
-          </BaseButton>
-        </template>
-        <template #item="{ item }">
-          <div class="flex">
-            <span class="mr-3">{{ item.text }}</span>
-            <span class="ml-auto mt-[-3px] flex">
-              <BaseCounter :counter="item.count" class="my-auto" />
-            </span>
-          </div>
-        </template>
-      </BaseDropdown>
+
+      <ExploreListboxCategories />
+
       <div
         v-if="spacesLoaded"
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:mt-0 xs:ml-auto"
@@ -131,7 +79,6 @@ onMounted(() => {
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
-            <!-- Added mb-0 to remove mb-4 added by block component -->
             <BaseBlock
               class="mb-0 flex items-center justify-center text-center transition-all hover:border-skin-text"
               style="height: 266px"

@@ -8,6 +8,7 @@ import { mapOldPluginNames } from '@/helpers/utils';
 
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
+const selectedCategory = ref('');
 
 export function useSpaces() {
   const route = useRoute();
@@ -38,8 +39,6 @@ export function useSpaces() {
     spaces.value = exploreObj.spaces;
     spacesLoaded.value = true;
   }
-
-  const selectedCategory = ref('');
 
   const testnetNetworks = Object.entries(networks)
     .filter((network: any) => network[1].testnet)

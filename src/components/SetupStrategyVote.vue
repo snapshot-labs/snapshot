@@ -8,8 +8,7 @@ const { form } = useSpaceForm('setup');
 const { t } = useI18n();
 
 const votingItems = computed(() => {
-  return ['whitelist', 'ticket'].map((name, i) => ({
-    id: i + 1,
+  return ['whitelist', 'ticket'].map(name => ({
     value: name,
     extras: {
       information:

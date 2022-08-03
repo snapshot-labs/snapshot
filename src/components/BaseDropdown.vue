@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, onBeforeUnmount } from 'vue';
-import { Placement } from '@popperjs/core';
 
 withDefaults(
   defineProps<{
@@ -11,9 +10,8 @@ withDefaults(
         }
       | Record<string, any>[]
       | null;
-    placement?: Placement;
   }>(),
-  { items: null, placement: 'bottom-end' }
+  { items: null }
 );
 
 const emit = defineEmits(['select']);
@@ -37,50 +35,33 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
 </script>
 
 <template>
-  <div ref="dropdownEl" class="h-full">
-    <BasePopover :options="{ offset: [0, 12], placement }" :open="open">
-      <template #item>
-        <div
-          class="flex h-full w-full cursor-pointer items-center"
-          @click="open = !open"
-        >
-          <slot name="button" />
-        </div>
-      </template>
+  <div ref="dropdownEl" class="relative h-full">
+    <div
+      class="flex h-full w-full cursor-pointer items-center"
+      @click="open = !open"
+    >
+      <slot name="button" />
+    </div>
 
-      <template #content>
-        <Transition
-          enter-active-class="transition ease-out duration-100"
-          enter-from-class="transform opacity-0 scale-95"
-          enter-to-class="transform opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-75"
-          leave-from-class="transform opacity-100 scale-100"
-          leave-to-class="transform opacity-0 scale-95"
+    <div
+      v-if="open"
+      class="absolute right-0 z-20 mt-2 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg text-left shadow-lg md:max-w-[400px]"
+    >
+      <ul class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain">
+        <slot name="header" />
+        <li
+          v-for="item in items"
+          :key="item.text"
+          :class="{ selected: item.selected }"
+          class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
+          @click.stop="handleClick(item.action)"
         >
-          <div
-            v-if="open"
-            class="z-20 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg text-left shadow-lg md:max-w-[400px]"
-          >
-            <ul
-              class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
-            >
-              <slot name="header" />
-              <li
-                v-for="item in items"
-                :key="item.text"
-                :class="{ selected: item.selected }"
-                class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
-                @click.stop="handleClick(item.action)"
-              >
-                <slot :key="item" name="item" :item="item">
-                  {{ item.text }}
-                </slot>
-              </li>
-            </ul>
-          </div>
-        </Transition>
-      </template>
-    </BasePopover>
+          <slot :key="item" name="item" :item="item">
+            {{ item.text }}
+          </slot>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
