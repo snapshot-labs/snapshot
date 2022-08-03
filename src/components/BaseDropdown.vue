@@ -43,25 +43,36 @@ onBeforeUnmount(() => window.removeEventListener('click', close));
       <slot name="button" />
     </div>
 
-    <div
-      v-if="open"
-      class="absolute right-0 z-20 mt-2 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg text-left shadow-lg md:max-w-[400px]"
+    <Transition
+      enter-active-class="transition ease-out duration-100"
+      enter-from-class="transform opacity-0 scale-95"
+      enter-to-class="transform opacity-100 scale-100"
+      leave-active-class="transition ease-in duration-75"
+      leave-from-class="transform opacity-100 scale-100"
+      leave-to-class="transform opacity-0 scale-95"
     >
-      <ul class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain">
-        <slot name="header" />
-        <li
-          v-for="item in items"
-          :key="item.text"
-          :class="{ selected: item.selected }"
-          class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
-          @click.stop="handleClick(item.action)"
+      <div
+        v-if="open"
+        class="absolute right-0 z-20 mt-2 max-w-[320px] overflow-hidden rounded-2xl border border-skin-border bg-skin-header-bg text-left shadow-lg md:max-w-[400px]"
+      >
+        <ul
+          class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
         >
-          <slot :key="item" name="item" :item="item">
-            {{ item.text }}
-          </slot>
-        </li>
-      </ul>
-    </div>
+          <slot name="header" />
+          <li
+            v-for="item in items"
+            :key="item.text"
+            :class="{ selected: item.selected }"
+            class="group block cursor-pointer select-none list-none whitespace-nowrap px-3 py-2"
+            @click.stop="handleClick(item.action)"
+          >
+            <slot :key="item" name="item" :item="item">
+              {{ item.text }}
+            </slot>
+          </li>
+        </ul>
+      </div>
+    </Transition>
   </div>
 </template>
 
