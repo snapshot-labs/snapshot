@@ -65,6 +65,9 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
-    require('prettier-plugin-tailwindcss')
+    require('prettier-plugin-tailwindcss'),
+    require('@tailwindcss/forms')({
+      strategy: 'class'
+    })
   ]
 };
