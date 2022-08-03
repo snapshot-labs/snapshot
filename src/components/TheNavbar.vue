@@ -57,7 +57,7 @@ watchEffect(() => {
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <template v-if="auth.isAuthenticated.value">
-            <DropdownAccount
+            <MenuAccount
               :address="web3Account"
               @switchWallet="modalAccountOpen = true"
             >
@@ -83,7 +83,7 @@ watchEffect(() => {
                   v-text="shorten(web3Account)"
                 />
               </BaseButton>
-            </DropdownAccount>
+            </MenuAccount>
           </template>
 
           <BaseButton
