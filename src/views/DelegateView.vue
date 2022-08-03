@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
-import { useProfiles } from '@/composables/useProfiles';
+import { debouncedWatch } from '@vueuse/core';
 import { isAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
@@ -10,15 +9,18 @@ import {
   getDelegatesBySpace
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { getDelegates, getDelegators } from '@/helpers/delegation';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
-import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useModal } from '@/composables/useModal';
-import { useEns } from '@/composables/useEns';
-import { useDelegate } from '@/composables/useDelegate';
+import {
+  useI18n,
+  useProfiles,
+  useWeb3,
+  useIntl,
+  useApolloQuery,
+  useModal,
+  useEns,
+  useDelegate
+} from '@/composables';
 
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
