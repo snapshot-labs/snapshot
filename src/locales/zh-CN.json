@@ -681,14 +681,14 @@
     "subDescription": "Web3管理不一定要复杂。 Snapshot是各组织寻求一种简单有效的方法来管理其社区或组织的完美解决办法。"
   },
   "footerView": {
-    "resources": "Resources",
-    "about": "About",
-    "blog": "Blog",
-    "jobs": "Jobs",
-    "discussions": "Discussions",
+    "resources": "资源",
+    "about": "关于",
+    "blog": "博客",
+    "jobs": "工作机会",
+    "discussions": "讨论",
     "github": "GitHub",
-    "docs": "Docs",
-    "support": "Support",
-    "hiring": "Join us!"
+    "docs": "文件",
+    "support": "帮助",
+    "hiring": "加入我们！"
   }
 }
