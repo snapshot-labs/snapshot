@@ -13,8 +13,7 @@ const { form, setDefaultStrategy } = useSpaceForm('setup');
 const { t } = useI18n();
 
 const tokenStandards = computed(() => {
-  return ['ERC-20', 'ERC-721', 'ERC-1155'].map((name, i) => ({
-    id: i + 1,
+  return ['ERC-20', 'ERC-721', 'ERC-1155'].map(name => ({
     value: name
   }));
 });
@@ -27,7 +26,7 @@ const input = ref({
 const defaultToken = {
   name: '',
   logo: '',
-  standard: tokenStandards.value[0].value,
+  standard: 'ERC-20',
   symbol: '',
   decimals: null
 };
