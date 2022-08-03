@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { useFormValidation } from '@/composables';

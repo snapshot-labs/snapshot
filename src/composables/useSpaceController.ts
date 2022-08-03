@@ -1,17 +1,20 @@
 import { computed, ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
-import { useTxStatus } from '../composables/useTxStatus';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { getAddress } from '@ethersproject/address';
-import { useI18n } from '@/composables/useI18n';
-import { useWeb3 } from '@/composables/useWeb3';
-import { isAddress } from '@ethersproject/address';
-import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import { useRoute } from 'vue-router';
-import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
-import { useApp } from '@/composables/useApp';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import { getAddress, isAddress } from '@ethersproject/address';
+import {
+  sendTransaction,
+  getSpaceUri
+} from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  useTxStatus,
+  useI18n,
+  useWeb3,
+  useApp,
+  useFlashNotification
+} from '@/composables';
 
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);

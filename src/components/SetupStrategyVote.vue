@@ -8,10 +8,9 @@ const { form } = useSpaceForm('setup');
 const { t } = useI18n();
 
 const votingItems = computed(() => {
-  return ['whitelist', 'ticket'].map((name, i) => ({
-    id: i + 1,
+  return ['whitelist', 'ticket'].map(name => ({
     value: name,
-    options: {
+    extras: {
       information:
         name === 'whitelist'
           ? t('setup.strategy.onePersonOneVote.whitelistInformation')
@@ -102,7 +101,7 @@ onMounted(setFormValues);
                     : 'Ticket voting'
                 }}
                 <IconInformationTooltip
-                  :information="item.options.information"
+                  :information="item.extras?.information"
                   class="text-skin-text"
                 />
               </span>
