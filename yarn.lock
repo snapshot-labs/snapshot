@@ -1241,6 +1241,18 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
+"@floating-ui/core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.0.0.tgz#ec1d31f54c72dd0460276e2149e59bd13c0f01f6"
+  integrity sha512-sm3nW0hHAxTv3gRDdCH8rNVQxijF+qPFo5gAeXCErRjKC7Qc28lIQ3R9Vd7Gw+KgwfA7RhRydDFuGeI0peGq7A==
+
+"@floating-ui/dom@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.0.0.tgz#66923a56755b6cb7a5958ecf25fe293912672d65"
+  integrity sha512-PMqJvY5Fae8HVQgUqM+lidprS6p9LSvB0AUhCdYKqr3YCaV+WaWCeVNBtXPRY2YIdrgcsL2+vd5F07FxgihHUw==
+  dependencies:
+    "@floating-ui/core" "^1.0.0"
+
 "@gnosis.pm/safe-apps-provider@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.8.1.tgz#2f8fb98ae84c8b57855d7f8d6dfbff1be08689c6"
@@ -1288,6 +1300,14 @@
   integrity sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==
   dependencies:
     "@hapi/hoek" "^9.0.0"
+
+"@headlessui-float/vue@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.7.0.tgz#396da90492a5a854ee7e0834f06de88a39320e49"
+  integrity sha512-z6jTe/id+rsznvZcbo8D0et1B8fzR5tF+sxtP48U3dVXtLqUAVLPd05lgRmkcK+k9x7c8bEHm6sgNQbijqRkUw==
+  dependencies:
+    "@floating-ui/core" "^1.0.0"
+    "@floating-ui/dom" "^1.0.0"
 
 "@headlessui/vue@^1.6.7":
   version "1.6.7"
