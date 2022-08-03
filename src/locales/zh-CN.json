@@ -335,7 +335,7 @@
     "proposalValidation": "提案验证",
     "validation": "类型",
     "proposalThreshold": {
-      "label": "门槛",
+      "label": "阈值",
       "information": "创建提案所需的最低投票权。"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
@@ -687,8 +687,8 @@
     "jobs": "工作机会",
     "discussions": "讨论",
     "github": "GitHub",
-    "docs": "文件",
-    "support": "帮助",
+    "docs": "文档",
+    "support": "支持",
     "hiring": "加入我们！"
   }
 }
