@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
 import { useApp } from '@/composables';
+import { useRouter } from 'vue-router';
 import { PopoverButton } from '@headlessui/vue';
 
 const { domain } = useApp();
+const router = useRouter();
 
 const commitSha = import.meta.env.VITE_COMMIT_SHA;
 
@@ -21,6 +23,11 @@ const navigationItems = [
     link: 'setup'
   }
 ];
+
+function clickNavigationItem(item: any) {
+  if (domain) window.open(`https://snapshot.org/#/${item.link}`, '_blank');
+  else router.push({ name: item.link });
+}
 </script>
 
 <template>
@@ -44,7 +51,7 @@ const navigationItems = [
             :key="item.name"
             as="div"
             class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link group-hover:text-skin-text"
-            @click="$router.push({ name: item.link })"
+            @click="clickNavigationItem(item)"
           >
             {{ item.name }}
           </PopoverButton>
