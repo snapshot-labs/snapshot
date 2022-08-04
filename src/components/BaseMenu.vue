@@ -38,7 +38,7 @@ const emit = defineEmits(['select']);
       leave-to-class="transform opacity-0 scale-95"
     >
       <MenuItems
-        class="absolute right-0 mt-2 origin-top-right overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg"
+        class="absolute right-0 z-20 mt-2 origin-top-right overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg"
       >
         <MenuItem v-for="item in items" :key="item.text" v-slot="{ active }">
           <div
