@@ -11,6 +11,7 @@
   "retry": "リトライ",
   "currentResults": "現在の投票状況",
   "reset": "リセット",
+  "close": "Close",
   "save": "保存",
   "author": "作成者",
   "next": "次へ",
@@ -24,6 +25,7 @@
   "space": "スペース",
   "spaces": "スペース",
   "verifiedSpace": "認証済みのスペース",
+  "warningSpace": "This is not an official space, proceed with caution!",
   "version": "バージョン",
   "timeline": "タイムライン",
   "ended": "が終了しました。",
@@ -49,6 +51,7 @@
   "toggleSkin": "スキンの切り替え",
   "about": "Snapshotについて",
   "license": "ライセンス",
+  "voted": "Voted",
   "ipfsServer": "IPFSサーバ",
   "hub": "ハブ",
   "cancel": "キャンセル",
@@ -119,6 +122,8 @@
   "join": "参加する",
   "joined": "参加中",
   "leave": "退出する",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "リンクをコピーする",
   "duplicateProposal": "提案を複製する",
   "joinedSpaces": "参加中のスペース",
@@ -130,9 +135,13 @@
   "confirmAction": "アクションを確定する",
   "or": "または",
   "share": "共有する",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "作成する",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
+  "createASpace": "Create a space",
+  "getStarted": "Get started",
+  "skip": "Skip",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -220,7 +229,16 @@
     "vote": "投票する",
     "startDate": "開始日",
     "endDate": "終了日",
-    "votingSystem": "投票のシステム"
+    "votingSystem": "投票のシステム",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "提案",
@@ -253,6 +271,7 @@
     "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
+    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
     "set": "設定する",
     "profile": "プロフィール",
     "avatar": "アバター",
@@ -274,6 +293,20 @@
     },
     "hideSpace": "ホームページからスペースを隠す",
     "links": "Social accounts",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "pistachiodao.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",
@@ -287,8 +320,10 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
     },
-    "strategiesList": "Strategies",
+    "strategiesList": "Select up to 8 strategies",
+    "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "ストラテジーを追加する",
+    "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
       "information": "Admins are able to modify the space settings and manage the space's proposals."
@@ -298,9 +333,9 @@
       "information": "Authors are able to create proposals without having to pass validation."
     },
     "proposalValidation": "提案のバリデーション",
-    "validation": "バリデーション",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "作成者のみ提案を提出可能",
@@ -326,9 +361,15 @@
     "domain": {
       "label": "Domain name",
       "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you aditionally need to open a pull request on github. {docs}"
+      "info": "To setup a custom domain you additionally need to open a pull request on github after you have created the space. {docs}"
     },
     "skin": "スキン",
+    "treasuries": {
+      "label": "Treasuries",
+      "add": "Add treasury",
+      "edit": "Edit treasury",
+      "information": "Add treasuries of your organization to show them in your space."
+    },
     "addPlugin": "プラグインを追加する",
     "editPlugin": "プラグインを編集する",
     "pluginParameters": "プラグインのパラメータ"
@@ -338,12 +379,14 @@
     "chooseExistingEns": "作成するスペースと紐付ける既存のENSドメインを選択してください。",
     "useSingleExistingEns": "既存のENSドメインを使用してください:",
     "orReigsterNewEns": "または新しいドメインを登録する：",
+    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "スペースを作成するためには、まずENSドメインが必要です。ドメインを入力し、ENS登録の指示に従ってください。",
     "createASpace": "スペースを作成する",
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "サポートされているドメインの拡張子",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the {docs} or join Snapshot {discord}.",
+    "helpDocsAndDiscordLinks": "Not sure how to setup your space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Space controller",
+    "setSpaceControllerExists": "The snapshot text-record for this domain has already been set. Choose edit to change it, otherwise you can skip to the next step.",
     "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
     "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
     "editSpaceController": "ENSのコントローラを編集する",
@@ -362,7 +405,35 @@
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
     "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account"
+    "fillCurrentAccount": "Use currently logged in account",
+    "domain": {
+      "title": "Setup your space domain",
+      "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
+      "ensMessageTestnet": "You can also {link} on the Rinkeby testnet and mess with things there first.",
+      "tryDemo": "try the demo"
+    },
+    "strategy": {
+      "title": "How would you like to setup your voting strategy?",
+      "subtitle": "You can change your strategy settings any time.",
+      "blockTitle": "Setup voting strategy",
+      "onePersonOneVote": {
+        "title": "One person, one vote",
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "whitelistInformation": "Specify a number of accounts that can vote",
+        "ticketInformation": "Any account can vote",
+        "votesEqualInfo": "Each vote is equal and no token is required"
+      },
+      "tokenVoting": {
+        "title": "Token weighted voting",
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
+        "tokenNotFound": "Token not found"
+      },
+      "advanced": {
+        "title": "Custom setup",
+        "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
+      }
+    },
+    "validationTitle": "Who can manage this space and create proposals?"
   },
   "profile": {
     "buttonEdit": "Edit profile",
@@ -559,7 +630,8 @@
         "settings": "{space} の設定"
       },
       "strategy": "{key} のストラテジー",
-      "delegate": "委任"
+      "delegate": "委任",
+      "ranking": "Ranking"
     }
   },
   "hal": {
@@ -580,5 +652,43 @@
     "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
     "switchToNetwork": "Switch to {network}",
     "goToDemoSite": "Go to demo website"
+  },
+  "treasury": {
+    "title": "Treasury",
+    "wallets": {
+      "title": "Wallets",
+      "empty": "This space doesn't have a treasury yet",
+      "addTreasury": "Add a treasury"
+    },
+    "assets": {
+      "title": "Assets",
+      "empty": "There are no assets in this contract"
+    },
+    "24hChange": "24h change"
+  },
+  "newsletter": {
+    "yourEmail": "Your email",
+    "title": "Get the latest Snapshot updates"
+  },
+  "joinCommunity": "Join Snapshot community",
+  "header": {
+    "title": "Where decisions get made",
+    "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
+  },
+  "aboutPage": {
+    "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
+    "subHeader": "Governance should be a snap",
+    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "blog": "Blog",
+    "jobs": "Jobs",
+    "discussions": "Discussions",
+    "github": "GitHub",
+    "docs": "Docs",
+    "support": "Support",
+    "hiring": "Join us!"
   }
 }

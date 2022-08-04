@@ -3,16 +3,11 @@ import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import mapKeys from 'lodash/fp/mapKeys';
 import { getAddress } from '@ethersproject/address';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
-import { useI18n } from '@/composables/useI18n';
-import { useCopy } from '@/composables/useCopy';
-import { decode, encode } from '@/helpers/b64';
-import { useIntl } from '@/composables/useIntl';
-import { useStrategies } from '@/composables/useStrategies';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { decodeJson, encodeJson } from '@/helpers/b64';
+import { useI18n, useCopy, useStrategies, useIntl } from '@/composables';
 
 const defaultParams = {
   symbol: 'BAL',
@@ -37,8 +32,8 @@ let provider;
 const strategyExample = computed(() => {
   if (queryParams.query) {
     try {
-      const { params, network, snapshot, addresses } = JSON.parse(
-        decode(queryParams.query)
+      const { params, network, snapshot, addresses } = decodeJson(
+        queryParams.query
       );
       return {
         ...strategy.value?.examples?.[0],
@@ -54,21 +49,16 @@ const strategyExample = computed(() => {
   return strategy.value?.examples?.[0];
 });
 
-const modalNetworksOpen = ref(false);
 const loading = ref(false);
 const strategyError = ref(null);
 const networkError = ref(null);
 const scores = ref(null);
 const form = ref({
   params: {},
-  network: 1,
+  network: '1',
   snapshot: '',
   addresses: []
 });
-
-const strategyValidationErrors = computed(
-  () => validateSchema(strategyDefinition.value, form.value.params) ?? []
-);
 
 const scoresWithZeroBalanceAddresses = computed(() => {
   if (!scores.value) {
@@ -100,10 +90,10 @@ async function loadScores() {
     scores.value = await getScores(
       '',
       [strategyParams],
-      form.value.network.toString(),
+      form.value.network,
       form.value.addresses,
       parseInt(form.value.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
     loading.value = false;
   } catch (e) {
@@ -115,7 +105,7 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
-    provider = await getProvider(form.value.network, 'brovider');
+    provider = await getProvider(form.value.network);
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
   } catch (e) {
@@ -127,7 +117,7 @@ async function loadSnapshotBlockNumber() {
 
 async function handleURLUpdate(_, paramName) {
   router.replace({
-    query: { query: encode(JSON.stringify(form.value)) },
+    query: { query: encodeJson(form.value) },
     params: { retainScrollPosition: true }
   });
 
@@ -141,9 +131,7 @@ async function handleURLUpdate(_, paramName) {
 
 function copyURL() {
   copyToClipboard(
-    `${window.location.origin}/#${route.path}?query=${encode(
-      JSON.stringify(form.value)
-    )}`
+    `${window.location.origin}/#${route.path}?query=${encodeJson(form.value)}`
   );
 }
 
@@ -151,7 +139,7 @@ watch(
   strategyExample,
   () => {
     form.value.params = strategyExample.value?.strategy.params ?? defaultParams;
-    form.value.network = strategyExample.value?.network ?? 1;
+    form.value.network = strategyExample.value?.network ?? '1';
     form.value.addresses = strategyExample.value?.addresses ?? [];
   },
   { immediate: true }
@@ -164,8 +152,7 @@ onMounted(async () => {
   loading.value = true;
   scores.value = null;
   networkError.value = false;
-
-  if (queryParams.query) {
+  if (queryParams.query && strategyExample.value.snapshot) {
     form.value.snapshot = strategyExample.value.snapshot;
     loading.value = false;
   } else {
@@ -180,12 +167,8 @@ onMounted(async () => {
       <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="mb-3 px-4 md:px-0">
-          <router-link
-            :to="`/strategy/${$route.params.name}`"
-            class="text-skin-text"
-          >
-            <BaseIcon name="back" size="22" class="!align-middle" />
-            {{ $t('back') }}
+          <router-link :to="{ path: `/strategy/${$route.params.name}` }">
+            <ButtonBack />
           </router-link>
         </div>
         <h1 class="mb-2 px-4 md:px-0">
@@ -194,24 +177,15 @@ onMounted(async () => {
         <div class="space-y-3">
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
-              <UiInput @click="modalNetworksOpen = true">
-                <template #selected>
-                  {{
-                    form.network
-                      ? networks[form.network].name
-                      : $t('selectNetwork')
-                  }}
-                </template>
-                <template #label> {{ $t(`settings.network.label`) }} </template>
-              </UiInput>
-              <UiInput
+              <ComboboxNetwork
+                :network="form.network"
+                @select="value => (form.network = value)"
+              />
+              <BaseInput
                 v-model="form.snapshot"
+                :title="$t('snapshot')"
                 @update:modelValue="handleURLUpdate"
-              >
-                <template #label>
-                  {{ $t('snapshot') }}
-                </template>
-              </UiInput>
+              />
             </div>
             <BaseBlock
               v-if="networkError"
@@ -227,7 +201,6 @@ onMounted(async () => {
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
-              :errors="strategyValidationErrors"
             />
             <TextareaJson
               v-else
@@ -294,12 +267,4 @@ onMounted(async () => {
       </div>
     </template>
   </TheLayout>
-  <teleport to="#modal">
-    <ModalNetworks
-      v-model="form.network"
-      :open="modalNetworksOpen"
-      @close="modalNetworksOpen = false"
-      @update:modelValue="event => handleURLUpdate(event, 'networkUpdate')"
-    />
-  </teleport>
 </template>

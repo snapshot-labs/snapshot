@@ -1,26 +1,31 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
-import { useStore } from '@/composables/useStore';
-import { useI18n } from '@/composables/useI18n';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
+import { ExtendedSpace } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  useProposals,
+  useI18n,
+  useInfiniteLoader,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useUnseenProposals
+} from '@/composables';
 
 const props = defineProps<{
-  space: {
-    id: string;
-    name: string;
-    members: string[];
-    about: string;
-  };
+  space: ExtendedSpace;
 }>();
 
-const { store } = useStore();
+const {
+  store,
+  userVotedProposalIds,
+  setSpaceFilter,
+  resetSpaceProposals,
+  addSpaceProposals
+} = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -31,6 +36,12 @@ const { apolloQuery } = useApolloQuery();
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
+
+const spaceProposals = computed(() => {
+  return clone(store.space.proposals).filter(
+    proposal => proposal.space.id === props.space.id
+  );
+});
 
 const spaceFilterBy = computed(() => store.space.filterBy);
 
@@ -49,7 +60,7 @@ async function loadProposals(skip = 0) {
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  store.space.proposals = store.space.proposals.concat(proposalsObj);
+  addSpaceProposals(proposalsObj);
 }
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
@@ -70,7 +81,7 @@ function emitUpdateLastSeenProposal() {
 watch(web3Account, () => emitUpdateLastSeenProposal());
 
 async function load() {
-  if (store.space.proposals.length > 0) return;
+  if (spaceProposals.value.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -78,34 +89,30 @@ async function load() {
 }
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loadingMore.value)
+  loadMore(() => loadProposals(spaceProposals.value.length), loadingMore.value)
 );
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(
-  () => store.space.proposals,
-  () => {
-    loadProfiles(store.space.proposals.map((proposal: any) => proposal.author));
-  }
-);
+watch(spaceProposals, () => {
+  loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
+});
 
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
 });
 
 function selectState(e) {
-  store.space.filterBy = e;
-  store.space.proposals = [];
+  setSpaceFilter(e);
   load();
 }
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
 
-  const firstProposal: any = store.space.proposals[0];
+  const firstProposal: any = spaceProposals.value[0];
   if (firstProposal && firstProposal?.space.id !== props.space.id) {
-    store.space.proposals = [];
+    resetSpaceProposals();
     load();
   }
 });
@@ -123,46 +130,46 @@ onMounted(() => {
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
-        <BaseDropdown
+        <BaseMenu
           :items="[
             {
               text: $t('proposals.states.all'),
               action: 'all',
-              selected: spaceFilterBy === 'all'
+              extras: { selected: spaceFilterBy === 'all' }
             },
             {
               text: $t('proposals.states.active'),
               action: 'active',
-              selected: spaceFilterBy === 'active'
+              extras: { selected: spaceFilterBy === 'active' }
             },
             {
               text: $t('proposals.states.pending'),
               action: 'pending',
-              selected: spaceFilterBy === 'pending'
+              extras: { selected: spaceFilterBy === 'pending' }
             },
             {
               text: $t('proposals.states.closed'),
               action: 'closed',
-              selected: spaceFilterBy === 'closed'
+              extras: { selected: spaceFilterBy === 'closed' }
             },
             {
               text: $t('proposals.states.core'),
               action: 'core',
-              selected: spaceFilterBy === 'core'
+              extras: { selected: spaceFilterBy === 'core' }
             }
           ]"
           @select="selectState"
         >
           <template #button>
-            <BaseButton class="pr-3">
+            <BaseButton class="flex items-center pr-3">
               {{ $t(`proposals.states.${store.space.filterBy}`) }}
-              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
+              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
             </BaseButton>
           </template>
-        </BaseDropdown>
+        </BaseMenu>
 
         <SpaceProposalsNotice
-          v-if="store.space.proposals.length < 1 && !loadingData"
+          v-if="spaceProposals.length < 1 && !loadingData"
           :space-id="space.id"
           :web3-account="web3Account"
         />
@@ -173,17 +180,18 @@ onMounted(() => {
       </BaseBlock>
 
       <SpaceProposalsNoProposals
-        v-if="!loadingData && store.space.proposals.length < 1"
+        v-if="!loadingData && spaceProposals.length < 1"
         class="mt-2"
         :space="space"
       />
       <div v-else class="my-4 md:space-y-4">
         <BaseProposalItem
-          v-for="(proposal, i) in store.space.proposals"
+          v-for="(proposal, i) in spaceProposals"
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
           :space="space"
+          :voted="userVotedProposalIds.includes(proposal.id)"
           class="border-b first:border-t"
         />
       </div>

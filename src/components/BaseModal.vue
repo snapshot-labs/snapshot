@@ -1,31 +1,34 @@
-<script setup>
+<script setup lang="ts">
 import { watch, toRefs } from 'vue';
-import { useModal } from '@/composables/useModal';
 
-const props = defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
-  showClose: {
-    type: Boolean,
-    required: false,
-    default: true
+const props = withDefaults(
+  defineProps<{
+    open: boolean;
+    hideClose?: boolean;
+    maxHeight?: string;
+  }>(),
+  {
+    hideClose: false,
+    maxHeight: '420px'
   }
-});
+);
+
+const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
-const { modalOpen } = useModal();
 
-watch(open, (val, prev) => {
-  if (val !== prev) modalOpen.value = !modalOpen.value;
+watch(open, isOpen => {
+  document.body.classList[isOpen ? 'add' : 'remove']('overflow-hidden');
 });
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="open" class="modal z-50 mx-auto w-screen">
-      <div class="backdrop" @click="$emit('close')" />
+    <div
+      v-if="open"
+      class="modal z-50 mx-auto w-screen font-sans text-base text-skin-text antialiased"
+    >
+      <div class="backdrop" @click="emit('close')" />
       <div class="shell relative overflow-hidden rounded-none md:rounded-3xl">
         <div v-if="$slots.header" class="pt-3 text-center">
           <slot name="header" />
@@ -36,13 +39,13 @@ watch(open, (val, prev) => {
         <div v-if="$slots.footer" class="border-t p-4 text-center">
           <slot name="footer" />
         </div>
-        <a
-          v-if="showClose"
-          class="absolute right-0 top-1 p-4 text-skin-text"
-          @click="$emit('close')"
+        <BaseButtonIcon
+          v-if="!hideClose"
+          class="absolute right-3 top-[20px]"
+          @click="emit('close')"
         >
-          <BaseIcon name="close" />
-        </a>
+          <i-ho-x />
+        </BaseButtonIcon>
       </div>
     </div>
   </Transition>
@@ -97,7 +100,7 @@ watch(open, (val, prev) => {
     }
 
     .modal-body {
-      max-height: 420px;
+      max-height: v-bind(maxHeight);
       flex: auto;
       text-align: initial;
       overflow-y: auto;

@@ -1,16 +1,18 @@
 <script setup>
 import { ref, toRef, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useModal } from '@/composables/useModal';
-import { useWeb3 } from '@/composables/useWeb3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useI18n } from '@/composables/useI18n';
+import {
+  useModal,
+  useWeb3,
+  useI18n,
+  useFlashNotification
+} from '@/composables';
 
 const { t } = useI18n();
 const auth = getInstance();
-const { modalOpen, modalAccountOpen } = useModal();
+const { modalAccountOpen } = useModal();
 const props = defineProps({
   placeholder: String,
   buttonName: String,
@@ -152,7 +154,7 @@ function closeEvent() {
   if (loading.value) return;
   closeModal.value = false;
 }
-watch([modalOpen, closeModal], () => {
+watch([closeModal], () => {
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');

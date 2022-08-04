@@ -4,17 +4,20 @@ import { shorten, explorerUrl } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { useRouter, useRoute } from 'vue-router';
+import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
+
+const emit = defineEmits(['next']);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
 const router = useRouter();
 const route = useRoute();
-
-const props = defineProps<{ web3Account: string }>();
+const { web3Account } = useWeb3();
 
 const fillConnectedWallet = ref(true);
+const isEditController = ref(false);
 
 const {
   spaceControllerInput,
@@ -26,7 +29,8 @@ const {
   setRecord,
   confirmSetRecord,
   ensAddress,
-  textRecord
+  textRecord,
+  uriAddress
 } = useSpaceController();
 
 async function handleSetRecord() {
@@ -35,18 +39,20 @@ async function handleSetRecord() {
     router.push({
       name: 'setup',
       params: {
-        step: 'profile',
         ens: route.params.ens
+      },
+      query: {
+        step: 4
       }
     });
   }
 }
 
 watch(
-  () => [fillConnectedWallet.value, props.web3Account],
+  () => [fillConnectedWallet.value, web3Account.value],
   () => {
     if (fillConnectedWallet.value)
-      return (spaceControllerInput.value = props.web3Account);
+      return (spaceControllerInput.value = web3Account.value);
 
     spaceControllerInput.value = '';
   },
@@ -56,47 +62,77 @@ watch(
 
 <template>
   <LoadingRow v-if="loadingTextRecord" block />
-  <BaseBlock v-else :title="$t('setup.setSpaceController')">
-    <div class="mb-4">
-      <BaseMessage level="info">
-        {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessage>
-    </div>
+  <div v-else-if="uriAddress && !isEditController">
+    <BaseMessageBlock level="info" is-responsive>
+      {{ $t('setup.setSpaceControllerExists') }}
 
-    <BaseInput
-      v-model.trim="spaceControllerInput"
-      title="Controller address"
-      :placeholder="
-        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
-      "
-      :readonly="fillConnectedWallet"
-      focus-on-mount
-      @keyup.delete="fillConnectedWallet = false"
+      <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
+        {{ $t('setup.seeOnEns') }}
+      </BaseLink>
+    </BaseMessageBlock>
+    <div class="mt-4 flex items-center justify-between px-4 md:px-0">
+      <BaseButton @click="isEditController = true">
+        {{ $t('edit') }}
+      </BaseButton>
+      <SetupButtonNext class="!mt-0" @click="emit('next')" />
+    </div>
+  </div>
+  <div v-else>
+    <BaseBlock :title="$t('setup.setSpaceController')">
+      <div class="mb-4">
+        <BaseMessageBlock level="info">
+          {{ $t('setup.setSpaceControllerInfo') }}
+        </BaseMessageBlock>
+      </div>
+
+      <BaseInput
+        v-model.trim="spaceControllerInput"
+        title="Controller address"
+        :placeholder="
+          $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+        "
+        :readonly="fillConnectedWallet"
+        focus-on-mount
+        @keyup.delete="fillConnectedWallet = false"
+      />
+      <div class="mt-1 flex items-center gap-2">
+        <BaseSwitch v-model="fillConnectedWallet" />
+        {{ $t('setup.fillCurrentAccount') }}
+      </div>
+      <BaseButton
+        class="mt-4 w-full"
+        primary
+        :disabled="!controllerInputIsValid"
+        :loading="settingENSRecord"
+        @click="confirmSetRecord"
+      >
+        {{ $t('setup.setController') }}
+      </BaseButton>
+
+      <BaseMessageBlock
+        v-if="isGnosisSafe && !fillConnectedWallet"
+        level="warning"
+      >
+        <i18n-t
+          keypath="setup.setSpaceControllerInfoGnosisSafe"
+          tag="span"
+          scope="global"
+        >
+          <template #link>
+            <BaseLink link="https://docs.snapshot.org/spaces/create">
+              {{ $t('learnMore') }}
+            </BaseLink>
+          </template>
+        </i18n-t>
+      </BaseMessageBlock>
+    </BaseBlock>
+    <SetupButtonNext
+      v-if="isEditController"
+      class="!mt-4 mr-4 md:mr-0"
+      text="skip"
+      @click="emit('next')"
     />
-    <div class="mt-1 flex items-center gap-2">
-      <BaseSwitch v-model="fillConnectedWallet" />
-      {{ $t('setup.fillCurrentAccount') }}
-    </div>
-    <BaseButton
-      class="mt-4 w-full"
-      primary
-      :disabled="!controllerInputIsValid"
-      :loading="settingENSRecord"
-      @click="confirmSetRecord"
-    >
-      {{ $t('setup.setController') }}
-    </BaseButton>
-
-    <BaseMessage v-if="isGnosisSafe && !fillConnectedWallet" level="warning">
-      <i18n-t keypath="setup.setSpaceControllerInfoGnosisSafe" tag="span">
-        <template #link>
-          <BaseLink link="https://docs.snapshot.org/spaces/create">
-            {{ $t('learnMore') }}
-          </BaseLink>
-        </template>
-      </i18n-t>
-    </BaseMessage>
-  </BaseBlock>
+  </div>
 
   <teleport to="#modal">
     <ModalUnsupportedNetwork
@@ -109,7 +145,14 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="m-4 space-y-1 text-skin-text">
+      <div class="m-4 mt-0 space-y-1 text-skin-text">
+        <BaseMessageBlock level="info" class="mb-3">
+          {{
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
+            })
+          }}
+        </BaseMessageBlock>
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -130,13 +173,6 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessage level="info">
-          {{
-            $t('setup.explainControllerAndEns', {
-              network: networks[defaultNetwork].name
-            })
-          }}
-        </BaseMessage>
       </div>
     </ModalConfirmAction>
   </teleport>

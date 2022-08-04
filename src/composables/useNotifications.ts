@@ -102,12 +102,12 @@ export function useNotifications() {
     ['initialValue']
   );
 
-  function selectNotification(n: { id: string; spaceId: string }) {
+  function selectNotification(id: string, spaceId: string) {
     router.push({
       name: 'spaceProposal',
-      params: { key: n.spaceId, id: n.id }
+      params: { key: spaceId, id: id }
     });
-    readNotificationsStorage.value.push(n.id);
+    readNotificationsStorage.value.push(id);
   }
 
   // Mark all notifications as read and remove duplicates from local storage

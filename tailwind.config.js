@@ -12,7 +12,6 @@ module.exports = {
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
-        blue: '#384aff',
         green: '#21b66f',
         red: '#ff3856'
       },
@@ -41,13 +40,15 @@ module.exports = {
       sm: '544px',
       md: '768px',
       lg: '1012px',
-      xl: '1280px'
+      xl: '1280px',
+      '2xl': '1536px'
     },
     fontFamily: {
       sans: [
         'Calibre, -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji'
       ],
-      mono: ['monospace']
+      mono: ['monospace'],
+      space: ['Space Mono']
     },
     fontSize: {
       '2xl': ['36px', '50px'],
@@ -64,6 +65,9 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
-    require('prettier-plugin-tailwindcss')
+    require('prettier-plugin-tailwindcss'),
+    require('@tailwindcss/forms')({
+      strategy: 'class'
+    })
   ]
 };

@@ -1,43 +1,56 @@
-<script>
+<script setup lang="ts">
 import { parseUnits, formatUnits } from '@ethersproject/units';
+import { onMounted, ref, watch } from 'vue';
 
-export default {
-  props: ['modelValue', 'inputProps', 'label', 'disabled', 'decimals'],
-  emits: ['update:modelValue', 'valid'],
-  data() {
-    return { input: '0', isValid: true, dirty: false };
-  },
-  watch: {
-    modelValue(value) {
-      if (value && this.disabled) {
-        this.input = formatUnits(value, this.decimals);
-      }
-    },
-    decimals() {
-      this.handleInput();
-    }
-  },
-  mounted() {
-    if (this.modelValue) {
-      this.input = formatUnits(this.modelValue, this.decimals);
-    }
-  },
-  methods: {
-    handleInput() {
-      this.dirty = true;
-      const value = this.format(this.input);
-      this.isValid = !!value;
-      this.$emit('update:modelValue', value);
-    },
-    format(amount) {
-      try {
-        return parseUnits(amount, this.decimals).toString();
-      } catch (error) {
-        return undefined;
-      }
-    }
+const props = defineProps([
+  'modelValue',
+  'inputProps',
+  'label',
+  'disabled',
+  'decimals'
+]);
+const emit = defineEmits(['update:modelValue', 'valid']);
+
+const input = ref('0');
+const isValid = ref(true);
+const dirty = ref(false);
+
+const format = (amount: string) => {
+  try {
+    return parseUnits(amount, props.decimals).toString();
+  } catch (error) {
+    return undefined;
   }
 };
+
+const handleInput = () => {
+  dirty.value = true;
+  const value = format(input.value);
+  isValid.value = !!value;
+  emit('update:modelValue', value);
+};
+
+onMounted(() => {
+  if (props.modelValue) {
+    input.value = formatUnits(props.modelValue, props.decimals);
+  }
+});
+
+watch(
+  () => props.modelValue,
+  value => {
+    if (value && props.disabled) {
+      input.value = formatUnits(value, props.decimals);
+    }
+  }
+);
+
+watch(
+  () => props.decimals,
+  () => {
+    handleInput();
+  }
+);
 </script>
 
 <template>

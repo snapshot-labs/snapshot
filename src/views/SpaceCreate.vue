@@ -1,51 +1,54 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, inject, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
-import { useApp } from '@/composables/useApp';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
-import { useStore } from '@/composables/useStore';
-import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import {
+  useFlashNotification,
+  useSpaceCreateForm,
+  useProposals,
+  usePlugins,
+  useI18n,
+  useModal,
+  useTerms,
+  useApp,
+  useApolloQuery,
+  useWeb3,
+  useClient
+} from '@/composables';
+
+const BODY_LIMIT_CHARACTERS = 14400;
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
+const { modalAccountOpen } = useModal();
+const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const {
   form,
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
-  resetForm
+  resetForm,
+  getValidation
 } = useSpaceCreateForm();
-const { modalAccountOpen } = useModal();
-const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
-const notify: any = inject('notify');
 
 const passValidation = ref([false, '']);
 const validationLoading = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
-
-const BODY_LIMIT_CHARACTERS = 14400;
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -72,7 +75,7 @@ const isValid = computed(() => {
     : true;
 
   return (
-    !clientLoading.value &&
+    !isSending.value &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
@@ -92,7 +95,9 @@ const stepIsValid = computed(() => {
     currentStep.value === 1 &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
-    passValidation.value[0] === true
+    passValidation.value[0] &&
+    !getValidation('name').message &&
+    !getValidation('discussion').message
   )
     return true;
   else if (
@@ -125,13 +130,13 @@ function getFormattedForm() {
   return clonedForm;
 }
 
-const { store } = useStore();
+const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
   console.log('Result', result);
   if (result.id) {
-    store.space.proposals = [];
+    resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
     resetForm();
     router.push({
@@ -178,7 +183,6 @@ async function loadSourceProposal() {
   );
 
   setSourceProposal(proposal);
-
   sourceProposalLoaded.value = true;
 }
 
@@ -251,12 +255,8 @@ onMounted(() =>
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div v-if="currentStep === 1" class="mb-3 overflow-hidden px-4 md:px-0">
-        <router-link
-          :to="domain ? { path: '/' } : { name: 'spaceProposals' }"
-          class="text-skin-text"
-        >
-          <BaseIcon name="back" size="22" class="!align-middle" />
-          {{ $t('back') }}
+        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
+          <ButtonBack />
         </router-link>
       </div>
 
@@ -312,7 +312,7 @@ onMounted(() =>
         <BaseButton
           v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
           :disabled="!isValid"
-          :loading="clientLoading || queryLoading"
+          :loading="isSending || queryLoading"
           class="block w-full"
           primary
           @click="

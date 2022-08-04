@@ -1,11 +1,12 @@
-<script setup>
-import { usePlugins } from '@/composables/usePlugins';
+<script setup lang="ts">
+import { usePlugins } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({
-  proposal: Object,
-  space: Object,
-  modelValue: Object
-});
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: any;
+  modelValue: any;
+}>();
 
 const { getPluginComponents } = usePlugins();
 const components = getPluginComponents(

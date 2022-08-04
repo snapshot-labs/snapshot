@@ -27,19 +27,16 @@ async function update(val) {
 
 <template>
   <div v-if="preview?.meta?.title">
-    <h3>{{ $t('discussion') }}</h3>
+    <h3 class="mb-2" v-text="$t('discussion')" />
     <BaseLink :link="getIpfsUrl(discussionLink)" hide-external-icon>
       <div
         class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
       >
         <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
-          <div>
-            <div
+          <div class="w-[32px]">
+            <IconDiscord
               v-if="preview.links.icon[0].href.includes('discord.com')"
-              class="rounded-full bg-[#5865F2] p-2"
-            >
-              <i-s-discord class="h-[26px] w-[26px]" />
-            </div>
+            />
             <img
               v-else
               :src="preview.links.icon[0].href"

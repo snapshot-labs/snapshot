@@ -1,4 +1,4 @@
-import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
+import { getScores, getVp } from '@snapshot-labs/snapshot.js/src/utils';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
@@ -71,7 +71,7 @@ export async function getResults(space, proposal, votes) {
       proposal.network,
       voters,
       parseInt(proposal.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
     console.timeEnd('getProposal.scores');
     console.log('Got scores');
@@ -79,7 +79,7 @@ export async function getResults(space, proposal, votes) {
     votes = votes
       .map((vote: any) => {
         vote.scores = strategies.map(
-          (strategy, i) => scores[i][vote.voter] || 0
+          (_strategy, i) => scores[i][vote.voter] || 0
         );
         vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
         return vote;
@@ -91,9 +91,9 @@ export async function getResults(space, proposal, votes) {
   /* Get results */
   const votingClass = new voting[proposal.type](proposal, votes, strategies);
   const results = {
-    resultsByVoteBalance: votingClass.resultsByVoteBalance(),
-    resultsByStrategyScore: votingClass.resultsByStrategyScore(),
-    sumOfResultsBalance: votingClass.sumOfResultsBalance()
+    scores: votingClass.getScores(),
+    scoresByStrategy: votingClass.getScoresByStrategy(),
+    scoresTotal: votingClass.getScoresTotal()
   };
 
   return { votes, results };
@@ -101,21 +101,16 @@ export async function getResults(space, proposal, votes) {
 
 export async function getPower(space, address, proposal) {
   console.log('[score] getPower');
-  const strategies = proposal.strategies ?? space.strategies;
-  const scores: any = await getScores(
-    space.id,
-    strategies,
+  const options: any = {};
+  if (import.meta.env.VITE_SCORES_URL)
+    options.url = import.meta.env.VITE_SCORES_URL;
+  return await getVp(
+    address,
     proposal.network,
-    [address],
+    proposal.strategies,
     parseInt(proposal.snapshot),
-    import.meta.env.VITE_SCORES_URL + '/api/scores'
+    space.id,
+    proposal.delegation === 1,
+    options
   );
-  const scoresByStrategy = strategies.map(
-    (strategy, i) => scores[i][address] || 0
-  );
-
-  return {
-    scoresByStrategy,
-    totalScore: scoresByStrategy.reduce((a, b: any) => a + b, 0)
-  };
 }

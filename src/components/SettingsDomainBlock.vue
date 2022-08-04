@@ -2,51 +2,49 @@
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
-defineProps<{
-  domain?: string;
-  skin?: string;
-  getErrorMessage: (field: string) => string;
+import { useSpaceForm } from '@/composables';
+
+const props = defineProps<{
+  context: 'setup' | 'settings';
 }>();
 
-const emit = defineEmits(['update:domain', 'update:skin']);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const modalSkinsOpen = ref(false);
 </script>
 
 <template>
   <BaseBlock :title="$t('settings.customDomain')">
-    <BaseMessage level="info" class="mb-4">
-      <i18n-t keypath="settings.domain.info" tag="span">
+    <BaseMessageBlock level="info" class="mb-4">
+      <i18n-t keypath="settings.domain.info" tag="span" scope="global">
         <template #docs>
           <BaseLink link="https://docs.snapshot.org/spaces/add-custom-domain">
             {{ $t('learnMore') }}
           </BaseLink>
         </template>
       </i18n-t>
-    </BaseMessage>
+    </BaseMessageBlock>
 
     <ContainerParallelInput>
       <BaseInput
+        v-model="form.domain"
         :title="$t('settings.domain.label')"
-        :model-value="domain"
-        :error="getErrorMessage('domain')"
+        :error="getValidation('domain')"
         :max-length="schemas.space.properties.domain.maxLength"
         placeholder="e.g. vote.balancer.fi"
-        @update:model-value="emit('update:domain', $event)"
       />
 
       <InputSelect
         :title="$t(`settings.skin`)"
-        :model-value="skin ? skin : $t('defaultSkin')"
+        :model-value="form.skin ? form.skin : $t('defaultSkin')"
         @select="modalSkinsOpen = true"
       />
     </ContainerParallelInput>
 
     <teleport to="#modal">
       <ModalSkins
-        :model-value="skin"
+        v-model="form.skin"
         :open="modalSkinsOpen"
-        @update:model-value="emit('update:skin', $event)"
         @close="modalSkinsOpen = false"
       />
     </teleport>

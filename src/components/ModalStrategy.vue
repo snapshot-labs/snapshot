@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useStrategies } from '@/composables/useStrategies';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
+import { useRouter } from 'vue-router';
+import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { encodeJson } from '@/helpers/b64';
+import { useNetworksFilter, useStrategies } from '@/composables';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -44,12 +44,28 @@ const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
 const { getNetworksSpacesCount } = useNetworksFilter();
 
-const strategyValidationErrors = computed(
-  () => validateSchema(strategyDefinition.value, input.value.params) ?? []
+const isValid = computed(
+  () => validateSchema(strategyDefinition.value, input.value.params) === true
 );
-const strategyIsValid = computed(() =>
-  strategyValidationErrors.value === true ? true : false
-);
+
+const router = useRouter();
+
+const playgroundLink = computed(() => {
+  const route = router.resolve({
+    name: 'playground',
+    query: {
+      query: encodeJson({
+        params: input.value.params,
+        network: input.value.network,
+        snapshot: '',
+        addresses: extendedStrategy.value?.examples?.[0].addresses || []
+      })
+    },
+    params: { name: input.value.name }
+  });
+
+  return new URL(route.href, window.location.origin).href;
+});
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -115,7 +131,6 @@ watch(open, () => {
               v-if="strategyDefinition"
               v-model="input.params"
               :definition="strategyDefinition"
-              :errors="strategyValidationErrors"
             />
             <TextareaJson
               v-else
@@ -133,20 +148,24 @@ watch(open, () => {
       <LoadingRow v-if="loadingStrategies" block />
       <div v-else class="space-y-3">
         <BaseStrategyItem
-          v-for="strategy in strategiesResults"
-          :key="strategy.id"
-          :strategy="strategy"
-          @click="selectStrategy(strategy.id)"
+          v-for="str in strategiesResults"
+          :key="str.id"
+          :strategy="str"
+          @click="selectStrategy(str.id)"
         />
         <BaseNoResults v-if="strategiesResults.length < 1" />
       </div>
     </div>
     <template v-if="input.name" #footer>
+      <BaseLink :link="playgroundLink" hide-external-icon class="mb-2 block">
+        <BaseButton class="w-full">
+          {{ $t('settings.testInPlayground') }}
+          <i-ho-external-link class="mb-[2px] inline-block text-xs" />
+        </BaseButton>
+      </BaseLink>
       <BaseButton
         :disabled="
-          !textAreaJsonIsValid ||
-          (strategyDefinition && !strategyIsValid) ||
-          loading
+          !textAreaJsonIsValid || (strategyDefinition && !isValid) || loading
         "
         class="w-full"
         primary

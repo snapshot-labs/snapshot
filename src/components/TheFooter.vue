@@ -1,71 +1,102 @@
-<script setup>
-import { ref } from 'vue';
-import { useSkin } from '@/composables/useSkin';
-const { toggleUserTheme, getThemeIcon } = useSkin();
-
-const modalAboutOpen = ref(false);
+<script setup lang="ts">
 const yearNow = new Date().getFullYear();
 
-const socials = [
+const snapshotTextLinks = [
   {
-    icon: 'twitter',
-    link: 'https://twitter.com/SnapshotLabs'
+    text: 'about',
+    link: {
+      name: 'about'
+    }
   },
   {
-    icon: 'discord',
-    link: 'https://discord.gg/snapshot'
+    text: 'blog',
+    link: 'https://snapshot.mirror.xyz/'
   },
   {
-    icon: 'telegram',
-    link: 'https://t.me/snapshotlabs'
+    text: 'jobs',
+    link: 'https://angel.co/company/snapshot-labs_/jobs'
+  }
+];
+
+const resourcesTextLinks = [
+  {
+    text: 'discussions',
+    link: 'https://github.com/snapshot-labs/snapshot/discussions'
   },
   {
-    icon: 'github',
-    link: `https://github.com/snapshot-labs`
+    text: 'github',
+    link: 'https://github.com/snapshot-labs'
   },
   {
-    icon: 'gitbook',
+    text: 'docs',
     link: 'https://docs.snapshot.org/'
+  },
+  {
+    text: 'support',
+    link: 'https://discord.snapshot.org/'
   }
 ];
 </script>
 
 <template>
-  <BaseContainer
-    class="flex flex-col items-center space-y-3 py-4 md:flex-row md:space-y-0 md:space-x-3"
-  >
-    <div class="space-x-3 md:ml-auto">
-      <span v-for="social in socials" :key="social">
-        <BaseLink :link="social.link" hide-external-icon>
-          <BaseIcon
-            size="30"
-            class="text-skin-text opacity-40 transition-opacity hover:opacity-80"
-            :name="social.icon"
-          />
-        </BaseLink>
-      </span>
-    </div>
-    <div class="flex space-x-2">
-      <ButtonSidebar @click="modalAboutOpen = true">
-        <span class="text-skin-link">?</span>
-      </ButtonSidebar>
-      <ButtonSidebar :aria-label="$t('toggleSkin')" @click="toggleUserTheme">
-        <BaseIcon size="20" class="text-skin-link" :name="getThemeIcon()" />
-      </ButtonSidebar>
+  <div class="-mt-3 border-t" />
+  <BaseContainer class="space-y-5 py-[40px] md:space-y-0">
+    <div class="space-y-5 md:flex md:space-y-0">
+      <div>
+        <div class="mx-auto md:mx-0">
+          <FooterTitle class="mb-2 text-center md:text-left">
+            {{ $t('newsletter.title') }}
+          </FooterTitle>
 
-      <ButtonLanguage />
+          <InputNewsletter tag="6449077" class="relative mx-auto w-[300px]" />
+        </div>
+
+        <div class="hidden md:block lg:hidden">
+          <FooterSocials />
+        </div>
+      </div>
+      <div
+        class="flex justify-center space-x-[70px] text-center md:w-full md:text-left lg:ml-[60px] lg:justify-start"
+      >
+        <FooterLinks>
+          <FooterTitle> Snapshot </FooterTitle>
+          <FooterLinksItem
+            v-for="item in snapshotTextLinks"
+            :key="item.text"
+            :link="item.link"
+          >
+            {{ $t(`footerView.${item.text}`) }}
+            <BasePill
+              v-if="item.text === 'jobs'"
+              class="ml-2 inline-block !rounded px-1 py-0 text-xs"
+            >
+              {{ $t('footerView.hiring') }}
+            </BasePill>
+          </FooterLinksItem>
+        </FooterLinks>
+
+        <FooterLinks>
+          <FooterTitle> {{ $t('footerView.resources') }} </FooterTitle>
+
+          <FooterLinksItem
+            v-for="item in resourcesTextLinks"
+            :key="item.text"
+            :link="item.link"
+          >
+            {{ $t(`footerView.${item.text}`) }}
+          </FooterLinksItem>
+        </FooterLinks>
+      </div>
+      <div class="pb-1 md:hidden lg:mt-0 lg:block">
+        <FooterTitle class="hidden whitespace-nowrap lg:block">
+          {{ $t('joinCommunity') }}
+        </FooterTitle>
+        <FooterSocials />
+      </div>
     </div>
-    <div
-      class="whitespace-nowrap pt-3 opacity-40 md:order-first md:pt-0 md:pr-2"
-    >
+
+    <div class="whitespace-nowrap text-center opacity-40 md:text-left">
       © {{ yearNow }} Snapshot Labs.
     </div>
   </BaseContainer>
-  <teleport to="#modal">
-    <ModalAbout
-      :open="modalAboutOpen"
-      @close="modalAboutOpen = false"
-      @openLang="modalLangOpen = true"
-    />
-  </teleport>
 </template>

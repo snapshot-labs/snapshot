@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { usePlugins } from '@/composables/usePlugins';
+import { usePlugins, useSpaceForm } from '@/composables';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
-  plugins: {
-    [key: string]: any;
-  };
+  context: 'setup' | 'settings';
 }>();
 
-const emit = defineEmits(['update:plugins']);
+const { form } = useSpaceForm(props.context);
 
 const { pluginIndex } = usePlugins();
 const currentPlugin = ref({});
@@ -17,14 +15,14 @@ const modalPluginsOpen = ref(false);
 
 function handleEditPlugins(name) {
   currentPlugin.value = {};
-  currentPlugin.value[name] = clone(props.plugins[name]);
+  currentPlugin.value[name] = clone(form.value.plugins[name]);
   modalPluginsOpen.value = true;
 }
 
 function handleRemovePlugins(plugin) {
-  const pluginsObj = clone(props.plugins);
+  const pluginsObj = clone(form.value.plugins);
   delete pluginsObj[plugin];
-  emit('update:plugins', pluginsObj);
+  form.value.plugins = pluginsObj;
 }
 
 function handleAddPlugins() {
@@ -33,17 +31,17 @@ function handleAddPlugins() {
 }
 
 function handleSubmitPlugins(payload) {
-  const pluginsObj = clone(props.plugins);
+  const pluginsObj = clone(form.value.plugins);
   pluginsObj[payload.key] = payload.input;
-  emit('update:plugins', pluginsObj);
+  form.value.plugins = pluginsObj;
 }
 </script>
 
 <template>
   <BaseBlock :title="$t('plugins')">
-    <div v-if="plugins">
+    <div v-if="form.plugins">
       <div
-        v-for="(name, index) in Object.keys(plugins).filter(
+        v-for="(name, index) in Object.keys(form.plugins).filter(
           key => pluginIndex[key]
         )"
         :key="index"

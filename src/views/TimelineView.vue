@@ -1,25 +1,31 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
 import { lsSet } from '@/helpers/utils';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { useProfiles } from '@/composables/useProfiles';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import zipObject from 'lodash/zipObject';
-import { useStore } from '@/composables/useStore';
-import { useI18n } from '@/composables/useI18n';
-
-const { store } = useStore();
+import {
+  useInfiniteLoader,
+  useUnseenProposals,
+  useScrollMonitor,
+  useApolloQuery,
+  useProfiles,
+  useFollowSpace,
+  useWeb3,
+  useProposals,
+  useI18n
+} from '@/composables';
 
 const loading = ref(false);
 
 const route = useRoute();
+const {
+  store,
+  userVotedProposalIds,
+  resetTimelineProposals,
+  setTimelineFilter
+} = useProposals();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
@@ -35,7 +41,7 @@ const spaces = computed(() => {
 
 watch(spaces, () => {
   if (route.name === 'timeline' || route.name === 'explore') {
-    store.timeline.proposals = [];
+    resetTimelineProposals();
     load();
   }
 });
@@ -114,8 +120,7 @@ const timelineFilterBy = computed(() => store.timeline.filterBy);
 
 // Change filter
 function selectState(e) {
-  store.timeline.filterBy = e;
-  store.timeline.proposals = [];
+  setTimelineFilter(e);
   load();
 }
 </script>
@@ -143,38 +148,38 @@ function selectState(e) {
     <template #content-left>
       <div class="flex justify-between px-4 pb-4 md:px-0">
         <h2 class="mt-1" v-text="$t('timeline')" />
-        <BaseDropdown
+        <BaseMenu
           :items="[
             {
               text: $t('proposals.states.all'),
               action: 'all',
-              selected: timelineFilterBy === 'all'
+              extras: { selected: timelineFilterBy === 'all' }
             },
             {
               text: $t('proposals.states.active'),
               action: 'active',
-              selected: timelineFilterBy === 'active'
+              extras: { selected: timelineFilterBy === 'active' }
             },
             {
               text: $t('proposals.states.pending'),
               action: 'pending',
-              selected: timelineFilterBy === 'pending'
+              extras: { selected: timelineFilterBy === 'pending' }
             },
             {
               text: $t('proposals.states.closed'),
               action: 'closed',
-              selected: timelineFilterBy === 'closed'
+              extras: { selected: timelineFilterBy === 'closed' }
             }
           ]"
           @select="selectState"
         >
           <template #button>
-            <BaseButton class="pr-3">
+            <BaseButton class="flex items-center pr-3">
               {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-              <BaseIcon size="14" name="arrow-down" class="mt-1 mr-1" />
+              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
             </BaseButton>
           </template>
-        </BaseDropdown>
+        </BaseMenu>
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow
@@ -205,6 +210,7 @@ function selectState(e) {
             :key="i"
             :proposal="proposal"
             :profiles="profiles"
+            :voted="userVotedProposalIds.includes(proposal.id)"
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>

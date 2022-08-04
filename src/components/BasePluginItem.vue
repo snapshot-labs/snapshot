@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useIntl } from '@/composables/useIntl';
 import { usePlugins } from '@/composables/usePlugins';
 import { getIpfsUrl } from '@/helpers/utils';
@@ -6,9 +6,15 @@ import { getIpfsUrl } from '@/helpers/utils';
 const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();
 
-defineProps({
-  plugin: Object // src/plugins/**/plugin.json
-});
+defineProps<{
+  plugin: {
+    icon: string;
+    name: string;
+    version: string;
+    author: string;
+    key: string;
+  };
+}>();
 </script>
 
 <template>
@@ -36,7 +42,6 @@ defineProps({
       </div>
 
       <BaseLink
-        class="flex items-center"
         :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
         @click.stop
       >

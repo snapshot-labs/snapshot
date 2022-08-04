@@ -42,11 +42,13 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-    },
-    dedupe: ['@popperjs/core']
+    }
   },
   test: {
-    open: true,
-    environment: 'happy-dom'
+    environment: 'happy-dom',
+    setupFiles: ['vitest.ts'],
+    deps: {
+      inline: ['@pusher/push-notifications-web']
+    }
   }
 });

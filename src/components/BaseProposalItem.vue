@@ -1,22 +1,20 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables/useIntl';
+import { useIntl } from '@/composables';
+import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
 
 const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
 
-const props = defineProps({
-  proposal: Object,
-  profiles: Object,
-  space: Object
-});
+const props = defineProps<{
+  proposal: Proposal;
+  profiles: { [key: string]: { ens: string; name?: string; about?: string } };
+  space: ExtendedSpace;
+  voted: boolean;
+}>();
 
-// shortening to twice the allowed character limit (140*2) before removing markdown
-// due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
-// until this is fixed we need to avoid applying that function to very long texts with a lot of markdown
-// see also: BaseProposalPreviewItem.vue
-const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
+const body = computed(() => removeMd(props.proposal.body));
 
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
@@ -47,33 +45,24 @@ const winningChoice = computed(() =>
               hide-avatar
             />
           </div>
-          <LabelProposalState :state="proposal.state" />
+          <LabelProposalVoted v-if="voted" />
         </div>
         <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
         <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />
-        <div>
-          <span
-            v-if="proposal.scores_state !== 'final'"
-            v-text="
-              getRelativeProposalPeriod(
-                proposal.state,
-                proposal.start,
-                proposal.end
-              )
-            "
-          />
+        <div class="mb-3">
           <span
             v-if="proposal.scores_state === 'final'"
             class="mt-2 flex items-center space-x-1"
           >
-            <BaseIcon size="20" name="check1" class="text-green" />
-            <span
-              >{{ shorten(proposal.choices[winningChoice], 64) }} -
+            <i-ho-check class="text-[17px] text-green" />
+            <span>
+              {{ shorten(proposal.choices[winningChoice], 64) }} -
               {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.symbol || proposal.space.symbol }}</span
-            >
+              {{ proposal.symbol || proposal.space.symbol }}
+            </span>
           </span>
         </div>
+        <ProposalItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </BaseBlock>

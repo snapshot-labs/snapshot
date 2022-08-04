@@ -59,6 +59,7 @@ export const PROPOSAL_QUERY = gql`
       scores_by_strategy
       scores_total
       votes
+      # delegation
     }
   }
 `;
@@ -136,7 +137,10 @@ export const NOTIFICATION_PROPOSALS_QUERY = gql`
 
 export const FOLLOWS_QUERY = gql`
   query Follows($space_in: [String], $follower_in: [String]) {
-    follows(where: { space_in: $space_in, follower_in: $follower_in }) {
+    follows(
+      where: { space_in: $space_in, follower_in: $follower_in }
+      first: 500
+    ) {
       id
       follower
       space {
@@ -189,6 +193,24 @@ export const SPACES_QUERY = gql`
       categories
       plugins
       followersCount
+      parent {
+        id
+        name
+        avatar
+        followersCount
+        children {
+          id
+        }
+      }
+      children {
+        id
+        name
+        avatar
+        followersCount
+        parent {
+          id
+        }
+      }
       voting {
         delay
         period
@@ -208,6 +230,11 @@ export const SPACES_QUERY = gql`
       filters {
         minScore
         onlyMembers
+      }
+      treasuries {
+        name
+        address
+        network
       }
     }
   }
@@ -358,6 +385,16 @@ export const PROFILES_QUERY = gql`
       about
       avatar
       created
+    }
+  }
+`;
+
+export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
+  query Votes($voter: String!, $proposals: [String]!) {
+    votes(where: { voter: $voter, proposal_in: $proposals }) {
+      proposal {
+        id
+      }
     }
   }
 `;
