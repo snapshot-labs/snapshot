@@ -28,6 +28,10 @@ const store = reactive<ProposalsStore>({
 const userVotedProposalIds = ref<string[]>([]);
 
 export function useProposals() {
+  function addSpaceProposals(proposals) {
+    store.space.proposals = store.space.proposals.concat(proposals);
+  }
+
   function removeSpaceProposal(id: string) {
     store.space.proposals = store.space.proposals.filter(
       proposal => proposal.id !== id
@@ -103,6 +107,7 @@ export function useProposals() {
     resetTimelineProposals,
     setSpaceFilter,
     setTimelineFilter,
-    addVotedProposalId
+    addVotedProposalId,
+    addSpaceProposals
   };
 }

@@ -4,6 +4,7 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   useProposals,
   useI18n,
@@ -18,7 +19,13 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { store, userVotedProposalIds, setSpaceFilter } = useProposals();
+const {
+  store,
+  userVotedProposalIds,
+  setSpaceFilter,
+  resetSpaceProposals,
+  addSpaceProposals
+} = useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -29,6 +36,12 @@ const { apolloQuery } = useApolloQuery();
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
+
+const spaceProposals = computed(() => {
+  return clone(store.space.proposals).filter(
+    proposal => proposal.space.id === props.space.id
+  );
+});
 
 const spaceFilterBy = computed(() => store.space.filterBy);
 
@@ -47,7 +60,7 @@ async function loadProposals(skip = 0) {
     'proposals'
   );
   stopLoadingMore.value = proposalsObj?.length < loadBy;
-  store.space.proposals = store.space.proposals.concat(proposalsObj);
+  addSpaceProposals(proposalsObj);
 }
 
 const { lastSeenProposals, updateLastSeenProposal } = useUnseenProposals();
@@ -68,7 +81,7 @@ function emitUpdateLastSeenProposal() {
 watch(web3Account, () => emitUpdateLastSeenProposal());
 
 async function load() {
-  if (store.space.proposals.length > 0) return;
+  if (spaceProposals.value.length > 0) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
@@ -76,17 +89,14 @@ async function load() {
 }
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(store.space.proposals.length), loadingMore.value)
+  loadMore(() => loadProposals(spaceProposals.value.length), loadingMore.value)
 );
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch(
-  () => store.space.proposals,
-  () => {
-    loadProfiles(store.space.proposals.map((proposal: any) => proposal.author));
-  }
-);
+watch(spaceProposals, () => {
+  loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
+});
 
 const loadingData = computed(() => {
   return loading.value || loadingMore.value;
@@ -100,9 +110,9 @@ function selectState(e) {
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
 
-  const firstProposal: any = store.space.proposals[0];
+  const firstProposal: any = spaceProposals.value[0];
   if (firstProposal && firstProposal?.space.id !== props.space.id) {
-    store.space.proposals = [];
+    resetSpaceProposals();
     load();
   }
 });
@@ -159,7 +169,7 @@ onMounted(() => {
         </BaseMenu>
 
         <SpaceProposalsNotice
-          v-if="store.space.proposals.length < 1 && !loadingData"
+          v-if="spaceProposals.length < 1 && !loadingData"
           :space-id="space.id"
           :web3-account="web3Account"
         />
@@ -170,13 +180,13 @@ onMounted(() => {
       </BaseBlock>
 
       <SpaceProposalsNoProposals
-        v-if="!loadingData && store.space.proposals.length < 1"
+        v-if="!loadingData && spaceProposals.length < 1"
         class="mt-2"
         :space="space"
       />
       <div v-else class="my-4 md:space-y-4">
         <BaseProposalItem
-          v-for="(proposal, i) in store.space.proposals"
+          v-for="(proposal, i) in spaceProposals"
           :key="i"
           :proposal="proposal"
           :profiles="profiles"
