@@ -43,12 +43,6 @@ export * from './utils/transactions';
 export * from './utils/realityModule';
 
 export default class Plugin {
-  public author = 'Gnosis';
-  public version = '1.0.0';
-  public name = 'SafeSnap';
-  public website = 'https://safe.gnosis.io';
-  public options: any;
-
   validateTransaction(transaction: SafeTransaction) {
     const addressEmptyOrValidate =
       transaction.to === '' || isAddress(transaction.to);
