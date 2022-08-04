@@ -32,6 +32,14 @@ export function useProposals() {
     store.space.proposals = store.space.proposals.concat(proposals);
   }
 
+  function setTimelineProposals(proposals) {
+    store.timeline.proposals = proposals;
+  }
+
+  function addTimelineProposals(proposals) {
+    store.timeline.proposals = store.timeline.proposals.concat(proposals);
+  }
+
   function removeSpaceProposal(id: string) {
     store.space.proposals = store.space.proposals.filter(
       proposal => proposal.id !== id
@@ -42,18 +50,9 @@ export function useProposals() {
     store.space.proposals = [];
   }
 
-  function resetTimelineProposals() {
-    store.timeline.proposals = [];
-  }
-
   function setSpaceFilter(filter: string) {
     store.space.filterBy = filter;
     resetSpaceProposals();
-  }
-
-  function setTimelineFilter(filter: string) {
-    store.timeline.filterBy = filter;
-    resetTimelineProposals();
   }
 
   function addVotedProposalId(id: string) {
@@ -104,10 +103,10 @@ export function useProposals() {
     userVotedProposalIds,
     removeSpaceProposal,
     resetSpaceProposals,
-    resetTimelineProposals,
     setSpaceFilter,
-    setTimelineFilter,
     addVotedProposalId,
-    addSpaceProposals
+    addSpaceProposals,
+    addTimelineProposals,
+    setTimelineProposals
   };
 }
