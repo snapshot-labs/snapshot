@@ -12,22 +12,22 @@ const searchOptions = computed(() => [
   {
     text: t('spaces'),
     action: 'home',
-    selected: route.name === 'home'
+    extras: { selected: route.name === 'home' }
   },
   {
     text: t('networks'),
     action: 'networks',
-    selected: route.name === 'networks'
+    extras: { selected: route.name === 'networks' }
   },
   {
     text: t('strategiesPage'),
     action: 'strategies',
-    selected: route.name === 'strategies'
+    extras: { selected: route.name === 'strategies' }
   },
   {
     text: t('plugins'),
     action: 'plugins',
-    selected: route.name === 'plugins'
+    extras: { selected: route.name === 'plugins' }
   }
 ]);
 
@@ -53,12 +53,14 @@ function redirectSearch(e) {
       class="flex-auto pr-2"
     />
     <div class="flex items-center border-l" style="height: 44px">
-      <BaseDropdown :items="searchOptions" @select="redirectSearch">
+      <BaseMenu :items="searchOptions" @select="redirectSearch">
         <template #button>
-          <span class="ml-3" v-text="searchSelectedOption" />
-          <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-text" />
+          <div class="flex h-full flex-grow items-center">
+            <span class="ml-3" v-text="searchSelectedOption" />
+            <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-text" />
+          </div>
         </template>
-      </BaseDropdown>
+      </BaseMenu>
     </div>
   </div>
 </template>

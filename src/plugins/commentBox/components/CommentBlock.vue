@@ -253,7 +253,7 @@ function deleteItemReply(key) {
           v-text="$d(item.timestamp, 'short', 'en-US')"
         />
 
-        <BaseDropdown
+        <BaseMenu
           v-if="isAdmin || isOwner || isCreator"
           class="float-right"
           :items="threeDotItems"
@@ -262,7 +262,7 @@ function deleteItemReply(key) {
           <template #button>
             <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
-        </BaseDropdown>
+        </BaseMenu>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>

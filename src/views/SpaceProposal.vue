@@ -322,7 +322,7 @@ const truncateMarkdownBody = computed(() => {
                 v-if="sharingIsSupported"
                 @click="shareProposal(space, proposal)"
               />
-              <BaseDropdown
+              <BaseMenu
                 v-else
                 class="!ml-auto pl-3"
                 :items="sharingItems"
@@ -333,15 +333,15 @@ const truncateMarkdownBody = computed(() => {
                 </template>
                 <template #item="{ item }">
                   <BaseIcon
-                    v-if="item.icon"
-                    :name="item.icon"
+                    v-if="item.extras.icon"
+                    :name="item.extras.icon"
                     size="21"
                     class="mr-2 align-middle !leading-[0]"
                   />
                   {{ item.text }}
                 </template>
-              </BaseDropdown>
-              <BaseDropdown
+              </BaseMenu>
+              <BaseMenu
                 class="md:ml-2"
                 :items="threeDotItems"
                 @select="selectFromThreedotDropdown"
@@ -353,7 +353,7 @@ const truncateMarkdownBody = computed(() => {
                     </BaseButtonIcon>
                   </div>
                 </template>
-              </BaseDropdown>
+              </BaseMenu>
             </div>
           </div>
 

@@ -148,27 +148,27 @@ function selectState(e) {
     <template #content-left>
       <div class="flex justify-between px-4 pb-4 md:px-0">
         <h2 class="mt-1" v-text="$t('timeline')" />
-        <BaseDropdown
+        <BaseMenu
           :items="[
             {
               text: $t('proposals.states.all'),
               action: 'all',
-              selected: timelineFilterBy === 'all'
+              extras: { selected: timelineFilterBy === 'all' }
             },
             {
               text: $t('proposals.states.active'),
               action: 'active',
-              selected: timelineFilterBy === 'active'
+              extras: { selected: timelineFilterBy === 'active' }
             },
             {
               text: $t('proposals.states.pending'),
               action: 'pending',
-              selected: timelineFilterBy === 'pending'
+              extras: { selected: timelineFilterBy === 'pending' }
             },
             {
               text: $t('proposals.states.closed'),
               action: 'closed',
-              selected: timelineFilterBy === 'closed'
+              extras: { selected: timelineFilterBy === 'closed' }
             }
           ]"
           @select="selectState"
@@ -179,7 +179,7 @@ function selectState(e) {
               <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
             </BaseButton>
           </template>
-        </BaseDropdown>
+        </BaseMenu>
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow
