@@ -52,7 +52,7 @@ onMounted(() => {
         <TheSearchBar />
       </BaseButton>
 
-      <ExploreDropdownCategories />
+      <ExploreMenuCategories />
 
       <div
         v-if="spacesLoaded"

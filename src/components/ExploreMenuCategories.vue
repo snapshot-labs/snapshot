@@ -23,7 +23,7 @@ const categoryItems = computed(() => {
     ...categoriesOrderedBySpaceCount.value
       .filter(c => spacesPerCategory.value[c])
       .map(c => ({
-        text: tc('explore.categories.' + c),
+        text: tc(`explore.categories.${c}`),
         action: c,
         extras: {
           count: spacesPerCategory.value[c],
