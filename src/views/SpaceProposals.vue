@@ -158,15 +158,9 @@ onMounted(() => {
               extras: { selected: spaceFilterBy === 'core' }
             }
           ]"
+          :selected="$t(`proposals.states.${store.space.filterBy}`)"
           @select="selectState"
-        >
-          <template #button>
-            <BaseButton class="flex items-center pr-3">
-              {{ $t(`proposals.states.${store.space.filterBy}`) }}
-              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
-            </BaseButton>
-          </template>
-        </BaseMenu>
+        />
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loadingData"
