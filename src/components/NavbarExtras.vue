@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
 import { useApp } from '@/composables';
+import { useRouter } from 'vue-router';
+import { PopoverButton } from '@headlessui/vue';
 
 const { domain } = useApp();
+const router = useRouter();
 
 const commitSha = import.meta.env.VITE_COMMIT_SHA;
 
@@ -20,17 +23,22 @@ const navigationItems = [
     link: 'setup'
   }
 ];
+
+function clickNavigationItem(item: any) {
+  if (domain) window.open(`https://snapshot.org/#/${item.link}`, '_blank');
+  else router.push({ name: item.link });
+}
 </script>
 
 <template>
-  <BaseDropdown :items="null" placement="bottom-end">
+  <BasePopover>
     <template #button>
       <ButtonSidebar class="relative !h-[46px] !w-[46px]">
         <i-ho-dots-horizontal class="text-skin-link" />
       </ButtonSidebar>
     </template>
-    <template #header>
-      <div class="w-[352px]">
+    <template #content>
+      <div>
         <div class="m-4 flex justify-between">
           <div>
             <ButtonTheme v-if="!domain" />
@@ -38,14 +46,15 @@ const navigationItems = [
           <ButtonLanguage class="!h-[42px]" />
         </div>
         <div class="group m-4 py-1">
-          <BaseLink
+          <PopoverButton
             v-for="item in navigationItems"
             :key="item.name"
-            :link="{ name: item.link }"
-            class="block py-1 pr-[100px] text-xl hover:!text-skin-link group-hover:text-skin-text"
+            as="div"
+            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link group-hover:text-skin-text"
+            @click="clickNavigationItem(item)"
           >
             {{ item.name }}
-          </BaseLink>
+          </PopoverButton>
         </div>
 
         <div class="mt-4 border-t">
@@ -64,5 +73,5 @@ const navigationItems = [
         </div>
       </div>
     </template>
-  </BaseDropdown>
+  </BasePopover>
 </template>

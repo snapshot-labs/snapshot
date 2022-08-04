@@ -120,32 +120,32 @@ onMounted(() => {
             <h2>{{ $t('proposals.header') }}</h2>
           </div>
         </div>
-        <BaseDropdown
+        <BaseMenu
           :items="[
             {
               text: $t('proposals.states.all'),
               action: 'all',
-              selected: spaceFilterBy === 'all'
+              extras: { selected: spaceFilterBy === 'all' }
             },
             {
               text: $t('proposals.states.active'),
               action: 'active',
-              selected: spaceFilterBy === 'active'
+              extras: { selected: spaceFilterBy === 'active' }
             },
             {
               text: $t('proposals.states.pending'),
               action: 'pending',
-              selected: spaceFilterBy === 'pending'
+              extras: { selected: spaceFilterBy === 'pending' }
             },
             {
               text: $t('proposals.states.closed'),
               action: 'closed',
-              selected: spaceFilterBy === 'closed'
+              extras: { selected: spaceFilterBy === 'closed' }
             },
             {
               text: $t('proposals.states.core'),
               action: 'core',
-              selected: spaceFilterBy === 'core'
+              extras: { selected: spaceFilterBy === 'core' }
             }
           ]"
           @select="selectState"
@@ -156,7 +156,7 @@ onMounted(() => {
               <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
             </BaseButton>
           </template>
-        </BaseDropdown>
+        </BaseMenu>
 
         <SpaceProposalsNotice
           v-if="store.space.proposals.length < 1 && !loadingData"

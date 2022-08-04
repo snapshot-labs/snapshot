@@ -40,7 +40,7 @@ const resourcesTextLinks = [
 
 <template>
   <div class="-mt-3 border-t" />
-  <BaseContainer class="space-y-5 py-[40px]">
+  <BaseContainer class="space-y-5 py-[40px] md:space-y-0">
     <div class="space-y-5 md:flex md:space-y-0">
       <div>
         <div class="mx-auto md:mx-0">
@@ -95,9 +95,7 @@ const resourcesTextLinks = [
       </div>
     </div>
 
-    <div
-      class="whitespace-nowrap text-center opacity-40 md:text-left lg:!-mt-4"
-    >
+    <div class="whitespace-nowrap text-center opacity-40 md:text-left">
       © {{ yearNow }} Snapshot Labs.
     </div>
   </BaseContainer>

@@ -9,17 +9,17 @@ export function useSharing() {
     {
       text: 'Twitter',
       action: 'shareProposalTwitter',
-      icon: 'twitter'
+      extras: { icon: 'twitter' }
     },
     {
       text: 'Facebook',
       action: 'shareToFacebook',
-      icon: 'facebook'
+      extras: { icon: 'facebook' }
     },
     {
       text: t('copyLink'),
       action: 'shareToClipboard',
-      icon: 'insertlink'
+      extras: { icon: 'insertlink' }
     }
   ];
 

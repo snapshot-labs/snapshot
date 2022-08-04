@@ -1,34 +1,44 @@
 <script setup lang="ts">
-import { useCategories, useSpaces } from '@/composables';
+import { computed } from 'vue';
+import { useCategories, useSpaces, useI18n } from '@/composables';
 
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { selectedCategory, orderedSpaces } = useSpaces();
+const { tc } = useI18n();
 
 function selectCategory(c) {
   selectedCategory.value = c === selectedCategory.value ? '' : c;
 }
+
+const categoryItems = computed(() => {
+  return [
+    {
+      text: tc('explore.categories.all'),
+      action: '',
+      extras: {
+        count: orderedSpaces.value.length,
+        selected: !selectedCategory.value
+      }
+    },
+    ...categoriesOrderedBySpaceCount.value
+      .filter(c => spacesPerCategory.value[c])
+      .map(c => ({
+        text: tc('explore.categories.' + c),
+        action: c,
+        extras: {
+          count: spacesPerCategory.value[c],
+          selected: selectedCategory.value === c
+        }
+      }))
+  ];
+});
 </script>
 
 <template>
-  <BaseDropdown
+  <BaseMenu
     class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
-    :items="[
-      {
-        text: $tc('explore.categories.all'),
-        action: '',
-        count: orderedSpaces.length,
-        selected: !selectedCategory
-      },
-      ...categoriesOrderedBySpaceCount
-        .filter(c => spacesPerCategory[c])
-        .map(c => ({
-          text: $tc('explore.categories.' + c),
-          action: c,
-          count: spacesPerCategory[c],
-          selected: selectedCategory === c
-        }))
-    ]"
-    @select="selectCategory($event)"
+    :items="categoryItems"
+    @select="selectCategory"
   >
     <template #button>
       <BaseButton
@@ -51,9 +61,9 @@ function selectCategory(c) {
       <div class="flex">
         <span class="mr-3">{{ item.text }}</span>
         <span class="ml-auto mt-[-3px] flex">
-          <BaseCounter :counter="item.count" class="my-auto" />
+          <BaseCounter :counter="item.extras.count" class="my-auto" />
         </span>
       </div>
     </template>
-  </BaseDropdown>
+  </BaseMenu>
 </template>

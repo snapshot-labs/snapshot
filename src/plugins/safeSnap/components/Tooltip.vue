@@ -11,13 +11,8 @@ const { copyToClipboard } = useCopy();
 </script>
 
 <template>
-  <BasePopoverHover
-    :options="{
-      offset: [0, 5],
-      placement: 'left'
-    }"
-  >
-    <template #item>
+  <BasePopoverHover placement="left">
+    <template #button>
       <i-ho-information-circle />
     </template>
     <template #content>

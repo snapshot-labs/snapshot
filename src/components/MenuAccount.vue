@@ -29,11 +29,19 @@ function handleAction(e) {
 
 <template>
   <div>
-    <BaseDropdown
+    <BaseMenu
       :items="[
-        { text: 'View profile', action: 'viewProfile', icon: 'profile' },
-        { text: 'Switch wallet', action: 'switchWallet', icon: 'switch' },
-        { text: 'Log out', action: 'logout', icon: 'logout' }
+        {
+          text: 'View profile',
+          action: 'viewProfile',
+          extras: { icon: 'profile' }
+        },
+        {
+          text: 'Switch wallet',
+          action: 'switchWallet',
+          extras: { icon: 'switch' }
+        },
+        { text: 'Log out', action: 'logout', extras: { icon: 'logout' } }
       ]"
       @select="handleAction($event)"
     >
@@ -43,15 +51,18 @@ function handleAction(e) {
       <template #item="{ item }">
         <div class="flex items-center space-x-2">
           <div class="w-[24px]">
-            <i-ho-user-circle v-if="item.icon === 'profile'" />
-            <i-ho-refresh v-if="item.icon === 'switch'" />
-            <i-ho-logout v-if="item.icon === 'logout'" class="ml-[2px]" />
+            <i-ho-user-circle v-if="item.extras.icon === 'profile'" />
+            <i-ho-refresh v-if="item.extras.icon === 'switch'" />
+            <i-ho-logout
+              v-if="item.extras.icon === 'logout'"
+              class="ml-[2px]"
+            />
           </div>
           <div>
             {{ item.text }}
           </div>
         </div>
       </template>
-    </BaseDropdown>
+    </BaseMenu>
   </div>
 </template>

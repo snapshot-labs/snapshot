@@ -34,7 +34,10 @@ const avatarNotReactive = ref(form.value.avatar);
                       size="80"
                       :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar: avatarNotReactive }"
                     />
-                    <AvatarOverlayEdit :loading="uploading" />
+                    <AvatarOverlayEdit
+                      :loading="uploading"
+                      :avatar="form?.avatar"
+                    />
                     <div
                       class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
                     >

@@ -24,7 +24,7 @@ const socials = [
     class="flex items-center justify-center space-x-3 pt-2 md:mt-4 md:justify-start lg:mt-0 lg:justify-end"
   >
     <span v-for="social in socials" :key="social.icon">
-      <BaseLink :link="social.link" hide-external-icon @click.stop="null">
+      <BaseLink :link="social.link" hide-external-icon>
         <FooterSocialsItem v-if="social.icon === 'youtube'">
           <i-s-youtube class="text-[25px]" />
         </FooterSocialsItem>

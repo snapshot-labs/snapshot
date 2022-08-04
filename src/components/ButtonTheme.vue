@@ -7,8 +7,8 @@ const { toggleUserTheme, getThemeIcon } = useSkin();
 <template>
   <ButtonSidebar
     :aria-label="$t('toggleSkin')"
-    class="text-skin-text"
-    @click.stop="toggleUserTheme"
+    class="text-skin-text hover:text-skin-link"
+    @click="toggleUserTheme"
   >
     <i-ho-moon v-if="getThemeIcon() === 'moon'" />
     <i-ho-sun v-if="getThemeIcon() === 'sun'" />
