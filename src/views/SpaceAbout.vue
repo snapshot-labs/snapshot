@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useProfiles } from '@/composables/useProfiles';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { useI18n } from '@/composables/useI18n';
-import { useIntl } from '@/composables/useIntl';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { useProfiles, useI18n, useIntl } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;

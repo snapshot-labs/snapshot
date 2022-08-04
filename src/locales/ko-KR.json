@@ -11,6 +11,7 @@
   "retry": "다시하기",
   "currentResults": "현재 결과",
   "reset": "초기화",
+  "close": "Close",
   "save": "저장",
   "author": "저자",
   "next": "다음",
@@ -50,6 +51,7 @@
   "toggleSkin": "스킨 토글",
   "about": "소개",
   "license": "라이센스",
+  "voted": "Voted",
   "ipfsServer": "IPFS 서버",
   "hub": "허브",
   "cancel": "취소",
@@ -120,6 +122,8 @@
   "join": "참여",
   "joined": "참여함",
   "leave": "나가기",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "링크 복사",
   "duplicateProposal": "제안 복사",
   "joinedSpaces": "참여한 공간",
@@ -131,6 +135,7 @@
   "confirmAction": "액션 확인",
   "or": "또는",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -224,7 +229,16 @@
     "vote": "투표",
     "startDate": "시작일",
     "endDate": "종료일",
-    "votingSystem": "투표 유형"
+    "votingSystem": "투표 유형",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "제안",
@@ -279,7 +293,20 @@
     },
     "hideSpace": "홈페이지에서 공간 숨기기",
     "links": "Social accounts",
-    "subspaces": "Sub-Spaces",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "pistachiodao.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
       "label": "Voting strategy",
@@ -306,9 +333,9 @@
       "information": "Authors are able to create proposals without having to pass validation."
     },
     "proposalValidation": "제안 검증",
-    "validation": "확인",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
@@ -387,16 +414,22 @@
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
+      "subtitle": "You can change your strategy settings any time.",
+      "blockTitle": "Setup voting strategy",
       "onePersonOneVote": {
         "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "whitelistInformation": "Specify a number of accounts that can vote",
+        "ticketInformation": "Any account can vote",
+        "votesEqualInfo": "Each vote is equal and no token is required"
       },
       "tokenVoting": {
         "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
+        "tokenNotFound": "Token not found"
       },
       "advanced": {
-        "title": "Advanced settings",
+        "title": "Custom setup",
         "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
       }
     },
@@ -646,5 +679,16 @@
     "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
     "subHeader": "Governance should be a snap",
     "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "blog": "Blog",
+    "jobs": "Jobs",
+    "discussions": "Discussions",
+    "github": "GitHub",
+    "docs": "Docs",
+    "support": "Support",
+    "hiring": "Join us!"
   }
 }

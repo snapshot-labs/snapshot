@@ -20,6 +20,7 @@ onMounted(() => loadProfiles([userAddress.value]));
       <ProfileSidebar
         :profiles="profiles"
         :user-address="userAddress"
+        class="mb-4 lg:mb-0"
         @edit="modalProfileFormOpen = true"
       />
     </template>

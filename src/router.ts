@@ -59,7 +59,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:sourceSpace?',
+    path: 'settings',
     name: 'spaceSettings',
     component: SpaceSettings
   },
@@ -124,7 +124,6 @@ if (domain) {
     { path: '/plugins', name: 'plugins', component: ExploreView },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
-    { path: '/explore', name: 'explore', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },
     {
       path: '/playground/:name',
@@ -163,7 +162,7 @@ routes.push({
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     }

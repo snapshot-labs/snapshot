@@ -193,6 +193,24 @@ export const SPACES_QUERY = gql`
       categories
       plugins
       followersCount
+      parent {
+        id
+        name
+        avatar
+        followersCount
+        children {
+          id
+        }
+      }
+      children {
+        id
+        name
+        avatar
+        followersCount
+        parent {
+          id
+        }
+      }
       voting {
         delay
         period
@@ -367,6 +385,16 @@ export const PROFILES_QUERY = gql`
       about
       avatar
       created
+    }
+  }
+`;
+
+export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
+  query Votes($voter: String!, $proposals: [String]!) {
+    votes(where: { voter: $voter, proposal_in: $proposals }) {
+      proposal {
+        id
+      }
     }
   }
 `;

@@ -77,54 +77,62 @@ watch(
       <SetupButtonNext class="!mt-0" @click="emit('next')" />
     </div>
   </div>
-  <BaseBlock v-else :title="$t('setup.setSpaceController')">
-    <div class="mb-4">
-      <BaseMessageBlock level="info">
-        {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessageBlock>
-    </div>
+  <div v-else>
+    <BaseBlock :title="$t('setup.setSpaceController')">
+      <div class="mb-4">
+        <BaseMessageBlock level="info">
+          {{ $t('setup.setSpaceControllerInfo') }}
+        </BaseMessageBlock>
+      </div>
 
-    <BaseInput
-      v-model.trim="spaceControllerInput"
-      title="Controller address"
-      :placeholder="
-        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
-      "
-      :readonly="fillConnectedWallet"
-      focus-on-mount
-      @keyup.delete="fillConnectedWallet = false"
-    />
-    <div class="mt-1 flex items-center gap-2">
-      <BaseSwitch v-model="fillConnectedWallet" />
-      {{ $t('setup.fillCurrentAccount') }}
-    </div>
-    <BaseButton
-      class="mt-4 w-full"
-      primary
-      :disabled="!controllerInputIsValid"
-      :loading="settingENSRecord"
-      @click="confirmSetRecord"
-    >
-      {{ $t('setup.setController') }}
-    </BaseButton>
-
-    <BaseMessageBlock
-      v-if="isGnosisSafe && !fillConnectedWallet"
-      level="warning"
-    >
-      <i18n-t
-        keypath="setup.setSpaceControllerInfoGnosisSafe"
-        tag="span"
-        scope="global"
+      <BaseInput
+        v-model.trim="spaceControllerInput"
+        title="Controller address"
+        :placeholder="
+          $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+        "
+        :readonly="fillConnectedWallet"
+        focus-on-mount
+        @keyup.delete="fillConnectedWallet = false"
+      />
+      <div class="mt-1 flex items-center gap-2">
+        <BaseSwitch v-model="fillConnectedWallet" />
+        {{ $t('setup.fillCurrentAccount') }}
+      </div>
+      <BaseButton
+        class="mt-4 w-full"
+        primary
+        :disabled="!controllerInputIsValid"
+        :loading="settingENSRecord"
+        @click="confirmSetRecord"
       >
-        <template #link>
-          <BaseLink link="https://docs.snapshot.org/spaces/create">
-            {{ $t('learnMore') }}
-          </BaseLink>
-        </template>
-      </i18n-t>
-    </BaseMessageBlock>
-  </BaseBlock>
+        {{ $t('setup.setController') }}
+      </BaseButton>
+
+      <BaseMessageBlock
+        v-if="isGnosisSafe && !fillConnectedWallet"
+        level="warning"
+      >
+        <i18n-t
+          keypath="setup.setSpaceControllerInfoGnosisSafe"
+          tag="span"
+          scope="global"
+        >
+          <template #link>
+            <BaseLink link="https://docs.snapshot.org/spaces/create">
+              {{ $t('learnMore') }}
+            </BaseLink>
+          </template>
+        </i18n-t>
+      </BaseMessageBlock>
+    </BaseBlock>
+    <SetupButtonNext
+      v-if="isEditController"
+      class="!mt-4 mr-4 md:mr-0"
+      text="skip"
+      @click="emit('next')"
+    />
+  </div>
 
   <teleport to="#modal">
     <ModalUnsupportedNetwork
@@ -137,7 +145,14 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="m-4 space-y-1 text-skin-text">
+      <div class="m-4 mt-0 space-y-1 text-skin-text">
+        <BaseMessageBlock level="info" class="mb-3">
+          {{
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
+            })
+          }}
+        </BaseMessageBlock>
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -158,13 +173,6 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessageBlock level="info">
-          {{
-            $t('setup.explainControllerAndEns', {
-              network: networks[defaultNetwork].name
-            })
-          }}
-        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>

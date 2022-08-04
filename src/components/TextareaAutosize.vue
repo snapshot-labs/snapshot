@@ -38,6 +38,7 @@ const computedStyles = computed(() => {
 function resize() {
   height.value = 'auto';
   nextTick(() => {
+    if (!textarea.value) return;
     let contentHeight = textarea.value.scrollHeight + 1;
     if (props.minHeight) {
       contentHeight =
@@ -51,7 +52,7 @@ function resize() {
         maxHeightScroll.value = false;
       }
     }
-    const heightVal = contentHeight + 'px';
+    const heightVal = `${contentHeight}px`;
     height.value = heightVal;
   });
   return;

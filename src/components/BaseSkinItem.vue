@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useIntl } from '@/composables/useIntl';
 import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
@@ -6,7 +6,9 @@ const { skinsSpacesCount } = useSkinsFilter();
 
 const { formatCompactNumber } = useIntl();
 
-defineProps(['skin']);
+defineProps<{
+  skin: string;
+}>();
 </script>
 
 <template>

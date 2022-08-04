@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables';
 
-const { getErrorMessage } = useSpaceSettingsForm();
-
-defineProps<{
-  twitter?: string;
-  github?: string;
+const props = defineProps<{
+  context: 'setup' | 'settings';
 }>();
 
-const emit = defineEmits(['update:twitter', 'update:github']);
+const { form, getValidation } = useSpaceForm(props.context);
 </script>
 
 <template>
@@ -17,22 +14,20 @@ const emit = defineEmits(['update:twitter', 'update:github']);
     <div class="space-y-2">
       <ContainerParallelInput>
         <InputSocial
+          v-model="form.twitter"
           title="Twitter"
-          :model-value="twitter"
-          :error="getErrorMessage('twitter')"
+          :error="getValidation('twitter')"
           :max-length="schemas.space.properties.twitter.maxLength"
           icon="twitter"
           placeholder="e.g. elonmusk"
-          @update:model-value="value => emit('update:twitter', value)"
         />
         <InputSocial
+          v-model="form.github"
           title="Github"
-          :model-value="github"
-          :error="getErrorMessage('github')"
+          :error="getValidation('github')"
           :max-length="schemas.space.properties.github.maxLength"
           icon="github"
           placeholder="e.g. vbuterin"
-          @update:model-value="value => emit('update:github', value)"
         />
       </ContainerParallelInput>
     </div>

@@ -2,12 +2,12 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { isHexString } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 import {
-  Collectable,
-  ContractInteractionModuleTransaction,
-  ModuleTransaction,
-  SendAssetModuleTransaction,
-  TransferFundsModuleTransaction
-} from '../models';
+  CollectableAsset,
+  CustomContractTransaction,
+  SafeTransaction,
+  CollectableAssetTransaction,
+  TokenAssetTransaction
+} from '@/helpers/interfaces';
 import { InterfaceDecoder } from './decoder';
 import { getNativeAsset } from './coins';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
@@ -20,7 +20,7 @@ export function rawToModuleTransaction({
   value,
   data,
   nonce
-}): ModuleTransaction {
+}): SafeTransaction {
   return {
     to,
     value,
@@ -35,7 +35,7 @@ export function sendAssetToModuleTransaction({
   collectable,
   data,
   nonce
-}): SendAssetModuleTransaction {
+}): CollectableAssetTransaction {
   const _collectable = {
     id: collectable.id,
     name: collectable.name,
@@ -61,7 +61,7 @@ export function transferFundsToModuleTransaction({
   token,
   data,
   nonce
-}): TransferFundsModuleTransaction {
+}): TokenAssetTransaction {
   const base = {
     operation: '0',
     nonce,
@@ -91,7 +91,7 @@ export function transferFundsToModuleTransaction({
 export function contractInteractionToModuleTransaction(
   { to, value, data, nonce, method },
   multiSendAddress: string
-): ContractInteractionModuleTransaction {
+): CustomContractTransaction {
   const operation = to === multiSendAddress ? '1' : '0';
   return {
     to,
@@ -106,9 +106,9 @@ export function contractInteractionToModuleTransaction(
 
 export async function decodeContractTransaction(
   network: string,
-  transaction: ModuleTransaction,
+  transaction: SafeTransaction,
   multiSendAddress: string
-): Promise<ContractInteractionModuleTransaction> {
+): Promise<CustomContractTransaction> {
   const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
     const method = contractInterface.getMethodFragment(transaction.data);
@@ -144,19 +144,19 @@ export async function decodeContractTransaction(
 }
 
 function getMethodSignature(data: string) {
-  const methodSignature = data.substr(0, 10);
+  const methodSignature = data.slice(0, 10);
   if (isHexString(methodSignature) && methodSignature.length === 10) {
     return methodSignature;
   }
   return null;
 }
 
-export function isERC20TransferTransaction(transaction: ModuleTransaction) {
+export function isERC20TransferTransaction(transaction: SafeTransaction) {
   // 0xa9059cbb == transfer(address to, uint256 amount)
   return getMethodSignature(transaction.data) === '0xa9059cbb';
 }
 
-function decodeERC721TransferTransaction(transaction: ModuleTransaction) {
+function decodeERC721TransferTransaction(transaction: SafeTransaction) {
   const erc721ContractInterface = new InterfaceDecoder(ERC721_ABI);
   try {
     return erc721ContractInterface.decodeFunction(transaction.data);
@@ -167,7 +167,7 @@ function decodeERC721TransferTransaction(transaction: ModuleTransaction) {
 
 export async function decodeTransactionData(
   network: string,
-  transaction: ModuleTransaction,
+  transaction: SafeTransaction,
   multiSendAddress: string
 ) {
   if (!transaction.data || transaction.data === '0x') {
@@ -199,7 +199,7 @@ export async function decodeTransactionData(
 
   const erc721DecodedParams = decodeERC721TransferTransaction(transaction);
   if (erc721DecodedParams) {
-    const collectable: Collectable = {
+    const collectable: CollectableAsset = {
       id: erc721DecodedParams[2],
       address: transaction.to,
       name: 'Unknown'

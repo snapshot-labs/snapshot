@@ -2,26 +2,18 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables/useIntl';
+import { useIntl } from '@/composables';
 import { Proposal } from '@/helpers/interfaces';
 
-const {
-  formatNumber,
-  formatCompactNumber,
-  formatPercentNumber,
-  getRelativeProposalPeriod
-} = useIntl();
+const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
   profiles: { [key: string]: { ens: string; name?: string; about?: string } };
+  voted: boolean;
 }>();
 
-// shortening to twice the allowed character limit (140*2) before removing markdown
-// due to a bug in remove-markdown: https://github.com/stiang/remove-markdown/issues/52
-// until this is fixed we need to avoid applying that function to very long texts with a lot of markdown
-// see also: BaseProposalItem.vue
-const body = computed(() => removeMd(shorten(props.proposal.body, 280)));
+const body = computed(() => removeMd(props.proposal.body));
 
 const winningChoice = computed(() =>
   props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
@@ -38,30 +30,35 @@ const winningChoice = computed(() =>
       }"
     >
       <div>
-        <div class="mb-2 flex items-center space-x-1">
-          <router-link
-            class="group text-skin-text"
-            :to="{
-              name: 'spaceProposals',
-              params: { key: proposal.space.id }
-            }"
-          >
-            <div class="flex items-center">
-              <AvatarSpace :space="proposal.space" size="28" />
-              <span
-                class="ml-2 group-hover:text-skin-link"
-                v-text="proposal.space.name"
-              />
-            </div>
-          </router-link>
-          <span v-text="$tc('proposalBy')" />
-          <BaseUser
-            :address="proposal.author"
-            :profile="profiles[proposal.author]"
-            :proposal="proposal"
-            :space="proposal.space"
-            hide-avatar
-          />
+        <div class="flex justify-between">
+          <div class="mb-2 flex items-center space-x-1">
+            <router-link
+              class="group text-skin-text"
+              :to="{
+                name: 'spaceProposals',
+                params: { key: proposal.space.id }
+              }"
+            >
+              <div class="flex items-center">
+                <AvatarSpace :space="proposal.space" size="28" />
+                <span
+                  class="ml-2 group-hover:text-skin-link"
+                  v-text="proposal.space.name"
+                />
+              </div>
+            </router-link>
+            <span v-text="$tc('proposalBy')" />
+            <BaseUser
+              :address="proposal.author"
+              :profile="profiles[proposal.author]"
+              :proposal="proposal"
+              :space="proposal.space"
+              hide-avatar
+            />
+          </div>
+          <div>
+            <LabelProposalVoted v-if="voted" />
+          </div>
         </div>
         <h3 class="mt-1 mb-1 break-words" v-text="proposal.title" />
         <p class="mb-2 break-words text-md" v-text="shorten(body, 120)" />
@@ -107,22 +104,7 @@ const winningChoice = computed(() =>
             />
           </div>
         </div>
-        <div class="flex items-center">
-          <LabelProposalState :state="proposal.state" slim class="mr-2" />
-          {{ $t(`proposals.states.${proposal.state}`)
-          }}<span v-if="proposal.scores_state !== 'final'"
-            >,
-            {{
-              getRelativeProposalPeriod(
-                proposal.state,
-                proposal.start,
-                proposal.end
-              )
-            }}</span
-          ><span v-if="proposal.scores_state === 'final'"
-            >, {{ formatNumber(proposal.votes) }} votes
-          </span>
-        </div>
+        <ProposalItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </div>
