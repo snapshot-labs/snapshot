@@ -22,10 +22,10 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
 
 <template>
   <div>
-    <BaseDropdown :items="localeItems" @select="selectLang($event)">
+    <BaseMenu :items="localeItems" @select="selectLang($event)">
       <template #button>
         <slot />
       </template>
-    </BaseDropdown>
+    </BaseMenu>
   </div>
 </template>

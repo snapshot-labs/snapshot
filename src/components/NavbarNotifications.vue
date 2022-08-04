@@ -39,7 +39,7 @@ onMounted(() => loadNotifications());
       <div class="my-2 w-full">
         <div class="mb-3 flex items-center justify-between px-3">
           <h4>{{ $t('notifications.header') }}</h4>
-          <BaseDropdown
+          <BaseMenu
             :items="[
               {
                 text: $t('notifications.markAllAsRead'),
@@ -60,7 +60,7 @@ onMounted(() => loadNotifications());
                 {{ item.text }}
               </div>
             </template>
-          </BaseDropdown>
+          </BaseMenu>
         </div>
         <div class="mb-3 space-x-2 px-3">
           <BaseButton

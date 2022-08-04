@@ -34,18 +34,16 @@ const getPluginComponents = (componentName: string, pluginKeys) => {
 
   return Object.entries(allPluginComponents)
     .map(([path, componentModule]) => {
-      if (path.endsWith(componentName + '.vue')) {
+      if (path.endsWith(`${componentName}.vue`)) {
         const pluginKey = path
           .replace('../plugins/', '')
           .replace(`/${componentName}.vue`, '');
 
         if (pluginKeys.includes(pluginKey)) {
           // prefix component name for better debugging, e.g. in console warnings
-          componentModule.default.name =
-            'Plugins' +
-            pluginKey[0].toUpperCase() +
-            pluginKey.substring(1) +
-            componentName;
+          componentModule.default.name = `Plugins${pluginKey[0].toUpperCase()}${pluginKey.substring(
+            1
+          )}${componentName}`;
           return componentModule.default;
         }
       }

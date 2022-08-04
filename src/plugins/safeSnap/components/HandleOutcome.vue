@@ -354,10 +354,9 @@ const approvalData = computed(() => {
     return {
       decision: isApproved ? 'Yes' : 'No',
       timeLeft: t('safeSnap.finalizedIn', [formatRelativeTime(endTime)]),
-      currentBond:
-        formatUnits(currentBond, bondData.value.tokenDecimals) +
-        ' ' +
+      currentBond: `${formatUnits(currentBond, bondData.value.tokenDecimals)} ${
         bondData.value.tokenSymbol
+      }`
     };
   }
   return {

@@ -93,7 +93,7 @@ async function loadScores() {
       form.value.network,
       form.value.addresses,
       parseInt(form.value.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
     loading.value = false;
   } catch (e) {

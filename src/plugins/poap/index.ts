@@ -11,7 +11,7 @@ export default class Plugin {
   public options: any;
 
   openScanPage(address) {
-    window.open(`${APP_BASE_URL}/scan/` + address, '_blank');
+    window.open(`${APP_BASE_URL}/scan/${address}`, '_blank');
   }
   async getCurrentState(snapshot, address) {
     // Fetch the event
