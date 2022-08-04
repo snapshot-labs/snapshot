@@ -158,7 +158,7 @@ async function getDelegatesWithScore() {
       space.value.network,
       delegatesAddresses,
       'latest',
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
 
     uniqueDelegators.forEach(delegate => {
