@@ -18,7 +18,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-const { followingSpaces, loadingFollows } = useFollowSpace();
+const { followingSpaces, loadingFollows, loadFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 
@@ -65,13 +65,17 @@ async function getProposals(skip = 0) {
 }
 
 async function loadMoreProposals(skip = 0) {
+  if (skip === 0) return;
   const proposals = await getProposals(skip);
   stopLoadingMore.value = proposals?.length < loadBy;
   addTimelineProposals(proposals);
 }
 
 async function loadProposals() {
+  if (!web3Account.value && isFeedJoinedSpaces.value) return;
+  loading.value = true;
   const proposals = await getProposals();
+  loading.value = false;
   setTimelineProposals(proposals);
 }
 
@@ -79,13 +83,6 @@ const { profiles, loadProfiles } = useProfiles();
 watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
-
-async function load() {
-  if (!web3Account.value && isFeedJoinedSpaces.value) return;
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
 
 function setStateFilter(name: string) {
   router.push({
@@ -106,9 +103,9 @@ function setFeed(name: string) {
 }
 
 watch(
-  () => [route.query.state, route.query.feed],
+  () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
-    load();
+    loadProposals();
   },
   { immediate: true }
 );
