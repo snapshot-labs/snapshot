@@ -170,7 +170,7 @@ export interface SafeTransaction {
 }
 
 export interface RealityOracleProposal {
-  dao: string;
+  gnosisSafeAddress: string;
   oracle: string;
   cooldown: number;
   expiration: number;

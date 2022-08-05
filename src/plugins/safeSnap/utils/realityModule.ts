@@ -48,7 +48,7 @@ export const getModuleDetails = async (
   network: string,
   moduleAddress: string
 ): Promise<{
-  dao: string;
+  gnosisSafeAddress: string;
   oracle: string;
   cooldown: number;
   minimumBond: number;
@@ -77,7 +77,7 @@ export const getModuleDetails = async (
   }
 
   return {
-    dao: moduleDetails[0][0],
+    gnosisSafeAddress: moduleDetails[0][0],
     oracle: moduleDetails[1][0],
     cooldown: moduleDetails[2][0],
     minimumBond: moduleDetails[3][0],

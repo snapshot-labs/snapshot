@@ -125,6 +125,7 @@ const updateDetails = async () => {
     questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
       props.moduleAddress,
+      props.moduleType,
       props.proposal.id,
       getTxHashes()
     );

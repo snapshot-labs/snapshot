@@ -119,11 +119,12 @@ export default {
   },
   async mounted() {
     try {
-      const { dao } = await plugin.getModuleDetails(
+      const { gnosisSafeAddress } = await plugin.getModuleDetails(
         this.network,
-        this.moduleAddress
+        this.moduleAddress,
+        this.moduleType
       );
-      this.gnosisSafeAddress = dao;
+      this.gnosisSafeAddress = gnosisSafeAddress;
       this.transactionConfig = {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,

@@ -25,9 +25,10 @@ import {
 import {
   buildQuestion,
   checkPossibleExecution,
-  getModuleDetails,
+  getModuleDetails as getRealityModuleDetails,
   getProposalDetails
 } from './utils/realityModule';
+import { getModuleDetails as getUmaModuleDetails } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -90,6 +91,7 @@ export default class Plugin {
   async getExecutionDetailsWithHashes(
     network: string,
     moduleAddress: string,
+    moduleType: 'reality' | 'uma',
     proposalId: string,
     txHashes: string[]
   ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
@@ -104,10 +106,10 @@ export default class Plugin {
       questionHash,
       txHashes
     );
-    const moduleDetails = await getModuleDetails(
-      provider,
+    const moduleDetails = await this.getModuleDetails(
       network,
-      moduleAddress
+      moduleAddress,
+      moduleType
     );
     const questionState = await checkPossibleExecution(
       provider,
@@ -131,9 +133,20 @@ export default class Plugin {
     };
   }
 
-  async getModuleDetails(network: string, moduleAddress: string) {
+  async getModuleDetails(
+    network: string,
+    moduleAddress: string,
+    moduleType: 'reality' | 'uma'
+  ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetails(provider, network, moduleAddress);
+    switch (moduleType) {
+      case 'reality':
+        return getRealityModuleDetails(provider, network, moduleAddress);
+      case 'uma':
+        return getUmaModuleDetails(provider, network, moduleAddress);
+      default:
+        throw new Error('Module type not supported');
+    }
   }
 
   async submitProposalWithHashes(
