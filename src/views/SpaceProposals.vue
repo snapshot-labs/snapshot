@@ -75,7 +75,7 @@ async function load() {
 }
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(spaceProposals.value.length), loadingMore.value)
+  loadMore(() => loadProposals(spaceProposals.value.length))
 );
 
 const { profiles, loadProfiles } = useProfiles();
@@ -177,7 +177,9 @@ onMounted(() => {
           class="border-b first:border-t"
         />
       </div>
-      <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
+      <div class="relative">
+        <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+      </div>
       <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>

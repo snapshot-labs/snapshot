@@ -139,5 +139,7 @@ onMounted(() => {
       <BaseNoResults v-if="items.length < 1 && !loading" use-block />
     </div>
   </BaseContainer>
-  <div ref="endElement" />
+  <div class="relative">
+    <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+  </div>
 </template>

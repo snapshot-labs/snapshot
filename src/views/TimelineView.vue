@@ -45,10 +45,7 @@ const spaces = computed(() => {
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { endElement } = useScrollMonitor(() => {
   if (!web3Account.value && route.name === 'timeline') return;
-  loadMore(
-    () => loadMoreProposals(store.timeline.proposals.length),
-    loading.value
-  );
+  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 
 const { apolloQuery } = useApolloQuery();
@@ -197,8 +194,10 @@ onMounted(() => {
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>
-        <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
-        <div v-if="loadingMore && !loading" :slim="true">
+        <div class="relative">
+          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+        </div>
+        <div v-if="loadingMore && !loading">
           <LoadingRow class="border-t" />
         </div>
       </div>
