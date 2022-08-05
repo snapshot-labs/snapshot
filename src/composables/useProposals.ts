@@ -28,10 +28,6 @@ const store = reactive<ProposalsStore>({
 const userVotedProposalIds = ref<string[]>([]);
 
 export function useProposals() {
-  function addSpaceProposals(proposals) {
-    store.space.proposals = store.space.proposals.concat(proposals);
-  }
-
   function setTimelineProposals(proposals) {
     store.timeline.proposals = proposals;
   }
@@ -40,14 +36,22 @@ export function useProposals() {
     store.timeline.proposals = store.timeline.proposals.concat(proposals);
   }
 
-  function removeSpaceProposal(id: string) {
-    store.space.proposals = store.space.proposals.filter(
-      proposal => proposal.id !== id
-    );
+  function setSpaceProposals(proposals) {
+    store.space.proposals = proposals;
+  }
+
+  function addSpaceProposals(proposals) {
+    store.space.proposals = store.space.proposals.concat(proposals);
   }
 
   function resetSpaceProposals() {
     store.space.proposals = [];
+  }
+
+  function removeSpaceProposal(id: string) {
+    store.space.proposals = store.space.proposals.filter(
+      proposal => proposal.id !== id
+    );
   }
 
   function setSpaceFilter(filter: string) {
@@ -101,12 +105,13 @@ export function useProposals() {
   return {
     store,
     userVotedProposalIds,
-    removeSpaceProposal,
-    resetSpaceProposals,
     setSpaceFilter,
     addVotedProposalId,
+    setSpaceProposals,
     addSpaceProposals,
-    addTimelineProposals,
-    setTimelineProposals
+    resetSpaceProposals,
+    removeSpaceProposal,
+    setTimelineProposals,
+    addTimelineProposals
   };
 }
