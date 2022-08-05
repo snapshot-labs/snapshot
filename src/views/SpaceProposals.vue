@@ -3,6 +3,7 @@ import { onMounted, computed, ref, watch } from 'vue';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { useRoute } from 'vue-router';
 
 import {
   useProposals,
@@ -19,13 +20,8 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const {
-  store,
-  userVotedProposalIds,
-  setSpaceFilter,
-  addSpaceProposals,
-  setSpaceProposals
-} = useProposals();
+const { store, userVotedProposalIds, addSpaceProposals, setSpaceProposals } =
+  useProposals();
 const { setPageTitle } = useI18n();
 
 const loading = ref(false);
@@ -43,7 +39,8 @@ const spaceProposals = computed(() => {
   );
 });
 
-const spaceFilterBy = computed(() => store.space.filterBy);
+const route = useRoute();
+const stateFilter = computed(() => route.query.state || 'all');
 
 async function getProposals(skip = 0) {
   return apolloQuery(
@@ -53,8 +50,8 @@ async function getProposals(skip = 0) {
         first: loadBy,
         skip,
         space: props.space.id,
-        state: spaceFilterBy.value === 'core' ? 'all' : spaceFilterBy.value,
-        author_in: spaceFilterBy.value === 'core' ? spaceMembers.value : []
+        state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
+        author_in: stateFilter.value === 'core' ? spaceMembers.value : []
       }
     },
     'proposals'
@@ -89,10 +86,7 @@ watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
 
-function selectState(e) {
-  setSpaceFilter(e);
-  loadProposals();
-}
+watch(stateFilter, loadProposals);
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
@@ -114,37 +108,7 @@ onMounted(() => {
             </h2>
           </div>
         </div>
-        <BaseMenu
-          :items="[
-            {
-              text: $t('proposals.states.all'),
-              action: 'all',
-              extras: { selected: spaceFilterBy === 'all' }
-            },
-            {
-              text: $t('proposals.states.active'),
-              action: 'active',
-              extras: { selected: spaceFilterBy === 'active' }
-            },
-            {
-              text: $t('proposals.states.pending'),
-              action: 'pending',
-              extras: { selected: spaceFilterBy === 'pending' }
-            },
-            {
-              text: $t('proposals.states.closed'),
-              action: 'closed',
-              extras: { selected: spaceFilterBy === 'closed' }
-            },
-            {
-              text: $t('proposals.states.core'),
-              action: 'core',
-              extras: { selected: spaceFilterBy === 'core' }
-            }
-          ]"
-          :selected="$t(`proposals.states.${store.space.filterBy}`)"
-          @select="selectState"
-        />
+        <SpaceProposalsMenuFilter />
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
@@ -152,7 +116,7 @@ onMounted(() => {
         />
       </div>
 
-      <BaseBlock v-if="space.about && spaceFilterBy == 'all'" class="mb-3">
+      <BaseBlock v-if="space.about && stateFilter == 'all'" class="mb-3">
         <TextAutolinker :text="space.about" />
       </BaseBlock>
 
