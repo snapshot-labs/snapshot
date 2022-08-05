@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { lsSet } from '@/helpers/utils';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-import zipObject from 'lodash/zipObject';
 import {
   useInfiniteLoader,
-  useUnseenProposals,
   useScrollMonitor,
   useApolloQuery,
   useProfiles,
@@ -45,9 +42,7 @@ const spaces = computed(() => {
   else return verifiedSpaces;
 });
 
-const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
 const { endElement } = useScrollMonitor(() => {
   if (!web3Account.value && route.name === 'timeline') return;
   loadMore(
@@ -88,20 +83,6 @@ watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-// Save the lastSeenProposal times for all spaces
-function emitUpdateLastSeenProposal() {
-  if (web3Account.value) {
-    lsSet(
-      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      zipObject(
-        followingSpaces.value,
-        Array(followingSpaces.value.length).fill(new Date().getTime())
-      )
-    );
-  }
-  updateLastSeenProposal(web3Account.value);
-}
-
 async function load() {
   if (!web3Account.value && isQueryJoinedSpaces.value) return;
   loading.value = true;
@@ -121,14 +102,6 @@ function setQuery(filter: string, name: string) {
     }
   });
 }
-
-watch(
-  web3Account,
-  () => {
-    emitUpdateLastSeenProposal();
-  },
-  { immediate: true }
-);
 
 watch(
   () => [route.query.state, route.query.spaces],
