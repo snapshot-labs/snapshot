@@ -6,22 +6,18 @@ import { useApolloQuery, useWeb3 } from '@/composables';
 interface ProposalsStore {
   space: {
     proposals: Proposal[];
-    filterBy: string;
   };
   timeline: {
     proposals: Proposal[];
-    filterBy: string;
   };
 }
 
 const store = reactive<ProposalsStore>({
   space: {
-    proposals: [],
-    filterBy: 'all'
+    proposals: []
   },
   timeline: {
-    proposals: [],
-    filterBy: 'all'
+    proposals: []
   }
 });
 
@@ -54,11 +50,6 @@ export function useProposals() {
     );
   }
 
-  function setSpaceFilter(filter: string) {
-    store.space.filterBy = filter;
-    resetSpaceProposals();
-  }
-
   function addVotedProposalId(id: string) {
     userVotedProposalIds.value.push(id);
   }
@@ -77,17 +68,19 @@ export function useProposals() {
       'votes'
     );
 
-    const proposalId = votes.map(vote => vote.proposal.id);
+    const proposalId = votes?.map(vote => vote.proposal.id) ?? [];
     userVotedProposalIds.value = [
       ...new Set(userVotedProposalIds.value.concat(proposalId))
     ];
   }
 
-  const proposalIds = computed(() =>
-    store.space.proposals
-      .map(proposal => proposal.id)
-      .concat(store.timeline.proposals.map(proposal => proposal.id))
-  );
+  const proposalIds = computed(() => {
+    const timelineProposals =
+      store.timeline.proposals?.map(proposal => proposal.id) ?? [];
+    const spaceProposals =
+      store.space.proposals?.map(proposal => proposal.id) ?? [];
+    return [...timelineProposals, ...spaceProposals];
+  });
 
   const { web3Account } = useWeb3();
   watch(
@@ -105,7 +98,6 @@ export function useProposals() {
   return {
     store,
     userVotedProposalIds,
-    setSpaceFilter,
     addVotedProposalId,
     setSpaceProposals,
     addSpaceProposals,

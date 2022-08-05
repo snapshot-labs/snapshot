@@ -18,7 +18,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-const { followingSpaces, loadingFollows, loadFollows } = useFollowSpace();
+const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 
@@ -44,12 +44,12 @@ const spaces = computed(() => {
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { endElement } = useScrollMonitor(() => {
-  if (!web3Account.value && route.name === 'timeline') return;
   loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 
 const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
+  if (!web3Account.value && isFeedJoinedSpaces.value) return;
   return apolloQuery(
     {
       query: PROPOSALS_QUERY,
@@ -72,7 +72,6 @@ async function loadMoreProposals(skip = 0) {
 }
 
 async function loadProposals() {
-  if (!web3Account.value && isFeedJoinedSpaces.value) return;
   loading.value = true;
   const proposals = await getProposals();
   loading.value = false;
@@ -106,9 +105,13 @@ watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
     loadProposals();
-  },
-  { immediate: true }
+  }
 );
+
+onMounted(() => {
+  if (store.timeline.proposals.length > 0) return;
+  loadProposals();
+});
 
 onMounted(() => {
   setPageTitle('page.title.timeline');
@@ -199,7 +202,7 @@ onMounted(() => {
         <div class="relative">
           <div ref="endElement" class="absolute h-[10px] w-[10px]" />
         </div>
-        <div v-if="loadingMore && !loading">
+        <div v-if="loadingMore">
           <LoadingRow class="border-t" />
         </div>
       </div>
