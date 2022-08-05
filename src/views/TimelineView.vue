@@ -144,7 +144,7 @@ onMounted(() => {
 <template>
   <TheLayout class="!mt-0">
     <template #sidebar-left>
-      <div class="fixed mt-4 hidden w-[240px] lg:block">
+      <div class="fixed hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <BaseSidebarNavigationItem
