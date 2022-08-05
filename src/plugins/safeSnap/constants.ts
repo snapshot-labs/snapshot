@@ -65,6 +65,8 @@ export const REALITY_MODULE_ABI = [
   'function executeProposalWithIndex(string proposalId, bytes32[] txHashes, address to, uint256 value, bytes data, uint8 operation, uint256 txIndex)'
 ];
 
+export const UMA_MODULE_ABI = [];
+
 export const ORACLE_ABI = [
   // Events
   `event LogNewAnswer(

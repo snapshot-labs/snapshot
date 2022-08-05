@@ -9,14 +9,26 @@ const props = defineProps<{
 }>();
 
 const mapLegacyConfig = (config: Record<string, any>): Record<string, any> => {
-  if (config.safes) return config;
+  if (config.safes)
+    return {
+      ...config,
+      safes: config.safes.map(safe => {
+        if (safe.realityAddress) {
+          safe.moduleAddress = safe.realityAddress;
+          safe.moduleType = 'reality';
+          delete safe.realityAddress;
+        }
+        return safe;
+      })
+    };
 
   return {
     ...config,
     safes: [
       {
         network: props.space.network,
-        realityAddress: props.space.plugins.safeSnap.address,
+        moduleAddress: props.space.plugins.safeSnap.address,
+        moduleType: 'reality',
         // Some legacy proposals have a plain array of transactions instead
         // of the current two-dimensional structure for batches.
         txs:

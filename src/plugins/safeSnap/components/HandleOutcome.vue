@@ -30,7 +30,8 @@ const props = defineProps([
   'batches',
   'proposal',
   'network',
-  'realityAddress',
+  'moduleAddress',
+  'moduleType',
   'multiSendAddress'
 ]);
 
@@ -123,7 +124,7 @@ const updateDetails = async () => {
   try {
     questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
-      props.realityAddress,
+      props.moduleAddress,
       props.proposal.id,
       getTxHashes()
     );
@@ -178,9 +179,10 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalWithHashes(
+    const proposalSubmission = await plugin.submitProposalWithHashes(
       getInstance().web3,
-      props.realityAddress,
+      props.moduleAddress,
+      props.moduleType,
       questionDetails.value.proposalId,
       getTxHashes()
     );
@@ -248,7 +250,7 @@ const executeProposal = async () => {
       props.batches[questionDetails.value.nextTxIndex].mainTransaction;
     const executingProposal = plugin.executeProposalWithHashes(
       getInstance().web3,
-      props.realityAddress,
+      props.moduleAddress,
       questionDetails.value.proposalId,
       getTxHashes(),
       transaction,
