@@ -30,15 +30,15 @@ const {
 } = useProposals();
 
 const stateFilter = computed(() => route.query.state || 'all');
-const isQueryJoinedSpaces = computed(
-  () => !route.query.spaces || route.query.spaces === 'joined'
+const isFeedJoinedSpaces = computed(
+  () => !route.query.feed || route.query.feed === 'joined'
 );
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (isQueryJoinedSpaces.value) return followingSpaces.value;
+  if (isFeedJoinedSpaces.value) return followingSpaces.value;
   else return verifiedSpaces;
 });
 
@@ -81,27 +81,32 @@ watch(store.timeline.proposals, () => {
 });
 
 async function load() {
-  if (!web3Account.value && isQueryJoinedSpaces.value) return;
+  if (!web3Account.value && isFeedJoinedSpaces.value) return;
   loading.value = true;
   await loadProposals();
   loading.value = false;
 }
 
-function setFilter(name: string) {
-  setQuery('state', name);
-}
-
-function setQuery(filter: string, name: string) {
+function setStateFilter(name: string) {
   router.push({
     query: {
       ...route.query,
-      [filter]: name
+      ['state']: name
+    }
+  });
+}
+
+function setFeed(name: string) {
+  router.push({
+    query: {
+      ...route.query,
+      ['feed']: name
     }
   });
 }
 
 watch(
-  () => [route.query.state, route.query.spaces],
+  () => [route.query.state, route.query.feed],
   () => {
     load();
   },
@@ -120,15 +125,15 @@ onMounted(() => {
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <BaseSidebarNavigationItem
-              :is-active="isQueryJoinedSpaces"
-              @click="setQuery('spaces', 'joined')"
+              :is-active="isFeedJoinedSpaces"
+              @click="setFeed('joined')"
             >
               {{ $t('joinedSpaces') }}
             </BaseSidebarNavigationItem>
 
             <BaseSidebarNavigationItem
-              :is-active="route.query.spaces === 'all'"
-              @click="setQuery('spaces', 'all')"
+              :is-active="route.query.feed === 'all'"
+              @click="setFeed('all')"
             >
               {{ $t('allSpaces') }}
             </BaseSidebarNavigationItem>
@@ -163,15 +168,15 @@ onMounted(() => {
             }
           ]"
           :selected="$t(`proposals.states.${stateFilter}`)"
-          @select="setFilter"
+          @select="setStateFilter"
         />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
         <div
           v-else-if="
-            (isQueryJoinedSpaces && spaces.length < 1) ||
-            (isQueryJoinedSpaces && !web3.account)
+            (isFeedJoinedSpaces && spaces.length < 1) ||
+            (isFeedJoinedSpaces && !web3.account)
           "
           class="p-4 text-center"
         >
