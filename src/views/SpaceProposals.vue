@@ -68,20 +68,16 @@ async function loadMoreProposals(skip = 0) {
   addSpaceProposals(proposals);
 }
 
-async function loadProposals() {
-  const proposals = await getProposals();
-  setSpaceProposals(proposals);
-}
-
 const { web3Account } = useWeb3();
 const { emitUpdateLastSeenProposal } = useUnseenProposals();
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
 
-async function load() {
+async function loadProposals() {
   loading.value = true;
-  await loadProposals();
+  const proposals = await getProposals();
   emitUpdateLastSeenProposal(props.space.id);
   loading.value = false;
+  setSpaceProposals(proposals);
 }
 
 const { endElement } = useScrollMonitor(() =>
@@ -100,12 +96,12 @@ const loadingData = computed(() => {
 
 function selectState(e) {
   setSpaceFilter(e);
-  load();
+  loadProposals();
 }
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-  load();
+  loadProposals();
 });
 </script>
 
