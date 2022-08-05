@@ -147,11 +147,19 @@ onMounted(() => {
       <div class="fixed mt-4 hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <BaseSidebarNavigationItem @click="setQuery('spaces', 'joined')">
+            <BaseSidebarNavigationItem
+              :is-active="
+                !route.query.spaces || route.query.spaces === 'joined'
+              "
+              @click="setQuery('spaces', 'joined')"
+            >
               {{ $t('joinedSpaces') }}
             </BaseSidebarNavigationItem>
 
-            <BaseSidebarNavigationItem @click="setQuery('spaces', 'all')">
+            <BaseSidebarNavigationItem
+              :is-active="route.query.spaces === 'all'"
+              @click="setQuery('spaces', 'all')"
+            >
               {{ $t('allSpaces') }}
             </BaseSidebarNavigationItem>
           </div>
