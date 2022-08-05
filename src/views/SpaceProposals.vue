@@ -23,8 +23,8 @@ const {
   store,
   userVotedProposalIds,
   setSpaceFilter,
-  resetSpaceProposals,
-  addSpaceProposals
+  addSpaceProposals,
+  setSpaceProposals
 } = useProposals();
 const { setPageTitle } = useI18n();
 
@@ -45,8 +45,8 @@ const spaceProposals = computed(() => {
 
 const spaceFilterBy = computed(() => store.space.filterBy);
 
-async function loadProposals(skip = 0) {
-  const proposalsObj = await apolloQuery(
+async function getProposals(skip = 0) {
+  return apolloQuery(
     {
       query: PROPOSALS_QUERY,
       variables: {
@@ -59,23 +59,29 @@ async function loadProposals(skip = 0) {
     },
     'proposals'
   );
-  stopLoadingMore.value = proposalsObj?.length < loadBy;
-  addSpaceProposals(proposalsObj);
+}
+
+async function loadMoreProposals(skip = 0) {
+  if (skip === 0) return;
+  const proposals = await getProposals(skip);
+  stopLoadingMore.value = proposals?.length < loadBy;
+  addSpaceProposals(proposals);
 }
 
 const { web3Account } = useWeb3();
 const { emitUpdateLastSeenProposal } = useUnseenProposals();
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
 
-async function load() {
-  if (spaceProposals.value.length > 0) return;
+async function loadProposals() {
   loading.value = true;
-  await loadProposals();
+  const proposals = await getProposals();
+  emitUpdateLastSeenProposal(props.space.id);
   loading.value = false;
+  setSpaceProposals(proposals);
 }
 
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadProposals(spaceProposals.value.length), loadingMore.value)
+  loadMore(() => loadMoreProposals(spaceProposals.value.length))
 );
 
 const { profiles, loadProfiles } = useProfiles();
@@ -90,18 +96,12 @@ const loadingData = computed(() => {
 
 function selectState(e) {
   setSpaceFilter(e);
-  load();
+  loadProposals();
 }
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-  emitUpdateLastSeenProposal(props.space.id);
-
-  const firstProposal: any = spaceProposals.value[0];
-  if (firstProposal && firstProposal?.space.id !== props.space.id) {
-    resetSpaceProposals();
-    load();
-  }
+  loadProposals();
 });
 </script>
 
@@ -177,7 +177,9 @@ onMounted(() => {
           class="border-b first:border-t"
         />
       </div>
-      <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
+      <div class="relative">
+        <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+      </div>
       <LoadingRow v-if="loadingData" block />
     </template>
   </TheLayout>

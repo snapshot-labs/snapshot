@@ -18,7 +18,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-const { followingSpaces, loadingFollows } = useFollowSpace();
+const { followingSpaces, loadingFollows, loadFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 
@@ -30,25 +30,22 @@ const {
 } = useProposals();
 
 const stateFilter = computed(() => route.query.state || 'all');
-const isQueryJoinedSpaces = computed(
-  () => !route.query.spaces || route.query.spaces === 'joined'
+const isFeedJoinedSpaces = computed(
+  () => !route.query.feed || route.query.feed === 'joined'
 );
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (isQueryJoinedSpaces.value) return followingSpaces.value;
+  if (isFeedJoinedSpaces.value) return followingSpaces.value;
   else return verifiedSpaces;
 });
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { endElement } = useScrollMonitor(() => {
   if (!web3Account.value && route.name === 'timeline') return;
-  loadMore(
-    () => loadMoreProposals(store.timeline.proposals.length),
-    loading.value
-  );
+  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 
 const { apolloQuery } = useApolloQuery();
@@ -68,13 +65,17 @@ async function getProposals(skip = 0) {
 }
 
 async function loadMoreProposals(skip = 0) {
+  if (skip === 0) return;
   const proposals = await getProposals(skip);
   stopLoadingMore.value = proposals?.length < loadBy;
   addTimelineProposals(proposals);
 }
 
 async function loadProposals() {
+  if (!web3Account.value && isFeedJoinedSpaces.value) return;
+  loading.value = true;
   const proposals = await getProposals();
+  loading.value = false;
   setTimelineProposals(proposals);
 }
 
@@ -83,30 +84,28 @@ watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-async function load() {
-  if (!web3Account.value && isQueryJoinedSpaces.value) return;
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-function setFilter(name: string) {
-  setQuery('state', name);
-}
-
-function setQuery(filter: string, name: string) {
+function setStateFilter(name: string) {
   router.push({
     query: {
       ...route.query,
-      [filter]: name
+      ['state']: name
+    }
+  });
+}
+
+function setFeed(name: string) {
+  router.push({
+    query: {
+      ...route.query,
+      ['feed']: name
     }
   });
 }
 
 watch(
-  () => [route.query.state, route.query.spaces],
+  () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
-    load();
+    loadProposals();
   },
   { immediate: true }
 );
@@ -123,15 +122,15 @@ onMounted(() => {
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <BaseSidebarNavigationItem
-              :is-active="isQueryJoinedSpaces"
-              @click="setQuery('spaces', 'joined')"
+              :is-active="isFeedJoinedSpaces"
+              @click="setFeed('joined')"
             >
               {{ $t('joinedSpaces') }}
             </BaseSidebarNavigationItem>
 
             <BaseSidebarNavigationItem
-              :is-active="route.query.spaces === 'all'"
-              @click="setQuery('spaces', 'all')"
+              :is-active="route.query.feed === 'all'"
+              @click="setFeed('all')"
             >
               {{ $t('allSpaces') }}
             </BaseSidebarNavigationItem>
@@ -166,15 +165,15 @@ onMounted(() => {
             }
           ]"
           :selected="$t(`proposals.states.${stateFilter}`)"
-          @select="setFilter"
+          @select="setStateFilter"
         />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
         <div
           v-else-if="
-            (isQueryJoinedSpaces && spaces.length < 1) ||
-            (isQueryJoinedSpaces && !web3.account)
+            (isFeedJoinedSpaces && spaces.length < 1) ||
+            (isFeedJoinedSpaces && !web3.account)
           "
           class="p-4 text-center"
         >
@@ -197,8 +196,10 @@ onMounted(() => {
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>
-        <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
-        <div v-if="loadingMore && !loading" :slim="true">
+        <div class="relative">
+          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+        </div>
+        <div v-if="loadingMore && !loading">
           <LoadingRow class="border-t" />
         </div>
       </div>
