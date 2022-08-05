@@ -32,11 +32,16 @@ const {
   setTimelineProposals
 } = useProposals();
 
+const stateFilter = computed(() => route.query.state || 'all');
+const isQueryJoinedSpaces = computed(
+  () => !route.query.spaces || route.query.spaces === 'joined'
+);
+
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (route.query.spaces === 'joined') return followingSpaces.value;
+  if (isQueryJoinedSpaces.value) return [];
   else return verifiedSpaces;
 });
 
@@ -50,9 +55,6 @@ const { endElement } = useScrollMonitor(() => {
     loading.value
   );
 });
-
-const stateFilter = computed(() => route.query.state || 'all');
-const isQueryJoinedSpaces = computed(() => route.query.spaces === 'joined');
 
 const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
@@ -148,9 +150,7 @@ onMounted(() => {
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <BaseSidebarNavigationItem
-              :is-active="
-                !route.query.spaces || route.query.spaces === 'joined'
-              "
+              :is-active="isQueryJoinedSpaces"
               @click="setQuery('spaces', 'joined')"
             >
               {{ $t('joinedSpaces') }}
