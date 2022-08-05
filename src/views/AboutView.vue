@@ -44,7 +44,7 @@ const socials = [
 </script>
 
 <template>
-  <div class="font-sans text-base text-skin-text antialiased">
+  <div>
     <div class="hidden md:block">
       <img
         src="/about/main.png"

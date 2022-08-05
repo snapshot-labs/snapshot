@@ -24,10 +24,7 @@ watch(open, isOpen => {
 
 <template>
   <Transition name="fade">
-    <div
-      v-if="open"
-      class="modal z-50 mx-auto w-screen font-sans text-base text-skin-text antialiased"
-    >
+    <div v-if="open" class="modal z-50 mx-auto w-screen">
       <div class="backdrop" @click="emit('close')" />
       <div class="shell relative overflow-hidden rounded-none md:rounded-3xl">
         <div v-if="$slots.header" class="pt-3 text-center">
