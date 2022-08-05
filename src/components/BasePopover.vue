@@ -17,7 +17,7 @@ withDefaults(
 
 <template>
   <Popover>
-    <Float :placement="placement" :offset="10" :shift="8">
+    <Float :placement="placement" :offset="10" :shift="8" :z-index="20" portal>
       <PopoverButton class="outline-none">
         <slot v-if="$slots.button" name="button" />
         <div v-else>
@@ -34,7 +34,7 @@ withDefaults(
         leave-from-class="transform opacity-100 scale-100"
         leave-to-class="transform opacity-0 scale-95"
       >
-        <PopoverPanel class="z-20 w-screen max-w-xs outline-none sm:max-w-sm">
+        <PopoverPanel class="w-screen max-w-xs outline-none sm:max-w-sm">
           <div class="overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg">
             <div
               class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"

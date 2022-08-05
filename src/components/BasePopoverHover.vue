@@ -33,7 +33,14 @@ const delayClose = () => {
 
 <template>
   <Popover>
-    <Float :show="show" :placement="placement" :offset="10" :shift="8">
+    <Float
+      :show="show"
+      :placement="placement"
+      :offset="10"
+      :shift="8"
+      :z-index="20"
+      portal
+    >
       <PopoverButton
         class="outline-none"
         @mouseenter="open"
@@ -51,7 +58,7 @@ const delayClose = () => {
         leave-to-class="transform opacity-0 scale-95"
       >
         <PopoverPanel
-          class="z-20 w-screen outline-none sm:max-w-sm"
+          class="w-screen outline-none sm:max-w-sm"
           static
           @mouseenter="open"
           @mouseleave="delayClose"
