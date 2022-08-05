@@ -68,6 +68,10 @@ async function loadMoreProposals(skip = 0) {
   addSpaceProposals(proposals);
 }
 
+const { endElement } = useScrollMonitor(() =>
+  loadMore(() => loadMoreProposals(spaceProposals.value.length))
+);
+
 const { web3Account } = useWeb3();
 const { emitUpdateLastSeenProposal } = useUnseenProposals();
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
@@ -80,18 +84,9 @@ async function loadProposals() {
   setSpaceProposals(proposals);
 }
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadMoreProposals(spaceProposals.value.length))
-);
-
 const { profiles, loadProfiles } = useProfiles();
-
 watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
-});
-
-const loadingData = computed(() => {
-  return loading.value || loadingMore.value;
 });
 
 function selectState(e) {
@@ -152,7 +147,7 @@ onMounted(() => {
         />
 
         <SpaceProposalsNotice
-          v-if="spaceProposals.length < 1 && !loadingData"
+          v-if="spaceProposals.length < 1 && !loading"
           :space-id="space.id"
         />
       </div>
@@ -161,8 +156,10 @@ onMounted(() => {
         <TextAutolinker :text="space.about" />
       </BaseBlock>
 
+      <LoadingRow v-if="loading" block />
+
       <SpaceProposalsNoProposals
-        v-if="!loadingData && spaceProposals.length < 1"
+        v-else-if="spaceProposals.length < 1"
         class="mt-2"
         :space="space"
       />
@@ -180,7 +177,7 @@ onMounted(() => {
       <div class="relative">
         <div ref="endElement" class="absolute h-[10px] w-[10px]" />
       </div>
-      <LoadingRow v-if="loadingData" block />
+      <LoadingRow v-if="loadingMore" block />
     </template>
   </TheLayout>
 </template>
