@@ -86,7 +86,7 @@
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "rollup-plugin-visualizer": "^5.7.1",
-    "sass": "~1.54.1",
+    "sass": "~1.54.3",
     "sass-loader": "^13.0.1",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^3.1.7",
