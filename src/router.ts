@@ -124,7 +124,6 @@ if (domain) {
     { path: '/plugins', name: 'plugins', component: ExploreView },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
-    { path: '/explore', name: 'explore', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },
     {
       path: '/playground/:name',

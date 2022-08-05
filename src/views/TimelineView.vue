@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { lsSet } from '@/helpers/utils';
+import { useRoute, useRouter } from 'vue-router';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-import zipObject from 'lodash/zipObject';
 import {
   useInfiniteLoader,
-  useUnseenProposals,
   useScrollMonitor,
   useApolloQuery,
   useProfiles,
@@ -20,132 +17,131 @@ import {
 const loading = ref(false);
 
 const route = useRoute();
-const {
-  store,
-  userVotedProposalIds,
-  resetTimelineProposals,
-  setTimelineFilter
-} = useProposals();
+const router = useRouter();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
+
+const {
+  store,
+  userVotedProposalIds,
+  addTimelineProposals,
+  setTimelineProposals
+} = useProposals();
+
+const stateFilter = computed(() => route.query.state || 'all');
+const isFeedJoinedSpaces = computed(
+  () => !route.query.feed || route.query.feed === 'joined'
+);
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (route.name === 'timeline') return followingSpaces.value;
-  if (route.name === 'explore') return verifiedSpaces;
-  else return [];
+  if (isFeedJoinedSpaces.value) return followingSpaces.value;
+  else return verifiedSpaces;
 });
 
-watch(spaces, () => {
-  if (route.name === 'timeline' || route.name === 'explore') {
-    resetTimelineProposals();
-    load();
-  }
-});
-
-const isTimeline = computed(() => route.name === 'timeline');
-
-const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
 const { endElement } = useScrollMonitor(() => {
-  if (!web3Account.value && route.name === 'timeline') return;
-  loadMore(() => loadProposals(store.timeline.proposals.length), loading.value);
+  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 
 const { apolloQuery } = useApolloQuery();
-async function loadProposals(skip = 0) {
-  const proposalsObj = await apolloQuery(
+async function getProposals(skip = 0) {
+  if (!web3Account.value && isFeedJoinedSpaces.value) return;
+  return apolloQuery(
     {
       query: PROPOSALS_QUERY,
       variables: {
         first: loadBy,
         skip,
         space_in: spaces.value,
-        state: store.timeline.filterBy
+        state: stateFilter.value
       }
     },
     'proposals'
   );
-  stopLoadingMore.value = proposalsObj?.length < loadBy;
-  store.timeline.proposals = store.timeline.proposals.concat(proposalsObj);
+}
+
+async function loadMoreProposals(skip = 0) {
+  if (skip === 0) return;
+  const proposals = await getProposals(skip);
+  stopLoadingMore.value = proposals?.length < loadBy;
+  addTimelineProposals(proposals);
+}
+
+async function loadProposals() {
+  loading.value = true;
+  const proposals = await getProposals();
+  loading.value = false;
+  setTimelineProposals(proposals);
 }
 
 const { profiles, loadProfiles } = useProfiles();
-
 watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-// Save the lastSeenProposal times for all spaces
-function emitUpdateLastSeenProposal() {
-  if (web3Account.value) {
-    lsSet(
-      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      zipObject(
-        followingSpaces.value,
-        Array(followingSpaces.value.length).fill(new Date().getTime())
-      )
-    );
-  }
-  updateLastSeenProposal(web3Account.value);
+function setStateFilter(name: string) {
+  router.push({
+    query: {
+      ...route.query,
+      ['state']: name
+    }
+  });
+}
+
+function setFeed(name: string) {
+  router.push({
+    query: {
+      ...route.query,
+      ['feed']: name
+    }
+  });
 }
 
 watch(
-  [web3Account, followingSpaces],
+  () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
-    emitUpdateLastSeenProposal();
-  },
-  { immediate: true }
+    loadProposals();
+  }
 );
 
-// Initialize
 onMounted(() => {
-  load();
-  setPageTitle('page.title.timeline');
+  if (store.timeline.proposals.length > 0) return;
+  loadProposals();
 });
 
-async function load() {
-  if (store.timeline.proposals.length > 0) return;
-  if (!web3Account.value && route.name === 'timeline') return;
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-const timelineFilterBy = computed(() => store.timeline.filterBy);
-
-// Change filter
-function selectState(e) {
-  setTimelineFilter(e);
-  load();
-}
+onMounted(() => {
+  setPageTitle('page.title.timeline');
+});
 </script>
 
 <template>
   <TheLayout class="!mt-0">
-    <template #sidebar-right>
-      <div style="position: fixed; width: 320px" class="mt-4 hidden lg:block">
+    <template #sidebar-left>
+      <div class="fixed hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <router-link v-slot="{ isExactActive }" :to="{ name: 'timeline' }">
-              <BaseSidebarNavigationItem :is-active="isExactActive">
-                {{ $t('joinedSpaces') }}
-              </BaseSidebarNavigationItem>
-            </router-link>
-            <router-link v-slot="{ isExactActive }" :to="{ name: 'explore' }">
-              <BaseSidebarNavigationItem :is-active="isExactActive">
-                {{ $t('allSpaces') }}
-              </BaseSidebarNavigationItem>
-            </router-link>
+            <BaseSidebarNavigationItem
+              :is-active="isFeedJoinedSpaces"
+              @click="setFeed('joined')"
+            >
+              {{ $t('joinedSpaces') }}
+            </BaseSidebarNavigationItem>
+
+            <BaseSidebarNavigationItem
+              :is-active="route.query.feed === 'all'"
+              @click="setFeed('all')"
+            >
+              {{ $t('allSpaces') }}
+            </BaseSidebarNavigationItem>
           </div>
         </BaseBlock>
       </div>
     </template>
-    <template #content-left>
+    <template #content-right>
       <div class="flex justify-between px-4 pb-4 md:px-0">
         <h2 class="mt-1" v-text="$t('timeline')" />
         <BaseMenu
@@ -153,45 +149,34 @@ function selectState(e) {
             {
               text: $t('proposals.states.all'),
               action: 'all',
-              extras: { selected: timelineFilterBy === 'all' }
+              extras: { selected: stateFilter === 'all' }
             },
             {
               text: $t('proposals.states.active'),
               action: 'active',
-              extras: { selected: timelineFilterBy === 'active' }
+              extras: { selected: stateFilter === 'active' }
             },
             {
               text: $t('proposals.states.pending'),
               action: 'pending',
-              extras: { selected: timelineFilterBy === 'pending' }
+              extras: { selected: stateFilter === 'pending' }
             },
             {
               text: $t('proposals.states.closed'),
               action: 'closed',
-              extras: { selected: timelineFilterBy === 'closed' }
+              extras: { selected: stateFilter === 'closed' }
             }
           ]"
-          @select="selectState"
-        >
-          <template #button>
-            <BaseButton class="flex items-center pr-3">
-              {{ $t(`proposals.states.${store.timeline.filterBy}`) }}
-              <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
-            </BaseButton>
-          </template>
-        </BaseMenu>
+          :selected="$t(`proposals.states.${stateFilter}`)"
+          @select="setStateFilter"
+        />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
-        <LoadingRow
-          v-if="
-            loading ||
-            (web3.authLoading && isTimeline) ||
-            (loadingFollows && isTimeline)
-          "
-        />
+        <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
         <div
           v-else-if="
-            (isTimeline && spaces.length < 1) || (isTimeline && !web3.account)
+            (isFeedJoinedSpaces && spaces.length < 1) ||
+            (isFeedJoinedSpaces && !web3.account)
           "
           class="p-4 text-center"
         >
@@ -214,8 +199,10 @@ function selectState(e) {
             class="border-b first:border-t md:first:border-t-0"
           />
         </div>
-        <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
-        <div v-if="loadingMore && !loading" :slim="true">
+        <div class="relative">
+          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+        </div>
+        <div v-if="loadingMore">
           <LoadingRow class="border-t" />
         </div>
       </div>

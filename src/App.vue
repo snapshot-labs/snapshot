@@ -16,10 +16,7 @@ onMounted(async () => init());
   </template>
   <template v-else>
     <LoadingSpinner v-if="!isReady" class="overlay big animate-fade-in" />
-    <div
-      v-else
-      class="flex min-h-screen bg-skin-bg font-sans text-base text-skin-text antialiased"
-    >
+    <div v-else class="flex min-h-screen">
       <div v-if="!domain" id="sidebar" class="flex flex-col">
         <div
           class="sticky top-0 z-40 h-screen max-w-[60px] overflow-hidden bg-skin-bg transition-all sm:w-auto"

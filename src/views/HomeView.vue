@@ -1,22 +1,11 @@
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { shorten } from '@/helpers/utils';
-import {
-  useUnseenProposals,
-  useScrollMonitor,
-  useFollowSpace,
-  useSpaces,
-  useIntl,
-  useI18n
-} from '@/composables';
+import { useScrollMonitor, useSpaces, useIntl, useI18n } from '@/composables';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
-const { followingSpaces } = useFollowSpace();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
-
-const { getProposals } = useUnseenProposals();
-watchEffect(() => getProposals(followingSpaces.value));
 
 // Scroll
 const loadBy = 12;
@@ -52,7 +41,7 @@ onMounted(() => {
         <TheSearchBar />
       </BaseButton>
 
-      <ExploreDropdownCategories />
+      <ExploreMenuCategories />
 
       <div
         v-if="spacesLoaded"
@@ -131,6 +120,8 @@ onMounted(() => {
         </BaseButton>
       </div>
     </BaseContainer>
-    <div ref="endElement" />
+    <div class="relative">
+      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+    </div>
   </div>
 </template>

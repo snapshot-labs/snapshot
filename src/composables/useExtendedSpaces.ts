@@ -14,10 +14,11 @@ export function useExtendedSpaces() {
     const filteredLoadedSpaces = id_in.filter(
       id => !extentedSpaces.value?.find(space => space.id === id)
     );
+    if (!filteredLoadedSpaces.length) return;
 
     loading.value = true;
     try {
-      const response = await apolloQuery(
+      const spaces = await apolloQuery(
         {
           query: SPACES_QUERY,
           variables: {
@@ -27,10 +28,9 @@ export function useExtendedSpaces() {
         'spaces'
       );
 
-      extentedSpaces.value = [
-        ...extentedSpaces.value,
-        ...response.map(mapOldPluginNames)
-      ];
+      const mappedSpaces = spaces.map(mapOldPluginNames);
+      extentedSpaces.value = [...extentedSpaces.value, ...mappedSpaces];
+
       loading.value = false;
     } catch (e) {
       loading.value = false;

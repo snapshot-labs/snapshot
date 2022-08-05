@@ -9,7 +9,7 @@ type Item = {
 
 defineProps<{
   items: Item[];
-  label?: string;
+  selected?: string;
 }>();
 
 const emit = defineEmits(['select']);
@@ -20,9 +20,12 @@ const emit = defineEmits(['select']);
     <MenuButton class="h-full">
       <slot v-if="$slots.button" name="button" />
 
-      <BaseButton v-else>
-        {{ label }}
-        <i-ho-chevron-down class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+      <BaseButton v-else class="flex items-center">
+        {{ selected }}
+        <i-ho-chevron-down
+          class="-mr-1 ml-1 text-xs text-skin-text"
+          aria-hidden="true"
+        />
       </BaseButton>
     </MenuButton>
 
