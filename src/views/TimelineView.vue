@@ -41,7 +41,7 @@ const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (isQueryJoinedSpaces.value) return [];
+  if (isQueryJoinedSpaces.value) return followingSpaces.value;
   else return verifiedSpaces;
 });
 
