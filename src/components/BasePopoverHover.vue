@@ -14,18 +14,25 @@ withDefaults(
 );
 
 const show = ref(false);
-const timer = ref<any>(null);
+const timerOpen = ref<any>(null);
+const timerClose = ref<any>(null);
 
 const open = () => {
-  if (timer.value !== null) {
-    clearTimeout(timer.value);
-    timer.value = null;
+  if (timerClose.value !== null) {
+    clearTimeout(timerClose.value);
+    timerClose.value = null;
   }
-  show.value = true;
+  timerOpen.value = setTimeout(() => {
+    show.value = true;
+  }, 200);
 };
 
 const delayClose = () => {
-  timer.value = setTimeout(() => {
+  if (timerOpen.value !== null) {
+    clearTimeout(timerOpen.value);
+    timerOpen.value = null;
+  }
+  timerClose.value = setTimeout(() => {
     show.value = false;
   }, 150);
 };
