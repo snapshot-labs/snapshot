@@ -186,6 +186,23 @@ export interface RealityOracleProposal {
   endTime: number | undefined;
 }
 
+export interface UmaOracleProposal {
+  gnosisSafeAddress: string;
+  oracle: string;
+  rules: number;
+  expiration: number;
+  proposalId: string;
+  questionId: string | undefined;
+  executionApproved: boolean;
+  finalizedAt: number | undefined;
+  nextTxIndex: number | undefined;
+  transactions: SafeTransaction[];
+  txHashes: string[];
+  currentBond: BigNumber | undefined;
+  isApproved: boolean;
+  endTime: number | undefined;
+}
+
 export interface SafeAsset {
   address: string;
   name: string;

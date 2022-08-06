@@ -14,7 +14,11 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  RealityOracleProposal,
+  UmaOracleProposal
+} from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -94,7 +98,7 @@ export default class Plugin {
     moduleType: 'reality' | 'uma',
     proposalId: string,
     txHashes: string[]
-  ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
+  ): Promise<Omit<RealityOracleProposal | UmaOracleProposal, 'transactions'>> {
     const provider: StaticJsonRpcProvider = getProvider(network);
     const question = await buildQuestion(proposalId, txHashes);
     const questionHash = solidityKeccak256(['string'], [question]);

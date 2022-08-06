@@ -65,7 +65,13 @@ export const REALITY_MODULE_ABI = [
   'function executeProposalWithIndex(string proposalId, bytes32[] txHashes, address to, uint256 value, bytes data, uint8 operation, uint256 txIndex)'
 ];
 
-export const UMA_MODULE_ABI = [];
+export const UMA_MODULE_ABI = [
+  'function avatar() view returns (address)',
+  'function optimisticOracle() view returns (address)',
+  'function rules() view returns (string)',
+  'function bondAmount() view returns (uint256)',
+  'function liveness() view returns (uint64)'
+];
 
 export const ORACLE_ABI = [
   // Events
