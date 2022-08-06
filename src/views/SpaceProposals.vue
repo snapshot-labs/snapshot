@@ -58,7 +58,7 @@ async function getProposals(skip = 0) {
   );
 }
 
-async function loadMoreProposals(skip = 0) {
+async function loadMoreProposals(skip: number) {
   if (skip === 0) return;
   const proposals = await getProposals(skip);
   stopLoadingMore.value = proposals?.length < loadBy;
