@@ -118,9 +118,15 @@ onMounted(() => {
     </BaseContainer>
     <BaseContainer :slim="true">
       <div class="overflow-hidden">
-        <template v-if="isStrategies">
-          <LoadingRow v-if="loadingStrategies" block />
-          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ExploreSkeletonLoading
+          v-if="
+            loadingStrategies ||
+            loadingNetworksSpacesCount ||
+            loadingPluginsSpacesCount
+          "
+        />
+        <template v-else-if="isStrategies">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <router-link
               v-for="item in items.slice(0, limit)"
               :key="item.key"
@@ -130,9 +136,8 @@ onMounted(() => {
             </router-link>
           </div>
         </template>
-        <template v-if="isNetworks">
-          <LoadingRow v-if="loadingNetworksSpacesCount" block />
-          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <template v-else-if="isNetworks">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <router-link
               v-for="item in items.slice(0, limit)"
               :key="item.key"
@@ -142,9 +147,8 @@ onMounted(() => {
             </router-link>
           </div>
         </template>
-        <template v-if="isPlugins">
-          <LoadingRow v-if="loadingPluginsSpacesCount" block />
-          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <template v-else-if="isPlugins">
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div v-for="item in items.slice(0, limit)" :key="item.key">
               <BasePluginItem :plugin="item" />
             </div>

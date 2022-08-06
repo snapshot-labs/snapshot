@@ -96,16 +96,7 @@ onMounted(() => {
           </router-link>
         </div>
       </TransitionGroup>
-      <div
-        v-if="!spacesLoaded"
-        class="grid gap-4 opacity-40 md:grid-cols-3 lg:grid-cols-4"
-      >
-        <div
-          v-for="i in 12"
-          :key="i"
-          class="min-h-[266px] animate-pulse bg-skin-border md:rounded-xl"
-        ></div>
-      </div>
+      <ExploreSkeletonLoading v-if="!spacesLoaded" is-spaces />
       <BaseNoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         use-block
