@@ -90,6 +90,7 @@ watch(stateFilter, loadProposals);
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
+  if (store.space.proposals?.[0]?.space.id === route.params.key) return;
   loadProposals();
 });
 </script>

@@ -43,9 +43,6 @@ const spaces = computed(() => {
 });
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-const { endElement } = useScrollMonitor(() => {
-  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
-});
 
 const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
@@ -65,17 +62,17 @@ async function getProposals(skip = 0) {
 }
 
 async function loadMoreProposals(skip: number) {
-  if (skip === 0) return;
   const proposals = await getProposals(skip);
   stopLoadingMore.value = proposals?.length < loadBy;
   addTimelineProposals(proposals);
 }
 
 async function loadProposals() {
+  if (route.name !== 'timeline') return;
   loading.value = true;
   const proposals = await getProposals();
-  loading.value = false;
   setTimelineProposals(proposals);
+  loading.value = false;
 }
 
 const { profiles, loadProfiles } = useProfiles();
@@ -115,6 +112,11 @@ onMounted(() => {
 
 onMounted(() => {
   setPageTitle('page.title.timeline');
+});
+
+const { endElement } = useScrollMonitor(() => {
+  if (loading.value) return;
+  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 </script>
 
