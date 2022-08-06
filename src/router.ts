@@ -119,9 +119,7 @@ if (domain) {
       name: 'setup',
       component: SetupView
     },
-    { path: '/networks', name: 'networks', component: ExploreView },
-    { path: '/strategies', name: 'strategies', component: ExploreView },
-    { path: '/plugins', name: 'plugins', component: ExploreView },
+    { path: '/explore', name: 'explore', component: ExploreView },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },

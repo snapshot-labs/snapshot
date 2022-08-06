@@ -12,26 +12,30 @@ const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
+const isStrategies = computed(
+  () => !route.query.type || route.query.type === 'strategies'
+);
+const isNetworks = computed(() => route.query.type === 'networks');
+const isPlugins = computed(() => route.query.type === 'plugins');
+
 const buttonStr = computed(() => {
-  if (route.name === 'strategies') return t('explore.createStrategy');
-  if (route.name === 'networks') return t('explore.addNetwork');
-  if (route.name === 'plugins') return t('explore.createPlugin');
+  if (isStrategies.value) return t('explore.createStrategy');
+  if (isNetworks.value) return t('explore.addNetwork');
+  if (isPlugins.value) return t('explore.createPlugin');
   return '';
 });
 
 const resultsStr = computed(() => {
-  if (route.name === 'strategies') return t('explore.strategies');
-  if (route.name === 'networks') return t('explore.networks');
-  if (route.name === 'plugins') return t('explore.plugins');
+  if (isStrategies.value) return t('explore.strategies');
+  if (isNetworks.value) return t('explore.networks');
+  if (isPlugins.value) return t('explore.plugins');
   return t('explore.results');
 });
 
 const createLink = computed(() => {
-  if (route.name === 'strategies')
-    return 'https://docs.snapshot.org/strategies/create';
-  if (route.name === 'networks') return 'https://docs.snapshot.org/networks';
-  if (route.name === 'plugins')
-    return 'https://docs.snapshot.org/plugins/create';
+  if (isStrategies.value) return 'https://docs.snapshot.org/strategies/create';
+  if (isNetworks.value) return 'https://docs.snapshot.org/networks';
+  if (isPlugins.value) return 'https://docs.snapshot.org/plugins/create';
   return 'https://docs.snapshot.org/strategies/create';
 });
 
@@ -45,26 +49,26 @@ const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
 
 const items = computed(() => {
   const q = route.query.q || '';
-  if (route.name === 'strategies') return filterStrategies(q);
-  if (route.name === 'networks') return filterNetworks(q);
-  if (route.name === 'plugins') return filterPlugins(q);
+  if (isStrategies.value) return filterStrategies(q);
+  if (isNetworks.value) return filterNetworks(q);
+  if (isPlugins.value) return filterPlugins(q);
   return [];
 });
 
 watch(
   () => route.name,
   () => {
-    if (route.name === 'networks') getNetworksSpacesCount();
-    if (route.name === 'plugins') getPluginsSpacesCount();
-    if (route.name === 'strategies') getStrategies();
+    if (isStrategies.value) getStrategies();
+    if (isNetworks.value) getNetworksSpacesCount();
+    if (isPlugins.value) getPluginsSpacesCount();
   },
   { immediate: true }
 );
 
 const loading = computed(() => {
-  if (route.name === 'strategies') return loadingStrategies.value;
-  if (route.name === 'networks') return loadingNetworksSpacesCount.value;
-  if (route.name === 'plugins') return loadingPluginsSpacesCount.value;
+  if (isStrategies.value) return loadingStrategies.value;
+  if (isNetworks.value) return loadingNetworksSpacesCount.value;
+  if (isPlugins.value) return loadingPluginsSpacesCount.value;
   return false;
 });
 
@@ -104,7 +108,7 @@ onMounted(() => {
   </BaseContainer>
   <BaseContainer :slim="true">
     <div class="overflow-hidden">
-      <template v-if="route.name === 'strategies'">
+      <template v-if="isStrategies">
         <LoadingRow v-if="loadingStrategies" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
@@ -116,7 +120,7 @@ onMounted(() => {
           </router-link>
         </div>
       </template>
-      <template v-if="route.name === 'networks'">
+      <template v-if="isNetworks">
         <LoadingRow v-if="loadingNetworksSpacesCount" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <router-link
@@ -128,7 +132,7 @@ onMounted(() => {
           </router-link>
         </div>
       </template>
-      <template v-if="route.name === 'plugins'">
+      <template v-if="isPlugins">
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <div v-for="item in items.slice(0, limit)" :key="item.key">

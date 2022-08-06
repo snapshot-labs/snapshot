@@ -17,31 +17,37 @@ const searchOptions = computed(() => [
   {
     text: t('networks'),
     action: 'networks',
-    extras: { selected: route.name === 'networks' }
+    extras: { selected: route.query.type === 'networks' }
   },
   {
     text: t('strategiesPage'),
     action: 'strategies',
-    extras: { selected: route.name === 'strategies' }
+    extras: { selected: route.query.type === 'strategies' }
   },
   {
     text: t('plugins'),
     action: 'plugins',
-    extras: { selected: route.name === 'plugins' }
+    extras: { selected: route.query.type === 'plugins' }
   }
 ]);
 
 const searchSelectedOption = computed(
   () =>
-    searchOptions.value.find(option => option.action === route.name)?.text ||
-    'home'
+    searchOptions.value.find(option => option.action === route.query.type)
+      ?.text ?? 'Spaces'
 );
 
 function redirectSearch(e) {
-  router.push({
-    name: e,
-    query: routeQuery.value ? { q: routeQuery.value } : {}
-  });
+  if (e === 'home')
+    router.push({
+      name: e,
+      query: { q: routeQuery.value || undefined }
+    });
+  else
+    router.push({
+      name: 'explore',
+      query: { q: routeQuery.value || undefined, type: e }
+    });
 }
 </script>
 
