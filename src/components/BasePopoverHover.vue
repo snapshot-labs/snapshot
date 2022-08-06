@@ -45,7 +45,7 @@ const delayClose = () => {
       :placement="placement"
       :offset="10"
       :shift="8"
-      :z-index="20"
+      :z-index="50"
       portal
     >
       <PopoverButton
@@ -70,7 +70,9 @@ const delayClose = () => {
           @mouseenter="open"
           @mouseleave="delayClose"
         >
-          <div class="overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg">
+          <div
+            class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
+          >
             <div
               class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
             >
