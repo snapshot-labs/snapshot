@@ -1,64 +1,202 @@
-<script setup>
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useModal } from '@/composables/useModal';
-import { useI18n } from '@/composables/useI18n';
+<script setup lang="ts">
+import { onMounted, computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { useStorage } from '@vueuse/core';
+import { clearStampCache } from '@/helpers/utils';
+
+import {
+  useWeb3,
+  useI18n,
+  useClient,
+  useExtendedSpaces,
+  useSpaceController,
+  useSpaceForm,
+  useFlashNotification
+} from '@/composables';
+
+enum Step {
+  GETTING_STARTED,
+  ENS,
+  CONTROLLER,
+  PROFILE,
+  STRATEGY,
+  VOTING,
+  MODERATION,
+  CUSTOM_DOMAIN,
+  TREASURY,
+  PLUGINS
+}
 
 const route = useRoute();
-const { web3, web3Account } = useWeb3();
-const { modalAccountOpen } = useModal();
+const router = useRouter();
+const { web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
+const { notify } = useFlashNotification();
+const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
+
+const creatingSpace = ref(false);
+
+const { t } = useI18n();
+const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
+const { send } = useClient();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
+const currentStep = computed(() => Number(route.query.step));
+
+async function checkIfSpaceExists() {
+  await loadExtentedSpaces([route.params.ens as string]);
+  if (extentedSpaces.value?.some(space => space.id === route.params.ens)) {
+    return;
+  } else {
+    await sleep(5000);
+    await checkIfSpaceExists();
+  }
+}
+
+async function handleSubmit() {
+  if (!isValid.value) {
+    showAllValidationErrors.value = true;
+    return;
+  }
+  creatingSpace.value = true;
+
+  // Wait for ENS text-record transaction to confirm
+  if (pendingENSRecord.value) {
+    await sleep(3000);
+    await handleSubmit();
+  } else {
+    await loadUriAddress();
+    if (uriAddress.value !== web3Account.value) {
+      creatingSpace.value = false;
+      return;
+    }
+
+    // Adds connected wallet as admin so that the settings will show
+    // in the sidebar after space creation
+    form.value.admins = [web3Account.value];
+
+    // Create the space
+    const result = await send({ id: route.params.ens }, 'settings', form.value);
+    if (result.id) {
+      // Wait for the space to be available on the HUB
+      await checkIfSpaceExists();
+      await clearStampCache(route.params.ens as string);
+      creatingSpace.value = false;
+      console.log('Result', result);
+
+      // Save created space to local storage
+      const createdSpaces = useStorage(
+        `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
+        {}
+      );
+      createdSpaces.value[route.params.ens as string] = {
+        showMessage: true
+      };
+
+      // Redirect to the new space page
+      router.push({
+        name: 'spaceProposals',
+        params: {
+          key: route.params.ens
+        }
+      });
+      notify(['green', t('notify.saved')]);
+    }
+    creatingSpace.value = false;
+  }
+}
+
+function nextStep(ensKey = '') {
+  router.push({
+    params: ensKey ? { ens: ensKey } : {},
+    query: { step: currentStep.value + 1 }
+  });
+}
+
+function previousStep() {
+  router.push({ query: { step: currentStep.value - 1 } });
+}
+
+function pushStepOne() {
+  router.push({ query: { step: Step.GETTING_STARTED } });
+}
 
 onMounted(() => {
+  if (!route.query.step || !web3Account.value) pushStepOne();
   setPageTitle('page.title.setup');
 });
 </script>
 
 <template>
   <TheLayout>
-    <template #content-left>
+    <template #sidebar-left>
+      <SetupSidebarStepper
+        class="fixed hidden lg:block"
+        :current-step="currentStep"
+        @change-step="value => router.push({ query: { step: value } })"
+      />
+    </template>
+    <template #content-right>
       <div class="px-4 md:px-0">
         <h1 class="mb-4" v-text="$t('setup.createASpace')" />
       </div>
-      <template v-if="web3Account || web3.authLoading">
-        <!-- Step one - setup ens domain -->
-        <SetupDomain v-if="!route.params.step" />
-        <!-- Step two - setup space controller -->
-        <SetupController
-          v-else-if="route.params.step === 'controller' && route.params.ens"
-          :web3-account="web3Account"
+      <template v-if="web3Account || currentStep === Step.GETTING_STARTED">
+        <SetupIntro
+          v-if="currentStep === Step.GETTING_STARTED"
+          @next="nextStep"
         />
-        <!-- Step three - setup space profile -->
+
+        <SetupDomain v-if="currentStep === Step.ENS" @next="nextStep" />
+
+        <SetupController
+          v-else-if="currentStep === Step.CONTROLLER && route.params.ens"
+          @next="nextStep"
+        />
+
         <SetupProfile
-          v-else-if="route.params.step === 'profile' && route.params.ens"
-          :web3-account="web3Account"
+          v-else-if="currentStep === Step.PROFILE && route.params.ens"
+          @next="nextStep"
+          @back="previousStep"
+        />
+
+        <SetupStrategy
+          v-else-if="currentStep === Step.STRATEGY && route.params.ens"
+          @next="nextStep"
+          @back="previousStep"
+        />
+
+        <SetupVoting
+          v-else-if="currentStep === Step.VOTING && route.params.ens"
+          @next="nextStep"
+          @back="previousStep"
+        />
+
+        <SetupModeration
+          v-else-if="currentStep === Step.MODERATION && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupCustomdomain
+          v-else-if="currentStep === Step.CUSTOM_DOMAIN && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupTreasury
+          v-else-if="currentStep === Step.TREASURY && route.params.ens"
+          @back="previousStep"
+          @next="nextStep"
+        />
+
+        <SetupPlugins
+          v-else-if="currentStep === Step.PLUGINS && route.params.ens"
+          :creating-space="creatingSpace"
+          @back="previousStep"
+          @next="handleSubmit"
         />
       </template>
-      <BaseBlock v-else>
-        <BaseButton class="w-full" primary @click="modalAccountOpen = true">
-          {{ $t('connectWallet') }}
-        </BaseButton>
-      </BaseBlock>
-    </template>
-    <template #sidebar-right>
-      <BaseBlock class="mt-4 text-skin-text">
-        <BaseIcon
-          name="gitbook"
-          size="24"
-          class="pr-2 !align-middle text-skin-text"
-        />
-        <i18n-t keypath="setup.helpDocsAndDiscordLinks" tag="span">
-          <template #docs>
-            <BaseLink link="https://docs.snapshot.org/spaces/create">
-              documentation</BaseLink
-            >
-          </template>
-          <template #discord>
-            <BaseLink link="https://discord.gg/snapshot"> Discord</BaseLink>
-          </template>
-        </i18n-t>
-      </BaseBlock>
     </template>
   </TheLayout>
 </template>

@@ -56,11 +56,12 @@ watch(
   }
 }
 </style>
+
 <template>
   <div
     v-if="allReply.length > 0"
     class="d-inline-block ml-2 mt-2"
-    style="color: blue; cursor: pointer"
+    style="cursor: pointer"
     @click="showIt = !showIt"
   >
     {{ showIt ? $t('comment_box.hide') : $t('comment_box.show') }}
@@ -94,7 +95,7 @@ watch(
   <div
     v-if="lastPage && showIt && !loadIt"
     class="d-inline-block ml-5 mt-2"
-    style="color: blue; cursor: pointer"
+    style="cursor: pointer"
     @click="
       $emit('loadMore');
       loadIt = true;
@@ -104,4 +105,3 @@ watch(
   </div>
   <LoadingRow v-if="loadingMore" class="my-2" />
 </template>
-<style></style>

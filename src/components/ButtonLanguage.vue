@@ -2,20 +2,16 @@
 import { ref } from 'vue';
 import languages from '@/locales/languages.json';
 
-defineProps<{
-  small?: boolean;
-}>();
-
 const modalLangOpen = ref(false);
 </script>
 
 <template>
   <DropdownLanguages>
-    <ButtonSidebar v-if="small">
-      <BaseIcon size="20" name="earth" class="text-skin-link" />
-    </ButtonSidebar>
-    <BaseButton v-else class="flex items-center" @click="modalLangOpen = true">
-      <BaseIcon size="24" name="earth" class="mr-2" />
+    <BaseButton
+      class="flex !h-[44px] w-full items-center !text-skin-text hover:!text-skin-link"
+      @click="modalLangOpen = true"
+    >
+      <i-ho-globe class="mr-2" />
       {{ languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name }}
     </BaseButton>
   </DropdownLanguages>

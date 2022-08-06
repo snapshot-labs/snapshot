@@ -13,17 +13,14 @@ export function useClient() {
   const auth = getInstance();
   const { notify } = useFlashNotification();
 
-  const loading = ref(false);
+  const isSending = ref(false);
 
   const connectorName = computed(() => auth.provider.value?.connectorName);
 
-  const usePersonalSign = computed(() => {
-    return (
-      connectorName.value === 'walletlink' ||
-      connectorName.value === 'walletconnect' ||
-      connectorName.value === 'gnosis'
-    );
-  });
+  const usePersonalSign = computed(
+    () =>
+      connectorName.value === 'walletlink' || connectorName.value === 'gnosis'
+  );
 
   const isGnosisSafe = computed(
     () =>
@@ -32,7 +29,7 @@ export function useClient() {
   );
 
   async function send(space, type, payload) {
-    loading.value = true;
+    isSending.value = true;
     try {
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
@@ -56,7 +53,7 @@ export function useClient() {
       notify(['red', errorMessage]);
       return e;
     } finally {
-      loading.value = false;
+      isSending.value = false;
     }
   }
 
@@ -97,5 +94,5 @@ export function useClient() {
     }
   }
 
-  return { send, clientLoading: computed(() => loading.value), isGnosisSafe };
+  return { send, isSending, isGnosisSafe };
 }

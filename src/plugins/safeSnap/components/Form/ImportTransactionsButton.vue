@@ -7,7 +7,7 @@ import { FunctionFragment, Interface } from '@ethersproject/abi';
 export default {
   name: 'ImportTransactionsButton',
   props: ['network'],
-  emits: ['import'],
+  emits: ['import', 'remove'],
   data() {
     return {
       json: '',
@@ -108,7 +108,7 @@ export default {
             };
           } catch (err) {
             throw new Error(
-              'invalid function params for transaction #' + (index + 1)
+              `invalid function params for transaction #${index + 1}`
             );
           }
         } else if (data && data !== '0x') {

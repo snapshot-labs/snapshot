@@ -3,15 +3,17 @@ import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { useSpaceForm } from '@/composables';
 
 const props = defineProps<{
-  form: { network: string; symbol: string; strategies: SpaceStrategy[] };
-  getErrorMessage: (field: string) => { message: string; push: boolean };
+  context: 'setup' | 'settings';
+  title?: string;
+  hideError?: boolean;
 }>();
 
-const emit = defineEmits(['updateStrategies', 'updateNetwork', 'updateSymbol']);
+const { form, getValidation } = useSpaceForm(props.context);
 
-const strategies = computed(() => props.form.strategies);
+const strategies = computed(() => form.value.strategies);
 
 const strategyObj = {
   name: '',
@@ -24,9 +26,8 @@ const currentStrategyIndex = ref<number | null>(null);
 const currentStrategy = ref<SpaceStrategy>(clone(strategyObj));
 
 function handleRemoveStrategy(i) {
-  emit(
-    'updateStrategies',
-    strategies.value.filter((strategy, index) => index !== i)
+  form.value.strategies = strategies.value.filter(
+    (strategy, index) => index !== i
   );
 }
 
@@ -46,29 +47,28 @@ function handleSubmitStrategy(strategy) {
   if (currentStrategyIndex.value !== null) {
     const strategiesClone = clone(strategies.value);
     strategiesClone[currentStrategyIndex.value] = strategy;
-    emit('updateStrategies', strategiesClone);
+    form.value.strategies = strategiesClone;
   } else {
-    emit('updateStrategies', strategies.value.concat(strategy));
+    form.value.strategies = strategies.value.concat(strategy);
   }
 }
 </script>
 
 <template>
-  <BaseBlock :title="$t('settings.strategies.label')">
+  <BaseBlock :title="title || $t('settings.strategies.label')">
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
         :information="$t('settings.network.information')"
-        @select="value => emit('updateNetwork', value)"
+        @select="value => (form.network = value)"
       />
       <BaseInput
-        :model-value="form.symbol"
+        v-model="form.symbol"
         :title="$t(`settings.symbol.label`)"
         :information="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
-        :error="getErrorMessage('symbol')"
+        :error="getValidation('symbol')"
         :max-length="schemas.space.properties.symbol.maxLength"
-        @update:model-value="value => emit('updateSymbol', value)"
       />
     </ContainerParallelInput>
 
@@ -80,6 +80,9 @@ function handleSubmitStrategy(strategy) {
           :information="$t('settings.strategies.information')"
         />
       </div>
+      <sub class="-mt-[10px] text-sm">
+        ({{ $t('settings.votingPowerIsCumulative') }})
+      </sub>
       <SettingsStrategiesBlockItem
         :strategies-form="strategies"
         @edit-strategy="i => handleEditStrategy(i)"
@@ -87,7 +90,10 @@ function handleSubmitStrategy(strategy) {
       />
     </div>
 
-    <StrategiesBlockWarning :error="getErrorMessage('strategies')" />
+    <StrategiesBlockWarning
+      v-if="!hideError"
+      :error="getValidation('strategies')"
+    />
 
     <BaseButton class="block w-full" @click="handleAddStrategy">
       {{ $t('settings.addStrategy') }}

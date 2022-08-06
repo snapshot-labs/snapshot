@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useApp } from '@/composables/useApp';
+
 import { lsSet, lsGet } from '@/helpers/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaces } from '@/composables/useSpaces';
+
+import {
+  useUnseenProposals,
+  useExtendedSpaces,
+  useFollowSpace,
+  useSpaces,
+  useWeb3,
+  useApp
+} from '@/composables';
 
 const router = useRouter();
 
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces } = useFollowSpace();
-const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
-  useUnseenProposals();
-const { domain } = useApp();
+const { spaceHasUnseenProposals } = useUnseenProposals();
+const { domain, showSidebar } = useApp();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 const { spaces } = useSpaces();
 
@@ -38,13 +41,6 @@ function saveSpaceOrder() {
       draggableSpaces.value
     );
 }
-const hasUnseenProposalsBySpace = space => {
-  return proposals.value.some(p => {
-    return (
-      p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
-    );
-  });
-};
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
@@ -66,21 +62,19 @@ watch(followingSpaces, () => {
   loadExtentedSpaces(followingSpaces.value);
 });
 
-watchEffect(() => getProposals(followingSpaces.value));
-
-watch(web3Account, () => {
-  loadFollows();
-  updateLastSeenProposal(web3Account.value);
-});
-
-onMounted(() => {
-  loadFollows();
-});
+watch(
+  web3Account,
+  () => {
+    loadFollows();
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <div
     class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
+    @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
       <router-link :to="{ name: 'home' }">
@@ -131,7 +125,7 @@ onMounted(() => {
           >
             <SidebarUnreadIndicator
               :space="element"
-              :has-unseen="hasUnseenProposalsBySpace(element)"
+              :has-unseen="spaceHasUnseenProposals(element)"
             />
             <div
               class="cursor-pointer"
@@ -168,7 +162,11 @@ onMounted(() => {
       }"
       class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
-      <router-link :to="{ name: 'setup' }">
+      <router-link
+        :to="{
+          name: 'setup'
+        }"
+      >
         <ButtonSidebar
           :class="{ '!border-skin-link': $route.name === 'setup' }"
         >

@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, inject, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
 import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
 import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
-import { useModal } from '@/composables/useModal';
-import { useTerms } from '@/composables/useTerms';
-import { useProfiles } from '@/composables/useProfiles';
-import { useApp } from '@/composables/useApp';
-import { useSharing } from '@/composables/useSharing';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useStore } from '@/composables/useStore';
-import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
+import {
+  useI18n,
+  useModal,
+  useTerms,
+  useProfiles,
+  useApp,
+  useSharing,
+  useWeb3,
+  useClient,
+  useInfiniteLoader,
+  useProposals,
+  useIntl,
+  useSpaceCreateForm,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -27,14 +30,15 @@ const router = useRouter();
 const { domain } = useApp();
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
-const { store } = useStore();
-const notify: any = inject('notify');
+const { send, isSending } = useClient();
+const { removeSpaceProposal } = useProposals();
+const { notify } = useFlashNotification();
 const { formatRelativeTime, formatNumber } = useIntl();
 
 const id: string = route.params.id as string;
 
 const modalOpen = ref(false);
+const isModalPostVoteOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadingProposal = ref(true);
 const loadedResults = ref(false);
@@ -88,6 +92,11 @@ async function loadProposal() {
   }
   loadingProposal.value = false;
   loadResults();
+}
+
+function reloadProposal() {
+  isModalPostVoteOpen.value = true;
+  loadProposal();
 }
 
 function formatProposalVotes(votes) {
@@ -166,17 +175,17 @@ async function deleteProposal() {
   });
   console.log('Result', result);
   if (result.id) {
-    store.space.proposals = [];
+    removeSpaceProposal(id);
     notify(['green', t('notify.proposalDeleted')]);
     router.push({ name: 'spaceProposals' });
   }
 }
 
 const {
-  shareToTwitter,
+  shareProposalTwitter,
   shareToFacebook,
   shareToClipboard,
-  startShare,
+  shareProposal,
   sharingIsSupported,
   sharingItems
 } = useSharing();
@@ -200,10 +209,10 @@ function selectFromThreedotDropdown(e) {
 }
 
 function selectFromShareDropdown(e) {
-  if (e === 'shareToTwitter')
-    shareToTwitter(props.space, proposal.value, window);
+  if (e === 'shareProposalTwitter')
+    shareProposalTwitter(props.space, proposal.value);
   else if (e === 'shareToFacebook')
-    shareToFacebook(props.space, proposal.value, window);
+    shareToFacebook(props.space, proposal.value);
   else if (e === 'shareToClipboard')
     shareToClipboard(props.space, proposal.value);
 }
@@ -311,9 +320,9 @@ const truncateMarkdownBody = computed(() => {
               />
               <ButtonShare
                 v-if="sharingIsSupported"
-                @click="startShare(space, proposal)"
+                @click="shareProposal(space, proposal)"
               />
-              <BaseDropdown
+              <BaseMenu
                 v-else
                 class="!ml-auto pl-3"
                 :items="sharingItems"
@@ -324,27 +333,27 @@ const truncateMarkdownBody = computed(() => {
                 </template>
                 <template #item="{ item }">
                   <BaseIcon
-                    v-if="item.icon"
-                    :name="item.icon"
+                    v-if="item.extras.icon"
+                    :name="item.extras.icon"
                     size="21"
                     class="mr-2 align-middle !leading-[0]"
                   />
                   {{ item.text }}
                 </template>
-              </BaseDropdown>
-              <BaseDropdown
+              </BaseMenu>
+              <BaseMenu
                 class="md:ml-2"
                 :items="threeDotItems"
                 @select="selectFromThreedotDropdown"
               >
                 <template #button>
                   <div>
-                    <BaseButtonIcon :loading="clientLoading">
+                    <BaseButtonIcon :loading="isSending">
                       <i-ho-dots-horizontal />
                     </BaseButtonIcon>
                   </div>
                 </template>
-              </BaseDropdown>
+              </BaseMenu>
             </div>
           </div>
 
@@ -536,7 +545,7 @@ const truncateMarkdownBody = computed(() => {
       :snapshot="proposal.snapshot"
       :strategies="strategies"
       @close="modalOpen = false"
-      @reload="loadProposal()"
+      @reload="reloadProposal()"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
@@ -549,6 +558,13 @@ const truncateMarkdownBody = computed(() => {
       :space="space"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), (modalOpen = true)"
+    />
+    <ModalPostVote
+      :open="isModalPostVoteOpen"
+      :space="space"
+      :proposal="proposal"
+      :selected-choices="selectedChoices"
+      @close="isModalPostVoteOpen = false"
     />
   </teleport>
 </template>

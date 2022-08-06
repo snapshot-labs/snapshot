@@ -42,8 +42,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
-    },
-    dedupe: ['@popperjs/core']
+    }
   },
   test: {
     environment: 'happy-dom',

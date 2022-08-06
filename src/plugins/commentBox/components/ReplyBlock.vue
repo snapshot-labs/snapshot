@@ -11,7 +11,7 @@ import { useIntl } from '@/composables/useIntl';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 const auth = getInstance();
-const { modalOpen, modalAccountOpen } = useModal();
+const { modalAccountOpen } = useModal();
 const { web3Account } = useWeb3();
 const props = defineProps({
   item: Object,
@@ -105,7 +105,7 @@ async function deleteItem() {
     notify(['primary', t('comment_box.error')]);
   }
 }
-watch([modalOpen, closeModal], () => {
+watch([closeModal], () => {
   const el = document.body;
   if (!closeModal.value) {
     el.classList['remove']('overflow-hidden');
@@ -178,7 +178,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           class="ml-1"
           v-text="$d(item.timestamp, 'short', 'en-US')"
         />
-        <BaseDropdown
+        <BaseMenu
           v-if="isAdmin || isOwner || isCreator"
           class="float-right"
           :items="threeDotItems"
@@ -187,7 +187,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           <template #button>
             <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
-        </BaseDropdown>
+        </BaseMenu>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>

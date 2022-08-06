@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
+import { useWeb3 } from '@/composables';
 
-const props = defineProps<{
+defineProps<{
   spaceId: string;
-  web3Account: string;
 }>();
+
+const { web3Account } = useWeb3();
 
 // Reactive local storage with help from vueuse package
 const createdSpaces = useStorage(
-  `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
+  `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
   {}
 );
 </script>
@@ -24,7 +26,7 @@ const createdSpaces = useStorage(
           <h3 class="mt-0">{{ $t('newSpaceNotice.header') }}</h3>
           <div class="text-skin-text">
             <BaseIcon name="info" size="24" class="float-left mr-1" />
-            <i18n-t keypath="newSpaceNotice.mainText" tag="p">
+            <i18n-t keypath="newSpaceNotice.mainText" tag="p" scope="global">
               <template #settings>
                 <BaseLink
                   :link="{ name: 'spaceSettings', params: { key: spaceId } }"
@@ -39,6 +41,7 @@ const createdSpaces = useStorage(
             keypath="newSpaceNotice.learnMore"
             tag="p"
             class="mt-2 text-skin-text"
+            scope="global"
           >
             <template #documentation>
               <BaseLink

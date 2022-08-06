@@ -75,7 +75,7 @@ onMounted(async () => {
   // Initialize the snapshot block number
   if (props.space?.network) {
     form.value.snapshot =
-      (await getBlockNumber(getProvider(props.space.network, 'brovider'))) - 4;
+      (await getBlockNumber(getProvider(props.space.network))) - 4;
   }
 });
 </script>
@@ -160,8 +160,7 @@ onMounted(async () => {
 
     <BaseBlock
       :title="$t('create.period')"
-      icon="info"
-      :icon-tooltip="$t('create.votingPeriodExplainer')"
+      :information="$t('create.votingPeriodExplainer')"
     >
       <div class="md:flex md:space-x-3">
         <UiInput
