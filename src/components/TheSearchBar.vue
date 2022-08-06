@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
+import { useI18n } from '@/composables';
 
 const route = useRoute();
 const router = useRouter();
@@ -11,8 +11,8 @@ const routeQuery = computed(() => route.query.q || '');
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
-    action: 'home',
-    extras: { selected: route.name === 'home' }
+    action: 'spaces',
+    extras: { selected: route.query.type === 'spaces' }
   },
   {
     text: t('networks'),
@@ -38,16 +38,9 @@ const searchSelectedOption = computed(
 );
 
 function redirectSearch(e) {
-  if (e === 'home')
-    router.push({
-      name: e,
-      query: { q: routeQuery.value || undefined }
-    });
-  else
-    router.push({
-      name: 'explore',
-      query: { q: routeQuery.value || undefined, type: e }
-    });
+  router.push({
+    query: { q: routeQuery.value || undefined, type: e }
+  });
 }
 </script>
 

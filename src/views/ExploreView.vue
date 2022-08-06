@@ -1,20 +1,24 @@
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { useRoute } from 'vue-router';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
-import { useIntl } from '@/composables/useIntl';
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
-import { useStrategies } from '@/composables/useStrategies';
-import { usePlugins } from '@/composables/usePlugins';
+
+import {
+  usePlugins,
+  useStrategies,
+  useNetworksFilter,
+  useIntl,
+  useScrollMonitor,
+  useI18n
+} from '@/composables';
 
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
-const isStrategies = computed(
-  () => !route.query.type || route.query.type === 'strategies'
+const isSpaces = computed(
+  () => !route.query.type || route.query.type === 'spaces'
 );
+const isStrategies = computed(() => route.query.type === 'strategies');
 const isNetworks = computed(() => route.query.type === 'networks');
 const isPlugins = computed(() => route.query.type === 'plugins');
 
@@ -56,7 +60,7 @@ const items = computed(() => {
 });
 
 watch(
-  () => route.name,
+  () => route.query.type,
   () => {
     if (isStrategies.value) getStrategies();
     if (isNetworks.value) getNetworksSpacesCount();
@@ -83,66 +87,73 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseContainer class="mb-4 flex items-center">
-    <BaseButton
-      class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
-    >
-      <TheSearchBar />
-    </BaseButton>
-    <div class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex">
-      <div class="flex flex-col">
-        {{ formatCompactNumber(items.length) }} {{ resultsStr }}
-      </div>
-
-      <BaseLink
-        v-if="buttonStr"
-        :link="createLink"
-        class="ml-3 hidden md:block"
-        hide-external-icon
+  <div v-if="isSpaces">
+    <ExploreSpaces />
+  </div>
+  <div v-else>
+    <BaseContainer class="mb-4 flex items-center">
+      <BaseButton
+        class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
       >
-        <BaseButton>
-          {{ buttonStr }}
-        </BaseButton>
-      </BaseLink>
-    </div>
-  </BaseContainer>
-  <BaseContainer :slim="true">
-    <div class="overflow-hidden">
-      <template v-if="isStrategies">
-        <LoadingRow v-if="loadingStrategies" block />
-        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <router-link
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :to="`/strategy/${item.id}`"
-          >
-            <BaseStrategyItem :strategy="item" />
-          </router-link>
+        <TheSearchBar />
+      </BaseButton>
+      <div
+        class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex"
+      >
+        <div class="flex flex-col">
+          {{ formatCompactNumber(items.length) }} {{ resultsStr }}
         </div>
-      </template>
-      <template v-if="isNetworks">
-        <LoadingRow v-if="loadingNetworksSpacesCount" block />
-        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <router-link
-            v-for="item in items.slice(0, limit)"
-            :key="item.key"
-            :to="`/?network=${item.key}`"
-          >
-            <BaseNetworkItem :network="item" />
-          </router-link>
-        </div>
-      </template>
-      <template v-if="isPlugins">
-        <LoadingRow v-if="loadingPluginsSpacesCount" block />
-        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <div v-for="item in items.slice(0, limit)" :key="item.key">
-            <BasePluginItem :plugin="item" />
+
+        <BaseLink
+          v-if="buttonStr"
+          :link="createLink"
+          class="ml-3 hidden md:block"
+          hide-external-icon
+        >
+          <BaseButton>
+            {{ buttonStr }}
+          </BaseButton>
+        </BaseLink>
+      </div>
+    </BaseContainer>
+    <BaseContainer :slim="true">
+      <div class="overflow-hidden">
+        <template v-if="isStrategies">
+          <LoadingRow v-if="loadingStrategies" block />
+          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <router-link
+              v-for="item in items.slice(0, limit)"
+              :key="item.key"
+              :to="`/strategy/${item.id}`"
+            >
+              <BaseStrategyItem :strategy="item" />
+            </router-link>
           </div>
-        </div>
-      </template>
-      <BaseNoResults v-if="items.length < 1 && !loading" use-block />
-    </div>
-  </BaseContainer>
+        </template>
+        <template v-if="isNetworks">
+          <LoadingRow v-if="loadingNetworksSpacesCount" block />
+          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <router-link
+              v-for="item in items.slice(0, limit)"
+              :key="item.key"
+              :to="`/?network=${item.key}`"
+            >
+              <BaseNetworkItem :network="item" />
+            </router-link>
+          </div>
+        </template>
+        <template v-if="isPlugins">
+          <LoadingRow v-if="loadingPluginsSpacesCount" block />
+          <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div v-for="item in items.slice(0, limit)" :key="item.key">
+              <BasePluginItem :plugin="item" />
+            </div>
+          </div>
+        </template>
+        <BaseNoResults v-if="items.length < 1 && !loading" use-block />
+      </div>
+    </BaseContainer>
+  </div>
   <div class="relative">
     <div ref="endElement" class="absolute h-[10px] w-[10px]" />
   </div>

@@ -1,13 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { shorten } from '@/helpers/utils';
+
 import { useScrollMonitor, useSpaces, useIntl, useI18n } from '@/composables';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
 
-// Scroll
 const loadBy = 12;
 const limit = ref(loadBy);
 
