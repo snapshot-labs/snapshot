@@ -46,18 +46,21 @@ const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 
 const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
-  if (!web3Account.value && isFeedJoinedSpaces.value) return;
-  return apolloQuery(
-    {
-      query: PROPOSALS_QUERY,
-      variables: {
-        first: loadBy,
-        skip,
-        space_in: spaces.value,
-        state: stateFilter.value
-      }
-    },
-    'proposals'
+  if (!web3Account.value && isFeedJoinedSpaces.value) return [];
+
+  return (
+    apolloQuery(
+      {
+        query: PROPOSALS_QUERY,
+        variables: {
+          first: loadBy,
+          skip,
+          space_in: spaces.value,
+          state: stateFilter.value
+        }
+      },
+      'proposals'
+    ) ?? []
   );
 }
 
