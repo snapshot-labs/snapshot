@@ -44,7 +44,7 @@ const socials = computed<SocialLink[]>(() => {
     >
       <i-s-twitter v-if="social.icon === 'twitter'" class="text-[23px]" />
       <i-s-github v-if="social.icon === 'github'" />
-      <i-ho-globe v-if="social.icon === 'earth'" class="text-[23px]" />
+      <i-ho-globe-alt v-if="social.icon === 'earth'" class="text-[23px]" />
     </BaseLink>
   </div>
 </template>
