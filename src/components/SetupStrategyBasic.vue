@@ -96,37 +96,32 @@ async function getTokenInfo() {
     input.value.address,
     input.value.network
   );
-  isTokenLoading.value = false;
 
   if (data?.[0]?.contract_name) {
     token.value.name = data[0].contract_name;
     token.value.logo = data[0].logo_url;
     token.value.symbol = data[0].contract_ticker_symbol;
     token.value.decimals = data[0].contract_decimals;
+    isTokenLoading.value = false;
   } else {
     try {
       // TODO: use brovider(?)
       const provider = new JsonRpcProvider(
         networks[input.value.network].rpc[0]
       );
-      token.value.name = await call(provider, ERC20ABI, [
-        input.value.address,
-        'name',
-        []
+      const tokenInfo = await Promise.all([
+        call(provider, ERC20ABI, [input.value.address, 'name', []]),
+        call(provider, ERC20ABI, [input.value.address, 'symbol', []]),
+        call(provider, ERC20ABI, [input.value.address, 'decimals', []])
       ]);
-      token.value.symbol = await call(provider, ERC20ABI, [
-        input.value.address,
-        'symbol',
-        []
-      ]);
-      token.value.decimals = await call(provider, ERC20ABI, [
-        input.value.address,
-        'decimals',
-        []
-      ]);
+      token.value.name = tokenInfo[0];
+      token.value.symbol = tokenInfo[1];
+      token.value.decimals = tokenInfo[2];
     } catch {
       tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
       token.value = clone(defaultToken);
+    } finally {
+      isTokenLoading.value = false;
     }
   }
 }
@@ -200,6 +195,7 @@ onMounted(setFormValues);
     <div class="float-right mx-4 md:mx-0">
       <SetupButtonNext
         class="!mt-0"
+        :disabled="isTokenLoading"
         :text="strategy?.params?.symbol ? 'next' : 'skip'"
         @click="nextStep"
       />
