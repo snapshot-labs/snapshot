@@ -34,7 +34,7 @@ function share() {
 
 <template>
   <BaseModal :open="open" max-height="550px" @close="emit('close')">
-    <div class="flex h-screen flex-col justify-between p-4 md:h-auto">
+    <div class="flex flex-col justify-between p-4 md:h-auto">
       <div>
         <img
           :src="imgPath"
@@ -56,32 +56,31 @@ function share() {
           </template>
         </div>
       </div>
-
-      <div class="mt-6 space-y-2">
-        <BaseLink
-          v-if="isGnosisSafe"
-          :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
-          hide-external-icon
-        >
-          <BaseButton class="w-full">
-            <div class="flex flex-grow items-center justify-center gap-1">
-              {{ $t('proposal.postVoteModal.seeQueue') }}
-              <i-ho-external-link class="text-sm" />
-            </div>
-          </BaseButton>
-        </BaseLink>
-        <BaseButton
-          v-else
-          class="flex !h-[42px] w-full items-center justify-center gap-2"
-          @click="share"
-        >
-          <BaseIcon name="twitter" size="24" class="text-[#1DA1F2]" />
-          {{ $t('shareOnTwitter') }}
-        </BaseButton>
-        <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
-          {{ $t('close') }}
-        </BaseButton>
-      </div>
     </div>
+    <template #footer>
+      <BaseLink
+        v-if="isGnosisSafe"
+        :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
+        hide-external-icon
+      >
+        <BaseButton class="w-full">
+          <div class="flex flex-grow items-center justify-center gap-1">
+            {{ $t('proposal.postVoteModal.seeQueue') }}
+            <i-ho-external-link class="text-sm" />
+          </div>
+        </BaseButton>
+      </BaseLink>
+      <BaseButton
+        v-else
+        class="flex !h-[42px] w-full items-center justify-center gap-2"
+        @click="share"
+      >
+        <BaseIcon name="twitter" size="24" class="text-[#1DA1F2]" />
+        {{ $t('shareOnTwitter') }}
+      </BaseButton>
+      <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
+        {{ $t('close') }}
+      </BaseButton>
+    </template>
   </BaseModal>
 </template>
