@@ -34,7 +34,7 @@ function share() {
 
 <template>
   <BaseModal :open="open" max-height="550px" @close="emit('close')">
-    <div class="flex h-screen flex-col justify-between p-4 md:h-auto">
+    <div class="flex flex-col justify-between p-4 md:h-auto">
       <div>
         <img
           :src="imgPath"
@@ -56,8 +56,9 @@ function share() {
           </template>
         </div>
       </div>
-
-      <div class="mt-6 space-y-2">
+    </div>
+    <template #footer>
+      <div class="space-y-2">
         <BaseLink
           v-if="isGnosisSafe"
           :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
@@ -82,6 +83,6 @@ function share() {
           {{ $t('close') }}
         </BaseButton>
       </div>
-    </div>
+    </template>
   </BaseModal>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
+import { useI18n } from '@/composables';
 
 const route = useRoute();
 const router = useRouter();
@@ -11,36 +11,35 @@ const routeQuery = computed(() => route.query.q || '');
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
-    action: 'home',
-    extras: { selected: route.name === 'home' }
+    action: 'spaces',
+    extras: { selected: route.query.type === 'spaces' }
   },
   {
     text: t('networks'),
     action: 'networks',
-    extras: { selected: route.name === 'networks' }
+    extras: { selected: route.query.type === 'networks' }
   },
   {
     text: t('strategiesPage'),
     action: 'strategies',
-    extras: { selected: route.name === 'strategies' }
+    extras: { selected: route.query.type === 'strategies' }
   },
   {
     text: t('plugins'),
     action: 'plugins',
-    extras: { selected: route.name === 'plugins' }
+    extras: { selected: route.query.type === 'plugins' }
   }
 ]);
 
 const searchSelectedOption = computed(
   () =>
-    searchOptions.value.find(option => option.action === route.name)?.text ||
-    'home'
+    searchOptions.value.find(option => option.action === route.query.type)
+      ?.text ?? 'Spaces'
 );
 
 function redirectSearch(e) {
   router.push({
-    name: e,
-    query: routeQuery.value ? { q: routeQuery.value } : {}
+    query: { q: routeQuery.value || undefined, type: e }
   });
 }
 </script>

@@ -72,7 +72,8 @@ export function useClient() {
         start: payload.start,
         end: payload.end,
         snapshot: payload.snapshot,
-        plugins: JSON.stringify(plugins)
+        plugins: JSON.stringify(plugins),
+        app: 'snapshot'
       });
     } else if (type === 'vote') {
       return clientEIP712.vote(auth.web3, web3.value.account, {
@@ -80,7 +81,8 @@ export function useClient() {
         proposal: payload.proposal.id,
         type: payload.proposal.type,
         choice: payload.choice,
-        privacy: payload.privacy
+        privacy: payload.privacy,
+        app: 'snapshot'
       });
     } else if (type === 'delete-proposal') {
       return clientEIP712.cancelProposal(auth.web3, web3.value.account, {

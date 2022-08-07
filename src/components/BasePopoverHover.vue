@@ -14,18 +14,25 @@ withDefaults(
 );
 
 const show = ref(false);
-const timer = ref<any>(null);
+const timerOpen = ref<any>(null);
+const timerClose = ref<any>(null);
 
 const open = () => {
-  if (timer.value !== null) {
-    clearTimeout(timer.value);
-    timer.value = null;
+  if (timerClose.value !== null) {
+    clearTimeout(timerClose.value);
+    timerClose.value = null;
   }
-  show.value = true;
+  timerOpen.value = setTimeout(() => {
+    show.value = true;
+  }, 200);
 };
 
 const delayClose = () => {
-  timer.value = setTimeout(() => {
+  if (timerOpen.value !== null) {
+    clearTimeout(timerOpen.value);
+    timerOpen.value = null;
+  }
+  timerClose.value = setTimeout(() => {
     show.value = false;
   }, 150);
 };
@@ -38,7 +45,7 @@ const delayClose = () => {
       :placement="placement"
       :offset="10"
       :shift="8"
-      :z-index="20"
+      :z-index="50"
       portal
     >
       <PopoverButton
@@ -63,7 +70,9 @@ const delayClose = () => {
           @mouseenter="open"
           @mouseleave="delayClose"
         >
-          <div class="overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg">
+          <div
+            class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
+          >
             <div
               class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
             >

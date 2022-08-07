@@ -12,11 +12,6 @@ export function useSharing() {
       extras: { icon: 'twitter' }
     },
     {
-      text: 'Facebook',
-      action: 'shareToFacebook',
-      extras: { icon: 'facebook' }
-    },
-    {
       text: t('copyLink'),
       action: 'shareToClipboard',
       extras: { icon: 'insertlink' }
@@ -41,20 +36,22 @@ export function useSharing() {
   }
 
   function shareVote(space, proposal, choices: string) {
+    const handle = space.twitter ? `@${space.twitter}` : space.name;
     const text = `I just voted "${choices}" for`;
     if (isSupported.value)
       share({
         title: '',
-        text: `${text} "${proposal.title}" @${space.twitter || space.name}`,
+        text: `${text} "${proposal.title}" ${handle} @SnapshotLabs`,
         url: proposalUrl(space.id, proposal)
       });
     else if (window) {
       shareTwitter(
         `${encodeURIComponent(text)}%20"${encodeURIComponent(
           proposal.title
-        )}"%20${encodedProposalUrl(space.id, proposal)}%20@${
-          space.twitter || space.name
-        }`
+        )}"%20${encodedProposalUrl(
+          space.id,
+          proposal
+        )}%20${handle}%20@SnapshotLabs`
       );
     }
   }
@@ -65,19 +62,13 @@ export function useSharing() {
   }
 
   function shareProposalTwitter(space, proposal) {
+    const handle = space.twitter ? `@${space.twitter}` : space.name;
     shareTwitter(
-      `@${space.twitter || space.name}%20${encodeURIComponent(
-        proposal.title
-      )}%20${encodedProposalUrl(space.id, proposal)}`
+      `${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
+        space.id,
+        proposal
+      )}%20${handle}%20@SnapshotLabs`
     );
-  }
-
-  function shareToFacebook(space, proposal) {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
-      space.id,
-      proposal
-    )}&quote=${encodeURIComponent(proposal.title)}`;
-    window.open(url, '_blank')?.focus();
   }
 
   const { copyToClipboard } = useCopy();
@@ -88,7 +79,6 @@ export function useSharing() {
 
   return {
     shareProposalTwitter,
-    shareToFacebook,
     shareToClipboard,
     proposalUrl,
     shareProposal,

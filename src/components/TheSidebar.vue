@@ -17,10 +17,11 @@ import {
 const router = useRouter();
 
 const { web3Account } = useWeb3();
-const { loadFollows, followingSpaces } = useFollowSpace();
+const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtendedSpaces();
 const { spaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
@@ -100,9 +101,10 @@ watch(
         </ButtonSidebar>
       </router-link>
     </div>
+    <SidebarSpacesSkeleton v-if="loadingFollows || spaceLoading" />
     <Transition name="fade">
       <draggable
-        v-if="draggableSpaces.length > 0"
+        v-show="draggableSpaces.length > 0 && !spaceLoading"
         v-model="draggableSpaces"
         :component-data="{ type: 'transition-group' }"
         v-bind="{ animation: 200 }"
