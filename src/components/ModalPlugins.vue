@@ -1,15 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch, toRefs } from 'vue';
-import { usePlugins } from '@/composables/usePlugins';
+import { PluginIndex } from '@/helpers/interfaces';
+import { usePlugins } from '@/composables';
 
-const props = defineProps({ open: Boolean, plugin: Object });
+const props = defineProps<{ open: boolean; plugin: PluginIndex }>();
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 const searchInput = ref('');
 const input = ref({});
 const isValid = ref(true);
-const selectedPlugin = ref({});
+const selectedPlugin = ref<PluginIndex | null>(null);
 
 const {
   filterPlugins,
@@ -19,7 +20,7 @@ const {
 } = usePlugins();
 
 function handleSubmit() {
-  const key = selectedPlugin.value.key;
+  const key = selectedPlugin.value?.key;
   emit('add', { input: input.value, key });
   emit('close');
 }
@@ -34,10 +35,11 @@ watch(open, () => {
   if (Object.keys(props.plugin).length > 0) {
     const key = Object.keys(props.plugin)[0];
     input.value = props.plugin[key];
-    selectedPlugin.value = Object.values(pluginIndex).find(p => p.key === key);
+    selectedPlugin.value =
+      Object.values(pluginIndex).find(p => p.key === key) ?? null;
   } else {
     input.value = {};
-    selectedPlugin.value = {};
+    selectedPlugin.value = null;
   }
 });
 </script>
@@ -77,10 +79,10 @@ watch(open, () => {
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
           <BasePluginItem
-            v-for="(plugin, i) in filterPlugins(searchInput)"
+            v-for="(pluginItem, i) in filterPlugins(searchInput)"
             :key="i"
-            :plugin="plugin"
-            @click="selectPlugin(plugin)"
+            :plugin="pluginItem"
+            @click="selectPlugin(pluginItem)"
           />
 
           <BaseNoResults
