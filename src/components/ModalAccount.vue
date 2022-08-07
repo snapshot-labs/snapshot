@@ -1,10 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { toRefs, computed } from 'vue';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 import { getIpfsUrl } from '@/helpers/utils';
 
-const props = defineProps(['open']);
+const props = defineProps<{
+  open: boolean;
+}>();
 
 defineEmits(['login', 'close']);
 
@@ -46,7 +48,7 @@ const injected = computed(() => getInjected());
             class="flex w-full items-center justify-center gap-2"
           >
             <img
-              :src="getIpfsUrl(connector.icon)"
+              :src="getIpfsUrl((connector as any).icon)"
               height="25"
               width="25"
               :alt="connector.name"

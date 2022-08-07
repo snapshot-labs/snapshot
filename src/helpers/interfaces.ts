@@ -231,3 +231,17 @@ export interface SafeExecutionData {
   network: string;
   realityModule: string;
 }
+
+export interface Plugin {
+  author: string;
+  defaults: any;
+  name: string;
+  version: string;
+  icon?: string;
+  description?: string;
+  website?: string;
+}
+
+export interface PluginIndex extends Plugin {
+  key: string;
+}
