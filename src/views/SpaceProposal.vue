@@ -183,7 +183,6 @@ async function deleteProposal() {
 
 const {
   shareProposalTwitter,
-  shareToFacebook,
   shareToClipboard,
   shareProposal,
   sharingIsSupported,
@@ -211,8 +210,6 @@ function selectFromThreedotDropdown(e) {
 function selectFromShareDropdown(e) {
   if (e === 'shareProposalTwitter')
     shareProposalTwitter(props.space, proposal.value);
-  else if (e === 'shareToFacebook')
-    shareToFacebook(props.space, proposal.value);
   else if (e === 'shareToClipboard')
     shareToClipboard(props.space, proposal.value);
 }
