@@ -75,10 +75,6 @@ watch([votes, web3Account], () => {
     clone(votes.value).concat(props.userVote),
     () => 'ipfs'
   );
-  console.log(
-    '🚀 ~ file: SpaceProposalVotesList.vue ~ line 78 ~ watch ~ votesWithUser',
-    votesWithUser
-  );
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
     votesWithUser.unshift(
       votesWithUser.splice(

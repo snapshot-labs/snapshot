@@ -97,7 +97,7 @@ export interface ExtendedSpace {
   children: ExtendedSpace[];
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
-  validation: { name: string; params: Record<string, any> };
+  validation: SpaceValidation;
   treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
@@ -106,6 +106,11 @@ export interface ExtendedSpace {
     quorum: number | null;
     type: string | null;
   };
+}
+
+export interface SpaceValidation {
+  name: string;
+  params: Record<string, any>;
 }
 
 export interface SpaceStrategy {

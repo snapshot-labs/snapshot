@@ -1,20 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watchEffect } from 'vue';
-import { useI18n } from '@/composables/useI18n';
-import { useUsername } from '@/composables/useUsername';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
-import { useTxStatus } from '@/composables/useTxStatus';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 
-const props = defineProps({
-  open: Boolean,
-  id: String,
-  delegate: String,
-  profiles: Object
-});
+import {
+  useI18n,
+  useUsername,
+  useTxStatus,
+  useFlashNotification
+} from '@/composables';
+
+const props = defineProps<{
+  open: boolean;
+  id: string;
+  delegate: string;
+  profiles: { [key: string]: { name?: string; ens?: string } };
+}>();
 
 const abi = ['function clearDelegate(bytes32 id)'];
 

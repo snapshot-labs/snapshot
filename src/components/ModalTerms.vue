@@ -1,7 +1,8 @@
-<script setup>
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils.ts';
+<script setup lang="ts">
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({ open: Boolean, space: Object });
+const props = defineProps<{ open: boolean; space: ExtendedSpace }>();
 
 const emit = defineEmits(['accept', 'close']);
 
@@ -22,7 +23,7 @@ function accept() {
       <h4 class="mb-3">
         {{ $tc('mustAgreeToTerms', [space.name]) }}
       </h4>
-      <BaseLink :link="space.terms">
+      <BaseLink :link="space.terms!">
         <TextAutolinker :text="getIpfsUrl" :truncate="35" />
       </BaseLink>
     </div>
