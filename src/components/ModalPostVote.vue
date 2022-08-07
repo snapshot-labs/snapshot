@@ -58,29 +58,31 @@ function share() {
       </div>
     </div>
     <template #footer>
-      <BaseLink
-        v-if="isGnosisSafe"
-        :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
-        hide-external-icon
-      >
-        <BaseButton class="w-full">
-          <div class="flex flex-grow items-center justify-center gap-1">
-            {{ $t('proposal.postVoteModal.seeQueue') }}
-            <i-ho-external-link class="text-sm" />
-          </div>
+      <div class="space-y-2">
+        <BaseLink
+          v-if="isGnosisSafe"
+          :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
+          hide-external-icon
+        >
+          <BaseButton class="w-full">
+            <div class="flex flex-grow items-center justify-center gap-1">
+              {{ $t('proposal.postVoteModal.seeQueue') }}
+              <i-ho-external-link class="text-sm" />
+            </div>
+          </BaseButton>
+        </BaseLink>
+        <BaseButton
+          v-else
+          class="flex !h-[42px] w-full items-center justify-center gap-2"
+          @click="share"
+        >
+          <BaseIcon name="twitter" size="24" class="text-[#1DA1F2]" />
+          {{ $t('shareOnTwitter') }}
         </BaseButton>
-      </BaseLink>
-      <BaseButton
-        v-else
-        class="flex !h-[42px] w-full items-center justify-center gap-2"
-        @click="share"
-      >
-        <BaseIcon name="twitter" size="24" class="text-[#1DA1F2]" />
-        {{ $t('shareOnTwitter') }}
-      </BaseButton>
-      <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
-        {{ $t('close') }}
-      </BaseButton>
+        <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
+          {{ $t('close') }}
+        </BaseButton>
+      </div>
     </template>
   </BaseModal>
 </template>
