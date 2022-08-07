@@ -73,7 +73,7 @@ const { profiles, loadProfiles } = useProfiles();
 watch([votes, web3Account], () => {
   const votesWithUser = uniqBy(
     clone(votes.value).concat(props.userVote),
-    () => 'ipfs'
+    'ipfs' as any
   );
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
     votesWithUser.unshift(
