@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue';
+import { ref, toRefs } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
+import { Profile } from '@/helpers/interfaces';
 
 import {
   useI18n,
@@ -15,8 +16,8 @@ import {
 const props = defineProps<{
   open: boolean;
   id: string;
+  profile: Profile;
   delegate: string;
-  profiles: { [key: string]: { name?: string; ens?: string } };
 }>();
 
 const abi = ['function clearDelegate(bytes32 id)'];
@@ -25,16 +26,13 @@ const emit = defineEmits(['close', 'reload']);
 
 const auth = getInstance();
 const { t } = useI18n();
-const { username, setProfile, setAddress } = useUsername();
 const { notify } = useFlashNotification();
+
+const { profile, delegate } = toRefs(props);
+const { username } = useUsername(delegate, profile);
 
 const loading = ref(false);
 const { pendingCount } = useTxStatus();
-
-watchEffect(() => {
-  setProfile(props.profiles[props.delegate]);
-  setAddress(props.delegate);
-});
 
 async function handleSubmit() {
   loading.value = true;

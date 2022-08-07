@@ -47,6 +47,15 @@ export interface StrategyDefinition {
   properties?: StrategyDefinitionProperties;
 }
 
+export interface Profile {
+  id: string;
+  name: string;
+  ens: string;
+  about?: string;
+  avatar?: string;
+  created?: number;
+}
+
 export interface ProfileActivity {
   id: string;
   created: number;
