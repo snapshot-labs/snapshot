@@ -41,6 +41,12 @@ const delayClose = () => {
 <template>
   <Popover>
     <Float
+      enter="transition ease-out duration-100"
+      enter-from="transform opacity-0 scale-95"
+      enter-to="transform opacity-100 scale-100"
+      leave="transition ease-in duration-75"
+      leave-from="transform opacity-100 scale-100"
+      leave-to="transform opacity-0 scale-95"
       :show="show"
       :placement="placement"
       :offset="10"
@@ -56,31 +62,22 @@ const delayClose = () => {
         <slot name="button" />
       </PopoverButton>
 
-      <Transition
-        enter-active-class="transition ease-out duration-100"
-        enter-from-class="transform opacity-0 scale-95"
-        enter-to-class="transform opacity-100 scale-100"
-        leave-active-class="transition ease-in duration-75"
-        leave-from-class="transform opacity-100 scale-100"
-        leave-to-class="transform opacity-0 scale-95"
+      <PopoverPanel
+        class="w-screen outline-none sm:max-w-sm"
+        static
+        @mouseenter="open"
+        @mouseleave="delayClose"
       >
-        <PopoverPanel
-          class="w-screen outline-none sm:max-w-sm"
-          static
-          @mouseenter="open"
-          @mouseleave="delayClose"
+        <div
+          class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
         >
           <div
-            class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
+            class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
           >
-            <div
-              class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
-            >
-              <slot name="content" />
-            </div>
+            <slot name="content" />
           </div>
-        </PopoverPanel>
-      </Transition>
+        </div>
+      </PopoverPanel>
     </Float>
   </Popover>
 </template>
