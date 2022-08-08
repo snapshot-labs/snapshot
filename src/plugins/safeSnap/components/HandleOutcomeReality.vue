@@ -16,7 +16,9 @@ import {
   useSafe
 } from '@/composables';
 
-import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
+import SafeSnapModalOptionApprovalReality from './Modal/OptionApprovalReality.vue';
+
+import { ensureRightNetwork } from '../utils';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
@@ -26,14 +28,7 @@ const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
 
-const props = defineProps([
-  'batches',
-  'proposal',
-  'network',
-  'moduleAddress',
-  'moduleType',
-  'multiSendAddress'
-]);
+const props = defineProps(['batches', 'proposal', 'network', 'moduleAddress']);
 
 const plugin = new Plugin();
 
@@ -51,57 +46,6 @@ const QuestionStates = {
   timeExpired: 9
 };
 Object.freeze(QuestionStates);
-
-const ensureRightNetwork = async chainId => {
-  const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
-  if (connectedToChainId === chainIdInt) return; // already on right chain
-
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-    // we cannot switch automatically
-    throw new Error(
-      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-    );
-  }
-
-  const network = networks[chainId];
-  const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-  try {
-    // check if the chain to connect to is installed
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-    });
-  } catch (error) {
-    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-    if (error.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdHex,
-              chainName: network.name,
-              rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer]
-            }
-          ]
-        });
-      } catch (addError) {
-        console.error(addError);
-      }
-    }
-    console.error(error);
-  }
-
-  await sleep(1e3); // somehow the switch does not take immediate effect :/
-  if (window.ethereum.chainId !== chainIdHex) {
-    throw new Error(
-      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-    );
-  }
-};
 
 const loading = ref(true);
 const questionStates = ref(QuestionStates);
@@ -122,10 +66,9 @@ const getTxHashes = () => {
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
+    questionDetails.value = await plugin.getExecutionDetailsWithHashesReality(
       props.network,
       props.moduleAddress,
-      props.moduleType,
       props.proposal.id,
       getTxHashes()
     );
@@ -180,10 +123,9 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = await plugin.submitProposalWithHashes(
+    const proposalSubmission = await plugin.submitRealityProposalWithHashes(
       getInstance().web3,
       props.moduleAddress,
-      props.moduleType,
       questionDetails.value.proposalId,
       getTxHashes()
     );
@@ -520,7 +462,7 @@ onMounted(async () => {
   </div>
 
   <teleport to="#modal">
-    <SafeSnapModalOptionApproval
+    <SafeSnapModalOptionApprovalReality
       :space-id="proposal.space.id"
       :minimum-bond="questionDetails?.minimumBond"
       :open="modalApproveDecisionOpen"

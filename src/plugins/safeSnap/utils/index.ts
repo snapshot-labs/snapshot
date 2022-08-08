@@ -7,6 +7,12 @@ import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
 import { SafeTransaction, SafeExecutionData } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+
+declare let window: any;
 
 export const mustBeEthereumAddress = memoize((address: string) => {
   const startsWith0x = address?.startsWith('0x');
@@ -173,4 +179,55 @@ export async function fetchTextSignatures(
   const response = await fetch(url.toString());
   const { results } = await response.json();
   return results.map(signature => signature.text_signature);
+}
+
+export async function ensureRightNetwork(chainId) {
+  const chainIdInt = parseInt(chainId);
+  const connectedToChainId = getInstance().provider.value?.chainId;
+  if (connectedToChainId === chainIdInt) return; // already on right chain
+
+  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
+    // we cannot switch automatically
+    throw new Error(
+      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
+    );
+  }
+
+  const network = networks[chainId];
+  const chainIdHex = `0x${chainIdInt.toString(16)}`;
+
+  try {
+    // check if the chain to connect to is installed
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
+    });
+  } catch (error: any) {
+    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
+    if (error.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: chainIdHex,
+              chainName: network.name,
+              rpcUrls: network.rpc,
+              blockExplorerUrls: [network.explorer]
+            }
+          ]
+        });
+      } catch (addError) {
+        console.error(addError);
+      }
+    }
+    console.error(error);
+  }
+
+  await sleep(1e3); // somehow the switch does not take immediate effect :/
+  if (window.ethereum.chainId !== chainIdHex) {
+    throw new Error(
+      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
+    );
+  }
 }

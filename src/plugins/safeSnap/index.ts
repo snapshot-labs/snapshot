@@ -92,10 +92,9 @@ export default class Plugin {
     });
   }
 
-  async getExecutionDetailsWithHashes(
+  async getExecutionDetailsWithHashesReality(
     network: string,
     moduleAddress: string,
-    moduleType: 'reality' | 'uma',
     proposalId: string,
     txHashes: string[]
   ): Promise<Omit<RealityOracleProposal | UmaOracleProposal, 'transactions'>> {
@@ -113,7 +112,7 @@ export default class Plugin {
     const moduleDetails = await this.getModuleDetails(
       network,
       moduleAddress,
-      moduleType
+      'reality'
     );
     const questionState = await checkPossibleExecution(
       provider,
@@ -137,6 +136,25 @@ export default class Plugin {
     };
   }
 
+  async getExecutionDetailsWithHashesUma(
+    network: string,
+    moduleAddress: string,
+    proposalId: string,
+    txHashes: string[]
+  ): Promise<Omit<RealityOracleProposal | UmaOracleProposal, 'transactions'>> {
+    const moduleDetails = await this.getModuleDetails(
+      network,
+      moduleAddress,
+      'uma'
+    );
+
+    return {
+      ...moduleDetails,
+      proposalId,
+      txHashes
+    };
+  }
+
   async getModuleDetails(
     network: string,
     moduleAddress: string,
@@ -150,33 +168,6 @@ export default class Plugin {
         return getUmaModuleDetails(provider, network, moduleAddress);
       default:
         throw new Error('Module type not supported');
-    }
-  }
-
-  async submitProposalWithHashes(
-    web3: any,
-    moduleAddress: string,
-    moduleType: 'reality' | 'uma',
-    proposalId: string,
-    txHashes: string[]
-  ) {
-    switch (moduleType) {
-      case 'reality':
-        return this.submitRealityProposalWithHashes(
-          web3,
-          moduleAddress,
-          proposalId,
-          txHashes
-        );
-      case 'uma':
-        return this.submitUmaProposalWithHashes(
-          web3,
-          moduleAddress,
-          proposalId,
-          txHashes
-        );
-      default:
-        throw new Error('Unknown module type');
     }
   }
 
@@ -202,14 +193,29 @@ export default class Plugin {
     web3: any,
     moduleAddress: string,
     proposalId: string,
-    txHashes: string[]
+    batches: any[]
   ) {
+    const txs = JSON.parse(
+      JSON.stringify(
+        batches
+          .map(batch =>
+            batch.transactions.map((tx: any) => ({
+              to: tx.to,
+              value: tx.value,
+              data: tx.data,
+              operation: tx.operation
+            }))
+          )
+          .flat()
+      )
+    );
+    console.log(JSON.stringify(txs));
     const tx = await sendTransaction(
       web3,
       moduleAddress,
       UMA_MODULE_ABI,
       'proposeTransactions',
-      [txHashes, proposalId]
+      [txs, proposalId]
     );
     yield;
     const receipt = await tx.wait();

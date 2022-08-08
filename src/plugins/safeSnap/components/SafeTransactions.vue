@@ -9,7 +9,8 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
 import SafeSnapTooltip from './Tooltip.vue';
-import SafeSnapHandleOutcome from './HandleOutcome.vue';
+import SafeSnapHandleOutcomeReality from './HandleOutcomeReality.vue';
+import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 
@@ -60,7 +61,8 @@ export default {
   components: {
     SafeSnapTooltip,
     SafeSnapFormImportTransactionsButton,
-    SafeSnapHandleOutcome,
+    SafeSnapHandleOutcomeReality,
+    SafeSnapHandleOutcomeUma,
     SafeSnapFormTransactionBatch
   },
   props: [
@@ -235,13 +237,18 @@ export default {
           @import="handleImport($event)"
         />
 
-        <SafeSnapHandleOutcome
-          v-if="preview && proposalResolved"
+        <SafeSnapHandleOutcomeReality
+          v-if="preview && proposalResolved && moduleType === 'reality'"
           :batches="input"
           :proposal="proposal"
           :module-address="moduleAddress"
-          :module-type="moduleType"
-          :multi-send-address="transactionConfig.multiSendAddress"
+          :network="transactionConfig.network"
+        />
+        <SafeSnapHandleOutcomeUma
+          v-if="preview && proposalResolved && moduleType === 'uma'"
+          :batches="input"
+          :proposal="proposal"
+          :module-address="moduleAddress"
           :network="transactionConfig.network"
         />
       </div>

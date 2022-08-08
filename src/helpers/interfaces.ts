@@ -192,15 +192,9 @@ export interface UmaOracleProposal {
   rules: number;
   expiration: number;
   proposalId: string;
-  questionId: string | undefined;
-  executionApproved: boolean;
-  finalizedAt: number | undefined;
-  nextTxIndex: number | undefined;
   transactions: SafeTransaction[];
   txHashes: string[];
-  currentBond: BigNumber | undefined;
-  isApproved: boolean;
-  endTime: number | undefined;
+  minimumBond: BigNumber | undefined;
 }
 
 export interface SafeAsset {
