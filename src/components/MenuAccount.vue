@@ -23,6 +23,10 @@ function handleAction(e) {
           params: { address: props.address }
         });
   if (e === 'switchWallet') return emit('switchWallet');
+  if (e === 'delegate')
+    return router.push({
+      name: 'delegate'
+    });
   return logout();
 }
 </script>
@@ -35,6 +39,11 @@ function handleAction(e) {
           text: 'View profile',
           action: 'viewProfile',
           extras: { icon: 'profile' }
+        },
+        {
+          text: 'Delegate',
+          action: 'delegate',
+          extras: { icon: 'user-add' }
         },
         {
           text: 'Switch wallet',
@@ -51,7 +60,14 @@ function handleAction(e) {
       <template #item="{ item }">
         <div class="flex items-center space-x-2">
           <div class="w-[24px]">
-            <i-ho-user-circle v-if="item.extras.icon === 'profile'" />
+            <i-ho-user-circle
+              v-if="item.extras.icon === 'profile'"
+              class="text-[19px]"
+            />
+            <i-ho-user-add
+              v-if="item.extras.icon === 'user-add'"
+              class="ml-[2px]"
+            />
             <i-ho-refresh v-if="item.extras.icon === 'switch'" />
             <i-ho-logout
               v-if="item.extras.icon === 'logout'"

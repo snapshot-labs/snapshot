@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import { ref, computed, watch, toRefs } from 'vue';
 import { shorten } from '@/helpers/utils';
-import { useProfiles } from '@/composables/useProfiles';
-import { useWeb3 } from '@/composables/useWeb3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
-import { useIntl } from '@/composables/useIntl';
 import pending from '@/helpers/pending.json';
 import {
-  Proposal,
   ExtendedSpace,
+  Proposal,
   Vote,
   SpaceStrategy
 } from '@/helpers/interfaces';
+
+import { useProfiles, useWeb3, useIntl } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -64,7 +63,6 @@ function isZero() {
 
 function openReceiptModal(iphsHash) {
   authorIpfsHash.value = iphsHash;
-  // this.relayerIpfsHash = vote.relayerIpfsHash;
   modalReceiptOpen.value = true;
 }
 
@@ -73,7 +71,7 @@ const { profiles, loadProfiles } = useProfiles();
 watch([votes, web3Account], () => {
   const votesWithUser = uniqBy(
     clone(votes.value).concat(props.userVote),
-    'ipfs'
+    'ipfs' as any
   );
   if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
     votesWithUser.unshift(
@@ -104,8 +102,10 @@ watch(visibleVotes, () => {
     <div
       v-for="(vote, i) in visibleVotes"
       :key="i"
-      class="flex items-center border-t px-3 py-[14px]"
-      :class="{ '!border: 0': i === 0 }"
+      :class="[
+        'flex items-center border-t px-3 py-[14px]',
+        { '!border-0': i === 0 }
+      ]"
     >
       <BaseUser
         :key="vote.voter"

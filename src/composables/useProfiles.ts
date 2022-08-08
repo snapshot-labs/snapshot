@@ -1,18 +1,13 @@
 import { getEnsAddress } from '@/helpers/profile';
 import { ref, computed } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PROFILES_QUERY } from '@/helpers/queries';
+import { Profile } from '@/helpers/interfaces';
+
+import { useApolloQuery } from '@/composables';
 
 // Holds profile data (ENS name, username, about) for all addresses appearing in the frontend
 const profiles = ref<{
-  [address: string]: {
-    ens: string;
-    id?: string;
-    name?: string;
-    about?: string;
-    avatar?: string;
-    created?: number;
-  };
+  [address: string]: Profile;
 }>({});
 
 const reloadingProfile = ref(false);
