@@ -17,11 +17,6 @@
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
   },
-  "torus": {
-    "id": "torus",
-    "name": "Torus",
-    "icon": "ipfs://QmTsZvSJrj5xbreGzccwPCdkV7ZKYEzPqRrTe5xduXgVmu"
-  },
   "walletlink": {
     "id": "walletlink",
     "name": "Coinbase Wallet",

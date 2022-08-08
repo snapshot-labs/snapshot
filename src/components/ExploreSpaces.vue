@@ -1,24 +1,13 @@
 <script setup>
-import { ref, watchEffect, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { shorten } from '@/helpers/utils';
-import {
-  useUnseenProposals,
-  useScrollMonitor,
-  useFollowSpace,
-  useSpaces,
-  useIntl,
-  useI18n
-} from '@/composables';
+
+import { useScrollMonitor, useSpaces, useIntl, useI18n } from '@/composables';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
-const { followingSpaces } = useFollowSpace();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
 
-const { getProposals } = useUnseenProposals();
-watchEffect(() => getProposals(followingSpaces.value));
-
-// Scroll
 const loadBy = 12;
 const limit = ref(loadBy);
 
@@ -107,16 +96,7 @@ onMounted(() => {
           </router-link>
         </div>
       </TransitionGroup>
-      <div
-        v-if="!spacesLoaded"
-        class="grid gap-4 opacity-40 md:grid-cols-3 lg:grid-cols-4"
-      >
-        <div
-          v-for="i in 12"
-          :key="i"
-          class="min-h-[266px] animate-pulse bg-skin-border md:rounded-xl"
-        ></div>
-      </div>
+      <ExploreSkeletonLoading v-if="!spacesLoaded" is-spaces />
       <BaseNoResults
         v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
         use-block
@@ -131,6 +111,8 @@ onMounted(() => {
         </BaseButton>
       </div>
     </BaseContainer>
-    <div ref="endElement" />
+    <div class="relative">
+      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+    </div>
   </div>
 </template>

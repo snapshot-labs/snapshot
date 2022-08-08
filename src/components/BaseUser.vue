@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue';
-import { useUsername } from '@/composables/useUsername';
-import { useApp } from '@/composables/useApp';
+import { toRefs } from 'vue';
+import { Profile } from '@/helpers/interfaces';
+
+import { useUsername, useApp } from '@/composables';
 
 const { domain } = useApp();
 
@@ -9,16 +10,12 @@ const props = defineProps<{
   address: string;
   space?: { members: string[]; network: string };
   proposal?: { network: string };
-  profile?: { ens: string; name?: string; about?: string };
+  profile?: Profile;
   hideAvatar?: boolean;
 }>();
 
-const { username, setProfile, setAddress } = useUsername();
-
-watchEffect(() => {
-  setProfile(props.profile);
-  setAddress(props.address);
-});
+const { profile, address } = toRefs(props);
+const { username } = useUsername(address, profile);
 </script>
 
 <template>

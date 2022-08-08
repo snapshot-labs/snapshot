@@ -2,10 +2,10 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables';
 import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
+import { useIntl } from '@/composables';
 
-const { formatCompactNumber, getRelativeProposalPeriod } = useIntl();
+const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;

@@ -183,7 +183,6 @@ async function deleteProposal() {
 
 const {
   shareProposalTwitter,
-  shareToFacebook,
   shareToClipboard,
   shareProposal,
   sharingIsSupported,
@@ -211,10 +210,15 @@ function selectFromThreedotDropdown(e) {
 function selectFromShareDropdown(e) {
   if (e === 'shareProposalTwitter')
     shareProposalTwitter(props.space, proposal.value);
-  else if (e === 'shareToFacebook')
-    shareToFacebook(props.space, proposal.value);
   else if (e === 'shareToClipboard')
     shareToClipboard(props.space, proposal.value);
+}
+
+function handleBackClick() {
+  if (domain && browserHasHistory.value?.includes('/')) return router.go(-1);
+  if (browserHasHistory.value?.includes('timeline')) return router.go(-1);
+  if (browserHasHistory.value?.includes(route.params.key)) return router.go(-1);
+  else router.push({ name: 'spaceProposals' });
 }
 
 const { profiles, loadProfiles } = useProfiles();
@@ -273,15 +277,7 @@ const truncateMarkdownBody = computed(() => {
   <TheLayout v-bind="$attrs">
     <template #content-left>
       <div class="mb-3 px-3 md:px-0">
-        <ButtonBack
-          @click="
-            browserHasHistory?.includes('timeline')
-              ? $router.go(-1)
-              : $router.push(
-                  domain ? { path: '/' } : { name: 'spaceProposals' }
-                )
-          "
-        />
+        <ButtonBack @click="handleBackClick" />
       </div>
       <div class="px-3 md:px-0">
         <template v-if="proposal">

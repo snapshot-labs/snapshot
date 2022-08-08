@@ -398,7 +398,7 @@ onMounted(async () => {
       :id="currentId"
       :open="modalOpen"
       :delegate="currentDelegate"
-      :profiles="profiles"
+      :profile="profiles[currentDelegate]"
       @close="modalOpen = false"
       @reload="getDelegationsAndDelegates"
     />

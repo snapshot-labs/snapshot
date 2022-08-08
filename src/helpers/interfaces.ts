@@ -47,6 +47,15 @@ export interface StrategyDefinition {
   properties?: StrategyDefinitionProperties;
 }
 
+export interface Profile {
+  id: string;
+  name: string;
+  ens: string;
+  about?: string;
+  avatar?: string;
+  created?: number;
+}
+
 export interface ProfileActivity {
   id: string;
   created: number;
@@ -97,7 +106,7 @@ export interface ExtendedSpace {
   children: ExtendedSpace[];
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
-  validation: { name: string; params: Record<string, any> };
+  validation: SpaceValidation;
   treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
@@ -106,6 +115,11 @@ export interface ExtendedSpace {
     quorum: number | null;
     type: string | null;
   };
+}
+
+export interface SpaceValidation {
+  name: string;
+  params: Record<string, any>;
 }
 
 export interface SpaceStrategy {
@@ -241,4 +255,18 @@ export interface SafeExecutionData {
   txs: SafeModuleTransactionBatch[];
   network: string;
   realityModule: string;
+}
+
+export interface Plugin {
+  author: string;
+  defaults: any;
+  name: string;
+  version: string;
+  icon?: string;
+  description?: string;
+  website?: string;
+}
+
+export interface PluginIndex extends Plugin {
+  key: string;
 }
