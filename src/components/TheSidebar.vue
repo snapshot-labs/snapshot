@@ -94,9 +94,7 @@ watch(
       class="group relative mt-2 flex items-center px-2"
     >
       <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar
-          :class="{ '!border-skin-link': $route.name === 'timeline' }"
-        >
+        <ButtonSidebar>
           <BaseIcon size="20" name="feed" />
         </ButtonSidebar>
       </router-link>
@@ -166,12 +164,13 @@ watch(
     >
       <router-link
         :to="{
-          name: 'setup'
+          name: 'setup',
+          query: {
+            step: '0'
+          }
         }"
       >
-        <ButtonSidebar
-          :class="{ '!border-skin-link': $route.name === 'setup' }"
-        >
+        <ButtonSidebar>
           <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>
