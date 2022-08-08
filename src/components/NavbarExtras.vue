@@ -60,7 +60,7 @@ function clickNavigationItem(item: any) {
         <div class="mt-4 border-t">
           <div class="m-4 flex items-center justify-between">
             <FooterSocials class="inline-flex justify-start !pt-0" />
-            <div class="max-w-[100px] text-sm leading-4 opacity-40">
+            <div class="text-sm leading-4 opacity-40">
               <BaseLink
                 v-if="commitSha"
                 :link="`https://github.com/${pkg.repository}/tree/${commitSha}`"
