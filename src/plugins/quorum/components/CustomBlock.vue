@@ -1,64 +1,71 @@
-<script>
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import Plugin from '../index';
 import { shorten } from '@/helpers/utils';
+import {
+  ExtendedSpace,
+  Proposal,
+  Vote,
+  SpaceStrategy
+} from '@/helpers/interfaces';
+
 import { useIntl, useQuorum } from '@/composables';
+
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: Proposal;
+  results: any;
+  loaded: any;
+  strategies: SpaceStrategy[];
+  votes: Vote[];
+}>();
 
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 const { quorumScore } = useQuorum();
 
-export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
-  setup() {
-    return { shorten, formatCompactNumber, formatPercentNumber };
-  },
-  data() {
-    return {
-      loading: false,
-      plugin: new Plugin(),
-      totalVotingPower: 0
-    };
-  },
-  computed: {
-    totalScore() {
-      const basicCount = this.space.plugins?.quorum?.basicCount;
-      if (basicCount && this.proposal.type === 'basic')
-        return this.votes
-          .filter(vote => basicCount.includes(vote.choice - 1))
-          .reduce((a, b) => a + b.balance, 0);
+const loading = ref(false);
+const plugin = ref(new Plugin());
+const totalVotingPower = ref(0);
 
-      return quorumScore({
-        proposal: this.proposal,
-        results: this.results,
-        votes: this.votes
-      });
-    },
-    quorum() {
-      return this.totalVotingPower === 0
-        ? 0
-        : this.totalScore / this.totalVotingPower;
-    }
-  },
+const totalScore = computed(() => {
+  const basicCount = props.space.plugins?.quorum?.basicCount;
+  if (basicCount && props.proposal.type === 'basic')
+    return props.votes
+      .filter(vote => basicCount.includes((vote.choice as number) - 1))
+      .reduce((a, b) => a + b.balance, 0);
 
-  async created() {
-    this.loading = true;
+  return quorumScore({
+    proposal: props.proposal,
+    results: props.results,
+    votes: props.votes
+  });
+});
 
-    this.totalVotingPower = await this.plugin.getTotalVotingPower(
-      getProvider(this.space.network),
-      this.space.plugins.quorum,
-      this.proposal.snapshot
-    );
+const quorum = computed(() => {
+  return totalVotingPower.value === 0
+    ? 0
+    : Number(totalScore.value) / totalVotingPower.value;
+});
 
-    this.loading = false;
-  }
-};
+onMounted(async () => {
+  loading.value = true;
+
+  totalVotingPower.value = await plugin.value.getTotalVotingPower(
+    getProvider(props.space.network),
+    props.space.plugins.quorum,
+    props.proposal.snapshot
+  );
+
+  loading.value = false;
+});
 </script>
 
 <template>
   <BaseBlock title="Quorum" :loading="!loaded">
     <div class="mb-1 text-skin-link">
       <span class="mr-1">
-        {{ formatCompactNumber(totalScore) }} /
+        {{ formatCompactNumber(Number(totalScore)) }} /
         {{ formatCompactNumber(totalVotingPower) }}
         {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
       </span>
