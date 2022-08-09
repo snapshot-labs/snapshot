@@ -37,7 +37,11 @@ export function useSharing() {
 
   function shareVote(space, proposal, choices: string) {
     const handle = space.twitter ? `@${space.twitter}` : space.name;
-    const text = `I just voted "${choices}" for`;
+    const isSingleChoice =
+      proposal.type === 'single-choice' || proposal.type === 'basic';
+    const text = isSingleChoice
+      ? `I just voted "${choices}" on`
+      : `I just voted on`;
     if (isSupported.value)
       share({
         title: '',
