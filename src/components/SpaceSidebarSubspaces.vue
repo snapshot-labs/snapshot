@@ -2,6 +2,10 @@
 import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
+import { useApp } from '@/composables';
+
+const { domain } = useApp();
+
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
@@ -25,8 +29,13 @@ const subSpaces = computed(() => {
   <div class="mt-3">
     <div v-if="mainSpace">
       <h5 class="px-4 font-normal text-skin-text">{{ $t('mainspace') }}</h5>
-      <router-link
-        :to="{ name: 'spaceProposals', params: { key: mainSpace.id } }"
+      <BaseLink
+        :link="
+          domain
+            ? `https://snapshot.org/#/${mainSpace.id}`
+            : { name: 'spaceProposals', params: { key: mainSpace.id } }
+        "
+        hide-external-icon
       >
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="mainSpace" size="22" />
@@ -34,14 +43,19 @@ const subSpaces = computed(() => {
             {{ mainSpace.name }}
           </span>
         </BaseSidebarNavigationItem>
-      </router-link>
+      </BaseLink>
     </div>
     <div v-if="subSpaces?.length">
       <h5 class="px-4 font-normal text-skin-text">{{ $t('subspaces') }}</h5>
-      <router-link
+      <BaseLink
         v-for="subSpace in subSpaces"
         :key="subSpace.id"
-        :to="{ name: 'spaceProposals', params: { key: subSpace.id } }"
+        :link="
+          domain
+            ? `https://snapshot.org/#/${subSpace.id}`
+            : { name: 'spaceProposals', params: { key: subSpace.id } }
+        "
+        hide-external-icon
       >
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="subSpace" size="22" />
@@ -49,7 +63,7 @@ const subSpaces = computed(() => {
             {{ subSpace.name }}
           </span>
         </BaseSidebarNavigationItem>
-      </router-link>
+      </BaseLink>
     </div>
   </div>
 </template>

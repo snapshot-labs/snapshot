@@ -13,7 +13,8 @@ import {
   useApolloQuery,
   useProfiles,
   useI18n,
-  useWeb3
+  useWeb3,
+  useApp
 } from '@/composables';
 
 const props = defineProps<{
@@ -23,6 +24,7 @@ const props = defineProps<{
 const { store, userVotedProposalIds, addSpaceProposals, setSpaceProposals } =
   useProposals();
 const { setPageTitle } = useI18n();
+const { domain } = useApp();
 
 const loading = ref(false);
 
@@ -90,8 +92,11 @@ watch(stateFilter, loadProposals);
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-  if (store.space.proposals?.[0]?.space.id === route.params.key) return;
-  loadProposals();
+
+  if (domain && store.space.proposals?.[0]?.space.id !== domain)
+    return loadProposals();
+  if (!domain && store.space.proposals?.[0]?.space.id !== route.params.key)
+    return loadProposals();
 });
 </script>
 
