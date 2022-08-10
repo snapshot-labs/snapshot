@@ -53,7 +53,7 @@ const emit = defineEmits(['select']);
       </MenuButton>
 
       <MenuItems
-        class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
+        class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg outline-none"
       >
         <div class="no-scrollbar max-h-[300px] overflow-auto">
           <MenuItem v-for="item in items" :key="item.text" v-slot="{ active }">
