@@ -113,6 +113,7 @@
   "select": "선택",
   "language": "언어",
   "agree": "동의함",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "이 작업을 완료하려면 {0} 서비스 약관에 동의해야 합니다.",
   "playground": "플레이그라운드",
   "strategyParams": "전략 매개변수",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
