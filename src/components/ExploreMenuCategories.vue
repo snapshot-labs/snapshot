@@ -38,6 +38,7 @@ const categoryItems = computed(() => {
   <BaseMenu
     class="w-full xs:w-auto"
     :items="categoryItems"
+    placement="bottom-start"
     @select="selectCategory"
   >
     <template #button>
@@ -46,8 +47,6 @@ const categoryItems = computed(() => {
         :disabled="!orderedSpaces.length"
       >
         <div class="leading-2 flex items-center leading-3">
-          <i-ho-view-grid class="mr-2 text-xs" />
-
           <span v-if="selectedCategory" class="group-hover:text-skin-link">
             {{ $tc('explore.categories.' + selectedCategory) }}
           </span>
