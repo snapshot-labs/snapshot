@@ -17,7 +17,7 @@ import {
 const router = useRouter();
 
 const { web3Account } = useWeb3();
-const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
+const { loadFollows, followingSpaces } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
@@ -99,7 +99,7 @@ watch(
         </ButtonSidebar>
       </router-link>
     </div>
-    <SidebarSpacesSkeleton v-if="loadingFollows || spaceLoading" />
+    <SidebarSpacesSkeleton v-if="spaceLoading" />
     <Transition name="fade">
       <draggable
         v-show="draggableSpaces.length > 0 && !spaceLoading"
