@@ -1,12 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { shorten } from '@/helpers/utils';
+import { useRoute, useRouter } from 'vue-router';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 import { useScrollMonitor, useSpaces, useIntl, useI18n } from '@/composables';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const { setPageTitle } = useI18n();
+
+const route = useRoute();
+const router = useRouter();
 
 const loadBy = 12;
 const limit = ref(loadBy);
@@ -31,31 +36,23 @@ onMounted(() => {
 
 <template>
   <div class="relative">
-    <TheHeader />
-    <BaseContainer
-      class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
-    >
-      <BaseButton
-        class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
-      >
-        <TheSearchBar />
-      </BaseButton>
+    <BaseContainer slim>
+      <div class="my-2 flex items-center space-x-2">
+        <ExploreMenuCategories />
 
-      <ExploreMenuCategories />
-
-      <div
-        v-if="spacesLoaded"
-        class="mt-2 whitespace-nowrap text-right text-skin-text xs:mt-0 xs:ml-auto"
-      >
-        {{
-          $tc('spaceCount', [
-            formatCompactNumber(orderedSpacesByCategory.length)
-          ])
-        }}
+        <BasePill
+          v-if="route.query.network"
+          class="relative flex items-center gap-1 pr-4"
+        >
+          {{ networks[route.query.network].name }}
+          <BaseButtonIcon
+            class="absolute right-0 !text-xs text-white"
+            @click="router.push({ query: { network: undefined } })"
+          >
+            <i-ho-x />
+          </BaseButtonIcon>
+        </BasePill>
       </div>
-    </BaseContainer>
-
-    <BaseContainer :slim="true">
       <TransitionGroup
         name="fade"
         tag="div"

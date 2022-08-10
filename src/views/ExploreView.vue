@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, onMounted, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 import {
   usePlugins,
@@ -8,12 +8,16 @@ import {
   useNetworksFilter,
   useIntl,
   useScrollMonitor,
-  useI18n
+  useI18n,
+  useSpaces
 } from '@/composables';
 
 const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
+const { orderedSpacesByCategory } = useSpaces();
+
 const route = useRoute();
+const router = useRouter();
 
 const isSpaces = computed(
   () => !route.query.type || route.query.type === 'spaces'
@@ -30,6 +34,7 @@ const buttonStr = computed(() => {
 });
 
 const resultsStr = computed(() => {
+  if (isSpaces.value) return t('explore.spaces');
   if (isStrategies.value) return t('explore.strategies');
   if (isNetworks.value) return t('explore.networks');
   if (isPlugins.value) return t('explore.plugins');
@@ -53,6 +58,7 @@ const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
 
 const items = computed(() => {
   const q = route.query.q || '';
+  if (isSpaces.value) return orderedSpacesByCategory.value;
   if (isStrategies.value) return filterStrategies(q);
   if (isNetworks.value) return filterNetworks(q);
   if (isPlugins.value) return filterPlugins(q);
@@ -81,22 +87,60 @@ const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
 
+const exploreTabs = computed(() => [
+  {
+    text: t('spaces'),
+    action: 'spaces',
+    extras: { selected: route.query.type === 'spaces' }
+  },
+  {
+    text: t('networks'),
+    action: 'networks',
+    extras: { selected: route.query.type === 'networks' }
+  },
+  {
+    text: t('strategiesPage'),
+    action: 'strategies',
+    extras: { selected: route.query.type === 'strategies' }
+  },
+  {
+    text: t('plugins'),
+    action: 'plugins',
+    extras: { selected: route.query.type === 'plugins' }
+  }
+]);
+
+const routeQuery = computed(() => route.query.q || '');
+function redirectSearch(e) {
+  router.push({
+    query: { q: routeQuery.value || undefined, type: e }
+  });
+}
+
 onMounted(() => {
   setPageTitle('page.title.explore');
 });
 </script>
 
 <template>
-  <div v-if="isSpaces">
-    <ExploreSpaces />
-  </div>
-  <div v-else>
-    <BaseContainer class="mb-4 flex items-center">
-      <BaseButton
-        class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
-      >
-        <TheSearchBar />
-      </BaseButton>
+  <div>
+    <!-- <TheHeader /> -->
+
+    <BaseContainer class="mb-4 flex items-center justify-between">
+      <div class="space-x-3">
+        <BaseButton
+          v-for="tab in exploreTabs"
+          :key="tab.action"
+          :class="{
+            '!border-skin-link':
+              route.query.type === tab.action ||
+              (!route.query.type && tab.action === 'spaces')
+          }"
+          @click="redirectSearch(tab.action)"
+        >
+          {{ tab.text }}
+        </BaseButton>
+      </div>
       <div
         class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex"
       >
@@ -116,7 +160,8 @@ onMounted(() => {
         </BaseLink>
       </div>
     </BaseContainer>
-    <BaseContainer :slim="true">
+    <ExploreSpaces v-if="isSpaces" />
+    <BaseContainer v-else slim>
       <div class="overflow-hidden">
         <ExploreSkeletonLoading
           v-if="

@@ -22,12 +22,14 @@ const { web3Account } = useWeb3();
             <i-ho-dots-vertical class="text-skin-link" />
           </ButtonSidebar>
           <router-link
+            v-if="domain"
             :to="{ path: '/' }"
             class="-ml-3 hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot
           </router-link>
+          <TheSearchBar v-else />
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <NavbarAccount />

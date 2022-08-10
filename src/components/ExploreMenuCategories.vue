@@ -7,14 +7,14 @@ const { selectedCategory, orderedSpaces } = useSpaces();
 const { tc } = useI18n();
 
 function selectCategory(c) {
-  selectedCategory.value = c === selectedCategory.value ? '' : c;
+  selectedCategory.value = c;
 }
 
 const categoryItems = computed(() => {
   return [
     {
       text: tc('explore.categories.all'),
-      action: '',
+      action: 'all',
       extras: {
         count: orderedSpaces.value.length,
         selected: !selectedCategory.value
@@ -36,26 +36,27 @@ const categoryItems = computed(() => {
 
 <template>
   <BaseMenu
-    class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
+    class="w-full xs:w-auto"
     :items="categoryItems"
     @select="selectCategory"
   >
     <template #button>
-      <BaseButton
-        class="w-full whitespace-nowrap pr-3"
+      <div
+        class="group w-full whitespace-nowrap px-2 py-2"
         :disabled="!orderedSpaces.length"
       >
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
-          <span v-if="selectedCategory">
+
+          <span v-if="selectedCategory" class="group-hover:text-skin-link">
             {{ $tc('explore.categories.' + selectedCategory) }}
           </span>
-          <span v-else>
-            {{ $tc('explore.categories.all') }}
+          <span v-else class="group-hover:text-skin-link">
+            {{ $tc('explore.category') }}
           </span>
           <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
         </div>
-      </BaseButton>
+      </div>
     </template>
     <template #item="{ item }">
       <div class="flex">
