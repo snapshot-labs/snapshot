@@ -40,7 +40,7 @@
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "0.1.103",
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
-    "@snapshot-labs/snapshot.js": "^0.4.17",
+    "@snapshot-labs/snapshot.js": "^0.4.18",
     "@vue/apollo-composable": "4.0.0-alpha.18",
     "@vueuse/core": "^9.1.0",
     "autolinker": "^3.15.0",
