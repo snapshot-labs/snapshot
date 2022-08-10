@@ -124,18 +124,21 @@ onMounted(() => {
 
 <template>
   <div>
-    <!-- <TheHeader /> -->
+    <TheHeader />
 
     <BaseContainer class="mb-4 flex items-center justify-between">
       <div class="space-x-2">
         <BaseButton
           v-for="tab in exploreTabs"
           :key="tab.action"
-          :class="{
-            '!border-skin-link':
-              route.query.type === tab.action ||
-              (!route.query.type && tab.action === 'spaces')
-          }"
+          :class="[
+            '!h-[42px]',
+            {
+              '!border-skin-link':
+                route.query.type === tab.action ||
+                (!route.query.type && tab.action === 'spaces')
+            }
+          ]"
           @click="redirectSearch(tab.action)"
         >
           {{ tab.text }}
