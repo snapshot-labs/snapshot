@@ -36,6 +36,7 @@ function clearInput() {
       autocapitalize="none"
       class="input w-full flex-auto border-none text-[20px]"
       @input="handleInputDebounce"
+      @click="route.name !== 'home' ? router.push({ name: 'home' }) : null"
     />
     <BaseButtonIcon @click="clearInput">
       <i-ho-x v-if="route.query.q" class="text-sm" />
