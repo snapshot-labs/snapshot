@@ -127,7 +127,7 @@ onMounted(() => {
     <!-- <TheHeader /> -->
 
     <BaseContainer class="mb-4 flex items-center justify-between">
-      <div class="space-x-3">
+      <div class="space-x-2">
         <BaseButton
           v-for="tab in exploreTabs"
           :key="tab.action"
