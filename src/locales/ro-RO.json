@@ -113,6 +113,7 @@
   "select": "Selectează",
   "language": "Limbă",
   "agree": "Sunt de acord",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Înainte de a termina această acțiune, trebuie sa accepți {0} terminii serviciului aici:",
   "playground": "Teren de joacă",
   "strategyParams": "Parametrii strategiei",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
