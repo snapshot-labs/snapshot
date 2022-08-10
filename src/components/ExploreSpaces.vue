@@ -37,7 +37,7 @@ onMounted(() => {
 <template>
   <div class="relative">
     <BaseContainer slim>
-      <div class="my-2 flex items-center space-x-2">
+      <div class="my-2 flex items-center space-x-2 px-4 md:px-0">
         <ExploreMenuCategories />
 
         <BasePill
@@ -46,7 +46,7 @@ onMounted(() => {
         >
           {{ networks[route.query.network].name }}
           <BaseButtonIcon
-            class="absolute right-0 !text-xs text-white"
+            class="absolute right-0 !text-xs !text-white"
             @click="router.push({ query: { network: undefined } })"
           >
             <i-ho-x />

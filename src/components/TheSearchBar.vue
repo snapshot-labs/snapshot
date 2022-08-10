@@ -25,7 +25,7 @@ function clearInput() {
 
 <template>
   <div
-    class="group -ml-3 -mb-1 flex w-full max-w-[360px] items-center rounded-full"
+    class="group relative -ml-3 -mb-1 flex w-full max-w-[360px] items-center rounded-full"
   >
     <i-ho-search class="mr-2 text-[20px] group-focus-within:text-skin-link" />
     <input
@@ -39,7 +39,10 @@ function clearInput() {
       @click="route.name !== 'home' ? router.push({ name: 'home' }) : null"
     />
     <BaseButtonIcon @click="clearInput">
-      <i-ho-x v-if="route.query.q" class="text-sm" />
+      <i-ho-x
+        v-if="route.query.q"
+        class="absolute right-0 hidden text-sm group-hover:inline-block"
+      />
     </BaseButtonIcon>
   </div>
 </template>

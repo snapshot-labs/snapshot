@@ -36,7 +36,6 @@ const categoryItems = computed(() => {
 
 <template>
   <BaseMenu
-    class="w-full xs:w-auto"
     :items="categoryItems"
     placement="bottom-start"
     @select="selectCategory"

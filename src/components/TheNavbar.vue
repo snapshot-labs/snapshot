@@ -28,7 +28,10 @@ const { web3Account } = useWeb3();
           >
             snapshot
           </BaseLink>
-          <TheSearchBar v-else />
+          <TheSearchBar v-else class="hidden md:flex" />
+          <ButtonSidebar class="ml-2 block sm:-ml-3 md:hidden">
+            <i-ho-search class="text-base" />
+          </ButtonSidebar>
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <NavbarAccount />

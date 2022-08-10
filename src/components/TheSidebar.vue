@@ -77,25 +77,10 @@ watch(
     class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
     @click="showSidebar = false"
   >
-    <div v-if="!domain" class="relative flex items-center px-2">
+    <div class="relative flex items-center px-2">
       <router-link :to="{ name: 'home' }">
         <ButtonSidebar class="!border-0">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </ButtonSidebar>
-      </router-link>
-    </div>
-    <div
-      v-tippy="{
-        content: 'Timeline',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="group relative mt-2 flex items-center px-2"
-    >
-      <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar>
-          <BaseIcon size="20" name="feed" />
         </ButtonSidebar>
       </router-link>
     </div>

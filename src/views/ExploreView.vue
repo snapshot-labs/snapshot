@@ -126,13 +126,13 @@ onMounted(() => {
   <div>
     <TheHeader />
 
-    <BaseContainer class="mb-4 flex items-center justify-between">
-      <div class="space-x-2">
+    <BaseContainer class="mb-4 flex items-center justify-between px-4">
+      <div class="no-scrollbar space-x-2 overflow-x-auto whitespace-nowrap">
         <BaseButton
           v-for="tab in exploreTabs"
           :key="tab.action"
           :class="[
-            '!h-[42px]',
+            '!h-[42px] !px-3',
             {
               '!border-skin-link':
                 route.query.type === tab.action ||
@@ -145,7 +145,7 @@ onMounted(() => {
         </BaseButton>
       </div>
       <div
-        class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex"
+        class="ml-3 hidden items-center whitespace-nowrap text-right md:flex"
       >
         <div class="flex flex-col">
           {{ formatCompactNumber(items.length) }} {{ resultsStr }}
