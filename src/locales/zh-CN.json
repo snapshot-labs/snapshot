@@ -113,6 +113,7 @@
   "select": "选择",
   "language": "语言",
   "agree": "我同意",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "在完成此操作之前，您必须同意此处的{0}服务条款：",
   "playground": "练习场",
   "strategyParams": "策略参数",
@@ -309,7 +310,7 @@
     },
     "website": "网站",
     "strategies": {
-      "label": "投票策略",
+      "label": "Strategie(s)",
       "information": "策略用于确定投票权或用户是否有资格创建提案。"
     },
     "network": {
