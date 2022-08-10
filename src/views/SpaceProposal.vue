@@ -215,6 +215,8 @@ function selectFromShareDropdown(e) {
 }
 
 function handleBackClick() {
+  if (browserHasHistory.value.includes('create'))
+    return router.push({ name: 'spaceProposals' });
   if (domain && browserHasHistory.value?.includes('/')) return router.go(-1);
   if (browserHasHistory.value?.includes('timeline')) return router.go(-1);
   if (browserHasHistory.value?.includes(route.params.key)) return router.go(-1);
