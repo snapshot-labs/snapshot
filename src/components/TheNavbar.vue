@@ -21,14 +21,13 @@ const { web3Account } = useWeb3();
           <ButtonSidebar class="sm:hidden" @click="showSidebar = !showSidebar">
             <i-ho-dots-vertical class="text-skin-link" />
           </ButtonSidebar>
-          <router-link
+          <BaseLink
             v-if="domain"
-            :to="{ path: '/' }"
-            class="-ml-3 hidden items-center sm:block"
-            style="font-size: 24px"
+            link="https://snapshot.org/"
+            class="-ml-3 hidden items-center text-[24px] sm:block"
           >
             snapshot
-          </router-link>
+          </BaseLink>
           <TheSearchBar v-else />
         </div>
         <div :key="web3Account" class="flex space-x-2">
