@@ -269,7 +269,7 @@
   "settings": {
     "header": "設定",
     "editController": "コントローラの編集",
-    "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
