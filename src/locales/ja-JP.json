@@ -113,6 +113,7 @@
   "select": "選択する",
   "language": "言語",
   "agree": "同意する",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "このアクションを完了する前に、 {0} 利用規約に同意する必要があります:",
   "playground": "プレイグラウンド",
   "strategyParams": "ストラテジーのパラメータ",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
