@@ -113,6 +113,7 @@
   "select": "Piliin",
   "language": "Lingwahe",
   "agree": "Sang-ayon ako",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Bago mo makumpleto ang pagkilos na ito, dapat kang sumang-ayon sa {0} mga tuntunin ng serbisyo dito:",
   "playground": "Palaruan",
   "strategyParams": "Param ng estratehiya",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
