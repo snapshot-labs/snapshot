@@ -26,7 +26,8 @@ withDefaults(
       leave-to="transform opacity-0 scale-95"
       :placement="placement"
       :offset="10"
-      :shift="8"
+      :shift="16"
+      :flip="16"
       :z-index="50"
       portal
     >
