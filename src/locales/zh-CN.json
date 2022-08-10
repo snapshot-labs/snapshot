@@ -269,7 +269,7 @@
   "settings": {
     "header": "设置",
     "editController": "编辑控制人",
-    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "您处于只读模式，要修改空间设置，请连接控制人或管理员的钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
     "noRecord": "未找到文本记录。请确保 id 已经在 network注册了域名，然后编辑控制人的文本记录来重新设置空间。",
