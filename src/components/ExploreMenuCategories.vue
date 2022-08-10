@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useCategories, useSpaces, useI18n } from '@/composables';
 
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
-const { selectedCategory, orderedSpaces } = useSpaces();
+const { selectedCategory, orderedSpaces, spacesLoaded } = useSpaces();
 const { tc } = useI18n();
 
 function selectCategory(c) {
@@ -43,8 +43,8 @@ const categoryItems = computed(() => {
   >
     <template #button>
       <div
+        v-if="orderedSpaces.length || spacesLoaded"
         class="group w-full whitespace-nowrap px-2 py-2"
-        :disabled="!orderedSpaces.length"
       >
         <div class="leading-2 flex items-center leading-3">
           <span v-if="selectedCategory" class="group-hover:text-skin-link">
