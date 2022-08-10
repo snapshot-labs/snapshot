@@ -17,7 +17,7 @@ import {
 const router = useRouter();
 
 const { web3Account } = useWeb3();
-const { loadFollows, followingSpaces } = useFollowSpace();
+const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
@@ -99,60 +99,62 @@ watch(
         </ButtonSidebar>
       </router-link>
     </div>
-    <SidebarSpacesSkeleton v-if="spaceLoading" />
-    <Transition name="fade">
-      <draggable
-        v-show="draggableSpaces.length > 0 && !spaceLoading"
-        v-model="draggableSpaces"
-        :component-data="{ type: 'transition-group' }"
-        v-bind="{ animation: 200 }"
-        item-key="id"
-        class="mt-2 space-y-2"
-        :delay="200"
-        :delay-on-touch-only="true"
-        @update="saveSpaceOrder"
-      >
-        <template #item="{ element }">
+    <SidebarSpacesSkeleton
+      v-if="extentedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+    />
+
+    <draggable
+      v-else
+      v-model="draggableSpaces"
+      :component-data="{ type: 'transition-group' }"
+      v-bind="{ animation: 200 }"
+      item-key="id"
+      class="mt-2 space-y-2"
+      :delay="200"
+      :delay-on-touch-only="true"
+      @update="saveSpaceOrder"
+    >
+      <template #item="{ element }">
+        <div
+          v-if="extentedSpacesObj[element]"
+          v-tippy="{
+            content: extentedSpacesObj[element].name,
+            placement: 'right',
+            delay: [750, 0],
+            touch: ['hold', 500]
+          }"
+          class="group relative flex items-center px-2"
+        >
+          <SidebarUnreadIndicator
+            :space="element"
+            :has-unseen="spaceHasUnseenProposals(element)"
+          />
           <div
-            v-if="extentedSpacesObj[element]"
-            v-tippy="{
-              content: extentedSpacesObj[element].name,
-              placement: 'right',
-              delay: [750, 0],
-              touch: ['hold', 500]
-            }"
-            class="group relative flex items-center px-2"
+            class="cursor-pointer"
+            @click="
+              router.push({
+                name: 'spaceProposals',
+                params: { key: element }
+              })
+            "
           >
-            <SidebarUnreadIndicator
-              :space="element"
-              :has-unseen="spaceHasUnseenProposals(element)"
+            <AvatarSpace
+              :key="element"
+              :space="extentedSpacesObj[element]"
+              symbol-index="space"
+              size="44"
+              class="pointer-events-none"
             />
-            <div
-              class="cursor-pointer"
-              @click="
-                router.push({
-                  name: 'spaceProposals',
-                  params: { key: element }
-                })
-              "
-            >
-              <AvatarSpace
-                :key="element"
-                :space="extentedSpacesObj[element]"
-                symbol-index="space"
-                size="44"
-                class="pointer-events-none"
-              />
-              <BaseCounter
-                v-if="spaces?.[element]?.proposals_active"
-                :counter="spaces[element].proposals_active"
-                class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
-              />
-            </div>
+            <BaseCounter
+              v-if="spaces?.[element]?.proposals_active"
+              :counter="spaces[element].proposals_active"
+              class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
+            />
           </div>
-        </template>
-      </draggable>
-    </Transition>
+        </div>
+      </template>
+    </draggable>
+
     <div
       v-tippy="{
         content: 'Create space',
