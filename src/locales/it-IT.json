@@ -113,6 +113,7 @@
   "select": "Seleziona",
   "language": "Lingua",
   "agree": "Accetto",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Prima di poter completare questa azione, è necessario accettare {0} termini di servizio qui:",
   "playground": "Playground",
   "strategyParams": "Parametri strategia",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
