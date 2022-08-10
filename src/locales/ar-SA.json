@@ -113,6 +113,7 @@
   "select": "حدد",
   "language": "اللغة",
   "agree": "أوافق",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "قبل أن تتمكن من إكمال هذا الإجراء، يجب عليك الموافقة على {0} شروط الخدمة هنا:",
   "playground": "ساحة التجريب",
   "strategyParams": "معايير الاستراتيجية",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
