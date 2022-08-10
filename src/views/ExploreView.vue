@@ -157,7 +157,7 @@ onMounted(() => {
           class="ml-3 hidden md:block"
           hide-external-icon
         >
-          <BaseButton>
+          <BaseButton class="!h-[42px]" primary>
             {{ buttonStr }}
           </BaseButton>
         </BaseLink>
