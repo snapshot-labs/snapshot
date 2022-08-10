@@ -113,6 +113,7 @@
   "select": "Pilih",
   "language": "Bahasa",
   "agree": "Saya setuju",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Sebelum Anda dapat menyelesaikan tindakan ini, Anda harus setuju pada {0} ketentuan layanan ini:",
   "playground": "Playground",
   "strategyParams": "Parameter strategi",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
