@@ -113,6 +113,7 @@
   "select": "选择",
   "language": "语言",
   "agree": "我同意",
+  "moderators": "版主",
   "mustAgreeToTerms": "在完成此操作之前，您必须同意此处的{0}服务条款：",
   "playground": "练习场",
   "strategyParams": "策略参数",
@@ -268,7 +269,7 @@
   "settings": {
     "header": "设置",
     "editController": "编辑控制人",
-    "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
+    "connectWithSpaceOwner": "您处于只读模式，要修改空间设置，请连接控制人或管理员的钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
     "noRecord": "未找到文本记录。请确保 id 已经在 network注册了域名，然后编辑控制人的文本记录来重新设置空间。",
@@ -309,7 +310,7 @@
     },
     "website": "网站",
     "strategies": {
-      "label": "投票策略",
+      "label": "策略",
       "information": "策略用于确定投票权或用户是否有资格创建提案。"
     },
     "network": {
