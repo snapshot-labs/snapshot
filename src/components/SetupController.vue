@@ -3,7 +3,6 @@ import { ref, watch } from 'vue';
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { useSpaceController } from '@/composables/useSpaceController';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useRouter, useRoute } from 'vue-router';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useClient } from '@/composables/useClient';
 
@@ -12,8 +11,6 @@ const emit = defineEmits(['next']);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
-const router = useRouter();
-const route = useRoute();
 const { web3Account } = useWeb3();
 
 const fillConnectedWallet = ref(true);
@@ -36,15 +33,7 @@ const {
 async function handleSetRecord() {
   const tx = await setRecord();
   if (tx) {
-    router.push({
-      name: 'setup',
-      params: {
-        ens: route.params.ens
-      },
-      query: {
-        step: 4
-      }
-    });
+    emit('next');
   }
 }
 
