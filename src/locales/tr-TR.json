@@ -493,6 +493,7 @@
     "networks": "ağ(lar)",
     "plugins": "eklenti(ler)",
     "results": "sonuç(lar)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",
