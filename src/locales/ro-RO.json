@@ -493,6 +493,7 @@
     "networks": "rețea(le)",
     "plugins": "plugin(uri)",
     "results": "rezultat(e)",
+    "category": "Category",
     "categories": {
       "all": "Toate",
       "protocol": "Protocol",
