@@ -237,7 +237,6 @@ export default {
           :batches="input"
           :proposal="proposal"
           :reality-address="realityAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>

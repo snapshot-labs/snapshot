@@ -26,13 +26,7 @@ const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
 
-const props = defineProps([
-  'batches',
-  'proposal',
-  'network',
-  'realityAddress',
-  'multiSendAddress'
-]);
+const props = defineProps(['batches', 'proposal', 'network', 'realityAddress']);
 
 const plugin = new Plugin();
 
