@@ -493,6 +493,7 @@
     "networks": "Netzwerk(e)",
     "plugins": "Plugin(s)",
     "results": "Ergebnis(se)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",
