@@ -115,7 +115,7 @@ watch(visibleVotes, () => {
         :address="vote.voter"
         :space="space"
         :proposal="proposal"
-        class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
+        width-class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px]"
       />
       <div class="flex-auto truncate px-2 text-center text-skin-link">
         <div
