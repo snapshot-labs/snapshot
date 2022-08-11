@@ -493,6 +493,7 @@
     "networks": "ネットワーク",
     "plugins": "プラグイン",
     "results": "結果",
+    "category": "Category",
     "categories": {
       "all": "全て",
       "protocol": "プロトコル",
