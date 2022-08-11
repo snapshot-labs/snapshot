@@ -16,8 +16,6 @@ function nextStep() {
     <SettingsProfileBlock context="setup" />
 
     <SettingsLinkBlock context="setup" />
-
-    <SettingsSubSpacesBlock context="setup" />
   </div>
   <div class="px-4 md:px-0">
     <SetupButtonBack @click="emit('back')" />

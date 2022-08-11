@@ -113,6 +113,7 @@
   "select": "Auswählen",
   "language": "Sprache",
   "agree": "Ich stimme zu",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Bevor Sie diese Aktion abschließen können, müssen Sie hier {0} Nutzungsbedingungen zustimmen:",
   "playground": "Spielplatz",
   "strategyParams": "Strategieparameter",
@@ -268,7 +269,7 @@
   "settings": {
     "header": "Einstellungen",
     "editController": "Edit controller",
-    "connectWithSpaceOwner": "Um die Space-Einstellungen zu ändern, verbinden Sie sich mit einem Controller- oder Admin-Wallet.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {

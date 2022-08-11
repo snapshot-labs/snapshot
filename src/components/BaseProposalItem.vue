@@ -2,14 +2,14 @@
 import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
+import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
 import { useIntl } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
-  profiles: { [key: string]: { ens: string; name?: string; about?: string } };
+  profiles: { [key: string]: Profile };
   space: ExtendedSpace;
   voted: boolean;
 }>();
@@ -33,16 +33,11 @@ const winningChoice = computed(() =>
       <div>
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
-            <AvatarSpace :space="proposal.space" size="28" />
-            <span class="!ml-2 hidden xs:block" v-text="proposal.space.name" />
-            <span v-text="$tc('proposalBy')" />
-
             <BaseUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
               :proposal="proposal"
-              hide-avatar
             />
           </div>
           <LabelProposalVoted v-if="voted" />

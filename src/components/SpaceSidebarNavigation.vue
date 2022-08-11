@@ -1,25 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useWeb3 } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
 }>();
-
-const auth = getInstance();
-const { web3Account } = useWeb3();
-
-const isAdmin = computed(() => {
-  const admins = props.space.admins?.map(address => address.toLowerCase());
-
-  return (
-    auth.isAuthenticated.value &&
-    web3Account.value &&
-    admins?.includes(web3Account.value.toLowerCase())
-  );
-});
 </script>
 
 <template>
@@ -57,11 +41,7 @@ const isAdmin = computed(() => {
         {{ $t('about') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link
-      v-if="isAdmin"
-      v-slot="{ isExactActive }"
-      :to="{ name: 'spaceSettings' }"
-    >
+    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceSettings' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>

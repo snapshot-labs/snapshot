@@ -113,6 +113,7 @@
   "select": "Выбрать",
   "language": "Язык",
   "agree": "Я принимаю",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Для завершения этого действия необходимо согласиться с условиями обслуживания {0} здесь:",
   "playground": "Игровая площадка",
   "strategyParams": "Параметры стратегии",
@@ -268,7 +269,7 @@
   "settings": {
     "header": "Настройки",
     "editController": "Изменить виджеты",
-    "connectWithSpaceOwner": "Чтобы изменить настройки сообщества, подключитесь к контроллеру или кошельку администратора.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "Текущий контроллер сообщества - {адрес}",
     "newController": "Новый контроллер",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {

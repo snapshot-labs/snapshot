@@ -50,7 +50,8 @@ const delayClose = () => {
       :show="show"
       :placement="placement"
       :offset="10"
-      :shift="8"
+      :shift="16"
+      :flip="16"
       :z-index="50"
       portal
     >

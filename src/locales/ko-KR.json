@@ -113,6 +113,7 @@
   "select": "선택",
   "language": "언어",
   "agree": "동의함",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "이 작업을 완료하려면 {0} 서비스 약관에 동의해야 합니다.",
   "playground": "플레이그라운드",
   "strategyParams": "전략 매개변수",
@@ -268,7 +269,7 @@
   "settings": {
     "header": "설정",
     "editController": "관리자 설정",
-    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useClient } from '@/composables';
+
+const { isGnosisSafe } = useClient();
+
 defineProps<{
   currentStep: number;
 }>();
@@ -11,11 +15,7 @@ const steps = [
   { name: 'Controller' },
   { name: 'Profile' },
   { name: 'Strategy' },
-  { name: 'Voting' },
-  { name: 'Moderation' },
-  { name: 'Custom domain' },
-  { name: 'Treasury' },
-  { name: 'Plugins' }
+  { name: isGnosisSafe.value ? 'Extras' : 'Moderation' }
 ];
 </script>
 

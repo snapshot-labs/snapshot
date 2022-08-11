@@ -154,11 +154,8 @@ async function handleSetRecord() {
       <template v-else>
         <div class="space-y-3">
           <BaseMessageBlock
-            v-if="
-              !(isSpaceController || isSpaceAdmin || ensOwner) &&
-              currentTextRecord
-            "
-            class="mx-4 mb-5 md:mx-0"
+            v-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
+            class="mx-4 mb-3 md:mx-0"
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}

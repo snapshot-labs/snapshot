@@ -81,6 +81,7 @@ export function useSpaces() {
     orderedSpaces.value.filter(
       space =>
         !selectedCategory.value ||
+        selectedCategory.value === 'all' ||
         (space.categories && space.categories.includes(selectedCategory.value))
     )
   );

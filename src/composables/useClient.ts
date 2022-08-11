@@ -47,7 +47,7 @@ export function useClient() {
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
       const errorMessage =
-        e && e.error_description
+        e?.error_description && typeof e.error_description === 'string'
           ? `Oops, ${e.error_description}`
           : t('notify.somethingWentWrong');
       notify(['red', errorMessage]);

@@ -113,6 +113,7 @@
   "select": "選択する",
   "language": "言語",
   "agree": "同意する",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "このアクションを完了する前に、 {0} 利用規約に同意する必要があります:",
   "playground": "プレイグラウンド",
   "strategyParams": "ストラテジーのパラメータ",
@@ -268,7 +269,7 @@
   "settings": {
     "header": "設定",
     "editController": "コントローラの編集",
-    "connectWithSpaceOwner": "スペースの設定を変更するためには、コントローラまたは管理者ウォレットと接続してください。",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +310,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {

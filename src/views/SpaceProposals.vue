@@ -106,6 +106,9 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
+      <BaseBlock v-if="space.about && stateFilter == 'all'" class="mb-3">
+        <TextAutolinker :text="space.about" />
+      </BaseBlock>
       <div class="relative mb-3 flex px-3 md:px-0">
         <div class="flex-auto">
           <div class="flex flex-auto items-center">
@@ -121,10 +124,6 @@ onMounted(() => {
           :space-id="space.id"
         />
       </div>
-
-      <BaseBlock v-if="space.about && stateFilter == 'all'" class="mb-3">
-        <TextAutolinker :text="space.about" />
-      </BaseBlock>
 
       <LoadingRow v-if="loading" block />
 
