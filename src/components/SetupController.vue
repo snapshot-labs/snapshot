@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { useSpaceController } from '@/composables/useSpaceController';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
+
+import { useClient, useSpaceController, useWeb3 } from '@/composables';
 
 const emit = defineEmits(['next']);
 
