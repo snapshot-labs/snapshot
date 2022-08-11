@@ -160,34 +160,36 @@ onMounted(setFormValues);
               :loading="isTokenLoading"
               focus-on-mount
             />
-
-            <BaseBlock
-              v-if="token.name"
-              class="mt-3 space-x-1 text-left text-sm"
-            >
-              <div class="flex justify-between">
-                <div class="flex items-center gap-1">
-                  <AvatarToken
-                    v-if="token.logo"
-                    :src="token.logo"
-                    :address="token.address"
-                    class="mr-1"
-                    size="30"
-                  />
-
-                  <span class="text-skin-link"> {{ token.name }} </span>
-                  <span> ${{ token.symbol }} </span>
-                </div>
-                <BaseLink
-                  v-if="input.network == '1'"
-                  class="text-skin-text hover:text-skin-link"
-                  :link="`https://etherscan.io/token/${input.address}`"
-                >
-                  {{ $t('learnMore') }}
-                </BaseLink>
-              </div>
-            </BaseBlock>
           </div>
+        </div>
+      </div>
+    </BaseBlock>
+
+    <BaseBlock v-if="token.name" class="!mt-3 space-x-1 text-left text-sm">
+      <div class="flex justify-between">
+        <div class="flex items-center gap-1 truncate">
+          <AvatarToken
+            v-if="token.logo"
+            :src="token.logo"
+            :address="token.address"
+            class="mr-1"
+            size="30"
+          />
+          <div class="truncate">
+            <div class="mr-4 truncate whitespace-nowrap text-skin-link">
+              {{ token.name }}
+            </div>
+            <div>${{ token.symbol }}</div>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <BaseLink
+            v-if="input.network == '1'"
+            class="text-skin-text hover:text-skin-link"
+            :link="`https://etherscan.io/token/${input.address}`"
+          >
+            {{ $t('learnMore') }}
+          </BaseLink>
         </div>
       </div>
     </BaseBlock>
