@@ -1,6 +1,6 @@
 import { TokenAsset } from '@/helpers/interfaces';
 
-export const ETHEREUM_COIN: TokenAsset = {
+const ETHEREUM_COIN: TokenAsset = {
   name: 'Ether',
   decimals: 18,
   symbol: 'ETH',
@@ -8,7 +8,7 @@ export const ETHEREUM_COIN: TokenAsset = {
     'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png',
   address: 'main'
 };
-export const MATIC_COIN: TokenAsset = {
+const MATIC_COIN: TokenAsset = {
   name: 'MATIC',
   decimals: 18,
   symbol: 'MATIC',

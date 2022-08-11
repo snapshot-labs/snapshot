@@ -33,8 +33,6 @@ import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 export * from './constants';
 
 export * from './utils/abi';
-export * from './utils/safe';
-export * from './utils/coins';
 export * from './utils/index';
 export * from './utils/decoder';
 export * from './utils/multiSend';

@@ -1,10 +1,9 @@
 <script>
-import Plugin, {
-  createBatch,
-  EIP3770_PREFIXES,
+import Plugin, { createBatch, EIP3770_PREFIXES } from '../index';
+import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles
-} from '../index';
+} from '@/plugins/safeSnap/utils/safe';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
