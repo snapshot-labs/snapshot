@@ -493,6 +493,7 @@
     "networks": "网络",
     "plugins": "插件",
     "results": "结果",
+    "category": "Category",
     "categories": {
       "all": "所有",
       "protocol": "协议",

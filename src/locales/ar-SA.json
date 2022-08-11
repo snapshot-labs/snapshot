@@ -493,6 +493,7 @@
     "networks": "شبكة (شبكات)",
     "plugins": "ملحق(ات)",
     "results": "النتيجة (النتائج)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",

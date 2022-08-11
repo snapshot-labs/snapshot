@@ -493,6 +493,7 @@
     "networks": "네트워크",
     "plugins": "플러그인",
     "results": "결과(에스)",
+    "category": "Category",
     "categories": {
       "all": "모두",
       "protocol": "프로토콜",

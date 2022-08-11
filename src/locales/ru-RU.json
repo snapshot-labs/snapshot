@@ -493,6 +493,7 @@
     "networks": "сеть(и)",
     "plugins": "плагин(ы)",
     "results": "результат(ы)",
+    "category": "Category",
     "categories": {
       "all": "Все",
       "protocol": "Протоколы",

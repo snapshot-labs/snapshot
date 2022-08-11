@@ -493,6 +493,7 @@
     "networks": "red(es)",
     "plugins": "extensión(es)",
     "results": "resultado(s)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",

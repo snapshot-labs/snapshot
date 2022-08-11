@@ -493,6 +493,7 @@
     "networks": "rede(s)",
     "plugins": "plugin(s)",
     "results": "resultado(s)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",

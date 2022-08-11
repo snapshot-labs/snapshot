@@ -493,6 +493,7 @@
     "networks": "jaringan",
     "plugins": "plugin",
     "results": "hasil",
+    "category": "Category",
     "categories": {
       "all": "Semua",
       "protocol": "Protokol",
