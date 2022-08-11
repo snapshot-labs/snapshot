@@ -188,7 +188,7 @@ onMounted(setFormValues);
             class="text-skin-text hover:text-skin-link"
             :link="`https://etherscan.io/token/${input.address}`"
           >
-            {{ $t('See on Etherscan') }}
+            {{ $t('setup.strategy.tokenVoting.seeOnEtherscan') }}
           </BaseLink>
         </div>
       </div>
