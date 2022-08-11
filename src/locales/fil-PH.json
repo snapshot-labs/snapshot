@@ -493,6 +493,7 @@
     "networks": "mga network",
     "plugins": "mga plugin",
     "results": "(mga) resulta",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",
