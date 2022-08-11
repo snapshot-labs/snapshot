@@ -81,18 +81,15 @@ export function getSafeHash(safe: SafeExecutionData) {
   return keccak256(['bytes32[]'], [hashes]);
 }
 
-export function validateSafeData(safe) {
-  return (
-    safe.txs.length === 0 ||
-    safe.txs
-      .map(batch => batch.transactions)
-      .flat()
-      .every(tx => tx)
+export function isValidInput(input: { safes: any[] }) {
+  return input.safes.every(
+    (safe: SafeExecutionData) =>
+      safe.txs.length === 0 ||
+      safe.txs
+        .map(batch => batch.transactions)
+        .flat()
+        .every(tx => tx)
   );
-}
-
-export function isValidInput(input) {
-  return input.safes.every(validateSafeData);
 }
 
 export function coerceConfig(config, network) {
