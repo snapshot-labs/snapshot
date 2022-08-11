@@ -7,3 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_DEFAULT_NETWORK: string;
   readonly VITE_PUSHER_BEAMS_INSTANCE_ID: string;
 }
+
+interface Window {
+  ethereum?: any;
+}
