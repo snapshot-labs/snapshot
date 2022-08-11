@@ -171,7 +171,7 @@ onMounted(setFormValues);
           <AvatarToken
             v-if="token.logo"
             :src="token.logo"
-            :address="token.address"
+            :address="input.address"
             class="mr-1"
             size="30"
           />
@@ -179,7 +179,7 @@ onMounted(setFormValues);
             <div class="mr-4 truncate whitespace-nowrap text-skin-link">
               {{ token.name }}
             </div>
-            <div>${{ token.symbol }}</div>
+            <BasePill class="py-1">${{ token.symbol }}</BasePill>
           </div>
         </div>
         <div class="flex items-center">
@@ -188,7 +188,7 @@ onMounted(setFormValues);
             class="text-skin-text hover:text-skin-link"
             :link="`https://etherscan.io/token/${input.address}`"
           >
-            {{ $t('learnMore') }}
+            {{ $t('See on Etherscan') }}
           </BaseLink>
         </div>
       </div>
