@@ -493,6 +493,7 @@
     "networks": "rete(e)",
     "plugins": "plugin(s)",
     "results": "risultato/i",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",
