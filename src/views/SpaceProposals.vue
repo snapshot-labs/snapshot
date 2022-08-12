@@ -133,7 +133,7 @@ onMounted(() => {
         :space="space"
       />
       <div v-else class="my-4 md:space-y-4">
-        <BaseProposalItem
+        <SpaceProposalsItem
           v-for="(proposal, i) in spaceProposals"
           :key="i"
           :proposal="proposal"

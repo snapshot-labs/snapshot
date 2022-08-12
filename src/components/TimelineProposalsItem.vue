@@ -56,12 +56,15 @@ const winningChoice = computed(() =>
               hide-avatar
             />
           </div>
-          <div>
-            <LabelProposalVoted v-if="voted" />
-          </div>
+          <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 class="mt-1 mb-1 break-words" v-text="proposal.title" />
-        <p class="mb-2 break-words text-md" v-text="shorten(body, 120)" />
+
+        <ProposalItemTitle :proposal="proposal" :voted="voted" />
+
+        <ProposalItemBody v-if="body">
+          {{ body }}
+        </ProposalItemBody>
+
         <div
           v-if="
             proposal.scores_state === 'final' &&
@@ -104,7 +107,6 @@ const winningChoice = computed(() =>
             />
           </div>
         </div>
-        <ProposalItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </div>
