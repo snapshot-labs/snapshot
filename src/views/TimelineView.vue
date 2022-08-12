@@ -195,7 +195,7 @@ const { endElement } = useScrollMonitor(() => {
           class="mb-0 py-4"
         />
         <div v-else>
-          <BaseProposalPreviewItem
+          <TimelineProposalsItem
             v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"

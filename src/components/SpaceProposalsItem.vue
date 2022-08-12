@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
-import { useIntl } from '@/composables';
-
-const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
@@ -15,10 +11,6 @@ const props = defineProps<{
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
-
-const winningChoice = computed(() =>
-  props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
-);
 </script>
 
 <template>
@@ -40,24 +32,28 @@ const winningChoice = computed(() =>
               :proposal="proposal"
             />
           </div>
-          <LabelProposalVoted v-if="voted" />
+          <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
-        <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />
-        <div class="mb-3">
-          <span
-            v-if="proposal.scores_state === 'final'"
-            class="mt-2 flex items-center space-x-1"
-          >
-            <i-ho-check class="text-[17px] text-green" />
-            <span>
-              {{ shorten(proposal.choices[winningChoice], 64) }} -
-              {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.symbol || proposal.space.symbol }}
-            </span>
-          </span>
-        </div>
-        <ProposalItemFooter :proposal="proposal" />
+
+        <ProposalsItemTitle :proposal="proposal" :voted="voted" />
+
+        <ProposalsItemBody v-if="body">
+          {{ body }}
+        </ProposalsItemBody>
+
+        <ProposalsItemResults
+          v-if="
+            proposal.scores_state === 'final' &&
+            proposal.scores_total > 0 &&
+            proposal.choices.length <= 6
+          "
+          :proposal="proposal"
+        />
+
+        <ProposalsItemActive
+          v-if="proposal.scores_state !== 'final'"
+          :proposal="proposal"
+        />
       </div>
     </router-link>
   </BaseBlock>
