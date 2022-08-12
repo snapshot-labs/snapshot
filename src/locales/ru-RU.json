@@ -62,6 +62,7 @@
   "removeSpace": "для сообщества {0}",
   "confirmVote": "Подтвердите голосование",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "Вариант(ы)",
   "votingPower": "Ваше право голоса",
   "receipt": "Квитанция",
