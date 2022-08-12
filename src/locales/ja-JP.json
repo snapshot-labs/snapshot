@@ -62,6 +62,7 @@
   "removeSpace": "for the space {0}",
   "confirmVote": "投票内容の確認",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "オプション",
   "votingPower": "あなたの投票力",
   "receipt": "レシート",
