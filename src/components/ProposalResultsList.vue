@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { useIntl } from '@/composables/useIntl';
-
-const { formatCompactNumber } = useIntl();
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  SpaceStrategy,
+  Vote
+} from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
+  votes: Vote[];
 }>();
 
 const choices = computed<{ i: number; choice: string }[]>(() =>
@@ -30,16 +34,11 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
       :results="results"
       :strategies="strategies"
     />
-    <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
-      {{ $t('settings.quorum.label') }}
-      <span class="float-right">
-        {{ formatCompactNumber(results.scoresTotal) }} /
-        {{
-          formatCompactNumber(
-            proposal.quorum || (space.voting.quorum as number)
-          )
-        }}
-      </span>
-    </div>
+    <ProposalResultsQuorum
+      :space="space"
+      :proposal="proposal"
+      :results="results"
+      :votes="votes"
+    />
   </div>
 </template>

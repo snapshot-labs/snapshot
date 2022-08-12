@@ -519,6 +519,7 @@ const truncateMarkdownBody = computed(() => {
           :proposal="proposal"
           :results="(results as Results)"
           :strategies="strategies"
+          :votes="votes"
         />
         <PluginProposalSidebar
           v-if="proposal.plugins && loadedResults && results"
