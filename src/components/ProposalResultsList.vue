@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  SpaceStrategy,
+  Vote
+} from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
+  votes: Vote[];
 }>();
 
 const choices = computed<{ i: number; choice: string }[]>(() =>
@@ -26,6 +33,12 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
       :proposal="proposal"
       :results="results"
       :strategies="strategies"
+    />
+    <ProposalResultsQuorum
+      :space="space"
+      :proposal="proposal"
+      :results="results"
+      :votes="votes"
     />
   </div>
 </template>

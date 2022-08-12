@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  Vote,
+  SpaceStrategy
+} from '@/helpers/interfaces';
 
 import { useIntl, useQuorum } from '@/composables';
 
 defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  results: Results | null;
+  results: Results;
+  strategies: SpaceStrategy[];
   votes: Vote[];
-  strategies: { name: string; network: string; params: Record<string, any> }[];
   loaded: boolean;
 }>();
 
