@@ -50,7 +50,6 @@ const body = computed(() => removeMd(props.proposal.body));
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-
         <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
         <ProposalsItemBody v-if="body">
