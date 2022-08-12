@@ -40,24 +40,26 @@ const winningChoice = computed(() =>
               :proposal="proposal"
             />
           </div>
-          <LabelProposalVoted v-if="voted" />
+          <LabelProposalState :state="proposal.state" />
         </div>
-        <h3 class="my-1 break-words leading-7" v-text="proposal.title" />
-        <p class="mb-2 break-words sm:text-md" v-text="shorten(body, 140)" />
-        <div class="mb-3">
-          <span
-            v-if="proposal.scores_state === 'final'"
-            class="mt-2 flex items-center space-x-1"
-          >
-            <i-ho-check class="text-[17px] text-green" />
-            <span>
-              {{ shorten(proposal.choices[winningChoice], 64) }} -
-              {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-              {{ proposal.symbol || proposal.space.symbol }}
-            </span>
+
+        <ProposalItemTitle :proposal="proposal" :voted="voted" />
+
+        <ProposalItemBody v-if="body">
+          {{ body }}
+        </ProposalItemBody>
+
+        <span
+          v-if="proposal.scores_state === 'final'"
+          class="mt-2 flex items-center space-x-1"
+        >
+          <i-ho-check class="text-[17px] text-green" />
+          <span>
+            {{ shorten(proposal.choices[winningChoice], 64) }} -
+            {{ formatCompactNumber(proposal.scores[winningChoice]) }}
+            {{ proposal.symbol || proposal.space.symbol }}
           </span>
-        </div>
-        <ProposalItemFooter :proposal="proposal" />
+        </span>
       </div>
     </router-link>
   </BaseBlock>
