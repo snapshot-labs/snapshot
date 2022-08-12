@@ -62,6 +62,7 @@
   "removeSpace": "{0} 공간",
   "confirmVote": "투표 확인",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "옵션",
   "votingPower": "당신의 투표권",
   "receipt": "처리 결과",
