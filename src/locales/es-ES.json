@@ -62,6 +62,7 @@
   "removeSpace": "para el espacio {0}",
   "confirmVote": "Confirmar voto",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "Opción(es)",
   "votingPower": "Tu poder de voto",
   "receipt": "Recibo",
@@ -366,7 +367,7 @@
     },
     "skin": "Tema",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -427,7 +428,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",

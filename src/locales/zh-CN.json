@@ -62,6 +62,7 @@
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "voteOverview": "投票总览",
+  "quorumReached": "quorum reached",
   "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "凭证",
@@ -427,7 +428,8 @@
       "tokenVoting": {
         "title": "代币加权投票",
         "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准",
-        "tokenNotFound": "未找到代币"
+        "tokenNotFound": "未找到代币",
+        "seeOnEtherscan": "在Etherscan上查看"
       },
       "advanced": {
         "title": "自定义设置",
@@ -493,7 +495,7 @@
     "networks": "网络",
     "plugins": "插件",
     "results": "结果",
-    "category": "Category",
+    "category": "分类",
     "categories": {
       "all": "所有",
       "protocol": "协议",
