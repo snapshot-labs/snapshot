@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
 import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
-import { useIntl } from '@/composables';
-
-const { formatCompactNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
@@ -15,10 +11,6 @@ const props = defineProps<{
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
-
-const winningChoice = computed(() =>
-  props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
-);
 </script>
 
 <template>
@@ -43,23 +35,25 @@ const winningChoice = computed(() =>
           <LabelProposalState :state="proposal.state" />
         </div>
 
-        <ProposalItemTitle :proposal="proposal" :voted="voted" />
+        <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
-        <ProposalItemBody v-if="body">
+        <ProposalsItemBody v-if="body">
           {{ body }}
-        </ProposalItemBody>
+        </ProposalsItemBody>
 
-        <span
-          v-if="proposal.scores_state === 'final'"
-          class="mt-2 flex items-center space-x-1"
-        >
-          <i-ho-check class="text-[17px] text-green" />
-          <span>
-            {{ shorten(proposal.choices[winningChoice], 64) }} -
-            {{ formatCompactNumber(proposal.scores[winningChoice]) }}
-            {{ proposal.symbol || proposal.space.symbol }}
-          </span>
-        </span>
+        <ProposalsItemResults
+          v-if="
+            proposal.scores_state === 'final' &&
+            proposal.scores_total > 0 &&
+            proposal.choices.length <= 6
+          "
+          :proposal="proposal"
+        />
+
+        <ProposalsItemActive
+          v-if="proposal.scores_state !== 'final'"
+          :proposal="proposal"
+        />
       </div>
     </router-link>
   </BaseBlock>

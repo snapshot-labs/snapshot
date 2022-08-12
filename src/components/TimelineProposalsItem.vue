@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { shorten } from '@/helpers/utils';
 import removeMd from 'remove-markdown';
-import { useIntl } from '@/composables';
 import { Proposal } from '@/helpers/interfaces';
-
-const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 const props = defineProps<{
   proposal: Proposal;
@@ -14,10 +10,6 @@ const props = defineProps<{
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
-
-const winningChoice = computed(() =>
-  props.proposal.scores.indexOf(Math.max(...props.proposal.scores))
-);
 </script>
 
 <template>
@@ -58,55 +50,25 @@ const winningChoice = computed(() =>
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
+        <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
-        <ProposalItemTitle :proposal="proposal" :voted="voted" />
-
-        <ProposalItemBody v-if="body">
+        <ProposalsItemBody v-if="body">
           {{ body }}
-        </ProposalItemBody>
+        </ProposalsItemBody>
 
-        <div
+        <ProposalsItemResults
           v-if="
             proposal.scores_state === 'final' &&
             proposal.scores_total > 0 &&
             proposal.choices.length <= 6
           "
-          class="mb-3"
-        >
-          <div
-            v-for="(choice, i) in proposal.choices"
-            :key="i"
-            class="relative mt-1 w-full"
-          >
-            <div
-              class="absolute ml-3 flex items-center leading-[43px] text-skin-link"
-            >
-              <i-ho-check
-                v-if="i === winningChoice"
-                class="mr-2 -ml-1 text-sm"
-              />
-              {{ shorten(choice, 32) }}
-              <span class="ml-1 text-skin-text">
-                {{ formatCompactNumber(proposal.scores[i]) }}
-                {{ proposal.symbol || proposal.space.symbol }}
-              </span>
-            </div>
-            <div
-              class="absolute right-0 mr-3 leading-[40px] text-skin-link"
-              v-text="
-                formatPercentNumber(
-                  (1 / proposal.scores_total) * proposal.scores[i]
-                )
-              "
-            />
-            <div
-              :style="`width: ${
-                (100 / proposal.scores_total) * proposal.scores[i]
-              }%;`"
-              class="h-[40px] rounded-md bg-skin-border"
-            />
-          </div>
-        </div>
+          :proposal="proposal"
+        />
+
+        <ProposalsItemActive
+          v-if="proposal.scores_state !== 'final'"
+          :proposal="proposal"
+        />
       </div>
     </router-link>
   </div>
