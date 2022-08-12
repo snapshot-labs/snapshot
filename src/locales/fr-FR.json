@@ -62,6 +62,7 @@
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
   "voteOverview": "Aperçu du vote",
+  "quorumReached": "quorum reached",
   "options": "Option(s)",
   "votingPower": "Votre voting power",
   "receipt": "Reçu",
