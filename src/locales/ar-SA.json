@@ -62,6 +62,7 @@
   "removeSpace": "للمساحة {0}",
   "confirmVote": "تأكيد التصويت",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "خيار(ات)",
   "votingPower": "قوة التصويت الخاصة بك",
   "receipt": "الإيصال",
