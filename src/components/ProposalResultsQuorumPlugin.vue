@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-import { shorten } from '@/helpers/utils';
 
 import { useIntl, useQuorum } from '@/composables';
 
@@ -11,17 +10,18 @@ const props = defineProps<{
   votes: Vote[];
 }>();
 
-const { formatCompactNumber, formatPercentNumber } = useIntl();
-const { quorum, totalScore, totalVotingPower } = useQuorum(props);
+const { formatCompactNumber } = useIntl();
+const { totalScore, totalVotingPower } = useQuorum(props);
 </script>
 
 <template>
-  <div class="mb-1 text-skin-link">
+  <div class="text-skin-link">
     <span class="mr-1">
+      {{ $t('settings.quorum.label') }}
+    </span>
+    <span class="float-right">
       {{ formatCompactNumber(totalScore) }} /
       {{ formatCompactNumber(totalVotingPower) }}
-      {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
     </span>
-    <span class="float-right" v-text="formatPercentNumber(quorum)" />
   </div>
 </template>
