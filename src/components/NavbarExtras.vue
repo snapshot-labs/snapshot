@@ -43,7 +43,7 @@ function clickNavigationItem(item: any) {
           <div>
             <ButtonTheme v-if="!domain" />
           </div>
-          <ButtonLanguage class="!h-[42px]" />
+          <MenuLanguages class="!h-[42px]" />
         </div>
         <div class="group m-4 my-[30px]">
           <PopoverButton

@@ -38,7 +38,6 @@ const emit = defineEmits(['select']);
       :shift="16"
       :flip="16"
       :z-index="50"
-      portal
     >
       <MenuButton class="h-full">
         <slot v-if="$slots.button" name="button" />
