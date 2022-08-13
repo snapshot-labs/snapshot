@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import languages from '@/locales/languages.json';
-import { useI18n } from '@/composables/useI18n';
+
+import { useI18n } from '@/composables';
 
 const { setLocale } = useI18n();
 
@@ -21,11 +22,16 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
 </script>
 
 <template>
-  <div>
-    <BaseMenu :items="localeItems" @select="selectLang($event)">
-      <template #button>
-        <slot />
-      </template>
-    </BaseMenu>
-  </div>
+  <BaseMenu :items="localeItems" @select="selectLang($event)">
+    <template #button>
+      <BaseButton
+        class="flex !h-[44px] w-full items-center !text-skin-text hover:!text-skin-link"
+      >
+        <i-ho-globe class="mr-2" />
+        {{
+          languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name
+        }}
+      </BaseButton>
+    </template>
+  </BaseMenu>
 </template>

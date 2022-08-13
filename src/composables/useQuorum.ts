@@ -1,17 +1,56 @@
+import { computed, onMounted, ref } from 'vue';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
-export default class Plugin {
-  public author = 'lbeder';
-  public version = '0.1.0';
-  public name = 'Quorum';
+interface QuorumProps {
+  space: ExtendedSpace;
+  proposal: Proposal;
+  votes: Vote[];
+  results: Results;
+}
 
-  /**
-   * Returns the total voting power at specific snapshot
-   */
-  async getTotalVotingPower(web3: any, quorumOptions: any, snapshot: string) {
+export function useQuorum(props: QuorumProps) {
+  const loading = ref(false);
+  const totalVotingPower = ref(0);
+
+  const totalScore = computed(() => {
+    const basicCount = props.space.plugins?.quorum?.basicCount;
+    if (basicCount && props.proposal.type === 'basic')
+      return props.votes
+        .filter(vote => basicCount.includes((vote.choice as number) - 1))
+        .reduce((a, b) => a + b.balance, 0);
+    return quorumScore({
+      proposal: props.proposal,
+      results: props.results,
+      votes: props.votes
+    });
+  });
+
+  const quorum = computed(() => {
+    return totalVotingPower.value === 0
+      ? 0
+      : totalScore.value / totalVotingPower.value;
+  });
+
+  function quorumScore(payload) {
+    let scores = 0;
+    if (
+      payload.proposal.privacy === 'shutter' &&
+      payload.proposal.scores_state !== 'final'
+    )
+      scores = payload.votes.reduce((a, b) => a + b.balance, 0);
+    else if (payload.results) scores = payload.results.scoresTotal;
+    return scores;
+  }
+
+  async function getTotalVotingPower(
+    web3: any,
+    quorumOptions: any,
+    snapshot: string
+  ) {
     const { strategy } = quorumOptions;
 
     switch (strategy) {
@@ -24,14 +63,14 @@ export default class Plugin {
 
         const blockTag = snapshot === 'latest' ? snapshot : parseInt(snapshot);
 
-        const totalVotingPower = await call(
+        const votingPower = await call(
           web3,
           [methodABI],
           [address, methodABI.name],
           { blockTag }
         );
 
-        return BigNumber.from(totalVotingPower)
+        return BigNumber.from(votingPower)
           .div(BigNumber.from(10).pow(decimals))
           .toNumber();
       }
@@ -69,4 +108,16 @@ export default class Plugin {
         throw new Error(`Unsupported quorum strategy: ${strategy}`);
     }
   }
+
+  onMounted(async () => {
+    loading.value = true;
+    totalVotingPower.value = await getTotalVotingPower(
+      getProvider(props.space.network),
+      props.space.plugins.quorum,
+      props.proposal.snapshot
+    );
+    loading.value = false;
+  });
+
+  return { quorumScore, quorum, totalScore, totalVotingPower };
 }

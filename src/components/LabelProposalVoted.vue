@@ -1,10 +1,10 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div
-    class="flex items-center gap-1 rounded-full border py-[1px] pl-[7px] pr-[12px] text-sm text-skin-heading"
+  <span
+    class="absolute inline-flex items-center gap-1 whitespace-nowrap py-[1px] text-sm text-skin-text"
   >
-    <i-ho-check class="text-green" />
+    <i-s-voted class="text-green" />
     {{ $t('voted') }}
-  </div>
+  </span>
 </template>

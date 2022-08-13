@@ -68,10 +68,6 @@ async function handleSubmit() {
       return;
     }
 
-    // Adds connected wallet as admin so that the settings will show
-    // in the sidebar after space creation
-    form.value.admins = [web3Account.value];
-
     // Create the space
     const result = await send({ id: route.params.ens }, 'settings', form.value);
     if (result.id) {

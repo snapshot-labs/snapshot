@@ -91,7 +91,7 @@ watch(
         delay: [750, 0],
         touch: ['hold', 500]
       }"
-      class="group relative mt-2 flex items-center px-2"
+      class="mt-2 px-2"
     >
       <router-link :to="{ name: 'timeline' }">
         <ButtonSidebar>
