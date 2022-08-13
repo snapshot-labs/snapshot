@@ -8,13 +8,14 @@ const props = defineProps<{
   profiles: { [key: string]: Profile };
   space: ExtendedSpace;
   voted: boolean;
+  hideSpaceAvatar?: boolean;
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
 </script>
 
 <template>
-  <BaseBlock slim class="transition-colors md:hover:border-skin-text">
+  <div>
     <router-link
       class="block p-3 text-skin-text sm:p-4"
       :to="{
@@ -25,11 +26,30 @@ const body = computed(() => removeMd(props.proposal.body));
       <div>
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
+            <template v-if="hideSpaceAvatar">
+              <router-link
+                class="group text-skin-text"
+                :to="{
+                  name: 'spaceProposals',
+                  params: { key: proposal.space.id }
+                }"
+              >
+                <div class="flex items-center">
+                  <AvatarSpace :space="proposal.space" size="28" />
+                  <span
+                    class="ml-2 group-hover:text-skin-link"
+                    v-text="proposal.space.name"
+                  />
+                </div>
+              </router-link>
+              <span v-text="$tc('proposalBy')" />
+            </template>
             <BaseUser
               :address="proposal.author"
               :profile="profiles[proposal.author]"
               :space="space"
               :proposal="proposal"
+              :hide-avatar="hideSpaceAvatar"
             />
           </div>
           <LabelProposalState :state="proposal.state" />
@@ -52,5 +72,5 @@ const body = computed(() => removeMd(props.proposal.body));
         />
       </div>
     </router-link>
-  </BaseBlock>
+  </div>
 </template>

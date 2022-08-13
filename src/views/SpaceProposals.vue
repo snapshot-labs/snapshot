@@ -34,11 +34,16 @@ const { apolloQuery } = useApolloQuery();
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
+const subSpaces = computed(
+  () => props.space.children?.map(space => space.id) ?? []
+);
 
 const spaceProposals = computed(() => {
-  return clone(store.space.proposals).filter(
-    proposal => proposal.space.id === props.space.id
-  );
+  if (domain)
+    return clone(store.space.proposals).filter(
+      proposal => proposal.space.id === props.space.id
+    );
+  return store.space.proposals;
 });
 
 const route = useRoute();
@@ -51,7 +56,7 @@ async function getProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space: props.space.id,
+        space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
         author_in: stateFilter.value === 'core' ? spaceMembers.value : []
       }
@@ -79,6 +84,7 @@ async function loadProposals() {
   loading.value = true;
   const proposals = await getProposals();
   emitUpdateLastSeenProposal(props.space.id);
+  stopLoadingMore.value = proposals?.length < loadBy;
   loading.value = false;
   setSpaceProposals(proposals);
 }
@@ -93,9 +99,9 @@ watch(stateFilter, loadProposals);
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
 
-  if (domain && store.space.proposals?.[0]?.space.id !== domain)
-    return loadProposals();
-  if (!domain && store.space.proposals?.[0]?.space.id !== route.params.key)
+  const spaceIds = store.space.proposals?.map(p => p.space.id);
+  if (domain && !spaceIds.includes(domain)) return loadProposals();
+  if (!domain && !spaceIds.includes(route.params.key as string))
     return loadProposals();
 });
 </script>
@@ -132,21 +138,26 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else class="my-4 md:space-y-4">
-        <SpaceProposalsItem
+      <div v-else class="my-4 md:space-y-3">
+        <BaseBlock
           v-for="(proposal, i) in spaceProposals"
           :key="i"
-          :proposal="proposal"
-          :profiles="profiles"
-          :space="space"
-          :voted="userVotedProposalIds.includes(proposal.id)"
-          class="border-b first:border-t"
-        />
+          slim
+          class="transition-colors md:hover:border-skin-text"
+        >
+          <ProposalsItem
+            :proposal="proposal"
+            :profiles="profiles"
+            :space="space"
+            :voted="userVotedProposalIds.includes(proposal.id)"
+            :hide-space-avatar="proposal.space.id !== space.id"
+          />
+        </BaseBlock>
       </div>
       <div class="relative">
         <div ref="endElement" class="absolute h-[10px] w-[10px]" />
       </div>
-      <LoadingRow v-if="loadingMore" block />
+      <LoadingRow v-if="loadingMore && !loading" block />
     </template>
   </TheLayout>
 </template>
