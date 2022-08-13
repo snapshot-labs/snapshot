@@ -1,9 +1,8 @@
 <script>
-import Plugin, {
-  getERC20TokenTransferTransactionData,
-  getNativeAsset,
-  transferFundsToModuleTransaction
-} from '../../index';
+import Plugin from '../../index';
+import { transferFundsToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
+import { getERC20TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
+import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import SafeSnapInputAddress from '../Input/Address.vue';

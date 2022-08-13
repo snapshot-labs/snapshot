@@ -30,16 +30,6 @@ import {
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
-export * from './constants';
-
-export * from './utils/abi';
-export * from './utils/index';
-export * from './utils/decoder';
-export * from './utils/multiSend';
-export * from './utils/realityETH';
-export * from './utils/transactions';
-export * from './utils/realityModule';
-
 export default class Plugin {
   validateTransaction(transaction: SafeTransaction) {
     const addressEmptyOrValidate =

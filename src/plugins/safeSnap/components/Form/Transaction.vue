@@ -1,6 +1,6 @@
 <script>
 import { formatUnits } from '@ethersproject/units';
-import { getAbiFirstFunctionName } from '../../index';
+import { getAbiFirstFunctionName } from '@/plugins/safeSnap/utils/abi';
 import { shorten } from '@/helpers/utils';
 import SafeSnapFormContractInteraction from './ContractInteraction.vue';
 import SafeSnapFormTransferFunds from './TransferFunds.vue';

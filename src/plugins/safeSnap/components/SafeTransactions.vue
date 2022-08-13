@@ -1,5 +1,7 @@
 <script>
-import Plugin, { createBatch, EIP3770_PREFIXES } from '../index';
+import Plugin from '../index';
+import { createBatch } from '@/plugins/safeSnap/utils';
+import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
 import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles

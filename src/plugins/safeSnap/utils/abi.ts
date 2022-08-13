@@ -9,7 +9,10 @@ import { BigNumberish } from '@ethersproject/bignumber';
 import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
 import { ABI } from '@/helpers/interfaces';
-import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './index';
+import {
+  mustBeEthereumAddress,
+  mustBeEthereumContractAddress
+} from '@/plugins/safeSnap/utils';
 
 export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
@@ -72,7 +75,7 @@ export async function getContractABI(
   }
 }
 
-export function isWriteFunction(method: FunctionFragment) {
+function isWriteFunction(method: FunctionFragment) {
   if (!method.stateMutability) return true;
   return !['view', 'pure'].includes(method.stateMutability);
 }

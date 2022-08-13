@@ -3,8 +3,12 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
 import memoize from 'lodash/memoize';
 
-import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
-import { createMultiSendTx, getMultiSend } from './multiSend';
+import SafeSnapPlugin from '../index';
+import {
+  createMultiSendTx,
+  getMultiSend,
+  MULTI_SEND_VERSION
+} from './multiSend';
 import { SafeTransaction, SafeExecutionData } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 

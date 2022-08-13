@@ -1,6 +1,6 @@
 <script>
 import { isParameterValue } from '../../utils/validator';
-import { isArrayParameter } from '../../index';
+import { isArrayParameter } from '@/plugins/safeSnap/utils/abi';
 import SafeSnapInputAddress from './Address.vue';
 import SafeSnapInputArrayType from './ArrayType.vue';
 

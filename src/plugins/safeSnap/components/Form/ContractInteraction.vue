@@ -1,11 +1,12 @@
 <script>
-import Plugin, {
-  contractInteractionToModuleTransaction,
-  getABIWriteFunctions,
+import Plugin from '../../index';
+import {
   getContractABI,
-  getContractTransactionData,
-  InterfaceDecoder
-} from '../../index';
+  getABIWriteFunctions,
+  getContractTransactionData
+} from '@/plugins/safeSnap/utils/abi';
+import { contractInteractionToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
+import { InterfaceDecoder } from '@/plugins/safeSnap/utils/decoder';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import { parseAmount } from '@/helpers/utils';

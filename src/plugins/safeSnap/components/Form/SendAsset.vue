@@ -1,8 +1,7 @@
 <script>
-import Plugin, {
-  getERC721TokenTransferTransactionData,
-  sendAssetToModuleTransaction
-} from '../../index';
+import Plugin from '../../index';
+import { sendAssetToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
+import { getERC721TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
 import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';

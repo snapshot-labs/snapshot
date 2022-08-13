@@ -1,6 +1,10 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { coerceConfig, isValidInput, getSafeHash } from '../index';
+import {
+  coerceConfig,
+  getSafeHash,
+  isValidInput
+} from '@/plugins/safeSnap/utils';
 
 import SafeTransactions from './SafeTransactions.vue';
 

@@ -1,8 +1,8 @@
 <script>
-import { getNativeAsset } from '../../index';
 import { parseEther } from '@ethersproject/units';
 import { isAddress } from '@ethersproject/address';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
+import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export default {
   name: 'ImportTransactionsButton',

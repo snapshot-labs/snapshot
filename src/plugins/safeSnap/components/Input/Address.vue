@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { mustBeEthereumAddress } from '../../index';
+import { mustBeEthereumAddress } from '@/plugins/safeSnap/utils';
 
 const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
 const emit = defineEmits(['update:modelValue', 'validAddress']);
