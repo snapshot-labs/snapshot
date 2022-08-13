@@ -195,13 +195,14 @@ const { endElement } = useScrollMonitor(() => {
           class="mb-0 py-4"
         />
         <div v-else>
-          <TimelineProposalsItem
+          <ProposalsItem
             v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
+            :space="proposal.space"
             :profiles="profiles"
             :voted="userVotedProposalIds.includes(proposal.id)"
-            class="border-b first:border-t md:first:border-t-0"
+            class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
         </div>
         <div class="relative">
