@@ -42,11 +42,7 @@ const body = computed(() => removeMd(props.proposal.body));
         </ProposalsItemBody>
 
         <ProposalsItemResults
-          v-if="
-            proposal.scores_state === 'final' &&
-            proposal.scores_total > 0 &&
-            proposal.choices.length <= 6
-          "
+          v-if="proposal.scores_state === 'final' && proposal.scores_total > 0"
           :proposal="proposal"
         />
 
