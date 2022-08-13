@@ -35,7 +35,7 @@ const socials = computed<SocialItem[]>(() => {
 </script>
 
 <template>
-  <div class="my-3 flex items-center space-x-3 px-4">
+  <div v-if="socials.length" class="my-3 flex items-center space-x-3 px-4">
     <BaseLink
       v-for="social in socials"
       :key="social.icon"
