@@ -1,4 +1,5 @@
-<script>
+<script setup>
+import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   coerceConfig,
@@ -8,53 +9,47 @@ import {
 
 import SafeTransactions from './SafeTransactions.vue';
 
-export default {
-  components: { SafeTransactions },
-  props: [
-    'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
-    'config', // the safeSnap plugin config of the current space
-    'network', // network of the space (needed when mapping legacy plugin configs)
-    'proposal',
-    'preview' // if true, renders a read-only view
-  ],
-  emits: ['update:modelValue'],
-  data() {
-    let input;
-    if (!Object.keys(this.modelValue).length) {
-      input = {
-        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-          ...safe,
-          hash: null,
-          txs: []
-        })),
-        valid: true
-      };
-    } else {
-      const value = clone(this.modelValue);
-      if (value.safes && this.config && Array.isArray(this.config.safes)) {
-        value.safes = value.safes.map((safe, index) => ({
-          ...this.config.safes[index],
-          ...safe
-        }));
-      }
-      input = coerceConfig(value, this.network);
-    }
+const props = defineProps([
+  'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
+  'config', // the safeSnap plugin config of the current space
+  'network', // network of the space (needed when mapping legacy plugin configs)
+  'proposal',
+  'preview' // if true, renders a read-only view
+]);
 
-    return { input };
-  },
-  methods: {
-    updateSafeTransactions() {
-      if (this.preview) return;
-      this.input.valid = isValidInput(this.input);
-      this.input.safes = this.input.safes.map(safe => {
-        return {
-          ...safe,
-          hash: getSafeHash(safe)
-        };
-      });
-      this.$emit('update:modelValue', this.input);
-    }
+const emit = defineEmits('update:modelValue');
+
+const input = ref({});
+if (!Object.keys(props.modelValue).length) {
+  input.value = {
+    safes: coerceConfig(props.config, props.network).safes.map(safe => ({
+      ...safe,
+      hash: null,
+      txs: []
+    })),
+    valid: true
+  };
+} else {
+  const value = clone(props.modelValue);
+  if (value.safes && props.config && Array.isArray(props.config.safes)) {
+    value.safes = value.safes.map((safe, index) => ({
+      ...props.config.safes[index],
+      ...safe
+    }));
   }
+  input.value = coerceConfig(value, props.network);
+}
+
+const updateSafeTransactions = () => {
+  if (props.preview) return;
+  input.value.valid = isValidInput(input.value);
+  input.value.safes = input.value.safes.map(safe => {
+    return {
+      ...safe,
+      hash: getSafeHash(safe)
+    };
+  });
+  emit('update:modelValue', input.value);
 };
 </script>
 
