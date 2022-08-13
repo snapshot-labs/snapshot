@@ -75,7 +75,7 @@ const updateSafeTransactions = () => {
         :reality-address="safe.realityAddress"
         :multi-send-address="safe.multiSendAddress"
         :model-value="safe.txs"
-        @update:modelValue="updateSafeTransactions(index, $event)"
+        @update:modelValue="updateSafeTransactions()"
       />
     </div>
   </div>
