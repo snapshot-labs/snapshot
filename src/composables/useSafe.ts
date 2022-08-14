@@ -1,15 +1,7 @@
 import { computed, reactive } from 'vue';
+import { SafeExecutionStatus } from '@/helpers/interfaces';
 
-interface ExecutionStatus {
-  batchError:
-    | undefined
-    | {
-        num: number;
-        message: string;
-      };
-}
-
-const state = reactive<ExecutionStatus>({
+const state = reactive<SafeExecutionStatus>({
   batchError: undefined
 });
 

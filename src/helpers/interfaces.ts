@@ -250,6 +250,15 @@ export interface SafeExecutionData {
   realityModule: string;
 }
 
+export interface SafeExecutionStatus {
+  batchError:
+    | undefined
+    | {
+        num: number;
+        message: string;
+      };
+}
+
 export interface Plugin {
   author: string;
   defaults: any;
