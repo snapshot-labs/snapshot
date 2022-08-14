@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { isAddress } from '@ethersproject/address';
 import { onMounted, ref, watch } from 'vue';
-import { mustBeEthereumAddress } from '@/plugins/safeSnap/utils';
 
 const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
 const emit = defineEmits(['update:modelValue', 'validAddress']);
@@ -25,7 +25,7 @@ onMounted(() => {
 const handleInput = () => {
   dirty.value = input.value !== '';
   emit('update:modelValue', input.value);
-  isValid.value = mustBeEthereumAddress(input.value);
+  isValid.value = isAddress(input.value);
   if (isValid.value) {
     emit('validAddress', input.value);
   }

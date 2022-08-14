@@ -9,13 +9,17 @@ import { BigNumberish } from '@ethersproject/bignumber';
 import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
 import { ABI } from '@/helpers/interfaces';
-import {
-  mustBeEthereumAddress,
-  mustBeEthereumContractAddress
-} from '@/plugins/safeSnap/utils';
 
 export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
+}
+
+export function isStringArray(value: string): boolean {
+  try {
+    return Array.isArray(JSON.parse(value));
+  } catch {
+    return false;
+  }
 }
 
 const fetchContractABI = memoize(
@@ -48,16 +52,7 @@ export async function getContractABI(
   const apiUrl = EXPLORER_API_URLS[network];
 
   if (!apiUrl) {
-    return '';
-  }
-
-  const isEthereumAddress = mustBeEthereumAddress(contractAddress);
-  const isEthereumContractAddress = await mustBeEthereumContractAddress(
-    network,
-    contractAddress
-  );
-
-  if (!isEthereumAddress || !isEthereumContractAddress) {
+    console.error(`No explorer URL for network ${network}.`);
     return '';
   }
 

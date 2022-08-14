@@ -1,13 +1,13 @@
 <script>
-import { isParameterValue } from '../../utils/validator';
-import { isArrayParameter } from '@/plugins/safeSnap/utils/abi';
+import { isArrayParameter, isStringArray } from '@/plugins/safeSnap/utils/abi';
 import SafeSnapInputAddress from './Address.vue';
 import SafeSnapInputArrayType from './ArrayType.vue';
+import { isAddress } from '@ethersproject/address';
 
 export default {
   components: { SafeSnapInputAddress, SafeSnapInputArrayType },
   props: ['modelValue', 'disabled', 'parameter'],
-  emits: ['update:modelValue', 'isValid'],
+  emits: ['update:modelValue'],
   data() {
     const placeholder = this.parameter.name
       ? `${this.parameter.name} (${this.parameter.type})`
@@ -24,7 +24,12 @@ export default {
   },
   computed: {
     isValid() {
-      return isParameterValue(this.parameter.baseType, this.value);
+      if (this.parameter.baseType === 'address') {
+        return isAddress(this.value);
+      } else if (isArrayParameter(this.parameter.baseType)) {
+        return isStringArray(this.value);
+      }
+      return !!this.value;
     }
   },
   watch: {
@@ -43,7 +48,6 @@ export default {
       this.value = value;
       this.dirty = true;
       this.$emit('update:modelValue', value);
-      this.$emit('isValid', this.isValid);
     },
     isArrayType() {
       return isArrayParameter(this.parameter.baseType);

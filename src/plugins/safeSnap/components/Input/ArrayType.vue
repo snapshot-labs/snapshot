@@ -1,39 +1,36 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { ParamType } from '@ethersproject/abi';
-import {
-  isAddressType,
-  isBooleanType,
-  isBytesType,
-  isIntType,
-  isUintType,
-  isStringArray
-} from '@/plugins/safeSnap/utils/validator';
+import { isStringArray } from '../../utils/abi';
 
 const props = defineProps<{
   parameter: ParamType;
   disabled: boolean;
 }>();
 
-const getPlaceholder = type => {
-  if (isAddressType(type)) {
+const getPlaceholder = (type: string) => {
+  if (type.startsWith('address')) {
     return 'E.g.: ["0xACa9...DA6E","0x1dF6...006e"]';
   }
 
-  if (isBooleanType(type)) {
+  if (type.startsWith('bool')) {
     return 'E.g.: [true, false, false, true]';
   }
 
-  if (isUintType(type)) {
+  if (type.startsWith('uint')) {
     return 'E.g.: [1000, 212, 320000022, 23]';
   }
 
-  if (isIntType(type)) {
+  if (type.startsWith('int')) {
     return 'E.g.: [1000, -212, 1232, -1]';
   }
 
-  if (isBytesType(type)) {
+  if (type.startsWith('bytes')) {
     return 'E.g.: ["0xc00000000000000000000000000000000000", "0xc00000000000000000000000000000000001"]';
+  }
+
+  if (type.startsWith('tuple')) {
+    return 'E.g.: [["first value", "second value"], ["first value", "second value"]]';
   }
 
   return 'E.g.: ["first value", "second value", "third value"]';
