@@ -2,7 +2,10 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 
-import { SafeTransaction } from '@/helpers/interfaces';
+import {
+  SafeTransactionOperationType,
+  SafeTransaction
+} from '@/helpers/interfaces';
 import { MULTI_SEND_ABI, MULTI_SEND_VERSIONS } from '../constants';
 
 export enum MULTI_SEND_VERSION {
@@ -50,7 +53,7 @@ export function createMultiSendTx(
   ]);
   return {
     to: multiSendAddress,
-    operation: '1',
+    operation: SafeTransactionOperationType.MULTISEND,
     value: '0',
     nonce: nonce.toString(),
     data

@@ -6,7 +6,8 @@ import {
   CustomContractTransaction,
   SafeTransaction,
   CollectableAssetTransaction,
-  TokenAssetTransaction
+  TokenAssetTransaction,
+  SafeTransactionOperationType
 } from '@/helpers/interfaces';
 import { InterfaceDecoder } from './decoder';
 import { getNativeAsset } from './coins';
@@ -26,7 +27,7 @@ export function rawToModuleTransaction({
     value,
     data,
     nonce,
-    operation: '0'
+    operation: SafeTransactionOperationType.NORMAL
   };
 }
 
@@ -48,7 +49,7 @@ export function sendAssetToModuleTransaction({
     nonce,
     recipient,
     value: '0',
-    operation: '0',
+    operation: SafeTransactionOperationType.NORMAL,
     type: 'transferNFT',
     to: collectable.address,
     collectable: _collectable
@@ -63,7 +64,7 @@ export function transferFundsToModuleTransaction({
   nonce
 }): TokenAssetTransaction {
   const base = {
-    operation: '0',
+    operation: SafeTransactionOperationType.NORMAL,
     nonce,
     token,
     recipient
@@ -92,7 +93,10 @@ export function contractInteractionToModuleTransaction(
   { to, value, data, nonce, method },
   multiSendAddress: string
 ): CustomContractTransaction {
-  const operation = to === multiSendAddress ? '1' : '0';
+  const operation =
+    to === multiSendAddress
+      ? SafeTransactionOperationType.MULTISEND
+      : SafeTransactionOperationType.NORMAL;
   return {
     to,
     data,

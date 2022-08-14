@@ -1,4 +1,4 @@
-import { BigNumber } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
 
 export interface Strategy {
@@ -174,12 +174,16 @@ export interface Vote {
 // Execution
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
+export enum SafeTransactionOperationType {
+  NORMAL,
+  MULTISEND
+}
 
 export interface SafeTransaction {
   to: string;
-  value: string;
+  value: BigNumberish;
   data: string;
-  operation: string;
+  operation: SafeTransactionOperationType;
   nonce: string;
 }
 
@@ -195,7 +199,7 @@ export interface RealityOracleProposal {
   nextTxIndex: number | undefined;
   transactions: SafeTransaction[];
   txHashes: string[];
-  currentBond: BigNumber | undefined;
+  currentBond: BigNumberish | undefined;
   isApproved: boolean;
   endTime: number | undefined;
 }

@@ -14,7 +14,11 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  RealityOracleProposal,
+  SafeTransactionOperationType
+} from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -38,7 +42,7 @@ export default class Plugin {
       isBigNumberish(transaction.value) &&
       addressEmptyOrValidate &&
       (!transaction.data || isHexString(transaction.data)) &&
-      ['0', '1'].includes(transaction.operation) &&
+      transaction.operation in SafeTransactionOperationType &&
       isBigNumberish(transaction.nonce)
     );
   }
