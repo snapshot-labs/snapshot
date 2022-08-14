@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { ParamType } from '@ethersproject/abi';
 import {
   isAddress,
   isBoolean,
@@ -9,7 +10,10 @@ import {
   isUint
 } from '@/plugins/safeSnap/utils/validator';
 
-const props = defineProps(['parameter', 'disabled']);
+const props = defineProps<{
+  parameter: ParamType;
+  disabled: boolean;
+}>();
 
 const getPlaceholder = type => {
   if (isAddress(type)) {
@@ -35,7 +39,7 @@ const getPlaceholder = type => {
   return 'E.g.: ["first value", "second value", "third value"]';
 };
 
-function getLabel(parameter) {
+function getLabel(parameter: ParamType) {
   let type = parameter.type;
   if (parameter.baseType === 'tuple') {
     const components = parameter.components.map(param => param.type).join(', ');
