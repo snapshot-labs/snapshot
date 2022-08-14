@@ -47,19 +47,6 @@ export default class Plugin {
     );
   }
 
-  calcTransactionHash(
-    network: string,
-    moduleAddress: string,
-    transaction: SafeTransaction
-  ) {
-    const chainId = parseInt(network);
-    const domain = {
-      chainId,
-      verifyingContract: moduleAddress
-    };
-    return _TypedDataEncoder.hash(domain, EIP712_TYPES, transaction);
-  }
-
   calcTransactionHashes(
     chainId: number,
     moduleAddress: string,
