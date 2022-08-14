@@ -2,12 +2,12 @@
 import { computed, ref } from 'vue';
 import { ParamType } from '@ethersproject/abi';
 import {
-  isAddress,
-  isBoolean,
-  isByte,
-  isInt,
-  isStringArray,
-  isUint
+  isAddressType,
+  isBooleanType,
+  isBytesType,
+  isIntType,
+  isUintType,
+  isStringArray
 } from '@/plugins/safeSnap/utils/validator';
 
 const props = defineProps<{
@@ -16,23 +16,23 @@ const props = defineProps<{
 }>();
 
 const getPlaceholder = type => {
-  if (isAddress(type)) {
+  if (isAddressType(type)) {
     return 'E.g.: ["0xACa9...DA6E","0x1dF6...006e"]';
   }
 
-  if (isBoolean(type)) {
+  if (isBooleanType(type)) {
     return 'E.g.: [true, false, false, true]';
   }
 
-  if (isUint(type)) {
+  if (isUintType(type)) {
     return 'E.g.: [1000, 212, 320000022, 23]';
   }
 
-  if (isInt(type)) {
+  if (isIntType(type)) {
     return 'E.g.: [1000, -212, 1232, -1]';
   }
 
-  if (isByte(type)) {
+  if (isBytesType(type)) {
     return 'E.g.: ["0xc00000000000000000000000000000000000", "0xc00000000000000000000000000000000001"]';
   }
 

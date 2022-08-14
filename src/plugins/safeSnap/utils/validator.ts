@@ -1,13 +1,16 @@
 import { mustBeEthereumAddress } from './index';
 import { isArrayParameter } from './abi';
 
-export const isAddress = (type: string): boolean =>
+export const isAddressType = (type: string): boolean =>
   type.indexOf('address') === 0;
-export const isBoolean = (type: string): boolean => type.indexOf('bool') === 0;
-export const isString = (type: string): boolean => type.indexOf('string') === 0;
-export const isUint = (type: string): boolean => type.indexOf('uint') === 0;
-export const isInt = (type: string): boolean => type.indexOf('int') === 0;
-export const isByte = (type: string): boolean => type.indexOf('byte') === 0;
+export const isBooleanType = (type: string): boolean =>
+  type.indexOf('bool') === 0;
+export const isStringType = (type: string): boolean =>
+  type.indexOf('string') === 0;
+export const isUintType = (type: string): boolean => type.indexOf('uint') === 0;
+export const isIntType = (type: string): boolean => type.indexOf('int') === 0;
+export const isBytesType = (type: string): boolean =>
+  type.indexOf('bytes') === 0;
 
 export const isStringArray = (text: string): boolean => {
   try {
