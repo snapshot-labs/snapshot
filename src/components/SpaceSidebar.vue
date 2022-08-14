@@ -10,7 +10,7 @@ defineProps<{ space: ExtendedSpace }>();
     <BaseBlock slim class="overflow-hidden">
       <div class="lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
         <SpaceSidebarHeader :space="space" />
-        <SpaceSidebarNavigation :space="space" class="mt-4 lg:mt-0" />
+        <SpaceSidebarNavigation :space="space" class="lg:mt-0" />
         <SpaceSidebarSubspaces :space="space" class="hidden lg:flex" />
         <SpaceSidebarFooter :space="space" class="hidden lg:flex" />
       </div>

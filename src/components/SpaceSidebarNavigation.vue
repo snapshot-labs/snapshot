@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="no-scrollbar flex overflow-y-auto lg:block">
+  <div class="no-scrollbar mt-4 flex overflow-y-auto lg:my-3 lg:block">
     <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceProposals' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('proposals.header') }}
