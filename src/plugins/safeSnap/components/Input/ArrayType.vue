@@ -8,7 +8,7 @@ import {
   isUint
 } from '../../utils/validator';
 
-const getPlaceholder = (name, type) => {
+const getPlaceholder = type => {
   if (isAddress(type)) {
     return 'E.g.: ["0xACa9...DA6E","0x1dF6...006e"]';
   }
@@ -47,10 +47,7 @@ export default {
   emits: [],
   data() {
     const label = getLabel(this.parameter);
-    const placeholder = getPlaceholder(
-      this.parameter.name,
-      this.parameter.type
-    );
+    const placeholder = getPlaceholder(this.parameter.type);
     return {
       input: '',
       dirty: false,
