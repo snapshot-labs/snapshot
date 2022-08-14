@@ -1,4 +1,5 @@
-<script>
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import {
   isAddress,
   isBoolean,
@@ -6,7 +7,9 @@ import {
   isInt,
   isStringArray,
   isUint
-} from '../../utils/validator';
+} from '@/plugins/safeSnap/utils/validator';
+
+const props = defineProps(['parameter', 'disabled']);
 
 const getPlaceholder = type => {
   if (isAddress(type)) {
@@ -42,38 +45,25 @@ function getLabel(parameter) {
   return type;
 }
 
-export default {
-  props: ['parameter', 'disabled'],
-  emits: [],
-  data() {
-    const label = getLabel(this.parameter);
-    const placeholder = getPlaceholder(this.parameter.type);
-    return {
-      input: '',
-      dirty: false,
-      placeholder,
-      label
-    };
-  },
-  computed: {
-    isValid() {
-      return isStringArray(this.input);
-    }
-  },
-  methods: {
-    handleInput(value) {
-      this.input = value;
-      this.dirty = true;
-    }
-  }
+const label = getLabel(props.parameter);
+const placeholder = getPlaceholder(props.parameter.type);
+
+const input = ref('');
+const dirty = ref(false);
+
+const isValid = computed(() => isStringArray(input.value));
+
+const handleInput = value => {
+  input.value = value;
+  dirty.value = true;
 };
 </script>
 
 <template>
   <UiInput
     :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${type}`"
-    :model-value="value"
+    :error="dirty && !isValid && `Invalid ${parameter.type}`"
+    :model-value="input"
     :placeholder="placeholder"
     @update:modelValue="handleInput($event)"
   >
