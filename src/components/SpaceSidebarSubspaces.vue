@@ -26,7 +26,7 @@ const subSpaces = computed(() => {
 </script>
 
 <template>
-  <div class="mt-3">
+  <div v-if="mainSpace || subSpaces.length" class="my-3">
     <div v-if="mainSpace">
       <h5 class="px-4 font-normal text-skin-text">{{ $t('mainspace') }}</h5>
       <BaseLink
