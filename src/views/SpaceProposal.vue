@@ -215,12 +215,9 @@ function selectFromShareDropdown(e) {
 }
 
 function handleBackClick() {
-  if (browserHasHistory.value.includes('create'))
+  if (!browserHasHistory.value || browserHasHistory.value.includes('create'))
     return router.push({ name: 'spaceProposals' });
-  if (domain && browserHasHistory.value?.includes('/')) return router.go(-1);
-  if (browserHasHistory.value?.includes('timeline')) return router.go(-1);
-  if (browserHasHistory.value?.includes(route.params.key)) return router.go(-1);
-  else router.push({ name: 'spaceProposals' });
+  return router.go(-1);
 }
 
 const { profiles, loadProfiles } = useProfiles();

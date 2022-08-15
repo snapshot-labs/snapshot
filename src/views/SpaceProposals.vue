@@ -35,9 +35,18 @@ const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
 
+const subSpaces = computed(
+  () => props.space.children?.map(space => space.id) ?? []
+);
+
 const spaceProposals = computed(() => {
-  return clone(store.space.proposals).filter(
-    proposal => proposal.space.id === props.space.id
+  if (domain)
+    return clone(store.space.proposals).filter(
+      proposal => proposal.space.id === props.space.id
+    );
+
+  return clone(store.space.proposals).filter(proposal =>
+    [props.space.id, ...subSpaces.value].includes(proposal.space.id)
   );
 });
 
@@ -51,7 +60,7 @@ async function getProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: [props.space.id],
+        space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
         author_in: stateFilter.value === 'core' ? spaceMembers.value : []
       }
@@ -93,11 +102,7 @@ watch(stateFilter, loadProposals);
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-
-  const spaceIds = store.space.proposals?.map(p => p.space.id);
-  if (domain && !spaceIds.includes(domain)) return loadProposals();
-  if (!domain && !spaceIds.includes(route.params.key as string))
-    return loadProposals();
+  if (spaceProposals.value.length === 0) loadProposals();
 });
 </script>
 
