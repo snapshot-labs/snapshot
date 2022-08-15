@@ -53,7 +53,7 @@ export function createMultiSendTx(
   ]);
   return {
     to: multiSendAddress,
-    operation: SafeTransactionOperationType.MULTISEND,
+    operation: SafeTransactionOperationType.DELEGATECALL,
     value: '0',
     nonce: nonce.toString(),
     data

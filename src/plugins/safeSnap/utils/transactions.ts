@@ -27,7 +27,7 @@ export function rawToModuleTransaction({
     value,
     data,
     nonce,
-    operation: SafeTransactionOperationType.NORMAL
+    operation: SafeTransactionOperationType.CALL
   };
 }
 
@@ -49,7 +49,7 @@ export function transferNftToModuleTransaction({
     nonce,
     recipient,
     value: '0',
-    operation: SafeTransactionOperationType.NORMAL,
+    operation: SafeTransactionOperationType.CALL,
     type: 'transferNFT',
     to: collectable.address,
     collectable: _collectable
@@ -64,7 +64,7 @@ export function transferFundsToModuleTransaction({
   nonce
 }): TokenAssetTransaction {
   const base = {
-    operation: SafeTransactionOperationType.NORMAL,
+    operation: SafeTransactionOperationType.CALL,
     nonce,
     token,
     recipient
@@ -95,8 +95,8 @@ export function contractInteractionToModuleTransaction(
 ): CustomContractTransaction {
   const operation =
     to === multiSendAddress
-      ? SafeTransactionOperationType.MULTISEND
-      : SafeTransactionOperationType.NORMAL;
+      ? SafeTransactionOperationType.DELEGATECALL
+      : SafeTransactionOperationType.CALL;
   return {
     to,
     data,

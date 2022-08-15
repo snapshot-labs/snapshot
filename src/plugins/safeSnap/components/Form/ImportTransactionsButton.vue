@@ -90,7 +90,7 @@ export default {
           to: tx.to,
           value,
           nonce: index,
-          operation: tx.operation || SafeTransactionOperationType.NORMAL
+          operation: tx.operation || SafeTransactionOperationType.CALL
         };
 
         if (tx.method && tx.params) {

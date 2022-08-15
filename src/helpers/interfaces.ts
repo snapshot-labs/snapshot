@@ -175,8 +175,8 @@ export interface Vote {
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
 export enum SafeTransactionOperationType {
-  NORMAL,
-  MULTISEND
+  CALL,
+  DELEGATECALL
 }
 
 export interface SafeTransaction {
