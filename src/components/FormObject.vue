@@ -6,7 +6,6 @@ import * as FormObject from '@/components/FormObject.vue';
 import InputString from '@/components/InputString.vue';
 import InputNumber from '@/components/InputNumber.vue';
 import InputSwitch from '@/components/InputSwitch.vue';
-import TextareaArray from '@/components/TextareaArray.vue';
 
 const props = defineProps<{
   modelValue: Record<string, any>;
@@ -27,8 +26,6 @@ const getComponent = name => {
       return InputNumber;
     case 'boolean':
       return InputSwitch;
-    case 'array':
-      return TextareaArray;
     default:
       return null;
   }
