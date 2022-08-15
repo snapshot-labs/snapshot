@@ -1,7 +1,7 @@
 import snapshot from '@snapshot-labs/snapshot.js';
 
 const API_URL = 'https://api.covalenthq.com/v1';
-const API_KEY = 'ckey_2d082caf47f04a46947f4f212a8';
+const API_KEY = 'ckey_f441bbb8d029401dba34009253b';
 export const ETHER_CONTRACT = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 export async function getTokenBalances(
