@@ -1,4 +1,5 @@
-<script>
+<script setup lang="ts">
+import { onMounted, computed, ref, watch } from 'vue';
 import Plugin from '../../index';
 import { transferFundsToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { getERC20TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
@@ -8,99 +9,81 @@ import { isAddress } from '@ethersproject/address';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputAmount from '../Input/Amount.vue';
 
-export default {
-  components: { SafeSnapInputAddress, SafeSnapInputAmount },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
-  data() {
-    const { amount = '0' } = this.modelValue || {};
-    const nativeAsset = getNativeAsset(this.config.network);
-    return {
-      plugin: new Plugin(),
-      tokens: [nativeAsset],
+const props = defineProps(['modelValue', 'nonce', 'config']);
+const emit = defineEmits(['update:modelValue']);
 
-      to: '',
-      value: amount,
-      tokenAddress: 'main',
+const nativeAsset = getNativeAsset(props.config.network);
 
-      validValue: true
-    };
-  },
-  computed: {
-    selectedToken() {
-      return this.tokens.find(token => token.address === this.tokenAddress);
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    tokenAddress() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    config() {
-      this.setTokens();
-    }
-  },
-  mounted() {
-    this.setTokens();
-    if (this.modelValue) {
-      const { recipient = '', token, amount = '0' } = this.modelValue;
-      this.to = recipient;
-      this.value = amount;
-      if (token) {
-        this.tokenAddress = token.address;
-        this.tokens = [token];
+const plugin = new Plugin();
+const tokens = ref([nativeAsset]);
+
+const to = ref('');
+const value = ref(props.modelValue?.amount || '0');
+const tokenAddress = ref('main');
+
+const selectedToken = computed(() => {
+  return (
+    tokens.value.find(token => token.address === tokenAddress.value) ||
+    nativeAsset
+  );
+});
+
+const updateTransaction = () => {
+  if (props.config.preview) return;
+  try {
+    if (isBigNumberish(value.value) && isAddress(to.value)) {
+      const data =
+        selectedToken.value?.address === 'main'
+          ? '0x'
+          : getERC20TokenTransferTransactionData(to.value, value.value);
+
+      const transaction = transferFundsToModuleTransaction({
+        data,
+        nonce: props.nonce,
+        amount: value.value,
+        recipient: to.value,
+        token: selectedToken.value
+      });
+
+      if (plugin.validateTransaction(transaction)) {
+        emit('update:modelValue', transaction);
+        return;
       }
     }
-  },
-  methods: {
-    updateTransaction() {
-      if (this.config.preview) return;
-      try {
-        if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const data =
-            this.selectedToken.address === 'main'
-              ? '0x'
-              : getERC20TokenTransferTransactionData(this.to, this.value);
+  } catch (error) {
+    console.warn('invalid transaction', error);
+  }
+  emit('update:modelValue', undefined);
+};
 
-          const transaction = transferFundsToModuleTransaction({
-            data,
-            nonce: this.nonce,
-            amount: this.value,
-            recipient: this.to,
-            token: this.selectedToken
-          });
-
-          if (this.plugin.validateTransaction(transaction)) {
-            this.$emit('update:modelValue', transaction);
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn('invalid transaction', error);
-      }
-      this.$emit('update:modelValue', undefined);
-    },
-    setTokens() {
-      if (!this.config.preview && this.config.tokens) {
-        this.tokens = [
-          getNativeAsset(this.config.network),
-          ...this.config.tokens
-        ];
-      }
-    }
+const setTokens = () => {
+  if (!props.config.preview && props.config.tokens) {
+    tokens.value = [nativeAsset, ...props.config.tokens];
   }
 };
+
+watch([to, tokenAddress, value, () => props.config], () => {
+  updateTransaction();
+  setTokens();
+});
+
+onMounted(() => {
+  setTokens();
+  if (props.modelValue) {
+    const { recipient = '', token, amount = '0' } = props.modelValue;
+    to.value = recipient;
+    value.value = amount;
+    if (token) {
+      tokenAddress.value = token.address;
+    }
+  }
+});
 </script>
 
 <template>
   <UiSelect v-model="tokenAddress" :disabled="config.preview">
     <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template v-if="selectedToken" #image>
+    <template v-if="selectedToken.logoUri" #image>
       <img :src="selectedToken.logoUri" alt="" class="ml-2 w-4 align-middle" />
     </template>
     <option
