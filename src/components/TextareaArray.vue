@@ -28,7 +28,7 @@ function handleInput(input) {
   <TextareaAutosize
     v-bind="$attrs"
     :model-value="modelValue?.join('\n')"
-    :placeholder="placeholder || definition?.examples?.join('\n') || ''"
+    :placeholder="placeholder || definition?.examples?.[0]?.join('\n') || ''"
     class="input w-full text-left"
     @update:modelValue="handleInput($event)"
   />
