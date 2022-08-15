@@ -150,7 +150,7 @@ onMounted(() => {
             :profiles="profiles"
             :space="space"
             :voted="userVotedProposalIds.includes(proposal.id)"
-            :hide-space-avatar="proposal.space.id !== space.id"
+            :hide-space-avatar="proposal.space.id === space.id"
           />
         </BaseBlock>
       </div>
