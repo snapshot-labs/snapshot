@@ -42,7 +42,6 @@ export function useStrategies() {
     );
 
     loadingStrategies.value = false;
-    return;
   }
 
   // Get extended strategy by Id and save it in extendedStrategies
@@ -68,7 +67,6 @@ export function useStrategies() {
     }
 
     loadingExtendedStrategy.value = false;
-    return;
   }
 
   return {
