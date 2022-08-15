@@ -39,7 +39,7 @@ const subSpaces = computed(
 );
 
 const spaceProposals = computed(() => {
-  if (domain)
+  if (domain || !props.space.children.length)
     return clone(store.space.proposals).filter(
       proposal => proposal.space.id === props.space.id
     );
