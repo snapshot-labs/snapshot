@@ -5,7 +5,7 @@ import { useFormValidation } from '@/composables';
 import * as FormObject from '@/components/FormObject.vue';
 import InputString from '@/components/InputString.vue';
 import InputNumber from '@/components/InputNumber.vue';
-import BaseSwitch from '@/components/BaseSwitch.vue';
+import InputSwitch from '@/components/InputSwitch.vue';
 import TextareaArray from '@/components/TextareaArray.vue';
 
 const props = defineProps<{
@@ -26,7 +26,7 @@ const getComponent = name => {
     case 'number':
       return InputNumber;
     case 'boolean':
-      return BaseSwitch;
+      return InputSwitch;
     case 'array':
       return TextareaArray;
     default:

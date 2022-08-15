@@ -38,7 +38,7 @@ function handleSubmitAddValidation(input) {
         />
       </ContainerParallelInput>
 
-      <BaseSwitch
+      <InputSwitch
         v-if="form.validation.name === 'basic'"
         v-model="form.filters.onlyMembers"
         :text-right="$t('settings.allowOnlyAuthors')"

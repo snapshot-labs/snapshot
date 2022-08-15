@@ -84,7 +84,7 @@ watch(
         @keyup.delete="fillConnectedWallet = false"
       />
       <div class="mt-1 flex items-center gap-2">
-        <BaseSwitch v-model="fillConnectedWallet" />
+        <InputSwitch v-model="fillConnectedWallet" />
         {{ $t('setup.fillCurrentAccount') }}
       </div>
       <BaseButton
