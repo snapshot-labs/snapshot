@@ -1,5 +1,5 @@
 <script setup>
-defineProps({ modelValue: [String, Number], disabled: Boolean });
+defineProps({ modelValue: [String, Number, Boolean], disabled: Boolean });
 
 const emit = defineEmits(['update:modelValue', 'change']);
 
@@ -11,16 +11,16 @@ function handleChange(event) {
 
 <template>
   <BaseButton class="mb-2 flex w-full items-center overflow-hidden !px-3">
-    <div class="no-shrink mr-2 text-skin-text">
+    <div class="mr-2 shrink-0 text-skin-text">
       <slot name="label" />
     </div>
-    <div v-if="$slots.image" class="no-shrink mr-2 text-skin-text">
+    <div v-if="$slots.image" class="mr-2 shrink-0 text-skin-text">
       <slot name="image" />
     </div>
     <select
       :disabled="disabled"
       :value="modelValue"
-      :class="{ disabled }"
+      :class="{ 'appearance-none': disabled }"
       class="input h-full w-full flex-auto"
       @change="handleChange($event)"
     >
@@ -28,12 +28,3 @@ function handleChange(event) {
     </select>
   </BaseButton>
 </template>
-
-<style scoped lang="scss">
-.no-shrink {
-  flex-shrink: 0;
-}
-.disabled {
-  appearance: none;
-}
-</style>
