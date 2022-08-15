@@ -4,7 +4,7 @@ import { getAbiFirstFunctionName } from '@/plugins/safeSnap/utils/abi';
 import { shorten } from '@/helpers/utils';
 import SafeSnapFormContractInteraction from './ContractInteraction.vue';
 import SafeSnapFormTransferFunds from './TransferFunds.vue';
-import SafeSnapFormSendAsset from './SendAsset.vue';
+import SafeSnapFormTransferNft from './TransferNft.vue';
 import SafeSnapFormRawTransaction from './RawTransaction.vue';
 
 const labels = {
@@ -18,7 +18,7 @@ export default {
   components: {
     SafeSnapFormContractInteraction,
     SafeSnapFormTransferFunds,
-    SafeSnapFormSendAsset,
+    SafeSnapFormTransferNft,
     SafeSnapFormRawTransaction
   },
   props: ['modelValue', 'nonce', 'config'],
@@ -144,7 +144,7 @@ export default {
       @update:modelValue="$emit('update:modelValue', $event)"
     />
 
-    <SafeSnapFormSendAsset
+    <SafeSnapFormTransferNft
       v-if="type === 'transferNFT'"
       :config="config"
       :model-value="modelValue"
