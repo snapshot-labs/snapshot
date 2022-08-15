@@ -159,6 +159,11 @@ onMounted(async () => {
     loadSnapshotBlockNumber();
   }
 });
+
+function handleNetworkSelect(value) {
+  form.value.network = value;
+  handleURLUpdate(null, 'networkUpdate');
+}
 </script>
 
 <template>
@@ -179,7 +184,7 @@ onMounted(async () => {
             <div class="space-y-2">
               <ComboboxNetwork
                 :network="form.network"
-                @select="value => (form.network = value)"
+                @select="handleNetworkSelect"
               />
               <BaseInput
                 v-model="form.snapshot"
