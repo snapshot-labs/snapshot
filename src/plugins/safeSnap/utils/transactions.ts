@@ -31,7 +31,7 @@ export function rawToModuleTransaction({
   };
 }
 
-export function sendAssetToModuleTransaction({
+export function transferNftToModuleTransaction({
   recipient,
   collectable,
   data,
@@ -208,7 +208,7 @@ export async function decodeTransactionData(
       address: transaction.to,
       name: 'Unknown'
     };
-    return sendAssetToModuleTransaction({
+    return transferNftToModuleTransaction({
       collectable,
       nonce: 0,
       data: transaction.data,

@@ -1,6 +1,6 @@
 <script>
 import Plugin from '../../index';
-import { sendAssetToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
+import { transferNftToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { getERC721TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
 import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
@@ -64,7 +64,7 @@ export default {
             this.selectedCollectable.id
           );
 
-          const transaction = sendAssetToModuleTransaction({
+          const transaction = transferNftToModuleTransaction({
             data,
             nonce: this.nonce,
             recipient: this.to,
