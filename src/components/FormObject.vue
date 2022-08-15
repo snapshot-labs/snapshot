@@ -2,9 +2,11 @@
 import { ref, toRefs, watch } from 'vue';
 import { useFormValidation } from '@/composables';
 
-import * as DefaultObject from '@/components/InputObject.vue';
+import * as FormObject from '@/components/FormObject.vue';
 import InputString from '@/components/InputString.vue';
 import InputNumber from '@/components/InputNumber.vue';
+import BaseSwitch from '@/components/BaseSwitch.vue';
+import TextareaArray from '@/components/TextareaArray.vue';
 
 const props = defineProps<{
   modelValue: Record<string, any>;
@@ -18,11 +20,15 @@ const input = ref(props.modelValue || props.definition.default || {});
 const getComponent = name => {
   switch (name) {
     case 'object':
-      return DefaultObject;
+      return FormObject;
     case 'string':
       return InputString;
     case 'number':
       return InputNumber;
+    case 'boolean':
+      return BaseSwitch;
+    case 'array':
+      return TextareaArray;
     default:
       return null;
   }

@@ -197,7 +197,7 @@ onMounted(async () => {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('strategyParams')">
-            <InputObject
+            <FormObject
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
@@ -221,8 +221,6 @@ onMounted(async () => {
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
               @change:modelValue="handleURLUpdate"
             />
           </BaseBlock>
