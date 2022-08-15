@@ -54,7 +54,7 @@ const dirty = ref(false);
 
 const isValid = computed(() => isStringArray(input.value));
 
-const handleInput = value => {
+const handleInput = (value: string) => {
   input.value = value;
   dirty.value = true;
 };
