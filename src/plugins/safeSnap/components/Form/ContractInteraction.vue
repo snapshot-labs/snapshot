@@ -222,9 +222,10 @@ export default {
         </option>
       </UiSelect>
 
-      <div v-if="selectedMethod && selectedMethod.inputs.length">
-        <div class="divider"></div>
-
+      <div
+        v-if="selectedMethod && selectedMethod.inputs.length"
+        class="space-y-2"
+      >
         <SafeSnapInputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
@@ -237,26 +238,3 @@ export default {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.textarea {
-  border: 1px solid var(--border-color);
-  background-color: transparent;
-  color: var(--link-color);
-  border-radius: 23px;
-  padding: 0 24px;
-  outline: none;
-  font-size: 14px;
-
-  &:hover {
-    color: var(--link-color);
-    border-color: var(--link-color);
-  }
-}
-
-.divider {
-  border-top: 1px solid #cacaca;
-  margin-top: 16px;
-  margin-bottom: 24px;
-}
-</style>

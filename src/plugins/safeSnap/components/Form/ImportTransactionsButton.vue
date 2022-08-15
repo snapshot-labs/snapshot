@@ -151,10 +151,10 @@ export default {
 </script>
 
 <template>
-  <div class="root">
+  <div class="mx-3 mb-3">
     <UiCollapsibleContent
       title="Add Transaction Batch with JSON"
-      class="import-transactions"
+      class="rounded-3xl"
       :hide-remove="true"
       :show-arrow="true"
       :open="open"
@@ -164,12 +164,8 @@ export default {
       <div style="padding: 8px 16px">
         <label
           for="files"
-          :class="{
-            box: true,
-            'file-import': true,
-            'active-dropzone': dropping
-          }"
-          class="box file-import"
+          :class="{ '!bg-green': dropping }"
+          class="flex min-h-[100px] cursor-pointer items-center justify-center rounded-3xl border"
           @dragenter.prevent="toggleDropping"
           @dragleave.prevent="toggleDropping"
           @drop.prevent="drop"
@@ -186,14 +182,16 @@ export default {
           type="file"
           @change="handleFileUpload"
         />
-        <div v-if="error" class="error mt-3">Error: {{ error }}.</div>
-        <div class="box tx-content mt-3">
+        <div v-if="error" class="mt-3 rounded-3xl bg-red p-3 text-white">
+          Error: {{ error }}.
+        </div>
+        <div class="mt-3 min-h-[100px] rounded-3xl border px-3 pt-3">
           <label for="tx_json"><h5>Transaction JSON</h5></label>
           <textarea
             id="tx_json"
             v-model="json"
             placeholder="You can also paste in JSON here."
-            class="tx-textarea outline-none"
+            class="min-h-[80px] w-full text-sm outline-none"
           ></textarea>
         </div>
         <div class="mt-3 flex flex-col items-center justify-center">
@@ -212,51 +210,3 @@ export default {
     </UiCollapsibleContent>
   </div>
 </template>
-
-<style scoped>
-.root {
-  padding: 0 16px 16px 16px;
-}
-.import-transactions {
-  border-radius: 23px;
-}
-.box {
-  min-height: 100px;
-  border-radius: 23px;
-  border: 1px solid #cacaca;
-}
-.file-import {
-  display: flex;
-  padding: 20px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: rgba(244, 246, 246, 0.3);
-  cursor: pointer;
-
-  font-size: 16px;
-  font-weight: 400;
-}
-.tx-content {
-  padding: 16px 16px 0 16px;
-}
-.tx-textarea {
-  width: 100%;
-  padding: 0;
-  min-height: 80px;
-  font-size: 14px;
-  background: transparent;
-}
-.error {
-  background: rgba(255, 0, 0, 0.1);
-  color: rgba(255, 48, 48, 1);
-  border-radius: 24px;
-  padding: 16px;
-  font-size: 14px;
-  font-weight: 100;
-}
-.active-dropzone {
-  background: green;
-}
-</style>

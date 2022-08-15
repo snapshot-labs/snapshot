@@ -101,7 +101,7 @@ export default {
   <UiSelect v-model="tokenAddress" :disabled="config.preview">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template v-if="selectedToken" #image>
-      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
+      <img :src="selectedToken.logoUri" alt="" class="ml-2 w-4 align-middle" />
     </template>
     <option
       v-for="(token, index) in tokens"
@@ -129,11 +129,3 @@ export default {
     />
   </div>
 </template>
-
-<style scoped>
-.tokenImage {
-  width: 24px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-</style>

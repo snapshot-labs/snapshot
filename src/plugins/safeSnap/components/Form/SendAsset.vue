@@ -97,7 +97,11 @@ export default {
   <UiSelect v-model="collectableAddress" :disabled="config.preview">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template v-if="selectedCollectable && selectedCollectable.logoUri" #image>
-      <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
+      <img
+        :src="selectedCollectable.logoUri"
+        alt=""
+        class="ml-2 w-4 align-middle"
+      />
     </template>
     <option v-if="!collectables.length" disabled selected>
       - {{ $t('safeSnap.noCollectibles') }} -
@@ -120,11 +124,3 @@ export default {
     :label="$t('safeSnap.to')"
   />
 </template>
-
-<style scoped>
-.tokenImage {
-  width: 24px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-</style>

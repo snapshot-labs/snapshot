@@ -78,13 +78,13 @@ export default {
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <h3 class="title">SafeSnap</h3>
+      <h3 class="pl-4 text-left">SafeSnap</h3>
     </template>
     <div class="m-4 mb-5">
       <p v-if="criteriaLink">
         {{ $t('safeSnap.labels.question') }}
         <a
-          class="question-link"
+          class="text-skin-link underline"
           rel="noreferrer noopener"
           target="_blank"
           :href="criteriaLink"
@@ -131,11 +131,11 @@ export default {
         <h4 class="text-center">
           {{ $t('safeSnap.setOutcomeTo') }}
         </h4>
-        <div class="vote-button-row">
-          <BaseButton class="button vote-button" @click="handleSetApproval(0)">
+        <div class="mt-3 flex space-x-3">
+          <BaseButton class="grow" @click="handleSetApproval(0)">
             No
           </BaseButton>
-          <BaseButton class="vote-button" primary @click="handleSetApproval(1)">
+          <BaseButton class="grow" primary @click="handleSetApproval(1)">
             Yes
           </BaseButton>
         </div>
@@ -143,22 +143,3 @@ export default {
     </div>
   </BaseModal>
 </template>
-
-<style>
-.vote-button {
-  width: 187px;
-}
-.vote-button-row {
-  padding-top: 15px;
-  display: flex;
-  justify-content: space-between;
-}
-.title {
-  text-align: left;
-  padding-left: 20px;
-}
-.question-link {
-  color: var(--link-color);
-  text-decoration: underline;
-}
-</style>

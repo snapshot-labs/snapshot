@@ -133,7 +133,7 @@ export default {
       v-if="modelValue.hash"
       :show-arrow="true"
       :open="!hashHidden"
-      class="collapsible-text mt-2"
+      class="mt-2 rounded-3xl"
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
     >
@@ -144,7 +144,7 @@ export default {
       :show-arrow="true"
       :pre="true"
       :open="!jsonHidden"
-      class="collapsible-text mt-2"
+      class="mt-2 rounded-3xl"
       title="Batch Transaction JSON"
       @toggle="jsonHidden = !jsonHidden"
     >
@@ -168,9 +168,3 @@ export default {
     </BaseButton>
   </UiCollapsible>
 </template>
-
-<style scoped>
-.collapsible-text {
-  border-radius: 23px;
-}
-</style>
