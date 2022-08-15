@@ -1,4 +1,5 @@
-<script>
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
 import Plugin from '../../index';
 import { transferNftToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { getERC721TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
@@ -6,91 +7,74 @@ import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 
-export default {
-  components: { SafeSnapInputAddress },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
-  setup() {
-    return { shorten };
-  },
-  data() {
-    return {
-      plugin: new Plugin(),
-      collectables: [],
-      loading: false,
+const props = defineProps(['modelValue', 'nonce', 'config']);
+const emit = defineEmits(['update:modelValue']);
 
-      to: '',
-      collectableAddress: ''
-    };
-  },
-  computed: {
-    selectedCollectable() {
-      if (!this.collectableAddress) return null;
-      return this.collectables.find(
-        collectable => collectable.address === this.collectableAddress
+const plugin = new Plugin();
+
+const collectables = ref<any[]>([]);
+const to = ref('');
+const collectableAddress = ref('');
+
+const selectedCollectable = computed(() => {
+  if (!collectableAddress.value) return null;
+  return collectables.value.find(
+    collectable => collectable.address === collectableAddress.value
+  );
+});
+
+const updateTransaction = () => {
+  if (props.config.preview) return;
+  try {
+    if (isAddress(to.value)) {
+      const data = getERC721TokenTransferTransactionData(
+        props.config.gnosisSafeAddress,
+        to.value,
+        selectedCollectable.value.id
       );
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    collectableAddress() {
-      this.updateTransaction();
-    },
-    config() {
-      this.setCollectables();
-    }
-  },
-  mounted() {
-    this.setCollectables();
-    if (this.modelValue) {
-      const { recipient = '', collectable } = this.modelValue;
-      this.to = recipient;
-      if (collectable) {
-        this.collectableAddress = collectable.address;
-        this.collectables = [collectable];
-      }
-    }
-  },
-  methods: {
-    updateTransaction() {
-      if (this.config.preview) return;
-      try {
-        if (isAddress(this.to)) {
-          const data = getERC721TokenTransferTransactionData(
-            this.config.gnosisSafeAddress,
-            this.to,
-            this.selectedCollectable.id
-          );
 
-          const transaction = transferNftToModuleTransaction({
-            data,
-            nonce: this.nonce,
-            recipient: this.to,
-            collectable: this.selectedCollectable
-          });
+      const transaction = transferNftToModuleTransaction({
+        data,
+        nonce: props.nonce,
+        recipient: to.value,
+        collectable: selectedCollectable.value
+      });
 
-          if (this.plugin.validateTransaction(transaction)) {
-            this.$emit('update:modelValue', transaction);
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn('invalid transaction');
+      if (plugin.validateTransaction(transaction)) {
+        emit('update:modelValue', transaction);
+        return;
       }
-      this.$emit('update:modelValue', undefined);
-    },
-    setCollectables() {
-      if (!this.config.preview && this.config.collectables) {
-        this.collectables = this.config.collectables;
-        if (!this.selectedCollectable && this.collectables.length) {
-          this.collectableAddress = this.collectables[0].address;
-        }
-      }
+    }
+  } catch (error) {
+    console.warn('invalid transaction');
+  }
+  emit('update:modelValue', undefined);
+};
+
+const setCollectables = () => {
+  if (!props.config.preview && props.config.collectables) {
+    collectables.value = props.config.collectables;
+    if (!selectedCollectable.value && collectables.value.length) {
+      collectableAddress.value = collectables.value[0].address;
     }
   }
 };
+
+watch([to, collectableAddress, props.config], () => {
+  updateTransaction();
+});
+
+onMounted(() => {
+  setCollectables();
+  if (props.modelValue) {
+    const { recipient = '', collectable } = props.modelValue;
+    to.value = recipient;
+    if (collectable) {
+      collectableAddress.value = collectable.address;
+      collectables.value = [collectable];
+    }
+  }
+});
 </script>
 
 <template>
@@ -98,7 +82,7 @@ export default {
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template v-if="selectedCollectable && selectedCollectable.logoUri" #image>
       <img
-        :src="selectedCollectable.logoUri"
+        :src="selectedCollectable.imageUri"
         alt=""
         class="ml-2 w-4 align-middle"
       />
