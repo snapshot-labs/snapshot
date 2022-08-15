@@ -87,7 +87,7 @@ const avatarNotReactive = ref(form.value.avatar);
             placeholder="e.g. https://example.com/terms"
           />
 
-          <BaseSwitch
+          <InputSwitch
             v-model="form.private"
             class="!mt-3"
             :text-right="$t('settings.hideSpace')"

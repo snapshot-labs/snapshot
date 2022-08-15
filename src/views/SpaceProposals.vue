@@ -34,16 +34,11 @@ const { apolloQuery } = useApolloQuery();
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
-const subSpaces = computed(
-  () => props.space.children?.map(space => space.id) ?? []
-);
 
 const spaceProposals = computed(() => {
-  if (domain)
-    return clone(store.space.proposals).filter(
-      proposal => proposal.space.id === props.space.id
-    );
-  return store.space.proposals;
+  return clone(store.space.proposals).filter(
+    proposal => proposal.space.id === props.space.id
+  );
 });
 
 const route = useRoute();
@@ -56,7 +51,7 @@ async function getProposals(skip = 0) {
       variables: {
         first: loadBy,
         skip,
-        space_in: [props.space.id, ...subSpaces.value],
+        space_in: [props.space.id],
         state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
         author_in: stateFilter.value === 'core' ? spaceMembers.value : []
       }
@@ -150,7 +145,7 @@ onMounted(() => {
             :profiles="profiles"
             :space="space"
             :voted="userVotedProposalIds.includes(proposal.id)"
-            :hide-space-avatar="proposal.space.id !== space.id"
+            :hide-space-avatar="proposal.space.id === space.id"
           />
         </BaseBlock>
       </div>

@@ -127,7 +127,7 @@ watch(open, () => {
             @select="value => (input.network = value)"
           />
           <div>
-            <InputObject
+            <FormObject
               v-if="strategyDefinition"
               v-model="input.params"
               :definition="strategyDefinition"

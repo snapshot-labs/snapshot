@@ -26,9 +26,9 @@ const body = computed(() => removeMd(props.proposal.body));
       <div>
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
-            <template v-if="hideSpaceAvatar">
+            <template v-if="!hideSpaceAvatar">
               <router-link
-                class="group text-skin-text"
+                class="text-skin-text"
                 :to="{
                   name: 'spaceProposals',
                   params: { key: proposal.space.id }
@@ -37,7 +37,7 @@ const body = computed(() => removeMd(props.proposal.body));
                 <div class="flex items-center">
                   <AvatarSpace :space="proposal.space" size="28" />
                   <span
-                    class="ml-2 group-hover:text-skin-link"
+                    class="ml-2 text-skin-link"
                     v-text="proposal.space.name"
                   />
                 </div>
@@ -49,7 +49,7 @@ const body = computed(() => removeMd(props.proposal.body));
               :profile="profiles[proposal.author]"
               :space="space"
               :proposal="proposal"
-              :hide-avatar="hideSpaceAvatar"
+              :hide-avatar="!hideSpaceAvatar"
             />
           </div>
           <LabelProposalState :state="proposal.state" />
