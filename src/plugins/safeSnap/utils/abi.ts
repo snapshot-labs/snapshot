@@ -75,7 +75,7 @@ function isWriteFunction(method: FunctionFragment) {
   return !['view', 'pure'].includes(method.stateMutability);
 }
 
-export function getABIWriteFunctions(abi: Fragment[]) {
+export function getABIWriteFunctions(abi: string | Fragment[]) {
   const abiInterface = new Interface(abi);
   return (
     abiInterface.fragments
