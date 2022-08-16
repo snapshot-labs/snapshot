@@ -77,7 +77,7 @@ const title = computed(() => {
 });
 
 const handleTypeChange = type => {
-  type.value = type;
+  selectedType.value = type;
   emit('update:modelValue', undefined);
 };
 
