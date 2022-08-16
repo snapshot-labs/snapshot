@@ -1,4 +1,4 @@
-<script>
+<script setup lang="ts">
 import Plugin from '../index';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
@@ -13,36 +13,21 @@ import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 
 const plugin = new Plugin();
 
-async function fetchBalances(network, gnosisSafeAddress) {
-  if (gnosisSafeAddress) {
-    try {
-      const balances = await getGnosisSafeBalances(network, gnosisSafeAddress);
-      return balances
-        .filter(balance => balance.token)
-        .map(balance => ({
-          ...balance.token,
-          address: balance.tokenAddress
-        }));
-    } catch (e) {
-      console.warn('Error fetching balances');
-    }
-  }
-  return [];
-}
+const props = defineProps([
+  'modelValue',
+  'proposal',
+  'network',
+  'realityAddress',
+  'multiSendAddress',
+  'preview',
+  'hash'
+]);
 
-async function fetchCollectibles(network, gnosisSafeAddress) {
-  if (gnosisSafeAddress) {
-    try {
-      return await getGnosisSafeCollectibles(network, gnosisSafeAddress);
-    } catch (error) {
-      console.warn('Error fetching collectables');
-    }
-  }
-  return [];
-}
+const emit = defineEmits(['update:modelValue']);
 
 function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
@@ -57,120 +42,130 @@ function formatBatches(network, realityModule, batches, multiSend) {
   return batches;
 }
 
-export default {
-  components: {
-    SafeSnapTooltip,
-    SafeSnapFormImportTransactionsButton,
-    SafeSnapHandleOutcome,
-    SafeSnapFormTransactionBatch
-  },
-  props: [
-    'modelValue',
-    'proposal',
-    'network',
-    'realityAddress',
-    'multiSendAddress',
-    'preview',
-    'hash'
-  ],
-  emits: ['update:modelValue'],
-  setup() {
-    return { shorten };
-  },
-  data() {
-    return {
-      input: formatBatches(
-        this.network,
-        this.realityAddress,
-        this.modelValue,
-        this.multiSendAddress
-      ),
-      gnosisSafeAddress: undefined,
-      showHash: false,
-      transactionConfig: {
-        preview: this.preview,
-        gnosisSafeAddress: undefined,
-        realityAddress: this.realityAddress,
-        network: this.network,
-        multiSendAddress: this.multiSendAddress,
-        tokens: [],
-        collectables: []
-      }
-    };
-  },
-  computed: {
-    safeLink() {
-      const prefix = EIP3770_PREFIXES[this.network];
-      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
-    },
-    networkName() {
-      if (this.network === '1') return 'Mainnet';
-      const { shortName, name } = networks[this.network] || {};
-      return shortName || name || `#${this.network}`;
-    },
-    networkIcon() {
-      const { logo } = networks[this.network];
-      return getIpfsUrl(logo);
-    },
-    proposalResolved() {
-      const ts = (Date.now() / 1e3).toFixed();
-      return ts > this.proposal.end;
-    }
-  },
-  async mounted() {
+const input = ref(
+  formatBatches(
+    props.network,
+    props.realityAddress,
+    props.modelValue,
+    props.multiSendAddress
+  )
+);
+const gnosisSafeAddress = ref<string>('');
+const showHash = ref(false);
+const transactionConfig = reactive({
+  preview: props.preview,
+  gnosisSafeAddress: gnosisSafeAddress.value,
+  realityAddress: props.realityAddress,
+  network: props.network,
+  multiSendAddress: props.multiSendAddress,
+  tokens: [],
+  collectables: []
+});
+
+async function fetchBalances() {
+  if (gnosisSafeAddress.value) {
     try {
-      const { dao } = await plugin.getModuleDetails(
-        this.network,
-        this.realityAddress
+      const balances = await getGnosisSafeBalances(
+        props.network,
+        gnosisSafeAddress.value
       );
-      this.gnosisSafeAddress = dao;
-      this.transactionConfig = {
-        ...this.transactionConfig,
-        gnosisSafeAddress: this.gnosisSafeAddress,
-        tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
-        collectables: await fetchCollectibles(
-          this.network,
-          this.gnosisSafeAddress
-        )
-      };
+      return balances
+        .filter(balance => balance.token)
+        .map(balance => ({
+          ...balance.token,
+          address: balance.tokenAddress
+        }));
     } catch (e) {
-      console.error(e);
-    }
-  },
-  methods: {
-    addTransactionBatch() {
-      this.input.push(
-        createBatch(
-          this.realityAddress,
-          parseInt(this.network),
-          this.input.length,
-          [],
-          this.multiSendAddress
-        )
-      );
-      this.$emit('update:modelValue', this.input);
-    },
-    removeBatch(index) {
-      this.input.splice(index, 1);
-      this.$emit('update:modelValue', this.input);
-    },
-    updateTransactionBatch(index, batch) {
-      this.input[index] = batch;
-      this.$emit('update:modelValue', this.input);
-    },
-    handleImport(txs) {
-      this.input.push(
-        createBatch(
-          this.realityAddress,
-          parseInt(this.network),
-          this.input.length,
-          txs,
-          this.multiSendAddress
-        )
-      );
-      this.$emit('update:modelValue', this.input);
+      console.warn('Error fetching balances');
     }
   }
+  return [];
+}
+
+async function fetchCollectibles() {
+  if (gnosisSafeAddress.value) {
+    try {
+      return await getGnosisSafeCollectibles(
+        props.network,
+        gnosisSafeAddress.value
+      );
+    } catch (error) {
+      console.warn('Error fetching collectables');
+    }
+  }
+  return [];
+}
+
+const safeLink = computed(() => {
+  const prefix = EIP3770_PREFIXES[props.network];
+  return `https://gnosis-safe.io/app/${prefix}:${gnosisSafeAddress.value}`;
+});
+
+const networkName = computed(() => {
+  if (props.network === '1') return 'Mainnet';
+  const { shortName, name } = networks[props.network] || {};
+  return shortName || name || `#${props.network}`;
+});
+
+const networkIcon = computed(() => {
+  const { logo } = networks[props.network];
+  return getIpfsUrl(logo);
+});
+
+const proposalResolved = computed(() => {
+  const ts = (Date.now() / 1e3).toFixed();
+  return ts > props.proposal.end;
+});
+
+onMounted(async () => {
+  try {
+    const { dao } = await plugin.getModuleDetails(
+      props.network,
+      props.realityAddress
+    );
+    gnosisSafeAddress.value = dao;
+    transactionConfig.gnosisSafeAddress = gnosisSafeAddress.value;
+    transactionConfig.tokens = await fetchBalances();
+    transactionConfig.collectables = await fetchCollectibles();
+  } catch (e) {
+    console.error(e);
+  }
+});
+
+const addTransactionBatch = () => {
+  input.value.push(
+    createBatch(
+      props.realityAddress,
+      parseInt(props.network),
+      input.value.length,
+      [],
+      props.multiSendAddress
+    )
+  );
+  emit('update:modelValue', input.value);
+};
+
+const removeBatch = index => {
+  input.value.splice(index, 1);
+  emit('update:modelValue', input.value);
+};
+
+const updateTransactionBatch = (index, batch) => {
+  input.value[index] = batch;
+  emit('update:modelValue', input.value);
+};
+
+const handleImport = txs => {
+  input.value.push(
+    createBatch(
+      props.realityAddress,
+      parseInt(props.network),
+      input.value.length,
+      txs,
+      props.multiSendAddress
+    )
+  );
+  emit('update:modelValue', input.value);
 };
 </script>
 
