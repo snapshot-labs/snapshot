@@ -1,152 +1,153 @@
-<script>
+<script setup lang="ts">
 import { parseEther } from '@ethersproject/units';
 import { isAddress } from '@ethersproject/address';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 import { SafeTransactionOperationType } from '@/helpers/interfaces';
+import { ref } from 'vue';
 
-export default {
-  name: 'ImportTransactionsButton',
-  props: ['network'],
-  emits: ['import', 'remove'],
-  data() {
-    return {
-      json: '',
-      error: '',
-      open: false,
-      dropping: false
+const props = defineProps(['network']);
+const emit = defineEmits(['import', 'remove']);
+
+const jsonString = ref('');
+const error = ref('');
+const open = ref(false);
+const dropping = ref(false);
+
+const readFile = file => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', e => {
+      try {
+        resolve(JSON.parse(e.target?.result as string));
+      } catch {
+        reject(new Error('JSON is not valid'));
+      }
+    });
+    reader.addEventListener('error', reject);
+    reader.addEventListener('abort', reject);
+    reader.readAsBinaryString(file);
+  });
+};
+
+const importTx = (tx, index) => {
+  if (tx.to && tx.value && isAddress(tx.to)) {
+    let value, data;
+    try {
+      value = parseEther(tx.value).toString();
+      data = tx.data?.toString().trim();
+    } catch (err) {
+      throw new Error(`transaction #${index + 1} is invalid`);
+    }
+    const base = {
+      to: tx.to,
+      value,
+      nonce: index,
+      operation: tx.operation || SafeTransactionOperationType.CALL
     };
-  },
-  methods: {
-    async handleFileUpload(event) {
-      const [file] = event.target?.files || [];
-      if (!file) {
-        this.error = 'Uploading file';
-        return;
-      }
-      event.target.value = '';
-      return this.importFromFile(file);
-    },
-    async importFromFile(file) {
-      let json;
-      try {
-        json = await this.readFile(file);
-      } catch (err) {
-        console.warn('err', err);
-        this.error = 'Uploading file';
-        return;
-      }
-      this.importTxs(json);
-    },
-    importFromText() {
-      let json;
-      try {
-        json = JSON.parse(this.json);
-      } catch (err) {
-        console.warn('err', err);
-        this.error = 'JSON is not valid';
-        return;
-      }
-      const successful = this.importTxs(json);
-      if (successful) {
-        // Clear textarea
-        this.json = '';
-      }
-    },
-    importTxs(json) {
-      this.error = '';
-      if (!Array.isArray(json)) {
-        this.error = 'JSON must be an array';
-        return false;
-      }
-      try {
-        const txs = json.map(this.importTx);
-        this.$emit('import', txs);
-        return true;
-      } catch (err) {
-        console.warn('err', err);
-        this.error = err.message;
-        return false;
-      }
-    },
-    toggleDropping() {
-      this.dropping = !this.dropping;
-    },
-    drop(event) {
-      this.toggleDropping();
-      const file = event.dataTransfer.files[0];
-      this.importFromFile(file);
-    },
-    importTx(tx, index) {
-      if (tx.to && tx.value && isAddress(tx.to)) {
-        let value, data;
-        try {
-          value = parseEther(tx.value).toString();
-          data = tx.data?.toString().trim();
-        } catch (err) {
-          throw new Error(`transaction #${index + 1} is invalid`);
-        }
-        const base = {
-          to: tx.to,
-          value,
-          nonce: index,
-          operation: tx.operation || SafeTransactionOperationType.CALL
-        };
 
-        if (tx.method && tx.params) {
-          const method = FunctionFragment.from(tx.method);
-          const contractInterface = new Interface([method]);
-          try {
-            const data = contractInterface.encodeFunctionData(
-              method,
-              tx.params
-            );
-            return {
-              type: 'contractInteraction',
-              data,
-              abi: contractInterface.fragments.map(frag => frag.format('full')),
-              ...base
-            };
-          } catch (err) {
-            throw new Error(
-              `invalid function params for transaction #${index + 1}`
-            );
-          }
-        } else if (data && data !== '0x') {
-          return {
-            type: 'raw',
-            data,
-            ...base
-          };
-        }
-
+    if (tx.method && tx.params) {
+      const method = FunctionFragment.from(tx.method);
+      const contractInterface = new Interface([method]);
+      try {
+        const encodedData = contractInterface.encodeFunctionData(
+          method,
+          tx.params
+        );
         return {
-          type: 'transferFunds',
-          data: '0x',
-          token: getNativeAsset(this.network),
-          recipient: tx.to,
-          amount: value,
+          type: 'contractInteraction',
+          data: encodedData,
+          abi: contractInterface.fragments.map(frag => frag.format('full')),
           ...base
         };
+      } catch (err) {
+        throw new Error(
+          `invalid function params for transaction #${index + 1}`
+        );
       }
-      throw new Error(`transaction #${index + 1} is invalid`);
-    },
-    readFile(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', e => {
-          try {
-            resolve(JSON.parse(e.target.result));
-          } catch (e) {
-            reject(new Error('JSON is not valid'));
-          }
-        });
-        reader.addEventListener('error', reject);
-        reader.addEventListener('abort', reject);
-        reader.readAsBinaryString(file);
-      });
+    } else if (data && data !== '0x') {
+      return {
+        type: 'raw',
+        data,
+        ...base
+      };
     }
+
+    return {
+      type: 'transferFunds',
+      data: '0x',
+      token: getNativeAsset(props.network),
+      recipient: tx.to,
+      amount: value,
+      ...base
+    };
   }
+  throw new Error(`transaction #${index + 1} is invalid`);
+};
+
+const importTxs = json => {
+  error.value = '';
+  if (!Array.isArray(json)) {
+    error.value = 'JSON must be an array';
+    return false;
+  }
+  try {
+    const txs = json.map(importTx);
+    emit('import', txs);
+    return true;
+  } catch (err: Error) {
+    console.warn('err', err);
+    error.value = err.message;
+    return false;
+  }
+};
+
+const importFromFile = async file => {
+  let json;
+  try {
+    json = await readFile(file);
+  } catch (err) {
+    console.warn('err', err);
+    error.value = 'Uploading file';
+    return;
+  }
+  importTxs(json);
+};
+
+const handleFileUpload = async event => {
+  const [file] = event.target?.files || [];
+  if (!file) {
+    error.value = 'Uploading file';
+    return;
+  }
+  event.target.value = '';
+  return importFromFile(file);
+};
+
+const importFromText = () => {
+  let json;
+  try {
+    json = JSON.parse(jsonString.value);
+  } catch (err) {
+    console.warn('err', err);
+    error.value = 'JSON is not valid';
+    return;
+  }
+  const successful = importTxs(json);
+  if (successful) {
+    // Clear textarea
+    jsonString.value = '';
+  }
+};
+
+const toggleDropping = () => {
+  dropping.value = !dropping.value;
+};
+
+const drop = event => {
+  toggleDropping();
+  const file = event.dataTransfer.files[0];
+  importFromFile(file);
 };
 </script>
 
@@ -189,7 +190,7 @@ export default {
           <label for="tx_json"><h5>Transaction JSON</h5></label>
           <textarea
             id="tx_json"
-            v-model="json"
+            v-model="jsonString"
             placeholder="You can also paste in JSON here."
             class="min-h-[80px] w-full text-sm outline-none"
           ></textarea>
