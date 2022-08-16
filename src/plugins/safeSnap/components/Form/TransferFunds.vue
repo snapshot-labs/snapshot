@@ -29,7 +29,6 @@ const selectedToken = computed(() => {
 });
 
 const updateTransaction = () => {
-  if (props.config.preview) return;
   try {
     if (isBigNumberish(value.value) && isAddress(to.value)) {
       const data =
@@ -57,7 +56,7 @@ const updateTransaction = () => {
 };
 
 const setTokens = () => {
-  if (!props.config.preview && props.config.tokens) {
+  if (props.config.tokens) {
     tokens.value = [nativeAsset, ...props.config.tokens];
   }
 };
@@ -81,7 +80,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <UiSelect v-model="tokenAddress" :disabled="config.preview">
+  <UiSelect v-model="tokenAddress">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template v-if="selectedToken.logoUri" #image>
       <img :src="selectedToken.logoUri" alt="" class="ml-2 w-4 align-middle" />
@@ -97,7 +96,6 @@ onMounted(() => {
   <div class="space-y-2">
     <SafeSnapInputAddress
       v-model="to"
-      :disabled="config.preview"
       :input-props="{
         required: true
       }"
@@ -108,7 +106,6 @@ onMounted(() => {
       v-model="value"
       :label="$t('safeSnap.amount')"
       :decimals="selectedToken?.decimals"
-      :disabled="config.preview"
     />
   </div>
 </template>

@@ -5,7 +5,6 @@ import { isStringArray } from '../../utils/abi';
 
 const props = defineProps<{
   parameter: ParamType;
-  disabled: boolean;
 }>();
 
 const getPlaceholder = (type: string) => {
@@ -62,7 +61,6 @@ const handleInput = (value: string) => {
 
 <template>
   <UiInput
-    :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${parameter.type}`"
     :model-value="input"
     :placeholder="placeholder"

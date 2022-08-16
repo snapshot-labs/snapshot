@@ -41,7 +41,6 @@ const safeSnapInput = computed(
     "
     :model-value="safeSnapInput"
     :proposal="proposal"
-    :preview="true"
     :config="space.plugins.safeSnap"
     :network="space.network"
   />

@@ -2,13 +2,7 @@
 import { parseUnits, formatUnits } from '@ethersproject/units';
 import { onMounted, ref, watch } from 'vue';
 
-const props = defineProps([
-  'modelValue',
-  'inputProps',
-  'label',
-  'disabled',
-  'decimals'
-]);
+const props = defineProps(['modelValue', 'inputProps', 'label', 'decimals']);
 const emit = defineEmits(['update:modelValue', 'valid']);
 
 const input = ref('0');
@@ -39,7 +33,7 @@ onMounted(() => {
 watch(
   () => props.modelValue,
   value => {
-    if (value && props.disabled) {
+    if (value) {
       input.value = formatUnits(value, props.decimals);
     }
   }
@@ -57,7 +51,6 @@ watch(
   <UiInput
     v-model="input"
     v-bind="inputProps"
-    :disabled="disabled"
     :error="dirty && !isValid && $t('safeSnap.invalidAmount')"
     @input="handleInput()"
   >

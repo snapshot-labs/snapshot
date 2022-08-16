@@ -10,7 +10,6 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
 import SafeSnapTooltip from './Tooltip.vue';
-import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
@@ -23,7 +22,6 @@ const props = defineProps([
   'network',
   'realityAddress',
   'multiSendAddress',
-  'preview',
   'hash'
 ]);
 
@@ -53,7 +51,6 @@ const input = ref(
 const gnosisSafeAddress = ref<string>('');
 const showHash = ref(false);
 const transactionConfig = reactive({
-  preview: props.preview,
   gnosisSafeAddress: gnosisSafeAddress.value,
   realityAddress: props.realityAddress,
   network: props.network,
@@ -110,11 +107,6 @@ const networkName = computed(() => {
 const networkIcon = computed(() => {
   const { logo } = networks[props.network];
   return getIpfsUrl(logo);
-});
-
-const proposalResolved = computed(() => {
-  const ts = (Date.now() / 1e3).toFixed();
-  return ts > props.proposal.end;
 });
 
 onMounted(async () => {
@@ -217,23 +209,14 @@ const handleImport = txs => {
         />
       </div>
 
-      <div v-if="!preview || proposalResolved">
-        <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
+      <div>
+        <BaseButton class="my-3" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
         </BaseButton>
 
         <SafeSnapFormImportTransactionsButton
-          v-if="!preview"
           :network="network"
           @import="handleImport($event)"
-        />
-
-        <SafeSnapHandleOutcome
-          v-if="preview && proposalResolved"
-          :batches="input"
-          :proposal="proposal"
-          :reality-address="realityAddress"
-          :network="transactionConfig.network"
         />
       </div>
     </div>

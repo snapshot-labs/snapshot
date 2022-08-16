@@ -36,7 +36,6 @@ const updateBatch = txs => {
 };
 
 const updateTransaction = (index, transaction) => {
-  if (props.config.preview) return;
   transactions.value[index] = transaction;
   updateBatch(transactions.value);
 };
@@ -99,7 +98,7 @@ const formatBatchJson = txs => {
 };
 
 onMounted(() => {
-  if (!props.config.preview && !transactions.value.length) {
+  if (!transactions.value.length) {
     addEmptyTransaction();
   }
 });
@@ -108,7 +107,6 @@ onMounted(() => {
 <template>
   <UiCollapsible
     borderless
-    :hide-remove="config.preview"
     :number="nonce + 1"
     :open="open"
     :title="`${$t('safeSnap.batch')} (${transactions.length})`"
@@ -158,11 +156,7 @@ onMounted(() => {
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
     </BaseBlock>
 
-    <BaseButton
-      v-if="!config.preview"
-      class="mt-2"
-      @click="addEmptyTransaction"
-    >
+    <BaseButton class="mt-2" @click="addEmptyTransaction">
       {{ $t('safeSnap.addTransaction') }}
     </BaseButton>
   </UiCollapsible>

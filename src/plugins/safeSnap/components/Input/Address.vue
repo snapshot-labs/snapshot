@@ -2,7 +2,7 @@
 import { isAddress } from '@ethersproject/address';
 import { onMounted, ref, watch } from 'vue';
 
-const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
+const props = defineProps(['modelValue', 'inputProps', 'label']);
 const emit = defineEmits(['update:modelValue', 'validAddress']);
 
 const input = ref('');
@@ -36,7 +36,6 @@ const handleInput = () => {
   <UiInput
     v-model="input"
     v-bind="inputProps"
-    :disabled="disabled"
     :error="dirty && !isValid && $t('safeSnap.invalidAddress')"
     @input="handleInput()"
   >

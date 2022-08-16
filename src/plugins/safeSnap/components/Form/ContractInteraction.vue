@@ -55,7 +55,6 @@ if (props.modelValue) {
 }
 
 const updateTransaction = () => {
-  if (props.config.preview) return;
   try {
     if (
       isBigNumberish(value.value) &&
@@ -142,29 +141,7 @@ watch(
 onMounted(() => {
   if (props.modelValue) {
     to.value = props.modelValue.to || '';
-
-    if (props.config.preview) {
-      const transactionDecoder = new InterfaceDecoder(
-        props.modelValue.abi || ''
-      );
-      selectedMethod.value = transactionDecoder.getMethodFragment(
-        props.modelValue.data || ''
-      );
-      parameters.value = transactionDecoder.decodeFunction(
-        props.modelValue.data || '',
-        selectedMethod.value
-      );
-
-      methods.value = [selectedMethod.value];
-      handleValueChange(props.modelValue.value || '0');
-      handleABIChanged(
-        typeof props.modelValue.abi === 'object'
-          ? JSON.stringify(props.modelValue.abi)
-          : props.modelValue.abi
-      );
-    } else {
-      setTimeout(updateTransaction, 1000);
-    }
+    setTimeout(updateTransaction, 1000);
   }
 });
 </script>
@@ -173,7 +150,6 @@ onMounted(() => {
   <div class="space-y-2">
     <SafeSnapInputAddress
       v-model="to"
-      :disabled="config.preview"
       :input-props="{
         required: true
       }"
@@ -182,7 +158,6 @@ onMounted(() => {
     />
 
     <UiInput
-      :disabled="config.preview"
       :error="!validValue && $t('safeSnap.invalidValue')"
       :model-value="value"
       @update:modelValue="handleValueChange($event)"
@@ -191,7 +166,6 @@ onMounted(() => {
     </UiInput>
 
     <UiInput
-      :disabled="config.preview"
       :error="!validAbi && $t('safeSnap.invalidAbi')"
       :model-value="abi"
       @update:modelValue="handleABIChanged($event)"
@@ -200,11 +174,7 @@ onMounted(() => {
     </UiInput>
 
     <div v-if="methods.length">
-      <UiSelect
-        v-model="methodIndex"
-        :disabled="config.preview"
-        @change="handleMethodChanged()"
-      >
+      <UiSelect v-model="methodIndex" @change="handleMethodChanged()">
         <template #label>function</template>
         <option v-for="(method, i) in methods" :key="i" :value="i">
           {{ method.name }}()
@@ -218,7 +188,6 @@ onMounted(() => {
         <SafeSnapInputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
-          :disabled="config.preview"
           :model-value="parameters[index]"
           :parameter="input"
           @update:modelValue="handleParameterChanged(index, $event)"

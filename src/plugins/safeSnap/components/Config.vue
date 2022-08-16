@@ -13,8 +13,7 @@ const props = defineProps([
   'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
   'config', // the safeSnap plugin config of the current space
   'network', // network of the space (needed when mapping legacy plugin configs)
-  'proposal',
-  'preview' // if true, renders a read-only view
+  'proposal'
 ]);
 
 const emit = defineEmits(['update:modelValue']);
@@ -45,7 +44,6 @@ if (!Object.keys(props.modelValue).length) {
 }
 
 const updateSafeTransactions = () => {
-  if (props.preview) return;
   input.value.valid = isValidInput(input.value);
   input.value.safes = input.value.safes.map(safe => {
     return {
@@ -59,7 +57,6 @@ const updateSafeTransactions = () => {
 
 <template>
   <div
-    v-if="!preview || input.safes.length > 0"
     class="mb-4 rounded-none border-t border-b bg-skin-block-bg md:rounded-xl md:border"
   >
     <h4 class="block border-b px-4 pt-3" style="padding-bottom: 12px">
@@ -71,8 +68,6 @@ const updateSafeTransactions = () => {
       class="border-b last:border-b-0"
     >
       <SafeTransactions
-        v-if="!preview || safe.txs.length > 0"
-        :preview="preview"
         :proposal="proposal"
         :hash="safe.hash"
         :network="safe.network"

@@ -24,7 +24,6 @@ const selectedCollectable = computed(() => {
 });
 
 const updateTransaction = () => {
-  if (props.config.preview) return;
   try {
     if (isAddress(to.value)) {
       const data = getERC721TokenTransferTransactionData(
@@ -52,7 +51,7 @@ const updateTransaction = () => {
 };
 
 const setCollectables = () => {
-  if (!props.config.preview && props.config.collectables) {
+  if (props.config.collectables) {
     collectables.value = props.config.collectables;
     if (!selectedCollectable.value && collectables.value.length) {
       collectableAddress.value = collectables.value[0].address;
@@ -78,7 +77,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <UiSelect v-model="collectableAddress" :disabled="config.preview">
+  <UiSelect v-model="collectableAddress">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template v-if="selectedCollectable && selectedCollectable.logoUri" #image>
       <img
@@ -101,10 +100,7 @@ onMounted(() => {
 
   <SafeSnapInputAddress
     v-model="to"
-    :disabled="config.preview"
-    :input-props="{
-      required: true
-    }"
+    :input-props="{ required: true }"
     :label="$t('safeSnap.to')"
   />
 </template>

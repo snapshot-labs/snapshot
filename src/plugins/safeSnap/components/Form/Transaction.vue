@@ -26,7 +26,7 @@ if (props.modelValue) {
   selectedType.value = props.modelValue.type ? props.modelValue.type : 'raw';
 }
 
-const open = ref(!props.config.preview);
+const open = ref(true);
 
 const getLabel = type => {
   return labels[type];
@@ -82,10 +82,7 @@ const handleTypeChange = type => {
 };
 
 onMounted(() => {
-  if (!props.config.preview) emit('update:modelValue', undefined);
-  if (props.config.preview && !props.modelValue.type) {
-    selectedType.value = 'raw';
-  }
+  emit('update:modelValue', undefined);
 });
 
 watch(
@@ -100,7 +97,6 @@ watch(
 
 <template>
   <UiCollapsible
-    :hide-remove="config.preview"
     :number="nonce + 1"
     :open="open"
     :title="title"
@@ -108,7 +104,6 @@ watch(
     @toggle="open = !open"
   >
     <UiSelect
-      :disabled="config.preview"
       :model-value="selectedType"
       @update:modelValue="handleTypeChange($event)"
     >

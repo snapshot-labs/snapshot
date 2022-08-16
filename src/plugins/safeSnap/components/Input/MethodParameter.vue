@@ -9,7 +9,6 @@ import { ParamType } from '@ethersproject/abi';
 const props = defineProps<{
   modelValue: string;
   parameter: ParamType;
-  disabled: boolean;
 }>();
 const emit = defineEmits(['update:modelValue']);
 
@@ -49,7 +48,6 @@ const handleInput = value => {
 <template>
   <UiSelect
     v-if="parameter.type === 'bool'"
-    :disabled="disabled"
     :model-value="input"
     @update:modelValue="handleInput($event)"
   >
@@ -61,7 +59,6 @@ const handleInput = value => {
   <!-- ADDRESS -->
   <SafeSnapInputAddress
     v-else-if="parameter.type === 'address'"
-    :disabled="disabled"
     :input-props="{ required: true }"
     :label="placeholder"
     :model-value="input"
@@ -70,7 +67,6 @@ const handleInput = value => {
   <!-- Array of X type -->
   <SafeSnapInputArrayType
     v-else-if="isArrayParameter(parameter.baseType)"
-    :disabled="disabled"
     :model-value="input"
     :parameter="parameter"
     @update:modelValue="handleInput($event)"
@@ -78,7 +74,6 @@ const handleInput = value => {
   <!-- Text input -->
   <UiInput
     v-else
-    :disabled="disabled"
     :error="dirty && !isValid && `Invalid ${parameter.type}`"
     :model-value="(input as string)"
     @update:modelValue="handleInput($event)"
