@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import Plugin from '../../index';
 import {
   decodeTransactionData,
@@ -52,10 +52,9 @@ watch([to, value, data], updateTransaction);
 
 onMounted(async () => {
   if (props.modelValue) {
-    const { to = '', value = '0', data = '' } = props.modelValue;
-    to.value = to;
-    value.value = value;
-    data.value = data;
+    to.value = props.modelValue.to || '';
+    value.value = props.modelValue.value || '0';
+    data.value = props.modelValue.data || '';
 
     if (props.config.preview) {
       try {
