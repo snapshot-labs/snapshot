@@ -1,11 +1,15 @@
-<script>
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
 import { formatUnits } from '@ethersproject/units';
 import { getAbiFirstFunctionName } from '@/plugins/safeSnap/utils/abi';
 import { shorten } from '@/helpers/utils';
+import { useI18n } from '@/composables';
 import SafeSnapFormContractInteraction from './ContractInteraction.vue';
 import SafeSnapFormTransferFunds from './TransferFunds.vue';
 import SafeSnapFormTransferNft from './TransferNft.vue';
 import SafeSnapFormRawTransaction from './RawTransaction.vue';
+
+const { t } = useI18n();
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -14,95 +18,84 @@ const labels = {
   raw: 'Raw Transaction'
 };
 
-export default {
-  components: {
-    SafeSnapFormContractInteraction,
-    SafeSnapFormTransferFunds,
-    SafeSnapFormTransferNft,
-    SafeSnapFormRawTransaction
-  },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue', 'remove'],
-  data() {
-    let type = 'transferFunds';
-    if (this.modelValue) {
-      type = this.modelValue.type ? this.modelValue.type : 'raw';
-    }
+const props = defineProps(['modelValue', 'nonce', 'config']);
+const emit = defineEmits(['update:modelValue', 'remove']);
 
-    return {
-      open: !this.config.preview,
-      type
-    };
-  },
-  computed: {
-    title() {
-      if (this.open) {
-        return '';
-      }
+const selectedType = ref('transferFunds');
+if (props.modelValue) {
+  selectedType.value = props.modelValue.type ? props.modelValue.type : 'raw';
+}
 
-      if (this.modelValue) {
-        try {
-          const recipientAddr = shorten(this.modelValue.recipient);
-          const toAddr = shorten(this.modelValue.to);
-          const type = this.modelValue.type || this.type;
-          switch (type) {
-            case 'contractInteraction':
-              return this.$t('safeSnap.transactionLabels.contractInteraction', {
-                functionName: getAbiFirstFunctionName(this.modelValue.abi),
-                amount: this.modelValue.value,
-                address: toAddr
-              });
-            case 'transferFunds':
-              return this.$t('safeSnap.transactionLabels.transferFunds', {
-                amount: formatUnits(
-                  this.modelValue.amount,
-                  this.modelValue.token.decimals
-                ),
-                tokenSymbol: this.modelValue.token.symbol,
-                address: recipientAddr
-              });
-            case 'transferNFT':
-              return this.$t('safeSnap.transactionLabels.transferNFT', {
-                name: this.modelValue.collectable.name,
-                id: shorten(this.modelValue.collectable.id, 10),
-                address: recipientAddr
-              });
-            case 'raw':
-              return this.$t('safeSnap.transactionLabels.raw', {
-                amount: this.modelValue.value,
-                address: recipientAddr
-              });
-          }
-        } catch (error) {
-          console.log('could not determine title', error);
-        }
+const open = ref(!props.config.preview);
+
+const getLabel = type => {
+  return labels[type];
+};
+
+const title = computed(() => {
+  if (open.value) {
+    return '';
+  }
+
+  if (props.modelValue) {
+    try {
+      const recipientAddr = shorten(props.modelValue.recipient);
+      const toAddr = shorten(props.modelValue.to);
+      switch (props.modelValue.type || selectedType.value) {
+        case 'contractInteraction':
+          return t('safeSnap.transactionLabels.contractInteraction', {
+            functionName: getAbiFirstFunctionName(props.modelValue.abi),
+            amount: props.modelValue.value,
+            address: toAddr
+          });
+        case 'transferFunds':
+          return t('safeSnap.transactionLabels.transferFunds', {
+            amount: formatUnits(
+              props.modelValue.amount,
+              props.modelValue.token.decimals
+            ),
+            tokenSymbol: props.modelValue.token.symbol,
+            address: recipientAddr
+          });
+        case 'transferNFT':
+          return t('safeSnap.transactionLabels.transferNFT', {
+            name: props.modelValue.collectable.name,
+            id: shorten(props.modelValue.collectable.id, 10),
+            address: recipientAddr
+          });
+        case 'raw':
+          return t('safeSnap.transactionLabels.raw', {
+            amount: props.modelValue.value,
+            address: recipientAddr
+          });
       }
-      return this.getLabel(this.type);
-    }
-  },
-  watch: {
-    modelValue() {
-      if (this.modelValue?.type) {
-        this.type = this.modelValue.type;
-      }
-    }
-  },
-  mounted() {
-    if (!this.config.preview) this.$emit('update:modelValue', undefined);
-    if (this.config.preview && !this.modelValue.type) {
-      this.type = 'raw';
-    }
-  },
-  methods: {
-    getLabel(type) {
-      return labels[type];
-    },
-    handleTypeChange(type) {
-      this.type = type;
-      this.$emit('update:modelValue', undefined);
+    } catch (error) {
+      console.log('could not determine title', error);
     }
   }
+  return getLabel(selectedType.value);
+});
+
+const handleTypeChange = type => {
+  type.value = type;
+  emit('update:modelValue', undefined);
 };
+
+onMounted(() => {
+  if (!props.config.preview) emit('update:modelValue', undefined);
+  if (props.config.preview && !props.modelValue.type) {
+    selectedType.value = 'raw';
+  }
+});
+
+watch(
+  () => props.modelValue,
+  () => {
+    if (props.modelValue?.type) {
+      selectedType.value = props.modelValue.type;
+    }
+  }
+);
 </script>
 
 <template>
@@ -116,7 +109,7 @@ export default {
   >
     <UiSelect
       :disabled="config.preview"
-      :model-value="type"
+      :model-value="selectedType"
       @update:modelValue="handleTypeChange($event)"
     >
       <template #label>{{ $t('safeSnap.type') }}</template>
@@ -129,7 +122,7 @@ export default {
     </UiSelect>
 
     <SafeSnapFormContractInteraction
-      v-if="type === 'contractInteraction'"
+      v-if="selectedType === 'contractInteraction'"
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
@@ -137,7 +130,7 @@ export default {
     />
 
     <SafeSnapFormTransferFunds
-      v-if="type === 'transferFunds'"
+      v-if="selectedType === 'transferFunds'"
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
@@ -145,7 +138,7 @@ export default {
     />
 
     <SafeSnapFormTransferNft
-      v-if="type === 'transferNFT'"
+      v-if="selectedType === 'transferNFT'"
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
@@ -153,7 +146,7 @@ export default {
     />
 
     <SafeSnapFormRawTransaction
-      v-if="type === 'raw'"
+      v-if="selectedType === 'raw'"
       :model-value="modelValue"
       :nonce="nonce"
       :config="config"
