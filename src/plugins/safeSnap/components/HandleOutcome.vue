@@ -17,14 +17,12 @@ import {
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
-import { RealityOracleProposal } from '@/helpers/interfaces';
-import { Result } from '@ethersproject/abi';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafe();
-const { web3, ensureRightNetwork } = useWeb3();
+const { web3Account, ensureRightNetwork } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
 
@@ -32,41 +30,24 @@ const props = defineProps(['batches', 'proposal', 'network', 'realityAddress']);
 
 const plugin = new Plugin();
 
-const QuestionStates = {
-  error: -1,
-  noWalletConnection: 0,
-  loading: 1,
-  waitingForQuestion: 2,
-  questionNotSet: 3,
-  questionNotResolved: 4,
-  waitingForCooldown: 5,
-  proposalApproved: 6,
-  proposalRejected: 7,
-  completelyExecuted: 8,
-  timeExpired: 9
-};
-Object.freeze(QuestionStates);
+enum QUESTION_STATES {
+  WAITING_FOR_QUESTION,
+  QUESTION_NO_SET,
+  QUESTION_NOT_RESOLVED,
+  WAITING_FOR_COOLDOWN,
+  PROPOSAL_APPROVED,
+  PROPOSAL_REJECTED,
+  COMPLETELY_EXECUTED,
+  TIME_EXPIRED,
+  UNKNOWN
+}
 
-const loading = ref(true);
-const questionStates = ref(QuestionStates);
+const loadingDetails = ref(true);
 const actionInProgress = ref<string | null>(null);
 const action2InProgress = ref<string | null>(null);
-const questionDetails = ref<
-  Omit<RealityOracleProposal, 'transactions'> | undefined
->(undefined);
+const questionDetails = ref<any>(undefined);
 const modalApproveDecisionOpen = ref(false);
-const bondData = ref<{
-  tokenSymbol: string;
-  tokenDecimals: number;
-  canClaim: boolean;
-  data?: {
-    length: string[];
-    historyHashes: Result[];
-    users: Result[];
-    bonds: Result[];
-    answers: Result[];
-  };
-}>({
+const bondData = ref<any>({
   tokenSymbol: 'ETH',
   tokenDecimals: 18,
   canClaim: false
@@ -77,7 +58,7 @@ const getTxHashes = () => {
 };
 
 const updateDetails = async () => {
-  loading.value = true;
+  loadingDetails.value = true;
   try {
     questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
@@ -85,6 +66,7 @@ const updateDetails = async () => {
       props.proposal.id,
       getTxHashes()
     );
+    console.log('questionDetails', questionDetails.value);
     if (questionDetails.value.questionId && getInstance().web3) {
       bondData.value = await plugin.loadClaimBondData(
         getInstance().web3,
@@ -97,7 +79,7 @@ const updateDetails = async () => {
   } catch (e) {
     console.error(e);
   } finally {
-    loading.value = false;
+    loadingDetails.value = false;
   }
 };
 
@@ -227,7 +209,7 @@ const executeProposal = async () => {
     pendingCount.value--;
     await sleep(3e3);
     await updateDetails();
-  } catch (err) {
+  } catch (err: Error) {
     pendingCount.value--;
     action2InProgress.value = null;
     setBatchError(questionDetails.value.nextTxIndex, err.reason);
@@ -247,17 +229,11 @@ const networkName = computed(() => {
 });
 
 const questionState = computed(() => {
-  if (!web3.value.account) return QuestionStates.noWalletConnection;
-
-  if (loading.value) return QuestionStates.loading;
-
-  if (!questionDetails.value) return QuestionStates.error;
-
   if (!questionDetails.value.questionId)
-    return QuestionStates.waitingForQuestion;
+    return QUESTION_STATES.WAITING_FOR_QUESTION;
 
   if (questionDetails.value.currentBond.isZero())
-    return QuestionStates.questionNotSet;
+    return QUESTION_STATES.QUESTION_NO_SET;
 
   const ts = (Date.now() / 1e3).toFixed();
   const { finalizedAt, cooldown, expiration, executionApproved, nextTxIndex } =
@@ -265,27 +241,28 @@ const questionState = computed(() => {
 
   const isExpired = finalizedAt + expiration < ts;
 
-  if (!finalizedAt) return QuestionStates.questionNotResolved;
+  if (!finalizedAt) return QUESTION_STATES.QUESTION_NOT_RESOLVED;
   if (executionApproved) {
-    if (finalizedAt + cooldown > ts) return QuestionStates.waitingForCooldown;
+    if (finalizedAt + cooldown > ts)
+      return QUESTION_STATES.WAITING_FOR_COOLDOWN;
 
     if (!Number.isInteger(nextTxIndex))
-      return QuestionStates.completelyExecuted;
-    else if (isExpired) return QuestionStates.timeExpired;
+      return QUESTION_STATES.COMPLETELY_EXECUTED;
+    else if (isExpired) return QUESTION_STATES.TIME_EXPIRED;
 
-    return QuestionStates.proposalApproved;
+    return QUESTION_STATES.PROPOSAL_APPROVED;
   }
-  if (isExpired) return QuestionStates.proposalRejected;
+  if (isExpired) return QUESTION_STATES.PROPOSAL_REJECTED;
 
-  return QuestionStates.error;
+  return QUESTION_STATES.UNKNOWN;
 });
 
 const showOracleInfo = computed(() => {
-  return (
-    questionState.value === questionStates.value.questionNotSet ||
-    questionState.value === questionStates.value.questionNotResolved ||
-    questionState.value === questionStates.value.waitingForCooldown
-  );
+  return [
+    QUESTION_STATES.QUESTION_NO_SET,
+    QUESTION_STATES.QUESTION_NOT_RESOLVED,
+    QUESTION_STATES.WAITING_FOR_COOLDOWN
+  ].includes(questionState.value);
 });
 
 const approvalData = computed(() => {
@@ -337,149 +314,147 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="questionState === questionStates.error" class="my-4">
-    {{ $t('safeSnap.labels.error') }}
-  </div>
-
-  <div v-if="questionState === questionStates.noWalletConnection" class="my-4">
-    {{ $t('safeSnap.labels.connectWallet') }}
-  </div>
-
-  <div v-if="questionState === questionStates.loading" class="my-4">
+  <div v-if="loadingDetails" class="my-4">
     <LoadingSpinner />
   </div>
-
-  <div v-if="connectedToRightChain || usingMetaMask">
-    <div
-      v-if="questionState === questionStates.waitingForQuestion"
-      class="my-4"
-    >
-      <BaseButton
-        :loading="actionInProgress === 'submit-proposal'"
-        @click="submitProposal"
-      >
-        {{ $t('safeSnap.labels.request') }}
-      </BaseButton>
+  <template v-else>
+    <div v-if="!web3Account" class="my-4">
+      {{ $t('safeSnap.labels.connectWallet') }}
     </div>
 
-    <div
-      v-if="
-        (showOracleInfo || bondData.canClaim) &&
-        questionState !== questionStates.loading
-      "
-      class="my-4"
-    >
-      <div class="inline-block text-base">
-        <h4 class="text-center text-skin-link">
-          Reality oracle
-          <a class="ml-2 text-skin-text" @click="updateDetails">
-            <BaseIcon name="refresh" size="22" />
-          </a>
-        </h4>
-        <div
-          v-if="questionState !== questionStates.questionNotSet"
-          class="my-3 flex items-center space-x-3"
-          style="text-align: left"
+    <div v-if="connectedToRightChain || usingMetaMask">
+      <div
+        v-if="questionState === QUESTION_STATES.WAITING_FOR_QUESTION"
+        class="my-4"
+      >
+        <BaseButton
+          :loading="actionInProgress === 'submit-proposal'"
+          @click="submitProposal"
         >
-          <div class="self-stretch rounded-lg border p-3">
-            <div>
-              <strong class="pr-3"
-                >{{
-                  questionDetails?.finalizedAt
-                    ? $t('safeSnap.finalOutcome')
-                    : $t('safeSnap.currentOutcome')
-                }}:</strong
-              >
-              <span class="float-right text-skin-link">
-                {{ approvalData?.decision }}
-              </span>
-            </div>
-            <div v-if="!questionDetails?.finalizedAt" mt-3>
-              <strong class="pr-3">{{ $t('safeSnap.currentBond') }}:</strong>
-              <span class="float-right text-skin-link">
-                {{ approvalData?.currentBond }}
-              </span>
-            </div>
-          </div>
+          {{ $t('safeSnap.labels.request') }}
+        </BaseButton>
+      </div>
 
+      <div v-if="showOracleInfo || bondData.canClaim" class="my-4">
+        <div class="inline-block text-base">
+          <h4 class="text-center text-skin-link">
+            Reality oracle
+            <a class="ml-2 text-skin-text" @click="updateDetails">
+              <BaseIcon name="refresh" size="22" />
+            </a>
+          </h4>
           <div
-            v-if="approvalData?.timeLeft"
-            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
+            v-if="questionState !== QUESTION_STATES.QUESTION_NO_SET"
+            class="my-3 flex items-center space-x-3"
+            style="text-align: left"
           >
-            <strong>{{ approvalData?.timeLeft }}</strong>
-          </div>
-        </div>
+            <div class="self-stretch rounded-lg border p-3">
+              <div>
+                <strong class="pr-3"
+                  >{{
+                    questionDetails?.finalizedAt
+                      ? $t('safeSnap.finalOutcome')
+                      : $t('safeSnap.currentOutcome')
+                  }}:</strong
+                >
+                <span class="float-right text-skin-link">
+                  {{ approvalData?.decision }}
+                </span>
+              </div>
+              <div v-if="!questionDetails?.finalizedAt" mt-3>
+                <strong class="pr-3">{{ $t('safeSnap.currentBond') }}:</strong>
+                <span class="float-right text-skin-link">
+                  {{ approvalData?.currentBond }}
+                </span>
+              </div>
+            </div>
 
-        <div v-if="questionState === questionStates.questionNotSet">
-          <BaseButton
-            class="mb-1 mt-3 w-full"
-            :loading="actionInProgress === 'set-outcome'"
-            @click="
-              modalApproveDecisionOpen = true;
-              actionInProgress = 'set-outcome';
-            "
-          >
-            {{ $t('safeSnap.labels.setOutcome') }}
-          </BaseButton>
-        </div>
-        <div v-if="questionState === questionStates.questionNotResolved">
-          <BaseButton
-            class="my-1 w-full"
-            :loading="actionInProgress === 'set-outcome'"
-            @click="
-              modalApproveDecisionOpen = true;
-              actionInProgress = 'set-outcome';
-            "
-          >
-            {{ $t('safeSnap.labels.changeOutcome') }}
-          </BaseButton>
-        </div>
-        <div v-if="bondData.canClaim">
-          <BaseButton
-            class="my-1 w-full"
-            :loading="actionInProgress === 'claim-bond'"
-            @click="claimBond"
-          >
-            {{ $t('safeSnap.claimBond') }}
-          </BaseButton>
+            <div
+              v-if="approvalData?.timeLeft"
+              class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
+            >
+              <strong>{{ approvalData?.timeLeft }}</strong>
+            </div>
+          </div>
+
+          <div v-if="questionState === QUESTION_STATES.QUESTION_NO_SET">
+            <BaseButton
+              class="mb-1 mt-3 w-full"
+              :loading="actionInProgress === 'set-outcome'"
+              @click="
+                modalApproveDecisionOpen = true;
+                actionInProgress = 'set-outcome';
+              "
+            >
+              {{ $t('safeSnap.labels.setOutcome') }}
+            </BaseButton>
+          </div>
+          <div v-if="questionState === QUESTION_STATES.QUESTION_NOT_RESOLVED">
+            <BaseButton
+              class="my-1 w-full"
+              :loading="actionInProgress === 'set-outcome'"
+              @click="
+                modalApproveDecisionOpen = true;
+                actionInProgress = 'set-outcome';
+              "
+            >
+              {{ $t('safeSnap.labels.changeOutcome') }}
+            </BaseButton>
+          </div>
+          <div v-if="bondData.canClaim">
+            <BaseButton
+              class="my-1 w-full"
+              :loading="actionInProgress === 'claim-bond'"
+              @click="claimBond"
+            >
+              {{ $t('safeSnap.claimBond') }}
+            </BaseButton>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <BaseButton
-        :loading="action2InProgress === 'execute-proposal'"
-        @click="executeProposal"
+      <div
+        v-if="questionState === QUESTION_STATES.PROPOSAL_APPROVED"
+        class="my-4"
       >
-        {{
-          $t('safeSnap.labels.executeTxs', [
-            questionDetails.nextTxIndex + 1,
-            batches.length
-          ])
-        }}
-      </BaseButton>
+        <BaseButton
+          :loading="action2InProgress === 'execute-proposal'"
+          @click="executeProposal"
+        >
+          {{
+            $t('safeSnap.labels.executeTxs', [
+              questionDetails.nextTxIndex + 1,
+              batches.length
+            ])
+          }}
+        </BaseButton>
+      </div>
     </div>
-  </div>
-  <div
-    v-else-if="
-      questionState !== questionStates.loading &&
-      questionState !== questionStates.noWalletConnection
-    "
-    class="my-4"
-  >
-    {{ $t('safeSnap.labels.switchChain', [networkName]) }}
-  </div>
+    <div v-else-if="web3Account" class="my-4">
+      {{ $t('safeSnap.labels.switchChain', [networkName]) }}
+    </div>
 
-  <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
-    {{ $t('safeSnap.labels.executed') }}
-  </div>
+    <div
+      v-if="questionState === QUESTION_STATES.COMPLETELY_EXECUTED"
+      class="my-4"
+    >
+      {{ $t('safeSnap.labels.executed') }}
+    </div>
 
-  <div v-if="questionState === questionStates.proposalRejected" class="my-4">
-    {{ $t('safeSnap.labels.rejected') }}
-  </div>
-  <div v-if="questionState === questionStates.timeExpired" class="my-4">
-    {{ $t('safeSnap.labels.expired') }}
-  </div>
+    <div
+      v-if="questionState === QUESTION_STATES.PROPOSAL_REJECTED"
+      class="my-4"
+    >
+      {{ $t('safeSnap.labels.rejected') }}
+    </div>
+    <div v-if="questionState === QUESTION_STATES.TIME_EXPIRED" class="my-4">
+      {{ $t('safeSnap.labels.expired') }}
+    </div>
+
+    <div v-if="questionState === QUESTION_STATES.UNKNOWN" class="my-4">
+      {{ $t('safeSnap.labels.error') }}
+    </div>
+  </template>
 
   <teleport to="#modal">
     <SafeSnapModalOptionApproval

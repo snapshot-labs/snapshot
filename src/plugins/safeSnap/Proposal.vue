@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Config from './components/Config.vue';
+import Display from './components/Display.vue';
 import { computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
@@ -34,7 +34,7 @@ const safeSnapInput = computed(
 </script>
 
 <template>
-  <Config
+  <Display
     v-if="
       proposal.plugins.safeSnap &&
       safeSnapInput.safes.some(s => s.txs.length > 0)

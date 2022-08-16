@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import Config from './components/Config.vue';
+import Form from './components/Form.vue';
 
 defineProps<{
   space: ExtendedSpace;
@@ -15,7 +15,7 @@ const update = form => {
 </script>
 
 <template>
-  <Config
+  <Form
     v-if="space.plugins.safeSnap"
     :proposal="proposal"
     :config="space.plugins.safeSnap"
