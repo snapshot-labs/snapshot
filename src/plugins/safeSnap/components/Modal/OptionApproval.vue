@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
 import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -17,6 +17,8 @@ import {
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
+import { RealityOracleProposal } from '@/helpers/interfaces';
+import { Result } from '@ethersproject/abi';
 
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
@@ -47,14 +49,27 @@ Object.freeze(QuestionStates);
 
 const loading = ref(true);
 const questionStates = ref(QuestionStates);
-const actionInProgress = ref(false);
-const action2InProgress = ref(false);
-const questionDetails = ref(undefined);
+const actionInProgress = ref<string | null>(null);
+const action2InProgress = ref<string | null>(null);
+const questionDetails = ref<
+  Omit<RealityOracleProposal, 'transactions'> | undefined
+>(undefined);
 const modalApproveDecisionOpen = ref(false);
-const bondData = ref({
+const bondData = ref<{
+  tokenSymbol: string;
+  tokenDecimals: number;
+  canClaim: boolean;
+  data?: {
+    length: string[];
+    historyHashes: Result[];
+    users: Result[];
+    bonds: Result[];
+    answers: Result[];
+  };
+}>({
   tokenSymbol: 'ETH',
-  canClaim: undefined,
-  data: undefined
+  tokenDecimals: 18,
+  canClaim: false
 });
 
 const getTxHashes = () => {
@@ -87,7 +102,9 @@ const updateDetails = async () => {
 };
 
 const claimBond = async () => {
-  if (!questionDetails.value.oracle) return;
+  if (!questionDetails.value?.oracle) return;
+  if (!bondData.value?.data) return;
+  if (!questionDetails.value.questionId) return;
   try {
     actionInProgress.value = 'claim-bond';
 
@@ -118,6 +135,8 @@ const claimBond = async () => {
 
 const submitProposal = async () => {
   if (!getInstance().isAuthenticated.value) return;
+  if (!questionDetails.value?.proposalId) return;
+
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
@@ -144,6 +163,9 @@ const submitProposal = async () => {
 
 const voteOnQuestion = async option => {
   if (!getInstance().isAuthenticated.value) return;
+  if (!questionDetails.value?.questionId) return;
+  if (!questionDetails.value?.oracle) return;
+  if (!questionDetails.value?.minimumBond) return;
   try {
     await ensureRightNetwork(props.network);
     const voting = plugin.voteForQuestion(
@@ -471,7 +493,7 @@ onMounted(async () => {
       :token-decimals="bondData?.tokenDecimals"
       :oracle="questionDetails?.oracle"
       @setApproval="voteOnQuestion"
-      @close="modalApproveDecisionOpen = actionInProgress = false"
+      @close="(modalApproveDecisionOpen = false), (actionInProgress = null)"
     />
   </teleport>
 </template>

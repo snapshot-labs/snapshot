@@ -199,6 +199,7 @@ export interface RealityOracleProposal {
   nextTxIndex: number | undefined;
   transactions: SafeTransaction[];
   txHashes: string[];
+  minimumBond: BigNumberish;
   currentBond: BigNumberish | undefined;
   isApproved: boolean;
   endTime: number | undefined;

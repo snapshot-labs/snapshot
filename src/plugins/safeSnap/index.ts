@@ -6,7 +6,10 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import {
+  BigNumberish,
+  isBigNumberish
+} from '@ethersproject/bignumber/lib/bignumber';
 
 import {
   call,
@@ -312,7 +315,7 @@ export default class Plugin {
     web3: any,
     oracleAddress: string,
     questionId: string,
-    minimumBondInDaoModule: string,
+    minimumBondInDaoModule: BigNumberish,
     answer: '1' | '0'
   ) {
     const currentBond = await call(web3, ORACLE_ABI, [
