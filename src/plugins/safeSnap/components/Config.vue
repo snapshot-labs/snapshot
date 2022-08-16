@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import {
@@ -17,9 +17,13 @@ const props = defineProps([
   'preview' // if true, renders a read-only view
 ]);
 
-const emit = defineEmits('update:modelValue');
+const emit = defineEmits(['update:modelValue']);
 
-const input = ref({});
+const input = ref<{
+  safes: any[];
+  valid?: boolean;
+}>({ safes: [] });
+
 if (!Object.keys(props.modelValue).length) {
   input.value = {
     safes: coerceConfig(props.config, props.network).safes.map(safe => ({
