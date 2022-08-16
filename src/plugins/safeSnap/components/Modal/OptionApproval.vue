@@ -1,78 +1,73 @@
-<script>
+<script setup>
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { useEns } from '@/composables/useEns';
-import { useSafe } from '@/composables';
 import { getEnsTextRecord } from '@snapshot-labs/snapshot.js/src/utils';
+import { ref, computed, onMounted } from 'vue';
 
-export default {
-  props: [
-    'spaceId',
-    'open',
-    'isApproved',
-    'bond',
-    'questionId',
-    'minimumBond',
-    'tokenSymbol',
-    'tokenDecimals',
-    'oracle'
-  ],
-  emits: ['close', 'setApproval'],
-  setup() {
-    const { safesnap } = useSafe();
-    const { isValidEnsDomain } = useEns();
-    return { safesnap, isValidEnsDomain };
-  },
-  data() {
-    return { criteriaLink: '' };
-  },
-  computed: {
-    answer() {
-      return this.isApproved ? 'Yes' : 'No';
-    },
-    bondData() {
-      const bondNotSet = BigNumber.from(this.bond).eq(0);
-      const minimumBond = BigNumber.from(this.minimumBond).eq(0)
-        ? BigNumber.from(10).pow(this.tokenDecimals)
-        : this.minimumBond;
-      const toSet = bondNotSet ? minimumBond : BigNumber.from(this.bond).mul(2);
-      return {
-        toSet: formatUnits(toSet, this.tokenDecimals),
-        current: bondNotSet ? '--' : formatUnits(this.bond, this.tokenDecimals),
-        tokenSymbol: this.tokenSymbol
-      };
-    },
-    questionLink() {
-      if (this.tokenSymbol && this.tokenSymbol !== 'ETH') {
-        return `https://reality.eth.link/app/#!/token/${this.tokenSymbol}/question/${this.oracle}-${this.questionId}`;
-      }
-      return `https://reality.eth.link/app/#!/question/${this.oracle}-${this.questionId}`;
-    }
-  },
-  mounted() {
-    setTimeout(this.getCriteriaLink, 800);
-  },
-  methods: {
-    async handleSetApproval(option) {
-      await this.$emit('setApproval', option);
-      this.$emit('close');
-    },
-    async getCriteriaLink() {
-      if (this.isValidEnsDomain(this.spaceId)) {
-        try {
-          this.criteriaLink = await getEnsTextRecord(
-            this.spaceId,
-            'daorequirements'
-          );
-        } catch (err) {
-          console.warn(
-            '[safesnap] failed to get the "daorequirements" text record'
-          );
-        }
-      }
+const props = defineProps([
+  'spaceId',
+  'open',
+  'isApproved',
+  'bond',
+  'questionId',
+  'minimumBond',
+  'tokenSymbol',
+  'tokenDecimals',
+  'oracle'
+]);
+
+const emit = defineEmits(['close', 'setApproval']);
+
+const { isValidEnsDomain } = useEns();
+
+const criteriaLink = ref('');
+
+const answer = computed(() => {
+  return props.isApproved ? 'Yes' : 'No';
+});
+
+const bondData = computed(() => {
+  const bondNotSet = BigNumber.from(props.bond).eq(0);
+  const minimumBond = BigNumber.from(props.minimumBond).eq(0)
+    ? BigNumber.from(10).pow(props.tokenDecimals)
+    : props.minimumBond;
+  const toSet = bondNotSet ? minimumBond : BigNumber.from(props.bond).mul(2);
+  return {
+    toSet: formatUnits(toSet, props.tokenDecimals),
+    current: bondNotSet ? '--' : formatUnits(props.bond, props.tokenDecimals),
+    tokenSymbol: props.tokenSymbol
+  };
+});
+
+const questionLink = computed(() => {
+  if (props.tokenSymbol && props.tokenSymbol !== 'ETH') {
+    return `https://reality.eth.link/app/#!/token/${props.tokenSymbol}/question/${props.oracle}-${props.questionId}`;
+  }
+  return `https://reality.eth.link/app/#!/question/${props.oracle}-${props.questionId}`;
+});
+
+const handleSetApproval = async option => {
+  emit('setApproval', option);
+  emit('close');
+};
+
+const getCriteriaLink = async () => {
+  if (isValidEnsDomain(props.spaceId)) {
+    try {
+      criteriaLink.value = await getEnsTextRecord(
+        props.spaceId,
+        'daorequirements'
+      );
+    } catch (err) {
+      console.warn(
+        '[safesnap] failed to get the "daorequirements" text record'
+      );
     }
   }
 };
+
+onMounted(() => setTimeout(getCriteriaLink, 800));
 </script>
 
 <template>
