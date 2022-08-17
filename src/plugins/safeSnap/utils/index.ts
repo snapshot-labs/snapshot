@@ -1,6 +1,6 @@
 import { keccak256 } from '@ethersproject/solidity';
 
-import SafeSnapPlugin from '../index';
+import { calcTransactionHashes } from '../index';
 import {
   createMultiSendTx,
   getMultiSend,
@@ -45,10 +45,7 @@ export function getBatchHash(
   transaction: SafeTransaction
 ) {
   try {
-    const safeSnap = new SafeSnapPlugin();
-    const hashes = safeSnap.calcTransactionHashes(chainId, module, [
-      transaction
-    ]);
+    const hashes = calcTransactionHashes(chainId, module, [transaction]);
     return hashes[0];
   } catch (err) {
     console.warn('invalid batch hash', err);
