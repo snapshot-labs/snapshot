@@ -32,9 +32,9 @@ import {
   buildQuestion,
   checkPossibleExecution,
   getModuleDetails,
-  getProposalDetails
+  getProposalDetails,
+  retrieveInfoFromOracle
 } from './utils/realityModule';
-import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export function validateTransaction(transaction: SafeTransaction) {
