@@ -33,7 +33,7 @@ import {
   checkPossibleExecution,
   getModuleDetails,
   getProposalDetails,
-  retrieveInfoFromOracle
+  getQuestionInfoFromOracle
 } from './utils/realityModule';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -88,7 +88,7 @@ export async function getExecutionDetailsWithHashes(
     moduleDetails.oracle,
     proposalDetails.questionId
   );
-  const infoFromOracle = await retrieveInfoFromOracle(
+  const infoFromOracle = await getQuestionInfoFromOracle(
     network,
     moduleDetails.oracle,
     proposalDetails.questionId

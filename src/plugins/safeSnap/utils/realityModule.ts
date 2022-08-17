@@ -86,7 +86,7 @@ export const getModuleDetails = async (
   };
 };
 
-export const retrieveInfoFromOracle = async (
+export const getQuestionInfoFromOracle = async (
   network: string,
   oracleAddress: string,
   questionId: string | undefined
