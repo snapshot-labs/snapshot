@@ -40,6 +40,7 @@
   "network": "Network",
   "networks": "Mga network",
   "skins": "Mga Skin",
+  "spaceMembers": "Members",
   "members": "Walang miyembro | {count} miyembro | {count} mga miyembro",
   "editStrategy": "Edit strategy",
   "invalidProposals": "Mga di-wastong panukala",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Pagpapatunay ng panukala",
     "validation": "Type",
