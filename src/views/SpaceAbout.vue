@@ -62,7 +62,7 @@ onMounted(() => {
         <h2>{{ $t('about') }}</h2>
       </div>
 
-      <BaseBlock>
+      <BaseBlock v-if="space.about || space.terms">
         <div class="space-y-3">
           <div v-if="space.about">
             <TextAutolinker :text="space.about" />
