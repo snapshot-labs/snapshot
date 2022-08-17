@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import Plugin from '../../index';
-import {
-  decodeTransactionData,
-  rawToModuleTransaction
-} from '@/plugins/safeSnap/utils/transactions';
+import { rawToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
