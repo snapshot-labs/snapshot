@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, watch } from 'vue';
-import Plugin from '../../index';
+import { validateTransaction } from '../../index';
 import { transferFundsToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { getERC20TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
@@ -14,7 +14,6 @@ const emit = defineEmits(['update:modelValue']);
 
 const nativeAsset = getNativeAsset(props.config.network);
 
-const plugin = new Plugin();
 const tokens = ref([nativeAsset]);
 
 const to = ref('');
@@ -44,7 +43,7 @@ const updateTransaction = () => {
         token: selectedToken.value
       });
 
-      if (plugin.validateTransaction(transaction)) {
+      if (validateTransaction(transaction)) {
         emit('update:modelValue', transaction);
         return;
       }

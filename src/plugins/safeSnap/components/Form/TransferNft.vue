@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import Plugin from '../../index';
+import { validateTransaction } from '../../index';
 import { transferNftToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { getERC721TokenTransferTransactionData } from '@/plugins/safeSnap/utils/abi';
 import { isAddress } from '@ethersproject/address';
@@ -9,8 +9,6 @@ import SafeSnapInputAddress from '../Input/Address.vue';
 
 const props = defineProps(['modelValue', 'nonce', 'config']);
 const emit = defineEmits(['update:modelValue']);
-
-const plugin = new Plugin();
 
 const collectables = ref<any[]>([]);
 const to = ref('');
@@ -39,7 +37,7 @@ const updateTransaction = () => {
         collectable: selectedCollectable.value
       });
 
-      if (plugin.validateTransaction(transaction)) {
+      if (validateTransaction(transaction)) {
         emit('update:modelValue', transaction);
         return;
       }

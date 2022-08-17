@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Plugin from '../index';
+import { getModuleDetails } from '@/plugins/safeSnap/utils/realityModule';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
 import {
@@ -13,8 +13,6 @@ import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
-
-const plugin = new Plugin();
 
 const props = defineProps([
   'modelValue',
@@ -111,10 +109,7 @@ const networkIcon = computed(() => {
 
 onMounted(async () => {
   try {
-    const { dao } = await plugin.getModuleDetails(
-      props.network,
-      props.realityAddress
-    );
+    const { dao } = await getModuleDetails(props.network, props.realityAddress);
     gnosisSafeAddress.value = dao;
     transactionConfig.gnosisSafeAddress = gnosisSafeAddress.value;
     transactionConfig.tokens = await fetchBalances();

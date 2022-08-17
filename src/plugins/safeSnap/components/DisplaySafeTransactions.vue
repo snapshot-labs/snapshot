@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Plugin from '../index';
+import { getModuleDetails } from '@/plugins/safeSnap/utils/realityModule';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
 import {
@@ -14,8 +14,6 @@ import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { Proposal } from '@/helpers/interfaces';
-
-const plugin = new Plugin();
 
 const props = defineProps<{
   proposal: Proposal;
@@ -112,7 +110,7 @@ const networkIcon = computed(() => {
 
 onMounted(async () => {
   try {
-    const { dao } = await plugin.getModuleDetails(
+    const { dao } = await getModuleDetails(
       props.safe.network,
       props.safe.realityAddress
     );

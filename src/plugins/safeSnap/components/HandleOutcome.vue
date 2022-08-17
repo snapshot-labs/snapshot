@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue';
-import Plugin from '../index';
+import {
+  getExecutionDetailsWithHashes,
+  executeProposalWithHashes,
+  loadClaimBondData,
+  sendClaimBondTransaction,
+  submitProposalWithHashes,
+  voteForQuestion
+} from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -27,8 +34,6 @@ const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
 
 const props = defineProps(['batches', 'proposal', 'network', 'realityAddress']);
-
-const plugin = new Plugin();
 
 enum QUESTION_STATES {
   WAITING_FOR_QUESTION,
@@ -60,7 +65,7 @@ const getTxHashes = () => {
 const updateDetails = async () => {
   loadingDetails.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
+    questionDetails.value = await getExecutionDetailsWithHashes(
       props.network,
       props.realityAddress,
       props.proposal.id,
@@ -68,7 +73,7 @@ const updateDetails = async () => {
     );
     console.log('questionDetails', questionDetails.value);
     if (questionDetails.value.questionId && getInstance().web3) {
-      bondData.value = await plugin.loadClaimBondData(
+      bondData.value = await loadClaimBondData(
         getInstance().web3,
         props.network,
         questionDetails.value.questionId,
@@ -95,7 +100,7 @@ const claimBond = async () => {
     );
 
     await ensureRightNetwork(props.network);
-    const clamingBond = plugin.claimBond(
+    const clamingBond = sendClaimBondTransaction(
       getInstance().web3,
       questionDetails.value.oracle,
       questionDetails.value.questionId,
@@ -122,7 +127,7 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalWithHashes(
+    const proposalSubmission = submitProposalWithHashes(
       getInstance().web3,
       props.realityAddress,
       questionDetails.value.proposalId,
@@ -150,7 +155,7 @@ const voteOnQuestion = async option => {
   if (!questionDetails.value?.minimumBond) return;
   try {
     await ensureRightNetwork(props.network);
-    const voting = plugin.voteForQuestion(
+    const voting = voteForQuestion(
       props.network,
       getInstance().web3,
       questionDetails.value.oracle,
@@ -193,7 +198,7 @@ const executeProposal = async () => {
     clearBatchError();
     const transaction =
       props.batches[questionDetails.value.nextTxIndex].mainTransaction;
-    const executingProposal = plugin.executeProposalWithHashes(
+    const executingProposal = executeProposalWithHashes(
       getInstance().web3,
       props.realityAddress,
       questionDetails.value.proposalId,

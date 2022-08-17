@@ -4,6 +4,7 @@ import { REALITY_MODULE_ABI, REALITY_ORACLE_ABI } from '../constants';
 import { HashZero } from '@ethersproject/constants';
 import { BigNumber } from '@ethersproject/bignumber';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export const buildQuestion = async (proposalId: string, txHashes: string[]) => {
   const hashesHash = solidityKeccak256(['bytes32[]'], [txHashes]).slice(2);
@@ -11,12 +12,12 @@ export const buildQuestion = async (proposalId: string, txHashes: string[]) => {
 };
 
 export const getProposalDetails = async (
-  provider: StaticJsonRpcProvider,
   network: string,
   moduleAddress: string,
   questionHash: string,
   txHashes: string[]
 ): Promise<{ questionId: string; nextTxIndex: number | undefined }> => {
+  const provider: StaticJsonRpcProvider = getProvider(network);
   const proposalInfo = (
     await multicall(
       network,
@@ -44,7 +45,6 @@ export const getProposalDetails = async (
 };
 
 export const getModuleDetails = async (
-  provider: StaticJsonRpcProvider,
   network: string,
   moduleAddress: string
 ): Promise<{
@@ -54,6 +54,7 @@ export const getModuleDetails = async (
   minimumBond: number;
   expiration: number;
 }> => {
+  const provider: StaticJsonRpcProvider = getProvider(network);
   let moduleDetails;
   try {
     // Assume module is Reality Module
@@ -86,7 +87,6 @@ export const getModuleDetails = async (
 };
 
 export const checkPossibleExecution = async (
-  provider: StaticJsonRpcProvider,
   network: string,
   oracleAddress: string,
   questionId: string | undefined
@@ -95,6 +95,7 @@ export const checkPossibleExecution = async (
   finalizedAt: number | undefined;
 }> => {
   if (questionId) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
     try {
       const result = await multicall(network, provider, REALITY_ORACLE_ABI, [
         [oracleAddress, 'resultFor', [questionId]],

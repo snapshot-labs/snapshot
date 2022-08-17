@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Plugin from '../../index';
+import { validateTransaction } from '../../index';
 import { rawToModuleTransaction } from '@/plugins/safeSnap/utils/transactions';
 import { isHexString } from '@ethersproject/bytes';
 import { parseAmount } from '@/helpers/utils';
@@ -9,7 +9,6 @@ import { computed, onMounted, ref, watch } from 'vue';
 const props = defineProps(['modelValue', 'nonce', 'config']);
 const emit = defineEmits(['update:modelValue']);
 
-const plugin = new Plugin();
 const to = ref('');
 const data = ref('');
 const value = ref('0');
@@ -36,7 +35,7 @@ const updateTransaction = () => {
     nonce: props.nonce
   });
 
-  if (plugin.validateTransaction(transaction)) {
+  if (validateTransaction(transaction)) {
     emit('update:modelValue', transaction);
     return;
   }

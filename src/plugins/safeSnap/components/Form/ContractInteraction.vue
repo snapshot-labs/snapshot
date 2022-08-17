@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Plugin from '../../index';
+import { validateTransaction } from '../../index';
 import {
   getContractABI,
   getABIWriteFunctions,
@@ -17,8 +17,6 @@ import { Fragment, JsonFragment, FunctionFragment } from '@ethersproject/abi';
 
 const props = defineProps(['modelValue', 'nonce', 'config']);
 const emit = defineEmits(['update:modelValue']);
-
-const plugin = new Plugin();
 
 const to = ref('');
 const abi = ref('');
@@ -78,7 +76,7 @@ const updateTransaction = () => {
         props.config.multiSendAddress
       );
 
-      if (plugin.validateTransaction(transaction)) {
+      if (validateTransaction(transaction)) {
         emit('update:modelValue', transaction);
         return;
       }
