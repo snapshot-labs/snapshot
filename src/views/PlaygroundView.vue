@@ -238,12 +238,11 @@ function handleNetworkSelect(value) {
           <BaseButton
             :loading="loading"
             :disabled="loading || !strategy"
-            class="w-full"
-            :style="[loading ? '' : 'padding-top: 0.2rem']"
+            class="flex w-full items-center justify-center"
             primary
             @click="loadScores"
           >
-            <BaseIcon name="play" size="18" />
+            <i-ho-play class="text-lg" />
           </BaseButton>
           <BaseButton class="mt-2 w-full" @click="copyURL">
             <BaseIcon
