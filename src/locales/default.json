@@ -40,6 +40,7 @@
   "network": "Network",
   "networks": "Networks",
   "skins": "Skins",
+  "spaceMembers": "Members",
   "members": "No members | {count} member | {count} members",
   "editStrategy": "Edit strategy",
   "invalidProposals": "Invalid proposals",

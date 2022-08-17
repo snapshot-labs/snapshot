@@ -118,7 +118,7 @@ onMounted(() => {
       </BaseBlock>
       <BaseBlock
         v-if="space?.admins?.length"
-        :title="$t('moderators')"
+        :title="$t('spaceMembers')"
         class="mt-3"
         slim
       >
