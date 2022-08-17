@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
+
 import { useProfiles, useI18n } from '@/composables';
 
 const props = defineProps<{
@@ -92,14 +93,20 @@ onMounted(() => {
         <div
           v-for="(strategy, i) in space.strategies"
           :key="i"
-          class="flex justify-between border-b p-4 last:border-b-0"
+          class="flex items-center justify-between border-b p-4 last:border-b-0"
         >
           <div>
-            <BaseLink
-              :link="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.name}`"
-            >
-              {{ strategy.name }}
-            </BaseLink>
+            <div class="flex items-center">
+              <h3>
+                {{ strategy.name }}
+              </h3>
+              <ButtonPlayground
+                :name="strategy.name"
+                :network="strategy.network"
+                :params="strategy.params"
+              />
+            </div>
+
             <div>{{ networks[strategy.network].name }}</div>
           </div>
           <div>
