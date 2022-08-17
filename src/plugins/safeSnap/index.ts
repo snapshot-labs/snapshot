@@ -25,7 +25,7 @@ import {
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
-  ORACLE_ABI,
+  REALITY_ORACLE_ABI,
   ERC20_ABI
 } from './constants';
 import {
@@ -142,12 +142,12 @@ export default class Plugin {
     oracleAddress: string,
     block: string
   ) {
-    const contract = new Contract(oracleAddress, ORACLE_ABI, web3);
+    const contract = new Contract(oracleAddress, REALITY_ORACLE_ABI, web3);
     const provider: StaticJsonRpcProvider = getProvider(network);
     const account = (await web3.listAccounts())[0];
 
     const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
-      await multicall(network, provider, ORACLE_ABI, [
+      await multicall(network, provider, REALITY_ORACLE_ABI, [
         [oracleAddress, 'balanceOf', [account]],
         [oracleAddress, 'getBestAnswer', [questionId]],
         [oracleAddress, 'getHistoryHash', [questionId]],
@@ -161,7 +161,7 @@ export default class Plugin {
     };
 
     try {
-      const tokenCall = await call(provider, ORACLE_ABI, [
+      const tokenCall = await call(provider, REALITY_ORACLE_ABI, [
         oracleAddress,
         'token',
         []
@@ -247,7 +247,7 @@ export default class Plugin {
     questionId: string,
     claimParams: [string[], string[], number[], string[]]
   ) {
-    const currentHistoryHash = await call(web3, ORACLE_ABI, [
+    const currentHistoryHash = await call(web3, REALITY_ORACLE_ABI, [
       oracleAddress,
       'getHistoryHash',
       [questionId]
@@ -257,7 +257,7 @@ export default class Plugin {
       const withdrawTx = await sendTransaction(
         web3,
         oracleAddress,
-        ORACLE_ABI,
+        REALITY_ORACLE_ABI,
         'withdraw',
         []
       );
@@ -270,7 +270,7 @@ export default class Plugin {
     const tx = await sendTransaction(
       web3,
       oracleAddress,
-      ORACLE_ABI,
+      REALITY_ORACLE_ABI,
       'claimMultipleAndWithdrawBalance',
       [[questionId], ...claimParams]
     );
@@ -318,7 +318,7 @@ export default class Plugin {
     minimumBondInDaoModule: BigNumberish,
     answer: '1' | '0'
   ) {
-    const currentBond = await call(web3, ORACLE_ABI, [
+    const currentBond = await call(web3, REALITY_ORACLE_ABI, [
       oracleAddress,
       'getBond',
       [questionId]
@@ -345,7 +345,11 @@ export default class Plugin {
     // a RealitioERC20, otherwise the catch will handle the currency as ETH
     try {
       const account = (await web3.listAccounts())[0];
-      const token = await call(web3, ORACLE_ABI, [oracleAddress, 'token', []]);
+      const token = await call(web3, REALITY_ORACLE_ABI, [
+        oracleAddress,
+        'token',
+        []
+      ]);
       const [[tokenDecimals], [allowance]] = await multicall(
         network,
         web3,
@@ -390,7 +394,7 @@ export default class Plugin {
     const tx = await sendTransaction(
       web3,
       oracleAddress,
-      ORACLE_ABI,
+      REALITY_ORACLE_ABI,
       methodName,
       parameters,
       txOverrides

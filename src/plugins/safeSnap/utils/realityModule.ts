@@ -1,6 +1,6 @@
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { REALITY_MODULE_ABI, ORACLE_ABI } from '../constants';
+import { REALITY_MODULE_ABI, REALITY_ORACLE_ABI } from '../constants';
 import { HashZero } from '@ethersproject/constants';
 import { BigNumber } from '@ethersproject/bignumber';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
@@ -96,7 +96,7 @@ export const checkPossibleExecution = async (
 }> => {
   if (questionId) {
     try {
-      const result = await multicall(network, provider, ORACLE_ABI, [
+      const result = await multicall(network, provider, REALITY_ORACLE_ABI, [
         [oracleAddress, 'resultFor', [questionId]],
         [oracleAddress, 'getFinalizeTS', [questionId]]
       ]);

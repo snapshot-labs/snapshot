@@ -1,7 +1,7 @@
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { BigNumber } from '@ethersproject/bignumber';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { ORACLE_ABI } from '../constants';
+import { REALITY_ORACLE_ABI } from '../constants';
 
 export const retrieveInfoFromOracle = async (
   provider: StaticJsonRpcProvider,
@@ -14,7 +14,7 @@ export const retrieveInfoFromOracle = async (
   endTime: number | undefined;
 }> => {
   if (questionId) {
-    const result = await multicall(network, provider, ORACLE_ABI, [
+    const result = await multicall(network, provider, REALITY_ORACLE_ABI, [
       [oracleAddress, 'getFinalizeTS', [questionId]],
       [oracleAddress, 'getBond', [questionId]],
       [oracleAddress, 'getBestAnswer', [questionId]]
