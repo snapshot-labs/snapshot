@@ -13,17 +13,20 @@ import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
+import { Proposal } from '@/helpers/interfaces';
 
 const plugin = new Plugin();
 
-const props = defineProps([
-  'modelValue',
-  'proposal',
-  'network',
-  'realityAddress',
-  'multiSendAddress',
-  'hash'
-]);
+const props = defineProps<{
+  proposal: Proposal;
+  safe: {
+    network: string;
+    realityAddress: string;
+    multiSendAddress: string;
+    batches: any[];
+    hash: string;
+  };
+}>();
 
 function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
@@ -40,19 +43,19 @@ function formatBatches(network, realityModule, batches, multiSend) {
 
 const input = ref(
   formatBatches(
-    props.network,
-    props.realityAddress,
-    props.modelValue,
-    props.multiSendAddress
+    props.safe.network,
+    props.safe.realityAddress,
+    props.safe.batches,
+    props.safe.multiSendAddress
   )
 );
 const gnosisSafeAddress = ref<string>('');
 const showHash = ref(false);
 const transactionConfig = reactive({
   gnosisSafeAddress: gnosisSafeAddress.value,
-  realityAddress: props.realityAddress,
-  network: props.network,
-  multiSendAddress: props.multiSendAddress,
+  realityAddress: props.safe.realityAddress,
+  network: props.safe.network,
+  multiSendAddress: props.safe.multiSendAddress,
   tokens: [],
   collectables: []
 });
@@ -61,7 +64,7 @@ async function fetchBalances() {
   if (gnosisSafeAddress.value) {
     try {
       const balances = await getGnosisSafeBalances(
-        props.network,
+        props.safe.network,
         gnosisSafeAddress.value
       );
       return balances
@@ -81,7 +84,7 @@ async function fetchCollectibles() {
   if (gnosisSafeAddress.value) {
     try {
       return await getGnosisSafeCollectibles(
-        props.network,
+        props.safe.network,
         gnosisSafeAddress.value
       );
     } catch (error) {
@@ -92,26 +95,26 @@ async function fetchCollectibles() {
 }
 
 const safeLink = computed(() => {
-  const prefix = EIP3770_PREFIXES[props.network];
+  const prefix = EIP3770_PREFIXES[props.safe.network];
   return `https://gnosis-safe.io/app/${prefix}:${gnosisSafeAddress.value}`;
 });
 
 const networkName = computed(() => {
-  if (props.network === '1') return 'Mainnet';
-  const { shortName, name } = networks[props.network] || {};
-  return shortName || name || `#${props.network}`;
+  if (props.safe.network === '1') return 'Mainnet';
+  const { shortName, name } = networks[props.safe.network] || {};
+  return shortName || name || `#${props.safe.network}`;
 });
 
 const networkIcon = computed(() => {
-  const { logo } = networks[props.network];
+  const { logo } = networks[props.safe.network];
   return getIpfsUrl(logo);
 });
 
 onMounted(async () => {
   try {
     const { dao } = await plugin.getModuleDetails(
-      props.network,
-      props.realityAddress
+      props.safe.network,
+      props.safe.realityAddress
     );
     gnosisSafeAddress.value = dao;
     transactionConfig.gnosisSafeAddress = gnosisSafeAddress.value;
@@ -122,10 +125,7 @@ onMounted(async () => {
   }
 });
 
-const proposalResolved = computed(() => {
-  const ts = (Date.now() / 1e3).toFixed();
-  return ts > props.proposal.end;
-});
+const proposalResolved = computed(() => Date.now() / 1e3 > props.proposal.end);
 </script>
 
 <template>
@@ -146,12 +146,12 @@ const proposalResolved = computed(() => {
       </a>
       <div class="flex-grow"></div>
       <SafeSnapTooltip
-        :reality-address="realityAddress"
-        :multi-send-address="multiSendAddress"
+        :reality-address="safe.realityAddress"
+        :multi-send-address="safe.multiSendAddress"
       />
     </h4>
     <UiCollapsibleText
-      v-if="hash"
+      v-if="safe.hash"
       :show-arrow="true"
       :open="showHash"
       class="border-b"
@@ -159,7 +159,7 @@ const proposalResolved = computed(() => {
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
     >
-      {{ hash }}
+      {{ safe.hash }}
     </UiCollapsibleText>
     <div class="text-center">
       <div
@@ -178,7 +178,7 @@ const proposalResolved = computed(() => {
         v-if="proposalResolved"
         :batches="input"
         :proposal="proposal"
-        :reality-address="realityAddress"
+        :reality-address="safe.realityAddress"
         :network="transactionConfig.network"
       />
     </div>
