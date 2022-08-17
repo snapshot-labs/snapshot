@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
+
 import { useProfiles, useI18n } from '@/composables';
 
 const props = defineProps<{
@@ -61,25 +62,27 @@ onMounted(() => {
         <h2>{{ $t('about') }}</h2>
       </div>
 
-      <div class="space-y-3 px-4 md:px-0">
-        <div v-if="space.about">
-          <TextAutolinker :text="space.about" />
-        </div>
-        <div v-if="space.terms">
-          <h4 class="mb-1 text-skin-link">
-            {{ $t('settings.terms.label') }}
-          </h4>
+      <BaseBlock>
+        <div class="space-y-3">
+          <div v-if="space.about">
+            <TextAutolinker :text="space.about" />
+          </div>
+          <div v-if="space.terms">
+            <h4 class="mb-1 text-skin-link">
+              {{ $t('settings.terms.label') }}
+            </h4>
 
-          <BaseLink
-            :link="getUrl(space.terms)"
-            class="flex items-center text-skin-text hover:text-skin-link"
-          >
-            <div class="max-w-[300px] truncate">
-              {{ space.terms }}
-            </div>
-          </BaseLink>
+            <BaseLink
+              :link="getUrl(space.terms)"
+              class="flex items-center text-skin-text hover:text-skin-link"
+            >
+              <div class="max-w-[300px] truncate">
+                {{ space.terms }}
+              </div>
+            </BaseLink>
+          </div>
         </div>
-      </div>
+      </BaseBlock>
 
       <BaseBlock
         v-if="space.strategies"
@@ -90,14 +93,20 @@ onMounted(() => {
         <div
           v-for="(strategy, i) in space.strategies"
           :key="i"
-          class="flex justify-between border-b p-4 last:border-b-0"
+          class="flex items-center justify-between border-b p-4 last:border-b-0"
         >
           <div>
-            <BaseLink
-              :link="`https://github.com/snapshot-labs/snapshot-strategies/tree/master/src/strategies/${strategy.name}`"
-            >
-              {{ strategy.name }}
-            </BaseLink>
+            <div class="flex items-center">
+              <h3>
+                {{ strategy.name }}
+              </h3>
+              <ButtonPlayground
+                :name="strategy.name"
+                :network="strategy.network"
+                :params="strategy.params"
+              />
+            </div>
+
             <div>{{ networks[strategy.network].name }}</div>
           </div>
           <div>

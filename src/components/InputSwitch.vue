@@ -2,9 +2,10 @@
 import { Switch } from '@headlessui/vue';
 
 defineProps<{
-  modelValue: boolean;
+  modelValue?: boolean;
   label?: string;
   textRight?: string;
+  definition?: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -65,6 +66,6 @@ const emit = defineEmits(['update:modelValue']);
         </span>
       </span>
     </Switch>
-    <span v-if="textRight">{{ textRight }}</span>
+    <span>{{ textRight || definition?.title || '' }}</span>
   </div>
 </template>

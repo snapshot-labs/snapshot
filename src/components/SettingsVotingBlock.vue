@@ -99,7 +99,7 @@ const votingPeriod = computed({
         </div>
       </div>
 
-      <BaseSwitch
+      <InputSwitch
         v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
       />

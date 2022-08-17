@@ -159,6 +159,11 @@ onMounted(async () => {
     loadSnapshotBlockNumber();
   }
 });
+
+function handleNetworkSelect(value) {
+  form.value.network = value;
+  handleURLUpdate(null, 'networkUpdate');
+}
 </script>
 
 <template>
@@ -179,7 +184,7 @@ onMounted(async () => {
             <div class="space-y-2">
               <ComboboxNetwork
                 :network="form.network"
-                @select="value => (form.network = value)"
+                @select="handleNetworkSelect"
               />
               <BaseInput
                 v-model="form.snapshot"
@@ -197,7 +202,7 @@ onMounted(async () => {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('strategyParams')">
-            <InputObject
+            <FormObject
               v-if="strategyDefinition"
               v-model="form.params"
               :definition="strategyDefinition"
@@ -221,8 +226,6 @@ onMounted(async () => {
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              class="input w-full text-left"
-              style="font-size: 18px"
               @change:modelValue="handleURLUpdate"
             />
           </BaseBlock>
@@ -235,12 +238,11 @@ onMounted(async () => {
           <BaseButton
             :loading="loading"
             :disabled="loading || !strategy"
-            class="w-full"
-            :style="[loading ? '' : 'padding-top: 0.2rem']"
+            class="flex w-full items-center justify-center"
             primary
             @click="loadScores"
           >
-            <BaseIcon name="play" size="18" />
+            <i-ho-play class="text-lg" />
           </BaseButton>
           <BaseButton class="mt-2 w-full" @click="copyURL">
             <BaseIcon

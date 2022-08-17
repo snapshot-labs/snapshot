@@ -34,6 +34,7 @@ const { apolloQuery } = useApolloQuery();
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
 );
+
 const subSpaces = computed(
   () => props.space.children?.map(space => space.id) ?? []
 );
@@ -43,7 +44,10 @@ const spaceProposals = computed(() => {
     return clone(store.space.proposals).filter(
       proposal => proposal.space.id === props.space.id
     );
-  return store.space.proposals;
+
+  return clone(store.space.proposals).filter(proposal =>
+    [props.space.id, ...subSpaces.value].includes(proposal.space.id)
+  );
 });
 
 const route = useRoute();
@@ -98,11 +102,7 @@ watch(stateFilter, loadProposals);
 
 onMounted(() => {
   setPageTitle('page.title.space.proposals', { space: props.space.name });
-
-  const spaceIds = store.space.proposals?.map(p => p.space.id);
-  if (domain && !spaceIds.includes(domain)) return loadProposals();
-  if (!domain && !spaceIds.includes(route.params.key as string))
-    return loadProposals();
+  if (spaceProposals.value.length === 0) loadProposals();
 });
 </script>
 
@@ -138,7 +138,7 @@ onMounted(() => {
         class="mt-2"
         :space="space"
       />
-      <div v-else class="my-4 md:space-y-3">
+      <div v-else class="my-4 space-y-4">
         <BaseBlock
           v-for="(proposal, i) in spaceProposals"
           :key="i"
@@ -150,7 +150,7 @@ onMounted(() => {
             :profiles="profiles"
             :space="space"
             :voted="userVotedProposalIds.includes(proposal.id)"
-            :hide-space-avatar="proposal.space.id !== space.id"
+            :hide-space-avatar="proposal.space.id === space.id"
           />
         </BaseBlock>
       </div>
