@@ -61,25 +61,27 @@ onMounted(() => {
         <h2>{{ $t('about') }}</h2>
       </div>
 
-      <div class="space-y-3 px-4 md:px-0">
-        <div v-if="space.about">
-          <TextAutolinker :text="space.about" />
-        </div>
-        <div v-if="space.terms">
-          <h4 class="mb-1 text-skin-link">
-            {{ $t('settings.terms.label') }}
-          </h4>
+      <BaseBlock>
+        <div class="space-y-3">
+          <div v-if="space.about">
+            <TextAutolinker :text="space.about" />
+          </div>
+          <div v-if="space.terms">
+            <h4 class="mb-1 text-skin-link">
+              {{ $t('settings.terms.label') }}
+            </h4>
 
-          <BaseLink
-            :link="getUrl(space.terms)"
-            class="flex items-center text-skin-text hover:text-skin-link"
-          >
-            <div class="max-w-[300px] truncate">
-              {{ space.terms }}
-            </div>
-          </BaseLink>
+            <BaseLink
+              :link="getUrl(space.terms)"
+              class="flex items-center text-skin-text hover:text-skin-link"
+            >
+              <div class="max-w-[300px] truncate">
+                {{ space.terms }}
+              </div>
+            </BaseLink>
+          </div>
         </div>
-      </div>
+      </BaseBlock>
 
       <BaseBlock
         v-if="space.strategies"
