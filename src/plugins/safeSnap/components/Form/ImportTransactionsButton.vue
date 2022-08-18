@@ -3,7 +3,7 @@ import { parseEther } from '@ethersproject/units';
 import { isAddress } from '@ethersproject/address';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
-import { SafeTransactionOperationType } from '@/helpers/interfaces';
+import { SafeTransactionOperationType } from '@/plugins/safeSnap/interfaces';
 import { ref } from 'vue';
 
 const props = defineProps(['network']);

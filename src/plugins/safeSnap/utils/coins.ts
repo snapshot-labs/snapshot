@@ -1,4 +1,4 @@
-import { TokenAsset } from '@/helpers/interfaces';
+import { TokenAsset } from '@/plugins/safeSnap/interfaces';
 
 const ETHEREUM_COIN: TokenAsset = {
   name: 'Ether',

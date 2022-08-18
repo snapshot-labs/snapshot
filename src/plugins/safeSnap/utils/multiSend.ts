@@ -5,7 +5,7 @@ import { hexDataLength } from '@ethersproject/bytes';
 import {
   SafeTransactionOperationType,
   SafeTransaction
-} from '@/helpers/interfaces';
+} from '@/plugins/safeSnap/interfaces';
 import { MULTI_SEND_ABI, MULTI_SEND_VERSIONS } from '../constants';
 
 export enum MULTI_SEND_VERSION {

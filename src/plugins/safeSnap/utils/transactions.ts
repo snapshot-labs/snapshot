@@ -8,7 +8,7 @@ import {
   CollectableAssetTransaction,
   TokenAssetTransaction,
   SafeTransactionOperationType
-} from '@/helpers/interfaces';
+} from '@/plugins/safeSnap/interfaces';
 import { InterfaceDecoder } from './decoder';
 import { getNativeAsset } from './coins';
 import { ERC20_ABI, ERC721_ABI } from '../constants';

@@ -6,7 +6,10 @@ import {
   getMultiSend,
   MULTI_SEND_VERSION
 } from './multiSend';
-import { SafeTransaction, SafeExecutionData } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  SafeExecutionData
+} from '@/plugins/safeSnap/interfaces';
 
 export function formatBatchTransaction(
   batch: SafeTransaction[],

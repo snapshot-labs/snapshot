@@ -20,8 +20,9 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   SafeTransaction,
   RealityOracleProposal,
-  SafeTransactionOperationType
-} from '@/helpers/interfaces';
+  SafeTransactionOperationType,
+  SafeExecutionForm
+} from '@/plugins/safeSnap/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,

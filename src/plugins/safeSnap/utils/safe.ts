@@ -1,5 +1,5 @@
 import { GNOSIS_SAFE_TRANSACTION_API_URLS } from '../constants';
-import { TokenAsset } from '@/helpers/interfaces';
+import { TokenAsset } from '@/plugins/safeSnap/interfaces';
 import memoize from 'lodash/memoize';
 
 async function callGnosisSafeTransactionApi(network: string, url: string) {
