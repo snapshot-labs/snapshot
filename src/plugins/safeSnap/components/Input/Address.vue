@@ -1,13 +1,25 @@
 <script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue';
 import { isAddress } from '@ethersproject/address';
-import { onMounted, ref, watch } from 'vue';
+import { useI18n } from '@/composables';
 
-const props = defineProps(['modelValue', 'inputProps', 'label']);
+const props = defineProps<{
+  modelValue: string;
+  inputProps: Record<string, any>;
+  label: string;
+}>();
+
 const emit = defineEmits(['update:modelValue', 'validAddress']);
+
+const { t } = useI18n();
 
 const input = ref('');
 const isValid = ref(false);
-const dirty = ref(false);
+const error = computed(() =>
+  input.value !== '' && !isValid.value
+    ? t('safeSnap.invalidAddress')
+    : undefined
+);
 
 watch(
   () => props.modelValue,
@@ -23,7 +35,6 @@ onMounted(() => {
 });
 
 const handleInput = () => {
-  dirty.value = input.value !== '';
   emit('update:modelValue', input.value);
   isValid.value = isAddress(input.value);
   if (isValid.value) {
@@ -36,7 +47,7 @@ const handleInput = () => {
   <UiInput
     v-model="input"
     v-bind="inputProps"
-    :error="dirty && !isValid && $t('safeSnap.invalidAddress')"
+    :error="error"
     @input="handleInput()"
   >
     <template v-if="label" #label>{{ label }}</template>
