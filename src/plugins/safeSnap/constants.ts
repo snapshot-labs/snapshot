@@ -1,5 +1,3 @@
-import { MULTI_SEND_VERSION } from './utils/multiSend';
-
 export const EIP712_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
