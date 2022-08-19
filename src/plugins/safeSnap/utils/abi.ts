@@ -6,7 +6,6 @@ import {
   ParamType
 } from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
-import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
 import { ABI } from '@/plugins/safeSnap/interfaces';
 
@@ -22,24 +21,21 @@ export function isStringArray(value: string): boolean {
   }
 }
 
-const fetchContractABI = memoize(
-  async (url: string, contractAddress: string) => {
-    const params = new URLSearchParams({
-      module: 'contract',
-      action: 'getAbi',
-      address: contractAddress
-    });
+const fetchContractABI = async (url: string, contractAddress: string) => {
+  const params = new URLSearchParams({
+    module: 'contract',
+    action: 'getAbi',
+    address: contractAddress
+  });
 
-    const response = await fetch(`${url}?${params}`);
+  const response = await fetch(`${url}?${params}`);
 
-    if (!response.ok) {
-      return { status: 0, result: '' };
-    }
+  if (!response.ok) {
+    return { status: 0, result: '' };
+  }
 
-    return response.json();
-  },
-  (url, contractAddress) => `${url}_${contractAddress}`
-);
+  return response.json();
+};
 
 export function parseMethodToABI(method: FunctionFragment) {
   return [method.format(FormatTypes.full)];
