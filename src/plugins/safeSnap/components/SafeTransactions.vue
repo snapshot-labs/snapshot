@@ -2,10 +2,7 @@
 import { getModuleDetails } from '@/plugins/safeSnap/utils/realityModule';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
-import {
-  getGnosisSafeBalances,
-  getGnosisSafeCollectibles
-} from '@/plugins/safeSnap/utils/safe';
+import { useSafe } from '@/composables/useSafe';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
@@ -24,6 +21,8 @@ const props = defineProps([
 ]);
 
 const emit = defineEmits(['update:modelValue']);
+
+const { getGnosisSafeBalances, getGnosisSafeCollectibles } = useSafe();
 
 function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {

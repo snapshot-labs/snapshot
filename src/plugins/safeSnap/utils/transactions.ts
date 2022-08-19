@@ -14,7 +14,9 @@ import { getNativeAsset } from './coins';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
 import { fetchTextSignatures } from './index';
 import { getContractABI, parseMethodToABI } from './abi';
-import { getGnosisSafeToken } from './safe';
+import { useSafe } from '@/composables/useSafe';
+
+const { getGnosisSafeToken } = useSafe();
 
 export function rawToModuleTransaction({
   to,
