@@ -105,12 +105,12 @@ export function encodeTransactions(transactions: SafeTransaction[]) {
 }
 
 export function createMultiSendTx(
-  txs: SafeTransaction[],
+  batch: SafeTransaction[],
   nonce: number,
   multiSendAddress: string
 ) {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
-  const transactionsEncoded = encodeTransactions(txs);
+  const transactionsEncoded = encodeTransactions(batch);
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);
