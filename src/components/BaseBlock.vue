@@ -57,6 +57,7 @@ const isCollapsed = ref(true);
       >
         <i-ho-chevron-up :class="[{ 'rotate-180': isCollapsed }]" />
       </BaseButtonIcon>
+      <slot name="title-buttons" />
     </div>
     <div v-if="loading" class="block px-4 py-4">
       <div
