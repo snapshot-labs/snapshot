@@ -4,6 +4,7 @@ defineProps<{
   loading?: boolean;
   type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
+  small?: boolean;
 }>();
 </script>
 
@@ -13,7 +14,8 @@ defineProps<{
     :class="[
       'button px-[22px] ',
       {
-        'button--primary hover:brightness-95': primary
+        'button--primary hover:brightness-95': primary,
+        'button--small': small
       }
     ]"
     :disabled="disabled || loading"
@@ -31,6 +33,7 @@ defineProps<{
   border-radius: 23px;
   height: 46px;
   font-size: 18px;
+  white-space: nowrap;
 
   &.button--primary {
     color: white;
@@ -48,6 +51,12 @@ defineProps<{
       border: 1px solid var(--border-color);
       background-color: var(--border-color);
     }
+  }
+
+  &.button--small {
+    padding: 0 10px;
+    height: 28px;
+    font-size: 14px;
   }
 
   &:hover {
