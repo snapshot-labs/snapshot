@@ -40,6 +40,7 @@
   "network": "Rete",
   "networks": "Reti",
   "skins": "Temi",
+  "spaceMembers": "Members",
   "members": "Nessun membro | {count} membro | {count} membri",
   "editStrategy": "Modifica strategia",
   "invalidProposals": "Proposta non valida",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Validazione proposta",
     "validation": "Type",
