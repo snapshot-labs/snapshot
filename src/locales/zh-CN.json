@@ -40,6 +40,7 @@
   "network": "网络",
   "networks": "网络",
   "skins": "皮肤",
+  "spaceMembers": "成员",
   "members": "没有成员 | {count} 个成员 | {count} 个成员",
   "editStrategy": "编辑策略",
   "invalidProposals": "无效提案",
@@ -62,7 +63,7 @@
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "voteOverview": "投票总览",
-  "quorumReached": "quorum reached",
+  "quorumReached": "已达到既定人数",
   "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "凭证",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "作者",
-      "information": "作者可以创建提案而不必通过验证。"
+      "information": "拥有者总是能够创建提案。"
     },
     "proposalValidation": "提案验证",
     "validation": "类型",

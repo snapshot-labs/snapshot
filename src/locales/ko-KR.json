@@ -40,6 +40,7 @@
   "network": "네트워크",
   "networks": "네트워크들",
   "skins": "스킨",
+  "spaceMembers": "Members",
   "members": "회원 없음 | {count} 회원 | {count} 구성원",
   "editStrategy": "전략 수정",
   "invalidProposals": "유효하지 않는 제안",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "제안 검증",
     "validation": "Type",

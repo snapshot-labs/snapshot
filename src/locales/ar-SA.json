@@ -40,6 +40,7 @@
   "network": "الشبكة",
   "networks": "الشبكات",
   "skins": "المظاهر",
+  "spaceMembers": "Members",
   "members": "لا يوجد أعضاء | {count} أعضاء | {count} أعضاء",
   "editStrategy": "تعديل الاستراتيجية",
   "invalidProposals": "اقتراحات غير صالحة",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "المصادقة على المقترح",
     "validation": "Type",
