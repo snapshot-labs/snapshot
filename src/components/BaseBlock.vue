@@ -18,7 +18,7 @@ const isCollapsed = ref(true);
 
 <template>
   <div
-    class="border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border"
+    class="overflow-hidden border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border"
   >
     <div
       v-if="title"
