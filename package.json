@@ -33,7 +33,7 @@
     "@ethersproject/providers": "^5.6.8",
     "@ethersproject/solidity": "^5.6.1",
     "@ethersproject/strings": "^5.5.0",
-    "@ethersproject/units": "^5.6.1",
+    "@ethersproject/units": "^5.7.0",
     "@ethersproject/wallet": "^5.6.1",
     "@headlessui-float/vue": "^0.8.0",
     "@headlessui/vue": "^1.6.7",
