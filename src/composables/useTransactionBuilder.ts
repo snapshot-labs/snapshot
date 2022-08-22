@@ -21,7 +21,7 @@ export function useTransactionBuilder() {
 
   function removeTransaction(batchIndex: number, transactionIndex: number) {
     batches.value[batchIndex].splice(transactionIndex, 1);
-    if (batches.value[batchIndex].length === 0) {
+    if (batches.value.length > 1 && batches.value[batchIndex].length === 0) {
       removeBatch(batchIndex);
     }
   }
