@@ -18,7 +18,7 @@ type Moderator = {
   roles: string[];
 };
 
-const moderators = computed(() => {
+const spaceMembers = computed(() => {
   const authors = props.space.members.map(member => {
     return {
       id: member,
@@ -122,7 +122,7 @@ onMounted(() => {
         class="mt-3"
         slim
       >
-        <AboutModeratorsListItem v-for="(mod, i) in moderators" :key="i">
+        <AboutMembersListItem v-for="(mod, i) in spaceMembers" :key="i">
           <BaseUser :address="mod.id" :profile="profiles[mod.id]" />
           <div class="space-x-2">
             <BasePill
@@ -140,7 +140,7 @@ onMounted(() => {
               author
             </BasePill>
           </div>
-        </AboutModeratorsListItem>
+        </AboutMembersListItem>
       </BaseBlock>
     </template>
   </TheLayout>
