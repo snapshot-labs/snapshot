@@ -40,6 +40,7 @@
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
+  "spaceMembers": "Members",
   "members": "Aucun membre | {count} membre | {count} membres",
   "editStrategy": "Modifier la stratégie",
   "invalidProposals": "Propositions incorrectes",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Validation de la proposition",
     "validation": "Type",

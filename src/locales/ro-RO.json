@@ -40,6 +40,7 @@
   "network": "Rețea",
   "networks": "Reţele",
   "skins": "Skin-uri",
+  "spaceMembers": "Members",
   "members": "Niciun membru | {count} membru |\n {count} membri",
   "editStrategy": "Modifică strategia",
   "invalidProposals": "Propuneri invalide",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Validare propunere",
     "validation": "Type",

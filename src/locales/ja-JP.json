@@ -40,6 +40,7 @@
   "network": "ネットワーク",
   "networks": "ネットワーク",
   "skins": "スキン",
+  "spaceMembers": "Members",
   "members": "メンバーなし | {count} メンバー | {count} メンバー",
   "editStrategy": "ストラテジーを編集",
   "invalidProposals": "無効な提案",
@@ -332,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "提案のバリデーション",
     "validation": "Type",

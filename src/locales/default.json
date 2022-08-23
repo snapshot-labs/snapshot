@@ -41,6 +41,7 @@
   "network": "Network",
   "networks": "Networks",
   "skins": "Skins",
+  "spaceMembers": "Members",
   "members": "No members | {count} member | {count} members",
   "editStrategy": "Edit strategy",
   "invalidProposals": "Invalid proposals",
@@ -334,7 +335,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Proposal validation",
     "validation": "Type",

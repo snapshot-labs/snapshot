@@ -62,7 +62,7 @@ onMounted(() => {
         <h2>{{ $t('about') }}</h2>
       </div>
 
-      <BaseBlock>
+      <BaseBlock v-if="space.about || space.terms">
         <div class="space-y-3">
           <div v-if="space.about">
             <TextAutolinker :text="space.about" />
@@ -118,17 +118,25 @@ onMounted(() => {
       </BaseBlock>
       <BaseBlock
         v-if="space?.admins?.length"
-        :title="$t('moderators')"
+        :title="$t('spaceMembers')"
         class="mt-3"
         slim
       >
         <AboutModeratorsListItem v-for="(mod, i) in moderators" :key="i">
           <BaseUser :address="mod.id" :profile="profiles[mod.id]" />
           <div class="space-x-2">
-            <BasePill v-if="mod.roles.includes('admin')" class="py-1">
+            <BasePill
+              v-if="mod.roles.includes('admin')"
+              v-tippy="{ content: $t('settings.admins.information') }"
+              class="cursor-help py-1"
+            >
               admin
             </BasePill>
-            <BasePill v-if="mod.roles.includes('author')" class="py-1">
+            <BasePill
+              v-if="mod.roles.includes('author')"
+              v-tippy="{ content: $t('settings.authors.information') }"
+              class="cursor-help py-1"
+            >
               author
             </BasePill>
           </div>
