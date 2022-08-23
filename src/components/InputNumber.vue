@@ -18,6 +18,6 @@ const emit = defineEmits(['update:modelValue']);
     :placeholder="placeholder"
     :information="information"
     type="number"
-    @update:model-value="emit('update:modelValue', Number($event))"
+    @update:model-value="emit('update:modelValue', $event)"
   />
 </template>
