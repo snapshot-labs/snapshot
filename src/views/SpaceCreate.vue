@@ -70,10 +70,7 @@ const dateEnd = computed(() => {
 });
 
 const isValid = computed(() => {
-  const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
-    ? form.value.metadata.plugins.safeSnap.valid
-    : true;
-
+  // TODO: validate safesnap
   return (
     !isSending.value &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
@@ -83,7 +80,6 @@ const isValid = computed(() => {
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     passValidation.value[0] &&
-    isSafeSnapPluginValid &&
     !web3.value.authLoading
   );
 });
