@@ -14,9 +14,7 @@ import { getNativeAsset } from './coins';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
 import { fetchTextSignatures } from './index';
 import { getContractABI, parseMethodToABI } from './abi';
-import { useSafe } from '@/composables/useSafe';
-
-const { getGnosisSafeToken } = useSafe();
+import { getSafeToken } from '@/helpers/safe';
 
 export function rawToModuleTransaction({
   to,
@@ -190,7 +188,7 @@ export async function decodeTransactionData(
     try {
       const erc20ContractInterface = new InterfaceDecoder(ERC20_ABI);
       const params = erc20ContractInterface.decodeFunction(transaction.data);
-      const token = await getGnosisSafeToken(network, transaction.to);
+      const token = await getSafeToken(network, transaction.to);
       return transferFundsToModuleTransaction({
         recipient: params[0],
         amount: params[1],

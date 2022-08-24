@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSafe } from '@/composables';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { ERC20_ABI, ERC721_ABI } from '@/plugins/safeSnap/constants';
 import { formatEther } from '@ethersproject/units';
@@ -10,8 +9,6 @@ import { onMounted, ref } from 'vue';
 
 const props = defineProps(['modelValue', 'nonce', 'config']);
 const emit = defineEmits(['update:modelValue', 'remove']);
-
-const { safesnap } = useSafe();
 
 const open = ref(true);
 const hashHidden = ref(true);
@@ -143,7 +140,7 @@ onMounted(() => {
     >
       {{ JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t') }}
     </UiCollapsibleText>
-    <BaseBlock
+    <!-- <BaseBlock
       v-if="
         safesnap.batchError &&
         safesnap.batchError.message &&
@@ -154,7 +151,7 @@ onMounted(() => {
     >
       <BaseIcon name="warning" class="mr-2 !text-red" />
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
-    </BaseBlock>
+    </BaseBlock> -->
 
     <BaseButton class="mt-2" @click="addEmptyTransaction">
       {{ $t('safeSnap.addTransaction') }}

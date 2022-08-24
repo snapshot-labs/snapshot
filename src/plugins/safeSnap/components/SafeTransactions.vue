@@ -2,7 +2,6 @@
 import { getModuleDetails } from '@/plugins/safeSnap/utils/realityModule';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
-import { useSafe } from '@/composables/useSafe';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
@@ -10,6 +9,7 @@ import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
+import { getSafeBalances, getSafeCollectables } from '@/helpers/safe';
 
 const props = defineProps([
   'modelValue',
@@ -21,8 +21,6 @@ const props = defineProps([
 ]);
 
 const emit = defineEmits(['update:modelValue']);
-
-const { getGnosisSafeBalances, getGnosisSafeCollectibles } = useSafe();
 
 function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
@@ -59,7 +57,7 @@ const transactionConfig = reactive({
 async function fetchBalances() {
   if (gnosisSafeAddress.value) {
     try {
-      const balances = await getGnosisSafeBalances(
+      const balances = await getSafeBalances(
         props.network,
         gnosisSafeAddress.value
       );
@@ -79,10 +77,7 @@ async function fetchBalances() {
 async function fetchCollectibles() {
   if (gnosisSafeAddress.value) {
     try {
-      return await getGnosisSafeCollectibles(
-        props.network,
-        gnosisSafeAddress.value
-      );
+      return await getSafeCollectables(props.network, gnosisSafeAddress.value);
     } catch (error) {
       console.warn('Error fetching collectables');
     }

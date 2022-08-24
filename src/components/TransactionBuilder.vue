@@ -1,10 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
-import { SafeModule, TransactionType } from '@/helpers/transactionBuilder';
+import {
+  createEmptyTransaction,
+  Transaction,
+  TransactionType
+} from '@/helpers/transactionBuilder';
+import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 
-defineProps<{
-  safeModule: SafeModule;
+const props = defineProps<{
+  title: string;
+  availableFunds: TokenAsset[];
+  availableCollectables: CollectableAsset[];
+}>();
+
+provide('availableFunds', props.availableFunds);
+provide('availableCollectables', props.availableCollectables);
+
+const emit = defineEmits<{
+  (e: 'updateBatches', batches: Transaction[][]): void;
+  (e: 'removeTransactionBuilder'): void;
 }>();
 
 const {
@@ -12,37 +27,55 @@ const {
   addEmptyBatch,
   removeBatch,
   addTransaction,
+  updateTransaction,
   removeTransaction
 } = useTransactionBuilder();
 
-const isAddTransactionModalOpen = ref<boolean>(false);
-const typeOfTransactionToAdd = ref<TransactionType>(
-  TransactionType.TRANSFER_FUNDS
-);
-const batchToAddTransactionTo = ref<number>(0);
+watch(batches, () => {
+  emit('updateBatches', batches.value as Transaction[][]);
+});
 
-function openAddTransactionModal(
-  transactionType: TransactionType,
-  batchIndex: number
+const isTransactionFormModalOpen = ref<boolean>(false);
+const targetBatchIndex = ref<number>(0);
+const targetTransactionIndex = ref<number | null>(0);
+const targetTransaction = ref<Transaction | null>(null);
+
+function openTransactionFormModal(
+  transaction: Transaction,
+  batchIndex: number,
+  transactionIndex: number | null = null
 ) {
-  isAddTransactionModalOpen.value = true;
-  typeOfTransactionToAdd.value = transactionType;
-  batchToAddTransactionTo.value = batchIndex;
+  targetTransaction.value = transaction;
+  targetBatchIndex.value = batchIndex;
+  targetTransactionIndex.value = transactionIndex;
+  isTransactionFormModalOpen.value = true;
+}
+
+function saveTransaction(transaction: Transaction) {
+  if (targetTransactionIndex.value === null) {
+    addTransaction(targetBatchIndex.value, transaction);
+  } else {
+    updateTransaction(
+      targetBatchIndex.value,
+      targetTransactionIndex.value,
+      transaction
+    );
+  }
 }
 </script>
 
 <template>
   <div>
-    <BaseBlock
-      :title="`${safeModule.moduleType} (${safeModule.moduleAddress})`"
-      slim
-    >
+    <BaseBlock :title="title" slim>
       <template #title-buttons>
         <div class="ml-auto space-x-2">
           <BaseButton small @click="addEmptyBatch">
             {{ batches.length === 1 ? 'Group transactions' : 'Add group' }}
           </BaseButton>
           <BaseButton small> Import </BaseButton>
+          <BaseButton small @click="$emit('removeTransactionBuilder')">
+            <i-ho-x class="inline" />
+          </BaseButton>
         </div>
       </template>
       <div
@@ -57,18 +90,24 @@ function openAddTransactionModal(
           </BaseButton>
         </h4>
         <TransactionBuilderAddTransactionBar
-          @select-type="openAddTransactionModal($event, batchIndex)"
+          @add-transaction="openTransactionFormModal($event, batchIndex)"
         />
         <div
           v-for="(transaction, transactionIndex) in batch"
           :key="transactionIndex"
           class="flex border-t px-4 py-2"
         >
-          {{ transaction.type }}
+          {{ transaction }}
           <BaseButton
             small
             class="ml-auto"
-            @click="removeTransaction(batchIndex, transactionIndex)"
+            @click="
+              openTransactionFormModal(
+                transaction,
+                batchIndex,
+                transactionIndex
+              )
+            "
           >
             <i-ho-pencil />
           </BaseButton>
@@ -84,11 +123,12 @@ function openAddTransactionModal(
     </BaseBlock>
 
     <teleport to="#modal">
-      <TransactionBuilderAddTransactionModal
-        :is-open="isAddTransactionModalOpen"
-        :transaction-type="typeOfTransactionToAdd"
-        @close="isAddTransactionModalOpen = false"
-        @addTransaction="addTransaction(batchToAddTransactionTo, $event)"
+      <TransactionBuilderTransactionFormModal
+        v-if="targetTransaction"
+        :is-open="isTransactionFormModalOpen"
+        :transaction="targetTransaction"
+        @close="isTransactionFormModalOpen = false"
+        @save-transaction="saveTransaction($event)"
       />
     </teleport>
   </div>

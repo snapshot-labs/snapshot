@@ -88,6 +88,8 @@ export const REALITY_ORACLE_ABI = [
   'function withdraw() public'
 ];
 
+export const UMA_MODULE_ABI = ['function avatar() view returns (address)'];
+
 export const ERC20_ABI = [
   //Read functions
   'function balanceOf(address account) view returns (uint256)',

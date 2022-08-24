@@ -2,7 +2,6 @@
 import { getModuleDetails } from '@/plugins/safeSnap/utils/realityModule';
 import { createBatch } from '@/plugins/safeSnap/utils';
 import { EIP3770_PREFIXES } from '@/plugins/safeSnap/constants';
-import { useSafe } from '@/composables/useSafe';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 
@@ -11,6 +10,7 @@ import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { computed, onMounted, reactive, ref } from 'vue';
 import { Proposal } from '@/helpers/interfaces';
+import { getSafeBalances, getSafeCollectables } from '@/helpers/safe';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -22,8 +22,6 @@ const props = defineProps<{
     hash: string;
   };
 }>();
-
-const { getGnosisSafeBalances, getGnosisSafeCollectibles } = useSafe();
 
 function formatBatches(network, realityModule, batches, multiSend) {
   if (batches.length) {
@@ -60,7 +58,7 @@ const transactionConfig = reactive({
 async function fetchBalances() {
   if (gnosisSafeAddress.value) {
     try {
-      const balances = await getGnosisSafeBalances(
+      const balances = await getSafeBalances(
         props.safe.network,
         gnosisSafeAddress.value
       );
@@ -80,7 +78,7 @@ async function fetchBalances() {
 async function fetchCollectibles() {
   if (gnosisSafeAddress.value) {
     try {
-      return await getGnosisSafeCollectibles(
+      return await getSafeCollectables(
         props.safe.network,
         gnosisSafeAddress.value
       );

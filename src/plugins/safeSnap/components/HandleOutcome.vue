@@ -19,8 +19,7 @@ import {
   useI18n,
   useIntl,
   useFlashNotification,
-  useTxStatus,
-  useSafe
+  useTxStatus
 } from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
@@ -28,7 +27,6 @@ import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
-const { clearBatchError, setBatchError } = useSafe();
 const { web3Account, ensureRightNetwork } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
@@ -195,7 +193,7 @@ const executeProposal = async () => {
   }
 
   try {
-    clearBatchError();
+    // clearBatchError();
     const transaction =
       props.batches[questionDetails.value.nextTxIndex].mainTransaction;
     const executingProposal = executeProposalWithHashes(
@@ -217,7 +215,7 @@ const executeProposal = async () => {
   } catch (err: Error) {
     pendingCount.value--;
     action2InProgress.value = null;
-    setBatchError(questionDetails.value.nextTxIndex, err.reason);
+    // setBatchError(questionDetails.value.nextTxIndex, err.reason);
   }
 };
 

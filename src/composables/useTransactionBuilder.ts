@@ -15,6 +15,14 @@ export function useTransactionBuilder() {
     batches.value[batchIndex].push(transaction);
   }
 
+  function updateTransaction(
+    batchIndex: number,
+    transactionIndex: number,
+    transaction: Transaction
+  ) {
+    batches.value[batchIndex][transactionIndex] = transaction;
+  }
+
   function removeBatch(batchIndex: number) {
     batches.value = batches.value.filter((_, index) => index !== batchIndex);
   }
@@ -30,6 +38,7 @@ export function useTransactionBuilder() {
     batches: readonly(batches),
     addEmptyBatch,
     addTransaction,
+    updateTransaction,
     removeBatch,
     removeTransaction
   };

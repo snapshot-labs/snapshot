@@ -1,81 +1,134 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { ref } from 'vue';
-import { coerceConfig, getSafeHash, isValidInput } from './utils';
-import SafeTransactions from './components/SafeTransactions.vue';
+import {
+  Transaction,
+  TransactionBuilderConfig
+} from '@/helpers/transactionBuilder';
+import { mapLegacyModuleConfig } from '@/plugins/safeSnap/utils';
+import {
+  getSafeBalances,
+  getSafeCollectables,
+  AbstractSafeModule,
+  SafeModuleConfig,
+  SafeModuleType,
+  SafeModuleExecutionData
+} from '@/helpers/safe';
+import { RealityModule } from './realityModule';
+import { UmaModule } from './umaModule';
 
 const props = defineProps<{
   space: ExtendedSpace;
-  proposal: any;
-  modelValue: any;
 }>();
 
 const emit = defineEmits(['update']);
-const update = form => {
-  emit('update', { key: 'safeSnap', form });
+
+const proposalExecutionData = ref<SafeModuleExecutionData[]>([]);
+
+const updateProposalExecutionData = (
+  builderIndex: number,
+  safeModule: AbstractSafeModule,
+  updatedBatches: Transaction[][]
+) => {
+  proposalExecutionData.value[builderIndex] = {
+    network: safeModule.network,
+    address: safeModule.address,
+    type: safeModule.type,
+    batches: updatedBatches
+  };
+  emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
 };
 
-const input = ref<{
-  safes: any[];
-  valid?: boolean;
-}>({ safes: [] });
+const removeProposalExecutionData = (builderIndex: number) => {
+  proposalExecutionData.value = proposalExecutionData.value.filter(
+    (_, index) => index !== builderIndex
+  );
+  emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
+};
 
-if (!Object.keys(props.modelValue).length) {
-  input.value = {
-    safes: coerceConfig(
-      props.space.plugins.safeSnap,
-      props.space.network
-    ).safes.map(safe => ({
-      ...safe,
-      hash: null,
-      txs: []
-    })),
-    valid: true
-  };
-} else {
-  const value = clone(props.modelValue);
-  if (
-    value.safes &&
-    props.space.plugins.safeSnap &&
-    Array.isArray(props.space.plugins.safeSnap.safes)
-  ) {
-    value.safes = value.safes.map((safe, index) => ({
-      ...props.space.plugins.safeSnap.safes[index],
-      ...safe
-    }));
+const safeModuleConfigs = computed(() =>
+  mapLegacyModuleConfig(props.space.plugins.safeSnap)
+);
+const transactionBuilders = ref<TransactionBuilderConfig[]>([]);
+const isInitializingTransactionBuilder = ref<boolean>(false);
+
+async function addTransactionBuilder(
+  safeModuleConfig: SafeModuleConfig
+): Promise<void> {
+  isInitializingTransactionBuilder.value = true;
+
+  let safeModule: AbstractSafeModule;
+
+  switch (safeModuleConfig.type) {
+    case SafeModuleType.REALITY:
+      safeModule = new RealityModule(safeModuleConfig);
+      break;
+    case SafeModuleType.UMA:
+      safeModule = new UmaModule(safeModuleConfig);
+      break;
+    default:
+      throw new Error(`Unknown safe module type: ${safeModuleConfig.type}`);
   }
-  input.value = coerceConfig(value, props.space.network);
+
+  await safeModule.setSafeAddress();
+
+  const availableFunds = await getSafeBalances(
+    safeModuleConfig.network,
+    safeModule.safeAddress
+  );
+  const availableCollectables = await getSafeCollectables(
+    safeModuleConfig.network,
+    safeModule.safeAddress
+  );
+
+  isInitializingTransactionBuilder.value = false;
+
+  transactionBuilders.value.push({
+    title: `${
+      safeModuleConfig.type.slice(0, 1).toUpperCase() +
+      safeModuleConfig.type.slice(1)
+    } (Safe: ${safeModule.safeAddress.slice(0, 8)}...)`,
+    availableFunds,
+    availableCollectables,
+    safeModule
+  });
 }
 
-const updateSafeTransactions = () => {
-  input.value.valid = isValidInput(input.value);
-  input.value.safes = input.value.safes.map(safe => {
-    return {
-      ...safe,
-      hash: getSafeHash(safe)
-    };
-  });
-  update(input.value);
-};
+function removeTransactionBuilder(builderIndex: number) {
+  transactionBuilders.value = transactionBuilders.value.filter(
+    (_, index) => index !== builderIndex
+  );
+  removeProposalExecutionData(builderIndex);
+}
 </script>
 
 <template>
-  <BaseBlock
-    v-if="space.plugins.safeSnap"
-    :title="$t('safeSnap.transactions')"
-    slim
-  >
-    <SafeTransactions
-      v-for="(safe, index) in input.safes"
-      :key="index"
-      :proposal="proposal"
-      :hash="safe.hash"
-      :network="safe.network"
-      :reality-address="safe.realityAddress"
-      :multi-send-address="safe.multiSendAddress"
-      :model-value="safe.txs"
-      @update:modelValue="updateSafeTransactions()"
-    />
-  </BaseBlock>
+  <div>
+    <div class="mb-3 space-y-3">
+      <TransactionBuilder
+        v-for="(builder, index) in transactionBuilders"
+        :key="index"
+        :title="builder.title"
+        :available-funds="builder.availableFunds"
+        :available-collectables="builder.availableCollectables"
+        @remove-transaction-builder="removeTransactionBuilder(index)"
+        @update-batches="
+          updateProposalExecutionData(index, builder.safeModule, $event)
+        "
+      />
+    </div>
+    <div v-if="isInitializingTransactionBuilder" class="p-4 text-center">
+      <LoadingSpinner /> initializing safe module
+    </div>
+    <div class="space-y-2">
+      <BaseButton
+        v-for="(safeModuleConfig, index) in safeModuleConfigs"
+        :key="index"
+        class="w-full"
+        @click="addTransactionBuilder(safeModuleConfig)"
+      >
+        add {{ safeModuleConfig.type }} module
+      </BaseButton>
+    </div>
+  </div>
 </template>

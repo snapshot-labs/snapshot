@@ -10,6 +10,22 @@ import {
   SafeTransaction,
   SafeExecutionData
 } from '@/plugins/safeSnap/interfaces';
+import { SafeModuleConfig, SafeModuleType } from '@/helpers/safe';
+
+export function mapLegacyModuleConfig(config: any): SafeModuleConfig[] {
+  return [
+    {
+      network: '4',
+      type: SafeModuleType.REALITY,
+      address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
+    },
+    {
+      network: '4',
+      type: SafeModuleType.UMA,
+      address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
+    }
+  ];
+}
 
 export function formatBatchTransaction(
   batch: SafeTransaction[],

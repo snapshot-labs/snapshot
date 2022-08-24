@@ -2,6 +2,7 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
+import { AbstractSafeModule, CollectableAsset, TokenAsset } from './safe';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -66,27 +67,16 @@ export enum MultiSendVersion {
   V1_1_1 = '1.1.1'
 }
 
-export enum SafeModuleType {
-  REALITY = 'reality',
-  UMA = 'uma'
-}
-
-export interface SafeModule {
-  moduleAddress: string;
-  moduleType: SafeModuleType;
-  multisendVersion: MultiSendVersion;
-}
-
 export enum TransactionOperationType {
   CALL,
   DELEGATECALL
 }
 
 export enum TransactionType {
-  TRANSFER_FUNDS,
-  TRANSFER_NFT,
-  CONTRACT_INTERACTION,
-  RAW_TRANSACTION
+  TRANSFER_FUNDS = 'transferFunds',
+  TRANSFER_NFT = 'transferNft',
+  CONTRACT = 'contractInteraction',
+  RAW = 'raw'
 }
 
 export interface Transaction {
@@ -95,7 +85,36 @@ export interface Transaction {
   value: BigNumber;
   data: string;
   operation: TransactionOperationType;
-  nonce: string;
+  [x: string]: any;
+}
+
+export interface TokenAssetTransaction extends Transaction {
+  type: TransactionType.TRANSFER_FUNDS;
+  amount: BigNumber;
+  recipient: string;
+  token?: TokenAsset;
+}
+
+export interface CollectableAssetTransaction extends Transaction {
+  type: TransactionType.TRANSFER_NFT;
+  recipient: string;
+  collectable?: CollectableAsset;
+}
+
+export interface ContractTransaction extends Transaction {
+  type: TransactionType.CONTRACT;
+  abi: string[];
+}
+
+export interface RawTransaction extends Transaction {
+  type: TransactionType.RAW;
+}
+
+export interface TransactionBuilderConfig {
+  title: string;
+  availableFunds: TokenAsset[];
+  availableCollectables: CollectableAsset[];
+  safeModule: AbstractSafeModule;
 }
 
 const MULTI_SEND_VERSIONS: Record<MultiSendVersion, Record<string, string>> = {
@@ -151,12 +170,37 @@ export function createMultiSendTx(
 }
 
 export function createEmptyTransaction(type: TransactionType): Transaction {
-  return {
+  const transaction = {
     type,
     to: '',
     value: BigNumber.from(0),
     data: '',
-    operation: TransactionOperationType.CALL,
-    nonce: '0'
+    operation: TransactionOperationType.CALL
   };
+
+  if (type === TransactionType.TRANSFER_FUNDS) {
+    return {
+      ...transaction,
+      recipient: '',
+      amount: BigNumber.from(0),
+      token: undefined
+    };
+  }
+
+  if (type === TransactionType.TRANSFER_NFT) {
+    return {
+      ...transaction,
+      recipient: '',
+      collectable: undefined
+    };
+  }
+
+  if (type === TransactionType.CONTRACT) {
+    return {
+      ...transaction,
+      abi: []
+    };
+  }
+
+  return transaction;
 }
