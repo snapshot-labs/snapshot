@@ -4,6 +4,10 @@ import { Transaction } from '@/helpers/transactionBuilder';
 export function useTransactionBuilder() {
   const batches = ref<Transaction[][]>([[]]);
 
+  function setBatches(existingBatches: Transaction[][]) {
+    batches.value = existingBatches;
+  }
+
   function addEmptyBatch() {
     batches.value.push([]);
   }
@@ -36,6 +40,7 @@ export function useTransactionBuilder() {
 
   return {
     batches: readonly(batches),
+    setBatches,
     addEmptyBatch,
     addTransaction,
     updateTransaction,

@@ -18,12 +18,18 @@ import { RealityModule } from './realityModule';
 import { UmaModule } from './umaModule';
 
 const props = defineProps<{
+  modelValue: {
+    safeSnap?: SafeModuleExecutionData[];
+    [otherPlugins: string]: any;
+  };
   space: ExtendedSpace;
 }>();
 
 const emit = defineEmits(['update']);
 
-const proposalExecutionData = ref<SafeModuleExecutionData[]>([]);
+const proposalExecutionData = ref<SafeModuleExecutionData[]>(
+  props.modelValue.safeSnap || []
+);
 
 const updateProposalExecutionData = (
   builderIndex: number,
@@ -53,31 +59,32 @@ const transactionBuilders = ref<TransactionBuilderConfig[]>([]);
 const isInitializingTransactionBuilder = ref<boolean>(false);
 
 async function addTransactionBuilder(
-  safeModuleConfig: SafeModuleConfig
+  config: SafeModuleConfig,
+  batches: Transaction[][] = [[]]
 ): Promise<void> {
   isInitializingTransactionBuilder.value = true;
 
   let safeModule: AbstractSafeModule;
 
-  switch (safeModuleConfig.type) {
+  switch (config.type) {
     case SafeModuleType.REALITY:
-      safeModule = new RealityModule(safeModuleConfig);
+      safeModule = new RealityModule(config);
       break;
     case SafeModuleType.UMA:
-      safeModule = new UmaModule(safeModuleConfig);
+      safeModule = new UmaModule(config);
       break;
     default:
-      throw new Error(`Unknown safe module type: ${safeModuleConfig.type}`);
+      throw new Error(`Unknown safe module type: ${config.type}`);
   }
 
   await safeModule.setSafeAddress();
 
   const availableFunds = await getSafeBalances(
-    safeModuleConfig.network,
+    config.network,
     safeModule.safeAddress
   );
   const availableCollectables = await getSafeCollectables(
-    safeModuleConfig.network,
+    config.network,
     safeModule.safeAddress
   );
 
@@ -85,12 +92,12 @@ async function addTransactionBuilder(
 
   transactionBuilders.value.push({
     title: `${
-      safeModuleConfig.type.slice(0, 1).toUpperCase() +
-      safeModuleConfig.type.slice(1)
+      config.type.slice(0, 1).toUpperCase() + config.type.slice(1)
     } (Safe: ${safeModule.safeAddress.slice(0, 8)}...)`,
     availableFunds,
     availableCollectables,
-    safeModule
+    safeModule,
+    batches
   });
 }
 
@@ -100,6 +107,12 @@ function removeTransactionBuilder(builderIndex: number) {
   );
   removeProposalExecutionData(builderIndex);
 }
+
+proposalExecutionData.value.forEach(
+  (executionData: SafeModuleExecutionData) => {
+    addTransactionBuilder(executionData, executionData.batches);
+  }
+);
 </script>
 
 <template>
@@ -111,6 +124,7 @@ function removeTransactionBuilder(builderIndex: number) {
         :title="builder.title"
         :available-funds="builder.availableFunds"
         :available-collectables="builder.availableCollectables"
+        :existing-batches="builder.batches"
         @remove-transaction-builder="removeTransactionBuilder(index)"
         @update-batches="
           updateProposalExecutionData(index, builder.safeModule, $event)

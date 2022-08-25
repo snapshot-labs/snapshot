@@ -8,6 +8,7 @@ const props = defineProps<{
   title: string;
   availableFunds: TokenAsset[];
   availableCollectables: CollectableAsset[];
+  existingBatches?: Transaction[][];
 }>();
 
 provide('availableFunds', props.availableFunds);
@@ -20,6 +21,7 @@ const emit = defineEmits<{
 
 const {
   batches,
+  setBatches,
   addEmptyBatch,
   removeBatch,
   addTransaction,
@@ -27,9 +29,15 @@ const {
   removeTransaction
 } = useTransactionBuilder();
 
-watch(batches, () => {
-  emit('updateBatches', batches.value as Transaction[][]);
-});
+setBatches(props.existingBatches || []);
+
+watch(
+  batches,
+  () => {
+    emit('updateBatches', batches.value as Transaction[][]);
+  },
+  { deep: true }
+);
 
 const isTransactionFormModalOpen = ref<boolean>(false);
 const targetBatchIndex = ref<number>(0);

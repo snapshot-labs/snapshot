@@ -115,6 +115,7 @@ export interface TransactionBuilderConfig {
   availableFunds: TokenAsset[];
   availableCollectables: CollectableAsset[];
   safeModule: AbstractSafeModule;
+  batches: Transaction[][];
 }
 
 const MULTI_SEND_VERSIONS: Record<MultiSendVersion, Record<string, string>> = {
