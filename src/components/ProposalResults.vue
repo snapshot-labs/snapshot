@@ -7,8 +7,6 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-import { useIntl, useQuorum } from '@/composables';
-
 defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
@@ -18,9 +16,6 @@ defineProps<{
   loaded: boolean;
 }>();
 
-const { formatCompactNumber } = useIntl();
-const { quorumScore } = useQuorum();
-
 const ts = Number((Date.now() / 1e3).toFixed());
 </script>
 
@@ -29,37 +24,15 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
-    <div class="space-y-3">
-      <ProposalResultsList
-        v-if="results"
-        :space="space"
-        :proposal="proposal"
-        :results="results"
-        :strategies="strategies"
-      />
+    <ProposalResultsList
+      v-if="results"
+      :space="space"
+      :proposal="proposal"
+      :results="results"
+      :strategies="strategies"
+      :votes="votes"
+    />
 
-      <div
-        v-if="results && (proposal.quorum || space.voting?.quorum)"
-        class="text-skin-link"
-      >
-        {{ $t('settings.quorum.label') }}
-        <span class="float-right">
-          {{
-            quorumScore({
-              proposal,
-              results,
-              votes
-            })
-          }}
-          /
-          {{
-            formatCompactNumber(
-              proposal.quorum || (space.voting.quorum as number)
-            )
-          }}
-        </span>
-      </div>
-    </div>
     <ProposalResultsShutter
       v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
       class="pt-2"
