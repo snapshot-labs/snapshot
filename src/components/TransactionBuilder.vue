@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
-import {
-  createEmptyTransaction,
-  Transaction,
-  TransactionType
-} from '@/helpers/transactionBuilder';
+import { Transaction } from '@/helpers/transactionBuilder';
 import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 
 const props = defineProps<{
