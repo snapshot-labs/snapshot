@@ -40,6 +40,7 @@
   "network": "Jaringan",
   "networks": "Jaringan",
   "skins": "Tampilan",
+  "spaceMembers": "Members",
   "members": "Tidak ada anggota | {count} anggota | {count} anggota",
   "editStrategy": "Edit strategi",
   "invalidProposals": "Proposal tidak valid",
@@ -62,6 +63,7 @@
   "removeSpace": "untuk ruang {0}",
   "confirmVote": "Konfirmasi suara",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "Pilihan",
   "votingPower": "Kekuatan voting anda",
   "receipt": "Bukti penerimaan",
@@ -113,6 +115,7 @@
   "select": "Pilih",
   "language": "Bahasa",
   "agree": "Saya setuju",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Sebelum Anda dapat menyelesaikan tindakan ini, Anda harus setuju pada {0} ketentuan layanan ini:",
   "playground": "Playground",
   "strategyParams": "Parameter strategi",
@@ -268,7 +271,7 @@
   "settings": {
     "header": "Pengaturan",
     "editController": "Edit controller",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +312,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -330,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Validasi proposal",
     "validation": "Type",
@@ -365,7 +368,7 @@
     },
     "skin": "Skin",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -426,7 +429,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",
@@ -492,6 +496,7 @@
     "networks": "jaringan",
     "plugins": "plugin",
     "results": "hasil",
+    "category": "Category",
     "categories": {
       "all": "Semua",
       "protocol": "Protokol",

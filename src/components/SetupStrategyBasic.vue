@@ -96,37 +96,32 @@ async function getTokenInfo() {
     input.value.address,
     input.value.network
   );
-  isTokenLoading.value = false;
 
   if (data?.[0]?.contract_name) {
     token.value.name = data[0].contract_name;
     token.value.logo = data[0].logo_url;
     token.value.symbol = data[0].contract_ticker_symbol;
     token.value.decimals = data[0].contract_decimals;
+    isTokenLoading.value = false;
   } else {
     try {
       // TODO: use brovider(?)
       const provider = new JsonRpcProvider(
         networks[input.value.network].rpc[0]
       );
-      token.value.name = await call(provider, ERC20ABI, [
-        input.value.address,
-        'name',
-        []
+      const tokenInfo = await Promise.all([
+        call(provider, ERC20ABI, [input.value.address, 'name', []]),
+        call(provider, ERC20ABI, [input.value.address, 'symbol', []]),
+        call(provider, ERC20ABI, [input.value.address, 'decimals', []])
       ]);
-      token.value.symbol = await call(provider, ERC20ABI, [
-        input.value.address,
-        'symbol',
-        []
-      ]);
-      token.value.decimals = await call(provider, ERC20ABI, [
-        input.value.address,
-        'decimals',
-        []
-      ]);
+      token.value.name = tokenInfo[0];
+      token.value.symbol = tokenInfo[1];
+      token.value.decimals = tokenInfo[2];
     } catch {
       tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
       token.value = clone(defaultToken);
+    } finally {
+      isTokenLoading.value = false;
     }
   }
 }
@@ -165,34 +160,36 @@ onMounted(setFormValues);
               :loading="isTokenLoading"
               focus-on-mount
             />
-
-            <BaseBlock
-              v-if="token.name"
-              class="mt-3 space-x-1 text-left text-sm"
-            >
-              <div class="flex justify-between">
-                <div class="flex items-center gap-1">
-                  <AvatarToken
-                    v-if="token.logo"
-                    :src="token.logo"
-                    :address="token.address"
-                    class="mr-1"
-                    size="30"
-                  />
-
-                  <span class="text-skin-link"> {{ token.name }} </span>
-                  <span> ${{ token.symbol }} </span>
-                </div>
-                <BaseLink
-                  v-if="input.network == '1'"
-                  class="text-skin-text hover:text-skin-link"
-                  :link="`https://etherscan.io/token/${input.address}`"
-                >
-                  {{ $t('learnMore') }}
-                </BaseLink>
-              </div>
-            </BaseBlock>
           </div>
+        </div>
+      </div>
+    </BaseBlock>
+
+    <BaseBlock v-if="token.name" class="!mt-3 space-x-1 text-left text-sm">
+      <div class="flex justify-between">
+        <div class="flex items-center gap-1 truncate">
+          <AvatarToken
+            v-if="token.logo"
+            :src="token.logo"
+            :address="input.address"
+            class="mr-1"
+            size="30"
+          />
+          <div class="truncate">
+            <div class="mr-4 truncate whitespace-nowrap text-skin-link">
+              {{ token.name }}
+            </div>
+            <BasePill class="py-1">${{ token.symbol }}</BasePill>
+          </div>
+        </div>
+        <div class="flex items-center">
+          <BaseLink
+            v-if="input.network == '1'"
+            class="text-skin-text hover:text-skin-link"
+            :link="`https://etherscan.io/token/${input.address}`"
+          >
+            {{ $t('setup.strategy.tokenVoting.seeOnEtherscan') }}
+          </BaseLink>
         </div>
       </div>
     </BaseBlock>
@@ -200,6 +197,7 @@ onMounted(setFormValues);
     <div class="float-right mx-4 md:mx-0">
       <SetupButtonNext
         class="!mt-0"
+        :disabled="isTokenLoading"
         :text="strategy?.params?.symbol ? 'next' : 'skip'"
         @click="nextStep"
       />

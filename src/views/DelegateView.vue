@@ -266,7 +266,7 @@ onMounted(async () => {
               :error="{ message: validateToInput }"
             />
             <div class="flex items-center space-x-2 px-2">
-              <BaseSwitch v-model="specifySpaceChecked" />
+              <InputSwitch v-model="specifySpaceChecked" />
               <span>{{ $t('setDelegationToSpace') }}</span>
             </div>
             <BaseInput
@@ -398,7 +398,7 @@ onMounted(async () => {
       :id="currentId"
       :open="modalOpen"
       :delegate="currentDelegate"
-      :profiles="profiles"
+      :profile="profiles[currentDelegate]"
       @close="modalOpen = false"
       @reload="getDelegationsAndDelegates"
     />

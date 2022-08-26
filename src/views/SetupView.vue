@@ -21,11 +21,7 @@ enum Step {
   CONTROLLER,
   PROFILE,
   STRATEGY,
-  VOTING,
-  MODERATION,
-  CUSTOM_DOMAIN,
-  TREASURY,
-  PLUGINS
+  EXTRAS
 }
 
 const route = useRoute();
@@ -71,10 +67,6 @@ async function handleSubmit() {
       creatingSpace.value = false;
       return;
     }
-
-    // Adds connected wallet as admin so that the settings will show
-    // in the sidebar after space creation
-    form.value.admins = [web3Account.value];
 
     // Create the space
     const result = await send({ id: route.params.ens }, 'settings', form.value);
@@ -166,32 +158,8 @@ onMounted(() => {
           @back="previousStep"
         />
 
-        <SetupVoting
-          v-else-if="currentStep === Step.VOTING && route.params.ens"
-          @next="nextStep"
-          @back="previousStep"
-        />
-
-        <SetupModeration
-          v-else-if="currentStep === Step.MODERATION && route.params.ens"
-          @back="previousStep"
-          @next="nextStep"
-        />
-
-        <SetupCustomdomain
-          v-else-if="currentStep === Step.CUSTOM_DOMAIN && route.params.ens"
-          @back="previousStep"
-          @next="nextStep"
-        />
-
-        <SetupTreasury
-          v-else-if="currentStep === Step.TREASURY && route.params.ens"
-          @back="previousStep"
-          @next="nextStep"
-        />
-
-        <SetupPlugins
-          v-else-if="currentStep === Step.PLUGINS && route.params.ens"
+        <SetupExtras
+          v-else-if="currentStep === Step.EXTRAS && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
           @next="handleSubmit"

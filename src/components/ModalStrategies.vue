@@ -27,22 +27,13 @@ defineEmits(['close']);
       >
         <div class="flex items-center justify-between">
           <h3 v-text="strategy.name" />
-          <router-link
-            target="_blank"
-            :to="{
-              name: 'playground',
-              params: { name: strategy.name },
-              query: {
-                query: encodeJson({
-                  network: strategy.network || proposal.network,
-                  snapshot: proposal.snapshot,
-                  params: strategy.params
-                })
-              }
-            }"
-          >
-            <BaseIcon name="play" size="18" class="flex" />
-          </router-link>
+
+          <ButtonPlayground
+            :name="strategy.name"
+            :network="strategy.network || proposal.network"
+            :params="strategy.params"
+            :snapshot="proposal.snapshot"
+          />
         </div>
 
         <div>

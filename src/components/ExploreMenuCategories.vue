@@ -7,14 +7,14 @@ const { selectedCategory, orderedSpaces } = useSpaces();
 const { tc } = useI18n();
 
 function selectCategory(c) {
-  selectedCategory.value = c === selectedCategory.value ? '' : c;
+  selectedCategory.value = c;
 }
 
 const categoryItems = computed(() => {
   return [
     {
       text: tc('explore.categories.all'),
-      action: '',
+      action: 'all',
       extras: {
         count: orderedSpaces.value.length,
         selected: !selectedCategory.value
@@ -51,7 +51,7 @@ const categoryItems = computed(() => {
             {{ $tc('explore.categories.' + selectedCategory) }}
           </span>
           <span v-else>
-            {{ $tc('explore.categories.all') }}
+            {{ $tc('explore.category') }}
           </span>
           <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
         </div>

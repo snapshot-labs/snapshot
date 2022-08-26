@@ -7,7 +7,7 @@ const APP_BASE_URL = 'https://app.poap.xyz';
 export default class Plugin {
   public author = 'Poap-xyz';
   public version = '1.0.0';
-  public name = 'Poap Module';
+  public name = 'POAP Module';
   public options: any;
 
   openScanPage(address) {

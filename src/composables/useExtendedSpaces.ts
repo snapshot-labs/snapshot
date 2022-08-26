@@ -5,11 +5,11 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { mapOldPluginNames } from '@/helpers/utils';
 
 const extentedSpaces = ref<ExtendedSpace[]>([]);
-const loading = ref(false);
 
 export function useExtendedSpaces() {
-  const { apolloQuery } = useApolloQuery();
+  const loading = ref(false);
 
+  const { apolloQuery } = useApolloQuery();
   async function loadExtentedSpaces(id_in: string[] = []) {
     const filteredLoadedSpaces = id_in.filter(
       id => !extentedSpaces.value?.find(space => space.id === id)

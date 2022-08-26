@@ -46,7 +46,7 @@ export function useClient() {
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
       const errorMessage =
-        e && e.error_description
+        e?.error_description && typeof e.error_description === 'string'
           ? `Oops, ${e.error_description}`
           : t('notify.somethingWentWrong');
       notify(['red', errorMessage]);
@@ -71,14 +71,16 @@ export function useClient() {
         start: payload.start,
         end: payload.end,
         snapshot: payload.snapshot,
-        plugins: JSON.stringify(plugins)
+        plugins: JSON.stringify(plugins),
+        app: 'snapshot'
       });
     } else if (type === 'vote') {
       return clientEIP712.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
-        choice: payload.choice
+        choice: payload.choice,
+        app: 'snapshot'
       });
     } else if (type === 'delete-proposal') {
       return clientEIP712.cancelProposal(auth.web3, web3.value.account, {

@@ -127,7 +127,7 @@ export function calcToSeconds(value, unit) {
   if (unit === 'd') return value * 60 * 60 * 24;
 }
 
-export function getIpfsUrl(url) {
+export function getIpfsUrl(url: string) {
   const gateway: any =
     import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
   return getUrl(url, gateway);

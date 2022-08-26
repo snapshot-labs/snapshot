@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { lsSet } from '@/helpers/utils';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-import zipObject from 'lodash/zipObject';
 import {
   useInfiniteLoader,
-  useUnseenProposals,
   useScrollMonitor,
   useApolloQuery,
   useProfiles,
@@ -33,54 +30,52 @@ const {
 } = useProposals();
 
 const stateFilter = computed(() => route.query.state || 'all');
-const isQueryJoinedSpaces = computed(
-  () => !route.query.spaces || route.query.spaces === 'joined'
+const isFeedJoinedSpaces = computed(
+  () => !route.query.feed || route.query.feed === 'joined'
 );
 
 const spaces = computed(() => {
   const verifiedSpaces = Object.entries(verified)
     .filter(space => space[1] === 1)
     .map(space => space[0]);
-  if (isQueryJoinedSpaces.value) return followingSpaces.value;
+  if (isFeedJoinedSpaces.value) return followingSpaces.value;
   else return verifiedSpaces;
 });
 
-const { updateLastSeenProposal } = useUnseenProposals();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
-const { endElement } = useScrollMonitor(() => {
-  if (!web3Account.value && route.name === 'timeline') return;
-  loadMore(
-    () => loadMoreProposals(store.timeline.proposals.length),
-    loading.value
-  );
-});
 
 const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
-  return apolloQuery(
-    {
-      query: PROPOSALS_QUERY,
-      variables: {
-        first: loadBy,
-        skip,
-        space_in: spaces.value,
-        state: stateFilter.value
-      }
-    },
-    'proposals'
+  if (!web3Account.value && isFeedJoinedSpaces.value) return [];
+
+  return (
+    apolloQuery(
+      {
+        query: PROPOSALS_QUERY,
+        variables: {
+          first: loadBy,
+          skip,
+          space_in: spaces.value,
+          state: stateFilter.value
+        }
+      },
+      'proposals'
+    ) ?? []
   );
 }
 
-async function loadMoreProposals(skip = 0) {
+async function loadMoreProposals(skip: number) {
   const proposals = await getProposals(skip);
   stopLoadingMore.value = proposals?.length < loadBy;
   addTimelineProposals(proposals);
 }
 
 async function loadProposals() {
+  if (route.name !== 'timeline') return;
+  loading.value = true;
   const proposals = await getProposals();
   setTimelineProposals(proposals);
+  loading.value = false;
 }
 
 const { profiles, loadProfiles } = useProfiles();
@@ -88,58 +83,43 @@ watch(store.timeline.proposals, () => {
   loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
 
-// Save the lastSeenProposal times for all spaces
-function emitUpdateLastSeenProposal() {
-  if (web3Account.value) {
-    lsSet(
-      `lastSeenProposals.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      zipObject(
-        followingSpaces.value,
-        Array(followingSpaces.value.length).fill(new Date().getTime())
-      )
-    );
-  }
-  updateLastSeenProposal(web3Account.value);
-}
-
-async function load() {
-  if (!web3Account.value && isQueryJoinedSpaces.value) return;
-  loading.value = true;
-  await loadProposals();
-  loading.value = false;
-}
-
-function setFilter(name: string) {
-  setQuery('state', name);
-}
-
-function setQuery(filter: string, name: string) {
+function setStateFilter(name: string) {
   router.push({
     query: {
       ...route.query,
-      [filter]: name
+      ['state']: name
+    }
+  });
+}
+
+function setFeed(name: string) {
+  router.push({
+    query: {
+      ...route.query,
+      ['feed']: name
     }
   });
 }
 
 watch(
-  web3Account,
+  () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
-    emitUpdateLastSeenProposal();
-  },
-  { immediate: true }
-);
-
-watch(
-  () => [route.query.state, route.query.spaces],
-  () => {
-    load();
-  },
-  { immediate: true }
+    loadProposals();
+  }
 );
 
 onMounted(() => {
+  if (store.timeline.proposals.length > 0) return;
+  loadProposals();
+});
+
+onMounted(() => {
   setPageTitle('page.title.timeline');
+});
+
+const { endElement } = useScrollMonitor(() => {
+  if (loading.value) return;
+  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 </script>
 
@@ -150,15 +130,15 @@ onMounted(() => {
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
             <BaseSidebarNavigationItem
-              :is-active="isQueryJoinedSpaces"
-              @click="setQuery('spaces', 'joined')"
+              :is-active="isFeedJoinedSpaces"
+              @click="setFeed('joined')"
             >
               {{ $t('joinedSpaces') }}
             </BaseSidebarNavigationItem>
 
             <BaseSidebarNavigationItem
-              :is-active="route.query.spaces === 'all'"
-              @click="setQuery('spaces', 'all')"
+              :is-active="route.query.feed === 'all'"
+              @click="setFeed('all')"
             >
               {{ $t('allSpaces') }}
             </BaseSidebarNavigationItem>
@@ -193,15 +173,15 @@ onMounted(() => {
             }
           ]"
           :selected="$t(`proposals.states.${stateFilter}`)"
-          @select="setFilter"
+          @select="setStateFilter"
         />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
         <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
         <div
           v-else-if="
-            (isQueryJoinedSpaces && spaces.length < 1) ||
-            (isQueryJoinedSpaces && !web3.account)
+            (isFeedJoinedSpaces && spaces.length < 1) ||
+            (isFeedJoinedSpaces && !web3.account)
           "
           class="p-4 text-center"
         >
@@ -215,17 +195,20 @@ onMounted(() => {
           class="mb-0 py-4"
         />
         <div v-else>
-          <BaseProposalPreviewItem
+          <ProposalsItem
             v-for="(proposal, i) in store.timeline.proposals"
             :key="i"
             :proposal="proposal"
+            :space="proposal.space"
             :profiles="profiles"
             :voted="userVotedProposalIds.includes(proposal.id)"
-            class="border-b first:border-t md:first:border-t-0"
+            class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
         </div>
-        <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
-        <div v-if="loadingMore && !loading" :slim="true">
+        <div class="relative">
+          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+        </div>
+        <div v-if="loadingMore">
           <LoadingRow class="border-t" />
         </div>
       </div>

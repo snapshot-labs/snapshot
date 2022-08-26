@@ -40,6 +40,7 @@
   "network": "네트워크",
   "networks": "네트워크들",
   "skins": "스킨",
+  "spaceMembers": "Members",
   "members": "회원 없음 | {count} 회원 | {count} 구성원",
   "editStrategy": "전략 수정",
   "invalidProposals": "유효하지 않는 제안",
@@ -62,6 +63,7 @@
   "removeSpace": "{0} 공간",
   "confirmVote": "투표 확인",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "옵션",
   "votingPower": "당신의 투표권",
   "receipt": "처리 결과",
@@ -113,6 +115,7 @@
   "select": "선택",
   "language": "언어",
   "agree": "동의함",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "이 작업을 완료하려면 {0} 서비스 약관에 동의해야 합니다.",
   "playground": "플레이그라운드",
   "strategyParams": "전략 매개변수",
@@ -268,7 +271,7 @@
   "settings": {
     "header": "설정",
     "editController": "관리자 설정",
-    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +312,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -330,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "제안 검증",
     "validation": "Type",
@@ -365,7 +368,7 @@
     },
     "skin": "스킨",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -426,7 +429,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",
@@ -492,6 +496,7 @@
     "networks": "네트워크",
     "plugins": "플러그인",
     "results": "결과(에스)",
+    "category": "Category",
     "categories": {
       "all": "모두",
       "protocol": "프로토콜",

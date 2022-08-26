@@ -1,12 +1,10 @@
 import { ref, computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useSkin } from '@/composables/useSkin';
-import { useSpaces } from '@/composables/useSpaces';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
+
+import { useI18n, useWeb3, useSkin, useSpaces } from '@/composables';
 
 const domainName = window.location.hostname;
 const env = import.meta.env.VITE_ENV;
@@ -20,8 +18,6 @@ const domainAlias = Object.keys(aliases).find(
   alias => aliases[alias] === domain
 );
 
-const { login } = useWeb3();
-
 const isReady = ref(false);
 
 // only affects small screens
@@ -31,6 +27,7 @@ export function useApp() {
   const { loadLocale } = useI18n();
   const { getSkin } = useSkin();
   const { getSpaces } = useSpaces();
+  const { login } = useWeb3();
 
   function connectWallet() {
     const auth = getInstance();

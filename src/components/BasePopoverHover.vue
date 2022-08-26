@@ -14,18 +14,25 @@ withDefaults(
 );
 
 const show = ref(false);
-const timer = ref<any>(null);
+const timerOpen = ref<any>(null);
+const timerClose = ref<any>(null);
 
 const open = () => {
-  if (timer.value !== null) {
-    clearTimeout(timer.value);
-    timer.value = null;
+  if (timerClose.value !== null) {
+    clearTimeout(timerClose.value);
+    timerClose.value = null;
   }
-  show.value = true;
+  timerOpen.value = setTimeout(() => {
+    show.value = true;
+  }, 200);
 };
 
 const delayClose = () => {
-  timer.value = setTimeout(() => {
+  if (timerOpen.value !== null) {
+    clearTimeout(timerOpen.value);
+    timerOpen.value = null;
+  }
+  timerClose.value = setTimeout(() => {
     show.value = false;
   }, 150);
 };
@@ -34,11 +41,18 @@ const delayClose = () => {
 <template>
   <Popover>
     <Float
+      enter="transition ease-out duration-100"
+      enter-from="transform opacity-0 scale-95"
+      enter-to="transform opacity-100 scale-100"
+      leave="transition ease-in duration-75"
+      leave-from="transform opacity-100 scale-100"
+      leave-to="transform opacity-0 scale-95"
       :show="show"
       :placement="placement"
       :offset="10"
-      :shift="8"
-      :z-index="20"
+      :shift="16"
+      :flip="16"
+      :z-index="50"
       portal
     >
       <PopoverButton
@@ -49,29 +63,22 @@ const delayClose = () => {
         <slot name="button" />
       </PopoverButton>
 
-      <Transition
-        enter-active-class="transition ease-out duration-100"
-        enter-from-class="transform opacity-0 scale-95"
-        enter-to-class="transform opacity-100 scale-100"
-        leave-active-class="transition ease-in duration-75"
-        leave-from-class="transform opacity-100 scale-100"
-        leave-to-class="transform opacity-0 scale-95"
+      <PopoverPanel
+        class="w-screen outline-none sm:max-w-sm"
+        static
+        @mouseenter="open"
+        @mouseleave="delayClose"
       >
-        <PopoverPanel
-          class="w-screen outline-none sm:max-w-sm"
-          static
-          @mouseenter="open"
-          @mouseleave="delayClose"
+        <div
+          class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
         >
-          <div class="overflow-hidden rounded-2xl bg-skin-header-bg shadow-lg">
-            <div
-              class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
-            >
-              <slot name="content" />
-            </div>
+          <div
+            class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
+          >
+            <slot name="content" />
           </div>
-        </PopoverPanel>
-      </Transition>
+        </div>
+      </PopoverPanel>
     </Float>
   </Popover>
 </template>

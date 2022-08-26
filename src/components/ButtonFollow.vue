@@ -28,8 +28,7 @@ const canFollow = computed(() =>
       v-bind="$attrs"
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
-      style="width: 120px"
-      class="group"
+      class="group min-w-[120px]"
       :class="{
         'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
@@ -44,7 +43,9 @@ const canFollow = computed(() =>
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>
       <span v-else>
-        <span class="group-hover:hidden"> {{ $t('joined') }} </span>
+        <span class="flex items-center gap-2 group-hover:hidden">
+          <i-ho-check class="text-green" /> {{ $t('joined') }}
+        </span>
         <span class="hidden group-hover:block">
           {{ $t('leave') }}
         </span>

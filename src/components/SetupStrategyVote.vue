@@ -110,11 +110,10 @@ onMounted(setFormValues);
           <BaseInput v-model="symbol" title="Symbol" />
         </div>
         <div v-if="input === 'whitelist'" class="md:w-2/3">
-          <LabelInput> Whitelisted addresses </LabelInput>
           <TextareaArray
             v-model="whitelist"
+            title="Whitelisted addresses"
             :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-            class="s-input !rounded-3xl"
           />
         </div>
       </div>

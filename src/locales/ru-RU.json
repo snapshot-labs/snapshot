@@ -40,6 +40,7 @@
   "network": "Сеть",
   "networks": "Сети",
   "skins": "Темы",
+  "spaceMembers": "Members",
   "members": "Нет участников | {count} участник | {count} участников",
   "editStrategy": "Изменить стратегию",
   "invalidProposals": "Недействительные предложения",
@@ -62,6 +63,7 @@
   "removeSpace": "для сообщества {0}",
   "confirmVote": "Подтвердите голосование",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "Вариант(ы)",
   "votingPower": "Ваше право голоса",
   "receipt": "Квитанция",
@@ -113,6 +115,7 @@
   "select": "Выбрать",
   "language": "Язык",
   "agree": "Я принимаю",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Для завершения этого действия необходимо согласиться с условиями обслуживания {0} здесь:",
   "playground": "Игровая площадка",
   "strategyParams": "Параметры стратегии",
@@ -268,7 +271,7 @@
   "settings": {
     "header": "Настройки",
     "editController": "Изменить виджеты",
-    "connectWithSpaceOwner": "Чтобы изменить настройки сообщества, подключитесь к контроллеру или кошельку администратора.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "Текущий контроллер сообщества - {адрес}",
     "newController": "Новый контроллер",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +312,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -330,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Проверка предложения",
     "validation": "Type",
@@ -365,7 +368,7 @@
     },
     "skin": "Тема",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -426,7 +429,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",
@@ -492,6 +496,7 @@
     "networks": "сеть(и)",
     "plugins": "плагин(ы)",
     "results": "результат(ы)",
+    "category": "Category",
     "categories": {
       "all": "Все",
       "protocol": "Протоколы",

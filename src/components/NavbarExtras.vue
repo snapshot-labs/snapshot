@@ -43,14 +43,14 @@ function clickNavigationItem(item: any) {
           <div>
             <ButtonTheme v-if="!domain" />
           </div>
-          <ButtonLanguage class="!h-[42px]" />
+          <MenuLanguages class="!h-[42px]" />
         </div>
-        <div class="group m-4 py-1">
+        <div class="group m-4 my-[30px]">
           <PopoverButton
             v-for="item in navigationItems"
             :key="item.name"
             as="div"
-            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link group-hover:text-skin-text"
+            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link hover:!opacity-100 group-hover:text-skin-text group-hover:opacity-70"
             @click="clickNavigationItem(item)"
           >
             {{ item.name }}
@@ -60,7 +60,7 @@ function clickNavigationItem(item: any) {
         <div class="mt-4 border-t">
           <div class="m-4 flex items-center justify-between">
             <FooterSocials class="inline-flex justify-start !pt-0" />
-            <div class="max-w-[100px] text-sm leading-4 opacity-40">
+            <div class="text-sm leading-4 opacity-40">
               <BaseLink
                 v-if="commitSha"
                 :link="`https://github.com/${pkg.repository}/tree/${commitSha}`"

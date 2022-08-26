@@ -40,6 +40,7 @@
   "network": "Rețea",
   "networks": "Reţele",
   "skins": "Skin-uri",
+  "spaceMembers": "Members",
   "members": "Niciun membru | {count} membru |\n {count} membri",
   "editStrategy": "Modifică strategia",
   "invalidProposals": "Propuneri invalide",
@@ -62,6 +63,7 @@
   "removeSpace": "pentru spațiul {0}",
   "confirmVote": "Confirmă votul",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "Opțiunea(i)",
   "votingPower": "Puterea ta de vot",
   "receipt": "Chitanță",
@@ -113,6 +115,7 @@
   "select": "Selectează",
   "language": "Limbă",
   "agree": "Sunt de acord",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "Înainte de a termina această acțiune, trebuie sa accepți {0} terminii serviciului aici:",
   "playground": "Teren de joacă",
   "strategyParams": "Parametrii strategiei",
@@ -268,7 +271,7 @@
   "settings": {
     "header": "Setări",
     "editController": "Edit controller",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -309,7 +312,7 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -330,7 +333,7 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "Validare propunere",
     "validation": "Type",
@@ -365,7 +368,7 @@
     },
     "skin": "Skin",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -426,7 +429,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",
@@ -492,6 +496,7 @@
     "networks": "rețea(le)",
     "plugins": "plugin(uri)",
     "results": "rezultat(e)",
+    "category": "Category",
     "categories": {
       "all": "Toate",
       "protocol": "Protocol",

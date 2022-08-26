@@ -6,19 +6,22 @@
  */
 
 import { ref } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { PLUGINS_COUNT_QUERY } from '@/helpers/queries';
+import { Plugin } from '@/helpers/interfaces';
+import { useApolloQuery } from '@/composables';
 
 // aggregate all plugin.json files in src/plugins
-const pluginIndex: Record<string, any> = Object.fromEntries(
-  Object.entries(import.meta.globEager('../plugins/*/plugin.json')).map(
-    ([path, config]) => {
-      const pluginKey = path
-        .replace('../plugins/', '')
-        .replace('/plugin.json', '');
-      return [pluginKey, { key: pluginKey, ...config }];
+const pluginIndex = Object.fromEntries(
+  Object.entries(
+    import.meta.globEager('../plugins/*/plugin.json') as {
+      [key: string]: Plugin;
     }
-  )
+  ).map(([path, config]) => {
+    const pluginKey = path
+      .replace('../plugins/', '')
+      .replace('/plugin.json', '');
+    return [pluginKey, { key: pluginKey, ...config }];
+  })
 );
 
 // import all plugin's main components (Create.vue, Proposal.vue, etc.)
@@ -70,8 +73,8 @@ const getPluginsSpacesCount = async () => {
   loadingPluginsSpacesCount.value = false;
 };
 
-const filterPlugins = (q = '') =>
-  Object.values(pluginIndex)
+const filterPlugins = (q = '') => {
+  return Object.values(pluginIndex)
     .filter(plugin =>
       JSON.stringify(plugin).toLowerCase().includes(q.toLowerCase())
     )
@@ -80,6 +83,7 @@ const filterPlugins = (q = '') =>
         (pluginsSpacesCount.value?.[b.key] ?? 0) -
         (pluginsSpacesCount.value?.[a.key] ?? 0)
     );
+};
 
 /**
  * Composable
