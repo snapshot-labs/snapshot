@@ -1,6 +1,6 @@
 import { computed, onMounted, ref } from 'vue';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
