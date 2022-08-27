@@ -8,18 +8,13 @@ export function useSharing() {
   const sharingItems = [
     {
       text: 'Twitter',
-      action: 'shareToTwitter',
-      icon: 'twitter'
-    },
-    {
-      text: 'Facebook',
-      action: 'shareToFacebook',
-      icon: 'facebook'
+      action: 'shareProposalTwitter',
+      extras: { icon: 'twitter' }
     },
     {
       text: t('copyLink'),
       action: 'shareToClipboard',
-      icon: 'insertlink'
+      extras: { icon: 'insertlink' }
     }
   ];
 
@@ -32,7 +27,7 @@ export function useSharing() {
 
   const { share, isSupported } = useShare();
 
-  function startShare(space, proposal) {
+  function shareProposal(space, proposal) {
     share({
       title: '',
       text: `${space.name} - ${proposal.title}`,
@@ -40,22 +35,44 @@ export function useSharing() {
     });
   }
 
-  function shareToTwitter(space, proposal, window) {
-    const url = `https://twitter.com/intent/tweet?text=@${
-      space.twitter || space.name
-    }%20${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
-      space.id,
-      proposal
-    )}`;
-    window.open(url, '_blank').focus();
+  function shareVote(space, proposal, choices: string) {
+    const handle = space.twitter ? `@${space.twitter}` : space.name;
+    const isSingleChoice =
+      proposal.type === 'single-choice' || proposal.type === 'basic';
+    const text = isSingleChoice
+      ? `I just voted "${choices}" on`
+      : `I just voted on`;
+    if (isSupported.value)
+      share({
+        title: '',
+        text: `${text} "${proposal.title}" ${handle} @SnapshotLabs`,
+        url: proposalUrl(space.id, proposal)
+      });
+    else if (window) {
+      shareTwitter(
+        `${encodeURIComponent(text)}%20"${encodeURIComponent(
+          proposal.title
+        )}"%20${encodedProposalUrl(
+          space.id,
+          proposal
+        )}%20${handle}%20@SnapshotLabs`
+      );
+    }
   }
 
-  function shareToFacebook(space, proposal, window) {
-    const url = `https://www.facebook.com/sharer/sharer.php?u=${encodedProposalUrl(
-      space.id,
-      proposal
-    )}&quote=${encodeURIComponent(proposal.title)}`;
-    window.open(url, '_blank').focus();
+  function shareTwitter(text) {
+    const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank')?.focus();
+  }
+
+  function shareProposalTwitter(space, proposal) {
+    const handle = space.twitter ? `@${space.twitter}` : space.name;
+    shareTwitter(
+      `${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
+        space.id,
+        proposal
+      )}%20${handle}%20@SnapshotLabs`
+    );
   }
 
   const { copyToClipboard } = useCopy();
@@ -65,11 +82,11 @@ export function useSharing() {
   }
 
   return {
-    shareToTwitter,
-    shareToFacebook,
+    shareProposalTwitter,
     shareToClipboard,
     proposalUrl,
-    startShare,
+    shareProposal,
+    shareVote,
     sharingIsSupported: isSupported,
     sharingItems
   };

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { encodeJson } from '@/helpers/b64';
 import { useNetworksFilter, useStrategies } from '@/composables';
 
@@ -128,7 +127,7 @@ watch(open, () => {
             @select="value => (input.network = value)"
           />
           <div>
-            <InputObject
+            <FormObject
               v-if="strategyDefinition"
               v-model="input.params"
               :definition="strategyDefinition"

@@ -11,6 +11,7 @@
   "retry": "Retry",
   "currentResults": "إعرض النتائج الحالية",
   "reset": "إعادة ضبط",
+  "close": "Close",
   "save": "حفظ",
   "author": "المؤلف",
   "next": "التالي",
@@ -39,6 +40,7 @@
   "network": "الشبكة",
   "networks": "الشبكات",
   "skins": "المظاهر",
+  "spaceMembers": "Members",
   "members": "لا يوجد أعضاء | {count} أعضاء | {count} أعضاء",
   "editStrategy": "تعديل الاستراتيجية",
   "invalidProposals": "اقتراحات غير صالحة",
@@ -50,6 +52,7 @@
   "toggleSkin": "Toggle skin",
   "about": "عن البرنامج",
   "license": "الترخيص",
+  "voted": "Voted",
   "ipfsServer": "سيرفر IPFS",
   "hub": "مكان التجمع",
   "cancel": "إلغاء",
@@ -60,6 +63,7 @@
   "removeSpace": "للمساحة {0}",
   "confirmVote": "تأكيد التصويت",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "خيار(ات)",
   "votingPower": "قوة التصويت الخاصة بك",
   "receipt": "الإيصال",
@@ -111,6 +115,7 @@
   "select": "حدد",
   "language": "اللغة",
   "agree": "أوافق",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "قبل أن تتمكن من إكمال هذا الإجراء، يجب عليك الموافقة على {0} شروط الخدمة هنا:",
   "playground": "ساحة التجريب",
   "strategyParams": "معايير الاستراتيجية",
@@ -120,6 +125,8 @@
   "join": "إنضمام",
   "joined": "انضم",
   "leave": "غادِر",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "نسخ الرابط",
   "duplicateProposal": "اقتراح مكرر",
   "joinedSpaces": "المساحات المشترك فيها",
@@ -131,6 +138,7 @@
   "confirmAction": "Confirm action",
   "or": "or",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -224,7 +232,16 @@
     "vote": "صوت",
     "startDate": "تاريخ البدء",
     "endDate": "تاريخ الانتهاء",
-    "votingSystem": "نظام التصويت"
+    "votingSystem": "نظام التصويت",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "المقترحات",
@@ -254,7 +271,7 @@
   "settings": {
     "header": "الإعدادات",
     "editController": "Edit controller",
-    "connectWithSpaceOwner": "To modify space settings, connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -279,10 +296,23 @@
     },
     "hideSpace": "إخفاء المساحة من الصفحة الرئيسية",
     "links": "Social accounts",
-    "subspaces": "Sub-Spaces",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "pistachiodao.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
+      "label": "Strategie(s)",
       "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
     },
     "network": {
@@ -303,12 +333,12 @@
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals."
     },
     "proposalValidation": "المصادقة على المقترح",
-    "validation": "المصادقة",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
+      "label": "Threshold",
       "information": "The minimum amount of voting power required to create a proposal."
     },
     "allowOnlyAuthors": "Allow only authors to submit a proposal",
@@ -338,7 +368,7 @@
     },
     "skin": "المظهر",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
       "information": "Add treasuries of your organization to show them in your space."
@@ -399,7 +429,8 @@
       "tokenVoting": {
         "title": "Token weighted voting",
         "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found"
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
         "title": "Custom setup",
@@ -465,6 +496,7 @@
     "networks": "شبكة (شبكات)",
     "plugins": "ملحق(ات)",
     "results": "النتيجة (النتائج)",
+    "category": "Category",
     "categories": {
       "all": "All",
       "protocol": "Protocol",
@@ -652,5 +684,16 @@
     "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
     "subHeader": "Governance should be a snap",
     "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "blog": "Blog",
+    "jobs": "Jobs",
+    "discussions": "Discussions",
+    "github": "GitHub",
+    "docs": "Docs",
+    "support": "Support",
+    "hiring": "Join us!"
   }
 }

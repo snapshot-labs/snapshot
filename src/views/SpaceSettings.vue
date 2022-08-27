@@ -1,44 +1,46 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { useSpaceController } from '@/composables/useSpaceController';
-import { useEns } from '@/composables/useEns';
-import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceForm } from '@/composables/useSpaceForm';
-import { useTreasury } from '@/composables/useTreasury';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+import {
+  useI18n,
+  useWeb3,
+  useClient,
+  useSpaceController,
+  useEns,
+  useExtendedSpaces,
+  useSpaceForm,
+  useTreasury,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
-  sourceSpace: ExtendedSpace;
 }>();
 
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validationResult, isValid, formatSpace } =
-  useSpaceForm('settings');
+const {
+  form,
+  validationResult,
+  isValid,
+  isReadyToSubmit,
+  populateForm,
+  resetForm
+} = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
-const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
-const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const isReadyToSubmit = computed(
-  () => !uploadLoading.value && !clientLoading.value && isValid.value
-);
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);
@@ -77,8 +79,7 @@ async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const formattedForm = formatSpace(form.value);
-  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  const result = await send({ id: props.space.id }, 'settings', form.value);
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
@@ -88,25 +89,11 @@ async function handleSubmit() {
   }
 }
 
-function handleReset() {
-  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
-  if (currentSettings.value) return (form.value = clone(currentSettings.value));
-}
-
 onMounted(async () => {
-  if (props.space) {
-    const spaceClone = clone(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-  }
-  if (props.sourceSpace) {
-    const fromClone = clone(props.sourceSpace);
-    if (fromClone) {
-      form.value = fromClone;
-    }
-  }
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+
+  populateForm(props.space);
+
   try {
     const uri = await getSpaceUri(
       props.space.id,
@@ -119,10 +106,6 @@ onMounted(async () => {
   }
 
   loaded.value = true;
-});
-
-onMounted(() => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
@@ -171,11 +154,8 @@ async function handleSetRecord() {
       <template v-else>
         <div class="space-y-3">
           <BaseMessageBlock
-            v-if="
-              !(isSpaceController || isSpaceAdmin || ensOwner) &&
-              currentTextRecord
-            "
-            class="mx-4 mb-5 md:mx-0"
+            v-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
+            class="mx-4 mb-3 md:mx-0"
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
@@ -184,6 +164,8 @@ async function handleSetRecord() {
           <SettingsProfileBlock context="settings" />
 
           <SettingsLinkBlock context="settings" />
+
+          <SettingsSubSpacesBlock context="settings" />
 
           <SettingsStrategiesBlock context="settings" />
 
@@ -226,12 +208,12 @@ async function handleSetRecord() {
               {{ $t('settings.editController') }}
             </BaseButton>
             <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="handleReset">
+              <BaseButton class="mb-2 block w-full" @click="resetForm">
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
                 :disabled="!isReadyToSubmit"
-                :loading="clientLoading"
+                :loading="isSending"
                 class="block w-full"
                 primary
                 @click="handleSubmit"

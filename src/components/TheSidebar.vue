@@ -1,23 +1,27 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, watchEffect, computed } from 'vue';
+import { watch, ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useUnseenProposals } from '@/composables/useUnseenProposals';
-import { useApp } from '@/composables/useApp';
+
 import { lsSet, lsGet } from '@/helpers/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaces } from '@/composables/useSpaces';
+
+import {
+  useUnseenProposals,
+  useExtendedSpaces,
+  useFollowSpace,
+  useSpaces,
+  useWeb3,
+  useApp
+} from '@/composables';
 
 const router = useRouter();
 
 const { web3Account } = useWeb3();
-const { loadFollows, followingSpaces } = useFollowSpace();
-const { proposals, getProposals, lastSeenProposals, updateLastSeenProposal } =
-  useUnseenProposals();
+const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
+const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+  useExtendedSpaces();
 const { spaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
@@ -38,13 +42,6 @@ function saveSpaceOrder() {
       draggableSpaces.value
     );
 }
-const hasUnseenProposalsBySpace = space => {
-  return proposals.value.some(p => {
-    return (
-      p.space.id === space && p.created > (lastSeenProposals.value[space] || 0)
-    );
-  });
-};
 
 watch(followingSpaces, () => {
   draggableSpaces.value = followingSpaces.value;
@@ -66,16 +63,13 @@ watch(followingSpaces, () => {
   loadExtentedSpaces(followingSpaces.value);
 });
 
-watchEffect(() => getProposals(followingSpaces.value));
-
-watch(web3Account, () => {
-  loadFollows();
-  updateLastSeenProposal(web3Account.value);
-});
-
-onMounted(() => {
-  loadFollows();
-});
+watch(
+  web3Account,
+  () => {
+    loadFollows();
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -97,69 +91,70 @@ onMounted(() => {
         delay: [750, 0],
         touch: ['hold', 500]
       }"
-      class="group relative mt-2 flex items-center px-2"
+      class="mt-2 px-2"
     >
       <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar
-          :class="{ '!border-skin-link': $route.name === 'timeline' }"
-        >
+        <ButtonSidebar>
           <BaseIcon size="20" name="feed" />
         </ButtonSidebar>
       </router-link>
     </div>
-    <Transition name="fade">
-      <draggable
-        v-if="draggableSpaces.length > 0"
-        v-model="draggableSpaces"
-        :component-data="{ type: 'transition-group' }"
-        v-bind="{ animation: 200 }"
-        item-key="id"
-        class="mt-2 space-y-2"
-        :delay="200"
-        :delay-on-touch-only="true"
-        @update="saveSpaceOrder"
-      >
-        <template #item="{ element }">
+    <SidebarSpacesSkeleton
+      v-if="extentedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+    />
+
+    <draggable
+      v-else
+      v-model="draggableSpaces"
+      :component-data="{ type: 'transition-group' }"
+      v-bind="{ animation: 200 }"
+      item-key="id"
+      class="mt-2 space-y-2"
+      :delay="200"
+      :delay-on-touch-only="true"
+      @update="saveSpaceOrder"
+    >
+      <template #item="{ element }">
+        <div
+          v-if="extentedSpacesObj[element]"
+          v-tippy="{
+            content: extentedSpacesObj[element].name,
+            placement: 'right',
+            delay: [750, 0],
+            touch: ['hold', 500]
+          }"
+          class="group relative flex items-center px-2"
+        >
+          <SidebarUnreadIndicator
+            :space="element"
+            :has-unseen="spaceHasUnseenProposals(element)"
+          />
           <div
-            v-if="extentedSpacesObj[element]"
-            v-tippy="{
-              content: extentedSpacesObj[element].name,
-              placement: 'right',
-              delay: [750, 0],
-              touch: ['hold', 500]
-            }"
-            class="group relative flex items-center px-2"
+            class="cursor-pointer"
+            @click="
+              router.push({
+                name: 'spaceProposals',
+                params: { key: element }
+              })
+            "
           >
-            <SidebarUnreadIndicator
-              :space="element"
-              :has-unseen="hasUnseenProposalsBySpace(element)"
+            <AvatarSpace
+              :key="element"
+              :space="extentedSpacesObj[element]"
+              symbol-index="space"
+              size="44"
+              class="pointer-events-none"
             />
-            <div
-              class="cursor-pointer"
-              @click="
-                router.push({
-                  name: 'spaceProposals',
-                  params: { key: element }
-                })
-              "
-            >
-              <AvatarSpace
-                :key="element"
-                :space="extentedSpacesObj[element]"
-                symbol-index="space"
-                size="44"
-                class="pointer-events-none"
-              />
-              <BaseCounter
-                v-if="spaces?.[element]?.proposals_active"
-                :counter="spaces[element].proposals_active"
-                class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
-              />
-            </div>
+            <BaseCounter
+              v-if="spaces?.[element]?.proposals_active"
+              :counter="spaces[element].proposals_active"
+              class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
+            />
           </div>
-        </template>
-      </draggable>
-    </Transition>
+        </div>
+      </template>
+    </draggable>
+
     <div
       v-tippy="{
         content: 'Create space',
@@ -173,13 +168,11 @@ onMounted(() => {
         :to="{
           name: 'setup',
           query: {
-            step: 1
+            step: '0'
           }
         }"
       >
-        <ButtonSidebar
-          :class="{ '!border-skin-link': $route.name === 'setup' }"
-        >
+        <ButtonSidebar>
           <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>

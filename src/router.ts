@@ -3,7 +3,6 @@ import { useApp } from '@/composables/useApp';
 
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
-import HomeView from '@/views/HomeView.vue';
 import AboutView from '@/views/AboutView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
 import SetupView from '@/views/SetupView.vue';
@@ -59,7 +58,7 @@ const spaceRoutes = [
     component: SpaceAbout
   },
   {
-    path: 'settings/:sourceSpace?',
+    path: 'settings',
     name: 'spaceSettings',
     component: SpaceSettings
   },
@@ -112,19 +111,15 @@ if (domain) {
   // If accessed through localhost or snapshot.org, add all routes and
   // prefix space routes with space domain (/:key).
   routes.push(
-    { path: '/', name: 'home', component: HomeView },
+    { path: '/', name: 'home', component: ExploreView },
     { path: '/about', name: 'about', component: AboutView },
     {
       path: '/setup/:ens?',
       name: 'setup',
       component: SetupView
     },
-    { path: '/networks', name: 'networks', component: ExploreView },
-    { path: '/strategies', name: 'strategies', component: ExploreView },
-    { path: '/plugins', name: 'plugins', component: ExploreView },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
-    { path: '/explore', name: 'explore', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },
     {
       path: '/playground/:name',
@@ -163,7 +158,7 @@ routes.push({
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) {
+  scrollBehavior(to, _from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     }

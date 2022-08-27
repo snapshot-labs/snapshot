@@ -9,9 +9,8 @@ import {
 } from '@headlessui/vue';
 
 type ListboxItem = {
-  id: number | string;
   value: any;
-  options?: any;
+  extras?: Record<string, any>;
 };
 
 const props = defineProps<{
@@ -70,7 +69,7 @@ const selectedItem = computed({
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
               v-for="item in items"
-              :key="item.id"
+              :key="item.value"
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"

@@ -50,14 +50,14 @@ export function lsRemove(key: string) {
   return localStorage.removeItem(`${pkg.name}.${key}`);
 }
 
-export function formatSpace(space) {
-  if (space?.plugins?.daoModule) {
-    // The Dao Module has been renamed to SafeSnap
-    // Previous spaces plugins have to be renamed
+export function mapOldPluginNames(space) {
+  // The Dao Module has been renamed to SafeSnap
+  // Previous spaces plugins have to be renamed
+  if (space.plugins?.daoModule) {
     space.plugins.safeSnap = space.plugins.daoModule;
     delete space.plugins.daoModule;
   }
-  if (space?.skin === null) delete space.skin;
+
   return space;
 }
 
@@ -87,10 +87,10 @@ export function formatAmount(amount, maxDecimals) {
   if (maxDecimals && out.includes('.')) {
     const parts = out.split('.');
     if (parts[1].length > maxDecimals) {
-      out = '~' + parts[0] + '.' + parts[1].slice(0, maxDecimals);
+      out = `~${parts[0]}.${parts[1].slice(0, maxDecimals)}`;
     }
   }
-  return out + ' ETH';
+  return `${out} ETH`;
 }
 
 export function parseAmount(input) {
@@ -127,7 +127,7 @@ export function calcToSeconds(value, unit) {
   if (unit === 'd') return value * 60 * 60 * 24;
 }
 
-export function getIpfsUrl(url) {
+export function getIpfsUrl(url: string) {
   const gateway: any =
     import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
   return getUrl(url, gateway);

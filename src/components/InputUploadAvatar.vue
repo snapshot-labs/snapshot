@@ -2,10 +2,6 @@
 import { ref } from 'vue';
 import { useImageUpload } from '@/composables/useImageUpload';
 
-defineProps<{
-  avatar?: string;
-}>();
-
 const emit = defineEmits(['image-uploaded', 'image-remove']);
 
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -17,45 +13,26 @@ function openFilePicker() {
 const uploadSuccess = ref(false);
 const previewFile = ref<File | undefined>(undefined);
 
-const { upload, uploading } = useImageUpload({
-  onSuccess: image => {
-    uploadSuccess.value = true;
-    emit('image-uploaded', image.url);
-  }
-});
+const { upload, isUploadingImage } = useImageUpload();
 
 function onFileChange(e) {
   uploadSuccess.value = false;
-  previewFile.value = (e.target as HTMLInputElement).files?.[0];
-  upload(previewFile.value);
-}
-
-function handleSelect(e) {
-  if (e === 'change') return openFilePicker();
-  if (e === 'remove') {
-    emit('image-remove', '');
-    return (previewFile.value = undefined);
-  }
+  if ((e.target as HTMLInputElement).files?.[0])
+    previewFile.value = (e.target as HTMLInputElement).files?.[0];
+  upload(previewFile.value, image => {
+    uploadSuccess.value = true;
+    emit('image-uploaded', image.url);
+  });
 }
 </script>
 
 <template>
-  <div @click="avatar ? null : openFilePicker()">
-    <BaseDropdown
-      :items="[
-        { text: $t('profile.settings.change'), action: 'change' },
-        { text: $t('profile.settings.remove'), action: 'remove' }
-      ]"
-      @select="handleSelect"
-    >
-      <template #button>
-        <slot
-          name="avatar"
-          :uploading="uploading"
-          :previewFile="uploadSuccess ? previewFile : undefined"
-        />
-      </template>
-    </BaseDropdown>
+  <div @click="openFilePicker()">
+    <slot
+      name="avatar"
+      :uploading="isUploadingImage"
+      :previewFile="uploadSuccess ? previewFile : undefined"
+    />
   </div>
   <input
     v-bind="$attrs"

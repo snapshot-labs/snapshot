@@ -1,3 +1,6 @@
+import { BigNumber } from '@ethersproject/bignumber';
+import { Fragment, JsonFragment } from '@ethersproject/abi';
+
 export interface Strategy {
   id: string;
   spacesCount: number;
@@ -44,6 +47,15 @@ export interface StrategyDefinition {
   properties?: StrategyDefinitionProperties;
 }
 
+export interface Profile {
+  id: string;
+  name: string;
+  ens: string;
+  about?: string;
+  avatar?: string;
+  created?: number;
+}
+
 export interface ProfileActivity {
   id: string;
   created: number;
@@ -85,14 +97,16 @@ export interface ExtendedSpace {
   terms: string | null;
   github: string | null;
   twitter: string | null;
-  followerCount: number;
+  followersCount: number;
   private: boolean;
   admins: string[];
   members: string[];
   categories: string[];
+  parent: ExtendedSpace | null;
+  children: ExtendedSpace[];
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
-  validation: { name: string; params: Record<string, any> };
+  validation: SpaceValidation;
   treasuries: TreasuryAsset[];
   voting: {
     delay: number | null;
@@ -101,6 +115,11 @@ export interface ExtendedSpace {
     quorum: number | null;
     type: string | null;
   };
+}
+
+export interface SpaceValidation {
+  name: string;
+  params: Record<string, any>;
 }
 
 export interface SpaceStrategy {
@@ -150,4 +169,93 @@ export interface Vote {
   scores: number[];
   vp: number;
   vp_by_strategy: number[];
+}
+
+// Execution
+
+export type ABI = string | Array<Fragment | JsonFragment | string>;
+
+export interface SafeTransaction {
+  to: string;
+  value: string;
+  data: string;
+  operation: string;
+  nonce: string;
+}
+
+export interface RealityOracleProposal {
+  dao: string;
+  oracle: string;
+  cooldown: number;
+  expiration: number;
+  proposalId: string;
+  questionId: string | undefined;
+  executionApproved: boolean;
+  finalizedAt: number | undefined;
+  nextTxIndex: number | undefined;
+  transactions: SafeTransaction[];
+  txHashes: string[];
+  currentBond: BigNumber | undefined;
+  isApproved: boolean;
+  endTime: number | undefined;
+}
+
+export interface SafeAsset {
+  address: string;
+  name: string;
+  logoUri?: string;
+}
+
+export interface CollectableAsset extends SafeAsset {
+  id: string;
+  tokenName?: string;
+}
+
+export interface TokenAsset extends SafeAsset {
+  symbol: string;
+  decimals: number;
+}
+
+export interface CollectableAssetTransaction extends SafeTransaction {
+  type: 'transferNFT';
+  recipient: string;
+  collectable: CollectableAsset;
+}
+
+export interface TokenAssetTransaction extends SafeTransaction {
+  type: 'transferFunds';
+  amount: string;
+  recipient: any;
+  token: TokenAsset;
+}
+
+export interface CustomContractTransaction extends SafeTransaction {
+  type: 'contractInteraction';
+  abi: string[];
+}
+
+export interface SafeModuleTransactionBatch {
+  hash: string;
+  transactions: SafeTransaction[];
+}
+
+export interface SafeExecutionData {
+  hash: string | null;
+  txs: SafeModuleTransactionBatch[];
+  network: string;
+  realityModule: string;
+}
+
+export interface Plugin {
+  author: string;
+  defaults: any;
+  name: string;
+  version: string;
+  icon?: string;
+  description?: string;
+  website?: string;
+}
+
+export interface PluginIndex extends Plugin {
+  key: string;
 }

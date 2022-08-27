@@ -71,7 +71,7 @@ export async function getResults(space, proposal, votes) {
       proposal.network,
       voters,
       parseInt(proposal.snapshot),
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
     console.timeEnd('getProposal.scores');
     console.log('Got scores');
@@ -79,7 +79,7 @@ export async function getResults(space, proposal, votes) {
     votes = votes
       .map((vote: any) => {
         vote.scores = strategies.map(
-          (strategy, i) => scores[i][vote.voter] || 0
+          (_strategy, i) => scores[i][vote.voter] || 0
         );
         vote.balance = vote.scores.reduce((a, b: any) => a + b, 0);
         return vote;

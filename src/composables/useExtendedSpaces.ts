@@ -2,21 +2,23 @@ import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { mapOldPluginNames } from '@/helpers/utils';
 
 const extentedSpaces = ref<ExtendedSpace[]>([]);
-const loading = ref(false);
 
 export function useExtendedSpaces() {
-  const { apolloQuery } = useApolloQuery();
+  const loading = ref(false);
 
+  const { apolloQuery } = useApolloQuery();
   async function loadExtentedSpaces(id_in: string[] = []) {
     const filteredLoadedSpaces = id_in.filter(
       id => !extentedSpaces.value?.find(space => space.id === id)
     );
+    if (!filteredLoadedSpaces.length) return;
 
     loading.value = true;
     try {
-      const response = await apolloQuery(
+      const spaces = await apolloQuery(
         {
           query: SPACES_QUERY,
           variables: {
@@ -26,7 +28,9 @@ export function useExtendedSpaces() {
         'spaces'
       );
 
-      extentedSpaces.value = [...extentedSpaces.value, ...response];
+      const mappedSpaces = spaces.map(mapOldPluginNames);
+      extentedSpaces.value = [...extentedSpaces.value, ...mappedSpaces];
+
       loading.value = false;
     } catch (e) {
       loading.value = false;
@@ -36,8 +40,8 @@ export function useExtendedSpaces() {
   }
 
   const reloadSpace = (id: string) => {
-    const space = extentedSpaces.value?.find(space => space.id === id);
-    if (space) {
+    const spaceToReload = extentedSpaces.value?.find(space => space.id === id);
+    if (spaceToReload) {
       extentedSpaces.value = extentedSpaces.value.filter(
         space => space.id !== id
       );

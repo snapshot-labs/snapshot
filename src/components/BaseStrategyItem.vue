@@ -1,9 +1,12 @@
-<script setup>
-import { useIntl } from '@/composables/useIntl';
+<script setup lang="ts">
+import { Strategy } from '@/helpers/interfaces';
+import { useIntl } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 
-defineProps(['strategy']);
+defineProps<{
+  strategy: Strategy;
+}>();
 </script>
 
 <template>

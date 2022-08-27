@@ -1,9 +1,14 @@
 import { ref, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormValidation } from '@/composables';
+import { useClient, useFormValidation, useImageUpload } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const SPACE_OBJECT = {
+const { isSending } = useClient();
+const { isUploadingImage } = useImageUpload();
+
+const BASIC_VALIDATION = { name: 'basic', params: {} };
+const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
   treasuries: [],
@@ -21,7 +26,7 @@ const SPACE_OBJECT = {
     quorum: 0,
     type: ''
   },
-  validation: { name: 'basic', params: {} },
+  validation: BASIC_VALIDATION,
   name: '',
   about: '',
   avatar: '',
@@ -37,10 +42,10 @@ const SPACE_OBJECT = {
   domain: '',
   skin: ''
 };
-const BASIC_VALIDATION = { name: 'basic', params: {} };
 
-const formSetup = ref(clone(SPACE_OBJECT));
-const formSettings = ref(clone(SPACE_OBJECT));
+const formSetup = ref(clone(EMPTY_SPACE_FORM));
+const formSettings = ref(clone(EMPTY_SPACE_FORM));
+const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const showAllValidationErrors = ref(false);
 
 export function useSpaceForm(context: 'setup' | 'settings') {
@@ -52,33 +57,39 @@ export function useSpaceForm(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
-  function formatSpace(spaceRaw) {
-    if (!spaceRaw) return;
-    const space = clone(spaceRaw);
-    if (!space) return;
-    delete space.id;
-    delete space.followersCount;
-    if (space.filters.invalids) delete space.filters.invalids;
-    Object.entries(space).forEach(([key, value]) => {
-      if (value === null || value === '') delete space[key];
-    });
-    space.strategies = space.strategies || [];
-    space.plugins = space.plugins || {};
-    space.validation = space.validation || BASIC_VALIDATION;
-    space.filters = space.filters || {};
-    space.voting = space.voting || {};
-    space.voting.delay = space.voting?.delay || undefined;
-    space.voting.period = space.voting?.period || undefined;
-    space.voting.type = space.voting?.type || undefined;
-    space.voting.quorum = space.voting?.quorum || undefined;
-    return space;
+  function populateForm(extendedSpace: ExtendedSpace) {
+    const formData = clone(extendedSpace);
+    delete formData.id;
+    delete formData.followersCount;
+
+    if (formData.filters.invalids) delete formData.filters.invalids;
+
+    formData.strategies = formData.strategies || [];
+    formData.plugins = formData.plugins || {};
+    formData.validation = formData.validation || BASIC_VALIDATION;
+    formData.filters = formData.filters || {};
+    formData.voting = formData.voting || {};
+    formData.voting.delay = formData.voting?.delay || undefined;
+    formData.voting.period = formData.voting?.period || undefined;
+    formData.voting.type = formData.voting?.type || undefined;
+    formData.voting.quorum = formData.voting?.quorum || undefined;
+    formData.children = formData.children.map(child => child.id) || [];
+    formData.parent = formData.parent?.id || '';
+
+    form.value = formData;
+    initialFormState.value = clone(formData);
   }
 
-  const formattedForm = computed(() => formatSpace(form.value));
+  function pruneForm(formData) {
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === null || value === '') delete formData[key];
+    });
+    return formData;
+  }
 
   const { getValidationMessage, validationResult, isValid } = useFormValidation(
     schemas.space,
-    formattedForm
+    computed(() => pruneForm(form.value))
   );
 
   function getValidation(field: string): { message: string; push: boolean } {
@@ -89,8 +100,12 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     };
   }
 
+  const isReadyToSubmit = computed(
+    () => !isUploadingImage.value && !isSending.value && isValid.value
+  );
+
   function resetForm() {
-    form.value = clone(SPACE_OBJECT);
+    form.value = clone(initialFormState.value);
     showAllValidationErrors.value = false;
   }
 
@@ -110,8 +125,9 @@ export function useSpaceForm(context: 'setup' | 'settings') {
     form,
     validationResult,
     isValid,
+    isReadyToSubmit,
     showAllValidationErrors,
-    formatSpace,
+    populateForm,
     getValidation,
     resetForm,
     setDefaultStrategy
