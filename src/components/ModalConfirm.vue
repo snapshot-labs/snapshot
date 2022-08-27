@@ -44,22 +44,22 @@ const isLoadingShutter = ref(false);
 
 async function voteShutter() {
   isLoadingShutter.value = true;
-  const choice = await shutterEncryptChoice(
+  const encryptedChoice = await shutterEncryptChoice(
     JSON.stringify(props.selectedChoices),
     props.proposal.id
   );
   isLoadingShutter.value = false;
 
-  if (!choice) return null;
-  return await vote({
+  if (!encryptedChoice) return null;
+  return vote({
     proposal: props.proposal,
-    choice,
+    choice: encryptedChoice,
     privacy: 'shutter'
   });
 }
 
 async function vote(payload) {
-  return await send(props.space, 'vote', payload);
+  return send(props.space, 'vote', payload);
 }
 
 async function handleSubmit() {
