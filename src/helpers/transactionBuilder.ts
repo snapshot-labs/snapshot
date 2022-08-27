@@ -3,7 +3,6 @@ import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 import { CollectableAsset, TokenAsset } from './safe';
-import { ComputedRef } from 'vue';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'

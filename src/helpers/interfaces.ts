@@ -1,6 +1,3 @@
-import { BigNumberish } from '@ethersproject/bignumber';
-import { Fragment, JsonFragment } from '@ethersproject/abi';
-
 export interface Strategy {
   id: string;
   spacesCount: number;
