@@ -42,6 +42,7 @@
   "gnosis": {
     "id": "gnosis",
     "name": "Gnosis Safe",
-    "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc"
+    "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc",
+    "hidden": true
   }
 }
