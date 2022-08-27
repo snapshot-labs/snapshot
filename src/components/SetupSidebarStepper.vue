@@ -15,7 +15,7 @@ const steps = [
   { name: 'Controller' },
   { name: 'Profile' },
   { name: 'Strategy' },
-  { name: isGnosisSafe.value ? 'Extras' : 'Moderation' }
+  { name: isGnosisSafe.value ? 'Extras' : 'Members' }
 ];
 </script>
 
