@@ -1,25 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import {
-  Transaction,
-  TransactionBuilderConfig
-} from '@/helpers/transactionBuilder';
-import { mapLegacyModuleConfig } from '@/plugins/safeSnap/utils';
+import { Transaction } from '@/helpers/transactionBuilder';
+import { mapLegacyConfig } from '@/plugins/safeSnap/utils';
 import {
   getSafeBalances,
   getSafeCollectables,
-  AbstractSafeModule,
-  SafeModuleConfig,
-  SafeModuleType,
-  SafeModuleExecutionData
+  ExecutionData,
+  TransactionBuilderInitData
 } from '@/helpers/safe';
-import { RealityModule } from './realityModule';
-import { UmaModule } from './umaModule';
 
 const props = defineProps<{
   modelValue: {
-    safeSnap?: SafeModuleExecutionData[];
+    safeSnap?: ExecutionData[];
     [otherPlugins: string]: any;
   };
   space: ExtendedSpace;
@@ -27,19 +20,18 @@ const props = defineProps<{
 
 const emit = defineEmits(['update']);
 
-const proposalExecutionData = ref<SafeModuleExecutionData[]>(
+const proposalExecutionData = ref<ExecutionData[]>(
   props.modelValue.safeSnap || []
 );
 
 const updateProposalExecutionData = (
   builderIndex: number,
-  safeModule: AbstractSafeModule,
+  builder: TransactionBuilderInitData,
   updatedBatches: Transaction[][]
 ) => {
   proposalExecutionData.value[builderIndex] = {
-    network: safeModule.network,
-    address: safeModule.address,
-    type: safeModule.type,
+    safe: builder.safe,
+    module: builder.module,
     batches: updatedBatches
   };
   emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
@@ -52,97 +44,82 @@ const removeProposalExecutionData = (builderIndex: number) => {
   emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
 };
 
-const safeModuleConfigs = computed(() =>
-  mapLegacyModuleConfig(props.space.plugins.safeSnap)
+const safeConfigs = computed(() =>
+  mapLegacyConfig(props.space.plugins.safeSnap)
 );
-const transactionBuilders = ref<TransactionBuilderConfig[]>([]);
-const isInitializingTransactionBuilder = ref<boolean>(false);
+const transactionBuilderInitData = ref<TransactionBuilderInitData[]>([]);
 
 async function addTransactionBuilder(
-  config: SafeModuleConfig,
-  batches: Transaction[][] = [[]]
+  executionData: ExecutionData
 ): Promise<void> {
-  isInitializingTransactionBuilder.value = true;
+  const { safe, batches, module } = executionData;
+  console.log(safe.network, safe.address);
+  const getAvailableFunds = () => getSafeBalances(safe.network, safe.address);
+  const getAvailableCollectables = () =>
+    getSafeCollectables(safe.network, safe.address);
 
-  let safeModule: AbstractSafeModule;
-
-  switch (config.type) {
-    case SafeModuleType.REALITY:
-      safeModule = new RealityModule(config);
-      break;
-    case SafeModuleType.UMA:
-      safeModule = new UmaModule(config);
-      break;
-    default:
-      throw new Error(`Unknown safe module type: ${config.type}`);
-  }
-
-  await safeModule.setSafeAddress();
-
-  const availableFunds = await getSafeBalances(
-    config.network,
-    safeModule.safeAddress
-  );
-  const availableCollectables = await getSafeCollectables(
-    config.network,
-    safeModule.safeAddress
-  );
-
-  isInitializingTransactionBuilder.value = false;
-
-  transactionBuilders.value.push({
-    title: `${
-      config.type.slice(0, 1).toUpperCase() + config.type.slice(1)
-    } (Safe: ${safeModule.safeAddress.slice(0, 8)}...)`,
-    availableFunds,
-    availableCollectables,
-    safeModule,
-    batches
+  transactionBuilderInitData.value.push({
+    title: `${safe.name} (${safe.network}, ${safe.address.slice(0, 6)})`,
+    batches,
+    getAvailableFunds,
+    getAvailableCollectables,
+    safe,
+    module
   });
 }
 
 function removeTransactionBuilder(builderIndex: number) {
-  transactionBuilders.value = transactionBuilders.value.filter(
+  transactionBuilderInitData.value = transactionBuilderInitData.value.filter(
     (_, index) => index !== builderIndex
   );
   removeProposalExecutionData(builderIndex);
 }
 
-proposalExecutionData.value.forEach(
-  (executionData: SafeModuleExecutionData) => {
-    addTransactionBuilder(executionData, executionData.batches);
-  }
-);
+proposalExecutionData.value.forEach((executionData: ExecutionData) => {
+  addTransactionBuilder(executionData);
+});
 </script>
 
 <template>
   <div>
     <div class="mb-3 space-y-3">
       <TransactionBuilder
-        v-for="(builder, index) in transactionBuilders"
+        v-for="(builder, index) in transactionBuilderInitData"
         :key="index"
         :title="builder.title"
-        :available-funds="builder.availableFunds"
-        :available-collectables="builder.availableCollectables"
-        :existing-batches="builder.batches"
+        :get-available-funds="builder.getAvailableFunds"
+        :get-available-collectables="builder.getAvailableCollectables"
+        :batches="builder.batches"
         @remove-transaction-builder="removeTransactionBuilder(index)"
-        @update-batches="
-          updateProposalExecutionData(index, builder.safeModule, $event)
-        "
+        @update-batches="updateProposalExecutionData(index, builder, $event)"
       />
     </div>
-    <div v-if="isInitializingTransactionBuilder" class="p-4 text-center">
-      <LoadingSpinner /> initializing safe module
-    </div>
     <div class="space-y-2">
-      <BaseButton
-        v-for="(safeModuleConfig, index) in safeModuleConfigs"
-        :key="index"
-        class="w-full"
-        @click="addTransactionBuilder(safeModuleConfig)"
-      >
-        add {{ safeModuleConfig.type }} module
-      </BaseButton>
+      <div v-for="safeConfig in safeConfigs" :key="safeConfig.safe.address">
+        <BaseButton
+          v-for="(module, index) in safeConfig.modules"
+          :key="index"
+          class="w-full"
+          @click="
+            addTransactionBuilder({
+              safe: safeConfig.safe,
+              batches: [[]],
+              module
+            })
+          "
+        >
+          add {{ module.type }} execution for safe {{ safeConfig.safe.name }}
+        </BaseButton>
+        <BaseButton
+          class="w-full"
+          @click="
+            addTransactionBuilder({ safe: safeConfig.safe, batches: [[]] })
+          "
+        >
+          add transactions for manual execution for safe
+          {{ safeConfig.safe.name }}
+        </BaseButton>
+      </div>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch } from 'vue';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TokenAsset } from '@/helpers/safe';
 import { TokenAssetTransaction } from '@/helpers/transactionBuilder';
@@ -12,32 +12,40 @@ const emit = defineEmits<{
   (e: 'updateTransaction', transaction: TokenAssetTransaction): void;
 }>();
 
-const availableFunds = inject('availableFunds') as TokenAsset[];
-const fundsOptions = computed(() => {
-  return availableFunds.map(availableToken => ({
-    extras: availableToken,
-    value: availableToken
-  }));
+const availableFunds = ref<TokenAsset[]>([]);
+const getAvailableFunds = inject('getAvailableFunds') as () => Promise<
+  TokenAsset[]
+>;
+onMounted(async () => {
+  availableFunds.value = await getAvailableFunds();
+  console.log(availableFunds.value);
 });
 
-const token = ref<TokenAsset | undefined>(props.transaction.token);
+const fundsOptions = computed(() =>
+  availableFunds.value.map(token => ({
+    extras: token,
+    value: token
+  }))
+);
+
+const selectedToken = ref<TokenAsset | undefined>(props.transaction.token);
 const recipient = ref<string>(props.transaction.recipient);
 const amount = ref<BigNumber>(props.transaction.amount);
 
-watch([token, recipient, amount], () => {
+watch([selectedToken, recipient, amount], () => {
   emit('updateTransaction', {
     ...props.transaction,
-    to: token.value?.address || '',
+    to: selectedToken.value?.address || '',
     recipient: recipient.value,
-    amount: amount.value,
-    token: token.value
+    amount: amount.value || '',
+    token: selectedToken.value
   });
 });
 </script>
 
 <template>
   <div v-if="fundsOptions.length" class="space-y-2">
-    <BaseListbox v-model="token" :items="fundsOptions" label="Currency">
+    <BaseListbox v-model="selectedToken" :items="fundsOptions" label="Currency">
       <template #selected="{ selectedItem }">
         {{ selectedItem.extras?.name }}
       </template>
@@ -51,13 +59,17 @@ watch([token, recipient, amount], () => {
     </BaseListbox>
     <div>
       <LabelInput>Recipient</LabelInput>
-      <InputString v-model="recipient" placeholder="0x..." :disabled="!token" />
+      <InputString
+        v-model="recipient"
+        placeholder="0x..."
+        :disabled="!selectedToken"
+      />
     </div>
     <div>
       <LabelInput>Amount</LabelInput>
       <InputNumber
         :model-value="amount.toString()"
-        :disabled="!token"
+        :disabled="!selectedToken"
         @update:model-value="amount = BigNumber.from($event)"
       />
     </div>

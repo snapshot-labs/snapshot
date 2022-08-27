@@ -4,15 +4,24 @@ import { useTransactionBuilder } from '@/composables';
 import { Transaction } from '@/helpers/transactionBuilder';
 import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 
-const props = defineProps<{
+// unfortunately this can't be imported from a file.
+// See: https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md#type-only-propsemit-declarations
+// "Currently complex types and type imports from other files are not supported."
+interface Props {
   title: string;
-  availableFunds: TokenAsset[];
-  availableCollectables: CollectableAsset[];
-  existingBatches?: Transaction[][];
-}>();
+  batches: Transaction[][];
+  getAvailableFunds?(): Promise<TokenAsset[]>;
+  getAvailableCollectables?(): Promise<CollectableAsset[]>;
+}
 
-provide('availableFunds', props.availableFunds);
-provide('availableCollectables', props.availableCollectables);
+const props = withDefaults(defineProps<Props>(), {
+  batches: () => [[]],
+  getAvailableFunds: async () => [], // TODO: replace with default uniswap token lists
+  getAvailableCollectables: async () => []
+});
+
+provide('getAvailableFunds', props.getAvailableFunds);
+provide('getAvailableCollectables', props.getAvailableCollectables);
 
 const emit = defineEmits<{
   (e: 'updateBatches', batches: Transaction[][]): void;
@@ -29,7 +38,7 @@ const {
   removeTransaction
 } = useTransactionBuilder();
 
-setBatches(props.existingBatches || []);
+setBatches(props.batches);
 
 watch(
   batches,

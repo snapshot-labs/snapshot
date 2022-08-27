@@ -12,37 +12,45 @@ const SAFE_TRANSACTION_API_URLS = {
   '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
 };
 
+export enum SafeType {
+  GNOSIS = 'gnosis',
+  TRIBUTE = 'tribute'
+}
+
+export interface Safe {
+  name: string;
+  type: SafeType;
+  address: string;
+  network: string;
+}
+
 export enum SafeModuleType {
   REALITY = 'reality',
   UMA = 'uma'
 }
 
-export interface SafeModuleConfig {
-  network: string;
+export interface SafeModule {
   address: string;
   type: SafeModuleType;
 }
 
-export interface SafeModuleExecutionData extends SafeModuleConfig {
-  batches: Transaction[][];
+export interface SafeConfig {
+  safe: Safe;
+  modules: SafeModule[];
 }
 
-export abstract class AbstractSafeModule implements SafeModuleConfig {
-  public network: string;
-  public address: string;
-  public type: SafeModuleType;
+export interface ExecutionData {
+  safe: Safe;
+  batches: Transaction[][];
+  module?: SafeModule;
+}
 
-  public safeAddress = '';
+export abstract class AbstractExecutor {
+  constructor(public executionData: ExecutionData) {}
 
-  constructor(config: SafeModuleConfig) {
-    this.network = config.network;
-    this.address = config.address;
-    this.type = config.type;
-  }
-
-  abstract setSafeAddress(): Promise<void>;
-  abstract proposeTransactions(batches: Transaction[][]): AsyncGenerator;
-  abstract executeTransactions(batches: Transaction[][]): AsyncGenerator;
+  abstract proposeTransactions(): AsyncGenerator;
+  abstract executeTransactions(): AsyncGenerator;
+  abstract disputeTransactions(): AsyncGenerator;
 }
 
 export interface SafeAsset {
@@ -60,6 +68,15 @@ export interface TokenAsset extends SafeAsset {
   symbol: string;
   decimals: number;
   safeBalance?: BigNumber;
+}
+
+export interface TransactionBuilderInitData {
+  title: string;
+  batches: Transaction[][];
+  getAvailableFunds?(): Promise<TokenAsset[]>;
+  getAvailableCollectables?(): Promise<CollectableAsset[]>;
+  safe: Safe;
+  module?: SafeModule;
 }
 
 const ETHEREUM_COIN: TokenAsset = {

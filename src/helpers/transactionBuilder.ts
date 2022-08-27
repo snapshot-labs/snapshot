@@ -2,7 +2,8 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import { AbstractSafeModule, CollectableAsset, TokenAsset } from './safe';
+import { CollectableAsset, TokenAsset } from './safe';
+import { ComputedRef } from 'vue';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -108,14 +109,6 @@ export interface ContractTransaction extends Transaction {
 
 export interface RawTransaction extends Transaction {
   type: TransactionType.RAW;
-}
-
-export interface TransactionBuilderConfig {
-  title: string;
-  availableFunds: TokenAsset[];
-  availableCollectables: CollectableAsset[];
-  safeModule: AbstractSafeModule;
-  batches: Transaction[][];
 }
 
 const MULTI_SEND_VERSIONS: Record<MultiSendVersion, Record<string, string>> = {

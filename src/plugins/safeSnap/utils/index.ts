@@ -1,5 +1,4 @@
 import { keccak256 } from '@ethersproject/solidity';
-
 import { calcTransactionHashes } from '../index';
 import {
   createMultiSendTx,
@@ -10,19 +9,45 @@ import {
   SafeTransaction,
   SafeExecutionData
 } from '@/plugins/safeSnap/interfaces';
-import { SafeModuleConfig, SafeModuleType } from '@/helpers/safe';
+import { SafeConfig, SafeModuleType, SafeType } from '@/helpers/safe';
 
-export function mapLegacyModuleConfig(config: any): SafeModuleConfig[] {
+export function mapLegacyConfig(config: any): SafeConfig[] {
   return [
     {
-      network: '4',
-      type: SafeModuleType.REALITY,
-      address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
+      safe: {
+        name: 'Main Safe',
+        type: SafeType.GNOSIS,
+        network: '4',
+        address: '0x6934DeeB18a7B7F25DbFB1ed8a0b361e42e4D2aF'
+      },
+      modules: [
+        {
+          type: SafeModuleType.REALITY,
+          address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
+        },
+        {
+          type: SafeModuleType.UMA,
+          address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
+        }
+      ]
     },
     {
-      network: '4',
-      type: SafeModuleType.UMA,
-      address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
+      safe: {
+        name: 'Secondary Safe',
+        type: SafeType.GNOSIS,
+        network: '4',
+        address: '0x6934DeeB18a7B7F25DbFB1ed8a0b361e42e4D2aF'
+      },
+      modules: [
+        {
+          type: SafeModuleType.REALITY,
+          address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
+        },
+        {
+          type: SafeModuleType.UMA,
+          address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
+        }
+      ]
     }
   ];
 }
