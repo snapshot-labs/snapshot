@@ -39,34 +39,6 @@ export const MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0 = {
   '1313161555': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
 };
 
-export const MULTI_SEND_CONTRACT_ADDRESSES_V1_2_0 = {
-  '1': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '4': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '42': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '5': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '88': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '100': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '246': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '73799': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185'
-};
-
-export const MULTI_SEND_CONTRACT_ADDRESSES_V1_1_1 = {
-  '1': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '4': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '5': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '42': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '88': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '100': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '246': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '73799': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD'
-};
-
-export enum MultiSendVersion {
-  V1_3_0 = '1.3.0',
-  V1_2_0 = '1.2.0',
-  V1_1_1 = '1.1.1'
-}
-
 export enum TransactionOperationType {
   CALL,
   DELEGATECALL
@@ -80,7 +52,7 @@ export enum TransactionType {
 }
 
 export interface Transaction {
-  type: TransactionType;
+  type?: TransactionType;
   to: string;
   value: BigNumber;
   data: string;
@@ -110,17 +82,8 @@ export interface RawTransaction extends Transaction {
   type: TransactionType.RAW;
 }
 
-const MULTI_SEND_VERSIONS: Record<MultiSendVersion, Record<string, string>> = {
-  [MultiSendVersion.V1_1_1]: MULTI_SEND_CONTRACT_ADDRESSES_V1_1_1,
-  [MultiSendVersion.V1_2_0]: MULTI_SEND_CONTRACT_ADDRESSES_V1_2_0,
-  [MultiSendVersion.V1_3_0]: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0
-};
-
-export function getMultiSend(
-  network: number | string,
-  version: MultiSendVersion = MultiSendVersion.V1_3_0
-) {
-  return MULTI_SEND_VERSIONS[version][network.toString()];
+export function getMultiSendAddress(network: number | string) {
+  return MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[network.toString()];
 }
 
 export function encodeTransactions(transactions: Transaction[]) {
@@ -145,7 +108,7 @@ export function encodeTransactions(transactions: Transaction[]) {
 
 export function createMultiSendTx(
   batch: Transaction[],
-  nonce: number,
+  nonce: string,
   multiSendAddress: string
 ) {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
@@ -156,8 +119,8 @@ export function createMultiSendTx(
   return {
     to: multiSendAddress,
     operation: TransactionOperationType.DELEGATECALL,
-    value: '0',
-    nonce: nonce.toString(),
+    value: BigNumber.from(0),
+    nonce,
     data
   };
 }

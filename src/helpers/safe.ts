@@ -1,4 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { StaticJsonRpcProvider, Web3Provider } from '@ethersproject/providers';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { Transaction } from './transactionBuilder';
 
 const SAFE_TRANSACTION_API_URLS = {
@@ -10,6 +12,16 @@ const SAFE_TRANSACTION_API_URLS = {
   '137': 'https://safe-transaction.polygon.gnosis.io/api/v1/',
   '56': 'https://safe-transaction.bsc.gnosis.io/api/v1/',
   '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
+};
+
+export const EIP712_TYPES = {
+  Transaction: [
+    { name: 'to', type: 'address' },
+    { name: 'value', type: 'uint256' },
+    { name: 'data', type: 'bytes' },
+    { name: 'operation', type: 'uint8' },
+    { name: 'nonce', type: 'uint256' }
+  ]
 };
 
 export enum SafeType {
@@ -45,8 +57,25 @@ export interface ExecutionData {
   module?: SafeModule;
 }
 
+export interface ModuleExecutionData extends ExecutionData {
+  module: SafeModule;
+}
+
 export abstract class AbstractExecutor {
-  constructor(public executionData: ExecutionData) {}
+  public readProvider: StaticJsonRpcProvider;
+  public writeProvider: Web3Provider | undefined;
+
+  constructor(
+    public executionData: ModuleExecutionData,
+    public proposalId: string
+  ) {
+    this.readProvider = getProvider(executionData.safe.network);
+  }
+
+  setWriteProvider(provider: Web3Provider | undefined) {
+    this.writeProvider = provider;
+    return this;
+  }
 
   abstract proposeTransactions(): AsyncGenerator;
   abstract executeTransactions(): AsyncGenerator;
