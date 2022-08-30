@@ -33,10 +33,6 @@ export function mapLegacyConfig(config: any): SafeConfig[] {
         {
           type: SafeModuleType.REALITY,
           address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
-        },
-        {
-          type: SafeModuleType.UMA,
-          address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
         }
       ]
     },
@@ -45,16 +41,12 @@ export function mapLegacyConfig(config: any): SafeConfig[] {
         name: 'Secondary Safe',
         type: SafeType.GNOSIS,
         network: '4',
-        address: '0x6934DeeB18a7B7F25DbFB1ed8a0b361e42e4D2aF'
+        address: '0x485255d5005454b73631C1A61C782211Da28e650'
       },
       modules: [
         {
-          type: SafeModuleType.REALITY,
-          address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
-        },
-        {
           type: SafeModuleType.UMA,
-          address: '0xd6FDB4ACFF1B01493eCB84494c220d3295E8fAe2'
+          address: '0xcD32691da48b3Fe4E7CB5593582C982d70971768'
         }
       ]
     }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
-import { useSafeUmaModule } from '@/composables';
+import { useTxStatus, useSafeUmaModule } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
@@ -9,16 +9,27 @@ const props = defineProps<{
 }>();
 
 const umaModule = useSafeUmaModule(props.executionData, props.proposalId);
+const { pendingCount } = useTxStatus();
 
 const loading = ref(true);
 onMounted(async () => {
   loading.value = false;
 });
+
+async function handleProposeTransactions() {
+  const proposeTransaction = umaModule.proposeTransactions();
+  await proposeTransaction.next();
+  pendingCount.value++;
+  await proposeTransaction.next();
+  pendingCount.value--;
+}
 </script>
 
 <template>
   <div>
     <LoadingSpinner v-if="loading" />
-    <BaseButton v-else> propose transactions </BaseButton>
+    <BaseButton v-else @click="handleProposeTransactions">
+      propose transactions
+    </BaseButton>
   </div>
 </template>

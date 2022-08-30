@@ -1,7 +1,13 @@
 import { pack } from '@ethersproject/solidity';
-import { Interface } from '@ethersproject/abi';
+import { FunctionFragment, Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
+import {
+  ABI,
+  getContractTransactionData,
+  getERC20TokenTransferTransactionData,
+  getERC721TokenTransferTransactionData
+} from './abi';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -64,6 +70,7 @@ export interface TokenTransaction {
 }
 
 export interface CollectableTransaction {
+  from: string;
   recipient: string;
   collectableAddress: string;
   collectableId: string;
@@ -73,7 +80,7 @@ export interface ContractTransaction {
   contractAddress: string;
   method: string;
   params: any[];
-  abi: string[];
+  abi: ABI;
 }
 
 export type Transaction =
@@ -167,6 +174,48 @@ export function createMultiSendTx(
   };
 }
 
+export function convertToRawTransaction(
+  transaction: Transaction
+): RawTransaction {
+  if (isRawTransaction(transaction)) {
+    return transaction;
+  } else if (isTokenTransaction(transaction)) {
+    return {
+      to: transaction.tokenAddress,
+      value: BigNumber.from(0),
+      data: getERC20TokenTransferTransactionData(
+        transaction.recipient,
+        transaction.amount
+      ),
+      operation: TransactionOperationType.CALL
+    };
+  } else if (isCollectableTransaction(transaction)) {
+    return {
+      to: transaction.collectableAddress,
+      value: BigNumber.from(0),
+      data: getERC721TokenTransferTransactionData(
+        transaction.from,
+        transaction.recipient,
+        transaction.collectableId
+      ),
+      operation: TransactionOperationType.CALL
+    };
+  } else if (isContractTransaction(transaction)) {
+    return {
+      to: transaction.contractAddress,
+      value: BigNumber.from(0),
+      data: getContractTransactionData(
+        transaction.abi,
+        FunctionFragment.from(transaction.method),
+        transaction.params
+      ),
+      operation: TransactionOperationType.CALL
+    };
+  } else {
+    throw new Error('Unkown transaction type');
+  }
+}
+
 export function createEmptyTransaction(type: TransactionType): Transaction {
   switch (type) {
     case TransactionType.RAW:
@@ -184,6 +233,7 @@ export function createEmptyTransaction(type: TransactionType): Transaction {
       };
     case TransactionType.COLLECTABLE:
       return {
+        from: '',
         recipient: '',
         collectableAddress: '',
         collectableId: ''

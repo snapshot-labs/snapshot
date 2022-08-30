@@ -3,9 +3,10 @@ import { HashZero } from '@ethersproject/constants';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import { EIP712_TYPES, ModuleExecutionData } from '@/helpers/safe';
 import {
+  convertToRawTransaction,
   createMultiSendTx,
   getMultiSendAddress,
-  Transaction
+  RawTransaction
 } from '@/helpers/transactionBuilder';
 import {
   ERC20_ABI,
@@ -41,11 +42,14 @@ export function useSafeRealityModule(
   const batchHashes = executionData.batches
     .map((batch, nonce) => {
       if (batch.length === 1) {
-        return calcTransactionHash(batch[0], nonce.toString());
+        return calcTransactionHash(
+          convertToRawTransaction(batch[0]),
+          nonce.toString()
+        );
       } else if (batch.length > 1) {
         return calcTransactionHash(
           createMultiSendTx(
-            batch,
+            batch.map(tx => convertToRawTransaction(tx)),
             nonce.toString(),
             getMultiSendAddress(executionData.safe.network)
           )
@@ -55,7 +59,7 @@ export function useSafeRealityModule(
     })
     .filter(hash => hash !== '');
 
-  function calcTransactionHash(transaction: Transaction, nonce = '0') {
+  function calcTransactionHash(transaction: RawTransaction, nonce = '0') {
     const domain = {
       chainId: executionData.safe.network,
       verifyingContract: executionData.module.address
