@@ -24,10 +24,11 @@ function selectChoice(i) {
     <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
-      class="mb-2 block w-full"
+      class="relative mb-2 block w-full"
       :class="selectedChoice === i + 1 && '!border-skin-link'"
       @click="selectChoice(i + 1)"
     >
+      <i-ho-check v-if="selectedChoice === i + 1" class="absolute" />
       {{ shorten(choice, 32) }}
     </BaseButton>
   </div>
