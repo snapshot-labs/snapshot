@@ -28,16 +28,15 @@ export function useSafeRealityModule(
 ) {
   const readProvider = getProvider(executionData.safe.network);
   let questionHash = '';
-  let executionApproved = false;
-  let nextTxIndex: number | undefined = undefined;
-  let daoAddress: string | undefined = undefined;
   let oracleAddress!: string;
   let minimumBond: number | undefined = undefined;
-  let expiration: number | undefined = undefined;
 
   const questionId = ref<string>('');
   const finalizedAt = ref<number | undefined>(undefined);
   const cooldown = ref<number | undefined>(undefined);
+  const executionApproved = ref<boolean>(false);
+  const nextTxIndex = ref<number | undefined>(undefined);
+  const expiration = ref<number | undefined>(undefined);
 
   const batchHashes = executionData.batches
     .map((batch, nonce) => {
@@ -124,7 +123,7 @@ export function useSafeRealityModule(
 
     questionId.value =
       proposalInfo[0] !== HashZero ? proposalInfo[0] : undefined;
-    nextTxIndex =
+    nextTxIndex.value =
       nextIndexToExecute < 0 || nextIndexToExecute >= batchHashes.length
         ? undefined
         : nextIndexToExecute;
@@ -144,11 +143,10 @@ export function useSafeRealityModule(
       ]
     );
 
-    daoAddress = moduleDetails[0][0];
     oracleAddress = moduleDetails[1][0];
     cooldown.value = moduleDetails[2][0];
     minimumBond = moduleDetails[3][0];
-    expiration = moduleDetails[4][0];
+    expiration.value = moduleDetails[4][0];
   }
 
   async function checkPossibleExecution(): Promise<void> {
@@ -164,13 +162,15 @@ export function useSafeRealityModule(
           ]
         );
 
-        executionApproved = BigNumber.from(result[0][0]).eq(BigNumber.from(1));
+        executionApproved.value = BigNumber.from(result[0][0]).eq(
+          BigNumber.from(1)
+        );
         finalizedAt.value = BigNumber.from(result[1][0]).toNumber();
       } catch (e) {
         console.log('Question is not answered yet.', e);
       }
     } else {
-      executionApproved = false;
+      executionApproved.value = false;
       finalizedAt.value = undefined;
     }
   }
@@ -265,6 +265,9 @@ export function useSafeRealityModule(
     finalizedAt: readonly(finalizedAt),
     questionId: readonly(questionId),
     cooldown: readonly(cooldown),
+    executionApproved: readonly(executionApproved),
+    nextTxIndex: readonly(nextTxIndex),
+    expiration: readonly(expiration),
     proposeTransactions,
     disputeTransactions,
     executeTransactions,

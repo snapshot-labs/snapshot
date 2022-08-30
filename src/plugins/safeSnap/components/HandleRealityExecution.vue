@@ -52,7 +52,11 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 }
 
 const canBeExecuted = computed(() => {
-  if (realityModule.finalizedAt.value && realityModule.cooldown.value) {
+  if (
+    realityModule.finalizedAt.value &&
+    realityModule.cooldown.value &&
+    realityModule.executionApproved
+  ) {
     return (
       realityModule.finalizedAt.value + realityModule.cooldown.value <
       timestamp.value
