@@ -16,8 +16,8 @@ onMounted(async () => {
   loading.value = false;
 });
 
-async function handleProposeTransactions() {
-  const proposeTransaction = umaModule.proposeTransactions();
+async function handleProposeExecution() {
+  const proposeTransaction = umaModule.proposeExecution();
   await proposeTransaction.next();
   pendingCount.value++;
   await proposeTransaction.next();
@@ -28,7 +28,7 @@ async function handleProposeTransactions() {
 <template>
   <div>
     <LoadingSpinner v-if="loading" />
-    <BaseButton v-else @click="handleProposeTransactions">
+    <BaseButton v-else @click="handleProposeExecution">
       propose transactions
     </BaseButton>
   </div>

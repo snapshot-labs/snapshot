@@ -15,7 +15,7 @@ export function useSafeUmaModule(
 ) {
   const readProvider = getProvider(executionData.safe.network);
 
-  async function* proposeTransactions() {
+  async function* proposeExecution() {
     const transactions = executionData.batches
       .map((batch, nonce) => {
         if (batch.length === 1) {
@@ -42,17 +42,17 @@ export function useSafeUmaModule(
     await tx.wait();
   }
 
-  async function* disputeTransactions() {
+  async function* disputeExecution() {
     yield;
   }
 
-  async function* executeTransactions() {
+  async function* execute() {
     yield;
   }
 
   return {
-    proposeTransactions,
-    disputeTransactions,
-    executeTransactions
+    proposeExecution,
+    disputeExecution,
+    execute
   };
 }

@@ -72,7 +72,7 @@ export function useSafeRealityModule(
     });
   }
 
-  async function* proposeTransactions() {
+  async function* proposeExecution() {
     const tx = await sendTransaction(
       getInstance().web3,
       executionData.module.address,
@@ -84,11 +84,11 @@ export function useSafeRealityModule(
     await tx.wait();
   }
 
-  async function* disputeTransactions() {
+  async function* disputeExecution() {
     yield;
   }
 
-  async function* executeTransactions() {
+  async function* execute() {
     yield;
   }
 
@@ -272,9 +272,9 @@ export function useSafeRealityModule(
     executionApproved: readonly(executionApproved),
     nextTxIndex: readonly(nextTxIndex),
     expiration: readonly(expiration),
-    proposeTransactions,
-    disputeTransactions,
-    executeTransactions,
+    proposeExecution,
+    disputeExecution,
+    execute,
     setQuestion,
     setProposalDetails,
     setModuleDetails,

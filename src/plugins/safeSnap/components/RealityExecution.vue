@@ -26,8 +26,8 @@ onMounted(async () => {
   loading.value = false;
 });
 
-async function handleProposeTransactions() {
-  const proposeTransaction = realityModule.proposeTransactions();
+async function handleProposeExecution() {
+  const proposeTransaction = realityModule.proposeExecution();
   await proposeTransaction.next();
   pendingCount.value++;
   await proposeTransaction.next();
@@ -80,7 +80,7 @@ const canBeExecuted = computed(() => {
         </BaseButton>
       </div>
     </div>
-    <BaseButton v-else @click="handleProposeTransactions">
+    <BaseButton v-else @click="handleProposeExecution">
       propose transactions
     </BaseButton>
   </div>
