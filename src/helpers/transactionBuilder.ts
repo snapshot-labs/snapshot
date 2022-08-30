@@ -2,7 +2,6 @@ import { pack } from '@ethersproject/solidity';
 import { Interface } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import { CollectableAsset, TokenAsset } from './safe';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -45,48 +44,91 @@ export enum TransactionOperationType {
 }
 
 export enum TransactionType {
-  TRANSFER_FUNDS = 'transferFunds',
-  TRANSFER_NFT = 'transferNft',
-  CONTRACT = 'contractInteraction',
+  TOKEN = 'token',
+  COLLECTABLE = 'collectable',
+  CONTRACT = 'contract',
   RAW = 'raw'
 }
 
-export interface Transaction {
-  type?: TransactionType;
+export interface RawTransaction {
   to: string;
   value: BigNumber;
   data: string;
   operation: TransactionOperationType;
-  [x: string]: any;
 }
 
-export interface TokenAssetTransaction extends Transaction {
-  type: TransactionType.TRANSFER_FUNDS;
+export interface TokenTransaction {
   amount: BigNumber;
   recipient: string;
-  token?: TokenAsset;
+  tokenAddress: string;
 }
 
-export interface CollectableAssetTransaction extends Transaction {
-  type: TransactionType.TRANSFER_NFT;
+export interface CollectableTransaction {
   recipient: string;
-  collectable?: CollectableAsset;
+  collectableAddress: string;
+  collectableId: string;
 }
 
-export interface ContractTransaction extends Transaction {
-  type: TransactionType.CONTRACT;
+export interface ContractTransaction {
+  contractAddress: string;
+  method: string;
+  params: any[];
   abi: string[];
 }
 
-export interface RawTransaction extends Transaction {
-  type: TransactionType.RAW;
+export type Transaction =
+  | RawTransaction
+  | TokenTransaction
+  | CollectableTransaction
+  | ContractTransaction;
+
+export function isRawTransaction(
+  transaction: any
+): transaction is RawTransaction {
+  return (
+    'to' in transaction &&
+    'value' in transaction &&
+    'data' in transaction &&
+    'operation' in transaction
+  );
+}
+
+export function isTokenTransaction(
+  transaction: any
+): transaction is TokenTransaction {
+  return (
+    'amount' in transaction &&
+    'recipient' in transaction &&
+    'tokenAddress' in transaction
+  );
+}
+
+export function isCollectableTransaction(
+  transaction: any
+): transaction is CollectableTransaction {
+  return (
+    'recipient' in transaction &&
+    'collectableAddress' in transaction &&
+    'collectableId' in transaction
+  );
+}
+
+export function isContractTransaction(
+  transaction: any
+): transaction is ContractTransaction {
+  return (
+    'contractAddress' in transaction &&
+    'method' in transaction &&
+    'params' in transaction &&
+    'abi' in transaction
+  );
 }
 
 export function getMultiSendAddress(network: number | string) {
   return MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[network.toString()];
 }
 
-export function encodeTransactions(transactions: Transaction[]) {
+export function encodeTransactions(transactions: RawTransaction[]) {
   const values = transactions.map(tx => [
     tx.operation,
     tx.to,
@@ -107,7 +149,7 @@ export function encodeTransactions(transactions: Transaction[]) {
 }
 
 export function createMultiSendTx(
-  batch: Transaction[],
+  batch: RawTransaction[],
   nonce: string,
   multiSendAddress: string
 ) {
@@ -126,37 +168,34 @@ export function createMultiSendTx(
 }
 
 export function createEmptyTransaction(type: TransactionType): Transaction {
-  const transaction = {
-    type,
-    to: '',
-    value: BigNumber.from(0),
-    data: '',
-    operation: TransactionOperationType.CALL
-  };
-
-  if (type === TransactionType.TRANSFER_FUNDS) {
-    return {
-      ...transaction,
-      recipient: '',
-      amount: BigNumber.from(0),
-      token: undefined
-    };
+  switch (type) {
+    case TransactionType.RAW:
+      return {
+        to: '',
+        value: BigNumber.from(0),
+        data: '0x',
+        operation: TransactionOperationType.CALL
+      };
+    case TransactionType.TOKEN:
+      return {
+        amount: BigNumber.from(0),
+        recipient: '',
+        tokenAddress: ''
+      };
+    case TransactionType.COLLECTABLE:
+      return {
+        recipient: '',
+        collectableAddress: '',
+        collectableId: ''
+      };
+    case TransactionType.CONTRACT:
+      return {
+        contractAddress: '',
+        method: '',
+        params: [],
+        abi: []
+      };
+    default:
+      throw new Error(`Unknown transaction type: ${type}`);
   }
-
-  if (type === TransactionType.TRANSFER_NFT) {
-    return {
-      ...transaction,
-      recipient: '',
-      collectable: undefined
-    };
-  }
-
-  if (type === TransactionType.CONTRACT) {
-    return {
-      ...transaction,
-      abi: []
-    };
-  }
-
-  return transaction;
 }

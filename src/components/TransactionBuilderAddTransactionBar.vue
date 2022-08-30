@@ -18,14 +18,14 @@ function addTransaction(type: TransactionType) {
   <div class="flex items-center justify-evenly">
     <div
       class="transaction-type-item"
-      @click="addTransaction(TransactionType.TRANSFER_FUNDS)"
+      @click="addTransaction(TransactionType.TOKEN)"
     >
       <i-ho-database class="inline" />
       Funds
     </div>
     <div
       class="transaction-type-item"
-      @click="addTransaction(TransactionType.TRANSFER_NFT)"
+      @click="addTransaction(TransactionType.COLLECTABLE)"
     >
       <i-ho-photograph />
       NFT

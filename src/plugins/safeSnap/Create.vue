@@ -53,7 +53,6 @@ async function addTransactionBuilder(
   executionData: ExecutionData
 ): Promise<void> {
   const { safe, batches, module } = executionData;
-  console.log(safe.network, safe.address);
   const getAvailableFunds = () => getSafeBalances(safe.network, safe.address);
   const getAvailableCollectables = () =>
     getSafeCollectables(safe.network, safe.address);

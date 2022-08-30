@@ -116,7 +116,7 @@ function saveTransaction(transaction: Transaction) {
             class="ml-auto"
             @click="
               openTransactionFormModal(
-                transaction,
+                transaction as Transaction, // this type casting shouldn't be necessary, right? because of readonly?
                 batchIndex,
                 transactionIndex
               )

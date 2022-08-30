@@ -2,15 +2,19 @@
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { BigNumber } from '@ethersproject/bignumber';
 import { TokenAsset } from '@/helpers/safe';
-import { TokenAssetTransaction } from '@/helpers/transactionBuilder';
+import { TokenTransaction } from '@/helpers/transactionBuilder';
 
 const props = defineProps<{
-  transaction: TokenAssetTransaction;
+  transaction: TokenTransaction;
 }>();
 
 const emit = defineEmits<{
-  (e: 'updateTransaction', transaction: TokenAssetTransaction): void;
+  (e: 'updateTransaction', transaction: TokenTransaction): void;
 }>();
+
+const selectedToken = ref<TokenAsset | undefined>(undefined);
+const recipient = ref<string>(props.transaction.recipient);
+const amount = ref<BigNumber>(props.transaction.amount);
 
 const availableFunds = ref<TokenAsset[]>([]);
 const getAvailableFunds = inject('getAvailableFunds') as () => Promise<
@@ -18,7 +22,9 @@ const getAvailableFunds = inject('getAvailableFunds') as () => Promise<
 >;
 onMounted(async () => {
   availableFunds.value = await getAvailableFunds();
-  console.log(availableFunds.value);
+  selectedToken.value = availableFunds.value.find(
+    token => token.address === props.transaction.tokenAddress
+  );
 });
 
 const fundsOptions = computed(() =>
@@ -28,17 +34,12 @@ const fundsOptions = computed(() =>
   }))
 );
 
-const selectedToken = ref<TokenAsset | undefined>(props.transaction.token);
-const recipient = ref<string>(props.transaction.recipient);
-const amount = ref<BigNumber>(props.transaction.amount);
-
 watch([selectedToken, recipient, amount], () => {
   emit('updateTransaction', {
     ...props.transaction,
-    to: selectedToken.value?.address || '',
     recipient: recipient.value,
     amount: amount.value || '',
-    token: selectedToken.value
+    tokenAddress: selectedToken.value?.address || ''
   });
 });
 </script>

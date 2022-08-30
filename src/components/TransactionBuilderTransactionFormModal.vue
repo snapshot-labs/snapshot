@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  TokenAssetTransaction,
-  Transaction,
-  TransactionType
-} from '@/helpers/transactionBuilder';
+import { isTokenTransaction, Transaction } from '@/helpers/transactionBuilder';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -40,12 +36,12 @@ function saveTransaction() {
 <template>
   <BaseModal :open="isOpen" @close="$emit('close')">
     <template #header>
-      <h3>Add transaction (type: {{ transaction.type }})</h3>
+      <h3>Add transaction</h3>
     </template>
     <BaseContainer class="min-h-[400px] py-2">
       <TransactionBuilderFormTransferFunds
-        v-if="transaction.type === TransactionType.TRANSFER_FUNDS"
-        :transaction="(transactionFormData as TokenAssetTransaction)"
+        v-if="isTokenTransaction(transactionFormData)"
+        :transaction="transactionFormData"
         @updateTransaction="transactionFormData = $event"
       />
     </BaseContainer>
