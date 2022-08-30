@@ -1,7 +1,7 @@
 import { readonly, ref } from 'vue';
 import { HashZero } from '@ethersproject/constants';
 import { _TypedDataEncoder } from '@ethersproject/hash';
-import { EIP712_TYPES, ModuleExecutionData } from '@/helpers/safe';
+import { EIP712_TYPES, Executor, ModuleExecutionData } from '@/helpers/safe';
 import {
   convertToRawTransaction,
   createMultiSendTx,
@@ -22,12 +22,15 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { keccak256 } from '@ethersproject/solidity';
 import { BigNumber } from '@ethersproject/bignumber';
+import { useTimestamp } from '@vueuse/core';
 
 export function useSafeRealityModule(
   executionData: ModuleExecutionData,
   proposalId: string
-) {
+): Executor {
+  const currentTimestamp = useTimestamp();
   const readProvider = getProvider(executionData.safe.network);
+
   let questionHash = '';
   let oracleAddress!: string;
   let minimumBond: number | undefined = undefined;
@@ -265,6 +268,15 @@ export function useSafeRealityModule(
     console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
+  function canExecute(): boolean {
+    return !!(
+      executionApproved.value &&
+      finalizedAt.value &&
+      cooldown.value &&
+      finalizedAt.value + cooldown.value < currentTimestamp.value
+    );
+  }
+
   return {
     finalizedAt: readonly(finalizedAt),
     questionId: readonly(questionId),
@@ -275,6 +287,7 @@ export function useSafeRealityModule(
     proposeExecution,
     disputeExecution,
     execute,
+    canExecute,
     setQuestion,
     setProposalDetails,
     setModuleDetails,

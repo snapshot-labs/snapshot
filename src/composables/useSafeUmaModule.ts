@@ -1,5 +1,5 @@
 import { UMA_MODULE_ABI } from '@/helpers/abi';
-import { ModuleExecutionData } from '@/helpers/safe';
+import { Executor, ModuleExecutionData } from '@/helpers/safe';
 import {
   convertToRawTransaction,
   createMultiSendTx,
@@ -12,7 +12,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 export function useSafeUmaModule(
   executionData: ModuleExecutionData,
   proposalId: string
-) {
+): Executor {
   const readProvider = getProvider(executionData.safe.network);
 
   async function* proposeExecution() {
@@ -50,9 +50,14 @@ export function useSafeUmaModule(
     yield;
   }
 
+  function canExecute() {
+    return true;
+  }
+
   return {
     proposeExecution,
     disputeExecution,
-    execute
+    execute,
+    canExecute
   };
 }

@@ -59,6 +59,15 @@ export interface ModuleExecutionData extends ExecutionData {
   module: SafeModule;
 }
 
+// This interface could turn out to be more limiting than helpful. We'll see.
+export interface Executor {
+  proposeExecution(): AsyncGenerator;
+  disputeExecution(): AsyncGenerator;
+  execute(): AsyncGenerator;
+  canExecute(): boolean;
+  [x: string]: any;
+}
+
 export interface SafeAsset {
   address: string;
   name: string;

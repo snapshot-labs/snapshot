@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { useTimestamp } from '@vueuse/core';
+import { onMounted, ref } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
 import { useTxStatus, useSafeRealityModule } from '@/composables';
 
@@ -10,7 +9,6 @@ const props = defineProps<{
 }>();
 
 const { pendingCount } = useTxStatus();
-const timestamp = useTimestamp();
 
 const realityModule = useSafeRealityModule(
   props.executionData,
@@ -50,20 +48,6 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
   await setOralceAnswerTransaction.next();
   pendingCount.value--;
 }
-
-const canBeExecuted = computed(() => {
-  if (
-    realityModule.finalizedAt.value &&
-    realityModule.cooldown.value &&
-    realityModule.executionApproved
-  ) {
-    return (
-      realityModule.finalizedAt.value + realityModule.cooldown.value <
-      timestamp.value
-    );
-  }
-  return false;
-});
 </script>
 
 <template>
@@ -71,7 +55,7 @@ const canBeExecuted = computed(() => {
     <LoadingSpinner v-if="loading" />
     <div v-if="realityModule.questionId">
       <div v-if="realityModule.finalizedAt">
-        <BaseButton v-if="canBeExecuted"> execute </BaseButton>
+        <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
         <div v-else>waiting for cooldown</div>
       </div>
       <div v-else>
