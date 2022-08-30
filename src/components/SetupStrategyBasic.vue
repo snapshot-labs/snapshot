@@ -5,7 +5,7 @@ import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { ERC20ABI } from '@/helpers/abi';
+import { ERC20_ABI } from '@/helpers/abi';
 
 const emit = defineEmits(['next']);
 
@@ -110,9 +110,9 @@ async function getTokenInfo() {
         networks[input.value.network].rpc[0]
       );
       const tokenInfo = await Promise.all([
-        call(provider, ERC20ABI, [input.value.address, 'name', []]),
-        call(provider, ERC20ABI, [input.value.address, 'symbol', []]),
-        call(provider, ERC20ABI, [input.value.address, 'decimals', []])
+        call(provider, ERC20_ABI, [input.value.address, 'name', []]),
+        call(provider, ERC20_ABI, [input.value.address, 'symbol', []]),
+        call(provider, ERC20_ABI, [input.value.address, 'decimals', []])
       ]);
       token.value.name = tokenInfo[0];
       token.value.symbol = tokenInfo[1];
