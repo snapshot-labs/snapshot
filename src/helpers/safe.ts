@@ -1,6 +1,4 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { StaticJsonRpcProvider, Web3Provider } from '@ethersproject/providers';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { Transaction } from './transactionBuilder';
 
 const SAFE_TRANSACTION_API_URLS = {
