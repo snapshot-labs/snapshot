@@ -61,27 +61,6 @@ export interface ModuleExecutionData extends ExecutionData {
   module: SafeModule;
 }
 
-export abstract class AbstractExecutor {
-  public readProvider: StaticJsonRpcProvider;
-  public writeProvider: Web3Provider | undefined;
-
-  constructor(
-    public executionData: ModuleExecutionData,
-    public proposalId: string
-  ) {
-    this.readProvider = getProvider(executionData.safe.network);
-  }
-
-  setWriteProvider(provider: Web3Provider | undefined) {
-    this.writeProvider = provider;
-    return this;
-  }
-
-  abstract proposeTransactions(): AsyncGenerator;
-  abstract executeTransactions(): AsyncGenerator;
-  abstract disputeTransactions(): AsyncGenerator;
-}
-
 export interface SafeAsset {
   address: string;
   name: string;
