@@ -38,7 +38,7 @@ function saveTransaction() {
     <template #header>
       <h3>Add transaction</h3>
     </template>
-    <BaseContainer class="min-h-[400px] py-2">
+    <BaseContainer class="py-4">
       <TransactionBuilderFormTransferFunds
         v-if="isTokenTransaction(transactionFormData)"
         :transaction="transactionFormData"

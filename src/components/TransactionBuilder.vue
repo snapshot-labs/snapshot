@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
-import { Transaction } from '@/helpers/transactionBuilder';
+import { isTokenTransaction, Transaction } from '@/helpers/transactionBuilder';
 import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 
 // unfortunately this can't be imported from a file.
@@ -9,6 +9,7 @@ import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 // "Currently complex types and type imports from other files are not supported."
 interface Props {
   title: string;
+  network: string;
   batches: Transaction[][];
   getAvailableFunds?(): Promise<TokenAsset[]>;
   getAvailableCollectables?(): Promise<CollectableAsset[]>;
@@ -20,6 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
   getAvailableCollectables: async () => []
 });
 
+provide('network', props.network);
 provide('getAvailableFunds', props.getAvailableFunds);
 provide('getAvailableCollectables', props.getAvailableCollectables);
 
@@ -110,7 +112,10 @@ function saveTransaction(transaction: Transaction) {
           :key="transactionIndex"
           class="flex border-t px-4 py-2"
         >
-          {{ transaction }}
+          <TransactionBuilderTokenTransaction
+            v-if="isTokenTransaction(transaction)"
+            :transaction="transaction"
+          />
           <BaseButton
             small
             class="ml-auto"

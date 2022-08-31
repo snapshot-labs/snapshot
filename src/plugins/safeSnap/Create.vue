@@ -4,6 +4,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { Transaction } from '@/helpers/transactionBuilder';
 import { mapLegacyConfig } from '@/plugins/safeSnap/utils';
 import {
+  SafeModuleLogos,
   getSafeBalances,
   getSafeCollectables,
   ExecutionData,
@@ -86,6 +87,7 @@ proposalExecutionData.value.forEach((executionData: ExecutionData) => {
         v-for="(builder, index) in transactionBuilderInitData"
         :key="index"
         :title="builder.title"
+        :network="builder.safe.network"
         :get-available-funds="builder.getAvailableFunds"
         :get-available-collectables="builder.getAvailableCollectables"
         :batches="builder.batches"
@@ -94,11 +96,15 @@ proposalExecutionData.value.forEach((executionData: ExecutionData) => {
       />
     </div>
     <div class="space-y-2">
-      <div v-for="safeConfig in safeConfigs" :key="safeConfig.safe.address">
+      <div
+        v-for="safeConfig in safeConfigs"
+        :key="safeConfig.safe.address"
+        class="space-y-2"
+      >
         <BaseButton
           v-for="(module, index) in safeConfig.modules"
           :key="index"
-          class="w-full"
+          class="flex w-full items-center text-left"
           @click="
             addTransactionBuilder({
               safe: safeConfig.safe,
@@ -107,16 +113,23 @@ proposalExecutionData.value.forEach((executionData: ExecutionData) => {
             })
           "
         >
-          add {{ module.type }} execution for safe {{ safeConfig.safe.name }}
+          {{ safeConfig.safe.name }}:
+          <span class="ml-1 first-letter:uppercase"
+            >{{ module.type }} execution</span
+          >
+          <img
+            :src="SafeModuleLogos[module.type]"
+            :alt="module.type"
+            class="ml-auto inline h-4"
+          />
         </BaseButton>
         <BaseButton
-          class="w-full"
+          class="w-full text-left"
           @click="
             addTransactionBuilder({ safe: safeConfig.safe, batches: [[]] })
           "
         >
-          add transactions for manual execution for safe
-          {{ safeConfig.safe.name }}
+          {{ safeConfig.safe.name }}: Manual execution
         </BaseButton>
       </div>
     </div>

@@ -44,6 +44,13 @@ export interface SafeModule {
   type: SafeModuleType;
 }
 
+export const SafeModuleLogos = {
+  [SafeModuleType.REALITY]:
+    'https://realityeth.github.io/da16ed6ca9d09bddfa60.png',
+  [SafeModuleType.UMA]:
+    'https://oracle.umaproject.org/static/media/uma-oo-logo-top.b60aad67dfef47096afe84a291b1c853.svg'
+};
+
 export interface SafeConfig {
   safe: Safe;
   modules: SafeModule[];

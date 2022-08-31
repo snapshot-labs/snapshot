@@ -20,11 +20,14 @@ const availableFunds = ref<TokenAsset[]>([]);
 const getAvailableFunds = inject('getAvailableFunds') as () => Promise<
   TokenAsset[]
 >;
+
+const loadingAvailableFunds = ref<boolean>(true);
 onMounted(async () => {
   availableFunds.value = await getAvailableFunds();
   selectedToken.value = availableFunds.value.find(
     token => token.address === props.transaction.tokenAddress
   );
+  loadingAvailableFunds.value = false;
 });
 
 const fundsOptions = computed(() =>
@@ -45,7 +48,10 @@ watch([selectedToken, recipient, amount], () => {
 </script>
 
 <template>
-  <div v-if="fundsOptions.length" class="space-y-2">
+  <div v-if="loadingAvailableFunds" class="flex justify-center">
+    <LoadingSpinner />
+  </div>
+  <div v-else class="space-y-2">
     <BaseListbox v-model="selectedToken" :items="fundsOptions" label="Currency">
       <template #selected="{ selectedItem }">
         {{ selectedItem.extras?.name }}
