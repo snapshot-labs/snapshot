@@ -8,12 +8,29 @@ import {
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { reactive, readonly } from 'vue';
+
+interface UmaModuleState {
+  loading: boolean;
+  oracleAddress: string | undefined;
+}
 
 export function useSafeUmaModule(
   executionData: ModuleExecutionData,
   proposalId: string
 ): Executor {
   const readProvider = getProvider(executionData.safe.network);
+
+  const state = reactive<UmaModuleState>({
+    loading: true,
+    oracleAddress: undefined
+  });
+
+  async function setState() {
+    state.loading = true;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    state.loading = false;
+  }
 
   async function* proposeExecution() {
     const transactions = executionData.batches
@@ -55,6 +72,8 @@ export function useSafeUmaModule(
   }
 
   return {
+    state: readonly(state),
+    setState,
     proposeExecution,
     disputeExecution,
     execute,

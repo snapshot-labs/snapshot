@@ -61,11 +61,13 @@ export interface ModuleExecutionData extends ExecutionData {
 
 // This interface could turn out to be more limiting than helpful. We'll see.
 export interface Executor {
+  state: Record<string, any>;
+  setState(): Promise<void>;
   proposeExecution(): AsyncGenerator;
   disputeExecution(): AsyncGenerator;
   execute(): AsyncGenerator;
   canExecute(): boolean;
-  [x: string]: any;
+  [x: string]: any; // Would like to remove this and not allow extra stuff.
 }
 
 export interface SafeAsset {

@@ -1,4 +1,4 @@
-import { readonly, ref } from 'vue';
+import { reactive, readonly } from 'vue';
 import { HashZero } from '@ethersproject/constants';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import { EIP712_TYPES, Executor, ModuleExecutionData } from '@/helpers/safe';
@@ -24,6 +24,19 @@ import { keccak256 } from '@ethersproject/solidity';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
 
+interface RealityModuleState {
+  loading: boolean;
+  oracleAddress: string | undefined;
+  minimumBond: BigNumber | undefined;
+  questionHash: string | undefined;
+  questionId: string;
+  finalizedAt: number | undefined;
+  cooldown: number | undefined;
+  executionApproved: boolean;
+  nextTxIndex: number | undefined;
+  expiration: number | undefined;
+}
+
 export function useSafeRealityModule(
   executionData: ModuleExecutionData,
   proposalId: string
@@ -31,16 +44,18 @@ export function useSafeRealityModule(
   const currentTimestamp = useTimestamp();
   const readProvider = getProvider(executionData.safe.network);
 
-  let questionHash = '';
-  let oracleAddress!: string;
-  let minimumBond: number | undefined = undefined;
-
-  const questionId = ref<string>('');
-  const finalizedAt = ref<number | undefined>(undefined);
-  const cooldown = ref<number | undefined>(undefined);
-  const executionApproved = ref<boolean>(false);
-  const nextTxIndex = ref<number | undefined>(undefined);
-  const expiration = ref<number | undefined>(undefined);
+  const state = reactive<RealityModuleState>({
+    loading: true,
+    oracleAddress: undefined,
+    minimumBond: undefined,
+    questionHash: undefined,
+    questionId: '',
+    finalizedAt: undefined,
+    cooldown: undefined,
+    executionApproved: false,
+    nextTxIndex: undefined,
+    expiration: undefined
+  });
 
   const batchHashes = executionData.batches
     .map((batch, nonce) => {
@@ -75,6 +90,15 @@ export function useSafeRealityModule(
     });
   }
 
+  async function setState() {
+    state.loading = true;
+    await setQuestion();
+    await setProposalDetails();
+    await setModuleDetails();
+    await checkPossibleExecution();
+    state.loading = false;
+  }
+
   async function* proposeExecution() {
     const tx = await sendTransaction(
       getInstance().web3,
@@ -101,8 +125,8 @@ export function useSafeRealityModule(
       'buildQuestion',
       [proposalId, batchHashes]
     ]);
-    questionHash = keccak256(['string'], [question]);
-    questionId.value = await call(readProvider, REALITY_MODULE_ABI, [
+    state.questionHash = keccak256(['string'], [question]);
+    state.questionId = await call(readProvider, REALITY_MODULE_ABI, [
       executionData.module.address,
       'getQuestionId',
       [question, 0]
@@ -115,11 +139,13 @@ export function useSafeRealityModule(
         executionData.safe.network,
         readProvider,
         REALITY_MODULE_ABI,
-        [[executionData.module.address, 'questionIds', [questionHash]]].concat(
+        [
+          [executionData.module.address, 'questionIds', [state.questionHash]]
+        ].concat(
           batchHashes.map(txHash => [
             executionData.module.address,
             'executedProposalTransactions',
-            [questionHash, txHash]
+            [state.questionHash, txHash]
           ])
         )
       )
@@ -128,9 +154,9 @@ export function useSafeRealityModule(
     // We need to offset the index by -1 the first element is the questionId
     const nextIndexToExecute = proposalInfo.indexOf(false, 1) - 1;
 
-    questionId.value =
+    state.questionId =
       proposalInfo[0] !== HashZero ? proposalInfo[0] : undefined;
-    nextTxIndex.value =
+    state.nextTxIndex =
       nextIndexToExecute < 0 || nextIndexToExecute >= batchHashes.length
         ? undefined
         : nextIndexToExecute;
@@ -150,57 +176,57 @@ export function useSafeRealityModule(
       ]
     );
 
-    oracleAddress = moduleDetails[1][0];
-    cooldown.value = moduleDetails[2][0];
-    minimumBond = moduleDetails[3][0];
-    expiration.value = moduleDetails[4][0];
+    state.oracleAddress = moduleDetails[1][0];
+    state.cooldown = moduleDetails[2][0];
+    state.minimumBond = moduleDetails[3][0];
+    state.expiration = moduleDetails[4][0];
   }
 
   async function checkPossibleExecution(): Promise<void> {
-    if (questionId.value) {
+    if (state.questionId) {
       try {
         const result = await multicall(
           executionData.safe.network,
           readProvider,
           REALITY_ORACLE_ABI,
           [
-            [oracleAddress, 'resultFor', [questionId.value]],
-            [oracleAddress, 'getFinalizeTS', [questionId.value]]
+            [state.oracleAddress, 'resultFor', [state.questionId]],
+            [state.oracleAddress, 'getFinalizeTS', [state.questionId]]
           ]
         );
 
-        executionApproved.value = BigNumber.from(result[0][0]).eq(
+        state.executionApproved = BigNumber.from(result[0][0]).eq(
           BigNumber.from(1)
         );
-        finalizedAt.value = BigNumber.from(result[1][0]).toNumber();
+        state.finalizedAt = BigNumber.from(result[1][0]).toNumber();
       } catch (e) {
         console.log('Question is not answered yet.', e);
       }
     } else {
-      executionApproved.value = false;
-      finalizedAt.value = undefined;
+      state.executionApproved = false;
+      state.finalizedAt = undefined;
     }
   }
 
   async function* setOracleAnswer(answer: '1' | '0') {
-    if (!getInstance().web3) return;
+    if (!getInstance().web3 || !state.oracleAddress) return;
 
     const currentBond = await call(readProvider, REALITY_ORACLE_ABI, [
-      oracleAddress,
+      state.oracleAddress,
       'getBond',
-      [questionId.value]
+      [state.questionId]
     ]);
 
     let bond;
     let methodName;
     const txOverrides = {};
-    let parameters = [questionId.value, HashZero.replace(/.$/, answer)];
+    let parameters = [state.questionId, HashZero.replace(/.$/, answer)];
 
     const currentBondIsZero = currentBond.eq(BigNumber.from(0));
     if (currentBondIsZero) {
       // DaoModules can have 0 minimumBond, if it happens, the initial bond will be 1 token
-      const daoBondIsZero = BigNumber.from(minimumBond).eq(0);
-      bond = daoBondIsZero ? BigNumber.from(10) : minimumBond;
+      const daoBondIsZero = BigNumber.from(state.minimumBond).eq(0);
+      bond = daoBondIsZero ? BigNumber.from(10) : state.minimumBond;
     } else {
       bond = currentBond.mul(2);
     }
@@ -210,7 +236,7 @@ export function useSafeRealityModule(
     try {
       const account = (await getInstance().web3.listAccounts())[0];
       const token = await call(readProvider, REALITY_ORACLE_ABI, [
-        oracleAddress,
+        state.oracleAddress,
         'token',
         []
       ]);
@@ -220,7 +246,7 @@ export function useSafeRealityModule(
         ERC20_ABI,
         [
           [token, 'decimals', []],
-          [token, 'allowance', [account, oracleAddress]]
+          [token, 'allowance', [account, state.oracleAddress]]
         ]
       );
 
@@ -236,7 +262,7 @@ export function useSafeRealityModule(
           token,
           ERC20_ABI,
           'approve',
-          [oracleAddress, bond],
+          [state.oracleAddress, bond],
           {}
         );
         yield 'erc20-approval';
@@ -257,7 +283,7 @@ export function useSafeRealityModule(
 
     const tx = await sendTransaction(
       getInstance().web3,
-      oracleAddress,
+      state.oracleAddress,
       REALITY_ORACLE_ABI,
       methodName,
       parameters,
@@ -270,28 +296,20 @@ export function useSafeRealityModule(
 
   function canExecute(): boolean {
     return !!(
-      executionApproved.value &&
-      finalizedAt.value &&
-      cooldown.value &&
-      finalizedAt.value + cooldown.value < currentTimestamp.value
+      state.executionApproved &&
+      state.finalizedAt &&
+      state.cooldown &&
+      state.finalizedAt + state.cooldown < currentTimestamp.value
     );
   }
 
   return {
-    finalizedAt: readonly(finalizedAt),
-    questionId: readonly(questionId),
-    cooldown: readonly(cooldown),
-    executionApproved: readonly(executionApproved),
-    nextTxIndex: readonly(nextTxIndex),
-    expiration: readonly(expiration),
+    state: readonly(state),
+    setState,
     proposeExecution,
     disputeExecution,
     execute,
     canExecute,
-    setQuestion,
-    setProposalDetails,
-    setModuleDetails,
-    checkPossibleExecution,
     setOracleAnswer
   };
 }

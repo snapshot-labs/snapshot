@@ -11,10 +11,7 @@ const props = defineProps<{
 const umaModule = useSafeUmaModule(props.executionData, props.proposalId);
 const { pendingCount } = useTxStatus();
 
-const loading = ref(true);
-onMounted(async () => {
-  loading.value = false;
-});
+onMounted(umaModule.setState);
 
 async function handleProposeExecution() {
   const proposeTransaction = umaModule.proposeExecution();
@@ -27,7 +24,7 @@ async function handleProposeExecution() {
 
 <template>
   <div>
-    <LoadingSpinner v-if="loading" />
+    <LoadingSpinner v-if="umaModule.state.loading" />
     <BaseButton v-else @click="handleProposeExecution">
       propose transactions
     </BaseButton>

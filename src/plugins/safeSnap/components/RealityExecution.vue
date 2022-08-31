@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
 import { useTxStatus, useSafeRealityModule } from '@/composables';
 
@@ -15,14 +15,7 @@ const realityModule = useSafeRealityModule(
   props.proposalId
 );
 
-const loading = ref(true);
-onMounted(async () => {
-  await realityModule.setQuestion();
-  await realityModule.setProposalDetails();
-  await realityModule.setModuleDetails();
-  await realityModule.checkPossibleExecution();
-  loading.value = false;
-});
+onMounted(realityModule.setState);
 
 async function handleProposeExecution() {
   const proposeTransaction = realityModule.proposeExecution();
@@ -31,7 +24,7 @@ async function handleProposeExecution() {
   await proposeTransaction.next();
   pendingCount.value--;
 
-  await realityModule.setProposalDetails();
+  await realityModule.setState();
   await handleSetOracleAnswer('1');
 }
 
@@ -52,9 +45,9 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 
 <template>
   <div>
-    <LoadingSpinner v-if="loading" />
-    <div v-if="realityModule.questionId">
-      <div v-if="realityModule.finalizedAt">
+    <LoadingSpinner v-if="realityModule.state.loading" />
+    <div v-if="realityModule.state.questionId">
+      <div v-if="realityModule.state.finalizedAt">
         <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
         <div v-else>waiting for cooldown</div>
       </div>
