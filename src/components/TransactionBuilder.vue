@@ -116,7 +116,7 @@ function saveTransaction(transaction: Transaction) {
           :key="transactionIndex"
           class="flex border-t px-4 py-2"
         >
-          <TransactionBuilderTokenTransaction
+          <TransactionBuilderTransactionToken
             v-if="isTokenTransaction(transaction)"
             :transaction="transaction"
           />
@@ -149,7 +149,7 @@ function saveTransaction(transaction: Transaction) {
     </BaseBlock>
 
     <teleport to="#modal">
-      <TransactionBuilderTransactionFormModal
+      <TransactionBuilderFormModal
         v-if="targetTransaction"
         :is-open="isTransactionFormModalOpen"
         :transaction="targetTransaction"
