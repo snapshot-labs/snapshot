@@ -2,6 +2,7 @@
 import {
   isCollectableTransaction,
   isTokenTransaction,
+  isRawTransaction,
   Transaction
 } from '@/helpers/transactionBuilder';
 import { computed, ref, watch } from 'vue';
@@ -50,6 +51,11 @@ function saveTransaction() {
       />
       <TransactionBuilderFormCollectable
         v-if="isCollectableTransaction(transactionFormData)"
+        :transaction="transactionFormData"
+        @updateTransaction="transactionFormData = $event"
+      />
+      <TransactionBuilderFormRaw
+        v-if="isRawTransaction(transactionFormData)"
         :transaction="transactionFormData"
         @updateTransaction="transactionFormData = $event"
       />

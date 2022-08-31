@@ -4,6 +4,7 @@ import { useTransactionBuilder } from '@/composables';
 import {
   isCollectableTransaction,
   isTokenTransaction,
+  isRawTransaction,
   Transaction
 } from '@/helpers/transactionBuilder';
 import { CollectableAsset, TokenAsset } from '@/helpers/safe';
@@ -120,8 +121,12 @@ function saveTransaction(transaction: Transaction) {
             v-if="isTokenTransaction(transaction)"
             :transaction="transaction"
           />
-          <TransactionBuilderCollectableTransaction
+          <TransactionBuilderTransactionCollectable
             v-if="isCollectableTransaction(transaction)"
+            :transaction="transaction"
+          />
+          <TransactionBuilderTransactionRaw
+            v-if="isRawTransaction(transaction)"
             :transaction="transaction"
           />
           <BaseButton
