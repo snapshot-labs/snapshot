@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
-import { isTokenTransaction, Transaction } from '@/helpers/transactionBuilder';
+import {
+  isCollectableTransaction,
+  isTokenTransaction,
+  Transaction
+} from '@/helpers/transactionBuilder';
 import { CollectableAsset, TokenAsset } from '@/helpers/safe';
 
 // unfortunately this can't be imported from a file.
@@ -114,6 +118,10 @@ function saveTransaction(transaction: Transaction) {
         >
           <TransactionBuilderTokenTransaction
             v-if="isTokenTransaction(transaction)"
+            :transaction="transaction"
+          />
+          <TransactionBuilderCollectableTransaction
+            v-if="isCollectableTransaction(transaction)"
             :transaction="transaction"
           />
           <BaseButton

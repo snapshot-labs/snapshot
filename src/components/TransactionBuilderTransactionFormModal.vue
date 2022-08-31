@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { isTokenTransaction, Transaction } from '@/helpers/transactionBuilder';
+import {
+  isCollectableTransaction,
+  isTokenTransaction,
+  Transaction
+} from '@/helpers/transactionBuilder';
 import { computed, ref, watch } from 'vue';
 
 const props = defineProps<{
@@ -39,8 +43,13 @@ function saveTransaction() {
       <h3>Add transaction</h3>
     </template>
     <BaseContainer class="py-4">
-      <TransactionBuilderFormTransferFunds
+      <TransactionBuilderFormToken
         v-if="isTokenTransaction(transactionFormData)"
+        :transaction="transactionFormData"
+        @updateTransaction="transactionFormData = $event"
+      />
+      <TransactionBuilderFormCollectable
+        v-if="isCollectableTransaction(transactionFormData)"
         :transaction="transactionFormData"
         @updateTransaction="transactionFormData = $event"
       />
