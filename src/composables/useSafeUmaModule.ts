@@ -10,7 +10,6 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { reactive, readonly } from 'vue';
 
 interface UmaModuleState extends ExecutorState {
-  loading: boolean;
   oracleAddress: string | undefined;
 }
 
@@ -21,15 +20,17 @@ export function useSafeUmaModule(
   const readProvider = getProvider(executionData.safe.network);
 
   const state = reactive<UmaModuleState>({
+    loading: true,
+    hasBeenProposed: false,
     hasBeenExecuted: false,
     canBeExecuted: false,
-    loading: true,
     oracleAddress: undefined
   });
 
   async function setState() {
     state.loading = true;
     await new Promise(resolve => setTimeout(resolve, 1000));
+    state.canBeExecuted = false;
     state.loading = false;
   }
 
@@ -67,16 +68,11 @@ export function useSafeUmaModule(
     yield;
   }
 
-  function canExecute() {
-    return true;
-  }
-
   return {
     state: readonly(state),
     setState,
     proposeExecution,
     disputeExecution,
-    execute,
-    canExecute
+    execute
   };
 }

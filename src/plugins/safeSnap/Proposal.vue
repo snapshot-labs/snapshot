@@ -53,6 +53,10 @@ const hasProposalEnded = computed<boolean>(() => {
         :has-proposal-ended="hasProposalEnded"
       />
     </div>
-    <ExecutionManual v-else :execution-data="data" />
+    <ExecutionManual
+      v-else
+      :execution-data="data"
+      :has-proposal-ended="hasProposalEnded"
+    />
   </BaseBlock>
 </template>

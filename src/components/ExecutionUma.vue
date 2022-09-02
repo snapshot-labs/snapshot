@@ -24,14 +24,27 @@ async function handleProposeExecution() {
 </script>
 
 <template>
-  <div>
-    <ExecutionTransactions :execution-data="executionData" />
-    <div v-if="hasProposalEnded">
-      <LoadingSpinner v-if="umaModule.state.loading" />
-      <BaseButton v-else @click="handleProposeExecution">
+  <ExecutionAbstract
+    :executor-state="umaModule.state"
+    :execution-data="executionData"
+    :has-proposal-ended="hasProposalEnded"
+  >
+    <template #proposal-still-active>
+      Execution will be possible after the proposal has ended.
+    </template>
+
+    <template #propose>
+      <BaseButton @click="handleProposeExecution">
         propose transactions
       </BaseButton>
-    </div>
-    <div v-else>Execution will be possible after the proposal has ended.</div>
-  </div>
+    </template>
+
+    <template #dispute>
+      <BaseButton>Dispute transactions</BaseButton>
+    </template>
+
+    <template #execute>
+      <BaseButton>Execute transactions</BaseButton>
+    </template>
+  </ExecutionAbstract>
 </template>

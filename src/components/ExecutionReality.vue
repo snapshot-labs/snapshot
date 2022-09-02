@@ -45,41 +45,39 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 </script>
 
 <template>
-  <div>
-    <ExecutionTransactions :execution-data="executionData" />
-    <div v-if="hasProposalEnded">
-      <div
-        v-if="realityModule.state.hasBeenExecuted"
-        class="flex flex-col items-center justify-center p-4"
-      >
-        <span class="mb-3 rounded-full bg-green p-2 text-white">
-          <i-ho-check />
-        </span>
-        <span>Transactions have been executed.</span>
-        <BaseLink link="https://etherscan.io">
-          Open transaction in explorer
-        </BaseLink>
-      </div>
-      <div v-else>
-        <LoadingSpinner v-if="realityModule.state.loading" />
-        <div v-if="realityModule.state.questionId">
-          <div v-if="realityModule.state.finalizedAt">
-            <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
-            <div v-else>waiting for cooldown</div>
-          </div>
-          <div v-else>
-            <BaseButton @click="handleSetOracleAnswer('0')">
-              dispute transactions
-            </BaseButton>
-          </div>
-        </div>
-        <BaseButton v-else @click="handleProposeExecution">
-          propose transactions
+  <ExecutionAbstract
+    :executor-state="realityModule.state"
+    :execution-data="executionData"
+    :has-proposal-ended="hasProposalEnded"
+  >
+    <template #proposal-still-active>
+      Execution will be possible after the proposal has ended.
+    </template>
+
+    <template #propose-execution>
+      <div class="p-4">
+        <BaseButton class="w-full" @click="handleProposeExecution">
+          Propose transactions for execution
         </BaseButton>
       </div>
-    </div>
-    <div v-else class="p-4 text-center">
-      Execution will be possible after the proposal has ended.
-    </div>
-  </div>
+    </template>
+
+    <template #dispute-execution>
+      <div v-if="realityModule.state.questionId">
+        <div v-if="realityModule.state.finalizedAt">
+          <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
+          <div v-else>waiting for cooldown</div>
+        </div>
+        <div v-else>
+          <BaseButton @click="handleSetOracleAnswer('0')">
+            dispute transactions
+          </BaseButton>
+        </div>
+      </div>
+    </template>
+
+    <template #execute>
+      <BaseButton>Execute transactions</BaseButton>
+    </template>
+  </ExecutionAbstract>
 </template>

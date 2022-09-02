@@ -29,14 +29,12 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
 
 interface RealityModuleState extends ExecutorState {
-  loading: boolean;
   oracleAddress: string | undefined;
   minimumBond: BigNumber | undefined;
   questionHash: string | undefined;
-  questionId: string;
+  questionId: string | undefined;
   finalizedAt: number | undefined;
   cooldown: number | undefined;
-  executionApproved: boolean;
   nextTxIndex: number | undefined;
   expiration: number | undefined;
 }
@@ -49,16 +47,16 @@ export function useSafeRealityModule(
   const readProvider = getProvider(executionData.safe.network);
 
   const state = reactive<RealityModuleState>({
+    loading: false,
+    hasBeenProposed: false,
     hasBeenExecuted: false,
     canBeExecuted: false,
-    loading: true,
     oracleAddress: undefined,
     minimumBond: undefined,
     questionHash: undefined,
-    questionId: '',
+    questionId: undefined,
     finalizedAt: undefined,
     cooldown: undefined,
-    executionApproved: false,
     nextTxIndex: undefined,
     expiration: undefined
   });
@@ -98,10 +96,11 @@ export function useSafeRealityModule(
 
   async function setState() {
     state.loading = true;
-    await setQuestion();
+    await setQuestionAndHash();
     await setProposalDetails();
     await setModuleDetails();
     await checkPossibleExecution();
+
     state.loading = false;
   }
 
@@ -125,18 +124,13 @@ export function useSafeRealityModule(
     yield;
   }
 
-  async function setQuestion(): Promise<void> {
+  async function setQuestionAndHash(): Promise<void> {
     const question = await call(readProvider, REALITY_MODULE_ABI, [
       executionData.module.address,
       'buildQuestion',
       [proposalId, batchHashes]
     ]);
     state.questionHash = keccak256(['string'], [question]);
-    state.questionId = await call(readProvider, REALITY_MODULE_ABI, [
-      executionData.module.address,
-      'getQuestionId',
-      [question, 0]
-    ]);
   }
 
   async function setProposalDetails(): Promise<void> {
@@ -201,16 +195,23 @@ export function useSafeRealityModule(
           ]
         );
 
-        state.executionApproved = BigNumber.from(result[0][0]).eq(
+        const oracleAnswerIsYes = BigNumber.from(result[0][0]).eq(
           BigNumber.from(1)
         );
+
         state.finalizedAt = BigNumber.from(result[1][0]).toNumber();
+        state.canBeExecuted = !!(
+          oracleAnswerIsYes &&
+          state.finalizedAt &&
+          state.cooldown &&
+          state.finalizedAt + state.cooldown < currentTimestamp.value
+        );
       } catch (e) {
         console.log('Question is not answered yet.', e);
       }
     } else {
-      state.executionApproved = false;
       state.finalizedAt = undefined;
+      state.canBeExecuted = false;
     }
   }
 
@@ -300,22 +301,12 @@ export function useSafeRealityModule(
     console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
-  function canExecute(): boolean {
-    return !!(
-      state.executionApproved &&
-      state.finalizedAt &&
-      state.cooldown &&
-      state.finalizedAt + state.cooldown < currentTimestamp.value
-    );
-  }
-
   return {
     state: readonly(state) as RealityModuleState,
     setState,
     proposeExecution,
     disputeExecution,
     execute,
-    canExecute,
     setOracleAnswer
   };
 }

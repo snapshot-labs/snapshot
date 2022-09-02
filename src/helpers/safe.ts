@@ -68,6 +68,8 @@ export interface ModuleExecutionData extends ExecutionData {
 
 // These interfaces could turn out to be more limiting than helpful. We'll see.
 export interface ExecutorState {
+  loading: boolean;
+  hasBeenProposed: boolean;
   canBeExecuted: boolean;
   hasBeenExecuted: boolean;
   [x: string]: any;
@@ -79,7 +81,6 @@ export interface Executor<TState = ExecutorState> {
   proposeExecution(): AsyncGenerator;
   disputeExecution(): AsyncGenerator;
   execute(): AsyncGenerator;
-  canExecute(): boolean;
   [x: string]: any; // Would like to remove this and not allow extra stuff.
 }
 
