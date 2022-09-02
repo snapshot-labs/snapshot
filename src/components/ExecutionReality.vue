@@ -51,7 +51,9 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
     :has-proposal-ended="hasProposalEnded"
   >
     <template #proposal-still-active>
-      Execution will be possible after the proposal has ended.
+      <div class="p-4 text-center">
+        Execution will be possible after the proposal has ended.
+      </div>
     </template>
 
     <template #propose-execution>
@@ -63,6 +65,7 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
     </template>
 
     <template #dispute-execution>
+      <!-- TODO: display txs/hashes as proposed on chain-->
       <div v-if="realityModule.state.questionId">
         <div v-if="realityModule.state.finalizedAt">
           <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
@@ -78,6 +81,18 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 
     <template #execute>
       <BaseButton>Execute transactions</BaseButton>
+    </template>
+
+    <template #has-been-executed>
+      <div class="flex flex-col items-center justify-center p-4">
+        <span class="mb-3 rounded-full bg-green p-2 text-white">
+          <i-ho-check />
+        </span>
+        <span>Transactions have been executed.</span>
+        <BaseLink link="https://etherscan.io">
+          Open transaction in explorer
+        </BaseLink>
+      </div>
     </template>
   </ExecutionAbstract>
 </template>
