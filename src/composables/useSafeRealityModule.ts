@@ -83,7 +83,7 @@ export function useSafeRealityModule(
       verifyingContract: executionData.module.address
     };
 
-    return _TypedDataEncoder.hash(domain, EIP712_TYPES, {
+    return _TypedDataEncoder.hash(domain, EIP712_SAFE_TRANSACTIN_TYPES, {
       ...transaction,
       data: transaction.data || '0x',
       nonce

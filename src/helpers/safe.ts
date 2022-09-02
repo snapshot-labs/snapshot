@@ -12,7 +12,7 @@ const SAFE_TRANSACTION_API_URLS = {
   '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
 };
 
-export const EIP712_TYPES = {
+export const EIP712_SAFE_TRANSACTIN_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
     { name: 'value', type: 'uint256' },
