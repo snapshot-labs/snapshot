@@ -18,31 +18,31 @@ function addTransaction(type: TransactionType) {
   <div class="flex items-center justify-evenly">
     <div
       class="transaction-type-item"
+      @click="addTransaction(TransactionType.RAW)"
+    >
+      <i-ho-adjustments />
+      Standard
+    </div>
+    <div
+      class="transaction-type-item"
       @click="addTransaction(TransactionType.TOKEN)"
     >
-      <i-ho-database class="inline" />
-      Funds
+      <i-ho-database />
+      Send Tokens
     </div>
     <div
       class="transaction-type-item"
       @click="addTransaction(TransactionType.COLLECTABLE)"
     >
       <i-ho-photograph />
-      NFT
+      Transfer NFT
     </div>
     <div
       class="transaction-type-item"
       @click="addTransaction(TransactionType.CONTRACT)"
     >
       <i-s-smart-contract />
-      Contract
-    </div>
-    <div
-      class="transaction-type-item"
-      @click="addTransaction(TransactionType.RAW)"
-    >
-      <i-ho-adjustments />
-      Raw
+      Custom Contract
     </div>
   </div>
 </template>

@@ -88,25 +88,39 @@ function saveTransaction(transaction: Transaction) {
   <div>
     <BaseBlock :title="title" slim>
       <template #title-buttons>
-        <div class="ml-auto space-x-2">
-          <BaseButton small @click="addEmptyBatch">
-            {{ batches.length === 1 ? 'Group transactions' : 'Add group' }}
-          </BaseButton>
-          <BaseButton small> Import </BaseButton>
-          <BaseButton small @click="$emit('removeTransactionBuilder')">
-            <i-ho-x class="inline" />
-          </BaseButton>
-        </div>
+        <BaseButton
+          v-tippy="'Add transaction group'"
+          class="ml-auto !border-none"
+          small
+          @click="addEmptyBatch"
+        >
+          <i-ho-plus />
+        </BaseButton>
+        <BaseButton v-tippy="'Import transactions'" class="!border-none" small>
+          <i-ho-download />
+        </BaseButton>
+        <BaseButton
+          v-tippy="'Remove execution instance'"
+          class="-mr-3 !border-none"
+          small
+          @click="emit('removeTransactionBuilder')"
+        >
+          <i-ho-trash />
+        </BaseButton>
       </template>
       <div
         v-for="(batch, batchIndex) in batches"
         :key="batchIndex"
         class="border-b last:border-b-0"
       >
-        <h4 v-if="batches.length > 1" class="flex border-b px-4 py-2">
+        <h4 v-if="batches.length > 1" class="flex border-b py-2 pl-4 pr-2">
           Group #{{ batchIndex + 1 }}
-          <BaseButton small class="ml-auto" @click="removeBatch(batchIndex)">
-            <i-ho-x />
+          <BaseButton
+            small
+            class="ml-auto !border-none"
+            @click="removeBatch(batchIndex)"
+          >
+            <i-ho-trash />
           </BaseButton>
         </h4>
         <TransactionBuilderAddTransactionBar
@@ -115,7 +129,7 @@ function saveTransaction(transaction: Transaction) {
         <div
           v-for="(transaction, transactionIndex) in batch"
           :key="transactionIndex"
-          class="flex border-t px-4 py-2"
+          class="flex border-t py-2 pl-3 pr-2"
         >
           <TransactionBuilderTransactionToken
             v-if="isTokenTransaction(transaction)"
@@ -131,7 +145,7 @@ function saveTransaction(transaction: Transaction) {
           />
           <BaseButton
             small
-            class="ml-auto"
+            class="ml-auto !border-none"
             @click="
               openTransactionFormModal(
                 transaction as Transaction, // this type casting shouldn't be necessary, right? because of readonly?
@@ -144,10 +158,10 @@ function saveTransaction(transaction: Transaction) {
           </BaseButton>
           <BaseButton
             small
-            class="ml-2"
+            class="!border-none"
             @click="removeTransaction(batchIndex, transactionIndex)"
           >
-            <i-ho-x />
+            <i-ho-trash />
           </BaseButton>
         </div>
       </div>

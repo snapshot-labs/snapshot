@@ -10,6 +10,6 @@ defineProps<{
   <div>
     <div>To: {{ transaction.to }}</div>
     <div>Value: {{ transaction.value }}</div>
-    <div>Data: {{ transaction.data }}</div>
+    <div v-if="transaction.data">Data: {{ transaction.data }}</div>
   </div>
 </template>
