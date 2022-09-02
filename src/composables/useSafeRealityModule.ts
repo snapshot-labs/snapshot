@@ -4,6 +4,7 @@ import { _TypedDataEncoder } from '@ethersproject/hash';
 import {
   EIP712_SAFE_TRANSACTIN_TYPES,
   Executor,
+  ExecutorState,
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
@@ -27,7 +28,7 @@ import { keccak256 } from '@ethersproject/solidity';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
 
-interface RealityModuleState {
+interface RealityModuleState extends ExecutorState {
   loading: boolean;
   oracleAddress: string | undefined;
   minimumBond: BigNumber | undefined;
@@ -43,11 +44,13 @@ interface RealityModuleState {
 export function useSafeRealityModule(
   executionData: ModuleExecutionData,
   proposalId: string
-): Executor {
+): Executor<RealityModuleState> {
   const currentTimestamp = useTimestamp();
   const readProvider = getProvider(executionData.safe.network);
 
   const state = reactive<RealityModuleState>({
+    hasBeenExecuted: false,
+    canBeExecuted: false,
     loading: true,
     oracleAddress: undefined,
     minimumBond: undefined,
@@ -307,7 +310,7 @@ export function useSafeRealityModule(
   }
 
   return {
-    state: readonly(state),
+    state: readonly(state) as RealityModuleState,
     setState,
     proposeExecution,
     disputeExecution,

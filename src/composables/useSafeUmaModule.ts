@@ -1,5 +1,5 @@
 import { UMA_MODULE_ABI } from '@/helpers/abi';
-import { Executor, ModuleExecutionData } from '@/helpers/safe';
+import { Executor, ExecutorState, ModuleExecutionData } from '@/helpers/safe';
 import {
   convertToRawTransaction,
   convertBatchToMultisendTransaction
@@ -9,7 +9,7 @@ import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { reactive, readonly } from 'vue';
 
-interface UmaModuleState {
+interface UmaModuleState extends ExecutorState {
   loading: boolean;
   oracleAddress: string | undefined;
 }
@@ -17,10 +17,12 @@ interface UmaModuleState {
 export function useSafeUmaModule(
   executionData: ModuleExecutionData,
   proposalId: string
-): Executor {
+): Executor<UmaModuleState> {
   const readProvider = getProvider(executionData.safe.network);
 
   const state = reactive<UmaModuleState>({
+    hasBeenExecuted: false,
+    canBeExecuted: false,
     loading: true,
     oracleAddress: undefined
   });

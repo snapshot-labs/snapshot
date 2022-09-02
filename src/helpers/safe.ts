@@ -66,9 +66,15 @@ export interface ModuleExecutionData extends ExecutionData {
   module: SafeModule;
 }
 
-// This interface could turn out to be more limiting than helpful. We'll see.
-export interface Executor {
-  state: Record<string, any>;
+// These interfaces could turn out to be more limiting than helpful. We'll see.
+export interface ExecutorState {
+  canBeExecuted: boolean;
+  hasBeenExecuted: boolean;
+  [x: string]: any;
+}
+
+export interface Executor<TState = ExecutorState> {
+  state: TState;
   setState(): Promise<void>;
   proposeExecution(): AsyncGenerator;
   disputeExecution(): AsyncGenerator;
