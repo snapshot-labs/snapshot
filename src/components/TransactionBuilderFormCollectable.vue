@@ -19,6 +19,8 @@ const getAvailableCollectables = inject(
   'getAvailableCollectables'
 ) as () => Promise<CollectableAsset[]>;
 
+const defaultFromAddress = inject('defaultFromAddress') as string;
+
 const loadingAvailableCollectables = ref<boolean>(true);
 onMounted(async () => {
   availableCollectables.value = await getAvailableCollectables();
@@ -40,6 +42,7 @@ const collectableOptions = computed(() =>
 watch([selectedCollectable, recipient], () => {
   emit('updateTransaction', {
     ...props.transaction,
+    from: defaultFromAddress,
     recipient: recipient.value,
     collectableId: selectedCollectable.value?.id || '',
     collectableAddress: selectedCollectable.value?.address || ''

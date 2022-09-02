@@ -16,6 +16,7 @@ interface Props {
   title: string;
   network: string;
   batches: Transaction[][];
+  defaultFromAddress: string;
   getAvailableFunds?(): Promise<TokenAsset[]>;
   getAvailableCollectables?(): Promise<CollectableAsset[]>;
 }
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 provide('network', props.network);
+provide('defaultFromAddress', props.defaultFromAddress);
 provide('getAvailableFunds', props.getAvailableFunds);
 provide('getAvailableCollectables', props.getAvailableCollectables);
 

@@ -6,6 +6,7 @@ import { useTxStatus, useSafeRealityModule } from '@/composables';
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
+  hasProposalEnded: boolean;
 }>();
 
 const { pendingCount } = useTxStatus();
@@ -45,20 +46,26 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 
 <template>
   <div>
-    <LoadingSpinner v-if="realityModule.state.loading" />
-    <div v-if="realityModule.state.questionId">
-      <div v-if="realityModule.state.finalizedAt">
-        <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
-        <div v-else>waiting for cooldown</div>
+    <ExecutionTransactions :execution-data="executionData" />
+    <div v-if="hasProposalEnded">
+      <LoadingSpinner v-if="realityModule.state.loading" />
+      <div v-if="realityModule.state.questionId">
+        <div v-if="realityModule.state.finalizedAt">
+          <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
+          <div v-else>waiting for cooldown</div>
+        </div>
+        <div v-else>
+          <BaseButton @click="handleSetOracleAnswer('0')">
+            dispute transactions
+          </BaseButton>
+        </div>
       </div>
-      <div v-else>
-        <BaseButton @click="handleSetOracleAnswer('0')">
-          dispute transactions
-        </BaseButton>
-      </div>
+      <BaseButton v-else @click="handleProposeExecution">
+        propose transactions
+      </BaseButton>
     </div>
-    <BaseButton v-else @click="handleProposeExecution">
-      propose transactions
-    </BaseButton>
+    <div v-else class="p-4 text-center">
+      Execution will be possible after the proposal has ended.
+    </div>
   </div>
 </template>

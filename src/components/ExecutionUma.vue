@@ -6,6 +6,7 @@ import { useTxStatus, useSafeUmaModule } from '@/composables';
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
+  hasProposalEnded: boolean;
 }>();
 
 const umaModule = useSafeUmaModule(props.executionData, props.proposalId);
@@ -24,9 +25,13 @@ async function handleProposeExecution() {
 
 <template>
   <div>
-    <LoadingSpinner v-if="umaModule.state.loading" />
-    <BaseButton v-else @click="handleProposeExecution">
-      propose transactions
-    </BaseButton>
+    <ExecutionTransactions :execution-data="executionData" />
+    <div v-if="hasProposalEnded">
+      <LoadingSpinner v-if="umaModule.state.loading" />
+      <BaseButton v-else @click="handleProposeExecution">
+        propose transactions
+      </BaseButton>
+    </div>
+    <div v-else>Execution will be possible after the proposal has ended.</div>
   </div>
 </template>

@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { ExecutionData } from '@/helpers/safe';
+
+defineProps<{
+  executionData: ExecutionData;
+}>();
+</script>
+
 <template>
-  <div>These transactions are executed manually.</div>
+  <ExecutionTransactions :execution-data="executionData" />
+  <div class="p-4 text-center">Transactions will be executed manually.</div>
 </template>

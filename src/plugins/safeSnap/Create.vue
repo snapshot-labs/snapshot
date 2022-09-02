@@ -88,9 +88,10 @@ proposalExecutionData.value.forEach((executionData: ExecutionData) => {
         :key="index"
         :title="builder.title"
         :network="builder.safe.network"
+        :batches="builder.batches"
+        :default-from-address="builder.safe.address"
         :get-available-funds="builder.getAvailableFunds"
         :get-available-collectables="builder.getAvailableCollectables"
-        :batches="builder.batches"
         @remove-transaction-builder="removeTransactionBuilder(index)"
         @update-batches="updateProposalExecutionData(index, builder, $event)"
       />
