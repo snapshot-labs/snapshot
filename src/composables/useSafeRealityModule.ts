@@ -55,6 +55,7 @@ export function useSafeRealityModule(
     minimumBond: undefined,
     questionHash: undefined,
     questionId: undefined,
+    questionResult: false,
     finalizedAt: undefined,
     cooldown: undefined,
     nextTxIndex: undefined,
@@ -185,29 +186,28 @@ export function useSafeRealityModule(
   async function checkPossibleExecution(): Promise<void> {
     if (state.questionId) {
       try {
-        const result = await multicall(
-          executionData.safe.network,
-          readProvider,
-          REALITY_ORACLE_ABI,
-          [
-            [state.oracleAddress, 'resultFor', [state.questionId]],
-            [state.oracleAddress, 'getFinalizeTS', [state.questionId]]
-          ]
-        );
+        state.finalizedAt = (await call(readProvider, REALITY_ORACLE_ABI, [
+          state.oracleAddress,
+          'getFinalizeTS',
+          [state.questionId]
+        ])) as number;
 
-        const oracleAnswerIsYes = BigNumber.from(result[0][0]).eq(
-          BigNumber.from(1)
-        );
+        if (state.finalizedAt > 0) {
+          state.questionResult = BigNumber.from(
+            await call(readProvider, REALITY_ORACLE_ABI, [
+              state.oracleAddress,
+              'resultFor',
+              [state.questionId]
+            ])
+          ).eq(BigNumber.from(1));
+        }
 
-        state.finalizedAt = BigNumber.from(result[1][0]).toNumber();
-        state.canBeExecuted = !!(
-          oracleAnswerIsYes &&
-          state.finalizedAt &&
-          state.cooldown &&
-          state.finalizedAt + state.cooldown < currentTimestamp.value
-        );
+        state.canBeExecuted = !!(state.questionResult &&
+          state.finalizedAt + Number(state.cooldown) < currentTimestamp.value,
+        state.finalizedAt + Number(state.expiration) > currentTimestamp.value);
       } catch (e) {
-        console.log('Question is not answered yet.', e);
+        state.finalizedAt = undefined;
+        state.canBeExecuted = false;
       }
     } else {
       state.finalizedAt = undefined;
