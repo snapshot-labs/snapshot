@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
 import { useTxStatus, useSafeUmaModule } from '@/composables';
 

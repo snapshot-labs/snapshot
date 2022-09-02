@@ -3,10 +3,8 @@ import {
   Fragment,
   FunctionFragment,
   Interface,
-  JsonFragment,
-  ParamType
+  JsonFragment
 } from '@ethersproject/abi';
-import { BigNumberish } from '@ethersproject/bignumber';
 
 export const REALITY_MODULE_ABI = [
   // Events
@@ -729,51 +727,7 @@ export function getABIWriteFunctions(abi: string | Fragment[]) {
   );
 }
 
-function extractMethodArgs(values: string[]) {
-  return (param: ParamType, index) => {
-    const value = values[index];
-    if (isArrayParameter(param.baseType)) {
-      return JSON.parse(value);
-    }
-    return value;
-  };
-}
-
-export function getContractTransactionData(
-  abi: ABI,
-  method: FunctionFragment,
-  values: string[]
-) {
-  const contractInterface = new Interface(abi);
-  const parameterValues = method.inputs.map(extractMethodArgs(values));
-  return contractInterface.encodeFunctionData(method, parameterValues);
-}
-
 export function getAbiFirstFunctionName(abi: ABI): string {
   const abiInterface = new Interface(abi);
   return abiInterface.fragments[0].name;
-}
-
-export function getERC20TokenTransferTransactionData(
-  recipientAddress: string,
-  amount: BigNumberish
-): string {
-  const contractInterface = new Interface(ERC20_ABI);
-  return contractInterface.encodeFunctionData('transfer', [
-    recipientAddress,
-    amount
-  ]);
-}
-
-export function getERC721TokenTransferTransactionData(
-  fromAddress: string,
-  recipientAddress: string,
-  id: BigNumberish
-): string {
-  const contractInterface = new Interface(ERC721_ABI);
-  return contractInterface.encodeFunctionData('safeTransferFrom', [
-    fromAddress,
-    recipientAddress,
-    id
-  ]);
 }

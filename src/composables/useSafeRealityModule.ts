@@ -1,11 +1,14 @@
 import { reactive, readonly } from 'vue';
 import { HashZero } from '@ethersproject/constants';
 import { _TypedDataEncoder } from '@ethersproject/hash';
-import { EIP712_TYPES, Executor, ModuleExecutionData } from '@/helpers/safe';
+import {
+  EIP712_SAFE_TRANSACTIN_TYPES,
+  Executor,
+  ModuleExecutionData
+} from '@/helpers/safe';
 import {
   convertToRawTransaction,
-  createMultiSendTx,
-  getMultiSendAddress,
+  convertBatchToMultisendTransaction,
   RawTransaction
 } from '@/helpers/transactionBuilder';
 import {
@@ -57,6 +60,7 @@ export function useSafeRealityModule(
     expiration: undefined
   });
 
+  // TODO: add nonces
   const batchHashes = executionData.batches
     .map((batch, nonce) => {
       if (batch.length === 1) {
@@ -66,10 +70,9 @@ export function useSafeRealityModule(
         );
       } else if (batch.length > 1) {
         return calcTransactionHash(
-          createMultiSendTx(
+          convertBatchToMultisendTransaction(
             batch.map(tx => convertToRawTransaction(tx)),
-            nonce.toString(),
-            getMultiSendAddress(executionData.safe.network)
+            executionData.safe.network
           )
         );
       }

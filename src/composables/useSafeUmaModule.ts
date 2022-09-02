@@ -2,8 +2,7 @@ import { UMA_MODULE_ABI } from '@/helpers/abi';
 import { Executor, ModuleExecutionData } from '@/helpers/safe';
 import {
   convertToRawTransaction,
-  createMultiSendTx,
-  getMultiSendAddress
+  convertBatchToMultisendTransaction
 } from '@/helpers/transactionBuilder';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
@@ -38,10 +37,9 @@ export function useSafeUmaModule(
         if (batch.length === 1) {
           return convertToRawTransaction(batch[0]);
         } else if (batch.length > 1) {
-          return createMultiSendTx(
+          return convertBatchToMultisendTransaction(
             batch.map(transaction => convertToRawTransaction(transaction)),
-            nonce.toString(),
-            getMultiSendAddress(executionData.safe.network)
+            executionData.safe.network
           );
         }
         return null;

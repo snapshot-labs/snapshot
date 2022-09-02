@@ -1,48 +1,43 @@
 import { pack } from '@ethersproject/solidity';
-import { FunctionFragment, Interface } from '@ethersproject/abi';
+import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import {
-  ABI,
-  getContractTransactionData,
-  getERC20TokenTransferTransactionData,
-  getERC721TokenTransferTransactionData
-} from './abi';
+import { ABI, ERC20_ABI, ERC721_ABI, isArrayParameter } from './abi';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
 ];
 
-export const MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0 = {
-  '1': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '3': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '4': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '10': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '28': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '42': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '5': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '56': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '69': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '100': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '122': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '123': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '137': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '246': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '288': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '588': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '1088': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '1285': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1287': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '4002': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '42161': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '42220': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '43114': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '73799': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '80001': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '333999': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1313161554': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1313161555': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
-};
+export enum MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0 {
+  CHAIN_1 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_3 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_4 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_10 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_28 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_42 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_5 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_56 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_69 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_100 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_122 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_123 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_137 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_246 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_288 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_588 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_1088 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_1285 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_1287 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_4002 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_42161 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_42220 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_43114 = '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  CHAIN_73799 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_80001 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_333999 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_1313161554 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  CHAIN_1313161555 = '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
+}
 
 export enum TransactionOperationType {
   CALL,
@@ -89,6 +84,11 @@ export type Transaction =
   | CollectableTransaction
   | ContractTransaction;
 
+export interface MultisendTransaction extends RawTransaction {
+  to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0;
+  operation: TransactionOperationType.DELEGATECALL;
+}
+
 export function isRawTransaction(
   transaction: any
 ): transaction is RawTransaction {
@@ -131,10 +131,6 @@ export function isContractTransaction(
   );
 }
 
-export function getMultiSendAddress(network: number | string) {
-  return MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[network.toString()];
-}
-
 export function encodeTransactions(transactions: RawTransaction[]) {
   const values = transactions.map(tx => [
     tx.operation,
@@ -155,23 +151,63 @@ export function encodeTransactions(transactions: RawTransaction[]) {
   return pack(types.flat(1), values.flat(1));
 }
 
-export function createMultiSendTx(
+export function convertBatchToMultisendTransaction(
   batch: RawTransaction[],
-  nonce: string,
-  multiSendAddress: string
-) {
+  chainId: string
+): MultisendTransaction {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
   const transactionsEncoded = encodeTransactions(batch);
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);
   return {
-    to: multiSendAddress,
+    to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[`CHAIN_${chainId}`],
     operation: TransactionOperationType.DELEGATECALL,
     value: BigNumber.from(0),
-    nonce,
     data
   };
+}
+
+function extractMethodArgs(values: string[]) {
+  return (param: ParamType, index) => {
+    const value = values[index];
+    if (isArrayParameter(param.baseType)) {
+      return JSON.parse(value);
+    }
+    return value;
+  };
+}
+
+export function getERC20TokenTransferTransactionData(
+  transaction: TokenTransaction
+): string {
+  const contractInterface = new Interface(ERC20_ABI);
+  return contractInterface.encodeFunctionData('transfer', [
+    transaction.recipient,
+    transaction.amount
+  ]);
+}
+
+export function getERC721TokenTransferTransactionData(
+  transaction: CollectableTransaction
+): string {
+  const contractInterface = new Interface(ERC721_ABI);
+  return contractInterface.encodeFunctionData('safeTransferFrom', [
+    transaction.from,
+    transaction.recipient,
+    transaction.collectableId
+  ]);
+}
+
+export function getContractTransactionData(transaction: ContractTransaction) {
+  const contractInterface = new Interface(transaction.abi);
+  const parameterValues = FunctionFragment.from(transaction.method).inputs.map(
+    extractMethodArgs(transaction.params)
+  );
+  return contractInterface.encodeFunctionData(
+    transaction.method,
+    parameterValues
+  );
 }
 
 export function convertToRawTransaction(
@@ -183,32 +219,21 @@ export function convertToRawTransaction(
     return {
       to: transaction.tokenAddress,
       value: BigNumber.from(0),
-      data: getERC20TokenTransferTransactionData(
-        transaction.recipient,
-        transaction.amount
-      ),
+      data: getERC20TokenTransferTransactionData(transaction),
       operation: TransactionOperationType.CALL
     };
   } else if (isCollectableTransaction(transaction)) {
     return {
       to: transaction.collectableAddress,
       value: BigNumber.from(0),
-      data: getERC721TokenTransferTransactionData(
-        transaction.from,
-        transaction.recipient,
-        transaction.collectableId
-      ),
+      data: getERC721TokenTransferTransactionData(transaction),
       operation: TransactionOperationType.CALL
     };
   } else if (isContractTransaction(transaction)) {
     return {
       to: transaction.contractAddress,
       value: BigNumber.from(0),
-      data: getContractTransactionData(
-        transaction.abi,
-        FunctionFragment.from(transaction.method),
-        transaction.params
-      ),
+      data: getContractTransactionData(transaction),
       operation: TransactionOperationType.CALL
     };
   } else {
@@ -222,7 +247,7 @@ export function createEmptyTransaction(type: TransactionType): Transaction {
       return {
         to: '',
         value: BigNumber.from(0),
-        data: '0x',
+        data: '',
         operation: TransactionOperationType.CALL
       };
     case TransactionType.TOKEN:
