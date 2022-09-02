@@ -7,9 +7,6 @@ import {
   SafeModuleType,
   ModuleExecutionData
 } from '@/helpers/safe';
-import RealityExecution from './components/RealityExecution.vue';
-import UmaExecution from './components/UmaExecution.vue';
-import ManualExecution from './components/ManualExecution.vue';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -27,17 +24,17 @@ const executionData = computed<ExecutionData[]>(() =>
     :title="data.safe.name"
   >
     <div v-if="data.module">
-      <RealityExecution
+      <ExecutionReality
         v-if="data.module.type === SafeModuleType.REALITY"
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
       />
-      <UmaExecution
+      <ExecutionUma
         v-if="data.module.type === SafeModuleType.UMA"
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
       />
     </div>
-    <ManualExecution v-else />
+    <ExecutionManual v-else />
   </BaseBlock>
 </template>
