@@ -236,7 +236,7 @@
     "votingSystem": "投票制度",
     "postVoteModal": {
       "defaultTitle": "投票成功！",
-      "gnosisSafeTitle": "您的投票正在等待...",
+      "gnosisSafeTitle": "您的投票正在进行中...",
       "gnosisSafeDescription": " 安全投票需要额外的签名者并在确认交易后可见",
       "seeQueue": "查看队列中的交易",
       "tips": {
