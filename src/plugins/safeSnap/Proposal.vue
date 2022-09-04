@@ -44,6 +44,7 @@ const hasProposalEnded = computed<boolean>(() => {
         v-if="data.module.type === SafeModuleType.REALITY"
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
+        :proposal-snapshot="proposal.snapshot"
         :has-proposal-ended="hasProposalEnded"
       />
       <ExecutionUma

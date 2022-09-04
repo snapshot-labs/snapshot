@@ -6,7 +6,6 @@ import {
 } from '@/helpers/transactionBuilder';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { reactive, readonly } from 'vue';
 
 interface UmaModuleState extends ExecutorState {
@@ -17,8 +16,6 @@ export function useSafeUmaModule(
   executionData: ModuleExecutionData,
   proposalId: string
 ): Executor<UmaModuleState> {
-  const readProvider = getProvider(executionData.safe.network);
-
   const state = reactive<UmaModuleState>({
     loading: true,
     hasBeenProposed: false,
@@ -36,7 +33,7 @@ export function useSafeUmaModule(
 
   async function* proposeExecution() {
     const transactions = executionData.batches
-      .map((batch, nonce) => {
+      .map(batch => {
         if (batch.length === 1) {
           return convertToRawTransaction(batch[0]);
         } else if (batch.length > 1) {

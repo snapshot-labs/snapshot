@@ -7,13 +7,15 @@ const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
   hasProposalEnded: boolean;
+  proposalSnapshot: string;
 }>();
 
 const { pendingCount } = useTxStatus();
 
 const realityModule = useSafeRealityModule(
   props.executionData,
-  props.proposalId
+  props.proposalId,
+  props.proposalSnapshot
 );
 
 onMounted(realityModule.setState);
@@ -26,10 +28,11 @@ async function handleProposeExecution() {
   pendingCount.value--;
 
   await realityModule.setState();
-  await handleSetOracleAnswer('1');
+
+  await handleDisputeExecution('1');
 }
 
-async function handleSetOracleAnswer(answer: '0' | '1') {
+async function handleDisputeExecution(answer: '0' | '1') {
   const setOralceAnswerTransaction = realityModule.setOracleAnswer(answer);
   const step = await setOralceAnswerTransaction.next();
   if (step.value === 'erc20-approval') {
@@ -41,6 +44,28 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
   pendingCount.value++;
   await setOralceAnswerTransaction.next();
   pendingCount.value--;
+
+  await realityModule.setState();
+}
+
+async function handleExecute() {
+  const executeTransaction = realityModule.execute();
+  await executeTransaction.next();
+  pendingCount.value++;
+  await executeTransaction.next();
+  pendingCount.value--;
+
+  await realityModule.setState();
+}
+
+async function handleClaimBond() {
+  const claimBondTransaction = realityModule.claimBond();
+  await claimBondTransaction.next();
+  pendingCount.value++;
+  await claimBondTransaction.next();
+  pendingCount.value--;
+
+  await realityModule.setState();
 }
 </script>
 
@@ -66,21 +91,19 @@ async function handleSetOracleAnswer(answer: '0' | '1') {
 
     <template #dispute-execution>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      <div v-if="realityModule.state.questionId">
-        <div v-if="realityModule.state.finalizedAt">
-          <BaseButton v-if="realityModule.canExecute()"> execute </BaseButton>
-          <div v-else>waiting for cooldown</div>
-        </div>
-        <div v-else>
-          <BaseButton @click="handleSetOracleAnswer('0')">
-            dispute transactions
-          </BaseButton>
-        </div>
-      </div>
+      Has the proposal passed?
+      <BaseButton @click="handleDisputeExecution('1')"> Yes </BaseButton>
+      <BaseButton @click="handleDisputeExecution('0')"> No </BaseButton>
     </template>
 
     <template #execute>
-      <BaseButton>Execute transactions</BaseButton>
+      <div v-if="realityModule.state.canBeExecuted">
+        <BaseButton @click="handleExecute">
+          Execute transaction batch #{{ realityModule.state.nextTxIndex }}
+        </BaseButton>
+        <BaseButton @click="handleClaimBond"> Claim bond </BaseButton>
+      </div>
+      <div v-else>waiting for cooldown</div>
     </template>
 
     <template #has-been-executed>

@@ -1,10 +1,12 @@
 import { reactive, readonly } from 'vue';
+import { Result } from '@ethersproject/abi';
 import { HashZero } from '@ethersproject/constants';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import {
   EIP712_SAFE_TRANSACTIN_TYPES,
   Executor,
   ExecutorState,
+  getNativeAsset,
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
@@ -27,6 +29,8 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { keccak256 } from '@ethersproject/solidity';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
+import { Contract } from '@ethersproject/contracts';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 
 interface RealityModuleState extends ExecutorState {
   oracleAddress: string | undefined;
@@ -41,7 +45,8 @@ interface RealityModuleState extends ExecutorState {
 
 export function useSafeRealityModule(
   executionData: ModuleExecutionData,
-  proposalId: string
+  proposalId: string,
+  proposalSnapshot: string
 ): Executor<RealityModuleState> {
   const currentTimestamp = useTimestamp();
   const readProvider = getProvider(executionData.safe.network);
@@ -97,9 +102,11 @@ export function useSafeRealityModule(
 
   async function setState() {
     state.loading = true;
+
     await setQuestionAndHash();
     await setProposalDetails();
     await setModuleDetails();
+    await setBondData();
     await checkPossibleExecution();
 
     state.loading = false;
@@ -122,7 +129,34 @@ export function useSafeRealityModule(
   }
 
   async function* execute() {
+    if (state.nextTxIndex === undefined) return;
+
+    const batch = executionData.batches[state.nextTxIndex];
+    const multisendTransaction = convertBatchToMultisendTransaction(
+      batch.map(tx => convertToRawTransaction(tx)),
+      executionData.safe.network
+    );
+    const tx = await sendTransaction(
+      getInstance().web3,
+      executionData.module.address,
+      REALITY_MODULE_ABI,
+      'executeProposalWithIndex',
+      [
+        proposalId,
+        batchHashes,
+        multisendTransaction.to,
+        multisendTransaction.value,
+        multisendTransaction.data || '0x',
+        multisendTransaction.operation,
+        state.nextTxIndex
+      ]
+    );
     yield;
+    await tx.wait();
+
+    if (executionData.batches.length > state.nextTxIndex + 1) {
+      state.nextTxIndex++;
+    }
   }
 
   async function setQuestionAndHash(): Promise<void> {
@@ -215,6 +249,42 @@ export function useSafeRealityModule(
     }
   }
 
+  async function setQuestionInfoFromOracle(): Promise<{
+    currentBond: BigNumber | undefined;
+    isApproved: boolean;
+    endTime: number | undefined;
+  }> {
+    if (state.questionId) {
+      const provider: StaticJsonRpcProvider = getProvider(
+        executionData.safe.network
+      );
+      const result = await multicall(
+        executionData.safe.network,
+        provider,
+        REALITY_ORACLE_ABI,
+        [
+          [state.oracleAddress, 'getFinalizeTS', [state.questionId]],
+          [state.oracleAddress, 'getBond', [state.questionId]],
+          [state.oracleAddress, 'getBestAnswer', [state.questionId]]
+        ]
+      );
+
+      const currentBond = BigNumber.from(result[1][0]);
+      const answer = BigNumber.from(result[2][0]);
+
+      return {
+        currentBond,
+        isApproved: answer.eq(BigNumber.from(1)),
+        endTime: BigNumber.from(result[0][0]).toNumber()
+      };
+    }
+    return {
+      currentBond: undefined,
+      isApproved: false,
+      endTime: undefined
+    };
+  }
+
   async function* setOracleAnswer(answer: '1' | '0') {
     if (!getInstance().web3 || !state.oracleAddress) return;
 
@@ -301,12 +371,164 @@ export function useSafeRealityModule(
     console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
+  async function* claimBond(
+    claimParams: [string[], string[], number[], string[]]
+  ) {
+    if (!getInstance().web3 || !state.oracleAddress) return;
+
+    const currentHistoryHash = await call(
+      getInstance().web3,
+      REALITY_ORACLE_ABI,
+      [state.oracleAddress, 'getHistoryHash', [state.questionId]]
+    );
+
+    if (BigNumber.from(currentHistoryHash).eq(0)) {
+      const withdrawTx = await sendTransaction(
+        getInstance().web3,
+        state.oracleAddress,
+        REALITY_ORACLE_ABI,
+        'withdraw',
+        []
+      );
+      yield;
+      await withdrawTx.wait();
+      return;
+    }
+
+    const tx = await sendTransaction(
+      getInstance().web3,
+      state.oracleAddress,
+      REALITY_ORACLE_ABI,
+      'claimMultipleAndWithdrawBalance',
+      [[state.questionId], ...claimParams]
+    );
+    yield;
+    await tx.wait();
+  }
+
+  async function setBondData() {
+    if (!getInstance().web3 || !state.oracleAddress) return;
+
+    const contract = new Contract(
+      state.oracleAddress,
+      REALITY_ORACLE_ABI,
+      getInstance().web3
+    );
+    const provider: StaticJsonRpcProvider = getProvider(
+      executionData.safe.network
+    );
+    const account = (await getInstance().web3.listAccounts())[0];
+
+    const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
+      await multicall(
+        executionData.safe.network,
+        provider,
+        REALITY_ORACLE_ABI,
+        [
+          [state.oracleAddress, 'balanceOf', [account]],
+          [state.oracleAddress, 'getBestAnswer', [state.questionId]],
+          [state.oracleAddress, 'getHistoryHash', [state.questionId]],
+          [state.oracleAddress, 'isFinalized', [state.questionId]]
+        ]
+      );
+
+    const nativeToken = getNativeAsset(executionData.safe.network);
+    let token = {
+      symbol: nativeToken.symbol,
+      decimals: nativeToken.decimals
+    };
+
+    try {
+      const tokenCall = await call(provider, REALITY_ORACLE_ABI, [
+        state.oracleAddress,
+        'token',
+        []
+      ]);
+      const [[symbol], [decimals]] = await multicall(
+        executionData.safe.network,
+        provider,
+        ERC20_ABI,
+        [
+          [tokenCall, 'symbol', []],
+          [tokenCall, 'decimals', []]
+        ]
+      );
+
+      token = {
+        symbol,
+        decimals
+      };
+    } catch (e) {
+      console.log('[Realitio] Info: Oracle is not ERC20 based.');
+    }
+
+    const answersFilter = contract.filters.LogNewAnswer(null, state.questionId);
+    const events = await contract.queryFilter(
+      answersFilter,
+      parseInt(proposalSnapshot)
+    );
+
+    const users: Result[] = [];
+    const historyHashes: Result[] = [];
+    const bonds: Result[] = [];
+    const answers: Result[] = [];
+
+    // We need to send the information from last to first
+    events.reverse();
+    events.forEach(({ args }) => {
+      users.push(args?.user.toLowerCase());
+      historyHashes.push(args?.history_hash);
+      bonds.push(args?.bond);
+      answers.push(args?.answer);
+    });
+
+    const alreadyClaimed = BigNumber.from(historyHash).eq(0);
+    const address = account.toLowerCase();
+
+    // Check if current user has submitted an answer
+    const currentUserAnswers = users.map((user, i) => {
+      if (user === address) return answers[i];
+    });
+
+    // If the user has answers, check if one of them is the winner
+    const votedForCorrectQuestion =
+      currentUserAnswers.some(answer => {
+        if (answer) {
+          return BigNumber.from(answer).eq(bestAnswer);
+        }
+      }) && isFinalized;
+
+    // If user has balance in the contract, he should be able to withdraw
+    const hasBalance = !userBalance.eq(0) && isFinalized;
+
+    // Remove the first history and add an empty one
+    // More info: https://github.com/realitio/realitio-contracts/blob/master/truffle/contracts/Realitio.sol#L502
+    historyHashes.shift();
+    const firstHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000000' as unknown;
+    historyHashes.push(firstHash as Result);
+
+    return {
+      tokenSymbol: token.symbol,
+      tokenDecimals: token.decimals,
+      canClaim: (!alreadyClaimed && votedForCorrectQuestion) || hasBalance,
+      data: {
+        length: [bonds.length.toString()],
+        historyHashes,
+        users,
+        bonds,
+        answers
+      }
+    };
+  }
+
   return {
     state: readonly(state) as RealityModuleState,
     setState,
     proposeExecution,
     disputeExecution,
     execute,
-    setOracleAnswer
+    setOracleAnswer,
+    claimBond
   };
 }

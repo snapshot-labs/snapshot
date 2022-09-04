@@ -655,14 +655,6 @@ export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
 }
 
-export function isStringArray(value: string): boolean {
-  try {
-    return Array.isArray(JSON.parse(value));
-  } catch {
-    return false;
-  }
-}
-
 const fetchContractABI = async (url: string, contractAddress: string) => {
   const params = new URLSearchParams({
     module: 'contract',
@@ -730,4 +722,15 @@ export function getABIWriteFunctions(abi: string | Fragment[]) {
 export function getAbiFirstFunctionName(abi: ABI): string {
   const abiInterface = new Interface(abi);
   return abiInterface.fragments[0].name;
+}
+
+export async function fetchTextSignatures(
+  methodSignature: string
+): Promise<string[]> {
+  const url = new URL('/api/v1/signatures', 'https://www.4byte.directory');
+  url.searchParams.set('hex_signature', methodSignature);
+  url.searchParams.set('ordering', 'created_at');
+  const response = await fetch(url.toString());
+  const { results } = await response.json();
+  return results.map(signature => signature.text_signature);
 }
