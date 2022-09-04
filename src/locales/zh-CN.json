@@ -237,10 +237,10 @@
     "postVoteModal": {
       "defaultTitle": "投票成功！",
       "gnosisSafeTitle": "您的投票正在进行中...",
-      "gnosisSafeDescription": " 安全投票需要额外的签名者并在确认交易后可见",
+      "gnosisSafeDescription": " 使用Safe进行的投票需要额外的签名者，并在交易确认后可见",
       "seeQueue": "查看队列中的交易",
       "tips": {
-        "1": "投票可以在提案处于活动状态时更改"
+        "1": "提案处于生效状态时可以更改投票"
       }
     }
   },
@@ -308,7 +308,7 @@
       "children": {
         "label": "子空间",
         "placeholder": "pistachiodao.eth",
-        "information": "此处列出的相关子空间也将显示在空间页面上"
+        "information": "此处列出的相关子空间将显示在空间页面上"
       }
     },
     "website": "网站",
