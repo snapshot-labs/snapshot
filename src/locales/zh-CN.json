@@ -293,7 +293,7 @@
     },
     "terms": {
       "label": "条款",
-      "information": "用户必须先接受这些条款才能创建提案或投票。"
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "从主页隐藏空间",
     "links": "社交账户",
@@ -314,15 +314,15 @@
     "website": "网站",
     "strategies": {
       "label": "策略",
-      "information": "策略用于确定投票权或用户是否有资格创建提案。"
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
     },
     "network": {
       "label": "网络",
-      "information": "用于此空间的 defaul网络。网络也可以在个别策略中指定。"
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
     },
     "symbol": {
       "label": "符号",
-      "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
     },
     "strategiesList": "最多选择 8 个策略",
     "votingPowerIsCumulative": "投票权是累积的",
@@ -330,17 +330,17 @@
     "testInPlayground": "在playground中测试",
     "admins": {
       "label": "管理员",
-      "information": "管理员能够修改空间设置和管理空间提案。"
+      "information": "Admins are able to modify the space settings and manage the space's proposals"
     },
     "authors": {
       "label": "作者",
-      "information": "拥有者总是能够创建提案。"
+      "information": "Authors are always able to create proposals"
     },
     "proposalValidation": "提案验证",
     "validation": "类型",
     "proposalThreshold": {
       "label": "阈值",
-      "information": "创建提案所需的最低投票权。"
+      "information": "The minimum amount of voting power required to create a proposal"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
     "editValidation": "编辑验证",
@@ -353,11 +353,11 @@
     "days": "天",
     "quorum": {
       "label": "提案人数",
-      "information": "提案获得通过所需的最低投票权数。"
+      "information": "The minimum amount of voting power required for the proposal to pass"
     },
     "type": {
       "label": "类型",
-      "information": "这个空间采用的投票方式。该类型的投票方式将应用到所有的提案当中。"
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
     },
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
@@ -372,7 +372,7 @@
       "label": "金库",
       "add": "添加金库",
       "edit": "编辑金库",
-      "information": "为您的您组织添加金库以在您的空间中展示它们。"
+      "information": "Add treasuries of your organization to show them in your space"
     },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
