@@ -52,7 +52,7 @@
   "toggleSkin": "切换皮肤",
   "about": "关于",
   "license": "许可证",
-  "showMore": "Show more",
+  "showMore": "显示更多",
   "voted": "已投票",
   "ipfsServer": "IPFS 服务器",
   "hub": "中心",
@@ -236,8 +236,8 @@
     "votingSystem": "投票制度",
     "postVoteModal": {
       "defaultTitle": "投票成功！",
-      "gnosisSafeTitle": "您的投票正在等待...",
-      "gnosisSafeDescription": " 安全投票需要额外的签名者并在确认交易后可见",
+      "gnosisSafeTitle": "您的投票正在进行中...",
+      "gnosisSafeDescription": " 使用Safe进行的投票需要额外的签名者，并在交易确认后可见",
       "seeQueue": "查看队列中的交易",
       "tips": {
         "1": "投票可以在提案处于活动状态时更改"
@@ -308,7 +308,7 @@
       "children": {
         "label": "子空间",
         "placeholder": "pistachiodao.eth",
-        "information": "此处列出的相关子空间也将显示在空间页面上"
+        "information": "此处列出的相关子空间将显示在空间页面上"
       }
     },
     "website": "网站",

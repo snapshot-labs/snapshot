@@ -11,7 +11,7 @@
   "retry": "Réessayer",
   "currentResults": "Résultats actuels",
   "reset": "Réinitialiser",
-  "close": "Close",
+  "close": "Fermer",
   "save": "Enregistrer",
   "author": "Auteur",
   "next": "Suivant",
@@ -25,7 +25,7 @@
   "space": "Espace",
   "spaces": "Espaces",
   "verifiedSpace": "Espace vérifié",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "Ce n'est pas un espace officiel, procédez avec prudence!",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "terminé",
@@ -40,7 +40,7 @@
   "network": "Réseau",
   "networks": "Réseaux",
   "skins": "Thèmes",
-  "spaceMembers": "Members",
+  "spaceMembers": "Membres",
   "members": "Aucun membre | {count} membre | {count} membres",
   "editStrategy": "Modifier la stratégie",
   "invalidProposals": "Propositions incorrectes",
@@ -52,7 +52,7 @@
   "toggleSkin": "Activer le thème",
   "about": "À propos",
   "license": "Licence",
-  "showMore": "Show more",
+  "showMore": "Voir plus",
   "voted": "Voted",
   "ipfsServer": "Serveur IPFS",
   "hub": "Hub",
@@ -64,7 +64,7 @@
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
   "voteOverview": "Aperçu du vote",
-  "quorumReached": "quorum reached",
+  "quorumReached": "quorum atteint",
   "options": "Option(s)",
   "votingPower": "Votre voting power",
   "receipt": "Reçu",
@@ -116,7 +116,7 @@
   "select": "Sélectionnez",
   "language": "Langage",
   "agree": "J'accepte",
-  "moderators": "Moderators",
+  "moderators": "Modérateurs",
   "mustAgreeToTerms": "Avant de pouvoir effectuer cette action, vous devez accepter les conditions d'utilisation de {0} ici:",
   "playground": "Playground",
   "strategyParams": "Paramètres de la stratégie",
@@ -126,8 +126,8 @@
   "join": "Rejoindre",
   "joined": "Abonné",
   "leave": "Se désabonner",
-  "subspaces": "Sub-spaces",
-  "mainspace": "Main space",
+  "subspaces": "Sous-espaces",
+  "mainspace": "Espace principal",
   "copyLink": "Copier le lien",
   "duplicateProposal": "Dupliquer la proposition",
   "joinedSpaces": "Espaces rejoints",
@@ -139,13 +139,13 @@
   "confirmAction": "Confirmer l’action",
   "or": "ou",
   "share": "Partager",
-  "shareOnTwitter": "Share on Twitter",
+  "shareOnTwitter": "Partager sur Twitter",
   "createButton": "Créer",
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
-  "createASpace": "Create a space",
-  "getStarted": "Get started",
-  "skip": "Skip",
+  "createASpace": "Créer un espace",
+  "getStarted": "Commencer",
+  "skip": "Ignorer",
   "newSpaceNotice": {
     "header": "Votre espace est live !",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -235,12 +235,12 @@
     "endDate": "Date de fin",
     "votingSystem": "Système de vote",
     "postVoteModal": {
-      "defaultTitle": "Your vote is in!",
-      "gnosisSafeTitle": "Your vote is pending...",
+      "defaultTitle": "Votre vote est enregistré !",
+      "gnosisSafeTitle": "Votre vote est en attente...",
       "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
-      "seeQueue": "See queued transactions",
+      "seeQueue": "Voir les transactions en attente",
       "tips": {
-        "1": "Votes can be changed while the proposal is active"
+        "1": "Les votes peuvent être modifiés tant que la proposition est active"
       }
     }
   },
@@ -272,7 +272,7 @@
   "settings": {
     "header": "Réglages",
     "editController": "Modifier le controller",
-    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "Vous êtes en mode lecture seule, pour modifier les paramètres de l'espace, connectez-vous avec un contrôleur ou un wallet administrateur.",
     "currentSpaceControllerIs": "Le controller de l’espace actuel est {address}",
     "newController": "Nouveau controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -280,67 +280,67 @@
     "profile": "Profil",
     "avatar": "Avatar",
     "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
+      "label": "Nom",
+      "placeholder": "p. ex. Yam Network"
     },
     "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
+      "label": "À propos",
+      "placeholder": "Quel est le but de votre organisation ?"
     },
     "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
+      "label": "Catégorie(s)",
+      "select": "Sélectionner la/les catégorie(s)"
     },
     "terms": {
-      "label": "Terms",
-      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+      "label": "Conditions",
+      "information": "Les utilisateurs devront accepter ces conditions avant de pouvoir créer une proposition ou voter."
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
-    "links": "Social accounts",
+    "links": "Réseaux Sociaux",
     "subspaces": {
-      "label": "Sub-spaces",
+      "label": "Sous-espaces",
       "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
       "parent": {
-        "label": "Main space",
+        "label": "Espace principal",
         "placeholder": "pistachiodao.eth",
         "information": "The space that this space is a sub-space of will be displayed on the space page"
       },
       "children": {
-        "label": "Sub-spaces",
+        "label": "Sous-espaces",
         "placeholder": "pistachiodao.eth",
         "information": "Related Sub-spaces listed here will be displayed on the space page"
       }
     },
-    "website": "Website",
+    "website": "Site web",
     "strategies": {
-      "label": "Strategie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+      "label": "Stratégie(s)",
+      "information": "Les stratégies sont utilisées pour déterminer le pouvoir de vote ou si un utilisateur est autorisé à créer une proposition."
     },
     "network": {
-      "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+      "label": "Réseau",
+      "information": "Le réseau par défaut utilisé pour cet espace. Les réseaux peuvent également être spécifiés dans les stratégies individuelles."
     },
     "symbol": {
-      "label": "Symbol",
-      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+      "label": "Symbole",
+      "information": "Le symbole par défaut utilisé sur cet espace, généralement le symbole du jeton, p. ex. BAL pour Balancer."
     },
-    "strategiesList": "Select up to 8 strategies",
-    "votingPowerIsCumulative": "Voting power is cumulative",
+    "strategiesList": "Sélectionnez jusqu'à 8 stratégies",
+    "votingPowerIsCumulative": "Le voting power est cumulatif",
     "addStrategy": "Ajouter une stratégie",
-    "testInPlayground": "Test in playground",
+    "testInPlayground": "Tester sur playground",
     "admins": {
-      "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals."
+      "label": "Administrateurs",
+      "information": "Les administrateurs peuvent modifier les paramètres de l'espace et gérer les propositions de l'espace."
     },
     "authors": {
-      "label": "Authors",
-      "information": "Authors are always able to create proposals."
+      "label": "Auteurs",
+      "information": "Les auteurs sont toujours en mesure de créer des propositions."
     },
     "proposalValidation": "Validation de la proposition",
     "validation": "Type",
     "proposalThreshold": {
-      "label": "Threshold",
-      "information": "The minimum amount of voting power required to create a proposal."
+      "label": "Seuil",
+      "information": "Le voting power minimum requis pour créer une proposition."
     },
     "allowOnlyAuthors": "Permettre uniquement aux auteurs de soumettre une proposition",
     "editValidation": "Modifier la validation",
@@ -349,30 +349,30 @@
     "voting": "Vote",
     "votingDelay": "Délai avant vote",
     "votingPeriod": "Période de vote",
-    "hours": "Hours",
-    "days": "Days",
+    "hours": "Heures",
+    "days": "Jours",
     "quorum": {
       "label": "Quorum",
-      "information": "The minimum amount of voting power required for the proposal to pass."
+      "information": "Le voting power minimum requis pour que la proposition soit adoptée."
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+      "information": "Le type de système de vote utilisé pour cet espace. Cela imposera le même système de vote pour toutes les propositions."
     },
     "anyType": "Tous",
     "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
     "customDomain": "Nom de domaine personnalisé",
     "domain": {
-      "label": "Domain name",
-      "placeholder": "e.g. vote.balancer.fi",
+      "label": "Nom de domaine",
+      "placeholder": "p. ex. vote.balancer.fi",
       "info": "To setup a custom domain you additionally need to open a pull request on github after you have created the space. {docs}"
     },
     "skin": "Thème",
     "treasuries": {
-      "label": "Treasury",
-      "add": "Add treasury",
-      "edit": "Edit treasury",
-      "information": "Add treasuries of your organization to show them in your space."
+      "label": "Trésorerie",
+      "add": "Ajouter une trésorerie",
+      "edit": "Modifier la trésorerie",
+      "information": "Ajoutez des trésoreries à votre organisation pour les afficher dans votre espace."
     },
     "addPlugin": "Ajouter un plugin",
     "editPlugin": "Modifier le plugin",
@@ -409,36 +409,36 @@
     "waitForTransaction": "La transaction doit être confirmée avant de pouvoir créer votre espace. {txUrl}",
     "pleaseWaitMessage": "Cela peut prendre quelques minutes, veuillez attendre pendant que la transaction est confirmée",
     "notControllerAddress": "Veuillez vous connecter avec l'adresse du controller {wallet} pour créer l'espace.",
-    "fillCurrentAccount": "Use currently logged in account",
+    "fillCurrentAccount": "Utiliser le compte connecté",
     "domain": {
-      "title": "Setup your space domain",
-      "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
+      "title": "Configurez votre domaine d'espace",
+      "ensMessage": "Avant de pouvoir créer votre propre espace, vous avez besoin d'un domaine ENS sur le réseau principal Ethereum.",
       "ensMessageTestnet": "You can also {link} on the Rinkeby testnet and mess with things there first.",
-      "tryDemo": "try the demo"
+      "tryDemo": "Essayer la démo"
     },
     "strategy": {
-      "title": "How would you like to setup your voting strategy?",
-      "subtitle": "You can change your strategy settings any time.",
-      "blockTitle": "Setup voting strategy",
+      "title": "Comment souhaitez-vous configurer votre stratégie de vote ?",
+      "subtitle": "Vous pouvez changer vos paramètres de stratégie à tout moment.",
+      "blockTitle": "Configurer la stratégie de vote",
       "onePersonOneVote": {
-        "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "title": "Une personne, un vote",
+        "description": "Gérer une liste blanche de personnes qui peuvent voter ou simplement permettre à n'importe quelle adresse de voter. Chaque vote est égal et aucun jeton n'est requis",
         "whitelistInformation": "Specify a number of accounts that can vote",
-        "ticketInformation": "Any account can vote",
-        "votesEqualInfo": "Each vote is equal and no token is required"
+        "ticketInformation": "N'importe quel compte peut voter",
+        "votesEqualInfo": "Chaque vote est égal et aucun jeton n'est requis"
       },
       "tokenVoting": {
-        "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found",
-        "seeOnEtherscan": "See on Etherscan"
+        "title": "Vote pondéré par jeton",
+        "description": "Les votes sont pondérés par un jeton. Le jeton peut être un jeton ERC-20, ERC-721 ou ERC-1155",
+        "tokenNotFound": "Jeton introuvable",
+        "seeOnEtherscan": "Voir sur Etherscan"
       },
       "advanced": {
-        "title": "Custom setup",
-        "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
+        "title": "Paramètres personnalisés",
+        "description": "Sélectionnez jusqu'à 8 stratégies avec un vaste choix d'options. Si vous ne trouvez pas de stratégie adaptée à votre cas d'utilisation, vous pouvez créer la vôtre"
       }
     },
-    "validationTitle": "Who can manage this space and create proposals?"
+    "validationTitle": "Qui peut gérer cet espace et créer des propositions ?"
   },
   "profile": {
     "buttonEdit": "Modifier le profil",
@@ -497,7 +497,7 @@
     "networks": "réseau(x)",
     "plugins": "plugin(s)",
     "results": "résultat(s)",
-    "category": "Category",
+    "category": "Catégorie",
     "categories": {
       "all": "Tout",
       "protocol": "Protocole",
@@ -637,7 +637,7 @@
       },
       "strategy": "Stratégie {key}",
       "delegate": "Déléguer",
-      "ranking": "Ranking"
+      "ranking": "Classement"
     }
   },
   "hal": {
@@ -660,41 +660,41 @@
     "goToDemoSite": "Accéder le site démo"
   },
   "treasury": {
-    "title": "Treasury",
+    "title": "Trésorerie",
     "wallets": {
-      "title": "Wallets",
-      "empty": "This space doesn't have a treasury yet",
-      "addTreasury": "Add a treasury"
+      "title": "Portefeuilles",
+      "empty": "Cet espace n'a pas encore de trésorerie",
+      "addTreasury": "Ajouter une trésorerie"
     },
     "assets": {
-      "title": "Assets",
-      "empty": "There are no assets in this contract"
+      "title": "Actifs",
+      "empty": "Ce contrat ne contient aucun actif"
     },
-    "24hChange": "24h change"
+    "24hChange": "Changement sur 24h"
   },
   "newsletter": {
-    "yourEmail": "Your email",
-    "title": "Get the latest Snapshot updates"
+    "yourEmail": "Votre e-mail",
+    "title": "Recevoir les dernières mises à jour de Snapshot"
   },
-  "joinCommunity": "Join Snapshot community",
+  "joinCommunity": "Rejoindre la communauté Snapshot",
   "header": {
-    "title": "Where decisions get made",
-    "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
+    "title": "Là où les décisions sont prises",
+    "description": "Snapshot est une plateforme de gouvernance communautaire gratuite et open-source. Créez votre propre espace dès maintenant et commencez à prendre des décisions !"
   },
   "aboutPage": {
-    "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
-    "subHeader": "Governance should be a snap",
-    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+    "description": "Snapshot est une plate-forme de gouvernance décentralisée qui facilite la création et le vote sur les propositions - le tout sans dépenser une fortune en frais de gaz ! De plus, notre système flexible prend en charge différents types et stratégies de vote, afin que vous puissiez adapter le processus de vote à vos besoins.",
+    "subHeader": "La gouvernance devrait être un jeu d'enfants",
+    "subDescription": "La gouvernance Web3 ne doit pas être compliquée. Snapshot est la solution idéale pour les organisations qui cherchent un moyen simple et efficace de gouverner leur communauté ou leur organisation."
   },
   "footerView": {
-    "resources": "Resources",
-    "about": "About",
+    "resources": "Ressources",
+    "about": "À propos",
     "blog": "Blog",
     "jobs": "Jobs",
     "discussions": "Discussions",
     "github": "GitHub",
-    "docs": "Docs",
+    "docs": "Documentation",
     "support": "Support",
-    "hiring": "Join us!"
+    "hiring": "Rejoignez-nous !"
   }
 }
