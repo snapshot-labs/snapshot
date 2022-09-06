@@ -60,6 +60,7 @@ export interface ExecutionData {
   safe: Safe;
   batches: Transaction[][];
   module?: SafeModule;
+  choice?: number;
 }
 
 export interface ModuleExecutionData extends ExecutionData {
