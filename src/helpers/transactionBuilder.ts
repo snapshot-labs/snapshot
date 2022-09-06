@@ -2,7 +2,7 @@ import { pack } from '@ethersproject/solidity';
 import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import { ABI, ERC20_ABI, ERC721_ABI, isArrayParameter } from './abi';
+import { ERC20_ABI, ERC721_ABI, isArrayParameter } from './abi';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -74,8 +74,8 @@ export interface CollectableTransaction {
 export interface ContractTransaction {
   contractAddress: string;
   method: string;
-  params: any[];
-  abi: ABI;
+  params: string[];
+  abi: string;
 }
 
 export type Transaction =
@@ -268,7 +268,7 @@ export function createEmptyTransaction(type: TransactionType): Transaction {
         contractAddress: '',
         method: '',
         params: [],
-        abi: []
+        abi: ''
       };
     default:
       throw new Error(`Unknown transaction type: ${type}`);

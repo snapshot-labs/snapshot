@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {
   isCollectableTransaction,
+  isContractTransaction,
   isTokenTransaction,
   isRawTransaction,
   Transaction
@@ -56,6 +57,11 @@ function saveTransaction() {
       />
       <TransactionBuilderFormRaw
         v-if="isRawTransaction(transactionFormData)"
+        :transaction="transactionFormData"
+        @updateTransaction="transactionFormData = $event"
+      />
+      <TransactionBuilderFormContract
+        v-if="isContractTransaction(transactionFormData)"
         :transaction="transactionFormData"
         @updateTransaction="transactionFormData = $event"
       />

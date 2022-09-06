@@ -3,6 +3,7 @@ import { provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
 import {
   isCollectableTransaction,
+  isContractTransaction,
   isTokenTransaction,
   isRawTransaction,
   Transaction
@@ -143,6 +144,10 @@ function saveTransaction(transaction: Transaction) {
           />
           <TransactionBuilderTransactionRaw
             v-if="isRawTransaction(transaction)"
+            :transaction="transaction"
+          />
+          <TransactionBuilderTransactionContract
+            v-if="isContractTransaction(transaction)"
             :transaction="transaction"
           />
           <BaseButton
