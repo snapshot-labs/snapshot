@@ -79,10 +79,10 @@ export interface ExecutorState {
 
 export interface Executor<TState = ExecutorState> {
   state: TState;
-  setState(): Promise<void>;
-  proposeExecution(): AsyncGenerator;
-  disputeExecution(): AsyncGenerator;
-  execute(): AsyncGenerator;
+  setState(...key: any[]): Promise<void>;
+  proposeExecution(...key: any[]): AsyncGenerator;
+  disputeExecution(...key: any[]): AsyncGenerator;
+  execute(...key: any[]): AsyncGenerator;
   [x: string]: any; // Would like to remove this and not allow extra stuff.
 }
 
