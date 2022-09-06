@@ -993,18 +993,18 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
-"@gnosis.pm/safe-apps-provider@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.13.0.tgz#3059630a2bef38c3568df6aab59a418733d5b859"
-  integrity sha512-ZJJRu4EDJYQN4If7V9Llxag8JDW1VBFevCA6vLze6yF70u2P5rsBy5beInVxZDFpm8A3HuXZnBXhSjwFKAZsBQ==
+"@gnosis.pm/safe-apps-provider@^0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.13.1.tgz#69b12f800fa67b132535753f674518b7aa8ba20b"
+  integrity sha512-v84Apwb5SeDuRexcvzL2fyfYS3SR9MqPSKiSyFFOWo/Tpm4zgF/Z4ZKhsBKkgktqGoc0zFUZeQPVvqyQpixM9g==
   dependencies:
-    "@gnosis.pm/safe-apps-sdk" "7.7.0"
+    "@gnosis.pm/safe-apps-sdk" "7.8.0"
     events "^3.3.0"
 
-"@gnosis.pm/safe-apps-sdk@7.7.0", "@gnosis.pm/safe-apps-sdk@^7.7.0":
-  version "7.7.0"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-sdk/-/safe-apps-sdk-7.7.0.tgz#dc3621634bd42f1d24cbe4342fd85592cd1491cd"
-  integrity sha512-MuiH09q/5DFfHQLrwNW7JSvGEMGqrS3jNJy9UKZHW77rxzmZssHX1l3+p5whTbtrcvLbxQgcp5egMrdw/sj0qw==
+"@gnosis.pm/safe-apps-sdk@7.8.0", "@gnosis.pm/safe-apps-sdk@^7.8.0":
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-sdk/-/safe-apps-sdk-7.8.0.tgz#295ab9d563b94208e3042495cdba787fa035c71e"
+  integrity sha512-kO8fJi1ebiKN9qH1NdDToVBuDQQ0U9NkL467U+84LtNTx5PzUJIu6O7tb4nZD24e/OItinf5W8GDWhhfZeiqOA==
   dependencies:
     "@gnosis.pm/safe-react-gateway-sdk" "^3.1.3"
     ethers "^5.6.8"
@@ -1239,14 +1239,14 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@snapshot-labs/lock@^0.1.105":
-  version "0.1.105"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.105.tgz#8706fff1ddfb01fc3affc3433775709d28c0b699"
-  integrity sha512-AhhOKELSbhsl0Dk4ZC9vr1j+cWTsPvQWdusfKaxLXbPtmpagFJ+c7YrxVvMSmrfIISein+ix5eAKYGNvG4DWOQ==
+"@snapshot-labs/lock@^0.1.1010":
+  version "0.1.1010"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1010.tgz#7de2883b39165c7d76b336a8e0b72b3f994f9fc9"
+  integrity sha512-wiOGYsnZ5E4/E//3Jo/B+bC4ZcRI2pwRqskPfKQ1IVjfkOGCjSztOt4cz4tj2aifXcdAw0qYcZytzP8sCk7biQ==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
-    "@gnosis.pm/safe-apps-provider" "^0.13.0"
-    "@gnosis.pm/safe-apps-sdk" "^7.7.0"
+    "@gnosis.pm/safe-apps-provider" "^0.13.1"
+    "@gnosis.pm/safe-apps-sdk" "^7.8.0"
     "@portis/web3" "^4.0.6"
     "@toruslabs/torus-embed" "^1.12.1"
     "@walletconnect/web3-provider" "^1.8.0"
