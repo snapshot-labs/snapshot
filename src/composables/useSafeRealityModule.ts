@@ -69,7 +69,7 @@ export function useSafeRealityModule(
   });
 
   // TODO: add nonces
-  const batchHashes = executionData.batches
+  const finalTxHashes = executionData.batches
     .map((batch, nonce) => {
       if (batch.length === 1) {
         return calcTransactionHash(
@@ -119,14 +119,96 @@ export function useSafeRealityModule(
       executionData.module.address,
       REALITY_MODULE_ABI,
       'addProposal',
-      [proposalId, batchHashes]
+      [proposalId, finalTxHashes]
     );
     yield;
     await tx.wait();
   }
 
-  async function* disputeExecution() {
+  async function* disputeExecution(answer: '0' | '1') {
+    if (!getInstance().web3 || !state.oracleAddress) return;
+
+    const currentBond = await call(readProvider, REALITY_ORACLE_ABI, [
+      state.oracleAddress,
+      'getBond',
+      [state.questionId]
+    ]);
+
+    let bond;
+    let methodName;
+    const txOverrides = {};
+    let parameters = [state.questionId, HashZero.replace(/.$/, answer)];
+
+    const currentBondIsZero = currentBond.eq(BigNumber.from(0));
+    if (currentBondIsZero) {
+      // DaoModules can have 0 minimumBond, if it happens, the initial bond will be 1 token
+      const daoBondIsZero = BigNumber.from(state.minimumBond).eq(0);
+      bond = daoBondIsZero ? BigNumber.from(10) : state.minimumBond;
+    } else {
+      bond = currentBond.mul(2);
+    }
+
+    // fetch token attribute from Realitio contract, if it works, it means it is
+    // a RealitioERC20, otherwise the catch will handle the currency as ETH
+    try {
+      const account = (await getInstance().web3.listAccounts())[0];
+      const token = await call(readProvider, REALITY_ORACLE_ABI, [
+        state.oracleAddress,
+        'token',
+        []
+      ]);
+      const [[tokenDecimals], [allowance]] = await multicall(
+        executionData.safe.network,
+        readProvider,
+        ERC20_ABI,
+        [
+          [token, 'decimals', []],
+          [token, 'allowance', [account, state.oracleAddress]]
+        ]
+      );
+
+      if (bond.eq(10)) {
+        bond = bond.pow(tokenDecimals);
+      }
+
+      // Check if contract has allowance on user tokens,
+      // if not, trigger approve method
+      if (allowance.lt(bond)) {
+        const approveTx = await sendTransaction(
+          getInstance().web3,
+          token,
+          ERC20_ABI,
+          'approve',
+          [state.oracleAddress, bond],
+          {}
+        );
+        yield 'erc20-approval';
+        const approvalReceipt = await approveTx.wait();
+        console.log('[DAO module] token transfer approved:', approvalReceipt);
+        yield;
+      }
+      parameters = [...parameters, bond, bond];
+      methodName = 'submitAnswerERC20';
+    } catch (e) {
+      if (bond.eq(10)) {
+        bond = bond.pow(18);
+      }
+      parameters = [...parameters, bond];
+      txOverrides['value'] = bond.toString();
+      methodName = 'submitAnswer';
+    }
+
+    const tx = await sendTransaction(
+      getInstance().web3,
+      state.oracleAddress,
+      REALITY_ORACLE_ABI,
+      methodName,
+      parameters,
+      txOverrides
+    );
     yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
   async function* execute() {
@@ -144,7 +226,7 @@ export function useSafeRealityModule(
       'executeProposalWithIndex',
       [
         proposalId,
-        batchHashes,
+        finalTxHashes,
         multisendTransaction.to,
         multisendTransaction.value,
         multisendTransaction.data || '0x',
@@ -164,7 +246,7 @@ export function useSafeRealityModule(
     const question = await call(readProvider, REALITY_MODULE_ABI, [
       executionData.module.address,
       'buildQuestion',
-      [proposalId, batchHashes]
+      [proposalId, finalTxHashes]
     ]);
     state.questionHash = keccak256(['string'], [question]);
   }
@@ -178,7 +260,7 @@ export function useSafeRealityModule(
         [
           [executionData.module.address, 'questionIds', [state.questionHash]]
         ].concat(
-          batchHashes.map(txHash => [
+          finalTxHashes.map(txHash => [
             executionData.module.address,
             'executedProposalTransactions',
             [state.questionHash, txHash]
@@ -193,7 +275,7 @@ export function useSafeRealityModule(
     state.questionId =
       proposalInfo[0] !== HashZero ? proposalInfo[0] : undefined;
     state.nextTxIndex =
-      nextIndexToExecute < 0 || nextIndexToExecute >= batchHashes.length
+      nextIndexToExecute < 0 || nextIndexToExecute >= finalTxHashes.length
         ? undefined
         : nextIndexToExecute;
 
@@ -291,92 +373,6 @@ export function useSafeRealityModule(
       isApproved: false,
       endTime: undefined
     };
-  }
-
-  async function* setOracleAnswer(answer: '1' | '0') {
-    if (!getInstance().web3 || !state.oracleAddress) return;
-
-    const currentBond = await call(readProvider, REALITY_ORACLE_ABI, [
-      state.oracleAddress,
-      'getBond',
-      [state.questionId]
-    ]);
-
-    let bond;
-    let methodName;
-    const txOverrides = {};
-    let parameters = [state.questionId, HashZero.replace(/.$/, answer)];
-
-    const currentBondIsZero = currentBond.eq(BigNumber.from(0));
-    if (currentBondIsZero) {
-      // DaoModules can have 0 minimumBond, if it happens, the initial bond will be 1 token
-      const daoBondIsZero = BigNumber.from(state.minimumBond).eq(0);
-      bond = daoBondIsZero ? BigNumber.from(10) : state.minimumBond;
-    } else {
-      bond = currentBond.mul(2);
-    }
-
-    // fetch token attribute from Realitio contract, if it works, it means it is
-    // a RealitioERC20, otherwise the catch will handle the currency as ETH
-    try {
-      const account = (await getInstance().web3.listAccounts())[0];
-      const token = await call(readProvider, REALITY_ORACLE_ABI, [
-        state.oracleAddress,
-        'token',
-        []
-      ]);
-      const [[tokenDecimals], [allowance]] = await multicall(
-        executionData.safe.network,
-        readProvider,
-        ERC20_ABI,
-        [
-          [token, 'decimals', []],
-          [token, 'allowance', [account, state.oracleAddress]]
-        ]
-      );
-
-      if (bond.eq(10)) {
-        bond = bond.pow(tokenDecimals);
-      }
-
-      // Check if contract has allowance on user tokens,
-      // if not, trigger approve method
-      if (allowance.lt(bond)) {
-        const approveTx = await sendTransaction(
-          getInstance().web3,
-          token,
-          ERC20_ABI,
-          'approve',
-          [state.oracleAddress, bond],
-          {}
-        );
-        yield 'erc20-approval';
-        const approvalReceipt = await approveTx.wait();
-        console.log('[DAO module] token transfer approved:', approvalReceipt);
-        yield;
-      }
-      parameters = [...parameters, bond, bond];
-      methodName = 'submitAnswerERC20';
-    } catch (e) {
-      if (bond.eq(10)) {
-        bond = bond.pow(18);
-      }
-      parameters = [...parameters, bond];
-      txOverrides['value'] = bond.toString();
-      methodName = 'submitAnswer';
-    }
-
-    const tx = await sendTransaction(
-      getInstance().web3,
-      state.oracleAddress,
-      REALITY_ORACLE_ABI,
-      methodName,
-      parameters,
-      txOverrides
-    );
-    yield;
-    const receipt = await tx.wait();
-    console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
   async function* claimBond(
@@ -535,7 +531,6 @@ export function useSafeRealityModule(
     proposeExecution,
     disputeExecution,
     execute,
-    setOracleAnswer,
     claimBond
   };
 }

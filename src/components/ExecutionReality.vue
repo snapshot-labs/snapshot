@@ -31,7 +31,7 @@ async function handleProposeExecution() {
 }
 
 async function handleDisputeExecution(answer: '0' | '1') {
-  const setOralceAnswerTransaction = realityModule.setOracleAnswer(answer);
+  const setOralceAnswerTransaction = realityModule.disputeExecution(answer);
   const step = await setOralceAnswerTransaction.next();
   if (step.value === 'erc20-approval') {
     pendingCount.value++;
