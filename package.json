@@ -64,7 +64,7 @@
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.4",
     "@tailwindcss/forms": "^0.5.2",
-    "@tailwindcss/line-clamp": "^0.4.0",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "^18.7.15",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.35.1",
