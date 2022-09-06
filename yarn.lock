@@ -7742,10 +7742,10 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unplugin-icons@^0.14.8:
-  version "0.14.8"
-  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.8.tgz#0711f4a941fd6fc1308b8ddd33e316c3cd1f2546"
-  integrity sha512-YxLC0Uxec+ayl8ju3CXmRX4Jg7IF8Tu2cRyq/okXwMK6fM140SPae332ByTlul1E/I7I0PXYSVVn8SlGunM/2g==
+unplugin-icons@^0.14.9:
+  version "0.14.9"
+  resolved "https://registry.yarnpkg.com/unplugin-icons/-/unplugin-icons-0.14.9.tgz#8ab967996032ad1bf8d99974340c850f09ff86a5"
+  integrity sha512-vPyVfNREH88dP6gszdaoGkAEFPpiScXj1A8eWN905jQgT53A3tsiPEiqJjCHOUVcsUaREt2JSudzumFOsCA78A==
   dependencies:
     "@antfu/install-pkg" "^0.1.0"
     "@antfu/utils" "^0.5.2"
@@ -7753,7 +7753,7 @@ unplugin-icons@^0.14.8:
     debug "^4.3.4"
     kolorist "^1.5.1"
     local-pkg "^0.4.2"
-    unplugin "^0.8.0"
+    unplugin "^0.9.5"
 
 unplugin-vue-components@^0.22.4:
   version "0.22.4"
@@ -7771,20 +7771,10 @@ unplugin-vue-components@^0.22.4:
     resolve "^1.22.1"
     unplugin "^0.9.0"
 
-unplugin@^0.8.0:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-0.8.1.tgz#4517b6a8ec3d944e838f9c346921d9777cd159e1"
-  integrity sha512-o7rUZoPLG1fH4LKinWgb77gDtTE6mw/iry0Pq0Z5UPvZ9+HZ1/4+7fic7t58s8/CGkPrDpGq+RltO+DmswcR4g==
-  dependencies:
-    acorn "^8.8.0"
-    chokidar "^3.5.3"
-    webpack-sources "^3.2.3"
-    webpack-virtual-modules "^0.4.4"
-
-unplugin@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-0.9.0.tgz#ebad287d61aa1b1f16de60feea74e8dd12224819"
-  integrity sha512-6o7q8Y9yxdPi5yCPmRuFfeNnVzGumRNZSK6hIkvZ6hd0cfigVdm0qBx/GgQ/NEjs54eUV1qTjvMYKRs9yh3rzw==
+unplugin@^0.9.0, unplugin@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/unplugin/-/unplugin-0.9.5.tgz#2e546c044e0631e699ebd6fb521eeb7bbcb8899f"
+  integrity sha512-luraheyfxwtvkvHpsOvMNv7IjLdORTWKZp0gWYNHGLi2ImON3iIZOj464qEyyEwLA/EMt12fC415HW9zRpOfTg==
   dependencies:
     acorn "^8.8.0"
     chokidar "^3.5.3"
