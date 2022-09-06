@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch } from 'vue';
+import { computed, inject, onMounted, ref, watch, watchEffect } from 'vue';
 import { ContractTransaction } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
 import { FunctionFragment, ParamType } from '@ethersproject/abi';
@@ -16,7 +16,7 @@ const network = inject('network') as string;
 
 const contractAddressInput = ref<string>(props.transaction.contractAddress);
 const methodInput = ref<string>(props.transaction.method);
-const paramsInput = ref<any[]>(props.transaction.params);
+const paramsInput = ref<string[]>([...props.transaction.params]);
 const abiInput = ref<string>(props.transaction.abi);
 
 const abiNotFound = ref(false);
@@ -35,13 +35,18 @@ async function updateABI() {
   if (newAbi) {
     abiNotFound.value = false;
     abiInput.value = newAbi;
-    methods.value = getABIWriteFunctions(abiInput.value);
-    methodInput.value =
-      methods.value.find(method => method.name === methodInput.value)?.name ||
-      methods.value[0]?.name;
   } else {
     abiNotFound.value = true;
   }
+}
+
+function updateMethods() {
+  if (!abiInput.value) return;
+
+  methods.value = getABIWriteFunctions(abiInput.value);
+  methodInput.value =
+    methods.value.find(method => method.name === methodInput.value)?.name ||
+    methods.value[0]?.name;
 }
 
 function updateParams() {
@@ -50,21 +55,21 @@ function updateParams() {
   );
   if (method) {
     params.value = method.inputs;
+  } else {
+    params.value = [];
   }
 }
 
-onMounted(async () => {
-  contractAddressInput.value = props.transaction.contractAddress;
-  updateABI();
-
-  methodInput.value = props.transaction.method;
-  paramsInput.value = props.transaction.params;
+onMounted(() => {
+  updateMethods();
+  updateParams();
 });
 
 watch(contractAddressInput, updateABI);
+watch(abiInput, updateMethods);
 watch(methodInput, updateParams);
 
-watch([contractAddressInput, methodInput, paramsInput, abiInput], () => {
+watchEffect(() => {
   emit('updateTransaction', {
     contractAddress: contractAddressInput.value,
     method: methodInput.value,
@@ -83,7 +88,9 @@ watch([contractAddressInput, methodInput, paramsInput, abiInput], () => {
         placeholder="0x..."
         :error="
           contractAddressInput && abiNotFound
-            ? { message: 'No ABI found on network #' + network }
+            ? {
+                message: `No ABI found on network #${network}. Enter manually.`
+              }
             : undefined
         "
       />

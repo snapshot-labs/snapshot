@@ -662,6 +662,7 @@ const fetchContractABI = async (url: string, contractAddress: string) => {
     address: contractAddress
   });
 
+  // TODO: needs API key or memoization
   const response = await fetch(`${url}?${params}`);
 
   if (!response.ok) {
