@@ -105,6 +105,9 @@ async function loadScores() {
 
 async function loadSnapshotBlockNumber() {
   try {
+    loading.value = true;
+    scores.value = null;
+    networkError.value = false;
     provider = await getProvider(form.value.network);
     form.value.snapshot = await getBlockNumber(provider);
     loading.value = false;
@@ -122,9 +125,6 @@ async function handleURLUpdate(_, paramName) {
   });
 
   if (paramName === 'networkUpdate') {
-    loading.value = true;
-    scores.value = null;
-    networkError.value = false;
     loadSnapshotBlockNumber();
   }
 }
@@ -149,12 +149,8 @@ onMounted(async () => {
   getExtendedStrategy(route.params.name);
   setPageTitle('page.title.playground');
 
-  loading.value = true;
-  scores.value = null;
-  networkError.value = false;
   if (queryParams.query && strategyExample.value.snapshot) {
     form.value.snapshot = strategyExample.value.snapshot;
-    loading.value = false;
   } else {
     loadSnapshotBlockNumber();
   }
@@ -183,7 +179,7 @@ function handleNetworkSelect(value) {
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
               <ComboboxNetwork
-                :network="form.network"
+                :network="form.network.toString()"
                 @select="handleNetworkSelect"
               />
               <BaseInput
