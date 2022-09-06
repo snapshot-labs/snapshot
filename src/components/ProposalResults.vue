@@ -34,7 +34,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
     />
 
     <ProposalResultsShutter
-      v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
+      v-if="proposal.privacy === 'shutter'"
       class="pt-2"
     />
   </BaseBlock>

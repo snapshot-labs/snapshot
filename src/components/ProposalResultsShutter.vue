@@ -11,7 +11,7 @@
       >
         <i-s-shutter class="h-[36px] text-[70px]" />
       </div>
-      <BaseLink link="https://shutter.network/" />
+      <BaseLink :link="$t('privacy.shutter.url')" />
     </div>
   </div>
 </template>

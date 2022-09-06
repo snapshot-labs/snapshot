@@ -236,6 +236,7 @@
     "startDate": "Start date",
     "endDate": "End date",
     "votingSystem": "Voting system",
+    "privacy": "Privacy",
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",
@@ -538,7 +539,8 @@
     "shutter": {
       "label": "Shutter",
       "description": "Choices are encrypted and only visible once the voting period is over",
-      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated"
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://shutter.network/"
     }
   },
   "safeSnap": {
