@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import { ExecutionData, ExecutorState } from '@/helpers/safe';
+import { useTxStatus } from '@/composables';
 
 defineProps<{
   executorState: ExecutorState;
   executionData: ExecutionData;
   hasProposalEnded: boolean;
 }>();
+
+const { pendingCount } = useTxStatus();
 </script>
 
 <template>
   <div>
     <ExecutionTransactions :execution-data="executionData" />
     <div v-if="hasProposalEnded">
-      <div v-if="executorState.loading" class="p-4 text-center">
+      <div v-if="executorState.loading || pendingCount" class="p-4 text-center">
         <LoadingSpinner />
       </div>
+      <slot v-else-if="executorState.hasBeenRejected" name="rejected" />
       <slot
         v-else-if="executorState.hasBeenExecuted"
         name="has-been-executed"

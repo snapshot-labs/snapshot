@@ -73,6 +73,7 @@ export interface ExecutorState {
   hasBeenProposed: boolean;
   canBeExecuted: boolean;
   hasBeenExecuted: boolean;
+  hasBeenRejected: boolean;
   [x: string]: any;
 }
 

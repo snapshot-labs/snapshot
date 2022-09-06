@@ -56,6 +56,7 @@ export function useSafeRealityModule(
     hasBeenProposed: false,
     hasBeenExecuted: false,
     canBeExecuted: false,
+    hasBeenRejected: false,
     oracleAddress: undefined,
     minimumBond: undefined,
     questionHash: undefined,
@@ -195,6 +196,10 @@ export function useSafeRealityModule(
       nextIndexToExecute < 0 || nextIndexToExecute >= batchHashes.length
         ? undefined
         : nextIndexToExecute;
+
+    if (state.questionId) {
+      state.hasBeenProposed = true;
+    }
   }
 
   async function setModuleDetails(): Promise<void> {
@@ -239,13 +244,16 @@ export function useSafeRealityModule(
         state.canBeExecuted = !!(state.questionResult &&
           state.finalizedAt + Number(state.cooldown) < currentTimestamp.value,
         state.finalizedAt + Number(state.expiration) > currentTimestamp.value);
+        state.hasBeenRejected = !state.questionResult && state.finalizedAt > 0;
       } catch (e) {
         state.finalizedAt = undefined;
         state.canBeExecuted = false;
+        state.hasBeenRejected = false;
       }
     } else {
       state.finalizedAt = undefined;
       state.canBeExecuted = false;
+      state.hasBeenRejected = false;
     }
   }
 
@@ -407,22 +415,21 @@ export function useSafeRealityModule(
   }
 
   async function setBondData() {
-    if (!getInstance().web3 || !state.oracleAddress) return;
+    if (!getInstance().web3 || !state.oracleAddress || !state.questionId)
+      return;
 
     const contract = new Contract(
       state.oracleAddress,
       REALITY_ORACLE_ABI,
       getInstance().web3
     );
-    const provider: StaticJsonRpcProvider = getProvider(
-      executionData.safe.network
-    );
+
     const account = (await getInstance().web3.listAccounts())[0];
 
     const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
       await multicall(
         executionData.safe.network,
-        provider,
+        readProvider,
         REALITY_ORACLE_ABI,
         [
           [state.oracleAddress, 'balanceOf', [account]],
@@ -439,14 +446,14 @@ export function useSafeRealityModule(
     };
 
     try {
-      const tokenCall = await call(provider, REALITY_ORACLE_ABI, [
+      const tokenCall = await call(readProvider, REALITY_ORACLE_ABI, [
         state.oracleAddress,
         'token',
         []
       ]);
       const [[symbol], [decimals]] = await multicall(
         executionData.safe.network,
-        provider,
+        readProvider,
         ERC20_ABI,
         [
           [tokenCall, 'symbol', []],

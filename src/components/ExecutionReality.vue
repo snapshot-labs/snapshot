@@ -28,8 +28,6 @@ async function handleProposeExecution() {
   pendingCount.value--;
 
   await realityModule.setState();
-
-  await handleDisputeExecution('1');
 }
 
 async function handleDisputeExecution(answer: '0' | '1') {
@@ -91,9 +89,27 @@ async function handleClaimBond() {
 
     <template #dispute-execution>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      Has the proposal passed?
-      <BaseButton @click="handleDisputeExecution('1')"> Yes </BaseButton>
-      <BaseButton @click="handleDisputeExecution('0')"> No </BaseButton>
+      <div class="space-y-2 p-4 text-center">
+        <div>Shall these transactions be executed?</div>
+        <div>
+          Current answer:
+          {{ realityModule.state.questionResult ? 'Yes' : 'No' }}
+        </div>
+        <div>Cooldown: {{ realityModule.state.cooldown }}</div>
+        <BaseButton
+          v-if="!realityModule.state.questionResult"
+          @click="handleDisputeExecution('1')"
+        >
+          Yes
+        </BaseButton>
+        <BaseButton
+          v-if="realityModule.state.questionResult"
+          @click="handleDisputeExecution('0')"
+        >
+          No
+        </BaseButton>
+        <div>Minimum bond: {{ realityModule.state.minimumBond }}</div>
+      </div>
     </template>
 
     <template #execute>
@@ -115,6 +131,15 @@ async function handleClaimBond() {
         <BaseLink link="https://etherscan.io">
           Open transaction in explorer
         </BaseLink>
+      </div>
+    </template>
+
+    <template #rejected>
+      <div class="flex flex-col items-center justify-center p-4">
+        <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
+          <i-ho-x />
+        </span>
+        <span>Transactions have been rejected.</span>
       </div>
     </template>
   </ExecutionAbstract>
