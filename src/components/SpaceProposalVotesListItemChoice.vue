@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getChoiceString } from '@/helpers/utils';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 const format = getChoiceString;
 
@@ -18,13 +19,18 @@ defineProps<{
       class="mx-auto cursor-help"
     />
 
+    <i-ho-exclamation
+      v-else-if="
+        !voting[proposal.type].isValidChoice(vote.choice, proposal.choices)
+      "
+      v-tippy="{ content: $t('proposal.invalidChoice') }"
+      class="mx-auto cursor-help"
+    />
+
     <div
       v-else
       v-tippy="{
-        content:
-          format(proposal, vote.choice).length > 24
-            ? format(proposal, vote.choice)
-            : null
+        content: format(proposal, vote.choice)
       }"
       class="truncate text-center text-skin-link"
     >

@@ -237,6 +237,7 @@
     "endDate": "End date",
     "votingSystem": "Voting system",
     "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",
