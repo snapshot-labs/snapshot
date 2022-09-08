@@ -21,6 +21,24 @@ async function handleProposeExecution() {
   await proposeTransaction.next();
   pendingCount.value--;
 }
+
+async function handleDisputeExecution() {
+  const disputeTransaction = umaModule.disputeExecution();
+  await disputeTransaction.next();
+  pendingCount.value++;
+  await disputeTransaction.next();
+  pendingCount.value--;
+}
+
+async function handleExecute() {
+  const executeTransaction = umaModule.execute();
+  await executeTransaction.next();
+  pendingCount.value++;
+  await executeTransaction.next();
+  pendingCount.value--;
+
+  await umaModule.setState();
+}
 </script>
 
 <template>
@@ -35,19 +53,21 @@ async function handleProposeExecution() {
       </div>
     </template>
 
-    <template #propose>
+    <template #propose-execution>
       <BaseButton @click="handleProposeExecution">
         propose transactions
       </BaseButton>
     </template>
 
-    <template #dispute>
+    <template #dispute-execution>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      <BaseButton>Dispute transactions</BaseButton>
+      <BaseButton @click="handleDisputeExecution">
+        Dispute transactions
+      </BaseButton>
     </template>
 
     <template #execute>
-      <BaseButton>Execute transactions</BaseButton>
+      <BaseButton @click="handleExecute"> Execute transactions </BaseButton>
     </template>
 
     <template #has-been-executed>
@@ -59,6 +79,15 @@ async function handleProposeExecution() {
         <BaseLink link="https://etherscan.io">
           Open transaction in explorer
         </BaseLink>
+      </div>
+    </template>
+
+    <template #rejected>
+      <div class="flex flex-col items-center justify-center p-4">
+        <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
+          <i-ho-x />
+        </span>
+        <span>Transactions have been rejected.</span>
       </div>
     </template>
   </ExecutionAbstract>

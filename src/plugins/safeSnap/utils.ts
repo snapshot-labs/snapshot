@@ -38,6 +38,20 @@ export function mapLegacyConfig(config: any): SafeConfig[] {
           address: '0xcD32691da48b3Fe4E7CB5593582C982d70971768'
         }
       ]
+    },
+    {
+      safe: {
+        name: 'Tertiary Safe',
+        type: SafeType.GNOSIS,
+        network: '5',
+        address: '0xe79a0084b8bA62c8f19E633d8c84C0a7189CD454'
+      },
+      modules: [
+        {
+          type: SafeModuleType.UMA,
+          address: '0x3609aa57a005F971363481Cd7AAae9Ac209E7e84'
+        }
+      ]
     }
   ];
 }
