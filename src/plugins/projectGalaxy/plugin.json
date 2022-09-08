@@ -1,8 +1,8 @@
 {
-  "name": "Project Galaxy",
+  "name": "Galxe",
   "version": "0.0.1",
-  "author": "Project-Galaxy",
-  "description": "Project Galaxy OAT",
+  "author": "Galxe",
+  "description": "Galxe OAT",
   "website": "https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/projectGalaxy",
   "icon": "https://ipfs.io/ipfs/bafkreibcmyqzyltbo5flwdrezyadm7zi66ka2oidwa22g4g7z6t6r4v4ui",
   "defaults": {
