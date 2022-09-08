@@ -43,7 +43,7 @@
     "@snapshot-labs/snapshot.js": "^0.4.28",
     "@vue/apollo-composable": "4.0.0-alpha.18",
     "@vueuse/core": "^9.1.1",
-    "autolinker": "^3.16.0",
+    "autolinker": "^4.0.0",
     "eslint": "^8.23.0",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
