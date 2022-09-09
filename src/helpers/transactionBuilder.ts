@@ -2,7 +2,9 @@ import { pack } from '@ethersproject/solidity';
 import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import { ERC20_ABI, ERC721_ABI, isArrayParameter } from './abi';
+import { isArrayParameter } from './abi';
+import ERC20_ABI from './abi/ERC20.json';
+import ERC721_ABI from './abi/ERC721.json';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
