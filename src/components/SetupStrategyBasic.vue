@@ -5,7 +5,7 @@ import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { ERC20_ABI } from '@/helpers/abi';
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
 
 const emit = defineEmits(['next']);
 

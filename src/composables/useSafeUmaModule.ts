@@ -1,4 +1,5 @@
-import { UMA_MODULE_ABI, UMA_ORACLE_ABI } from '@/helpers/abi';
+import UMA_MODULE_ABI from '@/helpers/abi/UMA_MODULE.json';
+import UMA_ORACLE_ABI from '@/helpers/abi/UMA_ORACLE.json';
 import {
   ExecutionData,
   Executor,

@@ -1,0 +1,9 @@
+[
+  "function name() view returns (string)",
+  "function decimals() view returns (uint32)",
+  "function symbol() view returns (string)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function allowance(address owner, address spender) external view returns (uint256)",
+  "function approve(address spender, uint256 value) external returns (bool)",
+  "function transfer(address recipient, uint256 amount) public virtual override returns (bool)"
+]

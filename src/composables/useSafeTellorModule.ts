@@ -1,4 +1,4 @@
-import { TELLOR_MODULE_ABI } from '@/helpers/abi';
+import TELLOR_MODULE_ABI from '@/helpers/abi/TELLOR_MODULE.json';
 import { Executor, ExecutorState, ModuleExecutionData } from '@/helpers/safe';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';

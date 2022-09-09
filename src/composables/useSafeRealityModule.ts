@@ -14,11 +14,9 @@ import {
   convertBatchToMultisendTransaction,
   RawTransaction
 } from '@/helpers/transactionBuilder';
-import {
-  ERC20_ABI,
-  REALITY_MODULE_ABI,
-  REALITY_ORACLE_ABI
-} from '@/helpers/abi';
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
+import REALITY_MODULE_ABI from '@/helpers/abi/REALITY_MODULE.json';
+import REALITY_ORACLE_ABI from '@/helpers/abi/REALITY_ORACLE.json';
 import {
   call,
   multicall,

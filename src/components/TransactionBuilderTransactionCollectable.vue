@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ERC20_ABI } from '@/helpers/abi';
-import { CollectableTransaction } from '@/helpers/transactionBuilder';
+import { inject, onMounted, reactive } from 'vue';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { inject, onMounted, reactive } from 'vue';
+import { CollectableTransaction } from '@/helpers/transactionBuilder';
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
 
 const props = defineProps<{
   transaction: CollectableTransaction;

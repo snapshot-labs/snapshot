@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ERC20_ABI } from '@/helpers/abi';
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import { TokenTransaction } from '@/helpers/transactionBuilder';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
