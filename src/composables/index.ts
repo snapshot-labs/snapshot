@@ -19,6 +19,7 @@ export { usePlugins } from './usePlugins';
 export { useProfiles } from './useProfiles';
 export { useSafeRealityModule } from './useSafeRealityModule';
 export { useSafeUmaModule } from './useSafeUmaModule';
+export { useSafeTellorModule } from './useSafeTellorModule';
 export { useScrollMonitor } from './useScrollMonitor';
 export { useSharing } from './useSharing';
 export { useSkinsFilter } from './useSkinsFilter';

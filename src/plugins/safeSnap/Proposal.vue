@@ -53,6 +53,12 @@ const hasProposalEnded = computed<boolean>(() => {
         :proposal-id="proposal.id"
         :has-proposal-ended="hasProposalEnded"
       />
+      <ExecutionTellor
+        v-if="data.module.type === SafeModuleType.TELLOR"
+        :execution-data="(data as ModuleExecutionData)"
+        :proposal-id="proposal.id"
+        :has-proposal-ended="hasProposalEnded"
+      />
     </div>
     <ExecutionManual
       v-else

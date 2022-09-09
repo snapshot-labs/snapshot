@@ -22,6 +22,10 @@ export function mapLegacyConfig(config: any): SafeConfig[] {
         {
           type: SafeModuleType.REALITY,
           address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'
+        },
+        {
+          type: SafeModuleType.TELLOR,
+          address: '0x32B2789cb1dF886F44eD09fcdD88e96B7453C80f'
         }
       ]
     },

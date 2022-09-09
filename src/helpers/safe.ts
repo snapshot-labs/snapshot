@@ -36,7 +36,8 @@ export interface Safe {
 
 export enum SafeModuleType {
   REALITY = 'reality',
-  UMA = 'uma'
+  UMA = 'uma',
+  TELLOR = 'tellor'
 }
 
 export interface SafeModule {
@@ -48,7 +49,9 @@ export const SafeModuleLogos = {
   [SafeModuleType.REALITY]:
     'https://realityeth.github.io/da16ed6ca9d09bddfa60.png',
   [SafeModuleType.UMA]:
-    'https://oracle.umaproject.org/static/media/uma-oo-logo-top.b60aad67dfef47096afe84a291b1c853.svg'
+    'https://oracle.umaproject.org/static/media/uma-oo-logo-top.b60aad67dfef47096afe84a291b1c853.svg',
+  [SafeModuleType.TELLOR]:
+    'https://s2.coinmarketcap.com/static/img/coins/64x64/4944.png'
 };
 
 export interface SafeConfig {

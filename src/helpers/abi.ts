@@ -585,6 +585,442 @@ export const UMA_MODULE_ABI = [
   }
 ];
 
+export const TELLOR_MODULE_ABI = [
+  {
+    inputs: [
+      { internalType: 'address', name: '_avatar', type: 'address' },
+      { internalType: 'address', name: '_target', type: 'address' },
+      {
+        internalType: 'address payable',
+        name: '_tellorAddress',
+        type: 'address'
+      },
+      { internalType: 'uint32', name: '_cooldown', type: 'uint32' },
+      { internalType: 'uint32', name: '_expiration', type: 'uint32' }
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousAvatar',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newAvatar',
+        type: 'address'
+      }
+    ],
+    name: 'AvatarSet',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'guard',
+        type: 'address'
+      }
+    ],
+    name: 'ChangedGuard',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousOwner',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newOwner',
+        type: 'address'
+      }
+    ],
+    name: 'OwnershipTransferred',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'queryId',
+        type: 'bytes32'
+      },
+      {
+        indexed: true,
+        internalType: 'string',
+        name: 'proposalId',
+        type: 'string'
+      }
+    ],
+    name: 'ProposalAdded',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'previousTarget',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'newTarget',
+        type: 'address'
+      }
+    ],
+    name: 'TargetSet',
+    type: 'event'
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'initiator',
+        type: 'address'
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'avatar',
+        type: 'address'
+      },
+      {
+        indexed: false,
+        internalType: 'address',
+        name: 'target',
+        type: 'address'
+      }
+    ],
+    name: 'TellorModuleSetup',
+    type: 'event'
+  },
+  {
+    inputs: [],
+    name: 'DOMAIN_SEPARATOR_TYPEHASH',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'INVALIDATED',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'TRANSACTION_TYPEHASH',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_proposalId', type: 'string' },
+      { internalType: 'bytes32[]', name: '_txHashes', type: 'bytes32[]' }
+    ],
+    name: 'addProposal',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'avatar',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_proposalId', type: 'string' },
+      { internalType: 'bytes32[]', name: '_txHashes', type: 'bytes32[]' }
+    ],
+    name: 'buildProposal',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'cooldown',
+    outputs: [{ internalType: 'uint32', name: '', type: 'uint32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_proposalId', type: 'string' },
+      { internalType: 'bytes32[]', name: '_txHashes', type: 'bytes32[]' },
+      { internalType: 'address', name: '_to', type: 'address' },
+      { internalType: 'uint256', name: '_value', type: 'uint256' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
+      { internalType: 'enum Enum.Operation', name: '_operation', type: 'uint8' }
+    ],
+    name: 'executeProposal',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: '_proposalId', type: 'string' },
+      { internalType: 'bytes32[]', name: '_txHashes', type: 'bytes32[]' },
+      { internalType: 'address', name: '_to', type: 'address' },
+      { internalType: 'uint256', name: '_value', type: 'uint256' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
+      {
+        internalType: 'enum Enum.Operation',
+        name: '_operation',
+        type: 'uint8'
+      },
+      { internalType: 'uint256', name: '_txIndex', type: 'uint256' }
+    ],
+    name: 'executeProposalWithIndex',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '', type: 'bytes32' },
+      { internalType: 'bytes32', name: '', type: 'bytes32' }
+    ],
+    name: 'executedProposalTransactions',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getChainId',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: '_queryId', type: 'bytes32' }],
+    name: 'getCurrentValue',
+    outputs: [
+      { internalType: 'bool', name: '_ifRetrieve', type: 'bool' },
+      { internalType: 'bytes', name: '_value', type: 'bytes' },
+      { internalType: 'uint256', name: '_timestampRetrieved', type: 'uint256' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_queryId', type: 'bytes32' },
+      { internalType: 'uint256', name: '_timestamp', type: 'uint256' }
+    ],
+    name: 'getDataBefore',
+    outputs: [
+      { internalType: 'bool', name: '_ifRetrieve', type: 'bool' },
+      { internalType: 'bytes', name: '_value', type: 'bytes' },
+      { internalType: 'uint256', name: '_timestampRetrieved', type: 'uint256' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'getGuard',
+    outputs: [{ internalType: 'address', name: '_guard', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_queryId', type: 'bytes32' },
+      { internalType: 'uint256', name: '_timestamp', type: 'uint256' }
+    ],
+    name: 'getIndexForDataBefore',
+    outputs: [
+      { internalType: 'bool', name: '_found', type: 'bool' },
+      { internalType: 'uint256', name: '_index', type: 'uint256' }
+    ],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: '_queryId', type: 'bytes32' }],
+    name: 'getNewValueCountbyQueryId',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'string', name: '_proposalId', type: 'string' }],
+    name: 'getQueryId',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'pure',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_queryId', type: 'bytes32' },
+      { internalType: 'uint256', name: '_index', type: 'uint256' }
+    ],
+    name: 'getTimestampbyQueryIdandIndex',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_to', type: 'address' },
+      { internalType: 'uint256', name: '_value', type: 'uint256' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
+      {
+        internalType: 'enum Enum.Operation',
+        name: '_operation',
+        type: 'uint8'
+      },
+      { internalType: 'uint256', name: '_nonce', type: 'uint256' }
+    ],
+    name: 'getTransactionHash',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'guard',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_queryId', type: 'bytes32' },
+      { internalType: 'uint256', name: '_timestamp', type: 'uint256' }
+    ],
+    name: 'isInDispute',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_proposalHash', type: 'bytes32' }
+    ],
+    name: 'markProposalWithExpiredResultAsInvalid',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'owner',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    name: 'queryIds',
+    outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'renounceOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'resultExpiration',
+    outputs: [{ internalType: 'uint32', name: '', type: 'uint32' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [
+      { internalType: 'bytes32', name: '_queryId', type: 'bytes32' },
+      { internalType: 'uint256', name: '_timestamp', type: 'uint256' }
+    ],
+    name: 'retrieveData',
+    outputs: [{ internalType: 'bytes', name: '', type: 'bytes' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_avatar', type: 'address' }],
+    name: 'setAvatar',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_guard', type: 'address' }],
+    name: 'setGuard',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_target', type: 'address' }],
+    name: 'setTarget',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'bytes', name: '_initParams', type: 'bytes' }],
+    name: 'setUp',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'target',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [],
+    name: 'tellor',
+    outputs: [{ internalType: 'contract ITellor', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function'
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'newOwner', type: 'address' }],
+    name: 'transferOwnership',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function'
+  }
+];
+
 export const REALITY_ORACLE_ABI = [
   // Events
   `event LogNewAnswer(
