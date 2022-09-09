@@ -293,7 +293,7 @@
     },
     "terms": {
       "label": "Conditions",
-      "information": "Les utilisateurs devront accepter ces conditions avant de pouvoir créer une proposition ou voter."
+      "information": "Les utilisateurs devront accepter ces conditions une fois avant de pouvoir créer une proposition ou voter"
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
     "links": "Réseaux Sociaux",
@@ -314,15 +314,15 @@
     "website": "Site web",
     "strategies": {
       "label": "Stratégie(s)",
-      "information": "Les stratégies sont utilisées pour déterminer le pouvoir de vote ou si un utilisateur est autorisé à créer une proposition."
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
     },
     "network": {
       "label": "Réseau",
-      "information": "Le réseau par défaut utilisé pour cet espace. Les réseaux peuvent également être spécifiés dans les stratégies individuelles."
+      "information": "Le réseau par défaut utilisé pour cet espace. Les réseaux peuvent également être spécifiés dans les stratégies individuelles"
     },
     "symbol": {
       "label": "Symbole",
-      "information": "Le symbole par défaut utilisé sur cet espace, généralement le symbole du jeton, p. ex. BAL pour Balancer."
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
     },
     "strategiesList": "Sélectionnez jusqu'à 8 stratégies",
     "votingPowerIsCumulative": "Le voting power est cumulatif",
@@ -330,17 +330,17 @@
     "testInPlayground": "Tester sur playground",
     "admins": {
       "label": "Administrateurs",
-      "information": "Les administrateurs peuvent modifier les paramètres de l'espace et gérer les propositions de l'espace."
+      "information": "Admins are able to modify the space settings and manage the space's proposals"
     },
     "authors": {
       "label": "Auteurs",
-      "information": "Les auteurs sont toujours en mesure de créer des propositions."
+      "information": "Authors are always able to create proposals"
     },
     "proposalValidation": "Validation de la proposition",
     "validation": "Type",
     "proposalThreshold": {
       "label": "Seuil",
-      "information": "Le voting power minimum requis pour créer une proposition."
+      "information": "The minimum amount of voting power required to create a proposal"
     },
     "allowOnlyAuthors": "Permettre uniquement aux auteurs de soumettre une proposition",
     "editValidation": "Modifier la validation",
@@ -353,11 +353,11 @@
     "days": "Jours",
     "quorum": {
       "label": "Quorum",
-      "information": "Le voting power minimum requis pour que la proposition soit adoptée."
+      "information": "The minimum amount of voting power required for the proposal to pass"
     },
     "type": {
       "label": "Type",
-      "information": "Le type de système de vote utilisé pour cet espace. Cela imposera le même système de vote pour toutes les propositions."
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
     },
     "anyType": "Tous",
     "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
@@ -372,7 +372,7 @@
       "label": "Trésorerie",
       "add": "Ajouter une trésorerie",
       "edit": "Modifier la trésorerie",
-      "information": "Ajoutez des trésoreries à votre organisation pour les afficher dans votre espace."
+      "information": "Add treasuries of your organization to show them in your space"
     },
     "addPlugin": "Ajouter un plugin",
     "editPlugin": "Modifier le plugin",

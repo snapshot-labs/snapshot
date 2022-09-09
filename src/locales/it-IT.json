@@ -293,7 +293,7 @@
     },
     "terms": {
       "label": "Terms",
-      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Nascondi lo spazio dalla pagina iniziale",
     "links": "Social accounts",
@@ -314,15 +314,15 @@
     "website": "Website",
     "strategies": {
       "label": "Strategie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
     },
     "network": {
       "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
     },
     "symbol": {
       "label": "Symbol",
-      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
     },
     "strategiesList": "Select up to 8 strategies",
     "votingPowerIsCumulative": "Voting power is cumulative",
@@ -330,17 +330,17 @@
     "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals."
+      "information": "Admins are able to modify the space settings and manage the space's proposals"
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are always able to create proposals."
+      "information": "Authors are always able to create proposals"
     },
     "proposalValidation": "Validazione proposta",
     "validation": "Type",
     "proposalThreshold": {
       "label": "Threshold",
-      "information": "The minimum amount of voting power required to create a proposal."
+      "information": "The minimum amount of voting power required to create a proposal"
     },
     "allowOnlyAuthors": "Permetti solo ai membri di presentare una proposta",
     "editValidation": "Modifica validatore",
@@ -353,11 +353,11 @@
     "days": "Days",
     "quorum": {
       "label": "Quorum",
-      "information": "The minimum amount of voting power required for the proposal to pass."
+      "information": "The minimum amount of voting power required for the proposal to pass"
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
     },
     "anyType": "Qualunque",
     "hideAbstain": "Ignore abstain votes in basic voting results",
@@ -372,7 +372,7 @@
       "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
-      "information": "Add treasuries of your organization to show them in your space."
+      "information": "Add treasuries of your organization to show them in your space"
     },
     "addPlugin": "Aggiungi plugin",
     "editPlugin": "Modifica plugin",
