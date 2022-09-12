@@ -73,7 +73,7 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.0.2",
-    "autoprefixer": "^10.4.8",
+    "autoprefixer": "^10.4.9",
     "c8": "^7.12.0",
     "cypress": "^10.7.0",
     "eslint-plugin-cypress": "^2.12.1",
