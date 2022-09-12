@@ -160,6 +160,14 @@ function handleNetworkSelect(value) {
   form.value.network = value;
   handleURLUpdate(null, 'networkUpdate');
 }
+
+const browserHasHistory = computed(() => window.history.state.back);
+
+function handleBackClick() {
+  if (!browserHasHistory.value)
+    return router.push({ path: `/strategy/${route.params.name}` });
+  return router.go(-1);
+}
 </script>
 
 <template>
@@ -168,9 +176,7 @@ function handleNetworkSelect(value) {
       <LoadingPage v-if="!strategy" />
       <div v-else>
         <div class="mb-3 px-4 md:px-0">
-          <router-link :to="{ path: `/strategy/${$route.params.name}` }">
-            <ButtonBack />
-          </router-link>
+          <ButtonBack @click="handleBackClick" />
         </div>
         <h1 class="mb-2 px-4 md:px-0">
           {{ strategy.id }}
