@@ -592,10 +592,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui-float/vue@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.8.0.tgz#34176edf82291dee4bca0df4006b1856c190dd3a"
-  integrity sha512-EP4nXwSwddYRn4GGY5rMaSq0Yn7M80NcI4oHK0B9spVq5jcmj6tGQ3RKDkrOvheBehNfi3LE/PHzdGIEaPWoJA==
+"@headlessui-float/vue@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.9.1.tgz#795d7fc11bb478160b4c3ee057690834a6495e2d"
+  integrity sha512-G+o6+clNTEZ6ifwzj/kuB/Zn9lxtcQH07CCjK3UJAgObf10fm76+xrwpcv13rkmoFygcwzKRxMjIKhT7DL4KIQ==
   dependencies:
     "@floating-ui/core" "^1.0.0"
     "@floating-ui/dom" "^1.0.0"
