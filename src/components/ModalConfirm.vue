@@ -26,7 +26,7 @@ const props = defineProps({
   strategies: Object
 });
 
-const emit = defineEmits(['reload', 'close']);
+const emit = defineEmits(['reload', 'close', 'openPostVoteModal']);
 
 const { t } = useI18n();
 const { send, isSending } = useClient();
@@ -48,6 +48,7 @@ async function handleSubmit() {
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }
+    emit('openPostVoteModal');
     addVotedProposalId(props.proposal.id);
     emit('close');
   }
