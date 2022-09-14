@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { RawTransaction } from '@/helpers/transactionBuilder';
+import { Transaction } from '@/helpers/transactionBuilder';
 
 defineProps<{
-  transaction: RawTransaction;
+  transaction: Transaction;
 }>();
 </script>
 
@@ -10,6 +10,5 @@ defineProps<{
   <div>
     <div>To: {{ transaction.to }}</div>
     <div>Value: {{ transaction.value }}</div>
-    <div v-if="transaction.data">Data: {{ transaction.data }}</div>
   </div>
 </template>

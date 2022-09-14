@@ -1,12 +1,8 @@
-import { readonly, ref } from 'vue';
+import { ref } from 'vue';
 import { Transaction } from '@/helpers/transactionBuilder';
 
-export function useTransactionBuilder() {
-  const batches = ref<Transaction[][]>([[]]);
-
-  function setBatches(existingBatches: Transaction[][]) {
-    batches.value = existingBatches;
-  }
+export function useTransactionBuilder(initialBatches: Transaction[][] = [[]]) {
+  const batches = ref<Transaction[][]>(initialBatches);
 
   function addEmptyBatch() {
     batches.value.push([]);
@@ -39,8 +35,7 @@ export function useTransactionBuilder() {
   }
 
   return {
-    batches: readonly(batches),
-    setBatches,
+    batches,
     addEmptyBatch,
     addTransaction,
     updateTransaction,

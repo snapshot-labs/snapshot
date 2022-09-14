@@ -10,9 +10,9 @@ import {
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
-  convertToRawTransaction,
   convertBatchToMultisendTransaction,
-  RawTransaction
+  convertToExecutableTransaction,
+  ExecutableTransaction
 } from '@/helpers/transactionBuilder';
 import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import REALITY_MODULE_ABI from '@/helpers/abi/REALITY_MODULE.json';
@@ -71,13 +71,13 @@ export function useSafeRealityModule(
     .map((batch, nonce) => {
       if (batch.length === 1) {
         return calcTransactionHash(
-          convertToRawTransaction(batch[0]),
+          convertToExecutableTransaction(batch[0]),
           nonce.toString()
         );
       } else if (batch.length > 1) {
         return calcTransactionHash(
           convertBatchToMultisendTransaction(
-            batch.map(tx => convertToRawTransaction(tx)),
+            batch.map(tx => convertToExecutableTransaction(tx)),
             executionData.safe.network
           )
         );
@@ -86,7 +86,10 @@ export function useSafeRealityModule(
     })
     .filter(hash => hash !== '');
 
-  function calcTransactionHash(transaction: RawTransaction, nonce = '0') {
+  function calcTransactionHash(
+    transaction: ExecutableTransaction,
+    nonce = '0'
+  ) {
     const domain = {
       chainId: executionData.safe.network,
       verifyingContract: executionData.module.address
@@ -214,7 +217,7 @@ export function useSafeRealityModule(
 
     const batch = executionData.batches[state.nextTxIndex];
     const multisendTransaction = convertBatchToMultisendTransaction(
-      batch.map(tx => convertToRawTransaction(tx)),
+      batch.map(tx => convertToExecutableTransaction(tx)),
       executionData.safe.network
     );
     const tx = await sendTransaction(

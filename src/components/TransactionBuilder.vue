@@ -1,77 +1,75 @@
 <script setup lang="ts">
-import { provide, ref, watch } from 'vue';
+import { computed, onMounted, provide, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
 import {
-  isCollectableTransaction,
-  isContractTransaction,
-  isTokenTransaction,
-  isRawTransaction,
-  Transaction
+  TransactionForms,
+  Transaction,
+  detectTransactionForm
 } from '@/helpers/transactionBuilder';
-import { CollectableAsset, TokenAsset } from '@/helpers/safe';
+import { CollectableAsset, FundsAsset } from '@/helpers/safe';
 
-// unfortunately this can't be imported from a file.
-// See: https://github.com/vuejs/rfcs/blob/master/active-rfcs/0040-script-setup.md#type-only-propsemit-declarations
-// "Currently complex types and type imports from other files are not supported."
-interface Props {
+const props = defineProps<{
   title: string;
   network: string;
-  batches: Transaction[][];
+  initialBatches: Transaction[][];
   defaultFromAddress: string;
-  getAvailableFunds?(): Promise<TokenAsset[]>;
-  getAvailableCollectables?(): Promise<CollectableAsset[]>;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  batches: () => [[]],
-  getAvailableFunds: async () => [], // TODO: replace with default uniswap token lists
-  getAvailableCollectables: async () => []
-});
-
-provide('network', props.network);
-provide('defaultFromAddress', props.defaultFromAddress);
-provide('getAvailableFunds', props.getAvailableFunds);
-provide('getAvailableCollectables', props.getAvailableCollectables);
+  getAvailableFunds(): Promise<FundsAsset[]>;
+  getAvailableCollectables(): Promise<CollectableAsset[]>;
+}>();
 
 const emit = defineEmits<{
   (e: 'updateBatches', batches: Transaction[][]): void;
   (e: 'removeTransactionBuilder'): void;
 }>();
 
+provide('network', props.network);
+provide('defaultFromAddress', props.defaultFromAddress);
+
 const {
   batches,
-  setBatches,
   addEmptyBatch,
   removeBatch,
   addTransaction,
-  updateTransaction,
-  removeTransaction
-} = useTransactionBuilder();
-
-setBatches(props.batches);
+  removeTransaction,
+  updateTransaction
+} = useTransactionBuilder(props.initialBatches);
 
 watch(
   batches,
   () => {
-    emit('updateBatches', batches.value as Transaction[][]);
+    emit('updateBatches', batches.value);
   },
   { deep: true }
 );
 
-const isTransactionFormModalOpen = ref<boolean>(false);
+const showForm = ref<TransactionForms | null>(null);
 const targetBatchIndex = ref<number>(0);
-const targetTransactionIndex = ref<number | null>(0);
-const targetTransaction = ref<Transaction | null>(null);
+const targetTransactionIndex = ref<number | null>(null);
+const targetTransaction = computed<Transaction | null>(() => {
+  if (targetTransactionIndex.value === null) return null;
+  return batches.value[targetBatchIndex.value][targetTransactionIndex.value];
+});
 
-function openTransactionFormModal(
-  transaction: Transaction,
-  batchIndex: number,
-  transactionIndex: number | null = null
-) {
-  targetTransaction.value = transaction;
+const loadingAvailableAssets = ref<boolean>(true);
+const availableFunds = ref<FundsAsset[]>([]);
+const availableCollectables = ref<CollectableAsset[]>([]);
+
+onMounted(async () => {
+  availableFunds.value = await props.getAvailableFunds();
+  availableCollectables.value = await props.getAvailableCollectables();
+  loadingAvailableAssets.value = false;
+});
+
+function openEmptyForm(form: TransactionForms, batchIndex: number) {
+  targetBatchIndex.value = batchIndex;
+  targetTransactionIndex.value = null;
+  showForm.value = form;
+}
+
+function openEditForm(batchIndex: number, transactionIndex: number) {
   targetBatchIndex.value = batchIndex;
   targetTransactionIndex.value = transactionIndex;
-  isTransactionFormModalOpen.value = true;
+  showForm.value = detectTransactionForm(targetTransaction.value!);
 }
 
 function saveTransaction(transaction: Transaction) {
@@ -111,6 +109,7 @@ function saveTransaction(transaction: Transaction) {
           <i-ho-trash />
         </BaseButton>
       </template>
+
       <div
         v-for="(batch, batchIndex) in batches"
         :key="batchIndex"
@@ -126,40 +125,19 @@ function saveTransaction(transaction: Transaction) {
             <i-ho-trash />
           </BaseButton>
         </h4>
-        <TransactionBuilderAddTransactionBar
-          @add-transaction="openTransactionFormModal($event, batchIndex)"
+        <TransactionBuilderAddTransaction
+          @add-transaction-of-type="openEmptyForm($event, batchIndex)"
         />
         <div
           v-for="(transaction, transactionIndex) in batch"
           :key="transactionIndex"
           class="flex border-t py-2 pl-3 pr-2"
         >
-          <TransactionBuilderTransactionToken
-            v-if="isTokenTransaction(transaction)"
-            :transaction="transaction"
-          />
-          <TransactionBuilderTransactionCollectable
-            v-if="isCollectableTransaction(transaction)"
-            :transaction="transaction"
-          />
-          <TransactionBuilderTransactionRaw
-            v-if="isRawTransaction(transaction)"
-            :transaction="transaction"
-          />
-          <TransactionBuilderTransactionContract
-            v-if="isContractTransaction(transaction)"
-            :transaction="transaction"
-          />
+          <TransactionBuilderDisplayTransaction :transaction="transaction" />
           <BaseButton
             small
             class="ml-auto !border-none"
-            @click="
-              openTransactionFormModal(
-                transaction as Transaction, // this type casting shouldn't be necessary, right? because of readonly?
-                batchIndex,
-                transactionIndex
-              )
-            "
+            @click="openEditForm(batchIndex, transactionIndex)"
           >
             <i-ho-pencil />
           </BaseButton>
@@ -175,12 +153,12 @@ function saveTransaction(transaction: Transaction) {
     </BaseBlock>
 
     <teleport to="#modal">
-      <TransactionBuilderFormModal
-        v-if="targetTransaction"
-        :is-open="isTransactionFormModalOpen"
+      <TransactionBuilderFormFunds
+        :show-form="showForm === TransactionForms.FUNDS"
         :transaction="targetTransaction"
-        @close="isTransactionFormModalOpen = false"
+        :available-funds="availableFunds"
         @save-transaction="saveTransaction($event)"
+        @close="showForm = null"
       />
     </teleport>
   </div>

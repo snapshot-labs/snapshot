@@ -7,9 +7,9 @@ import {
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
-  convertToRawTransaction,
+  convertToExecutableTransaction,
   convertBatchToMultisendTransaction,
-  RawTransaction
+  ExecutableTransaction
 } from '@/helpers/transactionBuilder';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -46,20 +46,20 @@ interface UmaModuleState extends ExecutorState {
 
 function convertExecutionDataToUmaTransactions(
   executionData: ExecutionData
-): RawTransaction[] {
+): ExecutableTransaction[] {
   return executionData.batches
     .map(batch => {
       if (batch.length === 1) {
-        return convertToRawTransaction(batch[0]);
+        return convertToExecutableTransaction(batch[0]);
       } else if (batch.length > 1) {
         return convertBatchToMultisendTransaction(
-          batch.map(transaction => convertToRawTransaction(transaction)),
+          batch.map(transaction => convertToExecutableTransaction(transaction)),
           executionData.safe.network
         );
       }
       return null;
     })
-    .filter(transaction => transaction !== null) as RawTransaction[];
+    .filter(transaction => transaction !== null) as ExecutableTransaction[];
 }
 
 export function useSafeUmaModule(

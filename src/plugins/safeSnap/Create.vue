@@ -5,7 +5,7 @@ import { Transaction } from '@/helpers/transactionBuilder';
 import { mapLegacyConfig } from '@/plugins/safeSnap/utils';
 import {
   SafeModuleLogos,
-  getSafeBalances,
+  getSafeFunds,
   getSafeCollectables,
   ExecutionData,
   TransactionBuilderInitData
@@ -54,7 +54,7 @@ async function addTransactionBuilder(
   executionData: ExecutionData
 ): Promise<void> {
   const { safe, batches, module } = executionData;
-  const getAvailableFunds = () => getSafeBalances(safe.network, safe.address);
+  const getAvailableFunds = () => getSafeFunds(safe.network, safe.address);
   const getAvailableCollectables = () =>
     getSafeCollectables(safe.network, safe.address);
 
@@ -88,7 +88,7 @@ proposalExecutionData.value.forEach((executionData: ExecutionData) => {
         :key="index"
         :title="builder.title"
         :network="builder.safe.network"
-        :batches="builder.batches"
+        :initial-batches="builder.batches"
         :default-from-address="builder.safe.address"
         :get-available-funds="builder.getAvailableFunds"
         :get-available-collectables="builder.getAvailableCollectables"

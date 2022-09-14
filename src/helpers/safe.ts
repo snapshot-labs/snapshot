@@ -90,17 +90,17 @@ export interface Executor<TState = ExecutorState> {
 }
 
 export interface SafeAsset {
-  address: string;
   name: string;
+  tokenAddress?: string;
   logoUri?: string;
 }
 
 export interface CollectableAsset extends SafeAsset {
   id: string;
-  tokenName?: string;
+  collectionName?: string;
 }
 
-export interface TokenAsset extends SafeAsset {
+export interface FundsAsset extends SafeAsset {
   symbol: string;
   decimals: number;
   safeBalance?: BigNumber;
@@ -109,58 +109,53 @@ export interface TokenAsset extends SafeAsset {
 export interface TransactionBuilderInitData {
   title: string;
   batches: Transaction[][];
-  getAvailableFunds?(): Promise<TokenAsset[]>;
+  getAvailableFunds?(): Promise<FundsAsset[]>;
   getAvailableCollectables?(): Promise<CollectableAsset[]>;
   safe: Safe;
   module?: SafeModule;
 }
 
-const ETHEREUM_COIN: TokenAsset = {
+const ETHEREUM_COIN: FundsAsset = {
   name: 'Ether',
   decimals: 18,
   symbol: 'ETH',
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png',
-  address: 'main'
+    'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png'
 };
 
-const MATIC_COIN: TokenAsset = {
+const MATIC_COIN: FundsAsset = {
   name: 'MATIC',
   decimals: 18,
   symbol: 'MATIC',
-  address: 'main',
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/137/currency_logo.png'
 };
 
-const EWC_COIN: TokenAsset = {
+const EWC_COIN: FundsAsset = {
   name: 'Energy Web Token',
   symbol: 'EWT',
-  address: 'main',
   decimals: 18,
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/246/currency_logo.png'
 };
 
-const XDAI_COIN: TokenAsset = {
+const XDAI_COIN: FundsAsset = {
   name: 'XDAI',
   symbol: 'XDAI',
-  address: 'main',
   decimals: 18,
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/100/currency_logo.png'
 };
 
-const BNB_COIN: TokenAsset = {
+const BNB_COIN: FundsAsset = {
   name: 'BNB',
   symbol: 'BNB',
-  address: 'main',
   decimals: 18,
   logoUri:
     'https://safe-transaction-assets.gnosis-safe.io/chains/56/currency_logo.png'
 };
 
-export function getNativeAsset(network: string): TokenAsset {
+export function getNativeAsset(network: string): FundsAsset {
   switch (parseInt(network)) {
     case 137:
     case 80001:
@@ -182,10 +177,10 @@ async function callSafeTransactionApi(network: string, url: string) {
   return response.json();
 }
 
-export const getSafeBalances = async (
+export const getSafeFunds = async (
   network: string,
   safeAddress: string
-): Promise<TokenAsset[]> => {
+): Promise<FundsAsset[]> => {
   const endpointPath = `/safes/${safeAddress}/balances/`;
   const balances = await callSafeTransactionApi(network, endpointPath);
 
@@ -199,7 +194,7 @@ export const getSafeBalances = async (
     return {
       safeBalance: balance,
       ...token,
-      address: tokenAddress
+      tokenAddress
     };
   });
 };
@@ -215,7 +210,7 @@ export const getSafeCollectables = (
 export const getSafeToken = async (
   network: string,
   tokenAddress: string
-): Promise<TokenAsset> => {
+): Promise<FundsAsset> => {
   const endpointPath = `/tokens/${tokenAddress}`;
   return callSafeTransactionApi(network, endpointPath);
 };

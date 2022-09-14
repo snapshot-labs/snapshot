@@ -1,5 +1,10 @@
 import { pack } from '@ethersproject/solidity';
-import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
+import {
+  FunctionFragment,
+  Interface,
+  ParamType,
+  Result
+} from '@ethersproject/abi';
 import { hexDataLength } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isArrayParameter } from './abi';
@@ -46,94 +51,41 @@ export enum TransactionOperationType {
   DELEGATECALL
 }
 
-export enum TransactionType {
-  TOKEN = 'token',
-  COLLECTABLE = 'collectable',
-  CONTRACT = 'contract',
-  RAW = 'raw'
+export enum TransactionForms {
+  FUNDS = 'funds',
+  NFT = 'nft',
+  CONTRACT = 'contract'
 }
 
-export interface RawTransaction {
+export type Transaction = {
   to: string;
   value: BigNumber;
   data: string;
   operation: TransactionOperationType;
-}
+  abi?: string;
+};
 
-export interface TokenTransaction {
-  amount: BigNumber;
-  recipient: string;
-  tokenAddress: string;
-}
+export type ExecutableTransaction = Omit<Transaction, 'abi'>;
 
-export interface CollectableTransaction {
-  from: string;
-  recipient: string;
-  collectableAddress: string;
-  collectableId: string;
-}
-
-export interface ContractTransaction {
-  contractAddress: string;
-  method: string;
-  params: string[];
-  abi: string;
-}
-
-export type Transaction =
-  | RawTransaction
-  | TokenTransaction
-  | CollectableTransaction
-  | ContractTransaction;
-
-export interface MultisendTransaction extends RawTransaction {
+export type MultisendTransaction = ExecutableTransaction & {
   to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0;
   operation: TransactionOperationType.DELEGATECALL;
+};
+
+export function convertToExecutableTransaction(
+  transaction: Transaction
+): ExecutableTransaction {
+  const { to, value, data, operation } = transaction;
+
+  return {
+    to,
+    value,
+    data,
+    operation
+  };
 }
 
-export function isRawTransaction(
-  transaction: any
-): transaction is RawTransaction {
-  return (
-    'to' in transaction &&
-    'value' in transaction &&
-    'data' in transaction &&
-    'operation' in transaction
-  );
-}
-
-export function isTokenTransaction(
-  transaction: any
-): transaction is TokenTransaction {
-  return (
-    'amount' in transaction &&
-    'recipient' in transaction &&
-    'tokenAddress' in transaction
-  );
-}
-
-export function isCollectableTransaction(
-  transaction: any
-): transaction is CollectableTransaction {
-  return (
-    'recipient' in transaction &&
-    'collectableAddress' in transaction &&
-    'collectableId' in transaction
-  );
-}
-
-export function isContractTransaction(
-  transaction: any
-): transaction is ContractTransaction {
-  return (
-    'contractAddress' in transaction &&
-    'method' in transaction &&
-    'params' in transaction &&
-    'abi' in transaction
-  );
-}
-
-export function encodeTransactions(transactions: RawTransaction[]) {
+export function encodeTransactionsForMultisend(transactions: Transaction[]) {
   const values = transactions.map(tx => [
     tx.operation,
     tx.to,
@@ -154,11 +106,11 @@ export function encodeTransactions(transactions: RawTransaction[]) {
 }
 
 export function convertBatchToMultisendTransaction(
-  batch: RawTransaction[],
+  batch: Transaction[],
   chainId: string
 ): MultisendTransaction {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
-  const transactionsEncoded = encodeTransactions(batch);
+  const transactionsEncoded = encodeTransactionsForMultisend(batch);
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);
@@ -180,99 +132,84 @@ function extractMethodArgs(values: string[]) {
   };
 }
 
-export function getERC20TokenTransferTransactionData(
-  transaction: TokenTransaction
+export function encodeERC20TransferData(
+  recipient: string,
+  amount: BigNumber
 ): string {
   const contractInterface = new Interface(ERC20_ABI);
-  return contractInterface.encodeFunctionData('transfer', [
-    transaction.recipient,
-    transaction.amount
-  ]);
+  return contractInterface.encodeFunctionData('transfer', [recipient, amount]);
+}
+
+export function decodeERC20TransferData(data: string): Result {
+  const contractInterface = new Interface(ERC20_ABI);
+  const method = contractInterface.getFunction('transfer');
+
+  return contractInterface.decodeFunctionData(method, data);
 }
 
 export function getERC721TokenTransferTransactionData(
-  transaction: CollectableTransaction
+  from: string,
+  recipient: string,
+  tokenId: BigNumber
 ): string {
   const contractInterface = new Interface(ERC721_ABI);
   return contractInterface.encodeFunctionData('safeTransferFrom', [
-    transaction.from,
-    transaction.recipient,
-    transaction.collectableId
+    from,
+    recipient,
+    tokenId
   ]);
 }
 
-export function getContractTransactionData(transaction: ContractTransaction) {
-  const contractInterface = new Interface(transaction.abi);
-  const parameterValues = FunctionFragment.from(transaction.method).inputs.map(
-    extractMethodArgs(transaction.params)
+export function getContractTransactionData(
+  abi: string,
+  method: string,
+  params: any[]
+) {
+  const contractInterface = new Interface(abi);
+  const parameterValues = FunctionFragment.from(method).inputs.map(
+    extractMethodArgs(params)
   );
-  return contractInterface.encodeFunctionData(
-    transaction.method,
-    parameterValues
-  );
+  return contractInterface.encodeFunctionData(method, parameterValues);
 }
 
-export function convertToRawTransaction(
+export function createEmptyTransaction(): Transaction {
+  return {
+    to: '',
+    value: BigNumber.from(0),
+    data: '0x',
+    operation: TransactionOperationType.CALL
+  };
+}
+
+enum FunctionSignatures {
+  ERC20_TRANSFER = '0xa9059cbb',
+  ERC20_TRANSFER_FROM = '0x23b872dd',
+  ERC721_TRANSFER_FROM = '0x42842e0e',
+  ERC721_SAFE_TRANSFER_FROM = '0xb88d4fde',
+  ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT = '0x42842e0e'
+}
+
+export function detectTransactionForm(
   transaction: Transaction
-): RawTransaction {
-  if (isRawTransaction(transaction)) {
-    return transaction;
-  } else if (isTokenTransaction(transaction)) {
-    return {
-      to: transaction.tokenAddress,
-      value: BigNumber.from(0),
-      data: getERC20TokenTransferTransactionData(transaction),
-      operation: TransactionOperationType.CALL
-    };
-  } else if (isCollectableTransaction(transaction)) {
-    return {
-      to: transaction.collectableAddress,
-      value: BigNumber.from(0),
-      data: getERC721TokenTransferTransactionData(transaction),
-      operation: TransactionOperationType.CALL
-    };
-  } else if (isContractTransaction(transaction)) {
-    return {
-      to: transaction.contractAddress,
-      value: BigNumber.from(0),
-      data: getContractTransactionData(transaction),
-      operation: TransactionOperationType.CALL
-    };
-  } else {
-    throw new Error('Unkown transaction type');
-  }
-}
+): TransactionForms {
+  const functionSignature = transaction.data.slice(0, 10);
 
-export function createEmptyTransaction(type: TransactionType): Transaction {
-  switch (type) {
-    case TransactionType.RAW:
-      return {
-        to: '',
-        value: BigNumber.from(0),
-        data: '',
-        operation: TransactionOperationType.CALL
-      };
-    case TransactionType.TOKEN:
-      return {
-        amount: BigNumber.from(0),
-        recipient: '',
-        tokenAddress: ''
-      };
-    case TransactionType.COLLECTABLE:
-      return {
-        from: '',
-        recipient: '',
-        collectableAddress: '',
-        collectableId: ''
-      };
-    case TransactionType.CONTRACT:
-      return {
-        contractAddress: '',
-        method: '',
-        params: [],
-        abi: ''
-      };
-    default:
-      throw new Error(`Unknown transaction type: ${type}`);
+  if (
+    functionSignature === FunctionSignatures.ERC721_TRANSFER_FROM ||
+    functionSignature === FunctionSignatures.ERC721_SAFE_TRANSFER_FROM ||
+    functionSignature ===
+      FunctionSignatures.ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT
+  ) {
+    return TransactionForms.NFT;
   }
+
+  if (
+    functionSignature === FunctionSignatures.ERC20_TRANSFER ||
+    functionSignature === FunctionSignatures.ERC20_TRANSFER_FROM ||
+    functionSignature === '0x'
+  ) {
+    return TransactionForms.FUNDS;
+  }
+
+  return TransactionForms.CONTRACT;
 }

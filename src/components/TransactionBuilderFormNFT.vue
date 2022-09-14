@@ -1,19 +1,22 @@
 <script setup lang="ts">
 import { computed, inject, onMounted, ref, watch } from 'vue';
 import { CollectableAsset } from '@/helpers/safe';
-import { CollectableTransaction } from '@/helpers/transactionBuilder';
+import { Transaction } from '@/helpers/transactionBuilder';
 
 const props = defineProps<{
-  transaction: CollectableTransaction;
+  showForm: boolean;
+  transaction: Transaction | null;
 }>();
 
 const emit = defineEmits<{
-  (e: 'updateTransaction', transaction: CollectableTransaction): void;
+  (e: 'close'): void;
+  (e: 'saveTransaction', transaction: Transaction): void;
 }>();
 
 const selectedCollectable = ref<CollectableAsset | undefined>(undefined);
-const recipient = ref<string>(props.transaction.recipient);
+const recipient = ref<string>('');
 
+const loadingAvailableCollectables = ref<boolean>(true);
 const availableCollectables = ref<CollectableAsset[]>([]);
 const getAvailableCollectables = inject(
   'getAvailableCollectables'
@@ -21,7 +24,6 @@ const getAvailableCollectables = inject(
 
 const defaultFromAddress = inject('defaultFromAddress') as string;
 
-const loadingAvailableCollectables = ref<boolean>(true);
 onMounted(async () => {
   availableCollectables.value = await getAvailableCollectables();
   selectedCollectable.value = availableCollectables.value.find(
