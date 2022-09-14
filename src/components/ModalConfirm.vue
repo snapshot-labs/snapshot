@@ -45,10 +45,10 @@ async function handleSubmit() {
   });
   console.log('Result', result);
   if (result.id) {
+    emit('openPostVoteModal');
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }
-    emit('openPostVoteModal');
     addVotedProposalId(props.proposal.id);
     emit('close');
   }
