@@ -6,7 +6,7 @@ import {
   EIP712_SAFE_TRANSACTIN_TYPES,
   Executor,
   ExecutorState,
-  getNativeAsset,
+  getNativeCoinInfo,
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
@@ -436,7 +436,7 @@ export function useSafeRealityModule(
         ]
       );
 
-    const nativeToken = getNativeAsset(executionData.safe.network);
+    const nativeToken = getNativeCoinInfo(executionData.safe.network);
     let token = {
       symbol: nativeToken.symbol,
       decimals: nativeToken.decimals

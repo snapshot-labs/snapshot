@@ -115,7 +115,9 @@ watch(() => props.showForm, populateForm);
             {{ selectedItem.extras?.name }}
           </template>
           <template #item="{ item }">
-            <div class="text-sm text-skin-link">{{ item.extras?.address }}</div>
+            <div class="text-sm text-skin-link">
+              {{ item.extras?.tokenAddress }}
+            </div>
             <div>
               {{ item.extras?.name }} ({{ item.extras?.symbol }})
               {{ item.extras?.safeBalance }}
@@ -127,7 +129,6 @@ watch(() => props.showForm, populateForm);
           <InputString
             v-model="recipient"
             placeholder="0x..."
-            :disabled="!selectedFundsAsset"
             :error="recipientError"
           />
         </div>
@@ -135,7 +136,6 @@ watch(() => props.showForm, populateForm);
           <LabelInput>Amount</LabelInput>
           <InputNumber
             :model-value="amount.toString()"
-            :disabled="!selectedFundsAsset"
             :error="amountError"
             @update:model-value="amount = BigNumber.from($event || 0)"
           />

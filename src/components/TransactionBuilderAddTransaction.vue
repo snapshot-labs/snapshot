@@ -20,7 +20,7 @@ defineEmits<{
       @click="$emit('addTransactionOfType', TransactionForms.NFT)"
     >
       <i-ho-photograph />
-      Transfer NFT
+      Transfer collectable
     </div>
     <div
       class="transaction-type-item"

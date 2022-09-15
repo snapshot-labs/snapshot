@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, provide, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useTransactionBuilder } from '@/composables';
 import {
   TransactionForms,
@@ -21,9 +21,6 @@ const emit = defineEmits<{
   (e: 'updateBatches', batches: Transaction[][]): void;
   (e: 'removeTransactionBuilder'): void;
 }>();
-
-provide('network', props.network);
-provide('defaultFromAddress', props.defaultFromAddress);
 
 const {
   batches,
@@ -157,6 +154,14 @@ function saveTransaction(transaction: Transaction) {
         :show-form="showForm === TransactionForms.FUNDS"
         :transaction="targetTransaction"
         :available-funds="availableFunds"
+        @save-transaction="saveTransaction($event)"
+        @close="showForm = null"
+      />
+      <TransactionBuilderFormNFT
+        :show-form="showForm === TransactionForms.NFT"
+        :transaction="targetTransaction"
+        :available-collectables="availableCollectables"
+        :default-from-address="props.defaultFromAddress"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />

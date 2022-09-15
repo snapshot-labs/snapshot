@@ -147,7 +147,7 @@ export function decodeERC20TransferData(data: string): Result {
   return contractInterface.decodeFunctionData(method, data);
 }
 
-export function getERC721TokenTransferTransactionData(
+export function encodeERC721TransferData(
   from: string,
   recipient: string,
   tokenId: BigNumber
@@ -158,6 +158,13 @@ export function getERC721TokenTransferTransactionData(
     recipient,
     tokenId
   ]);
+}
+
+export function decodeERC721TransferData(data: string): Result {
+  const contractInterface = new Interface(ERC721_ABI);
+  const method = contractInterface.getFunction('safeTransferFrom');
+
+  return contractInterface.decodeFunctionData(method, data);
 }
 
 export function getContractTransactionData(
