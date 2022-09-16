@@ -12,12 +12,12 @@ const emit = defineEmits(['close', 'networkChanged']);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const networkData = {
   '1': {
-    name: 'Mainnet',
+    name: 'Ethereum Mainnet',
     chainId: '0x1'
   },
-  '4': {
-    name: 'Rinkeby',
-    chainId: '0x4'
+  '5': {
+    name: 'Goerli Testnet',
+    chainId: '0x5'
   }
 };
 
@@ -65,14 +65,14 @@ const switchToDefaultNetwork = async () => {
       <BaseMessageBlock v-if="defaultNetwork === '1'" level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
-            network: 'Ethereum Mainnet'
+            network: networkData[defaultNetwork].name
           })
         }}
       </BaseMessageBlock>
-      <BaseMessageBlock v-if="defaultNetwork === '4'" level="warning">
+      <BaseMessageBlock v-if="defaultNetwork === '5'" level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
-            network: 'Rinkeby Network'
+            network: networkData[defaultNetwork].name
           })
         }}
       </BaseMessageBlock>
