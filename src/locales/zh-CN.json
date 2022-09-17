@@ -413,7 +413,7 @@
     "domain": {
       "title": "设置空间域名",
       "ensMessage": " 在创建自己的空间之前，您需要设置以太坊主网上的 ENS 域名。",
-      "ensMessageTestnet": "你也可以链接Rinkeby的测试网，在那里进行测试并处理问题。",
+      "ensMessageTestnet": "你也可以先在Goerli测试网 {link} 测试并处理问题。",
       "tryDemo": "尝试这个 demo"
     },
     "strategy": {
