@@ -55,7 +55,7 @@ Second, fill it with the proposal ID and the information of the Campaign which y
 ```
 ### More
 
-For Production Enviroment, we are using API Base Url https://graphigo.prd.galaxy.eco/query and only allows domain snapshot.org.
-For Local Enviroment or any other test purpose, you can switch the API Base Url(*file index.ts*) to https://graphigo.stg.galaxy.eco/query and change port to 3000(*file package.json*).
+For Production Environment, we are using API Base Url https://graphigo.prd.galaxy.eco/query and only allows domain snapshot.org.
+For Local Environment or any other test purpose, you can switch the API Base Url(*file index.ts*) to https://graphigo.stg.galaxy.eco/query and change port to 3000(*file package.json*).
 
 When you see "Access-Control-Allow-Origin" error on console, please check if you have set the correct API Base Url and correct port, then restart the server.
