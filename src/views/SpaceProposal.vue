@@ -95,7 +95,6 @@ async function loadProposal() {
 }
 
 function reloadProposal() {
-  isModalPostVoteOpen.value = true;
   loadProposal();
 }
 
@@ -542,6 +541,7 @@ const truncateMarkdownBody = computed(() => {
       :strategies="strategies"
       @close="modalOpen = false"
       @reload="reloadProposal()"
+      @openPostVoteModal="isModalPostVoteOpen = true"
     />
     <ModalStrategies
       :open="modalStrategiesOpen"
