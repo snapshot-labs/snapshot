@@ -36,7 +36,7 @@
     "@ethersproject/units": "^5.7.0",
     "@ethersproject/wallet": "^5.7.0",
     "@headlessui-float/vue": "^0.9.1",
-    "@headlessui/vue": "^1.7.0",
+    "@headlessui/vue": "^1.7.2",
     "@pusher/push-notifications-web": "^1.1.0",
     "@snapshot-labs/lock": "^0.1.1010",
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
