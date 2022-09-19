@@ -600,10 +600,10 @@
     "@floating-ui/core" "^1.0.0"
     "@floating-ui/dom" "^1.0.0"
 
-"@headlessui/vue@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.0.tgz#1778422d2969d53ad0e2b59defc9fec88f8ebf04"
-  integrity sha512-ClrXMThmo9lrFjHdzDQXsopjCgRA28v+u5s/J+gIAgvS5l3tTAI84GaVghFwxobijL9c6BsVgDQ7SrJ2dS1nLw==
+"@headlessui/vue@^1.7.2":
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.2.tgz#da0bb42bcc3e21636f8621322115c3a93adf2331"
+  integrity sha512-nmmFpQxnAy6zgf5r0pwdAH3Qw2IsSbTgvkpov9RkEVE8A6aPAT4iaAaPEAzdI+sPL5Wby05mhciJXSqtkLu+vQ==
 
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
