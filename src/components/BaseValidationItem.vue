@@ -1,11 +1,12 @@
-<script setup>
-import { useIntl } from '@/composables/useIntl';
-import { useValidationsFilter } from '@/composables/useValidationsFilter';
+<script setup lang="ts">
+import { useIntl, useValidationsFilter } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 const { validationsSpacesCount } = useValidationsFilter();
 
-defineProps(['validation']);
+defineProps<{
+  validation: string;
+}>();
 </script>
 
 <template>

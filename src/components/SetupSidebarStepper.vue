@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useClient } from '@/composables';
+
+const { isGnosisSafe } = useClient();
+
 defineProps<{
   currentStep: number;
 }>();
@@ -11,9 +15,7 @@ const steps = [
   { name: 'Controller' },
   { name: 'Profile' },
   { name: 'Strategy' },
-  { name: 'Voting' },
-  { name: 'Custom domain' },
-  { name: 'Validation' }
+  { name: isGnosisSafe.value ? 'Extras' : 'Members' }
 ];
 </script>
 
@@ -22,7 +24,7 @@ const steps = [
     <nav class="flex" aria-label="Progress">
       <ol role="list" class="space-y-4 pt-3">
         <li v-for="(step, i) in steps" :key="step.name">
-          <div v-if="currentStep > i + 1">
+          <div v-if="currentStep > i">
             <span class="flex items-center">
               <span
                 class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary"
@@ -35,7 +37,7 @@ const steps = [
               </span>
 
               <button
-                class="ml-4 text-base font-medium text-skin-text"
+                class="ml-3 text-base font-medium text-skin-text"
                 @click="emit('changeStep', i)"
               >
                 {{ step.name }}
@@ -43,7 +45,7 @@ const steps = [
             </span>
           </div>
           <div
-            v-else-if="currentStep === i + 1"
+            v-else-if="currentStep === i"
             class="flex items-center"
             aria-current="step"
           >
@@ -58,7 +60,7 @@ const steps = [
                 class="absolute -top-[25px] h-4 w-[1px] bg-primary"
               />
             </span>
-            <span class="ml-4 text-base font-medium text-skin-link">
+            <span class="ml-3 text-base font-medium text-skin-link">
               {{ step.name }}
             </span>
           </div>
@@ -72,7 +74,7 @@ const steps = [
                 class="absolute -top-[25px] h-4 w-[1px] bg-skin-border"
               />
             </div>
-            <span class="ml-4 text-base font-medium text-skin-text">
+            <span class="ml-3 text-base font-medium text-skin-text">
               {{ step.name }}
             </span>
           </div>

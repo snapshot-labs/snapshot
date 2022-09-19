@@ -11,6 +11,7 @@
   "retry": "다시하기",
   "currentResults": "현재 결과",
   "reset": "초기화",
+  "close": "Close",
   "save": "저장",
   "author": "저자",
   "next": "다음",
@@ -39,6 +40,7 @@
   "network": "네트워크",
   "networks": "네트워크들",
   "skins": "스킨",
+  "spaceMembers": "Members",
   "members": "회원 없음 | {count} 회원 | {count} 구성원",
   "editStrategy": "전략 수정",
   "invalidProposals": "유효하지 않는 제안",
@@ -50,6 +52,8 @@
   "toggleSkin": "스킨 토글",
   "about": "소개",
   "license": "라이센스",
+  "showMore": "Show more",
+  "voted": "Voted",
   "ipfsServer": "IPFS 서버",
   "hub": "허브",
   "cancel": "취소",
@@ -60,6 +64,7 @@
   "removeSpace": "{0} 공간",
   "confirmVote": "투표 확인",
   "voteOverview": "Vote overview",
+  "quorumReached": "quorum reached",
   "options": "옵션",
   "votingPower": "당신의 투표권",
   "receipt": "처리 결과",
@@ -111,6 +116,7 @@
   "select": "선택",
   "language": "언어",
   "agree": "동의함",
+  "moderators": "Moderators",
   "mustAgreeToTerms": "이 작업을 완료하려면 {0} 서비스 약관에 동의해야 합니다.",
   "playground": "플레이그라운드",
   "strategyParams": "전략 매개변수",
@@ -120,6 +126,8 @@
   "join": "참여",
   "joined": "참여함",
   "leave": "나가기",
+  "subspaces": "Sub-spaces",
+  "mainspace": "Main space",
   "copyLink": "링크 복사",
   "duplicateProposal": "제안 복사",
   "joinedSpaces": "참여한 공간",
@@ -131,6 +139,7 @@
   "confirmAction": "액션 확인",
   "or": "또는",
   "share": "Share",
+  "shareOnTwitter": "Share on Twitter",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -224,7 +233,16 @@
     "vote": "투표",
     "startDate": "시작일",
     "endDate": "종료일",
-    "votingSystem": "투표 유형"
+    "votingSystem": "투표 유형",
+    "postVoteModal": {
+      "defaultTitle": "Your vote is in!",
+      "gnosisSafeTitle": "Your vote is pending...",
+      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "seeQueue": "See queued transactions",
+      "tips": {
+        "1": "Votes can be changed while the proposal is active"
+      }
+    }
   },
   "proposals": {
     "header": "제안",
@@ -254,7 +272,7 @@
   "settings": {
     "header": "설정",
     "editController": "관리자 설정",
-    "connectWithSpaceOwner": "공간 설정을 수정하려면 관리자 또는 어드민 지갑에 연결하세요.",
+    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -275,23 +293,36 @@
     },
     "terms": {
       "label": "Terms",
-      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote."
+      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "홈페이지에서 공간 숨기기",
     "links": "Social accounts",
-    "subspaces": "Sub-Spaces",
+    "subspaces": {
+      "label": "Sub-spaces",
+      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "parent": {
+        "label": "Main space",
+        "placeholder": "pistachiodao.eth",
+        "information": "The space that this space is a sub-space of will be displayed on the space page"
+      },
+      "children": {
+        "label": "Sub-spaces",
+        "placeholder": "pistachiodao.eth",
+        "information": "Related Sub-spaces listed here will be displayed on the space page"
+      }
+    },
     "website": "Website",
     "strategies": {
-      "label": "Voting strategy",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal."
+      "label": "Strategie(s)",
+      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
     },
     "network": {
       "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies."
+      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
     },
     "symbol": {
       "label": "Symbol",
-      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer."
+      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
     },
     "strategiesList": "Select up to 8 strategies",
     "votingPowerIsCumulative": "Voting power is cumulative",
@@ -299,17 +330,17 @@
     "testInPlayground": "Test in playground",
     "admins": {
       "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals."
+      "information": "Admins are able to modify the space settings and manage the space's proposals"
     },
     "authors": {
       "label": "Authors",
-      "information": "Authors are able to create proposals without having to pass validation."
+      "information": "Authors are always able to create proposals"
     },
     "proposalValidation": "제안 검증",
-    "validation": "확인",
+    "validation": "Type",
     "proposalThreshold": {
-      "label": "Proposal threshold",
-      "information": "The minimum amount of voting power required to create a proposal."
+      "label": "Threshold",
+      "information": "The minimum amount of voting power required to create a proposal"
     },
     "allowOnlyAuthors": "작성자만 제안서를 제출할 수 있도록 허용",
     "editValidation": "유효성 검사 편집",
@@ -322,11 +353,11 @@
     "days": "Days",
     "quorum": {
       "label": "Quorum",
-      "information": "The minimum amount of voting power required for the proposal to pass."
+      "information": "The minimum amount of voting power required for the proposal to pass"
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals."
+      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
     },
     "anyType": "어떤",
     "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
@@ -338,10 +369,10 @@
     },
     "skin": "스킨",
     "treasuries": {
-      "label": "Treasuries",
+      "label": "Treasury",
       "add": "Add treasury",
       "edit": "Edit treasury",
-      "information": "Add treasuries of your organization to show them in your space."
+      "information": "Add treasuries of your organization to show them in your space"
     },
     "addPlugin": "플러그인 추가",
     "editPlugin": "편집 플러그인",
@@ -382,21 +413,28 @@
     "domain": {
       "title": "Setup your space domain",
       "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
-      "ensMessageTestnet": "You can also {link} on the Rinkeby testnet and mess with things there first.",
+      "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "try the demo"
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
+      "subtitle": "You can change your strategy settings any time.",
+      "blockTitle": "Setup voting strategy",
       "onePersonOneVote": {
         "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required"
+        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
+        "whitelistInformation": "Specify a number of accounts that can vote",
+        "ticketInformation": "Any account can vote",
+        "votesEqualInfo": "Each vote is equal and no token is required"
       },
       "tokenVoting": {
         "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard"
+        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
+        "tokenNotFound": "Token not found",
+        "seeOnEtherscan": "See on Etherscan"
       },
       "advanced": {
-        "title": "Advanced settings",
+        "title": "Custom setup",
         "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
       }
     },
@@ -459,6 +497,7 @@
     "networks": "네트워크",
     "plugins": "플러그인",
     "results": "결과(에스)",
+    "category": "Category",
     "categories": {
       "all": "모두",
       "protocol": "프로토콜",
@@ -646,5 +685,16 @@
     "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
     "subHeader": "Governance should be a snap",
     "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+  },
+  "footerView": {
+    "resources": "Resources",
+    "about": "About",
+    "blog": "Blog",
+    "jobs": "Jobs",
+    "discussions": "Discussions",
+    "github": "GitHub",
+    "docs": "Docs",
+    "support": "Support",
+    "hiring": "Join us!"
   }
 }

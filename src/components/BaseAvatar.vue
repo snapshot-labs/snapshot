@@ -2,13 +2,14 @@
 import { watch, ref } from 'vue';
 
 interface Props {
+  src: string;
   size?: string;
-  src?: string;
   previewFile?: File | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  size: '22'
+  size: '22',
+  previewFile: undefined
 });
 
 const avatarImage = ref<HTMLImageElement | null>(null);

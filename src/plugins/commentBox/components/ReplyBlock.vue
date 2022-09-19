@@ -178,7 +178,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           class="ml-1"
           v-text="$d(item.timestamp, 'short', 'en-US')"
         />
-        <BaseDropdown
+        <BaseMenu
           v-if="isAdmin || isOwner || isCreator"
           class="float-right"
           :items="threeDotItems"
@@ -187,7 +187,7 @@ const isCreator = computed(() => props.proposal.author === web3Account.value);
           <template #button>
             <BaseIcon name="threedots" size="25" class="v-align-text-bottom" />
           </template>
-        </BaseDropdown>
+        </BaseMenu>
       </div>
       <div class="mt-2">{{ item.markdown }}</div>
     </BaseBlock>

@@ -3,13 +3,18 @@ import { useEns } from './useEns';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { contractAddress } from '@/helpers/delegation';
 import { formatBytes32String } from '@ethersproject/strings';
-import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  sendTransaction,
+  sleep,
+  SNAPSHOT_SUBGRAPH_URL
+} from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useTxStatus } from '@/composables/useTxStatus';
-import { useI18n } from '@/composables/useI18n';
-import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import {
+  useTxStatus,
+  useI18n,
+  useWeb3,
+  useFlashNotification
+} from '@/composables';
 
 export function useDelegate() {
   const abi = ['function setDelegate(bytes32 id, address delegate)'];

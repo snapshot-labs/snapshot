@@ -9,7 +9,6 @@ const { formatCompactNumber, formatNumber } = useIntl();
 describe('TreasuryAssetsListItem', () => {
   let wrapper;
 
-  const findAssetLogo = () => wrapper.find('[alt="Asset logo"]');
   const findAssetName = () => wrapper.find('[data-testid="asset-name"]');
   const findAssetBalance = () => wrapper.find('[data-testid="asset-balance"]');
   const findAssetSymbol = () => wrapper.find('[data-testid="asset-symbol"]');
@@ -36,12 +35,6 @@ describe('TreasuryAssetsListItem', () => {
 
   afterEach(() => {
     wrapper.unmount();
-  });
-
-  it('should render the correct img url', () => {
-    createComponent();
-
-    expect(findAssetLogo().attributes('src')).toEqual(asset.logo_url);
   });
 
   it('should render the correct name', () => {

@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useI18n } from '@/composables/useI18n';
-import { useProfiles } from '@/composables/useProfiles';
+import { debouncedWatch } from '@vueuse/core';
 import { isAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
@@ -10,15 +9,18 @@ import {
   getDelegatesBySpace
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { getDelegates, getDelegators } from '@/helpers/delegation';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
-import { debouncedWatch } from '@vueuse/core';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useModal } from '@/composables/useModal';
-import { useEns } from '@/composables/useEns';
-import { useDelegate } from '@/composables/useDelegate';
+import {
+  useI18n,
+  useProfiles,
+  useWeb3,
+  useIntl,
+  useApolloQuery,
+  useModal,
+  useEns,
+  useDelegate
+} from '@/composables';
 
 const route = useRoute();
 const { t, setPageTitle } = useI18n();
@@ -156,7 +158,7 @@ async function getDelegatesWithScore() {
       space.value.network,
       delegatesAddresses,
       'latest',
-      import.meta.env.VITE_SCORES_URL + '/api/scores'
+      `${import.meta.env.VITE_SCORES_URL}/api/scores`
     );
 
     uniqueDelegators.forEach(delegate => {
@@ -257,25 +259,24 @@ onMounted(async () => {
       <div v-else class="space-y-3">
         <BaseBlock>
           <div class="space-y-2">
-            <UiInput
+            <BaseInput
               v-model.trim="form.address"
+              :title="$t('delegate.to')"
               :placeholder="$t('delegate.addressPlaceholder')"
-              :error="validateToInput"
-            >
-              <template #label>{{ $t('delegate.to') }}</template>
-            </UiInput>
+              :error="{ message: validateToInput }"
+            />
             <div class="flex items-center space-x-2 px-2">
-              <BaseSwitch v-model="specifySpaceChecked" />
+              <InputSwitch v-model="specifySpaceChecked" />
               <span>{{ $t('setDelegationToSpace') }}</span>
             </div>
-            <UiInput
+            <BaseInput
               v-show="specifySpaceChecked"
               v-model.trim="form.id"
+              :title="$t('space')"
+              :loading="spaceLoading"
               placeholder="e.g. balancer.eth"
-              :error="validateSpaceInput"
-            >
-              <template #label>{{ $t('space') }}</template>
-            </UiInput>
+              :error="{ message: validateSpaceInput }"
+            />
           </div>
         </BaseBlock>
         <BaseBlock
@@ -381,7 +382,7 @@ onMounted(async () => {
       <BaseBlock>
         <BaseButton
           :disabled="!isValidForm && !!web3Account"
-          :loading="delegationLoading || spaceLoading"
+          :loading="delegationLoading"
           class="block w-full"
           primary
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
@@ -397,7 +398,7 @@ onMounted(async () => {
       :id="currentId"
       :open="modalOpen"
       :delegate="currentDelegate"
-      :profiles="profiles"
+      :profile="profiles[currentDelegate]"
       @close="modalOpen = false"
       @reload="getDelegationsAndDelegates"
     />

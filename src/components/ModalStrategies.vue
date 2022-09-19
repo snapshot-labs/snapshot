@@ -1,14 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { isAddress } from '@ethersproject/address';
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { encodeJson } from '@/helpers/b64';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { Proposal, SpaceStrategy } from '@/helpers/interfaces';
 
-defineProps({
-  open: Boolean,
-  strategies: Object,
-  proposal: Object
-});
+defineProps<{
+  open: boolean;
+  strategies: { [key: string]: SpaceStrategy };
+  proposal: Proposal;
+}>();
 
 defineEmits(['close']);
 </script>
@@ -27,22 +27,14 @@ defineEmits(['close']);
       >
         <div class="flex items-center justify-between">
           <h3 v-text="strategy.name" />
-          <router-link
-            target="_blank"
-            :to="{
-              name: 'playground',
-              params: { name: strategy.name },
-              query: {
-                query: encodeJson({
-                  network: strategy.network || proposal.network,
-                  snapshot: proposal.snapshot,
-                  params: strategy.params
-                })
-              }
-            }"
-          >
-            <BaseIcon name="play" size="18" class="flex" />
-          </router-link>
+
+          <ButtonPlayground
+            :name="strategy.name"
+            :network="strategy.network || proposal.network"
+            :params="strategy.params"
+            :snapshot="proposal.snapshot"
+            @close="$emit('close')"
+          />
         </div>
 
         <div>
@@ -55,11 +47,14 @@ defineEmits(['close']);
           <div v-for="(param, key) in strategy.params" :key="key" class="flex">
             <span class="mr-1 flex-auto text-skin-text" v-text="key" />
             <BaseLink
-              v-if="key === 'address' || isAddress(param)"
-              :link="explorerUrl(strategy.network || proposal.network, param)"
+              v-if="
+                key === 'address' ||
+                (typeof param === 'string' && isAddress(param))
+              "
+              :link="explorerUrl(strategy.network || proposal.network, param as string)"
               class="block"
             >
-              <span v-text="shorten(param)" />
+              <span v-text="shorten(param as string)" />
             </BaseLink>
             <BaseLink
               v-else-if="typeof param === 'string' && param.startsWith('http')"

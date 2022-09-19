@@ -1,7 +1,9 @@
-<script setup>
-defineProps({
-  modelValue: Array
-});
+<script setup lang="ts">
+defineProps<{
+  modelValue: string[];
+  title?: string;
+  placeholder?: string;
+}>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -19,8 +21,14 @@ function handleInput(input) {
 </script>
 
 <template>
+  <LabelInput>
+    {{ title || '' }}
+  </LabelInput>
   <TextareaAutosize
+    v-bind="$attrs"
     :model-value="modelValue?.join('\n')"
+    :placeholder="placeholder || ''"
+    class="input w-full text-left"
     @update:modelValue="handleInput($event)"
   />
 </template>

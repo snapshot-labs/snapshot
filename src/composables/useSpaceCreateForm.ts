@@ -1,9 +1,9 @@
 import { onMounted, ref, watch, computed } from 'vue';
 import { useStorage } from '@vueuse/core';
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useValidationErrors } from '@/composables/useValidationErrors';
+import { useFormValidation } from '@/composables';
 
 interface ProposalForm {
   name: string;
@@ -68,14 +68,10 @@ export function useSpaceCreateForm() {
     userSelectedDateStart.value = false;
   }
 
-  const validate = computed(() => {
-    return validateSchema(schemas.proposal, form.value);
-  });
+  const { getValidationMessage } = useFormValidation(schemas.proposal, form);
 
-  const { validationErrorMessage } = useValidationErrors();
-
-  function getErrorMessage(field: string): { message: string; push: boolean } {
-    const message = validationErrorMessage(field, validate.value);
+  function getValidation(field: string): { message: string; push: boolean } {
+    const message = getValidationMessage(field);
     return {
       message: message || '',
       push: false
@@ -89,6 +85,6 @@ export function useSpaceCreateForm() {
     sourceProposalLoaded,
     sourceProposal,
     resetForm,
-    getErrorMessage
+    getValidation
   };
 }

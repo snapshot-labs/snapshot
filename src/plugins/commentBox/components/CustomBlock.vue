@@ -194,7 +194,9 @@ function deleteItem(key) {
         @deleteItem="deleteItem($event)"
       />
     </div>
-    <div ref="endElement" class="absolute bottom-0 h-[10px] w-[10px]" />
+    <div class="relative">
+      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+    </div>
 
     <LoadingRow v-if="loadingMore" class="my-2" />
   </BaseBlock>

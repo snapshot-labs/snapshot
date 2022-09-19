@@ -25,19 +25,12 @@ const { domain } = useApp();
 </script>
 
 <template>
-  <BasePopoverHover
-    :options="{
-      offset: [0, 12],
-      placement: isXLargeScreen ? 'bottom' : 'bottom-start'
-    }"
-  >
-    <template #item>
+  <BasePopoverHover :placement="isXLargeScreen ? 'bottom' : 'bottom-start'">
+    <template #button>
       <slot />
     </template>
     <template #content>
-      <div
-        class="w-[400px] min-w-[300px] cursor-default rounded-xl border border-skin-border bg-skin-header-bg p-4 shadow-lg"
-      >
+      <div class="p-4">
         <div class="flex">
           <div>
             <AvatarUser :address="address" size="69" />
@@ -60,7 +53,6 @@ const { domain } = useApp();
                   : { name: 'profileActivity', params: { address } }
               "
               hide-external-icon
-              @click.stop
             >
               <BaseButton primary class="w-full">
                 {{ $t('profile.viewProfile') }}
@@ -73,7 +65,6 @@ const { domain } = useApp();
                 explorerUrl(proposal?.network || space?.network || '1', address)
               "
               hide-external-icon
-              @click.stop
             >
               <BaseButton class="w-full">
                 {{ $t('seeInExplorer') }}

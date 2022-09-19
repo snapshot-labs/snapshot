@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
 
-defineProps({
-  open: Boolean,
-  authorIpfsHash: String,
-  relayerIpfsHash: Object
-});
+defineProps<{
+  open: boolean;
+  authorIpfsHash: string;
+  relayerIpfsHash?: string;
+}>();
 defineEmits(['close']);
 </script>
 

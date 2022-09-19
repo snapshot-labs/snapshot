@@ -1,25 +1,21 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useTerms } from '@/composables/useTerms';
-import { useClient } from '@/composables/useClient';
+import { useFollowSpace, useTerms, useClient } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps({ space: Object });
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
 
 const { isGnosisSafe } = useClient();
-
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-
 const { clickFollow, loadingFollow, isFollowing } = useFollowSpace(
   props.space.id
 );
 
-const canFollow = computed(() => {
-  if (props.space.terms) {
-    if (termsAccepted.value || isFollowing.value) return true;
-    else return false;
-  } else return true;
-});
+const canFollow = computed(() =>
+  props.space.terms ? termsAccepted.value || isFollowing.value : true
+);
 </script>
 
 <template>
@@ -32,8 +28,7 @@ const canFollow = computed(() => {
       v-bind="$attrs"
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
-      style="width: 120px"
-      class="group mb-4"
+      class="group min-w-[120px]"
       :class="{
         'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
@@ -48,7 +43,9 @@ const canFollow = computed(() => {
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>
       <span v-else>
-        <span class="group-hover:hidden"> {{ $t('joined') }} </span>
+        <span class="flex items-center gap-2 group-hover:hidden">
+          <i-ho-check class="text-green" /> {{ $t('joined') }}
+        </span>
         <span class="hidden group-hover:block">
           {{ $t('leave') }}
         </span>

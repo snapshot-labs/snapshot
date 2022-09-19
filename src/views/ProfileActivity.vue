@@ -42,7 +42,7 @@ const activityOlder = computed(() => {
 const { loadBy, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader(20);
 const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadVotes(activities.value.length), loadingMore.value)
+  loadMore(() => loadVotes(activities.value.length))
 );
 
 async function loadVotes(skip = 0) {
@@ -124,6 +124,8 @@ async function loadVotes(skip = 0) {
         {{ $t('profile.activity.noActivity') }}
       </BaseBlock>
     </div>
-    <div ref="endElement" class="h-[10px] w-[10px]" />
+    <div class="relative">
+      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
+    </div>
   </div>
 </template>

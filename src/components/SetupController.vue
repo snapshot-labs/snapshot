@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { useSpaceController } from '@/composables/useSpaceController';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { useRouter, useRoute } from 'vue-router';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useClient } from '@/composables/useClient';
+
+import { useClient, useSpaceController, useWeb3 } from '@/composables';
 
 const emit = defineEmits(['next']);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const { isGnosisSafe } = useClient();
 
-const router = useRouter();
-const route = useRoute();
 const { web3Account } = useWeb3();
 
 const fillConnectedWallet = ref(true);
@@ -36,15 +32,7 @@ const {
 async function handleSetRecord() {
   const tx = await setRecord();
   if (tx) {
-    router.push({
-      name: 'setup',
-      params: {
-        ens: route.params.ens
-      },
-      query: {
-        step: 4
-      }
-    });
+    emit('next');
   }
 }
 
@@ -77,54 +65,62 @@ watch(
       <SetupButtonNext class="!mt-0" @click="emit('next')" />
     </div>
   </div>
-  <BaseBlock v-else :title="$t('setup.setSpaceController')">
-    <div class="mb-4">
-      <BaseMessageBlock level="info">
-        {{ $t('setup.setSpaceControllerInfo') }}
-      </BaseMessageBlock>
-    </div>
+  <div v-else>
+    <BaseBlock :title="$t('setup.setSpaceController')">
+      <div class="mb-4">
+        <BaseMessageBlock level="info">
+          {{ $t('setup.setSpaceControllerInfo') }}
+        </BaseMessageBlock>
+      </div>
 
-    <BaseInput
-      v-model.trim="spaceControllerInput"
-      title="Controller address"
-      :placeholder="
-        $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
-      "
-      :readonly="fillConnectedWallet"
-      focus-on-mount
-      @keyup.delete="fillConnectedWallet = false"
-    />
-    <div class="mt-1 flex items-center gap-2">
-      <BaseSwitch v-model="fillConnectedWallet" />
-      {{ $t('setup.fillCurrentAccount') }}
-    </div>
-    <BaseButton
-      class="mt-4 w-full"
-      primary
-      :disabled="!controllerInputIsValid"
-      :loading="settingENSRecord"
-      @click="confirmSetRecord"
-    >
-      {{ $t('setup.setController') }}
-    </BaseButton>
-
-    <BaseMessageBlock
-      v-if="isGnosisSafe && !fillConnectedWallet"
-      level="warning"
-    >
-      <i18n-t
-        keypath="setup.setSpaceControllerInfoGnosisSafe"
-        tag="span"
-        scope="global"
+      <BaseInput
+        v-model.trim="spaceControllerInput"
+        title="Controller address"
+        :placeholder="
+          $t('setup.spaceOwnerAddressPlaceHolder', { address: web3Account })
+        "
+        :readonly="fillConnectedWallet"
+        focus-on-mount
+        @keyup.delete="fillConnectedWallet = false"
+      />
+      <div class="mt-1 flex items-center gap-2">
+        <InputSwitch v-model="fillConnectedWallet" />
+        {{ $t('setup.fillCurrentAccount') }}
+      </div>
+      <BaseButton
+        class="mt-4 w-full"
+        primary
+        :disabled="!controllerInputIsValid"
+        :loading="settingENSRecord"
+        @click="confirmSetRecord"
       >
-        <template #link>
-          <BaseLink link="https://docs.snapshot.org/spaces/create">
-            {{ $t('learnMore') }}
-          </BaseLink>
-        </template>
-      </i18n-t>
-    </BaseMessageBlock>
-  </BaseBlock>
+        {{ $t('setup.setController') }}
+      </BaseButton>
+
+      <BaseMessageBlock
+        v-if="isGnosisSafe && !fillConnectedWallet"
+        level="warning"
+      >
+        <i18n-t
+          keypath="setup.setSpaceControllerInfoGnosisSafe"
+          tag="span"
+          scope="global"
+        >
+          <template #link>
+            <BaseLink link="https://docs.snapshot.org/spaces/create">
+              {{ $t('learnMore') }}
+            </BaseLink>
+          </template>
+        </i18n-t>
+      </BaseMessageBlock>
+    </BaseBlock>
+    <SetupButtonNext
+      v-if="isEditController"
+      class="!mt-4 mr-4 md:mr-0"
+      text="skip"
+      @click="emit('next')"
+    />
+  </div>
 
   <teleport to="#modal">
     <ModalUnsupportedNetwork
@@ -137,7 +133,14 @@ watch(
       @close="modalConfirmSetTextRecordOpen = false"
       @confirm="handleSetRecord"
     >
-      <div class="m-4 space-y-1 text-skin-text">
+      <div class="m-4 mt-0 space-y-1 text-skin-text">
+        <BaseMessageBlock level="info" class="mb-3">
+          {{
+            $t('setup.explainControllerAndEns', {
+              network: networks[defaultNetwork].name
+            })
+          }}
+        </BaseMessageBlock>
         <div class="flex justify-between">
           <span>ENS address</span>
           <BaseLink :link="`https://app.ens.domains/name/${ensAddress}`">
@@ -158,13 +161,6 @@ watch(
             >{{ textRecord }}</span
           >
         </div>
-        <BaseMessageBlock level="info">
-          {{
-            $t('setup.explainControllerAndEns', {
-              network: networks[defaultNetwork].name
-            })
-          }}
-        </BaseMessageBlock>
       </div>
     </ModalConfirmAction>
   </teleport>

@@ -1,25 +1,18 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
+import { useSpaceForm } from '@/composables';
 
-const { getErrorMessage } = useSpaceSettingsForm();
-
-defineProps<{
-  validation: { name: string };
-  filters: { minScore: number; onlyMembers: boolean };
+const props = defineProps<{
+  context: 'setup' | 'settings';
 }>();
 
-const emit = defineEmits([
-  'update:validation',
-  'update:onlyMembers',
-  'update:minScore'
-]);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const modalValidationOpen = ref(false);
 
-function handleSubmitAddValidation(validation) {
-  emit('update:validation', clone(validation));
+function handleSubmitAddValidation(input) {
+  form.value.validation = clone(input);
 }
 </script>
 
@@ -30,33 +23,31 @@ function handleSubmitAddValidation(validation) {
         <InputSelect
           class="w-full"
           :title="$t(`settings.validation`)"
-          :error="getErrorMessage('settings.validation')"
-          :model-value="validation.name"
+          :error="getValidation('validation')"
+          :model-value="form.validation.name"
           @click="modalValidationOpen = true"
         />
 
         <InputNumber
-          v-if="validation.name === 'basic'"
+          v-if="form.validation.name === 'basic'"
+          v-model="form.filters.minScore"
           :title="$t('settings.proposalThreshold.label')"
           :information="$t('settings.proposalThreshold.information')"
-          :model-value="filters.minScore"
-          :error="getErrorMessage('minScore')"
+          :error="getValidation('minScore')"
           placeholder="1000"
-          @update:model-value="emit('update:minScore', $event)"
         />
       </ContainerParallelInput>
 
-      <BaseSwitch
-        v-if="validation.name === 'basic'"
-        :model-value="filters.onlyMembers"
+      <InputSwitch
+        v-if="form.validation.name === 'basic'"
+        v-model="form.filters.onlyMembers"
         :text-right="$t('settings.allowOnlyAuthors')"
-        @update:model-value="emit('update:onlyMembers', $event)"
       />
     </div>
     <teleport to="#modal">
       <ModalValidation
         :open="modalValidationOpen"
-        :validation="validation"
+        :validation="form.validation"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
       />

@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 
-const { getErrorMessage } = useSpaceSettingsForm();
+import { useSpaceForm } from '@/composables';
 
-defineProps<{
-  domain?: string;
-  skin?: string;
+const props = defineProps<{
+  context: 'setup' | 'settings';
 }>();
 
-const emit = defineEmits(['update:domain', 'update:skin']);
+const { form, getValidation } = useSpaceForm(props.context);
 
 const modalSkinsOpen = ref(false);
 </script>
@@ -29,26 +27,24 @@ const modalSkinsOpen = ref(false);
 
     <ContainerParallelInput>
       <BaseInput
+        v-model="form.domain"
         :title="$t('settings.domain.label')"
-        :model-value="domain"
-        :error="getErrorMessage('domain')"
+        :error="getValidation('domain')"
         :max-length="schemas.space.properties.domain.maxLength"
         placeholder="e.g. vote.balancer.fi"
-        @update:model-value="emit('update:domain', $event)"
       />
 
       <InputSelect
         :title="$t(`settings.skin`)"
-        :model-value="skin ? skin : $t('defaultSkin')"
+        :model-value="form.skin ? form.skin : $t('defaultSkin')"
         @select="modalSkinsOpen = true"
       />
     </ContainerParallelInput>
 
     <teleport to="#modal">
       <ModalSkins
-        :model-value="skin"
+        v-model="form.skin"
         :open="modalSkinsOpen"
-        @update:model-value="emit('update:skin', $event)"
         @close="modalSkinsOpen = false"
       />
     </teleport>

@@ -16,11 +16,12 @@ export function useStrategies() {
   const extendedStrategy = ref<Strategy | null>(null);
   const loadingExtendedStrategy = ref(false);
 
-  const strategyDefinition = computed(() =>
-    extendedStrategy.value?.schema?.$ref
-      ? extendedStrategy.value.schema.definitions.Strategy
-      : false
-  );
+  const strategyDefinition = computed(() => {
+    if (extendedStrategy.value?.schema?.$ref) {
+      return extendedStrategy.value.schema.definitions.Strategy;
+    }
+    return false;
+  });
 
   const filterStrategies = (q = '') =>
     strategies.value
@@ -41,7 +42,6 @@ export function useStrategies() {
     );
 
     loadingStrategies.value = false;
-    return;
   }
 
   // Get extended strategy by Id and save it in extendedStrategies
@@ -67,7 +67,6 @@ export function useStrategies() {
     }
 
     loadingExtendedStrategy.value = false;
-    return;
   }
 
   return {

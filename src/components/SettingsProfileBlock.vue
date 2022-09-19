@@ -1,31 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-
-const { getErrorMessage } = useSpaceSettingsForm();
+import { useSpaceForm } from '@/composables';
 
 const props = defineProps<{
-  name: string;
-  about?: string;
-  categories: string[];
-  avatar?: string;
-  private: boolean;
-  terms?: string;
-  website?: string;
+  context: 'setup' | 'settings';
 }>();
 
-const avatarNotReactive = ref(props.avatar);
+const { form, getValidation } = useSpaceForm(props.context);
 
-const emit = defineEmits([
-  'update:name',
-  'update:about',
-  'update:categories',
-  'update:avatar',
-  'update:private',
-  'update:terms',
-  'update:website'
-]);
+const avatarNotReactive = ref(form.value.avatar);
 </script>
 
 <template>
@@ -40,8 +24,8 @@ const emit = defineEmits([
               </LabelInput>
               <InputUploadAvatar
                 class="h-[80px]"
-                @image-uploaded="url => emit('update:avatar', url)"
-                @image-remove="() => emit('update:avatar', '')"
+                @image-uploaded="url => (form.avatar = url)"
+                @image-remove="() => (form.avatar = '')"
               >
                 <template #avatar="{ uploading, previewFile }">
                   <div class="relative">
@@ -50,7 +34,10 @@ const emit = defineEmits([
                       size="80"
                       :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar: avatarNotReactive }"
                     />
-                    <AvatarOverlayEdit :loading="uploading" />
+                    <AvatarOverlayEdit
+                      :loading="uploading"
+                      :avatar="form?.avatar"
+                    />
                     <div
                       class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
                     >
@@ -63,52 +50,47 @@ const emit = defineEmits([
           </div>
 
           <BaseInput
-            :model-value="name"
+            v-model="form.name"
             :title="$t(`settings.name.label`)"
-            :error="getErrorMessage('name')"
+            :error="getValidation('name')"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
             focus-on-mount
-            @update:model-value="value => emit('update:name', value)"
           />
 
           <LabelInput> {{ $t(`settings.about.label`) }} </LabelInput>
           <TextareaAutosize
-            :model-value="about"
+            v-model="form.about"
             class="s-input !rounded-3xl"
             :max-length="schemas.space.properties.about.maxLength"
             :placeholder="$t('settings.about.placeholder')"
-            @update:model-value="value => emit('update:about', value)"
           />
 
           <ListboxMultipleCategories
-            :categories="categories"
-            @update-categories="value => emit('update:categories', value)"
+            :categories="form.categories"
+            @update-categories="value => (form.categories = value)"
           />
 
           <InputUrl
+            v-model="form.website"
             :title="$t('settings.website')"
-            :model-value="website"
-            :error="getErrorMessage('website')"
+            :error="getValidation('website')"
             :max-length="schemas.space.properties.website.maxLength"
             placeholder="e.g. https://www.example.com"
-            @update:model-value="value => emit('update:website', value)"
           />
 
           <InputUrl
+            v-model="form.terms"
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
-            :model-value="terms"
-            :error="getErrorMessage('terms')"
+            :error="getValidation('terms')"
             placeholder="e.g. https://example.com/terms"
-            @update:model-value="value => emit('update:terms', value)"
           />
 
-          <BaseSwitch
+          <InputSwitch
+            v-model="form.private"
             class="!mt-3"
-            :model-value="private"
             :text-right="$t('settings.hideSpace')"
-            @update:model-value="value => emit('update:private', value)"
           />
         </div>
       </div>

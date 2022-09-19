@@ -1,18 +1,19 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 defineProps<{
   title?: string;
   counter?: number;
   slim?: boolean;
-  icon?: string;
-  iconClass?: string;
-  iconTooltip?: string;
-  iconHref?: string;
   loading?: boolean;
   hideBottomBorder?: boolean;
   label?: string;
   labelTooltip?: string;
   information?: string;
+  isCollapsable?: boolean;
 }>();
+
+const isCollapsed = ref(true);
 </script>
 
 <template>
@@ -21,8 +22,14 @@ defineProps<{
   >
     <div
       v-if="title"
-      class="flex justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
-      :class="{ 'border-b-0': hideBottomBorder }"
+      class="group flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
+      :class="[
+        {
+          'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)
+        },
+        { 'cursor-pointer': isCollapsable }
+      ]"
+      @click="isCollapsable ? (isCollapsed = !isCollapsed) : null"
     >
       <h4 class="flex items-center">
         <div>
@@ -43,23 +50,13 @@ defineProps<{
         >
           {{ label }}
         </div>
-        <BaseIcon
-          v-else-if="icon && !iconHref"
-          v-tippy="{ content: iconTooltip ? iconTooltip : null }"
-          :name="icon"
-          size="22"
-          :class="['float-right pt-1', iconClass]"
-        />
-        <BaseLink v-else-if="iconHref" :link="iconHref" hide-external-icon>
-          <BaseIcon
-            v-if="icon"
-            v-tippy="{ content: iconTooltip ? iconTooltip : null }"
-            :name="icon"
-            size="22"
-            :class="['float-right pt-1', iconClass]"
-          />
-        </BaseLink>
       </div>
+      <BaseButtonIcon
+        v-if="isCollapsable"
+        class="pr-0 group-hover:text-skin-link"
+      >
+        <i-ho-chevron-up :class="[{ 'rotate-180': isCollapsed }]" />
+      </BaseButtonIcon>
     </div>
     <div v-if="loading" class="block px-4 py-4">
       <div
@@ -68,8 +65,14 @@ defineProps<{
       />
       <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
     </div>
-    <div v-else :class="!slim && 'p-4'" class="leading-5 sm:leading-6">
-      <slot />
-    </div>
+    <Transition name="fade">
+      <div
+        v-if="!loading && (!isCollapsed || !isCollapsable)"
+        :class="!slim && 'p-4'"
+        class="leading-5 sm:leading-6"
+      >
+        <slot />
+      </div>
+    </Transition>
   </div>
 </template>

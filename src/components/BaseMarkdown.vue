@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
@@ -7,7 +7,9 @@ import { onMounted } from 'vue';
 import { useCopy } from '@/composables/useCopy';
 import { getIpfsUrl } from '@/helpers/utils';
 
-const props = defineProps({ body: String });
+const props = defineProps<{
+  body: string;
+}>();
 const { copyToClipboard } = useCopy();
 
 const remarkable = new Remarkable({
@@ -30,11 +32,11 @@ const markdown = computed(() => {
 });
 
 onMounted(() => {
-  document
-    .querySelector('.markdown-body')
-    .querySelectorAll('pre>code')
-    .forEach(function (code) {
-      code.parentElement.classList.add('rounded-lg');
+  const body = document.querySelector('.markdown-body');
+  if (body !== null)
+    body.querySelectorAll('pre>code').forEach(function (code) {
+      const parent = code.parentElement;
+      if (parent !== null) parent.classList.add('rounded-lg');
       const copyButton = document.createElement('a');
       const icon = document.createElement('i');
       icon.classList.add('copy');
@@ -43,8 +45,7 @@ onMounted(() => {
       icon.classList.add('iconfont');
       copyButton.appendChild(icon);
       copyButton.addEventListener('click', function () {
-        const codeText = code.innerText.trim();
-        copyToClipboard(codeText);
+        if (parent !== null) copyToClipboard(parent.innerText.trim());
       });
       code.appendChild(copyButton);
     });
@@ -52,6 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- eslint-disable-next-line vue/no-v-html -->
   <div class="markdown-body break-words" v-html="markdown" />
 </template>
 

@@ -18,7 +18,10 @@ onMounted(async () => {
   <TheLayout>
     <template #content-left>
       <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ path: '/strategies' }" class="text-skin-text">
+        <router-link
+          :to="{ path: '/', query: { type: 'strategies' } }"
+          class="text-skin-text"
+        >
           <BaseIcon name="back" size="22" class="!align-middle" />
           {{ $t('strategiesPage') }}
         </router-link>

@@ -1,10 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
-import { useValidationsFilter } from '@/composables/useValidationsFilter';
+import { SpaceValidation } from '@/helpers/interfaces';
+
+import { useValidationsFilter } from '@/composables';
 
 const defaultParams = {};
 
-const props = defineProps({ open: Boolean, validation: Object });
+const props = defineProps<{ open: boolean; validation: SpaceValidation }>();
 
 const emit = defineEmits(['add', 'close']);
 

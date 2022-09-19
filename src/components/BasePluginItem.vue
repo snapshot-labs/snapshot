@@ -1,14 +1,14 @@
-<script setup>
-import { useIntl } from '@/composables/useIntl';
-import { usePlugins } from '@/composables/usePlugins';
+<script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
+import { PluginIndex } from '@/helpers/interfaces';
+import { useIntl, usePlugins } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();
 
-defineProps({
-  plugin: Object // src/plugins/**/plugin.json
-});
+defineProps<{
+  plugin: PluginIndex;
+}>();
 </script>
 
 <template>

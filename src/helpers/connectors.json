@@ -17,11 +17,6 @@
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
   },
-  "torus": {
-    "id": "torus",
-    "name": "Torus",
-    "icon": "ipfs://QmTsZvSJrj5xbreGzccwPCdkV7ZKYEzPqRrTe5xduXgVmu"
-  },
   "walletlink": {
     "id": "walletlink",
     "name": "Coinbase Wallet",
@@ -44,9 +39,15 @@
     },
     "icon": "ipfs://QmNuLXa47xSrDNKRfpPNhoFTuoztvtWCcwGnPpT5MXJWMb"
   },
+  "stargazer": {
+    "id": "stargazer",
+    "name": "Stargazer",
+    "icon": "ipfs://bafkreiapdizo36f3yeg7g6l46f7ahbbkyo4otufnfyqri6louysr3grpzy"
+  },
   "gnosis": {
     "id": "gnosis",
     "name": "Gnosis Safe",
-    "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc"
+    "icon": "ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc",
+    "hidden": true
   }
 }

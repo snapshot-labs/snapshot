@@ -1,8 +1,6 @@
-<script>
-export default {
-  props: { open: Boolean, title: String },
-  emits: ['close']
-};
+<script setup lang="ts">
+defineProps<{ open: boolean; title: string }>();
+defineEmits(['close']);
 </script>
 
 <template>

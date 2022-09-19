@@ -2,7 +2,12 @@
 import { computed, ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  SpaceStrategy
+} from '@/helpers/interfaces';
 
 const { formatCompactNumber, formatPercentNumber, formatNumber } = useIntl();
 
@@ -11,7 +16,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
 }>();
 
 const titles = computed(() =>

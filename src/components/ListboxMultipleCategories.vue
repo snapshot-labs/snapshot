@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import { useCategories } from '@/composables/useCategories';
+import { computed } from 'vue';
+import { useCategories } from '@/composables';
 
 const props = defineProps<{
   categories: string[];
@@ -14,25 +14,18 @@ const categoriesItems = computed(() => {
   return categories.map((category, i) => ({ id: i + 1, name: category }));
 });
 
-const selectedCategories = ref<{ id: number; name: string }[]>([]);
-
-onMounted(() => {
-  // add props.categories to selectedCategories with correct id from categoriesItems
-  props.categories.forEach(category => {
-    const categoryItem = categoriesItems.value.find(
-      item => item.name === category
+const selectedCategories = computed({
+  get() {
+    return categoriesItems.value.filter(category =>
+      props.categories.includes(category.name)
     );
-    if (categoryItem) {
-      selectedCategories.value.push(categoryItem);
-    }
-  });
-});
-
-watch(selectedCategories, () => {
-  emit(
-    'updateCategories',
-    selectedCategories.value.map(item => item.name)
-  );
+  },
+  set(value) {
+    emit(
+      'updateCategories',
+      value.map(item => item.name)
+    );
+  }
 });
 </script>
 

@@ -38,7 +38,7 @@ export class InterfaceDecoder extends Interface {
     if (typeof fragmentOrName === 'string') {
       return this.getFunction(fragmentOrName);
     } else if (!fragmentOrName) {
-      const signature = data.substr(0, 10);
+      const signature = data.slice(0, 10);
       return this.getFunction(signature);
     }
     return fragmentOrName;
@@ -48,7 +48,7 @@ export class InterfaceDecoder extends Interface {
     if (isArrayParameter(parameter.baseType)) {
       return this.formatArrayValue(parameter.arrayChildren, value, deep);
     }
-    return this.formatValue(parameter.type, value);
+    return value.toString();
   }
 
   private formatArrayValue(paramType, value, deep = 0) {
@@ -57,9 +57,5 @@ export class InterfaceDecoder extends Interface {
     );
     if (deep) return formattedValues;
     return JSON.stringify(formattedValues);
-  }
-
-  private formatValue(type, value): string {
-    return value.toString();
   }
 }

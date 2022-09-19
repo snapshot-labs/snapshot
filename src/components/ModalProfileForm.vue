@@ -67,7 +67,6 @@ watch(
     <div class="space-y-2 p-4">
       <div class="flex justify-center">
         <InputUploadAvatar
-          :avatar="form.avatar"
           @image-uploaded="url => (form.avatar = url)"
           @image-remove="form.avatar = ''"
         >

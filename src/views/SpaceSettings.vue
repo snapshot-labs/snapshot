@@ -1,45 +1,46 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { getAddress } from '@ethersproject/address';
-import { useWeb3 } from '@/composables/useWeb3';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { useSpaceController } from '@/composables/useSpaceController';
-import { useEns } from '@/composables/useEns';
-import { getSpaceUri, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
-import { useTreasury } from '@/composables/useTreasury';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+import {
+  useI18n,
+  useWeb3,
+  useClient,
+  useSpaceController,
+  useEns,
+  useExtendedSpaces,
+  useSpaceForm,
+  useTreasury,
+  useFlashNotification
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
-  sourceSpace: ExtendedSpace;
 }>();
 
 const { t, setPageTitle } = useI18n();
 const { web3Account } = useWeb3();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
-const { form, validate, formatSpace, getErrorMessage } = useSpaceSettingsForm();
+const {
+  form,
+  validationResult,
+  isValid,
+  isReadyToSubmit,
+  populateForm,
+  resetForm
+} = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 
-const currentSettings = ref({});
 const currentTextRecord = ref('');
 const loaded = ref(false);
-const uploadLoading = ref(false);
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const isValid = computed(() => {
-  return (
-    !clientLoading.value && validate.value === true && !uploadLoading.value
-  );
-});
 
 const textRecord = computed(() => {
   const keyURI = encodeURIComponent(props.space.id);
@@ -75,10 +76,10 @@ const isSpaceAdmin = computed(() => {
 });
 
 async function handleSubmit() {
-  if (!isValid.value) return console.log('Invalid schema', validate.value);
+  if (!isValid.value)
+    return console.log('Invalid schema', validationResult.value);
 
-  const formattedForm = formatSpace(form.value);
-  const result = await send({ id: props.space.id }, 'settings', formattedForm);
+  const result = await send({ id: props.space.id }, 'settings', form.value);
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
@@ -88,25 +89,11 @@ async function handleSubmit() {
   }
 }
 
-function handleReset() {
-  if (props.sourceSpace) return (form.value = clone(props.sourceSpace));
-  if (currentSettings.value) return (form.value = clone(currentSettings.value));
-}
-
 onMounted(async () => {
-  if (props.space) {
-    const spaceClone = clone(props.space);
-    if (spaceClone) {
-      form.value = spaceClone;
-      currentSettings.value = clone(spaceClone);
-    }
-  }
-  if (props.sourceSpace) {
-    const fromClone = clone(props.sourceSpace);
-    if (fromClone) {
-      form.value = fromClone;
-    }
-  }
+  setPageTitle('page.title.space.settings', { space: props.space.name });
+
+  populateForm(props.space);
+
   try {
     const uri = await getSpaceUri(
       props.space.id,
@@ -119,10 +106,6 @@ onMounted(async () => {
   }
 
   loaded.value = true;
-});
-
-onMounted(() => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
 });
 
 const {
@@ -171,80 +154,37 @@ async function handleSetRecord() {
       <template v-else>
         <div class="space-y-3">
           <BaseMessageBlock
-            v-if="
-              !(isSpaceController || isSpaceAdmin || ensOwner) &&
-              currentTextRecord
-            "
-            class="mx-4 mb-5 md:mx-0"
+            v-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
+            class="mx-4 mb-3 md:mx-0"
             level="info"
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
 
-          <SettingsProfileBlock
-            v-model:name="form.name"
-            v-model:about="form.about"
-            v-model:categories="form.categories"
-            v-model:avatar="form.avatar"
-            v-model:private="form.private"
-            v-model:terms="form.terms"
-            v-model:website="form.website"
-          />
+          <SettingsProfileBlock context="settings" />
 
-          <SettingsLinkBlock
-            v-model:twitter="form.twitter"
-            v-model:github="form.github"
-          />
+          <SettingsLinkBlock context="settings" />
 
-          <SettingsStrategiesBlock
-            :form="form"
-            @update-strategies="val => (form.strategies = val)"
-            @update-network="val => (form.network = val)"
-            @update-symbol="val => (form.symbol = val)"
-          />
+          <SettingsSubSpacesBlock context="settings" />
+
+          <SettingsStrategiesBlock context="settings" />
 
           <SettingsAdminsBlock
-            :admins="form.admins"
+            context="settings"
             :is-space-controller="isSpaceController"
-            :error="getErrorMessage('admins')"
-            @update:admins="val => (form.admins = val)"
           />
 
-          <SettingsAuthorsBlock
-            :members="form.members"
-            :error="getErrorMessage('members')"
-            @update:members="val => (form.members = val)"
-          />
+          <SettingsAuthorsBlock context="settings" />
 
-          <SettingsValidationBlock
-            v-model:validation="form.validation"
-            :filters="form.filters"
-            @update:min-score="val => (form.filters.minScore = val)"
-            @update:only-members="val => (form.filters.onlyMembers = val)"
-          />
+          <SettingsValidationBlock context="settings" />
 
-          <SettingsVotingBlock
-            v-model:delay="form.voting.delay"
-            v-model:period="form.voting.period"
-            v-model:quorum="form.voting.quorum"
-            v-model:type="form.voting.type"
-            v-model:hideAbstain="form.voting.hideAbstain"
-          />
+          <SettingsVotingBlock context="settings" />
 
-          <SettingsDomainBlock
-            v-model:domain="form.domain"
-            v-model:skin="form.skin"
-          />
+          <SettingsDomainBlock context="settings" />
 
-          <SettingsTreasuriesBlock
-            :treasuries="form.treasuries"
-            @update-treasuries="value => (form.treasuries = value)"
-          />
+          <SettingsTreasuriesBlock context="settings" />
 
-          <SettingsPluginsBlock
-            :plugins="form.plugins"
-            @update:plugins="val => (form.plugins = val)"
-          />
+          <SettingsPluginsBlock context="settings" />
         </div>
       </template>
     </template>
@@ -268,12 +208,12 @@ async function handleSetRecord() {
               {{ $t('settings.editController') }}
             </BaseButton>
             <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="handleReset">
+              <BaseButton class="mb-2 block w-full" @click="resetForm">
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
-                :disabled="uploadLoading"
-                :loading="clientLoading"
+                :disabled="!isReadyToSubmit"
+                :loading="isSending"
                 class="block w-full"
                 primary
                 @click="handleSubmit"

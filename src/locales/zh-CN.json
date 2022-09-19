@@ -11,6 +11,7 @@
   "retry": "重试",
   "currentResults": "当前结果",
   "reset": "重置",
+  "close": "关闭",
   "save": "保存",
   "author": "作者",
   "next": "下一页",
@@ -39,6 +40,7 @@
   "network": "网络",
   "networks": "网络",
   "skins": "皮肤",
+  "spaceMembers": "成员",
   "members": "没有成员 | {count} 个成员 | {count} 个成员",
   "editStrategy": "编辑策略",
   "invalidProposals": "无效提案",
@@ -50,6 +52,8 @@
   "toggleSkin": "切换皮肤",
   "about": "关于",
   "license": "许可证",
+  "showMore": "显示更多",
+  "voted": "已投票",
   "ipfsServer": "IPFS 服务器",
   "hub": "中心",
   "cancel": "取消",
@@ -60,6 +64,7 @@
   "removeSpace": "用于空间 {0}",
   "confirmVote": "确认投票",
   "voteOverview": "投票总览",
+  "quorumReached": "已达到既定人数",
   "options": "选项",
   "votingPower": "您的投票权",
   "receipt": "凭证",
@@ -111,6 +116,7 @@
   "select": "选择",
   "language": "语言",
   "agree": "我同意",
+  "moderators": "版主",
   "mustAgreeToTerms": "在完成此操作之前，您必须同意此处的{0}服务条款：",
   "playground": "练习场",
   "strategyParams": "策略参数",
@@ -120,6 +126,8 @@
   "join": "加入",
   "joined": "已加入",
   "leave": "离开",
+  "subspaces": "子空间",
+  "mainspace": "主空间",
   "copyLink": "复制链接",
   "duplicateProposal": "复制提案",
   "joinedSpaces": "已加入的空间",
@@ -131,6 +139,7 @@
   "confirmAction": "确认操作",
   "or": "或者",
   "share": "分享",
+  "shareOnTwitter": "分享到 Twitter",
   "createButton": "创建",
   "discussion": "讨论",
   "changeWallet": "更换钱包",
@@ -224,7 +233,16 @@
     "vote": "投票",
     "startDate": "开始日期",
     "endDate": "结束日期",
-    "votingSystem": "投票制度"
+    "votingSystem": "投票制度",
+    "postVoteModal": {
+      "defaultTitle": "投票成功！",
+      "gnosisSafeTitle": "您的投票正在进行中...",
+      "gnosisSafeDescription": " 使用Safe进行的投票需要额外的签名者，并在交易确认后可见",
+      "seeQueue": "查看队列中的交易",
+      "tips": {
+        "1": "投票可以在提案处于活动状态时更改"
+      }
+    }
   },
   "proposals": {
     "header": "提案",
@@ -254,7 +272,7 @@
   "settings": {
     "header": "设置",
     "editController": "编辑控制人",
-    "connectWithSpaceOwner": "要修改空间设置，请连接控制人或管理员钱包。",
+    "connectWithSpaceOwner": "您处于只读模式，要修改空间设置，请连接控制人或管理员的钱包。",
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
     "noRecord": "未找到文本记录。请确保 id 已经在 network注册了域名，然后编辑控制人的文本记录来重新设置空间。",
@@ -275,23 +293,36 @@
     },
     "terms": {
       "label": "条款",
-      "information": "用户必须先接受这些条款才能创建提案或投票。"
+      "information": "用户在创建提案或投票前需要接受一次这些条款"
     },
     "hideSpace": "从主页隐藏空间",
     "links": "社交账户",
-    "subspaces": "子空间",
+    "subspaces": {
+      "label": "子空间",
+      "information": "子空格仅在主空格和子空格配置后才会显示。 {docs}",
+      "parent": {
+        "label": "主空间",
+        "placeholder": "pistachiodao.eth",
+        "information": "此空间作为子空间的空间将显示在空间页面上"
+      },
+      "children": {
+        "label": "子空间",
+        "placeholder": "pistachiodao.eth",
+        "information": "此处列出的相关子空间将显示在空间页面上"
+      }
+    },
     "website": "网站",
     "strategies": {
-      "label": "投票策略",
+      "label": "策略",
       "information": "策略用于确定投票权或用户是否有资格创建提案。"
     },
     "network": {
       "label": "网络",
-      "information": "用于此空间的 defaul网络。网络也可以在个别策略中指定。"
+      "information": "用于此空间的默认网络。网络也可以在单独的策略中指定。"
     },
     "symbol": {
       "label": "符号",
-      "information": "此空间使用的默认符号，通常是代币符号，例如BAL表示Balancer这一代币。"
+      "information": "此空间使用的默认符号，通常是代币的符号。例如BAL代表Balancer"
     },
     "strategiesList": "最多选择 8 个策略",
     "votingPowerIsCumulative": "投票权是累积的",
@@ -299,17 +330,17 @@
     "testInPlayground": "在playground中测试",
     "admins": {
       "label": "管理员",
-      "information": "管理员能够修改空间设置和管理空间提案。"
+      "information": "管理员能够修改空间设置和管理空间提案"
     },
     "authors": {
       "label": "作者",
-      "information": "作者可以创建提案而不必通过验证。"
+      "information": "创建者能够创建提案"
     },
     "proposalValidation": "提案验证",
-    "validation": "验证",
+    "validation": "类型",
     "proposalThreshold": {
-      "label": "提案门槛",
-      "information": "创建提案所需的最低投票权。"
+      "label": "阈值",
+      "information": "创建提案所需的最低投票权"
     },
     "allowOnlyAuthors": "仅允许作者提交提案",
     "editValidation": "编辑验证",
@@ -322,11 +353,11 @@
     "days": "天",
     "quorum": {
       "label": "提案人数",
-      "information": "提案获得通过所需的最低投票权数。"
+      "information": "提案通过所需的最低投票权"
     },
     "type": {
       "label": "类型",
-      "information": "这个空间采用的投票方式。该类型的投票方式将应用到所有的提案当中。"
+      "information": "此空间所采用的投票制度类型。该类型的投票制度将应用到所有的提案当中。"
     },
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
@@ -341,7 +372,7 @@
       "label": "金库",
       "add": "添加金库",
       "edit": "编辑金库",
-      "information": "为您的您组织添加金库以在您的空间中展示它们。"
+      "information": "添加您的组织的金库以在您的空间中展示它们"
     },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
@@ -382,21 +413,28 @@
     "domain": {
       "title": "设置空间域名",
       "ensMessage": " 在创建自己的空间之前，您需要设置以太坊主网上的 ENS 域名。",
-      "ensMessageTestnet": "你也可以在 Rinkeby 测试网上进行测试，先在那里进行处理。",
+      "ensMessageTestnet": "你也可以在 Goerli 测试网上进行测试，先在那里进行处理。",
       "tryDemo": "尝试这个 demo"
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
+      "subtitle": "您可以随时改变您的策略设置。",
+      "blockTitle": "设置投票策略",
       "onePersonOneVote": {
         "title": "一人，一票",
-        "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。"
+        "description": "管理可以投票或只允许任何地址投票的白名单。每个投票都是平等的，不需要代币。",
+        "whitelistInformation": "指定一些可以投票的账户",
+        "ticketInformation": "任何帐户都可以投票",
+        "votesEqualInfo": "每次投票都是平等的，无代币限制"
       },
       "tokenVoting": {
         "title": "代币加权投票",
-        "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准"
+        "description": "投票用代币作为参考的权重。代币可以是 ERC-20、 ERC-721 或 ERC-115 的代币标准",
+        "tokenNotFound": "未找到代币",
+        "seeOnEtherscan": "在Etherscan上查看"
       },
       "advanced": {
-        "title": "高级设置",
+        "title": "自定义设置",
         "description": "选择最多8个具有多种选项的策略。 如果你找不到正确的策略，你可以创建自己的策略"
       }
     },
@@ -459,6 +497,7 @@
     "networks": "网络",
     "plugins": "插件",
     "results": "结果",
+    "category": "分类",
     "categories": {
       "all": "所有",
       "protocol": "协议",
@@ -646,5 +685,16 @@
     "description": "Snapshot是一个去中心化的治理平台，这使得用户很容易创建提案并就其进行表决，所有这些提案都不需要花费gas！ 此外，我们的灵活系统支持各种投票类型和策略，以便您可以根据您的需要调整投票过程。",
     "subHeader": "治理应该是一种快照",
     "subDescription": "Web3管理不一定要复杂。 Snapshot是各组织寻求一种简单有效的方法来管理其社区或组织的完美解决办法。"
+  },
+  "footerView": {
+    "resources": "资源",
+    "about": "关于",
+    "blog": "博客",
+    "jobs": "工作机会",
+    "discussions": "讨论",
+    "github": "GitHub",
+    "docs": "文档",
+    "support": "支持",
+    "hiring": "加入我们！"
   }
 }

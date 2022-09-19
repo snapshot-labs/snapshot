@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import {
   Listbox,
   ListboxButton,
@@ -8,18 +8,26 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
+type ListboxItem = {
+  value: any;
+  extras?: Record<string, any>;
+};
+
 const props = defineProps<{
-  items: { id: number; name: string }[];
-  modelValue: { id: number; name: string };
+  items: ListboxItem[];
+  modelValue: any;
   label?: string;
   disableInput?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const selectedItem = ref<{ id: number; name: string }>(props.modelValue);
-
-watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
+const selectedItem = computed({
+  get: () =>
+    props.items.find(item => item.value === props.modelValue) ||
+    props.items[0].value,
+  set: newVal => emit('update:modelValue', newVal.value)
+});
 </script>
 
 <template>
@@ -38,8 +46,8 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
           :selectedItem="selectedItem"
         />
 
-        <span v-else>
-          {{ selectedItem.name }}
+        <span v-else-if="selectedItem">
+          {{ selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -61,7 +69,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
               v-for="item in items"
-              :key="item.id"
+              :key="item.value"
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"
@@ -81,7 +89,7 @@ watch(selectedItem, () => emit('update:modelValue', selectedItem.value));
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item.name }}
+                    {{ item.value }}
                   </span>
                 </span>
 

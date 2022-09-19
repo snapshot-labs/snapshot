@@ -6,7 +6,7 @@ import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useProposals } from '@/composables';
 import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
@@ -26,13 +26,13 @@ const props = defineProps({
   strategies: Object
 });
 
-const emit = defineEmits(['reload', 'close']);
+const emit = defineEmits(['reload', 'close', 'openPostVoteModal']);
 
 const { t } = useI18n();
-const { notify } = useFlashNotification();
-const { send, clientLoading } = useClient();
+const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
+const { addVotedProposalId } = useProposals();
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -45,10 +45,11 @@ async function handleSubmit() {
   });
   console.log('Result', result);
   if (result.id) {
-    notify(['green', t('notify.voteSuccessful')]);
+    emit('openPostVoteModal');
     if (!pending.includes(props.space.id)) {
       emit('reload');
     }
+    addVotedProposalId(props.proposal.id);
     emit('close');
   }
 }
@@ -155,8 +156,8 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || clientLoading"
-          :loading="clientLoading"
+          :disabled="vp === 0 || isSending"
+          :loading="isSending"
           type="submit"
           class="w-full"
           primary

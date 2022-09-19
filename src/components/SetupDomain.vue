@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, watch, onUnmounted, computed } from 'vue';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
-import { useSpaceSettingsForm } from '@/composables/useSpaceSettingsForm';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
@@ -17,9 +15,6 @@ const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
   useExtendedSpaces();
-const { resetForm } = useSpaceSettingsForm();
-
-const router = useRouter();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
@@ -41,13 +36,7 @@ const domainsWithoutExistingSpace = computed(() => {
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
-const nextStep = key => {
-  router.push({
-    name: 'setup',
-    params: { ens: key },
-    query: { step: 3 }
-  });
-};
+const emit = defineEmits(['next']);
 
 // handle periodic lookup (every 5s) while registering new domain
 let waitingForRegistrationInterval;
@@ -58,8 +47,6 @@ const waitForRegistration = () => {
 
 // stop lookup when leaving
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
-
-onMounted(() => resetForm());
 </script>
 
 <template>
@@ -88,7 +75,7 @@ onMounted(() => resetForm());
       </BaseMessageBlock>
 
       <BaseMessageBlock
-        v-if="defaultNetwork === '4'"
+        v-if="defaultNetwork === '5'"
         level="info"
         class="mb-4"
         is-responsive
@@ -117,7 +104,7 @@ onMounted(() => resetForm());
               :key="i"
               class="flex w-full items-center justify-between"
               :primary="domainsWithoutExistingSpace.length === 1"
-              @click="nextStep(ens.name)"
+              @click="emit('next', ens.name)"
             >
               {{ ens.name }}
               <BaseIcon name="go" size="22" class="-mr-2" />

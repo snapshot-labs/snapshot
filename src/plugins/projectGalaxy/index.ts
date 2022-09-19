@@ -44,6 +44,7 @@ export default class Plugin {
       query: `mutation claimOAT($input: PrepareParticipateInput!) {
         prepareParticipate(input: $input) {
           allow
+          disallowReason
         }
       }`,
       variables: {
@@ -62,7 +63,7 @@ export default class Plugin {
     const responseJSON = await eventResponse.json();
     return responseJSON.data.prepareParticipate.allow;
   }
- 
+
   async getCurrentState(snapshot, address, campaign) {
     // Fetch the event
     const eventResponse = await this.fetchGQL({

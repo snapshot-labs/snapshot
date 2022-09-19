@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
+import { useWeb3 } from '@/composables';
 
-const props = defineProps<{
+defineProps<{
   spaceId: string;
-  web3Account: string;
 }>();
+
+const { web3Account } = useWeb3();
 
 // Reactive local storage with help from vueuse package
 const createdSpaces = useStorage(
-  `snapshot.createdSpaces.${props.web3Account.slice(0, 8).toLowerCase()}`,
+  `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
   {}
 );
 </script>

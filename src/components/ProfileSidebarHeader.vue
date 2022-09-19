@@ -6,16 +6,16 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mt-3">
-    <div class="flex justify-center">
+  <div class="flex truncate lg:mt-3 lg:block">
+    <div class="flex lg:justify-center">
       <AvatarUser size="69" :address="userAddress" />
     </div>
-    <div class="text-center">
+    <div class="truncate lg:text-center">
       <ProfileName :profile="profile" :address="userAddress" />
       <ProfileAddressCopy
         :profile="profile"
         :user-address="userAddress"
-        class="justify-center"
+        class="lg:justify-center"
       />
     </div>
   </div>

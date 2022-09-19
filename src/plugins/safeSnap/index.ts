@@ -14,7 +14,7 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { ModuleTransaction, ProposalDetails } from './models';
+import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -31,7 +31,6 @@ import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
 export * from './constants';
-export * from './models';
 
 export * from './utils/abi';
 export * from './utils/safe';
@@ -44,20 +43,14 @@ export * from './utils/transactions';
 export * from './utils/realityModule';
 
 export default class Plugin {
-  public author = 'Gnosis';
-  public version = '1.0.0';
-  public name = 'SafeSnap';
-  public website = 'https://safe.gnosis.io';
-  public options: any;
-
-  validateTransaction(transaction: ModuleTransaction) {
+  validateTransaction(transaction: SafeTransaction) {
     const addressEmptyOrValidate =
       transaction.to === '' || isAddress(transaction.to);
     return (
       isBigNumberish(transaction.value) &&
       addressEmptyOrValidate &&
       (!transaction.data || isHexString(transaction.data)) &&
-      transaction.operation in ['0', '1'] &&
+      ['0', '1'].includes(transaction.operation) &&
       isBigNumberish(transaction.nonce)
     );
   }
@@ -65,7 +58,7 @@ export default class Plugin {
   calcTransactionHash(
     network: string,
     moduleAddress: string,
-    transaction: ModuleTransaction
+    transaction: SafeTransaction
   ) {
     const chainId = parseInt(network);
     const domain = {
@@ -78,7 +71,7 @@ export default class Plugin {
   calcTransactionHashes(
     chainId: number,
     moduleAddress: string,
-    transactions: ModuleTransaction[]
+    transactions: SafeTransaction[]
   ) {
     const domain = {
       chainId: chainId,
@@ -98,7 +91,7 @@ export default class Plugin {
     moduleAddress: string,
     proposalId: string,
     txHashes: string[]
-  ): Promise<Omit<ProposalDetails, 'transactions'>> {
+  ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
     const provider: StaticJsonRpcProvider = getProvider(network);
     const question = await buildQuestion(proposalId, txHashes);
     const questionHash = solidityKeccak256(['string'], [question]);
@@ -218,7 +211,8 @@ export default class Plugin {
     const answers: Result[] = [];
 
     // We need to send the information from last to first
-    events.reverse().forEach(({ args }) => {
+    events.reverse();
+    events.forEach(({ args }) => {
       users.push(args?.user.toLowerCase());
       historyHashes.push(args?.history_hash);
       bonds.push(args?.bond);
@@ -278,7 +272,7 @@ export default class Plugin {
     ]);
 
     if (BigNumber.from(currentHistoryHash).eq(0)) {
-      const tx = await sendTransaction(
+      const withdrawTx = await sendTransaction(
         web3,
         oracleAddress,
         ORACLE_ABI,
@@ -286,8 +280,8 @@ export default class Plugin {
         []
       );
       yield;
-      const receipt = await tx.wait();
-      console.log('[Realitio] executed withdraw:', receipt);
+      const withdrawReceipt = await withdrawTx.wait();
+      console.log('[Realitio] executed withdraw:', withdrawReceipt);
       return;
     }
 
@@ -311,7 +305,7 @@ export default class Plugin {
     moduleAddress: string,
     proposalId: string,
     txHashes: string[],
-    moduleTx: ModuleTransaction,
+    moduleTx: SafeTransaction,
     transactionIndex: number
   ) {
     const tx = await sendTransaction(

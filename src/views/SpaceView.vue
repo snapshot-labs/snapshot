@@ -1,10 +1,8 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useApp } from '@/composables/useApp';
-import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { useRouter, useRoute } from 'vue-router';
-import { formatSpace } from '@/helpers/utils';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
+import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useApp, useExtendedSpaces } from '@/composables';
 
 const route = useRoute();
 const router = useRouter();
@@ -23,16 +21,11 @@ if (aliasedSpace) {
 
 const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === spaceKey.value))
-);
-
-const sourceSpaceRoute = computed(() => route.params.sourceSpace);
-const sourceSpace = computed(() =>
-  formatSpace(extentedSpaces.value?.find(s => s.id === sourceSpaceRoute.value))
+  extentedSpaces.value?.find(s => s.id === spaceKey.value)
 );
 
 onMounted(async () => {
-  await loadExtentedSpaces([spaceKey.value, sourceSpaceRoute.value]);
+  await loadExtentedSpaces([spaceKey.value]);
   if (!space.value) {
     router.push('/');
   }
@@ -40,7 +33,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <router-view v-if="space" :space="space" :source-space="sourceSpace" />
+  <router-view v-if="space" :space="space" />
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout

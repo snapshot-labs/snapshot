@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  Vote,
+  SpaceStrategy
+} from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  strategies: { name: string; network: string; params: Record<string, any> }[];
+  strategies: SpaceStrategy[];
+  votes: Vote[];
   loaded: boolean;
 }>();
 

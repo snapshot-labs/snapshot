@@ -24,8 +24,8 @@ function formatDate(date) {
   const offset = dateObject.getTimezoneOffset();
   const data = new Date(dateObject.getTime() - offset * 60 * 1000);
   output.dateString = data.toISOString().split('T')[0];
-  output.h = ('0' + dateObject.getHours().toString()).slice(-2);
-  output.m = ('0' + dateObject.getMinutes().toString()).slice(-2);
+  output.h = `0${dateObject.getHours().toString()}`.slice(-2);
+  output.m = `0${dateObject.getMinutes().toString()}`.slice(-2);
   return output;
 }
 
