@@ -65,7 +65,7 @@
     "@iconify-json/heroicons-outline": "^1.1.4",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
-    "@types/node": "^18.7.16",
+    "@types/node": "^18.7.18",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.2",
     "@vitejs/plugin-vue": "^2.3.4",
@@ -93,7 +93,7 @@
     "unplugin-icons": "^0.14.9",
     "unplugin-vue-components": "^0.22.7",
     "vite": "^2.9.14",
-    "vitest": "^0.23.2",
+    "vitest": "^0.23.4",
     "vitest-fetch-mock": "^0.2.1"
   },
   "resolutions": {
