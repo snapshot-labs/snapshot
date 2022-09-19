@@ -67,7 +67,7 @@
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "^18.7.18",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
-    "@typescript-eslint/parser": "^5.36.2",
+    "@typescript-eslint/parser": "^5.37.0",
     "@vitejs/plugin-vue": "^2.3.4",
     "@vitest/ui": "^0.23.2",
     "@vue/eslint-config-prettier": "^6.0.0",
