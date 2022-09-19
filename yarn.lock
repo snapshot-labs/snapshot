@@ -552,10 +552,10 @@
   dependencies:
     "@floating-ui/core" "^1.0.0"
 
-"@gnosis.pm/safe-apps-provider@^0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.13.1.tgz#69b12f800fa67b132535753f674518b7aa8ba20b"
-  integrity sha512-v84Apwb5SeDuRexcvzL2fyfYS3SR9MqPSKiSyFFOWo/Tpm4zgF/Z4ZKhsBKkgktqGoc0zFUZeQPVvqyQpixM9g==
+"@gnosis.pm/safe-apps-provider@^0.13.2":
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/@gnosis.pm/safe-apps-provider/-/safe-apps-provider-0.13.2.tgz#b4963c51e2ae5e86198c7ca42248ab4d97355919"
+  integrity sha512-n/sd6Nq7Kg1ZRSB4zMy7lFV+5R5ZXFKd2ZtvIq0cBvkTM9K2sDNhqTE1Em2uy0hM5wKdWlTfJtwh6YkWVhoXDg==
   dependencies:
     "@gnosis.pm/safe-apps-sdk" "7.8.0"
     events "^3.3.0"
@@ -798,13 +798,13 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
-"@snapshot-labs/lock@^0.1.1010":
-  version "0.1.1010"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1010.tgz#7de2883b39165c7d76b336a8e0b72b3f994f9fc9"
-  integrity sha512-wiOGYsnZ5E4/E//3Jo/B+bC4ZcRI2pwRqskPfKQ1IVjfkOGCjSztOt4cz4tj2aifXcdAw0qYcZytzP8sCk7biQ==
+"@snapshot-labs/lock@^0.1.1011":
+  version "0.1.1011"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1011.tgz#5f61fac7eae4e80a656e46ea6792d57b1c0ec61e"
+  integrity sha512-QZ9byU46Oh1/9TRYwlf9wSqkqYgS6P8tzCh7bCWRuwuQmugyL6X65W7DkAtFiycSwrh60EDkNZlDFeG75vSFbA==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
-    "@gnosis.pm/safe-apps-provider" "^0.13.1"
+    "@gnosis.pm/safe-apps-provider" "^0.13.2"
     "@gnosis.pm/safe-apps-sdk" "^7.8.0"
     "@portis/web3" "^4.0.6"
     "@toruslabs/torus-embed" "^1.12.1"
