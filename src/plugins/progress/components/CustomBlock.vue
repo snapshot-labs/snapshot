@@ -4,7 +4,9 @@ import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { ref, onMounted } from 'vue';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
+const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 const props = defineProps([
   'space',
@@ -42,31 +44,34 @@ async function requireSignature() {
   }
 
   const auth = getInstance();
-  await signMessage(
+  let signature = await signMessage(
     auth.web3,
     'Signing this message will allow us to authorize your request to update the progress of your proposal.',
     web3Account.value
   );
 
-  const authHeader = '${props.proposal.id}-${signature}';
+  const authHeader = `${props.proposal.id}-${signature}`;
   localStorage.setItem('snap-progress', authHeader);
 
   return authHeader;
 }
 async function getActiveSteps() {
   if (isComplete) {
-    const apiUrl =
-      'https://jissr670k3.execute-api.us-east-1.amazonaws.com/dev/proposal/${props.proposal.id}';
-    fetch(apiUrl).then(response =>
-      response
-        .json()
-        .then(
-          data =>
-            (steps.value = data.Items.sort((a, b) =>
-              a.index > b.index ? 1 : -1
-            ))
-        )
-    );
+    const apiUrl = `https://jissr670k3.execute-api.us-east-1.amazonaws.com/dev/proposal/${props.proposal.id}`;
+    try {
+      fetch(apiUrl).then(response =>
+        response
+          .json()
+          .then(
+            data =>
+              (steps.value = data.Items.sort((a, b) =>
+                a.index > b.index ? 1 : -1
+              ))
+          )
+      );
+    } catch (e) {
+      notify(['primary', 'Oops something went wrong.']);
+    }
   }
 }
 async function createNewStep() {
@@ -74,8 +79,7 @@ async function createNewStep() {
     try {
       const sig = await requireSignature();
       addIsLoading.value = true;
-      const apiUrl =
-        'https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${props.proposal.id}';
+      const apiUrl = `https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${props.proposal.id}`;
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -95,6 +99,7 @@ async function createNewStep() {
       );
     } catch (e) {
       addIsLoading.value = false;
+      notify(['primary', 'Oops something went wrong.']);
     }
   }
 }
@@ -110,7 +115,7 @@ async function setStepComplete(step) {
       body: JSON.stringify({ proposalId: step.proposalId })
     };
     fetch(
-      'https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${step.id}',
+      `https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${step.id}`,
       requestOptions
     ).then(() => {
       getActiveSteps();
@@ -120,6 +125,7 @@ async function setStepComplete(step) {
   } catch (error) {
     completeIsLoading.value = false;
     currentlyLoadingStepId.value = null;
+    notify(['primary', 'Oops something went wrong.']);
   }
 }
 function closeEvent() {
@@ -134,8 +140,7 @@ async function deleteStep() {
   try {
     const sig = await requireSignature();
     deleteIsLoading.value = true;
-    const apiUrl =
-      'https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${step.id}?proposalId=${props.proposal.id}';
+    const apiUrl = `https://jci7szds71.execute-api.us-east-1.amazonaws.com/dev/proposal/${step.id}?proposalId=${props.proposal.id}`;
     const requestOptions = {
       method: 'DELETE',
       headers: {
@@ -149,6 +154,7 @@ async function deleteStep() {
     });
   } catch (error) {
     deleteIsLoading.value = false;
+    notify(['primary', 'Oops something went wrong.']);
   }
 }
 function formatDate(date) {
@@ -182,7 +188,7 @@ onMounted(async () => {
     <div class="flex flex-col">
       <div>
         <div
-          :v-bind:class="{
+          :class="{
             'border-green': isComplete()
           }"
           class="h-32 mt-2 min-w-[178px] rounded-xl border-2 bg-skin-block-bg p-3 text-base"
@@ -220,7 +226,7 @@ onMounted(async () => {
         </div>
         <div v-for="(step, index) in steps" :key="step.id">
           <div
-            :v-bind:class="{
+            :class="{
               'border-green': step.stepStatus === 'complete'
             }"
             class="h-32 min-w-[178px] rounded-xl border-2 bg-skin-block-bg p-3 text-base"
@@ -298,7 +304,7 @@ onMounted(async () => {
           <div class="h-[1rem]">
             <div
               :hidden="index === steps.length - 1"
-              :v-bind:class="{
+              :class="{
                 'border-green': step.stepStatus === 'complete',
                 'border-gray': step.stepStatus !== 'complete'
               }"
