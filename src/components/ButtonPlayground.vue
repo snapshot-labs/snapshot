@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { encodeJson } from '@/helpers/b64';
+import { useRouter } from 'vue-router';
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     name: string;
     network?: string;
@@ -15,24 +16,31 @@ withDefaults(
     snapshot: ''
   }
 );
+
+const emit = defineEmits(['close']);
+
+const router = useRouter();
+
+function clickPlayground() {
+  emit('close');
+  router.push({
+    name: 'playground',
+    query: {
+      query: encodeJson({
+        params: props.params,
+        network: props.network,
+        snapshot: props.snapshot
+      })
+    },
+    params: { name: props.name }
+  });
+}
 </script>
 
 <template>
   <BaseButtonIcon
     v-tippy="{ content: $t('playground') }"
-    @click="
-      $router.push({
-        name: 'playground',
-        query: {
-          query: encodeJson({
-            params,
-            network,
-            snapshot
-          })
-        },
-        params: { name }
-      })
-    "
+    @click="clickPlayground"
   >
     <i-ho-play />
   </BaseButtonIcon>
