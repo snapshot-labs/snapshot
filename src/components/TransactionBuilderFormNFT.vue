@@ -82,7 +82,7 @@ watch(() => props.showForm, populateForm);
 <template>
   <BaseModal :open="showForm" @close="closeAndClearForm">
     <template #header>
-      <h3>Transfer funds</h3>
+      <h3>Transfer collectable</h3>
     </template>
 
     <BaseContainer class="py-4">
