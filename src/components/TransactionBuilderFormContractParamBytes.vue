@@ -26,15 +26,15 @@ const requiredBytesStringLength = computed(() => requiredBytesLength.value * 2);
 
 const bytesFormatError = computed<{ message: string } | undefined>(() => {
   if (!input.value.startsWith('0x'))
-    return { message: 'Bytes must start with 0x', push: true };
+    return { message: 'Bytes must start with 0x' };
   if (!isHexString(input.value))
-    return { message: 'Bytes must be a valid hex string', push: true };
+    return { message: 'Bytes must be a valid hex string' };
 
   const bytesStringWithout0x = input.value.slice(2);
 
   if (requiredBytesStringLength.value === 0) {
     if (bytesStringWithout0x.length % 2 !== 0) {
-      return { message: 'Bytes string must be even length', push: true };
+      return { message: 'Bytes string must be even length' };
     }
 
     return undefined;
@@ -42,8 +42,7 @@ const bytesFormatError = computed<{ message: string } | undefined>(() => {
 
   if (bytesStringWithout0x.length !== requiredBytesStringLength.value)
     return {
-      message: `Requires exactly ${requiredBytesLength.value} bytes`,
-      push: true
+      message: `Requires exactly ${requiredBytesLength.value} bytes`
     };
 
   return undefined;
