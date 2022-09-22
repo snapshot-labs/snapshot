@@ -167,15 +167,13 @@ export function decodeERC721TransferData(data: string): Result {
   return contractInterface.decodeFunctionData(method, data);
 }
 
-export function getContractTransactionData(
+export function encodeContractData(
   abi: string,
-  method: string,
-  params: any[]
+  method: FunctionFragment,
+  paramValues: any[]
 ) {
   const contractInterface = new Interface(abi);
-  const parameterValues = FunctionFragment.from(method).inputs.map(
-    extractMethodArgs(params)
-  );
+  const parameterValues = method.inputs.map(extractMethodArgs(paramValues));
   return contractInterface.encodeFunctionData(method, parameterValues);
 }
 
@@ -190,10 +188,8 @@ export function createEmptyTransaction(): Transaction {
 
 enum FunctionSignatures {
   ERC20_TRANSFER = '0xa9059cbb',
-  ERC20_TRANSFER_FROM = '0x23b872dd',
-  ERC721_TRANSFER_FROM = '0x42842e0e',
-  ERC721_SAFE_TRANSFER_FROM = '0xb88d4fde',
-  ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT = '0x42842e0e'
+  ERC721_SAFE_TRANSFER_FROM = '0x42842e0e',
+  ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT = '0xb88d4fde'
 }
 
 export function detectTransactionForm(
@@ -202,7 +198,6 @@ export function detectTransactionForm(
   const functionSignature = transaction.data.slice(0, 10);
 
   if (
-    functionSignature === FunctionSignatures.ERC721_TRANSFER_FROM ||
     functionSignature === FunctionSignatures.ERC721_SAFE_TRANSFER_FROM ||
     functionSignature ===
       FunctionSignatures.ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT
@@ -212,7 +207,6 @@ export function detectTransactionForm(
 
   if (
     functionSignature === FunctionSignatures.ERC20_TRANSFER ||
-    functionSignature === FunctionSignatures.ERC20_TRANSFER_FROM ||
     functionSignature === '0x'
   ) {
     return TransactionForms.FUNDS;

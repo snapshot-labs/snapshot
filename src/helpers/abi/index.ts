@@ -1,3 +1,4 @@
+import memoize from 'lodash/memoize';
 import {
   FormatTypes,
   Fragment,
@@ -23,22 +24,24 @@ export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
 }
 
-const fetchContractABI = async (url: string, contractAddress: string) => {
-  const params = new URLSearchParams({
-    module: 'contract',
-    action: 'getAbi',
-    address: contractAddress
-  });
+const fetchContractABI = memoize(
+  async (url: string, contractAddress: string) => {
+    const params = new URLSearchParams({
+      module: 'contract',
+      action: 'getAbi',
+      address: contractAddress
+    });
 
-  // TODO: needs API key or memoization
-  const response = await fetch(`${url}?${params}`);
+    const response = await fetch(`${url}?${params}`);
 
-  if (!response.ok) {
-    return { status: 0, result: '' };
-  }
+    if (!response.ok) {
+      return { status: 0, result: '' };
+    }
 
-  return response.json();
-};
+    return response.json();
+  },
+  (url, contractAddress) => `${url}_${contractAddress}`
+);
 
 export function parseMethodToABI(method: FunctionFragment) {
   return [method.format(FormatTypes.full)];
@@ -75,31 +78,14 @@ function isWriteFunction(method: FunctionFragment) {
 }
 
 export function getABIWriteFunctions(abi: string | Fragment[]) {
-  const abiInterface = new Interface(abi);
-  return (
-    abiInterface.fragments
-      // Return only contract's functions
+  try {
+    const abiInterface = new Interface(abi);
+    return abiInterface.fragments
       .filter(FunctionFragment.isFunctionFragment)
       .map(FunctionFragment.fromObject)
-      // Return only write functions
       .filter(isWriteFunction)
-      // Sort by name
-      .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1))
-  );
-}
-
-export function getAbiFirstFunctionName(abi: ABI): string {
-  const abiInterface = new Interface(abi);
-  return abiInterface.fragments[0].name;
-}
-
-export async function fetchTextSignatures(
-  methodSignature: string
-): Promise<string[]> {
-  const url = new URL('/api/v1/signatures', 'https://www.4byte.directory');
-  url.searchParams.set('hex_signature', methodSignature);
-  url.searchParams.set('ordering', 'created_at');
-  const response = await fetch(url.toString());
-  const { results } = await response.json();
-  return results.map(signature => signature.text_signature);
+      .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+  } catch {
+    return [];
+  }
 }
