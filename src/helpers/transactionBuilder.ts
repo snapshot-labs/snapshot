@@ -55,6 +55,8 @@ export enum TransactionForms {
   FUNDS = 'funds',
   NFT = 'nft',
   CONTRACT = 'contract'
+  // UNISWAP = 'uniswap',
+  // DEPLOY = 'deploy'
 }
 
 export type Transaction = {
