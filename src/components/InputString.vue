@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { FormError } from '@/helpers/interfaces';
+
 defineProps<{
   modelValue?: string;
   definition?: any;
-  error?: { message: string; push?: boolean };
+  error?: FormError;
   placeholder?: string;
   information?: string;
 }>();
