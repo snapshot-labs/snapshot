@@ -91,8 +91,14 @@ const paramErrors = computed<FormError[]>(() => {
 
     if (param.baseType.startsWith('bytes'))
       return validateBytesString(value as string, param.baseType);
+
     if (param.baseType.startsWith('int') || param.baseType.startsWith('uint'))
       return validateIntString(value as string, param.baseType);
+
+    if (param.baseType === 'address') {
+      if (!isAddress(value as string))
+        return { message: 'Address is not valid' };
+    }
 
     return undefined;
   });
@@ -276,6 +282,7 @@ watch(selectedMethod, () => (methodParamValues.value = []));
               v-if="param.baseType === 'address'"
               :model-value="(methodParamValues[index] as string)"
               :label="param.name"
+              :error="paramErrors[index]"
               @update:model-value="methodParamValues[index] = $event"
             />
           </div>

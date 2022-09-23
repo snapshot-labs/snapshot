@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { isAddress } from '@ethersproject/address';
-import { computed, ref } from 'vue';
+import { FormError } from '@/helpers/transactionBuilder';
+import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
     modelValue: string;
     label: string;
+    error: FormError;
   }>(),
   {
     modelValue: '0x'
@@ -17,12 +18,6 @@ defineEmits<{
 }>();
 
 const input = ref<string>(props.modelValue);
-
-const addressError = computed<{ message: string } | undefined>(() => {
-  if (!isAddress(input.value)) return { message: 'Address is not valid' };
-
-  return undefined;
-});
 </script>
 
 <template>
@@ -30,7 +25,7 @@ const addressError = computed<{ message: string } | undefined>(() => {
   <InputString
     v-model="input"
     placeholder="0x..."
-    :error="addressError"
+    :error="error"
     @update:model-value="$emit('update:modelValue', $event)"
   />
 </template>
