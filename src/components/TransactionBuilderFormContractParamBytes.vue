@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { isHexString } from '@ethersproject/bytes';
+// Is this component even still needed? It's pure pass-through.
+import { ref } from 'vue';
+import { FormError } from '@/helpers/transactionBuilder';
 
 const props = withDefaults(
   defineProps<{
     modelValue: string;
-    exactBytesType: string;
     label: string;
+    error: FormError;
   }>(),
   {
     modelValue: '0x'
@@ -18,35 +19,6 @@ defineEmits<{
 }>();
 
 const input = ref<string>(props.modelValue);
-
-const requiredBytesLength = computed(() =>
-  Number(props.exactBytesType.replace('bytes', ''))
-);
-const requiredBytesStringLength = computed(() => requiredBytesLength.value * 2);
-
-const bytesFormatError = computed<{ message: string } | undefined>(() => {
-  if (!input.value.startsWith('0x'))
-    return { message: 'Bytes must start with 0x' };
-  if (!isHexString(input.value))
-    return { message: 'Bytes must be a valid hex string' };
-
-  const bytesStringWithout0x = input.value.slice(2);
-
-  if (requiredBytesStringLength.value === 0) {
-    if (bytesStringWithout0x.length % 2 !== 0) {
-      return { message: 'Bytes string must be even length' };
-    }
-
-    return undefined;
-  }
-
-  if (bytesStringWithout0x.length !== requiredBytesStringLength.value)
-    return {
-      message: `Requires exactly ${requiredBytesLength.value} bytes`
-    };
-
-  return undefined;
-});
 </script>
 
 <template>
@@ -54,7 +26,7 @@ const bytesFormatError = computed<{ message: string } | undefined>(() => {
   <InputString
     v-model="input"
     placeholder="0x..."
-    :error="bytesFormatError"
+    :error="error"
     @update:model-value="$emit('update:modelValue', $event)"
   />
 </template>

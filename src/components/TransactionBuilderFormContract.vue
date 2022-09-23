@@ -1,123 +1,302 @@
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, watch, watchEffect } from 'vue';
-import { ContractTransaction } from '@/helpers/transactionBuilder';
+import { computed, ref, watch } from 'vue';
+import {
+  encodeContractData,
+  FormError,
+  Transaction,
+  TransactionOperationType,
+  validateBytesString,
+  validateIntString
+} from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
-import { FunctionFragment, ParamType } from '@ethersproject/abi';
+import { FunctionFragment, Interface } from '@ethersproject/abi';
+import { BigNumber } from 'ethers';
+import { isAddress } from '@ethersproject/address';
 
 const props = defineProps<{
-  transaction: ContractTransaction;
+  showForm: boolean;
+  transaction: Transaction | null;
+  defaultFromAddress: string;
+  network: string;
 }>();
 
 const emit = defineEmits<{
-  (e: 'updateTransaction', transaction: ContractTransaction): void;
+  (e: 'close'): void;
+  (e: 'saveTransaction', transaction: Transaction): void;
 }>();
 
-const network = inject('network') as string;
+const contractAddress = ref<string>('');
+const abiString = ref<string>('[]');
+const abi = computed<Interface | undefined>(() => {
+  try {
+    return new Interface(abiString.value);
+  } catch (e) {
+    return undefined;
+  }
+});
+const availableMethods = computed<FunctionFragment[]>(() => {
+  if (!abi.value) return [];
+  return getABIWriteFunctions(abi.value);
+});
+const selectedMethod = ref<FunctionFragment | undefined>(undefined);
+const methodParamValues = ref<(boolean | string | BigNumber)[]>([]);
 
-const contractAddressInput = ref<string>(props.transaction.contractAddress);
-const methodInput = ref<string>(props.transaction.method);
-const paramsInput = ref<string[]>([...props.transaction.params]);
-const abiInput = ref<string>(props.transaction.abi);
+const useCustomData = ref<boolean>(false);
+const value = ref<BigNumber>(BigNumber.from(0));
+const data = ref<string>('0x');
 
+const abiLoading = ref(false);
 const abiNotFound = ref(false);
-const methods = ref<FunctionFragment[]>([]);
-const params = ref<ParamType[]>([]);
 
-const methodOptions = computed(() =>
-  methods.value.map(method => ({
-    value: method.name,
+const methodDropdownOptions = computed(() =>
+  availableMethods.value.map(method => ({
+    value: method,
     extras: method
   }))
 );
 
+const contractAddressError = computed<FormError>(() => {
+  if (contractAddress.value === '')
+    return { message: 'Contract address is required' };
+  if (!isAddress(contractAddress.value))
+    return { message: 'Contract address is not valid' };
+  return undefined;
+});
+
+const abiNotFoundError = computed<FormError>(() => {
+  if (useCustomData.value) return undefined;
+
+  if (abiNotFound.value)
+    return {
+      message: `ABI not found on network #${props.network}`,
+      push: true
+    };
+
+  return undefined;
+});
+
+const abiParseError = computed<FormError>(() => {
+  if (!useCustomData.value && !abi.value)
+    return { message: 'ABI string invalid', push: true };
+
+  return undefined;
+});
+
+const paramErrors = computed<FormError[]>(() => {
+  if (useCustomData.value || !selectedMethod.value) return [];
+
+  return selectedMethod.value.inputs.map((param, index) => {
+    const value = methodParamValues.value[index];
+    if (value === undefined) return undefined;
+
+    if (param.baseType.startsWith('bytes'))
+      return validateBytesString(value as string, param.baseType);
+    if (param.baseType.startsWith('int') || param.baseType.startsWith('uint'))
+      return validateIntString(value as string, param.baseType);
+
+    return undefined;
+  });
+});
+
+const hasParamErrors = computed<boolean>(() =>
+  paramErrors.value.some(error => !!error)
+);
+
 async function updateABI() {
-  const newAbi = await getContractABI(network, contractAddressInput.value);
+  abiLoading.value = true;
+
+  const newAbi = await getContractABI(props.network, contractAddress.value);
+
   if (newAbi) {
     abiNotFound.value = false;
-    abiInput.value = newAbi;
+    abiString.value = newAbi;
   } else {
     abiNotFound.value = true;
   }
+
+  abiLoading.value = false;
 }
 
 function updateMethods() {
-  if (!abiInput.value) return;
+  if (!abiString.value) return;
 
-  methods.value = getABIWriteFunctions(abiInput.value);
-  methodInput.value =
-    methods.value.find(method => method.name === methodInput.value)?.name ||
-    methods.value[0]?.name;
+  selectedMethod.value =
+    availableMethods.value.find(
+      method => method.name === selectedMethod.value?.name
+    ) || availableMethods.value[0];
 }
 
-function updateParams() {
-  const method = methods.value.find(
-    method => method.name === methodInput.value
-  );
-  if (method) {
-    params.value = method.inputs;
-  } else {
-    params.value = [];
+function closeAndClearForm() {
+  emit('close');
+
+  contractAddress.value = '';
+  selectedMethod.value = undefined;
+  methodParamValues.value = [];
+  abiString.value = '[]';
+  value.value = BigNumber.from(0);
+  data.value = '0x';
+}
+
+function saveTransaction() {
+  if (!selectedMethod.value && !useCustomData.value) return;
+
+  if (useCustomData.value) {
+    emit('saveTransaction', {
+      to: contractAddress.value,
+      value: value.value,
+      data: data.value,
+      operation: TransactionOperationType.CALL
+    });
+  } else if (selectedMethod.value) {
+    emit('saveTransaction', {
+      to: contractAddress.value,
+      value: BigNumber.from(0),
+      data: encodeContractData(
+        abiString.value,
+        selectedMethod.value,
+        methodParamValues.value
+      ),
+      operation: TransactionOperationType.CALL
+    });
+  }
+
+  closeAndClearForm();
+}
+
+async function populateForm() {
+  if (!props.showForm) return;
+
+  if (props.transaction) {
+    contractAddress.value = props.transaction.to;
+    value.value = props.transaction.value;
+    data.value = props.transaction.data;
+    useCustomData.value = data.value !== '0x';
   }
 }
 
-onMounted(() => {
-  updateMethods();
-  updateParams();
-});
-
-watch(contractAddressInput, updateABI);
-watch(abiInput, updateMethods);
-watch(methodInput, updateParams);
-
-watchEffect(() => {
-  emit('updateTransaction', {
-    contractAddress: contractAddressInput.value,
-    method: methodInput.value,
-    params: paramsInput.value,
-    abi: abiInput.value
-  });
-});
+watch(() => props.showForm, populateForm);
+watch(contractAddress, updateABI);
+watch(abiString, updateMethods);
+watch(selectedMethod, () => (methodParamValues.value = []));
 </script>
 
 <template>
-  <div class="space-y-2">
-    <div>
-      <LabelInput>Contract address</LabelInput>
-      <InputString
-        v-model="contractAddressInput"
-        placeholder="0x..."
-        :error="
-          contractAddressInput && abiNotFound
-            ? {
-                message: `No ABI found on network #${network}. Enter manually.`
-              }
-            : undefined
+  <BaseModal :open="showForm" @close="closeAndClearForm">
+    <template #header>
+      <h3>Custom contract interaction</h3>
+    </template>
+
+    <BaseContainer class="py-4">
+      <div class="space-y-2">
+        <div>
+          <LabelInput>Contract address</LabelInput>
+          <div class="relative mb-2">
+            <LoadingSpinner
+              v-if="abiLoading"
+              class="absolute right-3 top-2 z-50"
+            />
+            <InputString
+              v-model="contractAddress"
+              placeholder="0x..."
+              :error="contractAddressError || abiNotFoundError"
+            />
+          </div>
+          <InputSwitch v-model="useCustomData" text-right="Use custom data" />
+        </div>
+
+        <template v-if="useCustomData">
+          <div>
+            <LabelInput>Value</LabelInput>
+            <InputNumber
+              :model-value="value.toString()"
+              @update:model-value="value = BigNumber.from($event || 0)"
+            />
+          </div>
+          <div>
+            <LabelInput>Data</LabelInput>
+            <InputString v-model="data" />
+          </div>
+        </template>
+
+        <template v-else>
+          <div>
+            <LabelInput>ABI</LabelInput>
+            <InputString v-model="abiString" :error="abiParseError" />
+          </div>
+
+          <BaseListbox
+            v-if="availableMethods.length"
+            v-model="selectedMethod"
+            :items="methodDropdownOptions"
+            label="Method"
+          >
+            <template #selected="{ selectedItem }">
+              {{ selectedItem.extras?.name }}
+            </template>
+            <template #item="{ item }">
+              {{ item.extras?.name }}
+            </template>
+          </BaseListbox>
+
+          <div
+            v-for="(param, index) in selectedMethod?.inputs"
+            :key="index + param.type"
+          >
+            <TransactionBuilderFormContractParamBool
+              v-if="param.baseType === 'bool'"
+              :model-value="(methodParamValues[index] as boolean)"
+              :label="param.name"
+              @update:model-value="methodParamValues[index] = $event"
+            />
+            <TransactionBuilderFormContractParamBytes
+              v-if="param.baseType.startsWith('bytes')"
+              :model-value="(methodParamValues[index] as string)"
+              :label="param.name"
+              :error="paramErrors[index]"
+              @update:model-value="methodParamValues[index] = $event"
+            />
+            <template v-if="param.baseType === 'string'">
+              <LabelInput>{{ param.name }}</LabelInput>
+              <InputString
+                :model-value="(methodParamValues[index] as string)"
+                @update:model-value="methodParamValues[index] = $event"
+              />
+            </template>
+            <TransactionBuilderFormContractParamInt
+              v-if="
+                param.baseType.startsWith('uint') ||
+                param.baseType.startsWith('int')
+              "
+              :model-value="(methodParamValues[index] as string)"
+              :label="param.name"
+              :error="paramErrors[index]"
+              @update:model-value="methodParamValues[index] = $event"
+            />
+            <TransactionBuilderFormContractParamAddress
+              v-if="param.baseType === 'address'"
+              :model-value="(methodParamValues[index] as string)"
+              :label="param.name"
+              @update:model-value="methodParamValues[index] = $event"
+            />
+          </div>
+        </template>
+      </div>
+    </BaseContainer>
+
+    <template #footer>
+      <BaseButton
+        class="w-full"
+        primary
+        :disabled="
+          !!contractAddressError ||
+          !!abiParseError ||
+          !!abiNotFoundError ||
+          hasParamErrors
         "
-      />
-    </div>
-
-    <div>
-      <LabelInput>ABI</LabelInput>
-      <InputString v-model="abiInput" />
-    </div>
-
-    <BaseListbox
-      v-if="methods.length"
-      v-model="methodInput"
-      :items="methodOptions"
-      label="Method"
-    >
-      <template #selected="{ selectedItem }">
-        {{ selectedItem.extras?.name }}
-      </template>
-      <template #item="{ item }">
-        {{ item.extras?.name }}
-      </template>
-    </BaseListbox>
-
-    <div v-for="(param, index) in params" :key="index + param.type">
-      <LabelInput>{{ param.name }}</LabelInput>
-      <InputString v-model="paramsInput[index]" />
-    </div>
-  </div>
+        @click="saveTransaction"
+      >
+        save
+      </BaseButton>
+    </template>
+  </BaseModal>
 </template>

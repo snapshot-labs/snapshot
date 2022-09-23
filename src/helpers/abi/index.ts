@@ -72,20 +72,10 @@ export async function getContractABI(
   }
 }
 
-function isWriteFunction(method: FunctionFragment) {
-  if (!method.stateMutability) return true;
-  return !['view', 'pure'].includes(method.stateMutability);
-}
-
-export function getABIWriteFunctions(abi: string | Fragment[]) {
-  try {
-    const abiInterface = new Interface(abi);
-    return abiInterface.fragments
-      .filter(FunctionFragment.isFunctionFragment)
-      .map(FunctionFragment.fromObject)
-      .filter(isWriteFunction)
-      .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
-  } catch {
-    return [];
-  }
+export function getABIWriteFunctions(abi: Interface) {
+  return abi.fragments
+    .filter(FunctionFragment.isFunctionFragment)
+    .map(FunctionFragment.fromObject)
+    .filter(fragment => !['view', 'pure'].includes(fragment.stateMutability))
+    .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
 }

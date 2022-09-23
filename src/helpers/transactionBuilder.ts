@@ -5,7 +5,7 @@ import {
   ParamType,
   Result
 } from '@ethersproject/abi';
-import { hexDataLength } from '@ethersproject/bytes';
+import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isArrayParameter } from './abi';
 import ERC20_ABI from './abi/ERC20.json';
@@ -215,4 +215,75 @@ export function detectTransactionForm(
   }
 
   return TransactionForms.CONTRACT;
+}
+
+export type FormError = { message: string; push?: boolean } | undefined; // should be moved to core form stuff
+
+// this can probably be replaced with some ethers function but I couldn't find
+// anything that worked
+export function validateBytesString(
+  bytesString: string,
+  bytesType: string
+): FormError {
+  if (!bytesString.startsWith('0x'))
+    return { message: 'Bytes must start with 0x' };
+
+  if (!isHexString(bytesString))
+    return { message: 'Bytes must be a valid hex string' };
+
+  const requiredBytesLength = Number(bytesType.replace('bytes', ''));
+  const requiredBytesStringLength = requiredBytesLength * 2;
+
+  const bytesStringWithout0x = bytesString.slice(2);
+
+  if (requiredBytesStringLength === 0) {
+    if (bytesStringWithout0x.length % 2 !== 0) {
+      return { message: 'Bytes string must be even length' };
+    }
+
+    return undefined;
+  }
+
+  if (bytesStringWithout0x.length !== requiredBytesStringLength)
+    return {
+      message: `Requires exactly ${requiredBytesLength} bytes`
+    };
+
+  return undefined;
+}
+
+export function validateIntString(
+  intString: string,
+  intType: string
+): FormError {
+  const allowOnlyPositive = intType.startsWith('u');
+  const maxBits = Number(intType.replace(/^\D+/, ''));
+
+  const minNumber = allowOnlyPositive
+    ? BigNumber.from(0)
+    : BigNumber.from(-2).pow(maxBits - 1);
+  const maxNumber = allowOnlyPositive
+    ? BigNumber.from(2).pow(maxBits).sub(1)
+    : BigNumber.from(2)
+        .pow(maxBits - 1)
+        .sub(1);
+
+  const bigNumber = BigNumber.from(intString);
+
+  if (allowOnlyPositive && bigNumber.isNegative())
+    return {
+      message: 'Only positive numbers are allowed'
+    };
+
+  if (bigNumber.gt(maxNumber))
+    return {
+      message: `Number is too large for ${maxBits} bits`
+    };
+
+  if (bigNumber.lt(minNumber))
+    return {
+      message: `Number is too small for ${maxBits} bits`
+    };
+
+  return undefined;
 }

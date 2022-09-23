@@ -165,6 +165,14 @@ function saveTransaction(transaction: Transaction) {
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />
+      <TransactionBuilderFormContract
+        :show-form="showForm === TransactionForms.CONTRACT"
+        :transaction="targetTransaction"
+        :default-from-address="props.defaultFromAddress"
+        :network="props.network"
+        @save-transaction="saveTransaction($event)"
+        @close="showForm = null"
+      />
     </teleport>
   </div>
 </template>
