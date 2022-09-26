@@ -7,7 +7,6 @@ import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useProposals } from '@/composables';
-import pending from '@/helpers/pending.json';
 
 const { web3Account } = useWeb3();
 
@@ -46,9 +45,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     emit('openPostVoteModal');
-    if (!pending.includes(props.space.id)) {
-      emit('reload');
-    }
+    emit('reload');
     addVotedProposalId(props.proposal.id);
     emit('close');
   }
