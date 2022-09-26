@@ -6,13 +6,14 @@ export default {
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { FormError } from '@/helpers/interfaces';
 
 const props = withDefaults(
   defineProps<{
     type?: 'text' | 'number' | 'email';
     modelValue?: string | number;
     definition?: any;
-    error?: { message: string; push?: boolean };
+    error?: FormError;
     focusOnMount?: boolean;
     hideInput?: boolean;
     placeholder?: string;
