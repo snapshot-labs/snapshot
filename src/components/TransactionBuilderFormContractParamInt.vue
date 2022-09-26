@@ -1,32 +1,38 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { BigNumber } from '@ethersproject/bignumber';
-import { FormError } from '@/helpers/transactionBuilder';
+import { computed, onMounted, ref, watch } from 'vue';
+import { FormError } from '@/helpers/interfaces';
+import { validateIntString } from '@/helpers/transactionBuilder';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: string;
-    label: string;
-    error: FormError;
-  }>(),
-  {
-    modelValue: '0'
-  }
-);
-
-defineEmits<{
-  (e: 'update:modelValue', value: BigNumber): void;
+const props = defineProps<{
+  intString: string;
+  intType: string;
+  label: string;
 }>();
 
-const input = ref<string>(props.modelValue);
+const emit = defineEmits<{
+  (e: 'updateIntString', intString: string): void;
+  (e: 'updateError', error: FormError | null): void;
+}>();
+
+const input = ref<string>(props.intString);
+const error = computed<FormError | null>(() =>
+  validateIntString(input.value, props.intType)
+);
+
+onMounted(() => (input.value = props.intString));
+
+watch(input, () => emit('updateIntString', input.value), { immediate: true });
+watch(error, () => emit('updateError', error.value), { immediate: true });
 </script>
 
 <template>
-  <LabelInput>{{ label }}</LabelInput>
-  <InputString
-    v-model="input"
-    placeholder="0x..."
-    :error="error"
-    @update:model-value="$emit('update:modelValue', $event)"
-  />
+  <div>
+    <LabelInput>{{ label }}</LabelInput>
+    <InputString
+      v-model="input"
+      placeholder="e.g. max. 255 for uint8"
+      :error="error || undefined"
+      @update:model-value="input = $event"
+    />
+  </div>
 </template>

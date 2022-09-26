@@ -273,3 +273,7 @@ input[type='number'] {
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+.transaction-builder-form-tuple .transaction-builder-form-tuple {
+  @apply ml-2;
+}

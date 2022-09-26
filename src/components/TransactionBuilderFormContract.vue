@@ -1,17 +1,19 @@
 <script setup lang="ts">
+// test contract: 0xd34b12893aE5B1CDDa846C430d0C01782aE496C3
 import { computed, ref, watch } from 'vue';
+import flattenDeep from 'lodash/flattenDeep';
 import {
   encodeContractData,
-  FormError,
+  ParamValueError,
+  ParamValue,
   Transaction,
-  TransactionOperationType,
-  validateBytesString,
-  validateIntString
+  TransactionOperationType
 } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 import { BigNumber } from 'ethers';
 import { isAddress } from '@ethersproject/address';
+import { FormError } from '@/helpers/interfaces';
 
 const props = defineProps<{
   showForm: boolean;
@@ -39,7 +41,9 @@ const availableMethods = computed<FunctionFragment[]>(() => {
   return getABIWriteFunctions(abi.value);
 });
 const selectedMethod = ref<FunctionFragment | undefined>(undefined);
-const methodParamValues = ref<(boolean | string | BigNumber)[]>([]);
+const requiredParams = computed(() => selectedMethod.value?.inputs ?? []);
+const paramValues = ref<ParamValue[]>([]);
+const paramValueErrors = ref<ParamValueError[]>([]);
 
 const useCustomData = ref<boolean>(false);
 const value = ref<BigNumber>(BigNumber.from(0));
@@ -55,16 +59,16 @@ const methodDropdownOptions = computed(() =>
   }))
 );
 
-const contractAddressError = computed<FormError>(() => {
+const contractAddressError = computed<FormError | null>(() => {
   if (contractAddress.value === '')
     return { message: 'Contract address is required' };
   if (!isAddress(contractAddress.value))
     return { message: 'Contract address is not valid' };
-  return undefined;
+  return null;
 });
 
-const abiNotFoundError = computed<FormError>(() => {
-  if (useCustomData.value) return undefined;
+const abiNotFoundError = computed<FormError | null>(() => {
+  if (useCustomData.value) return null;
 
   if (abiNotFound.value)
     return {
@@ -72,40 +76,18 @@ const abiNotFoundError = computed<FormError>(() => {
       push: true
     };
 
-  return undefined;
+  return null;
 });
 
-const abiParseError = computed<FormError>(() => {
+const abiParseError = computed<FormError | null>(() => {
   if (!useCustomData.value && !abi.value)
     return { message: 'ABI string invalid', push: true };
 
-  return undefined;
+  return null;
 });
 
-const paramErrors = computed<FormError[]>(() => {
-  if (useCustomData.value || !selectedMethod.value) return [];
-
-  return selectedMethod.value.inputs.map((param, index) => {
-    const value = methodParamValues.value[index];
-    if (value === undefined) return undefined;
-
-    if (param.baseType.startsWith('bytes'))
-      return validateBytesString(value as string, param.baseType);
-
-    if (param.baseType.startsWith('int') || param.baseType.startsWith('uint'))
-      return validateIntString(value as string, param.baseType);
-
-    if (param.baseType === 'address') {
-      if (!isAddress(value as string))
-        return { message: 'Address is not valid' };
-    }
-
-    return undefined;
-  });
-});
-
-const hasParamErrors = computed<boolean>(() =>
-  paramErrors.value.some(error => !!error)
+const hasParamValueErrors = computed<boolean>(() =>
+  flattenDeep(paramValueErrors.value).some(e => !!e)
 );
 
 async function updateABI() {
@@ -137,7 +119,7 @@ function closeAndClearForm() {
 
   contractAddress.value = '';
   selectedMethod.value = undefined;
-  methodParamValues.value = [];
+  paramValues.value = [];
   abiString.value = '[]';
   value.value = BigNumber.from(0);
   data.value = '0x';
@@ -160,7 +142,7 @@ function saveTransaction() {
       data: encodeContractData(
         abiString.value,
         selectedMethod.value,
-        methodParamValues.value
+        paramValues.value
       ),
       operation: TransactionOperationType.CALL
     });
@@ -183,7 +165,7 @@ async function populateForm() {
 watch(() => props.showForm, populateForm);
 watch(contractAddress, updateABI);
 watch(abiString, updateMethods);
-watch(selectedMethod, () => (methodParamValues.value = []));
+watch(selectedMethod, () => (paramValues.value = []));
 </script>
 
 <template>
@@ -204,7 +186,7 @@ watch(selectedMethod, () => (methodParamValues.value = []));
             <InputString
               v-model="contractAddress"
               placeholder="0x..."
-              :error="contractAddressError || abiNotFoundError"
+              :error="(contractAddressError || abiNotFoundError) as FormError"
             />
           </div>
           <InputSwitch v-model="useCustomData" text-right="Use custom data" />
@@ -227,7 +209,10 @@ watch(selectedMethod, () => (methodParamValues.value = []));
         <template v-else>
           <div>
             <LabelInput>ABI</LabelInput>
-            <InputString v-model="abiString" :error="abiParseError" />
+            <InputString
+              v-model="abiString"
+              :error="(abiParseError as FormError)"
+            />
           </div>
 
           <BaseListbox
@@ -244,48 +229,12 @@ watch(selectedMethod, () => (methodParamValues.value = []));
             </template>
           </BaseListbox>
 
-          <div
-            v-for="(param, index) in selectedMethod?.inputs"
-            :key="index + param.type"
-          >
-            <TransactionBuilderFormContractParamBool
-              v-if="param.baseType === 'bool'"
-              :model-value="(methodParamValues[index] as boolean)"
-              :label="param.name"
-              @update:model-value="methodParamValues[index] = $event"
-            />
-            <TransactionBuilderFormContractParamBytes
-              v-if="param.baseType.startsWith('bytes')"
-              :model-value="(methodParamValues[index] as string)"
-              :label="param.name"
-              :error="paramErrors[index]"
-              @update:model-value="methodParamValues[index] = $event"
-            />
-            <template v-if="param.baseType === 'string'">
-              <LabelInput>{{ param.name }}</LabelInput>
-              <InputString
-                :model-value="(methodParamValues[index] as string)"
-                @update:model-value="methodParamValues[index] = $event"
-              />
-            </template>
-            <TransactionBuilderFormContractParamInt
-              v-if="
-                param.baseType.startsWith('uint') ||
-                param.baseType.startsWith('int')
-              "
-              :model-value="(methodParamValues[index] as string)"
-              :label="param.name"
-              :error="paramErrors[index]"
-              @update:model-value="methodParamValues[index] = $event"
-            />
-            <TransactionBuilderFormContractParamAddress
-              v-if="param.baseType === 'address'"
-              :model-value="(methodParamValues[index] as string)"
-              :label="param.name"
-              :error="paramErrors[index]"
-              @update:model-value="methodParamValues[index] = $event"
-            />
-          </div>
+          <TransactionBuilderFormContractParams
+            :params="requiredParams"
+            :values="paramValues"
+            @update-values="paramValues = $event"
+            @update-errors="paramValueErrors = $event"
+          />
         </template>
       </div>
     </BaseContainer>
@@ -298,7 +247,7 @@ watch(selectedMethod, () => (methodParamValues.value = []));
           !!contractAddressError ||
           !!abiParseError ||
           !!abiNotFoundError ||
-          hasParamErrors
+          hasParamValueErrors
         "
         @click="saveTransaction"
       >

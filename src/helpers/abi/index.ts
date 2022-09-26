@@ -20,10 +20,6 @@ export const EXPLORER_API_URLS = {
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
 
-export function isArrayParameter(parameter: string): boolean {
-  return ['tuple', 'array'].includes(parameter);
-}
-
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
     const params = new URLSearchParams({

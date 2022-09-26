@@ -1,31 +1,35 @@
 <script setup lang="ts">
-import { FormError } from '@/helpers/transactionBuilder';
-import { ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { FormError } from '@/helpers/interfaces';
+import { validateAddress } from '@/helpers/transactionBuilder';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: string;
-    label: string;
-    error: FormError;
-  }>(),
-  {
-    modelValue: '0x'
-  }
-);
-
-defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+const props = defineProps<{
+  address: string;
+  label: string;
 }>();
 
-const input = ref<string>(props.modelValue);
+const emit = defineEmits<{
+  (e: 'updateAddress', address: string): void;
+  (e: 'updateError', error: FormError | null): void;
+}>();
+
+const input = ref<string>(props.address);
+const error = computed<FormError | null>(() => validateAddress(input.value));
+
+onMounted(() => (input.value = props.address));
+
+watch(input, () => emit('updateAddress', input.value), { immediate: true });
+watch(error, () => emit('updateError', error.value), { immediate: true });
 </script>
 
 <template>
-  <LabelInput>{{ label }}</LabelInput>
-  <InputString
-    v-model="input"
-    placeholder="0x..."
-    :error="error"
-    @update:model-value="$emit('update:modelValue', $event)"
-  />
+  <div>
+    <LabelInput>{{ label }}</LabelInput>
+    <InputString
+      v-model="input"
+      placeholder="0x..."
+      :error="error || undefined"
+      @update:model-value="input = $event"
+    />
+  </div>
 </template>

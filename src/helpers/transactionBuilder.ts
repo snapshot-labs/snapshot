@@ -1,13 +1,9 @@
-import { pack } from '@ethersproject/solidity';
-import {
-  FunctionFragment,
-  Interface,
-  ParamType,
-  Result
-} from '@ethersproject/abi';
+import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
+import { isAddress } from '@ethersproject/address';
 import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
-import { isArrayParameter } from './abi';
+import { pack } from '@ethersproject/solidity';
+import { FormError } from './interfaces';
 import ERC20_ABI from './abi/ERC20.json';
 import ERC721_ABI from './abi/ERC721.json';
 
@@ -124,16 +120,6 @@ export function convertBatchToMultisendTransaction(
   };
 }
 
-function extractMethodArgs(values: string[]) {
-  return (param: ParamType, index) => {
-    const value = values[index];
-    if (isArrayParameter(param.baseType)) {
-      return JSON.parse(value);
-    }
-    return value;
-  };
-}
-
 export function encodeERC20TransferData(
   recipient: string,
   amount: BigNumber
@@ -172,11 +158,10 @@ export function decodeERC721TransferData(data: string): Result {
 export function encodeContractData(
   abi: string,
   method: FunctionFragment,
-  paramValues: any[]
+  paramValues: ParamValue[]
 ) {
   const contractInterface = new Interface(abi);
-  const parameterValues = method.inputs.map(extractMethodArgs(paramValues));
-  return contractInterface.encodeFunctionData(method, parameterValues);
+  return contractInterface.encodeFunctionData(method, paramValues);
 }
 
 export function createEmptyTransaction(): Transaction {
@@ -217,14 +202,15 @@ export function detectTransactionForm(
   return TransactionForms.CONTRACT;
 }
 
-export type FormError = { message: string; push?: boolean } | undefined; // should be moved to core form stuff
+export type ParamValue = boolean | string | ParamValue[];
+export type ParamValueError = FormError | null | ParamValueError[];
 
 // this can probably be replaced with some ethers function but I couldn't find
 // anything that worked
 export function validateBytesString(
   bytesString: string,
   bytesType: string
-): FormError {
+): FormError | null {
   if (!bytesString.startsWith('0x'))
     return { message: 'Bytes must start with 0x' };
 
@@ -241,7 +227,7 @@ export function validateBytesString(
       return { message: 'Bytes string must be even length' };
     }
 
-    return undefined;
+    return null;
   }
 
   if (bytesStringWithout0x.length !== requiredBytesStringLength)
@@ -249,13 +235,13 @@ export function validateBytesString(
       message: `Requires exactly ${requiredBytesLength} bytes`
     };
 
-  return undefined;
+  return null;
 }
 
 export function validateIntString(
   intString: string,
   intType: string
-): FormError {
+): FormError | null {
   const allowOnlyPositive = intType.startsWith('u');
   const maxBits = Number(intType.replace(/^\D+/, ''));
 
@@ -268,7 +254,13 @@ export function validateIntString(
         .pow(maxBits - 1)
         .sub(1);
 
-  const bigNumber = BigNumber.from(intString);
+  let bigNumber: BigNumber;
+
+  try {
+    bigNumber = BigNumber.from(intString);
+  } catch (e) {
+    return { message: 'Invalid number' };
+  }
 
   if (allowOnlyPositive && bigNumber.isNegative())
     return {
@@ -285,5 +277,11 @@ export function validateIntString(
       message: `Number is too small for ${maxBits} bits`
     };
 
-  return undefined;
+  return null;
+}
+
+export function validateAddress(address: string): FormError | null {
+  if (!isAddress(address)) return { message: 'Address is not valid' };
+
+  return null;
 }
