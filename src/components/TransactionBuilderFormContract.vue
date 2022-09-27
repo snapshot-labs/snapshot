@@ -145,7 +145,8 @@ function saveTransaction() {
         selectedMethod.value,
         paramValues.value
       ),
-      operation: TransactionOperationType.CALL
+      operation: TransactionOperationType.CALL,
+      abi: abiString.value
     });
   }
 
