@@ -170,8 +170,9 @@ export function decodeContractData(
 ): { method: FunctionFragment; values: Result } {
   const contractInterface = new Interface(abiString);
   const method = contractInterface.getFunction(data.slice(0, 10));
+  const values = contractInterface.decodeFunctionData(method, data);
 
-  return { method, values: contractInterface.decodeFunctionData(method, data) };
+  return { method, values };
 }
 
 export function createEmptyTransaction(): Transaction {
