@@ -44,7 +44,7 @@ const amountError = computed<{ message: string } | undefined>(() => {
   return undefined;
 });
 
-async function populateForm() {
+function populateForm() {
   if (!props.showForm) return;
 
   selectedFundsAsset.value = props.availableFunds[0];

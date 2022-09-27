@@ -151,7 +151,7 @@ function saveTransaction() {
   closeAndClearForm();
 }
 
-async function populateForm() {
+function populateForm() {
   if (!props.showForm) return;
 
   if (props.transaction) {

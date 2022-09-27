@@ -40,7 +40,7 @@ const recipientError = computed<{ message: string } | undefined>(() => {
   return undefined;
 });
 
-async function populateForm() {
+function populateForm() {
   if (!props.showForm) return;
 
   selectedCollectableAsset.value = props.availableCollectables[0];
