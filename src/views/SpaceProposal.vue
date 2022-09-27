@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { useRoute, useRouter } from 'vue-router';
 import { getProposal, getProposalVotes } from '@/helpers/snapshot';
 import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
@@ -112,11 +113,24 @@ async function loadResults() {
   ) {
     loadingResultsFailed.value = true;
   } else {
-    results.value = {
-      scores: proposal.value.scores,
-      scoresByStrategy: proposal.value.scores_by_strategy,
-      scoresTotal: proposal.value.scores_total
-    };
+    if (proposal.value.scores.length === 0) {
+      const votingClass = new voting[proposal.value.type](
+        proposal.value,
+        [],
+        strategies.value
+      );
+      results.value = {
+        scores: votingClass.getScores(),
+        scoresByStrategy: votingClass.getScoresByStrategy(),
+        scoresTotal: votingClass.getScoresTotal()
+      };
+    } else {
+      results.value = {
+        scores: proposal.value.scores,
+        scoresByStrategy: proposal.value.scores_by_strategy,
+        scoresTotal: proposal.value.scores_total
+      };
+    }
     loadedResults.value = true;
     loadingResultsFailed.value = false;
     const [userVotesRes, votesRes] = await Promise.all([
