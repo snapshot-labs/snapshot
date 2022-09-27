@@ -164,6 +164,16 @@ export function encodeContractData(
   return contractInterface.encodeFunctionData(method, paramValues);
 }
 
+export function decodeContractData(
+  data: string,
+  abiString: string
+): { method: FunctionFragment; values: Result } {
+  const contractInterface = new Interface(abiString);
+  const method = contractInterface.getFunction(data.slice(0, 10));
+
+  return { method, values: contractInterface.decodeFunctionData(method, data) };
+}
+
 export function createEmptyTransaction(): Transaction {
   return {
     to: '',
