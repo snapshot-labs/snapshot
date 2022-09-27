@@ -7,7 +7,8 @@ import {
   ParamValueError,
   ParamValue,
   Transaction,
-  TransactionOperationType
+  TransactionOperationType,
+  decodeContractData
 } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
@@ -156,9 +157,20 @@ function populateForm() {
 
   if (props.transaction) {
     contractAddress.value = props.transaction.to;
-    value.value = props.transaction.value;
-    data.value = props.transaction.data;
-    useCustomData.value = data.value !== '0x';
+    if (props.transaction.abi) {
+      abiString.value = props.transaction.abi;
+      useCustomData.value = false;
+      const { method, values } = decodeContractData(
+        props.transaction.data,
+        props.transaction.abi
+      );
+      selectedMethod.value = method;
+      paramValues.value[method.name] = method.inputs.map((_, i) => values[i]);
+    } else {
+      useCustomData.value = true;
+      value.value = props.transaction.value;
+      data.value = props.transaction.data;
+    }
   }
 }
 
