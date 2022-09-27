@@ -19,6 +19,13 @@ const errors = ref<ParamValueError[]>([]);
 
 onMounted(() => (input.value = props.values));
 
+watch(
+  () => props.params,
+  () => {
+    input.value = props.values;
+    errors.value = [];
+  }
+);
 watch(input, () => emit('updateValues', input.value), { deep: true });
 watch(errors, () => emit('updateErrors', errors.value), { deep: true });
 </script>
