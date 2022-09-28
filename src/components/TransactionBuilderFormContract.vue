@@ -20,7 +20,6 @@ import { FormError } from '@/helpers/interfaces';
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
-  defaultFromAddress: string;
   network: string;
 }>();
 
