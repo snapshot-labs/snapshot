@@ -24,8 +24,7 @@ const emit = defineEmits(['update:modelValue']);
 
 const selectedItem = computed({
   get: () =>
-    props.items.find(item => item.value === props.modelValue) ||
-    props.items[0].value,
+    props.items.find(item => item.value === props.modelValue) || props.items[0],
   set: newVal => emit('update:modelValue', newVal.value)
 });
 </script>
