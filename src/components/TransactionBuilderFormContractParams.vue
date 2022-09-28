@@ -16,6 +16,11 @@ const input = ref<ParamValue[]>(props.values);
 
 onMounted(() => (input.value = props.values));
 
+watch(
+  () => props.values,
+  () => (input.value = props.values)
+);
+
 watch(input, () => emit('updateValues', input.value), { deep: true });
 </script>
 

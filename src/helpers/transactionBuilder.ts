@@ -294,31 +294,33 @@ export function validateAddress(address: string): FormError | null {
   return null;
 }
 
-export function allParamValuesValid(
+export function validateAllParamValues(
   params: ParamType[],
   values: ParamValue[]
-): ParamValueError {
-  return params.map((param, index) => {
-    const value = values[index];
+): boolean {
+  return params
+    .map((param, index) => {
+      const value = values[index];
 
-    if (param.baseType === 'tuple') {
-      return allParamValuesValid(param.components, value as ParamValue[]);
-    }
+      if (value === undefined) return false;
 
-    if (param.baseType === 'address') {
-      return validateAddress(value as string);
-    }
+      if (param.baseType === 'tuple')
+        return validateAllParamValues(param.components, value as ParamValue[]);
 
-    if (param.baseType.startsWith('bytes')) {
-      return validateBytesString(value as string, param.baseType);
-    }
+      if (param.baseType === 'address')
+        return validateAddress(value as string) === null;
 
-    if (param.baseType.startsWith('int') || param.baseType.startsWith('uint')) {
-      return validateIntString(value as string, param.baseType);
-    }
+      if (param.baseType.startsWith('bytes'))
+        return validateBytesString(value as string, param.baseType) === null;
 
-    return null;
-  });
+      if (param.baseType.startsWith('int') || param.baseType.startsWith('uint'))
+        return validateIntString(value as string, param.baseType) === null;
+
+      if (param.baseType === 'bool' || param.baseType === 'string') return true;
+
+      return false;
+    })
+    .every(isValid => isValid);
 }
 
 export function bigNumberValuesToString(value: ParamValue): ParamValue {

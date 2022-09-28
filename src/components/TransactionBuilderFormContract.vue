@@ -1,15 +1,13 @@
 <script setup lang="ts">
 // test contract: 0xd34b12893aE5B1CDDa846C430d0C01782aE496C3
 import { computed, ref, watch } from 'vue';
-import flattenDeep from 'lodash/flattenDeep';
 import {
   encodeContractData,
-  ParamValueError,
   ParamValue,
   Transaction,
   TransactionOperationType,
   decodeContractData,
-  allParamValuesValid,
+  validateAllParamValues,
   bigNumberValuesToString
 } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
@@ -61,10 +59,8 @@ const requiredParams = computed<ParamType[]>(
   () => selectedMethod.value?.inputs ?? []
 );
 const paramValues = ref<ParamValue[]>([]);
-const hasParamValueErrors = computed<boolean>(() =>
-  flattenDeep(
-    allParamValuesValid(requiredParams.value, paramValues.value)
-  ).some((e: ParamValueError) => e !== null)
+const allParamValuesValid = computed<boolean>(() =>
+  validateAllParamValues(requiredParams.value, paramValues.value)
 );
 
 const contractAddressError = computed<FormError | null>(() => {
@@ -95,18 +91,23 @@ const abiParseError = computed<FormError | null>(() => {
 });
 
 async function updateABI() {
-  abiLoading.value = true;
+  if (isAddress(contractAddress.value)) {
+    abiLoading.value = true;
 
-  const newAbi = await getContractABI(props.network, contractAddress.value);
+    const newAbi = await getContractABI(props.network, contractAddress.value);
 
-  if (newAbi) {
-    abiNotFound.value = false;
-    abiString.value = newAbi;
+    if (newAbi) {
+      abiNotFound.value = false;
+      abiString.value = newAbi;
+    } else {
+      abiNotFound.value = true;
+    }
+
+    abiLoading.value = false;
   } else {
-    abiNotFound.value = true;
+    abiNotFound.value = false;
+    abiString.value = '[]';
   }
-
-  abiLoading.value = false;
 }
 
 function updateMethod() {
@@ -275,7 +276,7 @@ watch(abiString, () => updateMethod());
           !!contractAddressError ||
           !!abiParseError ||
           !!abiNotFoundError ||
-          hasParamValueErrors
+          !allParamValuesValid
         "
         @click="saveTransaction"
       >
