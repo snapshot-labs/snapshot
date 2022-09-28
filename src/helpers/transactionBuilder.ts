@@ -196,7 +196,8 @@ export function detectTransactionForm(
 
   if (
     functionSignature === FunctionSignatures.ERC20_TRANSFER ||
-    functionSignature === '0x'
+    (functionSignature === '0x' && transaction.value.gt(0))
+    // TODO: also check ERC20 amount > 0 by decoding data
   ) {
     return TransactionForms.FUNDS;
   }
