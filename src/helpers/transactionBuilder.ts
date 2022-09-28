@@ -175,15 +175,6 @@ export function decodeContractData(
   return { method, values };
 }
 
-export function createEmptyTransaction(): Transaction {
-  return {
-    to: '',
-    value: BigNumber.from(0),
-    data: '0x',
-    operation: TransactionOperationType.CALL
-  };
-}
-
 enum FunctionSignatures {
   ERC20_TRANSFER = '0xa9059cbb',
   ERC721_SAFE_TRANSFER_FROM = '0x42842e0e',
