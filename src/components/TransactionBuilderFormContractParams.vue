@@ -34,9 +34,9 @@ watch(errors, () => emit('updateErrors', errors.value), { deep: true });
     <div v-for="(param, index) in params" :key="index">
       <TransactionBuilderFormContractParamBool
         v-if="param.baseType === 'bool'"
-        :model-value="(input[index] as boolean) || false"
+        :bool-value="(input[index] as boolean) || false"
         :label="param.name"
-        @update:model-value="input[index] = $event"
+        @update-bool-value="(input[index] = $event), (errors[index] = null)"
       />
       <TransactionBuilderFormContractParamBytes
         v-if="param.baseType.startsWith('bytes')"
@@ -67,7 +67,7 @@ watch(errors, () => emit('updateErrors', errors.value), { deep: true });
         <LabelInput>{{ param.name }}</LabelInput>
         <InputString
           :model-value="(input[index] as string) || ''"
-          @update:model-value="input[index] = $event"
+          @update:model-value="(input[index] = $event), (errors[index] = null)"
         />
       </template>
       <TransactionBuilderFormContractParamTuple

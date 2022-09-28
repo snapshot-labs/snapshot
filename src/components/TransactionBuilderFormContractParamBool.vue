@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-const props = withDefaults(
-  defineProps<{
-    modelValue: boolean;
-    label: string;
-  }>(),
-  {
-    modelValue: false
-  }
-);
-
-defineEmits<{
-  (e: 'update:modelValue', value: boolean): void;
+const props = defineProps<{
+  boolValue: boolean;
+  label: string;
 }>();
 
-const input = ref<boolean>(props.modelValue);
+const emit = defineEmits<{
+  (e: 'updateBoolValue', value: boolean): void;
+}>();
+
+const input = ref<boolean>(props.boolValue);
+
+onMounted(() => (input.value = props.boolValue));
+
+watch(input, () => emit('updateBoolValue', input.value), { immediate: true });
 </script>
 
 <template>
@@ -23,7 +22,7 @@ const input = ref<boolean>(props.modelValue);
     v-model="input"
     :items="[{ value: true }, { value: false }]"
     :label="label"
-    @update:model-value="$emit('update:modelValue', $event)"
+    @update:model-value="input = $event"
   >
     <template #selected="{ selectedItem }">
       {{ selectedItem.value }}
