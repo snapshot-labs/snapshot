@@ -3,15 +3,19 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { FormError } from '@/helpers/interfaces';
 import { validateIntString } from '@/helpers/transactionBuilder';
 
-const props = defineProps<{
-  intString: string;
-  intType: string;
-  label: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    intString: string;
+    intType: string;
+    label: string;
+  }>(),
+  {
+    intString: ''
+  }
+);
 
 const emit = defineEmits<{
   (e: 'updateIntString', intString: string): void;
-  (e: 'updateError', error: FormError | null): void;
 }>();
 
 const input = ref<string>(props.intString);
@@ -22,7 +26,6 @@ const error = computed<FormError | null>(() =>
 onMounted(() => (input.value = props.intString));
 
 watch(input, () => emit('updateIntString', input.value), { immediate: true });
-watch(error, () => emit('updateError', error.value), { immediate: true });
 </script>
 
 <template>

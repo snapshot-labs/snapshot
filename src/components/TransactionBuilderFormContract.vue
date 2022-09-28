@@ -9,10 +9,11 @@ import {
   Transaction,
   TransactionOperationType,
   decodeContractData,
+  allParamValuesValid,
   bigNumberValuesToString
 } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
-import { FunctionFragment, Interface } from '@ethersproject/abi';
+import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumber } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { FormError } from '@/helpers/interfaces';
@@ -29,6 +30,11 @@ const emit = defineEmits<{
 }>();
 
 const contractAddress = ref<string>('');
+
+const useCustomData = ref<boolean>(false);
+const value = ref<BigNumber>(BigNumber.from(0));
+const data = ref<string>('0x');
+
 const abiString = ref<string>('[]');
 const abi = computed<Interface | undefined>(() => {
   try {
@@ -37,27 +43,28 @@ const abi = computed<Interface | undefined>(() => {
     return undefined;
   }
 });
+const abiLoading = ref(false);
+const abiNotFound = ref(false);
+
 const availableMethods = computed<FunctionFragment[]>(() => {
   if (!abi.value) return [];
   return getABIWriteFunctions(abi.value);
 });
-const selectedMethod = ref<FunctionFragment | undefined>(undefined);
-const requiredParams = computed(() => selectedMethod.value?.inputs ?? []);
-const paramValues = ref<ParamValue[]>([]);
-const paramValueErrors = ref<ParamValueError[]>([]);
-
-const useCustomData = ref<boolean>(false);
-const value = ref<BigNumber>(BigNumber.from(0));
-const data = ref<string>('0x');
-
-const abiLoading = ref(false);
-const abiNotFound = ref(false);
-
 const methodDropdownOptions = computed(() =>
   availableMethods.value.map(method => ({
     value: method,
     extras: method
   }))
+);
+const selectedMethod = ref<FunctionFragment | undefined>(undefined);
+const requiredParams = computed<ParamType[]>(
+  () => selectedMethod.value?.inputs ?? []
+);
+const paramValues = ref<ParamValue[]>([]);
+const hasParamValueErrors = computed<boolean>(() =>
+  flattenDeep(
+    allParamValuesValid(requiredParams.value, paramValues.value)
+  ).some((e: ParamValueError) => e !== null)
 );
 
 const contractAddressError = computed<FormError | null>(() => {
@@ -87,10 +94,6 @@ const abiParseError = computed<FormError | null>(() => {
   return null;
 });
 
-const hasParamValueErrors = computed<boolean>(() =>
-  flattenDeep(paramValueErrors.value).some(e => !!e)
-);
-
 async function updateABI() {
   abiLoading.value = true;
 
@@ -106,7 +109,7 @@ async function updateABI() {
   abiLoading.value = false;
 }
 
-function updateMethods() {
+function updateMethod() {
   if (!abiString.value) return;
 
   selectedMethod.value =
@@ -115,9 +118,14 @@ function updateMethods() {
     ) || availableMethods.value[0];
 }
 
-function closeAndClearForm() {
-  emit('close');
+function changeMethod(method: FunctionFragment) {
+  // important to clear the current values first, otherwise the new param
+  // fields would receive incompatible values
+  paramValues.value = [];
+  selectedMethod.value = method;
+}
 
+function clearForm() {
   contractAddress.value = '';
   selectedMethod.value = undefined;
   paramValues.value = [];
@@ -150,12 +158,10 @@ function saveTransaction() {
     });
   }
 
-  closeAndClearForm();
+  emit('close');
 }
 
 function populateForm() {
-  if (!props.showForm) return;
-
   if (props.transaction) {
     contractAddress.value = props.transaction.to;
     if (props.transaction.abi) {
@@ -177,14 +183,21 @@ function populateForm() {
   }
 }
 
-watch(() => props.showForm, populateForm);
-watch(contractAddress, updateABI);
-watch(abiString, updateMethods);
-watch(selectedMethod, () => (paramValues.value = []));
+function handleFormOpenAndClose() {
+  if (props.showForm) {
+    populateForm();
+  } else {
+    clearForm();
+  }
+}
+
+watch(() => props.showForm, handleFormOpenAndClose);
+watch(contractAddress, () => updateABI());
+watch(abiString, () => updateMethod());
 </script>
 
 <template>
-  <BaseModal :open="showForm" @close="closeAndClearForm">
+  <BaseModal :open="showForm" @close="emit('close')">
     <template #header>
       <h3>Custom contract interaction</h3>
     </template>
@@ -232,9 +245,10 @@ watch(selectedMethod, () => (paramValues.value = []));
 
           <BaseListbox
             v-if="availableMethods.length"
-            v-model="selectedMethod"
+            :model-value="selectedMethod"
             :items="methodDropdownOptions"
             label="Method"
+            @update:model-value="changeMethod($event)"
           >
             <template #selected="{ selectedItem }">
               {{ selectedItem.extras?.name }}
@@ -248,7 +262,6 @@ watch(selectedMethod, () => (paramValues.value = []));
             :params="requiredParams"
             :values="paramValues"
             @update-values="paramValues = $event"
-            @update-errors="paramValueErrors = $event"
           />
         </template>
       </div>

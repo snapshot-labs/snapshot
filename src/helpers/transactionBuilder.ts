@@ -1,4 +1,9 @@
-import { FunctionFragment, Interface, Result } from '@ethersproject/abi';
+import {
+  FunctionFragment,
+  Interface,
+  ParamType,
+  Result
+} from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { hexDataLength, isHexString } from '@ethersproject/bytes';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -287,6 +292,33 @@ export function validateAddress(address: string): FormError | null {
   if (!isAddress(address)) return { message: 'Address is not valid' };
 
   return null;
+}
+
+export function allParamValuesValid(
+  params: ParamType[],
+  values: ParamValue[]
+): ParamValueError {
+  return params.map((param, index) => {
+    const value = values[index];
+
+    if (param.baseType === 'tuple') {
+      return allParamValuesValid(param.components, value as ParamValue[]);
+    }
+
+    if (param.baseType === 'address') {
+      return validateAddress(value as string);
+    }
+
+    if (param.baseType.startsWith('bytes')) {
+      return validateBytesString(value as string, param.baseType);
+    }
+
+    if (param.baseType.startsWith('int') || param.baseType.startsWith('uint')) {
+      return validateIntString(value as string, param.baseType);
+    }
+
+    return null;
+  });
 }
 
 export function bigNumberValuesToString(value: ParamValue): ParamValue {

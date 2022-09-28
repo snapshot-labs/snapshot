@@ -3,14 +3,18 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { FormError } from '@/helpers/interfaces';
 import { validateAddress } from '@/helpers/transactionBuilder';
 
-const props = defineProps<{
-  address: string;
-  label: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    address: string;
+    label: string;
+  }>(),
+  {
+    address: ''
+  }
+);
 
 const emit = defineEmits<{
   (e: 'updateAddress', address: string): void;
-  (e: 'updateError', error: FormError | null): void;
 }>();
 
 const input = ref<string>(props.address);
@@ -19,7 +23,6 @@ const error = computed<FormError | null>(() => validateAddress(input.value));
 onMounted(() => (input.value = props.address));
 
 watch(input, () => emit('updateAddress', input.value), { immediate: true });
-watch(error, () => emit('updateError', error.value), { immediate: true });
 </script>
 
 <template>

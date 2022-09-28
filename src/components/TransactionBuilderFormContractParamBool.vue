@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 
-const props = defineProps<{
-  boolValue: boolean;
-  label: string;
-}>();
+const props = withDefaults(
+  defineProps<{
+    boolValue: boolean;
+    label: string;
+  }>(),
+  {
+    boolValue: false
+  }
+);
 
 const emit = defineEmits<{
   (e: 'updateBoolValue', value: boolean): void;
