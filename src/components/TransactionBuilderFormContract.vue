@@ -198,7 +198,7 @@ watch(abiString, () => updateMethod());
 </script>
 
 <template>
-  <BaseModal :open="showForm" @close="emit('close')">
+  <BaseModal :open="showForm" max-height="100%" @close="emit('close')">
     <template #header>
       <h3>Custom contract interaction</h3>
     </template>
