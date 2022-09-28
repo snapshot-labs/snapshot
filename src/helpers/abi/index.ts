@@ -6,6 +6,7 @@ import {
   Interface,
   JsonFragment
 } from '@ethersproject/abi';
+import { isAddress } from '@ethersproject/address';
 
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
@@ -22,6 +23,8 @@ export type ABI = string | Array<Fragment | JsonFragment | string>;
 
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
+    if (!isAddress(contractAddress)) throw new Error('Invalid address');
+
     const params = new URLSearchParams({
       module: 'contract',
       action: 'getAbi',
