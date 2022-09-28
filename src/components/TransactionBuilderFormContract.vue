@@ -8,7 +8,8 @@ import {
   ParamValue,
   Transaction,
   TransactionOperationType,
-  decodeContractData
+  decodeContractData,
+  bigNumberValuesToString
 } from '@/helpers/transactionBuilder';
 import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
@@ -166,7 +167,9 @@ function populateForm() {
         props.transaction.abi
       );
       selectedMethod.value = method;
-      paramValues.value[method.name] = method.inputs.map((_, i) => values[i]);
+      paramValues.value = method.inputs.map((_, i) =>
+        bigNumberValuesToString(values[i])
+      );
     } else {
       useCustomData.value = true;
       value.value = props.transaction.value;

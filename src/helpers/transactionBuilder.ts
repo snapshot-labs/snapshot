@@ -205,7 +205,7 @@ export function detectTransactionForm(
   return TransactionForms.CONTRACT;
 }
 
-export type ParamValue = boolean | string | ParamValue[];
+export type ParamValue = boolean | string | BigNumber | ParamValue[];
 export type ParamValueError = FormError | null | ParamValueError[];
 
 // this can probably be replaced with some ethers function but I couldn't find
@@ -287,4 +287,10 @@ export function validateAddress(address: string): FormError | null {
   if (!isAddress(address)) return { message: 'Address is not valid' };
 
   return null;
+}
+
+export function bigNumberValuesToString(value: ParamValue): ParamValue {
+  if (Array.isArray(value)) return value.map(bigNumberValuesToString);
+  if (BigNumber.isBigNumber(value)) return value.toString();
+  return value;
 }
