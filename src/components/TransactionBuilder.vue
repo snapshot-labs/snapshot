@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
+import draggable from 'vuedraggable';
+import { keccak256 } from '@ethersproject/solidity';
 import { useTransactionBuilder } from '@/composables';
 import {
   TransactionForms,
@@ -125,26 +127,39 @@ function saveTransaction(transaction: Transaction) {
         <TransactionBuilderAddTransaction
           @add-transaction-of-type="openEmptyForm($event, batchIndex)"
         />
-        <div
-          v-for="(transaction, transactionIndex) in batch"
-          :key="transactionIndex"
-          class="flex border-t py-2 pl-3 pr-2"
-        >
-          <TransactionBuilderDisplayTransaction :transaction="transaction" />
-          <BaseButton
-            small
-            class="ml-auto !border-none"
-            @click="openEditForm(batchIndex, transactionIndex)"
+
+        <div class="w-full overflow-hidden">
+          <draggable
+            :list="batch"
+            :item-key="(transaction: Transaction) => keccak256(['string'], [JSON.stringify(transaction) + Math.random()])"
+            v-bind="{ animation: 200 }"
+            handle=".drag-handle"
           >
-            <i-ho-pencil />
-          </BaseButton>
-          <BaseButton
-            small
-            class="!border-none"
-            @click="removeTransaction(batchIndex, transactionIndex)"
-          >
-            <i-ho-trash />
-          </BaseButton>
+            <template #item="{ element, index }">
+              <div class="flex border-t py-2 pl-3 pr-2">
+                <div
+                  class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
+                >
+                  <BaseIcon name="draggable" size="16" class="mr-[12px]" />
+                </div>
+                <TransactionBuilderDisplayTransaction :transaction="element" />
+                <BaseButton
+                  small
+                  class="ml-auto !border-none"
+                  @click="openEditForm(batchIndex, index)"
+                >
+                  <i-ho-pencil />
+                </BaseButton>
+                <BaseButton
+                  small
+                  class="!border-none"
+                  @click="removeTransaction(batchIndex, index)"
+                >
+                  <i-ho-trash />
+                </BaseButton>
+              </div>
+            </template>
+          </draggable>
         </div>
       </div>
     </BaseBlock>
