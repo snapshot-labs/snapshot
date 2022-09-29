@@ -16,6 +16,7 @@ const vpByStrategy = ref([]);
 const vpLoading = ref(false);
 const vpLoadingFailed = ref(false);
 const vpLoaded = ref(false);
+const reason = ref('');
 
 const props = defineProps({
   open: Boolean,
@@ -41,7 +42,8 @@ const symbols = computed(() =>
 async function handleSubmit() {
   const result = await send(props.space, 'vote', {
     proposal: props.proposal,
-    choice: props.selectedChoices
+    choice: props.selectedChoices,
+    reason: reason.value
   });
   console.log('Result', result);
   if (result.id) {
@@ -144,6 +146,12 @@ watch(
           >
             <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
+        </div>
+        <div class="flex">
+          <span class="mr-1 flex-auto text-skin-text" v-text="$t('reason')" />
+        </div>
+        <div class="flex">
+          <TextareaAutosize v-model="reason" :max-length="140" />
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </BaseBlock>

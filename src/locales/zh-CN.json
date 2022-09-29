@@ -67,6 +67,7 @@
   "quorumReached": "已达到既定人数",
   "options": "选项",
   "votingPower": "您的投票权",
+  "reason": "理由",
   "receipt": "凭证",
   "relayer": "中继器",
   "verifyOnMycrypto": "在 MyCrypto 上验证凭证",

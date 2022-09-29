@@ -67,6 +67,7 @@
   "quorumReached": "quorum reached",
   "options": "Option(s)",
   "votingPower": "Your voting power",
+  "reason": "Reason",
   "receipt": "Receipt",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verify receipt on MyCrypto",
