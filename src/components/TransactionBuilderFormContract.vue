@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// Test contract: 0xd34b12893aE5B1CDDa846C430d0C01782aE496C3
+// Test contract: 0xa964C8Af07325D55EE8368d46dee1E076bb9F455
 // Important: Test all possible data types/structures (arrays of arrays, arrays
 // of tuples, nested tuples, etc.), anything a contract can accept as a method arguments.
 import { computed, ref, watch } from 'vue';
