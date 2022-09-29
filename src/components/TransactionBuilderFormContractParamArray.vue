@@ -26,7 +26,7 @@ function addItem() {
   items.value.push(
     ParamType.from({
       type: props.type,
-      name: `${props.label} ${items.value.length}`
+      name: `${props.label} ${items.value.length + 1}`
     })
   );
 }
@@ -34,10 +34,6 @@ function addItem() {
 function removeItem(index: number) {
   input.value.splice(index, 1);
   items.value.splice(index, 1);
-}
-
-function getLabel(index: number) {
-  return `${props.type} ${index + 1}`;
 }
 
 onMounted(() => (input.value = props.values));
