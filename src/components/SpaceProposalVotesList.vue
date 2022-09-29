@@ -151,6 +151,15 @@ watch(visibleVotes, () => {
         <BaseButtonIcon @click="openReceiptModal(vote.ipfs)">
           <BaseIcon name="signature" />
         </BaseButtonIcon>
+        <span
+          v-if="vote.reason !== ''"
+          v-tippy="{
+            content: vote.reason
+          }"
+          class="text-skin-text transition-colors duration-200 hover:text-skin-link"
+        >
+          <BaseIcon name="info" />
+        </span>
       </div>
     </div>
     <a
