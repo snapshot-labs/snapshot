@@ -138,6 +138,7 @@ function saveTransaction(transaction: Transaction) {
             <template #item="{ element, index }">
               <div class="flex border-t py-2 pl-3 pr-2">
                 <div
+                  v-if="batch.length > 1"
                   class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
                 >
                   <BaseIcon name="draggable" size="16" class="mr-[12px]" />
