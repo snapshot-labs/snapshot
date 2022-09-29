@@ -3,13 +3,20 @@ import { onMounted, ref, watch } from 'vue';
 import { ParamType } from '@ethersproject/abi';
 import { ParamValue } from '@/helpers/transactionBuilder';
 
-const props = defineProps<{
-  params: ParamType[];
-  values: ParamValue[];
-}>();
+const props = withDefaults(
+  defineProps<{
+    params: ParamType[];
+    values: ParamValue[];
+    canRemoveItems?: boolean;
+  }>(),
+  {
+    canRemoveItems: false
+  }
+);
 
 const emit = defineEmits<{
   (e: 'updateValues', values: ParamValue[]): void;
+  (e: 'removeItem', index: number): void;
 }>();
 
 const input = ref<ParamValue[]>(props.values);
@@ -27,6 +34,9 @@ watch(input, () => emit('updateValues', input.value), { deep: true });
 <template>
   <div>
     <div v-for="(param, index) in params" :key="index">
+      <button v-if="canRemoveItems" @click="emit('removeItem', index)">
+        remove
+      </button>
       <TransactionBuilderFormContractParamBool
         v-if="param.baseType === 'bool'"
         :bool-value="(input[index] as boolean)"
@@ -65,6 +75,14 @@ watch(input, () => emit('updateValues', input.value), { deep: true });
       <TransactionBuilderFormContractParamTuple
         v-if="param.baseType === 'tuple'"
         :params="param.components"
+        :values="(input[index] as ParamValue[])"
+        :label="param.name"
+        @update-values="input[index] = $event"
+      />
+      <TransactionBuilderFormContractParamArray
+        v-if="param.baseType === 'array'"
+        :type="param.arrayChildren.baseType"
+        :tuple-components="param.components"
         :values="(input[index] as ParamValue[])"
         :label="param.name"
         @update-values="input[index] = $event"

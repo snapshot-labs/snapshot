@@ -307,6 +307,26 @@ export function validateAllParamValues(
       if (param.baseType === 'tuple')
         return validateAllParamValues(param.components, value as ParamValue[]);
 
+      if (param.baseType === 'array') {
+        if (!Array.isArray(value)) return false;
+
+        if (value.length === 0) return true;
+
+        if (param.arrayChildren.baseType === 'tuple') {
+          return validateAllParamValues(
+            Array(value.length).fill(ParamType.from(param.arrayChildren)),
+            value as ParamValue[]
+          );
+        }
+
+        return validateAllParamValues(
+          Array(value.length).fill(
+            ParamType.from(param.arrayChildren.baseType)
+          ),
+          value as ParamValue[]
+        );
+      }
+
       if (param.baseType === 'address')
         return validateAddress(value as string) === null;
 
