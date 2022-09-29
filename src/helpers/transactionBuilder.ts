@@ -312,17 +312,8 @@ export function validateAllParamValues(
 
         if (value.length === 0) return true;
 
-        if (param.arrayChildren.baseType === 'tuple') {
-          return validateAllParamValues(
-            Array(value.length).fill(ParamType.from(param.arrayChildren)),
-            value as ParamValue[]
-          );
-        }
-
         return validateAllParamValues(
-          Array(value.length).fill(
-            ParamType.from(param.arrayChildren.baseType)
-          ),
+          Array(value.length).fill(ParamType.from(param.arrayChildren)),
           value as ParamValue[]
         );
       }

@@ -2,12 +2,12 @@
 import { onMounted, ref, watch } from 'vue';
 import { ParamValue } from '@/helpers/transactionBuilder';
 import { ParamType } from '@ethersproject/abi';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = withDefaults(
   defineProps<{
-    type: string;
+    childSample: ParamType;
     values: ParamValue[];
-    tupleComponents: ParamType[] | null;
     label: string;
   }>(),
   {
@@ -23,20 +23,20 @@ const input = ref<ParamValue[]>(props.values);
 const items = ref<ParamType[]>([]);
 
 function addItem() {
-  items.value.push(
-    ParamType.from({
-      type: props.type,
-      name: `${props.label} ${items.value.length + 1}`
-    })
-  );
+  const child = clone(props.childSample);
+  child.name = `${props.label} ${items.value.length + 1}`; // TODO: make this reactive
+  items.value.push(child);
 }
 
 function removeItem(index: number) {
-  input.value.splice(index, 1);
-  items.value.splice(index, 1);
+  input.value = input.value.filter((_, i) => i !== index);
+  items.value = items.value.filter((_, i) => i !== index);
 }
 
-onMounted(() => (input.value = props.values));
+onMounted(() => {
+  input.value = props.values;
+  input.value.forEach(() => addItem());
+});
 
 watch(
   () => props.values,

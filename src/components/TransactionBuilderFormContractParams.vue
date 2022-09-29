@@ -33,8 +33,12 @@ watch(input, () => emit('updateValues', input.value), { deep: true });
 
 <template>
   <div>
-    <div v-for="(param, index) in params" :key="index">
-      <button v-if="canRemoveItems" @click="emit('removeItem', index)">
+    <div v-for="(param, index) in params" :key="index" class="relative">
+      <button
+        v-if="canRemoveItems"
+        class="absolute top-0 right-0"
+        @click="emit('removeItem', index)"
+      >
         remove
       </button>
       <TransactionBuilderFormContractParamBool
@@ -81,8 +85,7 @@ watch(input, () => emit('updateValues', input.value), { deep: true });
       />
       <TransactionBuilderFormContractParamArray
         v-if="param.baseType === 'array'"
-        :type="param.arrayChildren.baseType"
-        :tuple-components="param.components"
+        :child-sample="param.arrayChildren"
         :values="(input[index] as ParamValue[])"
         :label="param.name"
         @update-values="input[index] = $event"
