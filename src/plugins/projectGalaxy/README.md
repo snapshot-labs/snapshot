@@ -7,8 +7,8 @@ The **Galxe Plugin is designed for Snapshot.org. This will incentive communities
 ### 1. Preparation
 
 1. Create a Snapshot proposal on [https://snapshot.org/](https://snapshot.org/)
-2. Create a Snapshot Credential with the proposal ID created from step1 on [https://galaxy.eco/](https://galaxy.eco/)
-3. Create an OAT campaign ONLY with the credential created from step2 on [https://galaxy.eco/](https://galaxy.eco/)
+2. Create a Snapshot Credential with the proposal ID created from step1 on [https://galxe.com/](https://galxe.com/)
+3. Create an OAT campaign ONLY with the credential created from step2 on [https://galxe.com/](https://galxe.com/)
 
 ### 2. Add Galxe Plugin to your space
 
@@ -49,7 +49,7 @@ Second, fill it with the proposal ID and the information of the Campaign which y
 ```javascript
 {
 	"oats": {
-		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galxe/campaign/GCcqvUtDaM"
+		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galaxy/campaign/GCcqvUtDaM"
 	}
 }
 ```
