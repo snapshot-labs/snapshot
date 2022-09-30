@@ -49,7 +49,7 @@ Second, fill it with the proposal ID and the information of the Campaign which y
 ```javascript
 {
 	"oats": {
-		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galaxy/campaign/GCcqvUtDaM"
+		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galxe/campaign/GCcqvUtDaM"
 	}
 }
 ```
