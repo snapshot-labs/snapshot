@@ -413,7 +413,7 @@
     "domain": {
       "title": "Configurez votre domaine d'espace",
       "ensMessage": "Avant de pouvoir créer votre propre espace, vous avez besoin d'un domaine ENS sur le réseau principal Ethereum.",
-      "ensMessageTestnet": "You can also {link} on the Rinkeby testnet and mess with things there first.",
+      "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "Essayer la démo"
     },
     "strategy": {

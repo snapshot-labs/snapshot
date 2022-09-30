@@ -45,7 +45,7 @@ export function useSpaces() {
     .map(([id]) => id);
 
   const orderedSpaces = computed(() => {
-    const network = route.query.network || '';
+    const network = route.query.network || '4689';
     const q = route.query.q?.toString() || '';
     const list = Object.keys(spaces.value)
       .map(key => {

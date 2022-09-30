@@ -29,8 +29,8 @@ defineProps<{
   background-color: transparent;
   color: var(--link-color);
   border-radius: 23px;
-  height: 46px;
   font-size: 18px;
+  padding: 12px 24px;
 
   &.button--primary {
     color: white;

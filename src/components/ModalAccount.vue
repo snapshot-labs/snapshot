@@ -53,7 +53,13 @@ watch(open, () => {
               class="mr-2 -mt-1"
               :alt="injected.name"
             />
-            {{ injected.name }}
+            <div style="text-align: left">
+              <span v-if="injected.id === 'trustwallet'">Browser Wallet</span>
+              <span v-if="injected.id === 'trustwallet'" style="display: block"
+                >(ioPay, Metamask, Trust, etc.)</span
+              >
+              <span v-else>{{ injected.name }}</span>
+            </div>
           </BaseButton>
           <BaseButton
             v-else-if="cId !== 'injected' && !connectors[cId].hidden"
