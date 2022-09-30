@@ -8,7 +8,7 @@ const APP_URL = 'https://galxe.com';
 const NO_OAT_IMAGE =
   'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png';
 const IMG_LOGO_GALAXY =
-  '"https://d257b89266utxb.cloudfront.net/galaxy/images/jokey/1664574476611261159.png"';
+  'https://d257b89266utxb.cloudfront.net/galaxy/images/jokey/1664574476611261159.png';
 const IMG_ICON_LINK =
   'https://d257b89266utxb.cloudfront.net/galaxy/images/avatar/0x4960c283c45e1898c41633c39fb2015167b20dc3-1655712057.png';
 const IMG_ICONS = {
