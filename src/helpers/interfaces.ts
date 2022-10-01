@@ -259,3 +259,8 @@ export interface Plugin {
 export interface PluginIndex extends Plugin {
   key: string;
 }
+
+export interface FormError {
+  message: string;
+  push?: boolean;
+}

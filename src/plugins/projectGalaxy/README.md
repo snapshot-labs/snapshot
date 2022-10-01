@@ -1,18 +1,18 @@
-# Project Galaxy Plugin
+# Galxe Plugin
 
 Created time: July 21, 2022 5:51 PM
 
-The **Project Galaxy Plugin is designed for Snapshot.org. This will incentive communities to participate in the proposal vote by rewarding them with OATs (On-Chain Achievement Tokens). Space Admin can add this plugin into your space. After users vote, they can claim an OAT directly from the Project Galaxy Plugin section on the proposal page.**
+The **Galxe Plugin is designed for Snapshot.org. This will incentive communities to participate in the proposal vote by rewarding them with OATs (On-Chain Achievement Tokens). Space Admin can add this plugin into your space. After users vote, they can claim an OAT directly from the Galxe Plugin section on the proposal page.**
 
 ### 1. Preparation
 
 1. Create a Snapshot proposal on [https://snapshot.org/](https://snapshot.org/)
-2. Create a Snapshot Credential with the proposal ID created from step1 on [https://galaxy.eco/](https://galaxy.eco/)
-3. Create an OAT campaign ONLY with the credential created from step2 on [https://galaxy.eco/](https://galaxy.eco/)
+2. Create a Snapshot Credential with the proposal ID created from step1 on [https://galxe.com/](https://galxe.com/)
+3. Create an OAT campaign ONLY with the credential created from step2 on [https://galxe.com/](https://galxe.com/)
 
-### 2. Add Project Galaxy Plugin to your space
+### 2. Add Galxe Plugin to your space
 
-In Snapshot space setting, you can search and find the Project Galaxy Plugin in the plugins section, and add it to your space.
+In Snapshot space setting, you can search and find the Galxe Plugin in the plugins section, and add it to your space.
 
 ### 3. Set config JSON
 
