@@ -334,7 +334,7 @@
     },
     "authors": {
       "label": "Auteurs",
-      "information": "Authors are always able to create proposals"
+      "information": "Les auteurs sont toujours en mesure de créer des propositions"
     },
     "proposalValidation": "Validation de la proposition",
     "validation": "Type",
@@ -423,7 +423,7 @@
       "onePersonOneVote": {
         "title": "Une personne, un vote",
         "description": "Gérer une liste blanche de personnes qui peuvent voter ou simplement permettre à n'importe quelle adresse de voter. Chaque vote est égal et aucun jeton n'est requis",
-        "whitelistInformation": "Specify a number of accounts that can vote",
+        "whitelistInformation": "Spécifiez les comptes pouvant voter",
         "ticketInformation": "N'importe quel compte peut voter",
         "votesEqualInfo": "Chaque vote est égal et aucun jeton n'est requis"
       },
