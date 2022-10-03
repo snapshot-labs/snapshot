@@ -13,6 +13,7 @@ import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import VueTippy from 'vue-tippy';
+import firebaseMessaging from './helpers/firebase'
 
 const app = createApp({
   setup() {
@@ -27,6 +28,8 @@ const app = createApp({
     defaultProps: { delay: [400, null] },
     directive: 'tippy' // => v-tippy
   });
+
+app.config.globalProperties.$messaging = firebaseMessaging;
 
 app.mount('#app');
 

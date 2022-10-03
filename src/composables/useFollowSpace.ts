@@ -16,7 +16,7 @@ export function useFollowSpace(spaceId: any = {}) {
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
-  const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
+  const { toggleSpaceSubscription, isSubscribed } = useSpaceSubscription();
 
   const loadingFollow = ref('');
 
@@ -70,10 +70,6 @@ export function useFollowSpace(spaceId: any = {}) {
         follow(space);
       } else {
         if (isFollowing.value) {
-          // Also unsubscribe to the notifications if the user leaves the space.
-          if (isSubscribed.value) {
-            await toggleSubscription();
-          }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
             space
@@ -84,6 +80,12 @@ export function useFollowSpace(spaceId: any = {}) {
             space
           });
         }
+
+        // Also subscribe/unsubscribe to the notifications if the user join/leaves the space.
+        if (isSubscribed.value) {
+          await toggleSpaceSubscription(spaceId, isFollowing.value);
+        }
+
         await loadFollows();
         loadingFollow.value = '';
       }

@@ -5,5 +5,6 @@ interface ImportMetaEnv {
   readonly VITE_SCORES_URL: string;
   readonly VITE_IPFS_GATEWAY: string;
   readonly VITE_DEFAULT_NETWORK: string;
-  readonly VITE_PUSHER_BEAMS_INSTANCE_ID: string;
+  readonly VITE_VAPID_KEY: string;
+  readonly VITE_WEBHOOK_URL: string;
 }
