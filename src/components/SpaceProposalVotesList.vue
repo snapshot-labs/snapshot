@@ -3,7 +3,6 @@ import { ref, computed, watch, toRefs } from 'vue';
 import { shorten, getChoiceString } from '@/helpers/utils';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
-import pending from '@/helpers/pending.json';
 import {
   ExtendedSpace,
   Proposal,
@@ -34,26 +33,11 @@ const { web3Account } = useWeb3();
 const authorIpfsHash = ref('');
 const modalReceiptOpen = ref(false);
 
-const isFinalProposal = computed(() => {
-  const spaceShowPending = pending;
-  const showPending =
-    props.proposal.scores_state === 'pending' &&
-    spaceShowPending.includes(props.space.id);
-  return props.proposal.scores_state === 'final' || showPending;
-});
-
-const voteCount = computed(() =>
-  isFinalProposal.value ? props.proposal.votes : votes.value.length
-);
-const nbrVisibleVotes = ref(10);
+const voteCount = computed(() => props.proposal.votes);
 
 const sortedVotes = ref<Vote[]>([]);
 
-const visibleVotes = computed(() =>
-  isFinalProposal.value
-    ? sortedVotes.value
-    : sortedVotes.value.slice(0, nbrVisibleVotes.value)
-);
+const visibleVotes = computed(() => sortedVotes.value);
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
@@ -163,13 +147,9 @@ watch(visibleVotes, () => {
       </div>
     </div>
     <a
-      v-if="
-        isFinalProposal
-          ? sortedVotes.length < voteCount
-          : sortedVotes.length > 10 && nbrVisibleVotes < sortedVotes.length
-      "
+      v-if="sortedVotes.length < voteCount"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-      @click="isFinalProposal ? $emit('loadVotes') : (nbrVisibleVotes += 10)"
+      @click="$emit('loadVotes')"
     >
       <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
