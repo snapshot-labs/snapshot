@@ -90,9 +90,9 @@ watch(
   >
     <div class="flex flex-auto flex-col">
       <h4 class="m-4 mb-0 text-center">
-        {{ $tc('voteOverview') }}
+        {{ $tc('proposal.castVote') }}
       </h4>
-      <BaseBlock slim class="m-4 p-4 text-skin-link">
+      <div slim class="m-4 text-skin-link">
         <div class="flex">
           <span class="mr-1 flex-auto text-skin-text" v-text="$t('options')" />
           <span
@@ -162,7 +162,7 @@ watch(
           />
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
-      </BaseBlock>
+      </div>
     </div>
     <template #footer>
       <div class="float-left w-2/4 pr-2">
@@ -179,7 +179,7 @@ watch(
           primary
           @click="handleSubmit"
         >
-          {{ $t('proposal.vote') }}
+          {{ $t('confirm') }}
         </BaseButton>
       </div>
     </template>
