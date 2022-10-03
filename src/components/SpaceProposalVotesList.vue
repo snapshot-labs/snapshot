@@ -158,7 +158,7 @@ watch(visibleVotes, () => {
           }"
           class="text-skin-text transition-colors duration-200 hover:text-skin-link"
         >
-          <BaseIcon name="info" />
+          <i-ho-annotation class="text-[16px] leading-[16px]" />
         </span>
       </div>
     </div>

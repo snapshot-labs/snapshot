@@ -148,10 +148,18 @@ watch(
           </BaseLink>
         </div>
         <div class="flex">
-          <span class="mr-1 flex-auto text-skin-text" v-text="$t('reason')" />
+          <span
+            class="mr-1 flex-auto text-skin-text"
+            v-text="$t('reason.label')"
+          />
         </div>
         <div class="flex">
-          <TextareaAutosize v-model="reason" :max-length="140" />
+          <TextareaAutosize
+            v-model="reason"
+            :max-length="140"
+            class="s-input !rounded-3xl"
+            :placeholder="$t('reason.placeholder')"
+          />
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </BaseBlock>

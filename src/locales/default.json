@@ -67,7 +67,10 @@
   "quorumReached": "quorum reached",
   "options": "Option(s)",
   "votingPower": "Your voting power",
-  "reason": "Reason",
+  "reason": {
+    "label": "Reason",
+    "placeholder": "What is your reason?"
+  },
   "receipt": "Receipt",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verify receipt on MyCrypto",
