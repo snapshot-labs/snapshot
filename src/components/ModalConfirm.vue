@@ -144,13 +144,7 @@ watch(
             <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
         </div>
-        <div class="flex">
-          <span
-            class="mr-1 flex-auto text-skin-text"
-            v-text="$t('comment.label')"
-          />
-        </div>
-        <div class="flex">
+        <div class="mt-3 flex">
           <TextareaAutosize
             v-model="reason"
             :max-length="140"

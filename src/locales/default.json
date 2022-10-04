@@ -67,8 +67,7 @@
   "options": "Option(s)",
   "votingPower": "Your voting power",
   "comment": {
-    "label": "Comment",
-    "placeholder": "Leave a comment (optional)"
+    "placeholder": "Share your reason (optional)"
   },
   "receipt": "Receipt",
   "relayer": "Relayer",
