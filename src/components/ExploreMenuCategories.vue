@@ -61,7 +61,10 @@ const categoryItems = computed(() => {
       <div class="flex">
         <span class="mr-3">{{ item.text }}</span>
         <span class="ml-auto mt-[-3px] flex">
-          <BaseCounter :counter="item.extras.count" class="my-auto" />
+          <BaseCounter
+            :counter="item.extras.count"
+            class="my-auto !bg-skin-text"
+          />
         </span>
       </div>
     </template>

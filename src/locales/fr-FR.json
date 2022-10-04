@@ -334,7 +334,7 @@
     },
     "authors": {
       "label": "Auteurs",
-      "information": "Authors are always able to create proposals"
+      "information": "Les auteurs sont toujours en mesure de créer des propositions"
     },
     "proposalValidation": "Validation de la proposition",
     "validation": "Type",
@@ -423,7 +423,7 @@
       "onePersonOneVote": {
         "title": "Une personne, un vote",
         "description": "Gérer une liste blanche de personnes qui peuvent voter ou simplement permettre à n'importe quelle adresse de voter. Chaque vote est égal et aucun jeton n'est requis",
-        "whitelistInformation": "Specify a number of accounts that can vote",
+        "whitelistInformation": "Spécifiez les comptes pouvant voter",
         "ticketInformation": "N'importe quel compte peut voter",
         "votesEqualInfo": "Chaque vote est égal et aucun jeton n'est requis"
       },
@@ -682,9 +682,9 @@
     "description": "Snapshot est une plateforme de gouvernance communautaire gratuite et open-source. Créez votre propre espace dès maintenant et commencez à prendre des décisions !"
   },
   "aboutPage": {
-    "description": "Snapshot est une plate-forme de gouvernance décentralisée qui facilite la création et le vote sur les propositions - le tout sans dépenser une fortune en frais de gaz ! De plus, notre système flexible prend en charge différents types et stratégies de vote, afin que vous puissiez adapter le processus de vote à vos besoins.",
-    "subHeader": "La gouvernance devrait être un jeu d'enfants",
-    "subDescription": "La gouvernance Web3 ne doit pas être compliquée. Snapshot est la solution idéale pour les organisations qui cherchent un moyen simple et efficace de gouverner leur communauté ou leur organisation."
+    "description": "Snapshot est une plateforme de gouvernance décentralisée qui facilite la création et le vote sur les propositions - le tout sans dépenser une fortune en frais de gaz ! De plus, notre système flexible prend en charge différents types et stratégies de vote, afin que vous puissiez adapter le processus de vote à vos besoins.",
+    "subHeader": "La gouvernance devrait être simple",
+    "subDescription": "La gouvernance Web3 ne doit pas être compliquée. Snapshot est la solution idéale pour les organisations qui cherchent un moyen simple et efficace pour organiser leur communauté ou leur organisation."
   },
   "footerView": {
     "resources": "Ressources",
