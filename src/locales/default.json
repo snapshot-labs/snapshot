@@ -66,9 +66,9 @@
   "quorumReached": "quorum reached",
   "options": "Option(s)",
   "votingPower": "Your voting power",
-  "reason": {
-    "label": "Reason",
-    "placeholder": "What is your reason?"
+  "comment": {
+    "label": "Comment",
+    "placeholder": "Leave a comment (optional)"
   },
   "receipt": "Receipt",
   "relayer": "Relayer",

@@ -147,7 +147,7 @@ watch(
         <div class="flex">
           <span
             class="mr-1 flex-auto text-skin-text"
-            v-text="$t('reason.label')"
+            v-text="$t('comment.label')"
           />
         </div>
         <div class="flex">
@@ -155,7 +155,7 @@ watch(
             v-model="reason"
             :max-length="140"
             class="s-input !rounded-3xl"
-            :placeholder="$t('reason.placeholder')"
+            :placeholder="$t('comment.placeholder')"
           />
         </div>
         <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
