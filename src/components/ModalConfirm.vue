@@ -7,7 +7,6 @@ import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useProposals } from '@/composables';
-import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
 
@@ -28,7 +27,7 @@ const props = defineProps<{
   strategies: { name: string; network: string; params: Record<string, any> }[];
 }>();
 
-const emit = defineEmits(['reload', 'close']);
+const emit = defineEmits(['reload', 'close', 'openPostVoteModal']);
 
 const { t } = useI18n();
 const { send, isSending } = useClient();
@@ -72,10 +71,10 @@ async function handleSubmit() {
     });
 
   console.log('Result', result);
+  
   if (result?.id) {
-    if (!pending.includes(props.space.id)) {
-      emit('reload');
-    }
+    emit('openPostVoteModal');
+    emit('reload');
     addVotedProposalId(props.proposal.id);
     emit('close');
   }

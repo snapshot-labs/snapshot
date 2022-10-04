@@ -6,13 +6,14 @@ export default {
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { FormError } from '@/helpers/interfaces';
 
 const props = withDefaults(
   defineProps<{
     type?: 'text' | 'number' | 'email';
     modelValue?: string | number;
     definition?: any;
-    error?: { message: string; push?: boolean };
+    error?: FormError | null;
     focusOnMount?: boolean;
     hideInput?: boolean;
     placeholder?: string;
@@ -29,7 +30,7 @@ const props = withDefaults(
     type: 'text',
     modelValue: undefined,
     definition: undefined,
-    error: () => ({ message: '', push: false }),
+    error: null,
     focusOnMount: false,
     hideInput: false,
     placeholder: undefined,
@@ -50,7 +51,7 @@ const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 const visited = ref(false);
 
-const showErrorMessage = computed(() => visited.value || props.error.push);
+const showErrorMessage = computed(() => visited.value || props.error?.push);
 
 onMounted(() => {
   if (props.focusOnMount) {
@@ -79,15 +80,15 @@ onMounted(() => {
         :value="modelValue"
         :class="[
           's-input !h-[42px]',
-          { '!border-red': error.message && showErrorMessage },
+          { '!border-red': error?.message && showErrorMessage },
           { 'cursor-not-allowed placeholder:!opacity-30': isDisabled }
         ]"
         :maxlength="maxLength ?? definition?.maxLength"
         :placeholder="placeholder ?? definition?.examples?.[0] ?? ''"
         :readonly="readonly"
         :disabled="isDisabled"
-        @blur="error.message ? (visited = true) : null"
-        @focus="error.message ? null : (visited = false)"
+        @blur="error?.message ? (visited = true) : null"
+        @focus="error?.message ? null : (visited = false)"
         @input="
           $emit('update:modelValue', ($event.target as HTMLInputElement).value)
         "
@@ -110,17 +111,17 @@ onMounted(() => {
     <div
       :class="[
         's-error',
-        !!error.message && showErrorMessage
+        !!error?.message && showErrorMessage
           ? '-mt-[21px] opacity-100'
           : '-mt-[40px] h-6 opacity-0'
       ]"
     >
       <BaseIcon
-        v-if="error.message && showErrorMessage"
+        v-if="error?.message && showErrorMessage"
         name="warning"
         class="mr-2 text-white"
       />
-      {{ error.message }}
+      {{ error?.message }}
     </div>
   </div>
 </template>

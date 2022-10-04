@@ -17,15 +17,14 @@ export function useClient() {
 
   const connectorName = computed(() => auth.provider.value?.connectorName);
 
-  const usePersonalSign = computed(
-    () =>
-      connectorName.value === 'walletlink' || connectorName.value === 'gnosis'
-  );
-
   const isGnosisSafe = computed(
     () =>
       web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
       connectorName.value === 'gnosis'
+  );
+
+  const usePersonalSign = computed(
+    () => connectorName.value === 'walletlink' || isGnosisSafe.value
   );
 
   async function send(space, type, payload) {
