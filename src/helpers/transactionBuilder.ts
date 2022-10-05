@@ -109,7 +109,7 @@ export function encodeTransactionsForMultisend(transactions: Transaction[]) {
 }
 
 export function convertBatchToMultisendTransaction(
-  batch: Transaction[],
+  batch: ExecutableTransaction[],
   chainId: string
 ): MultisendTransaction {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
