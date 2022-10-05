@@ -4,6 +4,7 @@ import { Transaction } from './transactionBuilder';
 const SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction.gnosis.io/api/v1/',
   '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
+  '5': 'https://safe-transaction.goerli.gnosis.io/api/v1/',
   '100': 'https://safe-transaction.xdai.gnosis.io/api/v1/',
   '73799': 'https://safe-transaction.volta.gnosis.io/api/v1/',
   '246': 'https://safe-transaction.ewc.gnosis.io/api/v1/',
