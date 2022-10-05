@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExecutionData, ExecutorState } from '@/helpers/safe';
-import { useTxStatus } from '@/composables';
+import { useModal, useTxStatus, useWeb3 } from '@/composables';
 
 defineProps<{
   executorState: ExecutorState;
@@ -8,7 +8,9 @@ defineProps<{
   hasProposalEnded: boolean;
 }>();
 
+const { modalAccountOpen } = useModal();
 const { pendingCount } = useTxStatus();
+const { web3Account } = useWeb3();
 </script>
 
 <template>
@@ -24,10 +26,22 @@ const { pendingCount } = useTxStatus();
         name="has-been-executed"
       />
       <div v-else>
-        <slot v-if="executorState.canBeExecuted" name="execute" />
+        <div v-if="web3Account">
+          <slot v-if="executorState.canBeExecuted" name="execute" />
+          <div v-else>
+            <slot
+              v-if="executorState.hasBeenProposed"
+              name="dispute-execution"
+            />
+            <slot v-else name="propose-execution" />
+          </div>
+        </div>
         <div v-else>
-          <slot v-if="executorState.hasBeenProposed" name="dispute-execution" />
-          <slot v-else name="propose-execution" />
+          <div class="p-4 text-center">
+            <BaseButton @click="modalAccountOpen = true"
+              >connect wallet</BaseButton
+            >
+          </div>
         </div>
       </div>
     </div>
