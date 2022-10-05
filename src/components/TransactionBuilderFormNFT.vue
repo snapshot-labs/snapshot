@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { shortenAddress } from '@/helpers/utils';
-import { CollectableAsset } from '@/helpers/safe';
+import { CollectableAsset, getSafeCollectables, Safe } from '@/helpers/safe';
 import {
   decodeERC721TransferData,
   encodeERC721TransferData,
@@ -14,8 +14,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
-  availableCollectables: CollectableAsset[];
-  defaultFromAddress: string;
+  safe: Safe;
 }>();
 
 const emit = defineEmits<{
@@ -23,11 +22,12 @@ const emit = defineEmits<{
   (e: 'saveTransaction', transaction: Transaction): void;
 }>();
 
+const availableCollectables = ref<CollectableAsset[]>([]);
 const selectedCollectableAsset = ref<CollectableAsset | undefined>(undefined);
 const recipient = ref<string>('');
 
 const collectablesDropdownOptions = computed(() =>
-  props.availableCollectables.map(collectable => ({
+  availableCollectables.value.map(collectable => ({
     extras: collectable,
     value: collectable
   }))
@@ -40,13 +40,18 @@ const recipientError = computed<{ message: string } | undefined>(() => {
   return undefined;
 });
 
-function populateForm() {
+async function populateForm() {
   if (!props.showForm) return;
 
-  selectedCollectableAsset.value = props.availableCollectables[0];
+  availableCollectables.value = await getSafeCollectables(
+    props.safe.network,
+    props.safe.address
+  );
+
+  selectedCollectableAsset.value = availableCollectables.value[0];
 
   if (props.transaction) {
-    selectedCollectableAsset.value = props.availableCollectables.find(
+    selectedCollectableAsset.value = availableCollectables.value.find(
       asset => asset.tokenAddress === props.transaction!.to // ! => https://github.com/microsoft/TypeScript/issues/36230
     );
     const params = decodeERC721TransferData(props.transaction.data);
@@ -66,7 +71,7 @@ function saveTransaction() {
     to: selectedCollectableAsset.value!.tokenAddress,
     value: BigNumber.from(0),
     data: encodeERC721TransferData(
-      props.defaultFromAddress,
+      props.safe.address,
       recipient.value,
       selectedCollectableAsset.value!.id
     ),

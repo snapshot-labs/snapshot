@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { keccak256 } from '@ethersproject/solidity';
 import { useTransactionBuilder } from '@/composables';
@@ -8,15 +8,11 @@ import {
   Transaction,
   detectTransactionForm
 } from '@/helpers/transactionBuilder';
-import { CollectableAsset, FundsAsset } from '@/helpers/safe';
+import { Safe } from '@/helpers/safe';
 
 const props = defineProps<{
-  title: string;
-  network: string;
+  safe: Safe;
   initialBatches: Transaction[][];
-  defaultFromAddress: string;
-  getAvailableFunds(): Promise<FundsAsset[]>;
-  getAvailableCollectables(): Promise<CollectableAsset[]>;
 }>();
 
 const emit = defineEmits<{
@@ -49,16 +45,6 @@ const targetTransaction = computed<Transaction | null>(() => {
   return batches.value[targetBatchIndex.value][targetTransactionIndex.value];
 });
 
-const loadingAvailableAssets = ref<boolean>(true);
-const availableFunds = ref<FundsAsset[]>([]);
-const availableCollectables = ref<CollectableAsset[]>([]);
-
-onMounted(async () => {
-  availableFunds.value = await props.getAvailableFunds();
-  availableCollectables.value = await props.getAvailableCollectables();
-  loadingAvailableAssets.value = false;
-});
-
 function openEmptyForm(form: TransactionForms, batchIndex: number) {
   targetBatchIndex.value = batchIndex;
   targetTransactionIndex.value = null;
@@ -86,7 +72,10 @@ function saveTransaction(transaction: Transaction) {
 
 <template>
   <div>
-    <BaseBlock :title="title" slim>
+    <BaseBlock
+      :title="`${safe.name} (${safe.network}, ${safe.address.slice(0, 6)})`"
+      slim
+    >
       <template #title-buttons>
         <BaseButton
           v-tippy="'Add transaction group'"
@@ -94,10 +83,10 @@ function saveTransaction(transaction: Transaction) {
           small
           @click="addEmptyBatch"
         >
-          <i-ho-plus />
+          <i-ho-folder-add width="20" height="20" />
         </BaseButton>
         <BaseButton v-tippy="'Import transactions'" class="!border-none" small>
-          <i-ho-download />
+          <i-ho-download width="20" height="20" />
         </BaseButton>
         <BaseButton
           v-tippy="'Remove execution instance'"
@@ -105,7 +94,7 @@ function saveTransaction(transaction: Transaction) {
           small
           @click="emit('removeTransactionBuilder')"
         >
-          <i-ho-trash />
+          <i-ho-trash width="20" height="20" />
         </BaseButton>
       </template>
 
@@ -114,17 +103,46 @@ function saveTransaction(transaction: Transaction) {
         :key="batchIndex"
         class="border-b last:border-b-0"
       >
-        <h4 v-if="batches.length > 1" class="flex border-b py-2 pl-4 pr-2">
-          Group #{{ batchIndex + 1 }}
-          <BaseButton
-            small
-            class="ml-auto !border-none"
-            @click="removeBatch(batchIndex)"
-          >
-            <i-ho-trash />
-          </BaseButton>
+        <h4 v-if="batches.length > 1" class="flex py-2 pl-4 pr-2">
+          Transaction group #{{ batchIndex + 1 }}
+          <div class="ml-auto">
+            <BaseButton
+              v-tippy="'Transfer funds'"
+              small
+              class="!border-none"
+              @click="openEmptyForm(TransactionForms.FUNDS, batchIndex)"
+            >
+              <i-ho-database width="20" height="20" />
+            </BaseButton>
+            <BaseButton
+              v-tippy="'Transfer collectable'"
+              small
+              class="!border-none"
+              @click="openEmptyForm(TransactionForms.NFT, batchIndex)"
+            >
+              <i-ho-photograph width="20" height="20" />
+            </BaseButton>
+            <BaseButton
+              v-tippy="'Custom contract'"
+              small
+              class="!border-none"
+              @click="openEmptyForm(TransactionForms.CONTRACT, batchIndex)"
+            >
+              <i-s-smart-contract width="20" height="20" />
+            </BaseButton>
+            <BaseButton
+              v-tippy="'Remove transaction group'"
+              small
+              class="!border-none"
+              @click="removeBatch(batchIndex)"
+            >
+              <i-ho-trash width="20" height="20" />
+            </BaseButton>
+          </div>
         </h4>
+
         <TransactionBuilderAddTransaction
+          v-if="batches.length === 1"
           @add-transaction-of-type="openEmptyForm($event, batchIndex)"
         />
 
@@ -149,18 +167,25 @@ function saveTransaction(transaction: Transaction) {
                   class="ml-auto !border-none"
                   @click="openEditForm(batchIndex, index)"
                 >
-                  <i-ho-pencil />
+                  <i-ho-pencil width="20" height="20" />
                 </BaseButton>
                 <BaseButton
                   small
                   class="!border-none"
                   @click="removeTransaction(batchIndex, index)"
                 >
-                  <i-ho-trash />
+                  <i-ho-trash width="20" height="20" />
                 </BaseButton>
               </div>
             </template>
           </draggable>
+        </div>
+
+        <div
+          v-if="batch.length === 0 && batches.length > 1"
+          class="border-t p-3 text-center"
+        >
+          No transactions in this group yet.
         </div>
       </div>
     </BaseBlock>
@@ -169,22 +194,21 @@ function saveTransaction(transaction: Transaction) {
       <TransactionBuilderFormFunds
         :show-form="showForm === TransactionForms.FUNDS"
         :transaction="targetTransaction"
-        :available-funds="availableFunds"
+        :safe="safe"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />
       <TransactionBuilderFormNFT
         :show-form="showForm === TransactionForms.NFT"
         :transaction="targetTransaction"
-        :available-collectables="availableCollectables"
-        :default-from-address="props.defaultFromAddress"
+        :safe="safe"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />
       <TransactionBuilderFormContract
         :show-form="showForm === TransactionForms.CONTRACT"
         :transaction="targetTransaction"
-        :network="props.network"
+        :safe="safe"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />

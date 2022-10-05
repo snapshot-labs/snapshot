@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { computed, watch, ref } from 'vue';
+import { PopoverButton } from '@headlessui/vue';
 import { isAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
-import { FundsAsset } from '@/helpers/safe';
+import { FundsAsset, getSafeFunds, Safe } from '@/helpers/safe';
 import {
   decodeERC20TransferData,
   encodeERC20TransferData,
   Transaction,
   TransactionOperationType
 } from '@/helpers/transactionBuilder';
+import { FormError } from '@/helpers/interfaces';
 
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
-  availableFunds: FundsAsset[];
+  safe: Safe;
 }>();
 
 const emit = defineEmits<{
@@ -21,46 +23,46 @@ const emit = defineEmits<{
   (e: 'saveTransaction', transaction: Transaction): void;
 }>();
 
-const selectedFundsAsset = ref<FundsAsset | undefined>(undefined);
+const safeFunds = ref<FundsAsset[]>([]);
+const tokenAddress = ref<string>('');
 const recipient = ref<string>('');
 const amount = ref<BigNumber>(BigNumber.from(0));
 
-const fundsDropdownOptions = computed(() =>
-  props.availableFunds.map(token => ({
-    extras: token,
-    value: token
-  }))
-);
+const tokenAddressError = computed<FormError | null>(() => {
+  if (!tokenAddress.value) return null;
 
-const recipientError = computed<{ message: string } | undefined>(() => {
+  if (!isAddress(tokenAddress.value)) return { message: 'Invalid address' };
+
+  return null;
+});
+
+const recipientError = computed<FormError | null>(() => {
   if (recipient.value === '') return { message: 'Recipient is required' };
   if (!isAddress(recipient.value))
     return { message: 'Recipient is not a valid address' };
-  return undefined;
+
+  return null;
 });
 
-const amountError = computed<{ message: string } | undefined>(() => {
+const amountError = computed<FormError | null>(() => {
   if (amount.value.eq(0)) return { message: 'Amount is required' };
-  return undefined;
+
+  return null;
 });
 
-function populateForm() {
+async function populateForm() {
   if (!props.showForm) return;
 
-  selectedFundsAsset.value = props.availableFunds[0];
+  safeFunds.value = await getSafeFunds(props.safe.network, props.safe.address);
 
   if (props.transaction) {
     if (props.transaction.data === '0x') {
-      selectedFundsAsset.value = props.availableFunds.find(
-        asset => !asset.tokenAddress
-      );
+      tokenAddress.value = '';
       recipient.value = props.transaction.to;
       amount.value = props.transaction.value;
     } else {
-      selectedFundsAsset.value = props.availableFunds.find(
-        asset => asset.tokenAddress === props.transaction!.to // ! => https://github.com/microsoft/TypeScript/issues/36230
-      );
       const params = decodeERC20TransferData(props.transaction.data);
+      tokenAddress.value = props.transaction.to;
       recipient.value = params.recipient;
       amount.value = params.amount;
     }
@@ -70,15 +72,15 @@ function populateForm() {
 function closeAndClearForm() {
   emit('close');
 
-  selectedFundsAsset.value = undefined;
+  tokenAddress.value = '';
   recipient.value = '';
   amount.value = BigNumber.from(0);
 }
 
 function saveTransaction() {
-  if (selectedFundsAsset.value!.tokenAddress) {
+  if (tokenAddress.value) {
     emit('saveTransaction', {
-      to: selectedFundsAsset.value!.tokenAddress,
+      to: tokenAddress.value,
       value: BigNumber.from(0),
       data: encodeERC20TransferData(recipient.value, amount.value),
       operation: TransactionOperationType.CALL
@@ -106,37 +108,51 @@ watch(() => props.showForm, populateForm);
 
     <BaseContainer class="py-4">
       <div class="space-y-2">
-        <BaseListbox
-          v-model="selectedFundsAsset"
-          :items="fundsDropdownOptions"
-          label="Currency"
-        >
-          <template #selected="{ selectedItem }">
-            {{ selectedItem.extras?.name }}
-          </template>
-          <template #item="{ item }">
-            <div class="text-sm text-skin-link">
-              {{ item.extras?.tokenAddress }}
-            </div>
-            <div>
-              {{ item.extras?.name }} ({{ item.extras?.symbol }})
-              {{ item.extras?.safeBalance }}
-            </div>
-          </template>
-        </BaseListbox>
+        <LabelInput>Token address</LabelInput>
+        <div class="flex space-x-2">
+          <InputString
+            v-model="tokenAddress"
+            placeholder="Sending native asset"
+            :error="(tokenAddressError as FormError)"
+          />
+          <BasePopover>
+            <template #button>
+              <ButtonSidebar class="relative !h-[46px] !w-[46px]">
+                <i-ho-cash />
+              </ButtonSidebar>
+            </template>
+            <template #content>
+              <PopoverButton
+                v-for="(asset, index) in safeFunds"
+                :key="index"
+                as="div"
+                class="cursor-pointer px-3 py-2 hover:bg-skin-border"
+                @click="tokenAddress = asset.tokenAddress || ''"
+              >
+                <div class="text-sm text-skin-link">
+                  {{ asset.tokenAddress }}
+                </div>
+                <div>
+                  {{ asset.name }} ({{ asset.symbol }})<br />
+                  {{ asset.safeBalance }}
+                </div>
+              </PopoverButton>
+            </template>
+          </BasePopover>
+        </div>
         <div>
           <LabelInput>Recipient</LabelInput>
           <InputString
             v-model="recipient"
             placeholder="0x..."
-            :error="recipientError"
+            :error="(recipientError as FormError)"
           />
         </div>
         <div>
           <LabelInput>Amount</LabelInput>
           <InputNumber
             :model-value="amount.toString()"
-            :error="amountError"
+            :error="(amountError as FormError)"
             @update:model-value="amount = BigNumber.from($event || 0)"
           />
         </div>

@@ -17,11 +17,12 @@ import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumber } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { FormError } from '@/helpers/interfaces';
+import { Safe } from '@/helpers/safe';
 
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
-  network: string;
+  safe: Safe;
 }>();
 
 const emit = defineEmits<{
@@ -78,7 +79,7 @@ const abiNotFoundError = computed<FormError | null>(() => {
 
   if (abiNotFound.value)
     return {
-      message: `ABI not found on network #${props.network}`,
+      message: `ABI not found on network #${props.safe.network}`,
       push: true
     };
 
@@ -96,7 +97,10 @@ async function updateABI() {
   if (isAddress(contractAddress.value)) {
     abiLoading.value = true;
 
-    const newAbi = await getContractABI(props.network, contractAddress.value);
+    const newAbi = await getContractABI(
+      props.safe.network,
+      contractAddress.value
+    );
 
     if (newAbi) {
       abiNotFound.value = false;

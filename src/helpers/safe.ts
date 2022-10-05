@@ -107,15 +107,6 @@ export interface CollectableAsset extends Asset {
   imageUri: string;
 }
 
-export interface TransactionBuilderInitData {
-  title: string;
-  batches: Transaction[][];
-  getAvailableFunds?(): Promise<FundsAsset[]>;
-  getAvailableCollectables?(): Promise<CollectableAsset[]>;
-  safe: Safe;
-  module?: SafeModule;
-}
-
 export type NativeCoinInfo = {
   name: string;
   symbol: string;
