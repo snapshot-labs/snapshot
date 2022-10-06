@@ -1,8 +1,9 @@
-import TELLOR_MODULE_ABI from '@/helpers/abi/TELLOR_MODULE.json';
-import { Executor, ExecutorState, ModuleExecutionData } from '@/helpers/safe';
+import { reactive, readonly } from 'vue';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { reactive, readonly } from 'vue';
+import TELLOR_MODULE_ABI from '@/helpers/abi/TELLOR_MODULE.json';
+import { Executor, ExecutorState, ModuleExecutionData } from '@/helpers/safe';
+import { useTxStatus } from '@/composables';
 
 interface TellorModuleState extends ExecutorState {
   oracleAddress: string | undefined;
@@ -13,6 +14,7 @@ export function useSafeTellorModule(
   proposalId: string
 ): Executor<TellorModuleState> {
   const readProvider = getProvider(executionData.safe.network);
+  const { pendingCount } = useTxStatus();
 
   const state = reactive<TellorModuleState>({
     loading: true,
@@ -37,16 +39,19 @@ export function useSafeTellorModule(
     state.loading = false;
   }
 
-  async function* proposeExecution() {
-    yield;
+  async function proposeExecution() {
+    pendingCount.value++;
+    pendingCount.value--;
   }
 
-  async function* disputeExecution() {
-    yield;
+  async function disputeExecution() {
+    pendingCount.value++;
+    pendingCount.value--;
   }
 
-  async function* execute() {
-    yield;
+  async function execute() {
+    pendingCount.value++;
+    pendingCount.value--;
   }
 
   return {

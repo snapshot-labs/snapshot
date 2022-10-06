@@ -29,6 +29,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
 import { Contract } from '@ethersproject/contracts';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { useTxStatus, useWeb3 } from '@/composables';
 
 interface RealityModuleState extends ExecutorState {
   oracleAddress: string | undefined;
@@ -48,6 +49,8 @@ export function useSafeRealityModule(
 ): Executor<RealityModuleState> {
   const currentTimestamp = useTimestamp();
   const readProvider = getProvider(executionData.safe.network);
+  const { pendingCount } = useTxStatus();
+  const { web3Account } = useWeb3();
 
   const state = reactive<RealityModuleState>({
     loading: false,
@@ -114,7 +117,7 @@ export function useSafeRealityModule(
     state.loading = false;
   }
 
-  async function* proposeExecution() {
+  async function proposeExecution() {
     const tx = await sendTransaction(
       getInstance().web3,
       executionData.module.address,
@@ -122,11 +125,12 @@ export function useSafeRealityModule(
       'addProposal',
       [proposalId, finalTxHashes]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
-  async function* disputeExecution(answer: '0' | '1') {
+  async function disputeExecution(answer: '0' | '1') {
     if (!getInstance().web3 || !state.oracleAddress) return;
 
     const currentBond = await call(readProvider, REALITY_ORACLE_ABI, [
@@ -152,7 +156,6 @@ export function useSafeRealityModule(
     // fetch token attribute from Realitio contract, if it works, it means it is
     // a RealitioERC20, otherwise the catch will handle the currency as ETH
     try {
-      const account = (await getInstance().web3.listAccounts())[0];
       const token = await call(readProvider, REALITY_ORACLE_ABI, [
         state.oracleAddress,
         'token',
@@ -164,7 +167,7 @@ export function useSafeRealityModule(
         ERC20_ABI,
         [
           [token, 'decimals', []],
-          [token, 'allowance', [account, state.oracleAddress]]
+          [token, 'allowance', [web3Account.value, state.oracleAddress]]
         ]
       );
 
@@ -183,10 +186,10 @@ export function useSafeRealityModule(
           [state.oracleAddress, bond],
           {}
         );
-        yield 'erc20-approval';
+        pendingCount.value++;
         const approvalReceipt = await approveTx.wait();
+        pendingCount.value--;
         console.log('[DAO module] token transfer approved:', approvalReceipt);
-        yield;
       }
       parameters = [...parameters, bond, bond];
       methodName = 'submitAnswerERC20';
@@ -207,12 +210,13 @@ export function useSafeRealityModule(
       parameters,
       txOverrides
     );
-    yield;
+    pendingCount.value++;
     const receipt = await tx.wait();
+    pendingCount.value--;
     console.log('[DAO module] executed vote on oracle:', receipt);
   }
 
-  async function* execute() {
+  async function execute() {
     if (state.nextTxIndex === undefined) return;
 
     const batch = executionData.batches[state.nextTxIndex];
@@ -235,8 +239,9 @@ export function useSafeRealityModule(
         state.nextTxIndex
       ]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
 
     if (executionData.batches.length > state.nextTxIndex + 1) {
       state.nextTxIndex++;
@@ -376,7 +381,7 @@ export function useSafeRealityModule(
     };
   }
 
-  async function* claimBond(
+  async function claimBond(
     claimParams: [string[], string[], number[], string[]]
   ) {
     if (!getInstance().web3 || !state.oracleAddress) return;
@@ -395,8 +400,9 @@ export function useSafeRealityModule(
         'withdraw',
         []
       );
-      yield;
+      pendingCount.value++;
       await withdrawTx.wait();
+      pendingCount.value--;
       return;
     }
 
@@ -407,8 +413,9 @@ export function useSafeRealityModule(
       'claimMultipleAndWithdrawBalance',
       [[state.questionId], ...claimParams]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
   async function setBondData() {
@@ -421,15 +428,13 @@ export function useSafeRealityModule(
       getInstance().web3
     );
 
-    const account = (await getInstance().web3.listAccounts())[0];
-
     const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
       await multicall(
         executionData.safe.network,
         readProvider,
         REALITY_ORACLE_ABI,
         [
-          [state.oracleAddress, 'balanceOf', [account]],
+          [state.oracleAddress, 'balanceOf', [web3Account.value]],
           [state.oracleAddress, 'getBestAnswer', [state.questionId]],
           [state.oracleAddress, 'getHistoryHash', [state.questionId]],
           [state.oracleAddress, 'isFinalized', [state.questionId]]
@@ -487,11 +492,11 @@ export function useSafeRealityModule(
     });
 
     const alreadyClaimed = BigNumber.from(historyHash).eq(0);
-    const address = account.toLowerCase();
 
     // Check if current user has submitted an answer
     const currentUserAnswers = users.map((user, i) => {
-      if (user === address) return answers[i];
+      if (user.toString() === web3Account.value.toLowerCase())
+        return answers[i];
     });
 
     // If the user has answers, check if one of them is the winner

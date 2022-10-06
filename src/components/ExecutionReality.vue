@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
-import { useTxStatus, useSafeRealityModule } from '@/composables';
+import { useSafeRealityModule } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
@@ -10,8 +10,6 @@ const props = defineProps<{
   proposalSnapshot: string;
 }>();
 
-const { pendingCount } = useTxStatus();
-
 const realityModule = useSafeRealityModule(
   props.executionData,
   props.proposalId,
@@ -19,52 +17,6 @@ const realityModule = useSafeRealityModule(
 );
 
 onMounted(realityModule.setState);
-
-async function handleProposeExecution() {
-  const proposeTransaction = realityModule.proposeExecution();
-  await proposeTransaction.next();
-  pendingCount.value++;
-  await proposeTransaction.next();
-  pendingCount.value--;
-
-  await realityModule.setState();
-}
-
-async function handleDisputeExecution(answer: '0' | '1') {
-  const setOralceAnswerTransaction = realityModule.disputeExecution(answer);
-  const step = await setOralceAnswerTransaction.next();
-  if (step.value === 'erc20-approval') {
-    pendingCount.value++;
-    await setOralceAnswerTransaction.next();
-    pendingCount.value--;
-    await setOralceAnswerTransaction.next();
-  }
-  pendingCount.value++;
-  await setOralceAnswerTransaction.next();
-  pendingCount.value--;
-
-  await realityModule.setState();
-}
-
-async function handleExecute() {
-  const executeTransaction = realityModule.execute();
-  await executeTransaction.next();
-  pendingCount.value++;
-  await executeTransaction.next();
-  pendingCount.value--;
-
-  await realityModule.setState();
-}
-
-async function handleClaimBond() {
-  const claimBondTransaction = realityModule.claimBond();
-  await claimBondTransaction.next();
-  pendingCount.value++;
-  await claimBondTransaction.next();
-  pendingCount.value--;
-
-  await realityModule.setState();
-}
 </script>
 
 <template>
@@ -81,7 +33,7 @@ async function handleClaimBond() {
 
     <template #propose-execution>
       <div class="p-4">
-        <BaseButton class="w-full" @click="handleProposeExecution">
+        <BaseButton class="w-full" @click="realityModule.proposeExecution">
           Propose transactions for execution
         </BaseButton>
       </div>
@@ -98,13 +50,13 @@ async function handleClaimBond() {
         <div>Cooldown: {{ realityModule.state.cooldown }}</div>
         <BaseButton
           v-if="!realityModule.state.questionResult"
-          @click="handleDisputeExecution('1')"
+          @click="realityModule.disputeExecution('1')"
         >
           Yes
         </BaseButton>
         <BaseButton
           v-if="realityModule.state.questionResult"
-          @click="handleDisputeExecution('0')"
+          @click="realityModule.disputeExecution('0')"
         >
           No
         </BaseButton>
@@ -114,10 +66,10 @@ async function handleClaimBond() {
 
     <template #execute>
       <div v-if="realityModule.state.canBeExecuted">
-        <BaseButton @click="handleExecute">
+        <BaseButton @click="realityModule.execute">
           Execute transaction batch #{{ realityModule.state.nextTxIndex }}
         </BaseButton>
-        <BaseButton @click="handleClaimBond"> Claim bond </BaseButton>
+        <BaseButton @click="realityModule.claimBond"> Claim bond </BaseButton>
       </div>
       <div v-else>waiting for cooldown</div>
     </template>

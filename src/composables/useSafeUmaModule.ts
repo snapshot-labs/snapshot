@@ -25,7 +25,7 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { useWeb3 } from '@/composables';
+import { useWeb3, useTxStatus } from '@/composables';
 
 // "ZODIAC"
 const IDENTIFIER =
@@ -74,6 +74,7 @@ export function useSafeUmaModule(
 ): Executor<UmaModuleState> {
   const readProvider = getProvider(executionData.safe.network);
   const { web3Account } = useWeb3();
+  const { pendingCount } = useTxStatus();
 
   const state = reactive<UmaModuleState>({
     loading: true,
@@ -166,7 +167,7 @@ export function useSafeUmaModule(
 
   watch(web3Account, setBondCollateralAllowance);
 
-  async function* approveBond() {
+  async function approveBond() {
     if (!state.bondCollateralAddress) return;
 
     const tx = await sendTransaction(
@@ -176,11 +177,12 @@ export function useSafeUmaModule(
       'approve',
       [executionData.module.address, state.bondAmount]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
-  async function* proposeExecution() {
+  async function proposeExecution() {
     const tx = await sendTransaction(
       getInstance().web3,
       executionData.module.address,
@@ -188,11 +190,12 @@ export function useSafeUmaModule(
       'proposeTransactions',
       [umaTransactions, proposalId]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
-  async function* disputeExecution() {
+  async function disputeExecution() {
     if (!state.oracleAddress || !state.timestamp) return;
 
     const tx = await sendTransaction(
@@ -207,11 +210,12 @@ export function useSafeUmaModule(
         umaAncillaryData
       ]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
-  async function* execute() {
+  async function execute() {
     const tx = await sendTransaction(
       getInstance().web3,
       executionData.module.address,
@@ -219,8 +223,9 @@ export function useSafeUmaModule(
       'executeProposal',
       [umaTransactions]
     );
-    yield;
+    pendingCount.value++;
     await tx.wait();
+    pendingCount.value--;
   }
 
   return {

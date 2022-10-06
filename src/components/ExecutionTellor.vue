@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { ModuleExecutionData } from '@/helpers/safe';
-import { useTxStatus, useSafeTellorModule } from '@/composables';
+import { useSafeTellorModule } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
@@ -10,35 +10,8 @@ const props = defineProps<{
 }>();
 
 const tellorModule = useSafeTellorModule(props.executionData, props.proposalId);
-const { pendingCount } = useTxStatus();
 
 onMounted(tellorModule.setState);
-
-async function handleProposeExecution() {
-  const proposeTransaction = tellorModule.proposeExecution();
-  await proposeTransaction.next();
-  pendingCount.value++;
-  await proposeTransaction.next();
-  pendingCount.value--;
-}
-
-async function handleDisputeExecution() {
-  const disputeTransaction = tellorModule.disputeExecution();
-  await disputeTransaction.next();
-  pendingCount.value++;
-  await disputeTransaction.next();
-  pendingCount.value--;
-}
-
-async function handleExecute() {
-  const executeTransaction = tellorModule.execute();
-  await executeTransaction.next();
-  pendingCount.value++;
-  await executeTransaction.next();
-  pendingCount.value--;
-
-  await tellorModule.setState();
-}
 </script>
 
 <template>
@@ -54,20 +27,22 @@ async function handleExecute() {
     </template>
 
     <template #propose-execution>
-      <BaseButton @click="handleProposeExecution">
+      <BaseButton @click="tellorModule.proposeExecution">
         propose transactions
       </BaseButton>
     </template>
 
     <template #dispute-execution>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      <BaseButton @click="handleDisputeExecution">
+      <BaseButton @click="tellorModule.disputeExecution">
         Dispute transactions
       </BaseButton>
     </template>
 
     <template #execute>
-      <BaseButton @click="handleExecute"> Execute transactions </BaseButton>
+      <BaseButton @click="tellorModule.execute">
+        Execute transactions
+      </BaseButton>
     </template>
 
     <template #has-been-executed>
