@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ExecutionData } from '@/helpers/safe';
 
-const props = defineProps<{
+defineProps<{
   executionData: ExecutionData;
 }>();
 </script>
@@ -23,9 +23,3 @@ const props = defineProps<{
     />
   </div>
 </template>
-
-<style scoped>
-.transaction-type-label {
-  @apply flex w-1/4 flex-col items-center justify-center;
-}
-</style>
