@@ -166,6 +166,7 @@ export interface Vote {
   scores: number[];
   vp: number;
   vp_by_strategy: number[];
+  reason: string;
 }
 
 export interface Plugin {

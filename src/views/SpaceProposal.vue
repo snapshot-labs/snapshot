@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, watchEffect } from 'vue';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { useRoute, useRouter } from 'vue-router';
-import { getProposal, getResults, getProposalVotes } from '@/helpers/snapshot';
+import { getProposal, getProposalVotes } from '@/helpers/snapshot';
 import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
-import pending from '@/helpers/pending.json';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import {
   useI18n,
@@ -21,9 +21,7 @@ import {
   useFlashNotification
 } from '@/composables';
 
-const props = defineProps<{
-  space: ExtendedSpace;
-}>();
+const props = defineProps<{ space: ExtendedSpace }>();
 
 const route = useRoute();
 const router = useRouter();
@@ -109,21 +107,30 @@ function formatProposalVotes(votes) {
 async function loadResults() {
   if (!proposal.value) return;
   loadingResultsFailed.value = false;
-  const spaceShowPending = pending;
-  const showPending =
-    proposal.value.scores_state === 'pending' &&
-    spaceShowPending.includes(proposal.value.space.id);
   if (
     proposal.value.scores_state === 'invalid' &&
     proposal.value.state === 'closed'
   ) {
     loadingResultsFailed.value = true;
-  } else if (proposal.value.scores_state === 'final' || showPending) {
-    results.value = {
-      scores: proposal.value.scores,
-      scoresByStrategy: proposal.value.scores_by_strategy,
-      scoresTotal: proposal.value.scores_total
-    };
+  } else {
+    if (proposal.value.scores.length === 0) {
+      const votingClass = new voting[proposal.value.type](
+        proposal.value,
+        [],
+        strategies.value
+      );
+      results.value = {
+        scores: votingClass.getScores(),
+        scoresByStrategy: votingClass.getScoresByStrategy(),
+        scoresTotal: votingClass.getScoresTotal()
+      };
+    } else {
+      results.value = {
+        scores: proposal.value.scores,
+        scoresByStrategy: proposal.value.scores_by_strategy,
+        scoresTotal: proposal.value.scores_total
+      };
+    }
     loadedResults.value = true;
     loadingResultsFailed.value = false;
     const [userVotesRes, votesRes] = await Promise.all([
@@ -138,23 +145,6 @@ async function loadResults() {
     userVote.value = formatProposalVotes(userVotesRes);
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
-  } else {
-    const votesTmp = await getProposalVotes(id);
-    try {
-      const resultsObj = await getResults(
-        props.space,
-        proposal.value,
-        votesTmp
-      );
-      results.value = resultsObj.results;
-      votes.value = resultsObj.votes;
-      loadedResults.value = true;
-      loadingResultsFailed.value = false;
-      loadedVotes.value = true;
-    } catch (e) {
-      console.log(e);
-      loadingResultsFailed.value = true;
-    }
   }
 }
 
