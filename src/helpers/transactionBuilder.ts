@@ -11,6 +11,8 @@ import { pack } from '@ethersproject/solidity';
 import { FormError } from './interfaces';
 import ERC20_ABI from './abi/ERC20.json';
 import ERC721_ABI from './abi/ERC721.json';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -338,4 +340,39 @@ export function bigNumberValuesToString(value: ParamValue): ParamValue {
   if (Array.isArray(value)) return value.map(bigNumberValuesToString);
   if (BigNumber.isBigNumber(value)) return value.toString();
   return value;
+}
+
+export type TokenInfo = {
+  address: string;
+  name: string;
+  symbol: string;
+  decimals: number;
+};
+
+export const tokenInfo: TokenInfo[] = [];
+
+export async function getTokenInfo(
+  address: string,
+  network: string
+): Promise<TokenInfo> {
+  const existingInfo = tokenInfo.find(token => token.address === address);
+  if (existingInfo) return existingInfo;
+
+  const readProvider = getProvider(network);
+  const tokenInfoCalls = await Promise.all([
+    call(readProvider, ERC20_ABI, [address, 'name', []]),
+    call(readProvider, ERC20_ABI, [address, 'symbol', []]),
+    call(readProvider, ERC20_ABI, [address, 'decimals', []])
+  ]);
+
+  const newTokenInfo = {
+    address,
+    name: tokenInfoCalls[0],
+    symbol: tokenInfoCalls[1],
+    decimals: tokenInfoCalls[2]
+  };
+
+  tokenInfo.push(newTokenInfo);
+
+  return newTokenInfo;
 }
