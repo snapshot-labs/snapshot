@@ -18,7 +18,7 @@ const transactionDisplayType = computed<TransactionForms>(() => {
 
 <template>
   <div class="flex">
-    <div class="mr-2 flex w-5 grow items-center justify-center">
+    <div class="mr-2 flex w-5 items-center justify-center">
       <i-ho-database v-if="transactionDisplayType === TransactionForms.FUNDS" />
       <i-ho-photograph v-if="transactionDisplayType === TransactionForms.NFT" />
       <i-s-smart-contract

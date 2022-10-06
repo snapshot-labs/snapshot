@@ -54,7 +54,7 @@ onMounted(async () => {
 
 <template>
   <div class="flex items-center">
-    Transfer {{ Number(formatUnits(amount, tokenDecimals)) }}
+    Transfer {{ formatUnits(amount, tokenDecimals) }}
     {{ tokenAddress ? tokenSymbol : nativeCoinInfo.name }} to
     {{ recipientENS || shortenAddress(recipient) }}
   </div>

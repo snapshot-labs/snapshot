@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ExecutionData } from '@/helpers/safe';
 
-defineProps<{
+const props = defineProps<{
   executionData: ExecutionData;
 }>();
 </script>
@@ -14,13 +14,13 @@ defineProps<{
     >
       Group #{{ batchIndex + 1 }}
     </h5>
-    <div
+    <TransactionBuilderDisplayTransaction
       v-for="(transaction, transactionIndex) in batch"
       :key="transactionIndex"
+      :transaction="transaction"
+      :network="executionData.safe.network"
       class="border-b px-3 py-2"
-    >
-      {{ transaction }}
-    </div>
+    />
   </div>
 </template>
 
