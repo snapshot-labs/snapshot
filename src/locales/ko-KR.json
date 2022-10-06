@@ -63,10 +63,12 @@
   "confirmRemove": "위임을 제거하시겠습니까",
   "removeSpace": "{0} 공간",
   "confirmVote": "투표 확인",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "옵션",
   "votingPower": "당신의 투표권",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "처리 결과",
   "relayer": "중계자",
   "verifyOnMycrypto": "MyCrypto에서 처리결과 확인",
