@@ -63,10 +63,12 @@
   "confirmRemove": "Вы уверены, что хотите отменить свое делегирование в",
   "removeSpace": "для сообщества {0}",
   "confirmVote": "Подтвердите голосование",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "Вариант(ы)",
   "votingPower": "Ваше право голоса",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Квитанция",
   "relayer": "Передатчик",
   "verifyOnMycrypto": "Подтвердите получение на MyCrypto",
