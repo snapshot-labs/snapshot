@@ -63,10 +63,12 @@
   "confirmRemove": "هل انت متأكد من رغبتك بالغاء التفويض",
   "removeSpace": "للمساحة {0}",
   "confirmVote": "تأكيد التصويت",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "خيار(ات)",
   "votingPower": "قوة التصويت الخاصة بك",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "الإيصال",
   "relayer": "المرحّل",
   "verifyOnMycrypto": "تحقق من الإيصال على MyCrypto",
