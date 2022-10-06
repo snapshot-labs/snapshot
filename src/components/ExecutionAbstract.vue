@@ -46,7 +46,7 @@ const requiredNetwork = networks[props.executionData.safe.network];
               </template>
             </template>
           </template>
-          <div v-else class="p-4 text-center">
+          <div v-else>
             <BaseButton @click="modalAccountOpen = true"
               >connect wallet</BaseButton
             >
