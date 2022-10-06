@@ -1,3 +1,6 @@
 [
-  "function safeTransferFrom(address from, address recipient, uint256 tokenId) external payable"
+  "function safeTransferFrom(address from, address recipient, uint256 tokenId) external payable",
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function tokenURI(uint256 tokenId) view returns (string)"
 ]

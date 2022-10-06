@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { shortenAddress } from '@/helpers/utils';
 import {
   detectTransactionForm,
   Transaction,
@@ -9,6 +8,7 @@ import {
 
 const props = defineProps<{
   transaction: Transaction;
+  network: string;
 }>();
 
 const transactionDisplayType = computed<TransactionForms>(() => {
@@ -25,9 +25,20 @@ const transactionDisplayType = computed<TransactionForms>(() => {
         v-if="transactionDisplayType === TransactionForms.CONTRACT"
       />
     </div>
-    <div>
-      <div>To: {{ shortenAddress(transaction.to) }}</div>
-      <div>Value: {{ transaction.value }}</div>
-    </div>
+    <TransactionBuilderDisplayTransactionFunds
+      v-if="transactionDisplayType === TransactionForms.FUNDS"
+      :transaction="transaction"
+      :network="network"
+    />
+    <TransactionBuilderDisplayTransactionNFT
+      v-if="transactionDisplayType === TransactionForms.NFT"
+      :transaction="transaction"
+      :network="network"
+    />
+    <TransactionBuilderDisplayTransactionContract
+      v-if="transactionDisplayType === TransactionForms.CONTRACT"
+      :transaction="transaction"
+      :network="network"
+    />
   </div>
 </template>

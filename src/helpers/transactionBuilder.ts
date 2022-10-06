@@ -12,7 +12,7 @@ import { FormError } from './interfaces';
 import ERC20_ABI from './abi/ERC20.json';
 import ERC721_ABI from './abi/ERC721.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import { call, getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -375,4 +375,45 @@ export async function getTokenInfo(
   tokenInfo.push(newTokenInfo);
 
   return newTokenInfo;
+}
+
+export type NFTInfo = {
+  address: string;
+  tokenId: BigNumber;
+  collectionName: string;
+  symbol: string;
+  metadata: Record<string, any>;
+};
+
+export const nftInfo: NFTInfo[] = [];
+
+export async function getNFTInfo(
+  address: string,
+  tokenId: BigNumber,
+  network: string
+): Promise<NFTInfo> {
+  const existingInfo = nftInfo.find(
+    token => token.address === address && token.tokenId === tokenId
+  );
+  if (existingInfo) return existingInfo;
+  const readProvider = getProvider(network);
+  const nftInfoCalls = await Promise.all([
+    call(readProvider, ERC721_ABI, [address, 'name', []]),
+    call(readProvider, ERC721_ABI, [address, 'symbol', []]),
+    call(readProvider, ERC721_ABI, [address, 'tokenURI', [tokenId]])
+  ]);
+
+  const metadata = await fetch(getUrl(nftInfoCalls[2])).then(res => res.json());
+
+  const newNftInfo = {
+    address,
+    tokenId,
+    collectionName: nftInfoCalls[0],
+    symbol: nftInfoCalls[1],
+    metadata
+  };
+
+  nftInfo.push(newNftInfo);
+
+  return newNftInfo;
 }

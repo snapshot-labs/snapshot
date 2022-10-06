@@ -165,7 +165,10 @@ function transactionItemKey(transaction: Transaction) {
                 >
                   <BaseIcon name="draggable" size="16" class="mr-[12px]" />
                 </div>
-                <TransactionBuilderDisplayTransaction :transaction="element" />
+                <TransactionBuilderDisplayTransaction
+                  :transaction="element"
+                  :network="safe.network"
+                />
                 <BaseButton
                   small
                   class="ml-auto !border-none"
