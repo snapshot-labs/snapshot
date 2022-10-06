@@ -7,6 +7,7 @@
     "strategy": "balance",
     "address": "0x892f481BD6E9d7D26aE365211D9B45175d5D00e4",
     "decimals": 18,
+    "quorumModifier": 0.5,
     "methodABI": {
       "inputs": [],
       "name": "totalVotes",

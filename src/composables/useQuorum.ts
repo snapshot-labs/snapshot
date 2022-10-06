@@ -53,6 +53,8 @@ export function useQuorum(props: QuorumProps) {
   ) {
     const { strategy } = quorumOptions;
 
+    const quorumModifier = quorumOptions.quorumModifier ?? 1;
+
     switch (strategy) {
       case 'static': {
         return quorumOptions.total;
@@ -72,11 +74,11 @@ export function useQuorum(props: QuorumProps) {
 
         return BigNumber.from(votingPower)
           .div(BigNumber.from(10).pow(decimals))
-          .toNumber();
+          .toNumber() * quorumModifier;
       }
 
       case 'multichainBalance': {
-        const { network, strategies, quorumModifier } = quorumOptions;
+        const { network, strategies} = quorumOptions;
         const blocks = await getSnapshots(
           network,
           parseInt(snapshot),
@@ -100,8 +102,7 @@ export function useQuorum(props: QuorumProps) {
           }
           return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
         });
-        const modifier = quorumModifier ? quorumModifier : 1;
-        return totalBalance.toNumber() * modifier;
+        return totalBalance.toNumber() * quorumModifier;
       }
 
       default:
