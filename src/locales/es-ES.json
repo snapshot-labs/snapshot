@@ -63,10 +63,12 @@
   "confirmRemove": "¿Está seguro de que desea eliminar su delegación a",
   "removeSpace": "para el espacio {0}",
   "confirmVote": "Confirmar voto",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "Opción(es)",
   "votingPower": "Tu poder de voto",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Recibo",
   "relayer": "Retransmisor",
   "verifyOnMycrypto": "Verificar recibo en MyCrypto",

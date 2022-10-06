@@ -124,6 +124,15 @@ watch(visibleVotes, () => {
         <BaseButtonIcon @click="openReceiptModal(vote.ipfs)">
           <BaseIcon name="signature" />
         </BaseButtonIcon>
+        <BaseButtonIcon
+          v-if="vote.reason !== ''"
+          v-tippy="{
+            content: vote.reason
+          }"
+          class="cursor-default p-0"
+        >
+          <i-ho-annotation class="text-[16px]" />
+        </BaseButtonIcon>
       </div>
     </div>
     <a

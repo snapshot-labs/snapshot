@@ -63,10 +63,12 @@
   "confirmRemove": "Ești sigur că vrei să elimini delegația către",
   "removeSpace": "pentru spațiul {0}",
   "confirmVote": "Confirmă votul",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "Opțiunea(i)",
   "votingPower": "Puterea ta de vot",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Chitanță",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Verifică chitanța pe MyCrypto",

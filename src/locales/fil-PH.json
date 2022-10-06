@@ -63,10 +63,12 @@
   "confirmRemove": "Sigurado kaba na na gusto mo tanggalin ang iyong delegasyon sa",
   "removeSpace": "para sa puwang {0}",
   "confirmVote": "Kumpirmahin ang boto",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "Opsyon",
   "votingPower": "Ang lakas mo sa pagboto",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Resibo",
   "relayer": "Taga relay",
   "verifyOnMycrypto": "I-verify ang receipt sa MyCrypto",
