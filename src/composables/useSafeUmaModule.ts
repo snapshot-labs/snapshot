@@ -1,7 +1,7 @@
 import { reactive, readonly, watch } from 'vue';
 import UMA_MODULE_ABI from '@/helpers/abi/UMA_MODULE.json';
 import UMA_ORACLE_ABI from '@/helpers/abi/UMA_ORACLE.json';
-import ERC20_ABI from '@/helpers//abi/ERC20.json';
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import {
   ExecutionData,
   Executor,
