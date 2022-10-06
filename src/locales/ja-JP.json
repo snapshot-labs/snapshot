@@ -63,10 +63,12 @@
   "confirmRemove": "以下のアドレスへの投票権の委任を削除してもよろしいですか？",
   "removeSpace": "for the space {0}",
   "confirmVote": "投票内容の確認",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "オプション",
   "votingPower": "あなたの投票力",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "レシート",
   "relayer": "リレーヤー",
   "verifyOnMycrypto": "MyCryptoでレシートを検証する",
