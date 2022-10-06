@@ -68,6 +68,10 @@ function saveTransaction(transaction: Transaction) {
     );
   }
 }
+
+function transactionItemKey(transaction: Transaction) {
+  return keccak256(['string'], [JSON.stringify(transaction) + Math.random()]);
+}
 </script>
 
 <template>
@@ -149,7 +153,7 @@ function saveTransaction(transaction: Transaction) {
         <div class="w-full overflow-hidden">
           <draggable
             :list="batch"
-            :item-key="(transaction: Transaction) => keccak256(['string'], [JSON.stringify(transaction) + Math.random()])"
+            :item-key="transactionItemKey"
             v-bind="{ animation: 200 }"
             handle=".drag-handle"
           >
