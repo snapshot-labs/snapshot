@@ -21,6 +21,7 @@ export const VOTES_QUERY = gql`
       choice
       vp
       vp_by_strategy
+      reason
     }
   }
 `;
