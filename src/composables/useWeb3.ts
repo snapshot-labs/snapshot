@@ -2,7 +2,6 @@ import { computed, reactive } from 'vue';
 import { Web3Provider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatUnits } from '@ethersproject/units';
 
 let auth;
@@ -56,7 +55,6 @@ export function useWeb3() {
             await login();
           }
         });
-        // auth.provider.on('disconnect', async () => {});
       }
       console.log('Provider', auth.provider.value);
       let network, accounts;
@@ -101,63 +99,11 @@ export function useWeb3() {
     state.network = networks[chainId];
   }
 
-  const ensureRightNetwork = async chainId => {
-    const chainIdInt = parseInt(chainId);
-    const connectedToChainId = getInstance().provider.value?.chainId;
-    if (connectedToChainId === chainIdInt) return; // already on right chain
-
-    if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-      // we cannot switch automatically
-      throw new Error(
-        `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-      );
-    }
-
-    const network = networks[chainId];
-    const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-    try {
-      // check if the chain to connect to is installed
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-      });
-    } catch (error: any) {
-      // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-      if (error.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [
-              {
-                chainId: chainIdHex,
-                chainName: network.name,
-                rpcUrls: network.rpc,
-                blockExplorerUrls: [network.explorer]
-              }
-            ]
-          });
-        } catch (addError) {
-          console.error(addError);
-        }
-      }
-      console.error(error);
-    }
-
-    await sleep(1e3); // somehow the switch does not take immediate effect :/
-    if (window.ethereum.chainId !== chainIdHex) {
-      throw new Error(
-        `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-      );
-    }
-  };
-
   return {
     login,
     logout,
     loadProvider,
     handleChainChanged,
-    ensureRightNetwork,
     web3: computed(() => state),
     web3Account: computed(() => state.account)
   };
