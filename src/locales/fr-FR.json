@@ -63,10 +63,12 @@
   "confirmRemove": "Êtes-vous sûr de vouloir révoquer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "voteOverview": "Aperçu du vote",
   "quorumReached": "quorum atteint",
   "options": "Option(s)",
   "votingPower": "Votre voting power",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Reçu",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Vérifier le reçu sur MyCrypto",
