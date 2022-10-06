@@ -1,5 +1,7 @@
+import { reactive, readonly, watch } from 'vue';
 import UMA_MODULE_ABI from '@/helpers/abi/UMA_MODULE.json';
 import UMA_ORACLE_ABI from '@/helpers/abi/UMA_ORACLE.json';
+import ERC20_ABI from '@/helpers//abi/ERC20.json';
 import {
   ExecutionData,
   Executor,
@@ -18,11 +20,12 @@ import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes } from '@ethersproject/strings';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import {
+  call,
   multicall,
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { reactive, readonly } from 'vue';
+import { useWeb3 } from '@/composables';
 
 // "ZODIAC"
 const IDENTIFIER =
@@ -40,6 +43,9 @@ enum UmaResultState {
 
 interface UmaModuleState extends ExecutorState {
   oracleAddress: string | undefined;
+  bondCollateralAddress: string | undefined;
+  bondAmount: BigNumber;
+  bondAllowance: BigNumber;
   timestamp: number;
   resultState: UmaResultState;
 }
@@ -67,6 +73,7 @@ export function useSafeUmaModule(
   proposalId: string
 ): Executor<UmaModuleState> {
   const readProvider = getProvider(executionData.safe.network);
+  const { web3Account } = useWeb3();
 
   const state = reactive<UmaModuleState>({
     loading: true,
@@ -76,7 +83,10 @@ export function useSafeUmaModule(
     hasBeenRejected: false,
     oracleAddress: undefined,
     timestamp: 0,
-    resultState: UmaResultState.Invalid
+    resultState: UmaResultState.Invalid,
+    bondCollateralAddress: undefined,
+    bondAmount: BigNumber.from(0),
+    bondAllowance: BigNumber.from(0)
   });
 
   const umaTransactions = convertExecutionDataToUmaTransactions(executionData);
@@ -100,19 +110,26 @@ export function useSafeUmaModule(
   async function setState() {
     state.loading = true;
 
-    const [[timestamp], [optimisticOracle]] = await multicall(
-      executionData.safe.network,
-      readProvider,
-      UMA_MODULE_ABI,
-      [
-        [executionData.module.address, 'proposalHashes', [umaProposalHash]],
-        [executionData.module.address, 'optimisticOracle', []]
-      ]
-    );
+    const [[timestamp], [optimisticOracle], [bondAmount], [collateralAddress]] =
+      await multicall(
+        executionData.safe.network,
+        readProvider,
+        UMA_MODULE_ABI,
+        [
+          [executionData.module.address, 'proposalHashes', [umaProposalHash]],
+          [executionData.module.address, 'optimisticOracle', []],
+          [executionData.module.address, 'bondAmount', []],
+          [executionData.module.address, 'collateral', []]
+        ]
+      );
 
     state.timestamp = BigNumber.from(timestamp).toNumber();
     state.hasBeenProposed = !!state.timestamp;
     state.oracleAddress = optimisticOracle;
+    state.bondAmount = bondAmount;
+    state.bondCollateralAddress = collateralAddress;
+
+    await setBondCollateralAllowance();
 
     const [[umaResultState]] = await multicall(
       executionData.safe.network,
@@ -135,6 +152,32 @@ export function useSafeUmaModule(
     state.hasBeenProposed = umaResultState !== UmaResultState.Invalid;
     state.canBeExecuted = umaResultState === UmaResultState.Expired;
     state.loading = false;
+  }
+
+  async function setBondCollateralAllowance() {
+    if (web3Account.value && state.bondCollateralAddress) {
+      state.bondAllowance = await call(readProvider, ERC20_ABI, [
+        state.bondCollateralAddress,
+        'allowance',
+        [web3Account.value, executionData.module.address]
+      ]);
+    }
+  }
+
+  watch(web3Account, setBondCollateralAllowance);
+
+  async function* approveBond() {
+    if (!state.bondCollateralAddress) return;
+
+    const tx = await sendTransaction(
+      getInstance().web3,
+      state.bondCollateralAddress,
+      ERC20_ABI,
+      'approve',
+      [executionData.module.address, state.bondAmount]
+    );
+    yield;
+    await tx.wait();
   }
 
   async function* proposeExecution() {
@@ -183,6 +226,7 @@ export function useSafeUmaModule(
   return {
     state: readonly(state),
     setState,
+    approveBond,
     proposeExecution,
     disputeExecution,
     execute

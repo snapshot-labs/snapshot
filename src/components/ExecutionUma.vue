@@ -14,12 +14,24 @@ const { pendingCount } = useTxStatus();
 
 onMounted(umaModule.setState);
 
+async function handleApproveBond() {
+  const approveBondTransaction = umaModule.approveBond();
+  await approveBondTransaction.next();
+  pendingCount.value++;
+  await approveBondTransaction.next();
+  pendingCount.value--;
+
+  await umaModule.setState();
+}
+
 async function handleProposeExecution() {
   const proposeTransaction = umaModule.proposeExecution();
   await proposeTransaction.next();
   pendingCount.value++;
   await proposeTransaction.next();
   pendingCount.value--;
+
+  await umaModule.setState();
 }
 
 async function handleDisputeExecution() {
@@ -28,6 +40,8 @@ async function handleDisputeExecution() {
   pendingCount.value++;
   await disputeTransaction.next();
   pendingCount.value--;
+
+  await umaModule.setState();
 }
 
 async function handleExecute() {
@@ -54,9 +68,25 @@ async function handleExecute() {
     </template>
 
     <template #propose-execution>
-      <BaseButton @click="handleProposeExecution">
-        propose transactions
-      </BaseButton>
+      <div
+        v-if="umaModule.state.bondAllowance.gte(umaModule.state.bondAmount)"
+        class="flex flex-col"
+      >
+        <BaseButton @click="handleProposeExecution">
+          propose transactions
+        </BaseButton>
+        <small class="mt-2 opacity-50"
+          >You will deposit a bond of {{ umaModule.state.bondAmount }}.</small
+        >
+      </div>
+      <div v-else>
+        To propose these transactions you need to deposit a bond of
+        {{ umaModule.state.bondAmount }}. This bond needs to be approved by you
+        first.
+        <BaseButton class="mt-3" @click="handleApproveBond">
+          approve bond
+        </BaseButton>
+      </div>
     </template>
 
     <template #dispute-execution>
