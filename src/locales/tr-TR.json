@@ -63,10 +63,12 @@
   "confirmRemove": "Yetkilendirmenizi kaldırmak istediğinizden emin misiniz",
   "removeSpace": "{0} alanı için",
   "confirmVote": "Oyu Onayla",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "Seçenekler",
   "votingPower": "Oy Verme Gücünüz",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Dekont",
   "relayer": "Aktaran",
   "verifyOnMycrypto": "MyCrypto'da dekontu doğrulayın",
