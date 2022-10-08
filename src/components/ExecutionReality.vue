@@ -6,7 +6,7 @@ import { useSafeRealityModule } from '@/composables';
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
-  hasProposalEnded: boolean;
+  proposalStillActive: boolean;
   proposalSnapshot: string;
 }>();
 
@@ -23,7 +23,7 @@ onMounted(realityModule.setState);
   <ExecutionAbstract
     :executor-state="realityModule.state"
     :execution-data="executionData"
-    :has-proposal-ended="hasProposalEnded"
+    :proposal-still-active="proposalStillActive"
   >
     <template #proposal-still-active>
       <div class="p-4 text-center">
@@ -31,7 +31,7 @@ onMounted(realityModule.setState);
       </div>
     </template>
 
-    <template #propose-execution>
+    <template #propose>
       <div class="p-4">
         <BaseButton class="w-full" @click="realityModule.proposeExecution">
           Propose transactions for execution
@@ -39,7 +39,7 @@ onMounted(realityModule.setState);
       </div>
     </template>
 
-    <template #dispute-execution>
+    <template #dispute>
       <!-- TODO: display txs/hashes as proposed on chain-->
       <div class="space-y-2 p-4 text-center">
         <div>Shall these transactions be executed?</div>
@@ -74,7 +74,7 @@ onMounted(realityModule.setState);
       <div v-else>waiting for cooldown</div>
     </template>
 
-    <template #has-been-executed>
+    <template #executed>
       <div class="flex flex-col items-center justify-center p-4">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />

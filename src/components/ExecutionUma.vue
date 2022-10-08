@@ -6,7 +6,7 @@ import { useSafeUmaModule } from '@/composables';
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
-  hasProposalEnded: boolean;
+  proposalStillActive: boolean;
 }>();
 
 const umaModule = useSafeUmaModule(props.executionData, props.proposalId);
@@ -18,15 +18,9 @@ onMounted(umaModule.setState);
   <ExecutionAbstract
     :executor-state="umaModule.state"
     :execution-data="executionData"
-    :has-proposal-ended="hasProposalEnded"
+    :proposal-still-active="proposalStillActive"
   >
-    <template #proposal-still-active>
-      <div class="p-4 text-center">
-        Execution will be possible after the proposal has ended.
-      </div>
-    </template>
-
-    <template #propose-execution>
+    <template #propose>
       <div
         v-if="umaModule.state.bondAllowance.gte(umaModule.state.bondAmount)"
         class="flex flex-col"
@@ -48,7 +42,7 @@ onMounted(umaModule.setState);
       </div>
     </template>
 
-    <template #dispute-execution>
+    <template #dispute>
       <!-- TODO: display txs/hashes as proposed on chain-->
       <BaseButton @click="umaModule.disputeExecution">
         Dispute transactions
@@ -59,7 +53,7 @@ onMounted(umaModule.setState);
       <BaseButton @click="umaModule.execute"> Execute transactions </BaseButton>
     </template>
 
-    <template #has-been-executed>
+    <template #executed>
       <div class="flex flex-col items-center justify-center p-4">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />

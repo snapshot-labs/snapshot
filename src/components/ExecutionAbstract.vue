@@ -1,59 +1,44 @@
 <script setup lang="ts">
-import { ExecutionData, ExecutorState } from '@/helpers/safe';
-import { useModal, useTxStatus, useWeb3 } from '@/composables';
+import { computed } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { ExecutionData, ExecutorState } from '@/helpers/safe';
+import { useModal, useWeb3 } from '@/composables';
 
 const props = defineProps<{
   executorState: ExecutorState;
   executionData: ExecutionData;
-  hasProposalEnded: boolean;
+  proposalStillActive: boolean;
 }>();
 
 const { modalAccountOpen } = useModal();
-const { pendingCount } = useTxStatus();
 const { web3Account, web3 } = useWeb3();
 
 const requiredNetwork = networks[props.executionData.safe.network];
+const isWrongNetwork = computed(
+  () => web3.value.network.chainId !== requiredNetwork.chainId
+);
 </script>
 
 <template>
   <div>
     <ExecutionTransactions :execution-data="executionData" />
     <div class="p-4 text-center">
-      <template v-if="hasProposalEnded">
-        <div v-if="executorState.loading || pendingCount">
-          <LoadingSpinner />
-        </div>
-        <slot v-else-if="executorState.hasBeenRejected" name="rejected" />
-        <slot
-          v-else-if="executorState.hasBeenExecuted"
-          name="has-been-executed"
-        />
-        <template v-else>
-          <template v-if="web3Account">
-            <template v-if="web3.network.chainId !== requiredNetwork.chainId">
-              You are connected to the wrong network.<br />Please connect to:
-              {{ requiredNetwork.name }} ({{ requiredNetwork.chainId }}).
-            </template>
-            <template v-else>
-              <slot v-if="executorState.canBeExecuted" name="execute" />
-              <template v-else>
-                <slot
-                  v-if="executorState.hasBeenProposed"
-                  name="dispute-execution"
-                />
-                <slot v-else name="propose-execution" />
-              </template>
-            </template>
-          </template>
-          <div v-else>
-            <BaseButton @click="modalAccountOpen = true"
-              >connect wallet</BaseButton
-            >
-          </div>
-        </template>
+      <template v-if="proposalStillActive">
+        Execution will be possible after the proposal has ended.
       </template>
-      <slot v-else name="proposal-still-active" />
+      <LoadingSpinner v-else-if="executorState.loading" />
+      <slot v-else-if="executorState.hasBeenRejected" name="rejected" />
+      <slot v-else-if="executorState.hasBeenExecuted" name="executed" />
+      <BaseButton v-else-if="!web3Account" @click="modalAccountOpen = true">
+        connect wallet
+      </BaseButton>
+      <template v-else-if="isWrongNetwork">
+        You are connected to the wrong network.<br />Please connect to:
+        {{ requiredNetwork.name }} ({{ requiredNetwork.chainId }}).
+      </template>
+      <slot v-else-if="executorState.canBeExecuted" name="execute" />
+      <slot v-else-if="executorState.hasBeenProposed" name="dispute" />
+      <slot v-else name="propose" />
     </div>
   </div>
 </template>

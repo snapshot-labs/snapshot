@@ -4,7 +4,7 @@ import { reactive } from 'vue';
 
 const props = defineProps<{
   executionData: ExecutionData;
-  hasProposalEnded: boolean;
+  proposalStillActive: boolean;
 }>();
 
 // TODO: Figure out if normal/manual safe tx hash can be comoputed in advance
@@ -21,7 +21,7 @@ const state = reactive<ExecutorState>({
   <ExecutionAbstract
     :executor-state="state"
     :execution-data="executionData"
-    :has-proposal-ended="hasProposalEnded"
+    :proposal-still-active="proposalStillActive"
   >
     <template #proposal-still-active>
       <div class="p-4 text-center">
@@ -35,7 +35,7 @@ const state = reactive<ExecutorState>({
       </div>
     </template>
 
-    <template #has-been-executed>
+    <template #executed>
       <div class="flex flex-col items-center justify-center p-4">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />

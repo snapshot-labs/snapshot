@@ -6,7 +6,7 @@ import { useSafeTellorModule } from '@/composables';
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposalId: string;
-  hasProposalEnded: boolean;
+  proposalStillActive: boolean;
 }>();
 
 const tellorModule = useSafeTellorModule(props.executionData, props.proposalId);
@@ -18,7 +18,7 @@ onMounted(tellorModule.setState);
   <ExecutionAbstract
     :executor-state="tellorModule.state"
     :execution-data="executionData"
-    :has-proposal-ended="hasProposalEnded"
+    :proposal-still-active="proposalStillActive"
   >
     <template #proposal-still-active>
       <div class="p-4 text-center">
@@ -26,13 +26,13 @@ onMounted(tellorModule.setState);
       </div>
     </template>
 
-    <template #propose-execution>
+    <template #propose>
       <BaseButton @click="tellorModule.proposeExecution">
         propose transactions
       </BaseButton>
     </template>
 
-    <template #dispute-execution>
+    <template #dispute>
       <!-- TODO: display txs/hashes as proposed on chain-->
       <BaseButton @click="tellorModule.disputeExecution">
         Dispute transactions
@@ -45,7 +45,7 @@ onMounted(tellorModule.setState);
       </BaseButton>
     </template>
 
-    <template #has-been-executed>
+    <template #executed>
       <div class="flex flex-col items-center justify-center p-4">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />

@@ -17,9 +17,9 @@ const executionData = computed<ExecutionData[]>(() =>
   mapLegacyExecutionData(props.proposal.plugins.safeSnap)
 );
 
-const hasProposalEnded = computed<boolean>(() => {
+const proposalStillActive = computed<boolean>(() => {
   const now = new Date().getTime() / 1e3;
-  return now > props.proposal.end;
+  return now <= props.proposal.end;
 });
 </script>
 
@@ -45,25 +45,25 @@ const hasProposalEnded = computed<boolean>(() => {
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
         :proposal-snapshot="proposal.snapshot"
-        :has-proposal-ended="hasProposalEnded"
+        :proposal-still-active="proposalStillActive"
       />
       <ExecutionUma
         v-if="data.module.type === SafeModuleType.UMA"
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
-        :has-proposal-ended="hasProposalEnded"
+        :proposal-still-active="proposalStillActive"
       />
       <ExecutionTellor
         v-if="data.module.type === SafeModuleType.TELLOR"
         :execution-data="(data as ModuleExecutionData)"
         :proposal-id="proposal.id"
-        :has-proposal-ended="hasProposalEnded"
+        :proposal-still-active="proposalStillActive"
       />
     </div>
     <ExecutionManual
       v-else
       :execution-data="data"
-      :has-proposal-ended="hasProposalEnded"
+      :proposal-still-active="proposalStillActive"
     />
   </BaseBlock>
 </template>
