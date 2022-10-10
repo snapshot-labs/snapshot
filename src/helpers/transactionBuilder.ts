@@ -67,7 +67,7 @@ export type Transaction = {
   value: BigNumber;
   data: string;
   operation: TransactionOperationType;
-  abi?: string;
+  abi?: string; // TODO: store abi globally in execution data, per network and contract, not per transaction
 };
 
 export type ExecutableTransaction = Omit<Transaction, 'abi'>;
@@ -182,7 +182,7 @@ export function decodeContractData(
   return { method, values };
 }
 
-enum FunctionSignatures {
+enum KnownFunctionSignatures {
   ERC20_TRANSFER = '0xa9059cbb',
   ERC721_SAFE_TRANSFER_FROM = '0x42842e0e',
   ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT = '0xb88d4fde'
@@ -193,15 +193,15 @@ export function detectTransactionForm(
 ): TransactionForms {
   const functionSignature = transaction.data.slice(0, 10);
   if (
-    functionSignature === FunctionSignatures.ERC721_SAFE_TRANSFER_FROM ||
+    functionSignature === KnownFunctionSignatures.ERC721_SAFE_TRANSFER_FROM ||
     functionSignature ===
-      FunctionSignatures.ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT
+      KnownFunctionSignatures.ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT
   ) {
     return TransactionForms.NFT;
   }
 
   if (
-    functionSignature === FunctionSignatures.ERC20_TRANSFER ||
+    functionSignature === KnownFunctionSignatures.ERC20_TRANSFER ||
     (functionSignature === '0x' && BigNumber.from(transaction.value).gt(0))
     // TODO: also check ERC20 amount > 0 by decoding data
   ) {
@@ -214,8 +214,6 @@ export function detectTransactionForm(
 export type ParamValue = boolean | string | BigNumber | ParamValue[];
 export type ParamValueError = FormError | null | ParamValueError[];
 
-// this can probably be replaced with some ethers function but I couldn't find
-// anything that worked
 export function validateBytesString(
   bytesString: string,
   bytesType: string
