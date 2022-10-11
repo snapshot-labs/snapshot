@@ -70,7 +70,7 @@ async function getActiveSteps() {
           )
       );
     } catch (e) {
-      notify(['error', this.$t('progress.wentWrong')]);
+      notify(['red', this.$t('progress.wentWrong')]);
     }
   }
 }
@@ -99,7 +99,7 @@ async function createNewStep() {
       );
     } catch (e) {
       addIsLoading.value = false;
-      notify(['error', this.$t('progress.wentWrong')]);
+      notify(['red', this.$t('progress.wentWrong')]);
     }
   }
 }
@@ -125,7 +125,7 @@ async function setStepComplete(step) {
   } catch (error) {
     completeIsLoading.value = false;
     currentlyLoadingStepId.value = null;
-    notify(['error', this.$t('progress.wentWrong')]);
+    notify(['red', this.$t('progress.wentWrong')]);
   }
 }
 function closeEvent() {
@@ -154,7 +154,7 @@ async function deleteStep() {
     });
   } catch (error) {
     deleteIsLoading.value = false;
-    notify(['error', this.$t('progress.wentWrong')]);
+    notify(['red', this.$t('progress.wentWrong')]);
   }
 }
 function formatDate(date) {
