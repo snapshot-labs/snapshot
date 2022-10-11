@@ -4,6 +4,7 @@
   "createSpace": "创建空间",
   "backToHome": "主页",
   "actions": "操作",
+  "poweredBy": "Powered by",
   "results": "结果",
   "resultsError": "结果无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "vpError": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
@@ -195,6 +196,7 @@
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
     "typeEnforced": "{type}由空间强制执行",
+    "privacyEnforced": "{type} is enforced by the space",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
@@ -236,6 +238,8 @@
     "startDate": "开始日期",
     "endDate": "结束日期",
     "votingSystem": "投票制度",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
     "postVoteModal": {
       "defaultTitle": "投票成功！",
       "gnosisSafeTitle": "您的投票正在进行中...",
@@ -527,6 +531,19 @@
       "ranked-choice": "每个选民都可以选择和排列任何数目的选择。结果是通过即时计算的。",
       "weighted": "每个选民都可以在任何选择中分散投票权。",
       "basic": "有三种投票单选项：支持，反对，和弃权"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "none": "None",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Choices are encrypted and only visible once the voting period is over",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "safeSnap": {
