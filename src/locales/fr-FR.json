@@ -4,6 +4,7 @@
   "createSpace": "Créer un espace",
   "backToHome": "Accueil",
   "actions": "Actions",
+  "poweredBy": "Powered by",
   "results": "Résultats",
   "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
   "vpError": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
@@ -195,6 +196,7 @@
     "delayEnforced": "L’espace impose un délai jusqu’à ce que le vote puisse commencer",
     "periodEnforced": "L’espace impose la durée de la période de vote",
     "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",
@@ -236,6 +238,8 @@
     "startDate": "Date de début ",
     "endDate": "Date de fin",
     "votingSystem": "Système de vote",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
     "postVoteModal": {
       "defaultTitle": "Votre vote est enregistré !",
       "gnosisSafeTitle": "Votre vote est en attente...",
@@ -527,6 +531,19 @@
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
       "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
       "basic": "Choix de vote unique avec trois choix: Pour, Contre ou S’abstenir"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "none": "None",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Choices are encrypted and only visible once the voting period is over",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "safeSnap": {
