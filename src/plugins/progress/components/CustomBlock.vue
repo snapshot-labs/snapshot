@@ -5,9 +5,12 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { ref, onMounted } from 'vue';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useI18n } from '@/composables/useI18n';
 
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
+const { t } = useI18n();
+
 const props = defineProps([
   'space',
   'proposal',
@@ -25,6 +28,7 @@ let steps = ref([]);
 let closeModal = ref(false);
 let stepToDelete = ref({});
 let currentlyLoadingStepId = ref(null);
+
 function isOwner() {
   return web3Account.value === props.proposal.author;
 }
@@ -46,7 +50,7 @@ async function requireSignature() {
   const auth = getInstance();
   let signature = await signMessage(
     auth.web3,
-    this.$t('progress.confirmSignature'),
+    t('progress.confirmSignature'),
     web3Account.value
   );
 
@@ -70,7 +74,7 @@ async function getActiveSteps() {
           )
       );
     } catch (e) {
-      notify(['red', this.$t('progress.wentWrong')]);
+      notify(['red', t('progress.wentWrong')]);
     }
   }
 }
@@ -99,7 +103,7 @@ async function createNewStep() {
       );
     } catch (e) {
       addIsLoading.value = false;
-      notify(['red', this.$t('progress.wentWrong')]);
+      notify(['red', t('progress.wentWrong')]);
     }
   }
 }
@@ -125,7 +129,7 @@ async function setStepComplete(step) {
   } catch (error) {
     completeIsLoading.value = false;
     currentlyLoadingStepId.value = null;
-    notify(['red', this.$t('progress.wentWrong')]);
+    notify(['red', t('progress.wentWrong')]);
   }
 }
 function closeEvent() {
@@ -154,7 +158,7 @@ async function deleteStep() {
     });
   } catch (error) {
     deleteIsLoading.value = false;
-    notify(['red', this.$t('progress.wentWrong')]);
+    notify(['red', t('progress.wentWrong')]);
   }
 }
 function formatDate(date) {
