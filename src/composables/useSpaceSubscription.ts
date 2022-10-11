@@ -1,77 +1,84 @@
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useWeb3 } from '@/composables/useWeb3';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
 import { useAliasAction } from '@/composables/useAliasAction';
-import { beams } from '../helpers/beams';
 import { useFlashNotification } from './useFlashNotification';
 import { useI18n } from '@/composables/useI18n';
-import client from '@/helpers/clientEIP712';
+import firebaseMessaging from '@/helpers/firebase';
+import { deleteToken, getToken } from 'firebase/messaging';
 
-const subscriptions = ref<any[] | undefined>(undefined);
+const isSubscribed = ref<boolean>(false);
+const token = ref<string | undefined>(undefined);
+const webhookUrl =
+  (import.meta.env.VITE_WEBHOOK_URL as string) ?? 'http://localhost:3000';
+const vapidKey = (import.meta.env.VITE_VAPID_KEY as string) ?? '';
 
-export function useSpaceSubscription(spaceId: any) {
+export function useSpaceSubscription() {
   const { web3, web3Account } = useWeb3();
-  const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const { notify } = useFlashNotification();
   const { t } = useI18n();
   const loading = ref(false);
-  const isSubscribed = computed(() => {
-    return (
-      subscriptions.value?.some((subscription: any) => {
-        return (
-          subscription.space.id === spaceId &&
-          subscription.address === web3Account.value
-        );
-      }) ?? false
-    );
-  });
 
-  async function loadSubscriptions() {
-    if (!web3Account.value) return;
+  async function loadToken() {
+    const isNotificationEnabled =
+      Notification && Notification.permission === 'granted';
+    if (!isNotificationEnabled) return;
 
-    loading.value = true;
     try {
-      const spaceSubscriptions = await apolloQuery(
-        {
-          query: SUBSCRIPTIONS_QUERY,
-          variables: {
-            address: web3Account.value
-          }
+      token.value = await getToken(firebaseMessaging, {
+        vapidKey
+      });
+
+      const response = await fetch(`${webhookUrl}/api/subscribed`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        'subscriptions'
-      );
-      if (spaceSubscriptions) {
-        subscriptions.value = spaceSubscriptions;
-      } else {
-        subscriptions.value = undefined;
+        body: JSON.stringify({
+          token: token.value,
+          owner: web3Account.value
+        })
+      }).then(res => res.json());
+
+      isSubscribed.value = response.subscribed;
+    } catch (err) {
+      isSubscribed.value = false;
+      token.value = undefined;
+      console.error('Error validating device token', err);
+    }
+  }
+
+  async function updateDeviceToken(unsubscribe: boolean) {
+    try {
+      if (token.value) {
+        await fetch(`${webhookUrl}/api/device`, {
+          method: unsubscribe ? 'DELETE' : 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            token: token.value,
+            owner: web3Account.value
+          })
+        });
       }
-    } catch (e) {
-      console.error(e);
-      subscriptions.value = undefined;
-    } finally {
-      loading.value = false;
+    } catch (err) {
+      console.error('Error updating FCM device token', err);
     }
   }
 
   const configurePush = async () => {
     try {
-      if (!beams) {
-        notify(['red', t('notificationsNotSupported')]);
+      const permission = await Notification.requestPermission();
+
+      if (permission === 'granted') {
+        await updateDeviceToken(false);
+      } else {
+        notify(['red', t('notificationsBlocked')]);
         return;
       }
-
-      await beams.start();
-      await beams.addDeviceInterest(web3Account.value);
-      await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
-        from: web3Account.value,
-        space: spaceId
-      });
     } catch (error: any) {
-      // thrown by beams when the user denies the notification permission or browser doesn't support it
-      if (error.name === 'NotAllowedError')
-        notify(['red', t('notificationsBlocked')]);
+      notify(['red', t('notificationsNotSupported')]);
       console.error(error);
     }
   };
@@ -89,14 +96,13 @@ export function useSpaceSubscription(spaceId: any) {
       }
 
       if (isSubscribed.value) {
-        await client.unsubscribe(aliasWallet.value, aliasWallet.value.address, {
-          from: web3Account.value,
-          space: spaceId
-        });
+        await updateDeviceToken(true);
+        await deleteToken(firebaseMessaging);
       } else {
         await configurePush();
       }
-      await loadSubscriptions();
+
+      await loadToken();
     } catch (e) {
       console.error(e);
     } finally {
@@ -108,7 +114,7 @@ export function useSpaceSubscription(spaceId: any) {
     toggleSubscription,
     loading,
     isSubscribed,
-    subscriptions,
-    loadSubscriptions
+    loadToken,
+    token
   };
 }

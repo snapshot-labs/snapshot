@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref, watchEffect } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
 import { useIntl } from '@/composables/useIntl';
+import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { PopoverButton } from '@headlessui/vue';
 
 const {
@@ -17,9 +18,23 @@ const {
 
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 
+const { loading, toggleSubscription, isSubscribed, loadToken, token } =
+  useSpaceSubscription();
+
 function selectThreedotItem(e) {
   if (e === 'markAllAsRead') markAllAsRead();
 }
+
+const notificationIcon = ref('notifications-off');
+
+watchEffect(() => {
+  if (token.value === undefined) {
+    loadToken();
+  }
+  if (isSubscribed.value) {
+    notificationIcon.value = 'notifications-on';
+  } else notificationIcon.value = 'notifications-off';
+});
 
 onMounted(() => loadNotifications());
 </script>
@@ -39,28 +54,39 @@ onMounted(() => loadNotifications());
       <div class="my-2 w-full">
         <div class="mb-3 flex items-center justify-between px-3">
           <h4>{{ $t('notifications.header') }}</h4>
-          <BaseMenu
-            :items="[
-              {
-                text: $t('notifications.markAllAsRead'),
-                action: 'markAllAsRead'
-              }
-            ]"
-            @select="selectThreedotItem"
-          >
-            <template #button>
-              <i-ho-dots-horizontal
-                class="cursor-pointer text-[22px] hover:text-skin-link"
+          <div class="flex items-center">
+            <ButtonSidebar class="mr-3 inline" @click="toggleSubscription()">
+              <LoadingSpinner v-if="loading" />
+              <BaseIcon
+                v-else
+                size="20"
+                class="text-skin-link"
+                :name="notificationIcon"
               />
-            </template>
-            <template #item="{ item }">
-              <div class="flex items-center">
-                <i-ho-check class="mr-2 text-sm" />
+            </ButtonSidebar>
+            <BaseMenu
+              :items="[
+                {
+                  text: $t('notifications.markAllAsRead'),
+                  action: 'markAllAsRead'
+                }
+              ]"
+              @select="selectThreedotItem"
+            >
+              <template #button>
+                <i-ho-dots-horizontal
+                  class="cursor-pointer text-[22px] hover:text-skin-link"
+                />
+              </template>
+              <template #item="{ item }">
+                <div class="flex items-center">
+                  <i-ho-check class="mr-2 text-sm" />
 
-                {{ item.text }}
-              </div>
-            </template>
-          </BaseMenu>
+                  {{ item.text }}
+                </div>
+              </template>
+            </BaseMenu>
+          </div>
         </div>
         <div class="mb-3 space-x-2 px-3">
           <BaseButton

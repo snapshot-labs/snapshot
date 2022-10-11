@@ -1,6 +1,4 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
 import { useFollowSpace } from '@/composables/useFollowSpace';
 import { useIntl } from '@/composables/useIntl';
 
@@ -13,26 +11,7 @@ const props = defineProps({
 
 const { formatCompactNumber } = useIntl();
 
-const {
-  loading,
-  toggleSubscription,
-  isSubscribed,
-  loadSubscriptions,
-  subscriptions
-} = useSpaceSubscription(props.space.id);
-
 const { isFollowing } = useFollowSpace(props.space.id);
-
-const notificationIcon = ref('notifications-off');
-
-watchEffect(() => {
-  if (subscriptions.value === undefined) {
-    loadSubscriptions();
-  }
-  if (isSubscribed.value) {
-    notificationIcon.value = 'notifications-on';
-  } else notificationIcon.value = 'notifications-off';
-});
 </script>
 
 <template>
@@ -72,19 +51,6 @@ watchEffect(() => {
       class="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center"
     >
       <ButtonFollow :space="space" :primary="!isFollowing" />
-      <ButtonSidebar
-        v-if="isFollowing"
-        class="inline"
-        @click="toggleSubscription()"
-      >
-        <LoadingSpinner v-if="loading" />
-        <BaseIcon
-          v-else
-          size="20"
-          class="text-skin-link"
-          :name="notificationIcon"
-        />
-      </ButtonSidebar>
     </div>
   </div>
 </template>
