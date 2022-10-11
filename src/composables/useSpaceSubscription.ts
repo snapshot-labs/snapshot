@@ -110,37 +110,8 @@ export function useSpaceSubscription() {
     }
   }
 
-  async function toggleSpaceSubscription(spaceId, isFollowing) {
-    if (web3.value.authLoading) {
-      return null;
-    }
-
-    try {
-      await checkAlias();
-      if (!aliasWallet.value || !isValidAlias.value) {
-        await setAlias();
-      }
-
-      // Subscribe/unsubscribe user to space notifications
-      await fetch(`${webhookUrl}/api/subscription`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          owner: web3Account.value,
-          spaceId,
-          unsubscribe: isFollowing
-        })
-      });
-    } catch (e) {
-      console.error('Error toggling space subscription', e);
-    }
-  }
-
   return {
     toggleSubscription,
-    toggleSpaceSubscription,
     loading,
     isSubscribed,
     loadToken,
