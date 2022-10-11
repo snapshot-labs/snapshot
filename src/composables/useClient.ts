@@ -23,9 +23,7 @@ export function useClient() {
       connectorName.value === 'gnosis'
   );
 
-  const usePersonalSign = computed(
-    () => connectorName.value === 'walletlink' || isGnosisSafe.value
-  );
+  const usePersonalSign = computed(() => isGnosisSafe.value);
 
   async function send(space, type, payload) {
     isSending.value = true;
