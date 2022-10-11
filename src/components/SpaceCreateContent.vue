@@ -46,7 +46,7 @@ const handleDrop = e => {
 </script>
 
 <template>
-  <div class="px-4 md:px-0">
+  <div class="mb-5 px-4 md:px-0">
     <div class="flex flex-col space-y-3">
       <h1
         v-if="preview"

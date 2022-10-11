@@ -7,7 +7,7 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
@@ -23,8 +23,19 @@ const ts = Number((Date.now() / 1e3).toFixed());
   <BaseBlock
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
-    class="pb-2"
   >
-    <ProposalResultsList v-if="results" v-bind="props" />
+    <ProposalResultsList
+      v-if="results"
+      :space="space"
+      :proposal="proposal"
+      :results="results"
+      :strategies="strategies"
+      :votes="votes"
+    />
+
+    <ProposalResultsShutter
+      v-if="proposal.privacy === 'shutter'"
+      class="pt-2"
+    />
   </BaseBlock>
 </template>

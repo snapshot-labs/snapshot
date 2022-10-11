@@ -72,13 +72,15 @@ export function useQuorum(props: QuorumProps) {
           { blockTag }
         );
 
-        return BigNumber.from(votingPower)
-          .div(BigNumber.from(10).pow(decimals))
-          .toNumber() * quorumModifier;
+        return (
+          BigNumber.from(votingPower)
+            .div(BigNumber.from(10).pow(decimals))
+            .toNumber() * quorumModifier
+        );
       }
 
       case 'multichainBalance': {
-        const { network, strategies} = quorumOptions;
+        const { network, strategies } = quorumOptions;
         const blocks = await getSnapshots(
           network,
           parseInt(snapshot),
@@ -95,12 +97,12 @@ export function useQuorum(props: QuorumProps) {
         );
         const results = await Promise.all(requests);
         const totalBalance = results.reduce((total, ele, index) => {
-          const eleDecimals = strategies[index].decimals;
           if (index === 1) {
-            const eleDecimals = strategies[0].decimals;
-            total = total.div(BigNumber.from(10).pow(eleDecimals));
+            total = total.div(BigNumber.from(10).pow(strategies[0].decimals));
           }
-          return total.add(ele.div(BigNumber.from(10).pow(eleDecimals)));
+          return total.add(
+            ele.div(BigNumber.from(10).pow(strategies[index].decimals))
+          );
         });
         return totalBalance.toNumber() * quorumModifier;
       }
@@ -110,7 +112,7 @@ export function useQuorum(props: QuorumProps) {
     }
   }
 
-  onMounted(async () => {
+  async function loadTotalVotingPower() {
     loading.value = true;
     totalVotingPower.value = await getTotalVotingPower(
       getProvider(props.space.network),
@@ -118,7 +120,13 @@ export function useQuorum(props: QuorumProps) {
       props.proposal.snapshot
     );
     loading.value = false;
-  });
+  }
 
-  return { quorumScore, quorum, totalScore, totalVotingPower };
+  return {
+    quorumScore,
+    loadTotalVotingPower,
+    quorum,
+    totalScore,
+    totalVotingPower
+  };
 }

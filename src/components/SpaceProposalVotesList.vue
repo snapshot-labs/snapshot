@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch, toRefs } from 'vue';
-import { shorten, getChoiceString } from '@/helpers/utils';
+import { shorten } from '@/helpers/utils';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import uniqBy from 'lodash/uniqBy';
 import {
@@ -23,8 +23,6 @@ const props = defineProps<{
 }>();
 
 defineEmits(['loadVotes']);
-
-const format = getChoiceString;
 
 const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
@@ -101,17 +99,8 @@ watch(visibleVotes, () => {
         :proposal="proposal"
         width-class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left"
       />
-      <div class="flex-auto truncate px-2 text-center text-skin-link">
-        <div
-          v-tippy="{
-            content: format(proposal, vote.choice)
-          }"
-          class="truncate text-center text-skin-link"
-        >
-          {{ format(proposal, vote.choice) }}
-        </div>
-      </div>
 
+      <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
       <div
         class="flex min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:min-w-[130px]"
       >

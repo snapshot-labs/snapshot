@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
@@ -12,14 +12,12 @@ const props = defineProps<{
   dateEnd: number;
 }>();
 
-const emit = defineEmits(['userSelectedDate']);
-
-const selectedDate = ref('');
-const modalDateSelectOpen = ref(false);
-const modalVotingTypeOpen = ref(false);
-
-const { form, sourceProposalLoaded, userSelectedDateStart } =
-  useSpaceCreateForm();
+const {
+  form,
+  sourceProposalLoaded,
+  userSelectedDateStart,
+  userSelectedDateEnd
+} = useSpaceCreateForm();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
@@ -29,21 +27,14 @@ function addChoices(num) {
   }
 }
 
-function selectDate(date) {
-  selectedDate.value = date;
-  modalDateSelectOpen.value = true;
+function setDateStart(ts) {
+  form.value.start = ts;
+  userSelectedDateStart.value = true;
 }
 
-function setDate(ts) {
-  if (selectedDate.value) {
-    form.value[selectedDate.value] = ts;
-    if (selectedDate.value === 'start') {
-      userSelectedDateStart.value = true;
-    }
-    if (selectedDate.value === 'end') {
-      emit('userSelectedDate');
-    }
-  }
+function setDateEnd(ts) {
+  form.value.end = ts;
+  userSelectedDateEnd.value = true;
 }
 
 watch(
@@ -81,28 +72,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
-      <UiInput
-        v-tippy="{
-          content: !!space.voting?.type
-            ? $t('create.typeEnforced', { type: $t(`voting.${form.type}`) })
-            : null
-        }"
+      <InputSelectVotingtype
+        :type="space.voting?.type ? space.voting.type : form.type"
         :disabled="!!space.voting?.type"
-        :class="[space.voting?.type ? 'cursor-not-allowed' : 'cursor-pointer']"
-        class="!mb-4"
-        @click="!space.voting?.type ? (modalVotingTypeOpen = true) : null"
-      >
-        <template #selected>
-          <span class="w-full">
-            {{ $t(`voting.${form.type}`) }}
-          </span>
-        </template>
-        <template #label>
-          {{ $t(`create.votingSystem`) }}
-        </template>
-      </UiInput>
+        @update:type="value => (form.type = value)"
+      />
+
+      <h4 class="mt-3 mb-1" v-text="$t('create.choices')" />
       <div class="flex">
         <div class="w-full overflow-hidden">
           <draggable
@@ -152,7 +130,7 @@ onMounted(async () => {
             class="!h-[42px] !w-[42px]"
             @click="addChoices(1)"
           >
-            <BaseIcon size="20" name="plus" class="text-skin-link" />
+            <i-ho-plus-sm class="text-skin-link" />
           </ButtonSidebar>
         </div>
       </div>
@@ -162,65 +140,18 @@ onMounted(async () => {
       :title="$t('create.period')"
       :information="$t('create.votingPeriodExplainer')"
     >
-      <div class="md:flex md:space-x-3">
-        <UiInput
-          v-tippy="{
-            content: !!space.voting?.delay ? $t('create.delayEnforced') : null
-          }"
-          :disabled="!!space.voting?.delay"
-          :class="[
-            space.voting?.delay ? 'cursor-not-allowed' : 'cursor-pointer'
-          ]"
-          @click="!space.voting?.delay ? selectDate('start') : null"
-        >
-          <template #selected>
-            <span
-              v-text="
-                Math.round(dateStart / 10) ===
-                Math.round(parseInt((Date.now() / 1e3).toFixed()) / 10)
-                  ? $t('create.now')
-                  : $d(dateStart * 1e3, 'short', 'en-US')
-              "
-            />
-          </template>
-          <template #label>
-            {{ $t(`create.start`) }}
-          </template>
-          <template #info>
-            <BaseIcon
-              name="calendar"
-              size="18"
-              class="flex items-center text-skin-text"
-            />
-          </template>
-        </UiInput>
+      <div class="space-y-2 md:flex md:space-x-3 md:space-y-0">
+        <SpaceCreateVotingDateStart
+          :delay="space.voting?.delay"
+          :date="dateStart"
+          @select="value => setDateStart(value)"
+        />
 
-        <UiInput
-          v-tippy="{
-            content: space.voting?.period ? $t('create.periodEnforced') : null
-          }"
-          :disabled="!!space.voting?.period"
-          class="mb-0 md:mb-2"
-          :class="[
-            space.voting?.period ? 'cursor-not-allowed' : 'cursor-pointer'
-          ]"
-          @click="!space.voting?.period ? selectDate('end') : null"
-        >
-          <template #selected>
-            <span v-text="$d(dateEnd * 1e3, 'short', 'en-US')" />
-          </template>
-          <template #label>
-            {{ $t(`create.end`) }}
-          </template>
-          <template #info>
-            <BaseIcon
-              name="calendar"
-              size="18"
-              class="flex items-center text-skin-text"
-              :class="{ 'cursor-not-allowed': space.voting?.period }"
-            />
-          </template>
-        </UiInput>
+        <SpaceCreateVotingDateEnd
+          :period="space.voting?.period"
+          :date="dateEnd"
+          @select="value => setDateEnd(value)"
+        />
       </div>
     </BaseBlock>
 
@@ -235,18 +166,5 @@ onMounted(async () => {
         </template>
       </UiInput>
     </BaseBlock>
-    <teleport to="#modal">
-      <ModalSelectDate
-        :selected-date="selectedDate"
-        :open="modalDateSelectOpen"
-        @close="modalDateSelectOpen = false"
-        @input="setDate"
-      />
-      <ModalVotingType
-        v-model:selected="form.type"
-        :open="modalVotingTypeOpen"
-        @close="modalVotingTypeOpen = false"
-      />
-    </teleport>
   </div>
 </template>

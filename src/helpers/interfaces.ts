@@ -114,6 +114,7 @@ export interface ExtendedSpace {
     period: number | null;
     quorum: number | null;
     type: string | null;
+    privacy: string | null;
   };
 }
 
@@ -143,6 +144,7 @@ export interface Proposal {
   end: number;
   state: string;
   symbol: string;
+  privacy: string;
   discussion: string;
   quorum: number;
   scores: number[];
