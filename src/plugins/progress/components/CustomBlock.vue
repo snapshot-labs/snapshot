@@ -46,7 +46,7 @@ async function requireSignature() {
   const auth = getInstance();
   let signature = await signMessage(
     auth.web3,
-    'Signing this message will allow us to authorize your request to update the progress of your proposal.',
+    this.$t('progress.confirmSignature'),
     web3Account.value
   );
 
@@ -70,7 +70,7 @@ async function getActiveSteps() {
           )
       );
     } catch (e) {
-      notify(['primary', 'Oops something went wrong.']);
+      notify(['error', this.$t('progress.wentWrong')]);
     }
   }
 }
@@ -99,7 +99,7 @@ async function createNewStep() {
       );
     } catch (e) {
       addIsLoading.value = false;
-      notify(['primary', 'Oops something went wrong.']);
+      notify(['error', this.$t('progress.wentWrong')]);
     }
   }
 }
@@ -125,7 +125,7 @@ async function setStepComplete(step) {
   } catch (error) {
     completeIsLoading.value = false;
     currentlyLoadingStepId.value = null;
-    notify(['primary', 'Oops something went wrong.']);
+    notify(['error', this.$t('progress.wentWrong')]);
   }
 }
 function closeEvent() {
@@ -154,7 +154,7 @@ async function deleteStep() {
     });
   } catch (error) {
     deleteIsLoading.value = false;
-    notify(['primary', 'Oops something went wrong.']);
+    notify(['error', this.$t('progress.wentWrong')]);
   }
 }
 function formatDate(date) {
@@ -177,7 +177,8 @@ onMounted(async () => {
 
 <template>
   <BaseBlock title="Progress" :loading="!loaded">
-    <div class="flex h-0 flex-row-reverse">
+    <div v-if="!isComplete()">{{ $t('progress.comeBack') }}</div>
+    <div v-if="isComplete()" class="flex h-0 flex-row-reverse">
       <i
         v-if="isOwner() && isComplete()"
         class="edit-icon iconfont icongear relative cursor-pointer hover:text-skin-link"
@@ -185,7 +186,7 @@ onMounted(async () => {
         @click="toggleEditMode()"
       ></i>
     </div>
-    <div class="flex flex-col">
+    <div v-if="isComplete()" class="flex flex-col">
       <div>
         <div
           :class="{
@@ -197,23 +198,25 @@ onMounted(async () => {
             <div>
               <div class="step-counter">1</div>
             </div>
-            <div class="ml-3 w-full">Voting</div>
+            <div class="ml-3 w-full">{{ $t('progress.voting') }}</div>
           </div>
           <div class="flex">
             <div class="w-[55%] text-xs">
-              <div v-if="isComplete()" class="leading-[.5rem]">Completed</div>
+              <div v-if="isComplete()" class="leading-[.5rem]">
+                {{ $t('progress.completed') }}
+              </div>
               <div v-if="isComplete()">
                 {{ completedDate() }}
               </div>
             </div>
             <div class="ml-auto flex flex-col-reverse">
-              <span v-if="isComplete()" class="status mr-2 bg-green text-white"
-                >Completed</span
-              >
+              <span v-if="isComplete()" class="status mr-2 bg-green text-white">
+                {{ $t('progress.completed') }}
+              </span>
               <span
                 v-if="!isComplete()"
                 class="status mr-2 bg-gray-500 text-white"
-                >In Progress</span
+                >{{ $t('progress.inProgress') }}</span
               >
             </div>
           </div>
@@ -254,7 +257,7 @@ onMounted(async () => {
                   v-if="step.stepStatus === 'complete'"
                   class="leading-[.5rem]"
                 >
-                  Completed
+                  {{ $t('progress.completed') }}
                 </div>
                 <div v-if="step.stepStatus === 'complete'">
                   {{ formatDate(step.completedDate) }}
@@ -264,7 +267,7 @@ onMounted(async () => {
                 <span
                   v-if="step.stepStatus === 'complete'"
                   class="status mr-2 bg-green text-white"
-                  >Completed
+                  >{{ $t('progress.completed') }}
                 </span>
                 <span
                   v-if="
@@ -273,7 +276,7 @@ onMounted(async () => {
                     firstIncompleteStepId() === step.id
                   "
                   class="status mr-2 bg-gray-500 text-white"
-                  >In Progress
+                  >{{ $t('progress.inProgress') }}
                 </span>
 
                 <BaseButton
@@ -282,7 +285,9 @@ onMounted(async () => {
                   :disabled="firstIncompleteStepId() !== step.id"
                   @click="setStepComplete(step)"
                 >
-                  <span v-if="!thisStepUpdating(step)">Complete</span>
+                  <span v-if="!thisStepUpdating(step)">{{
+                    $t('progress.complete')
+                  }}</span>
                   <div
                     v-if="thisStepUpdating(step)"
                     class="spinner relative"
@@ -296,7 +301,7 @@ onMounted(async () => {
                     firstIncompleteStepId() !== step.id
                   "
                   class="status mr-2 bg-gray-500 text-white"
-                  >Soon
+                  >{{ $t('progress.soon') }}
                 </span>
               </div>
             </div>
@@ -315,10 +320,10 @@ onMounted(async () => {
       </div>
       <div class="w-100">
         <div v-if="editMode" class="mt-4">
-          <span class="text-xl">New Step</span>
+          <span class="text-xl">{{ $t('progress.newStep') }}</span>
           <textarea
             v-model="newStepDescription"
-            placeholder="Description"
+            :placeholder="[$t('progress.description')]"
             class="input h-full w-full rounded-3xl border border-skin-border py-3 px-4 text-left focus-within:!border-skin-link hover:border-skin-text"
           />
           <BaseButton
@@ -326,7 +331,7 @@ onMounted(async () => {
             class="button button--primary ml-2 mt-2 w-full px-[24px] hover:brightness-95"
             @click="createNewStep()"
           >
-            <span v-if="!addIsLoading">Add</span>
+            <span v-if="!addIsLoading">{{ $t('progress.add') }}</span>
             <div v-if="addIsLoading" class="spinner relative"></div>
           </BaseButton>
         </div>
@@ -335,10 +340,10 @@ onMounted(async () => {
   </BaseBlock>
   <BaseModal :open="closeModal" @close="closeEvent">
     <template #header>
-      <h3>Delete Step</h3>
+      <h3>{{ $t('progress.deleteStep') }}</h3>
     </template>
     <div class="mt-3 text-center">
-      <p>Are you sure you want to delete?</p>
+      <p>{{ $t('progress.deleteConfirm') }}</p>
     </div>
     <div
       class="mb-2 mt-3 flex content-center items-center justify-center text-center"
@@ -348,11 +353,11 @@ onMounted(async () => {
         :loading="loading"
         @click="deleteStep"
       >
-        <span v-if="!deleteIsLoading">Delete</span>
+        <span v-if="!deleteIsLoading">{{ $t('progress.delete') }}</span>
         <div v-if="deleteIsLoading" class="spinner relative"></div>
       </BaseButton>
       <BaseButton :disabled="loading" class="ml-2" @click="closeEvent">
-        Cancel
+        {{ $t('progress.cancel') }}
       </BaseButton>
     </div>
   </BaseModal>
