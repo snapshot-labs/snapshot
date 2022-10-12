@@ -196,7 +196,7 @@
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
     "typeEnforced": "{type}由空间强制执行",
-    "privacyEnforced": "{type} 由空间强制执行",
+    "privacyEnforced": "由空间强制执行",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
@@ -238,8 +238,8 @@
     "startDate": "开始日期",
     "endDate": "结束日期",
     "votingSystem": "投票制度",
-    "privacy": "Privacy",
-    "invalidChoice": "Invalid choice",
+    "privacy": "隐私",
+    "invalidChoice": "无效的选择",
     "postVoteModal": {
       "defaultTitle": "投票成功！",
       "gnosisSafeTitle": "您的投票正在进行中...",
@@ -305,7 +305,7 @@
     "links": "社交账户",
     "subspaces": {
       "label": "子空间",
-      "information": "子空格仅在主空格和子空格配置后才会显示。 {docs}",
+      "information": "子空间仅在主空间和子空间都配置后才会显示。 ",
       "parent": {
         "label": "主空间",
         "placeholder": "pistachiodao.eth",
@@ -371,7 +371,7 @@
     "domain": {
       "label": "域名",
       "placeholder": "例如 vote.balancer.fi",
-      "info": "要设置一个自定义域名，您另外需要在github上开启一个pull request。 docs"
+      "info": "要设置一个自定义域名，您另外需要在github上开启一个pull request。"
     },
     "skin": "皮肤",
     "treasuries": {
@@ -534,15 +534,15 @@
     }
   },
   "privacy": {
-    "label": "Privacy",
-    "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
-    "any": "Any",
-    "none": "None",
+    "label": "隐私",
+    "title": "选择投票隐私",
+    "information": "提案中使用的隐私类型，在此处设置将对所有提案执行相同的隐私。",
+    "any": "任何类型",
+    "none": "未设置",
     "shutter": {
-      "label": "Shutter",
-      "description": "Choices are encrypted and only visible once the voting period is over",
-      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "label": "快门",
+      "description": "选择是加密的，只有在投票期结束后才能看到",
+      "tooltip": "该提案已启用快门隐私。所有的投票都将被加密，直到投票期结束并计算出最终的分数",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
