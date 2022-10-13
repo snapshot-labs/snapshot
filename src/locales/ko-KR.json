@@ -4,6 +4,7 @@
   "createSpace": "공간 만들기",
   "backToHome": "홈",
   "actions": "액션",
+  "poweredBy": "Powered by",
   "results": "결과",
   "resultsError": "결과를 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
   "vpError": "투표권을 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
@@ -195,6 +196,7 @@
     "delayEnforced": "투표가 시작될 때까지 공간이 지연됩니다.",
     "periodEnforced": "공간은 투표 기간을 적용합니다.",
     "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
     "edit": "편집",
     "continue": "계속",
     "now": "현재",
@@ -236,6 +238,8 @@
     "startDate": "시작일",
     "endDate": "종료일",
     "votingSystem": "투표 유형",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",
@@ -527,6 +531,19 @@
       "ranked-choice": "각 유권자는 원하는 수만큼 선택하고 순위를 매길 수 있습니다. 결과는 즉시 결선 투표 계수 방법으로 계산됩니다.",
       "weighted": "각 유권자는 원하는 선택지들에 투표권을 행사 할 수있습니다.",
       "basic": "세 가지 선택이 있는 단일 선택 투표: 찬성, 반대 또는 기권"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "none": "None",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Choices are encrypted and only visible once the voting period is over",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "safeSnap": {
