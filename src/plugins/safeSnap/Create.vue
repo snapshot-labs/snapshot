@@ -27,7 +27,7 @@ const proposalExecutionData = ref<ExecutionData[]>(
   props.modelValue.safeSnap || []
 );
 
-const updateProposalBatches = (
+const updateTransactionBatches = (
   builderIndex: number,
   updatedBatches: Transaction[][]
 ) => {
@@ -35,7 +35,7 @@ const updateProposalBatches = (
   emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
 };
 
-const updateProposalABIs = (
+const updateContractABIs = (
   builderIndex: number,
   updatedAbis: ExecutionDataABIs
 ) => {
@@ -65,8 +65,8 @@ function addProposalExecutionData(executionData: ExecutionData) {
         :initial-batches="executionData.batches"
         :initial-abis="executionData.abis"
         @remove-transaction-builder="removeProposalExecutionData(index)"
-        @update-batches="updateProposalBatches(index, $event)"
-        @update-abis="updateProposalABIs(index, $event)"
+        @update-batches="updateTransactionBatches(index, $event)"
+        @update-abis="updateContractABIs(index, $event)"
       />
     </div>
     <div class="space-y-2">
