@@ -16,11 +16,6 @@ const props = defineProps<{
 const executionData = computed<ExecutionData[]>(() =>
   mapLegacyExecutionData(props.proposal.plugins.safeSnap)
 );
-
-const proposalStillActive = computed<boolean>(() => {
-  const now = new Date().getTime() / 1e3;
-  return now <= props.proposal.end;
-});
 </script>
 
 <template>
