@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { ComputedRef, Ref } from 'vue';
 import { Transaction } from './transactionBuilder';
 
 const SAFE_TRANSACTION_API_URLS = {
@@ -64,30 +65,31 @@ export interface ExecutionData {
   safe: Safe;
   batches: Transaction[][];
   module?: SafeModule;
-  choice?: number;
+  criteria?: string; // for human or automated (can be JSON) processing in (optimistic) oracles
+  // TODO: add text field in transaction builder for this
 }
 
 export interface ModuleExecutionData extends ExecutionData {
   module: SafeModule;
 }
 
-// These interfaces could turn out to be more limiting than helpful. We'll see.
-export interface ExecutorState {
-  loading: boolean;
-  hasBeenProposed: boolean;
-  canBeExecuted: boolean;
-  hasBeenExecuted: boolean;
-  hasBeenRejected: boolean;
-  [x: string]: any;
+export enum ExecutionState {
+  WAITING,
+  PROPOSABLE,
+  DISPUTABLE,
+  EXECUTABLE,
+  EXECUTED,
+  REJECTED
 }
 
-export interface Executor<TState = ExecutorState> {
-  state: TState;
-  setState(...key: any[]): Promise<void>;
-  proposeExecution(...key: any[]): Promise<void>;
-  disputeExecution(...key: any[]): Promise<void>;
+export interface Executor {
+  loading: Ref<boolean>;
+  executionState: ComputedRef<ExecutionState>;
+  executionData: ExecutionData;
+  propose(...key: any[]): Promise<void>;
+  dispute(...key: any[]): Promise<void>;
   execute(...key: any[]): Promise<void>;
-  [x: string]: any; // Would like to remove this and not allow extra stuff.
+  [key: string]: any;
 }
 
 export interface Asset {

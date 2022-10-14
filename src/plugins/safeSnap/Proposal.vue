@@ -24,46 +24,47 @@ const proposalStillActive = computed<boolean>(() => {
 </script>
 
 <template>
-  <BaseBlock
-    v-for="(data, index) in executionData"
-    :key="index"
-    :title="data.safe.name"
-    slim
-  >
-    <template #title-buttons>
-      <img
-        v-if="data.module"
-        :src="SafeModuleLogos[data.module.type]"
-        :alt="data.safe.type"
-        class="inline h-4"
-      />
-    </template>
+  <div>
+    <BaseBlock
+      v-for="(data, index) in executionData"
+      :key="index"
+      :title="data.safe.name"
+      slim
+    >
+      <template #title-buttons>
+        <img
+          v-if="data.module"
+          :src="SafeModuleLogos[data.module.type]"
+          :alt="data.safe.type"
+          class="inline h-4"
+        />
+      </template>
 
-    <div v-if="data.module">
-      <ExecutionReality
-        v-if="data.module.type === SafeModuleType.REALITY"
-        :execution-data="(data as ModuleExecutionData)"
-        :proposal-id="proposal.id"
-        :proposal-snapshot="proposal.snapshot"
-        :proposal-still-active="proposalStillActive"
-      />
-      <ExecutionUma
-        v-if="data.module.type === SafeModuleType.UMA"
-        :execution-data="(data as ModuleExecutionData)"
-        :proposal-id="proposal.id"
-        :proposal-still-active="proposalStillActive"
-      />
-      <ExecutionTellor
-        v-if="data.module.type === SafeModuleType.TELLOR"
-        :execution-data="(data as ModuleExecutionData)"
-        :proposal-id="proposal.id"
-        :proposal-still-active="proposalStillActive"
-      />
-    </div>
-    <ExecutionManual
-      v-else
-      :execution-data="data"
-      :proposal-still-active="proposalStillActive"
-    />
-  </BaseBlock>
+      <ExecutionTransactions :execution-data="data" />
+
+      <div v-if="data.module" class="p-4 text-center">
+        <Suspense>
+          <ExecutionReality
+            v-if="data.module.type === SafeModuleType.REALITY"
+            :execution-data="(data as ModuleExecutionData)"
+            :proposal="proposal"
+          />
+          <template #fallback>
+            <LoadingSpinner />
+          </template>
+        </Suspense>
+        <Suspense>
+          <ExecutionUma
+            v-if="data.module.type === SafeModuleType.UMA"
+            :execution-data="(data as ModuleExecutionData)"
+            :proposal="proposal"
+          />
+          <template #fallback>
+            <LoadingSpinner />
+          </template>
+        </Suspense>
+      </div>
+      <ExecutionManual v-else :execution-data="data" />
+    </BaseBlock>
+  </div>
 </template>

@@ -1,42 +1,41 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { computed } from 'vue';
+import { formatUnits } from '@ethersproject/units';
+import { Proposal } from '@/helpers/interfaces';
 import { ModuleExecutionData } from '@/helpers/safe';
-import { useSafeUmaModule } from '@/composables';
+import { useExecutorUma } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
-  proposalId: string;
-  proposalStillActive: boolean;
+  proposal: Proposal;
 }>();
 
-const umaModule = useSafeUmaModule(props.executionData, props.proposalId);
-
-onMounted(umaModule.setState);
+const executor = await useExecutorUma(props.executionData, props.proposal);
+const hasBondAllowance = computed<boolean>(() =>
+  executor.bondAllowance.value.gte(executor.bondAmount)
+);
 </script>
 
 <template>
-  <ExecutionAbstract
-    :executor-state="umaModule.state"
-    :execution-data="executionData"
-    :proposal-still-active="proposalStillActive"
-  >
+  <ExecutionAbstract :executor="executor">
     <template #propose>
-      <div
-        v-if="umaModule.state.bondAllowance.gte(umaModule.state.bondAmount)"
-        class="flex flex-col"
-      >
-        <BaseButton @click="umaModule.proposeExecution">
+      <div v-if="hasBondAllowance" class="flex flex-col">
+        <BaseButton @click="executor.propose">
           propose transactions
         </BaseButton>
-        <small class="mt-2 opacity-50"
-          >You will deposit a bond of {{ umaModule.state.bondAmount }}.</small
-        >
+        <small class="mt-2 opacity-50">
+          You will deposit a bond of {{ executor.bondAmount }}.
+        </small>
       </div>
       <div v-else>
-        To propose these transactions you need to deposit a bond of
-        {{ umaModule.state.bondAmount }}. This bond needs to be approved by you
-        first.
-        <BaseButton class="mt-3" @click="umaModule.approveBond">
+        To propose transactions you need to deposit a bond of
+        {{ formatUnits(executor.bondAmount, executor.bondDecimals) }}
+        {{ executor.bondSymbol }}.<br />
+        <br />
+        Approve the Optimistic Governor at<br />
+        {{ executionData.module.address }}<br />
+        to take the bond from your account.<br />
+        <BaseButton class="mt-3" @click="executor.approveBond">
           approve bond
         </BaseButton>
       </div>
@@ -44,17 +43,15 @@ onMounted(umaModule.setState);
 
     <template #dispute>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      <BaseButton @click="umaModule.disputeExecution">
-        Dispute transactions
-      </BaseButton>
+      <BaseButton @click="executor.dispute"> Dispute transactions </BaseButton>
     </template>
 
     <template #execute>
-      <BaseButton @click="umaModule.execute"> Execute transactions </BaseButton>
+      <BaseButton @click="executor.execute"> Execute transactions </BaseButton>
     </template>
 
     <template #executed>
-      <div class="flex flex-col items-center justify-center p-4">
+      <div class="flex flex-col items-center justify-center">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />
         </span>
@@ -66,7 +63,7 @@ onMounted(umaModule.setState);
     </template>
 
     <template #rejected>
-      <div class="flex flex-col items-center justify-center p-4">
+      <div class="flex flex-col items-center justify-center">
         <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
           <i-ho-x />
         </span>

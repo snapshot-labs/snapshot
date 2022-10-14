@@ -1,81 +1,62 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { Proposal } from '@/helpers/interfaces';
 import { ModuleExecutionData } from '@/helpers/safe';
-import { useSafeRealityModule } from '@/composables';
+import { useExecutorReality } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
-  proposalId: string;
-  proposalStillActive: boolean;
-  proposalSnapshot: string;
+  proposal: Proposal;
 }>();
 
-const realityModule = useSafeRealityModule(
-  props.executionData,
-  props.proposalId,
-  props.proposalSnapshot
-);
-
-onMounted(realityModule.setState);
+const executor = await useExecutorReality(props.executionData, props.proposal);
 </script>
 
 <template>
-  <ExecutionAbstract
-    :executor-state="realityModule.state"
-    :execution-data="executionData"
-    :proposal-still-active="proposalStillActive"
-  >
-    <template #proposal-still-active>
-      <div class="p-4 text-center">
-        Execution will be possible after the proposal has ended.
-      </div>
-    </template>
-
+  <ExecutionAbstract :executor="executor">
     <template #propose>
-      <div class="p-4">
-        <BaseButton class="w-full" @click="realityModule.proposeExecution">
-          Propose transactions for execution
-        </BaseButton>
-      </div>
+      <BaseButton class="w-full" @click="executor.propose">
+        Propose transactions for execution
+      </BaseButton>
     </template>
 
     <template #dispute>
-      <!-- TODO: display txs/hashes as proposed on chain-->
-      <div class="space-y-2 p-4 text-center">
+      <div>
         <div>Shall these transactions be executed?</div>
         <div>
           Current answer:
-          {{ realityModule.state.questionResult ? 'Yes' : 'No' }}
+          {{ executor.bestAnswer ? 'Yes' : 'No' }}
         </div>
-        <div>Cooldown: {{ realityModule.state.cooldown }}</div>
+        <div>Cooldown: {{ executor.cooldown }}</div>
         <BaseButton
-          v-if="!realityModule.state.questionResult"
-          @click="realityModule.disputeExecution('1')"
+          v-if="!executor.bestAnswer"
+          @click="executor.disputeExecution(true)"
         >
           Yes
         </BaseButton>
         <BaseButton
-          v-if="realityModule.state.questionResult"
-          @click="realityModule.disputeExecution('0')"
+          v-if="executor.bestAnswer"
+          @click="executor.disputeExecution(false)"
         >
           No
         </BaseButton>
-        <div>Minimum bond: {{ realityModule.state.minimumBond }}</div>
+        <div>Required bond: {{ executor.bondNextAmount }}</div>
       </div>
     </template>
 
     <template #execute>
-      <div v-if="realityModule.state.canBeExecuted">
-        <BaseButton @click="realityModule.execute">
-          Execute transaction batch #{{ realityModule.state.nextTxIndex }}
-        </BaseButton>
-        <BaseButton @click="realityModule.claimBond"> Claim bond </BaseButton>
+      <div v-if="executor.cooldown">
+        Waiting for cooldown: {{ executor.cooldown }}
       </div>
-      <div v-else>waiting for cooldown</div>
+      <div v-else>
+        <BaseButton @click="executor.execute">
+          Execute transaction batch #{{ executor.nextTransactionToExecute }}
+        </BaseButton>
+        <BaseButton @click="executor.claimBond"> Claim bond </BaseButton>
+      </div>
     </template>
 
     <template #executed>
-      <div class="flex flex-col items-center justify-center p-4">
+      <div class="flex flex-col items-center justify-center">
         <span class="mb-3 rounded-full bg-green p-2 text-white">
           <i-ho-check />
         </span>
@@ -87,7 +68,7 @@ onMounted(realityModule.setState);
     </template>
 
     <template #rejected>
-      <div class="flex flex-col items-center justify-center p-4">
+      <div class="flex flex-col items-center justify-center">
         <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
           <i-ho-x />
         </span>
