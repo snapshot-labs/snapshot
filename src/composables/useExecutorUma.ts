@@ -12,11 +12,7 @@ import UMA_ORACLE_ABI from '@/helpers/abi/UMA_ORACLE.json';
 import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import { Proposal } from '@/helpers/interfaces';
 import { Executor, ExecutionState, ModuleExecutionData } from '@/helpers/safe';
-import {
-  convertToExecutableTransaction,
-  convertBatchToMultisendTransaction,
-  ExecutableTransaction
-} from '@/helpers/transactionBuilder';
+import { convertExecutionDataToModuleTransactions } from '@/helpers/transactionBuilder';
 import { useWeb3, useTxStatus } from '@/composables';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
@@ -34,24 +30,6 @@ enum UmaOracleResultState {
   Settled // Final price has been set in the contract (can get here from Expired or Resolved).
 }
 
-function convertExecutionDataToUmaTransactions(
-  executionData: ModuleExecutionData
-): ExecutableTransaction[] {
-  return executionData.batches
-    .map(batch => {
-      if (batch.length === 1) {
-        return convertToExecutableTransaction(batch[0]);
-      } else if (batch.length > 1) {
-        return convertBatchToMultisendTransaction(
-          batch.map(transaction => convertToExecutableTransaction(transaction)),
-          executionData.safe.network
-        );
-      }
-      return null;
-    })
-    .filter(transaction => transaction !== null) as ExecutableTransaction[];
-}
-
 export async function useExecutorUma(
   executionData: ModuleExecutionData,
   proposal: Proposal
@@ -62,7 +40,7 @@ export async function useExecutorUma(
   const { web3Account } = useWeb3();
   const { pendingCount } = useTxStatus();
 
-  const transactions = convertExecutionDataToUmaTransactions(executionData);
+  const transactions = convertExecutionDataToModuleTransactions(executionData);
   const transactionsHash = keccak256(
     defaultAbiCoder.encode(
       ['(address to, uint8 operation, uint256 value, bytes data)[]'],

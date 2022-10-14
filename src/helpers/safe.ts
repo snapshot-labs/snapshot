@@ -61,9 +61,14 @@ export interface SafeConfig {
   modules: SafeModule[];
 }
 
+export type ExecutionDataABIs = {
+  [contractAddress: string]: string;
+};
+
 export interface ExecutionData {
   safe: Safe;
   batches: Transaction[][];
+  abis: ExecutionDataABIs;
   module?: SafeModule;
   criteria?: string; // for human or automated (can be JSON) processing in (optimistic) oracles
   // TODO: add text field in transaction builder for this

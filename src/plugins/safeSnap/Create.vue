@@ -3,7 +3,11 @@ import { computed, ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { Transaction } from '@/helpers/transactionBuilder';
 import { mapLegacyConfig } from '@/plugins/safeSnap/utils';
-import { SafeModuleLogos, ExecutionData } from '@/helpers/safe';
+import {
+  SafeModuleLogos,
+  ExecutionData,
+  ExecutionDataABIs
+} from '@/helpers/safe';
 
 const props = defineProps<{
   modelValue: {
@@ -23,11 +27,19 @@ const proposalExecutionData = ref<ExecutionData[]>(
   props.modelValue.safeSnap || []
 );
 
-const updateProposalExecutionData = (
+const updateProposalBatches = (
   builderIndex: number,
   updatedBatches: Transaction[][]
 ) => {
   proposalExecutionData.value[builderIndex].batches = updatedBatches;
+  emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
+};
+
+const updateProposalABIs = (
+  builderIndex: number,
+  updatedAbis: ExecutionDataABIs
+) => {
+  proposalExecutionData.value[builderIndex].abis = updatedAbis;
   emit('update', { key: 'safeSnap', form: proposalExecutionData.value });
 };
 
@@ -51,8 +63,10 @@ function addProposalExecutionData(executionData: ExecutionData) {
         :key="index"
         :safe="executionData.safe"
         :initial-batches="executionData.batches"
+        :initial-abis="executionData.abis"
         @remove-transaction-builder="removeProposalExecutionData(index)"
-        @update-batches="updateProposalExecutionData(index, $event)"
+        @update-batches="updateProposalBatches(index, $event)"
+        @update-abis="updateProposalABIs(index, $event)"
       />
     </div>
     <div class="space-y-2">
@@ -69,6 +83,7 @@ function addProposalExecutionData(executionData: ExecutionData) {
             addProposalExecutionData({
               safe: safeConfig.safe,
               batches: [[]],
+              abis: {},
               module
             })
           "
@@ -86,7 +101,11 @@ function addProposalExecutionData(executionData: ExecutionData) {
         <BaseButton
           class="w-full text-left"
           @click="
-            addProposalExecutionData({ safe: safeConfig.safe, batches: [[]] })
+            addProposalExecutionData({
+              safe: safeConfig.safe,
+              batches: [[]],
+              abis: {}
+            })
           "
         >
           {{ safeConfig.safe.name }}: Manual execution

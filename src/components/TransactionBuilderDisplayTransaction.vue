@@ -9,6 +9,7 @@ import {
 const props = defineProps<{
   transaction: Transaction;
   network: string;
+  contractAbi?: string;
 }>();
 
 const transactionDisplayType = computed<TransactionForms>(() => {
@@ -39,6 +40,7 @@ const transactionDisplayType = computed<TransactionForms>(() => {
       v-if="transactionDisplayType === TransactionForms.CONTRACT"
       :transaction="transaction"
       :network="network"
+      :abi="contractAbi"
     />
   </div>
 </template>

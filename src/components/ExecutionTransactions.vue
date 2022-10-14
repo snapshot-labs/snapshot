@@ -19,6 +19,7 @@ defineProps<{
       :key="transactionIndex"
       :transaction="transaction"
       :network="executionData.safe.network"
+      :contract-abi="executionData.abis[transaction.to]"
       class="border-b px-3 py-2"
     />
   </div>

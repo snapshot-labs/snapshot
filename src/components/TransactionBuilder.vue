@@ -8,31 +8,42 @@ import {
   Transaction,
   detectTransactionForm
 } from '@/helpers/transactionBuilder';
-import { Safe } from '@/helpers/safe';
+import { ExecutionDataABIs, Safe } from '@/helpers/safe';
 
 const props = defineProps<{
   safe: Safe;
   initialBatches: Transaction[][];
+  initialAbis: ExecutionDataABIs;
 }>();
 
 const emit = defineEmits<{
   (e: 'updateBatches', batches: Transaction[][]): void;
+  (e: 'updateAbis', abis: ExecutionDataABIs): void;
   (e: 'removeTransactionBuilder'): void;
 }>();
 
 const {
   batches,
+  abis,
   addEmptyBatch,
   removeBatch,
   addTransaction,
   removeTransaction,
-  updateTransaction
-} = useTransactionBuilder(props.initialBatches);
+  updateTransaction,
+  addABI
+} = useTransactionBuilder(props.initialBatches, props.initialAbis);
 
 watch(
   batches,
   () => {
     emit('updateBatches', batches.value);
+  },
+  { deep: true }
+);
+watch(
+  abis,
+  () => {
+    emit('updateAbis', abis.value);
   },
   { deep: true }
 );
@@ -168,6 +179,7 @@ function transactionItemKey(transaction: Transaction) {
                 <TransactionBuilderDisplayTransaction
                   :transaction="element"
                   :network="safe.network"
+                  :contract-abi="abis[element.to]"
                 />
                 <BaseButton
                   small
@@ -215,8 +227,10 @@ function transactionItemKey(transaction: Transaction) {
       <TransactionBuilderFormContract
         :show-form="showForm === TransactionForms.CONTRACT"
         :transaction="targetTransaction"
+        :abis="abis"
         :safe="safe"
         @save-transaction="saveTransaction($event)"
+        @save-abi="addABI($event.contractAddress, $event.abiString)"
         @close="showForm = null"
       />
     </teleport>

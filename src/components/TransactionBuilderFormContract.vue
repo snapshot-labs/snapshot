@@ -17,17 +17,19 @@ import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumber } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { FormError } from '@/helpers/interfaces';
-import { Safe } from '@/helpers/safe';
+import { ExecutionDataABIs, Safe } from '@/helpers/safe';
 
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
+  abis: ExecutionDataABIs;
   safe: Safe;
 }>();
 
 const emit = defineEmits<{
   (e: 'close'): void;
   (e: 'saveTransaction', transaction: Transaction): void;
+  (e: 'saveAbi', abi: { contractAddress: string; abiString: string }): void;
 }>();
 
 const contractAddress = ref<string>('');
@@ -160,10 +162,14 @@ function saveTransaction() {
         selectedMethod.value,
         paramValues.value
       ),
-      operation: TransactionOperationType.CALL,
-      abi: abiString.value
+      operation: TransactionOperationType.CALL
     });
   }
+
+  emit('saveAbi', {
+    contractAddress: contractAddress.value,
+    abiString: abiString.value
+  });
 
   emit('close');
 }
@@ -171,13 +177,16 @@ function saveTransaction() {
 function populateForm() {
   if (props.transaction) {
     contractAddress.value = props.transaction.to;
-    if (props.transaction.abi) {
-      abiString.value = props.transaction.abi;
+
+    if (props.abis[contractAddress.value]) {
+      abiString.value = props.abis[contractAddress.value];
       useCustomData.value = false;
+
       const { method, values } = decodeContractData(
         props.transaction.data,
-        props.transaction.abi
+        abiString.value
       );
+
       selectedMethod.value = method;
       paramValues.value = method.inputs.map((_, i) =>
         bigNumberValuesToString(values[i])

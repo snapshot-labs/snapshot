@@ -14,10 +14,10 @@ import { FunctionFragment } from '@ethersproject/abi';
 const props = defineProps<{
   transaction: Transaction;
   network: string;
+  abi?: string;
 }>();
 
 const contractAddress = ref<string>('');
-const abiString = ref<string>('');
 const useCustomData = ref<boolean>(false);
 const targetMethod = ref<FunctionFragment>();
 const paramValues = ref<ParamValue[]>([]);
@@ -26,12 +26,11 @@ const data = ref<string>('');
 
 onMounted(async () => {
   contractAddress.value = props.transaction.to;
-  if (props.transaction.abi) {
-    abiString.value = props.transaction.abi;
+  if (props.abi) {
     useCustomData.value = false;
     const { method, values } = decodeContractData(
       props.transaction.data,
-      props.transaction.abi
+      props.abi
     );
     targetMethod.value = method;
     paramValues.value = method.inputs.map((_, i) =>
@@ -46,7 +45,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="flex flex-col items-start justify-start">
+  <div class="flex flex-col items-start justify-start truncate">
     <template v-if="useCustomData">
       <span>Contract: {{ shortenAddress(contractAddress) }}</span>
       <span>Value: {{ formatUnits(value) }}</span>
@@ -56,7 +55,11 @@ onMounted(async () => {
       <span>Contract: {{ shortenAddress(contractAddress) }}</span>
       <span>Method: {{ targetMethod?.name }}</span>
       <span>Arguments:</span>
-      <div v-for="(param, index) in targetMethod?.inputs" :key="index">
+      <div
+        v-for="(param, index) in targetMethod?.inputs"
+        :key="index"
+        class="truncate"
+      >
         - {{ param.name }}: {{ paramValues[index] }}
       </div>
     </template>

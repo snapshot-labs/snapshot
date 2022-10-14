@@ -9,9 +9,8 @@ import {
   ModuleExecutionData
 } from '@/helpers/safe';
 import {
-  convertBatchToMultisendTransaction,
-  convertToExecutableTransaction,
-  ExecutableTransaction
+  convertExecutionDataToModuleTransactions,
+  Transaction
 } from '@/helpers/transactionBuilder';
 import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import REALITY_MODULE_ABI from '@/helpers/abi/REALITY_MODULE.json';
@@ -30,7 +29,7 @@ import { parseUnits } from '@ethersproject/units';
 function calcTransactionHash(
   chainId: string,
   verifyingContract: string,
-  transaction: ExecutableTransaction,
+  transaction: Transaction,
   nonce = '0'
 ) {
   const domain = { chainId, verifyingContract };
@@ -40,25 +39,6 @@ function calcTransactionHash(
     data: transaction.data || '0x',
     nonce
   });
-}
-
-function convertExecutionDataToRealityTransactions(
-  executionData: ModuleExecutionData
-): ExecutableTransaction[] {
-  return executionData.batches
-    .map(batch => {
-      if (!batch.length) return null;
-
-      if (batch.length === 1) {
-        return convertToExecutableTransaction(batch[0]);
-      } else {
-        return convertBatchToMultisendTransaction(
-          batch.map(tx => convertToExecutableTransaction(tx)),
-          executionData.safe.network
-        );
-      }
-    })
-    .filter(tx => tx !== null) as ExecutableTransaction[];
 }
 
 export async function useExecutorReality(
@@ -72,7 +52,7 @@ export async function useExecutorReality(
   const { pendingCount } = useTxStatus();
   const nativeToken = getNativeCoinInfo(executionData.safe.network);
 
-  const transactions = convertExecutionDataToRealityTransactions(executionData);
+  const transactions = convertExecutionDataToModuleTransactions(executionData);
   const transactionHashes = transactions.map((executableTransaction, nonce) =>
     calcTransactionHash(
       executionData.safe.network,
@@ -265,17 +245,8 @@ export async function useExecutorReality(
   }
 
   async function execute() {
-    if (
-      nextTransactionToExecute.value === -1 ||
-      nextTransactionToExecute.value >= transactionHashes.length
-    )
-      return;
-
-    const batch = executionData.batches[nextTransactionToExecute.value];
-    const multisendTransaction = convertBatchToMultisendTransaction(
-      batch.map(tx => convertToExecutableTransaction(tx)),
-      executionData.safe.network
-    );
+    const transaction = transactions[nextTransactionToExecute.value];
+    if (!transaction) return;
 
     loading.value = true;
     try {
@@ -284,10 +255,10 @@ export async function useExecutorReality(
         .executeProposalWithIndex(
           proposal.id,
           transactionHashes,
-          multisendTransaction.to,
-          multisendTransaction.value,
-          multisendTransaction.data || '0x',
-          multisendTransaction.operation,
+          transaction.to,
+          transaction.value,
+          transaction.data || '0x',
+          transaction.operation,
           nextTransactionToExecute
         );
 

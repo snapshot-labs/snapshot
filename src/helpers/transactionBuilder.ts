@@ -13,6 +13,7 @@ import ERC20_ABI from './abi/ERC20.json';
 import ERC721_ABI from './abi/ERC721.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call, getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { ModuleExecutionData } from './safe';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -67,28 +68,12 @@ export type Transaction = {
   value: BigNumber;
   data: string;
   operation: TransactionOperationType;
-  abi?: string; // TODO: store abi globally in execution data, per network and contract, not per transaction
 };
 
-export type ExecutableTransaction = Omit<Transaction, 'abi'>;
-
-export type MultisendTransaction = ExecutableTransaction & {
+export type MultisendTransaction = Transaction & {
   to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0;
   operation: TransactionOperationType.DELEGATECALL;
 };
-
-export function convertToExecutableTransaction(
-  transaction: Transaction
-): ExecutableTransaction {
-  const { to, value, data, operation } = transaction;
-
-  return {
-    to,
-    value,
-    data,
-    operation
-  };
-}
 
 export function encodeTransactionsForMultisend(transactions: Transaction[]) {
   const values = transactions.map(tx => [
@@ -111,7 +96,7 @@ export function encodeTransactionsForMultisend(transactions: Transaction[]) {
 }
 
 export function convertBatchToMultisendTransaction(
-  batch: ExecutableTransaction[],
+  batch: Transaction[],
   chainId: string
 ): MultisendTransaction {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
@@ -125,6 +110,25 @@ export function convertBatchToMultisendTransaction(
     value: BigNumber.from(0),
     data
   };
+}
+
+export function convertExecutionDataToModuleTransactions(
+  executionData: ModuleExecutionData
+): Transaction[] {
+  return executionData.batches
+    .map(batch => {
+      if (!batch.length) return null;
+
+      if (batch.length === 1) {
+        return batch[0];
+      } else {
+        return convertBatchToMultisendTransaction(
+          batch,
+          executionData.safe.network
+        );
+      }
+    })
+    .filter(tx => tx !== null) as Transaction[];
 }
 
 export function encodeERC20TransferData(
