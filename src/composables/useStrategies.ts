@@ -41,6 +41,11 @@ export function useStrategies() {
       'strategies'
     );
 
+    const index = strategies.value.findIndex(
+      elem => elem['id'] === 'pagination'
+    );
+    if (index) strategies.value.splice(index, 1);
+
     loadingStrategies.value = false;
   }
 
