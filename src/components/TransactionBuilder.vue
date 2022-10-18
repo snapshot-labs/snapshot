@@ -156,7 +156,7 @@ function transactionItemKey(transaction: Transaction) {
           </div>
         </h4>
 
-        <TransactionBuilderAddTransaction
+        <TransactionBuilderFormAddTransaction
           v-if="batches.length === 1"
           @add-transaction-of-type="openEmptyForm($event, batchIndex)"
         />
