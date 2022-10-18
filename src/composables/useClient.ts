@@ -23,9 +23,7 @@ export function useClient() {
       connectorName.value === 'gnosis'
   );
 
-  const usePersonalSign = computed(
-    () => connectorName.value === 'walletlink' || isGnosisSafe.value
-  );
+  const usePersonalSign = computed(() => isGnosisSafe.value);
 
   async function send(space, type, payload) {
     isSending.value = true;
@@ -80,6 +78,7 @@ export function useClient() {
         proposal: payload.proposal.id,
         type: payload.proposal.type,
         choice: payload.choice,
+        privacy: payload.privacy,
         app: 'snapshot',
         reason: payload.reason
       });

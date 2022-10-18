@@ -812,6 +812,13 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
+"@shutter-network/shutter-crypto@0.1.0-beta.3":
+  version "0.1.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@shutter-network/shutter-crypto/-/shutter-crypto-0.1.0-beta.3.tgz#0ec7a3beab87aed15363349d240dfdff8d462012"
+  integrity sha512-kX9gOODp/4HqRubM7Hx4bb36yuVxIB/FOb4CfhB3gGWO5H2u7i0EnvrdJzsYXtDSrELXv7ay5Ly9k6X2fAk1jA==
+  dependencies:
+    browser-or-node "^2.0.0"
+
 "@sideway/address@^4.1.3":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.4.tgz#03dccebc6ea47fdc226f7d3d1ad512955d4783f0"
@@ -849,10 +856,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.36":
-  version "0.4.36"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.36.tgz#ffa8d4d9de2dc6d2f3cbdaf0096f8a7eea232a37"
-  integrity sha512-PzjFirSj8/3AoZmA+NUxozKFSP1h89R94RIX2ty+cLpY9fSR+bKL/iyvp4lHmvFVApBLxTq6XW8zE5tdSkyLLg==
+"@snapshot-labs/snapshot.js@^0.4.40":
+  version "0.4.40"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.40.tgz#64dcea55c3f349470c2470d9fd520deeef7d1973"
+  integrity sha512-/6VHbDZANx36c4nMCiPrg3LR52jjysow+F/79lp7h8B3sNHMqHCTDmheBM6pTguQ3+cCgfKLOrZn62C9laQW2A==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1984,6 +1991,11 @@ brorand@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
   integrity sha1-EsJe/kCkXjwyPrhnWgoM5XsiNx8=
+
+browser-or-node@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/browser-or-node/-/browser-or-node-2.0.0.tgz#808ea90282a670931cdc0ea98166538a50dd0d89"
+  integrity sha512-3Lrks/Okgof+/cRguUNG+qRXSeq79SO3hY4QrXJayJofwJwHiGC0qi99uDjsfTwULUFSr1OGVsBkdIkygKjTUA==
 
 browserify-aes@^1.0.6, browserify-aes@^1.2.0:
   version "1.2.0"

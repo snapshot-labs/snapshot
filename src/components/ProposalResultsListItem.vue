@@ -76,19 +76,30 @@ const isVisible = computed(() => {
           v-text="choice.choice"
         />
       </div>
-      <div class="flex justify-end space-x-2">
-        <span
-          v-tippy="{
-            content: results.scoresByStrategy[choice.i]
-              .map((score, index) => `${formatNumber(score)} ${titles[index]}`)
-              .join(' + ')
-          }"
-          class="whitespace-nowrap"
-        >
-          {{ formatCompactNumber(results.scores[choice.i]) }}
-          {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
-        </span>
-        <span v-text="formatPercentNumber(choicePercentage)" />
+      <div class="flex justify-end">
+        <i-ho-lock-closed
+          v-if="
+            proposal.privacy === 'shutter' && proposal.scores_state !== 'final'
+          "
+          v-tippy="{ content: $t('privacy.shutter.tooltip') }"
+          class="mx-auto cursor-help"
+        />
+        <div v-else class="space-x-2">
+          <span
+            v-tippy="{
+              content: results.scoresByStrategy[choice.i]
+                .map(
+                  (score, index) => `${formatNumber(score)} ${titles[index]}`
+                )
+                .join(' + ')
+            }"
+            class="whitespace-nowrap"
+          >
+            {{ formatCompactNumber(results.scores[choice.i]) }}
+            {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
+          </span>
+          <span v-text="formatPercentNumber(choicePercentage)" />
+        </div>
       </div>
     </div>
 

@@ -11,7 +11,6 @@ const { form } = useSpaceForm(props.context);
 
 const delayUnit = ref('h');
 const periodUnit = ref('h');
-const modalVotingTypeOpen = ref(false);
 
 const votingDelay = computed({
   get: () =>
@@ -84,15 +83,18 @@ const votingPeriod = computed({
             placeholder="1000"
           />
 
-          <InputSelect
-            :title="$t(`settings.type.label`)"
+          <InputSelectVotingtype
+            :type="form.voting.type"
             :information="$t(`settings.type.information`)"
-            :model-value="
-              form.voting.type
-                ? $t(`voting.${form.voting.type}`)
-                : $t('settings.anyType')
-            "
-            @select="modalVotingTypeOpen = true"
+            allow-any
+            @update:type="value => (form.voting.type = value)"
+          />
+
+          <InputSelectPrivacy
+            :privacy="form.voting.privacy"
+            :information="$t(`privacy.information`)"
+            allow-any
+            @update:privacy="value => (form.voting.privacy = value)"
           />
         </div>
       </div>
@@ -102,14 +104,5 @@ const votingPeriod = computed({
         :text-right="$t('settings.hideAbstain')"
       />
     </div>
-    <teleport to="#modal">
-      <ModalVotingType
-        :selected="form.voting.type"
-        :open="modalVotingTypeOpen"
-        allow-any
-        @update:selected="form.voting.type = $event"
-        @close="modalVotingTypeOpen = false"
-      />
-    </teleport>
   </BaseBlock>
 </template>

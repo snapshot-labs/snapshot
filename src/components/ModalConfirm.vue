@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
@@ -7,6 +7,8 @@ import { useIntl } from '@/composables/useIntl';
 import { getPower } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useProposals } from '@/composables';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import shutterEncryptChoice from '@/helpers/shutter';
 
 const { web3Account } = useWeb3();
 
@@ -17,14 +19,14 @@ const vpLoadingFailed = ref(false);
 const vpLoaded = ref(false);
 const reason = ref('');
 
-const props = defineProps({
-  open: Boolean,
-  space: Object,
-  proposal: Object,
-  selectedChoices: [Object, Number],
-  snapshot: String,
-  strategies: Object
-});
+const props = defineProps<{
+  open: boolean;
+  space: ExtendedSpace;
+  proposal: Proposal;
+  selectedChoices: number | number[] | Record<string, any> | null;
+  snapshot: string;
+  strategies: { name: string; network: string; params: Record<string, any> }[];
+}>();
 
 const emit = defineEmits(['reload', 'close', 'openPostVoteModal']);
 
@@ -38,14 +40,42 @@ const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
-async function handleSubmit() {
-  const result = await send(props.space, 'vote', {
+const isLoadingShutter = ref(false);
+
+async function voteShutter() {
+  isLoadingShutter.value = true;
+  const encryptedChoice = await shutterEncryptChoice(
+    JSON.stringify(props.selectedChoices),
+    props.proposal.id
+  );
+  isLoadingShutter.value = false;
+
+  if (!encryptedChoice) return null;
+  return vote({
     proposal: props.proposal,
-    choice: props.selectedChoices,
+    choice: encryptedChoice,
+    privacy: 'shutter',
     reason: reason.value
   });
+}
+
+async function vote(payload) {
+  return send(props.space, 'vote', payload);
+}
+
+async function handleSubmit() {
+  let result: { id: string } | null = null;
+  if (props.proposal.privacy === 'shutter') result = await voteShutter();
+  else
+    result = await vote({
+      proposal: props.proposal,
+      choice: props.selectedChoices,
+      reason: reason.value
+    });
+
   console.log('Result', result);
-  if (result.id) {
+
+  if (result?.id) {
     emit('openPostVoteModal');
     emit('reload');
     addVotedProposalId(props.proposal.id);
@@ -110,7 +140,7 @@ watch(
             :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
             class="float-right"
           >
-            {{ formatNumber(proposal.snapshot) }}
+            {{ formatNumber(Number(proposal.snapshot)) }}
           </BaseLink>
         </div>
         <div class="flex">
@@ -163,8 +193,8 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || isSending"
-          :loading="isSending"
+          :disabled="vp === 0 || isSending || isLoadingShutter"
+          :loading="isSending || isLoadingShutter"
           type="submit"
           class="w-full"
           primary
