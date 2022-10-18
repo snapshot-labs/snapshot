@@ -10,7 +10,6 @@ defineProps<{
 
 <template>
   <div>
-    <ExecutionTransactions :execution-data="executionData" />
     <div class="p-4 text-center">
       Transactions can be executed manually in the safe.
     </div>

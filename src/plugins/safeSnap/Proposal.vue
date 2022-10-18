@@ -35,7 +35,7 @@ const executionData = computed<ExecutionData[]>(() =>
         />
       </template>
 
-      <ExecutionTransactions :execution-data="data" />
+      <ExecutionDisplayTransactions :execution-data="data" />
 
       <div v-if="data.module" class="p-4 text-center">
         <Suspense>
