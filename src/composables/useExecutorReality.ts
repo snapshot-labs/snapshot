@@ -53,11 +53,11 @@ export async function useExecutorReality(
   const nativeToken = getNativeCoinInfo(executionData.safe.network);
 
   const transactions = convertExecutionDataToModuleTransactions(executionData);
-  const transactionHashes = transactions.map((executableTransaction, nonce) =>
+  const transactionHashes = transactions.map((transaction, nonce) =>
     calcTransactionHash(
       executionData.safe.network,
       executionData.module.address,
-      executableTransaction,
+      transaction,
       nonce.toString()
     )
   );
