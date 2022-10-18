@@ -12,7 +12,8 @@ const props = defineProps<{
 }>();
 
 const { formatCompactNumber } = useIntl();
-const { totalScore, totalVotingPower, loadTotalVotingPower } = useQuorum(props);
+const { totalQuorumScore, totalVotingPower, loadTotalVotingPower } =
+  useQuorum(props);
 
 onMounted(() => loadTotalVotingPower());
 </script>
@@ -23,7 +24,7 @@ onMounted(() => loadTotalVotingPower());
       {{ $t('settings.quorum.label') }}
     </span>
     <span class="float-right">
-      {{ formatCompactNumber(totalScore) }} /
+      {{ formatCompactNumber(totalQuorumScore) }} /
       {{ formatCompactNumber(totalVotingPower) }}
     </span>
   </div>
