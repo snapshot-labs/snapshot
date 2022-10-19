@@ -31,7 +31,11 @@ defineProps<{
         {{ $t('delegate.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link v-slot="{ isActive }" :to="{ name: 'spaceTreasury' }">
+    <router-link
+      v-if="space.treasuries.length"
+      v-slot="{ isActive }"
+      :to="{ name: 'spaceTreasury' }"
+    >
       <BaseSidebarNavigationItem :is-active="isActive">
         {{ $t('treasury.title') }}
       </BaseSidebarNavigationItem>
