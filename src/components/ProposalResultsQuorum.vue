@@ -10,7 +10,7 @@ const props = defineProps<{
   votes: Vote[];
 }>();
 
-const { quorumScore } = useQuorum(props);
+const { totalQuorumScore } = useQuorum(props);
 
 const { formatCompactNumber } = useIntl();
 </script>
@@ -19,15 +19,7 @@ const { formatCompactNumber } = useIntl();
   <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
     {{ $t('settings.quorum.label') }}
     <span class="float-right">
-      {{
-        formatCompactNumber(
-          quorumScore({
-            proposal: props.proposal,
-            results: props.results,
-            votes: props.votes
-          })
-        )
-      }}
+      {{ formatCompactNumber(totalQuorumScore) }}
       /
       {{ formatCompactNumber(proposal?.quorum || space.voting?.quorum || 0) }}
     </span>
