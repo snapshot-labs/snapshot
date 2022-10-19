@@ -22,7 +22,7 @@ export function useQuorum(props: QuorumProps) {
       return props.results.scores
         .filter((c, i) => basicCount.includes(i))
         .reduce((a, b) => a + b, 0);
-    if (props.results) return props.results.scoresTotal;
+    if (props.results.scoresTotal) return props.results.scoresTotal;
     return 0;
   });
 
