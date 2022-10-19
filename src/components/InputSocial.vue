@@ -5,7 +5,7 @@ defineProps<{
   placeholder?: string;
   maxLength?: number;
   title?: string;
-  icon?: 'twitter' | 'github' | 'earth';
+  icon?: 'twitter' | 'github' | 'earth' | 'coingecko';
 }>();
 
 const emit = defineEmits(['update:modelValue']);

@@ -188,6 +188,7 @@ export const SPACES_QUERY = gql`
       twitter
       website
       github
+      coingecko
       private
       domain
       members

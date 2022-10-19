@@ -11,7 +11,7 @@ const { form, getValidation } = useSpaceForm(props.context);
 
 <template>
   <BaseBlock :title="$t('settings.links')">
-    <div class="space-y-2">
+    <div class="space-y-3">
       <ContainerParallelInput>
         <InputSocial
           v-model="form.twitter"
@@ -28,6 +28,14 @@ const { form, getValidation } = useSpaceForm(props.context);
           :max-length="schemas.space.properties.github.maxLength"
           icon="github"
           placeholder="e.g. vbuterin"
+        />
+        <InputSocial
+          v-model="form.coingecko"
+          title="CoinGecko"
+          :error="getValidation('coingecko')"
+          :max-length="schemas.space.properties.coingecko.maxLength"
+          icon="coingecko"
+          placeholder="e.g. uniswap"
         />
       </ContainerParallelInput>
     </div>
