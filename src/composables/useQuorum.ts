@@ -1,4 +1,4 @@
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -16,35 +16,21 @@ export function useQuorum(props: QuorumProps) {
   const loading = ref(false);
   const totalVotingPower = ref(0);
 
-  const totalScore = computed(() => {
+  const totalQuorumScore = computed(() => {
     const basicCount = props.space.plugins?.quorum?.basicCount;
     if (basicCount && props.proposal.type === 'basic')
-      return props.votes
-        .filter(vote => basicCount.includes((vote.choice as number) - 1))
-        .reduce((a, b) => a + b.balance, 0);
-    return quorumScore({
-      proposal: props.proposal,
-      results: props.results,
-      votes: props.votes
-    });
+      return props.results.scores
+        .filter((c, i) => basicCount.includes(i))
+        .reduce((a, b) => a + b, 0);
+    if (props.results.scoresTotal) return props.results.scoresTotal;
+    return 0;
   });
 
   const quorum = computed(() => {
     return totalVotingPower.value === 0
       ? 0
-      : totalScore.value / totalVotingPower.value;
+      : totalQuorumScore.value / totalVotingPower.value;
   });
-
-  function quorumScore(payload) {
-    let scores = 0;
-    if (
-      payload.proposal.privacy === 'shutter' &&
-      payload.proposal.scores_state !== 'final'
-    )
-      scores = payload.votes.reduce((a, b) => a + b.balance, 0);
-    else if (payload.results) scores = payload.results.scoresTotal;
-    return scores;
-  }
 
   async function getTotalVotingPower(
     web3: any,
@@ -123,10 +109,9 @@ export function useQuorum(props: QuorumProps) {
   }
 
   return {
-    quorumScore,
     loadTotalVotingPower,
     quorum,
-    totalScore,
+    totalQuorumScore,
     totalVotingPower
   };
 }
