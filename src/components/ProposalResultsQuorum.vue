@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
-import { useIntl } from '@/composables';
+import { useIntl, useQuorum } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -10,6 +10,8 @@ const props = defineProps<{
   votes: Vote[];
 }>();
 
+const { totalQuorumScore } = useQuorum(props);
+
 const { formatCompactNumber } = useIntl();
 </script>
 
@@ -17,7 +19,8 @@ const { formatCompactNumber } = useIntl();
   <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
     {{ $t('settings.quorum.label') }}
     <span class="float-right">
-      {{ formatCompactNumber(results.scoresTotal) }} /
+      {{ formatCompactNumber(totalQuorumScore) }}
+      /
       {{ formatCompactNumber(proposal?.quorum || space.voting?.quorum || 0) }}
     </span>
   </div>

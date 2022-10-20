@@ -9,7 +9,7 @@ import i18n, {
 const currentLocale = ref(lsGet('locale', defaultLocale));
 
 export function useI18n() {
-  const { t, tc } = i18n.global;
+  const { t, d, tc } = i18n.global;
 
   async function setLocale(locale) {
     currentLocale.value = locale;
@@ -27,5 +27,5 @@ export function useI18n() {
     document.title = t(message, params);
   }
 
-  return { t, tc, setLocale, loadLocale, currentLocale, setPageTitle };
+  return { t, d, tc, setLocale, loadLocale, currentLocale, setPageTitle };
 }

@@ -21,6 +21,12 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
     .map((choice, i) => ({ i, choice }))
     .sort((a, b) => props.results.scores[b.i] - props.results.scores[a.i])
 );
+
+const showQuorum = computed(
+  () =>
+    props.proposal.privacy !== 'shutter' ||
+    props.proposal.scores_state === 'final'
+);
 </script>
 
 <template>
@@ -35,6 +41,7 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
       :strategies="strategies"
     />
     <ProposalResultsQuorum
+      v-if="showQuorum"
       :space="space"
       :proposal="proposal"
       :results="results"

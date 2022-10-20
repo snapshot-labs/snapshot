@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
 import { useIntl, useQuorum } from '@/composables';
@@ -11,7 +12,10 @@ const props = defineProps<{
 }>();
 
 const { formatCompactNumber } = useIntl();
-const { totalScore, totalVotingPower } = useQuorum(props);
+const { totalQuorumScore, totalVotingPower, loadTotalVotingPower } =
+  useQuorum(props);
+
+onMounted(() => loadTotalVotingPower());
 </script>
 
 <template>
@@ -20,7 +24,7 @@ const { totalScore, totalVotingPower } = useQuorum(props);
       {{ $t('settings.quorum.label') }}
     </span>
     <span class="float-right">
-      {{ formatCompactNumber(totalScore) }} /
+      {{ formatCompactNumber(totalQuorumScore) }} /
       {{ formatCompactNumber(totalVotingPower) }}
     </span>
   </div>

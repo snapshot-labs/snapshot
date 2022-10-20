@@ -10,7 +10,6 @@ import {
   useModal,
   useTerms,
   useProfiles,
-  useApp,
   useSharing,
   useWeb3,
   useClient,
@@ -25,7 +24,7 @@ const props = defineProps<{ space: ExtendedSpace }>();
 
 const route = useRoute();
 const router = useRouter();
-const { domain } = useApp();
+
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 const { send, isSending } = useClient();
@@ -458,6 +457,16 @@ const truncateMarkdownBody = computed(() => {
               <span class="float-right text-skin-link">
                 {{ $t(`voting.${proposal.type}`) }}
               </span>
+            </div>
+            <div v-if="proposal.privacy">
+              <b>{{ $t('proposal.privacy') }}</b>
+              <BaseLink
+                v-tippy="{ content: $t(`privacy.${proposal.privacy}.tooltip`) }"
+                :link="$t(`privacy.${proposal.privacy}.url`)"
+                class="float-right cursor-pointer text-skin-link"
+              >
+                {{ $t(`privacy.${proposal.privacy}.label`) }}
+              </BaseLink>
             </div>
             <div>
               <b>{{ $t('proposal.startDate') }}</b>

@@ -21,6 +21,7 @@ export const VOTES_QUERY = gql`
       choice
       vp
       vp_by_strategy
+      reason
     }
   }
 `;
@@ -45,6 +46,7 @@ export const PROPOSAL_QUERY = gql`
       type
       quorum
       symbol
+      privacy
       strategies {
         name
         network
@@ -216,6 +218,7 @@ export const SPACES_QUERY = gql`
         period
         type
         quorum
+        privacy
         hideAbstain
       }
       strategies {

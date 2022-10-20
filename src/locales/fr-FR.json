@@ -4,6 +4,7 @@
   "createSpace": "Créer un espace",
   "backToHome": "Accueil",
   "actions": "Actions",
+  "poweredBy": "Powered by",
   "results": "Résultats",
   "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
   "vpError": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
@@ -63,10 +64,12 @@
   "confirmRemove": "Êtes-vous sûr de vouloir révoquer votre délégation à",
   "removeSpace": "pour l'espace {0}",
   "confirmVote": "Confirmez votre vote",
-  "voteOverview": "Aperçu du vote",
   "quorumReached": "quorum atteint",
   "options": "Option(s)",
   "votingPower": "Votre voting power",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "Reçu",
   "relayer": "Relayer",
   "verifyOnMycrypto": "Vérifier le reçu sur MyCrypto",
@@ -193,6 +196,7 @@
     "delayEnforced": "L’espace impose un délai jusqu’à ce que le vote puisse commencer",
     "periodEnforced": "L’espace impose la durée de la période de vote",
     "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
     "edit": "Modifier",
     "continue": "Continuer",
     "now": "Maintenant",
@@ -234,6 +238,8 @@
     "startDate": "Date de début ",
     "endDate": "Date de fin",
     "votingSystem": "Système de vote",
+    "privacy": "Privacy",
+    "invalidChoice": "Choix invalide",
     "postVoteModal": {
       "defaultTitle": "Votre vote est enregistré !",
       "gnosisSafeTitle": "Votre vote est en attente...",
@@ -330,7 +336,7 @@
     "testInPlayground": "Tester sur playground",
     "admins": {
       "label": "Administrateurs",
-      "information": "Admins are able to modify the space settings and manage the space's proposals"
+      "information": "Les administrateurs peuvent modifier les paramètres et gérer les propositions de l'espace"
     },
     "authors": {
       "label": "Auteurs",
@@ -340,7 +346,7 @@
     "validation": "Type",
     "proposalThreshold": {
       "label": "Seuil",
-      "information": "The minimum amount of voting power required to create a proposal"
+      "information": "Le voting power minimum requis pour créer une proposition"
     },
     "allowOnlyAuthors": "Permettre uniquement aux auteurs de soumettre une proposition",
     "editValidation": "Modifier la validation",
@@ -353,11 +359,11 @@
     "days": "Jours",
     "quorum": {
       "label": "Quorum",
-      "information": "The minimum amount of voting power required for the proposal to pass"
+      "information": "Le voting power minimum requis pour que la proposition passe"
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
+      "information": "Le type de système de vote utilisé pour cet espace. Cela imposera le même système de vote pour toutes les propositions"
     },
     "anyType": "Tous",
     "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
@@ -525,6 +531,19 @@
       "ranked-choice": "Chaque votant peut effectuer plusieurs choix et les classer par préférence. Le système du second tour instantané est utilisé pour calculer les résultats.",
       "weighted": "Chaque votant peut répartir ses droits de vote entre les différents choix.",
       "basic": "Choix de vote unique avec trois choix: Pour, Contre ou S’abstenir"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "none": "None",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "safeSnap": {

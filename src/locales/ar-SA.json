@@ -4,6 +4,7 @@
   "createSpace": "إنشاء مساحة",
   "backToHome": "الصفحه الرئيسيه",
   "actions": "الإجراءات",
+  "poweredBy": "Powered by",
   "results": "النتائج",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
@@ -63,10 +64,12 @@
   "confirmRemove": "هل انت متأكد من رغبتك بالغاء التفويض",
   "removeSpace": "للمساحة {0}",
   "confirmVote": "تأكيد التصويت",
-  "voteOverview": "Vote overview",
   "quorumReached": "quorum reached",
   "options": "خيار(ات)",
   "votingPower": "قوة التصويت الخاصة بك",
+  "comment": {
+    "placeholder": "Share your reason (optional)"
+  },
   "receipt": "الإيصال",
   "relayer": "المرحّل",
   "verifyOnMycrypto": "تحقق من الإيصال على MyCrypto",
@@ -193,6 +196,7 @@
     "delayEnforced": "The space enforces a delay until voting can start",
     "periodEnforced": "The space enforces the duration of the voting period",
     "typeEnforced": "{type} is enforced by the space",
+    "privacyEnforced": "{type} is enforced by the space",
     "edit": "Edit",
     "continue": "Continue",
     "now": "Now",
@@ -234,6 +238,8 @@
     "startDate": "تاريخ البدء",
     "endDate": "تاريخ الانتهاء",
     "votingSystem": "نظام التصويت",
+    "privacy": "Privacy",
+    "invalidChoice": "Invalid choice",
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",
@@ -525,6 +531,19 @@
       "ranked-choice": "يمكن لكل ناخب اختيار وترتيب أي عدد من الخيارات. يتم حساب النتائج بطريقة العد الفوري.",
       "weighted": "ويمكن لكل ناخب أن يوزع قوة التصويت على أي عدد من الخيارات.",
       "basic": "التصويت بخيار واحد من ثلاثة خيارات: مع،ضد أو الامتناع عن التصويت"
+    }
+  },
+  "privacy": {
+    "label": "Privacy",
+    "title": "Select voting privacy",
+    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "any": "Any",
+    "none": "None",
+    "shutter": {
+      "label": "Shutter",
+      "description": "Choices are encrypted and only visible once the voting period is over",
+      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "safeSnap": {
