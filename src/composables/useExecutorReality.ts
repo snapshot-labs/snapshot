@@ -1,45 +1,14 @@
-import { computed, ref, watch } from 'vue';
-import { HashZero, AddressZero } from '@ethersproject/constants';
-import { _TypedDataEncoder } from '@ethersproject/hash';
-import {
-  EIP712_SAFE_TRANSACTIN_TYPES,
-  ExecutionState,
-  Executor,
-  getNativeCoinInfo,
-  ModuleExecutionData
-} from '@/helpers/safe';
-import {
-  convertExecutionDataToModuleTransactions,
-  Transaction
-} from '@/helpers/transactionBuilder';
-import ERC20_ABI from '@/helpers/abi/ERC20.json';
-import REALITY_MODULE_ABI from '@/helpers/abi/REALITY_MODULE.json';
-import REALITY_ORACLE_ETH_ABI from '@/helpers/abi/REALITY_ORACLE_ETH.json';
-import REALITY_ORACLE_ERC_ABI from '@/helpers/abi/REALITY_ORACLE_ERC.json';
+import { computed, ref } from 'vue';
+import { HashZero } from '@ethersproject/constants';
+import { ExecutionState, Executor, ModuleExecutionData } from '@/helpers/safe';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { keccak256 } from '@ethersproject/solidity';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useTimestamp } from '@vueuse/core';
-import { Contract } from '@ethersproject/contracts';
-import { useTxStatus, useWeb3 } from '@/composables';
+import {
+  useExecutorRealityModule,
+  useExecutorRealityOracle,
+  useTxStatus
+} from '@/composables';
 import { Proposal } from '@/helpers/interfaces';
-import { parseUnits } from '@ethersproject/units';
-
-function calcTransactionHash(
-  chainId: string,
-  verifyingContract: string,
-  transaction: Transaction,
-  nonce = '0'
-) {
-  const domain = { chainId, verifyingContract };
-
-  return _TypedDataEncoder.hash(domain, EIP712_SAFE_TRANSACTIN_TYPES, {
-    ...transaction,
-    data: transaction.data || '0x',
-    nonce
-  });
-}
 
 export async function useExecutorReality(
   executionData: ModuleExecutionData,
@@ -47,125 +16,58 @@ export async function useExecutorReality(
 ): Promise<Executor> {
   const now = useTimestamp({ offset: 0 });
   const loading = ref<boolean>(false);
-  const readProvider = getProvider(executionData.safe.network);
-  const { web3Account } = useWeb3();
   const { pendingCount } = useTxStatus();
-  const nativeToken = getNativeCoinInfo(executionData.safe.network);
 
-  const transactions = convertExecutionDataToModuleTransactions(executionData);
-  const transactionHashes = transactions.map((transaction, nonce) =>
-    calcTransactionHash(
-      executionData.safe.network,
-      executionData.module.address,
-      transaction,
-      nonce.toString()
-    )
-  );
-
-  const moduleContract = new Contract(
-    executionData.module.address,
-    REALITY_MODULE_ABI,
-    readProvider
-  );
-
-  const cooldown = await moduleContract.questionCooldown();
-  const expiration = await moduleContract.answerExpiration();
-  const minimumBond = BigNumber.from(await moduleContract.minimumBond());
-  const question = await moduleContract.buildQuestion(
-    proposal.id,
-    transactionHashes
-  );
-  const questionHash = keccak256(['string'], [question]);
-  const questionId = await moduleContract.questionIds(questionHash);
+  const {
+    moduleContract,
+    transactions,
+    transactionHashes,
+    nextTransactionToExecute,
+    allTransactionsExecuted,
+    questionId,
+    cooldownPeriod,
+    expirationPeriod,
+    minimumBond,
+    updateTransactionExecutionStates
+  } = await useExecutorRealityModule(executionData, proposal);
 
   const oracleAddress = await moduleContract.oracle();
 
-  // assume an ERC20 oracle first
-  let oracleContract = new Contract(
+  const {
+    oracleContract,
+    oracleAnswer,
+    isOracleAnswerFinal,
+    oracleAnswerFinalizedAt,
+    bondContract,
+    bondDecimals,
+    bondSymbol,
+    bondAllowance,
+    bondNextAmount,
+    answerHistoryHashes,
+    involvedUsers,
+    placedBonds,
+    givenAnswers,
+    updateOracleAnswer,
+    updateDisputeHistory,
+    updateBondInfo
+  } = await useExecutorRealityOracle(
+    executionData,
+    proposal,
     oracleAddress,
-    REALITY_ORACLE_ERC_ABI,
-    readProvider
+    questionId,
+    minimumBond
   );
 
-  let bondAddress = AddressZero;
-  let bondContract = new Contract(bondAddress, ERC20_ABI, readProvider);
-  let bondDecimals = 18;
-  let bondSymbol = getNativeCoinInfo(executionData.safe.network).symbol;
-
-  try {
-    // There is no way to determine whether we are dealing with an ETH or ERC20 oracle, other than trying to call the token method.
-    // If this throws, we have an ETH oracle. If it doesn't, we have an ERC20 oracle and the address of the collateral token.
-    bondAddress = await oracleContract.token();
-    bondContract = bondContract.attach(bondAddress);
-    bondDecimals = await bondContract.decimals();
-    bondSymbol = await bondContract.symbol();
-  } catch {
-    oracleContract = new Contract(
-      oracleAddress,
-      REALITY_ORACLE_ETH_ABI,
-      readProvider
-    );
-  }
-
-  const bondAllowance = ref<BigNumber>(BigNumber.from(0));
-  const bondCurrentAmount = ref<BigNumber>(BigNumber.from(0));
-  const bondNextAmount = computed<BigNumber>(() => {
-    // RealityModule can have 0 minimumBond, if it happens, the minimum bond will be 1 token
-    if (bondCurrentAmount.value.eq(0)) {
-      return minimumBond.eq(0) ? parseUnits('1', bondDecimals) : minimumBond;
-    } else {
-      return bondCurrentAmount.value.mul(2);
-    }
-  });
-  const withdrawableUserBondBalance = ref<BigNumber>(BigNumber.from(0));
-  const bestAnswer = ref<boolean>(false);
-  const currentHistoryHash = ref<string>(HashZero);
-  const isFinalized = ref<boolean>(false);
-
-  const questionAnswer = ref<boolean>(false);
-  const finalizedAt = ref<number>(0);
-  const nextTransactionToExecute = ref<number>(-1);
-
-  const involvedUsers = ref<string[]>([]);
-  const placedBonds = ref<BigNumber[]>([]);
-  const givenAnswers = ref<boolean[]>([]);
-  const answerHistoryHashes = ref<string[]>([]);
-  const answersFilter = oracleContract.filters.LogNewAnswer(null, questionId);
-
-  async function setState() {
+  async function updateState() {
     loading.value = true;
 
-    await setNextTransactionToExecute();
-
-    bondCurrentAmount.value = BigNumber.from(
-      await oracleContract.getBond(questionId)
-    );
-    withdrawableUserBondBalance.value = BigNumber.from(
-      await oracleContract.balanceOf(web3Account.value)
-    );
-    bestAnswer.value =
-      (await oracleContract.getBestAnswer(questionId)) !== HashZero;
-    currentHistoryHash.value = await oracleContract.getHistoryHash(questionId);
-    isFinalized.value = await oracleContract.isFinalized(questionId);
-    finalizedAt.value = await oracleContract.getFinalizeTS(questionId);
-    questionAnswer.value = BigNumber.from(
-      await oracleContract.resultFor(questionId)
-    ).eq(BigNumber.from(1));
-
-    await setBondData();
+    await updateTransactionExecutionStates();
+    await updateOracleAnswer();
+    await updateDisputeHistory();
+    await updateBondInfo();
 
     loading.value = false;
   }
-
-  async function setBondAllowance() {
-    bondAllowance.value = BigNumber.from(
-      web3Account.value
-        ? await bondContract.allowance(web3Account.value, oracleAddress)
-        : 0
-    );
-  }
-
-  watch(web3Account, setBondAllowance);
 
   async function propose() {
     loading.value = true;
@@ -178,7 +80,7 @@ export async function useExecutorReality(
       await tx.wait();
       pendingCount.value--;
 
-      await setState();
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -187,7 +89,7 @@ export async function useExecutorReality(
   async function dispute(answer: boolean) {
     const answerBytesString = HashZero.replace(/.$/, answer ? '1' : '0');
 
-    if (bondAddress) {
+    if (bondContract) {
       await disputeERC20(answerBytesString);
     } else {
       await disputeETH(answerBytesString);
@@ -205,6 +107,8 @@ export async function useExecutorReality(
       pendingCount.value++;
       await tx.wait();
       pendingCount.value--;
+
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -223,30 +127,17 @@ export async function useExecutorReality(
       pendingCount.value++;
       await tx.wait();
       pendingCount.value--;
-    } finally {
-      loading.value = false;
-    }
-  }
 
-  async function approveBond() {
-    loading.value = true;
-
-    try {
-      const tx = await bondContract
-        .connect(getInstance().web3.getSigner())
-        .approve(oracleAddress, bondNextAmount.value);
-
-      pendingCount.value++;
-      await tx.wait();
-      pendingCount.value--;
+      await updateState();
     } finally {
       loading.value = false;
     }
   }
 
   async function execute() {
+    if (nextTransactionToExecute.value === null) return;
+
     const transaction = transactions[nextTransactionToExecute.value];
-    if (!transaction) return;
 
     loading.value = true;
     try {
@@ -266,20 +157,30 @@ export async function useExecutorReality(
       await tx.wait();
       pendingCount.value--;
 
-      await setNextTransactionToExecute();
+      await updateState();
     } finally {
       loading.value = false;
     }
   }
 
-  async function setNextTransactionToExecute(): Promise<void> {
-    const transactionExecutionStates = await Promise.all(
-      transactionHashes.map(hash =>
-        moduleContract.executedProposalTransactions(questionHash, hash)
-      )
-    );
+  async function approveBond() {
+    if (!bondContract) return;
 
-    nextTransactionToExecute.value = transactionExecutionStates.indexOf(false);
+    loading.value = true;
+
+    try {
+      const tx = await bondContract
+        .connect(getInstance().web3.getSigner())
+        .approve(oracleAddress, bondNextAmount.value);
+
+      pendingCount.value++;
+      await tx.wait();
+      pendingCount.value--;
+
+      await updateState();
+    } finally {
+      loading.value = false;
+    }
   }
 
   async function withdrawBondBalance() {
@@ -293,6 +194,8 @@ export async function useExecutorReality(
       pendingCount.value++;
       await tx.wait();
       pendingCount.value--;
+
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -316,54 +219,31 @@ export async function useExecutorReality(
       pendingCount.value++;
       await tx.wait();
       pendingCount.value--;
+
+      await updateState();
     } finally {
       loading.value = false;
     }
   }
 
-  async function setBondData() {
-    const events = await oracleContract.queryFilter(
-      answersFilter,
-      parseInt(proposal.snapshot)
-    );
-
-    // We need to send the information from last to first
-    events.reverse();
-    events.forEach(({ args }) => {
-      if (!args) return;
-      const { user, history_hash, bond, answer } = args;
-
-      involvedUsers.value.push(user.toLowerCase());
-      answerHistoryHashes.value.push(history_hash);
-      placedBonds.value.push(bond);
-      givenAnswers.value.push(answer);
-    });
-
-    const alreadyClaimed = BigNumber.from(currentHistoryHash).eq(0);
-
-    // Check if current user has submitted an answer
-    const currentUserAnswers = involvedUsers.value.map((user, i) => {
-      if (user.toString() === web3Account.value.toLowerCase())
-        return givenAnswers[i];
-    });
-
-    // If the user has answers, check if one of them is the winner
-    const votedForCorrectQuestion =
-      currentUserAnswers.some(answerBytes => answerBytes !== HashZero) &&
-      isFinalized;
-
-    // Remove the first history and add an empty one
-    // More info: https://github.com/realitio/realitio-contracts/blob/master/truffle/contracts/Realitio.sol#L502
-    answerHistoryHashes.value.shift();
-    const firstHash =
-      '0x0000000000000000000000000000000000000000000000000000000000000000';
-    answerHistoryHashes.value.push(firstHash);
-  }
+  const INVALID_QUESTION_ID =
+    '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
 
   const executionState = computed<ExecutionState>(() => {
     if (now.value <= proposal.end) return ExecutionState.WAITING;
 
-    return ExecutionState.PROPOSABLE;
+    if (questionId === INVALID_QUESTION_ID) return ExecutionState.INVALIDATED;
+    if (questionId === HashZero) return ExecutionState.PROPOSABLE;
+
+    if (allTransactionsExecuted.value) return ExecutionState.EXECUTED;
+
+    if (!isOracleAnswerFinal) return ExecutionState.DISPUTABLE;
+
+    if (oracleAnswer.value === false) return ExecutionState.REJECTED;
+
+    if (oracleAnswer.value === true) return ExecutionState.EXECUTABLE;
+
+    return ExecutionState.UNKNOWN;
   });
 
   return {
@@ -373,10 +253,10 @@ export async function useExecutorReality(
     propose,
     dispute,
     execute,
-    cooldown,
-    bestAnswer,
-    bondCurrentAmount,
-    bondNextAmount,
+    cooldownPeriod,
+    expirationPeriod,
+    oracleAnswer,
+    oracleAnswerFinalizedAt,
     bondAllowance,
     bondSymbol,
     bondDecimals,

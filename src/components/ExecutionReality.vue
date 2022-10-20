@@ -75,5 +75,14 @@ const executor = await useExecutorReality(props.executionData, props.proposal);
         <span>Transactions have been rejected.</span>
       </div>
     </template>
+
+    <template #invalidated>
+      <div class="flex flex-col items-center justify-center">
+        <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
+          <i-ho-x />
+        </span>
+        <span>The proposal has been marked as invalid.</span>
+      </div>
+    </template>
   </ExecutionAbstract>
 </template>

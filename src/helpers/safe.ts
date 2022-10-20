@@ -84,7 +84,9 @@ export enum ExecutionState {
   DISPUTABLE,
   EXECUTABLE,
   EXECUTED,
-  REJECTED
+  REJECTED,
+  INVALIDATED,
+  UNKNOWN
 }
 
 export interface Executor {

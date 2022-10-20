@@ -28,6 +28,10 @@ const isWrongNetwork = computed(
     </template>
     <LoadingSpinner v-else-if="executorLoading" />
     <slot
+      v-else-if="executionState === ExecutionState.INVALIDATED"
+      name="invalidated"
+    />
+    <slot
       v-else-if="executionState === ExecutionState.REJECTED"
       name="rejected"
     />

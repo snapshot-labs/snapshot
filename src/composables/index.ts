@@ -7,6 +7,8 @@ export { useDelegate } from './useDelegate';
 export { useEns } from './useEns';
 export { useExecutorUma } from './useExecutorUma';
 export { useExecutorReality } from './useExecutorReality';
+export { useExecutorRealityModule } from './useExecutorRealityModule';
+export { useExecutorRealityOracle } from './useExecutorRealityOracle';
 export { useExtendedSpaces } from './useExtendedSpaces';
 export { useFlashNotification } from './useFlashNotification';
 export { useFollowSpace } from './useFollowSpace';
