@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import coingeckoIcon from '@/assets/icons/coingecko.svg';
-
 withDefaults(
   defineProps<{
     name: string;
@@ -14,10 +12,7 @@ withDefaults(
 </script>
 
 <template>
-  <template v-if="name === 'coingecko'">
-    <img :src="coingeckoIcon" alt="coingecko" class="coingecko" />
-  </template>
-  <template v-else>
+  <template>
     <i
       class="iconfont"
       :class="`icon${name}`"
@@ -25,9 +20,3 @@ withDefaults(
     />
   </template>
 </template>
-
-<style scoped lang="scss">
-.coingecko {
-  width: 18px;
-}
-</style>
