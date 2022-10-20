@@ -12,11 +12,9 @@ withDefaults(
 </script>
 
 <template>
-  <template>
     <i
       class="iconfont"
       :class="`icon${name}`"
       :style="size ? `font-size: ${size}px; line-height: ${size}px;` : ''"
     />
-  </template>
 </template>
