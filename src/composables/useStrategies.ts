@@ -41,10 +41,9 @@ export function useStrategies() {
       'strategies'
     );
 
-    const index = strategies.value.findIndex(
-      elem => elem['id'] === 'pagination'
+    strategies.value = strategies.value.filter(
+      strategy => strategy.id !== 'pagination'
     );
-    if (index) strategies.value.splice(index, 1);
 
     loadingStrategies.value = false;
   }
