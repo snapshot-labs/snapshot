@@ -105,7 +105,10 @@ const {
       </div>
       <div v-else>
         <BaseButton primary @click="execute">
-          Execute transaction group #{{ nextTransactionToExecute + 1 }}
+          <template v-if="executionData.batches.length > 1">
+            Execute transaction group #{{ nextTransactionToExecute + 1 }}
+          </template>
+          <template v-else> Execute transactions </template>
         </BaseButton>
         <div class="mt-1 opacity-50">
           Execution expires in:
