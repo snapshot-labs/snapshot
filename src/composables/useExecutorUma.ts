@@ -31,6 +31,7 @@ enum UmaOracleResultState {
 }
 
 export async function useExecutorUma(
+  executionDataIndex: number,
   executionData: ModuleExecutionData,
   proposal: Proposal
 ): Promise<Executor> {
@@ -47,6 +48,9 @@ export async function useExecutorUma(
       [transactions]
     )
   );
+
+  const explanation = `${proposal.id}:${executionDataIndex}`;
+
   const ancillaryData = pack(
     ['string', 'bytes', 'bytes'],
     [
@@ -90,8 +94,9 @@ export async function useExecutorUma(
   const executionEvents = ref<Event[]>([]);
   const executed = computed<boolean>(() => {
     return (
+      executionEvents.value.length > 0 &&
       executionEvents.value.length ===
-      proposalEvents.value.length * transactions.length
+        proposalEvents.value.length * transactions.length
     );
   });
 
@@ -120,7 +125,9 @@ export async function useExecutorUma(
     );
 
     proposalEvents.value = allProposalEvents.filter(
-      event => event.args?.proposalHash === transactionsHash
+      event =>
+        event.args?.proposalHash === transactionsHash &&
+        event.args?.explanation === explanation
     );
 
     executionEvents.value = await moduleContract.queryFilter(
@@ -176,7 +183,7 @@ export async function useExecutorUma(
     try {
       const tx = await moduleContract
         .connect(getInstance().web3.getSigner())
-        .proposeTransactions(transactions, proposal.id);
+        .proposeTransactions(transactions, explanation);
 
       pendingCount.value++;
       await tx.wait(3);

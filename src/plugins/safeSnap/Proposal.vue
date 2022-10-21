@@ -51,6 +51,7 @@ const executionData = computed<ExecutionData[]>(() =>
         <Suspense>
           <ExecutionUma
             v-if="data.module.type === SafeModuleType.UMA"
+            :execution-data-index="index"
             :execution-data="(data as ModuleExecutionData)"
             :proposal="proposal"
           />

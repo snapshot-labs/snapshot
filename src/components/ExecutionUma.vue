@@ -7,6 +7,7 @@ import { useExecutorUma } from '@/composables';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
+  executionDataIndex: number;
   proposal: Proposal;
 }>();
 
@@ -24,7 +25,11 @@ const {
   approveBond,
   proposedAt,
   disputeTimeout
-} = await useExecutorUma(props.executionData, props.proposal);
+} = await useExecutorUma(
+  props.executionDataIndex,
+  props.executionData,
+  props.proposal
+);
 
 const hasBondAllowance = computed<boolean>(() =>
   bondAllowance.value.gte(bondAmount)
