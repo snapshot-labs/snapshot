@@ -608,6 +608,24 @@
     "success_claim": "Le POAP a été réclamé à votre collection",
     "error_claim": "Un problème est survenu lors de la création du token"
   },
+  "progress": {
+    "progress": "Progress",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "complete": "Complete",
+    "newStep": "New Step",
+    "description": "Description",
+    "add": "Add",
+    "deleteStep": "Delete Step",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
+    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
+    "wentWrong": "Oops something went wrong.",
+    "voting": "Voting",
+    "soon": "Soon"
+  },
   "charts": {
     "charts": "Tableaux",
     "noVotesYet": "Il n’y a pas encore de votes à visualiser.",
