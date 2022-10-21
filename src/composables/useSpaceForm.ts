@@ -37,6 +37,7 @@ const EMPTY_SPACE_FORM = {
   website: '',
   twitter: '',
   github: '',
+  coingecko: '',
   parent: null,
   children: [],
   private: false,

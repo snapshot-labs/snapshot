@@ -30,6 +30,13 @@ const socials = computed<SocialItem[]>(() => {
     });
   }
 
+  if (props.space?.coingecko) {
+    socialsArray.push({
+      icon: 'coingecko',
+      link: `https://www.coingecko.com/coins/${props.space?.coingecko}`
+    });
+  }
+
   return socialsArray;
 });
 </script>
@@ -46,6 +53,7 @@ const socials = computed<SocialItem[]>(() => {
       <i-s-twitter v-if="social.icon === 'twitter'" class="text-[23px]" />
       <i-s-github v-if="social.icon === 'github'" />
       <i-ho-globe-alt v-if="social.icon === 'earth'" class="text-[23px]" />
+      <i-s-coingecko v-if="social.icon === 'coingecko'" />
     </BaseLink>
   </div>
 </template>
