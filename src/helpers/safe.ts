@@ -93,7 +93,6 @@ export enum ExecutionState {
 export interface Executor {
   loading: Ref<boolean>;
   executionState: ComputedRef<ExecutionState>;
-  executionData: ExecutionData;
   propose(...key: any[]): Promise<void>;
   dispute(...key: any[]): Promise<void>;
   execute(...key: any[]): Promise<void>;

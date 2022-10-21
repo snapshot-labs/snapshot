@@ -10,32 +10,46 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const executor = await useExecutorUma(props.executionData, props.proposal);
+const {
+  loading,
+  executionState,
+  propose,
+  dispute,
+  execute,
+  bondAllowance,
+  bondAmount,
+  bondDecimals,
+  bondSymbol,
+  approveBond
+} = await useExecutorUma(props.executionData, props.proposal);
+
 const hasBondAllowance = computed<boolean>(() =>
-  executor.bondAllowance.value.gte(executor.bondAmount)
+  bondAllowance.value.gte(bondAmount)
 );
 </script>
 
 <template>
-  <ExecutionAbstract :executor="executor">
+  <ExecutionAbstract
+    :loading="loading"
+    :execution-state="executionState"
+    :network="executionData.safe.network"
+  >
     <template #propose>
       <div v-if="hasBondAllowance" class="flex flex-col">
-        <BaseButton @click="executor.propose">
-          propose transactions
-        </BaseButton>
+        <BaseButton @click="propose"> propose transactions </BaseButton>
         <small class="mt-2 opacity-50">
-          You will deposit a bond of {{ executor.bondAmount }}.
+          You will deposit a bond of {{ bondAmount }}.
         </small>
       </div>
       <div v-else>
         To propose transactions you need to deposit a bond of
-        {{ formatUnits(executor.bondAmount, executor.bondDecimals) }}
-        {{ executor.bondSymbol }}.<br />
+        {{ formatUnits(bondAmount, bondDecimals) }}
+        {{ bondSymbol }}.<br />
         <br />
         Approve the Optimistic Governor at<br />
         {{ executionData.module.address }}<br />
         to take the bond from your account.<br />
-        <BaseButton class="mt-3" @click="executor.approveBond">
+        <BaseButton class="mt-3" @click="approveBond">
           approve bond
         </BaseButton>
       </div>
@@ -43,11 +57,11 @@ const hasBondAllowance = computed<boolean>(() =>
 
     <template #dispute>
       <!-- TODO: display txs/hashes as proposed on chain-->
-      <BaseButton @click="executor.dispute"> Dispute transactions </BaseButton>
+      <BaseButton @click="dispute"> Dispute transactions </BaseButton>
     </template>
 
     <template #execute>
-      <BaseButton @click="executor.execute"> Execute transactions </BaseButton>
+      <BaseButton @click="execute"> Execute transactions </BaseButton>
     </template>
 
     <template #executed>

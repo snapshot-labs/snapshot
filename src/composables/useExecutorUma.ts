@@ -101,7 +101,7 @@ export async function useExecutorUma(
     oracleAnswer.value = BigNumber.from(oracleRequest.resolvedPrice).eq(1);
   }
 
-  async function setBondAllowance() {
+  async function setCurrentUserBondAllowance() {
     bondAllowance.value = BigNumber.from(
       web3Account.value
         ? await bondContract.allowance(
@@ -112,7 +112,8 @@ export async function useExecutorUma(
     );
   }
 
-  watch(web3Account, setBondAllowance);
+  watch(web3Account, setCurrentUserBondAllowance);
+  await setCurrentUserBondAllowance();
 
   async function approveBond() {
     loading.value = true;
@@ -122,7 +123,7 @@ export async function useExecutorUma(
         .approve(executionData.module.address, bondAmount);
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
     } finally {
       loading.value = false;
@@ -137,7 +138,7 @@ export async function useExecutorUma(
         .proposeTransactions(transactions, proposal.id);
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await setOracleState();
@@ -159,7 +160,7 @@ export async function useExecutorUma(
         );
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await setOracleState();
@@ -176,7 +177,7 @@ export async function useExecutorUma(
         .executeProposal(transactions);
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await setOracleState();
@@ -189,10 +190,9 @@ export async function useExecutorUma(
     if (now.value <= proposal.end) return ExecutionState.WAITING;
 
     if (UmaOracleResultState.Settled === oracleState.value) {
-      if (oracleAnswer.value) {
-        return ExecutionState.EXECUTED;
-      }
-      return ExecutionState.REJECTED;
+      return oracleAnswer.value
+        ? ExecutionState.EXECUTED
+        : ExecutionState.REJECTED;
     }
 
     if (UmaOracleResultState.Expired === oracleState.value) {
@@ -209,7 +209,6 @@ export async function useExecutorUma(
   return {
     loading,
     executionState,
-    executionData,
     propose,
     dispute,
     execute,

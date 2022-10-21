@@ -158,6 +158,7 @@ export async function useExecutorRealityOracle(
   }
 
   watch(web3Account, setCurrentUserBondAllowance);
+  await setCurrentUserBondAllowance();
 
   return {
     oracleContract,
