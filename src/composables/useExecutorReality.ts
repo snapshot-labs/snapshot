@@ -91,7 +91,7 @@ export async function useExecutorReality(
         .addProposal(proposal.id, transactionHashes);
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -124,7 +124,7 @@ export async function useExecutorReality(
         );
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -144,7 +144,7 @@ export async function useExecutorReality(
         });
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -173,7 +173,7 @@ export async function useExecutorReality(
         );
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -193,7 +193,7 @@ export async function useExecutorReality(
         .approve(oracleAddress, bondNextAmount.value);
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -211,7 +211,7 @@ export async function useExecutorReality(
         .withdraw();
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -236,7 +236,7 @@ export async function useExecutorReality(
         );
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();

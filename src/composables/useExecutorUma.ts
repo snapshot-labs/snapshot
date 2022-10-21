@@ -162,7 +162,7 @@ export async function useExecutorUma(
         .approve(executionData.module.address, bondAmount);
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -179,7 +179,7 @@ export async function useExecutorUma(
         .proposeTransactions(transactions, proposal.id);
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -201,7 +201,7 @@ export async function useExecutorUma(
         );
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
@@ -218,7 +218,7 @@ export async function useExecutorUma(
         .executeProposal(transactions);
 
       pendingCount.value++;
-      await tx.wait(2);
+      await tx.wait(3);
       pendingCount.value--;
 
       await updateState();
