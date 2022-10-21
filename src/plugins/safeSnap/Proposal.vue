@@ -19,7 +19,7 @@ const executionData = computed<ExecutionData[]>(() =>
 </script>
 
 <template>
-  <div>
+  <div class="space-y-3">
     <BaseBlock
       v-for="(data, index) in executionData"
       :key="index"
