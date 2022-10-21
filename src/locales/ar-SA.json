@@ -608,6 +608,24 @@
     "success_claim": "تم سك العملة POAP إلى مجموعتك",
     "error_claim": "حدثت مشكلة في سك العملة الرمزية"
   },
+  "progress": {
+    "progress": "Progress",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "complete": "Complete",
+    "newStep": "New Step",
+    "description": "Description",
+    "add": "Add",
+    "deleteStep": "Delete Step",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
+    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
+    "wentWrong": "Oops something went wrong.",
+    "voting": "Voting",
+    "soon": "Soon"
+  },
   "charts": {
     "charts": "الرسوم البيانية",
     "noVotesYet": "لا توجد تصويتات لعرضها حتى الآن.",
