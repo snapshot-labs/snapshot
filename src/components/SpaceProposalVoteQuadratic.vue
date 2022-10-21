@@ -1,18 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
 import { useMediaQuery } from '@vueuse/core';
+import { Proposal, Vote } from '@/helpers/interfaces';
 
-defineProps({
-  proposal: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{
+  proposal: Proposal;
+  userVote: Vote | null;
+}>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref({});
+const selectedChoices = ref(props.userVote?.choice || {});
 
 const isSmallScreen = useMediaQuery('(max-width: 543px)');
 
@@ -41,13 +40,17 @@ function removeVote(i) {
 }
 
 // Delete choice if empty string or 0
-watch(selectedChoices.value, currentValue => {
-  Object.entries(currentValue).forEach(choice => {
-    if (choice[1] === '' || choice[1] <= 0)
-      delete selectedChoices.value[choice[0]];
-  });
-  emit('selectChoice', selectedChoices.value);
-});
+watch(
+  () => selectedChoices.value,
+  currentValue => {
+    Object.entries(currentValue).forEach(choice => {
+      if (choice[1] === '' || (typeof choice[1] === 'number' && choice[1] <= 0))
+        delete selectedChoices.value[choice[0]];
+    });
+    emit('selectChoice', selectedChoices.value);
+  },
+  { immediate: true, deep: true }
+);
 </script>
 
 <template>

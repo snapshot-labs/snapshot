@@ -1,14 +1,13 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useWeb3 } from '@/composables/useWeb3';
+import { Proposal, Vote, Choice } from '@/helpers/interfaces';
 
-const props = defineProps({
-  proposal: {
-    type: Object,
-    required: true
-  },
-  modelValue: [Array, Number, Object]
-});
+const props = defineProps<{
+  proposal: Proposal;
+  userVote: Vote | null;
+  modelValue: Choice;
+}>();
 
 const emit = defineEmits(['update:modelValue', 'clickVote']);
 
@@ -32,21 +31,25 @@ function emitChoice(c) {
       <SpaceProposalVoteSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
         :proposal="proposal"
+        :user-vote="userVote"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
         :proposal="proposal"
+        :user-vote="userVote"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
         :proposal="proposal"
+        :user-vote="userVote"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
         :proposal="proposal"
+        :user-vote="userVote"
         @selectChoice="emitChoice"
       />
     </div>
