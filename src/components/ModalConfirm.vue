@@ -161,7 +161,13 @@ watch(
             v-tippy="{
               content: validation
                 ? 'You are eligible to vote'
-                : 'You are not eligible to vote, make sure to verify your stamps on gitcoin passport'
+                : proposal.validation.name === 'passport'
+                ? 'You are not eligible to vote, make sure to verify ' +
+                  proposal.validation.params.stamps
+                    .map(stamp => stamp.id)
+                    .join(', ') +
+                  ' stamps on gitcoin passport'
+                : 'You are not eligible to vote'
             }"
           >
             {{ validation ? 'Success' : 'Failed' }}
