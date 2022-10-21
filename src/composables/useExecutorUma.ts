@@ -35,7 +35,9 @@ export async function useExecutorUma(
   executionData: ModuleExecutionData,
   proposal: Proposal
 ): Promise<Executor> {
-  const now = computed(() => useTimestamp({ offset: 0 }).value / 1000);
+  const now = computed(
+    () => useTimestamp({ offset: 0, interval: 1000 }).value / 1000
+  );
   const loading = ref<boolean>(false);
   const readProvider = getProvider(executionData.safe.network);
   const { web3Account } = useWeb3();
