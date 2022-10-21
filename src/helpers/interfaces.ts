@@ -95,6 +95,7 @@ export interface ExtendedSpace {
   domain: string | null;
   website: string | null;
   terms: string | null;
+  coingecko: string | null;
   github: string | null;
   twitter: string | null;
   followersCount: number;
