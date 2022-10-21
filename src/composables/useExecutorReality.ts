@@ -202,30 +202,6 @@ export async function useExecutorReality(
     }
   }
 
-  async function assignBondBalances() {
-    loading.value = true;
-
-    try {
-      const tx = await oracleContract
-        .connect(getInstance().web3.getSigner())
-        .claimWinnings(
-          questionId,
-          answerHistoryHashes.value,
-          involvedUsers.value,
-          placedBonds.value,
-          givenAnswers.value
-        );
-
-      pendingCount.value++;
-      await tx.wait(2);
-      pendingCount.value--;
-
-      await updateState();
-    } finally {
-      loading.value = false;
-    }
-  }
-
   async function withdrawBondBalance() {
     loading.value = true;
 
@@ -288,12 +264,11 @@ export async function useExecutorReality(
 
   return {
     loading,
-    now,
     executionState,
-    executionData,
     propose,
     dispute,
     execute,
+    now,
     cooldownPeriod,
     expirationPeriod,
     oracleContract,
@@ -309,7 +284,6 @@ export async function useExecutorReality(
     currentUserVotedForCorrectAnswer,
     approveBond,
     withdrawBondBalance,
-    assignBondBalances,
     assignBondBalancesAndWithdraw,
     nextTransactionToExecute
   };

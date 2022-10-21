@@ -10,9 +10,12 @@ const props = defineProps<{
 }>();
 
 const {
-  now,
   loading,
   executionState,
+  propose,
+  dispute,
+  execute,
+  now,
   oracleContract,
   oracleAnswer,
   oracleAnswerFinalizedAt,
@@ -27,11 +30,7 @@ const {
   bondDecimals,
   allBondsAssigned,
   currentUserVotedForCorrectAnswer,
-  propose,
-  dispute,
-  execute,
   approveBond,
-  assignBondBalances,
   assignBondBalancesAndWithdraw,
   withdrawBondBalance
 } = await useExecutorReality(props.executionData, props.proposal);
