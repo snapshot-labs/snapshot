@@ -79,14 +79,15 @@ export interface ModuleExecutionData extends ExecutionData {
 }
 
 export enum ExecutionState {
-  WAITING,
-  PROPOSABLE,
-  DISPUTABLE,
-  EXECUTABLE,
-  EXECUTED,
-  REJECTED,
-  INVALIDATED,
-  UNKNOWN
+  WAITING = 'waiting',
+  PROPOSABLE = 'proposable',
+  DISPUTABLE = 'disputable',
+  EXECUTABLE = 'executable',
+  EXECUTED = 'executed',
+  REJECTED = 'rejected',
+  INVALIDATED = 'invalidated',
+  EXPIRED = 'expired',
+  UNKNOWN = 'unknown'
 }
 
 export interface Executor {

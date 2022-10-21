@@ -10,11 +10,17 @@ import {
 } from '@/composables';
 import { Proposal } from '@/helpers/interfaces';
 
+const INVALID_QUESTION_ID =
+  '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
+
+const HashOne =
+  '0x0000000000000000000000000000000000000000000000000000000000000001';
+
 export async function useExecutorReality(
   executionData: ModuleExecutionData,
   proposal: Proposal
 ): Promise<Executor> {
-  const now = useTimestamp({ offset: 0 });
+  const now = computed(() => useTimestamp({ offset: 0 }).value / 1000);
   const loading = ref<boolean>(false);
   const { pendingCount } = useTxStatus();
 
@@ -41,12 +47,16 @@ export async function useExecutorReality(
     bondContract,
     bondDecimals,
     bondSymbol,
-    bondAllowance,
+    currentUserBondAllowance,
+    withdrawableUserBondBalance,
+    bondCurrentAmount,
     bondNextAmount,
-    answerHistoryHashes,
     involvedUsers,
     placedBonds,
     givenAnswers,
+    answerHistoryHashes,
+    allBondsAssigned,
+    currentUserVotedForCorrectAnswer,
     updateOracleAnswer,
     updateDisputeHistory,
     updateBondInfo
@@ -55,9 +65,11 @@ export async function useExecutorReality(
     proposal,
     oracleAddress,
     questionId,
-    minimumBond
+    minimumBond,
+    now
   );
 
+  // TODO: This creates quite some load time. Consider refactoring to load data more lazily/specifically.
   async function updateState() {
     loading.value = true;
 
@@ -69,6 +81,8 @@ export async function useExecutorReality(
     loading.value = false;
   }
 
+  await updateState();
+
   async function propose() {
     loading.value = true;
     try {
@@ -77,7 +91,7 @@ export async function useExecutorReality(
         .addProposal(proposal.id, transactionHashes);
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -102,10 +116,15 @@ export async function useExecutorReality(
     try {
       const tx = await oracleContract
         .connect(getInstance().web3.getSigner())
-        .submitAnswerERC20(questionId, answerBytesString);
+        .submitAnswerERC20(
+          questionId,
+          answerBytesString,
+          bondCurrentAmount.value,
+          bondNextAmount.value
+        );
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -120,12 +139,12 @@ export async function useExecutorReality(
     try {
       const tx = await oracleContract
         .connect(getInstance().web3.getSigner())
-        .submitAnswer(questionId, answerBytesString, {
-          value: bondNextAmount.value
+        .submitAnswer(questionId, answerBytesString, bondCurrentAmount.value, {
+          value: bondNextAmount.value.toString()
         });
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -150,11 +169,11 @@ export async function useExecutorReality(
           transaction.value,
           transaction.data || '0x',
           transaction.operation,
-          nextTransactionToExecute
+          nextTransactionToExecute.value
         );
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -174,7 +193,31 @@ export async function useExecutorReality(
         .approve(oracleAddress, bondNextAmount.value);
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
+      pendingCount.value--;
+
+      await updateState();
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function assignBondBalances() {
+    loading.value = true;
+
+    try {
+      const tx = await oracleContract
+        .connect(getInstance().web3.getSigner())
+        .claimWinnings(
+          questionId,
+          answerHistoryHashes.value,
+          involvedUsers.value,
+          placedBonds.value,
+          givenAnswers.value
+        );
+
+      pendingCount.value++;
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -192,7 +235,7 @@ export async function useExecutorReality(
         .withdraw();
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -213,11 +256,11 @@ export async function useExecutorReality(
           answerHistoryHashes.value,
           involvedUsers.value,
           placedBonds.value,
-          givenAnswers.value
+          givenAnswers.value.map(answer => (answer ? HashOne : HashZero))
         );
 
       pendingCount.value++;
-      await tx.wait();
+      await tx.wait(2);
       pendingCount.value--;
 
       await updateState();
@@ -225,9 +268,6 @@ export async function useExecutorReality(
       loading.value = false;
     }
   }
-
-  const INVALID_QUESTION_ID =
-    '0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF';
 
   const executionState = computed<ExecutionState>(() => {
     if (now.value <= proposal.end) return ExecutionState.WAITING;
@@ -237,7 +277,7 @@ export async function useExecutorReality(
 
     if (allTransactionsExecuted.value) return ExecutionState.EXECUTED;
 
-    if (!isOracleAnswerFinal) return ExecutionState.DISPUTABLE;
+    if (!isOracleAnswerFinal.value) return ExecutionState.DISPUTABLE;
 
     if (oracleAnswer.value === false) return ExecutionState.REJECTED;
 
@@ -248,6 +288,7 @@ export async function useExecutorReality(
 
   return {
     loading,
+    now,
     executionState,
     executionData,
     propose,
@@ -255,13 +296,20 @@ export async function useExecutorReality(
     execute,
     cooldownPeriod,
     expirationPeriod,
+    oracleContract,
     oracleAnswer,
     oracleAnswerFinalizedAt,
-    bondAllowance,
+    currentUserBondAllowance,
+    withdrawableUserBondBalance,
+    hasBondToken: bondContract !== null,
     bondSymbol,
     bondDecimals,
+    bondNextAmount,
+    allBondsAssigned,
+    currentUserVotedForCorrectAnswer,
     approveBond,
     withdrawBondBalance,
+    assignBondBalances,
     assignBondBalancesAndWithdraw,
     nextTransactionToExecute
   };

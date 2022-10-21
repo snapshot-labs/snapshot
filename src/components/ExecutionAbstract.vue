@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { Executor, ExecutionState } from '@/helpers/safe';
+import { ExecutionState } from '@/helpers/safe';
 import { useModal, useWeb3 } from '@/composables';
 
 const props = defineProps<{
-  executor: Executor;
+  loading: boolean;
+  executionState: ExecutionState;
+  network: string;
 }>();
 
 const { modalAccountOpen } = useModal();
 const { web3Account, web3 } = useWeb3();
 
-const executorLoading = computed<boolean>(() => props.executor.loading.value);
-const executionState = computed<ExecutionState>(
-  () => props.executor.executionState.value
-);
-const requiredNetwork = networks[props.executor.executionData.safe.network];
+const requiredNetwork = networks[props.network];
 const isWrongNetwork = computed(
   () => web3.value.network.chainId !== requiredNetwork.chainId
 );
@@ -26,7 +24,7 @@ const isWrongNetwork = computed(
     <template v-if="executionState === ExecutionState.WAITING">
       Execution will be possible after the proposal has ended.
     </template>
-    <LoadingSpinner v-else-if="executorLoading" />
+    <LoadingSpinner v-else-if="loading" />
     <slot
       v-else-if="executionState === ExecutionState.INVALIDATED"
       name="invalidated"

@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue';
+import { computed, Ref, ref, watch } from 'vue';
 import { getNativeCoinInfo, ModuleExecutionData } from '@/helpers/safe';
 import REALITY_ORACLE_ERC_ABI from '@/helpers/abi/REALITY_ORACLE_ERC.json';
 import REALITY_ORACLE_ETH_ABI from '@/helpers/abi/REALITY_ORACLE_ETH.json';
@@ -16,7 +16,8 @@ export async function useExecutorRealityOracle(
   proposal: Proposal,
   oracleAddress: string,
   questionId: string,
-  minimumBond: BigNumber
+  minimumBond: BigNumber,
+  now: Ref<number>
 ) {
   const readProvider = getProvider(executionData.safe.network);
   const { web3Account } = useWeb3();
@@ -25,10 +26,14 @@ export async function useExecutorRealityOracle(
     await detectOracleAndBondToken(oracleAddress);
 
   const oracleAnswer = ref<boolean>(false);
-  const isOracleAnswerFinal = ref<boolean>(false);
   const oracleAnswerFinalizedAt = ref<number>(0);
+  const isOracleAnswerFinal = computed<boolean>(
+    () =>
+      oracleAnswerFinalizedAt.value > 0 &&
+      now.value - oracleAnswerFinalizedAt.value > 0
+  );
 
-  const bondAllowance = ref<BigNumber>(BigNumber.from(0));
+  const currentUserBondAllowance = ref<BigNumber>(BigNumber.from(0));
   const bondCurrentAmount = ref<BigNumber>(BigNumber.from(0));
   const bondNextAmount = computed<BigNumber>(() => {
     // RealityModule can have 0 minimumBond, if it happens, the minimum bond will be 1 token
@@ -44,6 +49,16 @@ export async function useExecutorRealityOracle(
   const placedBonds = ref<BigNumber[]>([]);
   const givenAnswers = ref<boolean[]>([]);
   const answerHistoryHashes = ref<string[]>([]);
+  const allBondsAssigned = ref<boolean>(false);
+  const currentUserVotedForCorrectAnswer = computed<boolean>(() => {
+    return involvedUsers.value.reduce((isCorrect, user, index) => {
+      return (
+        isCorrect ||
+        (user.toLowerCase() === web3Account.value.toLowerCase() &&
+          givenAnswers.value[index] === oracleAnswer.value)
+      );
+    }, false);
+  });
 
   async function detectOracleAndBondToken(oracleAddress: string) {
     // A reality module is connected to an oracle accepting either an ERC20 or ETH as a bond.
@@ -89,7 +104,6 @@ export async function useExecutorRealityOracle(
   async function updateOracleAnswer() {
     oracleAnswer.value =
       (await oracleContract.getBestAnswer(questionId)) !== HashZero;
-    isOracleAnswerFinal.value = await oracleContract.isFinalized(questionId);
     oracleAnswerFinalizedAt.value = await oracleContract.getFinalizeTS(
       questionId
     );
@@ -97,8 +111,8 @@ export async function useExecutorRealityOracle(
 
   async function updateDisputeHistory() {
     const answerEvents = await oracleContract.queryFilter(
-      oracleContract.filters.LogNewAnswer(null, questionId),
-      parseInt(proposal.snapshot)
+      oracleContract.filters.LogNewAnswer(null, questionId)
+      // parseInt(proposal.snapshot) // TODO: needs archive node
     );
 
     involvedUsers.value = [];
@@ -115,7 +129,7 @@ export async function useExecutorRealityOracle(
       involvedUsers.value.push(user.toLowerCase());
       answerHistoryHashes.value.push(history_hash);
       placedBonds.value.push(bond);
-      givenAnswers.value.push(answer);
+      givenAnswers.value.push(answer !== HashZero);
     });
 
     // Remove the first history and add an empty one
@@ -131,17 +145,19 @@ export async function useExecutorRealityOracle(
     withdrawableUserBondBalance.value = BigNumber.from(
       await oracleContract.balanceOf(web3Account.value)
     );
+    allBondsAssigned.value =
+      (await oracleContract.getHistoryHash(questionId)) === HashZero;
   }
 
-  async function setBondAllowance() {
-    bondAllowance.value = BigNumber.from(
+  async function setCurrentUserBondAllowance() {
+    currentUserBondAllowance.value = BigNumber.from(
       bondContract && web3Account.value
         ? await bondContract.allowance(web3Account.value, oracleAddress)
         : 0
     );
   }
 
-  watch(web3Account, setBondAllowance);
+  watch(web3Account, setCurrentUserBondAllowance);
 
   return {
     oracleContract,
@@ -151,12 +167,16 @@ export async function useExecutorRealityOracle(
     bondContract,
     bondDecimals,
     bondSymbol,
-    bondAllowance,
+    currentUserBondAllowance,
+    withdrawableUserBondBalance,
     bondNextAmount,
-    answerHistoryHashes,
+    bondCurrentAmount,
     involvedUsers,
     placedBonds,
     givenAnswers,
+    answerHistoryHashes,
+    allBondsAssigned,
+    currentUserVotedForCorrectAnswer,
     updateOracleAnswer,
     updateDisputeHistory,
     updateBondInfo

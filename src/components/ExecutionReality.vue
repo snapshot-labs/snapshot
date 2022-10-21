@@ -2,57 +2,134 @@
 import { Proposal } from '@/helpers/interfaces';
 import { ModuleExecutionData } from '@/helpers/safe';
 import { useExecutorReality } from '@/composables';
+import { formatUnits } from '@ethersproject/units';
 
 const props = defineProps<{
   executionData: ModuleExecutionData;
   proposal: Proposal;
 }>();
 
-const executor = await useExecutorReality(props.executionData, props.proposal);
+const {
+  now,
+  loading,
+  executionState,
+  oracleContract,
+  oracleAnswer,
+  oracleAnswerFinalizedAt,
+  cooldownPeriod,
+  expirationPeriod,
+  bondNextAmount,
+  currentUserBondAllowance,
+  withdrawableUserBondBalance,
+  nextTransactionToExecute,
+  hasBondToken,
+  bondSymbol,
+  bondDecimals,
+  allBondsAssigned,
+  currentUserVotedForCorrectAnswer,
+  propose,
+  dispute,
+  execute,
+  approveBond,
+  assignBondBalances,
+  assignBondBalancesAndWithdraw,
+  withdrawBondBalance
+} = await useExecutorReality(props.executionData, props.proposal);
 </script>
 
 <template>
-  <ExecutionAbstract :executor="executor">
+  <ExecutionAbstract
+    :loading="loading"
+    :execution-state="executionState"
+    :network="executionData.safe.network"
+  >
     <template #propose>
-      <BaseButton class="w-full" @click="executor.propose">
+      <BaseButton class="w-full" primary @click="propose">
         Propose transactions for execution
       </BaseButton>
     </template>
 
     <template #dispute>
       <div>
-        <div>Shall these transactions be executed?</div>
-        <div>
-          Current answer:
-          {{ executor.bestAnswer ? 'Yes' : 'No' }}
+        <div class="mb-2">Shall these transactions be executed?</div>
+        <div v-if="oracleAnswerFinalizedAt" class="mb-3">
+          Current answer: {{ oracleAnswer ? 'Yes' : 'No' }}
+          <div class="opacity-50">
+            Dispute timeout:
+            {{ Math.max(oracleAnswerFinalizedAt - now, 0).toFixed(0) }}
+          </div>
         </div>
-        <div>Cooldown: {{ executor.cooldown }}</div>
-        <BaseButton
-          v-if="!executor.bestAnswer"
-          @click="executor.disputeExecution(true)"
-        >
-          Yes
-        </BaseButton>
-        <BaseButton
-          v-if="executor.bestAnswer"
-          @click="executor.disputeExecution(false)"
-        >
-          No
-        </BaseButton>
-        <div>Required bond: {{ executor.bondNextAmount }}</div>
+
+        <div v-if="hasBondToken && currentUserBondAllowance.lt(bondNextAmount)">
+          Approve the Reality oracle at<br />
+          {{ oracleContract.address }}<br />
+          to take the bond from your account.<br />
+          <BaseButton @click="approveBond()">
+            Approve {{ formatUnits(bondNextAmount, bondDecimals) }} as bond
+          </BaseButton>
+        </div>
+        <div v-else class="space-x-3">
+          <BaseButton
+            v-if="!oracleAnswer || oracleAnswerFinalizedAt === 0"
+            @click="dispute(true)"
+          >
+            Yes
+          </BaseButton>
+          <BaseButton
+            v-if="oracleAnswer || oracleAnswerFinalizedAt === 0"
+            @click="dispute(false)"
+          >
+            No
+          </BaseButton>
+        </div>
+        <div class="mt-2">
+          Required bond: {{ formatUnits(bondNextAmount, bondDecimals) }}
+          {{ bondSymbol }}
+        </div>
+        <div v-if="hasBondToken" class="mt-2">
+          Allowance: {{ currentUserBondAllowance }} {{ bondSymbol }}
+        </div>
       </div>
     </template>
 
     <template #execute>
-      <div v-if="executor.cooldown">
-        Waiting for cooldown: {{ executor.cooldown }}
+      <div v-if="now < oracleAnswerFinalizedAt + cooldownPeriod">
+        Execution approved. Waiting for cooldown:
+        {{
+          Math.max(oracleAnswerFinalizedAt + cooldownPeriod - now, 0).toFixed(
+            0
+          )
+        }}s
+      </div>
+      <div v-else-if="now > oracleAnswerFinalizedAt + expirationPeriod">
+        Execution approved but expired.
       </div>
       <div v-else>
-        <BaseButton @click="executor.execute">
-          Execute transaction batch #{{ executor.nextTransactionToExecute }}
+        <BaseButton primary @click="execute">
+          Execute transaction group #{{ nextTransactionToExecute + 1 }}
         </BaseButton>
-        <BaseButton @click="executor.claimBond"> Claim bond </BaseButton>
+        <div class="mt-1 opacity-50">
+          Execution expires in:
+          {{
+            Math.max(
+              oracleAnswerFinalizedAt + expirationPeriod - now,
+              0
+            ).toFixed(0)
+          }}s
+        </div>
       </div>
+      <ExecutionRealityClaimBond
+        class="mt-3 flex flex-col space-y-2"
+        :assign-bond-balances-and-withdraw="assignBondBalancesAndWithdraw"
+        :withdraw-bond-balance="withdrawBondBalance"
+        :withdrawable-user-bond-balance="withdrawableUserBondBalance"
+        :bond-symbol="bondSymbol"
+        :bond-decimals="bondDecimals"
+        :all-bonds-assigned="allBondsAssigned"
+        :current-user-voted-for-correct-answer="
+          currentUserVotedForCorrectAnswer
+        "
+      />
     </template>
 
     <template #executed>
@@ -65,6 +142,18 @@ const executor = await useExecutorReality(props.executionData, props.proposal);
           Open transaction in explorer
         </BaseLink>
       </div>
+      <ExecutionRealityClaimBond
+        class="mt-3 flex flex-col space-y-2"
+        :assign-bond-balances-and-withdraw="assignBondBalancesAndWithdraw"
+        :withdraw-bond-balance="withdrawBondBalance"
+        :withdrawable-user-bond-balance="withdrawableUserBondBalance"
+        :bond-symbol="bondSymbol"
+        :bond-decimals="bondDecimals"
+        :all-bonds-assigned="allBondsAssigned"
+        :current-user-voted-for-correct-answer="
+          currentUserVotedForCorrectAnswer
+        "
+      />
     </template>
 
     <template #rejected>
@@ -74,6 +163,18 @@ const executor = await useExecutorReality(props.executionData, props.proposal);
         </span>
         <span>Transactions have been rejected.</span>
       </div>
+      <ExecutionRealityClaimBond
+        class="mt-3 flex flex-col space-y-2"
+        :assign-bond-balances-and-withdraw="assignBondBalancesAndWithdraw"
+        :withdraw-bond-balance="withdrawBondBalance"
+        :withdrawable-user-bond-balance="withdrawableUserBondBalance"
+        :bond-symbol="bondSymbol"
+        :bond-decimals="bondDecimals"
+        :all-bonds-assigned="allBondsAssigned"
+        :current-user-voted-for-correct-answer="
+          currentUserVotedForCorrectAnswer
+        "
+      />
     </template>
 
     <template #invalidated>
@@ -83,6 +184,18 @@ const executor = await useExecutorReality(props.executionData, props.proposal);
         </span>
         <span>The proposal has been marked as invalid.</span>
       </div>
+      <ExecutionRealityClaimBond
+        class="mt-3 flex flex-col space-y-2"
+        :assign-bond-balances-and-withdraw="assignBondBalancesAndWithdraw"
+        :withdraw-bond-balance="withdrawBondBalance"
+        :withdrawable-user-bond-balance="withdrawableUserBondBalance"
+        :bond-symbol="bondSymbol"
+        :bond-decimals="bondDecimals"
+        :all-bonds-assigned="allBondsAssigned"
+        :current-user-voted-for-correct-answer="
+          currentUserVotedForCorrectAnswer
+        "
+      />
     </template>
   </ExecutionAbstract>
 </template>
