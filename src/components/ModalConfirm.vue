@@ -4,7 +4,7 @@ import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
-import { getPower } from '@/helpers/snapshot';
+import { getPower, getValidation } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useProposals } from '@/composables';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
@@ -17,6 +17,9 @@ const vpByStrategy = ref([]);
 const vpLoading = ref(false);
 const vpLoadingFailed = ref(false);
 const vpLoaded = ref(false);
+const validation = ref(0);
+const validationLoading = ref(false);
+const validationLoadingFailed = ref(false);
 const reason = ref('');
 
 const props = defineProps<{
@@ -89,20 +92,25 @@ watch(
     if (props.open === false) return;
     vpLoading.value = true;
     vpLoadingFailed.value = false;
+    validationLoading.value = true;
+    validationLoadingFailed.value = false;
     try {
-      const result = await getPower(
-        props.space,
-        web3Account.value,
-        props.proposal
-      );
-      vp.value = result.vp;
-      vpByStrategy.value = result.vp_by_strategy;
+      const [vpResult, validationResult] = await Promise.all([
+        getPower(props.space, web3Account.value, props.proposal),
+        getValidation(props.space, web3Account.value, props.proposal)
+      ]);
+      console.log(validationResult);
+      validation.value = validationResult;
+      vp.value = vpResult.vp;
+      vpByStrategy.value = vpResult.vp_by_strategy;
     } catch (e) {
       vpLoadingFailed.value = true;
+      validationLoadingFailed.value = true;
       console.log(e);
     } finally {
       vpLoaded.value = true;
       vpLoading.value = false;
+      validationLoading.value = false;
     }
   }
 );
@@ -141,6 +149,30 @@ watch(
             class="float-right"
           >
             {{ formatNumber(Number(proposal.snapshot)) }}
+          </BaseLink>
+        </div>
+        <div class="flex">
+          <span class="mr-1 flex-auto text-skin-text">Validation</span>
+          <span v-if="validationLoadingFailed" class="item-center flex">
+            <BaseIcon name="warning" size="22" class="text-red" />
+          </span>
+          <span
+            v-else-if="!validationLoadingFailed && !validationLoading"
+            v-tippy="{
+              content: validation
+                ? 'You are eligible to vote'
+                : 'You are not eligible to vote, make sure to verify your stamps on gitcoin passport'
+            }"
+          >
+            {{ validation ? 'Success' : 'Failed' }}
+          </span>
+          <LoadingSpinner v-else />
+          <BaseLink
+            v-if="!validation && !validationLoading && !validationLoadingFailed"
+            link="https://passport.gitcoin.co/"
+            class="ml-1 flex items-center"
+          >
+            <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
         </div>
         <div class="flex">
@@ -193,7 +225,7 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || isSending || isLoadingShutter"
+          :disabled="!validation || vp === 0 || isSending || isLoadingShutter"
           :loading="isSending || isLoadingShutter"
           type="submit"
           class="w-full"

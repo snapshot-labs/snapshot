@@ -8,6 +8,9 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { VALIDATIONS_COUNT_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 
+// Temp update validations
+validations['passport'] = {};
+
 const validationsSpacesCount: any = ref(null);
 
 export function useValidationsFilter() {

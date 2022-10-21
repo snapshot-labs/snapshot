@@ -146,6 +146,7 @@ export interface Proposal {
   state: string;
   symbol: string;
   privacy: string;
+  validation: SpaceValidation;
   discussion: string;
   quorum: number;
   scores: number[];
