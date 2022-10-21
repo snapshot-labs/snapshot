@@ -2,7 +2,7 @@ import { computed, ref, watch } from 'vue';
 import { useTimestamp } from '@vueuse/core';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { Contract } from '@ethersproject/contracts';
+import { Contract, Event } from '@ethersproject/contracts';
 import { keccak256 } from '@ethersproject/keccak256';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes } from '@ethersproject/strings';
@@ -34,7 +34,7 @@ export async function useExecutorUma(
   executionData: ModuleExecutionData,
   proposal: Proposal
 ): Promise<Executor> {
-  const now = useTimestamp({ offset: 0 });
+  const now = computed(() => useTimestamp({ offset: 0 }).value / 1000);
   const loading = ref<boolean>(false);
   const readProvider = getProvider(executionData.safe.network);
   const { web3Account } = useWeb3();
@@ -79,9 +79,21 @@ export async function useExecutorUma(
   const proposedAt = BigNumber.from(
     await moduleContract.proposalHashes(transactionsHash)
   ).toNumber();
+  const disputeTimeout = BigNumber.from(
+    await moduleContract.liveness()
+  ).toNumber();
 
   const oracleState = ref<UmaOracleResultState>(UmaOracleResultState.Invalid);
   const oracleAnswer = ref<boolean>(true);
+
+  const proposalEvents = ref<Event[]>([]);
+  const executionEvents = ref<Event[]>([]);
+  const executed = computed<boolean>(() => {
+    return (
+      executionEvents.value.length ===
+      proposalEvents.value.length * transactions.length
+    );
+  });
 
   async function setOracleState() {
     oracleState.value = await oracleContract.getState(
@@ -101,6 +113,22 @@ export async function useExecutorUma(
     oracleAnswer.value = BigNumber.from(oracleRequest.resolvedPrice).eq(1);
   }
 
+  async function updateProposalExecutionHistory() {
+    const allProposalEvents = await moduleContract.queryFilter(
+      moduleContract.filters.TransactionsProposed()
+      // parseInt(proposal.snapshot) // TODO: needs archive node
+    );
+
+    proposalEvents.value = allProposalEvents.filter(
+      event => event.args?.proposalHash === transactionsHash
+    );
+
+    executionEvents.value = await moduleContract.queryFilter(
+      moduleContract.filters.TransactionExecuted(transactionsHash)
+      // parseInt(proposal.snapshot) // TODO: needs archive node
+    );
+  }
+
   async function setCurrentUserBondAllowance() {
     bondAllowance.value = BigNumber.from(
       web3Account.value
@@ -113,7 +141,18 @@ export async function useExecutorUma(
   }
 
   watch(web3Account, setCurrentUserBondAllowance);
-  await setCurrentUserBondAllowance();
+
+  async function updateState() {
+    loading.value = true;
+
+    await setOracleState();
+    await updateProposalExecutionHistory();
+    await setCurrentUserBondAllowance();
+
+    loading.value = false;
+  }
+
+  await updateState();
 
   async function approveBond() {
     loading.value = true;
@@ -125,6 +164,8 @@ export async function useExecutorUma(
       pendingCount.value++;
       await tx.wait(2);
       pendingCount.value--;
+
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -141,7 +182,7 @@ export async function useExecutorUma(
       await tx.wait(2);
       pendingCount.value--;
 
-      await setOracleState();
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -163,7 +204,7 @@ export async function useExecutorUma(
       await tx.wait(2);
       pendingCount.value--;
 
-      await setOracleState();
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -180,7 +221,7 @@ export async function useExecutorUma(
       await tx.wait(2);
       pendingCount.value--;
 
-      await setOracleState();
+      await updateState();
     } finally {
       loading.value = false;
     }
@@ -189,10 +230,15 @@ export async function useExecutorUma(
   const executionState = computed<ExecutionState>(() => {
     if (now.value <= proposal.end) return ExecutionState.WAITING;
 
-    if (UmaOracleResultState.Settled === oracleState.value) {
-      return oracleAnswer.value
-        ? ExecutionState.EXECUTED
-        : ExecutionState.REJECTED;
+    if (executed.value) {
+      return ExecutionState.EXECUTED;
+    }
+
+    if (
+      UmaOracleResultState.Settled === oracleState.value &&
+      !oracleAnswer.value
+    ) {
+      return ExecutionState.REJECTED;
     }
 
     if (UmaOracleResultState.Expired === oracleState.value) {
@@ -212,10 +258,13 @@ export async function useExecutorUma(
     propose,
     dispute,
     execute,
+    now,
     bondAllowance,
     bondAmount,
     bondSymbol,
     bondDecimals,
-    approveBond
+    approveBond,
+    proposedAt,
+    disputeTimeout
   };
 }

@@ -16,11 +16,14 @@ const {
   propose,
   dispute,
   execute,
+  now,
   bondAllowance,
   bondAmount,
   bondDecimals,
   bondSymbol,
-  approveBond
+  approveBond,
+  proposedAt,
+  disputeTimeout
 } = await useExecutorUma(props.executionData, props.proposal);
 
 const hasBondAllowance = computed<boolean>(() =>
@@ -56,11 +59,16 @@ const hasBondAllowance = computed<boolean>(() =>
     </template>
 
     <template #dispute>
-      <!-- TODO: display txs/hashes as proposed on chain-->
+      <div class="mb-3">
+        Proposed at: {{ new Date(proposedAt).toLocaleString() }}<br />
+        Dispute timeout:
+        {{ Math.max(proposedAt + disputeTimeout - now, 0).toFixed(0) }}s
+      </div>
       <BaseButton @click="dispute"> Dispute transactions </BaseButton>
     </template>
 
     <template #execute>
+      <div class="mb-3">Execution approved.</div>
       <BaseButton @click="execute"> Execute transactions </BaseButton>
     </template>
 
