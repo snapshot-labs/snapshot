@@ -2,18 +2,16 @@
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
-import { Proposal, Vote } from '@/helpers/interfaces';
+import { Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   proposal: Proposal;
-  userVote: Vote | null;
+  userChoice: number[] | null;
 }>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref<number[]>(
-  (props.userVote?.choice as number[]) || []
-);
+const selectedChoices = ref<number[]>(props.userChoice || []);
 
 function selectChoice(i) {
   selectedChoices.value.push(i);

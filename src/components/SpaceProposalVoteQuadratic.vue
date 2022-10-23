@@ -2,16 +2,16 @@
 import { ref, watch } from 'vue';
 import { percentageOfTotal } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
 import { useMediaQuery } from '@vueuse/core';
-import { Proposal, Vote } from '@/helpers/interfaces';
+import { Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   proposal: Proposal;
-  userVote: Vote | null;
+  userChoice: Record<string, any> | null;
 }>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref(props.userVote?.choice || {});
+const selectedChoices = ref(props.userChoice || {});
 
 const isSmallScreen = useMediaQuery('(max-width: 543px)');
 
