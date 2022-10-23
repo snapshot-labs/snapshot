@@ -65,8 +65,8 @@ onMounted(async () => {
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
   // Initialize the snapshot block number
   if (props.space?.network) {
-    form.value.snapshot =
-      (await getBlockNumber(getProvider(props.space.network))) - 4;
+    const currentBlock = await getBlockNumber(getProvider(props.space.network));
+    form.value.snapshot = currentBlock - 4;
   }
 });
 </script>
