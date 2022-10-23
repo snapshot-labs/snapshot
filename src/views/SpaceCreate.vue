@@ -288,7 +288,7 @@ onMounted(() =>
         v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
         class="space-y-3"
       >
-        <PluginCreate
+        <SpaceCreatePlugins
           v-model="form.metadata.plugins"
           :proposal="proposal"
           :space="space"
