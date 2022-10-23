@@ -181,7 +181,7 @@ function selectFromThreedotDropdown(e) {
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
-        step: 1,
+        step: 0,
         sourceProposal: proposal.value.id
       }
     });
