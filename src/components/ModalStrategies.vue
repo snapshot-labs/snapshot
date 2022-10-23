@@ -6,7 +6,7 @@ import { Proposal, SpaceStrategy } from '@/helpers/interfaces';
 
 defineProps<{
   open: boolean;
-  strategies: { [key: string]: SpaceStrategy };
+  strategies: SpaceStrategy[];
   proposal: Proposal;
 }>();
 

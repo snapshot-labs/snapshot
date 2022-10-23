@@ -31,7 +31,7 @@ const showQuorum = computed(
 
 <template>
   <div class="space-y-3">
-    <ProposalResultsListItem
+    <SpaceProposalResultsListItem
       v-for="choice in choices"
       :key="choice.i"
       :choice="choice"
@@ -40,7 +40,7 @@ const showQuorum = computed(
       :results="results"
       :strategies="strategies"
     />
-    <ProposalResultsQuorum
+    <SpaceProposalResultsQuorum
       v-if="showQuorum"
       :space="space"
       :proposal="proposal"
