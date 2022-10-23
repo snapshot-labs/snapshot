@@ -44,21 +44,25 @@ const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
 
 export function useSpaceCreateForm() {
-  const formDraft = useStorage(`snapshot.proposal`, clone(EMPTY_PROPOSAL));
-
   const route = useRoute();
+
+  const formDraft = useStorage(
+    `snapshot.proposal.${route.params.key}`,
+    clone(EMPTY_PROPOSAL)
+  );
+
   const sourceProposal = computed(() => route.params.sourceProposal);
 
   watch(
     form,
     () => {
-      formDraft.value = form.value;
+      formDraft.value = clone(form.value);
     },
-    { immediate: true }
+    { deep: true }
   );
 
   onMounted(() => {
-    if (!sourceProposal.value) form.value = formDraft.value;
+    if (!sourceProposal.value) form.value = clone(formDraft.value);
   });
 
   function resetForm() {

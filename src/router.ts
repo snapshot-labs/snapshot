@@ -45,9 +45,9 @@ const spaceRoutes = [
     name: 'spaceCreate',
     component: SpaceCreate,
     beforeEnter: to => {
-      // set step to 1 if it is not set
+      // set step to 0 if it is not set
       if (!to.params.step) {
-        to.params.step = 1;
+        to.params.step = 0;
       }
     }
   },

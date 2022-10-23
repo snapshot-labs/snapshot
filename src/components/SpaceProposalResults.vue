@@ -24,7 +24,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
-    <ProposalResultsList
+    <SpaceProposalResultsList
       v-if="results"
       :space="space"
       :proposal="proposal"
@@ -33,7 +33,7 @@ const ts = Number((Date.now() / 1e3).toFixed());
       :votes="votes"
     />
 
-    <ProposalResultsShutter
+    <SpaceProposalResultsShutter
       v-if="proposal.privacy === 'shutter'"
       class="pt-2"
     />

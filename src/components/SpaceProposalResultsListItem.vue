@@ -103,7 +103,7 @@ const isVisible = computed(() => {
       </div>
     </div>
 
-    <ProposalResultsProgressBar
+    <SpaceProposalResultsProgressBar
       :value="results.scoresByStrategy[choice.i]"
       :max="
         proposal.type === 'basic' && hideAbstain

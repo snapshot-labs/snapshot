@@ -25,7 +25,7 @@ const { formatCompactNumber } = useIntl();
     </span>
   </div>
 
-  <ProposalResultsQuorumPlugin
+  <SpaceProposalResultsQuorumPlugin
     v-else-if="space?.plugins?.quorum"
     v-bind="props"
   />

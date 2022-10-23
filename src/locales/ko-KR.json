@@ -608,6 +608,24 @@
     "success_claim": "POAP이 컬렉션에 발행되었습니다.",
     "error_claim": "토큰 발행에 문제가 발생했습니다."
   },
+  "progress": {
+    "progress": "Progress",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "complete": "Complete",
+    "newStep": "New Step",
+    "description": "Description",
+    "add": "Add",
+    "deleteStep": "Delete Step",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
+    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
+    "wentWrong": "Oops something went wrong.",
+    "voting": "Voting",
+    "soon": "Soon"
+  },
   "charts": {
     "charts": "차트",
     "noVotesYet": "아직 시각화할 투표가 없습니다.",
