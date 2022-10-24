@@ -5,6 +5,7 @@ import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useFlashNotification } from '@/composables/useFlashNotification';
+import { useAliasAction } from '@/composables/useAliasAction';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useClient() {
@@ -12,6 +13,7 @@ export function useClient() {
   const { web3 } = useWeb3();
   const auth = getInstance();
   const { notify } = useFlashNotification();
+  const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 
   const isSending = ref(false);
 
@@ -27,15 +29,23 @@ export function useClient() {
 
   async function send(space, type, payload) {
     isSending.value = true;
+    const aliasedVote = true;
+    const aliasedProposal = true;
     try {
+      if (aliasedVote || aliasedProposal) {
+        await checkAlias();
+        if (!aliasWallet.value || !isValidAlias.value) {
+          await setAlias();
+        }
+      }
       if (usePersonalSign.value) {
         if (payload.proposal) payload.proposal = payload.proposal.id;
         const clientPersonalSign = isGnosisSafe.value
           ? clientGnosisSafe
           : client;
         return await clientPersonalSign.broadcast(
-          auth.web3,
-          web3.value.account,
+          aliasWallet.value || auth.web3,
+          aliasWallet.value.address || web3.value.account,
           space.id,
           type,
           payload
@@ -59,29 +69,37 @@ export function useClient() {
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)
         plugins = payload.metadata.plugins;
-      return clientEIP712.proposal(auth.web3, web3.value.account, {
-        space: space.id,
-        type: payload.type,
-        title: payload.name,
-        body: payload.body,
-        discussion: payload.discussion,
-        choices: payload.choices,
-        start: payload.start,
-        end: payload.end,
-        snapshot: payload.snapshot,
-        plugins: JSON.stringify(plugins),
-        app: 'snapshot'
-      });
+      return clientEIP712.proposal(
+        aliasWallet.value || auth.web3,
+        aliasWallet.value.address || web3.value.account,
+        {
+          space: space.id,
+          type: payload.type,
+          title: payload.name,
+          body: payload.body,
+          discussion: payload.discussion,
+          choices: payload.choices,
+          start: payload.start,
+          end: payload.end,
+          snapshot: payload.snapshot,
+          plugins: JSON.stringify(plugins),
+          app: 'snapshot'
+        }
+      );
     } else if (type === 'vote') {
-      return clientEIP712.vote(auth.web3, web3.value.account, {
-        space: space.id,
-        proposal: payload.proposal.id,
-        type: payload.proposal.type,
-        choice: payload.choice,
-        privacy: payload.privacy,
-        app: 'snapshot',
-        reason: payload.reason
-      });
+      return clientEIP712.vote(
+        aliasWallet.value || auth.web3,
+        aliasWallet.value.address || web3.value.account,
+        {
+          space: space.id,
+          proposal: payload.proposal.id,
+          type: payload.proposal.type,
+          choice: payload.choice,
+          privacy: payload.privacy,
+          app: 'snapshot',
+          reason: payload.reason
+        }
+      );
     } else if (type === 'delete-proposal') {
       return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
