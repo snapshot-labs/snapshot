@@ -26,7 +26,7 @@
   "space": "空间",
   "spaces": "空间",
   "verifiedSpace": "已认证的空间",
-  "warningSpace": "这不是一个官方空间，请谨慎行事！",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "版本",
   "timeline": "时间线",
   "ended": "已结束",
