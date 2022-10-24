@@ -20,7 +20,7 @@ export function useReportDownload() {
   async function getAllVotes(proposalId: string) {
     let votes: Vote[] = [];
     let page = 0;
-    const pageSize = 1000;
+    const pageSize = 10000;
     while (votes.length === pageSize * page) {
       const newVotes = await getProposalVotes(proposalId, {
         first: pageSize,
