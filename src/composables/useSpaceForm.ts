@@ -17,7 +17,8 @@ const EMPTY_SPACE_FORM = {
   plugins: {},
   filters: {
     minScore: 0,
-    onlyMembers: false
+    onlyMembers: false,
+    aliased: false
   },
   voting: {
     delay: 0,
@@ -25,7 +26,8 @@ const EMPTY_SPACE_FORM = {
     period: 0,
     quorum: 0,
     type: '',
-    privacy: ''
+    privacy: '',
+    aliased: false
   },
   validation: BASIC_VALIDATION,
   name: '',

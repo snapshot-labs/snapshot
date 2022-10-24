@@ -43,6 +43,12 @@ function handleSubmitAddValidation(input) {
         v-model="form.filters.onlyMembers"
         :text-right="$t('settings.allowOnlyAuthors')"
       />
+
+      <InputSwitch
+        v-if="form.validation.name === 'basic'"
+        v-model="form.filters.aliased"
+        :text-right="$t('settings.enableAliased.proposal')"
+      />
     </div>
     <teleport to="#modal">
       <ModalValidation

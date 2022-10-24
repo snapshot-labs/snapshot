@@ -103,6 +103,11 @@ const votingPeriod = computed({
         v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
       />
+      <InputSwitch
+        v-if="form.validation.name === 'basic'"
+        v-model="form.voting.aliased"
+        :text-right="$t('settings.enableAliased.voting')"
+      />
     </div>
   </BaseBlock>
 </template>

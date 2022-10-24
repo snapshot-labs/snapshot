@@ -44,8 +44,8 @@ export function useClient() {
           ? clientGnosisSafe
           : client;
         return await clientPersonalSign.broadcast(
-          aliasWallet.value || auth.web3,
-          aliasWallet.value.address || web3.value.account,
+          auth.web3,
+          web3.value.account,
           space.id,
           type,
           payload
@@ -67,39 +67,37 @@ export function useClient() {
   async function sendEIP712(space, type, payload) {
     if (type === 'proposal') {
       let plugins = {};
+      const [provider, address] = space // TODO(zzuziak): change to space.filters.aliased
+        ? [aliasWallet.value, aliasWallet.value.address]
+        : [auth.web3, web3.value.account];
       if (Object.keys(payload.metadata?.plugins).length !== 0)
         plugins = payload.metadata.plugins;
-      return clientEIP712.proposal(
-        aliasWallet.value || auth.web3,
-        aliasWallet.value.address || web3.value.account,
-        {
-          space: space.id,
-          type: payload.type,
-          title: payload.name,
-          body: payload.body,
-          discussion: payload.discussion,
-          choices: payload.choices,
-          start: payload.start,
-          end: payload.end,
-          snapshot: payload.snapshot,
-          plugins: JSON.stringify(plugins),
-          app: 'snapshot'
-        }
-      );
+      return clientEIP712.proposal(provider, address, {
+        space: space.id,
+        type: payload.type,
+        title: payload.name,
+        body: payload.body,
+        discussion: payload.discussion,
+        choices: payload.choices,
+        start: payload.start,
+        end: payload.end,
+        snapshot: payload.snapshot,
+        plugins: JSON.stringify(plugins),
+        app: 'snapshot'
+      });
     } else if (type === 'vote') {
-      return clientEIP712.vote(
-        aliasWallet.value || auth.web3,
-        aliasWallet.value.address || web3.value.account,
-        {
-          space: space.id,
-          proposal: payload.proposal.id,
-          type: payload.proposal.type,
-          choice: payload.choice,
-          privacy: payload.privacy,
-          app: 'snapshot',
-          reason: payload.reason
-        }
-      );
+      const [provider, address] = space // TODO(zzuziak): change to space.voting.aliased
+        ? [aliasWallet.value, aliasWallet.value.address]
+        : [auth.web3, web3.value.account];
+      return clientEIP712.vote(provider, address, {
+        space: space.id,
+        proposal: payload.proposal.id,
+        type: payload.proposal.type,
+        choice: payload.choice,
+        privacy: payload.privacy,
+        app: 'snapshot',
+        reason: payload.reason
+      });
     } else if (type === 'delete-proposal') {
       return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
