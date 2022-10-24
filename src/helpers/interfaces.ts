@@ -105,7 +105,7 @@ export interface ExtendedSpace {
   categories: string[];
   parent: ExtendedSpace | null;
   children: ExtendedSpace[];
-  filters: { minScore: number; onlyMembers: boolean; aliased: boolean };
+  filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: SpaceValidation;
   treasuries: TreasuryAsset[];
