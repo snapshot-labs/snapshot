@@ -174,7 +174,7 @@ watch(
             <BaseIcon name="info" size="24" class="text-skin-text" />
           </BaseLink>
         </div>
-        <div class="mt-3 flex">
+        <div v-if="props.proposal.privacy !== 'shutter'" class="mt-3 flex">
           <TextareaAutosize
             v-model="reason"
             :max-length="140"

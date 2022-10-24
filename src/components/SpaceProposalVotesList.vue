@@ -121,7 +121,7 @@ watch(sortedVotes, () => {
           <BaseIcon name="signature" />
         </BaseButtonIcon>
         <BaseButtonIcon
-          v-if="vote.reason !== ''"
+          v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
           v-tippy="{
             content: vote.reason
           }"
