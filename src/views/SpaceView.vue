@@ -34,6 +34,8 @@ onMounted(async () => {
 </script>
 
 <template>
+  <SpaceWarningFlagged :space-key="spaceKey" />
+
   <router-view v-if="space" :space="space" />
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
@@ -59,5 +61,4 @@ onMounted(async () => {
       </template>
     </TheLayout>
   </div>
-  <SpaceWarningFlagged :space-key="spaceKey" />
 </template>

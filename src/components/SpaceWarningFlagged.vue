@@ -7,19 +7,19 @@ const props = defineProps<{
   spaceKey: string;
 }>();
 
-const isModalWarningFlaggedOpen = ref(false);
+const isWarningFlaggedShowing = ref(false);
 
 const acceptedFlaggedSpaces = useStorage<string[]>(
   `snapshot.acceptedFlaggedSpaces`,
   []
 );
 
-function addSpaceToAccepted() {
-  acceptedFlaggedSpaces.value = [
-    ...acceptedFlaggedSpaces.value,
-    props.spaceKey
-  ];
-}
+// function addSpaceToAccepted() {
+//   acceptedFlaggedSpaces.value = [
+//     ...acceptedFlaggedSpaces.value,
+//     props.spaceKey
+//   ];
+// }
 
 const isFlaggedSpace = computed(() => (verified[props.spaceKey] || 0) === -1);
 
@@ -28,17 +28,18 @@ onMounted(() => {
     !acceptedFlaggedSpaces.value.includes(props.spaceKey) &&
     isFlaggedSpace.value
   ) {
-    isModalWarningFlaggedOpen.value = true;
+    isWarningFlaggedShowing.value = true;
   }
 });
 </script>
 
 <template>
-  <teleport to="#modal">
-    <ModalWarningFlaggedSpace
-      :open="isModalWarningFlaggedOpen"
-      @close="isModalWarningFlaggedOpen = false"
-      @proceed="addSpaceToAccepted"
-    />
-  </teleport>
+  <BaseContainer class="mb-4">
+    <BaseMessageBlock v-if="isWarningFlaggedShowing" level="warning-red">
+      {{ $t('warningSpace') }}
+      <BaseLink link="https://docs.snapshot.org/spaces/flagged-spaces">{{
+        $t('learnMore')
+      }}</BaseLink>
+    </BaseMessageBlock>
+  </BaseContainer>
 </template>
