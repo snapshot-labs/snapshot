@@ -41,7 +41,7 @@ onMounted(() => {
       level="warning-red"
     >
       {{ $t('warningSpace') }}
-      <BaseLink link="https://docs.snapshot.org/spaces/flagged-spaces">{{
+      <BaseLink link="https://docs.snapshot.org/spaces/badges-and-warnings">{{
         $t('learnMore')
       }}</BaseLink>
     </BaseMessageBlock>
