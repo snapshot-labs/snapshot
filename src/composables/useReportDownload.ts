@@ -1,3 +1,4 @@
+import { ref } from 'vue';
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 import { getProposalVotes } from '@/helpers/snapshot';
@@ -8,16 +9,12 @@ export function useReportDownload() {
     data: any[] | Record<string, any>,
     fileName: string
   ) {
-    try {
-      const csv = await jsonexport(data);
-      const link = document.createElement('a');
-      link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
-      link.setAttribute('download', `${fileName}.csv`);
-      document.body.appendChild(link);
-      link.click();
-    } catch (e) {
-      console.error(e);
-    }
+    const csv = await jsonexport(data);
+    const link = document.createElement('a');
+    link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
+    link.setAttribute('download', `${fileName}.csv`);
+    document.body.appendChild(link);
+    link.click();
   }
 
   async function getAllVotes(proposalId: string) {
@@ -35,7 +32,10 @@ export function useReportDownload() {
     return votes;
   }
 
+  const isDownloadingVotes = ref(false);
+
   async function downloadVotes(proposalId: string) {
+    isDownloadingVotes.value = true;
     const votes = await getAllVotes(proposalId);
     if (!votes.length) return;
     const data = votes
@@ -50,10 +50,17 @@ export function useReportDownload() {
         };
       })
       .sort((a, b) => a.timestamp - b.timestamp);
-    getCsvFile(data, `${pkg.name}-report-${proposalId}`);
+    try {
+      getCsvFile(data, `${pkg.name}-report-${proposalId}`);
+    } catch (e) {
+      console.error(e);
+      isDownloadingVotes.value = false;
+    }
+    isDownloadingVotes.value = false;
   }
 
   return {
-    downloadVotes
+    downloadVotes,
+    isDownloadingVotes
   };
 }

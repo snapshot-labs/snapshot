@@ -15,8 +15,7 @@ import {
   useInfiniteLoader,
   useProposals,
   useSpaceCreateForm,
-  useFlashNotification,
-  useReportDownload
+  useFlashNotification
 } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace }>();
@@ -253,8 +252,6 @@ const truncateMarkdownBody = computed(() => {
     : 0;
   return markdownBodyHeight > 400 ? true : false;
 });
-
-const { downloadVotes } = useReportDownload();
 </script>
 
 <template>
@@ -431,7 +428,6 @@ const { downloadVotes } = useReportDownload();
           :proposal="proposal"
           :strategies="strategies"
         />
-        <BaseButton @click="downloadVotes(id)"> downloadVotes </BaseButton>
         <SpaceProposalResultsError
           v-if="loadingResultsFailed"
           :is-admin="isAdmin"
