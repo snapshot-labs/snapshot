@@ -28,7 +28,6 @@ export function useClient() {
   const usePersonalSign = computed(() => isGnosisSafe.value);
 
   async function send(space, type, payload) {
-    console.log(isGnosisSafe.value);
     isSending.value = true;
     try {
       if (usePersonalSign.value) {
@@ -58,7 +57,7 @@ export function useClient() {
   }
 
   async function sendEIP712(space, type, payload) {
-    const aliased = false; // TODO(zzuziak): change to space.voting.aliased
+    const aliased = true; // TODO(zzuziak): change to space.voting.aliased
     try {
       if (aliased) {
         await checkAlias();
