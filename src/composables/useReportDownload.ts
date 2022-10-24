@@ -3,7 +3,7 @@ import pkg from '@/../package.json';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { Vote } from '@/helpers/interfaces';
 
-export function useFileDownload() {
+export function useReportDownload() {
   async function getCsvFile(
     data: any[] | Record<string, any>,
     fileName: string

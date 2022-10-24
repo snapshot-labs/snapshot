@@ -16,7 +16,7 @@ import {
   useProposals,
   useSpaceCreateForm,
   useFlashNotification,
-  useFileDownload
+  useReportDownload
 } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace }>();
@@ -254,7 +254,7 @@ const truncateMarkdownBody = computed(() => {
   return markdownBodyHeight > 400 ? true : false;
 });
 
-const { downloadVotes } = useFileDownload();
+const { downloadVotes } = useReportDownload();
 </script>
 
 <template>
