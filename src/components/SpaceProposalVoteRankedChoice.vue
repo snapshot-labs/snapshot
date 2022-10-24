@@ -1,18 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
+import { Proposal } from '@/helpers/interfaces';
 
-defineProps({
-  proposal: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{
+  proposal: Proposal;
+  userChoice: number[] | null;
+}>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref([]);
+const selectedChoices = ref<number[]>(props.userChoice || []);
 
 function selectChoice(i) {
   selectedChoices.value.push(i);

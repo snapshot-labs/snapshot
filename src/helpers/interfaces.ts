@@ -164,10 +164,12 @@ export interface Results {
   scoresTotal: number;
 }
 
+export type Choice = number | number[] | Record<string, any>;
+
 export interface Vote {
   ipfs: string;
   voter: string;
-  choice: number | number[] | Record<string, any>;
+  choice: Choice;
   balance: number;
   scores: number[];
   vp: number;

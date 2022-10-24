@@ -1,19 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
+import { Proposal } from '@/helpers/interfaces';
 
-defineProps({
-  proposal: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{
+  proposal: Proposal;
+  userChoice: number[] | null;
+}>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref([]);
+const selectedChoices = ref<number[]>(props.userChoice || []);
 
-function selectChoice(i) {
+function selectChoice(i: number) {
   if (selectedChoices.value.includes(i))
     selectedChoices.value.splice(selectedChoices.value.indexOf(i), 1);
   else selectedChoices.value.push(i);

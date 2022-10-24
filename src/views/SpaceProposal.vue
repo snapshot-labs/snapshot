@@ -3,7 +3,7 @@ import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { useRoute, useRouter } from 'vue-router';
 import { getProposal, getProposalVotes } from '@/helpers/snapshot';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 import {
   useI18n,
   useModal,
@@ -41,7 +41,7 @@ const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref<Proposal | null>(null);
 const votes = ref([]);
-const userVote = ref([]);
+const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
 
 const isCreator = computed(() => proposal.value?.author === web3Account.value);
@@ -90,6 +90,7 @@ function reloadProposal() {
 }
 
 function formatProposalVotes(votes) {
+  if (!votes.length) return [];
   return votes.map(vote => {
     vote.balance = vote.vp;
     vote.scores = vote.vp_by_strategy;
@@ -135,7 +136,7 @@ async function loadResults() {
         first: 10
       })
     ]);
-    userVote.value = formatProposalVotes(userVotesRes);
+    userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   }
@@ -384,9 +385,10 @@ const { downloadVotes } = useFileDownload();
           :discussion-link="proposal.discussion"
         />
         <SpaceProposalVote
-          v-if="proposal?.state === 'active'"
+          v-if="proposal?.state === 'active' && loadedVotes"
           v-model="selectedChoices"
           :proposal="proposal"
+          :user-vote="userVote"
           @open="modalOpen = true"
           @clickVote="clickVote"
         />
