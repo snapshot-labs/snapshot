@@ -13,7 +13,7 @@ import ERC20_ABI from './abi/ERC20.json';
 import ERC721_ABI from './abi/ERC721.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call, getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { ModuleExecutionData } from './safe';
+import { ExecutionData } from './safe';
 
 export const MULTI_SEND_ABI = [
   'function multiSend(bytes transactions) payable'
@@ -113,7 +113,7 @@ export function convertBatchToMultisendTransaction(
 }
 
 export function convertExecutionDataToModuleTransactions(
-  executionData: ModuleExecutionData
+  executionData: ExecutionData
 ): Transaction[] {
   return executionData.batches
     .map(batch => {

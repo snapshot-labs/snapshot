@@ -1,17 +1,33 @@
 <script setup lang="ts">
 import { ExecutionData } from '@/helpers/safe';
+import { useWeb3 } from '@/composables';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { convertExecutionDataToModuleTransactions } from '@/helpers/transactionBuilder';
 
-defineProps<{
+const props = defineProps<{
   executionData: ExecutionData;
 }>();
 
-// TODO: Check if logged in as safe and allow to execute transactions.
+const { web3Account } = useWeb3();
+
+async function execute() {
+  const safe = getInstance().web3.getSigner();
+  const transactions = convertExecutionDataToModuleTransactions(
+    props.executionData
+  );
+  for (const { to, value, data } of transactions) {
+    await safe.sendTransaction({ to, value, data });
+  }
+}
 </script>
 
 <template>
   <div>
     <div class="p-4 text-center">
-      Transactions can be executed manually in the safe.
+      <div v-if="web3Account === executionData.safe.address">
+        <BaseButton @click="execute"> Execute transactions </BaseButton>
+      </div>
+      <div v-else>Transactions can be executed manually in the safe.</div>
     </div>
   </div>
 </template>
