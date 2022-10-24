@@ -22,21 +22,16 @@ export function useReportDownload() {
 
   async function getAllVotes(proposalId: string) {
     let votes: Vote[] = [];
-    let batches = 0;
-    const batchSize = 1000;
-    async function getAllVotes() {
-      const votesRes =
-        (await getProposalVotes(proposalId, {
-          skip: batchSize * batches,
-          first: batchSize
-        })) ?? [];
-      batches += 1;
-      votes = votes.concat(votesRes);
-      if (votes.length === batchSize * batches) {
-        await getAllVotes();
-      }
+    let page = 0;
+    const pageSize = 1000;
+    while (votes.length === pageSize * page) {
+      const newVotes = await getProposalVotes(proposalId, {
+        first: pageSize,
+        skip: page * pageSize
+      });
+      votes = [...votes, ...newVotes];
+      page++;
     }
-    await getAllVotes();
     return votes;
   }
 
