@@ -106,7 +106,7 @@ const votingPeriod = computed({
       <InputSwitch
         v-if="form.validation.name === 'basic'"
         v-model="form.voting.aliased"
-        :text-right="$t('settings.enableAliased.voting')"
+        :text-right="$t('settings.enableAliased')"
       />
     </div>
   </BaseBlock>
