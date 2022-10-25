@@ -57,7 +57,7 @@ export function useClient() {
   }
 
   async function sendEIP712(space, type, payload) {
-    const aliased = space.voting.aliased;
+    const aliased = space.voting?.aliased;
     try {
       if (aliased) {
         await checkAlias();
