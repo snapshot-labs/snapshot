@@ -221,6 +221,7 @@ export const SPACES_QUERY = gql`
         quorum
         privacy
         hideAbstain
+        aliased
       }
       strategies {
         name
