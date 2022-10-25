@@ -1,13 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+
 import { useApp, useExtendedSpaces } from '@/composables';
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
-const aliasedSpace = aliases[domain] || aliases[route.params.key];
+const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
@@ -33,6 +34,8 @@ onMounted(async () => {
 </script>
 
 <template>
+  <SpaceWarningFlagged :space-key="spaceKey" />
+
   <router-view v-if="space" :space="space" />
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
