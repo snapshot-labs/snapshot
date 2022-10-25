@@ -96,7 +96,7 @@ export function useClient() {
           reason: payload.reason
         });
       } else if (type === 'delete-proposal') {
-        return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
+        return clientEIP712.cancelProposal(provider, address, {
           space: space.id,
           proposal: payload.proposal.id
         });
