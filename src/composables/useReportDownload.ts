@@ -38,18 +38,16 @@ export function useReportDownload() {
     isDownloadingVotes.value = true;
     const votes = await getAllVotes(proposalId);
     if (!votes.length) return;
-    const data = votes
-      .map(vote => {
-        return {
-          address: vote.voter,
-          choice: vote.choice,
-          balance: vote.vp,
-          timestamp: vote.created,
-          dateUtc: new Date(vote.created * 1e3).toUTCString(),
-          authorIpfsHash: vote.ipfs
-        };
-      })
-      .sort((a, b) => a.timestamp - b.timestamp);
+    const data = votes.map(vote => {
+      return {
+        address: vote.voter,
+        choice: vote.choice,
+        balance: vote.vp,
+        timestamp: vote.created,
+        dateUtc: new Date(vote.created * 1e3).toUTCString(),
+        authorIpfsHash: vote.ipfs
+      };
+    });
     try {
       getCsvFile(data, `${pkg.name}-report-${proposalId}`);
     } catch (e) {
