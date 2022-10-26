@@ -120,7 +120,6 @@
   "language": "语言",
   "agree": "我同意",
   "moderators": "版主",
-  "mustAgreeToTerms": "在完成此操作之前，您必须同意此处的{0}服务条款：",
   "playground": "练习场",
   "strategyParams": "策略参数",
   "addresses": "地址",
@@ -275,6 +274,12 @@
     "all": "全部",
     "unread": "未读"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "设置",
     "editController": "编辑控制人",
@@ -298,7 +303,7 @@
       "select": "选择类别"
     },
     "terms": {
-      "label": "条款",
+      "label": "Terms of service",
       "information": "用户在创建提案或投票前需要接受一次这些条款"
     },
     "hideSpace": "从主页隐藏空间",
