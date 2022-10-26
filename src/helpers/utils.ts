@@ -112,7 +112,7 @@ export function getNumberWithOrdinal(n) {
 }
 
 export function explorerUrl(network, str: string, type = 'address'): string {
-  return `${networks[network].explorer}/${type}/${str}`;
+  return `${networks[network].explorer.url}/${type}/${str}`;
 }
 
 export function calcFromSeconds(value, unit) {

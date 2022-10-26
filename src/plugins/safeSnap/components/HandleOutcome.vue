@@ -83,7 +83,7 @@ const ensureRightNetwork = async chainId => {
               chainId: chainIdHex,
               chainName: network.name,
               rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer]
+              blockExplorerUrls: [network.explorer.url]
             }
           ]
         });
