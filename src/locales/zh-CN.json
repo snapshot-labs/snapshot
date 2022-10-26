@@ -275,10 +275,10 @@
     "unread": "未读"
   },
   "modalTerms": {
-    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
-    "actionJoin": "join",
-    "actionCreate": "create a proposal in",
-    "actionVote": "vote in"
+    "mustAgreeTo": "激活这个空间，您必须同意 spaceName 的服务条款。",
+    "actionJoin": "加入",
+    "actionCreate": "创建提案",
+    "actionVote": "投票"
   },
   "settings": {
     "header": "设置",
@@ -303,7 +303,7 @@
       "select": "选择类别"
     },
     "terms": {
-      "label": "Terms of service",
+      "label": "服务条款",
       "information": "用户在创建提案或投票前需要接受一次这些条款"
     },
     "hideSpace": "从主页隐藏空间",
