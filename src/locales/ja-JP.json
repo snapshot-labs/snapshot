@@ -120,7 +120,6 @@
   "language": "言語",
   "agree": "同意する",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "このアクションを完了する前に、 {0} 利用規約に同意する必要があります:",
   "playground": "プレイグラウンド",
   "strategyParams": "ストラテジーのパラメータ",
   "addresses": "アドレス",
@@ -275,6 +274,12 @@
     "all": "全て",
     "unread": "未読"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "設定",
     "editController": "コントローラの編集",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "ホームページからスペースを隠す",
