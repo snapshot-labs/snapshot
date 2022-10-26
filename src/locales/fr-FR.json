@@ -120,7 +120,6 @@
   "language": "Langage",
   "agree": "J'accepte",
   "moderators": "Modérateurs",
-  "mustAgreeToTerms": "Avant de pouvoir effectuer cette action, vous devez accepter les conditions d'utilisation de {0} ici:",
   "playground": "Playground",
   "strategyParams": "Paramètres de la stratégie",
   "addresses": "Adresses",
@@ -275,6 +274,12 @@
     "all": "Tout",
     "unread": "Non lus"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Réglages",
     "editController": "Modifier le controller",
@@ -298,7 +303,7 @@
       "select": "Sélectionner la/les catégorie(s)"
     },
     "terms": {
-      "label": "Conditions",
+      "label": "Terms of service",
       "information": "Les utilisateurs devront accepter ces conditions une fois avant de pouvoir créer une proposition ou voter"
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
