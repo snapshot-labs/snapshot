@@ -61,9 +61,7 @@ function addProposalExecutionData(executionData: ExecutionData) {
       <TransactionBuilder
         v-for="(executionData, index) in proposalExecutionData"
         :key="index"
-        :safe="executionData.safe"
-        :initial-batches="executionData.batches"
-        :initial-abis="executionData.abis"
+        :execution-data="executionData"
         @remove-transaction-builder="removeProposalExecutionData(index)"
         @update-batches="updateTransactionBatches(index, $event)"
         @update-abis="updateContractABIs(index, $event)"

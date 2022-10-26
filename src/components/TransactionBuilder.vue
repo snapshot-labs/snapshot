@@ -8,12 +8,10 @@ import {
   Transaction,
   detectTransactionForm
 } from '@/helpers/transactionBuilder';
-import { ExecutionDataABIs, Safe } from '@/helpers/safe';
+import { ExecutionData, ExecutionDataABIs } from '@/helpers/safe';
 
 const props = defineProps<{
-  safe: Safe;
-  initialBatches: Transaction[][];
-  initialAbis: ExecutionDataABIs;
+  executionData: ExecutionData;
 }>();
 
 const emit = defineEmits<{
@@ -31,7 +29,10 @@ const {
   removeTransaction,
   updateTransaction,
   addABI
-} = useTransactionBuilder(props.initialBatches, props.initialAbis);
+} = useTransactionBuilder(
+  props.executionData.batches,
+  props.executionData.abis
+);
 
 watch(
   batches,
@@ -54,6 +55,13 @@ const targetTransactionIndex = ref<number | null>(null);
 const targetTransaction = computed<Transaction | null>(() => {
   if (targetTransactionIndex.value === null) return null;
   return batches.value[targetBatchIndex.value][targetTransactionIndex.value];
+});
+const title = computed<string>(() => {
+  return `${props.executionData.safe.name} (${
+    props.executionData.safe.network
+  }, ${props.executionData.safe.address.slice(0, 6)}, ${
+    props.executionData.module?.type || 'manual'
+  } execution)`;
 });
 
 function openEmptyForm(form: TransactionForms, batchIndex: number) {
@@ -87,10 +95,7 @@ function transactionItemKey(transaction: Transaction) {
 
 <template>
   <div>
-    <BaseBlock
-      :title="`${safe.name} (${safe.network}, ${safe.address.slice(0, 6)})`"
-      slim
-    >
+    <BaseBlock :title="title" slim>
       <template #title-buttons>
         <BaseButton
           v-tippy="'Add transaction group'"
@@ -105,7 +110,7 @@ function transactionItemKey(transaction: Transaction) {
         </BaseButton>
         <BaseButton
           v-tippy="'Remove execution instance'"
-          class="-mr-3 !border-none"
+          class="-mr-2 !border-none"
           small
           @click="emit('removeTransactionBuilder')"
         >
@@ -178,7 +183,7 @@ function transactionItemKey(transaction: Transaction) {
                 </div>
                 <TransactionBuilderDisplayTransaction
                   :transaction="element"
-                  :network="safe.network"
+                  :network="executionData.safe.network"
                   :contract-abi="abis[element.to]"
                 />
                 <BaseButton
@@ -213,14 +218,14 @@ function transactionItemKey(transaction: Transaction) {
       <TransactionBuilderFormFunds
         :show-form="showForm === TransactionForms.FUNDS"
         :transaction="targetTransaction"
-        :safe="safe"
+        :safe="executionData.safe"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />
       <TransactionBuilderFormNFT
         :show-form="showForm === TransactionForms.NFT"
         :transaction="targetTransaction"
-        :safe="safe"
+        :safe="executionData.safe"
         @save-transaction="saveTransaction($event)"
         @close="showForm = null"
       />
@@ -228,7 +233,7 @@ function transactionItemKey(transaction: Transaction) {
         :show-form="showForm === TransactionForms.CONTRACT"
         :transaction="targetTransaction"
         :abis="abis"
-        :safe="safe"
+        :safe="executionData.safe"
         @save-transaction="saveTransaction($event)"
         @save-abi="addABI($event.contractAddress, $event.abiString)"
         @close="showForm = null"
