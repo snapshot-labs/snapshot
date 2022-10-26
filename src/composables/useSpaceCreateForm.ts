@@ -46,23 +46,36 @@ const sourceProposalLoaded = ref(false);
 export function useSpaceCreateForm() {
   const route = useRoute();
 
-  const formDraft = useStorage(
-    `snapshot.proposal.${route.params.key}`,
-    clone(EMPTY_PROPOSAL)
-  );
+  const formDraft = useStorage<{
+    name: string;
+    body: string;
+    choices: { key: number; text: string }[];
+  }>(`snapshot.proposal.${route.params.key}`, {
+    name: '',
+    body: '',
+    choices: []
+  });
 
   const sourceProposal = computed(() => route.params.sourceProposal);
 
   watch(
     form,
     () => {
-      formDraft.value = clone(form.value);
+      formDraft.value = {
+        name: form.value.name,
+        body: form.value.body,
+        choices: form.value.choices
+      };
     },
     { deep: true }
   );
 
   onMounted(() => {
-    if (!sourceProposal.value) form.value = clone(formDraft.value);
+    if (!sourceProposal.value) {
+      form.value.name = formDraft.value.name;
+      form.value.body = formDraft.value.body;
+      form.value.choices = formDraft.value.choices;
+    }
   });
 
   function resetForm() {

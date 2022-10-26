@@ -26,7 +26,7 @@
   "space": "Espacio",
   "spaces": "Espacios",
   "verifiedSpace": "Verified space",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "Versión",
   "timeline": "Línea de tiempo",
   "ended": "ended",

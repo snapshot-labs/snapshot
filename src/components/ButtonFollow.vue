@@ -57,6 +57,7 @@ const canFollow = computed(() =>
       v-if="space"
       :open="modalTermsOpen"
       :space="space"
+      :action="$t('modalTerms.actionJoin')"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), clickFollow(space.id)"
     />
