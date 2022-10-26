@@ -120,7 +120,6 @@
   "language": "Idioma",
   "agree": "Eu concordo",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "Antes de concluir esta ação, você deve concordar com os {0} termos de serviço aqui:",
   "playground": "Parque infantil",
   "strategyParams": "Parâmetros de estratégia",
   "addresses": "Moradas",
@@ -275,6 +274,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Definições",
     "editController": "Edit controller",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Ocultar comunidade da página inicial",
