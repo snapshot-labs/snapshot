@@ -53,7 +53,10 @@ export function useSpaceCreateForm() {
   }>(`snapshot.proposal.${route.params.key}`, {
     name: '',
     body: '',
-    choices: []
+    choices: [
+      { key: 0, text: '' },
+      { key: 1, text: '' }
+    ]
   });
 
   const sourceProposal = computed(() => route.params.sourceProposal);
