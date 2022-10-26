@@ -120,7 +120,6 @@
   "language": "언어",
   "agree": "동의함",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "이 작업을 완료하려면 {0} 서비스 약관에 동의해야 합니다.",
   "playground": "플레이그라운드",
   "strategyParams": "전략 매개변수",
   "addresses": "주소",
@@ -275,6 +274,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "설정",
     "editController": "관리자 설정",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "홈페이지에서 공간 숨기기",
