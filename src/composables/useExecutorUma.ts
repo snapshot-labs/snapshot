@@ -15,6 +15,7 @@ import { Executor, ExecutionState, ModuleExecutionData } from '@/helpers/safe';
 import { convertExecutionDataToModuleTransactions } from '@/helpers/transactionBuilder';
 import { useWeb3, useTxStatus } from '@/composables';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { hexlify } from '@ethersproject/bytes';
 
 // "ZODIAC"
 const IDENTIFIER =
@@ -51,7 +52,10 @@ export async function useExecutorUma(
     )
   );
 
-  const explanation = `${proposal.id}:${executionDataIndex}`;
+  const explanation = `${proposal.id}${hexlify([executionDataIndex]).replace(
+    '0x',
+    ''
+  )}`;
 
   const ancillaryData = pack(
     ['string', 'bytes', 'bytes'],
