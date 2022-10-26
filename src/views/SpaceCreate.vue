@@ -84,11 +84,17 @@ const isValid = computed(() => {
   );
 });
 
+enum Step {
+  CONTENT,
+  VOTING,
+  PLUGINS
+}
+
 const currentStep = computed(() => Number(route.params.step));
 
 const stepIsValid = computed(() => {
   if (
-    currentStep.value === 1 &&
+    currentStep.value === Step.CONTENT &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     passValidation.value[0] &&
@@ -97,7 +103,7 @@ const stepIsValid = computed(() => {
   )
     return true;
   else if (
-    currentStep.value === 2 &&
+    currentStep.value === Step.VOTING &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -250,7 +256,10 @@ onMounted(() =>
 <template>
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div v-if="currentStep === 1" class="mb-3 overflow-hidden px-4 md:px-0">
+      <div
+        v-if="currentStep === Step.CONTENT"
+        class="mb-3 overflow-hidden px-4 md:px-0"
+      >
         <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
           <ButtonBack />
         </router-link>
@@ -266,14 +275,14 @@ onMounted(() =>
 
       <!-- Step 1 -->
       <SpaceCreateContent
-        v-if="currentStep === 1"
+        v-if="currentStep === Step.CONTENT"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
       />
 
       <!-- Step 2 -->
       <SpaceCreateVoting
-        v-else-if="currentStep === 2"
+        v-else-if="currentStep === Step.VOTING"
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
@@ -284,7 +293,7 @@ onMounted(() =>
         v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
         class="space-y-3"
       >
-        <PluginCreate
+        <SpaceCreatePlugins
           v-model="form.metadata.plugins"
           :proposal="proposal"
           :space="space"
@@ -294,7 +303,7 @@ onMounted(() =>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
         <BaseButton
-          v-if="currentStep === 1"
+          v-if="currentStep === Step.CONTENT"
           class="mb-2 block w-full"
           @click="preview = !preview"
         >
@@ -303,9 +312,11 @@ onMounted(() =>
         <BaseButton v-else class="mb-2 block w-full" @click="previosStep">
           {{ $t('back') }}
         </BaseButton>
-
         <BaseButton
-          v-if="currentStep === 3 || (!needsPluginConfigs && currentStep === 2)"
+          v-if="
+            currentStep === Step.PLUGINS ||
+            (!needsPluginConfigs && currentStep === Step.VOTING)
+          "
           :disabled="!isValid"
           :loading="isSending || queryLoading"
           class="block w-full"
@@ -345,6 +356,7 @@ onMounted(() =>
     <ModalTerms
       :open="modalTermsOpen"
       :space="space"
+      :action="$t('modalTerms.actionCreate')"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), handleSubmit()"
     />

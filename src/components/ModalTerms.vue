@@ -2,7 +2,11 @@
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps<{ open: boolean; space: ExtendedSpace }>();
+const props = defineProps<{
+  open: boolean;
+  space: ExtendedSpace;
+  action: string;
+}>();
 
 const emit = defineEmits(['accept', 'close']);
 
@@ -19,10 +23,16 @@ function accept() {
     <template #header>
       <h3>{{ $t('settings.terms.label') }}</h3>
     </template>
-    <div class="my-2 p-4 text-center">
-      <h4 class="mb-3">
-        {{ $tc('mustAgreeToTerms', [space.name]) }}
-      </h4>
+    <div class="py-4 text-center md:p-4">
+      <BaseMessageBlock is-responsive level="info" class="mb-4 text-left">
+        {{
+          $tc('modalTerms.mustAgreeTo', {
+            action,
+            spaceName: space.name || 'spaces'
+          })
+        }}
+      </BaseMessageBlock>
+
       <BaseLink :link="space.terms!">
         <TextAutolinker :text="getIpfsUrl" :truncate="35" />
       </BaseLink>

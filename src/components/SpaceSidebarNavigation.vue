@@ -15,7 +15,7 @@ defineProps<{
     </router-link>
     <router-link
       v-slot="{ isExactActive }"
-      :to="{ name: 'spaceCreate', params: { step: 1 } }"
+      :to="{ name: 'spaceCreate', params: { step: 0 } }"
       data-testid="create-proposal-button"
     >
       <BaseSidebarNavigationItem :is-active="isExactActive">

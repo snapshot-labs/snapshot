@@ -26,7 +26,7 @@
   "space": "Space",
   "spaces": "Spaces",
   "verifiedSpace": "Verified space",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "ended",
@@ -120,7 +120,6 @@
   "language": "Language",
   "agree": "I agree",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "Before you can complete this action, you must agree to {0} terms of service here:",
   "playground": "Playground",
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
@@ -275,6 +274,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Settings",
     "editController": "Edit controller",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Hide space from homepage",

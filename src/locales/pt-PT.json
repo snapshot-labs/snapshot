@@ -26,7 +26,7 @@
   "space": "Espaço",
   "spaces": "Espaços",
   "verifiedSpace": "Verified space",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "Versão",
   "timeline": "Cronologia",
   "ended": "ended",
@@ -607,6 +607,24 @@
     "button_show": "Browse collection",
     "success_claim": "The POAP has been minted to your collection",
     "error_claim": "Ocorreu um problema ao cunhar o token"
+  },
+  "progress": {
+    "progress": "Progress",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "complete": "Complete",
+    "newStep": "New Step",
+    "description": "Description",
+    "add": "Add",
+    "deleteStep": "Delete Step",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
+    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
+    "wentWrong": "Oops something went wrong.",
+    "voting": "Voting",
+    "soon": "Soon"
   },
   "charts": {
     "charts": "Charts",

@@ -3,8 +3,7 @@ import { ref, computed, watch, onMounted, watchEffect } from 'vue';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { useRoute, useRouter } from 'vue-router';
 import { getProposal, getProposalVotes } from '@/helpers/snapshot';
-import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 import {
   useI18n,
   useModal,
@@ -15,7 +14,6 @@ import {
   useClient,
   useInfiniteLoader,
   useProposals,
-  useIntl,
   useSpaceCreateForm,
   useFlashNotification
 } from '@/composables';
@@ -30,7 +28,6 @@ const { web3, web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { removeSpaceProposal } = useProposals();
 const { notify } = useFlashNotification();
-const { formatRelativeTime, formatNumber } = useIntl();
 
 const id: string = route.params.id as string;
 
@@ -43,9 +40,8 @@ const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref<Proposal | null>(null);
 const votes = ref([]);
-const userVote = ref([]);
+const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
-const modalStrategiesOpen = ref(false);
 
 const isCreator = computed(() => proposal.value?.author === web3Account.value);
 const isAdmin = computed(() => {
@@ -57,9 +53,6 @@ const strategies = computed(
   () => proposal.value?.strategies ?? props.space.strategies
 );
 
-const symbols = computed((): string[] =>
-  strategies.value.map(strategy => (strategy.params.symbol as string) || '')
-);
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
   if (isAdmin.value || isCreator.value)
@@ -96,6 +89,7 @@ function reloadProposal() {
 }
 
 function formatProposalVotes(votes) {
+  if (!votes.length) return [];
   return votes.map(vote => {
     vote.balance = vote.vp;
     vote.scores = vote.vp_by_strategy;
@@ -141,7 +135,7 @@ async function loadResults() {
         first: 10
       })
     ]);
-    userVote.value = formatProposalVotes(userVotesRes);
+    userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   }
@@ -188,7 +182,7 @@ function selectFromThreedotDropdown(e) {
       name: 'spaceCreate',
       params: {
         key: proposal.value.space.id,
-        step: 1,
+        step: 0,
         sourceProposal: proposal.value.id
       }
     });
@@ -387,9 +381,10 @@ const truncateMarkdownBody = computed(() => {
           :discussion-link="proposal.discussion"
         />
         <SpaceProposalVote
-          v-if="proposal?.state === 'active'"
+          v-if="proposal?.state === 'active' && loadedVotes"
           v-model="selectedChoices"
           :proposal="proposal"
+          :user-vote="userVote"
           @open="modalOpen = true"
           @clickVote="clickVote"
         />
@@ -404,7 +399,7 @@ const truncateMarkdownBody = computed(() => {
           :loading-more="loadingMore"
           @loadVotes="loadMore(loadMoreVotes)"
         />
-        <PluginProposal
+        <SpaceProposalPlugins
           v-if="proposal?.plugins && loadedResults && results"
           :id="id"
           :space="space"
@@ -418,89 +413,11 @@ const truncateMarkdownBody = computed(() => {
     </template>
     <template #sidebar-right>
       <div v-if="proposal" class="mt-4 space-y-4 lg:mt-0">
-        <BaseBlock :title="$t('information')">
-          <div class="space-y-1">
-            <div>
-              <b>{{ $t('strategies') }}</b>
-              <span
-                class="float-right flex text-skin-link"
-                @click="modalStrategiesOpen = true"
-              >
-                <span
-                  v-for="(symbol, symbolIndex) of symbols.slice(0, 5)"
-                  :key="symbol"
-                  class="flex"
-                >
-                  <span
-                    v-tippy="{
-                      content: symbol
-                    }"
-                  >
-                    <AvatarSpace :space="space" :symbol-index="symbolIndex" />
-                  </span>
-                  <span
-                    v-show="symbolIndex !== symbols.length - 1"
-                    class="ml-1"
-                  />
-                </span>
-              </span>
-            </div>
-
-            <div>
-              <b>IPFS</b>
-              <BaseLink :link="getIpfsUrl(proposal.ipfs)" class="float-right">
-                #{{ proposal.ipfs.slice(0, 7) }}
-              </BaseLink>
-            </div>
-            <div>
-              <b>{{ $t('proposal.votingSystem') }}</b>
-              <span class="float-right text-skin-link">
-                {{ $t(`voting.${proposal.type}`) }}
-              </span>
-            </div>
-            <div v-if="proposal.privacy">
-              <b>{{ $t('proposal.privacy') }}</b>
-              <BaseLink
-                v-tippy="{ content: $t(`privacy.${proposal.privacy}.tooltip`) }"
-                :link="$t(`privacy.${proposal.privacy}.url`)"
-                class="float-right cursor-pointer text-skin-link"
-              >
-                {{ $t(`privacy.${proposal.privacy}.label`) }}
-              </BaseLink>
-            </div>
-            <div>
-              <b>{{ $t('proposal.startDate') }}</b>
-              <span
-                v-tippy="{
-                  content: formatRelativeTime(proposal.start)
-                }"
-                class="float-right text-skin-link"
-                v-text="$d(proposal.start * 1e3, 'short', 'en-US')"
-              />
-            </div>
-            <div>
-              <b>{{ $t('proposal.endDate') }}</b>
-              <span
-                v-tippy="{
-                  content: formatRelativeTime(proposal.end)
-                }"
-                class="float-right text-skin-link"
-                v-text="$d(proposal.end * 1e3, 'short', 'en-US')"
-              />
-            </div>
-            <div>
-              <b>{{ $t('snapshot') }}</b>
-              <BaseLink
-                :link="
-                  explorerUrl(proposal.network, proposal.snapshot, 'block')
-                "
-                class="float-right"
-              >
-                {{ formatNumber(Number(proposal.snapshot)) }}
-              </BaseLink>
-            </div>
-          </div>
-        </BaseBlock>
+        <SpaceProposalInformation
+          :space="space"
+          :proposal="proposal"
+          :strategies="strategies"
+        />
         <SpaceProposalResultsError
           v-if="loadingResultsFailed"
           :is-admin="isAdmin"
@@ -508,7 +425,7 @@ const truncateMarkdownBody = computed(() => {
           :proposal-state="proposal.scores_state"
           @retry="loadProposal()"
         />
-        <ProposalResults
+        <SpaceProposalResults
           :loaded="loadedResults"
           :space="space"
           :proposal="proposal"
@@ -516,7 +433,7 @@ const truncateMarkdownBody = computed(() => {
           :votes="votes"
           :strategies="strategies"
         />
-        <PluginProposalSidebar
+        <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
           :id="id"
           :space="space"
@@ -542,15 +459,10 @@ const truncateMarkdownBody = computed(() => {
       @reload="reloadProposal()"
       @openPostVoteModal="isModalPostVoteOpen = true"
     />
-    <ModalStrategies
-      :open="modalStrategiesOpen"
-      :proposal="proposal"
-      :strategies="strategies"
-      @close="modalStrategiesOpen = false"
-    />
     <ModalTerms
       :open="modalTermsOpen"
       :space="space"
+      :action="$t('modalTerms.actionVote')"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), (modalOpen = true)"
     />

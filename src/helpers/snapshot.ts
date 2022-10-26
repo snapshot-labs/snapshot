@@ -22,7 +22,7 @@ export async function getProposalVotes(
     });
     console.timeEnd('getProposalVotes');
     const votesResClone = cloneDeep(response);
-    return votesResClone.data.votes;
+    return votesResClone.data.votes || [];
   } catch (e) {
     console.log(e);
     return e;
