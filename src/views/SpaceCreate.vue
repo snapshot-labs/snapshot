@@ -360,6 +360,7 @@ onMounted(() =>
     <ModalTerms
       :open="modalTermsOpen"
       :space="space"
+      :action="$t('modalTerms.actionCreate')"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), handleSubmit()"
     />
