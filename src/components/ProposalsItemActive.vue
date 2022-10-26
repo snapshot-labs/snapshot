@@ -16,7 +16,7 @@ defineProps<{
     {{
       getRelativeProposalPeriod(proposal.state, proposal.start, proposal.end)
     }}
-    <span v-if="proposal.quorum">
+    <span v-if="proposal.quorum && proposal.scores_total">
       -
       {{
         formatPercentNumber(
