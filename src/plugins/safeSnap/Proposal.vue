@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
 import { mapLegacyExecutionData } from './utils';
 import {
   ExecutionData,
   SafeModuleLogos,
   SafeModuleType,
-  ModuleExecutionData
+  ModuleExecutionData,
+  Safe,
+  EIP3770_PREFIXES
 } from '@/helpers/safe';
 
 const props = defineProps<{
@@ -16,6 +19,11 @@ const props = defineProps<{
 const executionData = computed<ExecutionData[]>(() =>
   mapLegacyExecutionData(props.proposal.plugins.safeSnap)
 );
+
+function safeLink(safe: Safe): string {
+  const prefix = EIP3770_PREFIXES[safe.network];
+  return `https://gnosis-safe.io/app/${prefix}:${safe.address}`;
+}
 </script>
 
 <template>
@@ -23,16 +31,25 @@ const executionData = computed<ExecutionData[]>(() =>
     <BaseBlock
       v-for="(data, index) in executionData"
       :key="index"
-      :title="data.safe.name"
+      :title="`${data.safe.name} (${shorten(data.safe.address)})`"
       slim
     >
       <template #title-buttons>
-        <img
-          v-if="data.module"
-          :src="SafeModuleLogos[data.module.type]"
-          :alt="data.safe.type"
-          class="inline h-4"
-        />
+        <div class="flex">
+          <BaseLink
+            :link="safeLink(data.safe)"
+            target="_blank"
+            hide-external-icon
+          >
+            <i-ho-external-link />
+          </BaseLink>
+          <img
+            v-if="data.module"
+            :src="SafeModuleLogos[data.module.type]"
+            :alt="data.safe.type"
+            class="ml-auto inline h-4"
+          />
+        </div>
       </template>
 
       <ExecutionDisplayTransactions :execution-data="data" />

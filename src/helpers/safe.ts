@@ -14,6 +14,18 @@ const SAFE_TRANSACTION_API_URLS = {
   '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
 };
 
+export const EIP3770_PREFIXES = {
+  '1': 'eth',
+  '4': 'rin',
+  '5': 'gor',
+  '56': 'bnb',
+  '100': 'gno',
+  '246': 'ewt',
+  '73799': 'vt',
+  '42161': 'arb1',
+  '137': 'matic'
+};
+
 export const EIP712_SAFE_TRANSACTIN_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
