@@ -18,6 +18,7 @@ const {
   dispute,
   execute,
   now,
+  bondBalance,
   bondAllowance,
   bondAmount,
   bondDecimals,
@@ -34,6 +35,9 @@ const {
 const hasBondAllowance = computed<boolean>(() =>
   bondAllowance.value.gte(bondAmount)
 );
+const hasBondBalance = computed<boolean>(() =>
+  bondBalance.value.gte(bondAmount)
+);
 </script>
 
 <template>
@@ -44,10 +48,18 @@ const hasBondAllowance = computed<boolean>(() =>
   >
     <template #propose>
       <div v-if="hasBondAllowance" class="flex flex-col">
-        <BaseButton @click="propose"> propose transactions </BaseButton>
-        <small class="mt-2 opacity-50">
-          You will deposit a bond of {{ bondAmount }}.
-        </small>
+        <template v-if="hasBondBalance">
+          <BaseButton @click="propose"> propose transactions </BaseButton>
+          <small class="mt-2 opacity-50">
+            You will deposit a bond of
+            {{ formatUnits(bondAmount, bondDecimals) }}.
+          </small>
+        </template>
+        <template v-else>
+          You don't have the required
+          {{ formatUnits(bondAmount, bondDecimals) }} {{ bondSymbol }} to
+          propose.
+        </template>
       </div>
       <div v-else>
         To propose transactions you need to deposit a bond of

@@ -73,6 +73,7 @@ export async function useExecutorUma(
   );
 
   const bondAllowance = ref<BigNumber>(BigNumber.from(0));
+  const bondBalance = ref<BigNumber>(BigNumber.from(0));
   const bondAmount = BigNumber.from(await moduleContract.bondAmount());
   const bondAddress = await moduleContract.collateral();
   const bondContract = new Contract(bondAddress, ERC20_ABI, readProvider);
@@ -142,7 +143,7 @@ export async function useExecutorUma(
     );
   }
 
-  async function setCurrentUserBondAllowance() {
+  async function setCurrentUserBondBalanceAndAllowance() {
     bondAllowance.value = BigNumber.from(
       web3Account.value
         ? await bondContract.allowance(
@@ -151,16 +152,19 @@ export async function useExecutorUma(
           )
         : 0
     );
+    bondBalance.value = BigNumber.from(
+      web3Account.value ? await bondContract.balanceOf(web3Account.value) : 0
+    );
   }
 
-  watch(web3Account, setCurrentUserBondAllowance);
+  watch(web3Account, setCurrentUserBondBalanceAndAllowance);
 
   async function updateState() {
     loading.value = true;
 
     await setOracleState();
     await updateProposalExecutionHistory();
-    await setCurrentUserBondAllowance();
+    await setCurrentUserBondBalanceAndAllowance();
 
     loading.value = false;
   }
@@ -272,6 +276,7 @@ export async function useExecutorUma(
     dispute,
     execute,
     now,
+    bondBalance,
     bondAllowance,
     bondAmount,
     bondSymbol,
