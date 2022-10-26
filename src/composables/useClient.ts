@@ -73,6 +73,7 @@ export function useClient() {
         if (Object.keys(payload.metadata?.plugins).length !== 0)
           plugins = payload.metadata.plugins;
         return clientEIP712.proposal(provider, address, {
+          from: web3.value.account,
           space: space.id,
           type: payload.type,
           title: payload.name,
@@ -87,6 +88,7 @@ export function useClient() {
         });
       } else if (type === 'vote') {
         return clientEIP712.vote(provider, address, {
+          from: web3.value.account,
           space: space.id,
           proposal: payload.proposal.id,
           type: payload.proposal.type,
@@ -97,6 +99,7 @@ export function useClient() {
         });
       } else if (type === 'delete-proposal') {
         return clientEIP712.cancelProposal(provider, address, {
+          from: web3.value.account,
           space: space.id,
           proposal: payload.proposal.id
         });
