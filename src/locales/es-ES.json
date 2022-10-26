@@ -120,7 +120,6 @@
   "language": "Idioma",
   "agree": "Acepto",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "Antes de poder completar esta acción, debes aceptar los {0} términos de servicio aquí:",
   "playground": "Centro de Pruebas",
   "strategyParams": "Parámetros de estrategia",
   "addresses": "Direcciones",
@@ -275,6 +274,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Ajustes",
     "editController": "Edit controller",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Ocultar espacio de la página de inicio",
