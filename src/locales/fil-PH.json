@@ -120,7 +120,6 @@
   "language": "Lingwahe",
   "agree": "Sang-ayon ako",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "Bago mo makumpleto ang pagkilos na ito, dapat kang sumang-ayon sa {0} mga tuntunin ng serbisyo dito:",
   "playground": "Palaruan",
   "strategyParams": "Param ng estratehiya",
   "addresses": "Mga address",
@@ -275,6 +274,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Mga Setting",
     "editController": "Edit controller",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Itago ang espasyo sa homepage",
