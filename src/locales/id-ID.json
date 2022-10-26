@@ -120,7 +120,6 @@
   "language": "Bahasa",
   "agree": "Saya setuju",
   "moderators": "Moderators",
-  "mustAgreeToTerms": "Sebelum Anda dapat menyelesaikan tindakan ini, Anda harus setuju pada {0} ketentuan layanan ini:",
   "playground": "Playground",
   "strategyParams": "Parameter strategi",
   "addresses": "Alamat",
@@ -275,6 +274,12 @@
     "all": "Semua",
     "unread": "Belum dibaca"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "join",
+    "actionCreate": "create a proposal in",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Pengaturan",
     "editController": "Edit controller",
@@ -298,7 +303,7 @@
       "select": "Select categorie(s)"
     },
     "terms": {
-      "label": "Terms",
+      "label": "Terms of service",
       "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
     },
     "hideSpace": "Sembunyikan ruang dari halaman beranda",
