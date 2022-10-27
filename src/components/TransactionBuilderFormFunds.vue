@@ -13,6 +13,8 @@ import {
 import { FormError } from '@/helpers/interfaces';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 
+const DEFAULT_DECIMALS = 18;
+
 const props = defineProps<{
   showForm: boolean;
   transaction: Transaction | null;
@@ -32,7 +34,7 @@ const amount = computed<BigNumber>(() => {
   try {
     const integerRepresentation = parseUnits(
       amountInput.value,
-      selectedAsset.value?.decimals || 18
+      selectedAsset.value?.decimals || DEFAULT_DECIMALS
     );
     return BigNumber.from(integerRepresentation);
   } catch (e) {
@@ -50,7 +52,10 @@ const recipientError = computed<FormError | null>(() => {
 
 const amountError = computed<FormError | null>(() => {
   try {
-    parseUnits(amountInput.value, 18); // TODO: get decimals from token
+    parseUnits(
+      amountInput.value,
+      selectedAsset.value?.decimals || DEFAULT_DECIMALS
+    );
   } catch {
     return { message: 'Invalid amount' };
   }
@@ -72,7 +77,7 @@ async function populateForm() {
       recipient.value = props.transaction.to;
       amountInput.value = formatUnits(
         props.transaction.value.toString(),
-        selectedAsset.value?.decimals || 18
+        selectedAsset.value?.decimals || DEFAULT_DECIMALS
       );
     } else {
       const params = decodeERC20TransferData(props.transaction.data);
@@ -82,7 +87,7 @@ async function populateForm() {
       recipient.value = params.recipient;
       amountInput.value = formatUnits(
         params.amount,
-        selectedAsset.value?.decimals || 18
+        selectedAsset.value?.decimals || DEFAULT_DECIMALS
       );
     }
   }
