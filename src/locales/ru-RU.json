@@ -160,6 +160,7 @@
     "maxLength": "Максимальная длина: {0}",
     "pattern": "Неверный символ",
     "minItems": "Требуется минимум {0} предмета(ов)",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Необходимо наличие хотя бы одной стратегии.",
     "website": "Адрес должен быть в формате https://www.example.com",
     "format": "Неверный формат",
