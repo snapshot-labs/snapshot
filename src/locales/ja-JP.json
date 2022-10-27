@@ -160,6 +160,7 @@
     "maxLength": "最大文字数は {0} です",
     "pattern": "無効な文字",
     "minItems": "最低 {0} 個のアイテムが必要",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "少なくとも１つストラテジーが必要です",
     "website": "URLはhttps://www.example.com の形式でなければなりません",
     "format": "無効な形式",
