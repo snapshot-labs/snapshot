@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import {
   ExtendedSpace,
   Proposal,
@@ -7,7 +8,7 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
@@ -18,9 +19,15 @@ defineProps<{
   loadingResultsFailed: boolean;
 }>();
 
-const emit = defineEmits(['retry']);
+const emit = defineEmits(['reload']);
 
 const ts = Number((Date.now() / 1e3).toFixed());
+
+const isPendingScore = computed(
+  () =>
+    props.proposal.scores_state === 'pending' &&
+    props.proposal.state === 'closed'
+);
 </script>
 
 <template>
@@ -29,11 +36,11 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <SpaceProposalResultsError
-      v-if="loadingResultsFailed"
+      v-if="loadingResultsFailed || isPendingScore"
       :is-admin="isAdmin"
-      :proposal-id="proposal.id"
-      :proposal-state="proposal.scores_state"
-      @retry="emit('retry')"
+      :proposal="proposal"
+      :is-pending="isPendingScore"
+      @reload="emit('reload')"
     />
     <template v-else>
       <SpaceProposalResultsList
