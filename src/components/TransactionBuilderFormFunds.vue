@@ -11,6 +11,7 @@ import {
   TransactionOperationType
 } from '@/helpers/transactionBuilder';
 import { FormError } from '@/helpers/interfaces';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 
 const props = defineProps<{
   showForm: boolean;
@@ -24,16 +25,19 @@ const emit = defineEmits<{
 }>();
 
 const safeFunds = ref<FundsAsset[]>([]);
-const tokenAddress = ref<string>('');
+const selectedAsset = ref<FundsAsset | undefined>();
 const recipient = ref<string>('');
-const amount = ref<BigNumber>(BigNumber.from(0));
-
-const tokenAddressError = computed<FormError | null>(() => {
-  if (!tokenAddress.value) return null;
-
-  if (!isAddress(tokenAddress.value)) return { message: 'Invalid address' };
-
-  return null;
+const amountInput = ref<string>('0');
+const amount = computed<BigNumber>(() => {
+  try {
+    const integerRepresentation = parseUnits(
+      amountInput.value,
+      selectedAsset.value?.decimals || 18
+    );
+    return BigNumber.from(integerRepresentation);
+  } catch (e) {
+    return BigNumber.from(0);
+  }
 });
 
 const recipientError = computed<FormError | null>(() => {
@@ -45,6 +49,12 @@ const recipientError = computed<FormError | null>(() => {
 });
 
 const amountError = computed<FormError | null>(() => {
+  try {
+    parseUnits(amountInput.value, 18); // TODO: get decimals from token
+  } catch {
+    return { message: 'Invalid amount' };
+  }
+
   if (amount.value.eq(0)) return { message: 'Amount is required' };
 
   return null;
@@ -54,17 +64,26 @@ async function populateForm() {
   if (!props.showForm) return;
 
   safeFunds.value = await getSafeFunds(props.safe.network, props.safe.address);
+  selectedAsset.value = safeFunds.value[0] || undefined;
 
   if (props.transaction) {
     if (props.transaction.data === '0x') {
-      tokenAddress.value = '';
+      selectedAsset.value = safeFunds.value.find(asset => !asset.tokenAddress);
       recipient.value = props.transaction.to;
-      amount.value = props.transaction.value;
+      amountInput.value = formatUnits(
+        props.transaction.value.toString(),
+        selectedAsset.value?.decimals || 18
+      );
     } else {
       const params = decodeERC20TransferData(props.transaction.data);
-      tokenAddress.value = props.transaction.to;
+      selectedAsset.value = safeFunds.value.find(
+        asset => asset.tokenAddress === props.transaction!.to
+      );
       recipient.value = params.recipient;
-      amount.value = params.amount;
+      amountInput.value = formatUnits(
+        params.amount,
+        selectedAsset.value?.decimals || 18
+      );
     }
   }
 }
@@ -72,15 +91,15 @@ async function populateForm() {
 function closeAndClearForm() {
   emit('close');
 
-  tokenAddress.value = '';
+  selectedAsset.value = safeFunds.value[0] || undefined;
   recipient.value = '';
-  amount.value = BigNumber.from(0);
+  amountInput.value = '0';
 }
 
 function saveTransaction() {
-  if (tokenAddress.value) {
+  if (selectedAsset.value?.tokenAddress) {
     emit('saveTransaction', {
-      to: tokenAddress.value,
+      to: selectedAsset.value.tokenAddress,
       value: BigNumber.from(0),
       data: encodeERC20TransferData(recipient.value, amount.value),
       operation: TransactionOperationType.CALL
@@ -107,19 +126,16 @@ watch(() => props.showForm, populateForm);
     </template>
 
     <BaseContainer class="py-4">
-      <div class="space-y-2">
-        <LabelInput>Token address</LabelInput>
-        <div class="flex space-x-2">
-          <InputString
-            v-model="tokenAddress"
-            placeholder="Sending native asset"
-            :error="(tokenAddressError as FormError)"
-          />
-          <BasePopover>
+      <div v-if="safeFunds.length" class="space-y-2">
+        <div>
+          <LabelInput>Asset</LabelInput>
+          <BasePopover button-classes="w-full">
             <template #button>
-              <ButtonSidebar class="relative !h-[46px] !w-[46px]">
-                <i-ho-cash />
-              </ButtonSidebar>
+              <TransactionBuilderFormFundsAsset
+                v-if="selectedAsset"
+                :asset="selectedAsset"
+                class="w-full rounded-full border pl-2 pr-3"
+              />
             </template>
             <template #content>
               <PopoverButton
@@ -127,15 +143,9 @@ watch(() => props.showForm, populateForm);
                 :key="index"
                 as="div"
                 class="cursor-pointer px-3 py-2 hover:bg-skin-border"
-                @click="tokenAddress = asset.tokenAddress || ''"
+                @click="selectedAsset = asset"
               >
-                <div class="text-sm text-skin-link">
-                  {{ asset.tokenAddress }}
-                </div>
-                <div>
-                  {{ asset.name }} ({{ asset.symbol }})<br />
-                  {{ asset.safeBalance }}
-                </div>
+                <TransactionBuilderFormFundsAsset :asset="asset" />
               </PopoverButton>
             </template>
           </BasePopover>
@@ -151,12 +161,12 @@ watch(() => props.showForm, populateForm);
         <div>
           <LabelInput>Amount</LabelInput>
           <InputString
-            :model-value="amount.toString()"
+            v-model="amountInput"
             :error="(amountError as FormError)"
-            @update:model-value="amount = BigNumber.from($event || 0)"
           />
         </div>
       </div>
+      <div v-else class="py-3 text-center">No assets found in safe.</div>
     </BaseContainer>
 
     <template #footer>
