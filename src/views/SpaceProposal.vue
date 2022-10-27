@@ -8,14 +8,8 @@ import {
   useI18n,
   useModal,
   useTerms,
-  useProfiles,
-  useSharing,
   useWeb3,
-  useClient,
-  useInfiniteLoader,
-  useProposals,
-  useSpaceCreateForm,
-  useFlashNotification
+  useInfiniteLoader
 } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace }>();
@@ -25,9 +19,6 @@ const router = useRouter();
 
 const { t, setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
-const { send, isSending } = useClient();
-const { removeSpaceProposal } = useProposals();
-const { notify } = useFlashNotification();
 
 const id: string = route.params.id as string;
 
@@ -43,7 +34,6 @@ const votes = ref([]);
 const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
 
-const isCreator = computed(() => proposal.value?.author === web3Account.value);
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
@@ -52,13 +42,6 @@ const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => proposal.value?.strategies ?? props.space.strategies
 );
-
-const threeDotItems = computed(() => {
-  const items = [{ text: t('duplicate'), action: 'duplicate' }];
-  if (isAdmin.value || isCreator.value)
-    items.push({ text: t('delete'), action: 'delete' });
-  return items;
-});
 
 const browserHasHistory = computed(() => window.history.state.back);
 
@@ -151,63 +134,11 @@ async function loadMoreVotes() {
   votes.value = votes.value.concat(formatProposalVotes(votesObj));
 }
 
-async function deleteProposal() {
-  const result = await send(props.space, 'delete-proposal', {
-    proposal: proposal.value
-  });
-  console.log('Result', result);
-  if (result.id) {
-    removeSpaceProposal(id);
-    notify(['green', t('notify.proposalDeleted')]);
-    router.push({ name: 'spaceProposals' });
-  }
-}
-
-const {
-  shareProposalTwitter,
-  shareToClipboard,
-  shareProposal,
-  sharingIsSupported,
-  sharingItems
-} = useSharing();
-
-const { resetForm } = useSpaceCreateForm();
-
-function selectFromThreedotDropdown(e) {
-  if (!proposal.value) return;
-  if (e === 'delete') deleteProposal();
-  if (e === 'duplicate') {
-    resetForm();
-    router.push({
-      name: 'spaceCreate',
-      params: {
-        key: proposal.value.space.id,
-        step: 0,
-        sourceProposal: proposal.value.id
-      }
-    });
-  }
-}
-
-function selectFromShareDropdown(e) {
-  if (e === 'shareProposalTwitter')
-    shareProposalTwitter(props.space, proposal.value);
-  else if (e === 'shareToClipboard')
-    shareToClipboard(props.space, proposal.value);
-}
-
 function handleBackClick() {
   if (!browserHasHistory.value || browserHasHistory.value.includes('create'))
     return router.push({ name: 'spaceProposals' });
   return router.go(-1);
 }
-
-const { profiles, loadProfiles } = useProfiles();
-
-watch(proposal, () => {
-  if (!proposal.value) return;
-  loadProfiles([proposal.value.author]);
-});
 
 watch(web3Account, () => {
   const choice = route.query.choice as string;
@@ -234,24 +165,6 @@ onMounted(async () => {
     clickVote();
   }
 });
-
-const showFullMarkdownBody = ref(false);
-
-// Scroll to top of the page after clicking "Show less" button
-watch(showFullMarkdownBody, () => {
-  if (!showFullMarkdownBody.value) window.scrollTo(0, 0);
-});
-
-// Ref to the proposal body element
-const markdownBody = ref<HTMLElement | null>(null);
-
-// Detect if the proposal body is too long and should be shortened
-const truncateMarkdownBody = computed(() => {
-  const markdownBodyHeight = markdownBody.value?.clientHeight
-    ? markdownBody.value.clientHeight
-    : 0;
-  return markdownBodyHeight > 400 ? true : false;
-});
 </script>
 
 <template>
@@ -263,124 +176,12 @@ const truncateMarkdownBody = computed(() => {
 
       <div class="px-3 md:px-0">
         <template v-if="proposal">
-          <h1
-            class="mb-3 break-words text-xl leading-8 sm:text-2xl"
-            v-text="proposal.title"
+          <SpaceProposalHeader
+            :space="space"
+            :proposal="proposal"
+            :is-admin="isAdmin"
           />
-
-          <div class="mb-4 flex flex-col sm:flex-row sm:space-x-1">
-            <div class="mb-1 flex items-center sm:mb-0">
-              <LabelProposalState :state="proposal.state" class="mr-2" />
-              <router-link
-                class="group text-skin-text"
-                :to="{
-                  name: 'spaceProposals',
-                  params: { key: space.id }
-                }"
-              >
-                <div class="flex items-center">
-                  <AvatarSpace :space="space" size="28" />
-                  <span
-                    class="ml-2 group-hover:text-skin-link"
-                    v-text="space.name"
-                  />
-                </div>
-              </router-link>
-            </div>
-            <div class="flex grow items-center space-x-1">
-              <span v-text="$t('proposalBy')" />
-              <BaseUser
-                :address="proposal.author"
-                :profile="profiles[proposal.author]"
-                :space="space"
-                :proposal="proposal"
-                hide-avatar
-              />
-              <ButtonShare
-                v-if="sharingIsSupported"
-                @click="shareProposal(space, proposal)"
-              />
-              <BaseMenu
-                v-else
-                class="!ml-auto pl-3"
-                :items="sharingItems"
-                @select="selectFromShareDropdown"
-              >
-                <template #button>
-                  <ButtonShare />
-                </template>
-                <template #item="{ item }">
-                  <BaseIcon
-                    v-if="item.extras.icon"
-                    :name="item.extras.icon"
-                    size="21"
-                    class="mr-2 align-middle !leading-[0]"
-                  />
-                  {{ item.text }}
-                </template>
-              </BaseMenu>
-              <BaseMenu
-                class="md:ml-2"
-                :items="threeDotItems"
-                @select="selectFromThreedotDropdown"
-              >
-                <template #button>
-                  <div>
-                    <BaseButtonIcon :loading="isSending">
-                      <i-ho-dots-horizontal />
-                    </BaseButtonIcon>
-                  </div>
-                </template>
-                <template #item="{ item }">
-                  <div class="flex items-center gap-2">
-                    <i-ho-document-duplicate
-                      v-if="item.action === 'duplicate'"
-                    />
-                    <i-ho-trash v-if="item.action === 'delete'" />
-                    {{ item.text }}
-                  </div>
-                </template>
-              </BaseMenu>
-            </div>
-          </div>
-
-          <div v-if="proposal.body.length" class="relative">
-            <div
-              v-if="!showFullMarkdownBody && truncateMarkdownBody"
-              class="absolute bottom-0 h-[80px] w-full bg-gradient-to-t from-skin-bg"
-            />
-            <div
-              v-if="truncateMarkdownBody"
-              class="absolute flex w-full justify-center"
-              :class="{
-                '-bottom-[64px]': showFullMarkdownBody,
-                '-bottom-[14px]': !showFullMarkdownBody
-              }"
-            >
-              <BaseButton
-                class="z-10 !bg-skin-bg"
-                @click="showFullMarkdownBody = !showFullMarkdownBody"
-              >
-                {{
-                  showFullMarkdownBody
-                    ? $t('proposals.showLess')
-                    : $t('proposals.showMore')
-                }}
-              </BaseButton>
-            </div>
-            <div
-              class="overflow-hidden"
-              :class="{
-                'h-[420px]': !showFullMarkdownBody && truncateMarkdownBody,
-                'mb-[92px]': showFullMarkdownBody,
-                'mb-[56px]': !showFullMarkdownBody
-              }"
-            >
-              <div ref="markdownBody">
-                <BaseMarkdown :body="proposal.body" />
-              </div>
-            </div>
-          </div>
+          <SpaceProposalContent :space="space" :proposal="proposal" />
         </template>
         <LoadingPage v-else />
       </div>
@@ -428,13 +229,6 @@ const truncateMarkdownBody = computed(() => {
           :proposal="proposal"
           :strategies="strategies"
         />
-        <SpaceProposalResultsError
-          v-if="loadingResultsFailed"
-          :is-admin="isAdmin"
-          :proposal-id="proposal.id"
-          :proposal-state="proposal.scores_state"
-          @retry="loadProposal()"
-        />
         <SpaceProposalResults
           :loaded="loadedResults"
           :space="space"
@@ -442,6 +236,9 @@ const truncateMarkdownBody = computed(() => {
           :results="results"
           :votes="votes"
           :strategies="strategies"
+          :loading-results-failed="loadingResultsFailed"
+          :is-admin="isAdmin"
+          @retry="reloadProposal()"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
