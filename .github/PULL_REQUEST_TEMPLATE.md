@@ -1,4 +1,4 @@
-Fixes Issue #
+Fixes #
 
 Changes in this PR:
 
