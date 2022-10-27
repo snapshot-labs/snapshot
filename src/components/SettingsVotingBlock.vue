@@ -103,11 +103,17 @@ const votingPeriod = computed({
         v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
       />
-      <InputSwitch
-        v-if="form.validation.name === 'basic'"
-        v-model="form.voting.aliased"
-        :text-right="$t('settings.enableAliased')"
-      />
+      <div class="flex items-center">
+        <InputSwitch
+          v-if="form.validation.name === 'basic'"
+          v-model="form.voting.aliased"
+          :text-right="$t('settings.enableAliased')"
+        />
+        <IconInformationTooltip
+          class="text-sm"
+          :information="$t('settings.votingAliased')"
+        />
+      </div>
     </div>
   </BaseBlock>
 </template>

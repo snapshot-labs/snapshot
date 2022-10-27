@@ -361,6 +361,7 @@
     "voting": "Voting",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
+    "votingAliased": "Setting affects voting, creating and deleting proposals",
     "hours": "Hours",
     "days": "Days",
     "quorum": {
