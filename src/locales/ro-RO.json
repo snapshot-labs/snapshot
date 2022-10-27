@@ -160,6 +160,7 @@
     "maxLength": "Lungime maximă de {0}",
     "pattern": "Caracter invalid",
     "minItems": "Minim {0} caracter(e) necesar(e)",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Este necesară cel puţin o strategie.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Formatul nu este valid",
