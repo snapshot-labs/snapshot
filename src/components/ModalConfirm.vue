@@ -150,7 +150,7 @@ watch(
             <BaseButtonIcon class="p-0 pr-2" @click="loadVotingPower">
               <i-ho-refresh class="text-sm" />
             </BaseButtonIcon>
-            <i-ho-exclamation-circle />
+            <i-ho-exclamation-circle class="mt-[1px]" />
           </span>
           <span
             v-else-if="vpLoaded && !vpLoading"
