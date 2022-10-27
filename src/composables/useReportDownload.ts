@@ -42,10 +42,10 @@ export function useReportDownload() {
       return {
         address: vote.voter,
         choice: vote.choice,
-        balance: vote.vp,
+        voting_power: vote.vp,
         timestamp: vote.created,
-        dateUtc: new Date(vote.created * 1e3).toUTCString(),
-        authorIpfsHash: vote.ipfs
+        date_utc: new Date(vote.created * 1e3).toUTCString(),
+        author_ipfs_hash: vote.ipfs
       };
     });
     try {
