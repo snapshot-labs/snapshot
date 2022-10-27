@@ -160,6 +160,7 @@
     "maxLength": "Ang maximum na haba ay {0}",
     "pattern": "Di-wastong character",
     "minItems": "Kinakailangan ang minimum na {0} (mga) item",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Hindi bababa sa isang diskarte ang kinakailangan.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Di-wastong format",
