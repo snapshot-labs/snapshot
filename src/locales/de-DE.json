@@ -160,6 +160,7 @@
     "maxLength": "Maximallänge ist {0}",
     "pattern": "Ungültiges Zeichen",
     "minItems": "Mindestens {0} Element(e) erforderlich",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Mindestens eine Strategie ist erforderlich.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Ungültiges Format",
