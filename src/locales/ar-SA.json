@@ -160,6 +160,7 @@
     "maxLength": "الحد الاعلى لعدد الاحرف {0}",
     "pattern": "رمز غير صحيح",
     "minItems": "الحد الأدنى {0} عنصر(ار) مطلوب",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "تلزم خطة واحدة على الأقل.",
     "website": "URL should be in the format https://www.example.com",
     "format": "تنسيق غير صحيح",
