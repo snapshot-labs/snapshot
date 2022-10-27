@@ -175,6 +175,7 @@ export interface Vote {
   vp: number;
   vp_by_strategy: number[];
   reason: string;
+  created: number;
 }
 
 // Execution

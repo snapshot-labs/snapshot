@@ -1,12 +1,13 @@
 import { getVp } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
+import { Vote } from '@/helpers/interfaces';
 import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
   { first, voter, skip }: any = { first: 30000, voter: '', skip: 0 }
-) {
+): Promise<Vote[] | []> {
   try {
     console.time('getProposalVotes');
     const response = await apolloClient.query({
@@ -25,7 +26,7 @@ export async function getProposalVotes(
     return votesResClone.data.votes || [];
   } catch (e) {
     console.log(e);
-    return e;
+    return [];
   }
 }
 
