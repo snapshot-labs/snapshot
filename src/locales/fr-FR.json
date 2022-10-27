@@ -26,7 +26,7 @@
   "space": "Espace",
   "spaces": "Espaces",
   "verifiedSpace": "Espace vérifié",
-  "warningSpace": "Ce n'est pas un espace officiel, procédez avec prudence!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "terminé",

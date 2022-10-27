@@ -26,7 +26,7 @@
   "space": "공간",
   "spaces": "공간들",
   "verifiedSpace": "검증된 공간",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "버전",
   "timeline": "타임라인",
   "ended": "ended",

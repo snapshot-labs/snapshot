@@ -472,6 +472,7 @@ const truncateMarkdownBody = computed(() => {
     <ModalTerms
       :open="modalTermsOpen"
       :space="space"
+      :action="$t('modalTerms.actionVote')"
       @close="modalTermsOpen = false"
       @accept="acceptTerms(), (modalOpen = true)"
     />
