@@ -150,7 +150,7 @@ watch(() => props.showForm, populateForm);
         </div>
         <div>
           <LabelInput>Amount</LabelInput>
-          <InputNumber
+          <InputString
             :model-value="amount.toString()"
             :error="(amountError as FormError)"
             @update:model-value="amount = BigNumber.from($event || 0)"
