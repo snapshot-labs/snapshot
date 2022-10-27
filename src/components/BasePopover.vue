@@ -7,10 +7,12 @@ withDefaults(
   defineProps<{
     label?: string;
     placement?: Placement;
+    buttonClasses?: string;
   }>(),
   {
     label: '',
-    placement: 'bottom-end'
+    placement: 'bottom-end',
+    buttonClasses: ''
   }
 );
 </script>
@@ -31,7 +33,7 @@ withDefaults(
       :z-index="50"
       portal
     >
-      <PopoverButton class="outline-none">
+      <PopoverButton class="outline-none" :class="buttonClasses">
         <slot v-if="$slots.button" name="button" />
         <div v-else>
           <span>{{ label }}</span>
