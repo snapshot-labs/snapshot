@@ -66,6 +66,6 @@ const emit = defineEmits(['update:modelValue']);
         </span>
       </span>
     </Switch>
-    <span class="">{{ textRight || definition?.title || '' }}</span>
+    <span>{{ textRight || definition?.title || '' }}</span>
   </div>
 </template>
