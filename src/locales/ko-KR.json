@@ -160,6 +160,7 @@
     "maxLength": "최대 길이: {0}",
     "pattern": "잘못된 문자",
     "minItems": "최소 {0} 개 항목 필요",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "적어도 한 개의 전략이 필요합니다.",
     "website": "URL should be in the format https://www.example.com",
     "format": "잘못된 형식",
