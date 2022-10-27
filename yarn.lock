@@ -856,10 +856,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.42":
-  version "0.4.42"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.42.tgz#2439708bd97c2eb2fc3fa1f747f5644c19d15a00"
-  integrity sha512-2LA4tFpd5EWRgltM0b8VLW+ii14s7BoRjj96FJQQAMreViK3Wl9Y/lu8T+A1Mm3lYnaInoQ3Xb4q/AqFYq10DA==
+"@snapshot-labs/snapshot.js@^0.4.44":
+  version "0.4.44"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.44.tgz#2e305a3b39d6046c7f4559aec8dd9bfb4cdb7e7b"
+  integrity sha512-hF8vjlXEuACxn2Esk+vNK0IZSyglaQ3r/3ILbOIM6ScJZA9kVWJngaIUQklNsfgKILERQ30OW+GQrDYJYSz1mQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -4572,6 +4572,11 @@ json-to-graphql-query@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/json-to-graphql-query/-/json-to-graphql-query-2.2.4.tgz#ada9cfdbb9bf38589fd2661e1588d1edd0a882cc"
   integrity sha512-vNvsOKDSlEqYCzejI1xHS9Hm738dSnG4Upy09LUGqyybZXSIIb7NydDphB/6WxW2EEVpPU4JeU/Yo63Nw9dEJg==
+
+jsonexport@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/jsonexport/-/jsonexport-3.2.0.tgz#e5b4905ea1f6c8f8e0f62e4ceb26e4a31f1c93a8"
+  integrity sha512-GbO9ugb0YTZatPd/hqCGR0FSwbr82H6OzG04yzdrG7XOe4QZ0jhQ+kOsB29zqkzoYJLmLxbbrFiuwbQu891XnQ==
 
 jsonfile@^4.0.0:
   version "4.0.0"
