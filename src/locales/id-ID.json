@@ -160,6 +160,7 @@
     "maxLength": "Panjang maksimum adalah {0}",
     "pattern": "Karakter tidak valid",
     "minItems": "Minimal {0} item diperlukan",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Setidaknya satu strategi diperlukan.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Format tidak valid",
