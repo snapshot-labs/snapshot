@@ -10,7 +10,12 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-import { useProfiles, useWeb3, useIntl } from '@/composables';
+import {
+  useProfiles,
+  useWeb3,
+  useIntl,
+  useReportDownload
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -69,6 +74,8 @@ const { profiles, loadProfiles } = useProfiles();
 watch(sortedVotes, () => {
   loadProfiles(sortedVotes.value.map(vote => vote.voter));
 });
+
+const { downloadVotes, isDownloadingVotes } = useReportDownload();
 </script>
 
 <template>
@@ -76,9 +83,19 @@ watch(sortedVotes, () => {
     v-if="isZero()"
     :title="$t('votes')"
     :counter="voteCount"
-    :slim="true"
     :loading="!loaded"
+    slim
   >
+    <template #button>
+      <BaseButtonIcon>
+        <LoadingSpinner v-if="isDownloadingVotes" />
+        <i-ho-download
+          v-else
+          v-tippy="{ content: 'Download as CSV' }"
+          @click="downloadVotes(proposal.id)"
+        />
+      </BaseButtonIcon>
+    </template>
     <div
       v-for="(vote, i) in sortedVotes"
       :key="i"

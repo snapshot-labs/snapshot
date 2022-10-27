@@ -54,9 +54,9 @@ const strategies = computed(
 );
 
 const threeDotItems = computed(() => {
-  const items = [{ text: t('duplicateProposal'), action: 'duplicate' }];
+  const items = [{ text: t('duplicate'), action: 'duplicate' }];
   if (isAdmin.value || isCreator.value)
-    items.push({ text: t('deleteProposal'), action: 'delete' });
+    items.push({ text: t('delete'), action: 'delete' });
   return items;
 });
 
@@ -260,6 +260,7 @@ const truncateMarkdownBody = computed(() => {
       <div class="mb-3 px-3 md:px-0">
         <ButtonBack @click="handleBackClick" />
       </div>
+
       <div class="px-3 md:px-0">
         <template v-if="proposal">
           <h1
@@ -328,6 +329,15 @@ const truncateMarkdownBody = computed(() => {
                     <BaseButtonIcon :loading="isSending">
                       <i-ho-dots-horizontal />
                     </BaseButtonIcon>
+                  </div>
+                </template>
+                <template #item="{ item }">
+                  <div class="flex items-center gap-2">
+                    <i-ho-document-duplicate
+                      v-if="item.action === 'duplicate'"
+                    />
+                    <i-ho-trash v-if="item.action === 'delete'" />
+                    {{ item.text }}
                   </div>
                 </template>
               </BaseMenu>
