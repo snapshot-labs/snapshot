@@ -160,6 +160,7 @@
     "maxLength": "O comprimento máximo é {0}",
     "pattern": "Caracteres Inválidos",
     "minItems": "Mínimo {0} item(s) obrigatório(s)",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "É necessária pelo menos uma estratégia.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Formato inválido",
