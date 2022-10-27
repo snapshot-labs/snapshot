@@ -160,6 +160,7 @@
     "maxLength": "Maksimum Uzunluk: {0}",
     "pattern": "Geçersiz karakter",
     "minItems": "Minimum {0} öğe gerekli",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "En az bir strateji gerekiyor.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Geçersiz format",
