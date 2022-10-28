@@ -145,7 +145,7 @@ watch(
             <i-s-twitter v-if="item.extras.icon === 'twitter'" />
             <i-s-lenster
               v-if="item.extras.icon === 'lenster'"
-              class="text-skin-text"
+              class="mr-1 text-sm text-skin-text"
             />
             <i-ho-link v-if="item.extras.icon === 'link'" />
             {{ item.text }}
