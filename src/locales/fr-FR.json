@@ -17,7 +17,7 @@
   "save": "Enregistrer",
   "author": "Auteur",
   "next": "Suivant",
-  "choice": "Choice",
+  "choice": "Choix",
   "submit": "Valider",
   "plugins": "Plugins",
   "information": "Informations",
@@ -71,7 +71,7 @@
   "options": "Option(s)",
   "votingPower": "Votre voting power",
   "comment": {
-    "placeholder": "Share your reason (optional)"
+    "placeholder": "Partagez votre raison (facultatif)"
   },
   "receipt": "Reçu",
   "relayer": "Relayer",
@@ -241,7 +241,7 @@
     "startDate": "Date de début ",
     "endDate": "Date de fin",
     "votingSystem": "Système de vote",
-    "privacy": "Privacy",
+    "privacy": "Confidentialité",
     "invalidChoice": "Choix invalide",
     "postVoteModal": {
       "defaultTitle": "Votre vote est enregistré !",
@@ -543,15 +543,15 @@
     }
   },
   "privacy": {
-    "label": "Privacy",
-    "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "label": "Confidentialité",
+    "title": "Sélectionner la confidentialité des votes",
+    "information": "Le type de confidentialité utilisé pour les propositions, en le réglant ici, la même confidentialité sera appliquée à toutes les propositions.",
     "any": "Any",
     "none": "None",
     "shutter": {
       "label": "Shutter",
       "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
-      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "tooltip": "La confidentialité est activée pour cette proposition. Tous les votes seront cryptés jusqu'à ce que la période de vote soit terminée et le score final soit calculé",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
@@ -618,20 +618,20 @@
     "error_claim": "Un problème est survenu lors de la création du token"
   },
   "progress": {
-    "progress": "Progress",
-    "inProgress": "In Progress",
+    "progress": "Progression",
+    "inProgress": "En cours",
     "completed": "Completed",
     "complete": "Complete",
-    "newStep": "New Step",
+    "newStep": "Nouvelle étape",
     "description": "Description",
-    "add": "Add",
-    "deleteStep": "Delete Step",
-    "deleteConfirm": "Are you sure you want to delete?",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
-    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
-    "wentWrong": "Oops something went wrong.",
+    "add": "Ajouter",
+    "deleteStep": "Supprimer l’étape",
+    "deleteConfirm": "Confirmez-vous la suppression ?",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "comeBack": "Revenez une fois le vote terminé pour voir comment cette proposition progresse!",
+    "confirmSignature": "Signer ce message nous permettra d'autoriser votre demande de mise à jour de la progression de votre proposition.",
+    "wentWrong": "Une erreur s'est produite.",
     "voting": "Voting",
     "soon": "Soon"
   },
