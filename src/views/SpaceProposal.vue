@@ -79,12 +79,6 @@ function formatProposalVotes(votes) {
   });
 }
 
-const isInvalidScore = computed(
-  () =>
-    proposal.value?.scores_state === 'invalid' &&
-    proposal.value.state === 'closed'
-);
-
 async function loadResults() {
   if (!proposal.value) return;
 
@@ -197,7 +191,7 @@ onMounted(async () => {
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
-          v-if="proposal && !isInvalidScore"
+          v-if="proposal"
           :loaded="loadedVotes"
           :space="space"
           :proposal="proposal"
@@ -233,7 +227,6 @@ onMounted(async () => {
           :results="results"
           :votes="votes"
           :strategies="strategies"
-          :loading-results-failed="isInvalidScore"
           :is-admin="isAdmin"
           @reload="reloadProposal()"
         />

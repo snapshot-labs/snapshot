@@ -11,21 +11,26 @@ import {
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  results: Results;
+  results: Results | null;
   strategies: SpaceStrategy[];
   votes: Vote[];
   loaded: boolean;
   isAdmin: boolean;
-  loadingResultsFailed: boolean;
 }>();
 
 const emit = defineEmits(['reload']);
 
 const ts = Number((Date.now() / 1e3).toFixed());
 
+const isInvalidScore = computed(
+  () =>
+    props.proposal?.scores_state === 'invalid' &&
+    props.proposal.state === 'closed'
+);
+
 const isPendingScore = computed(
   () =>
-    props.proposal.scores_state === 'pending' &&
+    props.proposal?.scores_state === 'pending' &&
     props.proposal.state === 'closed'
 );
 </script>
@@ -36,10 +41,11 @@ const isPendingScore = computed(
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
     <SpaceProposalResultsError
-      v-if="loadingResultsFailed || isPendingScore"
+      v-if="isInvalidScore || isPendingScore"
       :is-admin="isAdmin"
       :proposal="proposal"
       :is-pending="isPendingScore"
+      :is-invalid="isInvalidScore"
       @reload="emit('reload')"
     />
     <template v-else>

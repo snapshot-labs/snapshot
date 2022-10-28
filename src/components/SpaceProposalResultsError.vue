@@ -13,16 +13,17 @@ import { Proposal } from '@/helpers/interfaces';
 const { t } = useI18n();
 
 const props = defineProps<{
-  isAdmin: boolean;
   proposal: Proposal;
+  isAdmin: boolean;
   isPending: boolean;
+  isInvalid: boolean;
 }>();
 
 const emit = defineEmits(['reload']);
 
 const retrying = ref(false);
 const retry = async () => {
-  if (props.proposal.scores_state === 'invalid' || props.isPending) {
+  if (props.isInvalid || props.isPending) {
     retrying.value = true;
     await fetch(
       `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
@@ -37,7 +38,7 @@ const retry = async () => {
   <BaseMessage v-if="isPending" level="info">
     {{ $t('resultsCalculating') }}
   </BaseMessage>
-  <BaseMessage v-else level="warning">
+  <BaseMessage v-else-if="isInvalid" level="warning">
     <div>{{ t('resultsError') }}</div>
   </BaseMessage>
   <BaseButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
