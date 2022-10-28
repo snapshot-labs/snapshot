@@ -358,7 +358,7 @@
       "information": "The minimum amount of voting power required to create a proposal"
     },
     "allowOnlyAuthors": "Allow only authors to submit a proposal",
-    "enableAliased": "Allow voting with session keys",
+    "enableAliased": "Allow actions with session keys",
     "editValidation": "Edit validation",
     "selectValidation": "Select validation",
     "validationParameters": "Validation parameters",
