@@ -245,12 +245,10 @@ onMounted(async () => {
   </TheLayout>
   <teleport v-if="proposal" to="#modal">
     <ModalConfirm
-      :id="id"
       :open="modalOpen"
       :space="space"
       :proposal="proposal"
       :selected-choices="selectedChoices"
-      :snapshot="proposal.snapshot"
       :strategies="strategies"
       @close="modalOpen = false"
       @reload="reloadProposal()"
