@@ -27,7 +27,6 @@ const isModalPostVoteOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadingProposal = ref(true);
 const loadedResults = ref(false);
-const loadingResultsFailed = ref(false);
 const loadedVotes = ref(false);
 const proposal = ref<Proposal | null>(null);
 const votes = ref([]);
@@ -82,46 +81,38 @@ function formatProposalVotes(votes) {
 
 async function loadResults() {
   if (!proposal.value) return;
-  loadingResultsFailed.value = false;
-  if (
-    proposal.value.scores_state === 'invalid' &&
-    proposal.value.state === 'closed'
-  ) {
-    loadingResultsFailed.value = true;
+
+  if (proposal.value.scores.length === 0) {
+    const votingClass = new voting[proposal.value.type](
+      proposal.value,
+      [],
+      strategies.value
+    );
+    results.value = {
+      scores: votingClass.getScores(),
+      scoresByStrategy: votingClass.getScoresByStrategy(),
+      scoresTotal: votingClass.getScoresTotal()
+    };
   } else {
-    if (proposal.value.scores.length === 0) {
-      const votingClass = new voting[proposal.value.type](
-        proposal.value,
-        [],
-        strategies.value
-      );
-      results.value = {
-        scores: votingClass.getScores(),
-        scoresByStrategy: votingClass.getScoresByStrategy(),
-        scoresTotal: votingClass.getScoresTotal()
-      };
-    } else {
-      results.value = {
-        scores: proposal.value.scores,
-        scoresByStrategy: proposal.value.scores_by_strategy,
-        scoresTotal: proposal.value.scores_total
-      };
-    }
-    loadedResults.value = true;
-    loadingResultsFailed.value = false;
-    const [userVotesRes, votesRes] = await Promise.all([
-      await getProposalVotes(id, {
-        first: 1,
-        voter: web3Account.value
-      }),
-      await getProposalVotes(id, {
-        first: 10
-      })
-    ]);
-    userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
-    votes.value = formatProposalVotes(votesRes);
-    loadedVotes.value = true;
+    results.value = {
+      scores: proposal.value.scores,
+      scoresByStrategy: proposal.value.scores_by_strategy,
+      scoresTotal: proposal.value.scores_total
+    };
   }
+  loadedResults.value = true;
+  const [userVotesRes, votesRes] = await Promise.all([
+    await getProposalVotes(id, {
+      first: 1,
+      voter: web3Account.value
+    }),
+    await getProposalVotes(id, {
+      first: 10
+    })
+  ]);
+  userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
+  votes.value = formatProposalVotes(votesRes);
+  loadedVotes.value = true;
 }
 
 const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
@@ -200,7 +191,7 @@ onMounted(async () => {
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
-          v-if="proposal && !loadingResultsFailed"
+          v-if="proposal"
           :loaded="loadedVotes"
           :space="space"
           :proposal="proposal"
@@ -236,9 +227,8 @@ onMounted(async () => {
           :results="results"
           :votes="votes"
           :strategies="strategies"
-          :loading-results-failed="loadingResultsFailed"
           :is-admin="isAdmin"
-          @retry="reloadProposal()"
+          @reload="reloadProposal()"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
@@ -255,12 +245,10 @@ onMounted(async () => {
   </TheLayout>
   <teleport v-if="proposal" to="#modal">
     <ModalConfirm
-      :id="id"
       :open="modalOpen"
       :space="space"
       :proposal="proposal"
       :selected-choices="selectedChoices"
-      :snapshot="proposal.snapshot"
       :strategies="strategies"
       @close="modalOpen = false"
       @reload="reloadProposal()"
