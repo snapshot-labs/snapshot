@@ -365,7 +365,7 @@
     "voting": "Voting",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
-    "votingAliased": "Setting affects voting, creating and deleting proposals",
+    "votingAliased": "Voting, creating and deleting proposals will no longer require the user to manually sign each time.",
     "hours": "Hours",
     "days": "Days",
     "quorum": {
