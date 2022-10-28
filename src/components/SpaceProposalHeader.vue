@@ -51,6 +51,7 @@ async function deleteProposal() {
 
 const {
   shareProposalTwitter,
+  shareProposalLenster,
   shareToClipboard,
   shareProposal,
   sharingIsSupported,
@@ -77,9 +78,11 @@ function selectFromThreedotDropdown(e) {
 
 function selectFromShareDropdown(e) {
   if (e === 'shareProposalTwitter')
-    shareProposalTwitter(props.space, props.proposal);
-  else if (e === 'shareToClipboard')
-    shareToClipboard(props.space, props.proposal);
+    return shareProposalTwitter(props.space, props.proposal);
+  if (e === 'shareProposalLenster')
+    return shareProposalLenster(props.space, props.proposal);
+  if (e === 'shareToClipboard')
+    return shareToClipboard(props.space, props.proposal);
 }
 
 const { profiles, loadProfiles } = useProfiles();
@@ -138,13 +141,15 @@ watch(
           <ButtonShare />
         </template>
         <template #item="{ item }">
-          <BaseIcon
-            v-if="item.extras.icon"
-            :name="item.extras.icon"
-            size="21"
-            class="mr-2 align-middle !leading-[0]"
-          />
-          {{ item.text }}
+          <div class="flex items-center gap-2">
+            <i-s-twitter v-if="item.extras.icon === 'twitter'" />
+            <i-s-lenster
+              v-if="item.extras.icon === 'lenster'"
+              class="text-skin-text"
+            />
+            <i-ho-link v-if="item.extras.icon === 'link'" />
+            {{ item.text }}
+          </div>
         </template>
       </BaseMenu>
       <BaseMenu

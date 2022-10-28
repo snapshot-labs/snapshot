@@ -1,6 +1,7 @@
 import { useI18n } from '@/composables/useI18n';
 import { useCopy } from '@/composables/useCopy';
 import { useShare } from '@vueuse/core';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 export function useSharing() {
   const { t } = useI18n();
@@ -12,9 +13,14 @@ export function useSharing() {
       extras: { icon: 'twitter' }
     },
     {
+      text: 'Lenster',
+      action: 'shareProposalLenster',
+      extras: { icon: 'lenster' }
+    },
+    {
       text: t('copyLink'),
       action: 'shareToClipboard',
-      extras: { icon: 'insertlink' }
+      extras: { icon: 'link' }
     }
   ];
 
@@ -35,35 +41,62 @@ export function useSharing() {
     });
   }
 
-  function shareVote(space, proposal, choices: string) {
-    const handle = space.twitter ? `@${space.twitter}` : space.name;
-    const isSingleChoice =
-      proposal.type === 'single-choice' || proposal.type === 'basic';
-    const isPrivate = proposal.privacy === 'shutter';
-    const text =
-      isSingleChoice && !isPrivate
-        ? `I just voted "${choices}" on`
-        : `I just voted on`;
+  function shareVote(
+    shareTo: 'twitter' | 'lenster',
+    payload: { space: ExtendedSpace; proposal: Proposal; choices: string }
+  ) {
+    const postText = getSharingText(shareTo, payload);
+
     if (isSupported.value)
-      share({
+      return share({
         title: '',
-        text: `${text} "${proposal.title}" ${handle} @SnapshotLabs`,
-        url: proposalUrl(space.id, proposal)
+        text: postText,
+        url: proposalUrl(payload.space.id, payload.proposal)
       });
-    else if (window) {
-      shareTwitter(
-        `${encodeURIComponent(text)}%20"${encodeURIComponent(
-          proposal.title
-        )}"%20${encodedProposalUrl(
-          space.id,
-          proposal
-        )}%20${handle}%20@SnapshotLabs`
-      );
-    }
+    if (window && shareTo === 'twitter') return shareTwitter(postText);
+    if (window && shareTo === 'lenster') return shareLenster(postText);
+  }
+
+  function getSharingText(shareTo: 'twitter' | 'lenster', payload): string {
+    const isSingleChoice =
+      payload.proposal.type === 'single-choice' ||
+      payload.proposal.type === 'basic';
+    const isPrivate = payload.proposal.privacy === 'shutter';
+    const votedText =
+      payload.choices && isSingleChoice && !isPrivate
+        ? `I just voted "${payload.choices}" on`
+        : `I just voted on`;
+
+    const spaceHandle = payload.space.twitter
+      ? `@${payload.space.twitter}`
+      : payload.space.name;
+
+    if (isSupported.value)
+      return `${votedText} "${payload.proposal.title}" ${spaceHandle} @SnapshotLabs`;
+    if (shareTo === 'twitter')
+      return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
+        payload.proposal.title
+      )}"%20${encodedProposalUrl(
+        payload.space.id,
+        payload.proposal
+      )}%20${spaceHandle}%20@SnapshotLabs`;
+    if (shareTo === 'lenster')
+      return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
+        payload.proposal.title
+      )}"%20${encodedProposalUrl(
+        payload.space.id,
+        payload.proposal
+      )}&hashtags=snapshotlabs`;
+    return `${votedText} "${payload.proposal.title}"`;
   }
 
   function shareTwitter(text) {
     const url = `https://twitter.com/intent/tweet?text=${text}`;
+    window.open(url, '_blank')?.focus();
+  }
+
+  function shareLenster(text) {
+    const url = `https://lenster.xyz/?text=${text}`;
     window.open(url, '_blank')?.focus();
   }
 
@@ -77,6 +110,15 @@ export function useSharing() {
     );
   }
 
+  function shareProposalLenster(space, proposal) {
+    shareLenster(
+      `${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
+        space.id,
+        proposal
+      )}&hashtags=snapshotlabs`
+    );
+  }
+
   const { copyToClipboard } = useCopy();
 
   function shareToClipboard(space, proposal) {
@@ -85,6 +127,7 @@ export function useSharing() {
 
   return {
     shareProposalTwitter,
+    shareProposalLenster,
     shareToClipboard,
     proposalUrl,
     shareProposal,
