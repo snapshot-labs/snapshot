@@ -134,7 +134,7 @@
   "subspaces": "Sous-espaces",
   "mainspace": "Espace principal",
   "copyLink": "Copier le lien",
-  "duplicate": "Duplicate",
+  "duplicate": "Dupliquer",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
   "setDelegationToSpace": "Limiter la délégation à un espace précis",
@@ -280,8 +280,8 @@
   },
   "modalTerms": {
     "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
-    "actionJoin": "join",
-    "actionCreate": "create a proposal in",
+    "actionJoin": "rejoindre",
+    "actionCreate": "créer une proposition dans",
     "actionVote": "vote in"
   },
   "settings": {
