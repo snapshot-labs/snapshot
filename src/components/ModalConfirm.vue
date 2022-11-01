@@ -187,7 +187,7 @@ watch(
               class="mr-1 flex-auto text-skin-text"
               v-text="$t('Validation')"
             />
-            <div class="flex gap-2">
+            <div class="flex items-center gap-1">
               <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />
               <i-ho-check v-else-if="isValidVoter" />
               <i-ho-x v-else />
@@ -256,40 +256,48 @@ watch(
               {{ $t('learnMore') }}</BaseLink
             >
           </BaseMessageBlock>
-          <BaseMessageBlock
+          <template
             v-else-if="
               !isValidVoter &&
               proposal.validation &&
               proposal.validation.name === 'passport'
             "
-            level="warning"
           >
-            <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
-            {{
-              `Voting requires a Gitcoin Passport with a minimum of ${proposal.validation.params.min_weight} points.`
-            }}
-            <BaseLink link="https://passport.gitcoin.co/#/dashboard">
-              {{ $t('Passport') }}</BaseLink
+            <BaseMessageBlock level="warning">
+              <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
+              {{
+                `Voting requires a Gitcoin Passport with at least ${proposal.validation.params.min_weight} point(s). Each verified stamp will grant you 1 point.`
+              }}
+              <BaseLink link="https://passport.gitcoin.co/#/dashboard">
+                {{ $t('Passport') }}</BaseLink
+              >
+            </BaseMessageBlock>
+            <BaseMessageBlock
+              v-if="proposal?.validation.params?.stamps.some(p => p.weight > 1)"
+              level="info"
             >
-            <!-- Create a table for proposal.validation.params.stamps -->
-            <table class="mt-3 w-full">
-              <thead>
-                <tr>
-                  <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
-                  <th class="w-1/3 py-1 text-left text-skin-link">Points</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="stamp in proposal.validation.params.stamps"
-                  :key="stamp.name"
-                >
-                  <td class="py-1">{{ stamp.id }}</td>
-                  <td class="py-1">{{ stamp.weight }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </BaseMessageBlock>
+              This proposal grants more points for the stamps below:
+              <!-- Create a table for proposal.validation.params.stamps -->
+              <table class="mt-3 w-full">
+                <thead>
+                  <tr>
+                    <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
+                    <th class="w-1/3 py-1 text-left text-skin-link">Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    v-for="stamp in proposal.validation.params.stamps"
+                    :key="stamp.name"
+                  >
+                    <td class="py-1">{{ stamp.id }}</td>
+                    <td class="py-1">{{ stamp.weight }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </BaseMessageBlock>
+          </template>
+
           <BaseMessageBlock v-else-if="!isValidVoter" level="warning">
             {{ `Oops, you don't seem to be eligible to vote.` }}
             <BaseLink link="https://passport.gitcoin.co/#/dashboard">
