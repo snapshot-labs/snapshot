@@ -82,7 +82,7 @@ function share(shareTo: 'twitter' | 'lenster') {
           {{ $t('shareOnLenster') }}
         </BaseButton>
 
-        <div v-if="true">
+        <div v-if="isGnosisSafe">
           <BaseLink
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon
