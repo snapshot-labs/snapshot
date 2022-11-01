@@ -1,4 +1,4 @@
-import { getVp } from '@snapshot-labs/snapshot.js/src/utils';
+import { getVp, validate } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import { Vote } from '@/helpers/interfaces';
@@ -70,6 +70,22 @@ export async function getPower(space, address, proposal) {
     parseInt(proposal.snapshot),
     space.id,
     proposal.delegation === 1,
+    options
+  );
+}
+
+export async function getValidation(space, address, proposal) {
+  console.log('[score] getValidation');
+  const options: any = {};
+  if (import.meta.env.VITE_SCORES_URL)
+    options.url = import.meta.env.VITE_SCORES_URL;
+  return await validate(
+    proposal.validation.name,
+    address,
+    space.id,
+    proposal.network,
+    proposal.snapshot,
+    proposal.validation.params,
     options
   );
 }

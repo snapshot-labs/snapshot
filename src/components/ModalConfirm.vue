@@ -4,7 +4,7 @@ import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { useClient } from '@/composables/useClient';
 import { useIntl } from '@/composables/useIntl';
-import { getPower } from '@/helpers/snapshot';
+import { getPower, getValidation } from '@/helpers/snapshot';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useProposals } from '@/composables';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
@@ -12,12 +12,15 @@ import shutterEncryptChoice from '@/helpers/shutter';
 
 const { web3Account } = useWeb3();
 
-const vp = ref(0);
-const vpByStrategy = ref([]);
-const vpLoading = ref(false);
-const vpLoadingFailed = ref(false);
-const vpLoaded = ref(false);
+const votingPower = ref(0);
+const votingPowerByStrategy = ref([]);
+const votingValidation = ref(0);
 const reason = ref('');
+
+const isValidationAndPowerLoading = ref(false);
+const isValidationAndPowerLoaded = ref(false);
+const hasVotingPowerFailed = ref(false);
+const hasVotingValidationFailed = ref(false);
 
 const props = defineProps<{
   open: boolean;
@@ -82,23 +85,47 @@ async function handleSubmit() {
   }
 }
 
-async function loadVotingPower() {
-  vpLoading.value = true;
-  vpLoadingFailed.value = false;
+async function loadVotingValidation() {
+  hasVotingValidationFailed.value = false;
   try {
-    const result = await getPower(
+    const validationRes = await getValidation(
       props.space,
       web3Account.value,
       props.proposal
     );
-    vp.value = result.vp;
-    vpByStrategy.value = result.vp_by_strategy;
+    votingValidation.value = validationRes;
   } catch (e) {
-    vpLoadingFailed.value = true;
+    hasVotingValidationFailed.value = true;
     console.log(e);
+  }
+}
+
+async function loadVotingPower() {
+  hasVotingPowerFailed.value = false;
+  try {
+    const powerRes = await getPower(
+      props.space,
+      web3Account.value,
+      props.proposal
+    );
+    votingPower.value = powerRes.vp;
+    votingPowerByStrategy.value = powerRes.vp_by_strategy;
+  } catch (e) {
+    hasVotingPowerFailed.value = true;
+    console.log(e);
+  }
+}
+
+async function loadValidationAndPower() {
+  try {
+    isValidationAndPowerLoading.value = true;
+    await Promise.all([loadVotingPower(), loadVotingValidation()]);
+  } catch (e) {
+    console.log(e);
+    isValidationAndPowerLoading.value = false;
   } finally {
-    vpLoaded.value = true;
-    vpLoading.value = false;
+    isValidationAndPowerLoading.value = false;
+    isValidationAndPowerLoaded.value = true;
   }
 }
 
@@ -106,7 +133,7 @@ watch(
   () => [props.open, web3Account.value],
   async () => {
     if (props.open === false) return;
-    loadVotingPower();
+    loadValidationAndPower();
   }
 );
 </script>
@@ -117,65 +144,88 @@ watch(
       <h4 class="m-4 mb-0 text-center">
         {{ $tc('proposal.castVote') }}
       </h4>
-      <div slim class="m-4 text-skin-link">
-        <div class="flex">
-          <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
-          <span
-            v-tippy="{
-              content:
-                format(proposal, selectedChoices).length > 30
-                  ? format(proposal, selectedChoices)
-                  : null
-            }"
-            class="ml-4 truncate text-right"
-          >
-            {{ format(proposal, selectedChoices) }}
-          </span>
+      <div slim class="m-4 space-y-4 text-skin-link">
+        <div>
+          <div class="flex">
+            <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
+            <span
+              v-tippy="{
+                content:
+                  format(proposal, selectedChoices).length > 30
+                    ? format(proposal, selectedChoices)
+                    : null
+              }"
+              class="ml-4 truncate text-right"
+            >
+              {{ format(proposal, selectedChoices) }}
+            </span>
+          </div>
+          <div class="flex">
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('snapshot')"
+            />
+            <BaseLink
+              :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
+              class="float-right"
+            >
+              {{ formatNumber(Number(proposal.snapshot)) }}
+            </BaseLink>
+          </div>
+
+          <div class="flex">
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('votingPower')"
+            />
+            <span
+              v-if="hasVotingPowerFailed || hasVotingValidationFailed"
+              class="item-center flex"
+            >
+              <BaseButtonIcon class="p-0 pr-2" @click="loadValidationAndPower">
+                <i-ho-refresh class="text-sm" />
+              </BaseButtonIcon>
+              <i-ho-exclamation-circle class="mt-[1px]" />
+            </span>
+            <span
+              v-else-if="
+                isValidationAndPowerLoaded && !isValidationAndPowerLoading
+              "
+              v-tippy="{
+                content: votingPowerByStrategy
+                  .map(
+                    (score, index) =>
+                      `${formatCompactNumber(votingPower === 0 ? 0 : score)} ${
+                        symbols[index]
+                      }`
+                  )
+                  .join(' + ')
+              }"
+            >
+              {{ formatCompactNumber(votingPower) }}
+              {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
+            </span>
+            <LoadingSpinner v-else />
+          </div>
         </div>
-        <div class="flex">
-          <span class="mr-1 flex-auto text-skin-text" v-text="$t('snapshot')" />
-          <BaseLink
-            :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
-            class="float-right"
-          >
-            {{ formatNumber(Number(proposal.snapshot)) }}
-          </BaseLink>
-        </div>
-        <div class="flex">
-          <span
-            class="mr-1 flex-auto text-skin-text"
-            v-text="$t('votingPower')"
-          />
-          <span v-if="vpLoadingFailed" class="item-center flex">
-            <BaseButtonIcon class="p-0 pr-2" @click="loadVotingPower">
-              <i-ho-refresh class="text-sm" />
-            </BaseButtonIcon>
-            <i-ho-exclamation-circle class="mt-[1px]" />
-          </span>
-          <span
-            v-else-if="vpLoaded && !vpLoading"
-            v-tippy="{
-              content: vpByStrategy
-                .map(
-                  (score, index) =>
-                    `${formatCompactNumber(score)} ${symbols[index]}`
-                )
-                .join(' + ')
-            }"
-          >
-            {{ formatCompactNumber(vp) }}
-            {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
-          </span>
-          <LoadingSpinner v-else />
-        </div>
-        <div class="mt-3">
+
+        <template
+          v-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
+        >
+          <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
+            {{ t('votingPowerError') }}
+          </BaseMessageBlock>
+          <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
+            {{
+              t(
+                'There was an error on our side and we could not verify if you eligible to vote.'
+              )
+            }}
+          </BaseMessageBlock>
           <BaseMessageBlock
-            v-if="!vpLoading && vpLoadingFailed"
+            v-else-if="votingPower === 0 && isValidationAndPowerLoaded"
             level="warning"
           >
-            {{ t('vpError') }}
-          </BaseMessageBlock>
-          <BaseMessageBlock v-else-if="vp === 0 && vpLoaded" level="warning">
             {{
               $t('noVotingPower', {
                 blockNumber: formatNumber(Number(proposal.snapshot))
@@ -187,6 +237,36 @@ watch(
               {{ $t('learnMore') }}</BaseLink
             >
           </BaseMessageBlock>
+          <BaseMessageBlock
+            v-else-if="!votingValidation && isValidationAndPowerLoaded"
+            level="warning"
+          >
+            <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
+            {{
+              `Voting requires a GitcoinPassport with a minimum of ${proposal.validation.params.min_weight} points.`
+            }}
+            <BaseLink link="https://passport.gitcoin.co/#/dashboard">
+              {{ $t('Passport') }}</BaseLink
+            >
+            <!-- Create a table for proposal.validation.params.stamps -->
+            <table class="mt-3 w-full">
+              <thead>
+                <tr>
+                  <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
+                  <th class="w-1/3 py-1 text-left text-skin-link">Points</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="stamp in proposal.validation.params.stamps"
+                  :key="stamp.name"
+                >
+                  <td class="py-1">{{ stamp.id }}</td>
+                  <td class="py-1">{{ stamp.weight }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </BaseMessageBlock>
           <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
             <TextareaAutosize
               v-model="reason"
@@ -195,9 +275,10 @@ watch(
               :placeholder="$t('comment.placeholder')"
             />
           </div>
-        </div>
+        </template>
       </div>
     </div>
+
     <template #footer>
       <div class="float-left w-2/4 pr-2">
         <BaseButton type="button" class="w-full" @click="$emit('close')">
@@ -206,7 +287,12 @@ watch(
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          :disabled="vp === 0 || isSending || isLoadingShutter"
+          :disabled="
+            votingPower === 0 ||
+            !votingValidation ||
+            isSending ||
+            isLoadingShutter
+          "
           :loading="isSending || isLoadingShutter"
           type="submit"
           class="w-full"
