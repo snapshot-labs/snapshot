@@ -14,7 +14,7 @@ const { web3Account } = useWeb3();
 
 const votingPower = ref(0);
 const votingPowerByStrategy = ref([]);
-const votingValidation = ref(false);
+const isValidVoter = ref(false);
 const reason = ref('');
 
 const isValidationAndPowerLoading = ref(false);
@@ -86,7 +86,7 @@ async function handleSubmit() {
 }
 
 async function loadVotingValidation() {
-  if (!props.proposal.validation) return (votingValidation.value = true);
+  if (!props.proposal.validation) return (isValidVoter.value = true);
   hasVotingValidationFailed.value = false;
   try {
     const validationRes = await getValidation(
@@ -94,7 +94,7 @@ async function loadVotingValidation() {
       web3Account.value,
       props.proposal
     );
-    votingValidation.value = validationRes;
+    isValidVoter.value = validationRes;
   } catch (e) {
     hasVotingValidationFailed.value = true;
     console.log(e);
@@ -175,6 +175,26 @@ watch(
             </BaseLink>
           </div>
 
+          <div
+            v-if="
+              proposal.validation?.name !== 'any' &&
+              isValidationAndPowerLoaded &&
+              !isValidationAndPowerLoading
+            "
+            class="flex"
+          >
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('Validation')"
+            />
+            <div class="flex gap-2">
+              <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />
+              <i-ho-check v-else-if="isValidVoter" />
+              <i-ho-x v-else />
+              {{ $t(`validation.${proposal.validation.name}.label`) }}
+            </div>
+          </div>
+
           <div class="flex">
             <span
               class="mr-1 flex-auto text-skin-text"
@@ -220,14 +240,11 @@ watch(
           <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
             {{
               t(
-                'There was an error on our side and we could not verify if you eligible to vote.'
+                'There was an error on our side and we could not verify if you eligible to vote. This is often due to a misconfigured voting validation or an unresponsive RPC node involved in the validation.'
               )
             }}
           </BaseMessageBlock>
-          <BaseMessageBlock
-            v-else-if="votingPower === 0 && isValidationAndPowerLoaded"
-            level="warning"
-          >
+          <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
               $t('noVotingPower', {
                 blockNumber: formatNumber(Number(proposal.snapshot))
@@ -241,8 +258,7 @@ watch(
           </BaseMessageBlock>
           <BaseMessageBlock
             v-else-if="
-              !votingValidation &&
-              isValidationAndPowerLoaded &&
+              !isValidVoter &&
               proposal.validation &&
               proposal.validation.name === 'passport'
             "
@@ -250,7 +266,7 @@ watch(
           >
             <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
             {{
-              `Voting requires a GitcoinPassport with a minimum of ${proposal.validation.params.min_weight} points.`
+              `Voting requires a Gitcoin Passport with a minimum of ${proposal.validation.params.min_weight} points.`
             }}
             <BaseLink link="https://passport.gitcoin.co/#/dashboard">
               {{ $t('Passport') }}</BaseLink
@@ -274,10 +290,7 @@ watch(
               </tbody>
             </table>
           </BaseMessageBlock>
-          <BaseMessageBlock
-            v-else-if="!votingValidation && isValidationAndPowerLoaded"
-            level="warning"
-          >
+          <BaseMessageBlock v-else-if="!isValidVoter" level="warning">
             {{ `Oops, you don't seem to be eligible to vote.` }}
             <BaseLink link="https://passport.gitcoin.co/#/dashboard">
               {{ $t('learnMore') }}</BaseLink
@@ -304,10 +317,7 @@ watch(
       <div class="float-left w-2/4 pl-2">
         <BaseButton
           :disabled="
-            votingPower === 0 ||
-            !votingValidation ||
-            isSending ||
-            isLoadingShutter
+            votingPower === 0 || !isValidVoter || isSending || isLoadingShutter
           "
           :loading="isSending || isLoadingShutter"
           type="submit"

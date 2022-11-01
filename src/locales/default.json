@@ -8,7 +8,7 @@
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "vpError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingPowerError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
   "retry": "Retry",
   "currentResults": "Current results",
@@ -565,8 +565,8 @@
       "description": "Anyone can vote with voting power can cast a vote."
     },
     "passport": {
-      "label": "Gitcoin passport",
-      "description": "Select a minimum amount of gitcoin passport stamps that a user must have to be able to vote."
+      "label": "Gitcoin Passport",
+      "description": "Select a minimum amount of Gitcoin Passport stamps that a user must have to be able to vote."
     }
   },
   "safeSnap": {
