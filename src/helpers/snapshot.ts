@@ -84,7 +84,7 @@ export async function getValidation(space, address, proposal) {
     address,
     space.id,
     proposal.network,
-    proposal.snapshot,
+    parseInt(proposal.snapshot),
     proposal.validation.params,
     options
   );
