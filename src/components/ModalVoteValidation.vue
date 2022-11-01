@@ -55,7 +55,10 @@ watch(open, () => {
 
     <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <div v-if="input.name" class="mb-4 rounded-md border p-4 text-skin-link">
-        <h4 class="mb-3 text-center" v-text="input.name" />
+        <h4
+          class="mb-3 text-center"
+          v-text="$t(`validation.${input.name}.label`)"
+        />
         <TextareaJson
           v-model="input.params"
           v-model:is-valid="isValid"

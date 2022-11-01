@@ -14,7 +14,7 @@ const { web3Account } = useWeb3();
 
 const votingPower = ref(0);
 const votingPowerByStrategy = ref([]);
-const votingValidation = ref(0);
+const votingValidation = ref(false);
 const reason = ref('');
 
 const isValidationAndPowerLoading = ref(false);
@@ -86,6 +86,7 @@ async function handleSubmit() {
 }
 
 async function loadVotingValidation() {
+  if (!props.proposal.validation) return (votingValidation.value = true);
   hasVotingValidationFailed.value = false;
   try {
     const validationRes = await getValidation(
@@ -160,6 +161,7 @@ watch(
               {{ format(proposal, selectedChoices) }}
             </span>
           </div>
+
           <div class="flex">
             <span
               class="mr-1 flex-auto text-skin-text"
@@ -241,6 +243,7 @@ watch(
             v-else-if="
               !votingValidation &&
               isValidationAndPowerLoaded &&
+              proposal.validation &&
               proposal.validation.name === 'passport'
             "
             level="warning"

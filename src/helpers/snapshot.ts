@@ -63,7 +63,7 @@ export async function getPower(space, address, proposal) {
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
-  return await getVp(
+  return getVp(
     address,
     proposal.network,
     proposal.strategies,
@@ -74,12 +74,16 @@ export async function getPower(space, address, proposal) {
   );
 }
 
-export async function getValidation(space, address, proposal) {
+export async function getValidation(
+  space,
+  address,
+  proposal
+): Promise<boolean> {
   console.log('[score] getValidation');
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
-  return await validate(
+  const validateRes = await validate(
     proposal.validation.name,
     address,
     space.id,
@@ -88,4 +92,6 @@ export async function getValidation(space, address, proposal) {
     proposal.validation.params,
     options
   );
+  if (typeof validateRes !== 'boolean') return false;
+  return validateRes;
 }

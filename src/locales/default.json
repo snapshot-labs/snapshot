@@ -565,7 +565,7 @@
       "description": "Anyone can vote with voting power can cast a vote."
     },
     "passport": {
-      "label": "Gitcoin Passport",
+      "label": "Gitcoin passport",
       "description": "Select a minimum amount of gitcoin passport stamps that a user must have to be able to vote."
     }
   },
