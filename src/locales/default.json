@@ -546,7 +546,7 @@
   "privacy": {
     "label": "Privacy",
     "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "Any",
     "none": "None",
     "shutter": {
@@ -554,6 +554,19 @@
       "description": "Choices are encrypted and only visible once the voting period is over",
       "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "Validation",
+    "title": "Select voting validation",
+    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can vote",
+      "description": "Anyone can vote with voting power can cast a vote."
+    },
+    "passport": {
+      "label": "Gitcoin Passport",
+      "description": "Select a minimum amount of gitcoin passport stamps that a user must have to be able to vote."
     }
   },
   "safeSnap": {

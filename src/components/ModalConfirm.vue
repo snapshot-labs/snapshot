@@ -238,7 +238,11 @@ watch(
             >
           </BaseMessageBlock>
           <BaseMessageBlock
-            v-else-if="!votingValidation && isValidationAndPowerLoaded"
+            v-else-if="
+              !votingValidation &&
+              isValidationAndPowerLoaded &&
+              proposal.validation.name === 'passport'
+            "
             level="warning"
           >
             <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
@@ -266,6 +270,15 @@ watch(
                 </tr>
               </tbody>
             </table>
+          </BaseMessageBlock>
+          <BaseMessageBlock
+            v-else-if="!votingValidation && isValidationAndPowerLoaded"
+            level="warning"
+          >
+            {{ `Oops, you don't seem to be eligible to vote.` }}
+            <BaseLink link="https://passport.gitcoin.co/#/dashboard">
+              {{ $t('learnMore') }}</BaseLink
+            >
           </BaseMessageBlock>
           <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
             <TextareaAutosize

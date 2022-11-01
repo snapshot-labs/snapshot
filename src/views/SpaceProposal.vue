@@ -58,25 +58,6 @@ function clickVote() {
 async function loadProposal() {
   loadingProposal.value = true;
   proposal.value = await getProposal(id);
-  // Temporarily change proposal validation data to passport
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  proposal.value = {
-    ...proposal.value,
-    validation: {
-      name: 'passport',
-      params: {
-        stamps: [
-          { id: 'Ens', weight: 1 }
-          // { id: 'Twitter', weight: 1 }
-          // { id: 'POAP', weight: 1 },
-          // { id: 'GitHub', weight: 1 }
-          // { id: 'SnapshotVotesProvider', weight: 2 }
-        ],
-        min_weight: 1
-      }
-    }
-  };
   // Redirect to 404 page if proposal doesn't belong to current space
   if (!proposal.value || props.space.id !== proposal.value.space.id) {
     router.push({ name: 'error-404' });

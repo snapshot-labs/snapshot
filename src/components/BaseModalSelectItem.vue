@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <BaseBlock
     :class="[
-      ' transition-colors hover:border-skin-text',
+      'cursor-pointer transition-colors hover:border-skin-text',
       { '!border-skin-link': selected }
     ]"
   >
