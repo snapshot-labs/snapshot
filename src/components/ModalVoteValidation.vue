@@ -39,6 +39,46 @@ watch(open, () => {
     };
   }
 });
+
+const definition = {
+  $schema: 'http://json-schema.org/draft-07/schema#',
+  $ref: '#/definitions/Validation',
+  definitions: {
+    Validation: {
+      title: 'Validation',
+      type: 'object',
+      properties: {
+        stamps: {
+          type: 'array',
+          title: 'Stamps',
+          minItems: 1,
+          maxItems: 32,
+          items: {
+            type: 'object',
+            properties: {
+              id: {
+                type: 'string',
+                title: 'Id'
+              },
+              weight: {
+                type: 'number',
+                title: 'Weight'
+              }
+            },
+            required: ['id', 'weight'],
+            additionalProperties: false
+          }
+        },
+        min_weight: {
+          type: 'number',
+          title: 'Min. weight'
+        }
+      },
+      required: ['stamps', 'min_weight'],
+      additionalProperties: false
+    }
+  }
+};
 </script>
 
 <template>
@@ -59,7 +99,13 @@ watch(open, () => {
           class="mb-3 text-center"
           v-text="$t(`validation.${input.name}.label`)"
         />
+        <FormObject
+          v-if="definition.definitions.Validation"
+          v-model="input.params"
+          :definition="definition.definitions.Validation"
+        />
         <TextareaJson
+          v-else
           v-model="input.params"
           v-model:is-valid="isValid"
           :placeholder="$t('settings.validationParameters')"
