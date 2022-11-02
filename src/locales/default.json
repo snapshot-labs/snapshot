@@ -566,7 +566,7 @@
     },
     "passport": {
       "label": "Gitcoin Passport",
-      "description": "Select a minimum amount of Gitcoin Passport stamps that a user must have to be able to vote."
+      "description": "Protect your proposals from spam and vote manipulation by setting up Gitcoin Passport."
     }
   },
   "safeSnap": {

@@ -266,7 +266,7 @@ watch(
             <BaseMessageBlock level="warning">
               <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
               {{
-                `Voting requires a Gitcoin Passport with at least ${proposal.validation.params.min_weight} point(s). Each verified stamp will grant you 1 point.`
+                `Voting requires a Gitcoin Passport with a minimum weight of ${proposal.validation.params.min_weight}.`
               }}
               <BaseLink link="https://passport.gitcoin.co/#/dashboard">
                 {{ $t('Passport') }}</BaseLink
@@ -276,13 +276,13 @@ watch(
               v-if="proposal?.validation.params?.stamps.some(p => p.weight > 1)"
               level="info"
             >
-              This proposal grants more points for the stamps below:
+              A list of stamps that can be used to increase your weight:
               <!-- Create a table for proposal.validation.params.stamps -->
               <table class="mt-3 w-full">
                 <thead>
                   <tr>
                     <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
-                    <th class="w-1/3 py-1 text-left text-skin-link">Points</th>
+                    <th class="w-1/3 py-1 text-left text-skin-link">Weight</th>
                   </tr>
                 </thead>
                 <tbody>
