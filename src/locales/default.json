@@ -562,7 +562,7 @@
     "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
     "any": {
       "label": "Anyone can vote",
-      "description": "Anyone can vote with voting power can cast a vote."
+      "description": "Anyone with voting power can cast a vote."
     },
     "passport": {
       "label": "Gitcoin Passport",
