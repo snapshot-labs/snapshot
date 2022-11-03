@@ -104,7 +104,7 @@ async function loadResults() {
   const [userVotesRes, votesRes] = await Promise.all([
     await getProposalVotes(id, {
       first: 1,
-      voter: web3Account.value
+      voter: web3Account.value || '0x0000000000000000000000000000000000000000'
     }),
     await getProposalVotes(id, {
       first: 10
