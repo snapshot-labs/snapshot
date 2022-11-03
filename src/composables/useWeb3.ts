@@ -45,7 +45,10 @@ export function useWeb3() {
         !auth.provider.value.isTorus
       )
         auth.provider.value.removeAllListeners();
-      if (auth.provider.value.on) {
+      if (
+        auth.provider.value.on &&
+        auth.provider._value['_events'] !== undefined
+      ) {
         auth.provider.value.on('chainChanged', async chainId => {
           handleChainChanged(parseInt(formatUnits(chainId, 0)));
         });
