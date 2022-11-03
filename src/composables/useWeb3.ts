@@ -43,7 +43,7 @@ export function useWeb3() {
       if (
         auth.provider.value.removeAllListeners &&
         !auth.provider.value.isTorus
-        )
+      )
         auth.provider.value.removeAllListeners();
       if (auth.provider.value.on) {
         try {
