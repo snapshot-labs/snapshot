@@ -41,6 +41,10 @@ export function useStrategies() {
       'strategies'
     );
 
+    strategies.value = strategies.value.filter(
+      strategy => strategy.id !== 'pagination'
+    );
+
     loadingStrategies.value = false;
   }
 

@@ -1,56 +1,58 @@
 <script setup lang="ts">
 /**
- * Shown on proposal page when proposalState is invalid or live calculation of
- * scores failed. It shows a descriptive error message and a retry button,
- * which triggers recalculation. When proposalState is invalid (meaning the
- * proposal is closed) the endpoint to update the db is triggered. Otherwise
- * live (re)calculation in SpaceProposal.vue kicks in.
- * It also shows a "Get help" button for space admins, pointing to discord.
+ * When proposalState is invalid or live calculation of
+ * scores failed. Show error message and a retry button,
+ * which triggers recalculation.
+ * Also shows a "Get help" button for space admins, pointing to discord.
  */
 
 import { ref } from 'vue';
 import { useI18n } from '@/composables/useI18n';
+import { Proposal } from '@/helpers/interfaces';
+
 const { t } = useI18n();
 
 const props = defineProps<{
+  proposal: Proposal;
   isAdmin: boolean;
-  proposalId: string;
-  proposalState: string;
+  isPending: boolean;
+  isInvalid: boolean;
 }>();
 
-const emit = defineEmits<{
-  (e: 'retry'): void;
-}>();
+const emit = defineEmits(['reload']);
 
 const retrying = ref(false);
 const retry = async () => {
-  if (props.proposalState === 'invalid') {
+  if (props.isInvalid || props.isPending) {
     retrying.value = true;
     await fetch(
-      `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposalId}`
+      `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
     );
     retrying.value = false;
   }
-  emit('retry');
+  emit('reload');
 };
 </script>
 
 <template>
-  <BaseBlock>
+  <BaseMessage v-if="isPending" level="info">
+    {{ $t('resultsCalculating') }}
+  </BaseMessage>
+  <BaseMessage v-else-if="isInvalid" level="warning">
     <div>{{ t('resultsError') }}</div>
-    <BaseButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
-      <BaseIcon name="refresh" />
-      {{ t('retry') }}
+  </BaseMessage>
+  <BaseButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
+    <BaseIcon name="refresh" />
+    {{ t('retry') }}
+  </BaseButton>
+  <BaseLink
+    v-if="isAdmin"
+    link="https://discord.gg/snapshot"
+    class="mt-3 block"
+    hide-external-icon
+  >
+    <BaseButton class="w-full">
+      {{ t('getHelp') }}
     </BaseButton>
-    <BaseLink
-      v-if="isAdmin"
-      link="https://discord.gg/snapshot"
-      class="mt-3 block"
-      hide-external-icon
-    >
-      <BaseButton class="w-full">
-        {{ t('getHelp') }}
-      </BaseButton>
-    </BaseLink>
-  </BaseBlock>
+  </BaseLink>
 </template>

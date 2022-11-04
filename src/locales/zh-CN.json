@@ -26,7 +26,7 @@
   "space": "空间",
   "spaces": "空间",
   "verifiedSpace": "已认证的空间",
-  "warningSpace": "这不是一个官方空间，请谨慎行事！",
+  "warningSpace": "这个空间已被标记为潜在的恶意空间，请谨慎行事。",
   "version": "版本",
   "timeline": "时间线",
   "ended": "已结束",
@@ -607,6 +607,24 @@
     "button_show": "浏览收藏",
     "success_claim": "POAP已被铸造到您的收藏中",
     "error_claim": "创建令牌时出错"
+  },
+  "progress": {
+    "progress": "进度",
+    "inProgress": "进行中",
+    "completed": "已完成",
+    "complete": "完成",
+    "newStep": "新步骤",
+    "description": "说明",
+    "add": "添加",
+    "deleteStep": "删除步骤",
+    "deleteConfirm": "您确定要删除吗？",
+    "delete": "删除",
+    "cancel": "取消",
+    "comeBack": "投票结束后再来看看这个提案的进展情况吧！",
+    "confirmSignature": "签名此消息将使我们能够授权您的请求来更新您的提案的进度。",
+    "wentWrong": "哎呀，出了点问题",
+    "voting": "投票中",
+    "soon": "即将到来"
   },
   "charts": {
     "charts": "图表",

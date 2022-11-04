@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  level: 'info' | 'warning';
+  level: 'info' | 'warning' | 'warning-red';
   isResponsive?: boolean;
 }>();
 </script>
@@ -9,7 +9,8 @@ defineProps<{
   <BaseBlock
     :class="[
       'rounded-xl border text-skin-text',
-      { '!border-skin-text ': level === 'warning' },
+      { '!border-skin-text': level === 'warning' },
+      { '!border-red': level === 'warning-red' },
       {
         ' rounded-none border-x-0': isResponsive
       }

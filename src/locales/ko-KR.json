@@ -26,7 +26,7 @@
   "space": "공간",
   "spaces": "공간들",
   "verifiedSpace": "검증된 공간",
-  "warningSpace": "This is not an official space, proceed with caution!",
+  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "version": "버전",
   "timeline": "타임라인",
   "ended": "ended",
@@ -607,6 +607,24 @@
     "button_show": "컬렉션 보기",
     "success_claim": "POAP이 컬렉션에 발행되었습니다.",
     "error_claim": "토큰 발행에 문제가 발생했습니다."
+  },
+  "progress": {
+    "progress": "Progress",
+    "inProgress": "In Progress",
+    "completed": "Completed",
+    "complete": "Complete",
+    "newStep": "New Step",
+    "description": "Description",
+    "add": "Add",
+    "deleteStep": "Delete Step",
+    "deleteConfirm": "Are you sure you want to delete?",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
+    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
+    "wentWrong": "Oops something went wrong.",
+    "voting": "Voting",
+    "soon": "Soon"
   },
   "charts": {
     "charts": "차트",

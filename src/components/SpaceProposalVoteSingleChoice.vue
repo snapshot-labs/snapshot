@@ -1,19 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
+import { Proposal } from '@/helpers/interfaces';
 
-defineProps({
-  proposal: {
-    type: Object,
-    required: true
-  }
-});
+const props = defineProps<{
+  proposal: Proposal;
+  userChoice: number | null;
+}>();
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoice = ref(null);
+const selectedChoice = ref<number | null>(props.userChoice || null);
 
-function selectChoice(i) {
+function selectChoice(i: number) {
   selectedChoice.value = i;
   emit('selectChoice', i);
 }

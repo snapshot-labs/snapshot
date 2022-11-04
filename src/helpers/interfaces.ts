@@ -95,6 +95,7 @@ export interface ExtendedSpace {
   domain: string | null;
   website: string | null;
   terms: string | null;
+  coingecko: string | null;
   github: string | null;
   twitter: string | null;
   followersCount: number;
@@ -163,15 +164,18 @@ export interface Results {
   scoresTotal: number;
 }
 
+export type Choice = number | number[] | Record<string, any>;
+
 export interface Vote {
   ipfs: string;
   voter: string;
-  choice: number | number[] | Record<string, any>;
+  choice: Choice;
   balance: number;
   scores: number[];
   vp: number;
   vp_by_strategy: number[];
   reason: string;
+  created: number;
 }
 
 // Execution

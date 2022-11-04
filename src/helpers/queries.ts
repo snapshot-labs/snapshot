@@ -22,6 +22,7 @@ export const VOTES_QUERY = gql`
       vp
       vp_by_strategy
       reason
+      created
     }
   }
 `;
@@ -188,6 +189,7 @@ export const SPACES_QUERY = gql`
       twitter
       website
       github
+      coingecko
       private
       domain
       members

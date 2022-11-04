@@ -5,7 +5,7 @@ import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { isGnosisSafe } = useClient();
-const { shareVote } = useSharing();
+const { shareVote, shareProposalTwitter, shareProposalLenster } = useSharing();
 const { web3Account } = useWeb3();
 
 const props = defineProps<{
@@ -23,12 +23,12 @@ const imgPath = computed(() => {
     : '/stickers/hooray.png';
 });
 
-function share() {
-  shareVote(
-    props.space,
-    props.proposal,
-    getChoiceString(props.proposal, props.selectedChoices)
-  );
+function share(shareTo: 'twitter' | 'lenster') {
+  shareVote(shareTo, {
+    space: props.space,
+    proposal: props.proposal,
+    choices: getChoiceString(props.proposal, props.selectedChoices)
+  });
 }
 </script>
 
@@ -59,26 +59,43 @@ function share() {
     </div>
     <template #footer>
       <div class="space-y-2">
-        <BaseLink
-          v-if="isGnosisSafe"
-          :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
-          hide-external-icon
-        >
-          <BaseButton class="w-full">
-            <div class="flex flex-grow items-center justify-center gap-1">
-              {{ $t('proposal.postVoteModal.seeQueue') }}
-              <i-ho-external-link class="text-sm" />
-            </div>
-          </BaseButton>
-        </BaseLink>
         <BaseButton
-          v-else
           class="flex !h-[42px] w-full items-center justify-center gap-2"
-          @click="share"
+          @click="
+            isGnosisSafe
+              ? shareProposalTwitter(space, proposal)
+              : share('twitter')
+          "
         >
-          <BaseIcon name="twitter" size="24" class="text-[#1DA1F2]" />
+          <i-s-twitter class="text-md text-[#1DA1F2]" />
           {{ $t('shareOnTwitter') }}
         </BaseButton>
+        <BaseButton
+          class="flex !h-[42px] w-full items-center justify-center gap-2"
+          @click="
+            isGnosisSafe
+              ? shareProposalLenster(space, proposal)
+              : share('lenster')
+          "
+        >
+          <i-s-lenster class="text-[#8B5CF6]" />
+          {{ $t('shareOnLenster') }}
+        </BaseButton>
+
+        <div v-if="isGnosisSafe">
+          <BaseLink
+            :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
+            hide-external-icon
+          >
+            <BaseButton class="w-full">
+              <div class="flex flex-grow items-center justify-center gap-1">
+                {{ $t('proposal.postVoteModal.seeQueue') }}
+                <i-ho-external-link class="text-sm" />
+              </div>
+            </BaseButton>
+          </BaseLink>
+        </div>
+
         <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
           {{ $t('close') }}
         </BaseButton>

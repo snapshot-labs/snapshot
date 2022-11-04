@@ -10,7 +10,12 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-import { useProfiles, useWeb3, useIntl } from '@/composables';
+import {
+  useProfiles,
+  useWeb3,
+  useIntl,
+  useReportDownload
+} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -18,7 +23,7 @@ const props = defineProps<{
   votes: Vote[];
   loaded: boolean;
   strategies: SpaceStrategy[];
-  userVote: Vote[];
+  userVote: Vote | null;
   loadingMore: boolean;
 }>();
 
@@ -33,9 +38,23 @@ const modalReceiptOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
-const sortedVotes = ref<Vote[]>([]);
+const sortedVotes = computed(() => {
+  const votesClone = clone(votes.value);
+  if (props.userVote) votesClone.push(props.userVote);
+  const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
+  if (uniqVotes.map(vote => vote.voter).includes(web3Account.value)) {
+    uniqVotes.unshift(
+      uniqVotes.splice(
+        uniqVotes.findIndex(item => item.voter === web3Account.value),
+        1
+      )[0]
+    );
+  } else {
+    uniqVotes.sort((a, b) => b.balance - a.balance);
+  }
+  return uniqVotes;
+});
 
-const visibleVotes = computed(() => sortedVotes.value);
 const titles = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
@@ -52,27 +71,11 @@ function openReceiptModal(iphsHash) {
 
 const { profiles, loadProfiles } = useProfiles();
 
-watch([votes, web3Account], () => {
-  const votesWithUser = uniqBy(
-    clone(votes.value).concat(props.userVote),
-    'ipfs' as any
-  );
-  if (votesWithUser.map(vote => vote.voter).includes(web3Account.value)) {
-    votesWithUser.unshift(
-      votesWithUser.splice(
-        votesWithUser.findIndex(item => item.voter === web3Account.value),
-        1
-      )[0]
-    );
-  } else {
-    votesWithUser.sort((a, b) => b.balance - a.balance);
-  }
-  sortedVotes.value = votesWithUser;
+watch(sortedVotes, () => {
+  loadProfiles(sortedVotes.value.map(vote => vote.voter));
 });
 
-watch(visibleVotes, () => {
-  loadProfiles(visibleVotes.value.map(vote => vote.voter));
-});
+const { downloadVotes, isDownloadingVotes } = useReportDownload();
 </script>
 
 <template>
@@ -80,11 +83,21 @@ watch(visibleVotes, () => {
     v-if="isZero()"
     :title="$t('votes')"
     :counter="voteCount"
-    :slim="true"
     :loading="!loaded"
+    slim
   >
+    <template #button>
+      <BaseButtonIcon>
+        <LoadingSpinner v-if="isDownloadingVotes" />
+        <i-ho-download
+          v-else
+          v-tippy="{ content: 'Download as CSV' }"
+          @click="downloadVotes(proposal.id)"
+        />
+      </BaseButtonIcon>
+    </template>
     <div
-      v-for="(vote, i) in visibleVotes"
+      v-for="(vote, i) in sortedVotes"
       :key="i"
       :class="[
         'flex items-center border-t px-3 py-[14px]',
@@ -125,7 +138,7 @@ watch(visibleVotes, () => {
           <BaseIcon name="signature" />
         </BaseButtonIcon>
         <BaseButtonIcon
-          v-if="vote.reason !== ''"
+          v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
           v-tippy="{
             content: vote.reason
           }"
