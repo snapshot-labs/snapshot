@@ -90,21 +90,9 @@ export interface ModuleExecutionData extends ExecutionData {
   module: SafeModule;
 }
 
-export enum ExecutionState {
-  WAITING = 'waiting',
-  PROPOSABLE = 'proposable',
-  DISPUTABLE = 'disputable',
-  EXECUTABLE = 'executable',
-  EXECUTED = 'executed',
-  REJECTED = 'rejected',
-  INVALIDATED = 'invalidated',
-  EXPIRED = 'expired',
-  UNKNOWN = 'unknown'
-}
-
-export interface Executor {
+export interface Executor<ExecutionState> {
   loading: Ref<boolean>;
-  executionState: ComputedRef<ExecutionState>;
+  state: ComputedRef<ExecutionState>;
   propose(...key: any[]): Promise<void>;
   dispute(...key: any[]): Promise<void>;
   execute(...key: any[]): Promise<void>;

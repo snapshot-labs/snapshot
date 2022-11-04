@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { HashZero } from '@ethersproject/constants';
-import { ExecutionState, Executor, ModuleExecutionData } from '@/helpers/safe';
+import { Executor, ModuleExecutionData } from '@/helpers/safe';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useTimestamp } from '@vueuse/core';
 import {
@@ -16,10 +16,22 @@ const INVALID_QUESTION_ID =
 const HashOne =
   '0x0000000000000000000000000000000000000000000000000000000000000001';
 
+export enum RealityExecutionState {
+  WAITING = 'waiting',
+  PROPOSABLE = 'proposable',
+  DISPUTABLE = 'disputable',
+  EXECUTABLE = 'executable',
+  EXECUTED = 'executed',
+  REJECTED = 'rejected',
+  INVALIDATED = 'invalidated',
+  EXPIRED = 'expired',
+  UNKNOWN = 'unknown'
+}
+
 export async function useExecutorReality(
   executionData: ModuleExecutionData,
   proposal: Proposal
-): Promise<Executor> {
+): Promise<Executor<RealityExecutionState>> {
   const now = computed(
     () => useTimestamp({ offset: 0, interval: 1000 }).value / 1000
   );
@@ -247,26 +259,27 @@ export async function useExecutorReality(
     }
   }
 
-  const executionState = computed<ExecutionState>(() => {
-    if (now.value <= proposal.end) return ExecutionState.WAITING;
+  const state = computed<RealityExecutionState>(() => {
+    if (now.value <= proposal.end) return RealityExecutionState.WAITING;
 
-    if (questionId === INVALID_QUESTION_ID) return ExecutionState.INVALIDATED;
-    if (questionId === HashZero) return ExecutionState.PROPOSABLE;
+    if (questionId === INVALID_QUESTION_ID)
+      return RealityExecutionState.INVALIDATED;
+    if (questionId === HashZero) return RealityExecutionState.PROPOSABLE;
 
-    if (allTransactionsExecuted.value) return ExecutionState.EXECUTED;
+    if (allTransactionsExecuted.value) return RealityExecutionState.EXECUTED;
 
-    if (!isOracleAnswerFinal.value) return ExecutionState.DISPUTABLE;
+    if (!isOracleAnswerFinal.value) return RealityExecutionState.DISPUTABLE;
 
-    if (oracleAnswer.value === false) return ExecutionState.REJECTED;
+    if (oracleAnswer.value === false) return RealityExecutionState.REJECTED;
 
-    if (oracleAnswer.value === true) return ExecutionState.EXECUTABLE;
+    if (oracleAnswer.value === true) return RealityExecutionState.EXECUTABLE;
 
-    return ExecutionState.UNKNOWN;
+    return RealityExecutionState.UNKNOWN;
   });
 
   return {
     loading,
-    executionState,
+    state,
     propose,
     dispute,
     execute,

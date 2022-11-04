@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { formatUnits } from '@ethersproject/units';
 import { Proposal } from '@/helpers/interfaces';
 import { ModuleExecutionData } from '@/helpers/safe';
@@ -12,102 +11,155 @@ const props = defineProps<{
 }>();
 
 const {
-  loading,
-  executionState,
   propose,
   dispute,
   execute,
-  now,
-  bondBalance,
-  bondAllowance,
-  bondAmount,
-  bondDecimals,
-  bondSymbol,
+  settleRejected,
   approveBond,
+  loading,
+  oracleContract,
+  bondInfo,
   proposedAt,
-  disputeTimeout
+  disputeCountdown,
+  isWaitingForOtherProposal,
+  isProposed,
+  isDisputed,
+  isExecuted,
+  isRejected,
+  isExecutable,
+  isRejectable
 } = await useExecutorUma(
   props.executionDataIndex,
   props.executionData,
   props.proposal
 );
-
-const hasBondAllowance = computed<boolean>(() =>
-  bondAllowance.value.gte(bondAmount)
-);
-const hasBondBalance = computed<boolean>(() =>
-  bondBalance.value.gte(bondAmount)
-);
 </script>
 
 <template>
-  <ExecutionAbstract
-    :loading="loading"
-    :execution-state="executionState"
-    :network="executionData.safe.network"
-  >
-    <template #propose>
-      <div v-if="hasBondAllowance" class="flex flex-col">
-        <template v-if="hasBondBalance">
-          <BaseButton @click="propose"> propose transactions </BaseButton>
-          <small class="mt-2 opacity-50">
-            You will deposit a bond of
-            {{ formatUnits(bondAmount, bondDecimals) }}.
-          </small>
-        </template>
-        <template v-else>
-          You don't have the required
-          {{ formatUnits(bondAmount, bondDecimals) }} {{ bondSymbol }} to
-          propose.
-        </template>
+  <LoadingSpinner v-if="loading" />
+
+  <div v-else-if="isExecuted" class="flex flex-col items-center justify-center">
+    <span class="mb-3 rounded-full bg-green p-2 text-white">
+      <i-ho-check />
+    </span>
+    <span>Transactions have been executed.</span>
+  </div>
+
+  <div v-else-if="isRejected" class="flex flex-col items-center justify-center">
+    <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
+      <i-ho-x />
+    </span>
+    <span>Transactions have been rejected.</span>
+  </div>
+
+  <template v-else-if="isDisputed">
+    Transactions have benn disputed. Waiting for dispute to be resolved.
+  </template>
+
+  <template v-else-if="isExecutable">
+    <div class="mb-3">Transactions have benn approved.</div>
+    <ExecutionEnsureNetwork :network="executionData.safe.network">
+      <BaseButton @click="execute"> Execute transactions </BaseButton>
+    </ExecutionEnsureNetwork>
+  </template>
+
+  <template v-else-if="isRejectable">
+    Transactions have been rejected.
+    <ExecutionEnsureNetwork :network="executionData.safe.network">
+      <BaseButton @click="settleRejected">
+        Settle rejection and return bonds
+      </BaseButton>
+    </ExecutionEnsureNetwork>
+  </template>
+
+  <template v-else-if="isProposed">
+    <div class="mb-3">
+      <div>
+        Proposed at: {{ new Date(proposedAt.toNumber()).toLocaleString() }}
       </div>
-      <div v-else>
+      <div>Dispute timeout: {{ disputeCountdown }}s</div>
+    </div>
+    <template v-if="bondInfo.currentUserBalance.gte(bondInfo.requiredAmount)">
+      <template
+        v-if="bondInfo.currentUserOracleAllowance.gte(bondInfo.requiredAmount)"
+      >
+        <ExecutionEnsureNetwork :network="executionData.safe.network">
+          <BaseButton @click="dispute"> Dispute transactions </BaseButton>
+        </ExecutionEnsureNetwork>
+      </template>
+      <template v-else>
+        To dispute a proposal you need to deposit a bond of
+        {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+        {{ bondInfo.symbol }}.<br />
+        <br />
+        Approve the Optimistic Oracle at<br />
+        {{ oracleContract.address }}<br />
+        to take the bond from your account.
+        <ExecutionEnsureNetwork :network="executionData.safe.network">
+          <BaseButton
+            class="mt-3"
+            @click="
+              approveBond(oracleContract.address, bondInfo.requiredAmount)
+            "
+          >
+            approve bond
+          </BaseButton>
+        </ExecutionEnsureNetwork>
+      </template>
+    </template>
+    <template v-else>
+      You don't have the required
+      {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+      {{ bondInfo.symbol }} to dispute these transactions.
+    </template>
+  </template>
+
+  <template v-else-if="isWaitingForOtherProposal">
+    These transactions are currently being proposed in another proposal. Settle
+    these transactions first before continuing here.
+  </template>
+
+  <template v-else>
+    <template v-if="bondInfo.currentUserBalance.gte(bondInfo.requiredAmount)">
+      <template
+        v-if="bondInfo.currentUserModuleAllowance.gte(bondInfo.requiredAmount)"
+      >
+        <div>Propose these transactions for execution.</div>
+        <small class="opacity-50">
+          You will deposit a bond of
+          {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+          {{ bondInfo.symbol }}.
+        </small>
+        <ExecutionEnsureNetwork :network="executionData.safe.network">
+          <BaseButton primary @click="propose">
+            propose transactions
+          </BaseButton>
+        </ExecutionEnsureNetwork>
+      </template>
+      <template v-else>
         To propose transactions you need to deposit a bond of
-        {{ formatUnits(bondAmount, bondDecimals) }}
-        {{ bondSymbol }}.<br />
+        {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+        {{ bondInfo.symbol }}.<br />
         <br />
         Approve the Optimistic Governor at<br />
         {{ executionData.module.address }}<br />
-        to take the bond from your account.<br />
-        <BaseButton class="mt-3" @click="approveBond">
-          approve bond
-        </BaseButton>
-      </div>
+        to take the bond from your account.
+        <ExecutionEnsureNetwork :network="executionData.safe.network">
+          <BaseButton
+            class="mt-3"
+            @click="
+              approveBond(executionData.module.address, bondInfo.requiredAmount)
+            "
+          >
+            approve bond
+          </BaseButton>
+        </ExecutionEnsureNetwork>
+      </template>
     </template>
-
-    <template #dispute>
-      <div class="mb-3">
-        Proposed at: {{ new Date(proposedAt).toLocaleString() }}<br />
-        Dispute timeout:
-        {{ Math.max(proposedAt + disputeTimeout - now, 0).toFixed(0) }}s
-      </div>
-      <BaseButton @click="dispute"> Dispute transactions </BaseButton>
+    <template v-else>
+      You don't have the required
+      {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+      {{ bondInfo.symbol }} to propose these transactions for execution.
     </template>
-
-    <template #execute>
-      <div class="mb-3">Execution approved.</div>
-      <BaseButton @click="execute"> Execute transactions </BaseButton>
-    </template>
-
-    <template #executed>
-      <div class="flex flex-col items-center justify-center">
-        <span class="mb-3 rounded-full bg-green p-2 text-white">
-          <i-ho-check />
-        </span>
-        <span>Transactions have been executed.</span>
-        <BaseLink link="https://etherscan.io">
-          Open transaction in explorer
-        </BaseLink>
-      </div>
-    </template>
-
-    <template #rejected>
-      <div class="flex flex-col items-center justify-center">
-        <span class="mb-3 rounded-full bg-gray-300 p-2 text-white">
-          <i-ho-x />
-        </span>
-        <span>Transactions have been rejected.</span>
-      </div>
-    </template>
-  </ExecutionAbstract>
+  </template>
 </template>

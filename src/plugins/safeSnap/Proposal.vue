@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { useTimestamp } from '@vueuse/core';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
 import { mapLegacyExecutionData } from './utils';
@@ -24,6 +25,12 @@ function safeLink(safe: Safe): string {
   const prefix = EIP3770_PREFIXES[safe.network];
   return `https://gnosis-safe.io/app/${prefix}:${safe.address}`;
 }
+
+const isProposalStillActive = computed(
+  () =>
+    useTimestamp({ offset: 0, interval: 1000 }).value / 1000 <=
+    props.proposal.end
+);
 </script>
 
 <template>
@@ -54,30 +61,35 @@ function safeLink(safe: Safe): string {
 
       <ExecutionDisplayTransactions :execution-data="data" />
 
-      <div v-if="data.module" class="p-4 text-center">
-        <Suspense>
-          <ExecutionReality
-            v-if="data.module.type === SafeModuleType.REALITY"
-            :execution-data="(data as ModuleExecutionData)"
-            :proposal="proposal"
-          />
-          <template #fallback>
-            <LoadingSpinner />
-          </template>
-        </Suspense>
-        <Suspense>
-          <ExecutionUma
-            v-if="data.module.type === SafeModuleType.UMA"
-            :execution-data-index="index"
-            :execution-data="(data as ModuleExecutionData)"
-            :proposal="proposal"
-          />
-          <template #fallback>
-            <LoadingSpinner />
-          </template>
-        </Suspense>
+      <div class="p-4 text-center">
+        <template v-if="isProposalStillActive">
+          Execution will be possible after the proposal has ended.
+        </template>
+        <template v-else-if="data.module">
+          <Suspense>
+            <ExecutionReality
+              v-if="data.module.type === SafeModuleType.REALITY"
+              :execution-data="(data as ModuleExecutionData)"
+              :proposal="proposal"
+            />
+            <template #fallback>
+              <LoadingSpinner />
+            </template>
+          </Suspense>
+          <Suspense>
+            <ExecutionUma
+              v-if="data.module.type === SafeModuleType.UMA"
+              :execution-data-index="index"
+              :execution-data="(data as ModuleExecutionData)"
+              :proposal="proposal"
+            />
+            <template #fallback>
+              <LoadingSpinner />
+            </template>
+          </Suspense>
+        </template>
+        <ExecutionManual v-else :execution-data="data" />
       </div>
-      <ExecutionManual v-else :execution-data="data" />
     </BaseBlock>
   </div>
 </template>
