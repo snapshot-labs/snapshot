@@ -88,23 +88,23 @@ const {
         </ExecutionEnsureNetwork>
       </template>
       <template v-else>
-        To dispute a proposal you need to deposit a bond of
-        {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
-        {{ bondInfo.symbol }}.<br />
-        <br />
-        Approve the Optimistic Oracle at<br />
-        {{ oracleContract.address }}<br />
-        to take the bond from your account.
-        <ExecutionEnsureNetwork :network="executionData.safe.network">
-          <BaseButton
-            class="mt-3"
-            @click="
-              approveBond(oracleContract.address, bondInfo.requiredAmount)
-            "
-          >
-            approve bond
-          </BaseButton>
-        </ExecutionEnsureNetwork>
+        <div class="mb-3">
+          To dispute a proposal you need to deposit a bond of
+          {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+          {{ bondInfo.symbol }}.<br />
+          <br />
+          Approve the Optimistic Oracle to take the bond from your account.
+          <ExecutionEnsureNetwork :network="executionData.safe.network">
+            <BaseButton
+              class="mt-3"
+              @click="
+                approveBond(oracleContract.address, bondInfo.requiredAmount)
+              "
+            >
+              approve bond
+            </BaseButton>
+          </ExecutionEnsureNetwork>
+        </div>
       </template>
     </template>
     <template v-else>
@@ -124,26 +124,25 @@ const {
       <template
         v-if="bondInfo.currentUserModuleAllowance.gte(bondInfo.requiredAmount)"
       >
-        <div>Propose these transactions for execution.</div>
-        <small class="opacity-50">
+        <ExecutionEnsureNetwork :network="executionData.safe.network">
+          <BaseButton primary class="mt-3" @click="propose">
+            Submit transactions for execution
+          </BaseButton>
+        </ExecutionEnsureNetwork>
+        <small class="mt-1 block opacity-50">
           You will deposit a bond of
           {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
           {{ bondInfo.symbol }}.
         </small>
-        <ExecutionEnsureNetwork :network="executionData.safe.network">
-          <BaseButton primary @click="propose">
-            propose transactions
-          </BaseButton>
-        </ExecutionEnsureNetwork>
       </template>
       <template v-else>
-        To propose transactions you need to deposit a bond of
-        {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
-        {{ bondInfo.symbol }}.<br />
-        <br />
-        Approve the Optimistic Governor at<br />
-        {{ executionData.module.address }}<br />
-        to take the bond from your account.
+        <div class="mb-3">
+          To propose transactions you need to deposit a bond of
+          {{ formatUnits(bondInfo.requiredAmount, bondInfo.decimals) }}
+          {{ bondInfo.symbol }}.<br />
+          <br />
+          Approve the Optimistic Governor to take the bond from your account.
+        </div>
         <ExecutionEnsureNetwork :network="executionData.safe.network">
           <BaseButton
             class="mt-3"
