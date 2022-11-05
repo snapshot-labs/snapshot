@@ -24,7 +24,6 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   selectedChoices: number | number[] | Record<string, any> | null;
-  snapshot: string;
   strategies: { name: string; network: string; params: Record<string, any> }[];
 }>();
 
@@ -83,45 +82,44 @@ async function handleSubmit() {
   }
 }
 
+async function loadVotingPower() {
+  vpLoading.value = true;
+  vpLoadingFailed.value = false;
+  try {
+    const result = await getPower(
+      props.space,
+      web3Account.value,
+      props.proposal
+    );
+    vp.value = result.vp;
+    vpByStrategy.value = result.vp_by_strategy;
+  } catch (e) {
+    vpLoadingFailed.value = true;
+    console.log(e);
+  } finally {
+    vpLoaded.value = true;
+    vpLoading.value = false;
+  }
+}
+
 watch(
   () => [props.open, web3Account.value],
   async () => {
     if (props.open === false) return;
-    vpLoading.value = true;
-    vpLoadingFailed.value = false;
-    try {
-      const result = await getPower(
-        props.space,
-        web3Account.value,
-        props.proposal
-      );
-      vp.value = result.vp;
-      vpByStrategy.value = result.vp_by_strategy;
-    } catch (e) {
-      vpLoadingFailed.value = true;
-      console.log(e);
-    } finally {
-      vpLoaded.value = true;
-      vpLoading.value = false;
-    }
+    loadVotingPower();
   }
 );
 </script>
 
 <template>
-  <BaseModal
-    :open="open"
-    :hide-close="true"
-    class="flex"
-    @close="$emit('close')"
-  >
+  <BaseModal :open="open" hide-close class="flex" @close="$emit('close')">
     <div class="flex flex-auto flex-col">
       <h4 class="m-4 mb-0 text-center">
         {{ $tc('proposal.castVote') }}
       </h4>
       <div slim class="m-4 text-skin-link">
         <div class="flex">
-          <span class="mr-1 flex-auto text-skin-text" v-text="$t('options')" />
+          <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
           <span
             v-tippy="{
               content:
@@ -149,7 +147,10 @@ watch(
             v-text="$t('votingPower')"
           />
           <span v-if="vpLoadingFailed" class="item-center flex">
-            <BaseIcon name="warning" size="22" class="text-red" />
+            <BaseButtonIcon class="p-0 pr-2" @click="loadVotingPower">
+              <i-ho-refresh class="text-sm" />
+            </BaseButtonIcon>
+            <i-ho-exclamation-circle class="mt-[1px]" />
           </span>
           <span
             v-else-if="vpLoaded && !vpLoading"
@@ -166,23 +167,35 @@ watch(
             {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
           </span>
           <LoadingSpinner v-else />
-          <BaseLink
-            v-if="vp === 0 && vpLoaded && !vpLoading && !vpLoadingFailed"
-            link="https://github.com/snapshot-labs/snapshot/discussions/767#discussioncomment-1400614"
-            class="ml-1 flex items-center"
+        </div>
+        <div class="mt-3">
+          <BaseMessageBlock
+            v-if="!vpLoading && vpLoadingFailed"
+            level="warning"
           >
-            <BaseIcon name="info" size="24" class="text-skin-text" />
-          </BaseLink>
+            {{ t('vpError') }}
+          </BaseMessageBlock>
+          <BaseMessageBlock v-else-if="vp === 0 && vpLoaded" level="warning">
+            {{
+              $t('noVotingPower', {
+                blockNumber: formatNumber(Number(proposal.snapshot))
+              })
+            }}
+            <BaseLink
+              link="https://github.com/snapshot-labs/snapshot/discussions/767"
+            >
+              {{ $t('learnMore') }}</BaseLink
+            >
+          </BaseMessageBlock>
+          <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
+            <TextareaAutosize
+              v-model="reason"
+              :max-length="140"
+              class="s-input !rounded-3xl"
+              :placeholder="$t('comment.placeholder')"
+            />
+          </div>
         </div>
-        <div v-if="props.proposal.privacy !== 'shutter'" class="mt-3 flex">
-          <TextareaAutosize
-            v-model="reason"
-            :max-length="140"
-            class="s-input !rounded-3xl"
-            :placeholder="$t('comment.placeholder')"
-          />
-        </div>
-        <div v-if="vpLoadingFailed" class="mt-3">{{ t('vpError') }}</div>
       </div>
     </div>
     <template #footer>

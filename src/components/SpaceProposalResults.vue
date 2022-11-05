@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import {
   ExtendedSpace,
   Proposal,
@@ -7,16 +8,31 @@ import {
   SpaceStrategy
 } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  results: Results;
+  results: Results | null;
   strategies: SpaceStrategy[];
   votes: Vote[];
   loaded: boolean;
+  isAdmin: boolean;
 }>();
 
+const emit = defineEmits(['reload']);
+
 const ts = Number((Date.now() / 1e3).toFixed());
+
+const isInvalidScore = computed(
+  () =>
+    props.proposal?.scores_state === 'invalid' &&
+    props.proposal.state === 'closed'
+);
+
+const isPendingScore = computed(
+  () =>
+    props.proposal?.scores_state === 'pending' &&
+    props.proposal.state === 'closed'
+);
 </script>
 
 <template>
@@ -24,18 +40,27 @@ const ts = Number((Date.now() / 1e3).toFixed());
     :loading="!loaded"
     :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
   >
-    <SpaceProposalResultsList
-      v-if="results"
-      :space="space"
+    <SpaceProposalResultsError
+      v-if="isInvalidScore || isPendingScore"
+      :is-admin="isAdmin"
       :proposal="proposal"
-      :results="results"
-      :strategies="strategies"
-      :votes="votes"
+      :is-pending="isPendingScore"
+      :is-invalid="isInvalidScore"
+      @reload="emit('reload')"
     />
-
-    <SpaceProposalResultsShutter
-      v-if="proposal.privacy === 'shutter'"
-      class="pt-2"
-    />
+    <template v-else>
+      <SpaceProposalResultsList
+        v-if="results"
+        :space="space"
+        :proposal="proposal"
+        :results="results"
+        :strategies="strategies"
+        :votes="votes"
+      />
+      <SpaceProposalResultsShutter
+        v-if="proposal.privacy === 'shutter'"
+        class="pt-2"
+      />
+    </template>
   </BaseBlock>
 </template>

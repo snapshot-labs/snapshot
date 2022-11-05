@@ -51,6 +51,7 @@ const isCollapsed = ref(true);
           {{ label }}
         </div>
       </div>
+      <slot name="button" />
       <BaseButtonIcon
         v-if="isCollapsable"
         class="pr-0 group-hover:text-skin-link"

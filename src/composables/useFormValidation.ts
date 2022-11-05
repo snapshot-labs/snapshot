@@ -49,7 +49,10 @@ export function useFormValidation(schema, form) {
     )
       return t('errors.invalidAddress');
 
-    if (errorFound?.instancePath.includes('strategies'))
+    if (
+      errorFound?.instancePath.includes('strategies') &&
+      errorFound?.keyword.includes('minItems')
+    )
       return t('errors.minStrategy');
 
     if (
