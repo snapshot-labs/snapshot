@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useTimestamp } from '@vueuse/core';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
-import { mapLegacyExecutionData } from './utils';
+import { mapLegacyExecutionData } from '@/plugins/safeSnap/compatibility';
 import {
   ExecutionData,
   SafeModuleLogos,

@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { Transaction } from '@/helpers/transactionBuilder';
-import { mapLegacyConfig } from '@/plugins/safeSnap/utils';
+import { mapLegacyConfig } from '@/plugins/safeSnap/compatibility';
 import {
   SafeModuleLogos,
   ExecutionData,
