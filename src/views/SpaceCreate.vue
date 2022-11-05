@@ -6,6 +6,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import validations from '@snapshot-labs/snapshot.js/src/validations';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExecutionData } from '@/helpers/safe';
 import {
   useFlashNotification,
   useSpaceCreateForm,
@@ -129,6 +130,22 @@ function getFormattedForm() {
   updateTime();
   clonedForm.start = dateStart.value;
   clonedForm.end = dateEnd.value;
+
+  if (clonedForm.metadata.plugins.safeSnap) {
+    clonedForm.metadata.plugins.safeSnap = clonedForm.metadata.plugins.safeSnap
+      .map((executionSet: ExecutionData) => {
+        return {
+          ...executionSet,
+          batches: executionSet.batches.filter(batch => batch.length > 0)
+        };
+      })
+      .filter((executionSet: ExecutionData) => executionSet.batches.length > 0);
+
+    if (clonedForm.metadata.plugins.safeSnap.length === 0) {
+      delete clonedForm.metadata.plugins.safeSnap;
+    }
+  }
+
   return clonedForm;
 }
 

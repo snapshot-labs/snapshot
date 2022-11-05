@@ -37,10 +37,6 @@ export function useTransactionBuilder(
   function removeTransaction(batchIndex: number, transactionIndex: number) {
     batches.value[batchIndex].splice(transactionIndex, 1);
     removeUnusedABIs();
-
-    if (batches.value.length > 1 && batches.value[batchIndex].length === 0) {
-      removeBatch(batchIndex);
-    }
   }
 
   function addABI(contract: string, abi: string) {
