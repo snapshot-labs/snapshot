@@ -41,7 +41,6 @@ export function mapLegacyExecutionData(executionData: any): ExecutionData[] {
         network: '4',
         address: '0x6934DeeB18a7B7F25DbFB1ed8a0b361e42e4D2aF'
       },
-      abis: {},
       module: {
         type: SafeModuleType.REALITY,
         address: '0x06340d38ED304703Ca200e3f9CD5f902C8605c43'

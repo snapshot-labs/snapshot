@@ -81,7 +81,6 @@ function addProposalExecutionData(executionData: ExecutionData) {
             addProposalExecutionData({
               safe: safeConfig.safe,
               batches: [[]],
-              abis: {},
               module
             })
           "
@@ -101,8 +100,7 @@ function addProposalExecutionData(executionData: ExecutionData) {
           @click="
             addProposalExecutionData({
               safe: safeConfig.safe,
-              batches: [[]],
-              abis: {}
+              batches: [[]]
             })
           "
         >

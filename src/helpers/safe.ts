@@ -80,7 +80,7 @@ export type ExecutionDataABIs = {
 export interface ExecutionData {
   safe: Safe;
   batches: Transaction[][];
-  abis: ExecutionDataABIs;
+  abis?: ExecutionDataABIs;
   module?: SafeModule;
   criteria?: string; // for human or automated (can be JSON) processing in (optimistic) oracles
   // TODO: add text field in transaction builder for this
