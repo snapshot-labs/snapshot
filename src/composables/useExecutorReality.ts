@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue';
 import { HashZero } from '@ethersproject/constants';
-import { Executor, ModuleExecutionData } from '@/helpers/safe';
+import { ModuleExecutionData } from '@/helpers/safe';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { useTimestamp } from '@vueuse/core';
 import {
@@ -31,7 +31,7 @@ export enum RealityExecutionState {
 export async function useExecutorReality(
   executionData: ModuleExecutionData,
   proposal: Proposal
-): Promise<Executor<RealityExecutionState>> {
+) {
   const now = computed(
     () => useTimestamp({ offset: 0, interval: 1000 }).value / 1000
   );
@@ -279,27 +279,28 @@ export async function useExecutorReality(
 
   return {
     loading,
+    RealityExecutionState,
     state,
     propose,
     dispute,
     execute,
     now,
-    cooldownPeriod,
-    expirationPeriod,
     oracleContract,
     oracleAnswer,
     oracleAnswerFinalizedAt,
+    cooldownPeriod,
+    expirationPeriod,
+    bondNextAmount,
     currentUserBondAllowance,
     withdrawableUserBondBalance,
+    nextTransactionToExecute,
     hasBondToken: bondContract !== null,
     bondSymbol,
     bondDecimals,
-    bondNextAmount,
     allBondsAssigned,
     currentUserVotedForCorrectAnswer,
     approveBond,
-    withdrawBondBalance,
     assignBondBalancesAndWithdraw,
-    nextTransactionToExecute
+    withdrawBondBalance
   };
 }
