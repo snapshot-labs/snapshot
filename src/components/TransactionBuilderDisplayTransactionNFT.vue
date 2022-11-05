@@ -40,7 +40,7 @@ onMounted(async () => {
     <template v-if="nftInfo">
       <img
         :src="getUrl(nftInfo.metadata.image)"
-        class="mr-2 h-4 w-4"
+        class="mr-2 h-4 w-4 rounded-md"
         :alt="nftInfo.metadata.image"
       />
       Transfer NFT {{ nftInfo?.tokenId }} of {{ nftInfo.collectionName }} to

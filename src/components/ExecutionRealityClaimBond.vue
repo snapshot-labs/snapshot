@@ -14,19 +14,17 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex flex-col space-y-2">
-    <BaseButton
-      v-if="currentUserVotedForCorrectAnswer && !allBondsAssigned"
-      @click="assignBondBalancesAndWithdraw"
-    >
-      Withdraw bond
-    </BaseButton>
-    <BaseButton
-      v-else-if="withdrawableUserBondBalance.gt(0)"
-      @click="withdrawBondBalance"
-    >
-      Withdraw {{ formatUnits(withdrawableUserBondBalance, bondDecimals) }}
-      {{ bondSymbol }}
-    </BaseButton>
-  </div>
+  <BaseButton
+    v-if="currentUserVotedForCorrectAnswer && !allBondsAssigned"
+    @click="assignBondBalancesAndWithdraw"
+  >
+    Withdraw bond
+  </BaseButton>
+  <BaseButton
+    v-else-if="withdrawableUserBondBalance.gt(0)"
+    @click="withdrawBondBalance"
+  >
+    Withdraw {{ formatUnits(withdrawableUserBondBalance, bondDecimals) }}
+    {{ bondSymbol }}
+  </BaseButton>
 </template>

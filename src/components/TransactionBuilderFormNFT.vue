@@ -101,7 +101,7 @@ watch(() => props.showForm, populateForm);
             <div class="flex items-center">
               <img
                 :src="selectedItem.extras?.imageUri"
-                class="mr-2 h-4 w-4"
+                class="mr-2 h-4 w-4 rounded-md"
                 :alt="selectedItem.extras?.imageUri"
               />
               <div class="leading-4">
@@ -119,7 +119,7 @@ watch(() => props.showForm, populateForm);
             <div class="flex items-center">
               <img
                 :src="item.extras?.imageUri"
-                class="mr-2 h-4 w-4"
+                class="mr-2 h-4 w-4 rounded-md"
                 :alt="item.extras?.imageUri"
               />
               <div class="leading-4">
