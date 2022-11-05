@@ -186,6 +186,12 @@ export async function useExecutorUma(
     )
   );
 
+  watch(disputeCountdown, (current, old) => {
+    if (current === '0' && old !== '0') {
+      updateState();
+    }
+  });
+
   const bondInfo = ref({
     requiredAmount: BigNumber.from(await moduleContract.bondAmount()),
     symbol: await bondContract.symbol(),
