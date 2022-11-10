@@ -288,8 +288,11 @@ export async function useExecutorUma(
     loading.value = true;
 
     await updateEventHistory();
-    await updateOracleState();
-    await updateCurrentUserBondInfo();
+
+    if (proposedAt.value.gt(0)) {
+      await updateOracleState();
+      await updateCurrentUserBondInfo();
+    }
 
     loading.value = false;
   }
