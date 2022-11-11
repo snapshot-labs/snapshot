@@ -7,6 +7,7 @@
   "poweredBy": "Powered by",
   "results": "Résultats",
   "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
+  "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "vpError": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
   "getHelp": "Obtenir de l’aide",
   "retry": "Réessayer",
@@ -16,6 +17,7 @@
   "save": "Enregistrer",
   "author": "Auteur",
   "next": "Suivant",
+  "choice": "Choix",
   "submit": "Valider",
   "plugins": "Plugins",
   "information": "Informations",
@@ -55,20 +57,21 @@
   "license": "Licence",
   "showMore": "Voir plus",
   "voted": "Voted",
+  "reload": "Reload",
   "ipfsServer": "Serveur IPFS",
   "hub": "Hub",
   "cancel": "Annuler",
-  "deleteProposal": "Supprimer la proposition",
+  "delete": "Delete",
   "demoSite": "Ceci est le site de démonstration, testez-le !",
   "removeDelegation": "Révoquer la délégation",
   "confirmRemove": "Êtes-vous sûr de vouloir révoquer votre délégation à",
   "removeSpace": "pour l'espace {0}",
-  "confirmVote": "Confirmez votre vote",
+  "noVotingPower": "Oops, it seems you don't have any voting power at block {blockNumber}.",
   "quorumReached": "quorum atteint",
   "options": "Option(s)",
   "votingPower": "Votre voting power",
   "comment": {
-    "placeholder": "Share your reason (optional)"
+    "placeholder": "Partagez votre raison (facultatif)"
   },
   "receipt": "Reçu",
   "relayer": "Relayer",
@@ -120,7 +123,6 @@
   "language": "Langage",
   "agree": "J'accepte",
   "moderators": "Modérateurs",
-  "mustAgreeToTerms": "Avant de pouvoir effectuer cette action, vous devez accepter les conditions d'utilisation de {0} ici:",
   "playground": "Playground",
   "strategyParams": "Paramètres de la stratégie",
   "addresses": "Adresses",
@@ -132,7 +134,7 @@
   "subspaces": "Sous-espaces",
   "mainspace": "Espace principal",
   "copyLink": "Copier le lien",
-  "duplicateProposal": "Dupliquer la proposition",
+  "duplicate": "Dupliquer",
   "joinedSpaces": "Espaces rejoints",
   "joinSpaces": "Rejoindre un espace",
   "setDelegationToSpace": "Limiter la délégation à un espace précis",
@@ -143,6 +145,7 @@
   "or": "ou",
   "share": "Partager",
   "shareOnTwitter": "Partager sur Twitter",
+  "shareOnLenster": "Share on Lenster",
   "createButton": "Créer",
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
@@ -161,6 +164,7 @@
     "maxLength": "Longueur maximale de {0}",
     "pattern": "Caractère invalide",
     "minItems": "Minimum {0} élément(s) requis",
+    "maxItems": "Maximum {0} item(s) allowed",
     "minStrategy": "Au moins une stratégie est requise.",
     "website": "L’URL doit être dans le format https://www.example.com",
     "format": "Format invalide",
@@ -238,7 +242,7 @@
     "startDate": "Date de début ",
     "endDate": "Date de fin",
     "votingSystem": "Système de vote",
-    "privacy": "Privacy",
+    "privacy": "Confidentialité",
     "invalidChoice": "Choix invalide",
     "postVoteModal": {
       "defaultTitle": "Votre vote est enregistré !",
@@ -275,6 +279,12 @@
     "all": "Tout",
     "unread": "Non lus"
   },
+  "modalTerms": {
+    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
+    "actionJoin": "rejoindre",
+    "actionCreate": "créer une proposition dans",
+    "actionVote": "vote in"
+  },
   "settings": {
     "header": "Réglages",
     "editController": "Modifier le controller",
@@ -298,7 +308,7 @@
       "select": "Sélectionner la/les catégorie(s)"
     },
     "terms": {
-      "label": "Conditions",
+      "label": "Terms of service",
       "information": "Les utilisateurs devront accepter ces conditions une fois avant de pouvoir créer une proposition ou voter"
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
@@ -534,15 +544,15 @@
     }
   },
   "privacy": {
-    "label": "Privacy",
-    "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "label": "Confidentialité",
+    "title": "Sélectionner la confidentialité des votes",
+    "information": "Le type de confidentialité utilisé pour les propositions, en le réglant ici, la même confidentialité sera appliquée à toutes les propositions.",
     "any": "Any",
     "none": "None",
     "shutter": {
       "label": "Shutter",
       "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
-      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "tooltip": "La confidentialité est activée pour cette proposition. Tous les votes seront cryptés jusqu'à ce que la période de vote soit terminée et le score final soit calculé",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
@@ -609,20 +619,20 @@
     "error_claim": "Un problème est survenu lors de la création du token"
   },
   "progress": {
-    "progress": "Progress",
-    "inProgress": "In Progress",
+    "progress": "Progression",
+    "inProgress": "En cours",
     "completed": "Completed",
     "complete": "Complete",
-    "newStep": "New Step",
+    "newStep": "Nouvelle étape",
     "description": "Description",
-    "add": "Add",
-    "deleteStep": "Delete Step",
-    "deleteConfirm": "Are you sure you want to delete?",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
-    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
-    "wentWrong": "Oops something went wrong.",
+    "add": "Ajouter",
+    "deleteStep": "Supprimer l’étape",
+    "deleteConfirm": "Confirmez-vous la suppression ?",
+    "delete": "Supprimer",
+    "cancel": "Annuler",
+    "comeBack": "Revenez une fois le vote terminé pour voir comment cette proposition progresse!",
+    "confirmSignature": "Signer ce message nous permettra d'autoriser votre demande de mise à jour de la progression de votre proposition.",
+    "wentWrong": "Une erreur s'est produite.",
     "voting": "Voting",
     "soon": "Soon"
   },
