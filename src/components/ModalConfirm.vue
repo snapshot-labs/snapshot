@@ -240,7 +240,7 @@ watch(
           <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
             {{
               t(
-                'There was an error on our side and we could not verify if you eligible to vote. This is often due to a misconfigured voting validation or an unresponsive RPC node involved in the validation.'
+                'There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.'
               )
             }}
           </BaseMessageBlock>
@@ -276,9 +276,10 @@ watch(
               v-if="proposal?.validation.params?.stamps.some(p => p.weight > 1)"
               level="info"
             >
-              A list of stamps that can be used to increase your weight:
-              <!-- Create a table for proposal.validation.params.stamps -->
               <table class="mt-3 w-full">
+                <caption>
+                  A list of stamps that can be used to increase your weight:
+                </caption>
                 <thead>
                   <tr>
                     <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>

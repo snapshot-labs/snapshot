@@ -21,6 +21,10 @@ const validations = ['any', 'passport'];
 
 function select(n: string) {
   input.value.name = n;
+  if (n === 'any') {
+    input.value.params = DEFAULT_PARAMS;
+    handleSubmit();
+  }
 }
 
 function handleSubmit() {
@@ -94,7 +98,7 @@ const definition = {
     </template>
 
     <div class="my-4 mx-0 min-h-[339px] md:mx-4">
-      <div v-if="input.name" class="mb-4 rounded-md border p-4 text-skin-link">
+      <div v-if="input.name" class="text-skin-link">
         <h4
           class="mb-3 text-center"
           v-text="$t(`validation.${input.name}.label`)"
