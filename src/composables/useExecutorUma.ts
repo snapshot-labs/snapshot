@@ -246,17 +246,24 @@ export async function useExecutorUma(
       ancillaryData
     );
 
+    const stampedAncillaryData = await oracleContract.stampAncillaryData(
+      ancillaryData,
+      executionData.module.address
+    );
+
     oracleHasDisputeResult.value = await votingContract[
       'hasPrice(bytes32,uint256,bytes)'
-    ](ZODIAC_IDENTIFIER, proposedAt.value, ancillaryData);
+    ](ZODIAC_IDENTIFIER, proposedAt.value, stampedAncillaryData);
 
     if (oracleHasDisputeResult.value) {
       oracleDisputeResult.value =
-        (await votingContract['getPrice(bytes32,uint256,bytes)'](
-          ZODIAC_IDENTIFIER,
-          proposedAt.value,
-          ancillaryData
-        )) === APPROVE_ANSWER;
+        (
+          await votingContract['getPrice(bytes32,uint256,bytes)'](
+            ZODIAC_IDENTIFIER,
+            proposedAt.value,
+            stampedAncillaryData
+          )
+        ).toString() === APPROVE_ANSWER;
     }
   }
 
