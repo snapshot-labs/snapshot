@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
-import client from '@/helpers/client';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { useWeb3 } from '@/composables/useWeb3';
@@ -23,24 +22,9 @@ export function useClient() {
       connectorName.value === 'gnosis'
   );
 
-  const usePersonalSign = computed(() => false);
-
   async function send(space, type, payload) {
     isSending.value = true;
     try {
-      if (usePersonalSign.value) {
-        if (payload.proposal) payload.proposal = payload.proposal.id;
-        const clientPersonalSign = isGnosisSafe.value
-          ? clientGnosisSafe
-          : client;
-        return await clientPersonalSign.broadcast(
-          auth.web3,
-          web3.value.account,
-          space.id,
-          type,
-          payload
-        );
-      }
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
       const errorMessage =
@@ -55,11 +39,12 @@ export function useClient() {
   }
 
   async function sendEIP712(space, type, payload) {
+    const client = isGnosisSafe.value ? clientGnosisSafe : clientEIP712;
     if (type === 'proposal') {
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)
         plugins = payload.metadata.plugins;
-      return clientEIP712.proposal(auth.web3, web3.value.account, {
+      return client.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -73,7 +58,7 @@ export function useClient() {
         app: 'snapshot'
       });
     } else if (type === 'vote') {
-      return clientEIP712.vote(auth.web3, web3.value.account, {
+      return client.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -83,12 +68,12 @@ export function useClient() {
         reason: payload.reason
       });
     } else if (type === 'delete-proposal') {
-      return clientEIP712.cancelProposal(auth.web3, web3.value.account, {
+      return client.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
     } else if (type === 'settings') {
-      return clientEIP712.space(auth.web3, web3.value.account, {
+      return client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
