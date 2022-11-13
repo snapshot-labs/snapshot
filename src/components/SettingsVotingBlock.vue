@@ -80,7 +80,7 @@ const votingPeriod = computed({
           placeholder="1000"
         />
 
-        <InputSelectVotingType
+        <InputSelectVoteType
           :type="form.voting.type"
           :information="$t(`settings.type.information`)"
           allow-any
