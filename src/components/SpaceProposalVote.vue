@@ -28,8 +28,10 @@ const validatedUserChoice = computed(() => {
       props.userVote.choice,
       props.proposal.choices
     )
-  )
+  ) {
+    emitChoice(props.userVote.choice);
     return props.userVote.choice;
+  }
   return null;
 });
 
