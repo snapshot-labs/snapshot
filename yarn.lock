@@ -856,10 +856,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.48":
-  version "0.4.48"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.48.tgz#b16d788fab8dd5b9774baf65cfa374e620ff4cb7"
-  integrity sha512-c1hUJ2b+bxta8scdf3LiBzGdcWL/l3PWxLD0PEWZXQ4Yjd+O2mwF5+JL0YTUzi3Bzp0XiTzeSaxRw5+9JG8Pzw==
+"@snapshot-labs/snapshot.js@^0.4.51":
+  version "0.4.51"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.51.tgz#470dd2894298b576e90c0ffe1f68e49e70d194e7"
+  integrity sha512-Su8fO0Emu8JR8yzlUxpmNDmdYFhNWZ41HAJdi1KvM+5fh71lA0CWrYHCcFYzwaaZ65K4YGz/ILQmWxG/hhGhXg==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -6457,7 +6457,7 @@ through2@^2.0.3:
 through@2, through@^2.3.8, through@~2.3, through@~2.3.1:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
-  integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+  integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
 tinybench@^2.1.5:
   version "2.1.5"
