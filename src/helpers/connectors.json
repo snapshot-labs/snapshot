@@ -9,10 +9,10 @@
     "network": "1",
     "options": {
       "rpc": {
-        "1": "https://rpc.brovider.xyz/1",
-        "4": "https://rpc.brovider.xyz/4",
-        "42": "https://rpc.brovider.xyz/42",
-        "10": "https://rpc.brovider.xyz/10"
+        "1": "https://rpc.snapshot.org/1",
+        "4": "https://rpc.snapshot.org/4",
+        "42": "https://rpc.snapshot.org/42",
+        "10": "https://rpc.snapshot.org/10"
       }
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
@@ -25,7 +25,7 @@
       "appName": "Snapshot",
       "darkMode": false,
       "chainId": 1,
-      "ethJsonrpcUrl": "https://rpc.brovider.xyz/1"
+      "ethJsonrpcUrl": "https://rpc.snapshot.org/1"
     },
     "icon": "ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q"
   },

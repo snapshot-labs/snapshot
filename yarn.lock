@@ -237,7 +237,7 @@
     "@ethersproject/logger" "^5.7.0"
     "@ethersproject/properties" "^5.7.0"
 
-"@ethersproject/address@5.7.0", "@ethersproject/address@^5.7.0":
+"@ethersproject/address@5.7.0", "@ethersproject/address@^5.6.1", "@ethersproject/address@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/address/-/address-5.7.0.tgz#19b56c4d74a3b0a46bfdbb6cfcc0a153fc697f37"
   integrity sha512-9wYhYt7aghVGo758POM5nqcOMaE168Q6aRLJZwUmiqSrAungkG74gSSeKEIR7ukixesdRZGPgVqme6vmxs1fkA==
@@ -856,13 +856,14 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.47":
-  version "0.4.47"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.47.tgz#1b2e806bc26a71c4dc540f43b5bdf5d4d63488b7"
-  integrity sha512-f/zwBqZkeaF/YTt2Z/AtP9mRi7gT97vHFL8gVbIFLmpBTfGJ5N7DX6RFNjN0eY4/9VJJ1KFN0sq0fc0v3lCztw==
+"@snapshot-labs/snapshot.js@^0.4.51":
+  version "0.4.51"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.51.tgz#470dd2894298b576e90c0ffe1f68e49e70d194e7"
+  integrity sha512-Su8fO0Emu8JR8yzlUxpmNDmdYFhNWZ41HAJdi1KvM+5fh71lA0CWrYHCcFYzwaaZ65K4YGz/ILQmWxG/hhGhXg==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
+    "@ethersproject/address" "^5.6.1"
     "@ethersproject/bytes" "^5.6.1"
     "@ethersproject/contracts" "^5.6.2"
     "@ethersproject/hash" "^5.6.1"
@@ -6456,7 +6457,7 @@ through2@^2.0.3:
 through@2, through@^2.3.8, through@~2.3, through@~2.3.1:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
-  integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+  integrity sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==
 
 tinybench@^2.1.5:
   version "2.1.5"
