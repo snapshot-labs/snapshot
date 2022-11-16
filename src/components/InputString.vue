@@ -14,14 +14,14 @@ const emit = defineEmits(['update:modelValue']);
 
 <template>
   <BaseListbox
-    v-if="definition.enum"
+    v-if="definition.anyOf"
     :definition="definition"
     :model-value="modelValue || definition?.default"
     :items="
-      definition.enum.map(e => ({
-        value: e,
+      definition.anyOf.map(e => ({
+        value: e.const,
         extras: {
-          translation: $t(`validation.passport-gated.operator.enums.${e}`)
+          text: $t(e.title)
         }
       }))
     "

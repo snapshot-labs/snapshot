@@ -55,7 +55,7 @@ const { getDefinitionTitle, getDefinitionDescription } = useI18n();
         />
 
         <span v-else-if="selectedItem">
-          {{ selectedItem?.extras?.translation || selectedItem.value }}
+          {{ selectedItem?.extras?.text || selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -97,7 +97,7 @@ const { getDefinitionTitle, getDefinitionDescription } = useI18n();
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item?.extras?.translation || item.value }}
+                    {{ item?.extras?.text || item.value }}
                   </span>
                 </span>
 

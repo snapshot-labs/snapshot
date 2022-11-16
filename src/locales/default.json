@@ -573,9 +573,9 @@
       "operator": {
         "title": "Select approval operator",
         "description": "Control how many or which stamps are required to vote.",
-        "enums": {
-          "AND": "Require all stamps",
-          "OR": "Require at least one stamp"
+        "enum": {
+          "and": "Require all stamps",
+          "or": "Require at least one stamp"
         }
       }
     },

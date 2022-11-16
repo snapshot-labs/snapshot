@@ -66,7 +66,13 @@ const definition = {
           type: 'string',
           title: 'validation.passport-gated.operator.title',
           description: 'validation.passport-gated.operator.description',
-          enum: ['AND', 'OR']
+          anyOf: [
+            {
+              const: 'AND',
+              title: 'validation.passport-gated.operator.enum.and'
+            },
+            { const: 'OR', title: 'validation.passport-gated.operator.enum.or' }
+          ]
         }
       },
       required: ['stamps'],
