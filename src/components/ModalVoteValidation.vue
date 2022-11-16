@@ -59,7 +59,7 @@ const definition = {
           maxItems: 32,
           items: {
             type: 'string',
-            enum: ['Ens', 'Twitter', 'SnapshotVotesProvider']
+            enum: ['Ens', 'Twitter', 'GitHub', 'POAP', 'SnapshotVotesProvider']
           }
         },
         operator: {
