@@ -9,7 +9,7 @@ import InputNumber from '@/components/InputNumber.vue';
 import InputSwitch from '@/components/InputSwitch.vue';
 
 const props = defineProps<{
-  modelValue: Record<string, any>;
+  modelValue: any[];
   definition: any;
   error?: FormError;
 }>();
@@ -18,8 +18,8 @@ const emit = defineEmits(['update:modelValue']);
 
 const input = ref(props.modelValue || props.definition.default || []);
 
-const getComponent = name => {
-  switch (name) {
+const getComponent = (type: string) => {
+  switch (type) {
     case 'object':
       return FormObject;
     case 'string':
@@ -37,17 +37,25 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
 </script>
 
 <template>
-  <div class="space-y-2">
+  <div v-if="definition?.items?.enum">
+    <BaseListboxMultiple
+      v-model="input"
+      :items="definition.items.enum"
+      :definition="definition"
+    />
+  </div>
+
+  <div v-else class="space-y-2">
     <div v-for="(property, i) in input" :key="i">
-      <BaseBlock>
-        <component
-          :is="getComponent(definition.items.type)"
-          v-model="input[i]"
-          :definition="definition.items"
-          :error="error"
-        />
-      </BaseBlock>
+      <component
+        :is="getComponent(definition?.items?.type || 'string')"
+        v-model="input[i]"
+        :definition="definition.items"
+        :error="error"
+      />
     </div>
-    <BaseButton class="w-full" @click="input.push({})">Add</BaseButton>
+    <BaseButton class="w-full" @click="input.push(definition?.items?.default)">
+      {{ $t('add') }}
+    </BaseButton>
   </div>
 </template>

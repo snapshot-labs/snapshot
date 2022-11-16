@@ -3,7 +3,7 @@ import { ref, toRefs, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { VoteValidation } from '@/helpers/interfaces';
 
-const DEFAULT_PARAMS = {};
+const DEFAULT_PARAMS: Record<string, any> = {};
 
 const props = defineProps<{ open: boolean; validation: VoteValidation }>();
 
@@ -17,7 +17,7 @@ const input = ref({
   params: DEFAULT_PARAMS
 });
 
-const validations = ['any', 'passport'];
+const validations = ['any', 'passport-gated'];
 
 function select(n: string) {
   input.value.name = n;
@@ -54,31 +54,22 @@ const definition = {
       properties: {
         stamps: {
           type: 'array',
-          title: 'Stamps',
+          title: 'validation.passport-gated.stamps.title',
           minItems: 1,
           maxItems: 32,
           items: {
-            type: 'object',
-            properties: {
-              id: {
-                type: 'string',
-                title: 'Id'
-              },
-              weight: {
-                type: 'number',
-                title: 'Weight'
-              }
-            },
-            required: ['id', 'weight'],
-            additionalProperties: false
+            type: 'string',
+            enum: ['Ens', 'Twitter', 'SnapshotVotesProvider']
           }
         },
-        min_weight: {
-          type: 'number',
-          title: 'Min. weight'
+        operator: {
+          type: 'string',
+          title: 'validation.passport-gated.operator.title',
+          description: 'validation.passport-gated.operator.description',
+          enum: ['AND', 'OR']
         }
       },
-      required: ['stamps', 'min_weight'],
+      required: ['stamps'],
       additionalProperties: false
     }
   }
@@ -99,10 +90,6 @@ const definition = {
 
     <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <div v-if="input.name" class="text-skin-link">
-        <h4
-          class="mb-3 text-center"
-          v-text="$t(`validation.${input.name}.label`)"
-        />
         <FormObject
           v-if="definition.definitions.Validation"
           v-model="input.params"

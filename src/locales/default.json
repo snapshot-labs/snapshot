@@ -564,8 +564,23 @@
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
     },
-    "passport": {
-      "label": "Gitcoin Passport",
+    "passport-gated": {
+      "label": "Gated Gitcoin Passport",
+      "stamps": {
+        "title": "Select stamps"
+      },
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "operator": {
+        "title": "Select approval operator",
+        "description": "Control how many or which stamps are required to vote.",
+        "enums": {
+          "AND": "Require all stamps",
+          "OR": "Require at least one stamp"
+        }
+      }
+    },
+    "passport-weighted": {
+      "label": "Weighted Gitcoin Passport",
       "description": "Protect your proposals from spam and vote manipulation by setting up Gitcoin Passport."
     }
   },

@@ -8,13 +8,16 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
+import { useI18n } from '@/composables';
+
 const props = defineProps<{
-  items: { id: number; name: string }[];
+  items: string[];
   label?: string;
   placeholder?: string;
-  modelValue?: { id: number; name: string }[];
+  modelValue?: string[];
   limit?: number;
   disableInput?: boolean;
+  definition?: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -24,17 +27,21 @@ const selectedItems = computed({
   set: newVal => emit('update:modelValue', newVal)
 });
 
-function isDisabled(item: { id: number; name: string }) {
+function isDisabled(item: string) {
   if (!props.limit) return false;
   if (selectedItems.value.length < props.limit) return false;
-  return !selectedItems.value.some(selectedItem => selectedItem.id === item.id);
+  return !selectedItems.value.some(selectedItem => selectedItem === item);
 }
+
+const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
   <Listbox v-model="selectedItems" as="div" :disabled="disableInput" multiple>
     <ListboxLabel>
-      <LabelInput>{{ label }}</LabelInput>
+      <LabelInput :information="getDefinitionDescription(definition)">
+        {{ label || getDefinitionTitle(definition) }}
+      </LabelInput>
     </ListboxLabel>
     <div class="relative">
       <ListboxButton
@@ -52,7 +59,7 @@ function isDisabled(item: { id: number; name: string }) {
         />
 
         <span v-else>
-          {{ selectedItems.map(item => item.name).join(', ') }}
+          {{ selectedItems.map(item => item).join(', ') }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -73,8 +80,8 @@ function isDisabled(item: { id: number; name: string }) {
         >
           <div class="max-h-[180px] overflow-y-scroll">
             <ListboxOption
-              v-for="item in items"
-              :key="item.id"
+              v-for="(item, i) in items"
+              :key="i"
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"
@@ -95,7 +102,7 @@ function isDisabled(item: { id: number; name: string }) {
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item.name }}
+                    {{ item }}
                   </span>
                 </span>
 

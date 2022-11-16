@@ -9,6 +9,8 @@ import {
 } from '@headlessui/vue';
 import isEqual from 'lodash/isEqual';
 
+import { useI18n } from '@/composables';
+
 type ListboxItem = {
   value: any;
   extras?: Record<string, any>;
@@ -19,6 +21,7 @@ const props = defineProps<{
   modelValue: any;
   label?: string;
   disableInput?: boolean;
+  definition?: any;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -29,12 +32,16 @@ const selectedItem = computed({
     props.items[0],
   set: newVal => emit('update:modelValue', newVal.value)
 });
+
+const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
   <Listbox v-model="selectedItem" as="div" :disabled="disableInput">
     <ListboxLabel>
-      <LabelInput>{{ label }}</LabelInput>
+      <LabelInput :information="getDefinitionDescription(definition)">
+        {{ label || getDefinitionTitle(definition) }}
+      </LabelInput>
     </ListboxLabel>
     <div class="relative">
       <ListboxButton
@@ -48,7 +55,7 @@ const selectedItem = computed({
         />
 
         <span v-else-if="selectedItem">
-          {{ selectedItem.value }}
+          {{ selectedItem?.extras?.translation || selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -90,7 +97,7 @@ const selectedItem = computed({
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item.value }}
+                    {{ item?.extras?.translation || item.value }}
                   </span>
                 </span>
 

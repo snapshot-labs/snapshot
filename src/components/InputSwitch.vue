@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue';
 
+import { useI18n } from '@/composables/';
+
 defineProps<{
   modelValue?: boolean;
   label?: string;
@@ -9,10 +11,12 @@ defineProps<{
 }>();
 
 const emit = defineEmits(['update:modelValue']);
+
+const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 pr-2">
+  <div class="flex items-center space-x-2 pt-1 pr-2">
     <Switch
       :model-value="modelValue"
       :class="modelValue ? 'bg-green' : 'bg-skin-border'"
@@ -66,6 +70,8 @@ const emit = defineEmits(['update:modelValue']);
         </span>
       </span>
     </Switch>
-    <span>{{ textRight || definition?.title || '' }}</span>
+    <LabelInput :information="getDefinitionDescription(definition) || ''">
+      {{ textRight || getDefinitionTitle(definition) || '' }}
+    </LabelInput>
   </div>
 </template>
