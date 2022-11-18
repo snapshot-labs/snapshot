@@ -27,21 +27,6 @@ export function useI18n() {
     document.title = t(message, params);
   }
 
-  function getDefinitionTitle(definition) {
-    const title = definition?.title;
-    if (!title) return null;
-    const translatedTitle = t(title) === title ? title : t(title);
-    return translatedTitle;
-  }
-
-  function getDefinitionDescription(definition) {
-    const description = definition?.description;
-    if (!description) return null;
-    const translatedDescription =
-      t(description) === description ? description : t(description);
-    return translatedDescription;
-  }
-
   return {
     t,
     d,
@@ -49,8 +34,6 @@ export function useI18n() {
     setLocale,
     loadLocale,
     currentLocale,
-    setPageTitle,
-    getDefinitionTitle,
-    getDefinitionDescription
+    setPageTitle
   };
 }

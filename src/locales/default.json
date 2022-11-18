@@ -566,18 +566,7 @@
     },
     "passport-gated": {
       "label": "Gated Gitcoin Passport",
-      "stamps": {
-        "title": "Select stamps"
-      },
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "operator": {
-        "title": "Select approval operator",
-        "description": "Control how many or which stamps are required to vote.",
-        "enum": {
-          "and": "Require all stamps",
-          "or": "Require at least one stamp"
-        }
-      }
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport."
     },
     "passport-weighted": {
       "label": "Weighted Gitcoin Passport",

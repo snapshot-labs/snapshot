@@ -9,8 +9,6 @@ import {
 } from '@headlessui/vue';
 import isEqual from 'lodash/isEqual';
 
-import { useI18n } from '@/composables';
-
 type ListboxItem = {
   value: any;
   extras?: Record<string, any>;
@@ -22,6 +20,7 @@ const props = defineProps<{
   label?: string;
   disableInput?: boolean;
   definition?: any;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -32,15 +31,13 @@ const selectedItem = computed({
     props.items[0],
   set: newVal => emit('update:modelValue', newVal.value)
 });
-
-const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
   <Listbox v-model="selectedItem" as="div" :disabled="disableInput">
     <ListboxLabel>
-      <LabelInput :information="getDefinitionDescription(definition)">
-        {{ label || getDefinitionTitle(definition) }}
+      <LabelInput :information="information || definition?.description">
+        {{ label || definition?.title }}
       </LabelInput>
     </ListboxLabel>
     <div class="relative">

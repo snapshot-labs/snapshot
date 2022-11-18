@@ -21,7 +21,7 @@ const emit = defineEmits(['update:modelValue']);
       definition.anyOf.map(e => ({
         value: e.const,
         extras: {
-          text: $t(e.title)
+          text: e.title
         }
       }))
     "

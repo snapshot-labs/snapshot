@@ -8,8 +8,6 @@ import {
   ListboxLabel
 } from '@headlessui/vue';
 
-import { useI18n } from '@/composables';
-
 const props = defineProps<{
   items: string[];
   label?: string;
@@ -18,6 +16,7 @@ const props = defineProps<{
   limit?: number;
   disableInput?: boolean;
   definition?: any;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -32,15 +31,13 @@ function isDisabled(item: string) {
   if (selectedItems.value.length < props.limit) return false;
   return !selectedItems.value.some(selectedItem => selectedItem === item);
 }
-
-const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
   <Listbox v-model="selectedItems" as="div" :disabled="disableInput" multiple>
     <ListboxLabel>
-      <LabelInput :information="getDefinitionDescription(definition)">
-        {{ label || getDefinitionTitle(definition) }}
+      <LabelInput :information="information || definition?.description">
+        {{ label || definition?.title }}
       </LabelInput>
     </ListboxLabel>
     <div class="relative">

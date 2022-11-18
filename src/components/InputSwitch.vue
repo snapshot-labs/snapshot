@@ -1,18 +1,15 @@
 <script setup lang="ts">
 import { Switch } from '@headlessui/vue';
 
-import { useI18n } from '@/composables/';
-
 defineProps<{
   modelValue?: boolean;
   label?: string;
   textRight?: string;
   definition?: any;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
-
-const { getDefinitionTitle, getDefinitionDescription } = useI18n();
 </script>
 
 <template>
@@ -70,8 +67,8 @@ const { getDefinitionTitle, getDefinitionDescription } = useI18n();
         </span>
       </span>
     </Switch>
-    <LabelInput :information="getDefinitionDescription(definition) || ''">
-      {{ textRight || getDefinitionTitle(definition) || '' }}
+    <LabelInput :information="information || definition?.description">
+      {{ textRight || definition?.title }}
     </LabelInput>
   </div>
 </template>
