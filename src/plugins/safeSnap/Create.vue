@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { Transaction } from '@/helpers/transactionBuilder';
-import { mapLegacyConfig } from '@/plugins/safeSnap/compatibility';
+import { isCurrentConfigFormat } from '@/plugins/safeSnap/compatibility';
 import {
   SafeModuleLogos,
   ExecutionData,
@@ -18,10 +18,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['update']);
-
-const safeConfigs = computed(() =>
-  mapLegacyConfig(props.space.plugins.safeSnap)
-);
 
 const proposalExecutionData = ref<ExecutionData[]>(
   props.modelValue.safeSnap || []
@@ -67,9 +63,9 @@ function addProposalExecutionData(executionData: ExecutionData) {
         @update-abis="updateContractABIs(index, $event)"
       />
     </div>
-    <div class="space-y-2">
+    <div v-if="isCurrentConfigFormat(space.plugins.safeSnap)" class="space-y-2">
       <div
-        v-for="safeConfig in safeConfigs"
+        v-for="safeConfig in space.plugins.safeSnap"
         :key="safeConfig.safe.address"
         class="space-y-2"
       >
@@ -107,6 +103,10 @@ function addProposalExecutionData(executionData: ExecutionData) {
           {{ safeConfig.safe.name }}: Manual execution
         </BaseButton>
       </div>
+    </div>
+    <div v-else>
+      To add transactions for execution to this proposal, the SafeSnap
+      configuration of this space must be updated.
     </div>
   </div>
 </template>

@@ -20,7 +20,7 @@ defineProps<{
       :transaction="transaction"
       :network="executionData.safe.network"
       :contract-abi="executionData.abis?.[transaction.to]"
-      class="border-b px-3 py-2"
+      class="border-b px-3 py-2 last:border-b-0"
     />
   </div>
 </template>

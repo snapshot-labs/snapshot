@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useTimestamp } from '@vueuse/core';
 import { shorten } from '@/helpers/utils';
-import { Proposal } from '@/helpers/interfaces';
-import { mapLegacyExecutionData } from '@/plugins/safeSnap/compatibility';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import {
+  isCurrentExecutionDataFormat,
+  handleExecutionDataCompatibility
+} from '@/plugins/safeSnap/compatibility';
 import {
   ExecutionData,
   SafeModuleLogos,
@@ -15,11 +18,13 @@ import {
 
 const props = defineProps<{
   proposal: Proposal;
+  space: ExtendedSpace;
 }>();
 
-const executionData = computed<ExecutionData[]>(() =>
-  mapLegacyExecutionData(props.proposal.plugins.safeSnap)
+const showExecutionControls = isCurrentExecutionDataFormat(
+  props.proposal.plugins.safeSnap
 );
+const executionData = ref<ExecutionData[]>([]);
 
 function safeLink(safe: Safe): string {
   const prefix = EIP3770_PREFIXES[safe.network];
@@ -31,6 +36,12 @@ const isProposalStillActive = computed(
     useTimestamp({ offset: 0, interval: 1000 }).value / 1000 <=
     props.proposal.end
 );
+
+onMounted(async () => {
+  executionData.value = await handleExecutionDataCompatibility(
+    props.proposal.plugins.safeSnap
+  );
+});
 </script>
 
 <template>
@@ -61,7 +72,7 @@ const isProposalStillActive = computed(
 
       <ExecutionDisplayTransactions :execution-data="data" />
 
-      <div class="p-4 text-center">
+      <div v-if="showExecutionControls" class="border-t p-4 text-center">
         <template v-if="isProposalStillActive">
           Execution will be possible after the proposal has ended.
         </template>
