@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { VoteValidation } from '@/helpers/interfaces';
 
@@ -18,6 +18,7 @@ const input = ref({
 });
 
 const validations = ['any', 'passport-gated'];
+const validationSchemas = ref(null);
 
 function select(n: string) {
   input.value.name = n;
@@ -32,7 +33,14 @@ function handleSubmit() {
   emit('close');
 }
 
+async function getValidations() {
+  const res = await fetch(`${import.meta.env.VITE_SCORES_URL}/api/validations`);
+  const data = await res.json();
+  validationSchemas.value = data || null;
+}
+
 watch(open, () => {
+  getValidations();
   input.value.name = '';
   if (props.validation?.params) {
     input.value.params = props.validation.params;
@@ -44,42 +52,14 @@ watch(open, () => {
   }
 });
 
-const definition = {
-  $schema: 'http://json-schema.org/draft-07/schema#',
-  $ref: '#/definitions/Validation',
-  definitions: {
-    Validation: {
-      title: 'Validation',
-      type: 'object',
-      properties: {
-        stamps: {
-          type: 'array',
-          title: 'validation.passport-gated.stamps.title',
-          minItems: 1,
-          maxItems: 32,
-          items: {
-            type: 'string',
-            enum: ['Ens', 'Twitter', 'GitHub', 'POAP', 'SnapshotVotesProvider']
-          }
-        },
-        operator: {
-          type: 'string',
-          title: 'validation.passport-gated.operator.title',
-          description: 'validation.passport-gated.operator.description',
-          anyOf: [
-            {
-              const: 'AND',
-              title: 'validation.passport-gated.operator.enum.and'
-            },
-            { const: 'OR', title: 'validation.passport-gated.operator.enum.or' }
-          ]
-        }
-      },
-      required: ['stamps'],
-      additionalProperties: false
-    }
-  }
-};
+const validationDefinition = computed(() => {
+  if (
+    validationSchemas.value?.[input.value.name]?.schema?.definitions?.Validation
+  )
+    return validationSchemas.value[input.value.name].schema.definitions
+      .Validation;
+  return null;
+});
 </script>
 
 <template>
@@ -97,9 +77,9 @@ const definition = {
     <div class="my-4 mx-0 min-h-[339px] md:mx-4">
       <div v-if="input.name" class="text-skin-link">
         <FormObject
-          v-if="definition.definitions.Validation"
+          v-if="validationDefinition"
           v-model="input.params"
-          :definition="definition.definitions.Validation"
+          :definition="validationDefinition"
         />
         <TextareaJson
           v-else
