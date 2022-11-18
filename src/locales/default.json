@@ -8,7 +8,9 @@
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "votingPowerError": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "Get help",
   "retry": "Retry",
   "currentResults": "Current results",
@@ -566,11 +568,11 @@
     },
     "passport-gated": {
       "label": "Gated Gitcoin Passport",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport."
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
-      "label": "Weighted Gitcoin Passport",
-      "description": "Protect your proposals from spam and vote manipulation by setting up Gitcoin Passport."
+      "label": "Weighted Gitcoin Passport"
     }
   },
   "safeSnap": {

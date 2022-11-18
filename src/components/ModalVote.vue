@@ -185,12 +185,12 @@ watch(
           >
             <span
               class="mr-1 flex-auto text-skin-text"
-              v-text="$t('Validation')"
+              v-text="$t('validation.label')"
             />
             <div class="flex items-center gap-1">
               <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />
-              <i-ho-check v-else-if="isValidVoter" />
-              <i-ho-x v-else />
+              <i-ho-check v-else-if="isValidVoter" class="text-green" />
+              <i-ho-x v-else class="text-red" />
               {{ $t(`validation.${proposal.validation.name}.label`) }}
             </div>
           </div>
@@ -235,14 +235,10 @@ watch(
           v-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
         >
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
-            {{ t('votingPowerError') }}
+            {{ t('votingPowerFailedMessage') }}
           </BaseMessageBlock>
           <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
-            {{
-              t(
-                'There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.'
-              )
-            }}
+            {{ t('votingValidationFailedMessage') }}
           </BaseMessageBlock>
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
@@ -256,55 +252,25 @@ watch(
               {{ $t('learnMore') }}</BaseLink
             >
           </BaseMessageBlock>
-          <template
+
+          <ModalVoteMessagePassport
             v-else-if="
               !isValidVoter &&
-              proposal.validation &&
-              proposal.validation.name === 'passport'
+              proposal.validation?.name &&
+              (proposal.validation.name === 'passport-gated' ||
+                proposal.validation.name === 'passport-weighted')
             "
-          >
-            <BaseMessageBlock level="warning">
-              <!-- {{ $t("Oops, you don't seem to be eligible to vote", {}) }} -->
-              {{
-                `Voting requires a Gitcoin Passport with a minimum weight of ${proposal.validation.params.min_weight}.`
-              }}
-              <BaseLink link="https://passport.gitcoin.co/#/dashboard">
-                {{ $t('Passport') }}</BaseLink
-              >
-            </BaseMessageBlock>
-            <BaseMessageBlock
-              v-if="proposal?.validation.params?.stamps.some(p => p.weight > 1)"
-              level="info"
-            >
-              <table class="mt-3 w-full">
-                <caption>
-                  A list of stamps that can be used to increase your weight:
-                </caption>
-                <thead>
-                  <tr>
-                    <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
-                    <th class="w-1/3 py-1 text-left text-skin-link">Weight</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="stamp in proposal.validation.params.stamps"
-                    :key="stamp.name"
-                  >
-                    <td class="py-1">{{ stamp.id }}</td>
-                    <td class="py-1">{{ stamp.weight }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </BaseMessageBlock>
-          </template>
+            :is-valid-voter="isValidVoter"
+            :proposal="proposal"
+          />
 
           <BaseMessageBlock v-else-if="!isValidVoter" level="warning">
-            {{ `Oops, you don't seem to be eligible to vote.` }}
-            <BaseLink link="https://passport.gitcoin.co/#/dashboard">
+            {{ $t('notValidVoterMessage') }}
+            <BaseLink link="https://docs.snapshot.org/">
               {{ $t('learnMore') }}</BaseLink
             >
           </BaseMessageBlock>
+
           <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
             <TextareaAutosize
               v-model="reason"
