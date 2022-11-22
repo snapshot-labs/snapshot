@@ -82,7 +82,11 @@ function formatProposalVotes(votes) {
 async function loadResults() {
   if (!proposal.value) return;
 
-  if (proposal.value.scores.length === 0) {
+  if (
+    proposal.value.scores.length === 0 ||
+    proposal.value.id ===
+      '0x1ab7ef84f6e904582d5b5b921944b5b1a8e36dbff1f1248fde87fef02b046816'
+  ) {
     const votingClass = new voting[proposal.value.type](
       proposal.value,
       [],
