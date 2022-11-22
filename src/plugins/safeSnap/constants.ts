@@ -274,6 +274,17 @@ export const UMA_VOTING_ABI = [
   'function withdrawRewards() returns (uint256)'
 ];
 
+export const UMA_FINDER_ABI = [
+  'event InterfaceImplementationChanged(bytes32 indexed interfaceName, address indexed newImplementationAddress)',
+  'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
+  'function changeImplementationAddress(bytes32 interfaceName, address implementationAddress)',
+  'function getImplementationAddress(bytes32 interfaceName) view returns (address)',
+  'function interfacesImplemented(bytes32) view returns (address)',
+  'function owner() view returns (address)',
+  'function renounceOwnership()',
+  'function transferOwnership(address newOwner)'
+];
+
 export const ERC20_ABI = [
   //Read functions
   'function balanceOf(address account) view returns (uint256)',
