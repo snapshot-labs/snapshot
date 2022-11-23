@@ -61,15 +61,6 @@ const isPendingScore = computed(
         v-if="proposal.privacy === 'shutter'"
         class="pt-2"
       />
-      <div
-        v-if="
-          proposal.id ===
-          '0x1ab7ef84f6e904582d5b5b921944b5b1a8e36dbff1f1248fde87fef02b046816'
-        "
-        class="pt-3"
-      >
-        Results will appear at the end of the proposal
-      </div>
     </template>
   </BaseBlock>
 </template>
