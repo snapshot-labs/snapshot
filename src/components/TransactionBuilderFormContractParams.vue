@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
 import { ParamType } from '@ethersproject/abi';
-import { ParamValue } from '@/helpers/transactionBuilder';
+import { ParamValue } from '@/helpers/abi';
 
 const props = withDefaults(
   defineProps<{

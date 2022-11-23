@@ -1,6 +1,5 @@
 import { ref } from 'vue';
-import { Transaction } from '@/helpers/transactionBuilder';
-import { ExecutionDataABIs } from '@/helpers/safe';
+import { ExecutionDataABIs, Transaction } from '@/helpers/safe';
 
 export function useTransactionBuilder(
   initialBatches: Transaction[][] = [[]],

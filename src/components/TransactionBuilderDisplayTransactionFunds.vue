@@ -3,12 +3,9 @@ import { onMounted, ref } from 'vue';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import { shortenAddress } from '@/helpers/utils';
-import {
-  decodeERC20TransferData,
-  Transaction,
-  getTokenInfo
-} from '@/helpers/transactionBuilder';
-import { getNativeCoinInfo } from '@/helpers/safe';
+import { decodeERC20TransferData } from '@/helpers/abi';
+import { getTokenInfo } from '@/helpers/transactionBuilder';
+import { getNativeCoinInfo, Transaction } from '@/helpers/safe';
 import { useProfiles } from '@/composables';
 
 const props = defineProps<{

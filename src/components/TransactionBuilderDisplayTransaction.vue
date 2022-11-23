@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { Transaction } from '@/helpers/safe';
 import {
   detectTransactionForm,
-  Transaction,
   TransactionForms
 } from '@/helpers/transactionBuilder';
 

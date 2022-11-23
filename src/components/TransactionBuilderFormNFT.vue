@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { shortenAddress } from '@/helpers/utils';
-import { CollectableAsset, getSafeCollectables, Safe } from '@/helpers/safe';
 import {
   decodeERC721TransferData,
-  encodeERC721TransferData,
+  encodeERC721TransferData
+} from '@/helpers/abi';
+import {
+  CollectableAsset,
+  getSafeCollectables,
+  Safe,
   Transaction,
   TransactionOperationType
-} from '@/helpers/transactionBuilder';
+} from '@/helpers/safe';
 import { isAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
 

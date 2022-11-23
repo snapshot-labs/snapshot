@@ -12,11 +12,11 @@ import UMA_VOTING_ABI from '@/helpers/abi/UMA_VOTING.json';
 import FINDER_ABI from '@/helpers/abi/FINDER.json';
 import ERC20_ABI from '@/helpers/abi/ERC20.json';
 import { Proposal } from '@/helpers/interfaces';
-import { ModuleExecutionData } from '@/helpers/safe';
 import {
   convertExecutionDataToModuleTransactions,
+  ModuleExecutionData,
   Transaction
-} from '@/helpers/transactionBuilder';
+} from '@/helpers/safe';
 import { useWeb3, useTxStatus } from '@/composables';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { hexlify } from '@ethersproject/bytes';

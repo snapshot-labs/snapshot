@@ -2,13 +2,10 @@
 import { onMounted, ref } from 'vue';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
+import { decodeContractData, ParamValue } from '@/helpers/abi';
 import { shortenAddress } from '@/helpers/utils';
-import {
-  Transaction,
-  decodeContractData,
-  bigNumberValuesToString,
-  ParamValue
-} from '@/helpers/transactionBuilder';
+import { Transaction } from '@/helpers/safe';
+import { bigNumberValuesToString } from '@/helpers/transactionBuilder';
 import { FunctionFragment } from '@ethersproject/abi';
 
 const props = defineProps<{

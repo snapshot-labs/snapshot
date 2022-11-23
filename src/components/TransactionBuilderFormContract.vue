@@ -1,23 +1,26 @@
 <script setup lang="ts">
-// Test contract: 0xafACd9735C6c5BC9296a730B228c6b2b682Fe13a
-// Important: Test all possible data types/structures (arrays of arrays, arrays
-// of tuples, nested tuples, etc.), anything a contract can accept as a method arguments.
 import { computed, ref, watch } from 'vue';
 import {
-  encodeContractData,
-  ParamValue,
-  Transaction,
-  TransactionOperationType,
-  decodeContractData,
   validateAllParamValues,
   bigNumberValuesToString
 } from '@/helpers/transactionBuilder';
-import { getABIWriteFunctions, getContractABI } from '@/helpers/abi';
+import {
+  decodeContractData,
+  encodeContractData,
+  getABIWriteFunctions,
+  getContractABI,
+  ParamValue
+} from '@/helpers/abi';
 import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumber } from 'ethers';
 import { isAddress } from '@ethersproject/address';
 import { FormError } from '@/helpers/interfaces';
-import { ExecutionDataABIs, Safe } from '@/helpers/safe';
+import {
+  ExecutionDataABIs,
+  Safe,
+  Transaction,
+  TransactionOperationType
+} from '@/helpers/safe';
 
 const props = defineProps<{
   showForm: boolean;

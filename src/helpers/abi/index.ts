@@ -4,9 +4,20 @@ import {
   Fragment,
   FunctionFragment,
   Interface,
-  JsonFragment
+  JsonFragment,
+  Result
 } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
+import { BigNumber } from '@ethersproject/bignumber';
+
+import ERC20_ABI from '@/helpers/abi/ERC20.json';
+import ERC721_ABI from '@/helpers/abi/ERC721.json';
+
+export enum KnownFunctionSignatures {
+  ERC20_TRANSFER = '0xa9059cbb',
+  ERC721_SAFE_TRANSFER_FROM = '0x42842e0e',
+  ERC721_SAFE_TRANSFER_FROM_TO_CONTRACT = '0xb88d4fde'
+}
 
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
@@ -21,6 +32,8 @@ export const EXPLORER_API_URLS = {
 };
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
+
+export type ParamValue = boolean | string | BigNumber | ParamValue[];
 
 const fetchContractABI = memoize(
   async (url: string, contractAddress: string) => {
@@ -42,10 +55,6 @@ const fetchContractABI = memoize(
   },
   (url, contractAddress) => `${url}_${contractAddress}`
 );
-
-export function parseMethodToABI(method: FunctionFragment) {
-  return [method.format(FormatTypes.full)];
-}
 
 export async function getContractABI(
   network: string,
@@ -72,10 +81,69 @@ export async function getContractABI(
   }
 }
 
+export function parseMethodToABI(method: FunctionFragment) {
+  return [method.format(FormatTypes.full)];
+}
+
 export function getABIWriteFunctions(abi: Interface) {
   return abi.fragments
     .filter(FunctionFragment.isFunctionFragment)
     .map(FunctionFragment.fromObject)
     .filter(fragment => !['view', 'pure'].includes(fragment.stateMutability))
     .sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1));
+}
+
+export function encodeERC20TransferData(
+  recipient: string,
+  amount: BigNumber
+): string {
+  const contractInterface = new Interface(ERC20_ABI);
+  return contractInterface.encodeFunctionData('transfer', [recipient, amount]);
+}
+
+export function decodeERC20TransferData(data: string): Result {
+  const contractInterface = new Interface(ERC20_ABI);
+  const method = contractInterface.getFunction('transfer');
+
+  return contractInterface.decodeFunctionData(method, data);
+}
+
+export function encodeERC721TransferData(
+  from: string,
+  recipient: string,
+  tokenId: BigNumber
+): string {
+  const contractInterface = new Interface(ERC721_ABI);
+  return contractInterface.encodeFunctionData('safeTransferFrom', [
+    from,
+    recipient,
+    tokenId
+  ]);
+}
+
+export function decodeERC721TransferData(data: string): Result {
+  const contractInterface = new Interface(ERC721_ABI);
+  const method = contractInterface.getFunction('safeTransferFrom');
+
+  return contractInterface.decodeFunctionData(method, data);
+}
+
+export function encodeContractData(
+  abi: string,
+  method: FunctionFragment,
+  paramValues: ParamValue[]
+) {
+  const contractInterface = new Interface(abi);
+  return contractInterface.encodeFunctionData(method, paramValues);
+}
+
+export function decodeContractData(
+  data: string,
+  abiString: string
+): { method: FunctionFragment; values: Result } {
+  const contractInterface = new Interface(abiString);
+  const method = contractInterface.getFunction(data.slice(0, 10));
+  const values = contractInterface.decodeFunctionData(method, data);
+
+  return { method, values };
 }

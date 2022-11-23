@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { ParamValue } from '@/helpers/transactionBuilder';
+import { ParamValue } from '@/helpers/abi';
 import { ParamType } from '@ethersproject/abi';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 

@@ -3,13 +3,17 @@ import { computed, watch, ref } from 'vue';
 import { PopoverButton } from '@headlessui/vue';
 import { isAddress } from '@ethersproject/address';
 import { BigNumber } from '@ethersproject/bignumber';
-import { FundsAsset, getSafeFunds, Safe } from '@/helpers/safe';
 import {
-  decodeERC20TransferData,
-  encodeERC20TransferData,
+  FundsAsset,
+  getSafeFunds,
+  Safe,
   Transaction,
   TransactionOperationType
-} from '@/helpers/transactionBuilder';
+} from '@/helpers/safe';
+import {
+  decodeERC20TransferData,
+  encodeERC20TransferData
+} from '@/helpers/abi';
 import { FormError } from '@/helpers/interfaces';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 

@@ -5,10 +5,9 @@ import { keccak256 } from '@ethersproject/solidity';
 import { useTransactionBuilder } from '@/composables';
 import {
   TransactionForms,
-  Transaction,
   detectTransactionForm
 } from '@/helpers/transactionBuilder';
-import { ExecutionData, ExecutionDataABIs } from '@/helpers/safe';
+import { ExecutionData, ExecutionDataABIs, Transaction } from '@/helpers/safe';
 
 const props = defineProps<{
   executionData: ExecutionData;

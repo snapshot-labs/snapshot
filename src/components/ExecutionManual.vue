@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ExecutionData } from '@/helpers/safe';
+import {
+  convertExecutionDataToModuleTransactions,
+  ExecutionData
+} from '@/helpers/safe';
 import { useWeb3 } from '@/composables';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { convertExecutionDataToModuleTransactions } from '@/helpers/transactionBuilder';
 
 const props = defineProps<{
   executionData: ExecutionData;

@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { shortenAddress } from '@/helpers/utils';
-import {
-  Transaction,
-  getNFTInfo,
-  decodeERC721TransferData,
-  NFTInfo
-} from '@/helpers/transactionBuilder';
+import { getNFTInfo, NFTInfo } from '@/helpers/transactionBuilder';
+import { decodeERC721TransferData } from '@/helpers/abi';
+import { Transaction } from '@/helpers/safe';
 import { useProfiles } from '@/composables';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 

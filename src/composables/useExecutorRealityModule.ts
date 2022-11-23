@@ -1,13 +1,11 @@
 import { computed, ref } from 'vue';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import {
-  EIP712_SAFE_TRANSACTIN_TYPES,
-  ModuleExecutionData
-} from '@/helpers/safe';
-import {
   convertExecutionDataToModuleTransactions,
+  EIP712_SAFE_TRANSACTIN_TYPES,
+  ModuleExecutionData,
   Transaction
-} from '@/helpers/transactionBuilder';
+} from '@/helpers/safe';
 import REALITY_MODULE_ABI from '@/helpers/abi/REALITY_MODULE.json';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { keccak256 } from '@ethersproject/solidity';
