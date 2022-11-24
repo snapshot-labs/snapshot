@@ -175,24 +175,25 @@ watch(
             </BaseLink>
           </div>
 
-          <div
-            v-if="
-              proposal.validation?.name !== 'any' &&
-              isValidationAndPowerLoaded &&
-              !isValidationAndPowerLoading
-            "
-            class="flex"
-          >
+          <div v-if="proposal.validation?.name !== 'any'" class="flex">
             <span
               class="mr-1 flex-auto text-skin-text"
               v-text="$t('validation.label')"
             />
-            <div class="flex items-center gap-1">
+            <div
+              v-if="
+                proposal.validation?.name !== 'any' &&
+                isValidationAndPowerLoaded &&
+                !isValidationAndPowerLoading
+              "
+              class="flex items-center gap-1"
+            >
               <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />
               <i-ho-check v-else-if="isValidVoter" class="text-green" />
               <i-ho-x v-else class="text-red" />
               {{ $t(`validation.${proposal.validation.name}.label`) }}
             </div>
+            <LoadingSpinner v-else />
           </div>
 
           <div class="flex">

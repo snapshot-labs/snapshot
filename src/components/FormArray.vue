@@ -46,13 +46,17 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
   </div>
 
   <div v-else class="space-y-2">
-    <div v-for="(property, i) in input" :key="i">
+    <div v-for="(property, i) in input" :key="i" class="flex">
       <component
         :is="getComponent(definition?.items?.type || 'string')"
         v-model="input[i]"
         :definition="definition.items"
         :error="error"
+        class="grow"
       />
+      <BaseButtonIcon @click="input.splice(i, 1)">
+        <BaseIcon name="close" size="14" />
+      </BaseButtonIcon>
     </div>
     <BaseButton class="w-full" @click="input.push(definition?.items?.default)">
       {{ $t('add') }}
