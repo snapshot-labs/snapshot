@@ -37,18 +37,17 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
 </script>
 
 <template>
-  <div v-if="definition?.items?.anyOf">
-    <BaseListboxMultiple
-      v-model="input"
-      :items="
-        definition.items.anyOf.map(item => ({
-          value: item.const,
-          title: item.title
-        }))
-      "
-      :definition="definition"
-    />
-  </div>
+  <BaseListboxMultiple
+    v-if="definition?.items?.anyOf"
+    v-model="input"
+    :items="
+      definition.items.anyOf.map(item => ({
+        value: item.const,
+        title: item.title
+      }))
+    "
+    :definition="definition"
+  />
 
   <div v-else class="space-y-2">
     <div v-for="(property, i) in input" :key="i">

@@ -11,6 +11,7 @@ import isEqual from 'lodash/isEqual';
 
 type ListboxItem = {
   value: any;
+  title?: string;
   extras?: Record<string, any>;
 };
 
@@ -52,7 +53,7 @@ const selectedItem = computed({
         />
 
         <span v-else-if="selectedItem">
-          {{ selectedItem?.extras?.text || selectedItem.value }}
+          {{ selectedItem?.title || selectedItem.value }}
         </span>
         <span
           class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
@@ -94,7 +95,7 @@ const selectedItem = computed({
                 >
                   <slot v-if="$slots.item" name="item" :item="item" />
                   <span v-else>
-                    {{ item?.extras?.text || item.value }}
+                    {{ item?.title || item.value }}
                   </span>
                 </span>
 

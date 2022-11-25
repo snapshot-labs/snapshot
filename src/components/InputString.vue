@@ -20,9 +20,7 @@ const emit = defineEmits(['update:modelValue']);
     :items="
       definition.anyOf.map(e => ({
         value: e.const,
-        extras: {
-          text: e.title
-        }
+        title: e.title
       }))
     "
     @update:model-value="emit('update:modelValue', $event)"
