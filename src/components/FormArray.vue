@@ -9,14 +9,14 @@ import InputNumber from '@/components/InputNumber.vue';
 import InputSwitch from '@/components/InputSwitch.vue';
 
 const props = defineProps<{
-  modelValue: any[];
-  definition: any;
+  modelValue?: any[];
+  definition?: any;
   error?: FormError;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const input = ref(props.modelValue || props.definition.default || []);
+const input = ref(props.modelValue || props.definition?.default || []);
 
 const getComponent = (type: string) => {
   switch (type) {
