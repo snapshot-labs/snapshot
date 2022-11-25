@@ -86,7 +86,8 @@ async function handleSubmit() {
 }
 
 async function loadVotingValidation() {
-  if (!props.proposal.validation) return (isValidVoter.value = true);
+  if (!props.proposal.validation || props.proposal.validation.name === 'any')
+    return (isValidVoter.value = true);
   hasVotingValidationFailed.value = false;
   try {
     const validationRes = await getValidation(
