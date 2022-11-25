@@ -6,13 +6,14 @@ defineProps<{
   label?: string;
   textRight?: string;
   definition?: any;
+  information?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 pr-2">
+  <div class="flex items-center space-x-2 pt-1 pr-2">
     <Switch
       :model-value="modelValue"
       :class="modelValue ? 'bg-green' : 'bg-skin-border'"
@@ -66,6 +67,8 @@ const emit = defineEmits(['update:modelValue']);
         </span>
       </span>
     </Switch>
-    <span>{{ textRight || definition?.title || '' }}</span>
+    <LabelInput :information="information || definition?.description">
+      {{ textRight || definition?.title }}
+    </LabelInput>
   </div>
 </template>

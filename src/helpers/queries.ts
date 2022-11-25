@@ -48,6 +48,10 @@ export const PROPOSAL_QUERY = gql`
       quorum
       symbol
       privacy
+      validation {
+        name
+        params
+      }
       strategies {
         name
         network
@@ -229,6 +233,10 @@ export const SPACES_QUERY = gql`
         params
       }
       validation {
+        name
+        params
+      }
+      voteValidation {
         name
         params
       }

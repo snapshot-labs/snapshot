@@ -34,69 +34,70 @@ const votingPeriod = computed({
 <template>
   <BaseBlock :title="$t('settings.voting')">
     <div class="space-y-2">
-      <div class="space-y-2 sm:flex sm:space-x-4 sm:space-y-0">
-        <div class="w-full space-y-2">
-          <BaseInput
-            v-model="votingDelay"
-            :title="$t('settings.votingDelay')"
-            type="number"
-            placeholder="e.g. 1"
-          >
-            <template #after>
-              <select
-                v-model="delayUnit"
-                class="input ml-2 -mr-2 text-center !text-skin-text"
-                required
-              >
-                <option value="h" selected>{{ $t('settings.hours') }}</option>
-                <option value="d">{{ $t('settings.days') }}</option>
-              </select>
-            </template>
-          </BaseInput>
+      <div class="space-y-2">
+        <BaseInput
+          v-model="votingDelay"
+          :title="$t('settings.votingDelay')"
+          type="number"
+          placeholder="e.g. 1"
+        >
+          <template #after>
+            <select
+              v-model="delayUnit"
+              class="input ml-2 -mr-2 text-center !text-skin-text"
+              required
+            >
+              <option value="h" selected>{{ $t('settings.hours') }}</option>
+              <option value="d">{{ $t('settings.days') }}</option>
+            </select>
+          </template>
+        </BaseInput>
 
-          <BaseInput
-            v-model="votingPeriod"
-            :title="$t('settings.votingPeriod')"
-            type="number"
-            placeholder="e.g. 5"
-          >
-            <template #after>
-              <select
-                v-model="periodUnit"
-                class="input ml-2 -mr-2 text-center !text-skin-text"
-                required
-              >
-                <option value="h" selected>
-                  {{ $t('settings.hours') }}
-                </option>
-                <option value="d">{{ $t('settings.days') }}</option>
-              </select>
-            </template>
-          </BaseInput>
-        </div>
+        <BaseInput
+          v-model="votingPeriod"
+          :title="$t('settings.votingPeriod')"
+          type="number"
+          placeholder="e.g. 5"
+        >
+          <template #after>
+            <select
+              v-model="periodUnit"
+              class="input ml-2 -mr-2 text-center !text-skin-text"
+              required
+            >
+              <option value="h" selected>
+                {{ $t('settings.hours') }}
+              </option>
+              <option value="d">{{ $t('settings.days') }}</option>
+            </select>
+          </template>
+        </BaseInput>
 
-        <div class="w-full space-y-2">
-          <InputNumber
-            v-model="form.voting.quorum"
-            :title="$t('settings.quorum.label')"
-            :information="$t('settings.quorum.information')"
-            placeholder="1000"
-          />
+        <InputNumber
+          v-model="form.voting.quorum"
+          :title="$t('settings.quorum.label')"
+          :information="$t('settings.quorum.information')"
+          placeholder="1000"
+        />
 
-          <InputSelectVotingtype
-            :type="form.voting.type"
-            :information="$t(`settings.type.information`)"
-            allow-any
-            @update:type="value => (form.voting.type = value)"
-          />
+        <InputSelectVoteType
+          :type="form.voting.type"
+          :information="$t(`settings.type.information`)"
+          allow-any
+          @update:type="value => (form.voting.type = value)"
+        />
 
-          <InputSelectPrivacy
-            :privacy="form.voting.privacy"
-            :information="$t(`privacy.information`)"
-            allow-any
-            @update:privacy="value => (form.voting.privacy = value)"
-          />
-        </div>
+        <InputSelectPrivacy
+          :privacy="form.voting.privacy"
+          :information="$t(`privacy.information`)"
+          allow-any
+          @update:privacy="value => (form.voting.privacy = value)"
+        />
+
+        <InputSelectVoteValidation
+          :validation="form.voteValidation"
+          @add="value => (form.voteValidation = value)"
+        />
       </div>
 
       <InputSwitch

@@ -27,5 +27,13 @@ export function useI18n() {
     document.title = t(message, params);
   }
 
-  return { t, d, tc, setLocale, loadLocale, currentLocale, setPageTitle };
+  return {
+    t,
+    d,
+    tc,
+    setLocale,
+    loadLocale,
+    currentLocale,
+    setPageTitle
+  };
 }
