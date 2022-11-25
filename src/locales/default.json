@@ -567,12 +567,12 @@
       "description": "Anyone with voting power can cast a vote."
     },
     "passport-gated": {
-      "label": "Gated Gitcoin Passport",
+      "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
       "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
-      "label": "Weighted Gitcoin Passport"
+      "label": "Gitcoin Passport weighted"
     }
   },
   "safeSnap": {

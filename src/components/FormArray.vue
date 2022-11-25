@@ -37,10 +37,15 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
 </script>
 
 <template>
-  <div v-if="definition?.items?.enum">
+  <div v-if="definition?.items?.anyOf">
     <BaseListboxMultiple
       v-model="input"
-      :items="definition.items.enum"
+      :items="
+        definition.items.anyOf.map(item => ({
+          value: item.const,
+          title: item.title
+        }))
+      "
       :definition="definition"
     />
   </div>

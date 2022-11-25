@@ -28,18 +28,12 @@ const selectedCategories = computed({
     v-model="selectedCategories"
     :placeholder="$t('settings.categories.select')"
     :label="$t(`settings.categories.label`)"
-    :items="categories"
+    :items="
+      categories.map(category => ({
+        value: category,
+        title: $t(`explore.categories.${category}`)
+      }))
+    "
     :limit="2"
-  >
-    <template #item="{ item }">
-      <span>{{ $t(`explore.categories.${item}`) }}</span>
-    </template>
-    <template #selected="{ selectedItems }">
-      <span>
-        {{
-          selectedItems.map(item => $t(`explore.categories.${item}`)).join(', ')
-        }}
-      </span>
-    </template>
-  </BaseListboxMultiple>
+  />
 </template>
