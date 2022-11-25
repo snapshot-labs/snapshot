@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, watch, computed } from 'vue';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { VoteValidation } from '@/helpers/interfaces';
+import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 
 const DEFAULT_PARAMS: Record<string, any> = {};
 
@@ -11,7 +11,8 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const isValid = ref(true);
+const isValidJson = ref(true);
+
 const input = ref({
   name: '',
   params: DEFAULT_PARAMS
@@ -33,10 +34,14 @@ function handleSubmit() {
   emit('close');
 }
 
+const areValidationsLoaded = ref(false);
+
 async function getValidations() {
+  if (validationSchemas.value) return;
   const res = await fetch(`${import.meta.env.VITE_SCORES_URL}/api/validations`);
   const data = await res.json();
   validationSchemas.value = data || null;
+  areValidationsLoaded.value = true;
 }
 
 watch(open, () => {
@@ -56,6 +61,13 @@ const validationDefinition = computed(() => {
   return (
     validationSchemas.value?.[input.value.name]?.schema?.definitions
       ?.Validation || null
+  );
+});
+
+const isValidForm = computed(() => {
+  if (!validationDefinition.value) return true;
+  return (
+    validateSchema(validationDefinition.value, input.value.params) === true
   );
 });
 </script>
@@ -82,13 +94,14 @@ const validationDefinition = computed(() => {
         <TextareaJson
           v-else
           v-model="input.params"
-          v-model:is-valid="isValid"
+          v-model:is-valid="isValidJson"
           :placeholder="$t('settings.validationParameters')"
           class="input text-left"
         />
       </div>
       <div v-if="!input.name">
-        <div class="space-y-3">
+        <LoadingRow v-if="!areValidationsLoaded" block class="px-0" />
+        <div v-else class="space-y-3">
           <BaseModalSelectItem
             v-for="v in validations"
             :key="v"
@@ -103,7 +116,7 @@ const validationDefinition = computed(() => {
     </div>
     <template v-if="input.name" #footer>
       <BaseButton
-        :disabled="!isValid"
+        :disabled="!isValidJson || !isValidForm"
         class="w-full"
         primary
         @click="handleSubmit"
