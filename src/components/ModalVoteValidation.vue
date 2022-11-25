@@ -53,12 +53,10 @@ watch(open, () => {
 });
 
 const validationDefinition = computed(() => {
-  if (
-    validationSchemas.value?.[input.value.name]?.schema?.definitions?.Validation
-  )
-    return validationSchemas.value[input.value.name].schema.definitions
-      .Validation;
-  return null;
+  return (
+    validationSchemas.value?.[input.value.name]?.schema?.definitions
+      ?.Validation || null
+  );
 });
 </script>
 

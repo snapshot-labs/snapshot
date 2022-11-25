@@ -53,6 +53,11 @@ function isDisabled(item: string) {
     </ListboxLabel>
     <div class="relative">
       <ListboxButton
+        v-tippy="{
+          content: selectedItems
+            .map(item => item?.title || item.value)
+            .join(', ')
+        }"
         class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
         :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
       >
