@@ -95,6 +95,7 @@ const validationDefinition = computed(() => {
             :title="$t(`validation.${v}.label`)"
             :description="$t(`validation.${v}.description`)"
             :selected="validation.name === v"
+            :tag="v === 'passport-gated' ? 'Beta' : ''"
             @click="select(v)"
           />
         </div>
