@@ -8,7 +8,9 @@
   "results": "结果",
   "resultsError": "结果无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "resultsCalculating": "正在计算最终结果。如果您在几分钟后仍然看到这个消息，请联系空间管理员。",
-  "vpError": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "获取帮助",
   "retry": "重试",
   "currentResults": "当前结果",
@@ -546,7 +548,7 @@
   "privacy": {
     "label": "隐私",
     "title": "选择投票隐私",
-    "information": "提案中使用的隐私类型，在此处设置将对所有提案执行相同的隐私。",
+    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "任何类型",
     "none": "未设置",
     "shutter": {
@@ -554,6 +556,23 @@
       "description": "选择是加密的，只有在投票期结束后才能看到",
       "tooltip": "该提案已启用快门隐私。所有的投票都将被加密，直到投票期结束并计算出最终的分数",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "Validation",
+    "title": "Select voting validation",
+    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can vote",
+      "description": "Anyone with voting power can cast a vote."
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
     }
   },
   "safeSnap": {
