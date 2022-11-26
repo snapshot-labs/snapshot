@@ -8,7 +8,7 @@
   "results": "结果",
   "resultsError": "结果无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "resultsCalculating": "正在计算最终结果。如果您在几分钟后仍然看到这个消息，请联系空间管理员。",
-  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingPowerFailedMessage": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
   "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "获取帮助",
