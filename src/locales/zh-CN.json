@@ -9,8 +9,8 @@
   "resultsError": "结果无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "resultsCalculating": "正在计算最终结果。如果您在几分钟后仍然看到这个消息，请联系空间管理员。",
   "votingPowerFailedMessage": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
-  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
-  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
+  "votingValidationFailedMessage": "我们这边出现了一个错误，我们无法验证您是否有资格投票。 这通常是由于投票验证配置错误或参与验证的API没有反应。",
+  "notValidVoterMessage": "哎呀，您好像没有资格对这个提案投票。",
   "getHelp": "获取帮助",
   "retry": "重试",
   "currentResults": "当前结果",
@@ -548,7 +548,7 @@
   "privacy": {
     "label": "隐私",
     "title": "选择投票隐私",
-    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
+    "information": "提案中使用的隐私类型。(在所有未来的提案中强制执行)",
     "any": "任何类型",
     "none": "未设置",
     "shutter": {
@@ -559,20 +559,20 @@
     }
   },
   "validation": {
-    "label": "Validation",
-    "title": "Select voting validation",
-    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "label": "验证",
+    "title": "选择投票验证",
+    "information": "用来确定用户是否可以投票的验证类型。(在所有未来的提案中强制执行)",
     "any": {
-      "label": "Anyone can vote",
-      "description": "Anyone with voting power can cast a vote."
+      "label": "任何人都可以投票",
+      "description": "任何有投票权的人都可以投票。"
     },
     "passport-gated": {
-      "label": "Gitcoin Passport gated",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "label": "Gitcoin Passport门控",
+      "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
+      "invalidVoterMessage": "你需要一本带有 {amount} 个如下邮票的Gitcoin Passport才能对这个提案投票: {stamps}。 "
     },
     "passport-weighted": {
-      "label": "Gitcoin Passport weighted"
+      "label": "Gitcoin Passport加权"
     }
   },
   "safeSnap": {
