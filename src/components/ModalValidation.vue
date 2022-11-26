@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { SpaceValidation } from '@/helpers/interfaces';
 
 import { useValidationsFilter } from '@/composables';
@@ -30,12 +31,12 @@ watch(
   }
 );
 
-function select(n) {
+function select(n: string) {
   input.value.name = n;
 }
 
 function handleSubmit() {
-  emit('add', input.value);
+  emit('add', clone(input.value));
   emit('close');
 }
 
@@ -69,16 +70,15 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 min-h-[339px] md:mx-4">
-      <div v-if="input.name" class="mb-4 rounded-md border p-4 text-skin-link">
-        <h4 class="mb-3 text-center" v-text="input.name" />
-        <TextareaJson
-          v-model="input.params"
-          v-model:is-valid="isValid"
-          :placeholder="$t('settings.validationParameters')"
-          class="input text-left"
-        />
-      </div>
+    <div class="my-4 mx-0 md:mx-4">
+      <TextareaJson
+        v-if="input.name"
+        v-model="input.params"
+        v-model:is-valid="isValid"
+        :placeholder="$t('settings.validationParameters')"
+        class="input text-left"
+      />
+
       <div v-if="!input.name">
         <LoadingRow v-if="loadingValidations" block />
         <div v-else class="space-y-3">
@@ -100,7 +100,7 @@ watch(open, () => {
         primary
         @click="handleSubmit"
       >
-        {{ validation.name ? $t('save') : $t('add') }}
+        {{ $t('save') }}
       </BaseButton>
     </template>
   </BaseModal>

@@ -143,6 +143,7 @@ export interface Proposal {
   state: string;
   symbol: string;
   privacy: string;
+  validation: VoteValidation;
   discussion: string;
   quorum: number;
   scores: number[];
@@ -153,6 +154,11 @@ export interface Proposal {
   plugins: Record<string, any>;
   space: ExtendedSpace;
   strategies: SpaceStrategy[];
+}
+
+export interface VoteValidation {
+  name: string;
+  params: Record<string, any>;
 }
 
 export interface Results {

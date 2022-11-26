@@ -244,7 +244,7 @@ onMounted(async () => {
     </template>
   </TheLayout>
   <teleport v-if="proposal" to="#modal">
-    <ModalConfirm
+    <ModalVote
       :open="modalOpen"
       :space="space"
       :proposal="proposal"
