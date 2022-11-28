@@ -22,11 +22,11 @@ if (aliasedSpace) {
 
 const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  extentedSpaces.value?.find(s => s.id === spaceKey.value)
+  extentedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
 onMounted(async () => {
-  await loadExtentedSpaces([spaceKey.value]);
+  await loadExtentedSpaces([spaceKey.value.toLowerCase()]);
   if (!space.value) {
     router.push('/');
   }
