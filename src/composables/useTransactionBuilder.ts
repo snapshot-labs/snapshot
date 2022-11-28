@@ -1,12 +1,17 @@
 import { ref } from 'vue';
 import { ExecutionDataABIs, Transaction } from '@/helpers/safe';
 
-export function useTransactionBuilder(
-  initialBatches: Transaction[][] = [[]],
-  initialABIs: ExecutionDataABIs = {}
-) {
-  const batches = ref<Transaction[][]>(initialBatches);
-  const abis = ref<ExecutionDataABIs>(initialABIs);
+export function useTransactionBuilder() {
+  const batches = ref<Transaction[][]>([]);
+  const abis = ref<ExecutionDataABIs>({});
+
+  function setBatches(newBatches: Transaction[][]) {
+    batches.value = newBatches;
+  }
+
+  function setABIs(newAbis: ExecutionDataABIs) {
+    abis.value = newAbis;
+  }
 
   function addEmptyBatch() {
     batches.value.push([]);
@@ -53,6 +58,8 @@ export function useTransactionBuilder(
   return {
     batches,
     abis,
+    setBatches,
+    setABIs,
     addEmptyBatch,
     addTransaction,
     updateTransaction,

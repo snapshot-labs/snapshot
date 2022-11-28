@@ -27,11 +27,13 @@ const {
   addTransaction,
   removeTransaction,
   updateTransaction,
-  addABI
-} = useTransactionBuilder(
-  props.executionData.batches,
-  props.executionData.abis
-);
+  addABI,
+  setBatches,
+  setABIs
+} = useTransactionBuilder();
+
+setBatches(props.executionData.batches);
+setABIs(props.executionData.abis || {});
 
 watch(
   batches,
@@ -49,6 +51,7 @@ watch(
 );
 
 const showForm = ref<TransactionForms | null>(null);
+const showImportForm = ref(false);
 const targetBatchIndex = ref<number>(0);
 const targetTransactionIndex = ref<number | null>(null);
 const targetTransaction = computed<Transaction | null>(() => {
@@ -87,6 +90,15 @@ function saveTransaction(transaction: Transaction) {
   }
 }
 
+function importData(data: {
+  batches: Transaction[][];
+  abis: ExecutionDataABIs;
+}) {
+  console.log(data);
+  setBatches(data.batches);
+  setABIs(data.abis);
+}
+
 function transactionItemKey(transaction: Transaction) {
   return keccak256(['string'], [JSON.stringify(transaction) + Math.random()]);
 }
@@ -104,7 +116,12 @@ function transactionItemKey(transaction: Transaction) {
         >
           <i-ho-folder-add width="20" height="20" />
         </BaseButton>
-        <BaseButton v-tippy="'Import transactions'" class="!border-none" small>
+        <BaseButton
+          v-tippy="'Import transactions'"
+          class="!border-none"
+          small
+          @click="showImportForm = true"
+        >
           <i-ho-download width="20" height="20" />
         </BaseButton>
         <BaseButton
@@ -236,6 +253,12 @@ function transactionItemKey(transaction: Transaction) {
         @save-transaction="saveTransaction($event)"
         @save-abi="addABI($event.contractAddress, $event.abiString)"
         @close="showForm = null"
+      />
+      <TransactionBuilderImport
+        :show-import-form="showImportForm"
+        :safe-address="executionData.safe.address"
+        @import-data="importData($event)"
+        @close="showImportForm = false"
       />
     </teleport>
   </div>
