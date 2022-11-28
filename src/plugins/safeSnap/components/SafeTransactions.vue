@@ -68,6 +68,7 @@ export default {
     'proposal',
     'network',
     'moduleAddress',
+    'moduleType',
     'multiSendAddress',
     'preview',
     'hash'
@@ -192,6 +193,7 @@ export default {
       <div class="flex-grow"></div>
       <SafeSnapTooltip
         :module-address="moduleAddress"
+        :module-type="moduleType"
         :multi-send-address="multiSendAddress"
       />
     </h4>
@@ -237,6 +239,7 @@ export default {
           :batches="input"
           :proposal="proposal"
           :module-address="moduleAddress"
+          :module-type="moduleType"
           :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />

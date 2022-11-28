@@ -31,6 +31,7 @@ const props = defineProps([
   'proposal',
   'network',
   'moduleAddress',
+  'moduleType',
   'multiSendAddress'
 ]);
 
@@ -178,9 +179,10 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalWithHashes(
+    const proposalSubmission = await plugin.submitProposalWithHashes(
       getInstance().web3,
       props.moduleAddress,
+      props.moduleType,
       questionDetails.value.proposalId,
       getTxHashes()
     );

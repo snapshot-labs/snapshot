@@ -100,6 +100,11 @@ export function coerceConfig(config, network) {
     return {
       ...config,
       safes: config.safes.map(safe => {
+        if (safe.realityAddress) {
+          safe.moduleAddress = safe.realityAddress;
+          safe.moduleType = 'reality';
+          delete safe.realityAddress;
+        }
         const _network = safe.network || network;
         const multiSendAddress =
           safe.multiSendAddress || getMultiSend(_network);
@@ -150,6 +155,7 @@ export function coerceConfig(config, network) {
       {
         network,
         moduleAddress: config.address,
+        moduleType: 'reality',
         multiSendAddress:
           getMultiSend(network, MULTI_SEND_VERSION.V1_1_1) ||
           getMultiSend(network, MULTI_SEND_VERSION.V1_3_0)

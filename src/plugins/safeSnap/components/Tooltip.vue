@@ -4,6 +4,7 @@ import { useCopy } from '@/composables/useCopy';
 
 defineProps<{
   moduleAddress: string;
+  moduleType: string;
   multiSendAddress: string;
 }>();
 
@@ -25,7 +26,10 @@ const { copyToClipboard } = useCopy();
           {{ shorten(multiSendAddress) }}
           <i-ho-duplicate class="ml-1" />
         </BaseButton>
-        <div class="mt-3">Module address</div>
+        <div class="mt-3">
+          {{ moduleType.charAt(0).toUpperCase() }}
+          {{ moduleType.slice(1) }} Module address
+        </div>
         <BaseButton
           class="flex w-full items-center justify-between"
           @click="copyToClipboard(moduleAddress)"

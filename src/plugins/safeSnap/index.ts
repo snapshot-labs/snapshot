@@ -19,7 +19,8 @@ import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
   ORACLE_ABI,
-  ERC20_ABI
+  ERC20_ABI,
+  UMA_MODULE_ABI
 } from './constants';
 import {
   buildQuestion,
@@ -135,7 +136,34 @@ export default class Plugin {
     return getModuleDetails(provider, network, moduleAddress);
   }
 
-  async *submitProposalWithHashes(
+  async submitProposalWithHashes(
+    web3: any,
+    moduleAddress: string,
+    moduleType: 'reality' | 'uma',
+    proposalId: string,
+    txHashes: string[]
+  ) {
+    switch (moduleType) {
+      case 'reality':
+        return this.submitRealityProposalWithHashes(
+          web3,
+          moduleAddress,
+          proposalId,
+          txHashes
+        );
+      case 'uma':
+        return this.submitUmaProposalWithHashes(
+          web3,
+          moduleAddress,
+          proposalId,
+          txHashes
+        );
+      default:
+        throw new Error('Unknown module type');
+    }
+  }
+
+  async *submitRealityProposalWithHashes(
     web3: any,
     moduleAddress: string,
     proposalId: string,
@@ -150,7 +178,25 @@ export default class Plugin {
     );
     yield;
     const receipt = await tx.wait();
-    console.log('[DAO module] submitted proposal:', receipt);
+    console.log('[DAO module] submitted reality proposal:', receipt);
+  }
+
+  async *submitUmaProposalWithHashes(
+    web3: any,
+    moduleAddress: string,
+    proposalId: string,
+    txHashes: string[]
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'proposeTransactions',
+      [txHashes, proposalId]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] submitted uma proposal:', receipt);
   }
 
   async loadClaimBondData(
