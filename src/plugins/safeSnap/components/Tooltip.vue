@@ -3,7 +3,8 @@ import { shorten } from '@/helpers/utils';
 import { useCopy } from '@/composables/useCopy';
 
 defineProps<{
-  realityAddress: string;
+  moduleAddress: string;
+  moduleType: string;
   multiSendAddress: string;
 }>();
 
@@ -25,12 +26,12 @@ const { copyToClipboard } = useCopy();
           {{ shorten(multiSendAddress) }}
           <i-ho-duplicate class="ml-1" />
         </BaseButton>
-        <div class="mt-3">Reality module address</div>
+        <div class="mt-3">Module address</div>
         <BaseButton
           class="flex w-full items-center justify-between"
-          @click="copyToClipboard(realityAddress)"
+          @click="copyToClipboard(moduleAddress)"
         >
-          {{ shorten(realityAddress) }}
+          {{ shorten(moduleAddress) }}
           <i-ho-duplicate class="ml-1" />
         </BaseButton>
       </div>

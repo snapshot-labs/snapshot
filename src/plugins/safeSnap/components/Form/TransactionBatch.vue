@@ -54,7 +54,7 @@ export default {
     createBatch(nonce, txs) {
       const chainId = parseInt(this.config.network);
       return createBatch(
-        this.config.realityAddress,
+        this.config.moduleAddress,
         chainId,
         nonce,
         txs,

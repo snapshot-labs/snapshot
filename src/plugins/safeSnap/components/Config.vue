@@ -73,7 +73,7 @@ export default {
         :proposal="proposal"
         :hash="safe.hash"
         :network="safe.network"
-        :reality-address="safe.realityAddress"
+        :module-address="safe.moduleAddress"
         :multi-send-address="safe.multiSendAddress"
         :model-value="safe.txs"
         @update:modelValue="updateSafeTransactions(index, $event)"

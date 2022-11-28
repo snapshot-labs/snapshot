@@ -43,13 +43,13 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
-function formatBatches(network, realityModule, batches, multiSend) {
+function formatBatches(network, moduleAddress, batches, multiSend) {
   if (batches.length) {
     const batchSample = batches[0];
     if (Array.isArray(batchSample)) {
       const chainId = parseInt(network);
       return batches.map((txs, index) =>
-        createBatch(realityModule, chainId, index, txs, multiSend)
+        createBatch(moduleAddress, chainId, index, txs, multiSend)
       );
     }
   }
@@ -67,7 +67,7 @@ export default {
     'modelValue',
     'proposal',
     'network',
-    'realityAddress',
+    'moduleAddress',
     'multiSendAddress',
     'preview',
     'hash'
@@ -80,7 +80,7 @@ export default {
     return {
       input: formatBatches(
         this.network,
-        this.realityAddress,
+        this.moduleAddress,
         this.modelValue,
         this.multiSendAddress
       ),
@@ -89,7 +89,7 @@ export default {
       transactionConfig: {
         preview: this.preview,
         gnosisSafeAddress: undefined,
-        realityAddress: this.realityAddress,
+        moduleAddress: this.moduleAddress,
         network: this.network,
         multiSendAddress: this.multiSendAddress,
         tokens: [],
@@ -120,7 +120,7 @@ export default {
     try {
       const { dao } = await plugin.getModuleDetails(
         this.network,
-        this.realityAddress
+        this.moduleAddress
       );
       this.gnosisSafeAddress = dao;
       this.transactionConfig = {
@@ -140,7 +140,7 @@ export default {
     addTransactionBatch() {
       this.input.push(
         createBatch(
-          this.realityAddress,
+          this.moduleAddress,
           parseInt(this.network),
           this.input.length,
           [],
@@ -160,7 +160,7 @@ export default {
     handleImport(txs) {
       this.input.push(
         createBatch(
-          this.realityAddress,
+          this.moduleAddress,
           parseInt(this.network),
           this.input.length,
           txs,
@@ -191,7 +191,7 @@ export default {
       </a>
       <div class="flex-grow"></div>
       <SafeSnapTooltip
-        :reality-address="realityAddress"
+        :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
       />
     </h4>
@@ -236,7 +236,7 @@ export default {
           v-if="preview && proposalResolved"
           :batches="input"
           :proposal="proposal"
-          :reality-address="realityAddress"
+          :module-address="moduleAddress"
           :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />
