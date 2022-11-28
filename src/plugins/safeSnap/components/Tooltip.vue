@@ -4,7 +4,6 @@ import { useCopy } from '@/composables/useCopy';
 
 defineProps<{
   moduleAddress: string;
-  moduleType: string;
   multiSendAddress: string;
 }>();
 
