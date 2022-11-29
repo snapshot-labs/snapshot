@@ -106,8 +106,7 @@ async function loadResults() {
     web3Account.value
       ? await getProposalVotes(id, {
           first: 1,
-          voter:
-            web3Account.value || '0x0000000000000000000000000000000000000000',
+          voter: web3Account.value,
           space: proposal.value.space.id
         })
       : [],
