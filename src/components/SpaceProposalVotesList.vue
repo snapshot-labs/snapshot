@@ -86,7 +86,7 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
     :loading="!loaded"
     slim
   >
-    <template #button>
+    <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon>
         <LoadingSpinner v-if="isDownloadingVotes" />
         <i-ho-download
