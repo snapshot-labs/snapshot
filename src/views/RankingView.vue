@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import orderBy from 'lodash/orderBy';
-import { useSpaces } from '@/composables/useSpaces';
+import { getRanking, useSpaces } from '@/composables/useSpaces';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
 import { useI18n } from '@/composables/useI18n';
@@ -17,23 +17,12 @@ const spacesSorted = computed(() => {
   const spacesArr = Object.values(spaces.value)
     .map(space => {
       space.proposals = space.proposals || 0;
-      space.proposals_1d = space.proposals_1d || 0;
       space.proposals_7d = space.proposals_7d || 0;
       space.votes = space.votes || 0;
-      space.votes_1d = space.votes_1d || 0;
       space.votes_7d = space.votes_7d || 0;
-      space.voters = space.voters || 0;
-      space.voters_1d = space.voters_1d || 0;
-      space.voters_7d = space.voters_7d || 0;
       space.followers = space.followers || 0;
-      space.followers_1d = space.followers_1d || 0;
       space.followers_7d = space.followers_7d || 0;
-      space.ranking =
-        space.voters / 20 +
-        space.votes_7d +
-        space.voters_7d +
-        space.proposals_7d * 50 +
-        space.followers_7d;
+      space.ranking = getRanking(space.id, space);
       return space;
     })
     .filter(space => verified[space.id] !== -1);
