@@ -11,7 +11,7 @@ const props = defineProps<{
 }>();
 
 const mainSpace = computed(() => {
-  return props.space?.parent?.children?.find(
+  return props.space?.parent?.children?.some(
     child => child.id === props.space?.id
   )
     ? props.space?.parent
@@ -19,9 +19,7 @@ const mainSpace = computed(() => {
 });
 
 const subSpaces = computed(() => {
-  return props.space?.children?.filter(
-    space => space.parent?.id === props.space?.id
-  );
+  return props.space?.children || [];
 });
 </script>
 
