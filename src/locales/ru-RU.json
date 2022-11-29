@@ -8,7 +8,9 @@
   "results": "Результаты",
   "resultsError": "Не удалось подсчитать результаты. Часто это связано с неправильной конфигурацией стратегии или не отвечающим на запросы ноды RPC, задействованным в стратегии.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "vpError": "Не удалось рассчитать ваше право голоса. Часто это происходит из-за неправильно настроенной стратегии или не отвечающего на запросы ноды RPC, задействованной в стратегии.",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "Получить помощь",
   "retry": "Повторить",
   "currentResults": "Текущий результат",
@@ -546,7 +548,7 @@
   "privacy": {
     "label": "Privacy",
     "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "Any",
     "none": "None",
     "shutter": {
@@ -554,6 +556,23 @@
       "description": "Choices are encrypted and only visible once the voting period is over",
       "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "Validation",
+    "title": "Select voting validation",
+    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can vote",
+      "description": "Anyone with voting power can cast a vote."
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
     }
   },
   "safeSnap": {
