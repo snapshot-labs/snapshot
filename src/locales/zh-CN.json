@@ -8,7 +8,9 @@
   "results": "结果",
   "resultsError": "结果无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
   "resultsCalculating": "正在计算最终结果。如果您在几分钟后仍然看到这个消息，请联系空间管理员。",
-  "vpError": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
+  "votingPowerFailedMessage": "您的投票权无法计算。这通常是由于策略配置错误或者策略中涉及到了无反应的RPC节点。",
+  "votingValidationFailedMessage": "我们一方出现了一个错误，我们无法核实你是否有资格投票。 这常常是由于错误配置的投票验证或在验证中包含一个不适应的 API。",
+  "notValidVoterMessage": "很抱歉，您似乎没有资格对此提案进行投票。",
   "getHelp": "获取帮助",
   "retry": "重试",
   "currentResults": "当前结果",
@@ -546,7 +548,7 @@
   "privacy": {
     "label": "隐私",
     "title": "选择投票隐私",
-    "information": "提案中使用的隐私类型，在此处设置将对所有提案执行相同的隐私。",
+    "information": "提案中使用的隐私类型。(在所有未来的提案中强制执行)",
     "any": "任何类型",
     "none": "未设置",
     "shutter": {
@@ -554,6 +556,23 @@
       "description": "选择是加密的，只有在投票期结束后才能看到",
       "tooltip": "该提案已启用快门隐私。所有的投票都将被加密，直到投票期结束并计算出最终的分数",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "验证",
+    "title": "选择投票验证",
+    "information": "验证类型用来确定用户是否可以投票。(在所有未来的提案中强制执行)",
+    "any": {
+      "label": "任何人都可以投票",
+      "description": "任何拥有投票权的人都可以投票。"
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport门槛",
+      "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
+      "invalidVoterMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport加权"
     }
   },
   "safeSnap": {
