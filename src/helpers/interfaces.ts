@@ -207,6 +207,18 @@ export interface RealityOracleProposal {
   endTime: number | undefined;
 }
 
+export interface UmaOracleProposal {
+  dao: string;
+  oracle: string;
+  rules: number;
+  expiration: number;
+  proposalId: string;
+  transactions: SafeTransaction[];
+  txHashes: string[];
+  minimumBond: BigNumber | undefined;
+  explanation: string;
+}
+
 export interface SafeAsset {
   address: string;
   name: string;
