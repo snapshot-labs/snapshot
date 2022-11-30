@@ -375,7 +375,7 @@
     },
     "type": {
       "label": "类型",
-      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
+      "information": "此空间使用的投票系统的类型。(对所有未来的提案强制执行)"
     },
     "anyType": "任意",
     "hideAbstain": "忽略基本投票结果中的弃权票",
