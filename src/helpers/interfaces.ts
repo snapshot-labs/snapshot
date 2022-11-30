@@ -250,7 +250,7 @@ export interface SafeExecutionData {
   hash: string | null;
   txs: SafeModuleTransactionBatch[];
   network: string;
-  realityModule: string;
+  umaModule: string;
 }
 
 export interface Plugin {
