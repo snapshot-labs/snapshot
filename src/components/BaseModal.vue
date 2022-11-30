@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, toRefs } from 'vue';
+import { watch, toRefs, onBeforeUnmount } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -19,6 +19,10 @@ const { open } = toRefs(props);
 
 watch(open, isOpen => {
   document.body.classList[isOpen ? 'add' : 'remove']('overflow-hidden');
+});
+
+onBeforeUnmount(() => {
+  document.body.classList.remove('overflow-hidden');
 });
 </script>
 
