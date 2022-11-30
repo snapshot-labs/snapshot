@@ -9,8 +9,7 @@
       "safes": [
         {
           "network": "CHAIN_ID",
-          "moduleAddress": "0xSAFE_MODULE_ADDRESS",
-          "moduleType": "reality | uma"
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
         }
       ]
     },
@@ -18,8 +17,7 @@
       "safes": [
         {
           "network": "CHAIN_ID",
-          "moduleAddress": "0xSAFE_MODULE_ADDRESS",
-          "moduleType": "reality | uma"
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS"
         }
       ]
     }
