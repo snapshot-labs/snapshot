@@ -21,6 +21,7 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+// Currently old proposals show only the transactions but no controls or execution status.
 const showExecutionControls = isCurrentExecutionDataFormat(
   props.proposal.plugins.safeSnap
 );
