@@ -22,7 +22,7 @@ interface LegacyExecutionData {
   }[];
 }
 
-export function isSafeConfig(safeConfig: unknown): safeConfig is SafeConfig {
+function isSafeConfig(safeConfig: unknown): safeConfig is SafeConfig {
   return (
     typeof safeConfig === 'object' &&
     safeConfig !== null &&
@@ -51,7 +51,7 @@ export function isCurrentExecutionDataFormat(
   );
 }
 
-export function isLegacyExecutionDataFormat(
+function isLegacyExecutionDataFormat(
   unknownExecutionData: unknown
 ): unknownExecutionData is LegacyExecutionData {
   return (
@@ -68,7 +68,7 @@ export function isLegacyExecutionDataFormat(
   );
 }
 
-export async function mapLegacyExecutionData(legacyExecutionSet, index) {
+async function mapLegacyExecutionData(legacyExecutionSet, index) {
   const readProvider = getProvider(legacyExecutionSet.network);
 
   const realityModuleContract = new Contract(
