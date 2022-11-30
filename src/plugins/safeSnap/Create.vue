@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { Transaction } from '@/helpers/transactionBuilder';
 import { isCurrentConfigFormat } from '@/plugins/safeSnap/compatibility';
 import {
-  SafeModuleLogos,
   ExecutionData,
-  ExecutionDataABIs
+  ExecutionDataABIs,
+  SafeModuleLogos,
+  Transaction
 } from '@/helpers/safe';
 
 const props = defineProps<{
