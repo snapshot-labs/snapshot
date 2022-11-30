@@ -8,11 +8,12 @@ export const VOTES_QUERY = gql`
     $orderBy: String
     $orderDirection: OrderDirection
     $voter: String
+    $space: String
   ) {
     votes(
       first: $first
       skip: $skip
-      where: { proposal: $id, vp_gt: 0, voter: $voter }
+      where: { proposal: $id, vp_gt: 0, voter: $voter, space: $space }
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {

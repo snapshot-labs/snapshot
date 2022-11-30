@@ -92,7 +92,7 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
         <i-ho-download
           v-else
           v-tippy="{ content: 'Download as CSV' }"
-          @click="downloadVotes(proposal.id)"
+          @click="downloadVotes(proposal.id, proposal.space.id)"
         />
       </BaseButtonIcon>
     </template>
