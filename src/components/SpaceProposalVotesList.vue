@@ -86,13 +86,13 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
     :loading="!loaded"
     slim
   >
-    <template #button>
+    <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon>
         <LoadingSpinner v-if="isDownloadingVotes" />
         <i-ho-download
           v-else
           v-tippy="{ content: 'Download as CSV' }"
-          @click="downloadVotes(proposal.id)"
+          @click="downloadVotes(proposal.id, proposal.space.id)"
         />
       </BaseButtonIcon>
     </template>

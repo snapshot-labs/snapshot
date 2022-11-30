@@ -8,7 +8,9 @@
   "results": "결과",
   "resultsError": "결과를 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "vpError": "투표권을 계산할 수 없습니다. 이는 종종 잘못 구성된 전략이나 전략에 포함된 RPC 노드가 응답하지 않아서 일 수 있습니다.",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "도움 받기",
   "retry": "다시하기",
   "currentResults": "현재 결과",
@@ -546,7 +548,7 @@
   "privacy": {
     "label": "Privacy",
     "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "Any",
     "none": "None",
     "shutter": {
@@ -554,6 +556,23 @@
       "description": "Choices are encrypted and only visible once the voting period is over",
       "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "Validation",
+    "title": "Select voting validation",
+    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can vote",
+      "description": "Anyone with voting power can cast a vote."
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
     }
   },
   "safeSnap": {
