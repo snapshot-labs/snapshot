@@ -21,7 +21,10 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-// Currently old proposals show only the transactions but no controls or execution status.
+// Currently old proposals show only the transactions but no controls or
+// execution status. That's because right now I assume multisend v3 but old
+// proposals might have used other multisend addresses, leading to different
+// hashes. This still needs to be handled in @/plugins/safeSnap/compatibility.
 const showExecutionControls = isCurrentExecutionDataFormat(
   props.proposal.plugins.safeSnap
 );
