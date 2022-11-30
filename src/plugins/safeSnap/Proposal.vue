@@ -16,7 +16,7 @@ const mapLegacyConfig = (config: Record<string, any>): Record<string, any> => {
     safes: [
       {
         network: props.space.network,
-        realityAddress: props.space.plugins.safeSnap.address,
+        umaAddress: props.space.plugins.safeSnap.address,
         // Some legacy proposals have a plain array of transactions instead
         // of the current two-dimensional structure for batches.
         txs:

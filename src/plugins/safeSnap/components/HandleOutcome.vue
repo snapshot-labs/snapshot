@@ -30,7 +30,7 @@ const props = defineProps([
   'batches',
   'proposal',
   'network',
-  'realityAddress',
+  'umaAddress',
   'multiSendAddress'
 ]);
 
@@ -123,7 +123,7 @@ const updateDetails = async () => {
   try {
     questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
-      props.realityAddress,
+      props.umaAddress,
       props.proposal.id,
       getTxHashes()
     );
@@ -180,7 +180,7 @@ const submitProposal = async () => {
     await ensureRightNetwork(props.network);
     const proposalSubmission = plugin.submitProposalWithHashes(
       getInstance().web3,
-      props.realityAddress,
+      props.umaAddress,
       questionDetails.value.proposalId,
       getTxHashes()
     );
@@ -248,7 +248,7 @@ const executeProposal = async () => {
       props.batches[questionDetails.value.nextTxIndex].mainTransaction;
     const executingProposal = plugin.executeProposalWithHashes(
       getInstance().web3,
-      props.realityAddress,
+      props.umaAddress,
       questionDetails.value.proposalId,
       getTxHashes(),
       transaction,
@@ -406,7 +406,7 @@ onMounted(async () => {
     >
       <div class="inline-block text-base">
         <h4 class="text-center text-skin-link">
-          Reality oracle
+          UMA oracle
           <a class="ml-2 text-skin-text" @click="updateDetails">
             <BaseIcon name="refresh" size="22" />
           </a>
