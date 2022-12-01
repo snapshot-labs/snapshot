@@ -59,7 +59,10 @@ async function loadProposal() {
   loadingProposal.value = true;
   proposal.value = await getProposal(id);
   // Redirect to 404 page if proposal doesn't belong to current space
-  if (!proposal.value || props.space.id !== proposal.value.space.id) {
+  if (
+    !proposal.value ||
+    props.space.id.toLowerCase() !== proposal.value.space.id.toLowerCase()
+  ) {
     router.push({ name: 'error-404' });
   }
   loadingProposal.value = false;
