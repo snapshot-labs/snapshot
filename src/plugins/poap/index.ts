@@ -9,6 +9,8 @@ export default class Plugin {
   public version = '1.0.0';
   public name = 'POAP Module';
   public options: any;
+  private static readonly POAP_API_API_KEY =
+    'e68BJLYJ1ns9Mdb9hd21j8Ci1e6dVYsAddQfOVQp3oYHo9bqLCutMewQP8NhbVvguMdHiHefNat3eZWiFReeV9nr7QH4xAl67fYASKHhFfGbVKKzak11PV6NM1wYy2eP';
 
   openScanPage(address) {
     window.open(`${APP_BASE_URL}/scan/${address}`, '_blank');
@@ -16,7 +18,8 @@ export default class Plugin {
   async getCurrentState(snapshot, address) {
     // Fetch the event
     const eventResponse = await fetch(
-      `${API_BASE_URL}/snapshot/proposal/${snapshot}`
+      `${API_BASE_URL}/snapshot/proposal/${snapshot}`,
+      { headers: { 'x-api-key': Plugin.POAP_API_API_KEY } }
     );
     // If the fetch fails: the event doesn't exists for this poap yet
     if (!eventResponse.ok) {
@@ -40,7 +43,8 @@ export default class Plugin {
 
     // Fetch the claim info for the address
     const addressResponse = await fetch(
-      `${API_BASE_URL}/snapshot/proposal/${snapshot}/${address}`
+      `${API_BASE_URL}/snapshot/proposal/${snapshot}/${address}`,
+      { headers: { 'x-api-key': Plugin.POAP_API_API_KEY } }
     );
 
     // If the fetch failed return the NOT_VOTED state
@@ -71,7 +75,10 @@ export default class Plugin {
     };
     const response = await fetch(`${API_BASE_URL}/claim/snapshot-proposal`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': Plugin.POAP_API_API_KEY
+      },
       body: JSON.stringify(body)
     });
     if (!response.ok) {
