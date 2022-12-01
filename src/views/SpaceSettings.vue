@@ -176,6 +176,8 @@ async function handleSetRecord() {
 
           <SettingsAuthorsBlock context="settings" />
 
+          <SettingsProposalBlock context="settings" />
+
           <SettingsValidationBlock context="settings" />
 
           <SettingsVotingBlock context="settings" />
