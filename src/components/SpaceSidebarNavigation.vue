@@ -10,7 +10,7 @@ const hasDelegationStrategy = computed(() => {
   return props.space.strategies?.some(
     strategy =>
       strategy.name.includes('delegation') ||
-      JSON.stringify(strategy.params).includes('delegation')
+      JSON.stringify(strategy.params).includes('"delegation"')
   );
 });
 </script>
