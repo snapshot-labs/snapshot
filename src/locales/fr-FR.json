@@ -375,7 +375,7 @@
     },
     "type": {
       "label": "Type",
-      "information": "Le type de système de vote utilisé pour cet espace. Cela imposera le même système de vote pour toutes les propositions"
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
     },
     "anyType": "Tous",
     "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",

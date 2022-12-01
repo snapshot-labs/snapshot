@@ -375,7 +375,7 @@
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
     },
     "anyType": "すべて",
     "hideAbstain": "基本的な投票結果において棄権投票を無視する",

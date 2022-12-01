@@ -375,7 +375,7 @@
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
     },
     "anyType": "어떤",
     "hideAbstain": "기본 투표 결과에서 기권 투표 무시",
