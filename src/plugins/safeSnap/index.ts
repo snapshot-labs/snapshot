@@ -14,19 +14,14 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
+import { SafeTransaction, UmaOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
-import {
-  buildQuestion,
-  checkPossibleExecution,
-  getModuleDetails,
-  getProposalDetails
-} from './utils/realityModule';
+import { getModuleDetails } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -91,42 +86,12 @@ export default class Plugin {
     moduleAddress: string,
     proposalId: string,
     txHashes: string[]
-  ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
-    const provider: StaticJsonRpcProvider = getProvider(network);
-    const question = await buildQuestion(proposalId, txHashes);
-    const questionHash = solidityKeccak256(['string'], [question]);
-
-    const proposalDetails = await getProposalDetails(
-      provider,
-      network,
-      moduleAddress,
-      questionHash,
-      txHashes
-    );
-    const moduleDetails = await getModuleDetails(
-      provider,
-      network,
-      moduleAddress
-    );
-    const questionState = await checkPossibleExecution(
-      provider,
-      network,
-      moduleDetails.oracle,
-      proposalDetails.questionId
-    );
-    const infoFromOracle = await retrieveInfoFromOracle(
-      provider,
-      network,
-      moduleDetails.oracle,
-      proposalDetails.questionId
-    );
+  ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
+    const moduleDetails = await this.getModuleDetails(network, moduleAddress);
     return {
       ...moduleDetails,
       proposalId,
-      ...questionState,
-      ...proposalDetails,
-      txHashes,
-      ...infoFromOracle
+      txHashes
     };
   }
 

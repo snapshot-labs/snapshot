@@ -210,13 +210,13 @@ export interface RealityOracleProposal {
 export interface UmaOracleProposal {
   dao: string;
   oracle: string;
-  rules: number;
+  rules: string;
   expiration: number;
   proposalId: string;
   transactions: SafeTransaction[];
   txHashes: string[];
-  minimumBond: BigNumber | undefined;
-  explanation: string;
+  minimumBond: BigNumber | number | undefined;
+  explanation?: string;
 }
 
 export interface SafeAsset {
