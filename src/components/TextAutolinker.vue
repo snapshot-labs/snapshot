@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-
-const props = defineProps<{
+import Autolinker from 'autolinker';
+interface Props {
   text: string;
   truncate?: number;
-}>();
-
-const spanText = computed(() =>
-  props.truncate ? props.text.slice(0, props.truncate) : props.text
+}
+const props = withDefaults(defineProps<Props>(), {
+  truncate: 0
+});
+const textWithLinks = computed(() =>
+  Autolinker.link(props.text, {
+    truncate: props.truncate,
+    sanitizeHtml: true
+  })
 );
 </script>
 
 <template>
-  <span v-text="spanText" />
+  <span v-html="textWithLinks" />
 </template>
