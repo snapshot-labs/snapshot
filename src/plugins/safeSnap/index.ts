@@ -21,7 +21,7 @@ import {
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
-import { getModuleDetails, getBondDetails } from './utils/umaModule';
+import { getModuleDetails } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -88,8 +88,6 @@ export default class Plugin {
     txHashes: string[]
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
     const moduleDetails = await this.getModuleDetails(network, moduleAddress);
-    const bondDetails = await this.getBondDetails(network, moduleAddress);
-    console.log(bondDetails.value);
 
     return {
       ...moduleDetails,
@@ -98,14 +96,26 @@ export default class Plugin {
     };
   }
 
+  async *approveBond(network: string, web3: any, moduleAddress: string) {
+    const moduleDetails = await this.getModuleDetails(network, moduleAddress);
+
+    const approveTx = await sendTransaction(
+      web3,
+      moduleDetails.collateral,
+      ERC20_ABI,
+      'approve',
+      [moduleAddress, moduleDetails.minimumBond],
+      {}
+    );
+    yield 'erc20-approval';
+    const approvalReceipt = await approveTx.wait();
+    console.log('[DAO module] token transfer approved:', approvalReceipt);
+    yield;
+  }
+
   async getModuleDetails(network: string, moduleAddress: string) {
     const provider: StaticJsonRpcProvider = getProvider(network);
     return getModuleDetails(provider, network, moduleAddress);
-  }
-
-  async getBondDetails(network: string, moduleAddress: string) {
-    const provider: StaticJsonRpcProvider = getProvider(network);
-    return getBondDetails(provider, moduleAddress);
   }
 
   async *submitProposalWithHashes(
