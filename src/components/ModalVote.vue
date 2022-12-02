@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
-import { useClient } from '@/composables/useClient';
-import { useIntl } from '@/composables/useIntl';
 import { getPower, getValidation } from '@/helpers/snapshot';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useProposals } from '@/composables';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
+
+import {
+  useProposals,
+  useWeb3,
+  useGnosis,
+  useI18n,
+  useClient,
+  useIntl
+} from '@/composables';
 
 const { web3Account } = useWeb3();
 
@@ -37,6 +41,7 @@ const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
 const { addVotedProposalId } = useProposals();
+const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -232,8 +237,13 @@ watch(
           </div>
         </div>
 
+        <MessageWarningGnosisNetwork
+          v-if="isGnosisAndNotSpaceNetwork"
+          :space="space"
+          action="vote"
+        />
         <template
-          v-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
+          v-else-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
         >
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
             {{ t('votingPowerFailedMessage') }}
@@ -293,7 +303,11 @@ watch(
       <div class="float-left w-2/4 pl-2">
         <BaseButton
           :disabled="
-            votingPower === 0 || !isValidVoter || isSending || isLoadingShutter
+            votingPower === 0 ||
+            !isValidVoter ||
+            isSending ||
+            isLoadingShutter ||
+            isGnosisAndNotSpaceNetwork
           "
           :loading="isSending || isLoadingShutter"
           type="submit"

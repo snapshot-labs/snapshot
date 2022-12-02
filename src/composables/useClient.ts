@@ -1,26 +1,21 @@
-import { ref, computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
+import { ref } from 'vue';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+
+import { useGnosis } from '@/composables/useGnosis';
+import { useWeb3 } from '@/composables/useWeb3';
+import { useI18n } from '@/composables/useI18n';
+import { useFlashNotification } from '@/composables/useFlashNotification';
 
 export function useClient() {
   const { t } = useI18n();
+  const { notify } = useFlashNotification();
+  const { isGnosisSafe } = useGnosis();
   const { web3 } = useWeb3();
   const auth = getInstance();
-  const { notify } = useFlashNotification();
 
   const isSending = ref(false);
-
-  const connectorName = computed(() => auth.provider.value?.connectorName);
-
-  const isGnosisSafe = computed(
-    () =>
-      web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
-      connectorName.value === 'gnosis'
-  );
 
   async function send(space, type, payload) {
     isSending.value = true;
