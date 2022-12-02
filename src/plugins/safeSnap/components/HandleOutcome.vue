@@ -203,11 +203,16 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalWithHashes(
+    // const proposalSubmission = plugin.submitProposalWithHashes(
+    //   getInstance().web3,
+    //   props.umaAddress,
+    //   questionDetails.value.proposalId,
+    //   getTxHashes()
+    // );
+    const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.proposalId,
-      getTxHashes()
+      questionDetails.value.transactions
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -269,15 +274,20 @@ const executeProposal = async () => {
 
   try {
     clearBatchError();
-    const transaction =
-      props.batches[questionDetails.value.nextTxIndex].mainTransaction;
-    const executingProposal = plugin.executeProposalWithHashes(
+    // const transaction =
+    //   props.batches[questionDetails.value.nextTxIndex].mainTransaction;
+    // const executingProposal = plugin.executeProposalWithHashes(
+    //   getInstance().web3,
+    //   props.umaAddress,
+    //   questionDetails.value.proposalId,
+    //   getTxHashes(),
+    //   transaction,
+    //   questionDetails.value.nextTxIndex
+    // );
+    const executingProposal = plugin.executeProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.proposalId,
-      getTxHashes(),
-      transaction,
-      questionDetails.value.nextTxIndex
+      questionDetails.value.transactions
     );
     await executingProposal.next();
     action2InProgress.value = null;
@@ -290,7 +300,7 @@ const executeProposal = async () => {
   } catch (err) {
     pendingCount.value--;
     action2InProgress.value = null;
-    setBatchError(questionDetails.value.nextTxIndex, err.reason);
+    // setBatchError(questionDetails.value.nextTxIndex, err.reason);
   }
 };
 
