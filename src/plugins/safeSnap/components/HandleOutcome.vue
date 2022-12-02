@@ -118,9 +118,15 @@ const getTxHashes = () => {
   return props.batches.map(batch => batch.hash);
 };
 
+const getTransactions = () => {
+  return props.batches.map(batch => batch.transactions);
+};
+
 const updateDetails = async () => {
   loading.value = true;
   try {
+    console.log('transactions:', getTransactions());
+    console.log('tx hashes:', getTxHashes());
     questionDetails.value = await plugin.getExecutionDetails(
       props.network,
       props.umaAddress,
@@ -212,7 +218,7 @@ const submitProposal = async () => {
     const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
       props.umaAddress,
-      props.batches.transactions
+      getTransactions()
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -287,7 +293,7 @@ const executeProposal = async () => {
     const executingProposal = plugin.executeProposal(
       getInstance().web3,
       props.umaAddress,
-      props.batches.transactions
+      getTransactions()
     );
     await executingProposal.next();
     action2InProgress.value = null;
