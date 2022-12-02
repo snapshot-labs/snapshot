@@ -18,6 +18,7 @@ import { SafeTransaction, UmaOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
+  UMA_MODULE_ABI,
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
@@ -81,18 +82,16 @@ export default class Plugin {
     });
   }
 
-  async getExecutionDetailsWithHashes(
+  async getExecutionDetails(
     network: string,
     moduleAddress: string,
-    proposalId: string,
-    txHashes: string[]
+    proposalId: string
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
     const moduleDetails = await this.getModuleDetails(network, moduleAddress);
 
     return {
       ...moduleDetails,
-      proposalId,
-      txHashes
+      proposalId
     };
   }
 

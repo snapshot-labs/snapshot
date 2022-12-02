@@ -121,11 +121,10 @@ const getTxHashes = () => {
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
+    questionDetails.value = await plugin.getExecutionDetails(
       props.network,
       props.umaAddress,
-      props.proposal.id,
-      getTxHashes()
+      props.proposal.id
     );
     if (questionDetails.value.questionId && getInstance().web3) {
       bondData.value = await plugin.loadClaimBondData(
