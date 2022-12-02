@@ -135,6 +135,23 @@ export default class Plugin {
     console.log('[DAO module] submitted proposal:', receipt);
   }
 
+  async *submitProposal(
+    web3: any,
+    moduleAddress: string,
+    transactions: SafeTransaction[]
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'proposeTransactions',
+      [transactions, '']
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] submitted proposal:', receipt);
+  }
+
   async loadClaimBondData(
     web3: any,
     network: string,
@@ -304,6 +321,23 @@ export default class Plugin {
         moduleTx.operation,
         transactionIndex
       ]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] executed proposal:', receipt);
+  }
+
+  async *executeProposal(
+    web3: any,
+    moduleAddress: string,
+    transactions: SafeTransaction[]
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'executeProposal',
+      [transactions]
     );
     yield;
     const receipt = await tx.wait();
