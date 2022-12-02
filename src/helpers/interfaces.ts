@@ -217,6 +217,11 @@ export interface UmaOracleProposal {
   txHashes: string[];
   minimumBond: BigNumber | number | undefined;
   explanation?: string;
+  allowance: BigNumber | number | undefined;
+  collateral: string;
+  decimals: number;
+  symbol: string;
+  userBalance: BigNumber | number | undefined;
 }
 
 export interface SafeAsset {

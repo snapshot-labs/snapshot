@@ -143,6 +143,32 @@ const updateDetails = async () => {
   }
 };
 
+const approveBond = async () => {
+  if (!questionDetails.value.oracle) return;
+  try {
+    actionInProgress.value = 'approve-bond';
+
+    await ensureRightNetwork(props.network);
+
+    const approveBond = await plugin.approveBond(
+      props.network,
+      getInstance().web3,
+      props.umaAddress
+    );
+    await approveBond.next();
+    actionInProgress.value = null;
+    pendingCount.value++;
+    await approveBond.next();
+    notify(t('notify.youDidIt'));
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (e) {
+    console.error(e);
+    actionInProgress.value = null;
+  }
+};
+
 const claimBond = async () => {
   if (!questionDetails.value.oracle) return;
   try {
@@ -385,6 +411,17 @@ onMounted(async () => {
   </div>
 
   <div v-if="connectedToRightChain || usingMetaMask">
+    <div
+      v-if="questionState === questionStates.waitingForQuestion"
+      class="my-4"
+    >
+      <BaseButton
+        :loading="actionInProgress === 'approve-bond'"
+        @click="approveBond"
+      >
+        {{ $t('safeSnap.labels.approveBond') }}
+      </BaseButton>
+    </div>
     <div
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
