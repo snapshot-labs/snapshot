@@ -212,7 +212,7 @@ const submitProposal = async () => {
     const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.transactions
+      props.batches.transactions
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -287,7 +287,7 @@ const executeProposal = async () => {
     const executingProposal = plugin.executeProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.transactions
+      props.batches.transactions
     );
     await executingProposal.next();
     action2InProgress.value = null;
