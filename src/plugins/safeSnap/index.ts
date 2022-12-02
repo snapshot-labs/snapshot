@@ -21,7 +21,7 @@ import {
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
-import { getModuleDetails } from './utils/umaModule';
+import { getModuleDetails, getBondDetails } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -88,6 +88,9 @@ export default class Plugin {
     txHashes: string[]
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
     const moduleDetails = await this.getModuleDetails(network, moduleAddress);
+    const bondDetails = await this.getBondDetails(network, moduleAddress);
+    console.log(bondDetails.value);
+
     return {
       ...moduleDetails,
       proposalId,
@@ -98,6 +101,11 @@ export default class Plugin {
   async getModuleDetails(network: string, moduleAddress: string) {
     const provider: StaticJsonRpcProvider = getProvider(network);
     return getModuleDetails(provider, network, moduleAddress);
+  }
+
+  async getBondDetails(network: string, moduleAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    return getBondDetails(provider, moduleAddress);
   }
 
   async *submitProposalWithHashes(
