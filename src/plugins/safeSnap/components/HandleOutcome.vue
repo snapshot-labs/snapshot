@@ -119,7 +119,16 @@ const getTxHashes = () => {
 };
 
 const getTransactions = () => {
-  return props.batches.map(batch => batch.transactions);
+  return props.batches.map(batch => [
+    batch.transactions[0].to,
+    Number(batch.transactions[0].operation),
+    batch.transactions[0].value,
+    batch.transactions[0].data
+  ]);
+};
+
+const getTransactionsExperimental = () => {
+  return props.batches.map(batch => [batch.transactions[0]]);
 };
 
 const updateDetails = async () => {
