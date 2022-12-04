@@ -38,10 +38,10 @@ onMounted(() => loadSpaces());
   <div>
     <div class="space-y-4">
       <ProfileAboutBiography v-if="profile?.about" :about="profile.about" />
-      <ProfileAboutSpacesList
-        :user-address="userAddress"
-        :following-spaces="followedSpaces"
-        :loading-followed-spaces="loadingFollowedSpaces"
+      <BlockSpacesList
+        :spaces="followedSpaces.map(f => f.space.id)"
+        :title="$t('profile.about.joinedSpaces')"
+        :loading="loadingFollowedSpaces"
       />
       <ProfileAboutDelegate
         :user-address="userAddress"
