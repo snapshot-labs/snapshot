@@ -291,6 +291,12 @@
     "header": "Pengaturan",
     "editController": "Edit controller",
     "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
+    "gnosisWrongNetwork": {
+      "base": "Your Gnosis Safe is on the wrong network. Please connect to {network} to {action}.",
+      "settings": "edit the space settings",
+      "create": "create a proposal",
+      "vote": "vote on this proposal"
+    },
     "currentSpaceControllerIs": "The current space controller is {address}",
     "newController": "New controller",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
