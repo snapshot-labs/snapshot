@@ -55,7 +55,6 @@ export function useWeb3() {
               await login();
             }
           });
-          // auth.provider.on('disconnect', async () => {});
         } catch (e) {
           console.log(`failed to subscribe to events for provider: ${e}`);
         }
