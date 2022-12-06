@@ -59,7 +59,10 @@ async function loadProposal() {
   loadingProposal.value = true;
   proposal.value = await getProposal(id);
   // Redirect to 404 page if proposal doesn't belong to current space
-  if (!proposal.value || props.space.id !== proposal.value.space.id) {
+  if (
+    !proposal.value ||
+    props.space.id.toLowerCase() !== proposal.value.space.id.toLowerCase()
+  ) {
     router.push({ name: 'error-404' });
   }
   loadingProposal.value = false;
@@ -102,12 +105,17 @@ async function loadResults() {
   }
   loadedResults.value = true;
   const [userVotesRes, votesRes] = await Promise.all([
+    // Skip if user is not connected
+    web3Account.value
+      ? await getProposalVotes(id, {
+          first: 1,
+          voter: web3Account.value,
+          space: proposal.value.space.id
+        })
+      : [],
     await getProposalVotes(id, {
-      first: 1,
-      voter: web3Account.value || '0x0000000000000000000000000000000000000000'
-    }),
-    await getProposalVotes(id, {
-      first: 10
+      first: 10,
+      space: proposal.value.space.id
     })
   ]);
   userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;

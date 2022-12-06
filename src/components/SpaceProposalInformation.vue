@@ -11,7 +11,7 @@ const props = defineProps<{
   strategies: SpaceStrategy[];
 }>();
 
-const modalStrategiesOpen = ref(false);
+const isModalProposalStrategiesOpen = ref(false);
 
 const { formatRelativeTime, formatNumber } = useIntl();
 
@@ -27,7 +27,7 @@ const symbols = computed((): string[] =>
         <b>{{ $t('strategies') }}</b>
         <span
           class="float-right flex text-skin-link"
-          @click="modalStrategiesOpen = true"
+          @click="isModalProposalStrategiesOpen = true"
         >
           <span
             v-for="(symbol, symbolIndex) of symbols.slice(0, 5)"
@@ -100,11 +100,11 @@ const symbols = computed((): string[] =>
     </div>
   </BaseBlock>
   <teleport to="#modal">
-    <ModalStrategies
-      :open="modalStrategiesOpen"
+    <ModalProposalStrategies
+      :open="isModalProposalStrategiesOpen"
       :proposal="proposal"
       :strategies="strategies"
-      @close="modalStrategiesOpen = false"
+      @close="isModalProposalStrategiesOpen = false"
     />
   </teleport>
 </template>

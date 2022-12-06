@@ -1,9 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
 }>();
+
+const hasDelegationStrategy = computed(() => {
+  return props.space.strategies?.some(
+    strategy =>
+      strategy.name.includes('delegation') ||
+      JSON.stringify(strategy.params).includes('"delegation"')
+  );
+});
 </script>
 
 <template>
@@ -23,7 +32,7 @@ defineProps<{
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link
-      v-if="space.strategies?.find(strategy => strategy.name === 'delegation')"
+      v-if="hasDelegationStrategy"
       v-slot="{ isExactActive }"
       :to="{ name: 'delegate', params: { key: space.id } }"
     >
