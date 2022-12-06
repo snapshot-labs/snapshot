@@ -120,7 +120,6 @@ export type Transaction = {
 };
 
 export type MultisendTransaction = Transaction & {
-  to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0;
   operation: TransactionOperationType.DELEGATECALL;
 };
 
@@ -133,6 +132,7 @@ export interface ExecutionData {
   batches: Transaction[][];
   abis?: ExecutionDataABIs;
   module?: SafeModule;
+  multisendAddress?: string;
   criteria?: string; // for human or automated (can be JSON) processing in (optimistic) oracles
   // TODO: add text field in transaction builder for this
 }
@@ -315,7 +315,10 @@ export function convertExecutionDataToModuleTransactions(
       } else {
         return convertBatchToMultisendTransaction(
           batch,
-          executionData.safe.network
+          executionData.multisendAddress ||
+            MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[
+              `CHAIN_${executionData.safe.network}`
+            ]
         );
       }
     })
@@ -324,7 +327,7 @@ export function convertExecutionDataToModuleTransactions(
 
 export function convertBatchToMultisendTransaction(
   batch: Transaction[],
-  chainId: string
+  multisendAddress: string
 ): MultisendTransaction {
   const multiSendContract = new Interface(MULTISEND_ABI);
   const transactionsEncoded = encodeTransactionsForMultisend(batch);
@@ -332,7 +335,7 @@ export function convertBatchToMultisendTransaction(
     transactionsEncoded
   ]);
   return {
-    to: MULTI_SEND_CONTRACT_ADDRESSES_V1_3_0[`CHAIN_${chainId}`],
+    to: multisendAddress,
     operation: TransactionOperationType.DELEGATECALL,
     value: BigNumber.from(0),
     data

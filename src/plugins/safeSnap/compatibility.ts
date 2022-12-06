@@ -19,6 +19,7 @@ interface LegacyExecutionData {
       | Record<string, any>[][];
     network: string;
     realityAddress: string;
+    multiSendAddress?: string;
   }[];
 }
 
@@ -68,7 +69,10 @@ function isLegacyExecutionDataFormat(
   );
 }
 
-async function mapLegacyExecutionData(legacyExecutionSet, index) {
+async function mapLegacyExecutionData(
+  legacyExecutionSet,
+  index
+): Promise<ExecutionData> {
   const readProvider = getProvider(legacyExecutionSet.network);
 
   const realityModuleContract = new Contract(
@@ -129,7 +133,13 @@ async function mapLegacyExecutionData(legacyExecutionSet, index) {
     })
   };
 
-  mappedExecutionSet.abis = abis;
+  if (Object.keys(abis).length > 0) {
+    mappedExecutionSet.abis = abis;
+  }
+
+  if (legacyExecutionSet.multiSendAddress) {
+    mappedExecutionSet.multisendAddress = legacyExecutionSet.multiSendAddress;
+  }
 
   return mappedExecutionSet;
 }
