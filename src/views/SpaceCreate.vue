@@ -38,7 +38,7 @@ const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-const { isGnosisAndWrongNetwork } = useGnosis();
+const { isGnosisAndNotSpaceNetwork } = useGnosis();
 
 const {
   form,
@@ -345,7 +345,7 @@ onMounted(() =>
             web3.authLoading ||
             executingValidationFailed ||
             validationLoading ||
-            isGnosisAndWrongNetwork
+            isGnosisAndNotSpaceNetwork
           "
           primary
           :data-testid="
