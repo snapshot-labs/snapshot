@@ -471,8 +471,10 @@
     "about": {
       "header": "About",
       "joinedSpaces": "Joined spaces",
+      "createdSpaces": "Created spaces",
       "biography": "Bio",
       "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "notCreatedSpacesYet": "Hasn't created any spaces yet",
       "delegatorNetworkInfo": "Change by switching network in your wallet",
       "delegate": "Delegate",
       "delegated": "Delegated",

@@ -6,6 +6,7 @@ import { useMediaQuery } from '@vueuse/core';
 defineProps<{
   spaces: string[];
   title: string;
+  message?: string;
   loading?: boolean;
 }>();
 
@@ -59,7 +60,7 @@ const numberOfSpacesByScreenSize = computed(() => {
         </div>
       </div>
       <div v-else class="border-t p-4">
-        {{ $t('profile.about.notJoinSpacesYet') }}
+        {{ message || $t('noResultsFound') }}
       </div>
     </BaseBlock>
     <teleport to="#modal">

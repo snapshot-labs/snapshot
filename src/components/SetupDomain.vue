@@ -24,7 +24,7 @@ watch(
   async () => {
     ownedEnsDomains.value = [];
     loadingOwnedEnsDomains.value = true;
-    await loadOwnedEnsDomains();
+    await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
     if (ownedEnsDomains.value.map(d => d.name).length)
       await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
