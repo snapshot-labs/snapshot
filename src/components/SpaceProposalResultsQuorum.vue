@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
-import { useIntl, useQuorum } from '@/composables';
+import { useQuorum, useI18n } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -11,22 +12,33 @@ const props = defineProps<{
 }>();
 
 const { totalQuorumScore } = useQuorum(props);
+const { t } = useI18n();
 
-const { formatCompactNumber } = useIntl();
+const quorum = computed(
+  () => props.proposal?.quorum || props.space.voting?.quorum || 0
+);
+
+const warningEstimateQuorumShutter = computed(() =>
+  props.proposal.privacy !== 'shutter' ||
+  props.proposal.scores_state === 'final'
+    ? ''
+    : t('proposal.quorum.warningOnlyEstimateQuorum')
+);
 </script>
 
 <template>
-  <div v-if="proposal.quorum || space.voting?.quorum" class="text-skin-link">
-    {{ $t('settings.quorum.label') }}
-    <span class="float-right">
-      {{ formatCompactNumber(totalQuorumScore) }}
-      /
-      {{ formatCompactNumber(proposal?.quorum || space.voting?.quorum || 0) }}
-    </span>
-  </div>
+  <div class="pt-2">
+    <ProgressQuorum
+      v-if="proposal.quorum || space.voting?.quorum"
+      :score="totalQuorumScore"
+      :total="quorum"
+      :warning="warningEstimateQuorumShutter"
+    />
 
-  <SpaceProposalResultsQuorumPlugin
-    v-else-if="space?.plugins?.quorum"
-    v-bind="props"
-  />
+    <SpaceProposalResultsQuorumPlugin
+      v-else-if="space?.plugins?.quorum"
+      v-bind="props"
+      :warning="warningEstimateQuorumShutter"
+    />
+  </div>
 </template>
