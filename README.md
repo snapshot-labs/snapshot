@@ -31,7 +31,6 @@
     <a href="https://features.snapshot.org/feature-requests"><b>Feature requests</b></a>
     •
     <a href="https://docs.snapshot.org/guides/contribute"><b>Contribute</b></a>
-
 </div>
 
 ## Project setup
