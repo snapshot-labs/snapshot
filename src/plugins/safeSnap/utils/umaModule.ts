@@ -58,6 +58,7 @@ export const getModuleDetails = async (
   decimals: number;
   symbol: string;
   userBalance: BigNumber;
+  needsBondApproval: boolean;
 }> => {
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
     [moduleAddress, 'avatar'],
@@ -68,16 +69,27 @@ export const getModuleDetails = async (
   ]);
   // NOTE: Need to get questionId, finalizedAt, isApproved
   const bondDetails = await getBondDetails(provider, moduleAddress);
+
+  const minimumBond = moduleDetails[3][0];
+  let needsApproval = false;
+  if (
+    Number(minimumBond) > 0 &&
+    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)
+  ) {
+    needsApproval = true;
+  }
+
   return {
     dao: moduleDetails[0][0],
     oracle: moduleDetails[1][0],
     rules: moduleDetails[2][0],
-    minimumBond: moduleDetails[3][0],
+    minimumBond: minimumBond,
     expiration: moduleDetails[4][0],
     allowance: bondDetails.currentUserBondAllowance,
     collateral: bondDetails.collateral,
     decimals: bondDetails.decimals,
     symbol: bondDetails.symbol,
-    userBalance: bondDetails.currentUserBalance
+    userBalance: bondDetails.currentUserBalance,
+    needsBondApproval: needsApproval
   };
 };
