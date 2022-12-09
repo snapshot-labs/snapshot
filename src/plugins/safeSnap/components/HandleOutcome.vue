@@ -436,7 +436,10 @@ onMounted(async () => {
 
   <div v-if="connectedToRightChain || usingMetaMask">
     <div
-      v-if="questionState === questionStates.waitingForQuestion"
+      v-if="
+        questionState === questionStates.waitingForQuestion &&
+        questionDetails.needsBondApproval === true
+      "
       class="my-4"
     >
       <BaseButton
@@ -447,7 +450,10 @@ onMounted(async () => {
       </BaseButton>
     </div>
     <div
-      v-if="questionState === questionStates.waitingForQuestion"
+      v-if="
+        questionState === questionStates.waitingForQuestion &&
+        questionDetails.needsBondApproval === false
+      "
       class="my-4"
     >
       <BaseButton
