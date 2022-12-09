@@ -292,7 +292,7 @@
     "editController": "编辑控制人",
     "connectWithSpaceOwner": "您处于只读模式，要修改空间设置，请连接控制人或管理员的钱包。",
     "gnosisWrongNetwork": {
-      "base": "您的Gnosis Safe在错误的网络上。请连接到 {network} 来 {action}。",
+      "base": "您的Gnosis Safe 在错误的网络上。请链接到网络来action。",
       "settings": "编辑空间设置",
       "create": "创建提案",
       "vote": "对此提案进行投票"
