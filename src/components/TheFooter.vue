@@ -33,7 +33,7 @@ const resourcesTextLinks = [
   },
   {
     text: 'support',
-    link: 'https://discord.gg/snapshot/'
+    link: 'https://discord.snapshot.org//'
   }
 ];
 </script>
