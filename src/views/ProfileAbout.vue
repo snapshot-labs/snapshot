@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
+import { useApolloQuery, useEns, useExtendedSpaces } from '@/composables';
 
 const props = defineProps<{
   userAddress: string;
@@ -13,7 +13,7 @@ const { apolloQuery } = useApolloQuery();
 const followedSpaces = ref([]);
 const loadingFollowedSpaces = ref(true);
 
-async function loadSpaces() {
+async function loadSpacesFollowed() {
   loadingFollowedSpaces.value = true;
   try {
     followedSpaces.value = await apolloQuery(
@@ -31,18 +31,44 @@ async function loadSpaces() {
     console.error(e);
   }
 }
-onMounted(() => loadSpaces());
+onMounted(() => loadSpacesFollowed());
+
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
+const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+
+const domainsWithExistingSpace = computed(() => {
+  const spaces = ownedEnsDomains.value.map(d => d.name);
+  return extentedSpaces.value.filter(d => spaces.includes(d.id));
+});
+
+const loadingOwnedSpaces = ref(false);
+
+onMounted(async () => {
+  loadingOwnedSpaces.value = true;
+  await loadOwnedEnsDomains(props.userAddress);
+  await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
+  loadingOwnedSpaces.value = false;
+});
 </script>
 
 <template>
   <div>
     <div class="space-y-4">
       <ProfileAboutBiography v-if="profile?.about" :about="profile.about" />
-      <ProfileAboutSpacesList
-        :user-address="userAddress"
-        :following-spaces="followedSpaces"
-        :loading-followed-spaces="loadingFollowedSpaces"
+      <BlockSpacesList
+        :spaces="domainsWithExistingSpace.map(f => f.id)"
+        :title="$t('profile.about.createdSpaces')"
+        :message="$t('profile.about.notCreatedSpacesYet')"
+        :loading="loadingOwnedSpaces"
       />
+
+      <BlockSpacesList
+        :spaces="followedSpaces.map(f => f.space.id)"
+        :title="$t('profile.about.joinedSpaces')"
+        :message="$t('profile.about.notJoinSpacesYet')"
+        :loading="loadingFollowedSpaces"
+      />
+
       <ProfileAboutDelegate
         :user-address="userAddress"
         :following-spaces="followedSpaces"

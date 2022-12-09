@@ -62,7 +62,7 @@ const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 watch(
   [currentTextRecord, textRecord],
   async () => {
-    loadOwnedEnsDomains();
+    loadOwnedEnsDomains(web3Account.value);
   },
   { immediate: true }
 );

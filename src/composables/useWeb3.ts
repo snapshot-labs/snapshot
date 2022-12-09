@@ -52,11 +52,9 @@ export function useWeb3() {
           });
           auth.provider.value.on('accountsChanged', async accounts => {
             if (accounts.length !== 0) {
-              state.account = accounts[0];
               await login();
             }
           });
-          // auth.provider.on('disconnect', async () => {});
         } catch (e) {
           console.log(`failed to subscribe to events for provider: ${e}`);
         }
