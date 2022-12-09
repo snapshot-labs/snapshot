@@ -213,10 +213,12 @@ export interface UmaOracleProposal {
   rules: string;
   expiration: number;
   proposalId: string;
+  // questionId: string | undefined;
   transactions: SafeTransaction[];
-  txHashes: string[];
   minimumBond: BigNumber | number | undefined;
   explanation?: string;
+  // finalizedAt: number | undefined;
+  // isApproved: boolean;
   allowance: BigNumber | number | undefined;
   collateral: string;
   decimals: number;

@@ -18,6 +18,7 @@ import { SafeTransaction, UmaOracleProposal } from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
+  UMA_MODULE_ABI,
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
@@ -81,18 +82,16 @@ export default class Plugin {
     });
   }
 
-  async getExecutionDetailsWithHashes(
+  async getExecutionDetails(
     network: string,
     moduleAddress: string,
-    proposalId: string,
-    txHashes: string[]
+    proposalId: string
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
     const moduleDetails = await this.getModuleDetails(network, moduleAddress);
 
     return {
       ...moduleDetails,
-      proposalId,
-      txHashes
+      proposalId
     };
   }
 
@@ -130,6 +129,20 @@ export default class Plugin {
       REALITY_MODULE_ABI,
       'addProposal',
       [proposalId, txHashes]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] submitted proposal:', receipt);
+  }
+
+  async *submitProposal(web3: any, moduleAddress: string, transactions: any) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'proposeTransactions',
+      [transactions, '0x']
+      // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
     );
     yield;
     const receipt = await tx.wait();
@@ -305,6 +318,19 @@ export default class Plugin {
         moduleTx.operation,
         transactionIndex
       ]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] executed proposal:', receipt);
+  }
+
+  async *executeProposal(web3: any, moduleAddress: string, transactions: any) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'executeProposal',
+      [transactions]
     );
     yield;
     const receipt = await tx.wait();

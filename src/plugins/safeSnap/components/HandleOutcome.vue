@@ -118,14 +118,28 @@ const getTxHashes = () => {
   return props.batches.map(batch => batch.hash);
 };
 
+const getTransactions = () => {
+  return props.batches.map(batch => [
+    batch.transactions[0].to,
+    Number(batch.transactions[0].operation),
+    batch.transactions[0].value,
+    batch.transactions[0].data
+  ]);
+};
+
+const getTransactionsExperimental = () => {
+  return props.batches.map(batch => [batch.transactions[0]]);
+};
+
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
+    console.log('transactions:', getTransactions());
+    console.log('tx hashes:', getTxHashes());
+    questionDetails.value = await plugin.getExecutionDetails(
       props.network,
       props.umaAddress,
-      props.proposal.id,
-      getTxHashes()
+      props.proposal.id
     );
     if (questionDetails.value.questionId && getInstance().web3) {
       bondData.value = await plugin.loadClaimBondData(
@@ -204,11 +218,16 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalWithHashes(
+    // const proposalSubmission = plugin.submitProposalWithHashes(
+    //   getInstance().web3,
+    //   props.umaAddress,
+    //   questionDetails.value.proposalId,
+    //   getTxHashes()
+    // );
+    const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.proposalId,
-      getTxHashes()
+      getTransactions()
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -270,15 +289,20 @@ const executeProposal = async () => {
 
   try {
     clearBatchError();
-    const transaction =
-      props.batches[questionDetails.value.nextTxIndex].mainTransaction;
-    const executingProposal = plugin.executeProposalWithHashes(
+    // const transaction =
+    //   props.batches[questionDetails.value.nextTxIndex].mainTransaction;
+    // const executingProposal = plugin.executeProposalWithHashes(
+    //   getInstance().web3,
+    //   props.umaAddress,
+    //   questionDetails.value.proposalId,
+    //   getTxHashes(),
+    //   transaction,
+    //   questionDetails.value.nextTxIndex
+    // );
+    const executingProposal = plugin.executeProposal(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.proposalId,
-      getTxHashes(),
-      transaction,
-      questionDetails.value.nextTxIndex
+      getTransactions()
     );
     await executingProposal.next();
     action2InProgress.value = null;
@@ -291,7 +315,7 @@ const executeProposal = async () => {
   } catch (err) {
     pendingCount.value--;
     action2InProgress.value = null;
-    setBatchError(questionDetails.value.nextTxIndex, err.reason);
+    // setBatchError(questionDetails.value.nextTxIndex, err.reason);
   }
 };
 

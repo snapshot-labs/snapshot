@@ -66,6 +66,7 @@ export const getModuleDetails = async (
     [moduleAddress, 'bondAmount'],
     [moduleAddress, 'liveness']
   ]);
+  // NOTE: Need to get questionId, finalizedAt, isApproved
   const bondDetails = await getBondDetails(provider, moduleAddress);
   return {
     dao: moduleDetails[0][0],
