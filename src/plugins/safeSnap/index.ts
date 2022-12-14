@@ -85,9 +85,14 @@ export default class Plugin {
   async getExecutionDetails(
     network: string,
     moduleAddress: string,
-    proposalId: string
+    proposalId: string,
+    transactions: any
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
-    const moduleDetails = await this.getModuleDetails(network, moduleAddress);
+    const moduleDetails = await this.getModuleDetails(
+      network,
+      moduleAddress,
+      transactions
+    );
 
     return {
       ...moduleDetails,
@@ -95,8 +100,17 @@ export default class Plugin {
     };
   }
 
-  async *approveBond(network: string, web3: any, moduleAddress: string) {
-    const moduleDetails = await this.getModuleDetails(network, moduleAddress);
+  async *approveBond(
+    network: string,
+    web3: any,
+    moduleAddress: string,
+    transactions: any
+  ) {
+    const moduleDetails = await this.getModuleDetails(
+      network,
+      moduleAddress,
+      transactions
+    );
 
     const approveTx = await sendTransaction(
       web3,
@@ -112,9 +126,13 @@ export default class Plugin {
     yield;
   }
 
-  async getModuleDetails(network: string, moduleAddress: string) {
+  async getModuleDetails(
+    network: string,
+    moduleAddress: string,
+    transactions: any
+  ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetails(provider, network, moduleAddress);
+    return getModuleDetails(provider, network, moduleAddress, transactions);
   }
 
   async *submitProposalWithHashes(

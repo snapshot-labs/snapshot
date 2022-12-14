@@ -139,7 +139,8 @@ const updateDetails = async () => {
     questionDetails.value = await plugin.getExecutionDetails(
       props.network,
       props.umaAddress,
-      props.proposal.id
+      props.proposal.id,
+      getTransactions()
     );
     if (questionDetails.value.questionId && getInstance().web3) {
       bondData.value = await plugin.loadClaimBondData(
@@ -193,16 +194,16 @@ const claimBond = async () => {
     );
 
     await ensureRightNetwork(props.network);
-    const clamingBond = plugin.claimBond(
+    const claimingBond = plugin.claimBond(
       getInstance().web3,
       questionDetails.value.oracle,
       questionDetails.value.questionId,
       params
     );
-    await clamingBond.next();
+    await claimingBond.next();
     actionInProgress.value = null;
     pendingCount.value++;
-    await clamingBond.next();
+    await claimingBond.next();
     notify(t('notify.youDidIt'));
     pendingCount.value--;
     await sleep(3e3);
@@ -345,22 +346,41 @@ const questionState = computed(() => {
     return QuestionStates.questionNotSet;
 
   const ts = (Date.now() / 1e3).toFixed();
-  const { finalizedAt, cooldown, expiration, executionApproved, nextTxIndex } =
-    questionDetails.value;
+  const {
+    finalizedAt,
+    cooldown,
+    expiration,
+    executionApproved,
+    nextTxIndex,
+    proposalEvent
+  } = questionDetails.value;
 
-  const isExpired = finalizedAt + expiration < ts;
+  // Proposal is approved if it expires without a dispute.
+  if (proposalEvent.isExpired) return QuestionStates.proposalApproved;
 
-  if (!finalizedAt) return QuestionStates.questionNotResolved;
-  if (executionApproved) {
-    if (finalizedAt + cooldown > ts) return QuestionStates.waitingForCooldown;
-
-    if (!Number.isInteger(nextTxIndex))
-      return QuestionStates.completelyExecuted;
-    else if (isExpired) return QuestionStates.timeExpired;
-
+  // Proposal is approved if it has been settled without a disputer.
+  if (proposalEvent.isSettled && !proposalEvent.isDisputed)
     return QuestionStates.proposalApproved;
-  }
-  if (isExpired) return QuestionStates.proposalRejected;
+
+  // TODO: Deleting disputed proposals, deleting resolved proposals that have been executed,
+  // allowing re-proposal of disputed proposals.
+
+  // Commenting out the below since it is not relevant for uma execution
+
+  // const isExpired = finalizedAt + expiration < ts;
+
+  // if (!finalizedAt) return QuestionStates.questionNotResolved;
+  // if (executionApproved) {
+  //   if (finalizedAt + cooldown > ts) return QuestionStates.waitingForCooldown;
+
+  //   if (!Number.isInteger(nextTxIndex))
+  //     return QuestionStates.completelyExecuted;
+  //   else if (isExpired) return QuestionStates.timeExpired;
+
+  //   return QuestionStates.proposalApproved;
+  // }
+
+  // if (isExpired) return QuestionStates.proposalRejected;
 
   return QuestionStates.error;
 });
