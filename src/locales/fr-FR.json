@@ -293,9 +293,9 @@
     "connectWithSpaceOwner": "Vous êtes en mode lecture seule, pour modifier les paramètres de l'espace, connectez-vous avec un contrôleur ou un wallet administrateur.",
     "gnosisWrongNetwork": {
       "base": "Your Gnosis Safe is on the wrong network. Please connect to {network} to {action}.",
-      "settings": "edit the space settings",
-      "create": "create a proposal",
-      "vote": "vote on this proposal"
+      "settings": "éditer les paramètres de l'espace",
+      "create": "créer une proposition",
+      "vote": "voter sur cette proposition"
     },
     "currentSpaceControllerIs": "Le controller de l’espace actuel est {address}",
     "newController": "Nouveau controller",
