@@ -115,7 +115,7 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
 
       <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
       <div
-        class="flex min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:min-w-[130px]"
+        class="flex w-[110px] min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:w-[130px] xs:min-w-[130px]"
       >
         <span
           v-tippy="{
