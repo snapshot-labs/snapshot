@@ -488,7 +488,7 @@
       "votedFor": "Voté {choice}",
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
-      "older": "Plus ancien",
+      "olderThanWeek": "Older than a week",
       "noActivity": "Pas encore d'activité"
     },
     "settings": {
