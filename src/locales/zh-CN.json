@@ -488,7 +488,7 @@
       "votedFor": "投了 {choice}",
       "today": "今天",
       "thisWeek": "本周",
-      "olderThanWeek": "Older than a week",
+      "olderThanWeek": "早于一周前",
       "noActivity": "暂无动态"
     },
     "settings": {
