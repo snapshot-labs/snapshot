@@ -62,7 +62,12 @@ export interface ProfileActivity {
   type: string;
   title: string;
   space: { id: string; avatar: string };
-  vote?: { proposalId: string; choice: string; type: string };
+  vote?: {
+    proposalId: string;
+    choice: string;
+    type: string;
+    isVisibleChoice: boolean;
+  };
 }
 
 export interface TreasuryAsset {

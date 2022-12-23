@@ -61,6 +61,10 @@ async function loadVotes(skip = 0) {
   stopLoadingMore.value = votes?.length < loadBy;
 
   votes.forEach(vote => {
+    const isVisibleChoice = ['basic', 'single-choice'].includes(
+      vote.proposal?.type ?? ''
+    );
+
     activities.value.push({
       id: vote.id,
       created: vote.created,
@@ -72,8 +76,9 @@ async function loadVotes(skip = 0) {
       },
       vote: {
         proposalId: vote.proposal.id,
-        choice: vote.proposal.choices[vote.choice - 1],
-        type: vote.proposal.type
+        choice: vote.proposal.choices?.[vote.choice - 1] ?? '',
+        type: vote.proposal.type,
+        isVisibleChoice
       }
     });
   });
@@ -109,7 +114,7 @@ async function loadVotes(skip = 0) {
 
       <ProfileActivityList
         v-if="activityOlder.length"
-        :title="$t('profile.activity.older')"
+        :title="$t('profile.activity.olderThanWeek')"
       >
         <ProfileActivityListItem
           v-for="activity in activityOlder"
