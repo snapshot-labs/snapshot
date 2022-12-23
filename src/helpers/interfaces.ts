@@ -66,7 +66,6 @@ export interface ProfileActivity {
     proposalId: string;
     choice: string;
     type: string;
-    isVisibleChoice: boolean;
   };
 }
 

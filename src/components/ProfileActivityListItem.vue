@@ -27,10 +27,9 @@ defineProps<{ activity: ProfileActivity }>();
           <div class="text-xs leading-5 text-skin-text">
             {{
               $t('profile.activity.votedFor', {
-                choice:
-                  activity.vote?.isVisibleChoice && activity.vote?.choice
-                    ? `"${activity.vote?.choice}"`
-                    : ''
+                choice: activity.vote?.choice
+                  ? `"${activity.vote?.choice}"`
+                  : ''
               })
             }}
           </div>

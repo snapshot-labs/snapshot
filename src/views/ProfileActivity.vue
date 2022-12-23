@@ -76,9 +76,10 @@ async function loadVotes(skip = 0) {
       },
       vote: {
         proposalId: vote.proposal.id,
-        choice: vote.proposal.choices?.[vote.choice - 1] ?? '',
-        type: vote.proposal.type,
-        isVisibleChoice
+        choice: isVisibleChoice
+          ? vote.proposal.choices?.[vote.choice - 1] ?? ''
+          : '',
+        type: vote.proposal.type
       }
     });
   });
