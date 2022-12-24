@@ -1,13 +1,14 @@
-<script>
-import chevronIcon from '@/assets/icons/chevron.svg';
+<script setup lang="ts">
+defineProps<{
+  open: boolean;
+  title: string;
+  number: number;
+  hideRemove: boolean;
+  showArrow: boolean;
+  borderless: boolean;
+}>();
 
-export default {
-  props: ['open', 'title', 'number', 'hideRemove', 'showArrow', 'borderless'],
-  emits: ['toggle'],
-  data() {
-    return { chevronIcon };
-  }
-};
+defineEmits(['toggle']);
 </script>
 
 <template>
@@ -26,12 +27,7 @@ export default {
         class="mr-3 flex cursor-pointer items-center"
         @click="$emit('toggle')"
       >
-        <img
-          :src="chevronIcon"
-          alt="arrow"
-          class="arrow"
-          :class="{ rotate: !open }"
-        />
+        <i-ho-chevron-up :class="{ rotate: !open }" />
       </div>
       <slot name="icons"></slot>
     </div>
