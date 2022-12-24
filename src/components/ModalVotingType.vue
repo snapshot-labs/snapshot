@@ -1,15 +1,9 @@
-<script setup>
-defineProps({
-  open: {
-    type: Boolean,
-    required: true
-  },
-  selected: String,
-  allowAny: {
-    type: Boolean,
-    default: false
-  }
-});
+<script setup lang="ts">
+defineProps<{
+  open: boolean;
+  selected: string;
+  allowAny: boolean;
+}>();
 
 const emit = defineEmits(['close', 'update:selected']);
 
