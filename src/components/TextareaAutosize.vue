@@ -16,7 +16,7 @@ const props = withDefaults(
     placeholder: '',
     minHeight: 0,
     maxHeight: 0,
-    maxLength: 0
+    maxLength: undefined
   }
 );
 
