@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import Autolinker from 'autolinker';
+
 interface Props {
   text: string;
   truncate?: number;
@@ -17,5 +18,6 @@ const textWithLinks = computed(() =>
 </script>
 
 <template>
+  <!-- eslint-disable-next-line vue/no-v-html -->
   <span v-html="textWithLinks" />
 </template>
