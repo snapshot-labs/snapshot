@@ -7,11 +7,9 @@ defineProps<{
   open: boolean;
   title: string;
   text: string;
-  number: number;
-  hideRemove: boolean;
+  hideRemove?: boolean;
   showArrow: boolean;
-  borderless: boolean;
-  pre: boolean;
+  pre?: boolean;
 }>();
 
 defineEmits(['toggle']);
@@ -21,10 +19,7 @@ defineEmits(['toggle']);
   <UiCollapsibleContent
     :open="open"
     :title="title"
-    :number="number"
-    :hide-remove="hideRemove"
     :show-arrow="showArrow"
-    :borderless="borderless"
     @toggle="$emit('toggle')"
   >
     <template #icons>

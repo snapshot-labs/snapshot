@@ -4,7 +4,7 @@ defineProps<{
   title: string;
   number: number;
   hideRemove: boolean;
-  borderless: boolean;
+  borderless?: boolean;
 }>();
 
 defineEmits(['remove', 'toggle']);

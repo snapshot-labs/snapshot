@@ -2,17 +2,14 @@
 defineProps<{
   open: boolean;
   title: string;
-  number: number;
-  hideRemove: boolean;
   showArrow: boolean;
-  borderless: boolean;
 }>();
 
 defineEmits(['toggle']);
 </script>
 
 <template>
-  <div class="collapsible-container w-full text-left" :class="{ borderless }">
+  <div class="collapsible-container w-full text-left">
     <div class="collapsible-header flex items-stretch px-2">
       <div
         class="ml-2 flex flex-auto flex-nowrap items-center"

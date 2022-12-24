@@ -138,13 +138,13 @@ export default {
     <UiCollapsibleText
       v-if="modelValue.hash"
       :show-arrow="true"
-      :pre="true"
       :open="!jsonHidden"
       :text="
         JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t')
       "
       class="collapsible-text mt-2"
       title="Batch Transaction JSON"
+      pre
       @toggle="jsonHidden = !jsonHidden"
     />
     <BaseBlock
