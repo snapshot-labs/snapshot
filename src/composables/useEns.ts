@@ -4,23 +4,21 @@ import {
   ENS_DOMAINS_BY_ACCOUNT_QUERY,
   ENS_DOMAIN_BY_HASH_QUERY
 } from '@/helpers/queries';
-import { useWeb3 } from '@/composables/useWeb3';
 
 export function useEns() {
   const validEnsTlds = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
 
   const { ensApolloQuery } = useApolloQuery();
-  const { web3Account } = useWeb3();
 
   const ownedEnsDomains = ref<Record<string, any>[]>([]);
 
-  const loadOwnedEnsDomains = async () => {
-    if (!web3Account.value) return (ownedEnsDomains.value = []);
+  const loadOwnedEnsDomains = async (address: string) => {
+    if (!address) return (ownedEnsDomains.value = []);
 
     const res = await ensApolloQuery({
       query: ENS_DOMAINS_BY_ACCOUNT_QUERY,
       variables: {
-        id: web3Account.value.toLowerCase()
+        id: address.toLowerCase()
       }
     });
 

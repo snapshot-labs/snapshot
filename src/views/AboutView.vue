@@ -26,7 +26,7 @@ const socials = [
   },
   {
     icon: 'discord',
-    link: 'https://discord.gg/snapshot'
+    link: 'https://discord.snapshot.org/'
   },
   {
     icon: 'telegram',

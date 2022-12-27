@@ -38,7 +38,7 @@ const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-const { isGnosisAndNotSpaceNetwork } = useGnosis();
+const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
 const {
   form,

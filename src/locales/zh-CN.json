@@ -291,6 +291,12 @@
     "header": "设置",
     "editController": "编辑控制人",
     "connectWithSpaceOwner": "您处于只读模式，要修改空间设置，请连接控制人或管理员的钱包。",
+    "gnosisWrongNetwork": {
+      "base": "您的Gnosis Safe 在错误的网络上。请链接到网络来action。",
+      "settings": "编辑空间设置",
+      "create": "创建提案",
+      "vote": "对此提案进行投票"
+    },
     "currentSpaceControllerIs": "当前空间控制人是 {address}",
     "newController": "新的控制人",
     "noRecord": "未找到文本记录。请确保 id 已经在 network注册了域名，然后编辑控制人的文本记录来重新设置空间。",
@@ -432,7 +438,8 @@
       "title": "设置空间域名",
       "ensMessage": " 在创建自己的空间之前，您需要设置以太坊主网上的 ENS 域名。",
       "ensMessageTestnet": "你也可以先在Goerli测试网 {link} 测试并处理问题。",
-      "tryDemo": "尝试这个 demo"
+      "tryDemo": "尝试这个 demo",
+      "yourExistingSpaces": "您已经存在的空间"
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
@@ -464,8 +471,10 @@
     "about": {
       "header": "关于我们",
       "joinedSpaces": "已加入的空间",
+      "createdSpaces": "创建空间",
       "biography": "个人介绍",
       "notJoinSpacesYet": "尚未加入任何空间",
+      "notCreatedSpacesYet": "尚未创建任何空间",
       "delegatorNetworkInfo": "通过切换你钱包中的网络进行更改",
       "delegate": "委托",
       "delegated": "已委托",
