@@ -4,7 +4,7 @@ import { onMounted, ref } from 'vue';
 const props = defineProps<{
   modelValue?: string | number;
   placeholder?: string;
-  error?: [string, boolean];
+  error?: string | boolean;
   number?: boolean;
   disabled?: boolean;
   maxlength?: string | number;
