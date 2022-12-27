@@ -1,20 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-interface ProfileActivity {
-  id: string;
-  created: number;
-  type: string;
-  title: string;
-  space: { id: string; avatar: string };
-  vote?: { proposalId: string; choice: string; type: string };
-}
+import { ProfileActivity } from '@/helpers/interfaces';
 
-const props = defineProps<{ activity: ProfileActivity }>();
-
-const showChoice = computed(() => {
-  // true if proposal type is 'basic' or 'single-choice'
-  return ['basic', 'single-choice'].includes(props.activity.vote?.type ?? '');
-});
+defineProps<{ activity: ProfileActivity }>();
 </script>
 
 <template>
@@ -40,7 +27,9 @@ const showChoice = computed(() => {
           <div class="text-xs leading-5 text-skin-text">
             {{
               $t('profile.activity.votedFor', {
-                choice: showChoice ? `"${activity.vote?.choice}"` : ''
+                choice: activity.vote?.choice
+                  ? `"${activity.vote?.choice}"`
+                  : ''
               })
             }}
           </div>
