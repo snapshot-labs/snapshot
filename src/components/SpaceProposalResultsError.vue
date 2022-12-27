@@ -47,7 +47,7 @@ const retry = async () => {
   </BaseButton>
   <BaseLink
     v-if="isAdmin"
-    link="https://discord.gg/snapshot"
+    link="https://discord.snapshot.org/"
     class="mt-3 block"
     hide-external-icon
   >

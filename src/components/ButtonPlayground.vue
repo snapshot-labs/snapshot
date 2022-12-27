@@ -17,13 +17,10 @@ const props = withDefaults(
   }
 );
 
-const emit = defineEmits(['close']);
-
 const router = useRouter();
 
 function clickPlayground() {
-  emit('close');
-  router.push({
+  const playgroundRoute = router.resolve({
     name: 'playground',
     query: {
       query: encodeJson({
@@ -34,6 +31,7 @@ function clickPlayground() {
     },
     params: { name: props.name }
   });
+  window.open(playgroundRoute.href, '_blank');
 }
 </script>
 

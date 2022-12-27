@@ -78,7 +78,7 @@ const validateToInput = computed(() => {
 watch(
   web3Account,
   () => {
-    loadOwnedEnsDomains();
+    loadOwnedEnsDomains(web3Account.value);
   },
   { immediate: true }
 );
