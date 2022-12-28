@@ -5,6 +5,7 @@ defineProps<{
   title?: string;
   information?: string;
   dateString?: string;
+  date: number;
   disabled?: boolean;
   type?: string;
   tooltip: string | null;
@@ -36,6 +37,7 @@ const modalDateSelectOpen = ref(false);
     <ModalSelectDate
       :type="type"
       :open="modalDateSelectOpen"
+      :value="date"
       @close="modalDateSelectOpen = false"
       @input="$emit('update:date', $event)"
     />
