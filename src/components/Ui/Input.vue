@@ -1,27 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-const props = defineProps({
-  modelValue: [String, Number],
-  placeholder: String,
-  error: [String, Boolean],
-  number: Boolean,
-  disabled: Boolean,
-  maxlength: [Number, String],
-  additionalInputClass: String,
-  required: {
-    type: Boolean,
-    default: true
-  },
-  focusOnMount: {
-    type: Boolean,
-    default: false
-  },
-  readonly: {
-    type: Boolean,
-    default: false
-  }
-});
+const props = defineProps<{
+  modelValue?: string | number;
+  placeholder?: string;
+  error?: string | boolean;
+  number?: boolean;
+  disabled?: boolean;
+  maxlength?: string | number;
+  additionalInputClass?: string;
+  focusOnMount?: boolean;
+  readonly?: boolean;
+}>();
 
 const emit = defineEmits(['update:modelValue', 'blur']);
 
@@ -33,7 +23,7 @@ function handleInput(e) {
   emit('update:modelValue', input);
 }
 
-const inputRef = ref(null);
+const inputRef = ref<null | HTMLInputElement>(null);
 
 onMounted(() => {
   if (props.focusOnMount) {
@@ -67,7 +57,6 @@ onMounted(() => {
         :disabled="disabled"
         class="input w-full flex-auto"
         :class="[additionalInputClass, { 'cursor-not-allowed': disabled }]"
-        :required="required"
         :readonly="readonly"
         :maxlength="maxlength"
         @input="handleInput"
