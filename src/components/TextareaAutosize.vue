@@ -19,10 +19,10 @@ const props = withDefaults(
     placeholder: '',
     title: '',
     information: '',
-    definition: null,
+    definition: {},
     minHeight: 0,
     maxHeight: 0,
-    maxLength: 0
+    maxLength: undefined
   }
 );
 
