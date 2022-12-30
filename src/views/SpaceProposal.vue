@@ -17,7 +17,7 @@ const props = defineProps<{ space: ExtendedSpace }>();
 const route = useRoute();
 const router = useRouter();
 
-const { t, setPageTitle } = useI18n();
+const { setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 
 const id: string = route.params.id as string;

@@ -34,7 +34,7 @@ const modalDateSelectOpen = ref(false);
   </div>
   <teleport to="#modal">
     <ModalSelectDate
-      :selected-date="type"
+      :type="type"
       :open="modalDateSelectOpen"
       @close="modalDateSelectOpen = false"
       @input="$emit('update:date', $event)"
