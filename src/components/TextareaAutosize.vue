@@ -85,19 +85,17 @@ onMounted(() => resize());
 </script>
 
 <template>
-  <div>
-    <LabelInput v-if="title || definition?.title" :information="information">
-      {{ title ?? definition.title }}
-    </LabelInput>
-    <textarea
-      v-bind="$attrs"
-      ref="textarea"
-      v-model="val"
-      class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"
-      :style="computedStyles"
-      :maxlength="maxLength"
-      :placeholder="placeholder"
-      @focus="resize"
-    />
-  </div>
+  <LabelInput v-if="title || definition?.title" :information="information">
+    {{ title ?? definition.title }}
+  </LabelInput>
+  <textarea
+    v-bind="$attrs"
+    ref="textarea"
+    v-model="val"
+    class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"
+    :style="computedStyles"
+    :maxlength="maxLength"
+    :placeholder="placeholder"
+    @focus="resize"
+  />
 </template>
