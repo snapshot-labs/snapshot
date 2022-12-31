@@ -115,6 +115,7 @@ async function loadVotingPower() {
       web3Account.value,
       props.proposal
     );
+    console.log(powerRes);
     votingPower.value = powerRes.vp;
     votingPowerByStrategy.value = powerRes.vp_by_strategy;
   } catch (e) {
@@ -245,12 +246,14 @@ watch(
         <template
           v-else-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
         >
-          <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
-            {{ t('votingPowerFailedMessage') }}
-          </BaseMessageBlock>
-          <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
-            {{ t('votingValidationFailedMessage') }}
-          </BaseMessageBlock>
+          <template v-if="hasVotingPowerFailed || hasVotingValidationFailed">
+            <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
+              {{ t('votingPowerFailedMessage') }}
+            </BaseMessageBlock>
+            <BaseMessageBlock v-if="hasVotingValidationFailed" level="warning">
+              {{ t('votingValidationFailedMessage') }}
+            </BaseMessageBlock>
+          </template>
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
               $t('noVotingPower', {
