@@ -115,7 +115,6 @@ async function loadVotingPower() {
       web3Account.value,
       props.proposal
     );
-    console.log(powerRes);
     votingPower.value = powerRes.vp;
     votingPowerByStrategy.value = powerRes.vp_by_strategy;
   } catch (e) {
