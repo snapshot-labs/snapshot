@@ -58,8 +58,12 @@ watch(open, () => {
         <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="m-4 mx-auto flex max-w-[180px]">
-      <input v-model="time" type="time" class="s-input !pl-4 text-lg" />
+    <div v-else class="m-4 mx-auto max-w-[140px]">
+      <input
+        v-model="time"
+        type="time"
+        class="s-input form-input text-center text-lg"
+      />
     </div>
     <template #footer>
       <div class="float-left w-2/4 pr-2">
