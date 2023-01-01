@@ -12,7 +12,7 @@ const { currentLocale: locale } = useI18n();
 
 const [
   yearNow = new Date().getFullYear(),
-  monthNow = new Date().getMonth() + 1
+  monthNow = new Date().getMonth()
   // dayNow = new Date().getDate()
 ] = props.modelValue ? props.modelValue.split('-') : [];
 
@@ -26,7 +26,6 @@ const fullYear = computed(() =>
 );
 const days = computed(() => new Date(year.value, month.value + 1, 0).getDate());
 const emptyDays = computed(() => new Date(year.value, month.value, 1).getDay());
-const isFutureMonth = computed(() => month.value > new Date().getMonth());
 
 const today = computed(() => {
   return formatDate(
@@ -77,7 +76,6 @@ function isSelectable(year, month, day) {
     <div class="mb-2 flex items-center">
       <div class="w-1/4 text-left">
         <a
-          v-show="isFutureMonth"
           class="iconfont iconback text-lg font-semibold text-skin-text"
           @click="month--"
         />
@@ -105,15 +103,22 @@ function isSelectable(year, month, day) {
       <div v-for="day in days" :key="day">
         <a
           v-if="isSelectable(year, month, day)"
-          class="day selectable border-b border-r"
+          class="day border-b border-r bg-transparent text-skin-link hover:bg-skin-link hover:text-skin-bg"
           :class="{
-            'bg-skin-header-bg': formatDate(year, month, day) === today,
-            selected: input.includes(formatDate(year, month, day))
+            'ring-1 ring-inset ring-primary':
+              formatDate(year, month, day) === today,
+            '!bg-skin-link text-skin-bg': input.includes(
+              formatDate(year, month, day)
+            )
           }"
           @click="toggleDay(year, month, day)"
           v-text="day"
         />
-        <div v-else class="day border-b border-r" v-text="day" />
+        <div
+          v-else
+          class="day cursor-not-allowed border-b border-r text-skin-border"
+          v-text="day"
+        />
       </div>
     </div>
   </div>
@@ -125,7 +130,6 @@ function isSelectable(year, month, day) {
   margin: 0 auto;
 
   .day {
-    color: var(--text-color);
     text-decoration: none;
     font-size: 17px !important;
     float: left;
@@ -133,21 +137,6 @@ function isSelectable(year, month, day) {
     line-height: 44px;
     width: 44px;
     height: 44px;
-
-    &.selectable {
-      color: var(--link-color);
-      background-color: transparent;
-
-      &:hover {
-        background-color: var(--link-color) !important;
-        color: var(--bg-color) !important;
-      }
-    }
-
-    &.selected {
-      background-color: var(--link-color) !important;
-      color: var(--bg-color) !important;
-    }
   }
 }
 </style>
