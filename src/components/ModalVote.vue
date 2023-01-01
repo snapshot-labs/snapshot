@@ -245,14 +245,12 @@ watch(
         <template
           v-else-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
         >
-
-            <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
-              {{ t('votingPowerFailedMessage') }}
-            </BaseMessageBlock>
-            <BaseMessageBlock v-else-if="hasVotingValidationFailed" level="warning">
-              {{ t('votingValidationFailedMessage') }}
-            </BaseMessageBlock>
-
+          <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
+            {{ t('votingPowerFailedMessage') }}
+          </BaseMessageBlock>
+          <BaseMessageBlock v-else-if="hasVotingValidationFailed" level="warning">
+            {{ t('votingValidationFailedMessage') }}
+          </BaseMessageBlock>
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
               $t('noVotingPower', {
