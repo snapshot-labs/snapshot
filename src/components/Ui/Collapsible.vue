@@ -1,11 +1,11 @@
-<script setup>
-defineProps({
-  open: Boolean,
-  title: String,
-  number: Number,
-  hideRemove: Boolean,
-  borderless: Boolean
-});
+<script setup lang="ts">
+defineProps<{
+  open: boolean;
+  title: string;
+  number: number;
+  hideRemove: boolean;
+  borderless?: boolean;
+}>();
 
 defineEmits(['remove', 'toggle']);
 </script>

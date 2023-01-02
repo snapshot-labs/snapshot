@@ -161,6 +161,11 @@ input[type='number']::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type='time']::-webkit-calendar-picker-indicator {
+  background: none;
+  display: none;
+}
+
 // Pointer cursor for file input buttons
 input[type=file], /* FF, IE7+, chrome (except button) */
 input[type=file]::-webkit-file-upload-button {

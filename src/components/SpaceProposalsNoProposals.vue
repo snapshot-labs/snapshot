@@ -1,5 +1,9 @@
-<script setup>
-defineProps(['space']);
+<script setup lang="ts">
+import { ExtendedSpace } from '@/helpers/interfaces';
+
+defineProps<{
+  space: ExtendedSpace;
+}>();
 </script>
 <template>
   <div class="mb-3 text-center">

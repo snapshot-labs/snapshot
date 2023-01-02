@@ -13,7 +13,10 @@ const props = withDefaults(
   {
     modelValue: '',
     autosize: true,
-    placeholder: ''
+    placeholder: '',
+    minHeight: 0,
+    maxHeight: 0,
+    maxLength: undefined
   }
 );
 

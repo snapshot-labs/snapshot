@@ -1,17 +1,29 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { getIpfsUrl } from '@/helpers/utils';
 
-const props = defineProps(['discussionLink']);
-const preview = ref(false);
+const props = defineProps<{
+  discussionLink: string;
+}>();
+const preview = ref<null | {
+  meta: {
+    title: string;
+    description: string;
+  };
+  links: {
+    icon: {
+      href: string;
+    }[];
+  };
+}>(null);
 
 onMounted(async () => {
   await update(props.discussionLink);
 });
 
-async function update(val) {
+async function update(val: string) {
   try {
-    preview.value = false;
+    preview.value = null;
     new URL(val);
     const IFRAMELY_API_KEY = 'd155718c86be7d5305ccb6';
     const url = `https://cdn.iframe.ly/api/iframely?url=${encodeURI(
@@ -40,6 +52,7 @@ async function update(val) {
             <img
               v-else
               :src="preview.links.icon[0].href"
+              alt="logo"
               width="32"
               height="32"
               class="rounded bg-white"
