@@ -185,11 +185,10 @@ onMounted(async () => {
         <LoadingPage v-else />
       </div>
       <div class="space-y-4">
-        <SpaceProposalDiscussionLink
-          v-if="proposal?.discussion"
-          class="px-3 md:px-0"
-          :discussion-link="proposal.discussion"
-        />
+        <div v-if="proposal?.discussion" class="px-3 md:px-0">
+          <h3 v-text="$t('discussion')" />
+          <BlockLink :link="proposal.discussion" />
+        </div>
         <SpaceProposalVote
           v-if="proposal?.state === 'active' && loadedVotes"
           v-model="selectedChoices"

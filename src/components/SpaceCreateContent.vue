@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useIntl, useImageUpload, useSpaceCreateForm } from '@/composables';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
+  space: ExtendedSpace;
   preview: boolean;
   bodyLimit: number;
 }>();
@@ -48,6 +50,12 @@ const handleDrop = e => {
 <template>
   <div class="mb-5 px-4 md:px-0">
     <div class="flex flex-col space-y-3">
+      <BlockLink
+        v-if="space?.guidelines"
+        :title="$t('settings.proposal.guidelines.title')"
+        :link="space.guidelines"
+      />
+
       <h1
         v-if="preview"
         class="w-full break-all"

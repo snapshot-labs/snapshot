@@ -202,6 +202,8 @@ export const SPACES_QUERY = gql`
       categories
       plugins
       followersCount
+      template
+      guidelines
       parent {
         id
         name

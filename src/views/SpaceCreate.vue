@@ -42,6 +42,7 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
 const {
   form,
+  formDraft,
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
@@ -251,13 +252,21 @@ watch(preview, () => {
 });
 
 onMounted(async () => {
+  setPageTitle('page.title.space.create', { space: props.space.name });
+
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
-});
 
-onMounted(() =>
-  setPageTitle('page.title.space.create', { space: props.space.name })
-);
+  if (!sourceProposal.value) {
+    form.value.name = formDraft.value.name;
+    form.value.body = formDraft.value.body;
+    form.value.choices = formDraft.value.choices;
+  }
+
+  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+    form.value.body = props.space.template;
+  }
+});
 </script>
 
 <template>
@@ -283,6 +292,7 @@ onMounted(() =>
       <!-- Step 1 -->
       <SpaceCreateContent
         v-if="currentStep === Step.CONTENT"
+        :space="space"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
       />
