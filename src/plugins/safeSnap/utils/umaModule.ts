@@ -65,7 +65,9 @@ export const getModuleDetails = async (
   userBalance: BigNumber;
   needsBondApproval: boolean;
   proposalEvent: any;
+  proposalExecuted: boolean;
 }> => {
+  const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracle'],
@@ -73,7 +75,6 @@ export const getModuleDetails = async (
     [moduleAddress, 'bondAmount'],
     [moduleAddress, 'liveness']
   ]);
-  // NOTE: Need to get questionId, finalizedAt, isApproved
   let needsApproval = false;
   const minimumBond = moduleDetails[3][0];
   const optimisticOracle = moduleDetails[1][0];
@@ -89,8 +90,9 @@ export const getModuleDetails = async (
   // Create ancillary data for proposal hash
   let ancillaryData = '';
   let timestamp = 0;
+  let proposalHash;
   if (transactions !== undefined) {
-    const transactionsHash = keccak256(
+    proposalHash = keccak256(
       defaultAbiCoder.encode(
         ['(address to, uint8 operation, uint256 value, bytes data)[]'],
         [transactions]
@@ -102,15 +104,10 @@ export const getModuleDetails = async (
       [
         '',
         pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(transactionsHash.replace('0x', ''))
+        toUtf8Bytes(proposalHash.replace('0x', ''))
       ]
     );
-    const moduleContract = new Contract(
-      moduleAddress,
-      UMA_MODULE_ABI,
-      provider
-    );
-    timestamp = await moduleContract.proposalHashes(transactionsHash);
+    timestamp = await moduleContract.proposalHashes(proposalHash);
   }
 
   // Search for requests with matching ancillary data
@@ -121,17 +118,16 @@ export const getModuleDetails = async (
   );
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const events = await oracleContract.queryFilter('ProposePrice', -100000);
-  const proposeEvent = events.filter(
+  const proposalEvents = await oracleContract.queryFilter(oracleContract.filters.ProposePrice(moduleAddress));
+  const thisModuleProposalEvents = proposalEvents.filter(
     event =>
-      event.args?.requester === moduleAddress &&
       event.args?.ancillaryData === ancillaryData &&
       Number(event.args?.timestamp) === Number(timestamp)
   );
 
-  // Get the full request (with state and disputer)
+  // Get the full proposal event (with state and disputer).
   const proposalEvent = await Promise.all(
-    proposeEvent.map(event => {
+    thisModuleProposalEvents.map(event => {
       return oracleContract
         .getRequest(
           event.args?.requester,
@@ -150,16 +146,21 @@ export const getModuleDetails = async (
             Number(event.args?.expirationTimestamp);
 
           return {
-            expirationTimestamp: result.expirationTime,
+            expirationTimestamp: event.args?.expirationTimestamp,
             isExpired: isExpired,
             isDisputed: isDisputed,
             isSettled: result.settled,
-            resolvedPrice: result.resolvedPrice
+            resolvedPrice: result.resolvedPrice,
+            proposalHash: proposalHash
           };
         });
     })
   );
 
+  // If we add a ProposalExecuted event to the OptimisticGovernor, we could check by both the hash and the timestamp.
+  // In its current form, this code will create issues if there are duplicate proposals.
+  const executionEvents = await moduleContract.queryFilter(moduleContract.filters.TransactionExecuted(proposalHash));
+  const proposalExecuted = executionEvents.length > 0;
   return {
     dao: moduleDetails[0][0],
     oracle: moduleDetails[1][0],
@@ -172,6 +173,7 @@ export const getModuleDetails = async (
     symbol: bondDetails.symbol,
     userBalance: bondDetails.currentUserBalance,
     needsBondApproval: needsApproval,
-    proposalEvent: proposalEvent[0]
+    proposalEvent: proposalEvent[0],
+    proposalExecuted: proposalExecuted
   };
 };

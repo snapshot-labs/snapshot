@@ -126,6 +126,40 @@ export default class Plugin {
     yield;
   }
 
+  async *deleteDisputedProposal(
+    web3: any,
+    moduleAddress: string,
+    transactionHash: any
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'deleteDisputedProposal',
+      [transactionHash]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] deleted disputed proposal:', receipt);
+  }
+
+  async *deleteRejectedProposal(
+    web3: any,
+    moduleAddress: string,
+    transactionHash: any
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'deleteRejectedProposal',
+      [transactionHash]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] deleted rejected proposal:', receipt);
+  }
+
   async getModuleDetails(
     network: string,
     moduleAddress: string,

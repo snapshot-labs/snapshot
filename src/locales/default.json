@@ -605,7 +605,9 @@
       "criteria": "acceptance criteria?",
       "proposalPassed": "Did the proposal pass?",
       "expired": "The proposal has expired",
-      "approveBond": "Approve bond"
+      "approveBond": "Approve bond",
+      "executeTxsUma": "Execute transaction batch",
+      "deleteDisputedProposal": "Delete disputed proposal"
     }
   },
   "poap": {
