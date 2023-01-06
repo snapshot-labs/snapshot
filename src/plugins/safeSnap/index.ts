@@ -14,7 +14,11 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, UmaOracleProposal } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  RealityOracleProposal,
+  UmaOracleProposal
+} from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
@@ -22,7 +26,13 @@ import {
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
-import { getModuleDetails } from './utils/umaModule';
+import {
+  buildQuestion,
+  checkPossibleExecution,
+  getModuleDetailsReality,
+  getProposalDetails
+} from './utils/realityModule';
+import { getModuleDetailsUma } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -82,13 +92,73 @@ export default class Plugin {
     });
   }
 
+  async getExecutionDetailsWithHashes(
+    network: string,
+    moduleAddress: string,
+    proposalId: string,
+    txHashes: string[]
+  ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    const question = await buildQuestion(proposalId, txHashes);
+    const questionHash = solidityKeccak256(['string'], [question]);
+
+    const proposalDetails = await getProposalDetails(
+      provider,
+      network,
+      moduleAddress,
+      questionHash,
+      txHashes
+    );
+    const moduleDetails = await getModuleDetailsReality(
+      provider,
+      network,
+      moduleAddress
+    );
+    const questionState = await checkPossibleExecution(
+      provider,
+      network,
+      moduleDetails.oracle,
+      proposalDetails.questionId
+    );
+    const infoFromOracle = await retrieveInfoFromOracle(
+      provider,
+      network,
+      moduleDetails.oracle,
+      proposalDetails.questionId
+    );
+    return {
+      ...moduleDetails,
+      proposalId,
+      ...questionState,
+      ...proposalDetails,
+      txHashes,
+      ...infoFromOracle
+    };
+  }
+
+  async getModuleDetailsReality(network: string, moduleAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    return getModuleDetailsReality(provider, network, moduleAddress);
+  }
+
+  async validateUmaModule(network: string, moduleAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    const moduleContract = new Contract(
+      moduleAddress,
+      UMA_MODULE_ABI,
+      provider
+    );
+
+    return moduleContract.rules().then(() => 'uma').catch(() => 'reality');
+  }
+
   async getExecutionDetails(
     network: string,
     moduleAddress: string,
     proposalId: string,
     transactions: any
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
-    const moduleDetails = await this.getModuleDetails(
+    const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
       transactions
@@ -106,7 +176,7 @@ export default class Plugin {
     moduleAddress: string,
     transactions: any
   ) {
-    const moduleDetails = await this.getModuleDetails(
+    const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
       transactions
@@ -160,13 +230,13 @@ export default class Plugin {
     console.log('[DAO module] deleted rejected proposal:', receipt);
   }
 
-  async getModuleDetails(
+  async getModuleDetailsUma(
     network: string,
     moduleAddress: string,
     transactions: any
   ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetails(provider, network, moduleAddress, transactions);
+    return getModuleDetailsUma(provider, network, moduleAddress, transactions);
   }
 
   async *submitProposalWithHashes(

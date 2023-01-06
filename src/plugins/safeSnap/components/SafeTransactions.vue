@@ -10,6 +10,7 @@ import { getIpfsUrl, shorten } from '@/helpers/utils';
 
 import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapHandleOutcome from './HandleOutcome.vue';
+import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 
@@ -43,13 +44,13 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
-function formatBatches(network, umaModule, batches, multiSend) {
+function formatBatches(network, module, batches, multiSend) {
   if (batches.length) {
     const batchSample = batches[0];
     if (Array.isArray(batchSample)) {
       const chainId = parseInt(network);
       return batches.map((txs, index) =>
-        createBatch(umaModule, chainId, index, txs, multiSend)
+        createBatch(module, chainId, index, txs, multiSend)
       );
     }
   }
@@ -61,12 +62,14 @@ export default {
     SafeSnapTooltip,
     SafeSnapFormImportTransactionsButton,
     SafeSnapHandleOutcome,
+    SafeSnapHandleOutcomeUma,
     SafeSnapFormTransactionBatch
   },
   props: [
     'modelValue',
     'proposal',
     'network',
+    'realityAddress',
     'umaAddress',
     'multiSendAddress',
     'preview',
@@ -80,15 +83,19 @@ export default {
     return {
       input: formatBatches(
         this.network,
-        this.umaAddress,
+        this.realityAddress,
         this.modelValue,
         this.multiSendAddress
       ),
       gnosisSafeAddress: undefined,
+      moduleType: undefined,
+      moduleAddress: undefined,
+      moduleTypeReady: false,
       showHash: false,
       transactionConfig: {
         preview: this.preview,
         gnosisSafeAddress: undefined,
+        realityAddress: this.realityAddress,
         umaAddress: this.umaAddress,
         network: this.network,
         multiSendAddress: this.multiSendAddress,
@@ -118,10 +125,25 @@ export default {
   },
   async mounted() {
     try {
-      const { dao } = await plugin.getModuleDetails(
+      const moduleType = await plugin.validateUmaModule(
         this.network,
         this.umaAddress
       );
+
+      const { dao } =
+        moduleType === 'reality'
+          ? await plugin.getModuleDetailsReality(
+              this.network,
+              this.realityAddress
+            )
+          : await plugin.getModuleDetailsUma(this.network, this.umaAddress);
+
+      const moduleAddress =
+        moduleType === 'reality' ? this.realityAddress : this.umaAddress;
+
+      this.moduleType = moduleType;
+      this.moduleAddress = moduleAddress;
+      this.moduleTypeReady = true;
       this.gnosisSafeAddress = dao;
       this.transactionConfig = {
         ...this.transactionConfig,
@@ -140,7 +162,7 @@ export default {
     addTransactionBatch() {
       this.input.push(
         createBatch(
-          this.umaAddress,
+          this.moduleAddress,
           parseInt(this.network),
           this.input.length,
           [],
@@ -160,7 +182,7 @@ export default {
     handleImport(txs) {
       this.input.push(
         createBatch(
-          this.umaAddress,
+          this.moduleAddress,
           parseInt(this.network),
           this.input.length,
           txs,
@@ -191,8 +213,10 @@ export default {
       </a>
       <div class="flex-grow"></div>
       <SafeSnapTooltip
-        :uma-address="umaAddress"
+        v-if="moduleTypeReady"
+        :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
+        :module-type="moduleType"
       />
     </h4>
     <UiCollapsibleText
@@ -233,10 +257,29 @@ export default {
         />
 
         <SafeSnapHandleOutcome
-          v-if="preview && proposalResolved"
+          v-if="
+            preview &&
+            proposalResolved &&
+            moduleType === 'reality' &&
+            moduleTypeReady
+          "
           :batches="input"
           :proposal="proposal"
-          :uma-address="umaAddress"
+          :reality-address="transactionConfig.realityAddress"
+          :multi-send-address="transactionConfig.multiSendAddress"
+          :network="transactionConfig.network"
+        />
+
+        <SafeSnapHandleOutcomeUma
+          v-if="
+            preview &&
+            proposalResolved &&
+            moduleType === 'uma' &&
+            moduleTypeReady
+          "
+          :batches="input"
+          :proposal="proposal"
+          :uma-address="transactionConfig.umaAddress"
           :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"
         />

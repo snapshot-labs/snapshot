@@ -111,7 +111,7 @@ export function coerceConfig(config, network) {
           if (Array.isArray(batch)) {
             // Assume old config
             return createBatch(
-              safe.umaAddress,
+              safe.realityAddress,
               _network,
               nonce,
               batch,
@@ -149,7 +149,7 @@ export function coerceConfig(config, network) {
     safes: [
       {
         network,
-        umaAddress: config.address,
+        realityAddress: config.address,
         multiSendAddress:
           getMultiSend(network, MULTI_SEND_VERSION.V1_1_1) ||
           getMultiSend(network, MULTI_SEND_VERSION.V1_3_0)

@@ -47,7 +47,7 @@ const getBondDetails = async (
   return bondInfo.value;
 };
 
-export const getModuleDetails = async (
+export const getModuleDetailsUma = async (
   provider: StaticJsonRpcProvider,
   network: string,
   moduleAddress: string,
@@ -118,7 +118,9 @@ export const getModuleDetails = async (
   );
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const proposalEvents = await oracleContract.queryFilter(oracleContract.filters.ProposePrice(moduleAddress));
+  const proposalEvents = await oracleContract.queryFilter(
+    oracleContract.filters.ProposePrice(moduleAddress)
+  );
   const thisModuleProposalEvents = proposalEvents.filter(
     event =>
       event.args?.ancillaryData === ancillaryData &&
@@ -159,7 +161,9 @@ export const getModuleDetails = async (
 
   // If we add a ProposalExecuted event to the OptimisticGovernor, we could check by both the hash and the timestamp.
   // In its current form, this code will create issues if there are duplicate proposals.
-  const executionEvents = await moduleContract.queryFilter(moduleContract.filters.TransactionExecuted(proposalHash));
+  const executionEvents = await moduleContract.queryFilter(
+    moduleContract.filters.TransactionExecuted(proposalHash)
+  );
   const proposalExecuted = executionEvents.length > 0;
   return {
     dao: moduleDetails[0][0],

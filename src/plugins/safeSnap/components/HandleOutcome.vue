@@ -16,6 +16,8 @@ import {
   useSafe
 } from '@/composables';
 
+import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
+
 const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
@@ -28,7 +30,7 @@ const props = defineProps([
   'batches',
   'proposal',
   'network',
-  'umaAddress',
+  'realityAddress',
   'multiSendAddress'
 ]);
 
@@ -38,13 +40,14 @@ const QuestionStates = {
   error: -1,
   noWalletConnection: 0,
   loading: 1,
-  waitingForProposal: 2,
-  waitingForLiveness: 3,
-  proposalApproved: 4,
-  proposalRejected: 5,
-  completelyExecuted: 6,
-  disputedButNotResolved: 7,
-  disputedResolvedValid: 8
+  waitingForQuestion: 2,
+  questionNotSet: 3,
+  questionNotResolved: 4,
+  waitingForCooldown: 5,
+  proposalApproved: 6,
+  proposalRejected: 7,
+  completelyExecuted: 8,
+  timeExpired: 9
 };
 Object.freeze(QuestionStates);
 
@@ -104,25 +107,35 @@ const questionStates = ref(QuestionStates);
 const actionInProgress = ref(false);
 const action2InProgress = ref(false);
 const questionDetails = ref(undefined);
+const modalApproveDecisionOpen = ref(false);
+const bondData = ref({
+  tokenSymbol: 'ETH',
+  canClaim: undefined,
+  data: undefined
+});
 
-const getTransactions = () => {
-  return props.batches.map(batch => [
-    batch.transactions[0].to,
-    Number(batch.transactions[0].operation),
-    batch.transactions[0].value,
-    batch.transactions[0].data
-  ]);
+const getTxHashes = () => {
+  return props.batches.map(batch => batch.hash);
 };
 
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetails(
+    questionDetails.value = await plugin.getExecutionDetailsWithHashes(
       props.network,
-      props.umaAddress,
+      props.realityAddress,
       props.proposal.id,
-      getTransactions()
+      getTxHashes()
     );
+    if (questionDetails.value.questionId && getInstance().web3) {
+      bondData.value = await plugin.loadClaimBondData(
+        getInstance().web3,
+        props.network,
+        questionDetails.value.questionId,
+        questionDetails.value.oracle,
+        props.proposal.snapshot
+      );
+    }
   } catch (e) {
     console.error(e);
   } finally {
@@ -130,22 +143,26 @@ const updateDetails = async () => {
   }
 };
 
-const approveBond = async () => {
+const claimBond = async () => {
   if (!questionDetails.value.oracle) return;
   try {
-    actionInProgress.value = 'approve-bond';
+    actionInProgress.value = 'claim-bond';
+
+    const params = Object.keys(bondData.value.data).map(
+      key => new Array(...bondData.value.data[key])
+    );
 
     await ensureRightNetwork(props.network);
-
-    const approveBond = await plugin.approveBond(
-      props.network,
+    const clamingBond = plugin.claimBond(
       getInstance().web3,
-      props.umaAddress
+      questionDetails.value.oracle,
+      questionDetails.value.questionId,
+      params
     );
-    await approveBond.next();
+    await clamingBond.next();
     actionInProgress.value = null;
     pendingCount.value++;
-    await approveBond.next();
+    await clamingBond.next();
     notify(t('notify.youDidIt'));
     pendingCount.value--;
     await sleep(3e3);
@@ -161,10 +178,11 @@ const submitProposal = async () => {
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposal(
+    const proposalSubmission = plugin.submitProposalWithHashes(
       getInstance().web3,
-      props.umaAddress,
-      getTransactions()
+      props.realityAddress,
+      questionDetails.value.proposalId,
+      getTxHashes()
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -177,6 +195,38 @@ const submitProposal = async () => {
   } catch (e) {
     console.error(e);
   } finally {
+    actionInProgress.value = null;
+  }
+};
+
+const voteOnQuestion = async option => {
+  if (!getInstance().isAuthenticated.value) return;
+  try {
+    await ensureRightNetwork(props.network);
+    const voting = plugin.voteForQuestion(
+      props.network,
+      getInstance().web3,
+      questionDetails.value.oracle,
+      questionDetails.value.questionId,
+      questionDetails.value.minimumBond,
+      option
+    );
+    const step = await voting.next();
+    if (step.value === 'erc20-approval') {
+      actionInProgress.value = null;
+      pendingCount.value++;
+      await voting.next();
+      pendingCount.value--;
+      await voting.next();
+    }
+    actionInProgress.value = null;
+    pendingCount.value++;
+    await voting.next();
+    pendingCount.value--;
+    await sleep(3e3);
+    await updateDetails();
+  } catch (e) {
+    console.error(e);
     actionInProgress.value = null;
   }
 };
@@ -194,10 +244,15 @@ const executeProposal = async () => {
 
   try {
     clearBatchError();
-    const executingProposal = plugin.executeProposal(
+    const transaction =
+      props.batches[questionDetails.value.nextTxIndex].mainTransaction;
+    const executingProposal = plugin.executeProposalWithHashes(
       getInstance().web3,
-      props.umaAddress,
-      getTransactions()
+      props.realityAddress,
+      questionDetails.value.proposalId,
+      getTxHashes(),
+      transaction,
+      questionDetails.value.nextTxIndex
     );
     await executingProposal.next();
     action2InProgress.value = null;
@@ -210,71 +265,7 @@ const executeProposal = async () => {
   } catch (err) {
     pendingCount.value--;
     action2InProgress.value = null;
-  }
-};
-
-const deleteDisputedProposal = async () => {
-  if (!getInstance().isAuthenticated.value) return;
-  action2InProgress.value = 'delete-disputed-proposal';
-  try {
-    await ensureRightNetwork(props.network);
-  } catch (e) {
-    console.error(e);
-    action2InProgress.value = null;
-    return;
-  }
-
-  try {
-    clearBatchError();
-    const deletingDisputedProposal = plugin.deleteDisputedProposal(
-      getInstance().web3,
-      props.umaAddress,
-      questionDetails.value.proposalEvent.proposalHash
-    );
-    await deletingDisputedProposal.next();
-    action2InProgress.value = null;
-    pendingCount.value++;
-    await deletingDisputedProposal.next();
-    notify(t('notify.youDidIt'));
-    pendingCount.value--;
-    await sleep(3e3);
-    await updateDetails();
-  } catch (err) {
-    pendingCount.value--;
-    action2InProgress.value = null;
-  }
-};
-
-// TODO: Implement button for deleting rejected proposal.
-const deleteRejectedProposal = async () => {
-  if (!getInstance().isAuthenticated.value) return;
-  action2InProgress.value = 'delete-rejected-proposal';
-  try {
-    await ensureRightNetwork(props.network);
-  } catch (e) {
-    console.error(e);
-    action2InProgress.value = null;
-    return;
-  }
-
-  try {
-    clearBatchError();
-    const deletingRejectedProposal = plugin.deleteRejectedProposal(
-      getInstance().web3,
-      props.umaAddress,
-      questionDetails.value.proposalEvent.proposalHash
-    );
-    await deletingRejectedProposal.next();
-    action2InProgress.value = null;
-    pendingCount.value++;
-    await deletingRejectedProposal.next();
-    notify(t('notify.youDidIt'));
-    pendingCount.value--;
-    await sleep(3e3);
-    await updateDetails();
-  } catch (err) {
-    pendingCount.value--;
-    action2InProgress.value = null;
+    setBatchError(questionDetails.value.nextTxIndex, err.reason);
   }
 };
 
@@ -297,40 +288,82 @@ const questionState = computed(() => {
 
   if (!questionDetails.value) return QuestionStates.error;
 
+  if (!questionDetails.value.questionId)
+    return QuestionStates.waitingForQuestion;
+
+  if (questionDetails.value.currentBond.isZero())
+    return QuestionStates.questionNotSet;
+
   const ts = (Date.now() / 1e3).toFixed();
-  const { proposalEvent, proposalExecuted } = questionDetails.value;
+  const { finalizedAt, cooldown, expiration, executionApproved, nextTxIndex } =
+    questionDetails.value;
 
-  // If proposal has already been executed, prevents user from proposing again.
-  if (proposalExecuted) return QuestionStates.completelyExecuted;
+  const isExpired = finalizedAt + expiration < ts;
 
-  // Proposal can be made if it has not been made already.
-  if (!proposalEvent) return QuestionStates.waitingForProposal;
+  if (!finalizedAt) return QuestionStates.questionNotResolved;
+  if (executionApproved) {
+    if (finalizedAt + cooldown > ts) return QuestionStates.waitingForCooldown;
 
-  // Proposal has been made and is waiting for liveness period to complete.
-  if (!proposalEvent.isExpired && !proposalEvent.isDisputed)
-    return QuestionStates.waitingForLiveness;
+    if (!Number.isInteger(nextTxIndex))
+      return QuestionStates.completelyExecuted;
+    else if (isExpired) return QuestionStates.timeExpired;
 
-  // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
-  if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
-
-  // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (proposalEvent.isExpired && !proposalEvent.isSettled)
     return QuestionStates.proposalApproved;
-
-  // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (proposalEvent.isSettled && !proposalEvent.isDisputed && !proposalExecuted)
-    return QuestionStates.proposalApproved;
-
-  // Proposal can not be re-proposed if it has been executed.
-  if (proposalEvent.isSettled && proposalExecuted)
-    return QuestionStates.completelyExecuted;
-
-  // Proposal can be deleted if it has been rejected.
-  if (proposalEvent.isDisputed && proposalEvent.resolvedPrice == 0)
-    return QuestionStates.proposalRejected;
-  // TODO: Allow user to delete proposal but do not show option to re-propose.
+  }
+  if (isExpired) return QuestionStates.proposalRejected;
 
   return QuestionStates.error;
+});
+
+const showOracleInfo = computed(() => {
+  return (
+    questionState.value === questionStates.value.questionNotSet ||
+    questionState.value === questionStates.value.questionNotResolved ||
+    questionState.value === questionStates.value.waitingForCooldown
+  );
+});
+
+const approvalData = computed(() => {
+  if (questionDetails.value) {
+    const { currentBond, finalizedAt, isApproved, endTime } =
+      questionDetails.value;
+
+    if (currentBond === undefined || BigNumber.from(currentBond).eq(0)) {
+      return {
+        decision: '--',
+        timeLeft: '--',
+        currentBond: '--'
+      };
+    }
+
+    if (finalizedAt) {
+      if (isApproved) {
+        return {
+          decision: 'Yes',
+          timeLeft: t('safeSnap.executableIn', [
+            formatRelativeTime(endTime + questionDetails.value.cooldown)
+          ])
+        };
+      }
+
+      return {
+        decision: 'No'
+      };
+    }
+
+    return {
+      decision: isApproved ? 'Yes' : 'No',
+      timeLeft: t('safeSnap.finalizedIn', [formatRelativeTime(endTime)]),
+      currentBond: `${formatUnits(currentBond, bondData.value.tokenDecimals)} ${
+        bondData.value.tokenSymbol
+      }`
+    };
+  }
+  return {
+    decision: '--',
+    timeLeft: '--',
+    currentBond: '--'
+  };
 });
 
 onMounted(async () => {
@@ -353,24 +386,7 @@ onMounted(async () => {
 
   <div v-if="connectedToRightChain || usingMetaMask">
     <div
-      v-if="
-        questionState === questionStates.waitingForProposal &&
-        questionDetails.needsBondApproval === true
-      "
-      class="my-4"
-    >
-      <BaseButton
-        :loading="actionInProgress === 'approve-bond'"
-        @click="approveBond"
-      >
-        {{ $t('safeSnap.labels.approveBond') }}
-      </BaseButton>
-    </div>
-    <div
-      v-if="
-        questionState === questionStates.waitingForProposal &&
-        questionDetails.needsBondApproval === false
-      "
+      v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
       <BaseButton
@@ -382,27 +398,87 @@ onMounted(async () => {
     </div>
 
     <div
-      v-if="questionState === questionStates.waitingForLiveness"
-      class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
-    >
-      <strong>{{
-        'Proposal can be executed at ' +
-        new Date(
-          questionDetails.proposalEvent.expirationTimestamp * 1000
-        ).toLocaleString()
-      }}</strong>
-    </div>
-
-    <div
-      v-if="questionState === questionStates.disputedButNotResolved"
+      v-if="
+        (showOracleInfo || bondData.canClaim) &&
+        questionState !== questionStates.loading
+      "
       class="my-4"
     >
-      <BaseButton
-        :loading="action2InProgress === 'delete-disputed-proposal'"
-        @click="deleteDisputedProposal"
-      >
-        {{ $t('safeSnap.labels.deleteDisputedProposal') }}
-      </BaseButton>
+      <div class="inline-block text-base">
+        <h4 class="text-center text-skin-link">
+          Reality oracle
+          <a class="ml-2 text-skin-text" @click="updateDetails">
+            <BaseIcon name="refresh" size="22" />
+          </a>
+        </h4>
+        <div
+          v-if="questionState !== questionStates.questionNotSet"
+          class="my-3 flex items-center space-x-3"
+          style="text-align: left"
+        >
+          <div class="self-stretch rounded-lg border p-3">
+            <div>
+              <strong class="pr-3"
+                >{{
+                  questionDetails?.finalizedAt
+                    ? $t('safeSnap.finalOutcome')
+                    : $t('safeSnap.currentOutcome')
+                }}:</strong
+              >
+              <span class="float-right text-skin-link">
+                {{ approvalData?.decision }}
+              </span>
+            </div>
+            <div v-if="!questionDetails?.finalizedAt" mt-3>
+              <strong class="pr-3">{{ $t('safeSnap.currentBond') }}:</strong>
+              <span class="float-right text-skin-link">
+                {{ approvalData?.currentBond }}
+              </span>
+            </div>
+          </div>
+
+          <div
+            v-if="approvalData?.timeLeft"
+            class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
+          >
+            <strong>{{ approvalData?.timeLeft }}</strong>
+          </div>
+        </div>
+
+        <div v-if="questionState === questionStates.questionNotSet">
+          <BaseButton
+            class="mb-1 mt-3 w-full"
+            :loading="actionInProgress === 'set-outcome'"
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+          >
+            {{ $t('safeSnap.labels.setOutcome') }}
+          </BaseButton>
+        </div>
+        <div v-if="questionState === questionStates.questionNotResolved">
+          <BaseButton
+            class="my-1 w-full"
+            :loading="actionInProgress === 'set-outcome'"
+            @click="
+              modalApproveDecisionOpen = true;
+              actionInProgress = 'set-outcome';
+            "
+          >
+            {{ $t('safeSnap.labels.changeOutcome') }}
+          </BaseButton>
+        </div>
+        <div v-if="bondData.canClaim">
+          <BaseButton
+            class="my-1 w-full"
+            :loading="actionInProgress === 'claim-bond'"
+            @click="claimBond"
+          >
+            {{ $t('safeSnap.claimBond') }}
+          </BaseButton>
+        </div>
+      </div>
     </div>
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
@@ -411,7 +487,7 @@ onMounted(async () => {
         @click="executeProposal"
       >
         {{
-          $t('safeSnap.labels.executeTxsUma', [
+          $t('safeSnap.labels.executeTxs', [
             questionDetails.nextTxIndex + 1,
             batches.length
           ])
@@ -436,4 +512,23 @@ onMounted(async () => {
   <div v-if="questionState === questionStates.proposalRejected" class="my-4">
     {{ $t('safeSnap.labels.rejected') }}
   </div>
+  <div v-if="questionState === questionStates.timeExpired" class="my-4">
+    {{ $t('safeSnap.labels.expired') }}
+  </div>
+
+  <teleport to="#modal">
+    <SafeSnapModalOptionApproval
+      :space-id="proposal.space.id"
+      :minimum-bond="questionDetails?.minimumBond"
+      :open="modalApproveDecisionOpen"
+      :is-approved="questionDetails?.isApproved"
+      :bond="questionDetails?.currentBond"
+      :question-id="questionDetails?.questionId"
+      :token-symbol="bondData?.tokenSymbol"
+      :token-decimals="bondData?.tokenDecimals"
+      :oracle="questionDetails?.oracle"
+      @setApproval="voteOnQuestion"
+      @close="modalApproveDecisionOpen = actionInProgress = false"
+    />
+  </teleport>
 </template>
