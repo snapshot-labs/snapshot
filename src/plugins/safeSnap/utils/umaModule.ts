@@ -64,6 +64,7 @@ export const getModuleDetailsUma = async (
   symbol: string;
   userBalance: BigNumber;
   needsBondApproval: boolean;
+  noTransactions: boolean;
   proposalEvent: any;
   proposalExecuted: boolean;
 }> => {
@@ -108,6 +109,23 @@ export const getModuleDetailsUma = async (
       ]
     );
     timestamp = await moduleContract.proposalHashes(proposalHash);
+  } else {
+    return {
+      dao: moduleDetails[0][0],
+      oracle: moduleDetails[1][0],
+      rules: moduleDetails[2][0],
+      minimumBond: minimumBond,
+      expiration: moduleDetails[4][0],
+      allowance: bondDetails.currentUserBondAllowance,
+      collateral: bondDetails.collateral,
+      decimals: bondDetails.decimals,
+      symbol: bondDetails.symbol,
+      userBalance: bondDetails.currentUserBalance,
+      needsBondApproval: needsApproval,
+      noTransactions: true,
+      proposalEvent: {},
+      proposalExecuted: false
+    };
   }
 
   // Search for requests with matching ancillary data
@@ -165,6 +183,7 @@ export const getModuleDetailsUma = async (
     moduleContract.filters.TransactionExecuted(proposalHash)
   );
   const proposalExecuted = executionEvents.length > 0;
+
   return {
     dao: moduleDetails[0][0],
     oracle: moduleDetails[1][0],
@@ -177,6 +196,7 @@ export const getModuleDetailsUma = async (
     symbol: bondDetails.symbol,
     userBalance: bondDetails.currentUserBalance,
     needsBondApproval: needsApproval,
+    noTransactions: false,
     proposalEvent: proposalEvent[0],
     proposalExecuted: proposalExecuted
   };

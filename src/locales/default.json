@@ -597,6 +597,7 @@
       "changeOutcome": "Change outcome",
       "executeTxs": "Execute transaction batch {0} of {1}",
       "executed": "All transactions have been executed",
+      "noTransactions": "There are no transactions to execute",
       "rejected": "Proposal rejected",
       "error": "Something went wrong",
       "connectWallet": "Connect wallet to see execution details",
@@ -606,8 +607,10 @@
       "proposalPassed": "Did the proposal pass?",
       "expired": "The proposal has expired",
       "approveBond": "Approve bond",
+      "confirmVoteResults": "Click to confirm the proposal passed",
       "executeTxsUma": "Execute transaction batch",
-      "deleteDisputedProposal": "Delete disputed proposal"
+      "deleteDisputedProposal": "Delete disputed proposal",
+      "deleteRejectedProposal": "Delete rejected proposal"
     }
   },
   "poap": {

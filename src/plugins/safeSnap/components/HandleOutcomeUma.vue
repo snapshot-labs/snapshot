@@ -38,13 +38,15 @@ const QuestionStates = {
   error: -1,
   noWalletConnection: 0,
   loading: 1,
-  waitingForProposal: 2,
-  waitingForLiveness: 3,
-  proposalApproved: 4,
-  proposalRejected: 5,
-  completelyExecuted: 6,
-  disputedButNotResolved: 7,
-  disputedResolvedValid: 8
+  waitingForVoteConfirmation: 2,
+  noTransactions: 3,
+  waitingForProposal: 4,
+  waitingForLiveness: 5,
+  proposalApproved: 6,
+  proposalRejected: 7,
+  completelyExecuted: 8,
+  disputedButNotResolved: 9,
+  disputedResolvedValid: 10
 };
 Object.freeze(QuestionStates);
 
@@ -100,9 +102,10 @@ const ensureRightNetwork = async chainId => {
 };
 
 const loading = ref(true);
-const questionStates = ref(QuestionStates);
 const actionInProgress = ref(false);
 const action2InProgress = ref(false);
+const voteResultsConfirmed = ref(false);
+const questionStates = ref(QuestionStates);
 const questionDetails = ref(undefined);
 
 const getTransactions = () => {
@@ -154,6 +157,10 @@ const approveBond = async () => {
     console.error(e);
     actionInProgress.value = null;
   }
+};
+
+const confirmVoteResults = () => {
+  voteResultsConfirmed.value = true;
 };
 
 const submitProposal = async () => {
@@ -245,7 +252,6 @@ const deleteDisputedProposal = async () => {
   }
 };
 
-// TODO: Implement button for deleting rejected proposal.
 const deleteRejectedProposal = async () => {
   if (!getInstance().isAuthenticated.value) return;
   action2InProgress.value = 'delete-rejected-proposal';
@@ -297,14 +303,22 @@ const questionState = computed(() => {
 
   if (!questionDetails.value) return QuestionStates.error;
 
+  if (questionDetails.value.noTransactions)
+    return QuestionStates.noTransactions;
+
   const ts = (Date.now() / 1e3).toFixed();
   const { proposalEvent, proposalExecuted } = questionDetails.value;
 
   // If proposal has already been executed, prevents user from proposing again.
   if (proposalExecuted) return QuestionStates.completelyExecuted;
 
-  // Proposal can be made if it has not been made already.
-  if (!proposalEvent) return QuestionStates.waitingForProposal;
+  // User can confirm vote results if not done already and there is no proposal yet.
+  if (!proposalEvent && !voteResultsConfirmed.value)
+    return QuestionStates.waitingForVoteConfirmation;
+
+  // Proposal can be made if it has not been made already and user confirmed vote results.
+  if (!proposalEvent && voteResultsConfirmed)
+    return QuestionStates.waitingForProposal;
 
   // Proposal has been made and is waiting for liveness period to complete.
   if (!proposalEvent.isExpired && !proposalEvent.isDisputed)
@@ -328,7 +342,6 @@ const questionState = computed(() => {
   // Proposal can be deleted if it has been rejected.
   if (proposalEvent.isDisputed && proposalEvent.resolvedPrice == 0)
     return QuestionStates.proposalRejected;
-  // TODO: Allow user to delete proposal but do not show option to re-propose.
 
   return QuestionStates.error;
 });
@@ -353,6 +366,22 @@ onMounted(async () => {
 
   <div v-if="connectedToRightChain || usingMetaMask">
     <div
+      v-if="questionState === questionStates.waitingForVoteConfirmation"
+      class="my-4"
+    >
+      <BaseButton
+        :loading="actionInProgress === 'confirm-vote-results'"
+        @click="confirmVoteResults"
+      >
+        {{ $t('safeSnap.labels.confirmVoteResults') }}
+      </BaseButton>
+    </div>
+
+    <div v-if="questionState === questionStates.noTransactions" class="my-4">
+      {{ $t('safeSnap.labels.noTransactions') }}
+    </div>
+
+    <div
       v-if="
         questionState === questionStates.waitingForProposal &&
         questionDetails.needsBondApproval === true
@@ -366,6 +395,7 @@ onMounted(async () => {
         {{ $t('safeSnap.labels.approveBond') }}
       </BaseButton>
     </div>
+
     <div
       v-if="
         questionState === questionStates.waitingForProposal &&
@@ -402,6 +432,15 @@ onMounted(async () => {
         @click="deleteDisputedProposal"
       >
         {{ $t('safeSnap.labels.deleteDisputedProposal') }}
+      </BaseButton>
+    </div>
+
+    <div v-if="questionState === questionStates.proposalRejected" class="my-4">
+      <BaseButton
+        :loading="action2InProgress === 'delete-rejected-proposal'"
+        @click="deleteRejectedProposal"
+      >
+        {{ $t('safeSnap.labels.deleteRejectedProposal') }}
       </BaseButton>
     </div>
 
