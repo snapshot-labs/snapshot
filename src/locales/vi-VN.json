@@ -271,7 +271,7 @@
     "createASpace": "Tạo một không gian",
     "registerEnsButton": "Register",
     "supportedEnsTLDs": "Supported domain endings",
-    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.gg/snapshot'>Discord</a>.",
+    "helpDocsAndDiscordLinks": "Not sure how to create a space? Learn more in the <a target='_blank' href='https://docs.snapshot.org/spaces/create'> documentation </a> or join Snapshot <a target='_blank' href='https://discord.snapshot.org/'>Discord</a>.",
     "setSpaceController": "Set space controller address on ENS",
     "editSpaceController": "Edit controller on ENS",
     "setController": "Set controller",

@@ -17,14 +17,15 @@ export function useReportDownload() {
     link.click();
   }
 
-  async function getAllVotes(proposalId: string) {
+  async function getAllVotes(proposalId: string, space: string) {
     let votes: Vote[] = [];
     let page = 0;
-    const pageSize = 10000;
+    const pageSize = 1000;
     while (votes.length === pageSize * page) {
       const newVotes = await getProposalVotes(proposalId, {
         first: pageSize,
-        skip: page * pageSize
+        skip: page * pageSize,
+        space: space
       });
       votes = [...votes, ...newVotes];
       page++;
@@ -34,9 +35,9 @@ export function useReportDownload() {
 
   const isDownloadingVotes = ref(false);
 
-  async function downloadVotes(proposalId: string) {
+  async function downloadVotes(proposalId: string, space: string) {
     isDownloadingVotes.value = true;
-    const votes = await getAllVotes(proposalId);
+    const votes = await getAllVotes(proposalId, space);
     if (!votes.length) return;
     const data = votes.map(vote => {
       return {

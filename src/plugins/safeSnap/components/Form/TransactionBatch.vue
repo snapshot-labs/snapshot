@@ -1,7 +1,6 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useSafe } from '@/composables';
-import chevronIcon from '@/assets/icons/chevron.svg';
 import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
@@ -21,8 +20,7 @@ export default {
       hashHidden: true,
       jsonHidden: true,
       batch: this.modelValue,
-      transactions: this.modelValue ? clone(this.modelValue.transactions) : [],
-      chevronIcon
+      transactions: this.modelValue ? clone(this.modelValue.transactions) : []
     };
   },
   async mounted() {
@@ -132,23 +130,23 @@ export default {
       v-if="modelValue.hash"
       :show-arrow="true"
       :open="!hashHidden"
+      :text="modelValue.hash"
       class="collapsible-text mt-2"
       title="Batch Transaction Hash"
       @toggle="hashHidden = !hashHidden"
-    >
-      {{ modelValue.hash }}
-    </UiCollapsibleText>
+    />
     <UiCollapsibleText
       v-if="modelValue.hash"
       :show-arrow="true"
-      :pre="true"
       :open="!jsonHidden"
+      :text="
+        JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t')
+      "
       class="collapsible-text mt-2"
       title="Batch Transaction JSON"
+      pre
       @toggle="jsonHidden = !jsonHidden"
-    >
-      {{ JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t') }}
-    </UiCollapsibleText>
+    />
     <BaseBlock
       v-if="
         safesnap.batchError &&

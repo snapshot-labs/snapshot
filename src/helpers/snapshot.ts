@@ -1,4 +1,4 @@
-import { getVp } from '@snapshot-labs/snapshot.js/src/utils';
+import { getVp, validate } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import { Vote } from '@/helpers/interfaces';
@@ -6,7 +6,12 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
-  { first, voter, skip }: any = { first: 30000, voter: '', skip: 0 }
+  { first, voter, skip, space }: any = {
+    first: 1000,
+    voter: '',
+    skip: 0,
+    space: ''
+  }
 ): Promise<Vote[] | []> {
   try {
     console.time('getProposalVotes');
@@ -18,7 +23,8 @@ export async function getProposalVotes(
         orderDirection: 'desc',
         first,
         voter,
-        skip
+        skip,
+        space
       }
     });
     console.timeEnd('getProposalVotes');
@@ -63,7 +69,7 @@ export async function getPower(space, address, proposal) {
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
-  return await getVp(
+  return getVp(
     address,
     proposal.network,
     proposal.strategies,
@@ -72,4 +78,26 @@ export async function getPower(space, address, proposal) {
     proposal.delegation === 1,
     options
   );
+}
+
+export async function getValidation(
+  space,
+  address,
+  proposal
+): Promise<boolean> {
+  console.log('[score] getValidation');
+  const options: any = {};
+  if (import.meta.env.VITE_SCORES_URL)
+    options.url = import.meta.env.VITE_SCORES_URL;
+  const validateRes = await validate(
+    proposal.validation.name,
+    address,
+    space.id,
+    proposal.network,
+    parseInt(proposal.snapshot),
+    proposal.validation.params,
+    options
+  );
+  if (typeof validateRes !== 'boolean') return false;
+  return validateRes;
 }

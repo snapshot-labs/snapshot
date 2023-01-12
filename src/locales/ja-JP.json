@@ -8,7 +8,9 @@
   "results": "投票結果",
   "resultsError": "結果を計算できませんでした。戦略が誤って設定されていたり、または戦略に対してRPCノードが無反応であることが原因かもしれません。",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "vpError": "投票力を計算できませんでした。ストラテジーの誤設定や、ストラテジーに関係するRPCノードが無反応であることが原因かもしれません。",
+  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "ヘルプ",
   "retry": "リトライ",
   "currentResults": "現在の投票状況",
@@ -289,6 +291,12 @@
     "header": "設定",
     "editController": "コントローラの編集",
     "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
+    "gnosisWrongNetwork": {
+      "base": "Your Gnosis Safe is on the wrong network. Please connect to {network} to {action}.",
+      "settings": "edit the space settings",
+      "create": "create a proposal",
+      "vote": "vote on this proposal"
+    },
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
     "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
@@ -373,7 +381,7 @@
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. This will enforce the same voting system for all proposals"
+      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
     },
     "anyType": "すべて",
     "hideAbstain": "基本的な投票結果において棄権投票を無視する",
@@ -430,7 +438,8 @@
       "title": "Setup your space domain",
       "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
       "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
-      "tryDemo": "try the demo"
+      "tryDemo": "try the demo",
+      "yourExistingSpaces": "Your existing spaces"
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
@@ -462,8 +471,10 @@
     "about": {
       "header": "About",
       "joinedSpaces": "Joined spaces",
+      "createdSpaces": "Created spaces",
       "biography": "Bio",
       "notJoinSpacesYet": "Hasn't joined any spaces yet",
+      "notCreatedSpacesYet": "Hasn't created any spaces yet",
       "delegatorNetworkInfo": "Change by switching network in your wallet",
       "delegate": "Delegate",
       "delegated": "Delegated",
@@ -477,7 +488,7 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older",
+      "olderThanWeek": "Older than a week",
       "noActivity": "No activity yet"
     },
     "settings": {
@@ -546,7 +557,7 @@
   "privacy": {
     "label": "Privacy",
     "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals, setting it here will enforce the same privacy on all proposals.",
+    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "Any",
     "none": "None",
     "shutter": {
@@ -554,6 +565,23 @@
       "description": "Choices are encrypted and only visible once the voting period is over",
       "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+    }
+  },
+  "validation": {
+    "label": "Validation",
+    "title": "Select voting validation",
+    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can vote",
+      "description": "Anyone with voting power can cast a vote."
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
     }
   },
   "safeSnap": {

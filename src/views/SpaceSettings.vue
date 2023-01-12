@@ -15,7 +15,8 @@ import {
   useExtendedSpaces,
   useSpaceForm,
   useTreasury,
-  useFlashNotification
+  useFlashNotification,
+  useGnosis
 } from '@/composables';
 
 const props = defineProps<{
@@ -36,6 +37,7 @@ const {
 } = useSpaceForm('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
+const { isGnosisAndNotDefaultNetwork } = useGnosis();
 
 const currentTextRecord = ref('');
 const loaded = ref(false);
@@ -60,7 +62,7 @@ const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 watch(
   [currentTextRecord, textRecord],
   async () => {
-    loadOwnedEnsDomains();
+    loadOwnedEnsDomains(web3Account.value);
   },
   { immediate: true }
 );
@@ -153,8 +155,15 @@ async function handleSetRecord() {
       </BaseMessageBlock>
       <template v-else>
         <div class="space-y-3">
+          <MessageWarningGnosisNetwork
+            v-if="isGnosisAndNotDefaultNetwork"
+            :space="space"
+            action="settings"
+            is-responsive
+          />
+
           <BaseMessageBlock
-            v-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
+            v-else-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
             class="mx-4 mb-3 md:mx-0"
             level="info"
           >
@@ -212,7 +221,7 @@ async function handleSetRecord() {
                 {{ $t('reset') }}
               </BaseButton>
               <BaseButton
-                :disabled="!isReadyToSubmit"
+                :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
                 :loading="isSending"
                 class="block w-full"
                 primary

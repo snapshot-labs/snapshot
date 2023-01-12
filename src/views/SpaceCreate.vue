@@ -17,7 +17,8 @@ import {
   useApp,
   useApolloQuery,
   useWeb3,
-  useClient
+  useClient,
+  useGnosis
 } from '@/composables';
 
 const BODY_LIMIT_CHARACTERS = 14400;
@@ -37,6 +38,8 @@ const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
+const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
+
 const {
   form,
   userSelectedDateEnd,
@@ -341,7 +344,8 @@ onMounted(() =>
             (!stepIsValid && !!web3Account) ||
             web3.authLoading ||
             executingValidationFailed ||
-            validationLoading
+            validationLoading ||
+            isGnosisAndNotSpaceNetwork
           "
           primary
           :data-testid="

@@ -3,14 +3,16 @@ import { ref, watch, computed, onMounted } from 'vue';
 import { useSpaceForm, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { ERC20ABI } from '@/helpers/abi';
+import { isAddress } from '@ethersproject/address';
 
 const emit = defineEmits(['next']);
 
 const { form, setDefaultStrategy } = useSpaceForm('setup');
 const { t } = useI18n();
+
+const BROVIDER_URL = 'https://rpc.snapshot.org';
 
 const tokenStandards = computed(() => {
   return ['ERC-20', 'ERC-721', 'ERC-1155'].map(name => ({
@@ -91,7 +93,15 @@ const tokenError = ref('');
 
 async function getTokenInfo() {
   tokenError.value = '';
+
+  if (!input.value.address || !isAddress(input.value.address)) {
+    tokenError.value = t('errors.invalidAddress');
+    token.value = clone(defaultToken);
+    return;
+  }
+
   isTokenLoading.value = true;
+
   const { data } = await getTokenPrices(
     input.value.address,
     input.value.network
@@ -105,9 +115,8 @@ async function getTokenInfo() {
     isTokenLoading.value = false;
   } else {
     try {
-      // TODO: use brovider(?)
       const provider = new JsonRpcProvider(
-        networks[input.value.network].rpc[0]
+        `${BROVIDER_URL}/${input.value.network}`
       );
       const tokenInfo = await Promise.all([
         call(provider, ERC20ABI, [input.value.address, 'name', []]),

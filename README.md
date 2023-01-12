@@ -15,7 +15,7 @@
     <a href="https://telegram.snapshot.org">
         <img src="https://img.shields.io/badge/Telegram-white?logo=telegram" alt="Telegram">
     </a>
-    <a href="https://discord.snapshot.org">
+    <a href="https://discord.snapshot.org/">
         <img src="https://img.shields.io/discord/707079246388133940.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord">
     </a>
     <a href="https://twitter.com/SnapshotLabs">
@@ -31,7 +31,6 @@
     <a href="https://features.snapshot.org/feature-requests"><b>Feature requests</b></a>
     •
     <a href="https://docs.snapshot.org/guides/contribute"><b>Contribute</b></a>
-   
 </div>
 
 ## Project setup

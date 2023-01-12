@@ -31,6 +31,11 @@ export function useExtendedSpaces() {
       const mappedSpaces = spaces.map(mapOldPluginNames);
       extentedSpaces.value = [...extentedSpaces.value, ...mappedSpaces];
 
+      // Remove any duplicates incase two requests were made at the same time
+      extentedSpaces.value = extentedSpaces.value.filter(
+        (space, index, self) => index === self.findIndex(t => t.id === space.id)
+      );
+
       loading.value = false;
     } catch (e) {
       loading.value = false;

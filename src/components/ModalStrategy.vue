@@ -121,7 +121,7 @@ watch(open, () => {
     <div v-if="input.name" class="m-4">
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
-        <div class="min-h-[280px] space-y-3">
+        <div class="min-h-[250px] space-y-3">
           <ComboboxNetwork
             :network="input.network"
             @select="value => (input.network = value)"

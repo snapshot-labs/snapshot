@@ -62,7 +62,11 @@ export interface ProfileActivity {
   type: string;
   title: string;
   space: { id: string; avatar: string };
-  vote?: { proposalId: string; choice: string; type: string };
+  vote?: {
+    proposalId: string;
+    choice: string;
+    type: string;
+  };
 }
 
 export interface TreasuryAsset {
@@ -146,6 +150,7 @@ export interface Proposal {
   state: string;
   symbol: string;
   privacy: string;
+  validation: VoteValidation;
   discussion: string;
   quorum: number;
   scores: number[];
@@ -156,6 +161,11 @@ export interface Proposal {
   plugins: Record<string, any>;
   space: ExtendedSpace;
   strategies: SpaceStrategy[];
+}
+
+export interface VoteValidation {
+  name: string;
+  params: Record<string, any>;
 }
 
 export interface Results {

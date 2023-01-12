@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 
-const props = defineProps({ value: { Number, Array }, max: Number });
+const props = defineProps<{ value: number | number[]; max: number }>();
 
 const bars = computed(() =>
   Array.isArray(props.value) ? props.value : [props.value]
@@ -14,7 +14,7 @@ const bars = computed(() =>
     <div
       v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"
-      :style="`width: ${parseFloat((100 / max) * bar).toFixed(3)}%;`"
+      :style="`width: ${((100 / max) * bar).toFixed(3)}%;`"
       class="z-10 h-full bg-primary"
       :class="{
         'opacity-80': i === 1,

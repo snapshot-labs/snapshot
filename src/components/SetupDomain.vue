@@ -22,8 +22,9 @@ const loadingOwnedEnsDomains = ref(false);
 watch(
   web3Account,
   async () => {
+    ownedEnsDomains.value = [];
     loadingOwnedEnsDomains.value = true;
-    await loadOwnedEnsDomains();
+    await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
     if (ownedEnsDomains.value.map(d => d.name).length)
       await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
@@ -34,6 +35,11 @@ watch(
 const domainsWithoutExistingSpace = computed(() => {
   const spaces = clone(extentedSpaces.value.map(space => space.id));
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
+});
+
+const domainsWithExistingSpace = computed(() => {
+  const spaces = ownedEnsDomains.value.map(d => d.name);
+  return extentedSpaces.value.filter(d => spaces.includes(d.id));
 });
 
 const emit = defineEmits(['next']);
@@ -74,6 +80,13 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
         </i18n-t>
       </BaseMessageBlock>
 
+      <BlockSpacesList
+        v-if="domainsWithExistingSpace.length"
+        :spaces="domainsWithExistingSpace.map(space => space.id)"
+        :title="$t('setup.domain.yourExistingSpaces')"
+        class="mb-3"
+      />
+
       <BaseMessageBlock
         v-if="defaultNetwork === '5'"
         level="info"
@@ -110,16 +123,12 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               <BaseIcon name="go" size="22" class="-mr-2" />
             </BaseButton>
           </div>
-          <div class="my-3">
+          <div class="mt-4">
             {{ $t('setup.orReigsterNewEns') }}
           </div>
-          <SetupDomainRegister
-            v-model.trim="inputDomain"
-            @waitForRegistration="waitForRegistration"
-          />
         </div>
-        <div v-else>
-          <div class="mb-3">
+        <div>
+          <div v-if="!domainsWithoutExistingSpace.length" class="mb-3">
             {{ $t('setup.toCreateASpace') }}
           </div>
           <SetupDomainRegister

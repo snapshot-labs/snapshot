@@ -1,17 +1,15 @@
-<script>
-import chevronIcon from '@/assets/icons/chevron.svg';
+<script setup lang="ts">
+defineProps<{
+  open: boolean;
+  title: string;
+  showArrow: boolean;
+}>();
 
-export default {
-  props: ['open', 'title', 'number', 'hideRemove', 'showArrow', 'borderless'],
-  emits: ['toggle'],
-  data() {
-    return { chevronIcon };
-  }
-};
+defineEmits(['toggle']);
 </script>
 
 <template>
-  <div class="collapsible-container w-full text-left" :class="{ borderless }">
+  <div class="collapsible-container w-full text-left">
     <div class="collapsible-header flex items-stretch px-2">
       <div
         class="ml-2 flex flex-auto flex-nowrap items-center"
@@ -26,12 +24,7 @@ export default {
         class="mr-3 flex cursor-pointer items-center"
         @click="$emit('toggle')"
       >
-        <img
-          :src="chevronIcon"
-          alt="arrow"
-          class="arrow"
-          :class="{ rotate: !open }"
-        />
+        <i-ho-chevron-up :class="{ rotate: !open }" />
       </div>
       <slot name="icons"></slot>
     </div>

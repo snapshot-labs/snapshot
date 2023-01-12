@@ -223,13 +223,12 @@ export default {
       v-if="hash"
       :show-arrow="true"
       :open="showHash"
+      :text="hash"
       class="border-b"
       style="border-width: 0 0 1px 0 !important"
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
-    >
-      {{ hash }}
-    </UiCollapsibleText>
+    />
     <div class="text-center">
       <div
         v-for="(batch, index) in input"

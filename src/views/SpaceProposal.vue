@@ -17,7 +17,7 @@ const props = defineProps<{ space: ExtendedSpace }>();
 const route = useRoute();
 const router = useRouter();
 
-const { t, setPageTitle } = useI18n();
+const { setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 
 const id: string = route.params.id as string;
@@ -59,7 +59,10 @@ async function loadProposal() {
   loadingProposal.value = true;
   proposal.value = await getProposal(id);
   // Redirect to 404 page if proposal doesn't belong to current space
-  if (!proposal.value || props.space.id !== proposal.value.space.id) {
+  if (
+    !proposal.value ||
+    props.space.id.toLowerCase() !== proposal.value.space.id.toLowerCase()
+  ) {
     router.push({ name: 'error-404' });
   }
   loadingProposal.value = false;
@@ -82,11 +85,7 @@ function formatProposalVotes(votes) {
 async function loadResults() {
   if (!proposal.value) return;
 
-  if (
-    proposal.value.scores.length === 0 ||
-    proposal.value.id ===
-      '0x1ab7ef84f6e904582d5b5b921944b5b1a8e36dbff1f1248fde87fef02b046816'
-  ) {
+  if (proposal.value.scores.length === 0) {
     const votingClass = new voting[proposal.value.type](
       proposal.value,
       [],
@@ -106,12 +105,17 @@ async function loadResults() {
   }
   loadedResults.value = true;
   const [userVotesRes, votesRes] = await Promise.all([
+    // Skip if user is not connected
+    web3Account.value
+      ? await getProposalVotes(id, {
+          first: 1,
+          voter: web3Account.value,
+          space: proposal.value.space.id
+        })
+      : [],
     await getProposalVotes(id, {
-      first: 1,
-      voter: web3Account.value || '0x0000000000000000000000000000000000000000'
-    }),
-    await getProposalVotes(id, {
-      first: 10
+      first: 10,
+      space: proposal.value.space.id
     })
   ]);
   userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
@@ -248,7 +252,7 @@ onMounted(async () => {
     </template>
   </TheLayout>
   <teleport v-if="proposal" to="#modal">
-    <ModalConfirm
+    <ModalVote
       :open="modalOpen"
       :space="space"
       :proposal="proposal"

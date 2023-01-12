@@ -42,11 +42,14 @@ const subSpaces = computed(
 const spaceProposals = computed(() => {
   if (domain)
     return clone(store.space.proposals).filter(
-      proposal => proposal.space.id === props.space.id
+      proposal =>
+        proposal.space.id.toLowerCase() === props.space.id.toLowerCase()
     );
 
   return clone(store.space.proposals).filter(proposal =>
-    [props.space.id, ...subSpaces.value].includes(proposal.space.id)
+    [props.space.id.toLowerCase(), ...subSpaces.value].includes(
+      proposal.space.id.toLowerCase()
+    )
   );
 });
 

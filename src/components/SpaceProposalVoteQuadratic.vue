@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { percentageOfTotal } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
+import { calcPercentageOfSum } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
 import { useMediaQuery } from '@vueuse/core';
 import { Proposal } from '@/helpers/interfaces';
 
@@ -18,11 +18,10 @@ const isSmallScreen = useMediaQuery('(max-width: 543px)');
 function percentage(i) {
   return (
     Math.round(
-      percentageOfTotal(
-        i + 1,
-        selectedChoices.value,
+      calcPercentageOfSum(
+        selectedChoices.value[i + 1],
         Object.values(selectedChoices.value)
-      ) * 10
+      ) * 1000
     ) / 10
   );
 }

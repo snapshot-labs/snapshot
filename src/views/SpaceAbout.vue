@@ -107,7 +107,7 @@ onMounted(() => {
               />
             </div>
 
-            <div>{{ networks[strategy.network].name }}</div>
+            <div>{{ networks[strategy.network]?.name }}</div>
           </div>
           <div>
             <BasePill v-if="strategy.params.symbol" class="py-1">
