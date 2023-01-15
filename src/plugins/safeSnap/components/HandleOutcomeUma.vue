@@ -4,22 +4,18 @@ import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { BigNumber } from '@ethersproject/bignumber';
-import { formatUnits } from '@ethersproject/units';
 
 import {
   useWeb3,
   useI18n,
-  useIntl,
   useFlashNotification,
   useTxStatus,
   useSafe
 } from '@/composables';
 
-const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
-const { clearBatchError, setBatchError } = useSafe();
+const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
@@ -40,13 +36,12 @@ const QuestionStates = {
   loading: 1,
   waitingForVoteConfirmation: 2,
   noTransactions: 3,
-  waitingForProposal: 4,
-  waitingForLiveness: 5,
-  proposalApproved: 6,
-  proposalRejected: 7,
-  completelyExecuted: 8,
-  disputedButNotResolved: 9,
-  disputedResolvedValid: 10
+  completelyExecuted: 4,
+  proposalRejected: 5,
+  disputedButNotResolved: 6,
+  waitingForProposal: 7,
+  waitingForLiveness: 8,
+  proposalApproved: 9
 };
 Object.freeze(QuestionStates);
 
@@ -124,6 +119,7 @@ const updateDetails = async () => {
       props.network,
       props.umaAddress,
       props.proposal.id,
+      props.proposal.ipfs,
       getTransactions()
     );
   } catch (e) {
@@ -171,6 +167,7 @@ const submitProposal = async () => {
     const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
       props.umaAddress,
+      props.proposal.ipfs,
       getTransactions()
     );
     await proposalSubmission.next();
@@ -307,25 +304,29 @@ const questionState = computed(() => {
     return QuestionStates.noTransactions;
 
   const ts = (Date.now() / 1e3).toFixed();
-  const { proposalEvent, proposalExecuted } = questionDetails.value;
+  const { proposalEvent, proposalExecuted, activeProposal } =
+    questionDetails.value;
 
   // If proposal has already been executed, prevents user from proposing again.
   if (proposalExecuted) return QuestionStates.completelyExecuted;
 
   // User can confirm vote results if not done already and there is no proposal yet.
-  if (!proposalEvent && !voteResultsConfirmed.value)
+  if (!activeProposal && !voteResultsConfirmed.value)
     return QuestionStates.waitingForVoteConfirmation;
 
   // Proposal can be made if it has not been made already and user confirmed vote results.
-  if (!proposalEvent && voteResultsConfirmed)
+  if (!activeProposal && voteResultsConfirmed)
     return QuestionStates.waitingForProposal;
 
-  // Proposal has been made and is waiting for liveness period to complete.
-  if (!proposalEvent.isExpired && !proposalEvent.isDisputed)
-    return QuestionStates.waitingForLiveness;
+  // Proposal can be deleted if it has been rejected.
+  if (proposalEvent.isDisputed && proposalEvent.resolvedPrice == 0)
+    return QuestionStates.proposalRejected;
 
   // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
   if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
+
+  // Proposal has been made and is waiting for liveness period to complete.
+  if (!proposalEvent.isExpired) return QuestionStates.waitingForLiveness;
 
   // Proposal is approved if it expires without a dispute and hasn't been settled.
   if (proposalEvent.isExpired && !proposalEvent.isSettled)
@@ -334,14 +335,6 @@ const questionState = computed(() => {
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
   if (proposalEvent.isSettled && !proposalEvent.isDisputed && !proposalExecuted)
     return QuestionStates.proposalApproved;
-
-  // Proposal can not be re-proposed if it has been executed.
-  if (proposalEvent.isSettled && proposalExecuted)
-    return QuestionStates.completelyExecuted;
-
-  // Proposal can be deleted if it has been rejected.
-  if (proposalEvent.isDisputed && proposalEvent.resolvedPrice == 0)
-    return QuestionStates.proposalRejected;
 
   return QuestionStates.error;
 });

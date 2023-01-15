@@ -115,6 +115,7 @@ export const UMA_MODULE_ABI = [
   'event SetRules(string indexed rules)',
   'event TargetSet(address indexed previousTarget, address indexed newTarget)',
   'event TransactionExecuted(bytes32 indexed proposalHash, uint256 indexed transactionIndex)',
+  'event ProposalExecuted(bytes32 indexed proposalHash, uint256 indexed proposalTime)',
   'event TransactionsProposed(address indexed proposer, uint256 indexed proposalTime, tuple(tuple(address to, uint8 operation, uint256 value, bytes data)[] transactions, uint256 requestTime) proposal, bytes32 proposalHash, bytes explanation, uint256 challengeWindowEnds)',
   'function PROPOSAL_HASH_KEY() view returns (bytes)',
   'function PROPOSAL_VALID_RESPONSE() view returns (int256)',

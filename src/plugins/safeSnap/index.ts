@@ -1,6 +1,7 @@
 import { Result } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isHexString } from '@ethersproject/bytes';
+import { toUtf8Bytes } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { _TypedDataEncoder } from '@ethersproject/hash';
@@ -149,24 +150,30 @@ export default class Plugin {
       provider
     );
 
-    return moduleContract.rules().then(() => 'uma').catch(() => 'reality');
+    return moduleContract
+      .rules()
+      .then(() => 'uma')
+      .catch(() => 'reality');
   }
 
   async getExecutionDetails(
     network: string,
     moduleAddress: string,
     proposalId: string,
+    explanation: string,
     transactions: any
   ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
+      explanation,
       transactions
     );
 
     return {
       ...moduleDetails,
-      proposalId
+      proposalId,
+      explanation
     };
   }
 
@@ -179,6 +186,7 @@ export default class Plugin {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
+      '',
       transactions
     );
 
@@ -233,10 +241,17 @@ export default class Plugin {
   async getModuleDetailsUma(
     network: string,
     moduleAddress: string,
+    explanation: string,
     transactions: any
   ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetailsUma(provider, network, moduleAddress, transactions);
+    return getModuleDetailsUma(
+      provider,
+      network,
+      moduleAddress,
+      explanation,
+      transactions
+    );
   }
 
   async *submitProposalWithHashes(
@@ -257,13 +272,19 @@ export default class Plugin {
     console.log('[DAO module] submitted proposal:', receipt);
   }
 
-  async *submitProposal(web3: any, moduleAddress: string, transactions: any) {
+  async *submitProposal(
+    web3: any,
+    moduleAddress: string,
+    explanation: string,
+    transactions: any
+  ) {
+    const explanationBytes = toUtf8Bytes(explanation);
     const tx = await sendTransaction(
       web3,
       moduleAddress,
       UMA_MODULE_ABI,
       'proposeTransactions',
-      [transactions, '0x']
+      [transactions, explanationBytes]
       // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
     );
     yield;

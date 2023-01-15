@@ -8,7 +8,7 @@ import { useWeb3 } from '@/composables';
 import { keccak256 } from '@ethersproject/keccak256';
 import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';
-import { toUtf8Bytes } from '@ethersproject/strings';
+import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 
 const getBondDetails = async (
   provider: StaticJsonRpcProvider,
@@ -51,6 +51,7 @@ export const getModuleDetailsUma = async (
   provider: StaticJsonRpcProvider,
   network: string,
   moduleAddress: string,
+  explanation: string,
   transactions: any
 ): Promise<{
   dao: string;
@@ -65,6 +66,7 @@ export const getModuleDetailsUma = async (
   userBalance: BigNumber;
   needsBondApproval: boolean;
   noTransactions: boolean;
+  activeProposal: boolean;
   proposalEvent: any;
   proposalExecuted: boolean;
 }> => {
@@ -90,7 +92,6 @@ export const getModuleDetailsUma = async (
 
   // Create ancillary data for proposal hash
   let ancillaryData = '';
-  let timestamp = 0;
   let proposalHash;
   if (transactions !== undefined) {
     proposalHash = keccak256(
@@ -108,7 +109,6 @@ export const getModuleDetailsUma = async (
         toUtf8Bytes(proposalHash.replace('0x', ''))
       ]
     );
-    timestamp = await moduleContract.proposalHashes(proposalHash);
   } else {
     return {
       dao: moduleDetails[0][0],
@@ -123,10 +123,16 @@ export const getModuleDetailsUma = async (
       userBalance: bondDetails.currentUserBalance,
       needsBondApproval: needsApproval,
       noTransactions: true,
+      activeProposal: false,
       proposalEvent: {},
       proposalExecuted: false
     };
   }
+  // Check for active proposals
+  const proposalHashTimestamp = await moduleContract.proposalHashes(
+    proposalHash
+  );
+  const activeProposal = proposalHashTimestamp.gt(0);
 
   // Search for requests with matching ancillary data
   const oracleContract = new Contract(
@@ -139,15 +145,16 @@ export const getModuleDetailsUma = async (
   const proposalEvents = await oracleContract.queryFilter(
     oracleContract.filters.ProposePrice(moduleAddress)
   );
-  const thisModuleProposalEvents = proposalEvents.filter(
+
+  const thisModuleProposalEvent = proposalEvents.filter(
     event =>
       event.args?.ancillaryData === ancillaryData &&
-      Number(event.args?.timestamp) === Number(timestamp)
+      event.args?.timestamp.toString() === proposalHashTimestamp.toString()
   );
 
-  // Get the full proposal event (with state and disputer).
-  const proposalEvent = await Promise.all(
-    thisModuleProposalEvents.map(event => {
+  // Get the full proposal events (with state and disputer).
+  const thisModuleFullProposalEvent = await Promise.all(
+    thisModuleProposalEvent.map(event => {
       return oracleContract
         .getRequest(
           event.args?.requester,
@@ -177,12 +184,27 @@ export const getModuleDetailsUma = async (
     })
   );
 
-  // If we add a ProposalExecuted event to the OptimisticGovernor, we could check by both the hash and the timestamp.
-  // In its current form, this code will create issues if there are duplicate proposals.
-  const executionEvents = await moduleContract.queryFilter(
-    moduleContract.filters.TransactionExecuted(proposalHash)
+  // Check if this specific proposal has already been executed.
+  const transactionsProposedEvents = await moduleContract.queryFilter(
+    moduleContract.filters.TransactionsProposed()
   );
-  const proposalExecuted = executionEvents.length > 0;
+
+  const thisProposalTransactionsProposedEvents =
+    transactionsProposedEvents.filter(
+      event => toUtf8String(event.args?.explanation) === explanation
+    );
+
+  const executionEvents = await moduleContract.queryFilter(
+    moduleContract.filters.ProposalExecuted(proposalHash)
+  );
+
+  const proposalTimes = thisProposalTransactionsProposedEvents.map(tx => tx.args?.proposalTime.toString());
+
+  const executionTimes = executionEvents.map(tx => tx.args?.proposalTime.toString());
+
+  const proposalExecuted = proposalTimes.some(time =>
+    executionTimes.includes(time)
+  );
 
   return {
     dao: moduleDetails[0][0],
@@ -197,7 +219,8 @@ export const getModuleDetailsUma = async (
     userBalance: bondDetails.currentUserBalance,
     needsBondApproval: needsApproval,
     noTransactions: false,
-    proposalEvent: proposalEvent[0],
+    activeProposal: activeProposal,
+    proposalEvent: thisModuleFullProposalEvent[0],
     proposalExecuted: proposalExecuted
   };
 };

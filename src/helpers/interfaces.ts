@@ -225,7 +225,7 @@ export interface UmaOracleProposal {
   proposalId: string;
   transactions: SafeTransaction[];
   minimumBond: BigNumber | number | undefined;
-  explanation?: string;
+  explanation: string;
   allowance: BigNumber | number | undefined;
   collateral: string;
   decimals: number;
