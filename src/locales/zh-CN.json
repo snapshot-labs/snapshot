@@ -402,14 +402,14 @@
     "editPlugin": "编辑插件",
     "pluginParameters": "插件参数",
     "proposal": {
-      "title": "Proposal",
+      "title": "提案",
       "guidelines": {
-        "title": "Guidelines",
-        "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
+        "title": "指南",
+        "information": "在提案创建指南放置一个链接，以帮助用户了解什么是一个好的/有效的提案"
       },
       "template": {
-        "title": "Template",
-        "information": "Start every proposal with a template to help users understand what information is required"
+        "title": "模板",
+        "information": "以模板启动每个提案，以帮助用户了解需要的信息"
       }
     }
   },
