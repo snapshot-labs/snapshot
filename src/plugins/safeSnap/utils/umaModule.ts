@@ -76,11 +76,13 @@ export const getModuleDetailsUma = async (
     [moduleAddress, 'optimisticOracle'],
     [moduleAddress, 'rules'],
     [moduleAddress, 'bondAmount'],
-    [moduleAddress, 'liveness']
+    [moduleAddress, 'liveness'],
+    [moduleAddress, 'PROPOSAL_VALID_RESPONSE']
   ]);
   let needsApproval = false;
   const minimumBond = moduleDetails[3][0];
   const optimisticOracle = moduleDetails[1][0];
+  const validResponse = moduleDetails[5][0].toString();
   const bondDetails = await getBondDetails(provider, moduleAddress);
 
   if (
@@ -154,7 +156,17 @@ export const getModuleDetailsUma = async (
 
   // Get the full proposal events (with state and disputer).
   const thisModuleFullProposalEvent = await Promise.all(
-    thisModuleProposalEvent.map(event => {
+    thisModuleProposalEvent.map(async event => {
+      const settledPriceResponse = await oracleContract.callStatic
+        .settleAndGetPrice(
+          event.args?.identifier,
+          event.args?.timestamp,
+          event.args?.ancillaryData,
+          { from: event.args?.requester }
+        )
+        .then(price => price.toString())
+        .catch(() => undefined);
+
       return oracleContract
         .getRequest(
           event.args?.requester,
@@ -172,10 +184,17 @@ export const getModuleDetailsUma = async (
             Math.floor(Date.now() / 1000) >=
             Number(event.args?.expirationTimestamp);
 
+          const isRejected =
+            settledPriceResponse !== undefined &&
+            settledPriceResponse !== validResponse
+              ? true
+              : false;
+
           return {
             expirationTimestamp: event.args?.expirationTimestamp,
             isExpired: isExpired,
             isDisputed: isDisputed,
+            isRejectable: isRejected,
             isSettled: result.settled,
             resolvedPrice: result.resolvedPrice,
             proposalHash: proposalHash
@@ -198,9 +217,13 @@ export const getModuleDetailsUma = async (
     moduleContract.filters.ProposalExecuted(proposalHash)
   );
 
-  const proposalTimes = thisProposalTransactionsProposedEvents.map(tx => tx.args?.proposalTime.toString());
+  const proposalTimes = thisProposalTransactionsProposedEvents.map(tx =>
+    tx.args?.proposalTime.toString()
+  );
 
-  const executionTimes = executionEvents.map(tx => tx.args?.proposalTime.toString());
+  const executionTimes = executionEvents.map(tx =>
+    tx.args?.proposalTime.toString()
+  );
 
   const proposalExecuted = proposalTimes.some(time =>
     executionTimes.includes(time)

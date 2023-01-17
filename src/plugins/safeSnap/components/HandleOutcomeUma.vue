@@ -319,9 +319,7 @@ const questionState = computed(() => {
     return QuestionStates.waitingForProposal;
 
   // Proposal can be deleted if it has been rejected.
-  if (proposalEvent.isDisputed && proposalEvent.resolvedPrice == 0)
-    return QuestionStates.proposalRejected;
-
+  if (proposalEvent.isRejected) return QuestionStates.proposalRejected;
   // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
   if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
 
