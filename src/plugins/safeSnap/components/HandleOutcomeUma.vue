@@ -364,13 +364,20 @@ onMounted(async () => {
         <BaseButton
           :loading="actionInProgress === 'confirm-vote-results'"
           @click="confirmVoteResults"
+          class="mr-2"
         >
           {{ $t('safeSnap.labels.confirmVoteResults') }}
         </BaseButton>
-        <IconInformationTooltip
-          :information="$t('safeSnap.labels.confirmVoteResultsToolTip')"
-          class="ml-2"
-        />
+        <BasePopoverHover placement="top">
+          <template #button>
+            <i-ho-information-circle />
+          </template>
+          <template #content>
+            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
+              {{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}
+            </div>
+          </template>
+        </BasePopoverHover>
       </BaseContainer>
     </div>
 
@@ -389,13 +396,20 @@ onMounted(async () => {
         <BaseButton
           :loading="actionInProgress === 'approve-bond'"
           @click="approveBond"
+          class="mr-2"
         >
           {{ $t('safeSnap.labels.approveBond') }}
         </BaseButton>
-        <IconInformationTooltip
-          :information="$t('safeSnap.labels.approveBondToolTip')"
-          class="ml-2"
-        />
+        <BasePopoverHover placement="top">
+          <template #button>
+            <i-ho-information-circle />
+          </template>
+          <template #content>
+            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
+              {{ $t('safeSnap.labels.approveBondToolTip') }}
+            </div>
+          </template>
+        </BasePopoverHover>
       </BaseContainer>
     </div>
     <div
@@ -409,13 +423,20 @@ onMounted(async () => {
         <BaseButton
           :loading="actionInProgress === 'submit-proposal'"
           @click="submitProposal"
+          class="mr-2"
         >
           {{ $t('safeSnap.labels.request') }}
         </BaseButton>
-        <IconInformationTooltip
-          :information="$t('safeSnap.labels.requestToolTip')"
-          class="ml-2"
-        />
+        <BasePopoverHover placement="top">
+          <template #button>
+            <i-ho-information-circle />
+          </template>
+          <template #content>
+            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
+              {{ $t('safeSnap.labels.requestToolTip') }}
+            </div>
+          </template>
+        </BasePopoverHover>
       </BaseContainer>
     </div>
 
@@ -460,6 +481,7 @@ onMounted(async () => {
         <BaseButton
           :loading="action2InProgress === 'execute-proposal'"
           @click="executeProposal"
+          class="mr-2"
         >
           {{
             $t('safeSnap.labels.executeTxsUma', [
@@ -468,10 +490,16 @@ onMounted(async () => {
             ])
           }}
         </BaseButton>
-        <IconInformationTooltip
-          :information="$t('safeSnap.labels.executeToolTip')"
-          class="ml-2"
-        />
+        <BasePopoverHover placement="top">
+          <template #button>
+            <i-ho-information-circle />
+          </template>
+          <template #content>
+            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
+              {{ $t('safeSnap.labels.executeToolTip') }}
+            </div>
+          </template>
+        </BasePopoverHover>
       </BaseContainer>
     </div>
   </div>
