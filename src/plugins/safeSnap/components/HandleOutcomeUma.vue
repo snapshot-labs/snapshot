@@ -358,14 +358,20 @@ onMounted(async () => {
   <div v-if="connectedToRightChain || usingMetaMask">
     <div
       v-if="questionState === questionStates.waitingForVoteConfirmation"
-      class="my-4"
+      class="my-4 inline-block"
     >
-      <BaseButton
-        :loading="actionInProgress === 'confirm-vote-results'"
-        @click="confirmVoteResults"
-      >
-        {{ $t('safeSnap.labels.confirmVoteResults') }}
-      </BaseButton>
+      <BaseContainer class="flex items-center">
+        <BaseButton
+          :loading="actionInProgress === 'confirm-vote-results'"
+          @click="confirmVoteResults"
+        >
+          {{ $t('safeSnap.labels.confirmVoteResults') }}
+        </BaseButton>
+        <IconInformationTooltip
+          :information="$t('safeSnap.labels.confirmVoteResultsToolTip')"
+          class="ml-2"
+        />
+      </BaseContainer>
     </div>
 
     <div v-if="questionState === questionStates.noTransactions" class="my-4">
@@ -377,29 +383,40 @@ onMounted(async () => {
         questionState === questionStates.waitingForProposal &&
         questionDetails.needsBondApproval === true
       "
-      class="my-4"
+      class="my-4 inline-block"
     >
-      <BaseButton
-        :loading="actionInProgress === 'approve-bond'"
-        @click="approveBond"
-      >
-        {{ $t('safeSnap.labels.approveBond') }}
-      </BaseButton>
+      <BaseContainer class="flex items-center">
+        <BaseButton
+          :loading="actionInProgress === 'approve-bond'"
+          @click="approveBond"
+        >
+          {{ $t('safeSnap.labels.approveBond') }}
+        </BaseButton>
+        <IconInformationTooltip
+          :information="$t('safeSnap.labels.approveBondToolTip')"
+          class="ml-2"
+        />
+      </BaseContainer>
     </div>
-
     <div
       v-if="
         questionState === questionStates.waitingForProposal &&
         questionDetails.needsBondApproval === false
       "
-      class="my-4"
+      class="my-4 inline-block"
     >
-      <BaseButton
-        :loading="actionInProgress === 'submit-proposal'"
-        @click="submitProposal"
-      >
-        {{ $t('safeSnap.labels.request') }}
-      </BaseButton>
+      <BaseContainer class="flex items-center">
+        <BaseButton
+          :loading="actionInProgress === 'submit-proposal'"
+          @click="submitProposal"
+        >
+          {{ $t('safeSnap.labels.request') }}
+        </BaseButton>
+        <IconInformationTooltip
+          :information="$t('safeSnap.labels.requestToolTip')"
+          class="ml-2"
+        />
+      </BaseContainer>
     </div>
 
     <div
@@ -435,18 +452,27 @@ onMounted(async () => {
       </BaseButton>
     </div>
 
-    <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <BaseButton
-        :loading="action2InProgress === 'execute-proposal'"
-        @click="executeProposal"
-      >
-        {{
-          $t('safeSnap.labels.executeTxsUma', [
-            questionDetails.nextTxIndex + 1,
-            batches.length
-          ])
-        }}
-      </BaseButton>
+    <div
+      v-if="questionState === questionStates.proposalApproved"
+      class="my-4 inline-block"
+    >
+      <BaseContainer class="flex items-center">
+        <BaseButton
+          :loading="action2InProgress === 'execute-proposal'"
+          @click="executeProposal"
+        >
+          {{
+            $t('safeSnap.labels.executeTxsUma', [
+              questionDetails.nextTxIndex + 1,
+              batches.length
+            ])
+          }}
+        </BaseButton>
+        <IconInformationTooltip
+          :information="$t('safeSnap.labels.executeToolTip')"
+          class="ml-2"
+        />
+      </BaseContainer>
     </div>
   </div>
   <div
