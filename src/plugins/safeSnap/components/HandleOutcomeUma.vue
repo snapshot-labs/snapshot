@@ -37,11 +37,10 @@ const QuestionStates = {
   waitingForVoteConfirmation: 2,
   noTransactions: 3,
   completelyExecuted: 4,
-  proposalRejected: 5,
-  disputedButNotResolved: 6,
-  waitingForProposal: 7,
-  waitingForLiveness: 8,
-  proposalApproved: 9
+  disputedButNotResolved: 5,
+  waitingForProposal: 6,
+  waitingForLiveness: 7,
+  proposalApproved: 8
 };
 Object.freeze(QuestionStates);
 
@@ -249,38 +248,6 @@ const deleteDisputedProposal = async () => {
   }
 };
 
-const deleteRejectedProposal = async () => {
-  if (!getInstance().isAuthenticated.value) return;
-  action2InProgress.value = 'delete-rejected-proposal';
-  try {
-    await ensureRightNetwork(props.network);
-  } catch (e) {
-    console.error(e);
-    action2InProgress.value = null;
-    return;
-  }
-
-  try {
-    clearBatchError();
-    const deletingRejectedProposal = plugin.deleteRejectedProposal(
-      getInstance().web3,
-      props.umaAddress,
-      questionDetails.value.proposalEvent.proposalHash
-    );
-    await deletingRejectedProposal.next();
-    action2InProgress.value = null;
-    pendingCount.value++;
-    await deletingRejectedProposal.next();
-    notify(t('notify.youDidIt'));
-    pendingCount.value--;
-    await sleep(3e3);
-    await updateDetails();
-  } catch (err) {
-    pendingCount.value--;
-    action2InProgress.value = null;
-  }
-};
-
 const usingMetaMask = computed(() => {
   return window.ethereum && getInstance().provider.value?.isMetaMask;
 });
@@ -318,8 +285,6 @@ const questionState = computed(() => {
   if (!activeProposal && voteResultsConfirmed)
     return QuestionStates.waitingForProposal;
 
-  // Proposal can be deleted if it has been rejected.
-  if (proposalEvent.isRejected) return QuestionStates.proposalRejected;
   // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
   if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
 
@@ -464,15 +429,6 @@ onMounted(async () => {
       </BaseButton>
     </div>
 
-    <div v-if="questionState === questionStates.proposalRejected" class="my-4">
-      <BaseButton
-        :loading="action2InProgress === 'delete-rejected-proposal'"
-        @click="deleteRejectedProposal"
-      >
-        {{ $t('safeSnap.labels.deleteRejectedProposal') }}
-      </BaseButton>
-    </div>
-
     <div
       v-if="questionState === questionStates.proposalApproved"
       class="my-4 inline-block"
@@ -515,9 +471,5 @@ onMounted(async () => {
 
   <div v-if="questionState === questionStates.completelyExecuted" class="my-4">
     {{ $t('safeSnap.labels.executed') }}
-  </div>
-
-  <div v-if="questionState === questionStates.proposalRejected" class="my-4">
-    {{ $t('safeSnap.labels.rejected') }}
   </div>
 </template>
