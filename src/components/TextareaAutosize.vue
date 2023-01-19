@@ -9,11 +9,17 @@ const props = withDefaults(
     maxHeight?: number;
     maxLength?: number;
     placeholder?: string;
+    title?: string;
+    information?: string;
+    definition?: any;
   }>(),
   {
     modelValue: '',
     autosize: true,
     placeholder: '',
+    title: '',
+    information: '',
+    definition: null,
     minHeight: 0,
     maxHeight: 0,
     maxLength: undefined
@@ -79,7 +85,11 @@ onMounted(() => resize());
 </script>
 
 <template>
+  <LabelInput v-if="title || definition?.title" :information="information">
+    {{ title ?? definition.title }}
+  </LabelInput>
   <textarea
+    v-bind="$attrs"
     ref="textarea"
     v-model="val"
     class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"

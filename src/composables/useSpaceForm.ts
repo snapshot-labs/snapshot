@@ -44,7 +44,9 @@ const EMPTY_SPACE_FORM = {
   children: [],
   private: false,
   domain: '',
-  skin: ''
+  skin: '',
+  guidelines: '',
+  template: ''
 };
 
 const formSetup = ref(clone(EMPTY_SPACE_FORM));
