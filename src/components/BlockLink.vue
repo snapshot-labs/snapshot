@@ -3,7 +3,8 @@ import { onMounted, ref } from 'vue';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{
-  discussionLink: string;
+  link: string;
+  title?: string;
 }>();
 const preview = ref<null | {
   meta: {
@@ -18,7 +19,7 @@ const preview = ref<null | {
 }>(null);
 
 onMounted(async () => {
-  await update(props.discussionLink);
+  await update(props.link);
 });
 
 async function update(val: string) {
@@ -39,8 +40,8 @@ async function update(val: string) {
 
 <template>
   <div v-if="preview?.meta?.title">
-    <h3 class="mb-2" v-text="$t('discussion')" />
-    <BaseLink :link="getIpfsUrl(discussionLink)" hide-external-icon>
+    <div v-if="title" class="mb-2" v-text="title" />
+    <BaseLink :link="getIpfsUrl(link)" hide-external-icon>
       <div
         class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
       >

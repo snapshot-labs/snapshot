@@ -58,7 +58,8 @@ export function useFormValidation(schema, form) {
     if (
       errorFound?.instancePath.includes('website') ||
       errorFound?.instancePath.includes('terms') ||
-      errorFound?.instancePath.includes('discussion')
+      errorFound?.instancePath.includes('discussion') ||
+      errorFound?.instancePath.includes('guidelines')
     )
       return t('errors.website');
 

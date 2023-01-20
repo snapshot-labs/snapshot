@@ -1,4 +1,4 @@
-import { onMounted, ref, watch, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useStorage } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
@@ -73,14 +73,6 @@ export function useSpaceCreateForm() {
     { deep: true }
   );
 
-  onMounted(() => {
-    if (!sourceProposal.value) {
-      form.value.name = formDraft.value.name;
-      form.value.body = formDraft.value.body;
-      form.value.choices = formDraft.value.choices;
-    }
-  });
-
   function resetForm() {
     form.value = clone(EMPTY_PROPOSAL);
     sourceProposalLoaded.value = false;
@@ -100,6 +92,7 @@ export function useSpaceCreateForm() {
 
   return {
     form,
+    formDraft,
     userSelectedDateStart,
     userSelectedDateEnd,
     sourceProposalLoaded,

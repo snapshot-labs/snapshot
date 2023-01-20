@@ -110,6 +110,8 @@ export interface ExtendedSpace {
   plugins: Record<string, any>;
   validation: SpaceValidation;
   treasuries: TreasuryAsset[];
+  template: string;
+  guidelines: string;
   voting: {
     delay: number | null;
     hideAbstain: boolean;
