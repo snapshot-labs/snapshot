@@ -43,7 +43,7 @@ export const getProposalDetails = async (
   };
 };
 
-export const getModuleDetails = async (
+export const getModuleDetailsReality = async (
   provider: StaticJsonRpcProvider,
   network: string,
   moduleAddress: string

@@ -1,6 +1,7 @@
 import { Result } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isHexString } from '@ethersproject/bytes';
+import { toUtf8Bytes } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { _TypedDataEncoder } from '@ethersproject/hash';
@@ -14,19 +15,25 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { SafeTransaction, RealityOracleProposal } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  RealityOracleProposal,
+  UmaOracleProposal
+} from '@/helpers/interfaces';
 import {
   EIP712_TYPES,
   REALITY_MODULE_ABI,
+  UMA_MODULE_ABI,
   ORACLE_ABI,
   ERC20_ABI
 } from './constants';
 import {
   buildQuestion,
   checkPossibleExecution,
-  getModuleDetails,
+  getModuleDetailsReality,
   getProposalDetails
 } from './utils/realityModule';
+import { getModuleDetailsUma } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 
@@ -103,7 +110,7 @@ export default class Plugin {
       questionHash,
       txHashes
     );
-    const moduleDetails = await getModuleDetails(
+    const moduleDetails = await getModuleDetailsReality(
       provider,
       network,
       moduleAddress
@@ -130,9 +137,104 @@ export default class Plugin {
     };
   }
 
-  async getModuleDetails(network: string, moduleAddress: string) {
+  async getModuleDetailsReality(network: string, moduleAddress: string) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetails(provider, network, moduleAddress);
+    return getModuleDetailsReality(provider, network, moduleAddress);
+  }
+
+  async validateUmaModule(network: string, moduleAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    const moduleContract = new Contract(
+      moduleAddress,
+      UMA_MODULE_ABI,
+      provider
+    );
+
+    return moduleContract
+      .rules()
+      .then(() => 'uma')
+      .catch(() => 'reality');
+  }
+
+  async getExecutionDetails(
+    network: string,
+    moduleAddress: string,
+    proposalId: string,
+    explanation: string,
+    transactions: any
+  ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
+    const moduleDetails = await this.getModuleDetailsUma(
+      network,
+      moduleAddress,
+      explanation,
+      transactions
+    );
+
+    return {
+      ...moduleDetails,
+      proposalId,
+      explanation
+    };
+  }
+
+  async *approveBond(
+    network: string,
+    web3: any,
+    moduleAddress: string,
+    transactions: any
+  ) {
+    const moduleDetails = await this.getModuleDetailsUma(
+      network,
+      moduleAddress,
+      '',
+      transactions
+    );
+
+    const approveTx = await sendTransaction(
+      web3,
+      moduleDetails.collateral,
+      ERC20_ABI,
+      'approve',
+      [moduleAddress, moduleDetails.minimumBond],
+      {}
+    );
+    yield 'erc20-approval';
+    const approvalReceipt = await approveTx.wait();
+    console.log('[DAO module] token transfer approved:', approvalReceipt);
+    yield;
+  }
+
+  async *deleteDisputedProposal(
+    web3: any,
+    moduleAddress: string,
+    transactionHash: any
+  ) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'deleteDisputedProposal',
+      [transactionHash]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] deleted disputed proposal:', receipt);
+  }
+
+  async getModuleDetailsUma(
+    network: string,
+    moduleAddress: string,
+    explanation: string,
+    transactions: any
+  ) {
+    const provider: StaticJsonRpcProvider = getProvider(network);
+    return getModuleDetailsUma(
+      provider,
+      network,
+      moduleAddress,
+      explanation,
+      transactions
+    );
   }
 
   async *submitProposalWithHashes(
@@ -147,6 +249,26 @@ export default class Plugin {
       REALITY_MODULE_ABI,
       'addProposal',
       [proposalId, txHashes]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] submitted proposal:', receipt);
+  }
+
+  async *submitProposal(
+    web3: any,
+    moduleAddress: string,
+    explanation: string,
+    transactions: any
+  ) {
+    const explanationBytes = toUtf8Bytes(explanation);
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'proposeTransactions',
+      [transactions, explanationBytes]
+      // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
     );
     yield;
     const receipt = await tx.wait();
@@ -322,6 +444,19 @@ export default class Plugin {
         moduleTx.operation,
         transactionIndex
       ]
+    );
+    yield;
+    const receipt = await tx.wait();
+    console.log('[DAO module] executed proposal:', receipt);
+  }
+
+  async *executeProposal(web3: any, moduleAddress: string, transactions: any) {
+    const tx = await sendTransaction(
+      web3,
+      moduleAddress,
+      UMA_MODULE_ABI,
+      'executeProposal',
+      [transactions]
     );
     yield;
     const receipt = await tx.wait();
