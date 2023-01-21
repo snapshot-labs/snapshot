@@ -13,6 +13,7 @@ export const EIP712_TYPES = {
 export const EIP3770_PREFIXES = {
   1: 'eth',
   4: 'rin',
+  5: 'gor',
   56: 'bnb',
   100: 'gno',
   246: 'ewt',
