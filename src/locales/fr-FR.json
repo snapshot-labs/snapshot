@@ -293,9 +293,9 @@
     "connectWithSpaceOwner": "Vous êtes en mode lecture seule, pour modifier les paramètres de l'espace, connectez-vous avec un contrôleur ou un wallet administrateur.",
     "gnosisWrongNetwork": {
       "base": "Your Gnosis Safe is on the wrong network. Please connect to {network} to {action}.",
-      "settings": "edit the space settings",
-      "create": "create a proposal",
-      "vote": "vote on this proposal"
+      "settings": "éditer les paramètres de l'espace",
+      "create": "créer une proposition",
+      "vote": "voter sur cette proposition"
     },
     "currentSpaceControllerIs": "Le controller de l’espace actuel est {address}",
     "newController": "Nouveau controller",
@@ -400,7 +400,18 @@
     },
     "addPlugin": "Ajouter un plugin",
     "editPlugin": "Modifier le plugin",
-    "pluginParameters": "Paramètres du plugin"
+    "pluginParameters": "Paramètres du plugin",
+    "proposal": {
+      "title": "Proposal",
+      "guidelines": {
+        "title": "Guidelines",
+        "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
+      },
+      "template": {
+        "title": "Template",
+        "information": "Start every proposal with a template to help users understand what information is required"
+      }
+    }
   },
   "setup": {
     "example": "ex : yam.eth",
@@ -488,7 +499,7 @@
       "votedFor": "Voté {choice}",
       "today": "Aujourd'hui",
       "thisWeek": "Cette semaine",
-      "older": "Plus ancien",
+      "olderThanWeek": "Older than a week",
       "noActivity": "Pas encore d'activité"
     },
     "settings": {

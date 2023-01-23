@@ -12,10 +12,7 @@ const emit = defineEmits(['input', 'close']);
 const { open } = toRefs(props);
 const step = ref(0);
 const input = ref('');
-const time = ref({
-  h: '12',
-  m: '00'
-});
+const time = ref('12:00');
 
 function formatDate(date) {
   const output = { h: '12', m: '00', dateString: '' };
@@ -31,7 +28,7 @@ function formatDate(date) {
 
 function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
-  const dateString = `${input.value} ${time.value.h}:${time.value.m}:00`;
+  const dateString = `${input.value} ${time.value}:00`;
   const timestamp = new Date(dateString).getTime() / 1000;
   emit('input', timestamp);
   emit('close');
@@ -41,7 +38,7 @@ watch(open, () => {
   step.value = 0;
   if (!props.value) return;
   const { dateString, h, m } = formatDate(props.value);
-  time.value = { h, m };
+  time.value = `${h}:${m}`;
   input.value = dateString;
 });
 </script>
@@ -61,12 +58,12 @@ watch(open, () => {
         <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="m-4 mx-auto flex" style="max-width: 160px">
-      <BaseButton class="w-max !px-0">
-        <input v-model="time.h" max="24" class="input w-5/12 text-center" />
-        <span class="w-2/12">:</span>
-        <input v-model="time.m" max="60" class="input w-5/12 text-center" />
-      </BaseButton>
+    <div v-else class="m-4 mx-auto max-w-[140px]">
+      <input
+        v-model="time"
+        type="time"
+        class="s-input form-input text-center text-lg"
+      />
     </div>
     <template #footer>
       <div class="float-left w-2/4 pr-2">

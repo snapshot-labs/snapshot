@@ -16,6 +16,8 @@ const emit = defineEmits(['next', 'back']);
 
     <SettingsAuthorsBlock context="setup" />
 
+    <SettingsProposalBlock context="setup" />
+
     <SettingsVotingBlock context="setup" />
 
     <SettingsValidationBlock context="setup" />

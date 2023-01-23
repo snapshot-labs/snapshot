@@ -400,7 +400,18 @@
     },
     "addPlugin": "Agregar extensión",
     "editPlugin": "Editar extensión",
-    "pluginParameters": "Parámetros de la extensión"
+    "pluginParameters": "Parámetros de la extensión",
+    "proposal": {
+      "title": "Proposal",
+      "guidelines": {
+        "title": "Guidelines",
+        "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
+      },
+      "template": {
+        "title": "Template",
+        "information": "Start every proposal with a template to help users understand what information is required"
+      }
+    }
   },
   "setup": {
     "example": "ej. yam.eth",
@@ -488,7 +499,7 @@
       "votedFor": "Voted {choice}",
       "today": "Today",
       "thisWeek": "This week",
-      "older": "Older",
+      "olderThanWeek": "Older than a week",
       "noActivity": "No activity yet"
     },
     "settings": {
