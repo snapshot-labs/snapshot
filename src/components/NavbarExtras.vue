@@ -7,7 +7,8 @@ import { PopoverButton } from '@headlessui/vue';
 const { domain } = useApp();
 const router = useRouter();
 
-const commitSha = import.meta.env.VITE_COMMIT_SHA;
+const commitSha =
+  import.meta.env.VITE_COMMIT_SHA || import.meta.env.VITE_VERCEL_GIT_COMMIT_SHA;
 
 const navigationItems = [
   {
