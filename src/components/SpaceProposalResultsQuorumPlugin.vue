@@ -12,8 +12,12 @@ const props = defineProps<{
   warning?: string;
 }>();
 
-const { totalQuorumScore, totalVotingPower, loadTotalVotingPower } =
-  useQuorum(props);
+const {
+  totalQuorumScore,
+  totalVotingPower,
+  loadTotalVotingPower,
+  loadingQuorum
+} = useQuorum(props);
 
 onMounted(() => loadTotalVotingPower());
 </script>
@@ -22,6 +26,7 @@ onMounted(() => loadTotalVotingPower());
   <ProgressQuorum
     :score="totalQuorumScore"
     :total="totalVotingPower"
+    :loading="loadingQuorum"
     :warning="warning"
   />
 </template>

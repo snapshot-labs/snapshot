@@ -246,9 +246,6 @@
     "votingSystem": "Voting system",
     "privacy": "Privacy",
     "invalidChoice": "Invalid choice",
-    "quorum": {
-      "warningOnlyEstimateQuorum": "This proposal uses Shutter privacy, as a result the quorum is only an estimate. The final quorum will be available after the proposal is closed."
-    },
     "postVoteModal": {
       "defaultTitle": "Your vote is in!",
       "gnosisSafeTitle": "Your vote is pending...",

@@ -6,6 +6,7 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
 defineProps<{
   score: number;
   total: number;
+  loading?: boolean;
   warning?: string;
 }>();
 </script>
@@ -23,7 +24,8 @@ defineProps<{
           <i-ho-exclamation-circle class="text-sm" />
         </BaseButtonIcon>
       </div>
-      <div class="flex gap-2">
+      <LoadingSpinner v-if="loading" class="mr-1" />
+      <div v-else class="flex gap-2">
         <i-ho-check
           v-if="total && score >= total"
           class="text-skin-success text-green"

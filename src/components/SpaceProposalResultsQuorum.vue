@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
-import { useQuorum, useI18n } from '@/composables';
+import { useQuorum } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -12,17 +12,9 @@ const props = defineProps<{
 }>();
 
 const { totalQuorumScore } = useQuorum(props);
-const { t } = useI18n();
 
 const quorum = computed(
   () => props.proposal?.quorum || props.space.voting?.quorum || 0
-);
-
-const warningEstimateQuorumShutter = computed(() =>
-  props.proposal.privacy !== 'shutter' ||
-  props.proposal.scores_state === 'final'
-    ? ''
-    : t('proposal.quorum.warningOnlyEstimateQuorum')
 );
 </script>
 
@@ -32,13 +24,11 @@ const warningEstimateQuorumShutter = computed(() =>
       v-if="proposal.quorum || space.voting?.quorum"
       :score="totalQuorumScore"
       :total="quorum"
-      :warning="warningEstimateQuorumShutter"
     />
 
     <SpaceProposalResultsQuorumPlugin
       v-else-if="space?.plugins?.quorum"
       v-bind="props"
-      :warning="warningEstimateQuorumShutter"
     />
   </div>
 </template>
