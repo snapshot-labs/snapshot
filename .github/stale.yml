@@ -1,5 +1,5 @@
-daysUntilStale: 60
-daysUntilClose: 7
+daysUntilStale: 120
+daysUntilClose: 14
 exemptLabels:
   - pinned
   - enhancement
