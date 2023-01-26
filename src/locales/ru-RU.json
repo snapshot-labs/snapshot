@@ -217,7 +217,8 @@
       },
       "customValidation": "Чтобы подать предложение, необходимо пройти проверку предложения.",
       "executionError": "Проверка вашего права на создание предложений в этом сообществе не удалась. Вероятно, это связано с неправильной конфигурацией стратегии."
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "Делегировать",
