@@ -217,7 +217,8 @@
       },
       "customValidation": "Kailangan mong ipasa ang pagpapatunay ng panukala upang makapagsumite ng isang panukala.",
       "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "Delegasyon",
