@@ -217,7 +217,8 @@
       },
       "customValidation": "Anda harus lulus validasi proposal untuk mengajukan proposal.",
       "executionError": "Verifikasi hak anda untuk membuat proposal di ruang ini telah gagal. Ini mungkin disebabkan karna kesalahan konfigurasi strategi."
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "Perwakilan",
