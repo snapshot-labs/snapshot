@@ -218,7 +218,7 @@
       "customValidation": "您需要通过提案验证后才能提交提案。",
       "executionError": "您在此空间中创建提案的资格验证失败。这可能是由于配置了错误的策略。"
     },
-    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
+    "errorGettingSnapshot": "我们在获取计算您投票能力所需的快照区块时遇到了一个错误。请稍后再试。"
   },
   "delegate": {
     "header": "委托",
