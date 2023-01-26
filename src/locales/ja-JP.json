@@ -217,7 +217,8 @@
       },
       "customValidation": "提案を提出するには、提案検証をクリアする必要があります。",
       "executionError": "このスペースで提案を作成する資格を確認することができませんでした。これはおそらくストラテジーの誤設定によるものです。"
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "委任",
