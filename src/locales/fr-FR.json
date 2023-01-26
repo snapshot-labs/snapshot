@@ -217,7 +217,8 @@
       },
       "customValidation": "Vous devez approuver la validation de la proposition pour soumettre une proposition.",
       "executionError": "La vérification de votre admissibilité à créer des propositions dans cet espace a échoué. C’est probablement dû à une stratégie mal configurée."
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "Déléguer",
