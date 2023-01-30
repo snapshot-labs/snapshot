@@ -66,7 +66,7 @@ async function lookupAddresses(
 
   return Object.fromEntries(
     addresses.map(address => {
-      return [address, ud[address] || ens[address] || ''];
+      return [address, ens[address] || ud[address] || ''];
     })
   );
 }
