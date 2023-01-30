@@ -400,7 +400,18 @@
     },
     "addPlugin": "添加插件",
     "editPlugin": "编辑插件",
-    "pluginParameters": "插件参数"
+    "pluginParameters": "插件参数",
+    "proposal": {
+      "title": "提案",
+      "guidelines": {
+        "title": "指南",
+        "information": "在提案创建指南放置一个链接，以帮助用户了解什么是一个好的/有效的提案"
+      },
+      "template": {
+        "title": "模板",
+        "information": "以模板启动每个提案，以帮助用户了解需要的信息"
+      }
+    }
   },
   "setup": {
     "example": "例如 yam.eth",

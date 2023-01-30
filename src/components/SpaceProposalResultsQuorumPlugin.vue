@@ -2,30 +2,31 @@
 import { onMounted } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
-import { useIntl, useQuorum } from '@/composables';
+import { useQuorum } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
   votes: Vote[];
+  warning?: string;
 }>();
 
-const { formatCompactNumber } = useIntl();
-const { totalQuorumScore, totalVotingPower, loadTotalVotingPower } =
-  useQuorum(props);
+const {
+  totalQuorumScore,
+  totalVotingPower,
+  loadTotalVotingPower,
+  loadingQuorum
+} = useQuorum(props);
 
 onMounted(() => loadTotalVotingPower());
 </script>
 
 <template>
-  <div class="text-skin-link">
-    <span class="mr-1">
-      {{ $t('settings.quorum.label') }}
-    </span>
-    <span class="float-right">
-      {{ formatCompactNumber(totalQuorumScore) }} /
-      {{ formatCompactNumber(totalVotingPower) }}
-    </span>
-  </div>
+  <ProgressQuorum
+    :score="totalQuorumScore"
+    :total="totalVotingPower"
+    :loading="loadingQuorum"
+    :warning="warning"
+  />
 </template>

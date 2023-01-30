@@ -2,9 +2,7 @@
 import { computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
-import { useSpaceCreateForm } from '@/composables/useSpaceCreateForm';
-import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { useSpaceCreateForm, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -57,17 +55,15 @@ watch(
   { immediate: true }
 );
 
+const { getSnapshot } = useSnapshot();
+
 onMounted(async () => {
   // Initialize the start date to current
   if (!sourceProposalLoaded.value && !userSelectedDateStart.value)
     form.value.start = Number((Date.now() / 1e3).toFixed());
   // Initialize the proposal type if set in space
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
-  // Initialize the snapshot block number
-  if (props.space?.network) {
-    const currentBlock = await getBlockNumber(getProvider(props.space.network));
-    form.value.snapshot = currentBlock - 4;
-  }
+  form.value.snapshot = await getSnapshot(props.space.network);
 });
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import { useWeb3, useIntl, useGnosis } from '@/composables';
+import { useWeb3, useIntl, useGnosis, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -12,6 +12,7 @@ const props = defineProps<{
 const { formatCompactNumber } = useIntl();
 const { web3, web3Account } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
+const { errorFetchingSnapshot } = useSnapshot();
 </script>
 
 <template>
@@ -22,8 +23,18 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
       action="create"
       is-responsive
     />
-    <!-- Shows when no wallet is connected and the space has any sort
-      of validation set -->
+
+    <BaseMessageBlock
+      v-else-if="errorFetchingSnapshot"
+      level="warning"
+      is-responsive
+    >
+      {{ $t('create.errorGettingSnapshot') }}
+      <BaseLink link="https://discord.snapshot.org/">
+        {{ $t('learnMore') }}
+      </BaseLink>
+    </BaseMessageBlock>
+
     <BaseMessageBlock
       v-else-if="
         !web3Account &&

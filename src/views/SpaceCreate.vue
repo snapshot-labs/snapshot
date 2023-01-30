@@ -19,7 +19,8 @@ import {
   useApolloQuery,
   useWeb3,
   useClient,
-  useGnosis
+  useGnosis,
+  useSnapshot
 } from '@/composables';
 
 const BODY_LIMIT_CHARACTERS = 14400;
@@ -40,6 +41,7 @@ const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
+const { isSnapshotLoading } = useSnapshot();
 
 const {
   form,
@@ -348,7 +350,7 @@ onMounted(async () => {
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
           :disabled="!isValid"
-          :loading="isSending || queryLoading"
+          :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
           @click="
@@ -362,7 +364,7 @@ onMounted(async () => {
         <BaseButton
           v-else
           class="block w-full"
-          :loading="validationLoading"
+          :loading="validationLoading || isSnapshotLoading"
           :disabled="
             (!stepIsValid && !!web3Account) ||
             web3.authLoading ||
