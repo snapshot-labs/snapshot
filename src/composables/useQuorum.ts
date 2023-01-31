@@ -110,6 +110,7 @@ export function useQuorum(props: QuorumProps) {
 
   return {
     loadTotalVotingPower,
+    loadingQuorum: loading,
     quorum,
     totalQuorumScore,
     totalVotingPower
