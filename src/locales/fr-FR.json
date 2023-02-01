@@ -147,7 +147,7 @@
   "or": "ou",
   "share": "Partager",
   "shareOnTwitter": "Partager sur Twitter",
-  "shareOnLenster": "Share on Lenster",
+  "shareOnLenster": "Partager sur Lenster",
   "createButton": "Créer",
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
@@ -317,7 +317,7 @@
       "select": "Sélectionner la/les catégorie(s)"
     },
     "terms": {
-      "label": "Terms of service",
+      "label": "Conditions d'utilisation",
       "information": "Les utilisateurs devront accepter ces conditions une fois avant de pouvoir créer une proposition ou voter"
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
@@ -403,13 +403,13 @@
     "editPlugin": "Modifier le plugin",
     "pluginParameters": "Paramètres du plugin",
     "proposal": {
-      "title": "Proposal",
+      "title": "Proposition",
       "guidelines": {
         "title": "Guidelines",
         "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
       },
       "template": {
-        "title": "Template",
+        "title": "Modèle",
         "information": "Start every proposal with a template to help users understand what information is required"
       }
     }
@@ -571,7 +571,7 @@
     "title": "Sélectionner la confidentialité des votes",
     "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
     "any": "Any",
-    "none": "None",
+    "none": "Aucun",
     "shutter": {
       "label": "Shutter",
       "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
