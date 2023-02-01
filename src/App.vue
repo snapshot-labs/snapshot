@@ -48,5 +48,6 @@ onMounted(async () => init());
       </div>
     </div>
   </template>
-  <BaseFlashNotification />
+  <TheFlashNotification />
+  <TheModalNotification />
 </template>

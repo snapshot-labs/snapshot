@@ -8,12 +8,14 @@ import {
   useGnosis,
   useWeb3,
   useI18n,
-  useFlashNotification
+  useFlashNotification,
+  useModalNotification
 } from '@/composables';
 
 export function useClient() {
   const { t } = useI18n();
   const { notify } = useFlashNotification();
+  const { notifyModal } = useModalNotification();
   const { isGnosisSafe } = useGnosis();
   const { web3 } = useWeb3();
   const auth = getInstance();
@@ -23,16 +25,20 @@ export function useClient() {
 
   const isSending = ref(false);
 
+  function errorNotification(description: string) {
+    notify([
+      'red',
+      description ? `Oops, ${description}` : t('notify.somethingWentWrong')
+    ]);
+    notifyModal('warning', description);
+  }
+
   async function send(space, type, payload) {
     isSending.value = true;
     try {
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
-      const errorMessage =
-        e?.error_description && typeof e.error_description === 'string'
-          ? `Oops, ${e.error_description}`
-          : t('notify.somethingWentWrong');
-      notify(['red', errorMessage]);
+      errorNotification(e?.error_description || '');
       return e;
     } finally {
       isSending.value = false;
