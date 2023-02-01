@@ -6,6 +6,7 @@ import { useApp } from '@/composables/useApp';
 import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { shorten } from '@/helpers/utils';
 
 const { env } = useApp();
 
@@ -50,6 +51,11 @@ const waitForRegistration = () => {
   clearInterval(waitingForRegistrationInterval);
   waitingForRegistrationInterval = setInterval(loadOwnedEnsDomains, 5000);
 };
+
+function shortenInvalidEns(ens: string) {
+  const [name, domain] = ens.split('.');
+  return `${shorten(name)}.${domain}`;
+}
 
 // stop lookup when leaving
 onUnmounted(() => clearInterval(waitingForRegistrationInterval));
@@ -112,16 +118,34 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             }}
           </div>
           <div class="space-y-2">
-            <BaseButton
-              v-for="(ens, i) in domainsWithoutExistingSpace"
-              :key="i"
-              class="flex w-full items-center justify-between"
-              :primary="domainsWithoutExistingSpace.length === 1"
-              @click="emit('next', ens.name)"
-            >
-              {{ ens.name }}
-              <BaseIcon name="go" size="22" class="-mr-2" />
-            </BaseButton>
+            <template v-for="(ens, i) in domainsWithoutExistingSpace" :key="i">
+              <BaseButton
+                v-if="!ens.isInvalid"
+                class="flex w-full items-center justify-between"
+                :primary="domainsWithoutExistingSpace.length === 1"
+                @click="emit('next', ens.name)"
+              >
+                {{ ens.name }}
+                <i-ho-arrow-sm-right class="-mr-2" />
+              </BaseButton>
+              <BaseLink
+                v-else
+                :link="`https://app.ens.domains/address/${web3Account}/controller`"
+                hide-external-icon
+              >
+                <BaseButton class="flex w-full items-center justify-between">
+                  {{ shortenInvalidEns(ens.name) }}
+                  <i-ho-exclamation-circle
+                    v-tippy="{
+                      content: ens.isInvalid
+                        ? $t('setup.domain.invalidEns')
+                        : null
+                    }"
+                    class="-mr-2"
+                  />
+                </BaseButton>
+              </BaseLink>
+            </template>
           </div>
           <div class="mt-4">
             {{ $t('setup.orReigsterNewEns') }}
