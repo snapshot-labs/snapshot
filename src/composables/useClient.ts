@@ -2,11 +2,14 @@ import { ref } from 'vue';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useRoute } from 'vue-router';
 
-import { useGnosis } from '@/composables/useGnosis';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useI18n } from '@/composables/useI18n';
-import { useFlashNotification } from '@/composables/useFlashNotification';
+import {
+  useGnosis,
+  useWeb3,
+  useI18n,
+  useFlashNotification
+} from '@/composables';
 
 export function useClient() {
   const { t } = useI18n();
@@ -14,6 +17,9 @@ export function useClient() {
   const { isGnosisSafe } = useGnosis();
   const { web3 } = useWeb3();
   const auth = getInstance();
+  const route = useRoute();
+
+  const DEFINED_APP = (route?.query.app as string) || 'snapshot';
 
   const isSending = ref(false);
 
@@ -50,7 +56,7 @@ export function useClient() {
         end: payload.end,
         snapshot: payload.snapshot,
         plugins: JSON.stringify(plugins),
-        app: 'snapshot'
+        app: DEFINED_APP
       });
     } else if (type === 'vote') {
       return client.vote(auth.web3, web3.value.account, {
@@ -59,7 +65,7 @@ export function useClient() {
         type: payload.proposal.type,
         choice: payload.choice,
         privacy: payload.privacy,
-        app: 'snapshot',
+        app: DEFINED_APP,
         reason: payload.reason
       });
     } else if (type === 'delete-proposal') {
