@@ -20,14 +20,10 @@ defineProps<{
     </div>
     <div class="flex items-end justify-between text-skin-text">
       <div class="flex flex-col">
-        <BaseLink
-          class="text-skin-text"
-          :link="`https://github.com/${plugin.author}`"
-          hide-external-icon
-        >
+        <div class="text-skin-text">
           <BaseIcon name="github" class="mr-1" />
           {{ plugin.author }}
-        </BaseLink>
+        </div>
         {{
           $tc('inSpaces', [
             formatCompactNumber(pluginsSpacesCount?.[plugin.key] ?? 0)
