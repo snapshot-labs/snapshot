@@ -267,10 +267,10 @@ export interface SafeExecutionData {
 }
 
 export interface Plugin {
-  author: string;
-  defaults: any;
   name: string;
+  author: string;
   version: string;
+  defaults?: any;
   icon?: string;
   description?: string;
   website?: string;
