@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, toRefs } from 'vue';
+import { ref, watch, toRefs, computed } from 'vue';
 import { PluginIndex } from '@/helpers/interfaces';
 import { usePlugins } from '@/composables';
 
-const props = defineProps<{ open: boolean; plugin: PluginIndex }>();
+const props = defineProps<{
+  open: boolean;
+  plugin: Record<string, any>;
+  usedPlugins: string[];
+}>();
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
@@ -30,6 +34,14 @@ function selectPlugin(plugin: PluginIndex) {
   if (!plugin?.defaults?.space) return handleSubmit();
   input.value = selectedPlugin.value?.defaults?.space ?? {};
 }
+
+const availablePlugins = computed(() => {
+  const filteredPlugins = filterPlugins(searchInput.value);
+  const availablePlugins = filteredPlugins.filter(
+    p => !props.usedPlugins.includes(p.key)
+  );
+  return availablePlugins;
+});
 
 watch(open, () => {
   if (props.open) getPluginsSpacesCount();
@@ -80,15 +92,13 @@ watch(open, () => {
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
           <BasePluginItem
-            v-for="(pluginItem, i) in filterPlugins(searchInput)"
+            v-for="(pluginItem, i) in availablePlugins"
             :key="i"
             :plugin="pluginItem"
             @click="selectPlugin(pluginItem)"
           />
 
-          <BaseNoResults
-            v-if="Object.keys(filterPlugins(searchInput)).length < 1"
-          />
+          <BaseNoResults v-if="Object.keys(availablePlugins).length < 1" />
         </div>
       </div>
     </div>
