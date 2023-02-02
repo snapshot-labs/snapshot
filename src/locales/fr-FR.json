@@ -7,10 +7,10 @@
   "poweredBy": "Powered by",
   "results": "Résultats",
   "resultsError": "Les résultats n’ont pas pu être calculés. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
-  "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
-  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
+  "resultsCalculating": "Les résultats finaux sont en cours de calcul. Si vous voyez toujours ce message après quelques minutes, contactez l'administrateur de l'espace.",
+  "votingPowerFailedMessage": "Votre voting power n’a pas pu être calculé. C’est habituellement dû à une stratégie mal configurée ou à un RPC désynchronisé impliqué dans la stratégie.",
+  "votingValidationFailedMessage": "Il y a eu une erreur de notre côté et nous n'avons pas pu vérifier si vous êtes éligible au vote. Cela est souvent dû à une validation de vote mal configurée ou à une API non réactive impliquée dans la validation.",
+  "notValidVoterMessage": "Oups, vous ne semblez pas être éligible au vote sur cette proposition.",
   "getHelp": "Obtenir de l’aide",
   "retry": "Réessayer",
   "currentResults": "Résultats actuels",
@@ -30,7 +30,7 @@
   "space": "Espace",
   "spaces": "Espaces",
   "verifiedSpace": "Espace vérifié",
-  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
+  "warningSpace": "Cet espace a été signalé comme potentiellement malveillant. Faites preuve de prudence.",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "terminé",
@@ -58,12 +58,12 @@
   "about": "À propos",
   "license": "Licence",
   "showMore": "Voir plus",
-  "voted": "Voted",
-  "reload": "Reload",
+  "voted": "Voté",
+  "reload": "Rafraîchir",
   "ipfsServer": "Serveur IPFS",
   "hub": "Hub",
   "cancel": "Annuler",
-  "delete": "Delete",
+  "delete": "Supprimer",
   "demoSite": "Ceci est le site de démonstration, testez-le !",
   "removeDelegation": "Révoquer la délégation",
   "confirmRemove": "Êtes-vous sûr de vouloir révoquer votre délégation à",
@@ -147,7 +147,7 @@
   "or": "ou",
   "share": "Partager",
   "shareOnTwitter": "Partager sur Twitter",
-  "shareOnLenster": "Share on Lenster",
+  "shareOnLenster": "Partager sur Lenster",
   "createButton": "Créer",
   "discussion": "Discussion",
   "changeWallet": "Changer de wallet",
@@ -217,7 +217,8 @@
       },
       "customValidation": "Vous devez approuver la validation de la proposition pour soumettre une proposition.",
       "executionError": "La vérification de votre admissibilité à créer des propositions dans cet espace a échoué. C’est probablement dû à une stratégie mal configurée."
-    }
+    },
+    "errorGettingSnapshot": "Nous avons rencontré une erreur lors de la récupération du numéro de bloc nécessaire pour calculer votre voting power. Veuillez réessayer plus tard."
   },
   "delegate": {
     "header": "Déléguer",
@@ -249,7 +250,7 @@
     "postVoteModal": {
       "defaultTitle": "Votre vote est enregistré !",
       "gnosisSafeTitle": "Votre vote est en attente...",
-      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
+      "gnosisSafeDescription": "Les votes avec un Safe nécessitent des signataires supplémentaires et seront visibles une fois la transaction confirmée.",
       "seeQueue": "Voir les transactions en attente",
       "tips": {
         "1": "Les votes peuvent être modifiés tant que la proposition est active"
@@ -316,7 +317,7 @@
       "select": "Sélectionner la/les catégorie(s)"
     },
     "terms": {
-      "label": "Terms of service",
+      "label": "Conditions d'utilisation",
       "information": "Les utilisateurs devront accepter ces conditions une fois avant de pouvoir créer une proposition ou voter"
     },
     "hideSpace": "Cacher l'espace de la page d'accueil",
@@ -327,18 +328,18 @@
       "parent": {
         "label": "Espace principal",
         "placeholder": "pistachiodao.eth",
-        "information": "The space that this space is a sub-space of will be displayed on the space page"
+        "information": "L'espace dont cet espace est un sous-espace sera affiché sur la page de l'espace"
       },
       "children": {
         "label": "Sous-espaces",
         "placeholder": "pistachiodao.eth",
-        "information": "Related Sub-spaces listed here will be displayed on the space page"
+        "information": "Les sous-espaces apparentés listés ici seront affichés sur la page d'espace"
       }
     },
     "website": "Site web",
     "strategies": {
       "label": "Stratégie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
+      "information": "Les stratégies sont utilisées pour déterminer le voting power ou si un utilisateur est autorisé à créer une proposition"
     },
     "network": {
       "label": "Réseau",
@@ -346,7 +347,7 @@
     },
     "symbol": {
       "label": "Symbole",
-      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
+      "information": "Le symbole par défaut utilisé sur cet espace, généralement le symbole du jeton, p. ex. BAL pour Balancer"
     },
     "strategiesList": "Sélectionnez jusqu'à 8 stratégies",
     "votingPowerIsCumulative": "Le voting power est cumulatif",
@@ -381,7 +382,7 @@
     },
     "type": {
       "label": "Type",
-      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
+      "information": "Le type de système de vote utilisé pour cet espace. (Appliqué à toutes les propositions futures)"
     },
     "anyType": "Tous",
     "hideAbstain": "Ignorer les votes par abstention dans les résultats de vote basiques",
@@ -396,20 +397,20 @@
       "label": "Trésorerie",
       "add": "Ajouter une trésorerie",
       "edit": "Modifier la trésorerie",
-      "information": "Add treasuries of your organization to show them in your space"
+      "information": "Ajoutez des trésoreries à votre organisation pour les afficher dans votre espace"
     },
     "addPlugin": "Ajouter un plugin",
     "editPlugin": "Modifier le plugin",
     "pluginParameters": "Paramètres du plugin",
     "proposal": {
-      "title": "Proposal",
+      "title": "Proposition",
       "guidelines": {
-        "title": "Guidelines",
-        "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
+        "title": "Instructions",
+        "information": "Afficher un lien vers vos directives sur la création de propositions pour aider les utilisateurs à comprendre ce qui constitue une proposition valide"
       },
       "template": {
-        "title": "Template",
-        "information": "Start every proposal with a template to help users understand what information is required"
+        "title": "Modèle",
+        "information": "Créer chaque proposition avec un modèle pour aider les utilisateurs à comprendre quelles informations sont nécessaires"
       }
     }
   },
@@ -426,7 +427,7 @@
     "helpDocsAndDiscordLinks": "Not sure how to setup your space? Learn more in the {docs} or join Snapshot {discord}.",
     "setSpaceController": "Controller de l’espace",
     "setSpaceControllerExists": "The snapshot text-record for this domain has already been set. Choose edit to change it, otherwise you can skip to the next step.",
-    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
+    "setSpaceControllerInfo": "Le contrôleur d'espace est le compte qui sera en mesure de gérer les paramètres de l'espace. Des contrôleurs d'espace supplémentaires (admins) peuvent être ajoutés ultérieurement.",
     "setSpaceControllerInfoGnosisSafe": "Lors de la création d'un espace avec un Gnosis Safe, il est recommandé de définir l'adresse du Safe comme controller de l'espace. Si non, vous devez suivre quelques étapes supplémentaires. {link}",
     "editSpaceController": "Modifier le controller sur ENS",
     "setController": "Définir le controller",
@@ -450,7 +451,8 @@
       "ensMessage": "Avant de pouvoir créer votre propre espace, vous avez besoin d'un domaine ENS sur le réseau principal Ethereum.",
       "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "Essayer la démo",
-      "yourExistingSpaces": "Your existing spaces"
+      "yourExistingSpaces": "Vos espaces existants",
+      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
       "title": "Comment souhaitez-vous configurer votre stratégie de vote ?",
@@ -482,10 +484,10 @@
     "about": {
       "header": "À propos",
       "joinedSpaces": "Espaces rejoints",
-      "createdSpaces": "Created spaces",
+      "createdSpaces": "Espaces créés",
       "biography": "Biographie",
       "notJoinSpacesYet": "N'a pas encore rejoint d'espaces",
-      "notCreatedSpacesYet": "Hasn't created any spaces yet",
+      "notCreatedSpacesYet": "N'a pas encore créé d'espaces",
       "delegatorNetworkInfo": "Changer de réseau dans votre wallet",
       "delegate": "Déléguer",
       "delegated": "Délégué",
@@ -568,9 +570,9 @@
   "privacy": {
     "label": "Confidentialité",
     "title": "Sélectionner la confidentialité des votes",
-    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
+    "information": "Le type de confidentialité utilisé pour les propositions. (Appliqué à toutes les propositions futures)",
     "any": "Any",
-    "none": "None",
+    "none": "Aucun",
     "shutter": {
       "label": "Shutter",
       "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
@@ -581,18 +583,23 @@
   "validation": {
     "label": "Validation",
     "title": "Select voting validation",
-    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "information": "Le type de validation utilisé pour déterminer si un utilisateur peut voter. (Appliqué à toutes les propositions futures)",
     "any": {
-      "label": "Anyone can vote",
-      "description": "Anyone with voting power can cast a vote."
+      "label": "Ouvert à tous",
+      "description": "Toute personne ayant du voting power peut voter."
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
-      "label": "Gitcoin Passport gated",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
+      "label": "Accès réservé au Gitcoin Passport",
+      "description": "Protégez vos propositions contre le spam et la manipulation des votes en exigeant que les utilisateurs aient un Gitcoin Passport.",
       "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
-      "label": "Gitcoin Passport weighted"
+      "label": "Pondéré par Gitcoin Passport"
     }
   },
   "safeSnap": {

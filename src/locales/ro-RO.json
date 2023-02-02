@@ -217,7 +217,8 @@
       },
       "customValidation": "Trebuie sa treci de validarea propunerii pentru a o înscrie.",
       "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "Deleghează",
@@ -450,7 +451,8 @@
       "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
       "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "try the demo",
-      "yourExistingSpaces": "Your existing spaces"
+      "yourExistingSpaces": "Your existing spaces",
+      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
@@ -585,6 +587,11 @@
     "any": {
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",

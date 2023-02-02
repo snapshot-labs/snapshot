@@ -217,7 +217,8 @@
       },
       "customValidation": "您需要通过提案验证后才能提交提案。",
       "executionError": "您在此空间中创建提案的资格验证失败。这可能是由于配置了错误的策略。"
-    }
+    },
+    "errorGettingSnapshot": "我们在获取计算您投票能力所需的快照区块时遇到了一个错误。请稍后再试。"
   },
   "delegate": {
     "header": "委托",
@@ -450,7 +451,8 @@
       "ensMessage": " 在创建自己的空间之前，您需要设置以太坊主网上的 ENS 域名。",
       "ensMessageTestnet": "你也可以先在Goerli测试网 {link} 测试并处理问题。",
       "tryDemo": "尝试这个 demo",
-      "yourExistingSpaces": "您已经存在的空间"
+      "yourExistingSpaces": "您已经存在的空间",
+      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
@@ -585,6 +587,11 @@
     "any": {
       "label": "任何人都可以投票",
       "description": "任何拥有投票权的人都可以投票。"
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport门槛",
