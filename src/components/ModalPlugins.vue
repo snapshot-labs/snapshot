@@ -25,8 +25,9 @@ function handleSubmit() {
   emit('close');
 }
 
-function selectPlugin(plugin) {
+function selectPlugin(plugin: PluginIndex) {
   selectedPlugin.value = plugin;
+  if (!plugin?.defaults?.space) return handleSubmit();
   input.value = selectedPlugin.value?.defaults?.space ?? {};
 }
 
