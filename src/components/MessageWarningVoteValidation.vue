@@ -2,25 +2,46 @@
 import { Proposal } from '@/helpers/interfaces';
 
 defineProps<{
-  isValidVoter: boolean;
   proposal: Proposal;
 }>();
 </script>
 
 <template>
   <BaseMessageBlock level="warning">
-    <template v-if="proposal.validation.name === 'passport-gated'">
-      {{
-        $t('validation.passport-gated.invalidVoterMessage', {
-          amount: proposal.validation.params.operator === 'AND' ? 'all' : 'one',
-          stamps: proposal.validation.params.stamps.join(', ')
-        })
-      }}
+    <template
+      v-if="
+        proposal.validation.name === 'passport-gated' ||
+        proposal.validation.name === 'passport-weighted'
+      "
+    >
+      <template v-if="proposal.validation.name === 'passport-gated'">
+        {{
+          $t('validation.passport-gated.invalidVoterMessage', {
+            amount:
+              proposal.validation.params.operator === 'AND' ? 'all' : 'one',
+            stamps: proposal.validation.params.stamps.join(', ')
+          })
+        }}
+      </template>
+
+      <BaseLink link="https://passport.gitcoin.co/#/dashboard">
+        Gitcoin Passport
+      </BaseLink>
     </template>
 
-    <BaseLink link="https://passport.gitcoin.co/#/dashboard">
-      Gitcoin Passport</BaseLink
-    >
+    <template v-if="proposal.validation.name === 'basic'">
+      {{
+        $t('validation.basic.invalidVoterMessage', {
+          amount: proposal.validation.params.minScore
+        })
+      }}
+
+      <BaseLink
+        :link="{ name: 'spaceAbout', params: { key: proposal.space.id } }"
+      >
+        {{ $t('learnMore') }}
+      </BaseLink>
+    </template>
   </BaseMessageBlock>
   <!-- Maybe needed for weighted passport -->
   <!-- 

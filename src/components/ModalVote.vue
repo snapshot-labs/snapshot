@@ -248,7 +248,10 @@ watch(
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
             {{ t('votingPowerFailedMessage') }}
           </BaseMessageBlock>
-          <BaseMessageBlock v-else-if="hasVotingValidationFailed" level="warning">
+          <BaseMessageBlock
+            v-else-if="hasVotingValidationFailed"
+            level="warning"
+          >
             {{ t('votingValidationFailedMessage') }}
           </BaseMessageBlock>
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
@@ -264,14 +267,8 @@ watch(
             >
           </BaseMessageBlock>
 
-          <ModalVoteMessagePassport
-            v-else-if="
-              !isValidVoter &&
-              proposal.validation?.name &&
-              (proposal.validation.name === 'passport-gated' ||
-                proposal.validation.name === 'passport-weighted')
-            "
-            :is-valid-voter="isValidVoter"
+          <MessageWarningVoteValidation
+            v-else-if="!isValidVoter && proposal.validation?.name"
             :proposal="proposal"
           />
 

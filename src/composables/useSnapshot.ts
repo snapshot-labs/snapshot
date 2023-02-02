@@ -6,16 +6,17 @@ const isLoading = ref(false);
 const error = ref(false);
 
 export function useSnapshot() {
-  async function getSnapshot(network: string) {
+  async function getSnapshot(network: string): Promise<number> {
     try {
       isLoading.value = true;
       error.value = false;
       const currentBlock = await getBlockNumber(getProvider(network));
       console.log('Snapshot block number', currentBlock);
-      isLoading.value = false;
       return currentBlock - 4;
     } catch (e) {
       error.value = true;
+      return 0;
+    } finally {
       isLoading.value = false;
     }
   }
