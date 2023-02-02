@@ -451,7 +451,8 @@
       "ensMessage": "Avant de pouvoir créer votre propre espace, vous avez besoin d'un domaine ENS sur le réseau principal Ethereum.",
       "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "Essayer la démo",
-      "yourExistingSpaces": "Vos espaces existants"
+      "yourExistingSpaces": "Vos espaces existants",
+      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
       "title": "Comment souhaitez-vous configurer votre stratégie de vote ?",
@@ -586,6 +587,11 @@
     "any": {
       "label": "Ouvert à tous",
       "description": "Toute personne ayant du voting power peut voter."
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Accès réservé au Gitcoin Passport",
