@@ -62,7 +62,7 @@ watch(open, () => {
     <template #header>
       <h3>
         {{
-          selectedPlugin?.key
+          usedPlugins.includes(selectedPlugin?.key || '')
             ? $t('settings.editPlugin')
             : $t('settings.addPlugin')
         }}
@@ -74,20 +74,15 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 min-h-[300px] md:mx-4">
-      <BaseBlock
-        v-if="selectedPlugin?.key"
-        slim
-        class="mb-4 rounded-md p-4 text-skin-link"
-      >
-        <h4 class="mb-3 text-center" v-text="selectedPlugin.name" />
+    <div class="my-4 mx-4 min-h-[300px]">
+      <div v-if="selectedPlugin?.key">
         <TextareaJson
           v-model="input"
           v-model:is-valid="isValid"
           :placeholder="$t('settings.pluginParameters')"
           class="input text-left"
         />
-      </BaseBlock>
+      </div>
       <div v-if="!selectedPlugin?.key">
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
