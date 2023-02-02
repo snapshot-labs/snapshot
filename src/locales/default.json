@@ -587,6 +587,11 @@
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
     },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+    },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",

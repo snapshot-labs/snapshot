@@ -15,16 +15,44 @@ const isValidJson = ref(true);
 
 const input = ref({
   name: '',
-  params: DEFAULT_PARAMS
+  params: clone(DEFAULT_PARAMS)
 });
 
-const validations = ['any', 'passport-gated'];
-const validationSchemas = ref(null);
+type Validations = Record<
+  string,
+  {
+    key: string;
+    example?: Record<string, any>[];
+    schema?: Record<string, any>;
+    about?: string;
+  }
+>;
+
+const validations = ref<Validations | null>(null);
+const isValidationsLoaded = ref(false);
 
 function select(n: string) {
   input.value.name = n;
+
+  if (props.validation.name !== n) {
+    input.value.params = clone(DEFAULT_PARAMS);
+    if (n === 'basic') {
+      input.value.params = {
+        minScore: 1,
+        strategies: [
+          {
+            name: 'ticket',
+            network: '1',
+            params: {
+              symbol: 'DAI'
+            }
+          }
+        ]
+      };
+    }
+  }
+
   if (n === 'any') {
-    input.value.params = DEFAULT_PARAMS;
     handleSubmit();
   }
 }
@@ -34,14 +62,19 @@ function handleSubmit() {
   emit('close');
 }
 
-const areValidationsLoaded = ref(false);
-
 async function getValidations() {
-  if (validationSchemas.value) return;
-  const res = await fetch(`${import.meta.env.VITE_SCORES_URL}/api/validations`);
-  const data = await res.json();
-  validationSchemas.value = data || null;
-  areValidationsLoaded.value = true;
+  if (validations.value) return;
+  const fetchedValidations: Validations = await fetch(
+    `${import.meta.env.VITE_SCORES_URL}/api/validations`
+  ).then(res => res.json());
+  const validationsWithAny = {
+    any: {
+      key: 'any'
+    },
+    ...fetchedValidations
+  };
+  validations.value = validationsWithAny || null;
+  isValidationsLoaded.value = true;
 }
 
 watch(open, () => {
@@ -52,15 +85,15 @@ watch(open, () => {
   } else {
     input.value = {
       name: '',
-      params: DEFAULT_PARAMS
+      params: clone(DEFAULT_PARAMS)
     };
   }
 });
 
 const validationDefinition = computed(() => {
   return (
-    validationSchemas.value?.[input.value.name]?.schema?.definitions
-      ?.Validation || null
+    validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
+    null
   );
 });
 
@@ -100,16 +133,16 @@ const isValidForm = computed(() => {
         />
       </div>
       <div v-if="!input.name">
-        <LoadingRow v-if="!areValidationsLoaded" block class="px-0" />
+        <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />
         <div v-else class="space-y-3">
           <BaseModalSelectItem
             v-for="v in validations"
-            :key="v"
-            :title="$t(`validation.${v}.label`)"
-            :description="$t(`validation.${v}.description`)"
-            :selected="validation.name === v"
-            :tag="v === 'passport-gated' ? 'Beta' : ''"
-            @click="select(v)"
+            :key="v.key"
+            :title="$t(`validation.${v.key}.label`)"
+            :description="$t(`validation.${v.key}.description`)"
+            :selected="validation.name === v.key"
+            :tag="v.key === 'passport-gated' ? 'Beta' : ''"
+            @click="select(v.key)"
           />
         </div>
       </div>
