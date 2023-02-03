@@ -25,7 +25,7 @@ export const EIP3770_PREFIXES = {
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
   '4': 'https://api-rinkeby.etherscan.io/api',
-  '5': 'https://api-goerli.etherscan.io/',
+  '5': 'https://api-goerli.etherscan.io/api',
   '100': 'https://blockscout.com/xdai/mainnet/api',
   '73799': 'https://volta-explorer.energyweb.org/api',
   '246': 'https://explorer.energyweb.org/api',
