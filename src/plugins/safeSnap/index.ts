@@ -147,7 +147,7 @@ export default class Plugin {
     
     const provider: StaticJsonRpcProvider = getProvider(network);
     const moduleContract = new Contract(
-      moduleAddress,
+      umaAddress,
       UMA_MODULE_ABI,
       provider
     );
