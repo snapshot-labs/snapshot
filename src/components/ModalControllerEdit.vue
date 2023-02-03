@@ -1,24 +1,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useSpaceController } from '@/composables/useSpaceController';
 import { shorten } from '@/helpers/utils';
+import { isAddress } from '@ethersproject/address';
 
-const { spaceControllerInput, controllerInputIsValid, settingENSRecord } =
-  useSpaceController();
+import { useSpaceController } from '@/composables';
 
-const props = defineProps<{
+const {
+  spaceControllerInput,
+  settingENSRecord,
+  spaceController,
+  confirmSetRecord
+} = useSpaceController();
+
+defineProps<{
   open: boolean;
-  currentTextRecord: string;
   ensAddress: string;
 }>();
 
-const currentSpaceController = computed(() => {
-  if (!props.currentTextRecord) return null;
-  const position = props.currentTextRecord.includes('/testnet/') ? 5 : 4;
-  return props.currentTextRecord?.split('/')[position] ?? '';
-});
+const controllerInputIsValid = computed(() =>
+  isAddress(spaceControllerInput.value)
+);
 
-defineEmits(['close', 'set']);
+defineEmits(['close']);
 </script>
 
 <template>
@@ -30,10 +33,10 @@ defineEmits(['close', 'set']);
     </template>
 
     <div class="p-4">
-      <BaseMessageBlock v-if="currentSpaceController" level="info" class="mb-3">
+      <BaseMessageBlock v-if="spaceController" level="info" class="mb-3">
         {{
           $tc('settings.currentSpaceControllerIs', {
-            address: shorten(currentSpaceController)
+            address: shorten(spaceController)
           })
         }}
         <div>
@@ -49,8 +52,7 @@ defineEmits(['close', 'set']);
         :placeholder="
           $t('setup.spaceOwnerAddressPlaceHolder', {
             address:
-              currentSpaceController ??
-              '0x3901D0fDe202aF1427216b79f5243f8A022d68cf'
+              spaceController ?? '0x3901D0fDe202aF1427216b79f5243f8A022d68cf'
           })
         "
         focus-on-mount
@@ -63,7 +65,7 @@ defineEmits(['close', 'set']);
         primary
         :disabled="!controllerInputIsValid"
         :loading="settingENSRecord"
-        @click="$emit('set'), $emit('close')"
+        @click="confirmSetRecord(), $emit('close')"
       >
         {{ $t('settings.set') }}
       </BaseButton>
