@@ -13,6 +13,7 @@ export const EIP712_TYPES = {
 export const EIP3770_PREFIXES = {
   1: 'eth',
   4: 'rin',
+  5: 'gor',
   56: 'bnb',
   100: 'gno',
   246: 'ewt',
@@ -24,6 +25,7 @@ export const EIP3770_PREFIXES = {
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
   '4': 'https://api-rinkeby.etherscan.io/api',
+  '5': 'https://api-goerli.etherscan.io/',
   '100': 'https://blockscout.com/xdai/mainnet/api',
   '73799': 'https://volta-explorer.energyweb.org/api',
   '246': 'https://explorer.energyweb.org/api',
@@ -35,6 +37,7 @@ export const EXPLORER_API_URLS = {
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction.gnosis.io/api/v1/',
   '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
+  '5': 'https://safe-transaction.goerli.safe.global/api/vi/',
   '100': 'https://safe-transaction.xdai.gnosis.io/api/v1/',
   '73799': 'https://safe-transaction.volta.gnosis.io/api/v1/',
   '246': 'https://safe-transaction.ewc.gnosis.io/api/v1/',
