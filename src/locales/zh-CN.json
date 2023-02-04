@@ -643,7 +643,7 @@
       "changeOutcome": "修改结果",
       "executeTxs": "执行交易批处理 {0} / {1}",
       "executed": "所有交易已执行",
-      "noTransactions": "There are no transactions to execute",
+      "noTransactions": "没有需要执行的交易。",
       "rejected": "提案被否决",
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
@@ -652,14 +652,14 @@
       "criteria": "接收标准？",
       "proposalPassed": "该提案通过了吗？",
       "expired": "提案已过期",
-      "approveBond": "Approve bond",
-      "confirmVoteResults": "Click to confirm the proposal passed",
-      "executeTxsUma": "Execute transaction batch",
-      "deleteDisputedProposal": "Delete disputed proposal",
-      "confirmVoteResultsToolTip": "Make sure this proposal was approved by this Snapshot vote before proposing on-chain. If the Snapshot vote rejected the proposal, the on-chain proposal will be rejected as well and you will lose your bond.",
-      "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
-      "requestToolTip": "This will propose the transactions from this Snapshot vote on-chain. After a challenge window, if the proposal is valid, the transactions can be executed and your bond will be returned.",
-      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond."
+      "approveBond": "批准保证金",
+      "confirmVoteResults": "点击确认已通过的提案",
+      "executeTxsUma": "执行交易批次",
+      "deleteDisputedProposal": "删除有争议的提案",
+      "confirmVoteResultsToolTip": "请确保这项提案在提出链上提案之前经快照投票批准。 如果快照投票否决了这项提案，链上的提案也将被否决，你将失去你的保证金。",
+      "approveBondToolTip": "链上提案需要提案人提供保证金。这将批准你的钱包中的代币作为保证金。如果你做了一个无效的提案，它将受到争议，你将失去你的保证金。如果提案是有效的，你的保证金将在交易执行时被退回。",
+      "requestToolTip": "这将在链上提议该快照投票的交易。在一个挑战窗口后，如果提案有效，交易可以被执行，你的保证金将被退回。",
+      "executeToolTip": "这将执行此提案中的交易并退还提议者的保证金。"
     }
   },
   "poap": {
