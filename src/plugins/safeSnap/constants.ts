@@ -35,15 +35,15 @@ export const EXPLORER_API_URLS = {
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
-  '1': 'https://safe-transaction.gnosis.io/api/v1/',
-  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1/',
-  '5': 'https://safe-transaction.goerli.safe.global/api/v1/',
-  '100': 'https://safe-transaction.xdai.gnosis.io/api/v1/',
-  '73799': 'https://safe-transaction.volta.gnosis.io/api/v1/',
-  '246': 'https://safe-transaction.ewc.gnosis.io/api/v1/',
-  '137': 'https://safe-transaction.polygon.gnosis.io/api/v1/',
-  '56': 'https://safe-transaction.bsc.gnosis.io/api/v1/',
-  '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1/'
+  '1': 'https://safe-transaction.gnosis.io/api/v1',
+  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1',
+  '5': 'https://safe-transaction.goerli.safe.global/api/v1',
+  '100': 'https://safe-transaction.xdai.gnosis.io/api/v1',
+  '73799': 'https://safe-transaction.volta.gnosis.io/api/v1',
+  '246': 'https://safe-transaction.ewc.gnosis.io/api/v1',
+  '137': 'https://safe-transaction.polygon.gnosis.io/api/v1',
+  '56': 'https://safe-transaction.bsc.gnosis.io/api/v1',
+  '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1'
 };
 
 // ABIs
