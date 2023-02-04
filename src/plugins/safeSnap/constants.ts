@@ -12,7 +12,6 @@ export const EIP712_TYPES = {
 
 export const EIP3770_PREFIXES = {
   1: 'eth',
-  4: 'rin',
   5: 'gor',
   56: 'bnb',
   100: 'gno',
@@ -24,7 +23,6 @@ export const EIP3770_PREFIXES = {
 
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
-  '4': 'https://api-rinkeby.etherscan.io/api',
   '5': 'https://api-goerli.etherscan.io/api',
   '100': 'https://blockscout.com/xdai/mainnet/api',
   '73799': 'https://volta-explorer.energyweb.org/api',
@@ -35,15 +33,14 @@ export const EXPLORER_API_URLS = {
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
-  '1': 'https://safe-transaction.gnosis.io/api/v1',
-  '4': 'https://safe-transaction.rinkeby.gnosis.io/api/v1',
-  '5': 'https://safe-transaction.goerli.safe.global/api/v1',
-  '100': 'https://safe-transaction.xdai.gnosis.io/api/v1',
-  '73799': 'https://safe-transaction.volta.gnosis.io/api/v1',
-  '246': 'https://safe-transaction.ewc.gnosis.io/api/v1',
-  '137': 'https://safe-transaction.polygon.gnosis.io/api/v1',
-  '56': 'https://safe-transaction.bsc.gnosis.io/api/v1',
-  '42161': 'https://safe-transaction.arbitrum.gnosis.io/api/v1'
+  '1': 'https://safe-transaction-mainnet.safe.global/api/v1',
+  '5': 'https://safe-transaction-goerli.safe.global/api/v1',
+  '100': 'https://safe-transaction-gnosis-chain.safe.global/api/v1',
+  '73799': 'https://safe-transaction-volta.safe.global/api/v1',
+  '246': 'https://safe-transaction-ewc.safe.global//api/v1',
+  '137': 'https://safe-transaction-polygon.safe.global//api/v1',
+  '56': 'https://safe-transaction-bsc.safe.global//api/v1',
+  '42161': 'https://safe-transaction-arbitrum.safe.global/api/v1'
 };
 
 // ABIs
@@ -314,7 +311,6 @@ export const MULTI_SEND_ABI = [
 export const MULTI_SEND_V1_3_0 = {
   '1': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '3': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '4': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '10': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
   '28': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
   '42': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
@@ -343,7 +339,6 @@ export const MULTI_SEND_V1_3_0 = {
 };
 export const MULTI_SEND_V1_2_0 = {
   '1': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '4': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
   '42': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
   '5': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
   '88': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
@@ -353,7 +348,6 @@ export const MULTI_SEND_V1_2_0 = {
 };
 export const MULTI_SEND_V1_1_1 = {
   '1': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '4': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
   '5': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
   '42': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
   '88': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
