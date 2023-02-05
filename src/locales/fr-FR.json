@@ -643,6 +643,7 @@
       "changeOutcome": "Modifier le résultat",
       "executeTxs": "Exécuter le lot de transactions {0} sur {1}",
       "executed": "Toutes les transactions ont été exécutées",
+      "noTransactions": "There are no transactions to execute",
       "rejected": "Proposal rejected",
       "error": "Une erreur s'est produite",
       "connectWallet": "Connectez le wallet pour voir les détails de l'exécution",
@@ -650,7 +651,15 @@
       "question": "Cette proposition a-t-elle été adoptée et satisfait-elle aux",
       "criteria": "critères d'acceptation ?",
       "proposalPassed": "Did the proposal pass?",
-      "expired": "La proposition a expiré"
+      "expired": "La proposition a expiré",
+      "approveBond": "Approve bond",
+      "confirmVoteResults": "Click to confirm the proposal passed",
+      "executeTxsUma": "Execute transaction batch",
+      "deleteDisputedProposal": "Delete disputed proposal",
+      "confirmVoteResultsToolTip": "Make sure this proposal was approved by this Snapshot vote before proposing on-chain. If the Snapshot vote rejected the proposal, the on-chain proposal will be rejected as well and you will lose your bond.",
+      "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
+      "requestToolTip": "This will propose the transactions from this Snapshot vote on-chain. After a challenge window, if the proposal is valid, the transactions can be executed and your bond will be returned.",
+      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond."
     }
   },
   "poap": {
