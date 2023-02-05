@@ -27,33 +27,21 @@ const subSpaces = computed(() => {
   <div v-if="mainSpace || subSpaces.length" class="my-3">
     <div v-if="mainSpace">
       <h5 class="px-4 font-normal text-skin-text">{{ $t('mainspace') }}</h5>
-      <BaseLink
-        :link="
-          domain
-            ? `https://snapshot.org/#/${mainSpace.id}`
-            : { name: 'spaceProposals', params: { key: mainSpace.id } }
-        "
-        hide-external-icon
-      >
+      <LinkSpace :space-id="mainSpace.id">
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="mainSpace" size="22" />
           <span class="mx-2 truncate">
             {{ mainSpace.name }}
           </span>
         </BaseSidebarNavigationItem>
-      </BaseLink>
+      </LinkSpace>
     </div>
     <div v-if="subSpaces?.length">
       <h5 class="px-4 font-normal text-skin-text">{{ $t('subspaces') }}</h5>
-      <BaseLink
+      <LinkSpace
         v-for="subSpace in subSpaces"
         :key="subSpace.id"
-        :link="
-          domain
-            ? `https://snapshot.org/#/${subSpace.id}`
-            : { name: 'spaceProposals', params: { key: subSpace.id } }
-        "
-        hide-external-icon
+        :space-id="subSpace.id"
       >
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="subSpace" size="22" />
@@ -61,7 +49,7 @@ const subSpaces = computed(() => {
             {{ subSpace.name }}
           </span>
         </BaseSidebarNavigationItem>
-      </BaseLink>
+      </LinkSpace>
     </div>
   </div>
 </template>

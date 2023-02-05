@@ -4,15 +4,15 @@ import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { mapOldPluginNames } from '@/helpers/utils';
 
-const extentedSpaces = ref<ExtendedSpace[]>([]);
+const extendedSpaces = ref<ExtendedSpace[]>([]);
 
 export function useExtendedSpaces() {
   const loading = ref(false);
 
   const { apolloQuery } = useApolloQuery();
-  async function loadExtentedSpaces(id_in: string[] = []) {
+  async function loadExtendedSpaces(id_in: string[] = []) {
     const filteredLoadedSpaces = id_in.filter(
-      id => !extentedSpaces.value?.find(space => space.id === id)
+      id => !extendedSpaces.value?.find(space => space.id === id)
     );
     if (!filteredLoadedSpaces.length) return;
 
@@ -29,10 +29,10 @@ export function useExtendedSpaces() {
       );
 
       const mappedSpaces = spaces.map(mapOldPluginNames);
-      extentedSpaces.value = [...extentedSpaces.value, ...mappedSpaces];
+      extendedSpaces.value = [...extendedSpaces.value, ...mappedSpaces];
 
       // Remove any duplicates incase two requests were made at the same time
-      extentedSpaces.value = extentedSpaces.value.filter(
+      extendedSpaces.value = extendedSpaces.value.filter(
         (space, index, self) => index === self.findIndex(t => t.id === space.id)
       );
 
@@ -45,19 +45,19 @@ export function useExtendedSpaces() {
   }
 
   const reloadSpace = (id: string) => {
-    const spaceToReload = extentedSpaces.value?.find(space => space.id === id);
+    const spaceToReload = extendedSpaces.value?.find(space => space.id === id);
     if (spaceToReload) {
-      extentedSpaces.value = extentedSpaces.value.filter(
+      extendedSpaces.value = extendedSpaces.value.filter(
         space => space.id !== id
       );
-      loadExtentedSpaces([id]);
+      loadExtendedSpaces([id]);
     }
   };
 
   return {
-    loadExtentedSpaces,
+    loadExtendedSpaces,
     reloadSpace,
-    extentedSpaces: computed(() => extentedSpaces.value),
+    extendedSpaces: computed(() => extendedSpaces.value),
     spaceLoading: computed(() => loading.value)
   };
 }

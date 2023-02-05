@@ -58,6 +58,7 @@ export function useApp() {
 
   return {
     domain,
+    domainName,
     domainAlias,
     env,
     isReady,

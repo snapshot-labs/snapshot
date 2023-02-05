@@ -27,12 +27,10 @@ const body = computed(() => removeMd(props.proposal.body));
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
             <template v-if="!hideSpaceAvatar">
-              <router-link
+              <LinkSpace
                 class="text-skin-text"
-                :to="{
-                  name: 'spaceProposals',
-                  params: { key: proposal.space.id }
-                }"
+                :space-id="proposal.space.id"
+                @click.stop
               >
                 <div class="flex items-center">
                   <AvatarSpace :space="proposal.space" size="28" />
@@ -41,7 +39,7 @@ const body = computed(() => removeMd(props.proposal.body));
                     v-text="proposal.space.name"
                   />
                 </div>
-              </router-link>
+              </LinkSpace>
               <span v-text="$tc('proposalBy')" />
             </template>
             <BaseUser
