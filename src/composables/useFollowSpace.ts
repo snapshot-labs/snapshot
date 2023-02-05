@@ -8,7 +8,7 @@ import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
 import { useSpaceSubscription } from './useSpaceSubscription';
 
-const following = ref([]);
+const following = ref<{ space: { id: string } }[]>([]);
 const loadingFollows = ref(false);
 
 export function useFollowSpace(spaceId: any = {}) {
@@ -20,9 +20,7 @@ export function useFollowSpace(spaceId: any = {}) {
 
   const loadingFollow = ref('');
 
-  const followingSpaces = computed(() =>
-    following.value.map((f: any) => f.space.id)
-  );
+  const followingSpaces = computed(() => following.value.map(f => f.space.id));
 
   const isFollowing = computed(() =>
     following.value.some(

@@ -11,7 +11,7 @@ import { useI18n } from '@/composables/useI18n';
 
 const props = defineProps<{
   userAddress: string;
-  followingSpaces: { space: { id: string } }[];
+  followingSpaces: string[];
   loadingFollowedSpaces: boolean;
 }>();
 
@@ -26,12 +26,13 @@ const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 const delegatorsFilteredBySpaces = computed(() => {
   if (!delegators.value) return [];
 
-  const followingSpaceIds = props.followingSpaces.map(s => s.space.id);
   const delegatorSpaceIds = delegators.value
     .map(d => d.space)
     .filter(d => d !== '');
 
-  return uniqBy(delegatorSpaceIds.filter(d => followingSpaceIds.includes(d)));
+  return uniqBy(
+    delegatorSpaceIds.filter(d => props.followingSpaces.includes(d))
+  );
 });
 
 const loadingDelegators = ref<boolean | 'notSupportedNetwork'>(false);

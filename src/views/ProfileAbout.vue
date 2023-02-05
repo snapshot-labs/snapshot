@@ -1,37 +1,15 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { FOLLOWS_QUERY } from '@/helpers/queries';
-import { useApolloQuery, useEns, useExtendedSpaces } from '@/composables';
+import { useEns, useExtendedSpaces, useFollowSpace } from '@/composables';
 
 const props = defineProps<{
   userAddress: string;
   profile?: { about?: string };
 }>();
 
-const { apolloQuery } = useApolloQuery();
+const { followingSpaces, loadingFollows, loadFollows } = useFollowSpace();
 
-const followedSpaces = ref([]);
-const loadingFollowedSpaces = ref(true);
-
-async function loadSpacesFollowed() {
-  loadingFollowedSpaces.value = true;
-  try {
-    followedSpaces.value = await apolloQuery(
-      {
-        query: FOLLOWS_QUERY,
-        variables: {
-          follower_in: props.userAddress
-        }
-      },
-      'follows'
-    );
-    loadingFollowedSpaces.value = false;
-  } catch (e) {
-    loadingFollowedSpaces.value = false;
-    console.error(e);
-  }
-}
-onMounted(() => loadSpacesFollowed());
+onMounted(() => loadFollows());
 
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
@@ -63,16 +41,16 @@ onMounted(async () => {
       />
 
       <BlockSpacesList
-        :spaces="followedSpaces.map(f => f.space.id)"
+        :spaces="followingSpaces"
         :title="$t('profile.about.joinedSpaces')"
         :message="$t('profile.about.notJoinSpacesYet')"
-        :loading="loadingFollowedSpaces"
+        :loading="loadingFollows"
       />
 
       <ProfileAboutDelegate
         :user-address="userAddress"
-        :following-spaces="followedSpaces"
-        :loading-followed-spaces="loadingFollowedSpaces"
+        :following-spaces="followingSpaces"
+        :loading-followed-spaces="loadingFollows"
       />
     </div>
   </div>
