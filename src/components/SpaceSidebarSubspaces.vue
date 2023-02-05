@@ -2,10 +2,6 @@
 import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import { useApp } from '@/composables';
-
-const { domain } = useApp();
-
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
