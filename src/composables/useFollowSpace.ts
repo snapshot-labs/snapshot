@@ -51,21 +51,21 @@ export function useFollowSpace(spaceId = '') {
     }
   }
 
-  function clickFollow(space) {
+  function clickFollow(id: string) {
     !web3.value.authLoading
       ? web3Account.value
-        ? follow(space)
+        ? follow(id)
         : (modalAccountOpen.value = true)
       : null;
   }
 
-  async function follow(space) {
-    loadingFollow.value = spaceId;
+  async function follow(id: string) {
+    loadingFollow.value = id;
     try {
       await checkAlias();
       if (!aliasWallet.value || !isValidAlias.value) {
         await setAlias();
-        follow(space);
+        follow(id);
       } else {
         if (isFollowing.value) {
           // Also unsubscribe to the notifications if the user leaves the space.
@@ -74,12 +74,12 @@ export function useFollowSpace(spaceId = '') {
           }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
-            space
+            space: id
           });
         } else {
           await client.follow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
-            space
+            space: id
           });
         }
         await loadFollows();
