@@ -11,7 +11,7 @@ import { useSpaceSubscription } from './useSpaceSubscription';
 const following = ref<{ space: { id: string }; follower: string }[]>([]);
 const loadingFollows = ref(false);
 
-export function useFollowSpace(spaceId: any = {}) {
+export function useFollowSpace(spaceId = '') {
   const { web3, web3Account } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
