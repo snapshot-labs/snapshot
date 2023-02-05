@@ -9,7 +9,10 @@ import client from '@/helpers/clientEIP712';
 import { useSpaceSubscription } from './useSpaceSubscription';
 
 const following = ref<{ space: { id: string }; follower: string }[]>([]);
-const loadingFollows = ref(false);
+const isLoadingFollows = ref(false);
+
+const spaceFollowers = ref<{ space: { id: string }; follower: string }[]>([]);
+const isLoadingSpaceFollowers = ref(false);
 
 export function useFollowSpace(spaceId = '') {
   const { web3, web3Account } = useWeb3();
@@ -28,25 +31,48 @@ export function useFollowSpace(spaceId = '') {
     )
   );
 
-  async function loadFollows() {
+  async function loadFollows(first = 500) {
     const { isAuthenticated } = getInstance();
 
     if (!isAuthenticated.value) return;
 
-    loadingFollows.value = true;
+    isLoadingFollows.value = true;
     try {
       following.value = await apolloQuery(
         {
           query: FOLLOWS_QUERY,
           variables: {
+            first,
             follower_in: web3Account.value
           }
         },
         'follows'
       );
-      loadingFollows.value = false;
+
+      isLoadingFollows.value = false;
     } catch (e) {
-      loadingFollows.value = false;
+      isLoadingFollows.value = false;
+      console.error(e);
+    }
+  }
+
+  async function loadSpaceFollowers(first = 500) {
+    isLoadingSpaceFollowers.value = true;
+    try {
+      spaceFollowers.value = await apolloQuery(
+        {
+          query: FOLLOWS_QUERY,
+          variables: {
+            first,
+            space_in: spaceId
+          }
+        },
+        'follows'
+      );
+
+      isLoadingSpaceFollowers.value = false;
+    } catch (e) {
+      isLoadingSpaceFollowers.value = false;
       console.error(e);
     }
   }
@@ -94,9 +120,12 @@ export function useFollowSpace(spaceId = '') {
   return {
     clickFollow,
     loadFollows,
+    loadSpaceFollowers,
     loadingFollow: computed(() => loadingFollow.value),
-    loadingFollows: computed(() => loadingFollows.value),
+    isLoadingFollows: computed(() => isLoadingFollows.value),
+    isLoadingSpaceFollowers: computed(() => isLoadingSpaceFollowers.value),
     isFollowing,
-    followingSpaces
+    followingSpaces,
+    spaceFollowers
   };
 }

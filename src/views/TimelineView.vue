@@ -18,7 +18,7 @@ const loading = ref(false);
 
 const route = useRoute();
 const router = useRouter();
-const { followingSpaces, loadingFollows } = useFollowSpace();
+const { followingSpaces, isLoadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
 const { setPageTitle } = useI18n();
 
@@ -177,7 +177,7 @@ const { endElement } = useScrollMonitor(() => {
         />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
-        <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
+        <LoadingRow v-if="loading || web3.authLoading || isLoadingFollows" />
         <div
           v-else-if="
             (isFeedJoinedSpaces && spaces.length < 1) ||

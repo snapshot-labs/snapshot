@@ -17,7 +17,7 @@ import {
 const router = useRouter();
 
 const { web3Account } = useWeb3();
-const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
+const { loadFollows, followingSpaces, isLoadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
 const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
@@ -100,7 +100,7 @@ watch(
       </router-link>
     </div>
     <SidebarSpacesSkeleton
-      v-if="extentedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+      v-if="extentedSpaces.length === 0 && (spaceLoading || isLoadingFollows)"
     />
 
     <draggable

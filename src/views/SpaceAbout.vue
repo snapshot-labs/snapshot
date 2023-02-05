@@ -1,38 +1,45 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, Member } from '@/helpers/interfaces';
 
-import { useProfiles, useI18n } from '@/composables';
+import { useProfiles, useI18n, useFollowSpace } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const isMembersModalOpen = ref(false);
+
 const { setPageTitle } = useI18n();
 const { profiles, loadProfiles } = useProfiles();
 
-type Moderator = {
-  id: string;
-  roles: string[];
-};
+const { spaceFollowers, isLoadingSpaceFollowers, loadSpaceFollowers } =
+  useFollowSpace(props.space.id);
 
 const spaceMembers = computed(() => {
+  const followers = spaceFollowers.value.map(f => ({
+    id: f.follower,
+    roles: ['follower' as const]
+  }));
+
   const authors = props.space.members.map(member => {
     return {
       id: member,
-      roles: ['author']
+      roles: ['author' as const]
     };
   });
 
   const admins = props.space.admins.map(admin => {
     return {
       id: admin,
-      roles: ['admin']
+      roles: ['admin' as const]
     };
   });
 
-  return authors.concat(admins).reduce<Moderator[]>((acc, curr) => {
+  const members = [...followers, ...authors, ...admins];
+
+  const membersWithMergedRoles = members.reduce<Member[]>((acc, curr) => {
     const existing = acc.find(member => member.id === curr.id);
     if (existing) {
       existing.roles = existing.roles.concat(curr.roles);
@@ -40,14 +47,30 @@ const spaceMembers = computed(() => {
       acc.push(curr);
     }
     return acc;
-  }, [] as Moderator[]);
+  }, []);
+
+  // Sort members by roles, admins first, authors second, followers last
+  return membersWithMergedRoles
+    .sort(m => {
+      if (m.roles.includes('author')) return -1;
+      return 0;
+    })
+    .sort(m => {
+      if (m.roles.includes('admin')) return -1;
+      return 0;
+    })
+    .sort(m => {
+      if (m.roles.includes('admin') && m.roles.includes('author')) return -1;
+      return 0;
+    });
 });
 
-onMounted(() => {
-  if (props.space?.admins)
-    loadProfiles(props.space.admins.concat(props.space.members));
-  if (props.space?.name)
-    setPageTitle('page.title.space.about', { space: props.space.name });
+onMounted(async () => {
+  setPageTitle('page.title.space.about', { space: props.space.name });
+
+  await loadSpaceFollowers();
+
+  loadProfiles(spaceMembers.value.map(member => member.id));
 });
 </script>
 
@@ -93,12 +116,15 @@ onMounted(() => {
       </BaseBlock>
 
       <BaseBlock
-        v-if="space?.admins?.length"
         :title="$t('spaceMembers')"
+        :loading="isLoadingSpaceFollowers"
         class="mt-3"
         slim
       >
-        <AboutMembersListItem v-for="(mod, i) in spaceMembers" :key="i">
+        <AboutMembersListItem
+          v-for="(mod, i) in spaceMembers.slice(0, 5)"
+          :key="i"
+        >
           <BaseUser :address="mod.id" :profile="profiles[mod.id]" />
           <div class="space-x-2">
             <BasePill
@@ -117,7 +143,22 @@ onMounted(() => {
             </BasePill>
           </div>
         </AboutMembersListItem>
+        <a
+          v-if="spaceMembers.length > 5"
+          class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+          @click="isMembersModalOpen = true"
+        >
+          <span v-text="$t('seeMore')" />
+        </a>
       </BaseBlock>
     </template>
   </TheLayout>
+  <Teleport to="#modal">
+    <ModalMembers
+      :open="isMembersModalOpen"
+      :space-members="spaceMembers"
+      :profiles="profiles"
+      @close="isMembersModalOpen = false"
+    />
+  </Teleport>
 </template>

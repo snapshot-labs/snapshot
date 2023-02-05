@@ -7,7 +7,7 @@ const props = defineProps<{
   profile?: { about?: string };
 }>();
 
-const { followingSpaces, loadingFollows, loadFollows } = useFollowSpace();
+const { followingSpaces, isLoadingFollows, loadFollows } = useFollowSpace();
 
 onMounted(() => loadFollows());
 
@@ -44,13 +44,13 @@ onMounted(async () => {
         :spaces="followingSpaces"
         :title="$t('profile.about.joinedSpaces')"
         :message="$t('profile.about.notJoinSpacesYet')"
-        :loading="loadingFollows"
+        :loading="isLoadingFollows"
       />
 
       <ProfileAboutDelegate
         :user-address="userAddress"
         :following-spaces="followingSpaces"
-        :loading-followed-spaces="loadingFollows"
+        :loading-followed-spaces="isLoadingFollows"
       />
     </div>
   </div>

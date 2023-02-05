@@ -300,3 +300,8 @@ export interface FormError {
   message: string;
   push?: boolean;
 }
+
+export type Member = {
+  id: string;
+  roles: ('admin' | 'author' | 'follower')[];
+};
