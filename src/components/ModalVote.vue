@@ -267,14 +267,8 @@ watch(
             >
           </BaseMessageBlock>
 
-          <ModalVoteMessagePassport
-            v-else-if="
-              !isValidVoter &&
-              proposal.validation?.name &&
-              (proposal.validation.name === 'passport-gated' ||
-                proposal.validation.name === 'passport-weighted')
-            "
-            :is-valid-voter="isValidVoter"
+          <MessageWarningVoteValidation
+            v-else-if="!isValidVoter && proposal.validation?.name"
             :proposal="proposal"
           />
 

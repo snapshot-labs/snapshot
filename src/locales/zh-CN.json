@@ -202,7 +202,7 @@
     "delayEnforced": "空间强制执行直到投票可以开始",
     "periodEnforced": "空间强制执行投票期",
     "typeEnforced": "{type}由空间强制执行",
-    "privacyEnforced": "由空间强制执行",
+    "privacyEnforced": "{type} 由空间强制执行",
     "edit": "编辑",
     "continue": "继续",
     "now": "当前",
@@ -217,7 +217,8 @@
       },
       "customValidation": "您需要通过提案验证后才能提交提案。",
       "executionError": "您在此空间中创建提案的资格验证失败。这可能是由于配置了错误的策略。"
-    }
+    },
+    "errorGettingSnapshot": "我们在获取计算您投票能力所需的快照区块时遇到了一个错误。请稍后再试。"
   },
   "delegate": {
     "header": "委托",
@@ -282,7 +283,7 @@
     "unread": "未读"
   },
   "modalTerms": {
-    "mustAgreeTo": "激活这个空间，您必须同意 spaceName 的服务条款。",
+    "mustAgreeTo": "要{action} 此空间，您必须同意{spaceName} 的服务条款。",
     "actionJoin": "加入",
     "actionCreate": "创建提案",
     "actionVote": "投票"
@@ -389,7 +390,7 @@
     "domain": {
       "label": "域名",
       "placeholder": "例如 vote.balancer.fi",
-      "info": "要设置一个自定义域名，您另外需要在github上开启一个pull request。"
+      "info": "要设置一个自定义域名，您另外需要在github上开启一个pull request {docs}。"
     },
     "skin": "皮肤",
     "treasuries": {
@@ -418,7 +419,7 @@
     "chooseExistingEns": "选择您现有的一个ENS域名来创建空间：",
     "useSingleExistingEns": "使用您现有的ENS域名：",
     "orReigsterNewEns": "或者注册一个新的域名：",
-    "demoTestnetEnsMessage": "若要创建测试空间，您需要在 network 上的 ENS 域名。",
+    "demoTestnetEnsMessage": "若要创建测试空间，您需要在 {network} 上的 ENS 域名。",
     "toCreateASpace": "要创建空间，您首先需要一个ENS域名。在下面输入一个，并按照ENS的注册说明进行操作。",
     "createASpace": "创建空间",
     "registerEnsButton": "注册",
@@ -450,7 +451,8 @@
       "ensMessage": " 在创建自己的空间之前，您需要设置以太坊主网上的 ENS 域名。",
       "ensMessageTestnet": "你也可以先在Goerli测试网 {link} 测试并处理问题。",
       "tryDemo": "尝试这个 demo",
-      "yourExistingSpaces": "您已经存在的空间"
+      "yourExistingSpaces": "您已经存在的空间",
+      "invalidEns": "此ENS名称无效。 通常这是由于在注册时使用了无效字符。"
     },
     "strategy": {
       "title": "您想如何设置您的投票策略？",
@@ -586,6 +588,11 @@
       "label": "任何人都可以投票",
       "description": "任何拥有投票权的人都可以投票。"
     },
+    "basic": {
+      "label": "基础",
+      "description": "使用任何策略来确定用户是否可以投票。",
+      "invalidVoterMessage": "您不符合就该提案进行投票的最低余额要求。"
+    },
     "passport-gated": {
       "label": "Gitcoin Passport门槛",
       "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
@@ -636,6 +643,7 @@
       "changeOutcome": "修改结果",
       "executeTxs": "执行交易批处理 {0} / {1}",
       "executed": "所有交易已执行",
+      "noTransactions": "没有需要执行的交易。",
       "rejected": "提案被否决",
       "error": "出了些问题",
       "connectWallet": "连接钱包以查看执行详情",
@@ -643,7 +651,15 @@
       "question": "该提案是否通过并且是否符合",
       "criteria": "接收标准？",
       "proposalPassed": "该提案通过了吗？",
-      "expired": "提案已过期"
+      "expired": "提案已过期",
+      "approveBond": "批准保证金",
+      "confirmVoteResults": "点击确认已通过的提案",
+      "executeTxsUma": "执行交易批次",
+      "deleteDisputedProposal": "删除有争议的提案",
+      "confirmVoteResultsToolTip": "请确保这项提案在提出链上提案之前经快照投票批准。 如果快照投票否决了这项提案，链上的提案也将被否决，你将失去你的保证金。",
+      "approveBondToolTip": "链上提案需要提案人提供保证金。这将批准你的钱包中的代币作为保证金。如果你做了一个无效的提案，它将受到争议，你将失去你的保证金。如果提案是有效的，你的保证金将在交易执行时被退回。",
+      "requestToolTip": "这将在链上提议该快照投票的交易。在一个挑战窗口后，如果提案有效，交易可以被执行，你的保证金将被退回。",
+      "executeToolTip": "这将执行此提案中的交易并退还提议者的保证金。"
     }
   },
   "poap": {

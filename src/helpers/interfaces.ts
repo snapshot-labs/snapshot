@@ -109,6 +109,7 @@ export interface ExtendedSpace {
   filters: { minScore: number; onlyMembers: boolean };
   plugins: Record<string, any>;
   validation: SpaceValidation;
+  voteValidation: VoteValidation;
   treasuries: TreasuryAsset[];
   template: string;
   guidelines: string;

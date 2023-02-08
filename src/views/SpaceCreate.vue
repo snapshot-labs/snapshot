@@ -211,17 +211,24 @@ async function loadSourceProposal() {
   sourceProposalLoaded.value = true;
 }
 
+const queries = computed(() => {
+  let q: { snapshot?: string; app?: string } = {};
+  if (route.query.snapshot) q.snapshot = route.query.snapshot as string;
+  if (route.query.app) q.app = route.query.app as string;
+  return q;
+});
+
 function nextStep() {
   router.push({
     params: { step: currentStep.value + 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+    query: queries.value
   });
 }
 
 function previosStep() {
   router.push({
     params: { step: currentStep.value - 1 },
-    query: route.query.snapshot ? { snapshot: route.query.snapshot } : {}
+    query: queries.value
   });
 }
 

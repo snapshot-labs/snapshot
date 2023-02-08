@@ -217,7 +217,8 @@
       },
       "customValidation": "提案を提出するには、提案検証をクリアする必要があります。",
       "executionError": "このスペースで提案を作成する資格を確認することができませんでした。これはおそらくストラテジーの誤設定によるものです。"
-    }
+    },
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
     "header": "委任",
@@ -450,7 +451,8 @@
       "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
       "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
       "tryDemo": "try the demo",
-      "yourExistingSpaces": "Your existing spaces"
+      "yourExistingSpaces": "Your existing spaces",
+      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
       "title": "How would you like to setup your voting strategy?",
@@ -586,6 +588,11 @@
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
     },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can vote.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+    },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
@@ -636,6 +643,7 @@
       "changeOutcome": "Change case outcome",
       "executeTxs": "Execute transaction batch {0} of {1}",
       "executed": "すべてのトランザクションが実行されました",
+      "noTransactions": "There are no transactions to execute",
       "rejected": "Proposal rejected",
       "error": "何らかの問題が発生しました",
       "connectWallet": "実行の詳細を表示するにはウォレットに接続してください",
@@ -643,7 +651,15 @@
       "question": "この提案が合格し、それを満たしています",
       "criteria": "受け入れ基準?",
       "proposalPassed": "Did the proposal pass?",
-      "expired": "The proposal has expired"
+      "expired": "The proposal has expired",
+      "approveBond": "Approve bond",
+      "confirmVoteResults": "Click to confirm the proposal passed",
+      "executeTxsUma": "Execute transaction batch",
+      "deleteDisputedProposal": "Delete disputed proposal",
+      "confirmVoteResultsToolTip": "Make sure this proposal was approved by this Snapshot vote before proposing on-chain. If the Snapshot vote rejected the proposal, the on-chain proposal will be rejected as well and you will lose your bond.",
+      "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
+      "requestToolTip": "This will propose the transactions from this Snapshot vote on-chain. After a challenge window, if the proposal is valid, the transactions can be executed and your bond will be returned.",
+      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond."
     }
   },
   "poap": {

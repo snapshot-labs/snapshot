@@ -44,6 +44,10 @@ export function useEns() {
                 )
               };
             }
+            return {
+              ...domain,
+              isInvalid: true
+            };
           }
 
           return domain;

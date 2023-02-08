@@ -1,42 +1,74 @@
 import namehash from '@ensdomains/eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import { getAddress } from '@ethersproject/address';
 
-function ensReverseRecordRequest(addresses) {
+const UD_TOKEN = '5dpellhz6ma2rxcz9g5us82jh50x46sy';
+
+async function ensReverseRecordRequest(addresses) {
   const network = '1';
   const provider = getProvider(network);
   const abi = [
     'function getNames(address[] addresses) view returns (string[] r)'
   ];
-  return call(
+
+  const reverseRecords = await call(
     provider,
     abi,
     ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
     { blockTag: 'latest' }
   );
+  const validNames = reverseRecords.map(n =>
+    namehash.normalize(n) === n ? n : ''
+  );
+
+  return Object.fromEntries(
+    addresses.map((address, index) => {
+      return [address, validNames[index]];
+    })
+  );
 }
 
-function lookupAddresses(
+async function udReverseRecordRequest(addresses) {
+  addresses = [...new Set(addresses)];
+
+  try {
+    const res = await fetch(
+      `https://resolve.unstoppabledomains.com/reverse/query`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${UD_TOKEN}`
+        },
+        body: JSON.stringify({ addresses })
+      }
+    );
+    const data = await res.json();
+
+    return Object.fromEntries(
+      data?.data?.map(item => {
+        return [getAddress(item.meta.owner), item.meta.domain];
+      })
+    );
+  } catch (e) {
+    return {};
+  }
+}
+
+async function lookupAddresses(
   addresses: string[]
 ): Promise<{ [k: string]: string }> {
-  return new Promise((resolove, reject) => {
-    ensReverseRecordRequest(addresses)
-      .then(reverseRecords => {
-        const validNames = reverseRecords.map(n =>
-          namehash.normalize(n) === n ? n : ''
-        );
-        const ensNames = Object.fromEntries(
-          addresses.map((address, index) => {
-            return [address, validNames[index]];
-          })
-        );
+  const [ens, ud] = await Promise.all([
+    ensReverseRecordRequest(addresses),
+    udReverseRecordRequest(addresses)
+  ]);
 
-        resolove(ensNames);
-      })
-      .catch(error => {
-        reject(error);
-      });
-  });
+  return Object.fromEntries(
+    addresses.map(address => {
+      return [address, ens[address] || ud[address] || ''];
+    })
+  );
 }
 
 export async function getEnsAddress(
