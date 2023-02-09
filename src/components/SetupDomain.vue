@@ -14,7 +14,7 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
   useExtendedSpaces();
 
 const inputDomain = ref('');
@@ -28,19 +28,19 @@ watch(
     await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
     if (ownedEnsDomains.value.map(d => d.name).length)
-      await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
+      await loadExtendedSpaces(ownedEnsDomains.value.map(d => d.name));
   },
   { immediate: true }
 );
 
 const domainsWithoutExistingSpace = computed(() => {
-  const spaces = clone(extentedSpaces.value.map(space => space.id));
+  const spaces = clone(extendedSpaces.value.map(space => space.id));
   return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
 });
 
 const domainsWithExistingSpace = computed(() => {
   const spaces = ownedEnsDomains.value.map(d => d.name);
-  return extentedSpaces.value.filter(d => spaces.includes(d.id));
+  return extendedSpaces.value.filter(d => spaces.includes(d.id));
 });
 
 const emit = defineEmits(['next']);

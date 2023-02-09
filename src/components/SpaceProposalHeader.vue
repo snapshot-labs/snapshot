@@ -105,18 +105,12 @@ watch(
   <div class="mb-4 flex flex-col sm:flex-row sm:space-x-1">
     <div class="mb-1 flex items-center sm:mb-0">
       <LabelProposalState :state="proposal.state" class="mr-2" />
-      <router-link
-        class="group text-skin-text"
-        :to="{
-          name: 'spaceProposals',
-          params: { key: space.id }
-        }"
-      >
+      <LinkSpace :space-id="space.id" class="group text-skin-text">
         <div class="flex items-center">
           <AvatarSpace :space="space" size="28" />
           <span class="ml-2 group-hover:text-skin-link" v-text="space.name" />
         </div>
-      </router-link>
+      </LinkSpace>
     </div>
     <div class="flex grow items-center space-x-1">
       <span v-text="$t('proposalBy')" />

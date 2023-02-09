@@ -202,6 +202,10 @@ const { endElement } = useScrollMonitor(() => {
             :space="proposal.space"
             :profiles="profiles"
             :voted="userVotedProposalIds.includes(proposal.id)"
+            :to="{
+              name: 'spaceProposal',
+              params: { key: proposal.space.id, id: proposal.id }
+            }"
             class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
         </div>
