@@ -39,10 +39,7 @@ async function loadProposal() {
     extendedSpaces.value.find(
       space => space.id.toLowerCase() === proposal.value?.space.id.toLowerCase()
     ) ?? null;
-  console.log(
-    space.value?.parent?.children.map(c => c.id),
-    proposal.value.space.id
-  );
+
   if (!isSpaceRelatedProposal.value) return router.push({ name: 'error-404' });
 
   loadingProposal.value = false;

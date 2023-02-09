@@ -8,6 +8,7 @@ const props = defineProps<{
   profiles: { [key: string]: Profile };
   space: ExtendedSpace;
   voted: boolean;
+  to: Record<string, unknown>;
   hideSpaceAvatar?: boolean;
 }>();
 
@@ -16,13 +17,7 @@ const body = computed(() => removeMd(props.proposal.body));
 
 <template>
   <div>
-    <router-link
-      class="block p-3 text-skin-text sm:p-4"
-      :to="{
-        name: 'spaceProposal',
-        params: { key: proposal.space.id, id: proposal.id }
-      }"
-    >
+    <router-link class="block p-3 text-skin-text sm:p-4" :to="to">
       <div>
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-center space-x-1">
