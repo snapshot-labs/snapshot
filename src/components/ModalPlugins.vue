@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, watch, toRefs } from 'vue';
+import { ref, watch, toRefs, computed } from 'vue';
 import { PluginIndex } from '@/helpers/interfaces';
 import { usePlugins } from '@/composables';
 
-const props = defineProps<{ open: boolean; plugin: PluginIndex }>();
+const props = defineProps<{
+  open: boolean;
+  plugin: Record<string, any>;
+  usedPlugins: string[];
+}>();
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
@@ -25,10 +29,19 @@ function handleSubmit() {
   emit('close');
 }
 
-function selectPlugin(plugin) {
+function selectPlugin(plugin: PluginIndex) {
   selectedPlugin.value = plugin;
+  if (!plugin?.defaults?.space) return handleSubmit();
   input.value = selectedPlugin.value?.defaults?.space ?? {};
 }
+
+const availablePlugins = computed(() => {
+  const filteredPlugins = filterPlugins(searchInput.value);
+  const availablePlugins = filteredPlugins.filter(
+    p => !props.usedPlugins.includes(p.key)
+  );
+  return availablePlugins;
+});
 
 watch(open, () => {
   if (props.open) getPluginsSpacesCount();
@@ -49,7 +62,7 @@ watch(open, () => {
     <template #header>
       <h3>
         {{
-          selectedPlugin?.key
+          usedPlugins.includes(selectedPlugin?.key || '')
             ? $t('settings.editPlugin')
             : $t('settings.addPlugin')
         }}
@@ -61,33 +74,26 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 min-h-[300px] md:mx-4">
-      <BaseBlock
-        v-if="selectedPlugin?.key"
-        slim
-        class="mb-4 rounded-md p-4 text-skin-link"
-      >
-        <h4 class="mb-3 text-center" v-text="selectedPlugin.name" />
+    <div class="my-4 mx-4 min-h-[300px]">
+      <div v-if="selectedPlugin?.key">
         <TextareaJson
           v-model="input"
           v-model:is-valid="isValid"
           :placeholder="$t('settings.pluginParameters')"
           class="input text-left"
         />
-      </BaseBlock>
+      </div>
       <div v-if="!selectedPlugin?.key">
         <LoadingRow v-if="loadingPluginsSpacesCount" block />
         <div v-else class="space-y-3">
           <BasePluginItem
-            v-for="(pluginItem, i) in filterPlugins(searchInput)"
+            v-for="(pluginItem, i) in availablePlugins"
             :key="i"
             :plugin="pluginItem"
             @click="selectPlugin(pluginItem)"
           />
 
-          <BaseNoResults
-            v-if="Object.keys(filterPlugins(searchInput)).length < 1"
-          />
+          <BaseNoResults v-if="Object.keys(availablePlugins).length < 1" />
         </div>
       </div>
     </div>
