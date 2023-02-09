@@ -220,6 +220,22 @@ export interface RealityOracleProposal {
   endTime: number | undefined;
 }
 
+export interface UmaOracleProposal {
+  dao: string;
+  oracle: string;
+  rules: string;
+  expiration: number;
+  proposalId: string;
+  transactions: SafeTransaction[];
+  minimumBond: BigNumber | number | undefined;
+  explanation: string;
+  allowance: BigNumber | number | undefined;
+  collateral: string;
+  decimals: number;
+  symbol: string;
+  userBalance: BigNumber | number | undefined;
+}
+
 export interface SafeAsset {
   address: string;
   name: string;
@@ -267,10 +283,10 @@ export interface SafeExecutionData {
 }
 
 export interface Plugin {
-  author: string;
-  defaults: any;
   name: string;
+  author: string;
   version: string;
+  defaults?: any;
   icon?: string;
   description?: string;
   website?: string;

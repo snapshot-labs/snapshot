@@ -13,15 +13,15 @@ const { pluginIndex } = usePlugins();
 const currentPlugin = ref({});
 const modalPluginsOpen = ref(false);
 
-function handleEditPlugins(name) {
+function handleEditPlugins(name: string) {
   currentPlugin.value = {};
   currentPlugin.value[name] = clone(form.value.plugins[name]);
   modalPluginsOpen.value = true;
 }
 
-function handleRemovePlugins(plugin) {
+function handleRemovePlugins(name: string) {
   const pluginsObj = clone(form.value.plugins);
-  delete pluginsObj[plugin];
+  delete pluginsObj[name];
   form.value.plugins = pluginsObj;
 }
 
@@ -69,6 +69,7 @@ function handleSubmitPlugins(payload) {
       <ModalPlugins
         :open="modalPluginsOpen"
         :plugin="currentPlugin"
+        :used-plugins="Object.keys(form.plugins)"
         @close="modalPluginsOpen = false"
         @add="handleSubmitPlugins"
       />

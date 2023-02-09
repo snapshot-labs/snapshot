@@ -13,8 +13,7 @@ import {
   useApolloQuery,
   useProfiles,
   useI18n,
-  useWeb3,
-  useApp
+  useWeb3
 } from '@/composables';
 
 const props = defineProps<{
@@ -24,7 +23,6 @@ const props = defineProps<{
 const { store, userVotedProposalIds, addSpaceProposals, setSpaceProposals } =
   useProposals();
 const { setPageTitle } = useI18n();
-const { domain } = useApp();
 
 const loading = ref(false);
 
@@ -40,12 +38,6 @@ const subSpaces = computed(
 );
 
 const spaceProposals = computed(() => {
-  if (domain)
-    return clone(store.space.proposals).filter(
-      proposal =>
-        proposal.space.id.toLowerCase() === props.space.id.toLowerCase()
-    );
-
   return clone(store.space.proposals).filter(proposal =>
     [props.space.id.toLowerCase(), ...subSpaces.value].includes(
       proposal.space.id.toLowerCase()
@@ -154,6 +146,10 @@ onMounted(() => {
             :space="space"
             :voted="userVotedProposalIds.includes(proposal.id)"
             :hide-space-avatar="proposal.space.id === space.id"
+            :to="{
+              name: 'spaceProposal',
+              params: { id: proposal.id }
+            }"
           />
         </BaseBlock>
       </div>

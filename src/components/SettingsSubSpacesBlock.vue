@@ -8,7 +8,7 @@ const props = defineProps<{
 }>();
 
 const { form } = useSpaceForm(props.context);
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 const lookingUpParent = ref(false);
 const foundParent = ref(false);
@@ -22,9 +22,9 @@ watchDebounced(
     if (!form.value.parent) return;
 
     lookingUpParent.value = true;
-    await loadExtentedSpaces([form.value.parent]);
+    await loadExtendedSpaces([form.value.parent]);
 
-    const found = extentedSpaces.value?.some(
+    const found = extendedSpaces.value?.some(
       space => space.id === form.value.parent
     );
     if (found) {
@@ -50,9 +50,9 @@ watchDebounced(
     if (!childInput.value) return;
 
     lookingUpChild.value = true;
-    await loadExtentedSpaces([childInput.value]);
+    await loadExtendedSpaces([childInput.value]);
 
-    const found = extentedSpaces.value?.some(
+    const found = extendedSpaces.value?.some(
       space => space.id === childInput.value
     );
     if (found) {

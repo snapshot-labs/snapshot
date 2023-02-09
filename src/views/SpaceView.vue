@@ -9,7 +9,7 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -22,11 +22,11 @@ if (aliasedSpace) {
 
 const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
-  extentedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
+  extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
 onMounted(async () => {
-  await loadExtentedSpaces([spaceKey.value.toLowerCase()]);
+  await loadExtendedSpaces([spaceKey.value.toLowerCase()]);
   if (!space.value) {
     router.push('/');
   }
@@ -36,7 +36,7 @@ onMounted(async () => {
 <template>
   <SpaceWarningFlagged :space-key="spaceKey" />
 
-  <router-view v-if="space" :space="space" />
+  <router-view v-if="space" :space="space" :space-key="spaceKey" />
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout

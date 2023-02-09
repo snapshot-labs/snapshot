@@ -20,15 +20,15 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
-const { loadExtentedSpaces, extentedSpaces, spaceLoading } =
+const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
   useExtendedSpaces();
 const { spaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
 
-const extentedSpacesObj = computed(() => {
+const extendedSpacesObj = computed(() => {
   return (
-    extentedSpaces.value?.reduce(
+    extendedSpaces.value?.reduce(
       (acc, space) => ({ ...acc, [space.id]: space }),
       {}
     ) ?? {}
@@ -60,7 +60,7 @@ watch(followingSpaces, () => {
 });
 
 watch(followingSpaces, () => {
-  loadExtentedSpaces(followingSpaces.value);
+  loadExtendedSpaces(followingSpaces.value);
 });
 
 watch(
@@ -100,7 +100,7 @@ watch(
       </router-link>
     </div>
     <SidebarSpacesSkeleton
-      v-if="extentedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+      v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
     />
 
     <draggable
@@ -116,9 +116,9 @@ watch(
     >
       <template #item="{ element }">
         <div
-          v-if="extentedSpacesObj[element]"
+          v-if="extendedSpacesObj[element]"
           v-tippy="{
-            content: extentedSpacesObj[element].name,
+            content: extendedSpacesObj[element].name,
             placement: 'right',
             delay: [750, 0],
             touch: ['hold', 500]
@@ -140,7 +140,7 @@ watch(
           >
             <AvatarSpace
               :key="element"
-              :space="extentedSpacesObj[element]"
+              :space="extendedSpacesObj[element]"
               symbol-index="space"
               size="44"
               class="pointer-events-none"

@@ -34,11 +34,11 @@ async function loadSpacesFollowed() {
 onMounted(() => loadSpacesFollowed());
 
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadExtentedSpaces, extentedSpaces } = useExtendedSpaces();
+const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 const domainsWithExistingSpace = computed(() => {
   const spaces = ownedEnsDomains.value.map(d => d.name);
-  return extentedSpaces.value.filter(d => spaces.includes(d.id));
+  return extendedSpaces.value.filter(d => spaces.includes(d.id));
 });
 
 const loadingOwnedSpaces = ref(false);
@@ -46,7 +46,7 @@ const loadingOwnedSpaces = ref(false);
 onMounted(async () => {
   loadingOwnedSpaces.value = true;
   await loadOwnedEnsDomains(props.userAddress);
-  await loadExtentedSpaces(ownedEnsDomains.value.map(d => d.name));
+  await loadExtendedSpaces(ownedEnsDomains.value.map(d => d.name));
   loadingOwnedSpaces.value = false;
 });
 </script>
