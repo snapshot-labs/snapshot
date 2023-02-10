@@ -5,6 +5,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
 import { mapOldPluginNames } from '@/helpers/utils';
+import { ExploreSpace } from '@/helpers/interfaces';
 
 const spaces: any = ref([]);
 const spacesLoaded = ref(false);
@@ -27,7 +28,7 @@ export function useSpaces() {
   const route = useRoute();
 
   async function getSpaces() {
-    const exploreObj: any = await fetch(
+    const exploreObj: { spaces: Record<string, ExploreSpace> } = await fetch(
       `${import.meta.env.VITE_HUB_URL}/api/explore`
     ).then(res => res.json());
 

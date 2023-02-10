@@ -4,12 +4,7 @@ import { useIntl } from '@/composables/useIntl';
 const { formatCompactNumber } = useIntl();
 
 defineProps<{
-  space: {
-    id: string;
-    name: string;
-    avatar?: string;
-    followers?: number;
-  };
+  space: any;
 }>();
 </script>
 
@@ -32,8 +27,8 @@ defineProps<{
             </div>
             <div class="text-xs leading-5 text-skin-text">
               {{
-                $tc('members', space.followers, {
-                  count: formatCompactNumber(space.followers)
+                $tc('members', {
+                  count: formatCompactNumber(space.followers || 0)
                 })
               }}
             </div>
