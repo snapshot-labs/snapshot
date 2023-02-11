@@ -19,7 +19,8 @@ import {
   useWeb3,
   useClient,
   useGnosis,
-  useSnapshot
+  useSnapshot,
+  useMeta
 } from '@/composables';
 
 const BODY_LIMIT_CHARACTERS = 14400;
@@ -28,10 +29,22 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+useMeta({
+  title: {
+    key: 'metaInfo.space.create.title',
+    params: {
+      space: props.space.name
+    }
+  },
+  description: {
+    key: 'metaInfo.space.create.description'
+  }
+});
+
 const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
-const { t, setPageTitle } = useI18n();
+const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
@@ -261,8 +274,6 @@ watch(preview, () => {
 });
 
 onMounted(async () => {
-  setPageTitle('page.title.space.create', { space: props.space.name });
-
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 

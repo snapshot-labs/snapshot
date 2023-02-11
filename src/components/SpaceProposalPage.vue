@@ -5,20 +5,35 @@ import { useRoute, useRouter } from 'vue-router';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 import {
-  useI18n,
   useModal,
   useTerms,
   useWeb3,
-  useInfiniteLoader
+  useInfiniteLoader,
+  useMeta
 } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
 
+useMeta({
+  title: {
+    key: 'metaInfo.space.proposal.title',
+    params: {
+      space: props.space.name,
+      proposal: props.proposal.title
+    }
+  },
+  description: {
+    key: 'metaInfo.space.proposal.description',
+    params: {
+      body: props.proposal.body.slice(0, 160)
+    }
+  }
+});
+
 const route = useRoute();
 const router = useRouter();
 
-const { setPageTitle } = useI18n();
 const { web3, web3Account } = useWeb3();
 
 const proposalId: string = route.params.id as string;
@@ -131,10 +146,6 @@ watch(web3Account, () => {
 });
 
 onMounted(async () => {
-  setPageTitle('page.title.space.proposal', {
-    proposal: props.proposal.title,
-    space: props.space.name
-  });
   const choice = route.query.choice as string;
   if (props.proposal?.type === 'approval') selectedChoices.value = [];
   if (web3Account.value && choice) {

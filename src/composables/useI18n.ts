@@ -23,17 +23,12 @@ export function useI18n() {
     setI18nLanguage(i18n, currentLocale.value);
   }
 
-  function setPageTitle(message, params: any = {}) {
-    document.title = t(message, params);
-  }
-
   return {
     t,
     d,
     tc,
     setLocale,
     loadLocale,
-    currentLocale,
-    setPageTitle
+    currentLocale
   };
 }

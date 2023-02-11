@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import {
@@ -8,10 +8,20 @@ import {
   useNetworksFilter,
   useIntl,
   useScrollMonitor,
-  useI18n
+  useI18n,
+  useMeta
 } from '@/composables';
 
-const { t, setPageTitle } = useI18n();
+useMeta({
+  title: {
+    key: 'metaInfo.home.title'
+  },
+  description: {
+    key: 'metaInfo.home.description'
+  }
+});
+
+const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
@@ -80,10 +90,6 @@ const loadBy = 15;
 const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
-
-onMounted(() => {
-  setPageTitle('page.title.explore');
-});
 </script>
 
 <template>
