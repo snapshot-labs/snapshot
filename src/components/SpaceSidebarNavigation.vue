@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import legacySpaces from '@/../snapshot-spaces/spaces/legacy.json';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -12,6 +13,10 @@ const hasDelegationStrategy = computed(() => {
       strategy.name.includes('delegation') ||
       JSON.stringify(strategy.params).includes('"delegation"')
   );
+});
+
+const isLegacySpace = computed(() => {
+  return Object.keys(legacySpaces).includes(props.space.id);
 });
 </script>
 
@@ -54,7 +59,11 @@ const hasDelegationStrategy = computed(() => {
         {{ $t('about') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link v-slot="{ isExactActive }" :to="{ name: 'spaceSettings' }">
+    <router-link
+      v-if="!isLegacySpace"
+      v-slot="{ isExactActive }"
+      :to="{ name: 'spaceSettings' }"
+    >
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('settings.header') }}
       </BaseSidebarNavigationItem>
