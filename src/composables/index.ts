@@ -7,6 +7,7 @@ export { useDelegate } from './useDelegate';
 export { useEns } from './useEns';
 export { useExtendedSpaces } from './useExtendedSpaces';
 export { useFlashNotification } from './useFlashNotification';
+export { useModalNotification } from './useModalNotification';
 export { useFollowSpace } from './useFollowSpace';
 export { useI18n } from './useI18n';
 export { useImageUpload } from './useImageUpload';
