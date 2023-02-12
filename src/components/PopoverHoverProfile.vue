@@ -2,23 +2,15 @@
 import { explorerUrl } from '@/helpers/utils';
 import { useApp } from '@/composables/useApp';
 import { useMediaQuery } from '@vueuse/core';
+import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const isXLargeScreen = useMediaQuery('(min-width: 1280px)');
 
 defineProps<{
   address: string;
-  profile?: {
-    ens: string;
-    name?: string;
-    about?: string;
-  };
-  proposal?: {
-    network: string;
-  };
-  space?: {
-    members: string[];
-    network: string;
-  };
+  profile?: Profile;
+  proposal?: Proposal;
+  space?: ExtendedSpace;
 }>();
 
 const { domain } = useApp();

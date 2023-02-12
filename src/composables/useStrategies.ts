@@ -12,7 +12,7 @@ const strategies = ref<Strategy[]>([]);
 const extendedStrategies = ref<Strategy[]>([]);
 
 export function useStrategies() {
-  const loadingStrategies = ref(false);
+  const isLoadingStrategies = ref(false);
   const extendedStrategy = ref<Strategy | null>(null);
   const loadingExtendedStrategy = ref(false);
 
@@ -33,7 +33,7 @@ export function useStrategies() {
   // Get full list of strategies without about, schema and examples
   async function getStrategies() {
     if (strategies.value.length > 0) return;
-    loadingStrategies.value = true;
+    isLoadingStrategies.value = true;
     strategies.value = await apolloQuery(
       {
         query: STRATEGIES_QUERY
@@ -45,7 +45,7 @@ export function useStrategies() {
       strategy => strategy.id !== 'pagination'
     );
 
-    loadingStrategies.value = false;
+    isLoadingStrategies.value = false;
   }
 
   // Get extended strategy by Id and save it in extendedStrategies
@@ -78,7 +78,7 @@ export function useStrategies() {
     getStrategies,
     getExtendedStrategy,
     strategies,
-    loadingStrategies,
+    isLoadingStrategies,
     extendedStrategy,
     strategyDefinition
   };
