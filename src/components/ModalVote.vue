@@ -86,8 +86,8 @@ async function handleSubmit() {
     emit('openPostVoteModal');
     emit('reload');
     addVotedProposalId(props.proposal.id);
-    emit('close');
   }
+  emit('close');
 }
 
 async function loadVotingValidation() {

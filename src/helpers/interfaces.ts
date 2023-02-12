@@ -87,6 +87,23 @@ export interface TreasuryWallet {
   network: string;
 }
 
+export interface ExploreSpace {
+  id: string;
+  name: string;
+  private?: boolean;
+  terms?: string;
+  network?: string;
+  networks?: string[];
+  categories?: string[];
+  proposals?: number;
+  proposals_active?: number;
+  proposals_7d?: number;
+  votes?: number;
+  votes_7d?: number;
+  followers?: number;
+  followers_7d?: number;
+}
+
 export interface ExtendedSpace {
   id: string;
   name: string;

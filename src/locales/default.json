@@ -283,6 +283,12 @@
     "all": "All",
     "unread": "Unread"
   },
+  "modalNotifications": {
+    "wrong timestamp": {
+      "title": "Wrong timestamp",
+      "message": "The message timestamp is not valid. Please check the clock on your device, make sure it is set to the correct date and time and try again."
+    }
+  },
   "modalTerms": {
     "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
     "actionJoin": "join",
