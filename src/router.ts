@@ -90,11 +90,6 @@ if (domain) {
     { path: '/', name: 'home', component: SpaceView, children: spaceRoutes },
     { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     {
-      path: '/playground/:name',
-      name: 'playground',
-      component: PlaygroundView
-    },
-    {
       path: `/${domain}`,
       alias: `/${domainAlias ?? domain}`,
       name: 'home-redirect',
