@@ -71,9 +71,12 @@ const scoresWithZeroBalanceAddresses = computed(() => {
 const strategyExample = computed(() => {
   if (queryParams.query) {
     try {
-      const { params, network, snapshot } = decodeJson(queryParams.query);
+      const { params, network, snapshot, addresses } = decodeJson(
+        queryParams.query
+      );
       return {
         ...extendedStrategy.value?.examples?.[0],
+        addresses: addresses || extendedStrategy.value?.examples?.[0].addresses,
         network,
         snapshot,
         strategy: { params }
