@@ -179,7 +179,7 @@ const errorMessage = computed(() => {
                         {{ $t(`settings.members.${role}.description`) }}
                       </span>
                     </div>
-                    <div class="mx-2 px-2">
+                    <div class="px-3">
                       <i-ho-check v-if="member.role === role" />
                     </div>
                   </div>
