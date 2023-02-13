@@ -360,13 +360,16 @@
     "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
-    "admins": {
-      "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals"
-    },
-    "authors": {
-      "label": "Authors",
-      "information": "Authors are always able to create proposals"
+    "members": {
+      "admin": {
+        "description": "Are able to modify the space settings, manage the space's proposals and create proposals"
+      },
+      "moderator": {
+        "description": "Are able to manage the space's proposals and create proposals"
+      },
+      "author": {
+        "description": "Are always able to create proposals"
+      }
     },
     "proposalValidation": "Proposal validation",
     "validation": "Type",

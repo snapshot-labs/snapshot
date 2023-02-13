@@ -178,12 +178,7 @@ async function handleSetRecord() {
 
           <SettingsStrategiesBlock context="settings" />
 
-          <SettingsAdminsBlock
-            context="settings"
-            :is-space-controller="isSpaceController"
-          />
-
-          <SettingsAuthorsBlock context="settings" />
+          <SettingsMembersBlock context="settings" />
 
           <SettingsProposalBlock context="settings" />
 
