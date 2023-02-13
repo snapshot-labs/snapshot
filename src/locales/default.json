@@ -362,13 +362,13 @@
     "testInPlayground": "Test in playground",
     "members": {
       "admin": {
-        "description": "Are able to modify the space settings, manage the space's proposals and create proposals"
+        "description": "Admins able to modify the space settings, manage the space's proposals and create proposals"
       },
       "moderator": {
-        "description": "Are able to manage the space's proposals and create proposals"
+        "description": "Moderators able to manage the space's proposals and create proposals"
       },
       "author": {
-        "description": "Are always able to create proposals"
+        "description": "Authors always able to create proposals"
       }
     },
     "proposalValidation": "Proposal validation",
