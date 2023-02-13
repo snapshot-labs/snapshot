@@ -368,7 +368,7 @@
         "description": "Able to manage the space's proposals and create proposals"
       },
       "author": {
-        "description": "Able to create proposals without having to go through the proposal validation"
+        "description": "Able to create proposals without having to go through proposal validation"
       }
     },
     "proposalValidation": "Proposal validation",
