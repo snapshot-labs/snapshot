@@ -188,7 +188,21 @@ const errorMessage = computed(() => {
         <div class="flex items-center gap-1">
           <BasePopover>
             <template #button>
-              <InputSelect title="" :model-value="capitalize(member.role)" />
+              <InputSelect
+                v-if="
+                  props.space?.admins?.includes(member.address) &&
+                  !isAbleToChangeAdmins
+                "
+                title=""
+                :model-value="capitalize(member.role)"
+                class="cursor-not-allowed"
+                @click.stop
+              />
+              <InputSelect
+                v-else
+                title=""
+                :model-value="capitalize(member.role)"
+              />
             </template>
             <template #content="{ close }">
               <div class="my-2">
@@ -199,12 +213,9 @@ const errorMessage = computed(() => {
                   <div
                     class="flex items-center px-3 py-2"
                     :class="[
-                      props.space?.admins?.includes(member.address) &&
-                      !isAbleToChangeAdmins
-                        ? 'hover:bg-skin-background cursor-not-allowed'
-                        : (isAbleToChangeMembers &&
-                            (role === 'author' || role === 'moderator')) ||
-                          (isAbleToChangeAdmins && role === 'admin')
+                      (isAbleToChangeMembers &&
+                        (role === 'author' || role === 'moderator')) ||
+                      (isAbleToChangeAdmins && role === 'admin')
                         ? 'cursor-pointer hover:bg-skin-border'
                         : 'hover:bg-skin-background cursor-not-allowed'
                     ]"
