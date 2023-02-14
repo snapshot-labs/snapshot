@@ -111,7 +111,14 @@ function changeMemberRole(address: string, role: string, close: () => void) {
   close();
 }
 
-function deleteMember(member) {
+function deleteMember(member: Member) {
+  if (!isAbleToChangeMembers.value) return;
+  if (
+    props.space?.admins?.includes(member.address) &&
+    !isAbleToChangeAdmins.value
+  )
+    return;
+
   if (member.role === 'admin') {
     form.value.admins = form.value.admins?.filter(m => m !== member.address);
   } else if (member.role === 'moderator') {
@@ -191,7 +198,7 @@ const errorMessage = computed(() => {
               <InputSelect
                 v-if="
                   !isAbleToChangeMembers ||
-                  (props.space?.admins?.includes(member.address) &&
+                  (space?.admins?.includes(member.address) &&
                     !isAbleToChangeAdmins)
                 "
                 title=""
@@ -239,7 +246,12 @@ const errorMessage = computed(() => {
             </template>
           </BasePopover>
           <BaseButtonIcon
-            v-if="isAbleToChangeMembers"
+            :class="{
+              'cursor-not-allowed':
+                !isAbleToChangeMembers ||
+                (space?.admins?.includes(member.address) &&
+                  !isAbleToChangeAdmins)
+            }"
             @click="deleteMember(member)"
           >
             <i-ho-x class="text-base" />
