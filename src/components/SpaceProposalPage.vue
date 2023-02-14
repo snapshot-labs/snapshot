@@ -24,7 +24,6 @@ const { web3, web3Account } = useWeb3();
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
-const isModalPostVoteOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const loadedVotes = ref(false);
@@ -43,7 +42,7 @@ const strategies = computed(
 
 const browserHasHistory = computed(() => window.history.state.back);
 
-const { modalAccountOpen } = useModal();
+const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
