@@ -4,7 +4,12 @@ import { isAddress } from '@ethersproject/address';
 import capitalize from 'lodash/capitalize';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import { useSpaceForm, useFlashNotification, useWeb3 } from '@/composables';
+import {
+  useSpaceForm,
+  useFlashNotification,
+  useWeb3,
+  useI18n
+} from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -15,6 +20,7 @@ const props = defineProps<{
 const { form } = useSpaceForm(props.context);
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
+const { t } = useI18n();
 form.value.moderators = [];
 
 const inputAddMembers = ref('');
@@ -154,7 +160,7 @@ function addMembers(addresses: string) {
   nextTick(() => {
     inputAddMembers.value = '';
   });
-  notify(['green', 'Members added']);
+  notify(['green', t('settings.members.membersAdded')]);
 }
 
 const errorMessage = computed(() => {
@@ -167,12 +173,13 @@ const errorMessage = computed(() => {
   let message = '';
 
   membersArray.forEach(address => {
-    if (!isAddress(address)) return (message = 'Invalid address');
+    if (!isAddress(address))
+      return (message = t('settings.members.invalidAddress'));
     const isMember =
       form.value.admins?.includes(address) ||
       form.value.moderators?.includes(address) ||
       form.value.members?.includes(address);
-    if (isMember) return (message = 'Member already exists');
+    if (isMember) return (message = t('settings.members.alreadyExists'));
   });
 
   return { message, push: true };

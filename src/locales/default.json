@@ -365,6 +365,9 @@
       "information": "Members have different roles and permissions within the space.",
       "addMembers": "Add members",
       "addMembersInformation": "Paste an address to add a member. You can add multiple members at once by separating them with a comma.",
+      "alreadyExists": "Member already exists",
+      "invalidAddress": "Invalid address",
+      "membersAdded": "Members added",
       "admin": {
         "description": "Able to modify the space settings, manage the space's proposals and create proposals"
       },
