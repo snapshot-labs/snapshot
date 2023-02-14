@@ -213,7 +213,7 @@
     "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "You need to be a core member of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
