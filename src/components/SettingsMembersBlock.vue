@@ -190,8 +190,9 @@ const errorMessage = computed(() => {
             <template #button>
               <InputSelect
                 v-if="
-                  props.space?.admins?.includes(member.address) &&
-                  !isAbleToChangeAdmins
+                  !isAbleToChangeMembers ||
+                  (props.space?.admins?.includes(member.address) &&
+                    !isAbleToChangeAdmins)
                 "
                 title=""
                 :model-value="capitalize(member.role)"
@@ -237,7 +238,10 @@ const errorMessage = computed(() => {
               </div>
             </template>
           </BasePopover>
-          <BaseButtonIcon @click="deleteMember(member)">
+          <BaseButtonIcon
+            v-if="isAbleToChangeMembers"
+            @click="deleteMember(member)"
+          >
             <i-ho-x class="text-base" />
           </BaseButtonIcon>
         </div>
@@ -248,6 +252,7 @@ const errorMessage = computed(() => {
       <BaseInput
         :model-value="inputAddMembers"
         :error="errorMessage"
+        :is-disabled="!isAbleToChangeMembers"
         :title="$t('settings.members.addMembers')"
         :information="$t('settings.members.addMembersInformation')"
         placeholder="0x3901D0fDe202aF1427216b79f5243f8A022d68cf, 0x3901D0fDe202aF1427216b79f5243f8A022d68cf"
