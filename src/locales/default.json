@@ -361,6 +361,10 @@
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
     "members": {
+      "title": "Members",
+      "information": "Members have different roles and permissions within the space.",
+      "addMembers": "Add members",
+      "addMembersInformation": "Paste an address to add a member. You can add multiple members at once by separating them with a comma.",
       "admin": {
         "description": "Able to modify the space settings, manage the space's proposals and create proposals"
       },

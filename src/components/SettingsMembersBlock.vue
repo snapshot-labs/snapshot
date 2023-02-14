@@ -127,11 +127,11 @@ function addMembers(addresses: string) {
 const errorMessage = computed(() => {
   if (inputAddMembers.value === '') return { message: '' };
 
-  let message = '';
-
   const membersArray = inputAddMembers.value
     .split(',')
     .map(address => address.trim());
+
+  let message = '';
 
   membersArray.forEach(address => {
     if (!isAddress(address)) return (message = 'Invalid address');
@@ -147,7 +147,10 @@ const errorMessage = computed(() => {
 </script>
 
 <template>
-  <BaseBlock title="Members">
+  <BaseBlock
+    :title="$t('settings.members.title')"
+    :information="$t('settings.members.information')"
+  >
     <div class="space-y-1">
       <div
         v-for="member in members"
@@ -198,7 +201,8 @@ const errorMessage = computed(() => {
       <BaseInput
         :model-value="inputAddMembers"
         :error="errorMessage"
-        title="Add members"
+        :title="$t('settings.members.addMembers')"
+        :information="$t('settings.members.addMembersInformation')"
         placeholder="0x3901D0fDe202aF1427216b79f5243f8A022d68cf, 0x3901D0fDe202aF1427216b79f5243f8A022d68cf"
         class="w-full"
         @update:model-value="addMembers"
