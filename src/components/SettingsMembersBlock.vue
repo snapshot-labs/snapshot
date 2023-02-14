@@ -2,15 +2,19 @@
 import { computed, ref, nextTick } from 'vue';
 import { isAddress } from '@ethersproject/address';
 import capitalize from 'lodash/capitalize';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
-import { useSpaceForm, useFlashNotification } from '@/composables';
+import { useSpaceForm, useFlashNotification, useWeb3 } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  space?: ExtendedSpace;
+  ensOwner?: boolean;
 }>();
 
 const { form } = useSpaceForm(props.context);
 const { notify } = useFlashNotification();
+const { web3Account } = useWeb3();
 form.value.moderators = [];
 
 const inputAddMembers = ref('');
@@ -57,7 +61,29 @@ const members = computed(() => {
   return members;
 });
 
+const isAbleToChangeMembers = computed(() => {
+  if (props.context === 'setup') return true;
+  if (props.context === 'settings') {
+    if (props.ensOwner) return true;
+    if (props.space?.admins?.includes(web3Account.value)) return true;
+  }
+  return false;
+});
+
+const isAbleToChangeAdmins = computed(() => {
+  if (props.context === 'setup') return true;
+  if (props.context === 'settings') {
+    if (props.ensOwner) return true;
+  }
+  return false;
+});
+
 function changeMemberRole(address: string, role: string, close: () => void) {
+  if (!isAbleToChangeMembers.value) return;
+  if (role === 'admin' && !isAbleToChangeAdmins.value) return;
+  if (props.space?.admins?.includes(address) && !isAbleToChangeAdmins.value)
+    return;
+
   if (role === 'admin' && !form.value.admins?.includes(address)) {
     form.value.admins = [...form.value.admins, address];
     form.value.moderators = form.value.moderators?.filter(
@@ -171,7 +197,17 @@ const errorMessage = computed(() => {
                   :key="role"
                 >
                   <div
-                    class="flex cursor-pointer items-center px-3 py-2 hover:bg-skin-border"
+                    class="flex items-center px-3 py-2"
+                    :class="[
+                      props.space?.admins?.includes(member.address) &&
+                      !isAbleToChangeAdmins
+                        ? 'hover:bg-skin-background cursor-not-allowed'
+                        : (isAbleToChangeMembers &&
+                            (role === 'author' || role === 'moderator')) ||
+                          (isAbleToChangeAdmins && role === 'admin')
+                        ? 'cursor-pointer hover:bg-skin-border'
+                        : 'hover:bg-skin-background cursor-not-allowed'
+                    ]"
                     @click="changeMemberRole(member.address, role, close)"
                   >
                     <div class="">

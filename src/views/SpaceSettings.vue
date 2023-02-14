@@ -178,7 +178,11 @@ async function handleSetRecord() {
 
           <SettingsStrategiesBlock context="settings" />
 
-          <SettingsMembersBlock context="settings" />
+          <SettingsMembersBlock
+            context="settings"
+            :space="space"
+            :ens-owner="ensOwner"
+          />
 
           <SettingsProposalBlock context="settings" />
 
