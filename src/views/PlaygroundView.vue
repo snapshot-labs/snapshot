@@ -23,7 +23,7 @@ const { t, setPageTitle } = useI18n();
 const { formatCompactNumber } = useIntl();
 const {
   getExtendedStrategy,
-  extendedStrategy: strategy,
+  extendedStrategy,
   strategyDefinition,
   getStrategies,
   isLoadingStrategies,
@@ -75,21 +75,21 @@ const strategyExample = computed(() => {
         queryParams.query
       );
       return {
-        ...strategy.value?.examples?.[0],
-        addresses,
+        ...extendedStrategy.value?.examples?.[0],
+        addresses: addresses || extendedStrategy.value?.examples?.[0].addresses,
         network,
         snapshot,
         strategy: { params }
       };
     } catch (e) {
-      return strategy.value?.examples?.[0];
+      return extendedStrategy.value?.examples?.[0];
     }
   }
-  return strategy.value?.examples?.[0];
+  return extendedStrategy.value?.examples?.[0];
 });
 
 async function loadScores() {
-  if (!strategy.value) return;
+  if (!extendedStrategy.value) return;
 
   scores.value = null;
   strategyError.value = null;
@@ -97,7 +97,7 @@ async function loadScores() {
 
   try {
     const strategyParams = {
-      name: strategy.value.id,
+      name: extendedStrategy.value.id,
       params: form.value.params
     };
     scores.value = await getScores(
@@ -208,7 +208,7 @@ function handleNetworkSelect(value) {
             @search="value => (searchInput = value)"
           />
         </BaseBlock>
-        <LoadingPage v-if="!strategy" />
+        <LoadingPage v-if="!extendedStrategy" />
         <div v-else class="space-y-3">
           <BaseBlock :title="$t('settings.header')">
             <div class="space-y-2">
@@ -268,7 +268,7 @@ function handleNetworkSelect(value) {
         <BaseBlock :title="$t('actions')">
           <BaseButton
             :loading="loading"
-            :disabled="loading || !strategy"
+            :disabled="loading || !extendedStrategy"
             class="flex w-full items-center justify-center"
             primary
             @click="loadScores"
