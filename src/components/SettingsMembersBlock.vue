@@ -21,7 +21,6 @@ const { form } = useSpaceForm(props.context);
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 const { t } = useI18n();
-form.value.moderators = [];
 
 const inputAddMembers = ref('');
 

@@ -35,6 +35,14 @@ const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
+
+const isModerator = computed(() => {
+  const moderators = (props.space.moderators || []).map(moderator =>
+    moderator.toLowerCase()
+  );
+  return moderators.includes(web3Account.value?.toLowerCase());
+});
+
 const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => props.proposal?.strategies ?? props.space.strategies
@@ -156,6 +164,7 @@ onMounted(async () => {
           :space="space"
           :proposal="proposal"
           :is-admin="isAdmin"
+          :is-moderator="isModerator"
         />
         <SpaceProposalContent :space="space" :proposal="proposal" />
       </div>
