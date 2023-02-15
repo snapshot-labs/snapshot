@@ -238,14 +238,20 @@ function updateTime() {
 }
 
 async function validateAuthor() {
-  if (isValidAuthor.value === true) return;
-
-  if (props.space.filters.onlyMembers && !isMember.value)
-    return (isValidAuthor.value = false);
-
+  isValidAuthor.value = false;
   if (web3Account.value && auth.isAuthenticated.value) {
-    validationLoading.value = true;
+    if (isMember.value) {
+      isValidAuthor.value = true;
+      return;
+    }
+
+    if (props.space.filters.onlyMembers) {
+      isValidAuthor.value = false;
+      return;
+    }
+
     try {
+      validationLoading.value = true;
       const validationRes = await proposalValidation(
         props.space,
         web3Account.value
@@ -253,10 +259,11 @@ async function validateAuthor() {
 
       isValidAuthor.value = validationRes;
       console.log('Pass validation?', validationRes, validationName.value);
-      validationLoading.value = false;
     } catch (e) {
       executingValidationFailed.value = true;
       console.log(e);
+    } finally {
+      validationLoading.value = false;
     }
   }
 }
