@@ -71,7 +71,10 @@ export function useFormValidation(schema, form) {
     )
       return t('errors.members.maxItems', {
         limit: errorFound?.params.limit,
-        role: errorFound?.instancePath.replace('/', '')
+        role:
+          errorFound?.instancePath.replace('/', '') === 'members'
+            ? 'authors'
+            : errorFound?.instancePath.replace('/', '')
       });
 
     return errorFound
