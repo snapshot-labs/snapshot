@@ -168,6 +168,9 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "maxItems": "Maximum {0} item(s) allowed",
+    "members": {
+      "maxItems": "Maximum {limit} {role} allowed"
+    },
     "minStrategy": "At least one strategy is required.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",

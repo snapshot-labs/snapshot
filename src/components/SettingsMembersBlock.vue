@@ -17,7 +17,7 @@ const props = defineProps<{
   ensOwner?: boolean;
 }>();
 
-const { form } = useSpaceForm(props.context);
+const { form, getValidation } = useSpaceForm(props.context);
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 const { t } = useI18n();
@@ -172,13 +172,18 @@ const errorMessage = computed(() => {
   let message = '';
 
   membersArray.forEach(address => {
-    if (!isAddress(address))
-      return (message = t('settings.members.invalidAddress'));
+    if (!isAddress(address)) {
+      message = t('settings.members.invalidAddress');
+      return;
+    }
     const isMember =
       form.value.admins?.includes(address) ||
       form.value.moderators?.includes(address) ||
       form.value.members?.includes(address);
-    if (isMember) return (message = t('settings.members.alreadyExists'));
+    if (isMember) {
+      message = t('settings.members.alreadyExists');
+      return;
+    }
   });
 
   return { message, push: true };
@@ -277,6 +282,24 @@ const errorMessage = computed(() => {
         class="w-full"
         @update:model-value="addMembers"
       />
+
+      <BaseBlock
+        v-if="
+          getValidation('admins')?.message ||
+          getValidation('moderators')?.message ||
+          getValidation('members')?.message
+        "
+        class="mt-2 !border-red"
+      >
+        <BaseIcon name="warning" class="mr-2 !text-red" />
+        <span class="!text-red">
+          {{
+            getValidation('admins').message ||
+            getValidation('moderators').message ||
+            getValidation('members').message
+          }}</span
+        >
+      </BaseBlock>
     </div>
   </BaseBlock>
 </template>

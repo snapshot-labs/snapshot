@@ -63,6 +63,17 @@ export function useFormValidation(schema, form) {
     )
       return t('errors.website');
 
+    if (
+      (errorFound?.instancePath.includes('admins') ||
+        errorFound?.instancePath.includes('moderators') ||
+        errorFound?.instancePath.includes('members')) &&
+      errorFound?.keyword.includes('maxItems')
+    )
+      return t('errors.members.maxItems', {
+        limit: errorFound?.params.limit,
+        role: errorFound?.instancePath.replace('/', '')
+      });
+
     return errorFound
       ? t(`errors.${errorFound.keyword}`, [errorFound?.params.limit])
       : '';
