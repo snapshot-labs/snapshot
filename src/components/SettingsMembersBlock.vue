@@ -23,6 +23,7 @@ const { web3Account } = useWeb3();
 const { t } = useI18n();
 
 const inputAddMembers = ref('');
+const inputAddRole = ref('author');
 
 type Member = {
   address: string;
@@ -153,7 +154,15 @@ function addMembers(addresses: string) {
   if (addressesArray.length === 0) return;
 
   addressesArray.forEach(address => {
-    form.value.members = [...form.value.members, address];
+    if (inputAddRole.value === 'admin') {
+      form.value.admins = [...form.value.admins, address];
+    }
+    if (inputAddRole.value === 'moderator') {
+      form.value.moderators = [...form.value.moderators, address];
+    }
+    if (inputAddRole.value === 'author') {
+      form.value.members = [...form.value.members, address];
+    }
   });
 
   nextTick(() => {
@@ -206,54 +215,20 @@ const errorMessage = computed(() => {
         <div class="flex items-center gap-1">
           <BasePopover>
             <template #button>
-              <InputSelect
-                v-if="
-                  !isAbleToChangeMembers ||
-                  (space?.admins?.includes(member.address) &&
-                    !isAbleToChangeAdmins)
-                "
-                title=""
-                :model-value="capitalize(member.role)"
-                class="cursor-not-allowed"
-                @click.stop
-              />
-              <InputSelect
-                v-else
-                title=""
-                :model-value="capitalize(member.role)"
+              <SettingsMembersPopoverButton
+                :selected-role="capitalize(member.role)"
+                :is-able-to-change-admins="isAbleToChangeAdmins"
+                :is-able-to-change-members="isAbleToChangeMembers"
+                :is-admin="space?.admins?.includes(member.address)"
               />
             </template>
             <template #content="{ close }">
-              <div class="my-2">
-                <div
-                  v-for="role in ['admin', 'moderator', 'author']"
-                  :key="role"
-                >
-                  <div
-                    class="flex items-center px-3 py-2"
-                    :class="[
-                      (isAbleToChangeMembers &&
-                        (role === 'author' || role === 'moderator')) ||
-                      (isAbleToChangeAdmins && role === 'admin')
-                        ? 'cursor-pointer hover:bg-skin-border'
-                        : 'hover:bg-skin-background cursor-not-allowed'
-                    ]"
-                    @click="changeMemberRole(member.address, role, close)"
-                  >
-                    <div class="">
-                      <div class="font-semibold text-skin-heading">
-                        {{ capitalize(role) }}
-                      </div>
-                      <span class="opacity-80">
-                        {{ $t(`settings.members.${role}.description`) }}
-                      </span>
-                    </div>
-                    <div class="px-3">
-                      <i-ho-check v-if="member.role === role" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SettingsMembersPopoverContent
+                :current-role="member.role"
+                :is-able-to-change-admins="isAbleToChangeAdmins"
+                :is-able-to-change-members="isAbleToChangeMembers"
+                @change="changeMemberRole(member.address, $event, close)"
+              />
             </template>
           </BasePopover>
           <BaseButtonIcon
@@ -272,17 +247,39 @@ const errorMessage = computed(() => {
     </div>
 
     <div class="mt-3">
-      <BaseInput
-        :model-value="inputAddMembers"
-        :error="errorMessage"
-        :is-disabled="!isAbleToChangeMembers"
-        :title="$t('settings.members.addMembers')"
-        :information="$t('settings.members.addMembersInformation')"
-        placeholder="0x3901D0fDe202aF1427216b79f5243f8A022d68cf, 0x3901D0fDe202aF1427216b79f5243f8A022d68cf"
-        class="w-full"
-        @update:model-value="addMembers"
-      />
+      <div class="flex items-end gap-1">
+        <BaseInput
+          :model-value="inputAddMembers"
+          :error="errorMessage"
+          :is-disabled="!isAbleToChangeMembers"
+          :title="$t('settings.members.addMembers')"
+          :information="$t('settings.members.addMembersInformation')"
+          placeholder="0x3901D0fDe202aF1427216b79f5243f8A022d68cf, 0x3901D0fDe202aF1427216b79f5243f8A022d68cf"
+          class="w-full"
+          @update:model-value="addMembers"
+        />
 
+        <BasePopover>
+          <template #button>
+            <SettingsMembersPopoverButton
+              :selected-role="capitalize(inputAddRole)"
+              :is-able-to-change-admins="isAbleToChangeAdmins"
+              :is-able-to-change-members="isAbleToChangeMembers"
+            />
+          </template>
+          <template #content="{ close }">
+            <SettingsMembersPopoverContent
+              :current-role="inputAddRole"
+              :is-able-to-change-admins="isAbleToChangeAdmins"
+              :is-able-to-change-members="isAbleToChangeMembers"
+              @change="
+                inputAddRole = $event;
+                close();
+              "
+            />
+          </template>
+        </BasePopover>
+      </div>
       <BaseBlock
         v-if="
           getValidation('admins')?.message ||
