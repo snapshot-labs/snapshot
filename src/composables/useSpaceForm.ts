@@ -14,6 +14,7 @@ const EMPTY_SPACE_FORM = {
   categories: [],
   treasuries: [],
   admins: [],
+  moderators: [],
   members: [],
   plugins: {},
   filters: {

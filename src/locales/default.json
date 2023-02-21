@@ -168,6 +168,9 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "maxItems": "Maximum {0} item(s) allowed",
+    "members": {
+      "maxItems": "Maximum {limit} {role} allowed"
+    },
     "minStrategy": "At least one strategy is required.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",
@@ -213,7 +216,7 @@
     "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "You need to be a core member of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
@@ -360,13 +363,23 @@
     "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
-    "admins": {
-      "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals"
-    },
-    "authors": {
-      "label": "Authors",
-      "information": "Authors are always able to create proposals"
+    "members": {
+      "title": "Members",
+      "information": "Members have different roles and permissions within the space.",
+      "addMembers": "Add members",
+      "addMembersInformation": "Paste an address to add a member. You can add multiple members at once by separating them with a comma.",
+      "alreadyExists": "Member already exists",
+      "invalidAddress": "Invalid address",
+      "membersAdded": "Members added",
+      "admin": {
+        "description": "Able to modify the space settings, manage the space's proposals and create proposals"
+      },
+      "moderator": {
+        "description": "Able to manage the space's proposals and create proposals"
+      },
+      "author": {
+        "description": "Able to create proposals without having to go through proposal validation"
+      }
     },
     "proposalValidation": "Proposal validation",
     "validation": "Type",

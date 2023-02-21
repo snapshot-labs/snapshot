@@ -18,6 +18,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   isAdmin: boolean;
+  isModerator: boolean;
 }>();
 
 const router = useRouter();
@@ -32,7 +33,7 @@ const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
   const items = [{ text: t('duplicate'), action: 'duplicate' }];
-  if (props.isAdmin || isCreator.value)
+  if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
 });
