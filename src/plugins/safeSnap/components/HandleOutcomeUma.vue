@@ -4,6 +4,8 @@ import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { ensureRightNetwork } from './SafeTransactions.vue';
+import { useIntl } from '@/composables/useIntl';
 
 import {
   useWeb3,
@@ -13,6 +15,7 @@ import {
   useSafe
 } from '@/composables';
 
+const { formatDuration } = useIntl();
 const { t } = useI18n();
 
 const { clearBatchError } = useSafe();
@@ -44,65 +47,25 @@ const QuestionStates = {
 };
 Object.freeze(QuestionStates);
 
-const ensureRightNetwork = async chainId => {
-  const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
-  if (connectedToChainId === chainIdInt) return; // already on right chain
-
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-    // we cannot switch automatically
-    throw new Error(
-      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-    );
-  }
-
-  const network = networks[chainId];
-  const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-  try {
-    // check if the chain to connect to is installed
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-    });
-  } catch (error) {
-    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-    if (error.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdHex,
-              chainName: network.name,
-              rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer.url]
-            }
-          ]
-        });
-      } catch (addError) {
-        console.error(addError);
-      }
-    }
-    console.error(error);
-  }
-
-  await sleep(1e3); // somehow the switch does not take immediate effect :/
-  if (window.ethereum.chainId !== chainIdHex) {
-    throw new Error(
-      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-    );
-  }
-};
-
 const loading = ref(true);
 const actionInProgress = ref(false);
 const action2InProgress = ref(false);
 const voteResultsConfirmed = ref(false);
 const questionStates = ref(QuestionStates);
 const questionDetails = ref(undefined);
+const closeModal = ref(false);
 
-const getTransactions = () => {
+function closeEvent() {
+  closeModal.value = false;
+  voteResultsConfirmed.value = false;
+}
+
+function showProposeModal() {
+  closeModal.value = true;
+  voteResultsConfirmed.value = true;
+}
+
+const getTransactionsUma = () => {
   return props.batches.map(batch => [
     batch.transactions[0].to,
     Number(batch.transactions[0].operation),
@@ -114,12 +77,12 @@ const getTransactions = () => {
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetails(
+    questionDetails.value = await plugin.getExecutionDetailsUma(
       props.network,
       props.umaAddress,
       props.proposal.id,
       props.proposal.ipfs,
-      getTransactions()
+      getTransactionsUma()
     );
   } catch (e) {
     console.error(e);
@@ -128,14 +91,14 @@ const updateDetails = async () => {
   }
 };
 
-const approveBond = async () => {
+const approveBondUma = async () => {
   if (!questionDetails.value.oracle) return;
   try {
     actionInProgress.value = 'approve-bond';
 
     await ensureRightNetwork(props.network);
 
-    const approveBond = await plugin.approveBond(
+    const approveBond = await plugin.approveBondUma(
       props.network,
       getInstance().web3,
       props.umaAddress
@@ -154,20 +117,23 @@ const approveBond = async () => {
   }
 };
 
-const confirmVoteResults = () => {
-  voteResultsConfirmed.value = true;
+const getProposalUrl = (chain, txHash) => {
+  if (Number(chain) !== 5 && Number(chain) !== 80001) {
+    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
+  }
+  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
 };
 
-const submitProposal = async () => {
+const submitProposalUma = async () => {
   if (!getInstance().isAuthenticated.value) return;
   actionInProgress.value = 'submit-proposal';
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposal(
+    const proposalSubmission = plugin.submitProposalUma(
       getInstance().web3,
       props.umaAddress,
       props.proposal.ipfs,
-      getTransactions()
+      getTransactionsUma()
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
@@ -184,7 +150,7 @@ const submitProposal = async () => {
   }
 };
 
-const executeProposal = async () => {
+const executeProposalUma = async () => {
   if (!getInstance().isAuthenticated.value) return;
   action2InProgress.value = 'execute-proposal';
   try {
@@ -197,10 +163,10 @@ const executeProposal = async () => {
 
   try {
     clearBatchError();
-    const executingProposal = plugin.executeProposal(
+    const executingProposal = plugin.executeProposalUma(
       getInstance().web3,
       props.umaAddress,
-      getTransactions()
+      getTransactionsUma()
     );
     await executingProposal.next();
     action2InProgress.value = null;
@@ -216,7 +182,7 @@ const executeProposal = async () => {
   }
 };
 
-const deleteDisputedProposal = async () => {
+const deleteDisputedProposalUma = async () => {
   if (!getInstance().isAuthenticated.value) return;
   action2InProgress.value = 'delete-disputed-proposal';
   try {
@@ -229,7 +195,7 @@ const deleteDisputedProposal = async () => {
 
   try {
     clearBatchError();
-    const deletingDisputedProposal = plugin.deleteDisputedProposal(
+    const deletingDisputedProposal = plugin.deleteDisputedProposalUma(
       getInstance().web3,
       props.umaAddress,
       questionDetails.value.proposalEvent.proposalHash
@@ -328,21 +294,11 @@ onMounted(async () => {
       <BaseContainer class="flex items-center">
         <BaseButton
           :loading="actionInProgress === 'confirm-vote-results'"
-          @click="confirmVoteResults"
+          @click="showProposeModal"
           class="mr-2"
         >
           {{ $t('safeSnap.labels.confirmVoteResults') }}
         </BaseButton>
-        <BasePopoverHover placement="top">
-          <template #button>
-            <i-ho-information-circle />
-          </template>
-          <template #content>
-            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
-              {{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}
-            </div>
-          </template>
-        </BasePopoverHover>
       </BaseContainer>
     </div>
 
@@ -360,7 +316,7 @@ onMounted(async () => {
       <BaseContainer class="flex items-center">
         <BaseButton
           :loading="actionInProgress === 'approve-bond'"
-          @click="approveBond"
+          @click="approveBondUma"
           class="mr-2"
         >
           {{ $t('safeSnap.labels.approveBond') }}
@@ -385,36 +341,96 @@ onMounted(async () => {
       class="my-4 inline-block"
     >
       <BaseContainer class="flex items-center">
-        <BaseButton
-          :loading="actionInProgress === 'submit-proposal'"
-          @click="submitProposal"
-          class="mr-2"
-        >
-          {{ $t('safeSnap.labels.request') }}
-        </BaseButton>
-        <BasePopoverHover placement="top">
-          <template #button>
-            <i-ho-information-circle />
+        <BaseModal :open="closeModal" @close="closeEvent">
+          <template #header>
+            <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
           </template>
-          <template #content>
-            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
-              {{ $t('safeSnap.labels.requestToolTip') }}
+          <div class="my-3 p-3">
+            <div class="pr-3 pl-3">
+              <p>{{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}</p>
             </div>
-          </template>
-        </BasePopoverHover>
+            <div class="my-3 rounded-lg border p-3">
+              <div>
+                <strong class="pr-3">{{
+                  $t('safeSnap.labels.requiredBond')
+                }}</strong>
+                <span class="float-right text-skin-link">
+                  {{
+                    questionDetails.minimumBond.toString() +
+                    ' ' +
+                    questionDetails.symbol
+                  }}
+                </span>
+              </div>
+              <div>
+                <strong class="pr-3">{{
+                  $t('safeSnap.labels.challengePeriod')
+                }}</strong>
+                <span class="float-right text-skin-link">
+                  {{ formatDuration(Number(questionDetails.livenessPeriod)) }}
+                </span>
+              </div>
+            </div>
+            <div>
+              <BaseMessage
+                v-if="
+                  Number(questionDetails.minimumBond.toString()) >
+                  Number(questionDetails.userBalance.toString())
+                "
+                level="warning-red"
+              >
+                {{ $t('safeSnap.labels.bondWarning') }}
+              </BaseMessage>
+            </div>
+
+            <BaseButton
+              :loading="actionInProgress === 'submit-proposal'"
+              @click="submitProposalUma"
+              class="my-1 w-full"
+              :disabled="
+                Number(questionDetails.minimumBond.toString()) >
+                Number(questionDetails.userBalance.toString())
+              "
+            >
+              {{ $t('safeSnap.labels.request') }}
+            </BaseButton>
+          </div>
+        </BaseModal>
       </BaseContainer>
     </div>
 
     <div
       v-if="questionState === questionStates.waitingForLiveness"
-      class="flex items-center justify-center self-stretch rounded-lg border p-3 text-skin-link"
+      class="flex items-center justify-center self-stretch p-3 text-skin-link"
     >
-      <strong>{{
-        'Proposal can be executed at ' +
-        new Date(
-          questionDetails.proposalEvent.expirationTimestamp * 1000
-        ).toLocaleString()
-      }}</strong>
+      <BaseContainer class="my-1 inline-block">
+        <div>
+          <strong>{{
+            'Proposal can be executed at ' +
+            new Date(
+              questionDetails.proposalEvent.expirationTimestamp * 1000
+            ).toLocaleString()
+          }}</strong>
+        </div>
+
+        <div style="text-align: center" class="mt-3">
+          <a
+            :href="
+              getProposalUrl(
+                props.network,
+                questionDetails.proposalEvent.proposalTxHash
+              )
+            "
+            class="rounded-lg border p-2 text-skin-text"
+            rel="noreferrer noopener"
+            target="_blank"
+            style="font-size: 16px"
+          >
+            {{ $t('safeSnap.labels.disputeProposal') }}
+            <em style="font-size: 14px" class="iconfont iconexternal-link" />
+          </a>
+        </div>
+      </BaseContainer>
     </div>
 
     <div
@@ -423,7 +439,7 @@ onMounted(async () => {
     >
       <BaseButton
         :loading="action2InProgress === 'delete-disputed-proposal'"
-        @click="deleteDisputedProposal"
+        @click="deleteDisputedProposalUma"
       >
         {{ $t('safeSnap.labels.deleteDisputedProposal') }}
       </BaseButton>
@@ -436,7 +452,7 @@ onMounted(async () => {
       <BaseContainer class="flex items-center">
         <BaseButton
           :loading="action2InProgress === 'execute-proposal'"
-          @click="executeProposal"
+          @click="executeProposalUma"
           class="mr-2"
         >
           {{
