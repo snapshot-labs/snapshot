@@ -197,8 +197,9 @@ export const SPACES_QUERY = gql`
       coingecko
       private
       domain
-      members
       admins
+      moderators
+      members
       categories
       plugins
       followersCount

@@ -25,7 +25,7 @@ withDefaults(
       leave-from="transform opacity-100 scale-100"
       leave-to="transform opacity-0 scale-95"
       :placement="placement"
-      :offset="10"
+      :offset="4"
       :shift="16"
       :flip="16"
       :z-index="50"
@@ -39,14 +39,17 @@ withDefaults(
         </div>
       </PopoverButton>
 
-      <PopoverPanel class="w-screen max-w-xs outline-none sm:max-w-sm">
+      <PopoverPanel
+        v-slot="{ close }"
+        class="w-screen max-w-xs outline-none sm:max-w-sm"
+      >
         <div
           class="overflow-hidden rounded-2xl border bg-skin-header-bg shadow-lg"
         >
           <div
             class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
           >
-            <slot name="content" />
+            <slot name="content" :close="close" />
           </div>
         </div>
       </PopoverPanel>

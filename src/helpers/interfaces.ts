@@ -122,6 +122,7 @@ export interface ExtendedSpace {
   followersCount: number;
   private: boolean;
   admins: string[];
+  moderators: string[];
   members: string[];
   categories: string[];
   parent: ExtendedSpace | null;
