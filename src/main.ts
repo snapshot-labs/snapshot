@@ -14,6 +14,8 @@ import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import VueTippy from 'vue-tippy';
 
+if (top?.location !== location) document.documentElement.style.display = 'none';
+
 const app = createApp({
   setup() {
     provide(DefaultApolloClient, apolloClient);
