@@ -181,7 +181,7 @@ async function handleSetRecord() {
           <SettingsMembersBlock
             context="settings"
             :space="space"
-            :ens-owner="ensOwner"
+            :is-space-controller="isSpaceController"
           />
 
           <SettingsProposalBlock context="settings" />
