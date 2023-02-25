@@ -143,9 +143,13 @@ export const getModuleDetailsUma = async (
     provider
   );
 
+  const latestBlock = await provider.getBlock('latest');
+  const fromBlock = latestBlock.number - 20000;
+
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
   const proposalEvents = await oracleContract.queryFilter(
-    oracleContract.filters.ProposePrice(moduleAddress)
+    oracleContract.filters.ProposePrice(moduleAddress),
+    fromBlock
   );
 
   const thisModuleProposalEvent = proposalEvents.filter(
@@ -187,7 +191,8 @@ export const getModuleDetailsUma = async (
 
   // Check if this specific proposal has already been executed.
   const transactionsProposedEvents = await moduleContract.queryFilter(
-    moduleContract.filters.TransactionsProposed()
+    moduleContract.filters.TransactionsProposed(),
+    fromBlock
   );
 
   const thisProposalTransactionsProposedEvents =
@@ -196,7 +201,8 @@ export const getModuleDetailsUma = async (
     );
 
   const executionEvents = await moduleContract.queryFilter(
-    moduleContract.filters.ProposalExecuted(proposalHash)
+    moduleContract.filters.ProposalExecuted(proposalHash),
+    fromBlock
   );
 
   const proposalTimes = thisProposalTransactionsProposedEvents.map(tx =>
