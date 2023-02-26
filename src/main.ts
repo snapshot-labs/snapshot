@@ -13,6 +13,9 @@ import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import VueTippy from 'vue-tippy';
+import { createHead } from '@vueuse/head';
+
+const head = createHead();
 
 const app = createApp({
   setup() {
@@ -20,6 +23,7 @@ const app = createApp({
   },
   render: () => h(App)
 })
+  .use(head)
   .use(i18n)
   .use(router)
   .use(LockPlugin, options)
