@@ -59,7 +59,8 @@ const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
 const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpacesCount } =
   usePlugins();
 
-const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
+const { filterStrategies, getStrategies, isLoadingStrategies } =
+  useStrategies();
 
 const items = computed(() => {
   const q = route.query.q || '';
@@ -80,7 +81,7 @@ watch(
 );
 
 const loading = computed(() => {
-  if (isStrategies.value) return loadingStrategies.value;
+  if (isStrategies.value) return isLoadingStrategies.value;
   if (isNetworks.value) return loadingNetworksSpacesCount.value;
   if (isPlugins.value) return loadingPluginsSpacesCount.value;
   return false;
@@ -126,7 +127,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
       <div class="overflow-hidden">
         <ExploreSkeletonLoading
           v-if="
-            loadingStrategies ||
+            isLoadingStrategies ||
             loadingNetworksSpacesCount ||
             loadingPluginsSpacesCount
           "

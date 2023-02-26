@@ -1,7 +1,7 @@
 import { getVp, validate } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
-import { Vote } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Vote } from '@/helpers/interfaces';
 import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
@@ -80,10 +80,10 @@ export async function getPower(space, address, proposal) {
   );
 }
 
-export async function getValidation(
-  space,
-  address,
-  proposal
+export async function voteValidation(
+  space: ExtendedSpace,
+  address: string,
+  proposal: Proposal
 ): Promise<boolean> {
   console.log('[score] getValidation');
   const options: any = {};
@@ -96,6 +96,29 @@ export async function getValidation(
     proposal.network,
     parseInt(proposal.snapshot),
     proposal.validation.params,
+    options
+  );
+  if (typeof validateRes !== 'boolean') return false;
+  return validateRes;
+}
+
+export async function proposalValidation(
+  space: ExtendedSpace,
+  address: string
+): Promise<boolean> {
+  console.log('[score] getProposalValidation');
+  const options: any = {};
+  if (import.meta.env.VITE_SCORES_URL)
+    options.url = import.meta.env.VITE_SCORES_URL;
+
+  const validateRes = await validate(
+    space.validation.name,
+    address,
+    space.id,
+    space.network,
+    'latest',
+    // this is needed until we change proposal validation
+    { minScore: space.filters.minScore, strategies: space.strategies },
     options
   );
   if (typeof validateRes !== 'boolean') return false;

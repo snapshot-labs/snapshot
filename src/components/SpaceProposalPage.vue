@@ -39,7 +39,6 @@ const { web3, web3Account } = useWeb3();
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
-const isModalPostVoteOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const loadedVotes = ref(false);
@@ -51,6 +50,14 @@ const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
+
+const isModerator = computed(() => {
+  const moderators = (props.space.moderators || []).map(moderator =>
+    moderator.toLowerCase()
+  );
+  return moderators.includes(web3Account.value?.toLowerCase());
+});
+
 const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => props.proposal?.strategies ?? props.space.strategies
@@ -58,7 +65,7 @@ const strategies = computed(
 
 const browserHasHistory = computed(() => window.history.state.back);
 
-const { modalAccountOpen } = useModal();
+const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
@@ -168,6 +175,7 @@ onMounted(async () => {
           :space="space"
           :proposal="proposal"
           :is-admin="isAdmin"
+          :is-moderator="isModerator"
         />
         <SpaceProposalContent :space="space" :proposal="proposal" />
       </div>

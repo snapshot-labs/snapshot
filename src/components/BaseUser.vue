@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { toRefs } from 'vue';
-import { Profile } from '@/helpers/interfaces';
+import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 import { useUsername, useApp } from '@/composables';
 
@@ -8,8 +8,8 @@ const { domain } = useApp();
 
 const props = defineProps<{
   address: string;
-  space?: { members: string[]; network: string };
-  proposal?: { network: string };
+  space?: ExtendedSpace;
+  proposal?: Proposal;
   profile?: Profile;
   hideAvatar?: boolean;
   widthClass?: string;

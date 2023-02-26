@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
-import { getPower, getValidation } from '@/helpers/snapshot';
+import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
 
@@ -95,7 +95,7 @@ async function loadVotingValidation() {
     return (isValidVoter.value = true);
   hasVotingValidationFailed.value = false;
   try {
-    const validationRes = await getValidation(
+    const validationRes = await voteValidation(
       props.space,
       web3Account.value,
       props.proposal

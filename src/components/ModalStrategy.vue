@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, toRefs, watch } from 'vue';
-import { useRouter } from 'vue-router';
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
-import { encodeJson } from '@/helpers/b64';
 import { useNetworksFilter, useStrategies } from '@/composables';
 
 const defaultParams = {
@@ -35,7 +33,7 @@ const input = ref({
 const {
   filterStrategies,
   getStrategies,
-  loadingStrategies,
+  isLoadingStrategies,
   getExtendedStrategy,
   extendedStrategy,
   strategyDefinition
@@ -47,25 +45,6 @@ const { getNetworksSpacesCount } = useNetworksFilter();
 const isValid = computed(
   () => validateSchema(strategyDefinition.value, input.value.params) === true
 );
-
-const router = useRouter();
-
-const playgroundLink = computed(() => {
-  const route = router.resolve({
-    name: 'playground',
-    query: {
-      query: encodeJson({
-        params: input.value.params,
-        network: input.value.network,
-        snapshot: '',
-        addresses: extendedStrategy.value?.examples?.[0].addresses || []
-      })
-    },
-    params: { name: input.value.name }
-  });
-
-  return new URL(route.href, window.location.origin).href;
-});
 
 function handleSubmit() {
   const strategyObj = clone(input.value);
@@ -145,7 +124,7 @@ watch(open, () => {
     </div>
 
     <div v-else class="my-4 mx-0 min-h-[300px] md:mx-4">
-      <LoadingRow v-if="loadingStrategies" block />
+      <LoadingRow v-if="isLoadingStrategies" block />
       <div v-else class="space-y-3">
         <BaseStrategyItem
           v-for="str in strategiesResults"
@@ -157,17 +136,17 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="input.name" #footer>
-      <BaseLink :link="playgroundLink" hide-external-icon class="mb-2 block">
-        <BaseButton class="w-full">
-          {{ $t('settings.testInPlayground') }}
-          <i-ho-external-link class="mb-[2px] inline-block text-xs" />
-        </BaseButton>
-      </BaseLink>
+      <ButtonPlayground
+        big
+        :name="strategy.name"
+        :network="strategy.network"
+        :params="strategy.params"
+      />
       <BaseButton
         :disabled="
           !textAreaJsonIsValid || (strategyDefinition && !isValid) || loading
         "
-        class="w-full"
+        class="mt-2 w-full"
         primary
         @click="handleSubmit"
       >

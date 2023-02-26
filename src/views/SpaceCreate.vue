@@ -4,8 +4,9 @@ import { useRouter, useRoute } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
-import validations from '@snapshot-labs/snapshot.js/src/validations';
+import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
+
 import {
   useFlashNotification,
   useSpaceCreateForm,
@@ -22,6 +23,12 @@ import {
   useSnapshot,
   useMeta
 } from '@/composables';
+
+enum Step {
+  CONTENT,
+  VOTING,
+  PLUGINS
+}
 
 const BODY_LIMIT_CHARACTERS = 14400;
 
@@ -54,6 +61,7 @@ const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
+const { apolloQuery, queryLoading } = useApolloQuery();
 
 const {
   form,
@@ -65,8 +73,10 @@ const {
   getValidation
 } = useSpaceCreateForm();
 
-const passValidation = ref([false, '']);
+const isValidAuthor = ref(false);
 const validationLoading = ref(false);
+const preview = ref(false);
+const executingValidationFailed = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
 
 const proposal = computed(() =>
@@ -88,7 +98,7 @@ const dateEnd = computed(() => {
     : dateStart.value + threeDays;
 });
 
-const isValid = computed(() => {
+const isSafeFormValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
@@ -101,17 +111,11 @@ const isValid = computed(() => {
     form.value.snapshot &&
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
-    passValidation.value[0] &&
+    isValidAuthor.value &&
     isSafeSnapPluginValid &&
     !web3.value.authLoading
   );
 });
-
-enum Step {
-  CONTENT,
-  VOTING,
-  PLUGINS
-}
 
 const currentStep = computed(() => Number(route.params.step));
 
@@ -120,7 +124,7 @@ const stepIsValid = computed(() => {
     currentStep.value === Step.CONTENT &&
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
-    passValidation.value[0] &&
+    isValidAuthor.value &&
     !getValidation('name').message &&
     !getValidation('discussion').message
   )
@@ -136,12 +140,30 @@ const stepIsValid = computed(() => {
   else return false;
 });
 
+const isMember = computed(() => {
+  return (
+    props.space.members?.includes(web3Account.value) ||
+    props.space.admins?.includes(web3Account.value) ||
+    props.space.moderators?.includes(web3Account.value) ||
+    false
+  );
+});
+
 // Check if has plugins that can be confirgured on proposal creation
 const needsPluginConfigs = computed(() =>
   Object.keys(props.space?.plugins ?? {}).some(
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
+
+const queries = computed(() => {
+  let q: { snapshot?: string; app?: string } = {};
+  if (route.query.snapshot) q.snapshot = route.query.snapshot as string;
+  if (route.query.app) q.app = route.query.app as string;
+  return q;
+});
+
+const validationName = computed(() => props.space.validation?.name ?? 'basic');
 
 function getFormattedForm() {
   const clonedForm = clone(form.value);
@@ -195,7 +217,6 @@ function setSourceProposal(proposal) {
   }));
 }
 
-const { apolloQuery, queryLoading } = useApolloQuery();
 async function loadSourceProposal() {
   const proposal = await apolloQuery(
     {
@@ -211,13 +232,6 @@ async function loadSourceProposal() {
   sourceProposalLoaded.value = true;
 }
 
-const queries = computed(() => {
-  let q: { snapshot?: string; app?: string } = {};
-  if (route.query.snapshot) q.snapshot = route.query.snapshot as string;
-  if (route.query.app) q.app = route.query.app as string;
-  return q;
-});
-
 function nextStep() {
   router.push({
     params: { step: currentStep.value + 1 },
@@ -225,7 +239,7 @@ function nextStep() {
   });
 }
 
-function previosStep() {
+function previousStep() {
   router.push({
     params: { step: currentStep.value - 1 },
     query: queries.value
@@ -236,38 +250,44 @@ function updateTime() {
   timeSeconds.value = Number((Date.now() / 1e3).toFixed());
 }
 
-// Check if account passes space validation
-// (catch errors to show confiuration error message)
-const executingValidationFailed = ref(false);
+async function validateAuthor() {
+  isValidAuthor.value = false;
+  if (web3Account.value && auth.isAuthenticated.value) {
+    if (isMember.value) {
+      isValidAuthor.value = true;
+      return;
+    }
+
+    if (props.space.filters.onlyMembers) {
+      isValidAuthor.value = false;
+      return;
+    }
+
+    try {
+      validationLoading.value = true;
+      const validationRes = await proposalValidation(
+        props.space,
+        web3Account.value
+      );
+
+      isValidAuthor.value = validationRes;
+      console.log('Pass validation?', validationRes, validationName.value);
+    } catch (e) {
+      executingValidationFailed.value = true;
+      console.log(e);
+    } finally {
+      validationLoading.value = false;
+    }
+  }
+}
+
 watch(
   () => web3Account.value,
-  async () => {
-    if (passValidation.value[0] === true) return;
-    if (web3Account.value && auth.isAuthenticated.value) {
-      validationLoading.value = true;
-      try {
-        const validationName = props.space.validation?.name ?? 'basic';
-        const validationParams = props.space.validation?.params ?? {};
-        const isValid = await validations[validationName](
-          web3Account.value,
-          clone(props.space),
-          '',
-          clone(validationParams)
-        );
-
-        passValidation.value = [isValid, validationName];
-        console.log('Pass validation?', isValid, validationName);
-        validationLoading.value = false;
-      } catch (e) {
-        executingValidationFailed.value = true;
-        console.log(e);
-      }
-    }
+  () => {
+    validateAuthor();
   },
   { immediate: true }
 );
-
-const preview = ref(false);
 
 watch(preview, () => {
   window.scrollTo(0, 0);
@@ -305,7 +325,8 @@ onMounted(async () => {
         v-if="!validationLoading"
         :space="space"
         :executing-validation-failed="executingValidationFailed"
-        :pass-validation="passValidation"
+        :is-valid-author="isValidAuthor"
+        :validation-name="validationName"
         data-testid="create-proposal-connect-wallet-warning"
       />
 
@@ -346,7 +367,7 @@ onMounted(async () => {
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
         </BaseButton>
-        <BaseButton v-else class="mb-2 block w-full" @click="previosStep">
+        <BaseButton v-else class="mb-2 block w-full" @click="previousStep">
           {{ $t('back') }}
         </BaseButton>
         <BaseButton
@@ -354,7 +375,7 @@ onMounted(async () => {
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
-          :disabled="!isValid"
+          :disabled="!isSafeFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary

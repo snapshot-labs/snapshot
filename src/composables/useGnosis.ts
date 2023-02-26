@@ -14,6 +14,7 @@ export function useGnosis(space?: ExtendedSpace) {
   const isGnosisSafe = computed(
     () =>
       web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
+      web3.value?.walletConnectType === 'WalletConnect Safe App' ||
       connectorName.value === 'gnosis'
   );
 
