@@ -14,7 +14,7 @@ import {
 const props = defineProps<{
   context: 'setup' | 'settings';
   space?: ExtendedSpace;
-  ensOwner?: boolean;
+  isSpaceController?: boolean;
 }>();
 
 const { form, getValidation } = useSpaceForm(props.context);
@@ -70,7 +70,7 @@ const members = computed(() => {
 const isAbleToChangeMembers = computed(() => {
   if (props.context === 'setup') return true;
   if (props.context === 'settings') {
-    if (props.ensOwner) return true;
+    if (props.isSpaceController) return true;
     if (props.space?.admins?.includes(web3Account.value)) return true;
   }
   return false;
@@ -79,7 +79,7 @@ const isAbleToChangeMembers = computed(() => {
 const isAbleToChangeAdmins = computed(() => {
   if (props.context === 'setup') return true;
   if (props.context === 'settings') {
-    if (props.ensOwner) return true;
+    if (props.isSpaceController) return true;
   }
   return false;
 });
