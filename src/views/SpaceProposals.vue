@@ -12,17 +12,31 @@ import {
   useScrollMonitor,
   useApolloQuery,
   useProfiles,
-  useI18n,
-  useWeb3
+  useWeb3,
+  useMeta
 } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+useMeta({
+  title: {
+    key: 'metaInfo.space.proposals.title',
+    params: {
+      space: props.space.name
+    }
+  },
+  description: {
+    key: 'metaInfo.space.proposals.description',
+    params: {
+      about: props.space.about.slice(0, 160)
+    }
+  }
+});
+
 const { store, userVotedProposalIds, addSpaceProposals, setSpaceProposals } =
   useProposals();
-const { setPageTitle } = useI18n();
 
 const loading = ref(false);
 
@@ -96,7 +110,6 @@ watch(spaceProposals, () => {
 watch(stateFilter, loadProposals);
 
 onMounted(() => {
-  setPageTitle('page.title.space.proposals', { space: props.space.name });
   if (spaceProposals.value.length === 0) loadProposals();
 });
 </script>

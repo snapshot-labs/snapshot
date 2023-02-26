@@ -1204,6 +1204,47 @@
     "@typescript-eslint/types" "5.38.0"
     eslint-visitor-keys "^3.3.0"
 
+"@unhead/dom@1.1.8", "@unhead/dom@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@unhead/dom/-/dom-1.1.8.tgz#56105df0c83459b2e07ee0a3a12f253138e1824e"
+  integrity sha512-CS+6ncid6GqeBV8ALh4lht5Mios3r8rZNLJvvti0kwGHl9cnGWtURqZpEIoqljde9Me2Tcv5Y5sFYWSx1h64xw==
+  dependencies:
+    "@unhead/schema" "1.1.8"
+    "@unhead/shared" "1.1.8"
+
+"@unhead/schema@1.1.8", "@unhead/schema@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@unhead/schema/-/schema-1.1.8.tgz#d6f7be3080d7126678bfff2a08203e1954d1d91c"
+  integrity sha512-m4tg2pd7jVF8+TuduWur6Qrr+MDF2R9gq3z9s9UlFJ+f3gZZQ863w1nqIZ2KP38Tnld0jgrKOr2gs08VT9gfIw==
+  dependencies:
+    hookable "^5.4.2"
+    zhead "^2.0.4"
+
+"@unhead/shared@1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@unhead/shared/-/shared-1.1.8.tgz#e6602023b3ef16b4a619c130f47e6e6d72aadeb2"
+  integrity sha512-NokzfbCGHP5d6sxgnxaANGe6Cf3Ld786CtuPt+m9WtUWiXm15TjK9sXPq/P66a3IjxwcgRhkJ9F5KB+w+1XEtQ==
+  dependencies:
+    "@unhead/schema" "1.1.8"
+
+"@unhead/ssr@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@unhead/ssr/-/ssr-1.1.8.tgz#c1760ff714868e2bfa03f404f881e0979f76bac1"
+  integrity sha512-edAyGQjxz+hMjAYsnnf6iG/O48lyQtBz8uukpe3lTLSqg1sdZTRQ+bDAosVK3ognwPguR73/NUkXVXB3+hvptA==
+  dependencies:
+    "@unhead/schema" "1.1.8"
+    "@unhead/shared" "1.1.8"
+
+"@unhead/vue@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@unhead/vue/-/vue-1.1.8.tgz#9cb74b49241d46bc7e9e39c8d6b3198f3b05dc81"
+  integrity sha512-O7MZ9fbH1rrI6Nb5RvIaTW2UdCX5ptOuABmLfIxs0BQ0pNgDfeF/+tU5KEEfXaqpdj9bcR9fGFf8IYQuKYd8ag==
+  dependencies:
+    "@unhead/schema" "1.1.8"
+    "@unhead/shared" "1.1.8"
+    hookable "^5.4.2"
+    unhead "1.1.8"
+
 "@vitejs/plugin-vue@^2.3.4":
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.4.tgz#966a6279060eb2d9d1a02ea1a331af071afdcf9e"
@@ -1348,6 +1389,16 @@
     "@vueuse/metadata" "9.1.1"
     "@vueuse/shared" "9.1.1"
     vue-demi "*"
+
+"@vueuse/head@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@vueuse/head/-/head-1.1.8.tgz#3d5c6f54ac70834baf8fbb1d1dc82f5c7a77c196"
+  integrity sha512-kWow0WYuCnAAw9fZ4glvw5PiSlX0zNHnXZh/TyxnLFgsOdU1+97BeSOFX2Fv/SIDF0Rkz8VJYEpP3RZI8vuwPQ==
+  dependencies:
+    "@unhead/dom" "^1.1.8"
+    "@unhead/schema" "^1.1.8"
+    "@unhead/ssr" "^1.1.8"
+    "@unhead/vue" "^1.1.8"
 
 "@vueuse/metadata@9.1.1":
   version "9.1.1"
@@ -4068,6 +4119,11 @@ hoist-non-react-statics@^3.3.2:
   dependencies:
     react-is "^16.7.0"
 
+hookable@^5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/hookable/-/hookable-5.4.2.tgz#6a1d3c4b3cb5b4262f99b3070ce0ee92c9c78049"
+  integrity sha512-6rOvaUiNKy9lET1X0ECnyZ5O5kSV0PJbtA5yZUgdEF7fGJEVwSLSislltyt7nFwVVALYHQJtfGeAR2Y0A0uJkg==
+
 html-escaper@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"
@@ -5275,6 +5331,11 @@ p-try@^2.0.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/p-try/-/p-try-2.2.0.tgz#cb2868540e313d61de58fafbe35ce9004d5540e6"
   integrity sha512-R4nPAVTAU0B9D35/Gk3uJf/7XYbQcyohSKdvAxIRSNghFl4e71hVoGnBNQz9cWaXxO2I10KTC+3jMdvvoKw6dQ==
+
+packrup@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/packrup/-/packrup-0.1.0.tgz#8a2d865a45aaee9807504046548678fa3382b6e3"
+  integrity sha512-HnUl9ztHGty5ZK13WM8Q7854SWPKH/eCT+MiTO0P1qCu1Y4S5PPJ8E9MwD3cnjSr7PUPzXDnmOVJIKM043OfJQ==
 
 parent-module@^1.0.0:
   version "1.0.1"
@@ -6630,6 +6691,17 @@ unbox-primitive@^1.0.2:
     has-symbols "^1.0.3"
     which-boxed-primitive "^1.0.2"
 
+unhead@1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/unhead/-/unhead-1.1.8.tgz#88a083754b85dba5741042327c9fa2bf066c6354"
+  integrity sha512-I6QlutXf60mmcgIAtB4cupN9LFdoWvjaNX8sP3SHSHVRLAFYa4cINALwBHtzrzOQ+VTouXpYCKgAulZcfm6H7g==
+  dependencies:
+    "@unhead/dom" "1.1.8"
+    "@unhead/schema" "1.1.8"
+    "@unhead/shared" "1.1.8"
+    hookable "^5.4.2"
+    packrup "^0.1.0"
+
 universalify@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
@@ -7326,3 +7398,8 @@ zen-observable@0.8.15:
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/zen-observable/-/zen-observable-0.8.15.tgz#96415c512d8e3ffd920afd3889604e30b9eaac15"
   integrity sha512-PQ2PC7R9rslx84ndNBZB/Dkv8V8fZEpk83RLgXtYd0fwUgEjseMn1Dgajh2x6S8QbZAFa9p2qVCEuYZNgve0dQ==
+
+zhead@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/zhead/-/zhead-2.0.4.tgz#42509bbe85b790de9121301eac47d440d9073876"
+  integrity sha512-V4R94t3ifk9AURym6OskbKcnowzgp5Z88tkoL/NF67vyryNxC62u6mx5F1Ux4oh4+YN7FFmKYEyWy6m5kfPH6g==

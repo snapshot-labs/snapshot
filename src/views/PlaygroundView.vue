@@ -19,7 +19,7 @@ const router = useRouter();
 const route = useRoute();
 const { query: queryParams } = useRoute();
 const { copyToClipboard } = useCopy();
-const { t, setPageTitle } = useI18n();
+const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
 const {
   getExtendedStrategy,
@@ -166,7 +166,6 @@ watch(
 onMounted(async () => {
   getStrategies();
   getExtendedStrategy(route.params.name as string);
-  setPageTitle('page.title.playground');
 
   if (queryParams.query && strategyExample.value?.snapshot) {
     form.value.snapshot = strategyExample.value.snapshot;
