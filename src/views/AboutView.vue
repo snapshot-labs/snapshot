@@ -1,10 +1,8 @@
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import { useI18n } from '@/composables/useI18n';
 import { useSkin, DARK } from '@/composables/useSkin';
 import { useApp } from '@/composables/useApp';
 
-const { setPageTitle } = useI18n();
 const { userTheme } = useSkin();
 const { env } = useApp();
 
@@ -12,7 +10,6 @@ const themeBefore = userTheme.value;
 
 onMounted(() => {
   userTheme.value = DARK;
-  setPageTitle('Snapshot - Where decisions get made');
 });
 
 onUnmounted(() => {
