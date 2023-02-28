@@ -6,6 +6,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
+import { ensureRightNetwork } from './SafeTransactions.vue';
 
 import {
   useWeb3,
@@ -50,57 +51,6 @@ const QuestionStates = {
   timeExpired: 9
 };
 Object.freeze(QuestionStates);
-
-const ensureRightNetwork = async chainId => {
-  const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
-  if (connectedToChainId === chainIdInt) return; // already on right chain
-
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-    // we cannot switch automatically
-    throw new Error(
-      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-    );
-  }
-
-  const network = networks[chainId];
-  const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-  try {
-    // check if the chain to connect to is installed
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-    });
-  } catch (error) {
-    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-    if (error.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdHex,
-              chainName: network.name,
-              rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer.url]
-            }
-          ]
-        });
-      } catch (addError) {
-        console.error(addError);
-      }
-    }
-    console.error(error);
-  }
-
-  await sleep(1e3); // somehow the switch does not take immediate effect :/
-  if (window.ethereum.chainId !== chainIdHex) {
-    throw new Error(
-      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-    );
-  }
-};
 
 const loading = ref(true);
 const questionStates = ref(QuestionStates);
