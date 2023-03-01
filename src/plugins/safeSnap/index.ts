@@ -144,13 +144,9 @@ export default class Plugin {
 
   async validateUmaModule(network: string, umaAddress: string) {
     if (!isAddress(umaAddress)) return 'reality';
-    
+
     const provider: StaticJsonRpcProvider = getProvider(network);
-    const moduleContract = new Contract(
-      umaAddress,
-      UMA_MODULE_ABI,
-      provider
-    );
+    const moduleContract = new Contract(umaAddress, UMA_MODULE_ABI, provider);
 
     return moduleContract
       .rules()
@@ -158,7 +154,7 @@ export default class Plugin {
       .catch(() => 'reality');
   }
 
-  async getExecutionDetails(
+  async getExecutionDetailsUma(
     network: string,
     moduleAddress: string,
     proposalId: string,
@@ -179,7 +175,7 @@ export default class Plugin {
     };
   }
 
-  async *approveBond(
+  async *approveBondUma(
     network: string,
     web3: any,
     moduleAddress: string,
@@ -206,7 +202,7 @@ export default class Plugin {
     yield;
   }
 
-  async *deleteDisputedProposal(
+  async *deleteDisputedProposalUma(
     web3: any,
     moduleAddress: string,
     transactionHash: any
@@ -257,7 +253,7 @@ export default class Plugin {
     console.log('[DAO module] submitted proposal:', receipt);
   }
 
-  async *submitProposal(
+  async *submitProposalUma(
     web3: any,
     moduleAddress: string,
     explanation: string,
@@ -452,7 +448,11 @@ export default class Plugin {
     console.log('[DAO module] executed proposal:', receipt);
   }
 
-  async *executeProposal(web3: any, moduleAddress: string, transactions: any) {
+  async *executeProposalUma(
+    web3: any,
+    moduleAddress: string,
+    transactions: any
+  ) {
     const tx = await sendTransaction(
       web3,
       moduleAddress,

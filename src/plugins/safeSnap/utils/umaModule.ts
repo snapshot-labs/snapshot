@@ -10,7 +10,7 @@ import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 
-const getBondDetails = async (
+const getBondDetailsUma = async (
   provider: StaticJsonRpcProvider,
   moduleAddress: string
 ) => {
@@ -69,6 +69,7 @@ export const getModuleDetailsUma = async (
   activeProposal: boolean;
   proposalEvent: any;
   proposalExecuted: boolean;
+  livenessPeriod: string;
 }> => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
@@ -82,8 +83,8 @@ export const getModuleDetailsUma = async (
   let needsApproval = false;
   const minimumBond = moduleDetails[3][0];
   const optimisticOracle = moduleDetails[1][0];
-  const validResponse = moduleDetails[5][0].toString();
-  const bondDetails = await getBondDetails(provider, moduleAddress);
+  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
+  const livenessPeriod = moduleDetails[4][0];
 
   if (
     Number(minimumBond) > 0 &&
@@ -127,7 +128,8 @@ export const getModuleDetailsUma = async (
       noTransactions: true,
       activeProposal: false,
       proposalEvent: {},
-      proposalExecuted: false
+      proposalExecuted: false,
+      livenessPeriod: livenessPeriod
     };
   }
   // Check for active proposals
@@ -179,7 +181,8 @@ export const getModuleDetailsUma = async (
             isExpired: isExpired,
             isDisputed: isDisputed,
             isSettled: result.settled,
-            proposalHash: proposalHash
+            proposalHash: proposalHash,
+            proposalTxHash: event.transactionHash
           };
         });
     })
@@ -226,6 +229,7 @@ export const getModuleDetailsUma = async (
     noTransactions: false,
     activeProposal: activeProposal,
     proposalEvent: thisModuleFullProposalEvent[0],
-    proposalExecuted: proposalExecuted
+    proposalExecuted: proposalExecuted,
+    livenessPeriod: livenessPeriod.toString()
   };
 };
