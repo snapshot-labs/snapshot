@@ -159,10 +159,7 @@ onMounted(() => {
             :space="space"
             :voted="userVotedProposalIds.includes(proposal.id)"
             :hide-space-avatar="proposal.space.id === space.id"
-            :to="{
-              name: 'spaceProposal',
-              params: { id: proposal.id }
-            }"
+            :to="{ path: `/${proposal.space.id}/proposal/${proposal.id}` }"
           />
         </BaseBlock>
       </div>
