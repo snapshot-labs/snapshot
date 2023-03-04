@@ -77,11 +77,16 @@ function selectFromThreedotDropdown(e) {
   }
 }
 
-function selectFromShareDropdown(e) {
-  if (e === 'shareProposalTwitter')
-    return shareProposalTwitter(props.space, props.proposal);
+function selectFromShareDropdown(e: string) {
   if (e === 'shareProposalLenster')
     return shareProposalLenster(props.space, props.proposal);
+
+  if (sharingIsSupported.value)
+    return shareProposal(props.space, props.proposal);
+
+  if (e === 'shareProposalTwitter')
+    return shareProposalTwitter(props.space, props.proposal);
+
   if (e === 'shareToClipboard')
     return shareToClipboard(props.space, props.proposal);
 }
@@ -122,12 +127,8 @@ watch(
         :proposal="proposal"
         hide-avatar
       />
-      <ButtonShare
-        v-if="sharingIsSupported"
-        @click="shareProposal(space, proposal)"
-      />
+
       <BaseMenu
-        v-else
         class="!ml-auto pl-3"
         :items="sharingItems"
         @select="selectFromShareDropdown"
