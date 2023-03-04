@@ -47,6 +47,7 @@ export function useSharing() {
   ) {
     const postText = getSharingText(shareTo, payload);
 
+    if (window && shareTo === 'lenster') return shareLenster(postText);
     if (isSupported.value)
       return share({
         title: '',
@@ -54,7 +55,6 @@ export function useSharing() {
         url: proposalUrl(payload.space.id, payload.proposal)
       });
     if (window && shareTo === 'twitter') return shareTwitter(postText);
-    if (window && shareTo === 'lenster') return shareLenster(postText);
   }
 
   function getSharingText(shareTo: 'twitter' | 'lenster', payload): string {
@@ -71,6 +71,13 @@ export function useSharing() {
       ? `@${payload.space.twitter}`
       : payload.space.name;
 
+    if (shareTo === 'lenster')
+      return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
+        payload.proposal.title
+      )}"%20${encodedProposalUrl(
+        payload.space.id,
+        payload.proposal
+      )}&hashtags=snapshotlabs`;
     if (isSupported.value)
       return `${votedText} "${payload.proposal.title}" ${spaceHandle} @SnapshotLabs`;
     if (shareTo === 'twitter')
@@ -80,13 +87,7 @@ export function useSharing() {
         payload.space.id,
         payload.proposal
       )}%20${spaceHandle}%20@SnapshotLabs`;
-    if (shareTo === 'lenster')
-      return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
-        payload.proposal.title
-      )}"%20${encodedProposalUrl(
-        payload.space.id,
-        payload.proposal
-      )}&hashtags=snapshotlabs`;
+
     return `${votedText} "${payload.proposal.title}"`;
   }
 
