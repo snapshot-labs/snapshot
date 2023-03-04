@@ -36,7 +36,7 @@ const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors } =
+const { form, isValid, showAllValidationErrors, resetForm } =
   useFormSpaceSettings('setup');
 const { t } = useI18n();
 const { send } = useClient();
@@ -81,14 +81,16 @@ async function handleSubmit() {
       showMessage: true
     };
 
+    resetForm();
+
     // Redirect to the new space page
+    notify(['green', t('notify.saved')]);
     router.push({
       name: 'spaceProposals',
       params: {
         key: route.params.ens
       }
     });
-    notify(['green', t('notify.saved')]);
   }
   creatingSpace.value = false;
 }
