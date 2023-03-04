@@ -12,14 +12,27 @@ import {
   useSpaceForm,
   useTreasury,
   useFlashNotification,
-  useGnosis
+  useGnosis,
+  useMeta
 } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { t, setPageTitle } = useI18n();
+useMeta({
+  title: {
+    key: 'metaInfo.space.settings.title',
+    params: {
+      space: props.space.name
+    }
+  },
+  description: {
+    key: 'metaInfo.space.settings.description'
+  }
+});
+
+const { t } = useI18n();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
@@ -78,8 +91,6 @@ async function handleSetRecord() {
 }
 
 onMounted(async () => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
-
   populateForm(props.space);
   await loadEnsOwner();
   await loadSpaceController();
@@ -125,12 +136,11 @@ onMounted(async () => {
 
           <SettingsStrategiesBlock context="settings" />
 
-          <SettingsAdminsBlock
+          <SettingsMembersBlock
             context="settings"
+            :space="space"
             :is-space-controller="isSpaceController"
           />
-
-          <SettingsAuthorsBlock context="settings" />
 
           <SettingsProposalBlock context="settings" />
 

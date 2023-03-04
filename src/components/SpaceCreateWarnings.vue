@@ -6,7 +6,8 @@ import { useWeb3, useIntl, useGnosis, useSnapshot } from '@/composables';
 const props = defineProps<{
   space: ExtendedSpace;
   executingValidationFailed: boolean;
-  passValidation: (string | boolean)[];
+  isValidAuthor: boolean;
+  validationName: string;
 }>();
 
 const { formatCompactNumber } = useIntl();
@@ -81,11 +82,11 @@ const { errorFetchingSnapshot } = useSnapshot();
 
     <!-- Shows when wallet is connected and doesn't pass validaion -->
     <BaseMessageBlock
-      v-else-if="passValidation[0] === false"
+      v-else-if="isValidAuthor === false"
       level="warning"
       is-responsive
     >
-      <span v-if="passValidation[1] === 'basic'">
+      <span v-if="validationName === 'basic'">
         <span v-if="space?.filters.onlyMembers">
           {{ $t('create.validationWarning.basic.member') }}
         </span>

@@ -1,5 +1,6 @@
 export { useApolloQuery } from './useApolloQuery';
 export { useApp } from './useApp';
+export { useMeta } from './useMeta';
 export { useCategories } from './useCategories';
 export { useClient } from './useClient';
 export { useCopy } from './useCopy';

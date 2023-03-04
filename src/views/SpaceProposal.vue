@@ -17,7 +17,7 @@ const router = useRouter();
 
 const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
-const proposalId: string = route.params.id as string;
+const proposalId = route.params.id as string;
 
 const isSpaceRelatedProposal = computed(() => {
   if (!space.value || !proposal.value) return false;
@@ -44,7 +44,6 @@ async function loadProposal() {
 
   loadingProposal.value = false;
 }
-
 onMounted(() => {
   loadProposal();
 });
@@ -62,7 +61,6 @@ onMounted(() => {
       v-else-if="proposal && space"
       :space="space"
       :proposal="proposal"
-      :loading="loadingProposal"
       @reload-proposal="loadProposal"
     />
   </div>

@@ -11,8 +11,18 @@ import {
   useClient,
   useExtendedSpaces,
   useSpaceForm,
-  useFlashNotification
+  useFlashNotification,
+  useMeta
 } from '@/composables';
+
+useMeta({
+  title: {
+    key: 'metaInfo.setup.title'
+  },
+  description: {
+    key: 'metaInfo.setup.description'
+  }
+});
 
 enum Step {
   GETTING_STARTED,
@@ -25,7 +35,6 @@ enum Step {
 const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
-const { setPageTitle } = useI18n();
 const { notify } = useFlashNotification();
 const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
 const { t } = useI18n();
@@ -100,7 +109,6 @@ function pushStepOne() {
 
 onMounted(() => {
   if (!route.query.step || !web3Account.value) pushStepOne();
-  setPageTitle('page.title.setup');
 });
 </script>
 

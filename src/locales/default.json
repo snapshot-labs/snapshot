@@ -126,6 +126,7 @@
   "agree": "I agree",
   "moderators": "Moderators",
   "playground": "Playground",
+  "strategyDetails": "Strategy details",
   "strategyParams": "Strategy params",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
@@ -167,6 +168,9 @@
     "pattern": "Invalid character",
     "minItems": "Minimum {0} item(s) required",
     "maxItems": "Maximum {0} item(s) allowed",
+    "members": {
+      "maxItems": "Maximum {limit} {role} allowed"
+    },
     "minStrategy": "At least one strategy is required.",
     "website": "URL should be in the format https://www.example.com",
     "format": "Invalid format",
@@ -212,7 +216,7 @@
     "markdown": "Styling with Markdown is supported",
     "validationWarning": {
       "basic": {
-        "member": "You need to be an author of the space in order to submit a proposal.",
+        "member": "You need to be a core member of the space in order to submit a proposal.",
         "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
       },
       "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
@@ -359,13 +363,23 @@
     "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",
-    "admins": {
-      "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals"
-    },
-    "authors": {
-      "label": "Authors",
-      "information": "Authors are always able to create proposals"
+    "members": {
+      "title": "Members",
+      "information": "Members have different roles and permissions within the space.",
+      "addMembers": "Add members",
+      "addMembersInformation": "Paste an address to add a member. You can add multiple members at once by separating them with a comma.",
+      "alreadyExists": "Member already exists",
+      "invalidAddress": "Invalid address",
+      "membersAdded": "Members added",
+      "admin": {
+        "description": "Able to modify the space settings, manage the space's proposals and create proposals"
+      },
+      "moderator": {
+        "description": "Able to manage the space's proposals and create proposals"
+      },
+      "author": {
+        "description": "Able to create proposals without having to go through proposal validation"
+      }
     },
     "proposalValidation": "Proposal validation",
     "validation": "Type",
@@ -659,13 +673,16 @@
       "proposalPassed": "Did the proposal pass?",
       "expired": "The proposal has expired",
       "approveBond": "Approve bond",
-      "confirmVoteResults": "Click to confirm the proposal passed",
+      "confirmVoteResults": "Click to request proposal execution",
       "executeTxsUma": "Execute transaction batch",
       "deleteDisputedProposal": "Delete disputed proposal",
       "confirmVoteResultsToolTip": "Make sure this proposal was approved by this Snapshot vote before proposing on-chain. If the Snapshot vote rejected the proposal, the on-chain proposal will be rejected as well and you will lose your bond.",
       "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
-      "requestToolTip": "This will propose the transactions from this Snapshot vote on-chain. After a challenge window, if the proposal is valid, the transactions can be executed and your bond will be returned.",
-      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond."
+      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond.",
+      "bondWarning": "Bond is greater than users balance",
+      "requiredBond": "Required Bond:",
+      "challengePeriod": "Challenge Period:",
+      "disputeProposal": "UMA Oracle URL to dispute"
     }
   },
   "poap": {
@@ -728,24 +745,48 @@
     "reply": "Reply",
     "load_more": "Load more"
   },
-  "page": {
-    "title": {
-      "home": "Snapshot",
-      "setup": "Create a space",
-      "timeline": "Timeline",
-      "notifications": "Notifications",
-      "explore": "Explore",
-      "playground": "Playground",
-      "space": {
-        "create": "Create {space} proposal",
-        "about": "About {space}",
-        "proposals": "{space} Proposals",
-        "proposal": "{space} proposal: {proposal}",
-        "settings": "{space} Settings"
+  "metaInfo": {
+    "home": {
+      "title": "Snapshot - Where decisions get made",
+      "description": "Snapshot is an off-chain voting platform that allows DAOs, DeFi protocols, or NFT communities to participate in the decentralized governance easily and without gas fees."
+    },
+    "setup": {
+      "title": "Create a space",
+      "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
+    },
+    "timeline": {
+      "title": "Timeline",
+      "description": "See what's happening in the Snapshot community."
+    },
+    "playground": {
+      "title": "Playground",
+      "description": "{strategy}"
+    },
+    "strategy": {
+      "title": "{strategy} strategy",
+      "description": ""
+    },
+    "space": {
+      "create": {
+        "title": "{space} Create proposal",
+        "description": "Create a proposal and start a vote."
       },
-      "strategy": "{key} strategy",
-      "delegate": "Delegate",
-      "ranking": "Ranking"
+      "about": {
+        "title": "{space} About ",
+        "description": "{about}"
+      },
+      "proposals": {
+        "title": "{space} Proposals",
+        "description": "{about}"
+      },
+      "proposal": {
+        "title": "{space} Proposal: {proposal}",
+        "description": "{body}"
+      },
+      "settings": {
+        "title": "{space} Settings",
+        "description": "Change how proposals and voting works in this space."
+      }
     }
   },
   "hal": {

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 import {
@@ -8,10 +8,20 @@ import {
   useNetworksFilter,
   useIntl,
   useScrollMonitor,
-  useI18n
+  useI18n,
+  useMeta
 } from '@/composables';
 
-const { t, setPageTitle } = useI18n();
+useMeta({
+  title: {
+    key: 'metaInfo.home.title'
+  },
+  description: {
+    key: 'metaInfo.home.description'
+  }
+});
+
+const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
@@ -49,7 +59,8 @@ const { filterNetworks, getNetworksSpacesCount, loadingNetworksSpacesCount } =
 const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpacesCount } =
   usePlugins();
 
-const { filterStrategies, getStrategies, loadingStrategies } = useStrategies();
+const { filterStrategies, getStrategies, isLoadingStrategies } =
+  useStrategies();
 
 const items = computed(() => {
   const q = route.query.q || '';
@@ -70,7 +81,7 @@ watch(
 );
 
 const loading = computed(() => {
-  if (isStrategies.value) return loadingStrategies.value;
+  if (isStrategies.value) return isLoadingStrategies.value;
   if (isNetworks.value) return loadingNetworksSpacesCount.value;
   if (isPlugins.value) return loadingPluginsSpacesCount.value;
   return false;
@@ -80,10 +91,6 @@ const loadBy = 15;
 const limit = ref(loadBy);
 
 const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
-
-onMounted(() => {
-  setPageTitle('page.title.explore');
-});
 </script>
 
 <template>
@@ -120,7 +127,7 @@ onMounted(() => {
       <div class="overflow-hidden">
         <ExploreSkeletonLoading
           v-if="
-            loadingStrategies ||
+            isLoadingStrategies ||
             loadingNetworksSpacesCount ||
             loadingPluginsSpacesCount
           "
