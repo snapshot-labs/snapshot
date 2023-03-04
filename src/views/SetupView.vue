@@ -10,7 +10,7 @@ import {
   useI18n,
   useClient,
   useExtendedSpaces,
-  useSpaceForm,
+  useFormSpaceSettings,
   useFlashNotification,
   useMeta
 } from '@/composables';
@@ -36,7 +36,8 @@ const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
+const { form, isValid, showAllValidationErrors } =
+  useFormSpaceSettings('setup');
 const { t } = useI18n();
 const { send } = useClient();
 const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();

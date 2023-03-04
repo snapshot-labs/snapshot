@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { usePlugins, useSpaceForm } from '@/composables';
+import { usePlugins, useFormSpaceSettings } from '@/composables';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form } = useSpaceForm(props.context);
+const { form } = useFormSpaceSettings(props.context);
 
 const { pluginIndex } = usePlugins();
 const currentPlugin = ref({});

@@ -9,7 +9,7 @@ import {
   useClient,
   useSpaceController,
   useExtendedSpaces,
-  useSpaceForm,
+  useFormSpaceSettings,
   useTreasury,
   useFlashNotification,
   useGnosis,
@@ -43,7 +43,7 @@ const {
   isReadyToSubmit,
   populateForm,
   resetForm
-} = useSpaceForm('settings');
+} = useFormSpaceSettings('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 const { isGnosisAndNotDefaultNetwork } = useGnosis();
