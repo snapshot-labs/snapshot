@@ -3,6 +3,7 @@ import { onMounted, ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
+
 import {
   useInfiniteLoader,
   useScrollMonitor,
@@ -11,16 +12,22 @@ import {
   useFollowSpace,
   useWeb3,
   useProposals,
-  useI18n
+  useMeta
 } from '@/composables';
 
-const loading = ref(false);
+useMeta({
+  title: {
+    key: 'metaInfo.timeline.title'
+  },
+  description: {
+    key: 'metaInfo.timeline.description'
+  }
+});
 
 const route = useRoute();
 const router = useRouter();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
-const { setPageTitle } = useI18n();
 
 const {
   store,
@@ -28,6 +35,8 @@ const {
   addTimelineProposals,
   setTimelineProposals
 } = useProposals();
+
+const loading = ref(false);
 
 const stateFilter = computed(() => route.query.state || 'all');
 const isFeedJoinedSpaces = computed(
@@ -111,10 +120,6 @@ watch(
 onMounted(() => {
   if (store.timeline.proposals.length > 0) return;
   loadProposals();
-});
-
-onMounted(() => {
-  setPageTitle('page.title.timeline');
 });
 
 const { endElement } = useScrollMonitor(() => {
