@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -11,7 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref<number[]>(props.userChoice || []);
+const selectedChoices = ref<number[]>([]);
 
 function selectChoice(i) {
   selectedChoices.value.push(i);
@@ -25,6 +26,16 @@ function removeChoice(i) {
 function updateChoices() {
   emit('selectChoice', selectedChoices.value);
 }
+
+watch(
+  () => props.userChoice,
+  () => {
+    if (selectedChoices.value.length === 0)
+      selectedChoices.value = clone(props.userChoice) || [];
+    emit('selectChoice', selectedChoices.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

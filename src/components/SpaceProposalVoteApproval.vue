@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -10,7 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref<number[]>(props.userChoice || []);
+const selectedChoices = ref<number[]>([]);
 
 function selectChoice(i: number) {
   if (selectedChoices.value.includes(i))
@@ -19,6 +20,16 @@ function selectChoice(i: number) {
 
   emit('selectChoice', selectedChoices.value);
 }
+
+watch(
+  () => props.userChoice,
+  () => {
+    if (selectedChoices.value.length === 0)
+      selectedChoices.value = clone(props.userChoice) || [];
+    emit('selectChoice', selectedChoices.value || []);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
