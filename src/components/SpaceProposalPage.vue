@@ -90,6 +90,7 @@ function formatProposalVotes(votes) {
 }
 
 async function loadUserVote() {
+  userVote.value = null;
   if (!web3Account.value) return;
   const userVotesRes = await getProposalVotes(proposalId, {
     first: 1,
@@ -152,8 +153,7 @@ function handleBackClick() {
 watch(
   web3Account,
   () => {
-    userVote.value = null;
-    if (web3Account.value) loadVotes();
+    loadUserVote();
     const choice = route.query.choice as string;
     if (web3Account.value && choice) {
       selectedChoices.value = parseInt(choice);
