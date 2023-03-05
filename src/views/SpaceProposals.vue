@@ -109,9 +109,13 @@ watch(spaceProposals, () => {
 
 watch(stateFilter, loadProposals);
 
-onMounted(() => {
-  if (spaceProposals.value.length === 0) loadProposals();
-});
+watch(
+  () => props.space.id,
+  () => {
+    loadProposals();
+  },
+  { immediate: true }
+);
 </script>
 
 <template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
@@ -25,12 +25,17 @@ const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
-onMounted(async () => {
-  await loadExtendedSpaces([spaceKey.value.toLowerCase()]);
-  if (!space.value) {
-    router.push('/');
-  }
-});
+watch(
+  spaceKey,
+  async () => {
+    if (!spaceKey.value) return;
+    await loadExtendedSpaces([spaceKey.value.toLowerCase()]);
+    if (!space.value) {
+      router.push('/');
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
