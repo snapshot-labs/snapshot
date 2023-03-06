@@ -17,7 +17,7 @@ defineProps<{
       <template v-if="proposal.validation.name === 'passport-gated'">
         {{
           $t('validation.passport-gated.invalidVoterMessage', {
-            amount:
+            operator:
               proposal.validation.params.operator === 'AND' ? 'all' : 'one',
             stamps: proposal.validation.params.stamps.join(', ')
           })
