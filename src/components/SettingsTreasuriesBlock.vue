@@ -2,13 +2,13 @@
 import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form } = useSpaceForm(props.context);
+const { form } = useFormSpaceSettings(props.context);
 
 const treasuryObj = {
   name: '',

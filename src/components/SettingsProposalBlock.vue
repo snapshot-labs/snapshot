@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getValidation } = useSpaceForm(props.context);
+const { form, getValidation } = useFormSpaceSettings(props.context);
 </script>
 
 <template>

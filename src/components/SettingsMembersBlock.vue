@@ -5,7 +5,7 @@ import capitalize from 'lodash/capitalize';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 import {
-  useSpaceForm,
+  useFormSpaceSettings,
   useFlashNotification,
   useWeb3,
   useI18n
@@ -17,7 +17,7 @@ const props = defineProps<{
   isSpaceController?: boolean;
 }>();
 
-const { form, getValidation } = useSpaceForm(props.context);
+const { form, getValidation } = useFormSpaceSettings(props.context);
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 const { t } = useI18n();

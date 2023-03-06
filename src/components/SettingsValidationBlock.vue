@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getValidation } = useSpaceForm(props.context);
+const { form, getValidation } = useFormSpaceSettings(props.context);
 
 const modalValidationOpen = ref(false);
 

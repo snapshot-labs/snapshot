@@ -10,7 +10,7 @@ import {
   useWeb3,
   useClient,
   useProposals,
-  useSpaceCreateForm,
+  useFormSpaceProposal,
   useFlashNotification
 } from '@/composables';
 
@@ -59,7 +59,7 @@ const {
   sharingItems
 } = useSharing();
 
-const { resetForm } = useSpaceCreateForm();
+const { resetForm } = useFormSpaceProposal();
 
 function selectFromThreedotDropdown(e) {
   if (!props.proposal) return;

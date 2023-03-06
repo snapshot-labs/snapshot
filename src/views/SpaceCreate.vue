@@ -9,7 +9,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 
 import {
   useFlashNotification,
-  useSpaceCreateForm,
+  useFormSpaceProposal,
   useProposals,
   usePlugins,
   useI18n,
@@ -71,7 +71,7 @@ const {
   sourceProposal,
   resetForm,
   getValidation
-} = useSpaceCreateForm();
+} = useFormSpaceProposal();
 
 const isValidAuthor = ref(false);
 const validationLoading = ref(false);
