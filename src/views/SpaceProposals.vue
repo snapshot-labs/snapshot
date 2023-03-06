@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -13,7 +13,8 @@ import {
   useApolloQuery,
   useProfiles,
   useWeb3,
-  useMeta
+  useMeta,
+  useApp
 } from '@/composables';
 
 const props = defineProps<{
@@ -42,6 +43,7 @@ const loading = ref(false);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { apolloQuery } = useApolloQuery();
+const { domain } = useApp();
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
@@ -164,8 +166,7 @@ watch(
             :voted="userVotedProposalIds.includes(proposal.id)"
             :hide-space-avatar="proposal.space.id === space.id"
             :to="{
-              name: 'spaceProposal',
-              params: { id: proposal.id }
+              path: `${domain ? '' : proposal.space.id}/proposal/${proposal.id}`
             }"
           />
         </BaseBlock>

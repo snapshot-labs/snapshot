@@ -334,7 +334,7 @@
     "links": "Social accounts",
     "subspaces": {
       "label": "Sub-spaces",
-      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "information": "Add a sub-space to display its proposals within your space. If you want the current space to be displayed on the sub-space's page, the space needs to be added as main space in the sub-space settings to make relation mutual. {docs}",
       "parent": {
         "label": "Main space",
         "placeholder": "pistachiodao.eth",
