@@ -43,7 +43,7 @@ const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
 
-export function useSpaceCreateForm() {
+export function useFormSpaceProposal() {
   const route = useRoute();
 
   const formDraft = useStorage<{

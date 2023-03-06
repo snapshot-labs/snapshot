@@ -5,6 +5,7 @@ import connectors from '@/helpers/connectors.json';
 import walletlink from '@snapshot-labs/lock/connectors/walletlink';
 import gnosis from '@snapshot-labs/lock/connectors/gnosis';
 import stargazer from '@snapshot-labs/lock/connectors/stargazer';
+import kaikas from '@snapshot-labs/lock/connectors/kaikas';
 
 const options: any = { connectors: [] };
 const lockConnectors = {
@@ -13,7 +14,8 @@ const lockConnectors = {
   walletlink,
   portis,
   stargazer,
-  gnosis
+  gnosis,
+  kaikas
 };
 
 Object.entries(connectors).forEach((connector: any) => {

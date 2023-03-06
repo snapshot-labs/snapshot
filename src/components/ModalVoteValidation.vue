@@ -111,8 +111,8 @@ const isValidForm = computed(() => {
       <h3>
         {{
           input.name
-            ? $t('settings.editValidation')
-            : $t('settings.selectValidation')
+            ? $t('votingValidation.settingsTitle')
+            : $t('votingValidation.title')
         }}
       </h3>
     </template>
@@ -128,7 +128,7 @@ const isValidForm = computed(() => {
           v-else
           v-model="input.params"
           v-model:is-valid="isValidJson"
-          :placeholder="$t('settings.validationParameters')"
+          :placeholder="$t('votingValidation.paramPlaceholder')"
           class="input text-left"
         />
       </div>
@@ -138,8 +138,8 @@ const isValidForm = computed(() => {
           <BaseModalSelectItem
             v-for="v in validations"
             :key="v.key"
-            :title="$t(`validation.${v.key}.label`)"
-            :description="$t(`validation.${v.key}.description`)"
+            :title="$t(`votingValidation.${v.key}.label`)"
+            :description="$t(`votingValidation.${v.key}.description`)"
             :selected="validation.name === v.key"
             :tag="v.key === 'passport-gated' ? 'Beta' : ''"
             @click="select(v.key)"

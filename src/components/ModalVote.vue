@@ -191,7 +191,7 @@ watch(
           >
             <span
               class="mr-1 flex-auto text-skin-text"
-              v-text="$t('validation.label')"
+              v-text="$t('votingValidation.label')"
             />
             <div class="flex items-center gap-1">
               <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />

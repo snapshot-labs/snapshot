@@ -55,7 +55,7 @@ const formSettings = ref(clone(EMPTY_SPACE_FORM));
 const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const showAllValidationErrors = ref(false);
 
-export function useSpaceForm(context: 'setup' | 'settings') {
+export function useFormSpaceSettings(context: 'setup' | 'settings') {
   const form = computed({
     get: () => (context === 'setup' ? formSetup.value : formSettings.value),
     set: newVal =>

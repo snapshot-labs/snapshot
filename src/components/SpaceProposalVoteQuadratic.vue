@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import { calcPercentageOfSum } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
 import { useMediaQuery } from '@vueuse/core';
 import { Proposal } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -11,7 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoices = ref(props.userChoice || {});
+const selectedChoices = ref({});
 
 const isSmallScreen = useMediaQuery('(max-width: 543px)');
 
@@ -49,6 +50,15 @@ watch(
     emit('selectChoice', selectedChoices.value);
   },
   { immediate: true, deep: true }
+);
+
+watch(
+  () => props.userChoice,
+  () => {
+    if (Object.keys(selectedChoices.value).length === 0)
+      selectedChoices.value = clone(props.userChoice) || {};
+  },
+  { immediate: true }
 );
 </script>
 

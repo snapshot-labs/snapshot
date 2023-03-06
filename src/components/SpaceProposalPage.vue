@@ -89,6 +89,28 @@ function formatProposalVotes(votes) {
   });
 }
 
+async function loadUserVote() {
+  userVote.value = null;
+  if (!web3Account.value) return;
+  const userVotesRes = await getProposalVotes(proposalId, {
+    first: 1,
+    voter: web3Account.value,
+    space: props.proposal.space.id
+  });
+  userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
+}
+
+async function loadVotes() {
+  loadUserVote();
+  const votesRes = await getProposalVotes(proposalId, {
+    first: 10,
+    space: props.proposal.space.id
+  });
+
+  votes.value = formatProposalVotes(votesRes);
+  loadedVotes.value = true;
+}
+
 async function loadResults() {
   if (props.proposal.scores.length === 0) {
     const votingClass = new voting[props.proposal.type](
@@ -109,23 +131,7 @@ async function loadResults() {
     };
   }
   loadedResults.value = true;
-  const [userVotesRes, votesRes] = await Promise.all([
-    // Skip if user is not connected
-    web3Account.value
-      ? await getProposalVotes(proposalId, {
-          first: 1,
-          voter: web3Account.value,
-          space: props.proposal.space.id
-        })
-      : [],
-    await getProposalVotes(proposalId, {
-      first: 10,
-      space: props.proposal.space.id
-    })
-  ]);
-  userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
-  votes.value = formatProposalVotes(votesRes);
-  loadedVotes.value = true;
+  loadVotes();
 }
 
 const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
@@ -144,21 +150,20 @@ function handleBackClick() {
   return router.go(-1);
 }
 
-watch(web3Account, () => {
-  const choice = route.query.choice as string;
-  if (choice) {
-    selectedChoices.value = parseInt(choice);
-    clickVote();
-  }
-});
+watch(
+  web3Account,
+  () => {
+    loadUserVote();
+    const choice = route.query.choice as string;
+    if (web3Account.value && choice) {
+      selectedChoices.value = parseInt(choice);
+      clickVote();
+    }
+  },
+  { immediate: true }
+);
 
-onMounted(async () => {
-  const choice = route.query.choice as string;
-  if (props.proposal?.type === 'approval') selectedChoices.value = [];
-  if (web3Account.value && choice) {
-    selectedChoices.value = parseInt(choice);
-    clickVote();
-  }
+onMounted(() => {
   loadResults();
 });
 </script>
@@ -185,7 +190,7 @@ onMounted(async () => {
           <BlockLink :link="proposal.discussion" />
         </div>
         <SpaceProposalVote
-          v-if="proposal?.state === 'active' && loadedVotes"
+          v-if="proposal?.state === 'active'"
           v-model="selectedChoices"
           :proposal="proposal"
           :user-vote="userVote"
