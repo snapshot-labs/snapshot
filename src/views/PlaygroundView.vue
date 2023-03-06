@@ -163,16 +163,20 @@ watch(
   { immediate: true }
 );
 
-onMounted(async () => {
-  getStrategies();
-  getExtendedStrategy(route.params.name as string);
+watch(
+  () => route.params.name,
+  async () => {
+    getStrategies();
+    getExtendedStrategy(route.params.name as string);
 
-  if (queryParams.query && strategyExample.value?.snapshot) {
-    form.value.snapshot = strategyExample.value.snapshot;
-  } else {
-    loadSnapshotBlockNumber();
-  }
-});
+    if (queryParams.query && strategyExample.value?.snapshot) {
+      form.value.snapshot = strategyExample.value.snapshot;
+    } else {
+      loadSnapshotBlockNumber();
+    }
+  },
+  { immediate: true }
+);
 
 function handleNetworkSelect(value) {
   form.value.network = value;

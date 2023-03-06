@@ -29,7 +29,6 @@ const validatedUserChoice = computed(() => {
       props.proposal.choices
     )
   ) {
-    emitChoice(props.userVote.choice);
     return props.userVote.choice;
   }
   return null;
