@@ -10,8 +10,7 @@ import {
   useI18n,
   useClient,
   useExtendedSpaces,
-  useSpaceController,
-  useSpaceForm,
+  useFormSpaceSettings,
   useFlashNotification,
   useMeta
 } from '@/composables';
@@ -28,7 +27,6 @@ useMeta({
 enum Step {
   GETTING_STARTED,
   ENS,
-  CONTROLLER,
   PROFILE,
   STRATEGY,
   EXTRAS
@@ -38,14 +36,13 @@ const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors } = useSpaceForm('setup');
-
-const creatingSpace = ref(false);
-
+const { form, isValid, showAllValidationErrors, resetForm } =
+  useFormSpaceSettings('setup');
 const { t } = useI18n();
-const { pendingENSRecord, uriAddress, loadUriAddress } = useSpaceController();
 const { send } = useClient();
 const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
+
+const creatingSpace = ref(false);
 
 const currentStep = computed(() => Number(route.query.step));
 
@@ -66,46 +63,36 @@ async function handleSubmit() {
   }
   creatingSpace.value = true;
 
-  // Wait for ENS text-record transaction to confirm
-  if (pendingENSRecord.value) {
-    await sleep(3000);
-    await handleSubmit();
-  } else {
-    await loadUriAddress();
-    if (uriAddress.value !== web3Account.value) {
-      creatingSpace.value = false;
-      return;
-    }
-
-    // Create the space
-    const result = await send({ id: route.params.ens }, 'settings', form.value);
-    if (result.id) {
-      // Wait for the space to be available on the HUB
-      await checkIfSpaceExists();
-      await clearStampCache(route.params.ens as string);
-      creatingSpace.value = false;
-      console.log('Result', result);
-
-      // Save created space to local storage
-      const createdSpaces = useStorage(
-        `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
-        {}
-      );
-      createdSpaces.value[route.params.ens as string] = {
-        showMessage: true
-      };
-
-      // Redirect to the new space page
-      router.push({
-        name: 'spaceProposals',
-        params: {
-          key: route.params.ens
-        }
-      });
-      notify(['green', t('notify.saved')]);
-    }
+  // Create the space
+  const result = await send({ id: route.params.ens }, 'settings', form.value);
+  if (result.id) {
+    // Wait for the space to be available on the HUB
+    await checkIfSpaceExists();
+    await clearStampCache(route.params.ens as string);
     creatingSpace.value = false;
+    console.log('Result', result);
+
+    // Save created space to local storage
+    const createdSpaces = useStorage(
+      `snapshot.createdSpaces.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      {}
+    );
+    createdSpaces.value[route.params.ens as string] = {
+      showMessage: true
+    };
+
+    resetForm();
+
+    // Redirect to the new space page
+    notify(['green', t('notify.saved')]);
+    router.push({
+      name: 'spaceProposals',
+      params: {
+        key: route.params.ens
+      }
+    });
   }
+  creatingSpace.value = false;
 }
 
 function nextStep(ensKey = '') {
@@ -148,11 +135,6 @@ onMounted(() => {
         />
 
         <SetupDomain v-if="currentStep === Step.ENS" @next="nextStep" />
-
-        <SetupController
-          v-else-if="currentStep === Step.CONTROLLER && route.params.ens"
-          @next="nextStep"
-        />
 
         <SetupProfile
           v-else-if="currentStep === Step.PROFILE && route.params.ens"

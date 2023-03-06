@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useIntl, useImageUpload, useSpaceCreateForm } from '@/composables';
+import { useIntl, useImageUpload, useFormSpaceProposal } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
@@ -10,7 +10,7 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form, getValidation } = useSpaceCreateForm();
+const { form, getValidation } = useFormSpaceProposal();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);

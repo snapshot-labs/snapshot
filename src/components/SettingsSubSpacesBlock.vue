@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSpaceForm, useExtendedSpaces } from '@/composables';
+import { useFormSpaceSettings, useExtendedSpaces } from '@/composables';
 import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form } = useSpaceForm(props.context);
+const { form } = useFormSpaceSettings(props.context);
 const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 const lookingUpParent = ref(false);

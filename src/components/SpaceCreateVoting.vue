@@ -2,7 +2,7 @@
 import { computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
-import { useSpaceCreateForm, useSnapshot } from '@/composables';
+import { useFormSpaceProposal, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -15,7 +15,7 @@ const {
   sourceProposalLoaded,
   userSelectedDateStart,
   userSelectedDateEnd
-} = useSpaceCreateForm();
+} = useFormSpaceProposal();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 

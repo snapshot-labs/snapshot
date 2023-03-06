@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const emit = defineEmits(['next', 'back']);
 
@@ -13,7 +13,7 @@ enum Step {
 
 const votingStep = ref(Step.CHOOSE);
 
-const { form, setDefaultStrategy } = useSpaceForm('setup');
+const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
 
 function nextStep() {
   emit('next');

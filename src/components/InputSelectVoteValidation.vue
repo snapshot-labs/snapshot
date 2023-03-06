@@ -14,9 +14,9 @@ const isModalOpen = ref(false);
 <template>
   <InputSelect
     class="w-full"
-    :title="$t(`validation.label`)"
-    :information="$t(`validation.information`)"
-    :model-value="$t(`validation.${validation.name}.label`)"
+    :title="$t(`votingValidation.label`)"
+    :information="$t(`votingValidation.information`)"
+    :model-value="$t(`votingValidation.${validation.name}.label`)"
     @click="isModalOpen = true"
   />
 

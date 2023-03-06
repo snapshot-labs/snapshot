@@ -600,9 +600,11 @@
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
-  "validation": {
+  "votingValidation": {
     "label": "Validation",
-    "title": "Select voting validation",
+    "title": "Select validation",
+    "settingsTitle": "Configure validation",
+    "paramPlaceholder": "Validation parameters",
     "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
     "any": {
       "label": "Anyone can vote",
@@ -616,7 +618,7 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidVoterMessage": "You need a Gitcoin Passport with {operator} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"
