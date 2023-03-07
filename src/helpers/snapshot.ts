@@ -98,7 +98,10 @@ export async function voteValidation(
     proposal.validation.params,
     options
   );
-  if (typeof validateRes !== 'boolean') return false;
+  if (typeof validateRes !== 'boolean') {
+    console.error('Vote validation failed', validateRes);
+    return false;
+  }
   return validateRes;
 }
 
@@ -117,10 +120,15 @@ export async function proposalValidation(
     space.id,
     space.network,
     'latest',
-    // this is needed until we change proposal validation
-    { minScore: space.filters.minScore, strategies: space.strategies },
+    {
+      minScore: space.validation?.params?.minScore || space.filters.minScore,
+      strategies: space.validation?.params?.strategies || space.strategies
+    },
     options
   );
-  if (typeof validateRes !== 'boolean') return false;
+  if (typeof validateRes !== 'boolean') {
+    console.error('Proposal validation failed', validateRes);
+    return false;
+  }
   return validateRes;
 }

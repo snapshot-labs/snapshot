@@ -29,8 +29,8 @@ const EMPTY_SPACE_FORM = {
     type: '',
     privacy: ''
   },
-  validation: BASIC_VALIDATION,
-  voteValidation: ANY_VOTE_VALIDATION,
+  validation: clone(BASIC_VALIDATION),
+  voteValidation: clone(ANY_VOTE_VALIDATION),
   name: '',
   about: '',
   avatar: '',

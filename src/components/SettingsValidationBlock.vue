@@ -7,12 +7,17 @@ const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form } = useFormSpaceSettings(props.context);
 
 const modalValidationOpen = ref(false);
 
 function handleSubmitAddValidation(input) {
   form.value.validation = clone(input);
+}
+
+function handleClickSelectValidation() {
+  if (form.value.filters.onlyMembers) return;
+  modalValidationOpen.value = true;
 }
 </script>
 
@@ -22,24 +27,15 @@ function handleSubmitAddValidation(input) {
       <ContainerParallelInput>
         <InputSelect
           class="w-full"
-          :title="$t(`settings.validation`)"
-          :error="getValidation('validation')"
-          :model-value="form.validation.name"
-          @click="modalValidationOpen = true"
-        />
-
-        <InputNumber
-          v-if="form.validation.name === 'basic'"
-          v-model="form.filters.minScore"
-          :title="$t('settings.proposalThreshold.label')"
-          :information="$t('settings.proposalThreshold.information')"
-          :error="getValidation('minScore')"
-          placeholder="1000"
+          :title="$t(`proposalValidation.label`)"
+          :information="$t(`proposalValidation.information`)"
+          :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
+          :disabled="form.filters.onlyMembers"
+          @click="handleClickSelectValidation"
         />
       </ContainerParallelInput>
 
       <InputSwitch
-        v-if="form.validation.name === 'basic'"
         v-model="form.filters.onlyMembers"
         :text-right="$t('settings.allowOnlyAuthors')"
       />
@@ -48,6 +44,7 @@ function handleSubmitAddValidation(input) {
       <ModalValidation
         :open="modalValidationOpen"
         :validation="form.validation"
+        :filter-min-score="form.filters.minScore"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
       />

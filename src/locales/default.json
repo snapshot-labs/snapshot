@@ -600,6 +600,30 @@
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
+  "proposalValidation": {
+    "label": "Validation",
+    "title": "Select validation",
+    "settingsTitle": "Configure validation",
+    "paramPlaceholder": "Validation parameters",
+    "information": "The type of validation used to determine if a user can create a proposal. (Enforced on all future proposals)",
+    "any": {
+      "label": "Anyone can create",
+      "description": "Anyone can create a proposal."
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can create a proposal.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement to create a proposal. "
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {operator} of the following stamps to create a proposal: {stamps}"
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
+    }
+  },
   "votingValidation": {
     "label": "Validation",
     "title": "Select validation",
