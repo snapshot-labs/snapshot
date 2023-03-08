@@ -379,6 +379,7 @@ onMounted(async () => {
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
+          data-testid="create-proposal-publish-button"
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)

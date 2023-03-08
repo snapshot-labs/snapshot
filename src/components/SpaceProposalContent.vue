@@ -59,7 +59,10 @@ const truncateMarkdownBody = computed(() => {
       }"
     >
       <div ref="markdownBody">
-        <BaseMarkdown :body="proposal.body" />
+        <BaseMarkdown
+          :body="proposal.body"
+          data-testid="proposal-page-content"
+        />
       </div>
     </div>
   </div>

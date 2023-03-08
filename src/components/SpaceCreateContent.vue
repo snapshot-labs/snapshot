@@ -68,6 +68,7 @@ const handleDrop = e => {
         :max-length="128"
         :error="getValidation('name')"
         focus-on-mount
+        data-testid="input-proposal-title"
       />
 
       <div v-if="!preview">
@@ -93,6 +94,7 @@ const handleDrop = e => {
               v-model="form.body"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
+              data-testid="input-proposal-body"
               @paste="handlePaste"
             />
           </div>
@@ -141,6 +143,7 @@ const handleDrop = e => {
         placeholder="https://forum.balancer.fi/proposal"
         :title="$t('create.discussion')"
         :error="getValidation('discussion')"
+        data-testid="input-proposal-discussion"
       />
     </div>
   </div>
