@@ -5,7 +5,7 @@
     "dev": "vite --port=8080",
     "cypress:e2e": "start-server-and-test 'yarn cypress:serve' http-get://localhost:8081 'yarn cypress:run'",
     "cypress:serve": "VITE_E2E=true vite build && npx http-server dist -p 8081",
-    "cypress:run": "env-cmd cypress run --browser chrome --headed --no-exit",
+    "cypress:run": "env-cmd -f .env.test cypress run --browser chrome --headed --no-exit",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
     "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
