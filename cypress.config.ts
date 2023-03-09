@@ -16,7 +16,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       synpressPlugins(on, config);
     },
-    baseUrl: 'http://localhost:3000/#/',
+    baseUrl: 'http://localhost:8081/#/',
     supportFile: 'cypress/support/e2e.js'
   }
 });

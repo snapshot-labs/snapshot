@@ -3,8 +3,8 @@
   "version": "0.1.4",
   "scripts": {
     "dev": "vite --port=8080",
-    "cypress:e2e": "start-server-and-test 'yarn cypress:serve' http-get://localhost:3000 'yarn cypress:run'",
-    "cypress:serve": "VITE_E2E=true vite build && npx http-server dist -p 3000",
+    "cypress:e2e": "start-server-and-test 'yarn cypress:serve' http-get://localhost:8081 'yarn cypress:run'",
+    "cypress:serve": "VITE_E2E=true vite build && npx http-server dist -p 8081",
     "cypress:run": "env-cmd cypress run --browser chrome --headed --no-exit",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
