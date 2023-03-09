@@ -18,5 +18,6 @@ module.exports = defineConfig({
     },
     baseUrl: 'http://localhost:8081/#/',
     supportFile: 'cypress/support/e2e.js'
+    // specPattern: 'cypress/e2e/voting-proposal.spec.cy.js'
   }
 });

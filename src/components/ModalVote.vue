@@ -310,6 +310,7 @@ watch(
           type="submit"
           class="w-full"
           primary
+          data-testid="confirm-vote-button"
           @click="handleSubmit"
         >
           {{ $t('confirm') }}

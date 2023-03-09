@@ -96,7 +96,12 @@ function share(shareTo: 'twitter' | 'lenster') {
           </BaseLink>
         </div>
 
-        <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
+        <BaseButton
+          primary
+          class="!h-[42px] w-full"
+          data-testid="post-vote-modal-close"
+          @click="emit('close')"
+        >
           {{ $t('close') }}
         </BaseButton>
       </div>

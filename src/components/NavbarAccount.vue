@@ -33,6 +33,7 @@ watchEffect(() => {
       <BaseButton
         :loading="web3.authLoading || loadingProfiles || reloadingProfile"
         class="flex items-center"
+        data-testid="button-account-menu"
       >
         <AvatarUser
           :address="web3Account"

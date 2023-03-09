@@ -1,18 +1,6 @@
-describe('connect wallet spec', () => {
-  before(() => {
-    cy.visit('/');
-    cy.get('[data-testid="button-connect-wallet"]').click();
-    cy.get('[data-testid="button-connnect-wallet-injected"]').click();
-    cy.acceptMetamaskAccess();
-  });
-
+describe('create proposal', () => {
   beforeEach(() => {
     cy.visit('testsnap.eth');
-  });
-
-  after(() => {
-    cy.disconnectMetamaskWalletFromAllDapps();
-    cy.resetMetamaskAccount();
   });
 
   it('should create a proposal', () => {

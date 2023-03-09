@@ -36,6 +36,7 @@ watch(
       :key="i"
       class="relative mb-2 block w-full"
       :class="selectedChoice === i + 1 && '!border-skin-link'"
+      :data-testid="`sc-choice-button-${i}`"
       @click="selectChoice(i + 1)"
     >
       <i-ho-check v-if="selectedChoice === i + 1" class="absolute" />

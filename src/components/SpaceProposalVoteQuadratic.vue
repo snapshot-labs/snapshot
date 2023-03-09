@@ -63,51 +63,60 @@ watch(
 </script>
 
 <template>
-  <div class="mb-3">
-    <div v-for="(choice, i) in proposal.choices" :key="i">
-      <BaseButton
-        class="mb-2 flex w-full items-center justify-between overflow-hidden"
-        :class="selectedChoices[i + 1] > 0 && '!border-skin-link'"
+  <div class="mb-3" data-testid="quadratic-choice-list">
+    <BaseButton
+      v-for="(choice, i) in proposal.choices"
+      :key="i"
+      class="mb-2 flex w-full items-center justify-between overflow-hidden"
+      :class="selectedChoices[i + 1] > 0 && '!border-skin-link'"
+      :data-testid="`quadratic-choice-button-${i}`"
+    >
+      <div
+        v-tippy="{
+          content: choice.length > 20 && isSmallScreen ? choice : null
+        }"
+        class="truncate pr-3 text-left"
       >
-        <div
-          v-tippy="{
-            content: choice.length > 20 && isSmallScreen ? choice : null
-          }"
-          class="truncate pr-3 text-left"
+        {{ choice }}
+      </div>
+      <div class="flex items-center justify-end">
+        <button
+          :disabled="!selectedChoices[i + 1]"
+          class="btn-choice"
+          :data-testid="`quadratic-remove-button-${i}`"
+          @click="removeVote(i + 1)"
         >
-          {{ choice }}
+          -
+        </button>
+        <input
+          v-if="!isSmallScreen"
+          v-model.number="selectedChoices[i + 1]"
+          class="input text-center"
+          :class="{ 'btn-choice': isSmallScreen }"
+          style="width: 40px; height: 44px"
+          placeholder="0"
+          type="number"
+          :data-testid="`quadratic-input-${i}`"
+        />
+        <div v-if="isSmallScreen" style="min-width: 56px">
+          {{ percentage(i) }}%
         </div>
-        <div class="flex items-center justify-end">
-          <button
-            :disabled="!selectedChoices[i + 1]"
-            class="btn-choice"
-            @click="removeVote(i + 1)"
-          >
-            -
-          </button>
-          <input
-            v-if="!isSmallScreen"
-            v-model.number="selectedChoices[i + 1]"
-            class="input text-center"
-            :class="{ 'btn-choice': isSmallScreen }"
-            style="width: 40px; height: 44px"
-            placeholder="0"
-            type="number"
-          />
-          <div v-if="isSmallScreen" style="min-width: 56px">
-            {{ percentage(i) }}%
-          </div>
-          <button class="btn-choice" @click="addVote(i + 1)">+</button>
-          <div
-            v-if="!isSmallScreen"
-            style="min-width: 52px; margin-right: -5px"
-            class="text-right"
-          >
-            {{ percentage(i) }}%
-          </div>
+        <button
+          class="btn-choice"
+          :data-testid="`quadratic-add-button-${i}`"
+          @click="addVote(i + 1)"
+        >
+          +
+        </button>
+        <div
+          v-if="!isSmallScreen"
+          style="min-width: 52px; margin-right: -5px"
+          class="text-right"
+        >
+          {{ percentage(i) }}%
         </div>
-      </BaseButton>
-    </div>
+      </div>
+    </BaseButton>
   </div>
 </template>
 
