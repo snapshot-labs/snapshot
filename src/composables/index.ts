@@ -1,5 +1,6 @@
 export { useApolloQuery } from './useApolloQuery';
 export { useApp } from './useApp';
+export { useMeta } from './useMeta';
 export { useCategories } from './useCategories';
 export { useClient } from './useClient';
 export { useCopy } from './useCopy';
@@ -23,8 +24,8 @@ export { useSharing } from './useSharing';
 export { useSkinsFilter } from './useSkinsFilter';
 export { useSkin } from './useSkin';
 export { useSpaceController } from './useSpaceController';
-export { useSpaceCreateForm } from './useSpaceCreateForm';
-export { useSpaceForm } from './useSpaceForm';
+export { useFormSpaceProposal } from './useFormSpaceProposal';
+export { useFormSpaceSettings } from './useFormSpaceSettings';
 export { useSpaces } from './useSpaces';
 export { useSpaceSubscription } from './useSpaceSubscription';
 export { useProposals } from './useProposals';

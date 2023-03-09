@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import mapKeys from 'lodash/fp/mapKeys';
 import { getAddress } from '@ethersproject/address';
@@ -19,7 +19,7 @@ const router = useRouter();
 const route = useRoute();
 const { query: queryParams } = useRoute();
 const { copyToClipboard } = useCopy();
-const { t, setPageTitle } = useI18n();
+const { t } = useI18n();
 const { formatCompactNumber } = useIntl();
 const {
   getExtendedStrategy,
@@ -163,17 +163,20 @@ watch(
   { immediate: true }
 );
 
-onMounted(async () => {
-  getStrategies();
-  getExtendedStrategy(route.params.name as string);
-  setPageTitle('page.title.playground');
+watch(
+  () => route.params.name,
+  async () => {
+    getStrategies();
+    getExtendedStrategy(route.params.name as string);
 
-  if (queryParams.query && strategyExample.value?.snapshot) {
-    form.value.snapshot = strategyExample.value.snapshot;
-  } else {
-    loadSnapshotBlockNumber();
-  }
-});
+    if (queryParams.query && strategyExample.value?.snapshot) {
+      form.value.snapshot = strategyExample.value.snapshot;
+    } else {
+      loadSnapshotBlockNumber();
+    }
+  },
+  { immediate: true }
+);
 
 function handleNetworkSelect(value) {
   form.value.network = value;

@@ -1,13 +1,23 @@
-import { defineConfig } from 'cypress';
+const { defineConfig } = require('cypress');
+const synpressPlugins = require('@synthetixio/synpress/plugins');
 
-export default defineConfig({
+module.exports = defineConfig({
+  userAgent: 'synpress',
   viewportHeight: 900,
   viewportWidth: 1280,
   screenshotOnRunFailure: false,
   video: false,
-  defaultCommandTimeout: 10000,
+  chromeWebSecurity: true,
+  defaultCommandTimeout: 30000,
+  pageLoadTimeout: 30000,
+  requestTimeout: 30000,
   e2e: {
-    baseUrl: 'http://localhost:8081',
-    supportFile: false
+    testIsolation: true,
+    setupNodeEvents(on, config) {
+      synpressPlugins(on, config);
+    },
+    baseUrl: 'http://localhost:8081/#/',
+    supportFile: 'cypress/support/e2e.js'
+    // specPattern: 'cypress/e2e/voting-proposal.spec.cy.js'
   }
 });

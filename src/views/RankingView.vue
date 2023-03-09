@@ -1,15 +1,13 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { computed } from 'vue';
 import orderBy from 'lodash/orderBy';
 import { getRanking, useSpaces } from '@/composables/useSpaces';
 import { shorten } from '@/helpers/utils';
 import { useIntl } from '@/composables/useIntl';
-import { useI18n } from '@/composables/useI18n';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const { spaces, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
-const { setPageTitle } = useI18n();
 
 const limit = 200;
 
@@ -28,7 +26,6 @@ const spacesSorted = computed(() => {
     .filter(space => verified[space.id] !== -1);
   return orderBy(spacesArr, ['ranking'], ['desc']).slice(0, limit);
 });
-onMounted(() => setPageTitle('page.title.ranking'));
 </script>
 
 <template>

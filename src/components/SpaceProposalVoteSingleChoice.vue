@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -10,12 +11,22 @@ const props = defineProps<{
 
 const emit = defineEmits(['selectChoice']);
 
-const selectedChoice = ref<number | null>(props.userChoice || null);
+const selectedChoice = ref<number | null>(null);
 
 function selectChoice(i: number) {
   selectedChoice.value = i;
   emit('selectChoice', i);
 }
+
+watch(
+  () => props.userChoice,
+  () => {
+    if (!selectedChoice.value)
+      selectedChoice.value = clone(props.userChoice) || null;
+    emit('selectChoice', selectedChoice.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -25,6 +36,7 @@ function selectChoice(i: number) {
       :key="i"
       class="relative mb-2 block w-full"
       :class="selectedChoice === i + 1 && '!border-skin-link'"
+      :data-testid="`sc-choice-button-${i}`"
       @click="selectChoice(i + 1)"
     >
       <i-ho-check v-if="selectedChoice === i + 1" class="absolute" />

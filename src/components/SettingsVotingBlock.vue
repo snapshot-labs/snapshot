@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
 }>();
 
-const { form } = useSpaceForm(props.context);
+const { form } = useFormSpaceSettings(props.context);
 
 const delayUnit = ref('h');
 const periodUnit = ref('h');

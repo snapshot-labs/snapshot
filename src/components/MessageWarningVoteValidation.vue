@@ -16,8 +16,8 @@ defineProps<{
     >
       <template v-if="proposal.validation.name === 'passport-gated'">
         {{
-          $t('validation.passport-gated.invalidVoterMessage', {
-            amount:
+          $t('votingValidation.passport-gated.invalidVoterMessage', {
+            operator:
               proposal.validation.params.operator === 'AND' ? 'all' : 'one',
             stamps: proposal.validation.params.stamps.join(', ')
           })
@@ -31,7 +31,7 @@ defineProps<{
 
     <template v-if="proposal.validation.name === 'basic'">
       {{
-        $t('validation.basic.invalidVoterMessage', {
+        $t('votingValidation.basic.invalidVoterMessage', {
           amount: proposal.validation.params.minScore
         })
       }}

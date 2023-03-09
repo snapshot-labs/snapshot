@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useSpaceForm } from '@/composables';
+import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -11,7 +11,7 @@ const props = defineProps<{
   hideError?: boolean;
 }>();
 
-const { form, getValidation } = useSpaceForm(props.context);
+const { form, getValidation } = useFormSpaceSettings(props.context);
 
 const strategies = computed(() => form.value.strategies);
 

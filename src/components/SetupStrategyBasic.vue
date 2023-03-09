@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue';
-import { useSpaceForm, useI18n } from '@/composables';
+import { useFormSpaceSettings, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { JsonRpcProvider } from '@ethersproject/providers';
@@ -9,7 +9,7 @@ import { isAddress } from '@ethersproject/address';
 
 const emit = defineEmits(['next']);
 
-const { form, setDefaultStrategy } = useSpaceForm('setup');
+const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
 const { t } = useI18n();
 
 const BROVIDER_URL = 'https://rpc.snapshot.org';

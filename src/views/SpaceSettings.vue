@@ -1,29 +1,38 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue';
-import { getAddress } from '@ethersproject/address';
+import { computed, ref, onMounted } from 'vue';
 import { shorten, clearStampCache } from '@/helpers/utils';
-import { getSpaceUri } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 import {
   useI18n,
   useWeb3,
   useClient,
   useSpaceController,
-  useEns,
   useExtendedSpaces,
-  useSpaceForm,
+  useFormSpaceSettings,
   useTreasury,
   useFlashNotification,
-  useGnosis
+  useGnosis,
+  useMeta
 } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-const { t, setPageTitle } = useI18n();
+useMeta({
+  title: {
+    key: 'metaInfo.space.settings.title',
+    params: {
+      space: props.space.name
+    }
+  },
+  description: {
+    key: 'metaInfo.space.settings.description'
+  }
+});
+
+const { t } = useI18n();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
@@ -34,45 +43,27 @@ const {
   isReadyToSubmit,
   populateForm,
   resetForm
-} = useSpaceForm('settings');
+} = useFormSpaceSettings('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 const { isGnosisAndNotDefaultNetwork } = useGnosis();
+const {
+  settingENSRecord,
+  modalUnsupportedNetworkOpen,
+  modalConfirmSetTextRecordOpen,
+  spaceControllerInput,
+  setRecord,
+  loadEnsOwner,
+  isEnsOwner,
+  loadSpaceController,
+  isSpaceController
+} = useSpaceController();
 
-const currentTextRecord = ref('');
 const loaded = ref(false);
-
-const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
-
-const textRecord = computed(() => {
-  const keyURI = encodeURIComponent(props.space.id);
-  const address = web3Account.value
-    ? getAddress(web3Account.value)
-    : '<your-address>';
-  const registryNetworkPath = defaultNetwork === '1' ? '' : 'testnet/';
-  return `ipns://storage.snapshot.page/registry/${registryNetworkPath}${address}/${keyURI}`;
-});
-
-const isSpaceController = computed(() => {
-  return currentTextRecord.value === textRecord.value;
-});
-
-const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-
-watch(
-  [currentTextRecord, textRecord],
-  async () => {
-    loadOwnedEnsDomains(web3Account.value);
-  },
-  { immediate: true }
-);
-
-const ensOwner = computed(() =>
-  ownedEnsDomains.value?.map(d => d.name).includes(props.space.id)
-);
+const modalControllerEditOpen = ref(false);
 
 const isSpaceAdmin = computed(() => {
-  if (!props.space || !currentTextRecord.value) return false;
+  if (!props.space) return false;
   const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
@@ -91,36 +82,6 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
-  setPageTitle('page.title.space.settings', { space: props.space.name });
-
-  populateForm(props.space);
-
-  try {
-    const uri = await getSpaceUri(
-      props.space.id,
-      import.meta.env.VITE_DEFAULT_NETWORK
-    );
-    console.log('URI', uri);
-    currentTextRecord.value = uri;
-  } catch (e) {
-    console.log(e);
-  }
-
-  loaded.value = true;
-});
-
-const {
-  settingENSRecord,
-  modalUnsupportedNetworkOpen,
-  modalConfirmSetTextRecordOpen,
-  spaceControllerInput,
-  setRecord,
-  confirmSetRecord
-} = useSpaceController();
-
-const modalControllerEditOpen = ref(false);
-
 async function handleSetRecord() {
   const tx = await setRecord();
   const receipt = await tx.wait();
@@ -128,6 +89,13 @@ async function handleSetRecord() {
     reloadSpace(props.space.id);
   }
 }
+
+onMounted(async () => {
+  populateForm(props.space);
+  await loadEnsOwner();
+  await loadSpaceController();
+  loaded.value = true;
+});
 </script>
 
 <template>
@@ -142,17 +110,7 @@ async function handleSetRecord() {
         <h1 class="mb-4" v-text="$t('settings.header')" />
       </div>
       <LoadingRow v-if="!loaded" block />
-      <BaseMessageBlock v-else-if="!currentTextRecord" level="warning">
-        {{
-          $t('settings.noRecord', {
-            id: space.id,
-            network: networks[defaultNetwork].name
-          })
-        }}
-        <BaseLink :link="`https://app.ens.domains/name/${space.id}`">
-          {{ $t('setup.seeOnEns') }}
-        </BaseLink>
-      </BaseMessageBlock>
+
       <template v-else>
         <div class="space-y-3">
           <MessageWarningGnosisNetwork
@@ -163,7 +121,7 @@ async function handleSetRecord() {
           />
 
           <BaseMessageBlock
-            v-else-if="!(isSpaceController || isSpaceAdmin || ensOwner)"
+            v-else-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)"
             class="mx-4 mb-3 md:mx-0"
             level="info"
           >
@@ -181,7 +139,7 @@ async function handleSetRecord() {
           <SettingsMembersBlock
             context="settings"
             :space="space"
-            :ens-owner="ensOwner"
+            :is-space-controller="isSpaceController"
           />
 
           <SettingsProposalBlock context="settings" />
@@ -201,16 +159,12 @@ async function handleSetRecord() {
 
     <template #sidebar-right>
       <div class="mt-5 lg:mt-0" />
-      <div
-        v-if="
-          !(isSpaceController || isSpaceAdmin || ensOwner) && currentTextRecord
-        "
-      />
+      <div v-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)" />
       <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock v-if="ensOwner || isSpaceAdmin || isSpaceController">
+        <BaseBlock v-if="isEnsOwner || isSpaceAdmin || isSpaceController">
           <div class="space-y-2">
             <BaseButton
-              v-if="ensOwner"
+              v-if="isEnsOwner"
               :loading="settingENSRecord"
               class="block w-full"
               @click="modalControllerEditOpen = true"
@@ -248,10 +202,8 @@ async function handleSetRecord() {
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
-      :current-text-record="currentTextRecord"
       :ens-address="space.id"
       @close="modalControllerEditOpen = false"
-      @set="confirmSetRecord()"
     />
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"

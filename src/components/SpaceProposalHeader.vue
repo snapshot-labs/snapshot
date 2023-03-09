@@ -10,7 +10,7 @@ import {
   useWeb3,
   useClient,
   useProposals,
-  useSpaceCreateForm,
+  useFormSpaceProposal,
   useFlashNotification
 } from '@/composables';
 
@@ -59,7 +59,7 @@ const {
   sharingItems
 } = useSharing();
 
-const { resetForm } = useSpaceCreateForm();
+const { resetForm } = useFormSpaceProposal();
 
 function selectFromThreedotDropdown(e) {
   if (!props.proposal) return;
@@ -77,11 +77,16 @@ function selectFromThreedotDropdown(e) {
   }
 }
 
-function selectFromShareDropdown(e) {
-  if (e === 'shareProposalTwitter')
-    return shareProposalTwitter(props.space, props.proposal);
+function selectFromShareDropdown(e: string) {
   if (e === 'shareProposalLenster')
     return shareProposalLenster(props.space, props.proposal);
+
+  if (sharingIsSupported.value)
+    return shareProposal(props.space, props.proposal);
+
+  if (e === 'shareProposalTwitter')
+    return shareProposalTwitter(props.space, props.proposal);
+
   if (e === 'shareToClipboard')
     return shareToClipboard(props.space, props.proposal);
 }
@@ -100,6 +105,7 @@ watch(
 <template>
   <h1
     class="mb-3 break-words text-xl leading-8 sm:text-2xl"
+    data-testid="proposal-page-title"
     v-text="proposal.title"
   />
 
@@ -122,12 +128,8 @@ watch(
         :proposal="proposal"
         hide-avatar
       />
-      <ButtonShare
-        v-if="sharingIsSupported"
-        @click="shareProposal(space, proposal)"
-      />
+
       <BaseMenu
-        v-else
         class="!ml-auto pl-3"
         :items="sharingItems"
         @select="selectFromShareDropdown"

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useSpaceForm } from '@/composables/useSpaceForm';
+import { useFormSpaceSettings } from '@/composables/useFormSpaceSettings';
 
 const emit = defineEmits(['next', 'back']);
 
-const { form, showAllValidationErrors } = useSpaceForm('setup');
+const { form, showAllValidationErrors } = useFormSpaceSettings('setup');
 
 function nextStep() {
   if (!form.value.name) return (showAllValidationErrors.value = true);

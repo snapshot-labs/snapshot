@@ -9,7 +9,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 
 import {
   useFlashNotification,
-  useSpaceCreateForm,
+  useFormSpaceProposal,
   useProposals,
   usePlugins,
   useI18n,
@@ -20,7 +20,8 @@ import {
   useWeb3,
   useClient,
   useGnosis,
-  useSnapshot
+  useSnapshot,
+  useMeta
 } from '@/composables';
 
 enum Step {
@@ -35,10 +36,22 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+useMeta({
+  title: {
+    key: 'metaInfo.space.create.title',
+    params: {
+      space: props.space.name
+    }
+  },
+  description: {
+    key: 'metaInfo.space.create.description'
+  }
+});
+
 const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
-const { t, setPageTitle } = useI18n();
+const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
 const { web3, web3Account } = useWeb3();
@@ -58,7 +71,7 @@ const {
   sourceProposal,
   resetForm,
   getValidation
-} = useSpaceCreateForm();
+} = useFormSpaceProposal();
 
 const isValidAuthor = ref(false);
 const validationLoading = ref(false);
@@ -281,8 +294,6 @@ watch(preview, () => {
 });
 
 onMounted(async () => {
-  setPageTitle('page.title.space.create', { space: props.space.name });
-
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
@@ -368,6 +379,7 @@ onMounted(async () => {
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
+          data-testid="create-proposal-publish-button"
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)

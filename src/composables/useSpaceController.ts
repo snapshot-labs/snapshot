@@ -1,32 +1,28 @@
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { getAddress, isAddress } from '@ethersproject/address';
+import { getAddress } from '@ethersproject/address';
 import {
   sendTransaction,
-  getSpaceUri
+  getEnsOwner,
+  getSpaceController
 } from '@snapshot-labs/snapshot.js/src/utils';
-import {
-  useTxStatus,
-  useI18n,
-  useWeb3,
-  useApp,
-  useFlashNotification
-} from '@/composables';
+
+import { useI18n, useWeb3, useApp, useFlashNotification } from '@/composables';
 
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
 const pendingENSRecord = ref(false);
-const uriAddress = ref('');
+const ensOwner = ref<string | null>(null);
+const spaceController = ref<string | null>(null);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 export function useSpaceController() {
-  const { web3 } = useWeb3();
-  const { pendingCount } = useTxStatus();
+  const { web3, web3Account } = useWeb3();
   const auth = getInstance();
   const { t } = useI18n();
   const route = useRoute();
@@ -35,36 +31,20 @@ export function useSpaceController() {
 
   const ensAbi = ['function setText(bytes32 node, string key, string value)'];
 
-  const controllerInputIsValid = computed(() =>
-    isAddress(spaceControllerInput.value)
-  );
-
   const networkKey = computed(() => web3.value.network.key);
 
   const ensAddress = computed(
     () => domain || route.params.ens || route.params.key
   );
 
-  const textRecord = computed(() => {
-    const keyURI = encodeURIComponent(ensAddress.value as string);
-    const address = spaceControllerInput.value
-      ? getAddress(spaceControllerInput.value)
-      : null;
-    const registryNetworkPath = defaultNetwork === '1' ? '' : 'testnet/';
-    return `ipns://storage.snapshot.page/registry/${registryNetworkPath}${address}/${keyURI}`;
-  });
+  const isEnsOwner = computed(
+    () => ensOwner.value?.toLowerCase() === web3Account.value?.toLowerCase()
+  );
 
-  async function waitForSetRecord(tx) {
-    pendingENSRecord.value = true;
-    pendingCount.value++;
-    const receipt = await tx.wait();
-    await loadUriAddress();
-    pendingCount.value--;
-    pendingENSRecord.value = false;
-    notify(t('notify.ensSet'));
-    console.log('Receipt', receipt);
-    return receipt;
-  }
+  const isSpaceController = computed(
+    () =>
+      spaceController.value?.toLowerCase() === web3Account.value?.toLowerCase()
+  );
 
   async function setRecord() {
     settingENSRecord.value = true;
@@ -80,11 +60,11 @@ export function useSpaceController() {
         ensPublicResolverAddress,
         ensAbi,
         'setText',
-        [node, 'snapshot', textRecord.value]
+        [node, 'snapshot', getAddress(spaceControllerInput.value)]
       );
       settingENSRecord.value = false;
       notify(t('notify.transactionSent'));
-      waitForSetRecord(tx);
+
       return tx;
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
@@ -100,45 +80,30 @@ export function useSpaceController() {
     else modalConfirmSetTextRecordOpen.value = true;
   }
 
-  async function loadUriAddress() {
-    const uri = await getSpaceUri(ensAddress.value, defaultNetwork);
-    console.log('URI', uri);
-    const uriArray = uri?.split('/') ?? [];
-    if (defaultNetwork === '1') {
-      return (uriAddress.value = uriArray[4] ?? '');
-    }
-    if (uriArray[4] === 'testnet') {
-      return (uriAddress.value = uriArray[5] ?? '');
-    }
+  async function loadEnsOwner() {
+    ensOwner.value = await getEnsOwner(ensAddress.value, defaultNetwork);
   }
 
-  // Checks if a text-record with the connected wallet address exists
-  // and skips to step 3 if it does
-  const loadingTextRecord = ref(false);
-  onMounted(async () => {
-    try {
-      loadingTextRecord.value = true;
-      await loadUriAddress();
-      loadingTextRecord.value = false;
-    } catch (e) {
-      console.log(e);
-      loadingTextRecord.value = false;
-    }
-  });
+  async function loadSpaceController() {
+    spaceController.value = await getSpaceController(
+      ensAddress.value,
+      defaultNetwork
+    );
+  }
 
   return {
     spaceControllerInput,
-    controllerInputIsValid,
     settingENSRecord,
     pendingENSRecord,
     modalUnsupportedNetworkOpen,
     modalConfirmSetTextRecordOpen,
-    uriAddress,
-    loadingTextRecord,
     setRecord,
     confirmSetRecord,
-    loadUriAddress,
     ensAddress,
-    textRecord
+    loadEnsOwner,
+    isEnsOwner,
+    loadSpaceController,
+    spaceController,
+    isSpaceController
   };
 }

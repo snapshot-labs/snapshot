@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useSpaceForm, useI18n } from '@/composables';
+import { useFormSpaceSettings, useI18n } from '@/composables';
 
 const emit = defineEmits(['next']);
 
-const { form } = useSpaceForm('setup');
+const { form } = useFormSpaceSettings('setup');
 const { t } = useI18n();
 
 const votingItems = computed(() => {
