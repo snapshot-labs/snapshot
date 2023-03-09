@@ -105,6 +105,7 @@ watch(
 <template>
   <h1
     class="mb-3 break-words text-xl leading-8 sm:text-2xl"
+    data-testid="proposal-page-title"
     v-text="proposal.title"
   />
 

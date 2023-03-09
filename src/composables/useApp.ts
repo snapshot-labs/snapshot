@@ -30,6 +30,7 @@ export function useApp() {
   const { login } = useWeb3();
 
   function connectWallet() {
+    if (import.meta.env.VITE_E2E) return;
     const auth = getInstance();
 
     // Auto connect if previous session was connected

@@ -53,6 +53,7 @@ watchEffect(() => {
     v-if="!auth.isAuthenticated.value"
     :loading="loading || web3.authLoading"
     :aria-label="$t('connectWallet')"
+    data-testid="button-connect-wallet"
     @click="modalAccountOpen = true"
   >
     <span class="hidden sm:block" v-text="$t('connectWallet')" />
