@@ -166,7 +166,9 @@ watch(
             :voted="userVotedProposalIds.includes(proposal.id)"
             :hide-space-avatar="proposal.space.id === space.id"
             :to="{
-              path: `${domain ? '' : proposal.space.id}/proposal/${proposal.id}`
+              path: domain
+                ? `proposal/${proposal.id}`
+                : `/${proposal.space.id}/proposal/${proposal.id}`
             }"
           />
         </BaseBlock>
