@@ -13,8 +13,7 @@ import {
   useApolloQuery,
   useProfiles,
   useWeb3,
-  useMeta,
-  useApp
+  useMeta
 } from '@/composables';
 
 const props = defineProps<{
@@ -43,7 +42,6 @@ const loading = ref(false);
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { apolloQuery } = useApolloQuery();
-const { domain } = useApp();
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
