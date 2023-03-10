@@ -25,11 +25,11 @@ const modalVotingTypeOpen = ref(false);
   <InputSelect
     :title="$t(`settings.type.label`)"
     :information="information"
-    :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
+    :model-value="type ? $t(`voting.${type}.label`) : $t('settings.anyType')"
     :disabled="disabled"
     :tooltip="
       disabled
-        ? $t('create.typeEnforced', { type: $t(`voting.${type}`) })
+        ? $t('create.typeEnforced', { type: $t(`voting.${type}.label`) })
         : null
     "
     @select="modalVotingTypeOpen = true"
