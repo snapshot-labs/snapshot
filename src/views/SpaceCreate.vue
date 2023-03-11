@@ -347,16 +347,12 @@ onMounted(async () => {
       />
 
       <!-- Step 3 (only when plugins) -->
-      <div
+      <SpaceCreatePlugins
         v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
-        class="space-y-3"
-      >
-        <SpaceCreatePlugins
-          v-model="form.metadata.plugins"
-          :proposal="proposal"
-          :space="space"
-        />
-      </div>
+        v-model="form.metadata.plugins"
+        :proposal="proposal"
+        :space="space"
+      />
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
