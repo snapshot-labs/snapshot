@@ -632,16 +632,6 @@
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"
-    },
-    "nouns": {
-      "label": "Nouns",
-      "description": "Protect your space from spam by requiring users to have a Nouns DAO membership to create a proposal.",
-      "invalidVoterMessage": "You need a Nouns DAO membership to create a proposal."
-    },
-    "aave": {
-      "label": "Aave",
-      "description": "Protect your space from spam by requiring users to have a Aave membership to create a proposal.",
-      "invalidVoterMessage": "You need a Aave membership to create a proposal."
     }
   },
   "votingValidation": {
@@ -666,16 +656,6 @@
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"
-    },
-    "nouns": {
-      "label": "Nouns",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Noun.",
-      "invalidVoterMessage": "You need a Noun to vote on this proposal."
-    },
-    "aave": {
-      "label": "Aave",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Aave.",
-      "invalidVoterMessage": "You need a Aave to vote on this proposal."
     }
   },
   "safeSnap": {
