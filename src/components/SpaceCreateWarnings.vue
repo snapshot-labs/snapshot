@@ -6,12 +6,11 @@ import { useWeb3, useIntl, useGnosis, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
-  executingValidationFailed: boolean;
+  validationFailed: boolean;
   isValidAuthor: boolean;
   validationName: string;
 }>();
 
-const { formatCompactNumber } = useIntl();
 const { web3, web3Account } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { errorFetchingSnapshot } = useSnapshot();
@@ -48,22 +47,12 @@ const minScore = computed(
       v-else-if="
         !web3Account &&
         !web3.authLoading &&
-        (minScore || space?.filters.onlyMembers)
+        (props.space.validation.name || space.filters.onlyMembers)
       "
       level="warning"
       is-responsive
     >
-      <span v-if="space?.filters.onlyMembers">
-        {{ $t('create.validationWarning.basic.member') }}
-      </span>
-      <span v-else-if="minScore">
-        {{
-          $tc('create.validationWarning.basic.minScore', [
-            formatCompactNumber(minScore),
-            space.symbol
-          ])
-        }}
-      </span>
+      {{ $t('proposalValidation.notConnectedMessage') }}
       <div>
         <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">{{
           $t('learnMore')
@@ -73,47 +62,31 @@ const minScore = computed(
 
     <!-- Shows when wallet is connected and executing validation fails (e.g.
       due to misconfigured strategy)  -->
+
     <BaseMessageBlock
-      v-else-if="executingValidationFailed"
+      v-else-if="validationFailed"
       level="warning"
-      :route-object="{ name: 'spaceAbout', params: { key: space.id } }"
       is-responsive
     >
-      {{ $t('create.validationWarning.executionError') }}
+      {{ $t('proposalValidation.executionError') }}
     </BaseMessageBlock>
 
-    <!-- Shows when wallet is connected and doesn't pass validaion -->
+    <!-- Shows when wallet is connected and doesn't pass validation -->
     <BaseMessageBlock
-      v-else-if="isValidAuthor === false"
+      v-else-if="isValidAuthor === false && space?.filters.onlyMembers"
       level="warning"
-      is-responsive
     >
-      <span v-if="validationName === 'basic'">
-        <span v-if="space?.filters.onlyMembers">
-          {{ $t('create.validationWarning.basic.member') }}
-        </span>
-        <span v-else-if="minScore">
-          {{
-            $tc('create.validationWarning.basic.minScore', [
-              formatCompactNumber(minScore),
-              space.symbol
-            ])
-          }}
-        </span>
+      <span>
+        {{ $t('proposalValidation.onlyMemberMessage') }}
       </span>
-      <span v-else>
-        {{
-          $t(
-            space.validation.params.rules ||
-              'create.validationWarning.customValidation'
-          )
-        }}
-      </span>
-      <div>
-        <BaseLink :link="{ name: 'spaceAbout', params: { key: space.id } }">
-          {{ $t('learnMore') }}
-        </BaseLink>
-      </div>
     </BaseMessageBlock>
+    <MessageWarningValidation
+      v-else-if="isValidAuthor === false && validationName"
+      context="proposal"
+      :space-id="space.id"
+      :validation-name="validationName"
+      :validation-params="space.validation?.params || {}"
+      :min-score="minScore"
+    />
   </div>
 </template>

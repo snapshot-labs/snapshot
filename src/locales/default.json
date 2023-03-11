@@ -9,8 +9,6 @@
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
-  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "Get help",
   "retry": "Retry",
   "currentResults": "Current results",
@@ -214,14 +212,6 @@
     "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
-    "validationWarning": {
-      "basic": {
-        "member": "You need to be a core member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
-      },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
-      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
-    },
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
@@ -616,6 +606,10 @@
     "settingsTitle": "Configure validation",
     "paramPlaceholder": "Validation parameters",
     "information": "The type of validation used to determine if a user can create a proposal. (Enforced on all future proposals)",
+    "executionError": "There was an error on our side and we could not verify if you are eligible to create a proposal. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+    "notValidMessage": "Oops, you don't seem to be eligible to submit a proposal.",
+    "onlyMemberMessage": "You need to be a core member of the space in order to submit a proposal.",
+    "notConnectedMessage": "You need to connect your wallet in order to submit a proposal.",
     "any": {
       "label": "Anyone can create",
       "description": "Anyone can create a proposal."
@@ -623,7 +617,7 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can create a proposal.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to create a proposal. "
+      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal."
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
@@ -640,6 +634,8 @@
     "settingsTitle": "Configure validation",
     "paramPlaceholder": "Validation parameters",
     "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "executionError": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+    "notValidMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
     "any": {
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
@@ -647,7 +643,7 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
