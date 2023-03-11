@@ -103,6 +103,7 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
         'flex items-center border-t px-3 py-[14px]',
         { '!border-0': i === 0 }
       ]"
+      :data-testid="`proposal-votes-list-item-${i}`"
     >
       <BaseUser
         :key="vote.voter"

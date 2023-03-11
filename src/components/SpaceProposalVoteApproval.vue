@@ -33,7 +33,7 @@ watch(
 </script>
 
 <template>
-  <div class="mb-3">
+  <div class="mb-3" data-testid="approval-choice-list">
     <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
@@ -44,6 +44,7 @@ watch(
           i + 1
         )
       }"
+      :data-testid="`approval-choice-button-${i}`"
       @click="selectChoice(i + 1)"
     >
       <i-ho-check v-if="selectedChoices.includes(i + 1)" class="absolute" />
