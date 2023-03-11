@@ -23,7 +23,6 @@ function handleClickSelectValidation() {
 onMounted(() => {
   // This is a fix for older settings where the validation is set to basic but the minScore is not set
   // Which is equal to any
-  console.log(form.value.filters.minScore);
   if (form.value.validation.name === 'basic' && !form.value.filters.minScore) {
     form.value.validation.name = 'any';
   }
