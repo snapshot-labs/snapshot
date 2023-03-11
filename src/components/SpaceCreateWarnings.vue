@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 import { useWeb3, useIntl, useGnosis, useSnapshot } from '@/composables';
@@ -14,6 +15,13 @@ const { formatCompactNumber } = useIntl();
 const { web3, web3Account } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { errorFetchingSnapshot } = useSnapshot();
+
+const minScore = computed(
+  () =>
+    props.space?.validation?.params?.minScore ||
+    props.space?.filters?.minScore ||
+    0
+);
 </script>
 
 <template>
@@ -40,9 +48,7 @@ const { errorFetchingSnapshot } = useSnapshot();
       v-else-if="
         !web3Account &&
         !web3.authLoading &&
-        (space?.validation?.params.minScore ||
-          space?.filters.minScore ||
-          space?.filters.onlyMembers)
+        (minScore || space?.filters.onlyMembers)
       "
       level="warning"
       is-responsive
@@ -50,14 +56,10 @@ const { errorFetchingSnapshot } = useSnapshot();
       <span v-if="space?.filters.onlyMembers">
         {{ $t('create.validationWarning.basic.member') }}
       </span>
-      <span
-        v-else-if="
-          space?.validation?.params.minScore || space?.filters.minScore
-        "
-      >
+      <span v-else-if="minScore">
         {{
           $tc('create.validationWarning.basic.minScore', [
-            formatCompactNumber(space.filters.minScore),
+            formatCompactNumber(minScore),
             space.symbol
           ])
         }}
@@ -90,14 +92,10 @@ const { errorFetchingSnapshot } = useSnapshot();
         <span v-if="space?.filters.onlyMembers">
           {{ $t('create.validationWarning.basic.member') }}
         </span>
-        <span
-          v-else-if="
-            space?.validation?.params.minScore || space?.filters.minScore
-          "
-        >
+        <span v-else-if="minScore">
           {{
             $tc('create.validationWarning.basic.minScore', [
-              formatCompactNumber(space.filters.minScore),
+              formatCompactNumber(minScore),
               space.symbol
             ])
           }}
