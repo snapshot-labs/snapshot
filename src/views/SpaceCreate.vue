@@ -263,6 +263,11 @@ async function validateAuthor() {
       return;
     }
 
+    if (props.space.validation.name === 'any') {
+      isValidAuthor.value = true;
+      return;
+    }
+
     try {
       validationLoading.value = true;
       const validationRes = await proposalValidation(

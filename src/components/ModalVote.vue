@@ -91,7 +91,7 @@ async function handleSubmit() {
 }
 
 async function loadVotingValidation() {
-  if (!props.proposal.validation || props.proposal.validation.name === 'any') {
+  if (props.proposal.validation.name === 'any') {
     isValidVoter.value = true;
     return;
   }
