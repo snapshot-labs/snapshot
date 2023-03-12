@@ -114,16 +114,21 @@ export async function proposalValidation(
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
 
+  const params = space.validation?.params || {};
+  if (space.validation.name === 'basic') {
+    params.minScore =
+      space.validation?.params?.minScore || space.filters.minScore;
+    params.strategies =
+      space.validation?.params?.strategies || space.strategies;
+  }
+
   const validateRes = await validate(
     space.validation.name,
     address,
     space.id,
     space.network,
     'latest',
-    {
-      minScore: space.validation?.params?.minScore || space.filters.minScore,
-      strategies: space.validation?.params?.strategies || space.strategies
-    },
+    params,
     options
   );
   if (typeof validateRes !== 'boolean') {
