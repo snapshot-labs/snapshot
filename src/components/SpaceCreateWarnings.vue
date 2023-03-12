@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import { useWeb3, useIntl, useGnosis, useSnapshot } from '@/composables';
+import { useWeb3, useGnosis, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
