@@ -300,6 +300,13 @@
   },
   "settings": {
     "header": "Settings",
+    "navigation": {
+      "general": "General",
+      "strategies": "Strategies",
+      "proposal": "Proposal",
+      "voting": "Voting",
+      "advanced": "Advanced"
+    },
     "editController": "Edit controller",
     "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "gnosisWrongNetwork": {
@@ -431,6 +438,21 @@
       "template": {
         "title": "Template",
         "information": "Start every proposal with a template to help users understand what information is required"
+      }
+    },
+    "dangerZone": {
+      "title": "Danger zone",
+      "changeController": {
+        "title": "Change space controller",
+        "information": "Change the controller of this space. This can only be done by the ENS controller.",
+        "button": "Change controller",
+        "disabledInformation": "You need to be the ENS controller to change the space controller"
+      },
+      "deleteSpace": {
+        "title": "Delete space",
+        "information": "Delete this space and all its content. This cannot be undone.",
+        "button": "Delete space",
+        "disabledInformation": "You need to be the space controller to delete the space"
       }
     }
   },
