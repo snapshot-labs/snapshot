@@ -9,6 +9,7 @@ const props = defineProps<{
   validationName: string;
   validationParams: Record<string, any>;
   minScore: number;
+  symbol: string;
 }>();
 
 const { formatCompactNumber } = useIntl();
@@ -27,7 +28,7 @@ const tPath = computed(() => {
       {{
         $t(`${tPath}.basic.invalidVoterMessage`, {
           amount: formatCompactNumber(minScore),
-          symbol: validationParams?.symbol || ''
+          symbol
         })
       }}
 

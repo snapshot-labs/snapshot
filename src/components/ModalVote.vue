@@ -43,11 +43,25 @@ const { formatNumber, formatCompactNumber } = useIntl();
 const { addVotedProposalId } = useProposals();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
+const isLoadingShutter = ref(false);
+
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
-const isLoadingShutter = ref(false);
+const validationStrategySymbolsString = computed(() => {
+  let symbols = props.proposal.validation?.params?.strategies
+    ?.map(strategy => strategy.params.symbol)
+    .filter(symbol => symbol);
+
+  if (symbols.length === 0) return '';
+
+  symbols = symbols.map(symbol => `$${symbol}`);
+
+  if (symbols.length === 1) return `${symbols[0]}`;
+
+  return `(${symbols.join(', ')})`;
+});
 
 async function voteShutter() {
   isLoadingShutter.value = true;
@@ -278,6 +292,7 @@ watch(
             :validation-name="proposal.validation.name"
             :validation-params="proposal.validation?.params || {}"
             :min-score="proposal.validation?.params?.minScore || 0"
+            :symbol="validationStrategySymbolsString"
           />
 
           <!-- Reason field -->

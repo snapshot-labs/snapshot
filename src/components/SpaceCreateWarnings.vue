@@ -21,6 +21,24 @@ const minScore = computed(
     props.space?.filters?.minScore ||
     0
 );
+
+const strategySymbolsString = computed(() => {
+  const strategies = props.space.validation?.params?.strategies
+    ? props.space.validation.params.strategies
+    : props.space.strategies;
+
+  let symbols = strategies
+    ?.map(strategy => strategy.params.symbol)
+    .filter(symbol => symbol);
+
+  if (symbols.length === 0) return '';
+
+  symbols = symbols.map(symbol => `$${symbol}`);
+
+  if (symbols.length === 1) return `${symbols[0]}`;
+
+  return `(${symbols.join(', ')})`;
+});
 </script>
 
 <template>
@@ -87,6 +105,7 @@ const minScore = computed(
       :validation-name="validationName"
       :validation-params="space.validation?.params || {}"
       :min-score="minScore"
+      :symbol="strategySymbolsString || space.symbol"
     />
   </div>
 </template>
