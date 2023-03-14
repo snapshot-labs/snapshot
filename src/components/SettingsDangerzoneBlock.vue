@@ -23,19 +23,19 @@ const items = computed(() => [
     ),
     action: () => emit('changeController'),
     loading: props.isSettingEnsRecord
-  },
-
-  {
-    title: t('settings.dangerZone.deleteSpace.title'),
-    description: t('settings.dangerZone.deleteSpace.information'),
-    button: t('settings.dangerZone.deleteSpace.button'),
-    disabled: !props.isController,
-    disabledInformation: t(
-      'settings.dangerZone.deleteSpace.disabledInformation'
-    ),
-    action: () => emit('deleteSpace'),
-    loading: false
   }
+
+  // {
+  //   title: t('settings.dangerZone.deleteSpace.title'),
+  //   description: t('settings.dangerZone.deleteSpace.information'),
+  //   button: t('settings.dangerZone.deleteSpace.button'),
+  //   disabled: !props.isController,
+  //   disabledInformation: t(
+  //     'settings.dangerZone.deleteSpace.disabledInformation'
+  //   ),
+  //   action: () => emit('deleteSpace'),
+  //   loading: false
+  // }
 ]);
 </script>
 
@@ -60,7 +60,7 @@ const items = computed(() => [
         >
           <BaseButton
             variant="danger"
-            class="whitespace-nowrap"
+            class="ml-4 whitespace-nowrap"
             :disabled="item.disabled"
             :loading="item.loading"
             @click="item.disabled ? null : item.action()"
