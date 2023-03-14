@@ -857,7 +857,8 @@
   },
   "newsletter": {
     "yourEmail": "Your email",
-    "title": "Get the latest Snapshot updates"
+    "title": "Get the latest Snapshot updates",
+    "join": "Join the newsletter"
   },
   "joinCommunity": "Join Snapshot community",
   "header": {
