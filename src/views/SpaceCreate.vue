@@ -263,7 +263,10 @@ async function validateAuthor() {
       return;
     }
 
-    if (props.space.validation.name === 'any') {
+    if (
+      props.space.validation.name === 'any' ||
+      (props.space.validation.name === 'basic' && !props.space.filters.minScore)
+    ) {
       isValidAuthor.value = true;
       return;
     }
