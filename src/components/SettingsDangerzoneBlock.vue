@@ -5,7 +5,10 @@ import { useI18n } from '@/composables';
 const props = defineProps<{
   isController: boolean;
   isOwner: boolean;
+  isSettingEnsRecord: boolean;
 }>();
+
+const emit = defineEmits(['changeController', 'deleteSpace']);
 
 const { t } = useI18n();
 
@@ -17,7 +20,9 @@ const items = computed(() => [
     disabled: !props.isOwner,
     disabledInformation: t(
       'settings.dangerZone.changeController.disabledInformation'
-    )
+    ),
+    action: () => emit('changeController'),
+    loading: props.isSettingEnsRecord
   },
 
   {
@@ -27,7 +32,9 @@ const items = computed(() => [
     disabled: !props.isController,
     disabledInformation: t(
       'settings.dangerZone.deleteSpace.disabledInformation'
-    )
+    ),
+    action: () => emit('deleteSpace'),
+    loading: false
   }
 ]);
 </script>
@@ -55,6 +62,8 @@ const items = computed(() => [
             variant="danger"
             class="whitespace-nowrap"
             :disabled="item.disabled"
+            :loading="item.loading"
+            @click="item.disabled ? null : item.action()"
           >
             {{ item.button }}
           </BaseButton>

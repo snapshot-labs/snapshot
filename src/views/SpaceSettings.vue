@@ -59,14 +59,46 @@ const {
   isSpaceController
 } = useSpaceController();
 
+enum Page {
+  GENERAL,
+  STRATEGIES,
+  PROPOSAL,
+  VOTING,
+  ADVANCED
+}
+
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
+const currentPage = ref(Page.GENERAL);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
   const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
 });
+
+const settingsPages = computed(() => [
+  {
+    id: Page.GENERAL,
+    title: t('settings.navigation.general')
+  },
+  {
+    id: Page.STRATEGIES,
+    title: t('settings.navigation.strategies')
+  },
+  {
+    id: Page.PROPOSAL,
+    title: t('settings.navigation.proposal')
+  },
+  {
+    id: Page.VOTING,
+    title: t('settings.navigation.voting')
+  },
+  {
+    id: Page.ADVANCED,
+    title: t('settings.navigation.advanced')
+  }
+]);
 
 async function handleSubmit() {
   if (!isValid.value)
@@ -100,19 +132,16 @@ onMounted(async () => {
 
 <template>
   <TheLayout v-bind="$attrs">
-    <template #content-left>
-      <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ name: 'spaceProposals' }">
-          <ButtonBack />
-        </router-link>
-      </div>
-      <div class="px-4 md:px-0">
-        <h1 class="mb-4" v-text="$t('settings.header')" />
-      </div>
+    <div class="mb-3 px-4 md:px-0">
+      <router-link :to="{ name: 'spaceProposals' }">
+        <ButtonBack />
+      </router-link>
+    </div>
+    <template #content-right>
       <LoadingRow v-if="!loaded" block />
 
       <template v-else>
-        <div class="space-y-3">
+        <div class="mt-4 space-y-3 sm:mt-0">
           <MessageWarningGnosisNetwork
             v-if="isGnosisAndNotDefaultNetwork"
             :space="space"
@@ -128,75 +157,84 @@ onMounted(async () => {
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
 
-          <SettingsProfileBlock context="settings" />
+          <template v-if="currentPage === Page.GENERAL">
+            <SettingsProfileBlock context="settings" />
+            <SettingsLinkBlock context="settings" />
+            <SettingsMembersBlock
+              context="settings"
+              :space="space"
+              :is-space-controller="isSpaceController"
+            />
+          </template>
 
-          <SettingsLinkBlock context="settings" />
+          <template v-if="currentPage === Page.STRATEGIES">
+            <SettingsStrategiesBlock context="settings" />
+          </template>
 
-          <SettingsSubSpacesBlock context="settings" />
+          <template v-if="currentPage === Page.PROPOSAL">
+            <SettingsProposalBlock context="settings" />
 
-          <SettingsStrategiesBlock context="settings" />
+            <SettingsValidationBlock context="settings" />
+          </template>
 
-          <SettingsMembersBlock
-            context="settings"
-            :space="space"
-            :is-space-controller="isSpaceController"
-          />
+          <template v-if="currentPage === Page.VOTING">
+            <SettingsVotingBlock context="settings" />
+          </template>
 
-          <SettingsProposalBlock context="settings" />
-
-          <SettingsValidationBlock context="settings" />
-
-          <SettingsVotingBlock context="settings" />
-
-          <SettingsDomainBlock context="settings" />
-
-          <SettingsTreasuriesBlock context="settings" />
-
-          <SettingsPluginsBlock context="settings" />
+          <template v-if="currentPage === Page.ADVANCED">
+            <SettingsPluginsBlock context="settings" />
+            <SettingsTreasuriesBlock context="settings" />
+            <SettingsSubSpacesBlock context="settings" />
+            <SettingsDomainBlock context="settings" />
+            <SettingsDangerzoneBlock
+              :is-controller="isSpaceController"
+              :is-owner="isEnsOwner"
+              :is-setting-ens-record="settingENSRecord"
+              @change-controller="modalControllerEditOpen = true"
+              @delete-space="null"
+            />
+          </template>
+          <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
+            <BaseButton class="mb-2 block w-full" @click="resetForm">
+              {{ $t('reset') }}
+            </BaseButton>
+            <BaseButton
+              :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
+              :loading="isSending"
+              class="block w-full"
+              primary
+              @click="handleSubmit"
+            >
+              {{ $t('save') }}
+            </BaseButton>
+          </div>
         </div>
       </template>
     </template>
 
-    <template #sidebar-right>
-      <div class="mt-5 lg:mt-0" />
-      <div v-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)" />
-      <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock v-if="isEnsOwner || isSpaceAdmin || isSpaceController">
-          <div class="space-y-2">
-            <BaseButton
-              v-if="isEnsOwner"
-              :loading="settingENSRecord"
-              class="block w-full"
-              @click="modalControllerEditOpen = true"
+    <template #sidebar-left>
+      <BaseBlock slim class="overflow-hidden !border-t-0 sm:!border-t">
+        <div class="lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
+          <div
+            class="no-scrollbar mt-0 flex overflow-y-auto sm:mt-4 lg:my-3 lg:block"
+          >
+            <BaseSidebarNavigationItem
+              v-for="page in settingsPages"
+              :key="page.id"
+              :is-active="currentPage === page.id"
+              @click="currentPage = page.id"
             >
-              {{ $t('settings.editController') }}
-            </BaseButton>
-            <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="resetForm">
-                {{ $t('reset') }}
-              </BaseButton>
-              <BaseButton
-                :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
-                :loading="isSending"
-                class="block w-full"
-                primary
-                @click="handleSubmit"
-              >
-                {{ $t('save') }}
-              </BaseButton>
-            </div>
+              {{ page.title }}
+            </BaseSidebarNavigationItem>
           </div>
-        </BaseBlock>
-
-        <BaseBlock class="mt-3">
-          <div>
-            <div class="mb-2 text-skin-link">
-              {{ $t('newsletter.title') }}
-            </div>
-            <InputNewsletter tag="6449077" />
-          </div>
-        </BaseBlock>
-      </div>
+        </div>
+      </BaseBlock>
+      <BaseBlock class="mt-3">
+        <div class="mb-2 text-skin-link">
+          {{ $t('newsletter.join') }}
+        </div>
+        <InputNewsletter tag="6449077" />
+      </BaseBlock>
     </template>
   </TheLayout>
   <teleport to="#modal">
