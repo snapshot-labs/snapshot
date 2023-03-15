@@ -64,6 +64,7 @@ enum Page {
   STRATEGIES,
   PROPOSAL,
   VOTING,
+  MEMBERS,
   ADVANCED
 }
 
@@ -93,6 +94,10 @@ const settingsPages = computed(() => [
   {
     id: Page.VOTING,
     title: t('settings.navigation.voting')
+  },
+  {
+    id: Page.MEMBERS,
+    title: t('settings.navigation.members')
   },
   {
     id: Page.ADVANCED,
@@ -161,11 +166,6 @@ onMounted(async () => {
           <template v-if="currentPage === Page.GENERAL">
             <SettingsProfileBlock context="settings" />
             <SettingsLinkBlock context="settings" />
-            <SettingsMembersBlock
-              context="settings"
-              :space="space"
-              :is-space-controller="isSpaceController"
-            />
           </template>
 
           <template v-if="currentPage === Page.STRATEGIES">
@@ -173,13 +173,20 @@ onMounted(async () => {
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
-            <SettingsProposalBlock context="settings" />
-
             <SettingsValidationBlock context="settings" />
+            <SettingsProposalBlock context="settings" />
           </template>
 
           <template v-if="currentPage === Page.VOTING">
             <SettingsVotingBlock context="settings" />
+          </template>
+
+          <template v-if="currentPage === Page.MEMBERS">
+            <SettingsMembersBlock
+              context="settings"
+              :space="space"
+              :is-space-controller="isSpaceController"
+            />
           </template>
 
           <template v-if="currentPage === Page.ADVANCED">
