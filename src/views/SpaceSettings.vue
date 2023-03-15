@@ -141,7 +141,7 @@ onMounted(async () => {
       <LoadingRow v-if="!loaded" block />
 
       <template v-else>
-        <div class="mt-4 space-y-3 sm:mt-0">
+        <div class="mt-3 space-y-3 sm:mt-0">
           <MessageWarningGnosisNetwork
             v-if="isGnosisAndNotDefaultNetwork"
             :space="space"
@@ -151,8 +151,9 @@ onMounted(async () => {
 
           <BaseMessageBlock
             v-else-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)"
-            class="mx-4 mb-3 md:mx-0"
+            class="mt-3 md:mx-0"
             level="info"
+            is-responsive
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
@@ -213,10 +214,10 @@ onMounted(async () => {
     </template>
 
     <template #sidebar-left>
-      <BaseBlock slim class="overflow-hidden !border-t-0 sm:!border-t">
+      <BaseBlock slim class="overflow-hidden !border-t-0 md:!border-t">
         <div class="lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
           <div
-            class="no-scrollbar mt-0 flex overflow-y-auto sm:mt-4 lg:my-3 lg:block"
+            class="no-scrollbar mt-0 flex overflow-y-auto md:mt-4 lg:my-3 lg:block"
           >
             <BaseSidebarNavigationItem
               v-for="page in settingsPages"
@@ -229,7 +230,7 @@ onMounted(async () => {
           </div>
         </div>
       </BaseBlock>
-      <BaseBlock class="mt-3">
+      <BaseBlock class="my-3">
         <div class="mb-2 text-skin-link">
           {{ $t('newsletter.join') }}
         </div>
