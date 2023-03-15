@@ -295,6 +295,7 @@
       "strategies": "Strategies",
       "proposal": "Proposal",
       "voting": "Voting",
+      "members": "Members",
       "advanced": "Advanced"
     },
     "editController": "Edit controller",
@@ -878,7 +879,7 @@
   "newsletter": {
     "yourEmail": "Your email",
     "title": "Get the latest Snapshot updates",
-    "join": "Join the newsletter"
+    "join": "Join Snapshot newsletter"
   },
   "joinCommunity": "Join Snapshot community",
   "header": {
