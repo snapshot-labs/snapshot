@@ -66,10 +66,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   });
 
   const hasFormChanged = computed(() => {
-    console.log(
-      'hasFormChanged:',
-      !isEqual(formSettings.value, initialFormState.value)
-    );
     return !isEqual(formSettings.value, initialFormState.value);
   });
 
