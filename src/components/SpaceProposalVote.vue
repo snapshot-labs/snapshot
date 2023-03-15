@@ -76,6 +76,7 @@ function emitChoice(c) {
       "
       class="block w-full"
       primary
+      data-testid="proposal-vote-button"
       @click="$emit('clickVote')"
     >
       {{ $t('proposal.vote') }}

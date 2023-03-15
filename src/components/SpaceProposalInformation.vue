@@ -55,7 +55,7 @@ const symbols = computed((): string[] =>
       <div>
         <b>{{ $t('proposal.votingSystem') }}</b>
         <span class="float-right text-skin-link">
-          {{ $t(`voting.${proposal.type}`) }}
+          {{ $t(`voting.${proposal.type}.label`) }}
         </span>
       </div>
       <div v-if="proposal.privacy">

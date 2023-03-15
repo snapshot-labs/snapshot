@@ -76,7 +76,7 @@ const {
 const isValidAuthor = ref(false);
 const validationLoading = ref(false);
 const preview = ref(false);
-const executingValidationFailed = ref(false);
+const hasAuthorValidationFailed = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
 
 const proposal = computed(() =>
@@ -263,6 +263,14 @@ async function validateAuthor() {
       return;
     }
 
+    if (
+      props.space.validation.name === 'any' ||
+      (props.space.validation.name === 'basic' && !props.space.filters.minScore)
+    ) {
+      isValidAuthor.value = true;
+      return;
+    }
+
     try {
       validationLoading.value = true;
       const validationRes = await proposalValidation(
@@ -273,7 +281,7 @@ async function validateAuthor() {
       isValidAuthor.value = validationRes;
       console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
-      executingValidationFailed.value = true;
+      hasAuthorValidationFailed.value = true;
       console.log(e);
     } finally {
       validationLoading.value = false;
@@ -324,7 +332,7 @@ onMounted(async () => {
       <SpaceCreateWarnings
         v-if="!validationLoading"
         :space="space"
-        :executing-validation-failed="executingValidationFailed"
+        :validation-failed="hasAuthorValidationFailed"
         :is-valid-author="isValidAuthor"
         :validation-name="validationName"
         data-testid="create-proposal-connect-wallet-warning"
@@ -347,16 +355,12 @@ onMounted(async () => {
       />
 
       <!-- Step 3 (only when plugins) -->
-      <div
+      <SpaceCreatePlugins
         v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
-        class="space-y-3"
-      >
-        <SpaceCreatePlugins
-          v-model="form.metadata.plugins"
-          :proposal="proposal"
-          :space="space"
-        />
-      </div>
+        v-model="form.metadata.plugins"
+        :proposal="proposal"
+        :space="space"
+      />
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
@@ -379,6 +383,7 @@ onMounted(async () => {
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
+          data-testid="create-proposal-publish-button"
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
@@ -394,7 +399,7 @@ onMounted(async () => {
           :disabled="
             (!stepIsValid && !!web3Account) ||
             web3.authLoading ||
-            executingValidationFailed ||
+            hasAuthorValidationFailed ||
             validationLoading ||
             isGnosisAndNotSpaceNetwork
           "

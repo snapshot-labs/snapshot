@@ -37,8 +37,8 @@ function select(id) {
       <a v-for="(type, key) in types" :key="key" @click="select(type)">
         <BaseModalSelectItem
           :selected="type === selected"
-          :title="$t(`voting.${type}`)"
-          :description="$t(`voting.description.${type}`)"
+          :title="$t(`voting.${type}.label`)"
+          :description="$t(`voting.${type}.description`)"
         />
       </a>
     </div>
