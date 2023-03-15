@@ -45,6 +45,7 @@ watch(open, () => {
           <BaseButton
             v-if="cId === 'injected' && injected"
             class="flex w-full items-center justify-center"
+            data-testid="button-connnect-wallet-injected"
           >
             <img
               :src="getIpfsUrl(injected.icon)"

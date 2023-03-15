@@ -20,8 +20,8 @@ const snapshotTextLinks = [
 
 const resourcesTextLinks = [
   {
-    text: 'discussions',
-    link: 'https://github.com/snapshot-labs/snapshot/discussions'
+    text: 'faqs',
+    link: 'https://docs.snapshot.org/faq'
   },
   {
     text: 'github',

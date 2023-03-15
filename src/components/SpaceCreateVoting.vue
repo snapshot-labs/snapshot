@@ -96,6 +96,7 @@ onMounted(async () => {
                 :placeholder="index > 0 ? $t('optional') : ''"
                 class="group"
                 :focus-on-mount="index === 0"
+                :data-testid="`input-proposal-choice-${index}`"
               >
                 <template #label>
                   <div

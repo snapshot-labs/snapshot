@@ -187,7 +187,10 @@ onMounted(() => {
       <div class="space-y-4">
         <div v-if="proposal?.discussion" class="px-3 md:px-0">
           <h3 v-text="$t('discussion')" />
-          <BlockLink :link="proposal.discussion" />
+          <BlockLink
+            :link="proposal.discussion"
+            data-testid="proposal-page-discussion-link"
+          />
         </div>
         <SpaceProposalVote
           v-if="proposal?.state === 'active'"
