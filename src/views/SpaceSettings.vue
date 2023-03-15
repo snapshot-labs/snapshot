@@ -37,10 +37,11 @@ const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const {
-  form,
   validationResult,
   isValid,
   isReadyToSubmit,
+  hasFormChanged,
+  prunedForm,
   populateForm,
   resetForm
 } = useFormSpaceSettings('settings');
@@ -109,7 +110,11 @@ async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const result = await send({ id: props.space.id }, 'settings', form.value);
+  const result = await send(
+    { id: props.space.id },
+    'settings',
+    prunedForm.value
+  );
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);

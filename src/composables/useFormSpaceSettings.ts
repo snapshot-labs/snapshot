@@ -3,6 +3,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useClient, useFormValidation, useImageUpload } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import isEqual from 'lodash/isEqual';
 
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
@@ -64,6 +65,22 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
+  const hasFormChanged = computed(() => {
+    console.log(
+      'hasFormChanged:',
+      !isEqual(formSettings.value, initialFormState.value)
+    );
+    return !isEqual(formSettings.value, initialFormState.value);
+  });
+
+  const prunedForm = computed(() => {
+    const formData = clone(form.value);
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === null || value === '') delete formData[key];
+    });
+    return formData;
+  });
+
   function populateForm(extendedSpace: ExtendedSpace) {
     const formData = clone(extendedSpace);
     delete formData.id;
@@ -99,16 +116,9 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     initialFormState.value = clone(formData);
   }
 
-  function pruneForm(formData) {
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value === null || value === '') delete formData[key];
-    });
-    return formData;
-  }
-
   const { getValidationMessage, validationResult, isValid } = useFormValidation(
     schemas.space,
-    computed(() => pruneForm(form.value))
+    computed(() => prunedForm.value)
   );
 
   function getValidation(field: string): { message: string; push: boolean } {
@@ -142,10 +152,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   return {
     form,
+    prunedForm,
     validationResult,
     isValid,
     isReadyToSubmit,
     showAllValidationErrors,
+    hasFormChanged,
     populateForm,
     getValidation,
     resetForm,
