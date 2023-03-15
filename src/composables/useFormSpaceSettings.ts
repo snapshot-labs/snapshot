@@ -87,7 +87,15 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     formData.children = formData.children.map(child => child.id) || [];
     formData.parent = formData.parent?.id || '';
 
-    form.value = formData;
+    if (formData.validation.name === 'basic' && !formData.filters.minScore)
+      formData.validation.name = 'any';
+    if (
+      formData.validation.name === 'nouns' ||
+      formData.validation.name === 'aave'
+    )
+      formData.validation.name = 'basic';
+
+    form.value = clone(formData);
     initialFormState.value = clone(formData);
   }
 

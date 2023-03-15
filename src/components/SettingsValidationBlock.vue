@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useFormSpaceSettings } from '@/composables';
 
@@ -19,21 +19,6 @@ function handleClickSelectValidation() {
   if (form.value.filters.onlyMembers) return;
   modalValidationOpen.value = true;
 }
-
-onMounted(() => {
-  // This is a fix for older settings where the validation is set to basic but the minScore is not set
-  // Which is equal to any
-  if (form.value.validation.name === 'basic' && !form.value.filters.minScore) {
-    form.value.validation.name = 'any';
-  }
-  // This is a fix for the depricated validation types nouns and aave
-  if (
-    form.value.validation.name === 'nouns' ||
-    form.value.validation.name === 'aave'
-  ) {
-    form.value.validation.name = 'basic';
-  }
-});
 </script>
 
 <template>
