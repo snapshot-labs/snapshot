@@ -8,13 +8,13 @@ import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
 interface QuorumProps {
   space: ExtendedSpace;
   proposal: Proposal;
-  votes: Vote[];
   results: Results;
+  votes: Vote[];
 }
 
 export function useQuorum(props: QuorumProps) {
   const loading = ref(false);
-  const totalVotingPower = ref(0);
+  const quorum = ref(0);
 
   const totalQuorumScore = computed(() => {
     const basicCount = props.space.plugins?.quorum?.basicCount;
@@ -26,17 +26,11 @@ export function useQuorum(props: QuorumProps) {
     return 0;
   });
 
-  const quorum = computed(() => {
-    return totalVotingPower.value === 0
-      ? 0
-      : totalQuorumScore.value / totalVotingPower.value;
-  });
+  async function getQuorum(web3: any, quorumOptions: any, snapshot: string) {
+    if (props.proposal?.quorum || props.space.voting?.quorum) {
+      return props.proposal?.quorum || props.space.voting?.quorum || 0;
+    }
 
-  async function getTotalVotingPower(
-    web3: any,
-    quorumOptions: any,
-    snapshot: string
-  ) {
     const { strategy } = quorumOptions;
 
     const quorumModifier = quorumOptions.quorumModifier ?? 1;
@@ -98,9 +92,9 @@ export function useQuorum(props: QuorumProps) {
     }
   }
 
-  async function loadTotalVotingPower() {
+  async function loadQuorum() {
     loading.value = true;
-    totalVotingPower.value = await getTotalVotingPower(
+    quorum.value = await getQuorum(
       getProvider(props.space.network),
       props.space.plugins.quorum,
       props.proposal.snapshot
@@ -109,10 +103,9 @@ export function useQuorum(props: QuorumProps) {
   }
 
   return {
-    loadTotalVotingPower,
+    loadQuorum,
     loadingQuorum: loading,
-    quorum,
     totalQuorumScore,
-    totalVotingPower
+    quorum
   };
 }
