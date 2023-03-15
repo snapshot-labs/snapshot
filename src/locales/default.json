@@ -735,6 +735,7 @@
       "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
       "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond.",
       "bondWarning": "Bond is greater than users balance",
+      "quorumWarning": "Quorum did not reach space requirement",
       "requiredBond": "Required Bond:",
       "challengePeriod": "Challenge Period:",
       "disputeProposal": "UMA Oracle URL to dispute"
