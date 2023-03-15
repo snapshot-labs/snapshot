@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
@@ -120,15 +121,8 @@ async function handleSubmit() {
     notify(['green', t('notify.saved')]);
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
-    reloadSpace(props.space.id);
-  }
-}
-
-async function handleSetRecord() {
-  const tx = await setRecord();
-  const receipt = await tx.wait();
-  if (receipt) {
-    reloadSpace(props.space.id);
+    await reloadSpace(props.space.id);
+    populateForm(props.space);
   }
 }
 
@@ -137,6 +131,15 @@ onMounted(async () => {
   await loadEnsOwner();
   await loadSpaceController();
   loaded.value = true;
+});
+
+onBeforeRouteLeave(() => {
+  if (hasFormChanged.value) {
+    const answer = window.confirm(
+      'Do you really want to leave? you have unsaved changes!'
+    );
+    if (!answer) return false;
+  }
 });
 </script>
 
@@ -264,7 +267,7 @@ onMounted(async () => {
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"
       @close="modalConfirmSetTextRecordOpen = false"
-      @confirm="handleSetRecord"
+      @confirm="setRecord"
     >
       <div class="m-4 space-y-4 text-skin-link">
         <p>
