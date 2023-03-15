@@ -13,7 +13,8 @@ import {
   useI18n,
   useFlashNotification,
   useTxStatus,
-  useSafe
+  useSafe,
+  useQuorum
 } from '@/composables';
 
 const { formatDuration } = useIntl();
@@ -23,6 +24,7 @@ const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
+const { quorum } = useQuorum();
 
 const props = defineProps([
   'batches',
@@ -377,10 +379,7 @@ onMounted(async () => {
             </div>
             <div>
               <BaseMessage
-                v-if="
-                  Number(props.proposal.scores_total) <
-                  Number(props.proposal.quorum)
-                "
+                v-if="Number(props.proposal.scores_total) < Number(quorum)"
                 level="warning-red"
               >
                 {{ $t('safeSnap.labels.quorumWarning') }}
@@ -403,8 +402,7 @@ onMounted(async () => {
               :disabled="
                 Number(questionDetails.minimumBond.toString()) >
                   Number(questionDetails.userBalance.toString()) ||
-                Number(props.proposal.scores_total) <
-                  Number(props.proposal.quorum)
+                Number(props.proposal.scores_total) < Number(quorum)
               "
             >
               {{ $t('safeSnap.labels.request') }}
