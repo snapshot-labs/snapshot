@@ -4,8 +4,7 @@ import {
   ExtendedSpace,
   Proposal,
   Results,
-  SpaceStrategy,
-  Vote
+  SpaceStrategy
 } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -13,7 +12,6 @@ const props = defineProps<{
   proposal: Proposal;
   results: Results;
   strategies: SpaceStrategy[];
-  votes: Vote[];
 }>();
 
 const choices = computed<{ i: number; choice: string }[]>(() =>
@@ -45,7 +43,6 @@ const showQuorum = computed(
       :space="space"
       :proposal="proposal"
       :results="results"
-      :votes="votes"
     />
   </div>
 </template>

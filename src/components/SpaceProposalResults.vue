@@ -13,7 +13,6 @@ const props = defineProps<{
   proposal: Proposal;
   results: Results | null;
   strategies: SpaceStrategy[];
-  votes: Vote[];
   loaded: boolean;
   isAdmin: boolean;
 }>();
@@ -55,7 +54,6 @@ const isPendingScore = computed(
         :proposal="proposal"
         :results="results"
         :strategies="strategies"
-        :votes="votes"
       />
       <SpaceProposalResultsShutter
         v-if="proposal.privacy === 'shutter'"

@@ -4,7 +4,6 @@ import {
   ExtendedSpace,
   Proposal,
   Results,
-  Vote,
   SpaceStrategy
 } from '@/helpers/interfaces';
 
@@ -14,7 +13,6 @@ const props = defineProps<{
   space: ExtendedSpace;
   results: Results;
   loadedResults: boolean;
-  votes: Vote[];
   strategies: SpaceStrategy[];
 }>();
 

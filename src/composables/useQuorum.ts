@@ -9,7 +9,6 @@ interface QuorumProps {
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  votes: Vote[];
 }
 
 export function useQuorum(props: QuorumProps) {

@@ -8,7 +8,6 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  votes: Vote[];
 }>();
 
 const { totalQuorumScore, quorum, loadQuorum, loadingQuorum } =

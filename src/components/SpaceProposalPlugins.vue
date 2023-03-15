@@ -8,7 +8,6 @@ const props = defineProps<{
   space: ExtendedSpace;
   results: Results;
   loadedResults: boolean;
-  votes: Record<string, any>[];
   strategies: Record<string, any>[];
 }>();
 
