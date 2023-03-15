@@ -45,6 +45,7 @@ const loadedVotes = ref(false);
 const votes = ref([]);
 const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
+const modalVotesmOpen = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -208,7 +209,7 @@ onMounted(() => {
           :strategies="strategies"
           :user-vote="userVote"
           :loading-more="loadingMore"
-          @loadVotes="loadMore(loadMoreVotes)"
+          @openModal="modalVotesmOpen = true"
         />
         <SpaceProposalPlugins
           v-if="proposal?.plugins && loadedResults && results"
@@ -276,6 +277,18 @@ onMounted(() => {
       :proposal="proposal"
       :selected-choices="selectedChoices"
       @close="isModalPostVoteOpen = false"
+    />
+    <SpaceProposalVotesModal
+      :loaded="loadedVotes"
+      :space="space"
+      :proposal="proposal"
+      :votes="votes"
+      :strategies="strategies"
+      :user-vote="userVote"
+      :loading-more="loadingMore"
+      :open="modalVotesmOpen"
+      @loadVotes="loadMore(loadMoreVotes)"
+      @close="modalVotesmOpen = false"
     />
   </teleport>
 </template>

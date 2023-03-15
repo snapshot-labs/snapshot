@@ -7,7 +7,9 @@ const props = defineProps<{
   modelValue: string;
   placeholder?: string;
   modal?: boolean;
+  autofocus?: boolean;
 }>();
+
 const emit = defineEmits(['update:modelValue']);
 
 const router = useRouter();
@@ -54,6 +56,7 @@ function clearInput() {
       type="text"
       autocorrect="off"
       autocapitalize="none"
+      :autofocus="autofocus"
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />

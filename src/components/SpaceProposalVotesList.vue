@@ -27,7 +27,7 @@ const props = defineProps<{
   loadingMore: boolean;
 }>();
 
-defineEmits(['loadVotes']);
+defineEmits(['openModal']);
 
 const { formatCompactNumber } = useIntl();
 const { votes } = toRefs(props);
@@ -87,14 +87,22 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
     slim
   >
     <template v-if="props.proposal.state === 'closed'" #button>
-      <BaseButtonIcon>
-        <LoadingSpinner v-if="isDownloadingVotes" />
-        <i-ho-download
-          v-else
-          v-tippy="{ content: 'Download as CSV' }"
-          @click="downloadVotes(proposal.id, proposal.space.id)"
-        />
-      </BaseButtonIcon>
+      <div class="flex flex-row items-center">
+        <a
+          class="block rounded-b-none px-4 py-3 text-center md:rounded-b-md"
+          @click="$emit('openModal')"
+        >
+          <span v-text="$t('searchPlaceholder')" />
+        </a>
+        <BaseButtonIcon>
+          <LoadingSpinner v-if="isDownloadingVotes" />
+          <i-ho-download
+            v-else
+            v-tippy="{ content: 'Download as CSV' }"
+            @click="downloadVotes(proposal.id, proposal.space.id)"
+          />
+        </BaseButtonIcon>
+      </div>
     </template>
     <div
       v-for="(vote, i) in sortedVotes"
@@ -152,7 +160,7 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
     <a
       v-if="sortedVotes.length < voteCount"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-      @click="$emit('loadVotes')"
+      @click="$emit('openModal')"
     >
       <LoadingSpinner v-if="loadingMore" />
       <span v-else v-text="$t('seeMore')" />
