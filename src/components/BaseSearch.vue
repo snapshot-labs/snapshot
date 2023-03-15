@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 
@@ -7,7 +7,7 @@ const props = defineProps<{
   modelValue: string;
   placeholder?: string;
   modal?: boolean;
-  autofocus?: boolean;
+  focusOnMount?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -15,6 +15,7 @@ const emit = defineEmits(['update:modelValue']);
 const router = useRouter();
 
 const input = ref(props.modelValue || '');
+const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 function updateRouteQuery() {
   if (!props.modal) {
@@ -42,6 +43,12 @@ function clearInput() {
   }
   emit('update:modelValue', '');
 }
+
+onMounted(() => {
+  if (props.focusOnMount) {
+    BaseInputEL?.value?.focus();
+  }
+});
 </script>
 
 <template>
@@ -51,12 +58,12 @@ function clearInput() {
   >
     <i-ho-search class="mr-2 text-[19px]" />
     <input
+      ref="BaseInputEL"
       :value="input"
       :placeholder="placeholder"
       type="text"
       autocorrect="off"
       autocapitalize="none"
-      :autofocus="autofocus"
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />
