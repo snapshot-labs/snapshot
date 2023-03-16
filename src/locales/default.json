@@ -290,6 +290,7 @@
   },
   "settings": {
     "header": "Settings",
+    "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
     "navigation": {
       "general": "General",
       "strategies": "Strategies",

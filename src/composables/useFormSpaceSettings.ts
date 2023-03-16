@@ -3,6 +3,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useClient, useFormValidation, useImageUpload } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import isEqual from 'lodash/isEqual';
 
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
@@ -64,6 +65,18 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
+  const hasFormChanged = computed(() => {
+    return !isEqual(formSettings.value, initialFormState.value);
+  });
+
+  const prunedForm = computed(() => {
+    const formData = clone(form.value);
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === null || value === '') delete formData[key];
+    });
+    return formData;
+  });
+
   function populateForm(extendedSpace: ExtendedSpace) {
     const formData = clone(extendedSpace);
     delete formData.id;
@@ -87,20 +100,21 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     formData.children = formData.children.map(child => child.id) || [];
     formData.parent = formData.parent?.id || '';
 
-    form.value = formData;
-    initialFormState.value = clone(formData);
-  }
+    if (formData.validation.name === 'basic' && !formData.filters.minScore)
+      formData.validation.name = 'any';
+    if (
+      formData.validation.name === 'nouns' ||
+      formData.validation.name === 'aave'
+    )
+      formData.validation.name = 'basic';
 
-  function pruneForm(formData) {
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value === null || value === '') delete formData[key];
-    });
-    return formData;
+    form.value = clone(formData);
+    initialFormState.value = clone(formData);
   }
 
   const { getValidationMessage, validationResult, isValid } = useFormValidation(
     schemas.space,
-    computed(() => pruneForm(form.value))
+    computed(() => prunedForm.value)
   );
 
   function getValidation(field: string): { message: string; push: boolean } {
@@ -134,10 +148,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   return {
     form,
+    prunedForm,
     validationResult,
     isValid,
     isReadyToSubmit,
     showAllValidationErrors,
+    hasFormChanged,
     populateForm,
     getValidation,
     resetForm,
