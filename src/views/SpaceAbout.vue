@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
@@ -31,6 +31,8 @@ type Moderator = {
   roles: string[];
 };
 
+const isModalStrategiesOpen = ref(false);
+
 const spaceMembers = computed(() => {
   const authors = props.space.members.map(member => {
     return {
@@ -59,7 +61,9 @@ const spaceMembers = computed(() => {
     .reduce<Moderator[]>((acc, curr) => {
       const existing = acc.find(member => member.id === curr.id);
       if (existing) {
-        existing.roles = existing.roles.concat(curr.roles);
+        if (curr.roles[0] === 'admin') {
+          existing.roles = curr.roles;
+        }
       } else {
         acc.push(curr);
       }
@@ -74,7 +78,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <TheLayout>
+  <TheLayout v-bind="$attrs">
     <template #sidebar-left>
       <SpaceSidebar :space="space" />
     </template>
@@ -108,15 +112,27 @@ onMounted(() => {
       <BaseBlock
         v-if="space.strategies"
         :title="$t('settings.strategies.label')"
-        class="mt-3"
+        :counter="space.strategies.length"
+        show-more-button
+        show-more-button-label="seeAll"
         slim
+        class="mt-3"
+        @show-more="isModalStrategiesOpen = true"
       >
-        <SpaceAboutStrategiesList :strategies="space.strategies" />
+        <div class="grid grid-cols-1 gap-4 p-4 px-0 md:px-4">
+          <StrategiesListItem
+            v-for="(strategy, i) in space.strategies.slice(0, 2)"
+            :key="i"
+            :strategy="strategy"
+            class="!mb-0"
+          />
+        </div>
       </BaseBlock>
 
       <BaseBlock
-        v-if="space?.admins?.length"
+        v-if="spaceMembers.length"
         :title="$t('spaceMembers')"
+        :counter="spaceMembers.length"
         class="mt-3"
         slim
       >
@@ -151,4 +167,11 @@ onMounted(() => {
       </BaseBlock>
     </template>
   </TheLayout>
+  <teleport to="#modal">
+    <ModalStrategies
+      :open="isModalStrategiesOpen"
+      :strategies="space.strategies"
+      @close="isModalStrategiesOpen = false"
+    />
+  </teleport>
 </template>
