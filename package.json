@@ -46,7 +46,7 @@
     "@snapshot-labs/snapshot.js": "^0.4.70",
     "@vue/apollo-composable": "4.0.0-alpha.18",
     "@vueuse/core": "^9.1.1",
-    "@vueuse/head": "^1.1.8",
+    "@vueuse/head": "^1.1.23",
     "autolinker": "^4.0.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.23.1",
