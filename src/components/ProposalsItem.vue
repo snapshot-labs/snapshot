@@ -10,6 +10,7 @@ const props = defineProps<{
   voted: boolean;
   to: Record<string, unknown>;
   hideSpaceAvatar?: boolean;
+  showVerifiedIcon?: boolean;
 }>();
 
 const body = computed(() => removeMd(props.proposal.body));
@@ -32,6 +33,12 @@ const body = computed(() => removeMd(props.proposal.body));
                   <span
                     class="ml-2 text-skin-link"
                     v-text="proposal.space.name"
+                  />
+                  <IconVerifiedSpace
+                    v-if="showVerifiedIcon"
+                    :space-id="space.id"
+                    class="pl-[2px]"
+                    size="18"
                   />
                 </div>
               </LinkSpace>
