@@ -37,7 +37,7 @@ const selectedItems = computed({
     )
 });
 
-function isDisabled(item: string) {
+function isItemDisabled(item: string) {
   if (!props.limit) return false;
   if (selectedItems.value.length < props.limit) return false;
   return !selectedItems.value.some(selectedItem => selectedItem.value === item);
@@ -98,7 +98,7 @@ function isDisabled(item: string) {
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"
-              :disabled="isDisabled(item.value)"
+              :disabled="isItemDisabled(item.value)"
             >
               <li
                 :class="[
