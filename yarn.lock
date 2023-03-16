@@ -951,17 +951,25 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@floating-ui/core@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.0.0.tgz#ec1d31f54c72dd0460276e2149e59bd13c0f01f6"
-  integrity sha512-sm3nW0hHAxTv3gRDdCH8rNVQxijF+qPFo5gAeXCErRjKC7Qc28lIQ3R9Vd7Gw+KgwfA7RhRydDFuGeI0peGq7A==
+"@floating-ui/core@^1.0.0", "@floating-ui/core@^1.2.3":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.2.4.tgz#89e6311b021190c9e121fcf20306e76ac66e4066"
+  integrity sha512-SQOeVbMwb1di+mVWWJLpsUTToKfqVNioXys011beCAhyOIFtS+GQoW4EQSneuxzmQKddExDwQ+X0hLl4lJJaSQ==
 
-"@floating-ui/dom@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.0.0.tgz#66923a56755b6cb7a5958ecf25fe293912672d65"
-  integrity sha512-PMqJvY5Fae8HVQgUqM+lidprS6p9LSvB0AUhCdYKqr3YCaV+WaWCeVNBtXPRY2YIdrgcsL2+vd5F07FxgihHUw==
+"@floating-ui/dom@^1.0.0", "@floating-ui/dom@^1.2.1":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.2.4.tgz#e2eb2674f57fc182c425587e48ea43e336f4b8f8"
+  integrity sha512-4+k+BLhtWj+peCU60gp0+rHeR8+Ohqx6kjJf/lHMnJ8JD5Qj6jytcq1+SZzRwD7rvHKRhR7TDiWWddrNrfwQLg==
   dependencies:
-    "@floating-ui/core" "^1.0.0"
+    "@floating-ui/core" "^1.2.3"
+
+"@floating-ui/vue@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@floating-ui/vue/-/vue-0.2.1.tgz#a52b66e020897ad0535d0d0d3b09932446fc6231"
+  integrity sha512-HE+EIeakID7wI6vUwF0yMpaW48bNaPj8QtnQaRMkaQFhQReVBA4bY6fmJ3J7X+dqVgDbMhyfCG0fBJfdQMdWxQ==
+  dependencies:
+    "@floating-ui/dom" "^1.2.1"
+    vue-demi "^0.13.11"
 
 "@gnosis.pm/safe-apps-provider@^0.14.0":
   version "0.14.0"
@@ -1003,13 +1011,14 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui-float/vue@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.9.1.tgz#795d7fc11bb478160b4c3ee057690834a6495e2d"
-  integrity sha512-G+o6+clNTEZ6ifwzj/kuB/Zn9lxtcQH07CCjK3UJAgObf10fm76+xrwpcv13rkmoFygcwzKRxMjIKhT7DL4KIQ==
+"@headlessui-float/vue@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.0.tgz#4a7038585c635b128527c2d4efea5777c6eb97af"
+  integrity sha512-7myI+hZdgnuKVdOIFIKXrgda67YP74PU644kGJ8MGpXjh7ZWa9gF3IaAi0jM3YswUx6vKS4Rm8+bkGhcdWxB/Q==
   dependencies:
     "@floating-ui/core" "^1.0.0"
     "@floating-ui/dom" "^1.0.0"
+    "@floating-ui/vue" "^0.2.0"
 
 "@headlessui/vue@^1.7.12":
   version "1.7.12"
@@ -13635,6 +13644,11 @@ vue-demi@*, vue-demi@^0.13.1:
   version "0.13.1"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.1.tgz#7604904c88be338418a10abbc94d5b8caa14cb8c"
   integrity sha512-xmkJ56koG3ptpLnpgmIzk9/4nFf4CqduSJbUM0OdPoU87NwRuZ6x49OLhjSa/fC15fV+5CbEnrxU4oyE022svg==
+
+vue-demi@^0.13.11:
+  version "0.13.11"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
+  integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
 
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
