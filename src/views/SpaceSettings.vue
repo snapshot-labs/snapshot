@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { useConfirmDialog } from '@vueuse/core';
 
 import {
   useI18n,
@@ -133,12 +134,17 @@ onMounted(async () => {
   loaded.value = true;
 });
 
-onBeforeRouteLeave(() => {
+const {
+  isRevealed: isConfirmLeaveOpen,
+  reveal: openConfirmLeave,
+  confirm: confirmLeave,
+  cancel: cancelLeave
+} = useConfirmDialog();
+
+onBeforeRouteLeave(async () => {
   if (hasFormChanged.value) {
-    const answer = window.confirm(
-      'Do you really want to leave? you have unsaved changes!'
-    );
-    if (!answer) return false;
+    const { data } = await openConfirmLeave();
+    if (!data) return false;
   }
 });
 </script>
@@ -279,6 +285,16 @@ onBeforeRouteLeave(() => {
           {{ $t('setup.controllerHasAuthority') + '.' }}
         </p>
       </div>
+    </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmLeaveOpen"
+      show-cancel
+      @close="cancelLeave"
+      @confirm="confirmLeave(true)"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmLeaveMessage') }}
+      </BaseMessageBlock>
     </ModalConfirmAction>
   </teleport>
 </template>

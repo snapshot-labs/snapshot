@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   open: boolean;
+  showCancel?: boolean;
 }>();
 
 defineEmits(['close', 'confirm']);
@@ -15,14 +16,25 @@ defineEmits(['close', 'confirm']);
     </template>
 
     <slot />
+
     <template #footer>
-      <BaseButton
-        class="w-full"
-        primary
-        @click="$emit('confirm'), $emit('close')"
-      >
-        {{ $t('confirm') }}
-      </BaseButton>
+      <div class="flex gap-3">
+        <BaseButton
+          v-if="showCancel"
+          class="w-full"
+          primary
+          @click="$emit('close')"
+        >
+          {{ $t('cancel') }}
+        </BaseButton>
+        <BaseButton
+          class="w-full"
+          primary
+          @click="$emit('confirm'), $emit('close')"
+        >
+          {{ $t('confirm') }}
+        </BaseButton>
+      </div>
     </template>
   </BaseModal>
 </template>
