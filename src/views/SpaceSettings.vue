@@ -191,7 +191,10 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.STRATEGIES">
-            <SettingsStrategiesBlock context="settings" />
+            <SettingsStrategiesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">

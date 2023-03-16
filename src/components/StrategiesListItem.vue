@@ -8,20 +8,35 @@ import { Proposal, SpaceStrategy } from '@/helpers/interfaces';
 defineProps<{
   strategy: SpaceStrategy;
   proposal?: Proposal;
+  showDelete?: boolean;
+  showEdit?: boolean;
 }>();
+
+defineEmits(['delete', 'edit']);
 </script>
 
 <template>
-  <BaseBlock slim class="mb-3 p-4 text-skin-link">
-    <div class="flex items-center justify-between">
+  <BaseBlock slim class="group mb-3 p-4 text-skin-link">
+    <div class="items-center justify-between sm:flex">
       <h3 v-text="strategy.name" />
-
-      <ButtonPlayground
-        :name="strategy.name"
-        :network="strategy.network || proposal?.network"
-        :params="strategy.params"
-        :snapshot="proposal?.snapshot"
-      />
+      <div class="my-3 flex">
+        <div
+          class="flex shrink flex-row-reverse items-center gap-3 sm:my-0 sm:flex-row"
+        >
+          <BaseButtonIcon v-if="showDelete" @click="$emit('delete')">
+            <i-ho-trash />
+          </BaseButtonIcon>
+          <BaseButtonIcon v-if="showEdit" @click="$emit('edit')">
+            <i-ho-pencil />
+          </BaseButtonIcon>
+          <ButtonPlayground
+            :name="strategy.name"
+            :network="strategy.network || proposal?.network"
+            :params="strategy.params"
+            :snapshot="proposal?.snapshot"
+          />
+        </div>
+      </div>
     </div>
 
     <div>
