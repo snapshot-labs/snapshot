@@ -48,10 +48,10 @@ const items = computed(() => [
         class="flex items-center justify-between border-b px-4 py-3 last:border-b-0"
       >
         <div>
-          <div class="font-semibold">
+          <div class="font-semibold text-skin-heading">
             {{ item.title }}
           </div>
-          <div class="opacity-80">
+          <div>
             {{ item.description }}
           </div>
         </div>
