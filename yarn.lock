@@ -1020,10 +1020,10 @@
     "@floating-ui/dom" "^1.0.0"
     "@floating-ui/vue" "^0.2.0"
 
-"@headlessui/vue@^1.7.2":
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.2.tgz#da0bb42bcc3e21636f8621322115c3a93adf2331"
-  integrity sha512-nmmFpQxnAy6zgf5r0pwdAH3Qw2IsSbTgvkpov9RkEVE8A6aPAT4iaAaPEAzdI+sPL5Wby05mhciJXSqtkLu+vQ==
+"@headlessui/vue@^1.7.12":
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.12.tgz#963b2eb2f548278c49f2d1e67f0a4a84f54078da"
+  integrity sha512-IV0k1I2I8Bj37HljFF231Y9cpldfiucf+inMCxA/VPoQT6UTxo0N/rb78CrogBxXNfsPxKmz3y/nlv+eRz6zvg==
 
 "@humanwhocodes/config-array@^0.10.4":
   version "0.10.4"
@@ -2406,11 +2406,15 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-2.3.4.tgz#966a6279060eb2d9d1a02ea1a331af071afdcf9e"
   integrity sha512-IfFNbtkbIm36O9KB8QodlwwYvTEsJb4Lll4c2IwB3VHc2gie2mSPtSzL0eYay7X2jd/2WX02FjSGTWR6OPr/zg==
 
-"@vitest/ui@^0.23.4":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.23.4.tgz#87b77ad9f92b18ebc50a7380b703753069dc17fa"
-  integrity sha512-lNZVTTrkHThGAwNQ1ah1qCNnm70r7OLB5LCUdSqboStve/1eKTrtt27QfDSSUTG8AVJQzU0eaN/j8UocH+CqfA==
+"@vitest/ui@^0.29.3":
+  version "0.29.3"
+  resolved "https://registry.yarnpkg.com/@vitest/ui/-/ui-0.29.3.tgz#568194b11d12d57610e755e0643fe8dc748cea68"
+  integrity sha512-6xJyLhfSBRCzMbI9ip4BI7KIMnIM5cqOFl1sj4GSuHfRai17Q3FYZRcNvgo4TlE0f38/MSXDfjOc35/ZepYIWw==
   dependencies:
+    fast-glob "^3.2.12"
+    flatted "^3.2.7"
+    pathe "^1.1.0"
+    picocolors "^1.0.0"
     sirv "^2.0.2"
 
 "@vue/apollo-composable@4.0.0-alpha.18":
@@ -7433,10 +7437,10 @@ flat-cache@^3.0.4:
     flatted "^3.1.0"
     rimraf "^3.0.2"
 
-flatted@^3.1.0:
-  version "3.2.5"
-  resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.5.tgz#76c8584f4fc843db64702a6bd04ab7a8bd666da3"
-  integrity sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==
+flatted@^3.1.0, flatted@^3.2.7:
+  version "3.2.7"
+  resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.7.tgz#609f39207cb614b89d0765b477cb2d437fbf9787"
+  integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
 follow-redirects@^1.0.0:
   version "1.15.2"
@@ -10845,6 +10849,11 @@ path-type@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
+
+pathe@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/pathe/-/pathe-1.1.0.tgz#e2e13f6c62b31a3289af4ba19886c230f295ec03"
+  integrity sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==
 
 pathval@^1.1.1:
   version "1.1.1"
