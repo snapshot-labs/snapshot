@@ -5,6 +5,7 @@ import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form, getValidation } = useFormSpaceSettings(props.context);
@@ -23,6 +24,7 @@ const avatarNotReactive = ref(form.value.avatar);
                 {{ $t('settings.avatar') }}
               </LabelInput>
               <InputUploadAvatar
+                :is-view-only="isViewOnly"
                 class="h-[80px]"
                 @image-uploaded="url => (form.avatar = url)"
                 @image-remove="() => (form.avatar = '')"
@@ -37,6 +39,7 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarOverlayEdit
                       :loading="uploading"
                       :avatar="form?.avatar"
+                      :is-view-only="isViewOnly"
                     />
                     <div
                       class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
@@ -55,6 +58,7 @@ const avatarNotReactive = ref(form.value.avatar);
             :error="getValidation('name')"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
+            :is-disabled="isViewOnly"
             focus-on-mount
           />
 
@@ -64,10 +68,12 @@ const avatarNotReactive = ref(form.value.avatar);
             class="s-input !rounded-3xl"
             :max-length="schemas.space.properties.about.maxLength"
             :placeholder="$t('settings.about.placeholder')"
+            :is-disabled="isViewOnly"
           />
 
           <ListboxMultipleCategories
             :categories="form.categories"
+            :is-disabled="isViewOnly"
             @update-categories="value => (form.categories = value)"
           />
 
@@ -76,6 +82,7 @@ const avatarNotReactive = ref(form.value.avatar);
             :title="$t('settings.website')"
             :error="getValidation('website')"
             :max-length="schemas.space.properties.website.maxLength"
+            :is-disabled="isViewOnly"
             placeholder="e.g. https://www.example.com"
           />
 
@@ -84,11 +91,13 @@ const avatarNotReactive = ref(form.value.avatar);
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
             :error="getValidation('terms')"
+            :is-disabled="isViewOnly"
             placeholder="e.g. https://example.com/terms"
           />
 
           <InputSwitch
             v-model="form.private"
+            :is-disabled="isViewOnly"
             class="!mt-3"
             :text-right="$t('settings.hideSpace')"
           />
