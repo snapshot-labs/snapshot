@@ -3,9 +3,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'daily'
-    allow:
-      # Allow updates for snapshot.js only
+      interval: 'weekly'
   - package-ecosystem: 'gitsubmodule'
     directory: '/'
     schedule:
