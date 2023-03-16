@@ -39,6 +39,13 @@ const spaceMembers = computed(() => {
     };
   });
 
+  const moderators = props.space.moderators.map(moderator => {
+    return {
+      id: moderator,
+      roles: ['moderator']
+    };
+  });
+
   const admins = props.space.admins.map(admin => {
     return {
       id: admin,
@@ -46,15 +53,18 @@ const spaceMembers = computed(() => {
     };
   });
 
-  return authors.concat(admins).reduce<Moderator[]>((acc, curr) => {
-    const existing = acc.find(member => member.id === curr.id);
-    if (existing) {
-      existing.roles = existing.roles.concat(curr.roles);
-    } else {
-      acc.push(curr);
-    }
-    return acc;
-  }, [] as Moderator[]);
+  return authors
+    .concat(moderators)
+    .concat(admins)
+    .reduce<Moderator[]>((acc, curr) => {
+      const existing = acc.find(member => member.id === curr.id);
+      if (existing) {
+        existing.roles = existing.roles.concat(curr.roles);
+      } else {
+        acc.push(curr);
+      }
+      return acc;
+    }, [] as Moderator[]);
 });
 
 onMounted(() => {
@@ -115,14 +125,23 @@ onMounted(() => {
           <div class="space-x-2">
             <BasePill
               v-if="mod.roles.includes('admin')"
-              v-tippy="{ content: $t('settings.admins.information') }"
+              v-tippy="{ content: $t('settings.members.admin.description') }"
               class="cursor-help py-1"
             >
               admin
             </BasePill>
             <BasePill
+              v-if="mod.roles.includes('moderator')"
+              v-tippy="{
+                content: $t('settings.members.moderator.description')
+              }"
+              class="cursor-help py-1"
+            >
+              moderator
+            </BasePill>
+            <BasePill
               v-if="mod.roles.includes('author')"
-              v-tippy="{ content: $t('settings.authors.information') }"
+              v-tippy="{ content: $t('settings.members.author.description') }"
               class="cursor-help py-1"
             >
               author
