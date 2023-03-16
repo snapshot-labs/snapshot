@@ -6,13 +6,15 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { ensureRightNetwork } from './SafeTransactions.vue';
 import { useIntl } from '@/composables/useIntl';
+import { formatUnits } from '@ethersproject/units';
 
 import {
   useWeb3,
   useI18n,
   useFlashNotification,
   useTxStatus,
-  useSafe
+  useSafe,
+  useQuorum
 } from '@/composables';
 
 const { formatDuration } = useIntl();
@@ -22,6 +24,7 @@ const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
+const { quorum } = useQuorum();
 
 const props = defineProps([
   'batches',
@@ -356,7 +359,10 @@ onMounted(async () => {
                 }}</strong>
                 <span class="float-right text-skin-link">
                   {{
-                    questionDetails.minimumBond.toString() +
+                    formatUnits(
+                      questionDetails.minimumBond,
+                      questionDetails.decimals
+                    ) +
                     ' ' +
                     questionDetails.symbol
                   }}
@@ -372,6 +378,12 @@ onMounted(async () => {
               </div>
             </div>
             <div>
+              <BaseMessage
+                v-if="Number(props.proposal.scores_total) < Number(quorum)"
+                level="warning-red"
+              >
+                {{ $t('safeSnap.labels.quorumWarning') }}
+              </BaseMessage>
               <BaseMessage
                 v-if="
                   Number(questionDetails.minimumBond.toString()) >
@@ -389,7 +401,8 @@ onMounted(async () => {
               class="my-1 w-full"
               :disabled="
                 Number(questionDetails.minimumBond.toString()) >
-                Number(questionDetails.userBalance.toString())
+                  Number(questionDetails.userBalance.toString()) ||
+                Number(props.proposal.scores_total) < Number(quorum)
               "
             >
               {{ $t('safeSnap.labels.request') }}
