@@ -59,7 +59,8 @@ const {
   loadEnsOwner,
   isEnsOwner,
   loadSpaceController,
-  isSpaceController
+  isSpaceController,
+  ensOwner
 } = useSpaceController();
 
 enum Page {
@@ -210,6 +211,7 @@ onBeforeRouteLeave(async () => {
             <SettingsDomainBlock context="settings" />
             <SettingsDangerzoneBlock
               :is-controller="isSpaceController"
+              :ens-owner="ensOwner"
               :is-owner="isEnsOwner"
               :is-setting-ens-record="settingENSRecord"
               @change-controller="modalControllerEditOpen = true"
