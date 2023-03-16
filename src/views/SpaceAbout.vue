@@ -113,7 +113,7 @@ onMounted(() => {
         v-if="space.strategies"
         :title="$t('settings.strategies.label')"
         :counter="space.strategies.length"
-        show-more-button
+        :show-more-button="space.strategies.length > 2"
         show-more-button-label="seeAll"
         slim
         class="mt-3"
