@@ -11,11 +11,11 @@ const snapshotTextLinks = [
   {
     text: 'blog',
     link: 'https://snapshot.mirror.xyz/'
-  },
-  {
-    text: 'jobs',
-    link: 'https://angel.co/company/snapshot-labs_/jobs'
   }
+  // {
+  //   text: 'jobs',
+  //   link: 'https://angel.co/company/snapshot-labs_/jobs'
+  // }
 ];
 
 const resourcesTextLinks = [

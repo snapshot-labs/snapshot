@@ -44,15 +44,28 @@ export function useExtendedSpaces() {
     }
   }
 
-  const reloadSpace = (id: string) => {
-    const spaceToReload = extendedSpaces.value?.find(space => space.id === id);
-    if (spaceToReload) {
-      extendedSpaces.value = extendedSpaces.value.filter(
-        space => space.id !== id
+  async function reloadSpace(id: string) {
+    try {
+      const space = await apolloQuery(
+        {
+          query: SPACES_QUERY,
+          variables: {
+            id_in: [id]
+          }
+        },
+        'spaces'
       );
-      loadExtendedSpaces([id]);
+      space.map(mapOldPluginNames);
+
+      extendedSpaces.value = extendedSpaces.value.filter(
+        s => s.id !== space[0].id
+      );
+      extendedSpaces.value = [...extendedSpaces.value, ...space];
+    } catch (e) {
+      console.error(e);
+      return e;
     }
-  };
+  }
 
   return {
     loadExtendedSpaces,

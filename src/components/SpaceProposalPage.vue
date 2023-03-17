@@ -122,15 +122,19 @@ function handleBackClick() {
   return router.go(-1);
 }
 
+function handleChoiceQuery() {
+  const choice = route.query.choice as string;
+  if (web3Account.value && choice && props.proposal.state === 'active') {
+    selectedChoices.value = parseInt(choice);
+    clickVote();
+  }
+}
+
 watch(
   web3Account,
   () => {
     loadUserVote();
-    const choice = route.query.choice as string;
-    if (web3Account.value && choice) {
-      selectedChoices.value = parseInt(choice);
-      clickVote();
-    }
+    handleChoiceQuery();
   },
   { immediate: true }
 );

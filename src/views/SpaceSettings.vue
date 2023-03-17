@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { useConfirmDialog } from '@vueuse/core';
 
 import {
   useI18n,
@@ -37,10 +39,11 @@ const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
 const {
-  form,
   validationResult,
   isValid,
   isReadyToSubmit,
+  hasFormChanged,
+  prunedForm,
   populateForm,
   resetForm
 } = useFormSpaceSettings('settings');
@@ -109,21 +112,18 @@ async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const result = await send({ id: props.space.id }, 'settings', form.value);
+  const result = await send(
+    { id: props.space.id },
+    'settings',
+    prunedForm.value
+  );
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
-    reloadSpace(props.space.id);
-  }
-}
-
-async function handleSetRecord() {
-  const tx = await setRecord();
-  const receipt = await tx.wait();
-  if (receipt) {
-    reloadSpace(props.space.id);
+    await reloadSpace(props.space.id);
+    populateForm(props.space);
   }
 }
 
@@ -132,6 +132,20 @@ onMounted(async () => {
   await loadEnsOwner();
   await loadSpaceController();
   loaded.value = true;
+});
+
+const {
+  isRevealed: isConfirmLeaveOpen,
+  reveal: openConfirmLeave,
+  confirm: confirmLeave,
+  cancel: cancelLeave
+} = useConfirmDialog();
+
+onBeforeRouteLeave(async () => {
+  if (hasFormChanged.value) {
+    const { data } = await openConfirmLeave();
+    if (!data) return false;
+  }
 });
 </script>
 
@@ -259,7 +273,7 @@ onMounted(async () => {
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"
       @close="modalConfirmSetTextRecordOpen = false"
-      @confirm="handleSetRecord"
+      @confirm="setRecord"
     >
       <div class="m-4 space-y-4 text-skin-link">
         <p>
@@ -271,6 +285,16 @@ onMounted(async () => {
           {{ $t('setup.controllerHasAuthority') + '.' }}
         </p>
       </div>
+    </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmLeaveOpen"
+      show-cancel
+      @close="cancelLeave"
+      @confirm="confirmLeave(true)"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmLeaveMessage') }}
+      </BaseMessageBlock>
     </ModalConfirmAction>
   </teleport>
 </template>
