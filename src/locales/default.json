@@ -117,7 +117,7 @@
   "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "end {0}",
-  "contectHash": "Content hash",
+  "contentHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
@@ -352,7 +352,7 @@
     },
     "network": {
       "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
+      "information": "The default network used for this space. Networks can also be specified in individual strategies"
     },
     "symbol": {
       "label": "Symbol",
@@ -452,7 +452,7 @@
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
+    "orRegisterNewEns": "Or register a new domain:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
