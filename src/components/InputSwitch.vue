@@ -19,7 +19,7 @@ const emit = defineEmits(['update:modelValue']);
       :model-value="modelValue"
       :class="[
         modelValue ? 'bg-green' : 'bg-skin-border',
-        { 'cursor-not-allowed': isDisabled }
+        { '!cursor-not-allowed': isDisabled }
       ]"
       :disabled="isDisabled"
       class="relative inline-flex h-[22px] w-[38px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent outline-offset-2 transition-colors duration-200 ease-in-out"
