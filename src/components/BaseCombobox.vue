@@ -50,6 +50,7 @@ watch(
           spellcheck="false"
           :display-value="(item: any) => item.name"
           :class="{ 'cursor-not-allowed': isDisabled }"
+          :disabled="isDisabled"
           @change="emit('search', $event.target.value)"
         />
       </ComboboxButton>
