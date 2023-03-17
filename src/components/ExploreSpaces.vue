@@ -74,10 +74,13 @@ const { endElement } = useScrollMonitor(() => {
                   class="mb-1"
                 />
               </div>
-              <h3
-                class="mb-0 mt-0 !h-[32px] overflow-hidden pb-0 text-[22px]"
-                v-text="shorten(space.name, 16)"
-              />
+              <div class="flex items-center justify-center gap-1 truncate">
+                <h3
+                  class="mb-0 mt-0 !h-[32px] overflow-hidden pb-0 text-[22px]"
+                  v-text="shorten(space.name, 16)"
+                />
+                <IconVerifiedSpace :space-id="space.id" class="pt-[1px]" />
+              </div>
               <div class="mb-[12px] text-skin-text">
                 {{
                   $tc('members', space.followers, {
