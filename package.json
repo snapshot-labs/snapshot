@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.6.7",
-    "@braintree/sanitize-url": "^6.0.0",
+    "@braintree/sanitize-url": "^6.0.2",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/address": "^5.7.0",
