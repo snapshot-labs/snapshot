@@ -37,6 +37,7 @@ const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
+const votes = ref([]);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -185,6 +186,7 @@ onMounted(() => {
           :results="results"
           :loaded-results="loadedResults"
           :strategies="strategies"
+          :votes="votes"
         />
       </div>
     </template>
@@ -212,6 +214,7 @@ onMounted(() => {
           :results="results"
           :loaded-results="loadedResults"
           :strategies="strategies"
+          :votes="votes"
         />
       </div>
     </template>
