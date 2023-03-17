@@ -37,7 +37,7 @@ const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
-const votes = ref([]);
+const votes = ref<Vote[]>([]);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -177,6 +177,7 @@ onMounted(() => {
           :proposal="proposal"
           :strategies="strategies"
           :user-vote="userVote"
+          @votes="votes = $event"
         />
         <SpaceProposalPlugins
           v-if="proposal?.plugins && loadedResults && results"
