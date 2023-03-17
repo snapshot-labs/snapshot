@@ -43,3 +43,4 @@ export { useQuorum } from './useQuorum';
 export { useReportDownload } from './useReportDownload';
 export { useGnosis } from './useGnosis';
 export { useSnapshot } from './useSnapshot';
+export { useProposalVotesList } from './useProposalVotesList';
