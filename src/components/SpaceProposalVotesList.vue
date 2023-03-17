@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import uniqBy from 'lodash/uniqBy';
+import { ref, computed, onMounted } from 'vue';
+import { useProposalVotesList, useReportDownload } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,
   Vote,
   SpaceStrategy
 } from '@/helpers/interfaces';
-import { useProfiles, useWeb3, useReportDownload } from '@/composables';
-import { getProposalVotes } from '@/helpers/snapshot';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -18,82 +15,27 @@ const props = defineProps<{
   userVote: Vote | null;
 }>();
 
-const { web3Account } = useWeb3();
+const emit = defineEmits(['votes']);
 
-const votes = ref<Vote[]>([]);
-const loadedVotes = ref(false);
-const authorIpfsHash = ref('');
-const modalReceiptOpen = ref(false);
+const { isZero, votes, loadedVotes, sortedVotes, loadVotes, profiles } =
+  useProposalVotesList(props.proposal, props.userVote);
+
 const modalVotesmOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
-const sortedVotes = computed(() => {
-  const votesClone = clone(votes.value);
-  if (props.userVote) votesClone.push(props.userVote);
-  const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
-  if (uniqVotes.map(vote => vote.voter).includes(web3Account.value)) {
-    uniqVotes.unshift(
-      uniqVotes.splice(
-        uniqVotes.findIndex(item => item.voter === web3Account.value),
-        1
-      )[0]
-    );
-  } else {
-    uniqVotes.sort((a, b) => b.balance - a.balance);
-  }
-  return uniqVotes;
-});
-
-const titles = computed(() =>
-  props.strategies.map(strategy => strategy.params.symbol || '')
-);
-
-function isZero() {
-  if (!loadedVotes.value) return true;
-  if (votes.value.length > 0) return true;
-}
-
-function openReceiptModal(iphsHash) {
-  authorIpfsHash.value = iphsHash;
-  modalReceiptOpen.value = true;
-}
-
-const { profiles, loadProfiles } = useProfiles();
-
-watch(sortedVotes, () => {
-  loadProfiles(sortedVotes.value.map(vote => vote.voter));
-});
-
 const { downloadVotes, isDownloadingVotes } = useReportDownload();
 
-function formatProposalVotes(votes) {
-  if (!votes.length) return [];
-  return votes.map(vote => {
-    vote.balance = vote.vp;
-    vote.scores = vote.vp_by_strategy;
-    return vote;
-  });
-}
-
-async function loadVotes() {
-  const votesRes = await getProposalVotes(props.proposal.id, {
-    first: 6,
-    space: props.proposal.space.id
-  });
-
-  votes.value = formatProposalVotes(votesRes);
-  loadedVotes.value = true;
-}
-
 onMounted(() => {
-  loadVotes();
+  loadVotes(6).then(() => {
+    emit('votes', votes.value);
+  });
 });
 </script>
 
 <template>
   <BaseBlock
-    v-if="isZero()"
+    v-if="!isZero"
     :title="$t('votes')"
     :counter="voteCount"
     :loading="!loadedVotes"
@@ -116,10 +58,8 @@ onMounted(() => {
       :profiles="profiles"
       :space="space"
       :proposal="proposal"
-      :titles="titles"
       :class="{ '!border-0': i === 0 }"
       :data-testid="`proposal-votes-list-item-${i}`"
-      @open-receipt-modal="openReceiptModal"
     />
     <a
       v-if="sortedVotes.length < voteCount"
@@ -129,15 +69,9 @@ onMounted(() => {
       <span v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
-      <ModalReceipt
-        :open="modalReceiptOpen"
-        :author-ipfs-hash="authorIpfsHash"
-        @close="modalReceiptOpen = false"
-      />
       <SpaceProposalVotesModal
         :space="space"
         :proposal="proposal"
-        :votes="votes"
         :strategies="strategies"
         :user-vote="userVote"
         :open="modalVotesmOpen"

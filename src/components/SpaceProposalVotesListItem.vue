@@ -1,17 +1,24 @@
 <script lang="ts" setup>
+import { computed, ref } from 'vue';
 import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
 import { useIntl } from '@/composables';
-import { shorten } from '@/helpers/utils';
+import { shorten, getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   vote: Vote;
   profiles: Record<string, Profile>;
-  titles: Record<string, any>;
 }>();
 
 defineEmits(['openReceiptModal']);
+
+const authorIpfsHash = ref('');
+const relayerIpfsHash = ref('');
+
+const titles = computed(() =>
+  props.proposal.strategies.map(strategy => strategy.params.symbol || '')
+);
 
 const { formatCompactNumber } = useIntl();
 </script>
@@ -47,9 +54,56 @@ const { formatCompactNumber } = useIntl();
           )}`
         }}
       </span>
-      <BaseButtonIcon @click="$emit('openReceiptModal', vote.ipfs)">
-        <BaseIcon name="signature" />
-      </BaseButtonIcon>
+      <BasePopover>
+        <template #button>
+          <BaseButtonIcon @click="authorIpfsHash = vote.ipfs">
+            <BaseIcon name="signature" />
+          </BaseButtonIcon>
+        </template>
+        <template #content>
+          <div class="m-4 space-y-4">
+            <h3>{{ $t('receipt') }}</h3>
+            <BaseBlock slim class="p-4 text-skin-link">
+              <div class="flex">
+                <span
+                  class="mr-1 flex-auto text-skin-text"
+                  v-text="$t('author')"
+                />
+                <BaseLink
+                  :link="getIpfsUrl(authorIpfsHash)"
+                  class="text-skin-link"
+                >
+                  #{{ authorIpfsHash.slice(0, 7) }}
+                </BaseLink>
+              </div>
+              <div v-if="relayerIpfsHash" class="flex">
+                <span
+                  class="mr-1 flex-auto text-skin-text"
+                  v-text="$t('relayer')"
+                />
+                <BaseLink
+                  :link="getIpfsUrl(relayerIpfsHash)"
+                  class="text-skin-link"
+                >
+                  #{{ relayerIpfsHash.slice(0, 7) }}
+                </BaseLink>
+              </div>
+            </BaseBlock>
+            <BaseLink
+              :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
+              class="mb-2 block"
+              hide-external-icon
+            >
+              <BaseButton class="w-full">
+                {{ $t('verifyOnSignatorio') }}
+                <i-ho-external-link
+                  class="ml-1 mb-[2px] inline-block text-xs"
+                />
+              </BaseButton>
+            </BaseLink>
+          </div>
+        </template>
+      </BasePopover>
       <BaseButtonIcon
         v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
         v-tippy="{
