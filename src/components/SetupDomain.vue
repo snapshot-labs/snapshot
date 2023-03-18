@@ -148,7 +148,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </template>
           </div>
           <div class="mt-4">
-            {{ $t('setup.orReigsterNewEns') }}
+            {{ $t('setup.orRegisterNewEns') }}
           </div>
         </div>
         <div>
