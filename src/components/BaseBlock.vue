@@ -11,7 +11,12 @@ defineProps<{
   labelTooltip?: string;
   information?: string;
   isCollapsable?: boolean;
+  showMoreButton?: boolean;
+  showMoreButtonLabel?: string;
+  loadingMore?: boolean;
 }>();
+
+defineEmits(['showMore']);
 
 const isCollapsed = ref(true);
 </script>
@@ -73,6 +78,15 @@ const isCollapsed = ref(true);
         class="leading-5 sm:leading-6"
       >
         <slot />
+        <div
+          v-if="showMoreButton"
+          class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+        >
+          <LoadingSpinner v-if="loadingMore" />
+          <button v-else @click="$emit('showMore')">
+            <span v-text="$t(showMoreButtonLabel || 'seeMore')" />
+          </button>
+        </div>
       </div>
     </Transition>
   </div>

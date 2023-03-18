@@ -4,6 +4,7 @@ import { useCategories } from '@/composables';
 
 const props = defineProps<{
   categories: string[];
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['updateCategories']);
@@ -35,5 +36,6 @@ const selectedCategories = computed({
       }))
     "
     :limit="2"
+    :is-disabled="isDisabled"
   />
 </template>
