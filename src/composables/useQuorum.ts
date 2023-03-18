@@ -1,5 +1,5 @@
-import { computed, ref } from 'vue';
-import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
+import { computed, ref, onMounted } from 'vue';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
@@ -9,7 +9,6 @@ interface QuorumProps {
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  votes: Vote[];
 }
 
 export function useQuorum(props: QuorumProps) {
@@ -102,8 +101,9 @@ export function useQuorum(props: QuorumProps) {
     loading.value = false;
   }
 
+  onMounted(() => loadQuorum());
+
   return {
-    loadQuorum,
     loadingQuorum: loading,
     totalQuorumScore,
     quorum
