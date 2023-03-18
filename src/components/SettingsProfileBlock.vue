@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings } from '@/composables';
+import { useFormSpaceSettings, useApp } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -9,6 +9,7 @@ const props = defineProps<{
 }>();
 
 const { form, getValidation } = useFormSpaceSettings(props.context);
+const { env } = useApp();
 
 const avatarNotReactive = ref(form.value.avatar);
 </script>
@@ -24,7 +25,7 @@ const avatarNotReactive = ref(form.value.avatar);
                 {{ $t('settings.avatar') }}
               </LabelInput>
               <InputUploadAvatar
-                :is-view-only="isViewOnly"
+                :is-view-only="isViewOnly || env === 'demo'"
                 class="h-[80px]"
                 @image-uploaded="url => (form.avatar = url)"
                 @image-remove="() => (form.avatar = '')"
@@ -39,9 +40,12 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarOverlayEdit
                       :loading="uploading"
                       :avatar="form?.avatar"
-                      :is-view-only="isViewOnly"
+                      :is-view-only="isViewOnly || env === 'demo'"
                     />
                     <div
+                      :class="{
+                        'cursor-not-allowed': isViewOnly || env === 'demo'
+                      }"
                       class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
                     >
                       <i-ho-pencil class="text-[12px] text-skin-bg" />
