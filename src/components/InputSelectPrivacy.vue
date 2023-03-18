@@ -29,7 +29,7 @@ const modalVotingPrivacyOpen = ref(false);
       :model-value="
         privacy ? $t(`privacy.${privacy}.label`) : $t('privacy.any')
       "
-      :disabled="isDisabled"
+      :is-disabled="isDisabled"
       @select="modalVotingPrivacyOpen = true"
     />
     <teleport to="#modal">

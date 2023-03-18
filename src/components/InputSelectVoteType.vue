@@ -28,7 +28,7 @@ const modalVotingTypeOpen = ref(false);
     :title="$t(`settings.type.label`)"
     :information="information"
     :model-value="type ? $t(`voting.${type}.label`) : $t('settings.anyType')"
-    :disabled="isDisabled || isDisabledSettings"
+    :is-disabled="isDisabled || isDisabledSettings"
     :tooltip="
       isDisabled
         ? $t('create.typeEnforced', { type: $t(`voting.${type}.label`) })

@@ -18,7 +18,7 @@ const isModalOpen = ref(false);
     :title="$t(`votingValidation.label`)"
     :information="$t(`votingValidation.information`)"
     :model-value="$t(`votingValidation.${validation.name}.label`)"
-    :disabled="isDisabled"
+    :is-disabled="isDisabled"
     @select="isModalOpen = true"
   />
 

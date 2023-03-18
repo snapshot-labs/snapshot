@@ -224,10 +224,22 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.ADVANCED">
-            <SettingsPluginsBlock context="settings" />
-            <SettingsTreasuriesBlock context="settings" />
-            <SettingsSubSpacesBlock context="settings" />
-            <SettingsDomainBlock context="settings" />
+            <SettingsPluginsBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsTreasuriesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsSubSpacesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsDomainBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
             <SettingsDangerzoneBlock
               :is-controller="isSpaceController"
               :ens-owner="ensOwner"

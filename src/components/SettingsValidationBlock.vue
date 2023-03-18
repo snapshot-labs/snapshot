@@ -31,7 +31,7 @@ function handleClickSelectValidation() {
           :title="$t(`proposalValidation.label`)"
           :information="$t(`proposalValidation.information`)"
           :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
-          :disabled="form.filters.onlyMembers || isViewOnly"
+          :is-disabled="form.filters.onlyMembers || isViewOnly"
           @select="handleClickSelectValidation"
         />
       </ContainerParallelInput>
