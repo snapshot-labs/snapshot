@@ -23,11 +23,13 @@ const update = data => {
 </script>
 
 <template>
-  <component
-    :is="component"
-    v-for="(component, key) in components"
-    :key="key"
-    v-bind="props"
-    @update="update"
-  />
+  <div class="space-y-3">
+    <component
+      :is="component"
+      v-for="(component, key) in components"
+      :key="key"
+      v-bind="props"
+      @update="update"
+    />
+  </div>
 </template>

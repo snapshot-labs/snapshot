@@ -43,11 +43,25 @@ const { formatNumber, formatCompactNumber } = useIntl();
 const { addVotedProposalId } = useProposals();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
+const isLoadingShutter = ref(false);
+
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
 );
 
-const isLoadingShutter = ref(false);
+const validationStrategySymbolsString = computed(() => {
+  let symbols = props.proposal.validation?.params?.strategies
+    ?.map(strategy => strategy.params.symbol)
+    .filter(symbol => symbol);
+
+  if (symbols.length === 0) return '';
+
+  symbols = symbols.map(symbol => `$${symbol}`);
+
+  if (symbols.length === 1) return `${symbols[0]}`;
+
+  return `(${symbols.join(', ')})`;
+});
 
 async function voteShutter() {
   isLoadingShutter.value = true;
@@ -91,8 +105,10 @@ async function handleSubmit() {
 }
 
 async function loadVotingValidation() {
-  if (!props.proposal.validation || props.proposal.validation.name === 'any')
-    return (isValidVoter.value = true);
+  if (props.proposal.validation.name === 'any') {
+    isValidVoter.value = true;
+    return;
+  }
   hasVotingValidationFailed.value = false;
   try {
     const validationRes = await voteValidation(
@@ -245,14 +261,9 @@ watch(
         <template
           v-else-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
         >
+          <!-- Voting power messages -->
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
             {{ t('votingPowerFailedMessage') }}
-          </BaseMessageBlock>
-          <BaseMessageBlock
-            v-else-if="hasVotingValidationFailed"
-            level="warning"
-          >
-            {{ t('votingValidationFailedMessage') }}
           </BaseMessageBlock>
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
@@ -267,18 +278,24 @@ watch(
             >
           </BaseMessageBlock>
 
-          <MessageWarningVoteValidation
+          <!-- Voting validation messages -->
+          <BaseMessageBlock
+            v-else-if="hasVotingValidationFailed"
+            level="warning"
+          >
+            {{ t('votingPowerFailedMessage') }}
+          </BaseMessageBlock>
+          <MessageWarningValidation
             v-else-if="!isValidVoter && proposal.validation?.name"
-            :proposal="proposal"
+            context="voting"
+            :space-id="proposal.space.id"
+            :validation-name="proposal.validation.name"
+            :validation-params="proposal.validation?.params || {}"
+            :min-score="proposal.validation?.params?.minScore || 0"
+            :symbol="validationStrategySymbolsString"
           />
 
-          <BaseMessageBlock v-else-if="!isValidVoter" level="warning">
-            {{ $t('notValidVoterMessage') }}
-            <BaseLink link="https://docs.snapshot.org/">
-              {{ $t('learnMore') }}</BaseLink
-            >
-          </BaseMessageBlock>
-
+          <!-- Reason field -->
           <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
             <TextareaAutosize
               v-model="reason"

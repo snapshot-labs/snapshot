@@ -9,8 +9,6 @@
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
-  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
   "getHelp": "Get help",
   "retry": "Retry",
   "currentResults": "Current results",
@@ -119,7 +117,6 @@
   "endedAgo": "ended {0}",
   "proposalBy": "by {0}",
   "endDate": "end {0}",
-  "contectHash": "Content hash",
   "defaultSkin": "Default skin",
   "select": "Select",
   "language": "Language",
@@ -214,14 +211,6 @@
     "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
-    "validationWarning": {
-      "basic": {
-        "member": "You need to be a core member of the space in order to submit a proposal.",
-        "minScore": "You need to have a minimum of {0} {1} in order to submit a proposal."
-      },
-      "customValidation": "You need to pass the proposal validation in order to submit a proposal.",
-      "executionError": "Verifying your eligibility to create proposals in this space has failed. This is likely due to a misconfigured strategy."
-    },
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
   },
   "delegate": {
@@ -300,6 +289,15 @@
   },
   "settings": {
     "header": "Settings",
+    "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
+    "navigation": {
+      "general": "General",
+      "strategies": "Strategies",
+      "proposal": "Proposal",
+      "voting": "Voting",
+      "members": "Members",
+      "advanced": "Advanced"
+    },
     "editController": "Edit controller",
     "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
     "gnosisWrongNetwork": {
@@ -353,7 +351,7 @@
     },
     "network": {
       "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
+      "information": "The default network used for this space. Networks can also be specified in individual strategies"
     },
     "symbol": {
       "label": "Symbol",
@@ -432,13 +430,28 @@
         "title": "Template",
         "information": "Start every proposal with a template to help users understand what information is required"
       }
+    },
+    "dangerZone": {
+      "title": "Danger zone",
+      "changeController": {
+        "title": "Change space controller",
+        "information": "Change the controller of this space. This can only be done by the ENS controller.",
+        "button": "Change controller",
+        "disabledInformation": "You need to be the ENS owner ({owner}) to change the space controller."
+      },
+      "deleteSpace": {
+        "title": "Delete space",
+        "information": "Delete this space and all its content. This cannot be undone.",
+        "button": "Delete space",
+        "disabledInformation": "You need to be the space controller to delete the space"
+      }
     }
   },
   "setup": {
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
+    "orRegisterNewEns": "Or register a new domain:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Create a space",
@@ -572,19 +585,29 @@
   },
   "voting": {
     "selectVoting": "Select voting system",
-    "single-choice": "Single choice voting",
-    "approval": "Approval voting",
-    "quadratic": "Quadratic voting",
-    "ranked-choice": "Ranked choice voting",
-    "weighted": "Weighted voting",
-    "basic": "Basic voting",
-    "description": {
-      "single-choice": "Each voter may select only one choice.",
-      "approval": "Each voter may select any number of choices.",
-      "quadratic": "Each voter may spread voting power across any number of choices. Results are calculated quadratically.",
-      "ranked-choice": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method.",
-      "weighted": "Each voter may spread voting power across any number of choices.",
-      "basic": "Single choice voting with three choices: For, Against or Abstain"
+    "single-choice": {
+      "label": "Single choice voting",
+      "description": "Each voter may select only one choice."
+    },
+    "approval": {
+      "label": "Approval voting",
+      "description": "Each voter may select any number of choices."
+    },
+    "quadratic": {
+      "label": "Quadratic voting",
+      "description": "Each voter may spread voting power across any number of choices. Results are calculated quadratically."
+    },
+    "ranked-choice": {
+      "label": "Ranked choice voting",
+      "description": "Each voter may select and rank any number of choices. Results are calculated by instant-runoff counting method."
+    },
+    "weighted": {
+      "label": "Weighted voting",
+      "description": "Each voter may spread voting power across any number of choices."
+    },
+    "basic": {
+      "label": "Basic voting",
+      "description": "Single choice voting with three choices: For, Against or Abstain"
     }
   },
   "privacy": {
@@ -600,12 +623,42 @@
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
+  "proposalValidation": {
+    "label": "Validation",
+    "title": "Select validation",
+    "settingsTitle": "Configure validation",
+    "paramPlaceholder": "Validation parameters",
+    "information": "The type of validation used to determine if a user can create a proposal. (Enforced on all future proposals)",
+    "executionError": "There was an error on our side and we could not verify if you are eligible to create a proposal. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+    "notValidMessage": "Oops, you don't seem to be eligible to submit a proposal.",
+    "onlyMemberMessage": "You need to be a core member of the space in order to submit a proposal.",
+    "notConnectedMessage": "You need to connect your wallet in order to submit a proposal.",
+    "any": {
+      "label": "Anyone can create",
+      "description": "Anyone can create a proposal."
+    },
+    "basic": {
+      "label": "Basic",
+      "description": "Use any strategy to determine if a user can create a proposal.",
+      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal."
+    },
+    "passport-gated": {
+      "label": "Gitcoin Passport gated",
+      "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
+      "invalidVoterMessage": "You need a Gitcoin Passport with {operator} of the following stamps to create a proposal: {stamps}"
+    },
+    "passport-weighted": {
+      "label": "Gitcoin Passport weighted"
+    }
+  },
   "votingValidation": {
     "label": "Validation",
     "title": "Select validation",
     "settingsTitle": "Configure validation",
     "paramPlaceholder": "Validation parameters",
     "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "executionError": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
+    "notValidMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
     "any": {
       "label": "Anyone can vote",
       "description": "Anyone with voting power can cast a vote."
@@ -613,7 +666,7 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
@@ -682,6 +735,7 @@
       "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
       "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond.",
       "bondWarning": "Bond is greater than users balance",
+      "quorumWarning": "Quorum did not reach space requirement",
       "requiredBond": "Required Bond:",
       "challengePeriod": "Challenge Period:",
       "disputeProposal": "UMA Oracle URL to dispute"
@@ -825,7 +879,8 @@
   },
   "newsletter": {
     "yourEmail": "Your email",
-    "title": "Get the latest Snapshot updates"
+    "title": "Get the latest Snapshot updates",
+    "join": "Join Snapshot newsletter"
   },
   "joinCommunity": "Join Snapshot community",
   "header": {
@@ -842,7 +897,7 @@
     "about": "About",
     "blog": "Blog",
     "jobs": "Jobs",
-    "discussions": "Discussions",
+    "faqs": "FAQs",
     "github": "GitHub",
     "docs": "Docs",
     "support": "Support",
