@@ -4,6 +4,7 @@ import { VoteValidation } from '@/helpers/interfaces';
 
 defineProps<{
   validation: VoteValidation;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['add']);
@@ -17,7 +18,8 @@ const isModalOpen = ref(false);
     :title="$t(`votingValidation.label`)"
     :information="$t(`votingValidation.information`)"
     :model-value="$t(`votingValidation.${validation.name}.label`)"
-    @click="isModalOpen = true"
+    :disabled="isDisabled"
+    @select="isModalOpen = true"
   />
 
   <teleport to="#modal">

@@ -6,13 +6,15 @@ withDefaults(
     type?: string;
     information?: string;
     allowAny?: boolean;
-    disabled?: boolean;
+    isDisabled?: boolean;
+    isDisabledSettings?: boolean;
   }>(),
   {
     type: '',
     information: '',
     allowAny: false,
-    disabled: false
+    isDisabled: false,
+    isDisabledSettings: false
   }
 );
 
@@ -26,9 +28,9 @@ const modalVotingTypeOpen = ref(false);
     :title="$t(`settings.type.label`)"
     :information="information"
     :model-value="type ? $t(`voting.${type}.label`) : $t('settings.anyType')"
-    :disabled="disabled"
+    :disabled="isDisabled || isDisabledSettings"
     :tooltip="
-      disabled
+      isDisabled
         ? $t('create.typeEnforced', { type: $t(`voting.${type}.label`) })
         : null
     "

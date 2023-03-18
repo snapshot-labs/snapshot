@@ -5,6 +5,7 @@ import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -30,13 +31,14 @@ function handleClickSelectValidation() {
           :title="$t(`proposalValidation.label`)"
           :information="$t(`proposalValidation.information`)"
           :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
-          :disabled="form.filters.onlyMembers"
-          @click="handleClickSelectValidation"
+          :disabled="form.filters.onlyMembers || isViewOnly"
+          @select="handleClickSelectValidation"
         />
       </ContainerParallelInput>
 
       <InputSwitch
         v-model="form.filters.onlyMembers"
+        :is-disabled="isViewOnly"
         :text-right="$t('settings.allowOnlyAuthors')"
       />
     </div>

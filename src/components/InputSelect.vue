@@ -19,7 +19,7 @@ const emit = defineEmits(['select']);
       class="relative !h-[42px] w-full truncate pl-3 pr-5 text-left"
       @click="disabled ? null : emit('select')"
     >
-      <span :class="{ 'text-skin-text opacity-60': disabled }">
+      <span :class="{ 'text-skin-text ': disabled }">
         {{ modelValue }}
       </span>
       <i-ho-chevron-down

@@ -198,12 +198,21 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
-            <SettingsValidationBlock context="settings" />
-            <SettingsProposalBlock context="settings" />
+            <SettingsValidationBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsProposalBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.VOTING">
-            <SettingsVotingBlock context="settings" />
+            <SettingsVotingBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.MEMBERS">
