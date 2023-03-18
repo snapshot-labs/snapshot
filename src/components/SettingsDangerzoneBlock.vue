@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from '@/composables';
+import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{
   isController: boolean;
+  ensOwner: string | null;
   isOwner: boolean;
   isSettingEnsRecord: boolean;
 }>();
@@ -19,7 +21,8 @@ const items = computed(() => [
     button: t('settings.dangerZone.changeController.button'),
     disabled: !props.isOwner,
     disabledInformation: t(
-      'settings.dangerZone.changeController.disabledInformation'
+      'settings.dangerZone.changeController.disabledInformation',
+      { owner: shorten(props.ensOwner || '') }
     ),
     action: () => emit('changeController'),
     loading: props.isSettingEnsRecord

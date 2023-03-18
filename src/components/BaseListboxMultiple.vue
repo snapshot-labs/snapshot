@@ -20,7 +20,7 @@ const props = defineProps<{
   placeholder?: string;
   modelValue?: string[];
   limit?: number;
-  disableInput?: boolean;
+  isDisabled?: boolean;
   definition?: any;
   information?: string;
 }>();
@@ -37,7 +37,7 @@ const selectedItems = computed({
     )
 });
 
-function isDisabled(item: string) {
+function isItemDisabled(item: string) {
   if (!props.limit) return false;
   if (selectedItems.value.length < props.limit) return false;
   return !selectedItems.value.some(selectedItem => selectedItem.value === item);
@@ -45,7 +45,7 @@ function isDisabled(item: string) {
 </script>
 
 <template>
-  <Listbox v-model="selectedItems" as="div" :disabled="disableInput" multiple>
+  <Listbox v-model="selectedItems" as="div" :disabled="isDisabled" multiple>
     <ListboxLabel>
       <LabelInput :information="information || definition?.description">
         {{ label || definition?.title }}
@@ -59,7 +59,7 @@ function isDisabled(item: string) {
             .join(', ')
         }"
         class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
-        :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
+        :class="{ 'cursor-not-allowed !border-skin-border': isDisabled }"
       >
         <span v-if="selectedItems.length < 1" class="text-skin-text opacity-60">
           {{ placeholder }}
@@ -98,7 +98,7 @@ function isDisabled(item: string) {
               v-slot="{ active, selected, disabled }"
               as="template"
               :value="item"
-              :disabled="isDisabled(item.value)"
+              :disabled="isItemDisabled(item.value)"
             >
               <li
                 :class="[

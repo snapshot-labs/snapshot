@@ -5,6 +5,7 @@ const props = defineProps<{
   title?: string;
   error?: { message: string; push: boolean };
   information?: string;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -14,9 +15,10 @@ const emit = defineEmits(['update:modelValue']);
   <div>
     <BaseInput
       v-bind="props"
-      :model-value="modelValue as string"
+      :model-value="modelValue"
       :error="error"
       :information="information"
+      :is-disabled="isDisabled"
       class="!pl-[40px]"
       @update:model-value="input => emit('update:modelValue', input)"
     >

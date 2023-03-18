@@ -70,6 +70,7 @@ defineProps<{
 
   &:disabled {
     color: var(--border-color) !important;
+    border: 1px solid var(--border-color);
     cursor: not-allowed;
   }
 }
