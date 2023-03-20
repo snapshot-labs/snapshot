@@ -198,12 +198,21 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
-            <SettingsValidationBlock context="settings" />
-            <SettingsProposalBlock context="settings" />
+            <SettingsValidationBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsProposalBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.VOTING">
-            <SettingsVotingBlock context="settings" />
+            <SettingsVotingBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.MEMBERS">
@@ -215,10 +224,22 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.ADVANCED">
-            <SettingsPluginsBlock context="settings" />
-            <SettingsTreasuriesBlock context="settings" />
-            <SettingsSubSpacesBlock context="settings" />
-            <SettingsDomainBlock context="settings" />
+            <SettingsPluginsBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsTreasuriesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsSubSpacesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsDomainBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
             <SettingsDangerzoneBlock
               :is-controller="isSpaceController"
               :ens-owner="ensOwner"
