@@ -141,10 +141,13 @@ const stepIsValid = computed(() => {
 });
 
 const isMember = computed(() => {
+  function findAccount(object: string[], account: string) {
+    return object.map(a => a.toLowerCase()).includes(account.toLowerCase());
+  }
   return (
-    props.space.members?.includes(web3Account.value) ||
-    props.space.admins?.includes(web3Account.value) ||
-    props.space.moderators?.includes(web3Account.value) ||
+    findAccount(props.space.members, web3Account.value) ||
+    findAccount(props.space.admins, web3Account.value) ||
+    findAccount(props.space.moderators, web3Account.value) ||
     false
   );
 });
@@ -328,7 +331,6 @@ onMounted(async () => {
           <ButtonBack />
         </router-link>
       </div>
-
       <SpaceCreateWarnings
         v-if="!validationLoading"
         :space="space"
