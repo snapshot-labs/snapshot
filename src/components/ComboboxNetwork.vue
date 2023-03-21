@@ -5,6 +5,7 @@ import { useNetworksFilter } from '@/composables/useNetworksFilter';
 defineProps<{
   network: string;
   information?: string;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['select']);
@@ -29,6 +30,7 @@ const networks = computed((): { id: string; name: string }[] => {
     :items="networks"
     :selected-id="network"
     :information="information"
+    :is-disabled="isDisabled"
     @select="value => emit('select', value.id)"
     @search="value => (query = value)"
   >

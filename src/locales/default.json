@@ -438,7 +438,7 @@
         "title": "Change space controller",
         "information": "Change the controller of this space. This can only be done by the ENS controller.",
         "button": "Change controller",
-        "disabledInformation": "You need to be the ENS controller to change the space controller"
+        "disabledInformation": "You need to be the ENS owner ({owner}) to change the space controller."
       },
       "deleteSpace": {
         "title": "Delete space",

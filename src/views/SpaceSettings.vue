@@ -59,7 +59,8 @@ const {
   loadEnsOwner,
   isEnsOwner,
   loadSpaceController,
-  isSpaceController
+  isSpaceController,
+  ensOwner
 } = useSpaceController();
 
 enum Page {
@@ -147,6 +148,10 @@ onBeforeRouteLeave(async () => {
     if (!data) return false;
   }
 });
+
+const isViewOnly = computed(() => {
+  return !(isSpaceController.value || isSpaceAdmin.value);
+});
 </script>
 
 <template>
@@ -169,7 +174,7 @@ onBeforeRouteLeave(async () => {
           />
 
           <BaseMessageBlock
-            v-else-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)"
+            v-else-if="isViewOnly"
             class="mt-3 md:mx-0"
             level="info"
             is-responsive
@@ -178,12 +183,18 @@ onBeforeRouteLeave(async () => {
           </BaseMessageBlock>
 
           <template v-if="currentPage === Page.GENERAL">
-            <SettingsProfileBlock context="settings" />
-            <SettingsLinkBlock context="settings" />
+            <SettingsProfileBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsLinkBlock context="settings" :is-view-only="isViewOnly" />
           </template>
 
           <template v-if="currentPage === Page.STRATEGIES">
-            <SettingsStrategiesBlock context="settings" />
+            <SettingsStrategiesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
@@ -210,6 +221,7 @@ onBeforeRouteLeave(async () => {
             <SettingsDomainBlock context="settings" />
             <SettingsDangerzoneBlock
               :is-controller="isSpaceController"
+              :ens-owner="ensOwner"
               :is-owner="isEnsOwner"
               :is-setting-ens-record="settingENSRecord"
               @change-controller="modalControllerEditOpen = true"

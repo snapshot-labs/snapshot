@@ -12,6 +12,7 @@ const props = withDefaults(
     title?: string;
     information?: string;
     definition?: any;
+    isDisabled?: boolean;
   }>(),
   {
     modelValue: '',
@@ -22,7 +23,8 @@ const props = withDefaults(
     definition: null,
     minHeight: 0,
     maxHeight: 0,
-    maxLength: undefined
+    maxLength: undefined,
+    isDisabled: false
   }
 );
 
@@ -92,10 +94,14 @@ onMounted(() => resize());
     v-bind="$attrs"
     ref="textarea"
     v-model="val"
-    class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text hover:border-skin-text"
+    class="!mt-1 h-auto w-full rounded-3xl border border-skin-border py-3 px-4 focus-within:!border-skin-text"
+    :class="{
+      'cursor-not-allowed': isDisabled
+    }"
     :style="computedStyles"
     :maxlength="maxLength"
     :placeholder="placeholder"
+    :disabled="isDisabled"
     @focus="resize"
   />
 </template>

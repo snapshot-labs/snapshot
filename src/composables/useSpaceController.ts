@@ -101,6 +101,7 @@ export function useSpaceController() {
     confirmSetRecord,
     ensAddress,
     loadEnsOwner,
+    ensOwner,
     isEnsOwner,
     loadSpaceController,
     spaceController,
