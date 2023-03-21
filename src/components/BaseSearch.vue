@@ -41,6 +41,7 @@ function clearInput() {
     const { query } = router.currentRoute.value;
     router.push({ query: { ...query, q: undefined } });
   }
+  input.value = '';
   emit('update:modelValue', '');
 }
 

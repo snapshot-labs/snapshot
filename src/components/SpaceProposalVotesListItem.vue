@@ -62,7 +62,7 @@ const { formatCompactNumber } = useIntl();
         </template>
         <template #content>
           <div class="m-4 space-y-4">
-            <h3>{{ $t('receipt') }}</h3>
+            <h3 class="text-center">{{ $t('receipt') }}</h3>
             <BaseBlock slim class="p-4 text-skin-link">
               <div class="flex">
                 <span

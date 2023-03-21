@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useProposalVotesList, useReportDownload } from '@/composables';
+import { useProposalVotes, useReportDownload } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,
@@ -18,7 +18,7 @@ const props = defineProps<{
 const emit = defineEmits(['votes']);
 
 const { isZero, votes, loadedVotes, sortedVotes, loadVotes, profiles } =
-  useProposalVotesList(props.proposal, props.userVote);
+  useProposalVotes(props.proposal, props.userVote);
 
 const modalVotesmOpen = ref(false);
 

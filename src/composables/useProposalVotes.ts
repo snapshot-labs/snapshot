@@ -1,18 +1,30 @@
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useProfiles, useWeb3, useInfiniteLoader } from '@/composables';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
+import { isAddress } from '@ethersproject/address';
 
-export function useProposalVotesList(
+export function useProposalVotes(
   proposal: Proposal,
-  userVote: Vote | null
+  userVote: Vote | null,
+  search?: Ref<string>
 ) {
   const { web3Account } = useWeb3();
 
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
+
+  const searchLocal = computed(() => {
+    return search ? search.value : '';
+  });
+  const searchValid = computed(() => {
+    return searchLocal.value && searchLocal.value.length !== 0;
+  });
+  const searchIsAddress = computed(() => {
+    return searchValid.value ? isAddress(searchLocal.value) : false;
+  });
 
   const isZero = computed(() => {
     if (!loadedVotes.value) return true;
@@ -49,7 +61,8 @@ export function useProposalVotesList(
   async function loadVotes(first = 6) {
     const votesRes = await getProposalVotes(proposal.id, {
       first,
-      space: proposal.space.id
+      space: proposal.space.id,
+      ...(searchIsAddress.value ? { voter: searchLocal.value } : {})
     });
 
     votes.value = formatProposalVotes(votesRes);
@@ -61,7 +74,9 @@ export function useProposalVotesList(
   async function loadMoreVotes() {
     const votesObj = await getProposalVotes(proposal.id, {
       first: loadBy,
-      skip: votes.value.length
+      space: proposal.space.id,
+      skip: votes.value.length,
+      ...(searchIsAddress.value ? { voter: searchLocal.value } : {})
     });
     votes.value = votes.value.concat(formatProposalVotes(votesObj));
   }
@@ -71,6 +86,16 @@ export function useProposalVotesList(
   watch(sortedVotes, () => {
     loadProfiles(sortedVotes.value.map(vote => vote.voter));
   });
+
+  watch(
+    () => searchLocal.value,
+    to => {
+      if (to.length === 0 || searchIsAddress.value) {
+        votes.value = [];
+        loadVotes(20);
+      }
+    }
+  );
 
   return {
     isZero,

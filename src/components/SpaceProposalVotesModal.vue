@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, toRefs, watch } from 'vue';
 import { useScroll } from '@vueuse/core';
-import { useProposalVotesList } from '@/composables';
+import { useProposalVotes } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,
@@ -19,6 +19,9 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
+const votesScrollWrapper = ref<HTMLElement | null>(null);
+const votesQuery = ref('');
+
 const {
   votes,
   loadVotes,
@@ -27,10 +30,7 @@ const {
   loadingMore,
   loadMoreVotes,
   profiles
-} = useProposalVotesList(props.proposal, props.userVote);
-
-const votesScrollWrapper = ref<HTMLElement | null>(null);
-const votesQuery = ref('');
+} = useProposalVotes(props.proposal, props.userVote, votesQuery);
 
 const { arrivedState } = useScroll(votesScrollWrapper, {
   throttle: 500,
@@ -66,30 +66,27 @@ watch(
 </script>
 
 <template>
-  <BaseModal
-    :open="open"
-    max-height="608px"
-    max-width="608px"
-    @close="$emit('close')"
-  >
+  <BaseModal :open="open" @close="$emit('close')">
     <template #header>
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
         <h3>{{ $t('votes') }}</h3>
+        <BaseSearch
+          v-model="votesQuery"
+          :placeholder="$t('searchPlaceholder')"
+          :modal="true"
+          :focus-on-mount="true"
+          :not-update-route-query="true"
+          class="w-full flex-auto px-3 pb-3"
+        />
       </div>
     </template>
-    <div class="flex w-full flex-col">
-      <BaseSearch
-        :model-value="votesQuery"
-        :placeholder="$t('searchPlaceholder')"
-        :focus-on-mount="true"
-        class="w-full flex-auto px-3 pb-3"
-      />
+    <template #default="{ maxHeight }">
       <div
         ref="votesScrollWrapper"
-        class="flex h-full flex-col overflow-auto border-t"
-        :style="{ maxHeight: '450px', minHeight: '450px' }"
+        class="flex h-full min-h-full flex-col overflow-auto border-t"
+        :style="{ height: maxHeight }"
       >
         <SpaceProposalVotesListItem
           v-for="(vote, i) in sortedVotes"
@@ -107,6 +104,6 @@ watch(
           <LoadingSpinner v-if="loadingMore" />
         </a>
       </div>
-    </div>
+    </template>
   </BaseModal>
 </template>
