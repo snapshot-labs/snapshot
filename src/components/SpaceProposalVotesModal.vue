@@ -28,14 +28,14 @@ const {
   sortedVotes,
   loadMore,
   loadingMore,
+  loadedVotes,
   loadMoreVotes,
   profiles
-} = useProposalVotes(props.proposal, props.userVote, votesQuery);
+} = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
 const { arrivedState } = useScroll(votesScrollWrapper, {
-  throttle: 500,
   offset: {
-    bottom: 300
+    bottom: 60 * 10
   }
 });
 
@@ -84,26 +84,41 @@ watch(
     </template>
     <template #default="{ maxHeight }">
       <div
-        ref="votesScrollWrapper"
-        class="flex h-full min-h-full flex-col overflow-auto border-t"
+        v-if="!loadedVotes"
+        class="block px-4 py-4"
         :style="{ height: maxHeight }"
       >
-        <SpaceProposalVotesListItem
-          v-for="(vote, i) in sortedVotes"
-          :key="i"
-          :vote="vote"
-          :profiles="profiles"
-          :space="space"
-          :proposal="proposal"
-          :class="{ '!border-0': i === 0 }"
-          :data-testid="`proposal-votes-list-item-${i}`"
+        <div
+          class="lazy-loading mb-2 rounded-md"
+          style="width: 80%; height: 20px"
         />
-        <a
-          class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-        >
-          <LoadingSpinner v-if="loadingMore" />
-        </a>
+        <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
       </div>
+      <Transition name="fade">
+        <div
+          v-if="loadedVotes"
+          ref="votesScrollWrapper"
+          class="flex h-full min-h-full flex-col overflow-auto"
+          :style="{ height: maxHeight }"
+        >
+          <SpaceProposalVotesListItem
+            v-for="(vote, i) in sortedVotes"
+            :key="i"
+            :vote="vote"
+            :profiles="profiles"
+            :space="space"
+            :proposal="proposal"
+            :class="{ '!border-0': i === 0 }"
+            :data-testid="`proposal-votes-list-item-${i}`"
+            :hide-username="true"
+          />
+          <a
+            class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+          >
+            <LoadingSpinner v-if="loadingMore" />
+          </a>
+        </div>
+      </Transition>
     </template>
   </BaseModal>
 </template>

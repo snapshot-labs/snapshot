@@ -4,12 +4,18 @@ import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
 import { useIntl } from '@/composables';
 import { shorten, getIpfsUrl } from '@/helpers/utils';
 
-const props = defineProps<{
-  space: ExtendedSpace;
-  proposal: Proposal;
-  vote: Vote;
-  profiles: Record<string, Profile>;
-}>();
+const props = withDefaults(
+  defineProps<{
+    space: ExtendedSpace;
+    proposal: Proposal;
+    vote: Vote;
+    profiles: Record<string, Profile>;
+    hideUsername?: boolean;
+  }>(),
+  {
+    hideUsername: false
+  }
+);
 
 defineEmits(['openReceiptModal']);
 
@@ -31,6 +37,7 @@ const { formatCompactNumber } = useIntl();
       :address="vote.voter"
       :space="space"
       :proposal="proposal"
+      :hide-username="hideUsername"
       width-class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left"
     />
 

@@ -1,35 +1,32 @@
 import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
+import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useProfiles, useWeb3, useInfiniteLoader } from '@/composables';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { useProfiles, useWeb3, useInfiniteLoader, useEns } from '@/composables';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';
 
 export function useProposalVotes(
   proposal: Proposal,
+  loadBy = 6,
   userVote: Vote | null,
   search?: Ref<string>
 ) {
   const { web3Account } = useWeb3();
+  const { profiles, loadProfiles } = useProfiles();
+  const { isValidEnsDomain } = useEns();
+  const { loadMore, loadingMore } = useInfiniteLoader(loadBy);
 
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
-
-  const searchLocal = computed(() => {
-    return search ? search.value : '';
-  });
-  const searchValid = computed(() => {
-    return searchLocal.value && searchLocal.value.length !== 0;
-  });
-  const searchIsAddress = computed(() => {
-    return searchValid.value ? isAddress(searchLocal.value) : false;
-  });
+  const searchAddress = ref('');
 
   const isZero = computed(() => {
-    if (!loadedVotes.value) return true;
-    if (votes.value.length > 0) return false;
-    return true;
+    if (!loadedVotes.value) return false;
+    if (votes.value.length === 0) return true;
+    return false;
   });
 
   const sortedVotes = computed(() => {
@@ -58,43 +55,61 @@ export function useProposalVotes(
     });
   }
 
-  async function loadVotes(first = 6) {
+  async function loadVotes(first) {
     const votesRes = await getProposalVotes(proposal.id, {
-      first,
+      first: first || loadBy,
       space: proposal.space.id,
-      ...(searchIsAddress.value ? { voter: searchLocal.value } : {})
+      ...(searchAddress.value ? { voter: searchAddress.value } : {})
     });
 
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   }
 
-  const { loadBy, loadMore, loadingMore } = useInfiniteLoader(20);
-
   async function loadMoreVotes() {
     const votesObj = await getProposalVotes(proposal.id, {
       first: loadBy,
       space: proposal.space.id,
       skip: votes.value.length,
-      ...(searchIsAddress.value ? { voter: searchLocal.value } : {})
+      ...(searchAddress.value ? { voter: searchAddress.value } : {})
     });
     votes.value = votes.value.concat(formatProposalVotes(votesObj));
+    loadedVotes.value = true;
   }
-
-  const { profiles, loadProfiles } = useProfiles();
 
   watch(sortedVotes, () => {
     loadProfiles(sortedVotes.value.map(vote => vote.voter));
   });
 
-  watch(
-    () => searchLocal.value,
-    to => {
-      if (to.length === 0 || searchIsAddress.value) {
-        votes.value = [];
-        loadVotes(20);
+  watchDebounced(
+    () => search?.value,
+    async to => {
+      if (to === undefined) return;
+      console.log(':W search', to);
+
+      if (isAddress(to)) searchAddress.value = to;
+      else {
+        if (isValidEnsDomain(to)) {
+          try {
+            loadedVotes.value = false;
+            searchAddress.value = await getProvider('1').resolveName(to);
+            console.log(':addressResolved', searchAddress.value);
+          } catch (e) {
+            console.log(':addressResolved error', e);
+            searchAddress.value = '';
+          }
+        } else {
+          searchAddress.value = '';
+        }
       }
-    }
+
+      if (!loadingMore.value) {
+        votes.value = [];
+        loadedVotes.value = false;
+        loadVotes(loadBy);
+      }
+    },
+    { debounce: 500 }
   );
 
   return {

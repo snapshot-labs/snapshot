@@ -18,7 +18,7 @@ const props = defineProps<{
 const emit = defineEmits(['votes']);
 
 const { isZero, votes, loadedVotes, sortedVotes, loadVotes, profiles } =
-  useProposalVotes(props.proposal, props.userVote);
+  useProposalVotes(props.proposal, 6, props.userVote);
 
 const modalVotesmOpen = ref(false);
 
