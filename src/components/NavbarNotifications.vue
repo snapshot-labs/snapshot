@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useNotifications } from '@/composables/useNotifications';
+import { useWeb3 } from '@/composables/useWeb3';
 import { useIntl } from '@/composables/useIntl';
 import { PopoverButton } from '@headlessui/vue';
 
@@ -16,6 +17,7 @@ const {
 } = useNotifications();
 
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
+const { web3Account } = useWeb3();
 
 function selectThreedotItem(e) {
   if (e === 'markAllAsRead') markAllAsRead();
@@ -39,28 +41,37 @@ onMounted(() => loadNotifications());
       <div class="my-2 w-full">
         <div class="mb-3 flex items-center justify-between px-3">
           <h4>{{ $t('notifications.header') }}</h4>
-          <BaseMenu
-            :items="[
-              {
-                text: $t('notifications.markAllAsRead'),
-                action: 'markAllAsRead'
-              }
-            ]"
-            @select="selectThreedotItem"
-          >
-            <template #button>
-              <i-ho-dots-horizontal
-                class="cursor-pointer text-[22px] hover:text-skin-link"
+          <div class="flex flex-row content-center items-center gap-x-4">
+            <a
+              :href="`https://t.me/snapshotnotifybot?start=${web3Account}`"
+              target="_blank"
+            >
+              <i-ho-paper-airplane
+                class="rotate-45 cursor-pointer text-[16px] hover:text-skin-link"
               />
-            </template>
-            <template #item="{ item }">
-              <div class="flex items-center">
-                <i-ho-check class="mr-2 text-sm" />
-
-                {{ item.text }}
-              </div>
-            </template>
-          </BaseMenu>
+            </a>
+            <BaseMenu
+              :items="[
+                {
+                  text: $t('notifications.markAllAsRead'),
+                  action: 'markAllAsRead'
+                }
+              ]"
+              @select="selectThreedotItem"
+            >
+              <template #button>
+                <i-ho-dots-horizontal
+                  class="mt-1 cursor-pointer text-[22px] hover:text-skin-link"
+                />
+              </template>
+              <template #item="{ item }">
+                <div class="flex items-center">
+                  <i-ho-check class="mr-2 text-sm" />
+                  {{ item.text }}
+                </div>
+              </template>
+            </BaseMenu>
+          </div>
         </div>
         <div class="mb-3 space-x-2 px-3">
           <BaseButton
