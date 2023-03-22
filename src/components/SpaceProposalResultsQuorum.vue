@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
 import { useQuorum, useIntl } from '@/composables';
@@ -10,11 +9,8 @@ const props = defineProps<{
   results: Results;
 }>();
 
-const { totalQuorumScore, quorum, loadQuorum, loadingQuorum } =
-  useQuorum(props);
+const { totalQuorumScore, quorum, loadingQuorum } = useQuorum(props);
 const { formatCompactNumber, formatPercentNumber } = useIntl();
-
-onMounted(() => loadQuorum());
 </script>
 
 <template>

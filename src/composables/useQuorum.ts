@@ -1,5 +1,5 @@
-import { computed, ref } from 'vue';
-import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
+import { computed, ref, onMounted } from 'vue';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
@@ -27,8 +27,10 @@ export function useQuorum(props: QuorumProps) {
 
   async function getQuorum(web3: any, quorumOptions: any, snapshot: string) {
     if (props.proposal?.quorum || props.space.voting?.quorum) {
-      return props.proposal?.quorum || props.space.voting?.quorum || 0;
+      return props.proposal?.quorum || props.space.voting?.quorum;
     }
+
+    if (!quorumOptions) return 0;
 
     const { strategy } = quorumOptions;
 
@@ -101,8 +103,9 @@ export function useQuorum(props: QuorumProps) {
     loading.value = false;
   }
 
+  onMounted(() => loadQuorum());
+
   return {
-    loadQuorum,
     loadingQuorum: loading,
     totalQuorumScore,
     quorum

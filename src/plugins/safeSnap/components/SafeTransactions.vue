@@ -121,6 +121,8 @@ export default {
   props: [
     'modelValue',
     'proposal',
+    'space',
+    'results',
     'network',
     'realityAddress',
     'umaAddress',
@@ -331,6 +333,8 @@ export default {
           "
           :batches="input"
           :proposal="proposal"
+          :space="space"
+          :results="results"
           :uma-address="transactionConfig.umaAddress"
           :multi-send-address="transactionConfig.multiSendAddress"
           :network="transactionConfig.network"

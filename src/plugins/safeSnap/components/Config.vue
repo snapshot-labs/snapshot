@@ -11,7 +11,9 @@ export default {
     'config', // the safeSnap plugin config of the current space
     'network', // network of the space (needed when mapping legacy plugin configs)
     'proposal',
-    'preview' // if true, renders a read-only view
+    'preview', // if true, renders a read-only view
+    'space',
+    'results'
   ],
   emits: ['update:modelValue'],
   data() {
@@ -71,6 +73,8 @@ export default {
         v-if="!preview || safe.txs.length > 0"
         :preview="preview"
         :proposal="proposal"
+        :space="space"
+        :results="results"
         :hash="safe.hash"
         :network="safe.network"
         :reality-address="safe.realityAddress"
