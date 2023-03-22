@@ -72,7 +72,7 @@ onMounted(async () => {
     <BaseBlock :title="$t('create.voting')">
       <InputSelectVoteType
         :type="space.voting?.type || form.type"
-        :disabled="!!space.voting?.type"
+        :is-disabled="!!space.voting?.type"
         @update:type="value => (form.type = value)"
       />
 

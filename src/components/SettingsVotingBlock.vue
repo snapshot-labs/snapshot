@@ -5,6 +5,7 @@ import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -38,6 +39,7 @@ const votingPeriod = computed({
         <BaseInput
           v-model="votingDelay"
           :title="$t('settings.votingDelay')"
+          :is-disabled="isViewOnly"
           type="number"
           placeholder="e.g. 1"
         >
@@ -56,6 +58,7 @@ const votingPeriod = computed({
         <BaseInput
           v-model="votingPeriod"
           :title="$t('settings.votingPeriod')"
+          :is-disabled="isViewOnly"
           type="number"
           placeholder="e.g. 5"
         >
@@ -77,12 +80,14 @@ const votingPeriod = computed({
           v-model="form.voting.quorum"
           :title="$t('settings.quorum.label')"
           :information="$t('settings.quorum.information')"
+          :is-disabled="isViewOnly"
           placeholder="1000"
         />
 
         <InputSelectVoteType
           :type="form.voting.type"
           :information="$t(`settings.type.information`)"
+          :is-disabled-settings="isViewOnly"
           allow-any
           @update:type="value => (form.voting.type = value)"
         />
@@ -90,12 +95,14 @@ const votingPeriod = computed({
         <InputSelectPrivacy
           :privacy="form.voting.privacy"
           :information="$t(`privacy.information`)"
+          :is-disabled="isViewOnly"
           allow-any
           @update:privacy="value => (form.voting.privacy = value)"
         />
 
         <InputSelectVoteValidation
           :validation="form.voteValidation"
+          :is-disabled="isViewOnly"
           @add="value => (form.voteValidation = value)"
         />
       </div>
@@ -103,6 +110,7 @@ const votingPeriod = computed({
       <InputSwitch
         v-model="form.voting.hideAbstain"
         :text-right="$t('settings.hideAbstain')"
+        :is-disabled="isViewOnly"
       />
     </div>
   </BaseBlock>

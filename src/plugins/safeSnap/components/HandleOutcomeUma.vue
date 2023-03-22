@@ -17,6 +17,16 @@ import {
   useQuorum
 } from '@/composables';
 
+const props = defineProps([
+  'batches',
+  'proposal',
+  'space',
+  'results',
+  'network',
+  'umaAddress',
+  'multiSendAddress'
+]);
+
 const { formatDuration } = useIntl();
 const { t } = useI18n();
 
@@ -24,15 +34,7 @@ const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
 const { pendingCount } = useTxStatus();
 const { notify } = useFlashNotification();
-const { quorum } = useQuorum();
-
-const props = defineProps([
-  'batches',
-  'proposal',
-  'network',
-  'umaAddress',
-  'multiSendAddress'
-]);
+const { quorum } = useQuorum(props);
 
 const plugin = new Plugin();
 
