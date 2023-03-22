@@ -22,11 +22,18 @@ export function useProposalVotes(
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
   const searchAddress = ref('');
+  const isENS = ref(false);
+  const resolvingENS = ref(false);
+  const wrongENS = ref(false);
 
   const isZero = computed(() => {
     if (!loadedVotes.value) return false;
     if (votes.value.length === 0) return true;
     return false;
+  });
+
+  const votesNotFound = computed(() => {
+    return Boolean(searchAddress.value.length && votes.value.length === 0);
   });
 
   const sortedVotes = computed(() => {
@@ -77,6 +84,12 @@ export function useProposalVotes(
     loadedVotes.value = true;
   }
 
+  function clearVotes() {
+    loadedVotes.value = false;
+    votes.value = [];
+    searchAddress.value = '';
+  }
+
   watch(sortedVotes, () => {
     loadProfiles(sortedVotes.value.map(vote => vote.voter));
   });
@@ -85,21 +98,35 @@ export function useProposalVotes(
     () => search?.value,
     async to => {
       if (to === undefined) return;
-      console.log(':W search', to);
+      searchAddress.value = '';
 
-      if (isAddress(to)) searchAddress.value = to;
-      else {
+      if (isAddress(to)) {
+        searchAddress.value = to;
+      } else {
         if (isValidEnsDomain(to)) {
+          loadedVotes.value = false;
+          isENS.value = true;
+          resolvingENS.value = true;
+          let addressResolved;
           try {
-            loadedVotes.value = false;
-            searchAddress.value = await getProvider('1').resolveName(to);
-            console.log(':addressResolved', searchAddress.value);
+            addressResolved = await getProvider('1').resolveName(to);
           } catch (e) {
-            console.log(':addressResolved error', e);
-            searchAddress.value = '';
+            console.warn(':addressResolved error', e);
+            resolvingENS.value = false;
+            wrongENS.value = true;
           }
+          if (addressResolved) {
+            wrongENS.value = false;
+            searchAddress.value = addressResolved;
+          } else {
+            wrongENS.value = true;
+          }
+          resolvingENS.value = false;
         } else {
           searchAddress.value = '';
+          isENS.value = false;
+          resolvingENS.value = false;
+          wrongENS.value = false;
         }
       }
 
@@ -109,19 +136,24 @@ export function useProposalVotes(
         loadVotes(loadBy);
       }
     },
-    { debounce: 500 }
+    { debounce: 600 }
   );
 
   return {
     isZero,
+    votesNotFound,
     votes,
     loadedVotes,
     sortedVotes,
+    loadingMore,
+    profiles,
+    isENS,
+    resolvingENS,
+    wrongENS,
     formatProposalVotes,
     loadVotes,
     loadMore,
     loadMoreVotes,
-    loadingMore,
-    profiles
+    clearVotes
   };
 }

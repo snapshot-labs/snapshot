@@ -23,14 +23,18 @@ const votesScrollWrapper = ref<HTMLElement | null>(null);
 const votesQuery = ref('');
 
 const {
-  votes,
   loadVotes,
   sortedVotes,
   loadMore,
   loadingMore,
   loadedVotes,
   loadMoreVotes,
-  profiles
+  profiles,
+  clearVotes,
+  votesNotFound,
+  isENS,
+  resolvingENS,
+  wrongENS
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
 const { arrivedState } = useScroll(votesScrollWrapper, {
@@ -59,7 +63,7 @@ watch(
     if (to) {
       loadVotes(20);
     } else {
-      votes.value = [];
+      clearVotes();
     }
   }
 );
@@ -77,9 +81,23 @@ watch(
           :placeholder="$t('searchPlaceholder')"
           :modal="true"
           :focus-on-mount="true"
-          :not-update-route-query="true"
-          class="w-full flex-auto px-3 pb-3"
-        />
+          class="min-h-[60px] w-full flex-auto px-3 pb-3"
+        >
+          <template
+            v-if="isENS && (resolvingENS || wrongENS)"
+            #after="{ clearInput }"
+          >
+            <LoadingSpinner
+              v-if="isENS && resolvingENS && !wrongENS"
+              class="pb-[3px]"
+            />
+            <i-ho-x
+              v-if="isENS && wrongENS"
+              class="cursor-pointer text-sm text-red"
+              @click="clearInput"
+            />
+          </template>
+        </BaseSearch>
       </div>
     </template>
     <template #default="{ maxHeight }">
@@ -94,9 +112,16 @@ watch(
         />
         <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
       </div>
+      <div
+        v-if="loadedVotes && votesNotFound"
+        class="flex flex-row content-center items-center justify-center py-6"
+        :style="{ height: maxHeight }"
+      >
+        <span>{{ $t('noResultsFound') }}</span>
+      </div>
       <Transition name="fade">
         <div
-          v-if="loadedVotes"
+          v-if="loadedVotes && !votesNotFound"
           ref="votesScrollWrapper"
           class="flex h-full min-h-full flex-col overflow-auto"
           :style="{ height: maxHeight }"

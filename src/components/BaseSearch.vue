@@ -68,7 +68,8 @@ onMounted(() => {
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />
-    <a @click="clearInput">
+    <slot name="after" :clearInput="clearInput" />
+    <a v-if="!$slots.after" @click="clearInput">
       <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />
     </a>
   </div>
