@@ -12,6 +12,7 @@ const props = defineProps<{
   proposal?: Proposal;
   profile?: Profile;
   hideAvatar?: boolean;
+  hideUsername?: boolean;
   widthClass?: string;
 }>();
 
@@ -37,7 +38,10 @@ const { username } = useUsername(address, profile);
     >
       <div :class="[widthClass, 'flex flex-nowrap items-center space-x-1']">
         <AvatarUser v-if="!hideAvatar" :address="address" size="18" />
-        <span class="w-full cursor-pointer truncate text-skin-link">
+        <span
+          v-if="!hideUsername"
+          class="w-full cursor-pointer truncate text-skin-link"
+        >
           {{ username }}
         </span>
         <BaseBadge :address="address" :members="space?.members" />

@@ -4,13 +4,7 @@ import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { useRoute, useRouter } from 'vue-router';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-import {
-  useModal,
-  useTerms,
-  useWeb3,
-  useInfiniteLoader,
-  useMeta
-} from '@/composables';
+import { useModal, useTerms, useWeb3, useMeta } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -41,10 +35,9 @@ const proposalId: string = route.params.id as string;
 const modalOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
-const loadedVotes = ref(false);
-const votes = ref([]);
 const userVote = ref<Vote | null>(null);
 const results = ref<Results | null>(null);
+const votes = ref<Vote[]>([]);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -100,17 +93,6 @@ async function loadUserVote() {
   userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
 }
 
-async function loadVotes() {
-  loadUserVote();
-  const votesRes = await getProposalVotes(proposalId, {
-    first: 10,
-    space: props.proposal.space.id
-  });
-
-  votes.value = formatProposalVotes(votesRes);
-  loadedVotes.value = true;
-}
-
 async function loadResults() {
   if (props.proposal.scores.length === 0) {
     const votingClass = new voting[props.proposal.type](
@@ -131,17 +113,7 @@ async function loadResults() {
     };
   }
   loadedResults.value = true;
-  loadVotes();
-}
-
-const { loadBy, loadingMore, loadMore } = useInfiniteLoader(10);
-
-async function loadMoreVotes() {
-  const votesObj = await getProposalVotes(proposalId, {
-    first: loadBy,
-    skip: votes.value.length
-  });
-  votes.value = votes.value.concat(formatProposalVotes(votesObj));
+  loadUserVote();
 }
 
 function handleBackClick() {
@@ -205,14 +177,11 @@ onMounted(() => {
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
-          :loaded="loadedVotes"
           :space="space"
           :proposal="proposal"
-          :votes="votes"
           :strategies="strategies"
           :user-vote="userVote"
-          :loading-more="loadingMore"
-          @loadVotes="loadMore(loadMoreVotes)"
+          @votes="votes = $event"
         />
         <SpaceProposalPlugins
           v-if="proposal?.plugins && loadedResults && results"
@@ -221,8 +190,8 @@ onMounted(() => {
           :proposal="proposal"
           :results="results"
           :loaded-results="loadedResults"
-          :votes="votes"
           :strategies="strategies"
+          :votes="votes"
         />
       </div>
     </template>
@@ -238,7 +207,6 @@ onMounted(() => {
           :space="space"
           :proposal="proposal"
           :results="results"
-          :votes="votes"
           :strategies="strategies"
           :is-admin="isAdmin"
           @reload="reloadProposal()"
@@ -250,8 +218,8 @@ onMounted(() => {
           :proposal="proposal"
           :results="results"
           :loaded-results="loadedResults"
-          :votes="votes"
           :strategies="strategies"
+          :votes="votes"
         />
       </div>
     </template>
