@@ -268,7 +268,9 @@ async function validateAuthor() {
 
     if (
       props.space.validation.name === 'any' ||
-      (props.space.validation.name === 'basic' && !props.space.filters.minScore)
+      (props.space.validation.name === 'basic' &&
+        !props.space.filters.minScore &&
+        !props.space.validation.params?.minScore)
     ) {
       isValidAuthor.value = true;
       return;

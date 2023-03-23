@@ -4,6 +4,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useClient, useFormValidation, useImageUpload } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
@@ -100,7 +101,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     formData.children = formData.children.map(child => child.id) || [];
     formData.parent = formData.parent?.id || '';
 
-    if (formData.validation.name === 'basic' && !formData.filters.minScore)
+    if (
+      formData.validation.name === 'basic' &&
+      !formData.filters.minScore &&
+      !formData.validation.params.minScore &&
+      isEmpty(formData.validation.params)
+    )
       formData.validation.name = 'any';
     if (
       formData.validation.name === 'nouns' ||
