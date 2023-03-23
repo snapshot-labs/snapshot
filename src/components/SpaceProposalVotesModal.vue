@@ -107,11 +107,7 @@ watch(
         class="block px-4 py-4"
         :style="{ height: maxHeight }"
       >
-        <div
-          class="lazy-loading mb-2 rounded-md"
-          style="width: 80%; height: 20px"
-        />
-        <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
+        <LoadingList />
       </div>
       <div
         v-if="loadedVotes && votesNotFound"
