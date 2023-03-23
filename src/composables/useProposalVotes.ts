@@ -22,18 +22,14 @@ export function useProposalVotes(
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
   const searchAddress = ref('');
-  const isENS = ref(false);
+  const searchVote = ref<Vote[]>([]);
   const isResolvingEns = ref(false);
-  const isWrongEns = ref(false);
+  const noVotesFound = ref(false);
 
   const isZero = computed(() => {
     if (!loadedVotes.value) return false;
     if (votes.value.length === 0) return true;
     return false;
-  });
-
-  const votesNotFound = computed(() => {
-    return Boolean(loadedVotes.value && votes.value.length === 0);
   });
 
   const sortedVotes = computed(() => {
@@ -62,9 +58,9 @@ export function useProposalVotes(
     });
   }
 
-  async function loadVotes(first) {
+  async function loadVotes() {
     const votesRes = await getProposalVotes(proposal.id, {
-      first: first || loadBy,
+      first: loadBy,
       space: proposal.space.id,
       ...(searchAddress.value ? { voter: searchAddress.value } : {})
     });
@@ -84,10 +80,38 @@ export function useProposalVotes(
     loadedVotes.value = true;
   }
 
+  async function loadSearchVote() {
+    const votesObj = await getProposalVotes(proposal.id, {
+      space: proposal.space.id,
+      voter: searchAddress.value
+    });
+
+    if (votesObj.length === 0) {
+      noVotesFound.value = true;
+    } else {
+      searchVote.value = formatProposalVotes(votesObj);
+    }
+    loadedVotes.value = true;
+  }
+
   function clearVotes() {
     loadedVotes.value = false;
     votes.value = [];
     searchAddress.value = '';
+  }
+
+  async function resolveEns(ens: string) {
+    isResolvingEns.value = true;
+    let addressResolved;
+    try {
+      addressResolved = await getProvider('1').resolveName(ens);
+      if (!addressResolved) throw new Error('Wrong ens');
+    } catch (e) {
+      console.log(e);
+    } finally {
+      isResolvingEns.value = false;
+    }
+    return addressResolved;
   }
 
   watch(sortedVotes, () => {
@@ -97,61 +121,42 @@ export function useProposalVotes(
   watchDebounced(
     () => search?.value,
     async val => {
-      if (val === undefined) return;
       searchAddress.value = '';
-      let isWrongAddress = false;
-      if (isAddress(val)) {
-        isENS.value = false;
-        isResolvingEns.value = false;
-        isWrongEns.value = false;
-        searchAddress.value = val;
-      } else {
-        if (isValidEnsDomain(val)) {
-          isENS.value = true;
-          isResolvingEns.value = true;
-          let addressResolved;
-          try {
-            addressResolved = await getProvider('1').resolveName(val);
-            if (!addressResolved) throw new Error('Wrong ens');
-          } catch (e) {
-            isWrongEns.value = true;
-            isResolvingEns.value = false;
-            isWrongAddress = true;
-          }
-          isResolvingEns.value = false;
-          searchAddress.value = addressResolved;
-        } else {
-          if (val.length) isWrongAddress = true;
-          else {
-            isENS.value = false;
-          }
-        }
+      loadedVotes.value = false;
+      noVotesFound.value = false;
+      if (!val) {
+        searchVote.value = [];
+        loadedVotes.value = true;
+        return;
       }
 
-      if (isWrongAddress) {
-        loadedVotes.value = true;
-        votes.value = [];
-      } else {
-        loadedVotes.value = false;
-        votes.value = [];
-        loadVotes(loadBy);
+      if (isAddress(val)) {
+        searchAddress.value = val;
+      } else if (isValidEnsDomain(val)) {
+        searchAddress.value = await resolveEns(val);
       }
+
+      if (!searchAddress.value) {
+        loadedVotes.value = true;
+        noVotesFound.value = true;
+        return;
+      }
+      loadSearchVote();
     },
-    { debounce: 600 }
+    { debounce: 300 }
   );
 
   return {
     isZero,
-    votesNotFound,
+    noVotesFound,
     votes,
+    searchVote,
     loadedVotes,
     sortedVotes,
     loadingMore,
     profiles,
     searchAddress,
-    isENS,
     isResolvingEns,
-    isWrongEns,
     formatProposalVotes,
     loadVotes,
     loadMore,

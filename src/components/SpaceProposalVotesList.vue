@@ -26,10 +26,9 @@ const voteCount = computed(() => props.proposal.votes);
 
 const { downloadVotes, isDownloadingVotes } = useReportDownload();
 
-onMounted(() => {
-  loadVotes(6).then(() => {
-    emit('votes', votes.value);
-  });
+onMounted(async () => {
+  await loadVotes();
+  emit('votes', votes.value);
 });
 </script>
 
