@@ -33,8 +33,8 @@ const {
   clearVotes,
   votesNotFound,
   isENS,
-  resolvingENS,
-  wrongENS
+  isResolvingEns,
+  isWrongEns
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
 const { arrivedState } = useScroll(votesScrollWrapper, {
@@ -85,15 +85,15 @@ watch(
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
         >
           <template
-            v-if="isENS && (resolvingENS || wrongENS)"
+            v-if="isENS && (isResolvingEns || isWrongEns)"
             #after="{ clearInput }"
           >
             <LoadingSpinner
-              v-if="isENS && resolvingENS && !wrongENS"
+              v-if="isENS && isResolvingEns && !isWrongEns"
               class="pb-[3px]"
             />
             <i-ho-x
-              v-if="isENS && wrongENS"
+              v-if="isENS && isWrongEns"
               class="cursor-pointer text-sm text-red"
               @click="clearInput"
             />

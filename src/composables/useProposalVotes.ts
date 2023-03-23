@@ -23,8 +23,8 @@ export function useProposalVotes(
   const votes = ref<Vote[]>([]);
   const searchAddress = ref('');
   const isENS = ref(false);
-  const resolvingENS = ref(false);
-  const wrongENS = ref(false);
+  const isResolvingEns = ref(false);
+  const isWrongEns = ref(false);
 
   const isZero = computed(() => {
     if (!loadedVotes.value) return false;
@@ -96,40 +96,39 @@ export function useProposalVotes(
 
   watchDebounced(
     () => search?.value,
-    async to => {
-      if (to === undefined) return;
+    async val => {
+      if (val === undefined) return;
       searchAddress.value = '';
-
-      let addressWrong = false;
-      if (isAddress(to)) {
+      let isWrongAddress = false;
+      if (isAddress(val)) {
         isENS.value = false;
-        resolvingENS.value = false;
-        wrongENS.value = false;
-        searchAddress.value = to;
+        isResolvingEns.value = false;
+        isWrongEns.value = false;
+        searchAddress.value = val;
       } else {
-        if (isValidEnsDomain(to)) {
+        if (isValidEnsDomain(val)) {
           isENS.value = true;
-          resolvingENS.value = true;
+          isResolvingEns.value = true;
           let addressResolved;
           try {
-            addressResolved = await getProvider('1').resolveName(to);
+            addressResolved = await getProvider('1').resolveName(val);
             if (!addressResolved) throw new Error('Wrong ens');
           } catch (e) {
-            wrongENS.value = true;
-            resolvingENS.value = false;
-            addressWrong = true;
+            isWrongEns.value = true;
+            isResolvingEns.value = false;
+            isWrongAddress = true;
           }
-          resolvingENS.value = false;
+          isResolvingEns.value = false;
           searchAddress.value = addressResolved;
         } else {
-          if (to.length) addressWrong = true;
+          if (val.length) isWrongAddress = true;
           else {
             isENS.value = false;
           }
         }
       }
 
-      if (addressWrong) {
+      if (isWrongAddress) {
         loadedVotes.value = true;
         votes.value = [];
       } else {
@@ -151,8 +150,8 @@ export function useProposalVotes(
     profiles,
     searchAddress,
     isENS,
-    resolvingENS,
-    wrongENS,
+    isResolvingEns,
+    isWrongEns,
     formatProposalVotes,
     loadVotes,
     loadMore,
