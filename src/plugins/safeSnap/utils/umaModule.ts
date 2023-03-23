@@ -77,8 +77,7 @@ export const getModuleDetailsUma = async (
     [moduleAddress, 'optimisticOracle'],
     [moduleAddress, 'rules'],
     [moduleAddress, 'bondAmount'],
-    [moduleAddress, 'liveness'],
-    [moduleAddress, 'PROPOSAL_VALID_RESPONSE']
+    [moduleAddress, 'liveness']
   ]);
   let needsApproval = false;
   const minimumBond = moduleDetails[3][0];
@@ -156,7 +155,7 @@ export const getModuleDetailsUma = async (
       event.args?.timestamp.toString() === proposalHashTimestamp.toString()
   );
 
-  // Get the full proposal events (with state and disputer).
+  // Get the full proposal events (with state).
   const thisModuleFullProposalEvent = await Promise.all(
     thisModuleProposalEvent.map(async event => {
       return oracleContract
@@ -167,11 +166,6 @@ export const getModuleDetailsUma = async (
           event.args?.ancillaryData
         )
         .then(result => {
-          const isDisputed =
-            result.disputer === '0x0000000000000000000000000000000000000000'
-              ? false
-              : true;
-
           const isExpired =
             Math.floor(Date.now() / 1000) >=
             Number(event.args?.expirationTimestamp);
@@ -179,7 +173,6 @@ export const getModuleDetailsUma = async (
           return {
             expirationTimestamp: event.args?.expirationTimestamp,
             isExpired: isExpired,
-            isDisputed: isDisputed,
             isSettled: result.settled,
             proposalHash: proposalHash,
             proposalTxHash: event.transactionHash

@@ -45,10 +45,9 @@ const QuestionStates = {
   waitingForVoteConfirmation: 2,
   noTransactions: 3,
   completelyExecuted: 4,
-  disputedButNotResolved: 5,
-  waitingForProposal: 6,
-  waitingForLiveness: 7,
-  proposalApproved: 8
+  waitingForProposal: 5,
+  waitingForLiveness: 6,
+  proposalApproved: 7
 };
 Object.freeze(QuestionStates);
 
@@ -256,9 +255,6 @@ const questionState = computed(() => {
   if (!activeProposal && voteResultsConfirmed)
     return QuestionStates.waitingForProposal;
 
-  // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
-  if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
-
   // Proposal has been made and is waiting for liveness period to complete.
   if (!proposalEvent.isExpired) return QuestionStates.waitingForLiveness;
 
@@ -446,18 +442,6 @@ onMounted(async () => {
           </a>
         </div>
       </BaseContainer>
-    </div>
-
-    <div
-      v-if="questionState === questionStates.disputedButNotResolved"
-      class="my-4"
-    >
-      <BaseButton
-        :loading="action2InProgress === 'delete-disputed-proposal'"
-        @click="deleteDisputedProposalUma"
-      >
-        {{ $t('safeSnap.labels.deleteDisputedProposal') }}
-      </BaseButton>
     </div>
 
     <div
