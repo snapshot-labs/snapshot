@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { usePlugins } from '@/composables/usePlugins';
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 
 const props = defineProps<{
   id: string;
@@ -8,8 +8,8 @@ const props = defineProps<{
   space: ExtendedSpace;
   results: Results;
   loadedResults: boolean;
-  votes: Record<string, any>[];
   strategies: Record<string, any>[];
+  votes: Vote[];
 }>();
 
 const { getPluginComponents } = usePlugins();

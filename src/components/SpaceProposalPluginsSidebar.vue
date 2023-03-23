@@ -4,8 +4,8 @@ import {
   ExtendedSpace,
   Proposal,
   Results,
-  Vote,
-  SpaceStrategy
+  SpaceStrategy,
+  Vote
 } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -14,8 +14,8 @@ const props = defineProps<{
   space: ExtendedSpace;
   results: Results;
   loadedResults: boolean;
-  votes: Vote[];
   strategies: SpaceStrategy[];
+  votes: Vote[];
 }>();
 
 const { getPluginComponents } = usePlugins();

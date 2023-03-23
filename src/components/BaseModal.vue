@@ -35,7 +35,7 @@ onBeforeUnmount(() => {
           <slot name="header" />
         </div>
         <div class="modal-body">
-          <slot />
+          <slot :max-height="maxHeight" />
         </div>
         <div v-if="$slots.footer" class="border-t p-4 text-center">
           <slot name="footer" />
@@ -91,8 +91,9 @@ onBeforeUnmount(() => {
       border: 0;
       width: 100% !important;
       max-width: 100% !important;
-      max-height: 100% !important;
-      min-height: 100% !important;
+      height: 100% !important;
+      max-height: 100vh !important;
+      min-height: 100vh !important;
       margin-bottom: 0 !important;
 
       .modal-body {
@@ -101,6 +102,8 @@ onBeforeUnmount(() => {
     }
 
     .modal-body {
+      // height: v-bind(maxHeight);
+      // height: auto;
       max-height: v-bind(maxHeight);
       flex: auto;
       text-align: initial;
