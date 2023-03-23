@@ -63,6 +63,7 @@ watch(
     if (to) {
       loadVotes(20);
     } else {
+      votesQuery.value = '';
       clearVotes();
     }
   }
@@ -114,7 +115,7 @@ watch(
       </div>
       <div
         v-if="loadedVotes && votesNotFound"
-        class="flex flex-row content-center items-center justify-center py-6"
+        class="flex flex-row content-start items-start justify-center py-4"
         :style="{ height: maxHeight }"
       >
         <span>{{ $t('noResultsFound') }}</span>
@@ -137,11 +138,11 @@ watch(
             :data-testid="`proposal-votes-list-item-${i}`"
             :hide-username="true"
           />
-          <a
+          <div
             class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
           >
             <LoadingSpinner v-if="loadingMore" />
-          </a>
+          </div>
         </div>
       </Transition>
     </template>
