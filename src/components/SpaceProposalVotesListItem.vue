@@ -4,18 +4,12 @@ import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
 import { useIntl } from '@/composables';
 import { shorten, getIpfsUrl } from '@/helpers/utils';
 
-const props = withDefaults(
-  defineProps<{
-    space: ExtendedSpace;
-    proposal: Proposal;
-    vote: Vote;
-    profiles: Record<string, Profile>;
-    hideUsername?: boolean;
-  }>(),
-  {
-    hideUsername: false
-  }
-);
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: Proposal;
+  vote: Vote;
+  profiles: Record<string, Profile>;
+}>();
 
 defineEmits(['openReceiptModal']);
 
@@ -30,19 +24,14 @@ const { formatCompactNumber } = useIntl();
 </script>
 
 <template>
-  <div class="flex items-center border-t px-3 py-[14px]">
+  <div class="flex items-center gap-3 border-t px-3 py-[14px]">
     <BaseUser
       :key="vote.voter"
       :profile="profiles[vote.voter]"
       :address="vote.voter"
       :space="space"
       :proposal="proposal"
-      :hide-username="hideUsername"
-      :width-class="
-        hideUsername
-          ? 'w-[50px]'
-          : 'w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left'
-      "
+      :width-class="'w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left '"
     />
 
     <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
