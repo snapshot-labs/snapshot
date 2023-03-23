@@ -33,7 +33,7 @@ export function useProposalVotes(
   });
 
   const votesNotFound = computed(() => {
-    return Boolean(searchAddress.value.length && votes.value.length === 0);
+    return Boolean(loadedVotes.value && votes.value.length === 0);
   });
 
   const sortedVotes = computed(() => {
@@ -100,39 +100,41 @@ export function useProposalVotes(
       if (to === undefined) return;
       searchAddress.value = '';
 
+      let addressWrong = false;
       if (isAddress(to)) {
+        isENS.value = false;
+        resolvingENS.value = false;
+        wrongENS.value = false;
         searchAddress.value = to;
       } else {
         if (isValidEnsDomain(to)) {
-          loadedVotes.value = false;
           isENS.value = true;
           resolvingENS.value = true;
           let addressResolved;
           try {
             addressResolved = await getProvider('1').resolveName(to);
+            if (!addressResolved) throw new Error('Wrong ens');
           } catch (e) {
-            console.warn(':addressResolved error', e);
+            wrongENS.value = true;
             resolvingENS.value = false;
-            wrongENS.value = true;
-          }
-          if (addressResolved) {
-            wrongENS.value = false;
-            searchAddress.value = addressResolved;
-          } else {
-            wrongENS.value = true;
+            addressWrong = true;
           }
           resolvingENS.value = false;
+          searchAddress.value = addressResolved;
         } else {
-          searchAddress.value = '';
-          isENS.value = false;
-          resolvingENS.value = false;
-          wrongENS.value = false;
+          if (to.length) addressWrong = true;
+          else {
+            isENS.value = false;
+          }
         }
       }
 
-      if (!loadingMore.value) {
+      if (addressWrong) {
+        loadedVotes.value = true;
         votes.value = [];
+      } else {
         loadedVotes.value = false;
+        votes.value = [];
         loadVotes(loadBy);
       }
     },
@@ -147,6 +149,7 @@ export function useProposalVotes(
     sortedVotes,
     loadingMore,
     profiles,
+    searchAddress,
     isENS,
     resolvingENS,
     wrongENS,
