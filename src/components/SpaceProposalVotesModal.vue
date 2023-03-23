@@ -75,7 +75,7 @@ watch(
         <h3>{{ $t('votes') }}</h3>
         <BaseSearch
           v-model="votesQuery"
-          :placeholder="$t('searchPlaceholder')"
+          :placeholder="$t('searchPlaceholderVotes')"
           :modal="true"
           :focus-on-mount="true"
           class="min-h-[60px] w-full flex-auto px-3 pb-3"

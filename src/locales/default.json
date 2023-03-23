@@ -1,5 +1,6 @@
 {
   "searchPlaceholder": "Search",
+  "searchPlaceholderVotes": "Search by address or ENS",
   "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",
