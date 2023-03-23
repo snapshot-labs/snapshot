@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 import { useQuorum, useIntl } from '@/composables';
 

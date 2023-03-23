@@ -4,7 +4,6 @@ import {
   ExtendedSpace,
   Proposal,
   Results,
-  Vote,
   SpaceStrategy
 } from '@/helpers/interfaces';
 
