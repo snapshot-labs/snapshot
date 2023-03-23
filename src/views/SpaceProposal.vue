@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <TheLayout v-if="loadingProposal">
+    <TheLayout v-if="loadingProposal" :slim="false">
       <template #content-left>
         <LoadingPage />
       </template>
