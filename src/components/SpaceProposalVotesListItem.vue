@@ -38,7 +38,11 @@ const { formatCompactNumber } = useIntl();
       :space="space"
       :proposal="proposal"
       :hide-username="hideUsername"
-      width-class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left"
+      :width-class="
+        hideUsername
+          ? 'w-[50px]'
+          : 'w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left'
+      "
     />
 
     <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
