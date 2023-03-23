@@ -69,8 +69,10 @@ onMounted(() => {
       @input="handleInput"
     />
     <slot name="after" :clearInput="clearInput" />
-    <a v-if="!$slots.after" @click="clearInput">
-      <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />
-    </a>
+    <i-ho-x-mark
+      v-if="!$slots.after && modelValue"
+      class="cursor-pointer text-[12px]"
+      @click="clearInput"
+    />
   </div>
 </template>
