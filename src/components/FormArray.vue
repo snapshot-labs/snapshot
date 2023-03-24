@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 import { FormError } from '@/helpers/interfaces';
 
@@ -49,6 +50,11 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
     :definition="definition"
   />
 
+  <FormArrayStrategies
+    v-if="definition?.$id === 'strategies'"
+    v-model="input"
+  />
+
   <div v-else class="space-y-2">
     <div v-for="(property, i) in input" :key="i">
       <component
@@ -58,7 +64,10 @@ watch(input, () => emit('update:modelValue', input.value), { deep: true });
         :error="error"
       />
     </div>
-    <BaseButton class="w-full" @click="input.push(definition?.items?.default)">
+    <BaseButton
+      class="w-full"
+      @click="input.push(clone(definition?.items?.default))"
+    >
       {{ $t('add') }}
     </BaseButton>
   </div>

@@ -86,6 +86,52 @@ async function getValidations() {
     },
     ...fetchedValidations
   };
+  // For testing
+  validationsWithAny.basic.schema = {
+    $schema: 'http://json-schema.org/draft-07/schema#',
+    $ref: '#/definitions/Validation',
+    definitions: {
+      Validation: {
+        type: 'object',
+        properties: {
+          minScore: {
+            title: 'Minimum score',
+            type: 'number'
+          },
+          strategies: {
+            $id: 'strategies',
+            type: 'array',
+            items: {
+              type: 'object',
+              default: {
+                name: 'erc20-balance-of',
+                network: '1',
+                params: {}
+              },
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                network: {
+                  type: 'string'
+                },
+                params: {
+                  type: 'object'
+                }
+              }
+            }
+          }
+        },
+        required: ['minScore', 'strategies'],
+        additionalProperties: false
+      }
+    }
+  };
+  console.log(
+    '🚀 ~ file: ModalValidation.vue:90 ~ getValidations ~ validationsWithAny:',
+    validationsWithAny
+  );
+
   validations.value = validationsWithAny || null;
   isValidationsLoaded.value = true;
 }
