@@ -45,7 +45,7 @@ const UNCLAIMED = 'UNCLAIMED';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       loading: false,
@@ -90,12 +90,6 @@ export default {
       // Update the state if the address
       this.loading = true;
       this.address = newAccount;
-      await this.updateState();
-      this.loading = false;
-    },
-    votes: async function () {
-      // Update the state if the votes change
-      this.loading = true;
       await this.updateState();
       this.loading = false;
     }
