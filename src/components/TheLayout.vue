@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 withDefaults(
   defineProps<{
-    slim: boolean;
+    slim?: boolean;
   }>(),
   {
     slim: true
