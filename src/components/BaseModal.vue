@@ -17,8 +17,14 @@ const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
 
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') emit('close');
+}
+
 watch(open, isOpen => {
   document.body.classList[isOpen ? 'add' : 'remove']('overflow-hidden');
+  if (isOpen) document.addEventListener('keydown', onKeydown);
+  else document.removeEventListener('keydown', onKeydown);
 });
 
 onBeforeUnmount(() => {
