@@ -37,7 +37,6 @@ export { useTxStatus } from './useTxStatus';
 export { useUnseenProposals } from './useUnseenProposals';
 export { useUsername } from './useUsername';
 export { useFormValidation } from './useFormValidation';
-export { useValidationsFilter } from './useValidationsFilter';
 export { useWeb3 } from './useWeb3';
 export { useQuorum } from './useQuorum';
 export { useReportDownload } from './useReportDownload';
