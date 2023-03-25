@@ -112,7 +112,8 @@ async function getValidations() {
         properties: {
           minScore: {
             title: 'Minimum score',
-            type: 'number'
+            type: 'number',
+            minimum: 1
           },
           strategies: {
             $id: 'strategies',
@@ -178,7 +179,7 @@ watch(open, () => {
       </h3>
     </template>
 
-    <div class="my-4 mx-0 min-h-[250px] md:mx-4">
+    <div class="my-4 mx-4 min-h-[250px]">
       <div v-if="input.name" class="text-skin-link">
         <FormObject
           v-if="validationDefinition"
