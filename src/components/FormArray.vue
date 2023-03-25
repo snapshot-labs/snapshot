@@ -56,6 +56,7 @@ const getComponent = (type: string) => {
   <FormArrayStrategies
     v-if="definition?.$id === 'strategies'"
     v-model="input"
+    @update:is-valid="emit('update:isValid', $event)"
   />
 
   <div v-else class="space-y-2">

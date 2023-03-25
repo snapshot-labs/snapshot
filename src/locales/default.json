@@ -14,6 +14,8 @@
   "retry": "Retry",
   "currentResults": "Current results",
   "reset": "Reset",
+  "strategy": "Strategy",
+  "addStrategy": "Add a strategy",
   "close": "Close",
   "save": "Save",
   "author": "Author",

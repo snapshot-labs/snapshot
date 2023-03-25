@@ -34,6 +34,22 @@ type Validations = Record<
 
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
+const isStrategiesFormValid = ref(true);
+
+const validationDefinition = computed(() => {
+  return (
+    validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
+    null
+  );
+});
+
+const isValidForm = computed(() => {
+  if (isStrategiesFormValid.value === false) return false;
+  if (!validationDefinition.value) return true;
+  return (
+    validateSchema(validationDefinition.value, input.value.params) === true
+  );
+});
 
 function handleSelect(n: string) {
   input.value.name = n;
@@ -148,20 +164,6 @@ watch(open, () => {
     };
   }
 });
-
-const validationDefinition = computed(() => {
-  return (
-    validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
-    null
-  );
-});
-
-const isValidForm = computed(() => {
-  if (!validationDefinition.value) return true;
-  return (
-    validateSchema(validationDefinition.value, input.value.params) === true
-  );
-});
 </script>
 
 <template>
@@ -182,6 +184,7 @@ const isValidForm = computed(() => {
           v-if="validationDefinition"
           v-model="input.params"
           :definition="validationDefinition"
+          @update:is-valid="isStrategiesFormValid = $event"
         />
         <TextareaJson
           v-else

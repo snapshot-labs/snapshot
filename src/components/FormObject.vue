@@ -55,6 +55,7 @@ const { getValidationMessage } = useFormValidation(
       v-model="input[key]"
       :definition="property"
       :error="{ message: getValidationMessage(key) }"
+      @update:is-valid="emit('update:isValid', $event)"
     />
   </div>
 </template>

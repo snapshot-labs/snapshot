@@ -1,20 +1,35 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-
 import { useStrategies } from '@/composables';
 
 const props = defineProps<{
   modelValue: { name: string; network: string; params: any }[];
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update:isValid']);
 
 const { filterStrategies, getStrategies, strategies } = useStrategies();
 
-const searchInput = ref('');
-
 const input = ref<{ name: string; network: string; params: any }[]>(
   props.modelValue || []
+);
+const searchInput = ref('');
+const strategyValidationStates = ref<boolean[]>([]);
+
+function handleDelete(index: number) {
+  input.value.splice(index, 1);
+  strategyValidationStates.value.splice(index, 1);
+}
+
+watch(
+  strategyValidationStates,
+  () => {
+    const isValid = Object.values(strategyValidationStates.value).every(
+      v => v === true
+    );
+    emit('update:isValid', isValid);
+  },
+  { immediate: true, deep: true }
 );
 
 watch(
@@ -43,7 +58,14 @@ onMounted(() => {
         :key="i"
         class="space-y-2 rounded-md border p-3"
       >
-        {{ i + 1 }}
+        <div class="mb-3 flex items-center justify-between">
+          <BasePill class="text-[18px]">
+            {{ i + 1 }}
+          </BasePill>
+          <BaseButtonIcon v-if="input.length > 1" @click="handleDelete(i)">
+            <i-ho-trash class="text-[18px]" />
+          </BaseButtonIcon>
+        </div>
         <BaseCombobox
           :label="$t('strategy')"
           :items="
@@ -60,6 +82,7 @@ onMounted(() => {
         <FormObjectStrategyParams
           v-model="input[i].params"
           :strategy-name="input[i].name"
+          @update:is-valid="strategyValidationStates[i] = $event"
         />
       </div>
       <BaseButton
@@ -68,7 +91,7 @@ onMounted(() => {
           input.push({ name: 'erc20-balance-of', network: '1', params: {} })
         "
       >
-        {{ $t('add') }}
+        {{ $t('addStrategy') }}
       </BaseButton>
     </div>
   </div>
