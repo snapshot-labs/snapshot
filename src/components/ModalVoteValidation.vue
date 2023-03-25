@@ -117,7 +117,7 @@ const isValidForm = computed(() => {
       </h3>
     </template>
 
-    <div class="my-4 mx-0 min-h-[250px] md:mx-4">
+    <div class="my-4 mx-4 min-h-[250px]">
       <div v-if="input.name" class="text-skin-link">
         <FormObject
           v-if="validationDefinition"
