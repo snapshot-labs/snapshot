@@ -105,7 +105,7 @@ watch(
               :class="{ '!border-0': i === 0 }"
               :data-testid="`proposal-votes-list-item-${i}`"
             />
-            <span ref="votesEndEl" />
+            <div ref="votesEndEl" class="mb-3" />
             <div
               class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
             >
