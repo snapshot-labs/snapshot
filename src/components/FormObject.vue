@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
+import { computed, toRefs } from 'vue';
 import { useFormValidation } from '@/composables';
 
 import * as FormObject from '@/components/FormObject.vue';
@@ -13,9 +13,14 @@ const props = defineProps<{
   definition: any;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update:isValid']);
 
-const input = ref(props.modelValue || props.definition.default || {});
+const input = computed({
+  get: () => props.modelValue || props.definition.default || {},
+  set: value => {
+    emit('update:modelValue', value);
+  }
+});
 
 const getComponent = (type: string) => {
   switch (type) {
@@ -33,8 +38,6 @@ const getComponent = (type: string) => {
       return null;
   }
 };
-
-watch(input, () => emit('update:modelValue', input.value), { deep: true });
 
 const { modelValue } = toRefs(props);
 const { getValidationMessage } = useFormValidation(

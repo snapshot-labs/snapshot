@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 import { FormError } from '@/helpers/interfaces';
@@ -15,9 +15,14 @@ const props = defineProps<{
   error?: FormError;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'update:isValid']);
 
-const input = ref(props.modelValue || props.definition?.default || []);
+const input = computed({
+  get: () => props.modelValue || props.definition?.default || [],
+  set: value => {
+    emit('update:modelValue', value);
+  }
+});
 
 const getComponent = (type: string) => {
   switch (type) {
@@ -33,8 +38,6 @@ const getComponent = (type: string) => {
       return null;
   }
 };
-
-watch(input, () => emit('update:modelValue', input.value), { deep: true });
 </script>
 
 <template>
