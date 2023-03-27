@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
 import {
   ExtendedSpace,
   Proposal,

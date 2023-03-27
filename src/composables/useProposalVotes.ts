@@ -1,9 +1,7 @@
-import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { useProfiles, useWeb3, useInfiniteLoader, useEns } from '@/composables';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';

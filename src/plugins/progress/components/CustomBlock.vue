@@ -1,11 +1,7 @@
 <script setup>
 import Plugin from '../index';
-import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { ref, onMounted } from 'vue';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useI18n } from '@/composables/useI18n';
 
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();

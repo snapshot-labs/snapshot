@@ -1,4 +1,3 @@
-import { computed, ref } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
 import { apolloClient } from '@/helpers/apollo';
 import { ensApolloClient } from '@/helpers/ens';

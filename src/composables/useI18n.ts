@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import i18n, {
   defaultLocale,

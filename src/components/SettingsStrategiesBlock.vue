@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';

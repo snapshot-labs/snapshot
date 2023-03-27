@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
-import { useProposalVotes } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,

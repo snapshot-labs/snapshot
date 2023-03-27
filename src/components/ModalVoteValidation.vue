@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, computed } from 'vue';
 import { VoteValidation } from '@/helpers/interfaces';
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 

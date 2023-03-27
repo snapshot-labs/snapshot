@@ -1,10 +1,7 @@
-import { ref, computed } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
-
-import { useI18n, useWeb3, useSkin, useSpaces } from '@/composables';
 
 const domainName = window.location.hostname;
 const env = import.meta.env.VITE_ENV;

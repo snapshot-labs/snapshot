@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { parseUnits, formatUnits } from '@ethersproject/units';
-import { onMounted, ref, watch } from 'vue';
 
 const props = defineProps([
   'modelValue',

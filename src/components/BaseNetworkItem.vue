@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useIntl } from '@/composables/useIntl';
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const { formatCompactNumber } = useIntl();

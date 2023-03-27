@@ -1,7 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
 import { describe, afterEach, it, expect } from 'vitest';
 import TreasuryAssetsListItem from '@/components/TreasuryAssetsListItem.vue';
-import { useIntl } from '@/composables/useIntl';
 import { formatUnits } from '@ethersproject/units';
 
 const { formatCompactNumber, formatNumber } = useIntl();

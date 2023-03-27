@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import { upload as pin } from '@snapshot-labs/pineapple';
 
 const emit = defineEmits(['loading', 'input']);

@@ -1,10 +1,8 @@
-import { ref } from 'vue';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import { UMA_MODULE_ABI, ERC20_ABI, UMA_ORACLE_ABI } from '../constants';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
-import { useWeb3 } from '@/composables';
 import { keccak256 } from '@ethersproject/keccak256';
 import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';

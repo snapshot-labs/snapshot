@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSpaces } from '@/composables/useSpaces';
-
 const { spaces } = useSpaces();
 
 defineProps<{

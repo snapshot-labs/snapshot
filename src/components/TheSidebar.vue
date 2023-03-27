@@ -1,18 +1,7 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 
 import { lsSet, lsGet } from '@/helpers/utils';
-
-import {
-  useUnseenProposals,
-  useExtendedSpaces,
-  useFollowSpace,
-  useSpaces,
-  useWeb3,
-  useApp
-} from '@/composables';
 
 const router = useRouter();
 

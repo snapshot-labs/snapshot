@@ -1,13 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useModal } from '@/composables/useModal';
-import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useProfiles } from '@/composables/useProfiles';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { useI18n } from '@/composables/useI18n';
 import CommentBoxCommentBlock from './CommentBlock.vue';
 
 const { t } = useI18n();

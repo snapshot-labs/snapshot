@@ -1,5 +1,3 @@
-import { ref } from 'vue';
-
 const modalAccountOpen = ref(false);
 const isModalPostVoteOpen = ref(false);
 

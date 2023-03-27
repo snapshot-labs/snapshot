@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
 import { FormError } from '@/helpers/interfaces';
 
 const props = withDefaults(

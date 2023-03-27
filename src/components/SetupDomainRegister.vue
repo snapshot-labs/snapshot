@@ -4,9 +4,6 @@
  * Emits waitForRegistration event when Register button is clicked, to trigger domain lookup in background.
  */
 
-import { computed } from 'vue';
-import { useEns } from '@/composables/useEns';
-
 const { validEnsTlds } = useEns();
 
 const props = defineProps<{

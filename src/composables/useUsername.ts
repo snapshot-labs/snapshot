@@ -1,8 +1,5 @@
-import { computed, Ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Profile } from '@/helpers/interfaces';
-
-import { useWeb3 } from '@/composables';
 
 export function useUsername(
   address: Ref<string>,

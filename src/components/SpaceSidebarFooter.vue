@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { sanitizeUrl } from '@braintree/sanitize-url';
 
 const props = defineProps<{ space?: Record<string, any> }>();

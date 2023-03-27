@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useSkin } from '@/composables';
-
 const { toggleUserTheme, getThemeIcon } = useSkin();
 </script>
 

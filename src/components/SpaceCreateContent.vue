@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useIntl, useImageUpload, useFormSpaceProposal } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{

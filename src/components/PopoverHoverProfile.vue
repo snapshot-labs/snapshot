@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { explorerUrl } from '@/helpers/utils';
-import { useApp } from '@/composables/useApp';
 import { useMediaQuery } from '@vueuse/core';
 import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 

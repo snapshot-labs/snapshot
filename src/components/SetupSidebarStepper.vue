@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useClient } from '@/composables';
-
 const { isGnosisSafe } = useClient();
 
 defineProps<{

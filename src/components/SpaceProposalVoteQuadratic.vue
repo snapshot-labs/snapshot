@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { calcPercentageOfSum } from '@snapshot-labs/snapshot.js/src/voting/quadratic';
 import { useMediaQuery } from '@vueuse/core';
 import { Proposal } from '@/helpers/interfaces';

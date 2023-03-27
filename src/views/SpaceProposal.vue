@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { getProposal } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-
-import { useExtendedSpaces } from '@/composables';
 
 const props = defineProps<{ spaceKey: string }>();
 
