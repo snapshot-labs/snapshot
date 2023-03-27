@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
 import { useProposalVotes } from '@/composables';
 import {
@@ -33,13 +33,14 @@ const {
   profiles,
   clearVotes,
   noVotesFound,
-  isResolvingEns
+  isResolvingEns,
+  searchAddress
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
 useIntersectionObserver(
   votesEndEl,
-  ([{ isIntersecting }], observerElement) => {
-    if (props.open && isIntersecting) {
+  ([{ isIntersecting }]) => {
+    if (props.open && isIntersecting && searchAddress.value === '') {
       loadMore(loadMoreVotes);
     }
   },

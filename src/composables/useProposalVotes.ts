@@ -130,7 +130,7 @@ export function useProposalVotes(
         return;
       }
 
-      if (isAddress(val)) {
+      if (isAddress(val.toLowerCase())) {
         searchAddress.value = val;
       } else if (isValidEnsDomain(val)) {
         searchAddress.value = await resolveEns(val);
