@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
-import { useFormSpaceSettings } from '@/composables';
-
 const props = defineProps<{
   context: 'setup' | 'settings';
   isViewOnly?: boolean;

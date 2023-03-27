@@ -1,6 +1,4 @@
 <script setup>
-import { useApp } from '@/composables/useApp';
-
 const { domain } = useApp();
 const { init, isReady, showSidebar } = useApp();
 const route = useRoute();

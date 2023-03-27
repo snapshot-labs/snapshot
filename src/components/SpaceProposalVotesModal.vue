@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core';
-import { useProposalVotes } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,

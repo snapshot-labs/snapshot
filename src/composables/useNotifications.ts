@@ -4,9 +4,6 @@
  */
 
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
 import { useStorage } from '@vueuse/core';
 import uniqBy from 'lodash/uniqBy';
 

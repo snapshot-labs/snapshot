@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useImageUpload } from '@/composables/useImageUpload';
-
 const props = defineProps<{
   isViewOnly?: boolean;
 }>();

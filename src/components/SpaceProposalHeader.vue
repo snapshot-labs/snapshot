@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-import {
-  useI18n,
-  useProfiles,
-  useSharing,
-  useWeb3,
-  useClient,
-  useProposals,
-  useFormSpaceProposal,
-  useFlashNotification
-} from '@/composables';
-
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;

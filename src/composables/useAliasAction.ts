@@ -7,15 +7,11 @@
  */
 
 import { lsGet, lsSet } from '@/helpers/utils';
-import { useWeb3 } from '@/composables/useWeb3';
 import { Wallet } from '@ethersproject/wallet';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getDefaultProvider, Provider } from '@ethersproject/providers';
 import { ALIASES_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import client from '@/helpers/clientEIP712';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useI18n } from '@/composables/useI18n';
 
 const aliases = ref(lsGet('aliases') || {});
 const isValidAlias = ref(false);

@@ -3,8 +3,6 @@
  * returning computed properties based on current locale from i18n
  */
 
-import { useI18n } from '@/composables/useI18n';
-
 /**
  * This is needed since Intl still doesn't support durations:
  * https://github.com/tc39/proposal-intl-duration-format (hopefully soon!)

@@ -1,6 +1,5 @@
 import { Proposal } from '@/helpers/interfaces';
 import { USER_VOTED_PROPOSAL_IDS_QUERY } from '@/helpers/queries';
-import { useApolloQuery, useWeb3 } from '@/composables';
 
 interface ProposalsStore {
   space: {

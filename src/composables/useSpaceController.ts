@@ -8,8 +8,6 @@ import {
   getSpaceController
 } from '@snapshot-labs/snapshot.js/src/utils';
 
-import { useI18n, useWeb3, useApp, useFlashNotification } from '@/composables';
-
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);

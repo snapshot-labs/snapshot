@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useFollowSpace, useTerms, useClient } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{

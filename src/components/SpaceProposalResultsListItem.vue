@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
 import {
   ExtendedSpace,
   Proposal,

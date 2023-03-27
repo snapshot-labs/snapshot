@@ -3,17 +3,6 @@ import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
-import {
-  useProposals,
-  useInfiniteLoader,
-  useUnseenProposals,
-  useScrollMonitor,
-  useApolloQuery,
-  useProfiles,
-  useWeb3,
-  useMeta
-} from '@/composables';
-
 const props = defineProps<{
   space: ExtendedSpace;
 }>();

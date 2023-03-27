@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from '@/composables/useI18n';
-
 const { d } = useI18n();
 
 const props = withDefaults(

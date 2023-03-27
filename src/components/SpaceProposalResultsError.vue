@@ -6,7 +6,6 @@
  * Also shows a "Get help" button for space admins, pointing to discord.
  */
 
-import { useI18n } from '@/composables/useI18n';
 import { Proposal } from '@/helpers/interfaces';
 
 const { t } = useI18n();

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
-import { useApp, useExtendedSpaces } from '@/composables';
-
 const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();

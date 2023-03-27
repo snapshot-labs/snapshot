@@ -3,16 +3,6 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStorage } from '@vueuse/core';
 import { clearStampCache } from '@/helpers/utils';
 
-import {
-  useWeb3,
-  useI18n,
-  useClient,
-  useExtendedSpaces,
-  useFormSpaceSettings,
-  useFlashNotification,
-  useMeta
-} from '@/composables';
-
 useMeta({
   title: {
     key: 'metaInfo.setup.title'

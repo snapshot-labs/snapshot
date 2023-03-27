@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useTreasury } from '@/composables/useTreasury';
 import { TreasuryWallet } from '@/helpers/interfaces';
 
 const props = defineProps<{

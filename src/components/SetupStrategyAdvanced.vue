@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useFormSpaceSettings } from '@/composables/useFormSpaceSettings';
 const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
 
 const emit = defineEmits(['next']);

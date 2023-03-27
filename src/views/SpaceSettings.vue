@@ -3,19 +3,6 @@ import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 
-import {
-  useI18n,
-  useWeb3,
-  useClient,
-  useSpaceController,
-  useExtendedSpaces,
-  useFormSpaceSettings,
-  useTreasury,
-  useFlashNotification,
-  useGnosis,
-  useMeta
-} from '@/composables';
-
 const props = defineProps<{
   space: ExtendedSpace;
 }>();

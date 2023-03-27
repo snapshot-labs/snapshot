@@ -2,8 +2,6 @@
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 
-import { useSpaceController } from '@/composables';
-
 const {
   spaceControllerInput,
   settingENSRecord,

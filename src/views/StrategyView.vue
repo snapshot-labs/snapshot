@@ -1,6 +1,4 @@
 <script setup>
-import { useStrategies, useMeta } from '@/composables';
-
 const route = useRoute();
 
 const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();

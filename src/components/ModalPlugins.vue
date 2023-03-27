@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PluginIndex } from '@/helpers/interfaces';
-import { usePlugins } from '@/composables';
 
 const props = defineProps<{
   open: boolean;

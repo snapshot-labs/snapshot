@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
-import { useFormSpaceProposal, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;

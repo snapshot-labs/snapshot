@@ -1,4 +1,3 @@
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 import { useStorage, useMediaQuery } from '@vueuse/core';
 

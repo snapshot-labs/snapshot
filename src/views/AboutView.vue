@@ -1,7 +1,4 @@
 <script setup>
-import { useSkin, DARK } from '@/composables/useSkin';
-import { useApp } from '@/composables/useApp';
-
 const { userTheme } = useSkin();
 const { env } = useApp();
 

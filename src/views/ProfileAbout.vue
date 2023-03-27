@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { FOLLOWS_QUERY } from '@/helpers/queries';
-import { useApolloQuery, useEns, useExtendedSpaces } from '@/composables';
 
 const props = defineProps<{
   userAddress: string;

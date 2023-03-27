@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-import { useUsername, useApp } from '@/composables';
-
 const { domain } = useApp();
 
 const props = defineProps<{

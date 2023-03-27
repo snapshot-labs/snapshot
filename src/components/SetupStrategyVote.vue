@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useFormSpaceSettings, useI18n } from '@/composables';
-
 const emit = defineEmits(['next']);
 
 const { form } = useFormSpaceSettings('setup');

@@ -7,7 +7,6 @@
 import defaults from '@/locales/default.json';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { watchDebounced } from '@vueuse/core';
-import { useI18n } from '@/composables';
 
 export function useFormValidation(schema, form) {
   const { t } = useI18n();

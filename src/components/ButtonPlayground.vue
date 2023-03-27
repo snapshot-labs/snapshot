@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { encodeJson } from '@/helpers/b64';
 
-import { useApp } from '@/composables';
-
 const props = withDefaults(
   defineProps<{
     name: string;

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useIntl } from '@/composables';
-
 const props = defineProps<{
   context: 'voting' | 'proposal';
   spaceId: string;

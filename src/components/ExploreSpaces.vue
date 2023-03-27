@@ -1,8 +1,6 @@
 <script setup>
 import { shorten } from '@/helpers/utils';
 
-import { useScrollMonitor, useSpaces, useIntl } from '@/composables';
-
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 

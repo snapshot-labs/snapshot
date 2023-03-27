@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
-
 defineProps<{
   network: string;
   information?: string;

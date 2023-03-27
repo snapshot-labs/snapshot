@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useProposalVotes, useReportDownload } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,

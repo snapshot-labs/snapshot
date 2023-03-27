@@ -2,8 +2,6 @@
 import { getProposal } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-import { useExtendedSpaces } from '@/composables';
-
 const props = defineProps<{ spaceKey: string }>();
 
 const loadingProposal = ref(false);

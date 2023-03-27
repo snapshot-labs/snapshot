@@ -7,15 +7,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { ensureRightNetwork } from './SafeTransactions.vue';
 
-import {
-  useWeb3,
-  useI18n,
-  useIntl,
-  useFlashNotification,
-  useTxStatus,
-  useSafe
-} from '@/composables';
-
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 
 const { formatRelativeTime } = useIntl();

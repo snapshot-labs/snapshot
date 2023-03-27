@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useSpaces } from '@/composables/useSpaces';
 import { useMediaQuery } from '@vueuse/core';
 
 defineProps<{

@@ -2,7 +2,6 @@
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
-import { useCopy } from '@/composables/useCopy';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{

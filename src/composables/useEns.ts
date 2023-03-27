@@ -1,4 +1,3 @@
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import {
   ENS_DOMAINS_BY_ACCOUNT_QUERY,
   ENS_DOMAIN_BY_HASH_QUERY

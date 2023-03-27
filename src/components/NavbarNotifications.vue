@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useNotifications } from '@/composables/useNotifications';
-import { useIntl } from '@/composables/useIntl';
 import { PopoverButton } from '@headlessui/vue';
 
 const {

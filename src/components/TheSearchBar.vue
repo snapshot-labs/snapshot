@@ -1,6 +1,4 @@
 <script setup>
-import { useI18n } from '@/composables';
-
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();

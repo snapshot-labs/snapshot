@@ -9,16 +9,6 @@ import {
 import { getDelegates, getDelegators } from '@/helpers/delegation';
 import { shorten } from '@/helpers/utils';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
-import {
-  useI18n,
-  useProfiles,
-  useWeb3,
-  useIntl,
-  useApolloQuery,
-  useModal,
-  useEns,
-  useDelegate
-} from '@/composables';
 
 const route = useRoute();
 const { t } = useI18n();

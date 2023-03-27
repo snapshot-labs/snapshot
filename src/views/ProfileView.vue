@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useProfiles } from '@/composables/useProfiles';
-
 const route = useRoute();
 
 const modalProfileFormOpen = ref(false);

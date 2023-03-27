@@ -1,6 +1,4 @@
 <script setup>
-import { useFlashNotification } from '@/composables/useFlashNotification';
-
 const { items } = useFlashNotification();
 </script>
 

@@ -2,8 +2,6 @@
 import { Proposal } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
 
-import { useIntl } from '@/composables';
-
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 
 const props = defineProps<{

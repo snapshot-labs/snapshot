@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useAliasAction } from '@/composables/useAliasAction';
 import client from '@/helpers/clientEIP712';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useI18n } from '@/composables/useI18n';
-import { useProfiles } from '@/composables/useProfiles';
 import { clearStampCache } from '@/helpers/utils';
 
 const props = defineProps<{

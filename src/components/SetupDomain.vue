@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { useEns } from '@/composables/useEns';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';

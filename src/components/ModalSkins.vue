@@ -1,6 +1,4 @@
 <script setup>
-import { useSkinsFilter } from '@/composables/useSkinsFilter';
-
 const props = defineProps({
   open: {
     type: Boolean,

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useFormSpaceSettings } from '@/composables';
-
 const emit = defineEmits(['next', 'back']);
 
 enum Step {

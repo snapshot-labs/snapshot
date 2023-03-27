@@ -4,17 +4,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { ensureRightNetwork } from './SafeTransactions.vue';
-import { useIntl } from '@/composables/useIntl';
 import { formatUnits } from '@ethersproject/units';
-
-import {
-  useWeb3,
-  useI18n,
-  useFlashNotification,
-  useTxStatus,
-  useSafe,
-  useQuorum
-} from '@/composables';
 
 const props = defineProps([
   'batches',

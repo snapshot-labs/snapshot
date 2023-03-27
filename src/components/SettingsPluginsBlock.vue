@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePlugins, useFormSpaceSettings } from '@/composables';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{

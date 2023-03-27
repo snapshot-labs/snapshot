@@ -2,7 +2,6 @@
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-import { useModal, useTerms, useWeb3, useMeta } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);

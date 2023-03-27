@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from '@/composables';
 import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{

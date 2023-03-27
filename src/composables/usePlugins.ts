@@ -7,7 +7,6 @@
 
 import { PLUGINS_COUNT_QUERY } from '@/helpers/queries';
 import { Plugin } from '@/helpers/interfaces';
-import { useApolloQuery } from '@/composables';
 
 // aggregate all plugin.json files in src/plugins
 const pluginIndex = Object.fromEntries(

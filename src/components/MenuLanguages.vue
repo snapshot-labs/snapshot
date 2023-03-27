@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import languages from '@/locales/languages.json';
 
-import { useI18n } from '@/composables';
-
 const { setLocale } = useI18n();
 
 function selectLang(locale) {

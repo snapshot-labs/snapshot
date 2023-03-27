@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { Proposal } from '@/helpers/interfaces';
 
-import { useIntl } from '@/composables';
-
 const { getRelativeProposalPeriod, formatPercentNumber, formatCompactNumber } =
   useIntl();
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useCategories, useSpaces, useI18n } from '@/composables';
-
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
 const { selectedCategory, orderedSpaces } = useSpaces();
 const { tc } = useI18n();

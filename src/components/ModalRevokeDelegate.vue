@@ -5,13 +5,6 @@ import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
 import { Profile } from '@/helpers/interfaces';
 
-import {
-  useI18n,
-  useUsername,
-  useTxStatus,
-  useFlashNotification
-} from '@/composables';
-
 const props = defineProps<{
   open: boolean;
   id: string;

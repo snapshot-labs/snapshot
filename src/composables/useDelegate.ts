@@ -8,12 +8,6 @@ import {
   SNAPSHOT_SUBGRAPH_URL
 } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import {
-  useTxStatus,
-  useI18n,
-  useWeb3,
-  useFlashNotification
-} from '@/composables';
 
 export function useDelegate() {
   const abi = ['function setDelegate(bytes32 id, address delegate)'];

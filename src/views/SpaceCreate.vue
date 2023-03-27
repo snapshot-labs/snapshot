@@ -5,23 +5,6 @@ import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import {
-  useFlashNotification,
-  useFormSpaceProposal,
-  useProposals,
-  usePlugins,
-  useI18n,
-  useModal,
-  useTerms,
-  useApp,
-  useApolloQuery,
-  useWeb3,
-  useClient,
-  useGnosis,
-  useSnapshot,
-  useMeta
-} from '@/composables';
-
 enum Step {
   CONTENT,
   VOTING,

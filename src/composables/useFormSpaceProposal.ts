@@ -1,7 +1,6 @@
 import { useStorage } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormValidation } from '@/composables';
 
 interface ProposalForm {
   name: string;

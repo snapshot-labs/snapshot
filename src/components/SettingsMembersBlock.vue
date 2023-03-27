@@ -3,13 +3,6 @@ import { isAddress } from '@ethersproject/address';
 import capitalize from 'lodash/capitalize';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-import {
-  useFormSpaceSettings,
-  useFlashNotification,
-  useWeb3,
-  useI18n
-} from '@/composables';
-
 const props = defineProps<{
   context: 'setup' | 'settings';
   space?: ExtendedSpace;

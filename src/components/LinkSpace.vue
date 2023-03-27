@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import domains from '@/../snapshot-spaces/spaces/domains.json';
-import { useApp } from '@/composables';
 
 const props = defineProps<{
   spaceId: string;

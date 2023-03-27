@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useI18n } from '@/composables/useI18n';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useFormSpaceSettings, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { JsonRpcProvider } from '@ethersproject/providers';

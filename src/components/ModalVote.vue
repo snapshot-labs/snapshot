@@ -4,15 +4,6 @@ import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
 
-import {
-  useProposals,
-  useWeb3,
-  useGnosis,
-  useI18n,
-  useClient,
-  useIntl
-} from '@/composables';
-
 const { web3Account } = useWeb3();
 
 const votingPower = ref(0);

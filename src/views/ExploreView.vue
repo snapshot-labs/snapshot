@@ -1,14 +1,4 @@
 <script setup>
-import {
-  usePlugins,
-  useStrategies,
-  useNetworksFilter,
-  useIntl,
-  useScrollMonitor,
-  useI18n,
-  useMeta
-} from '@/composables';
-
 useMeta({
   title: {
     key: 'metaInfo.home.title'

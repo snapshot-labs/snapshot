@@ -1,6 +1,4 @@
-import { useI18n } from '@/composables/useI18n';
 import { useClipboard } from '@vueuse/core';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 
 export function useCopy() {
   const { t } = useI18n();

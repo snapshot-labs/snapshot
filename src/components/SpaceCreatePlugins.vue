@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePlugins } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
