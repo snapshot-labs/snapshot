@@ -15,9 +15,7 @@ const props = defineProps<{
   userVote: Vote | null;
 }>();
 
-const emit = defineEmits(['votes']);
-
-const { isZero, votes, loadedVotes, sortedVotes, loadVotes, profiles } =
+const { isZero, loadedVotes, sortedVotes, loadVotes, profiles } =
   useProposalVotes(props.proposal, 6, props.userVote);
 
 const modalVotesmOpen = ref(false);
@@ -28,7 +26,6 @@ const { downloadVotes, isDownloadingVotes } = useReportDownload();
 
 onMounted(async () => {
   await loadVotes();
-  emit('votes', votes.value);
 });
 </script>
 

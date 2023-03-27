@@ -6,7 +6,6 @@ defineProps({
   proposal: Object,
   results: Object,
   loadedResults: Boolean,
-  votes: Object,
   strategies: Object
 });
 </script>

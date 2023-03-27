@@ -6,7 +6,6 @@ defineProps({
   proposal: Object,
   results: Object,
   loadedResults: Boolean,
-  votes: Object,
   strategies: Object
 });
 </script>
@@ -18,7 +17,6 @@ defineProps({
     :proposal="proposal"
     :results="results"
     :loaded="loadedResults"
-    :votes="votes"
     :strategies="strategies"
   />
 </template>

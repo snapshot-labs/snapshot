@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, toRefs, watch } from 'vue';
-import { useScroll } from '@vueuse/core';
+import { useIntersectionObserver } from '@vueuse/core';
 import { useProposalVotes } from '@/composables';
 import {
   ExtendedSpace,
@@ -19,7 +19,7 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
-const votesScrollWrapper = ref<HTMLElement | null>(null);
+const votesEndEl = ref<HTMLElement | null>(null);
 const votesQuery = ref('');
 
 const {
@@ -36,23 +36,15 @@ const {
   isResolvingEns
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
-const { arrivedState } = useScroll(votesScrollWrapper, {
-  offset: {
-    bottom: 60 * 10
-  }
-});
-
-const { bottom } = toRefs(arrivedState);
-
-watch(
-  () => bottom.value,
-  val => {
-    if (props.open && val) {
+useIntersectionObserver(
+  votesEndEl,
+  ([{ isIntersecting }], observerElement) => {
+    if (props.open && isIntersecting) {
       loadMore(loadMoreVotes);
     }
   },
   {
-    immediate: false
+    threshold: 1
   }
 );
 
@@ -76,8 +68,8 @@ watch(
         <BaseSearch
           v-model="votesQuery"
           :placeholder="$t('searchPlaceholderVotes')"
-          :modal="true"
-          :focus-on-mount="true"
+          modal
+          focus-on-mount
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
         />
       </div>
@@ -86,23 +78,22 @@ watch(
       <div
         v-if="!loadedVotes || isResolvingEns"
         class="block px-4 pt-4"
-        :style="{ height: maxHeight }"
+        :style="{ minHeight: maxHeight }"
       >
         <LoadingList />
       </div>
       <div
         v-else-if="noVotesFound"
         class="flex flex-row content-start items-start justify-center pt-4"
-        :style="{ height: maxHeight }"
+        :style="{ minHeight: maxHeight }"
       >
         <span>{{ $t('noResultsFound') }}</span>
       </div>
       <div v-else>
         <Transition name="fade">
           <div
-            ref="votesScrollWrapper"
             class="flex h-full min-h-full flex-col overflow-auto"
-            :style="{ height: maxHeight }"
+            :style="{ minHeight: maxHeight }"
           >
             <SpaceProposalVotesListItem
               v-for="(vote, i) in searchVote.length ? searchVote : sortedVotes"
@@ -114,6 +105,7 @@ watch(
               :class="{ '!border-0': i === 0 }"
               :data-testid="`proposal-votes-list-item-${i}`"
             />
+            <div ref="votesEndEl" class="mb-3" />
             <div
               class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
             >
