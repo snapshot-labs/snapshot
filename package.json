@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.4",
-    "@synthetixio/synpress": "^3.3.1",
+    "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "^18.7.18",
