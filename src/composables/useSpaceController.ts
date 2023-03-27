@@ -1,5 +1,3 @@
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';

@@ -6,7 +6,6 @@
  * If the private key is removed from local storage, a new one will be created and registered.
  */
 
-import { computed, ref } from 'vue';
 import { lsGet, lsSet } from '@/helpers/utils';
 import { useWeb3 } from '@/composables/useWeb3';
 import { Wallet } from '@ethersproject/wallet';

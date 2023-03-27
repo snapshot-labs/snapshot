@@ -1,5 +1,4 @@
 <script setup>
-import { ref, toRef, watch } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';

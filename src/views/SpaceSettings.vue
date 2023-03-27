@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';

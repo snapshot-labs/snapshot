@@ -1,8 +1,6 @@
-import { ref } from 'vue';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useRoute } from 'vue-router';
 
 import {
   useGnosis,

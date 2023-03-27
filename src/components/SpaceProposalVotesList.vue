@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
 import { useProposalVotes, useReportDownload } from '@/composables';
 import {
   ExtendedSpace,

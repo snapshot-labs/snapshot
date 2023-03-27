@@ -1,6 +1,4 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { useStrategies, useMeta } from '@/composables';
 
 const route = useRoute();

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 

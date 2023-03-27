@@ -1,5 +1,4 @@
 import { getEnsAddress } from '@/helpers/profile';
-import { ref, computed } from 'vue';
 import { PROFILES_QUERY } from '@/helpers/queries';
 import { Profile } from '@/helpers/interfaces';
 

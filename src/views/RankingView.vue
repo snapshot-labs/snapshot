@@ -1,5 +1,4 @@
 <script setup>
-import { computed } from 'vue';
 import orderBy from 'lodash/orderBy';
 import { getRanking, useSpaces } from '@/composables/useSpaces';
 import { shorten } from '@/helpers/utils';

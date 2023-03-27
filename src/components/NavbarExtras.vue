@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
 import { useApp } from '@/composables';
-import { useRouter } from 'vue-router';
 import { PopoverButton } from '@headlessui/vue';
 
 const { domain } = useApp();

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 
 import { lsSet, lsGet } from '@/helpers/utils';

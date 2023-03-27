@@ -5,7 +5,6 @@
  * backend.
  */
 
-import { ref } from 'vue';
 import { PLUGINS_COUNT_QUERY } from '@/helpers/queries';
 import { Plugin } from '@/helpers/interfaces';
 import { useApolloQuery } from '@/composables';

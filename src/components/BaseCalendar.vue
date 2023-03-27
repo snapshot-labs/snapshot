@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 
 const props = defineProps<{

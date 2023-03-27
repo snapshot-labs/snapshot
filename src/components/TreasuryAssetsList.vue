@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useTreasury } from '@/composables/useTreasury';
-import { onMounted, computed } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
 
 const props = defineProps<{

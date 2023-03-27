@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import {
   ENS_DOMAINS_BY_ACCOUNT_QUERY,

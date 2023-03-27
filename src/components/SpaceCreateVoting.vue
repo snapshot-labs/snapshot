@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import { useFormSpaceProposal, useSnapshot } from '@/composables';

@@ -1,4 +1,3 @@
-import { computed, ref } from 'vue';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';

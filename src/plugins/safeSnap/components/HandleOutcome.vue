@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue';
 import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';

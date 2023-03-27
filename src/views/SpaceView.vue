@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 
 import { useApp, useExtendedSpaces } from '@/composables';

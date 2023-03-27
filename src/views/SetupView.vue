@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStorage } from '@vueuse/core';
 import { clearStampCache } from '@/helpers/utils';

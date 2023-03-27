@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import languages from '@/locales/languages.json';
 
 import { useI18n } from '@/composables';

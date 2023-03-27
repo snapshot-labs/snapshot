@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref, nextTick } from 'vue';
 import { isAddress } from '@ethersproject/address';
 import capitalize from 'lodash/capitalize';
 import { ExtendedSpace } from '@/helpers/interfaces';

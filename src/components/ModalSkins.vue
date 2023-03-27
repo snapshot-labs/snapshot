@@ -1,5 +1,4 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
 import { useSkinsFilter } from '@/composables/useSkinsFilter';
 
 const props = defineProps({

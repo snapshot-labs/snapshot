@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
 import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 import { useUsername, useApp } from '@/composables';

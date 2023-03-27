@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 import { useWeb3, useGnosis, useSnapshot } from '@/composables';

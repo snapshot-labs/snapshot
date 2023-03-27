@@ -1,4 +1,3 @@
-import { computed, Ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Profile } from '@/helpers/interfaces';
 

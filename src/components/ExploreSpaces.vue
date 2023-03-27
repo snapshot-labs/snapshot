@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
 
 import { useScrollMonitor, useSpaces, useIntl } from '@/composables';

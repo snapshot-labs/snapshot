@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { useClient, useFormValidation, useImageUpload } from '@/composables';

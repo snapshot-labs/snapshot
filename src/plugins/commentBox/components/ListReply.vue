@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onBeforeUpdate, watch } from 'vue';
 import CommentBoxReplyBlock from './ReplyBlock.vue';
 
 const props = defineProps({

@@ -1,5 +1,3 @@
-import { ref } from 'vue';
-
 interface Notification {
   id: number;
   description: string;

@@ -6,7 +6,6 @@
  * Also shows a "Get help" button for space admins, pointing to discord.
  */
 
-import { ref } from 'vue';
 import { useI18n } from '@/composables/useI18n';
 import { Proposal } from '@/helpers/interfaces';
 

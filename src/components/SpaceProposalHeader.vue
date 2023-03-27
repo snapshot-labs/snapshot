@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { watch, computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { useRouter } from 'vue-router';
 
 import {
   useI18n,

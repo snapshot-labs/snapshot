@@ -1,4 +1,3 @@
-import { computed, ref } from 'vue';
 import { useEns } from './useEns';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { contractAddress } from '@/helpers/delegation';

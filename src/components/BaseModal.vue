@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { watch, toRefs, onBeforeUnmount } from 'vue';
-
 const props = withDefaults(
   defineProps<{
     open: boolean;

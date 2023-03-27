@@ -1,4 +1,3 @@
-import { computed } from 'vue';
 import categories from '@/helpers/categories.json';
 import { useSpaces } from '@/composables/useSpaces';
 

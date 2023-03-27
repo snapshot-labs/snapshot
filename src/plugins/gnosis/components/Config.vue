@@ -1,5 +1,4 @@
 <script setup>
-import { ref, reactive, computed, watch } from 'vue';
 import GnosisCustomBlock from './CustomBlock.vue';
 
 const props = defineProps(['modelValue', 'proposal', 'network']);

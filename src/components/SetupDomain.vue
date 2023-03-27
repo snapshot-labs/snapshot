@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, computed } from 'vue';
 import { useEns } from '@/composables/useEns';
 import { useWeb3 } from '@/composables/useWeb3';
 import { useApp } from '@/composables/useApp';

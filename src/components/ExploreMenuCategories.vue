@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { useCategories, useSpaces, useI18n } from '@/composables';
 
 const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();

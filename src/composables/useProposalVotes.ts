@@ -1,4 +1,3 @@
-import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, toRefs, watch } from 'vue';
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { useNetworksFilter, useStrategies } from '@/composables';
 

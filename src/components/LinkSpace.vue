@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import { useApp } from '@/composables';
 

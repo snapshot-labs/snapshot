@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
 import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ExtendedSpace } from '@/helpers/interfaces';

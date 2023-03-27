@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
 import { getDelegators } from '@/helpers/delegation';
 import { useSpaces } from '@/composables/useSpaces';
 import uniqBy from 'lodash/uniqBy';

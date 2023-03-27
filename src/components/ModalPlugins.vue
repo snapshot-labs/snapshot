@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, toRefs, computed } from 'vue';
 import { PluginIndex } from '@/helpers/interfaces';
 import { usePlugins } from '@/composables';
 

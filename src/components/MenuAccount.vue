@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useWeb3 } from '@/composables/useWeb3';
-import { useRouter } from 'vue-router';
 import { useApp } from '@/composables/useApp';
 
 const props = defineProps<{

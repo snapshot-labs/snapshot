@@ -4,7 +4,6 @@
  * TODO: Extent and use this hook to validate the settings form and all future forms.
  */
 
-import { ref, computed } from 'vue';
 import defaults from '@/locales/default.json';
 import { validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import { watchDebounced } from '@vueuse/core';

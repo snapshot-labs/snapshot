@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 

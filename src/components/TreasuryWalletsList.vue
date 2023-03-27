@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { getEnsAddress } from '@/helpers/profile';
 import { useWeb3 } from '@/composables/useWeb3';

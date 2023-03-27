@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useImageUpload } from '@/composables/useImageUpload';
 
 const props = defineProps<{

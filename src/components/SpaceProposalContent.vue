@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 defineProps<{
   space: ExtendedSpace;

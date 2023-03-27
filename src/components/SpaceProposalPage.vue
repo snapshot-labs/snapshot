@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
-import { useRoute, useRouter } from 'vue-router';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 import { useModal, useTerms, useWeb3, useMeta } from '@/composables';

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue';
 import { useFormSpaceSettings, useI18n } from '@/composables';
 import { getTokenPrices } from '@/helpers/covalent';
 import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';

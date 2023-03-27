@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';

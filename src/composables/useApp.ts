@@ -1,4 +1,3 @@
-import { ref, computed } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
