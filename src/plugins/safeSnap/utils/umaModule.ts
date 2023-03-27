@@ -74,12 +74,13 @@ export const getModuleDetailsUma = async (
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
     [moduleAddress, 'avatar'],
-    [moduleAddress, 'optimisticOracle'],
+    [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
     [moduleAddress, 'bondAmount'],
     [moduleAddress, 'liveness']
   ]);
   let needsApproval = false;
+  const rules = moduleDetails[2][0];
   const minimumBond = moduleDetails[3][0];
   const optimisticOracle = moduleDetails[1][0];
   const bondDetails = await getBondDetailsUma(provider, moduleAddress);
@@ -104,11 +105,22 @@ export const getModuleDetailsUma = async (
     );
 
     ancillaryData = pack(
-      ['string', 'bytes', 'bytes'],
+      ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
       [
         '',
         pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace('0x', ''))
+        toUtf8Bytes(proposalHash.replace('0x', '')),
+        pack(
+          ['string', 'string', 'string', 'string'],
+          [',', 'explanation', ':', '"']
+        ),
+        toUtf8Bytes(explanation.replace('0x', '')),
+        pack(
+          ['string', 'string', 'string', 'string', 'string'],
+          ['"', ',', 'rules', ':', '"']
+        ),
+        toUtf8Bytes(rules.replace('0x', '')),
+        pack(['string'], ['"'])
       ]
     );
   } else {
@@ -135,7 +147,11 @@ export const getModuleDetailsUma = async (
   const proposalHashTimestamp = await moduleContract.proposalHashes(
     proposalHash
   );
-  const activeProposal = proposalHashTimestamp.gt(0);
+
+  // TODO: The previous implementation was returning an error. Need to look at this closer.
+  const activeProposal =
+    proposalHashTimestamp !==
+    '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   // Search for requests with matching ancillary data
   const oracleContract = new Contract(
@@ -146,32 +162,28 @@ export const getModuleDetailsUma = async (
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
   const proposalEvents = await oracleContract.queryFilter(
-    oracleContract.filters.ProposePrice(moduleAddress)
+    oracleContract.filters.AssertionMade()
   );
 
-  const thisModuleProposalEvent = proposalEvents.filter(
-    event =>
-      event.args?.ancillaryData === ancillaryData &&
-      event.args?.timestamp.toString() === proposalHashTimestamp.toString()
-  );
+  const thisModuleProposalEvent = proposalEvents.filter(event => {
+    return (
+      event.args?.claim === ancillaryData &&
+      event.args?.caller === moduleAddress
+    );
+  });
 
   // Get the full proposal events (with state).
   const thisModuleFullProposalEvent = await Promise.all(
     thisModuleProposalEvent.map(async event => {
       return oracleContract
-        .getRequest(
-          event.args?.requester,
-          event.args?.identifier,
-          event.args?.timestamp,
-          event.args?.ancillaryData
-        )
+        .getAssertion(event.args?.assertionId)
         .then(result => {
           const isExpired =
             Math.floor(Date.now() / 1000) >=
-            Number(event.args?.expirationTimestamp);
+            Number(event?.args?.expirationTime);
 
           return {
-            expirationTimestamp: event.args?.expirationTimestamp,
+            expirationTimestamp: event.args?.expirationTime,
             isExpired: isExpired,
             isSettled: result.settled,
             proposalHash: proposalHash,
@@ -195,16 +207,14 @@ export const getModuleDetailsUma = async (
     moduleContract.filters.ProposalExecuted(proposalHash)
   );
 
-  const proposalTimes = thisProposalTransactionsProposedEvents.map(tx =>
-    tx.args?.proposalTime.toString()
+  const assertion = thisProposalTransactionsProposedEvents.map(
+    tx => tx.args?.assertionId
   );
 
-  const executionTimes = executionEvents.map(tx =>
-    tx.args?.proposalTime.toString()
-  );
+  const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
 
-  const proposalExecuted = proposalTimes.some(time =>
-    executionTimes.includes(time)
+  const proposalExecuted = assertion.some(assertionId =>
+    assertionIds.includes(assertionId)
   );
 
   return {
