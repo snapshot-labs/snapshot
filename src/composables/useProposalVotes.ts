@@ -32,7 +32,7 @@ export function useProposalVotes(
 
   const sortedVotes = computed(() => {
     const votesClone = clone(votes.value);
-    if (userVote) votesClone.push(userVote);
+    if (userVote) votesClone.unshift(userVote);
     const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
     if (uniqVotes.map(vote => vote.voter).includes(web3Account.value)) {
       uniqVotes.unshift(
