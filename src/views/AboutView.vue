@@ -1,8 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
-import { useSkin, DARK } from '@/composables/useSkin';
-import { useApp } from '@/composables/useApp';
-
 const { userTheme } = useSkin();
 const { env } = useApp();
 

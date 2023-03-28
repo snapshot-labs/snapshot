@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useWeb3 } from '@/composables/useWeb3';
-import { useModal } from '@/composables/useModal';
-
 const { modalAccountOpen } = useModal();
 const { web3Account } = useWeb3();
 

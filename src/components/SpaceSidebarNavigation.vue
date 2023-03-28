@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import legacySpaces from '@/../snapshot-spaces/spaces/legacy.json';
 

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-
-import { useModal, useWeb3, useProfiles } from '@/composables';
 
 const { login, web3, web3Account } = useWeb3();
 const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =

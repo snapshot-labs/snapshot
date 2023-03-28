@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
 import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
-import { useIntl } from '@/composables';
 import { shorten, getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{

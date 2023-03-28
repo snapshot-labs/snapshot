@@ -1,7 +1,5 @@
-import { ref, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useClient, useFormValidation, useImageUpload } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';

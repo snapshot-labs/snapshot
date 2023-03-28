@@ -1,5 +1,3 @@
-import { useI18n } from '@/composables/useI18n';
-import { useCopy } from '@/composables/useCopy';
 import { useShare } from '@vueuse/core';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 

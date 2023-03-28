@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ACTIVITY_VOTES_QUERY } from '@/helpers/queries';
 import { ProfileActivity } from '@/helpers/interfaces';
-import { useInfiniteLoader } from '@/composables/useInfiniteLoader';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
 
 const props = defineProps<{
   userAddress: string;

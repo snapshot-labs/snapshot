@@ -1,4 +1,3 @@
-import { onMounted, onBeforeUnmount, ref } from 'vue';
 import scrollMonitor from 'scrollmonitor';
 
 export function useScrollMonitor(fn) {

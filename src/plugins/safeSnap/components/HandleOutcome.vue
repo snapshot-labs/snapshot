@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue';
 import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -7,15 +6,6 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
 import { ensureRightNetwork } from './SafeTransactions.vue';
-
-import {
-  useWeb3,
-  useI18n,
-  useIntl,
-  useFlashNotification,
-  useTxStatus,
-  useSafe
-} from '@/composables';
 
 import SafeSnapModalOptionApproval from './Modal/OptionApproval.vue';
 

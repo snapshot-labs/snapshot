@@ -1,13 +1,8 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
 import { getDelegators } from '@/helpers/delegation';
-import { useSpaces } from '@/composables/useSpaces';
 import uniqBy from 'lodash/uniqBy';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useDelegate } from '@/composables/useDelegate';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
-import { useI18n } from '@/composables/useI18n';
 
 const props = defineProps<{
   userAddress: string;

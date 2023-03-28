@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';

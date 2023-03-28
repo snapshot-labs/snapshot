@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useApp } from '@/composables';
 
 const { env } = useApp();
 

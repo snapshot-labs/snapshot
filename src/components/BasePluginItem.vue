@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
 import { PluginIndex } from '@/helpers/interfaces';
-import { useIntl, usePlugins } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();

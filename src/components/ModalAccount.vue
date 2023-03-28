@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toRefs, computed, ref, watch } from 'vue';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 import { getIpfsUrl } from '@/helpers/utils';

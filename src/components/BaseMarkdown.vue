@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
-import { onMounted } from 'vue';
-import { useCopy } from '@/composables/useCopy';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{

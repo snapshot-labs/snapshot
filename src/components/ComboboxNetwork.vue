@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useNetworksFilter } from '@/composables/useNetworksFilter';
-
 defineProps<{
   network: string;
   information?: string;

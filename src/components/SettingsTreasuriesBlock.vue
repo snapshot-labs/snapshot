@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';

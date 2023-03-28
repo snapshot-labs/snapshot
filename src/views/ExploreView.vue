@@ -1,17 +1,4 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-
-import {
-  usePlugins,
-  useStrategies,
-  useNetworksFilter,
-  useIntl,
-  useScrollMonitor,
-  useI18n,
-  useMeta
-} from '@/composables';
-
 useMeta({
   title: {
     key: 'metaInfo.home.title'

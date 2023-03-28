@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useFormSpaceSettings } from '@/composables/useFormSpaceSettings';
-
 const emit = defineEmits(['next', 'back']);
 
 const { form, showAllValidationErrors } = useFormSpaceSettings('setup');
