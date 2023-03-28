@@ -33,7 +33,7 @@ const modalOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
-const userVoteResolved = ref(false);
+const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
 
 const isAdmin = computed(() => {
@@ -82,7 +82,7 @@ function formatProposalVotes(votes) {
 async function loadUserVote() {
   userVote.value = null;
   if (!web3Account.value) {
-    userVoteResolved.value = true;
+    isUserVoteResolved.value = true;
     return;
   }
   const userVotesRes = await getProposalVotes(proposalId, {
@@ -91,7 +91,7 @@ async function loadUserVote() {
     space: props.proposal.space.id
   });
   userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
-  userVoteResolved.value = true;
+  isUserVoteResolved.value = true;
 }
 
 async function loadResults() {
@@ -178,7 +178,7 @@ onMounted(() => {
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
-          v-if="userVoteResolved"
+          v-if="isUserVoteResolved"
           :space="space"
           :proposal="proposal"
           :strategies="strategies"
