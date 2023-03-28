@@ -81,6 +81,7 @@ function formatProposalVotes(votes) {
 
 async function loadUserVote() {
   userVote.value = null;
+  userVoteResolved.value = false;
   if (!web3Account.value) {
     userVoteResolved.value = true;
     return;
