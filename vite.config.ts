@@ -31,7 +31,11 @@ export default defineConfig({
           alias: {
             ho: 'heroicons-outline'
           }
-        })
+        }),
+        componentName => {
+          if (componentName.startsWith('Tune'))
+            return { name: componentName, from: '@snapshot-labs/tune' };
+        }
       ]
     }),
     visualizer({

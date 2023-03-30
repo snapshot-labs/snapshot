@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { validateForm } from '@/helpers/validation';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -27,6 +28,7 @@ const input = ref({
   network: '1',
   params: {} as Record<string, any>
 });
+const formRef = ref();
 
 const {
   filterStrategies,
@@ -40,11 +42,16 @@ const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
 const { getNetworksSpacesCount } = useNetworksFilter();
 
-const isValid = computed(
-  () => validateSchema(strategyDefinition.value, input.value.params) === true
-);
+const validationErrors = computed(() => {
+  return validateForm(strategyDefinition.value || {}, input.value.params);
+});
+
+const isValid = computed(() => {
+  return Object.values(validationErrors.value).length === 0;
+});
 
 function handleSubmit() {
+  if (!isValid.value) return formRef?.value?.forceShowError();
   const strategyObj = clone(input.value);
   emit('add', strategyObj);
   emit('close');
@@ -58,6 +65,7 @@ async function selectStrategy(strategyName) {
   await initStrategy(strategyName);
   const params =
     extendedStrategy.value?.examples?.[0]?.strategy?.params || defaultParams;
+
   input.value.params = strategyDefinition.value ? {} : params;
   loading.value = false;
 }
@@ -104,10 +112,12 @@ watch(open, () => {
             @select="value => (input.network = value)"
           />
           <div>
-            <FormObject
+            <TuneForm
               v-if="strategyDefinition"
+              ref="formRef"
               v-model="input.params"
               :definition="strategyDefinition"
+              :error="validationErrors"
             />
             <TextareaJson
               v-else
@@ -141,9 +151,7 @@ watch(open, () => {
         :params="strategy.params"
       />
       <BaseButton
-        :disabled="
-          !textAreaJsonIsValid || (strategyDefinition && !isValid) || loading
-        "
+        :disabled="!textAreaJsonIsValid || loading"
         class="mt-2 w-full"
         primary
         @click="handleSubmit"

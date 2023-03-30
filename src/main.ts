@@ -8,6 +8,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';
+import '@snapshot-labs/tune/dist/style.css';
 import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
