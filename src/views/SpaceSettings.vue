@@ -20,6 +20,8 @@ useMeta({
 });
 
 const { t } = useI18n();
+const { domain } = useApp();
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace } = useExtendedSpaces();
@@ -94,6 +96,20 @@ const settingsPages = computed(() => [
   }
 ]);
 
+async function handleDelete() {
+  const result = await send({ id: props.space.id }, 'delete-space', null);
+  // Link to profile page, if on custom domain then the link is external
+  return domain
+    ? window.open(
+        `https://snapshot.org/#/profile/${web3Account.value}`,
+        '_blank'
+      )
+    : router.push({
+        name: 'profileActivity',
+        params: { address: web3Account.value }
+      });
+}
+
 async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
@@ -125,6 +141,13 @@ const {
   reveal: openConfirmLeave,
   confirm: confirmLeave,
   cancel: cancelLeave
+} = useConfirmDialog();
+
+const {
+  isRevealed: isConfirmDeleteOpen,
+  reveal: openConfirmDelete,
+  confirm: confirmDelete,
+  cancel: cancelDelete
 } = useConfirmDialog();
 
 onBeforeRouteLeave(async () => {
@@ -230,8 +253,9 @@ const isViewOnly = computed(() => {
               :ens-owner="ensOwner"
               :is-owner="isEnsOwner"
               :is-setting-ens-record="settingENSRecord"
+              :is-deleting="isConfirmDeleteOpen"
               @change-controller="modalControllerEditOpen = true"
-              @delete-space="null"
+              @delete-space="openConfirmDelete"
             />
           </template>
           <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
@@ -312,6 +336,16 @@ const isViewOnly = computed(() => {
     >
       <BaseMessageBlock level="warning" class="m-4">
         {{ $t('settings.confirmLeaveMessage') }}
+      </BaseMessageBlock>
+    </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmDeleteOpen"
+      show-cancel
+      @close="cancelDelete"
+      @confirm="handleDelete"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmDeleteSpace') }}
       </BaseMessageBlock>
     </ModalConfirmAction>
   </teleport>

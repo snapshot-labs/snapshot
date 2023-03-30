@@ -19,12 +19,7 @@ defineEmits(['close', 'confirm']);
 
     <template #footer>
       <div class="flex gap-3">
-        <BaseButton
-          v-if="showCancel"
-          class="w-full"
-          primary
-          @click="$emit('close')"
-        >
+        <BaseButton v-if="showCancel" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
         </BaseButton>
         <BaseButton
