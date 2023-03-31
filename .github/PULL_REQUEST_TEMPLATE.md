@@ -8,8 +8,14 @@ Fixes #
 ### Changes 
 *_(Briefly describe the changes made in this PR)_*
 
+1. Change 1
+2. Change 2
+
 ### How to test
 *_(Explain how the changes can be tested, including any required setup steps)_*
+
+1. Step 1
+2. Step 2
 
 ### To-Do
 *_(List any outstanding tasks be addressed before or after this PR is merged)_*
