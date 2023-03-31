@@ -144,12 +144,12 @@ export const getModuleDetailsUma = async (
     };
   }
   // Check for active proposals
-  const assertionIdProposalHash = await moduleContract.assertionIds(
+  const assertionId = await moduleContract.assertionIds(
     proposalHash
   );
 
   const activeProposal =
-    assertionIdProposalHash !==
+    assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   // Search for requests with matching ancillary data
@@ -161,7 +161,7 @@ export const getModuleDetailsUma = async (
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
   const assertionEvents = await oracleContract.queryFilter(
-    oracleContract.filters.AssertionMade(null, null, ancillaryData, null, moduleAddress)
+    oracleContract.filters.AssertionMade(assertionId)
   );
 
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
