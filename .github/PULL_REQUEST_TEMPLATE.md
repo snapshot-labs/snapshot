@@ -1,5 +1,4 @@
-### Fixes #
-(Include a reference to the issue or bug this PR addresses, if applicable)
+Fixes #
 
 ### Changes
 (Briefly describe the changes made in this PR)
