@@ -84,11 +84,11 @@ watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
 
 async function loadProposals() {
   loading.value = true;
-  const proposals = await getProposals();
+  const proposals = await getProposals(spaceProposals.value.length);
   emitUpdateLastSeenProposal(props.space.id);
   stopLoadingMore.value = proposals?.length < loadBy;
   loading.value = false;
-  setSpaceProposals(proposals);
+  addSpaceProposals(proposals);
 }
 
 const { profiles, loadProfiles } = useProfiles();
