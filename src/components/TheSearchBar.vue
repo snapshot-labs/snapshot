@@ -30,7 +30,7 @@ const searchOptions = computed(() => [
 const searchSelectedOption = computed(
   () =>
     searchOptions.value.find(option => option.action === route.query.type)
-      ?.text ?? 'Spaces'
+      ?.text ?? t('spaces')
 );
 
 function redirectSearch(e) {
