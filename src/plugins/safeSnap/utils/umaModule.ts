@@ -80,11 +80,11 @@ export const getModuleDetailsUma = async (
     [moduleAddress, 'liveness']
   ]);
   let needsApproval = false;
+  const optimisticOracle = moduleDetails[1][0];
   const rules = moduleDetails[2][0];
   const minimumBond = moduleDetails[3][0];
-  const optimisticOracle = moduleDetails[1][0];
-  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
   const livenessPeriod = moduleDetails[4][0];
+  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
 
   if (
     Number(minimumBond) > 0 &&
