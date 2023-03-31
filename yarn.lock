@@ -1114,7 +1114,7 @@
     "@floating-ui/dom" "^1.0.0"
     "@floating-ui/vue" "^0.2.0"
 
-"@headlessui/vue@^1.7.2":
+"@headlessui/vue@^1.7.12", "@headlessui/vue@^1.7.2":
   version "1.7.12"
   resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.12.tgz#963b2eb2f548278c49f2d1e67f0a4a84f54078da"
   integrity sha512-IV0k1I2I8Bj37HljFF231Y9cpldfiucf+inMCxA/VPoQT6UTxo0N/rb78CrogBxXNfsPxKmz3y/nlv+eRz6zvg==
@@ -1566,11 +1566,13 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.1.tgz#c014119334a4a236f34787be345e51af133583be"
-  integrity sha512-nEvvRnRY3yQ13ebjEqNwkwjHSrn1ep+42zy4BWo4rP63zhdOyHI5DPecmxmP14jiJFAE1qW0Azaf3d0DrZ7PAQ==
+"@snapshot-labs/tune@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.3.tgz#baefa6b1030390022b0338e1f993773542d4d099"
+  integrity sha512-/xW2PNJhVsTCgBGAz5mBN2miazIXSbFWc4U+fU9o75ZAT4m1Cz2VKfDyv1iY36Ab6wGdcm9oIF8LvRb4W9G4lw==
   dependencies:
+    "@headlessui/vue" "^1.7.12"
+    lodash "^4.17.21"
     sass "^1.60.0"
     vue "^3.2.47"
     vue-tippy "^6.0.0"
