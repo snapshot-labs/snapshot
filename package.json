@@ -45,7 +45,7 @@
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
     "@snapshot-labs/snapshot.js": "^0.4.73",
     "@vue/apollo-composable": "4.0.0-beta.4",
-    "@vueuse/core": "^9.1.1",
+    "@vueuse/core": "^9.13.0",
     "@vueuse/head": "^1.1.23",
     "autolinker": "^4.0.0",
     "env-cmd": "^10.1.0",
@@ -63,13 +63,13 @@
     "typescript": "^4.8.3",
     "vue": "^3.2.47",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.1.5",
+    "vue-router": "^4.1.6",
     "vue-tippy": "^6.0.0",
     "vuedraggable": "^4.0.2"
   },
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.4",
-    "@synthetixio/synpress": "^3.3.1",
+    "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@types/node": "^18.7.18",
@@ -88,7 +88,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^6.0.4",
     "husky": "^8.0.3",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^13.2.0",
     "postcss": "^8.4.16",
     "prettier": "^2.8.6",
     "prettier-plugin-tailwindcss": "^0.2.5",
@@ -101,7 +101,7 @@
     "unplugin-icons": "^0.15.3",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^2.9.14",
-    "vitest": "^0.29.3",
+    "vitest": "^0.29.7",
     "vitest-fetch-mock": "^0.2.1"
   },
   "resolutions": {
