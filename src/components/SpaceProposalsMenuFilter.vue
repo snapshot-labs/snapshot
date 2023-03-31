@@ -47,8 +47,8 @@ function redirectSearch(e: string) {
 </script>
 
 <template>
-  <BaseButton
-    class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
+  <div
+    class="w-full rounded-full border border-skin-border pl-3 pr-0 focus-within:!border-skin-text md:max-w-[420px]"
   >
     <div class="flex">
       <BaseSearch
@@ -73,5 +73,5 @@ function redirectSearch(e: string) {
         </BaseMenu>
       </div>
     </div>
-  </BaseButton>
+  </div>
 </template>
