@@ -1,10 +1,16 @@
 Fixes #
 
-### Changes
-(Briefly describe the changes made in this PR)
+### Changes 
+*_(Briefly describe the changes made in this PR)_*
 
 ### How to test
-(Explain how the changes can be tested, including any required setup steps)
+*_(Explain how the changes can be tested, including any required setup steps)_*
+
+### To-Do
+*_(List any outstanding tasks be addressed before or after this PR is merged)_*
+
+- [ ] Item 1
+
 
 ### Self-review checklist
 - [ ] I have performed a full self-review of my changes
@@ -12,12 +18,6 @@ Fixes #
 - [ ] I have tested my changes on a custom domain
 - [ ] I have run end-to-end tests `yarn cypress:test:e2e`, and they have passed
 
-### To-Do
-- [ ] Item 1
-- [ ] Item 2
-- [ ] Item 3
-(List any outstanding tasks be addressed before or after this PR is merged)
-
 ### Additional notes or considerations
-(Include any other relevant information or context that may be helpful for the reviewer)
+*_(Include any other relevant information or context that may be helpful for the reviewer)_*
 
