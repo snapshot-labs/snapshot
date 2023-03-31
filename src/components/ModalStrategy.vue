@@ -21,7 +21,7 @@ const props = defineProps<{
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 const searchInput = ref('');
-const textAreaJsonIsValid = ref(true);
+const isValidJson = ref(true);
 const loading = ref(false);
 const input = ref({
   name: '',
@@ -51,7 +51,9 @@ const isValid = computed(() => {
 });
 
 function handleSubmit() {
-  if (!isValid.value) return formRef?.value?.forceShowError();
+  if (!isValid.value || !isValidJson.value)
+    return formRef?.value?.forceShowError();
+
   const strategyObj = clone(input.value);
   emit('add', strategyObj);
   emit('close');
@@ -119,12 +121,11 @@ watch(open, () => {
               :definition="strategyDefinition"
               :error="validationErrors"
             />
-            <TextareaJson
+            <TuneTextareaJson
               v-else
               v-model="input.params"
-              v-model:is-valid="textAreaJsonIsValid"
               :placeholder="$t('strategyParameters')"
-              class="input text-left"
+              @update:is-valid="value => (isValidJson = value)"
             />
           </div>
         </div>
@@ -151,7 +152,7 @@ watch(open, () => {
         :params="strategy.params"
       />
       <BaseButton
-        :disabled="!textAreaJsonIsValid || loading"
+        :disabled="loading"
         class="mt-2 w-full"
         primary
         @click="handleSubmit"
