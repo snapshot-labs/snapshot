@@ -186,38 +186,6 @@ const executeProposalUma = async () => {
   }
 };
 
-const deleteDisputedProposalUma = async () => {
-  if (!getInstance().isAuthenticated.value) return;
-  action2InProgress.value = 'delete-disputed-proposal';
-  try {
-    await ensureRightNetwork(props.network);
-  } catch (e) {
-    console.error(e);
-    action2InProgress.value = null;
-    return;
-  }
-
-  try {
-    clearBatchError();
-    const deletingDisputedProposal = plugin.deleteDisputedProposalUma(
-      getInstance().web3,
-      props.umaAddress,
-      questionDetails.value.assertionEvent.proposalHash
-    );
-    await deletingDisputedProposal.next();
-    action2InProgress.value = null;
-    pendingCount.value++;
-    await deletingDisputedProposal.next();
-    notify(t('notify.youDidIt'));
-    pendingCount.value--;
-    await sleep(3e3);
-    await updateDetails();
-  } catch (err) {
-    pendingCount.value--;
-    action2InProgress.value = null;
-  }
-};
-
 const usingMetaMask = computed(() => {
   return window.ethereum && getInstance().provider.value?.isMetaMask;
 });
@@ -263,7 +231,11 @@ const questionState = computed(() => {
     return QuestionStates.proposalApproved;
 
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (assertionEvent.isSettled && !assertionEvent.isDisputed && !proposalExecuted)
+  if (
+    assertionEvent.isSettled &&
+    !assertionEvent.isDisputed &&
+    !proposalExecuted
+  )
     return QuestionStates.proposalApproved;
 
   return QuestionStates.error;
