@@ -160,14 +160,20 @@ export const getModuleDetailsUma = async (
   );
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  // TODO: Check for duplicates
-  const assertionEvent = await oracleContract.queryFilter(
+  const assertionEvents = await oracleContract.queryFilter(
     oracleContract.filters.AssertionMade(null, null, ancillaryData, null, moduleAddress)
   );
 
+  const thisModuleAssertionEvent = assertionEvents.filter(event => {
+    return (
+      event.args?.claim === ancillaryData &&
+      event.args?.callbackRecipient === moduleAddress
+    );
+  });
+
   // Get the full proposal events (with state).
   const fullAssertionEvent = await Promise.all(
-    assertionEvent.map(async event => {
+    thisModuleAssertionEvent.map(async event => {
       return oracleContract
         .getAssertion(event.args?.assertionId)
         .then(result => {
