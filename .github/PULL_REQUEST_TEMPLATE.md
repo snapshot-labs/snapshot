@@ -12,6 +12,11 @@ Fixes #
 - [ ] I have tested my changes on a custom domain
 - [ ] I have run end-to-end tests `yarn cypress:test:e2e`, and they have passed
 
+### To-Do
+- [ ] Item 1
+- [ ] Item 2
+- [ ] Item 3
+(List any outstanding tasks be addressed before or after this PR is merged)
 
 ### Additional notes or considerations
 (Include any other relevant information or context that may be helpful for the reviewer)
