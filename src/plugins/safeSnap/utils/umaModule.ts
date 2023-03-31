@@ -173,10 +173,10 @@ export const getModuleDetailsUma = async (
         .then(result => {
           const isExpired =
             Math.floor(Date.now() / 1000) >=
-            Number(event?.args?.expirationTime);
+            Number(result.expirationTime);
 
           return {
-            expirationTimestamp: event.args?.expirationTime,
+            expirationTimestamp: result.expirationTime,
             isExpired: isExpired,
             isSettled: result.settled,
             proposalHash: proposalHash,
