@@ -67,7 +67,7 @@ export const getModuleDetailsUma = async (
   needsBondApproval: boolean;
   noTransactions: boolean;
   activeProposal: boolean;
-  proposalEvent: any;
+  assertionEvent: any;
   proposalExecuted: boolean;
   livenessPeriod: string;
 }> => {
@@ -138,7 +138,7 @@ export const getModuleDetailsUma = async (
       needsBondApproval: needsApproval,
       noTransactions: true,
       activeProposal: false,
-      proposalEvent: {},
+      assertionEvent: {},
       proposalExecuted: false,
       livenessPeriod: livenessPeriod
     };
@@ -161,20 +161,20 @@ export const getModuleDetailsUma = async (
   );
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const proposalEvents = await oracleContract.queryFilter(
-    oracleContract.filters.AssertionMade()
+  const assertionEvents = await oracleContract.queryFilter(
+    oracleContract.filters.AssertionMade(null, null, null, null, moduleAddress)
   );
 
-  const thisModuleProposalEvent = proposalEvents.filter(event => {
+  const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
       event.args?.claim === ancillaryData &&
-      event.args?.caller === moduleAddress
+      event.args?.callbackRecipient === moduleAddress
     );
   });
 
   // Get the full proposal events (with state).
-  const thisModuleFullProposalEvent = await Promise.all(
-    thisModuleProposalEvent.map(async event => {
+  const thisModuleFullAssertionEvent = await Promise.all(
+    thisModuleAssertionEvent.map(async event => {
       return oracleContract
         .getAssertion(event.args?.assertionId)
         .then(result => {
@@ -231,7 +231,7 @@ export const getModuleDetailsUma = async (
     needsBondApproval: needsApproval,
     noTransactions: false,
     activeProposal: activeProposal,
-    proposalEvent: thisModuleFullProposalEvent[0],
+    assertionEvent: thisModuleFullAssertionEvent[0],
     proposalExecuted: proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };

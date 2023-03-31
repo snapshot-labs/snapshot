@@ -202,7 +202,7 @@ const deleteDisputedProposalUma = async () => {
     const deletingDisputedProposal = plugin.deleteDisputedProposalUma(
       getInstance().web3,
       props.umaAddress,
-      questionDetails.value.proposalEvent.proposalHash
+      questionDetails.value.assertionEvent.proposalHash
     );
     await deletingDisputedProposal.next();
     action2InProgress.value = null;
@@ -241,7 +241,7 @@ const questionState = computed(() => {
     return QuestionStates.noTransactions;
 
   const ts = (Date.now() / 1e3).toFixed();
-  const { proposalEvent, proposalExecuted, activeProposal } =
+  const { assertionEvent, proposalExecuted, activeProposal } =
     questionDetails.value;
 
   // If proposal has already been executed, prevents user from proposing again.
@@ -256,14 +256,14 @@ const questionState = computed(() => {
     return QuestionStates.waitingForProposal;
 
   // Proposal has been made and is waiting for liveness period to complete.
-  if (!proposalEvent.isExpired) return QuestionStates.waitingForLiveness;
+  if (!assertionEvent.isExpired) return QuestionStates.waitingForLiveness;
 
   // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (proposalEvent.isExpired && !proposalEvent.isSettled)
+  if (assertionEvent.isExpired && !assertionEvent.isSettled)
     return QuestionStates.proposalApproved;
 
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (proposalEvent.isSettled && !proposalEvent.isDisputed && !proposalExecuted)
+  if (assertionEvent.isSettled && !assertionEvent.isDisputed && !proposalExecuted)
     return QuestionStates.proposalApproved;
 
   return QuestionStates.error;
@@ -419,7 +419,7 @@ onMounted(async () => {
           <strong>{{
             'Proposal can be executed at ' +
             new Date(
-              questionDetails.proposalEvent.expirationTimestamp * 1000
+              questionDetails.assertionEvent.expirationTimestamp * 1000
             ).toLocaleString()
           }}</strong>
         </div>
@@ -429,7 +429,7 @@ onMounted(async () => {
             :href="
               getProposalUrl(
                 props.network,
-                questionDetails.proposalEvent.proposalTxHash
+                questionDetails.assertionEvent.proposalTxHash
               )
             "
             class="rounded-lg border p-2 text-skin-text"
