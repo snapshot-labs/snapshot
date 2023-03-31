@@ -124,7 +124,7 @@ watch(
             </h2>
           </div>
         </div>
-        <SpaceProposalsMenuFilter />
+        <SpaceProposalsMenuFilter :key="space.id" />
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
