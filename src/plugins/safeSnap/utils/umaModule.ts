@@ -144,13 +144,12 @@ export const getModuleDetailsUma = async (
     };
   }
   // Check for active proposals
-  const proposalHashTimestamp = await moduleContract.proposalHashes(
+  const assertionIdProposalHash = await moduleContract.assertionIds(
     proposalHash
   );
 
-  // TODO: The previous implementation was returning an error. Need to look at this closer.
   const activeProposal =
-    proposalHashTimestamp !==
+    assertionIdProposalHash !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   // Search for requests with matching ancillary data
