@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
+import { useInfiniteScroll } from '@vueuse/core';
 
 useMeta({
   title: {
@@ -97,6 +98,14 @@ function setFeed(name: string) {
   });
 }
 
+useInfiniteScroll(
+  document,
+  () => {
+    loadMore(() => loadMoreProposals(store.timeline.proposals.length));
+  },
+  { distance: 400 }
+);
+
 watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
@@ -107,11 +116,6 @@ watch(
 onMounted(() => {
   if (store.timeline.proposals.length > 0) return;
   loadProposals();
-});
-
-const { endElement } = useScrollMonitor(() => {
-  if (loading.value) return;
-  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
 });
 </script>
 
@@ -201,9 +205,6 @@ const { endElement } = useScrollMonitor(() => {
             show-verified-icon
             class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
-        </div>
-        <div class="relative">
-          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
         </div>
         <div v-if="loadingMore">
           <LoadingRow class="border-t" />
