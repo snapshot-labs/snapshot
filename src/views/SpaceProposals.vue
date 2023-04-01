@@ -108,17 +108,11 @@ watch([stateFilter, titleFilter], () => {
   loadProposals();
 });
 
-watch(
-  () => props.space.id,
-  () => {
-    loadProposals();
-  },
-  { immediate: true }
-);
-
 watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
+
+onMounted(() => loadProposals());
 </script>
 
 <template>
