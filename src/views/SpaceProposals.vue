@@ -22,7 +22,7 @@ useMeta({
   }
 });
 
-const { store, userVotedProposalIds, addSpaceProposals, setSpaceProposals } =
+const { store, userVotedProposalIds, addSpaceProposals, resetSpaceProposals } =
   useProposals();
 
 const loading = ref(false);
@@ -96,7 +96,10 @@ watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
 
-watch([stateFilter, titleFilter], loadProposals);
+watch([stateFilter, titleFilter], () => {
+  resetSpaceProposals();
+  loadProposals();
+});
 
 watch(
   () => props.space.id,
