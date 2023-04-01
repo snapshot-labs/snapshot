@@ -13,7 +13,6 @@ const emit = defineEmits(['update:modelValue']);
 const router = useRouter();
 
 const input = ref(props.modelValue || '');
-
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 function updateRouteQuery() {
