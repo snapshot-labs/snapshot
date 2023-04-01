@@ -22,13 +22,22 @@ useMeta({
   }
 });
 
-const { store, userVotedProposalIds, addSpaceProposals, resetSpaceProposals } =
-  useProposals();
+const {
+  store,
+  userVotedProposalIds,
+  addSpaceProposals,
+  resetSpaceProposals,
+  setSpaceProposals
+} = useProposals();
+
+const route = useRoute();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
+const { emitUpdateLastSeenProposal } = useUnseenProposals();
+const { profiles, loadProfiles } = useProfiles();
+const { apolloQuery } = useApolloQuery();
+const { web3Account } = useWeb3();
 
 const loading = ref(false);
-
-const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-const { apolloQuery } = useApolloQuery();
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
@@ -46,7 +55,6 @@ const spaceProposals = computed(() => {
   );
 });
 
-const route = useRoute();
 const stateFilter = computed(() => route.query.state || 'all');
 const titleFilter = computed(() => route.query.q || '');
 
@@ -78,23 +86,16 @@ const { endElement } = useScrollMonitor(() =>
   loadMore(() => loadMoreProposals(spaceProposals.value.length))
 );
 
-const { web3Account } = useWeb3();
-const { emitUpdateLastSeenProposal } = useUnseenProposals();
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
 
 async function loadProposals() {
   loading.value = true;
-  const proposals = await getProposals(spaceProposals.value.length);
-  emitUpdateLastSeenProposal(props.space.id);
+  const proposals = await getProposals();
   stopLoadingMore.value = proposals?.length < loadBy;
+  emitUpdateLastSeenProposal(props.space.id);
+  setSpaceProposals(proposals);
   loading.value = false;
-  addSpaceProposals(proposals);
 }
-
-const { profiles, loadProfiles } = useProfiles();
-watch(spaceProposals, () => {
-  loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
-});
 
 watch([stateFilter, titleFilter], () => {
   resetSpaceProposals();
@@ -108,6 +109,10 @@ watch(
   },
   { immediate: true }
 );
+
+watch(spaceProposals, () => {
+  loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
+});
 </script>
 
 <template>
