@@ -89,7 +89,7 @@ useInfiniteScroll(
     if (loadingMore.value) return;
     loadMore(() => loadMoreProposals(spaceProposals.value.length));
   },
-  { distance: 300 }
+  { distance: 400 }
 );
 
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
