@@ -36,7 +36,7 @@ onMounted(async () => init());
           <TheNavbar />
         </div>
         <div id="content" class="pb-6 pt-4">
-          <router-view />
+          <router-view :key="route.path" />
         </div>
         <footer v-if="route.name === 'home'" class="mt-auto">
           <TheFooter />

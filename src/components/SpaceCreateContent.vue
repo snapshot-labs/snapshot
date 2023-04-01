@@ -8,10 +8,17 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form, getValidation } = useFormSpaceProposal();
+const { form, isBodySet, getValidation } = useFormSpaceProposal();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
+const input = computed({
+  get: () => form.value.body,
+  set: value => {
+    form.value.body = value;
+    isBodySet.value = true;
+  }
+});
 
 const injectImageToBody = image => {
   const cursorPosition = textAreaEl.value?.selectionStart;
@@ -89,7 +96,7 @@ const handleDrop = e => {
           >
             <textarea
               ref="textAreaEl"
-              v-model="form.body"
+              v-model="input"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
               data-testid="input-proposal-body"

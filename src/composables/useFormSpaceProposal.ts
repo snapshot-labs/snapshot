@@ -39,6 +39,7 @@ const form = ref<ProposalForm>(clone(EMPTY_PROPOSAL));
 const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
+const isBodySet = ref(false);
 
 export function useFormSpaceProposal() {
   const route = useRoute();
@@ -75,6 +76,7 @@ export function useFormSpaceProposal() {
     sourceProposalLoaded.value = false;
     userSelectedDateEnd.value = false;
     userSelectedDateStart.value = false;
+    isBodySet.value = false;
   }
 
   const { getValidationMessage } = useFormValidation(schemas.proposal, form);
@@ -94,6 +96,7 @@ export function useFormSpaceProposal() {
     userSelectedDateEnd,
     sourceProposalLoaded,
     sourceProposal,
+    isBodySet,
     resetForm,
     getValidation
   };

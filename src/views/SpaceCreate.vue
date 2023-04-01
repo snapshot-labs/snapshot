@@ -50,6 +50,7 @@ const {
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
+  isBodySet,
   resetForm,
   getValidation
 } = useFormSpaceProposal();
@@ -297,7 +298,7 @@ onMounted(async () => {
     form.value.choices = formDraft.value.choices;
   }
 
-  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+  if (!!props.space?.template && !sourceProposal.value && !isBodySet.value) {
     form.value.body = props.space.template;
   }
 });

@@ -2,6 +2,7 @@
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -30,14 +31,14 @@ const {
   setSpaceProposals
 } = useProposals();
 
+const loading = ref(false);
+
 const route = useRoute();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { emitUpdateLastSeenProposal } = useUnseenProposals();
 const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
-
-const loading = ref(false);
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1 ? ['none'] : props.space.members
@@ -82,8 +83,13 @@ async function loadMoreProposals(skip: number) {
   addSpaceProposals(proposals);
 }
 
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadMoreProposals(spaceProposals.value.length))
+useInfiniteScroll(
+  document,
+  () => {
+    if (loadingMore.value) return;
+    loadMore(() => loadMoreProposals(spaceProposals.value.length));
+  },
+  { distance: 300 }
 );
 
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
@@ -166,9 +172,6 @@ watch(spaceProposals, () => {
             }"
           />
         </BaseBlock>
-      </div>
-      <div class="relative">
-        <div ref="endElement" class="absolute h-[10px] w-[10px]" />
       </div>
       <LoadingRow v-if="loadingMore && !loading" block />
     </template>
