@@ -12,7 +12,8 @@ const {
   form,
   sourceProposalLoaded,
   userSelectedDateStart,
-  userSelectedDateEnd
+  userSelectedDateEnd,
+  formDraft
 } = useFormSpaceProposal();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
@@ -20,6 +21,7 @@ const disableChoiceEdit = computed(() => form.value.type === 'basic');
 function addChoices(num) {
   for (let i = 1; i <= num; i++) {
     form.value.choices.push({ key: form.value.choices.length, text: '' });
+    formDraft.value.choices.push({ key: form.value.choices.length, text: '' });
   }
 }
 
@@ -95,6 +97,7 @@ onMounted(async () => {
                 class="group"
                 :focus-on-mount="index === 0"
                 :data-testid="`input-proposal-choice-${index}`"
+                @update:model-value="formDraft.choices[index].text = $event"
               >
                 <template #label>
                   <div

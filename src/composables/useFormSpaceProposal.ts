@@ -35,11 +35,20 @@ const EMPTY_PROPOSAL: ProposalForm = {
   type: 'single-choice'
 };
 
+const EMPTY_PROPOSAL_DRAFT = {
+  name: '',
+  body: '',
+  choices: [
+    { key: 0, text: '' },
+    { key: 1, text: '' }
+  ],
+  isBodySet: false
+};
+
 const form = ref<ProposalForm>(clone(EMPTY_PROPOSAL));
 const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
-const isBodySet = ref(false);
 
 export function useFormSpaceProposal() {
   const route = useRoute();
@@ -48,35 +57,17 @@ export function useFormSpaceProposal() {
     name: string;
     body: string;
     choices: { key: number; text: string }[];
-  }>(`snapshot.proposal.${route.params.key}`, {
-    name: '',
-    body: '',
-    choices: [
-      { key: 0, text: '' },
-      { key: 1, text: '' }
-    ]
-  });
+    isBodySet: boolean;
+  }>(`snapshot.proposal.${route.params.key}`, clone(EMPTY_PROPOSAL_DRAFT));
 
   const sourceProposal = computed(() => route.params.sourceProposal);
 
-  watch(
-    form,
-    () => {
-      formDraft.value = {
-        name: form.value.name,
-        body: form.value.body,
-        choices: form.value.choices
-      };
-    },
-    { deep: true }
-  );
-
   function resetForm() {
+    formDraft.value = clone(EMPTY_PROPOSAL_DRAFT);
     form.value = clone(EMPTY_PROPOSAL);
     sourceProposalLoaded.value = false;
     userSelectedDateEnd.value = false;
     userSelectedDateStart.value = false;
-    isBodySet.value = false;
   }
 
   const { getValidationMessage } = useFormValidation(schemas.proposal, form);
@@ -96,7 +87,6 @@ export function useFormSpaceProposal() {
     userSelectedDateEnd,
     sourceProposalLoaded,
     sourceProposal,
-    isBodySet,
     resetForm,
     getValidation
   };
