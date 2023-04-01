@@ -80,6 +80,7 @@ export const PROPOSALS_QUERY = gql`
     $space: String
     $space_in: [String]
     $author_in: [String]
+    $title_contains: String
   ) {
     proposals(
       first: $first
@@ -89,6 +90,7 @@ export const PROPOSALS_QUERY = gql`
         state: $state
         space_in: $space_in
         author_in: $author_in
+        title_contains: $title_contains
       }
     ) {
       id

@@ -48,6 +48,7 @@ const spaceProposals = computed(() => {
 
 const route = useRoute();
 const stateFilter = computed(() => route.query.state || 'all');
+const titleFilter = computed(() => route.query.q || '');
 
 async function getProposals(skip = 0) {
   return apolloQuery(
@@ -58,7 +59,8 @@ async function getProposals(skip = 0) {
         skip,
         space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
-        author_in: stateFilter.value === 'core' ? spaceMembers.value : []
+        author_in: stateFilter.value === 'core' ? spaceMembers.value : [],
+        title_contains: titleFilter.value
       }
     },
     'proposals'
@@ -94,7 +96,7 @@ watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
 
-watch(stateFilter, loadProposals);
+watch([stateFilter, titleFilter], loadProposals);
 
 watch(
   () => props.space.id,
@@ -115,7 +117,7 @@ watch(
         <TextAutolinker :text="space.about" />
       </BaseBlock>
       <div class="relative mb-3 flex px-3 md:px-0">
-        <div class="flex-auto">
+        <div class="hidden flex-auto md:flex">
           <div class="flex flex-auto items-center">
             <h2>
               {{ $t('proposals.header') }}
