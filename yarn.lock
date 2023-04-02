@@ -1547,10 +1547,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.73":
-  version "0.4.73"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.73.tgz#8e7973dd94f44c2fb7479b6b2ae0c48ec59b0ffa"
-  integrity sha512-xkuwM3sk5yTcA9vUxcHzkZj0ZbCBmIcY21MKeMFXWoo7TvfhX5lpw5BIbBsW6QC72JLZQ9bKxG7zvXRNtOTy6Q==
+"@snapshot-labs/snapshot.js@^0.4.75":
+  version "0.4.75"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.75.tgz#523f0c20add731ab75e88157c9a1168da3be305f"
+  integrity sha512-clPkpRzlOuRbvPdYUeW6cwAA+3tEGWFgs5VZTBy/pBONSi1VcN1ElaBWRacdFrGPbx2HXPRas71IeBWEBCqYtQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
