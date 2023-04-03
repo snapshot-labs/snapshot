@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ACTIVITY_VOTES_QUERY } from '@/helpers/queries';
 import { ProfileActivity } from '@/helpers/interfaces';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const props = defineProps<{
   userAddress: string;
@@ -9,6 +10,7 @@ const props = defineProps<{
 const { apolloQuery } = useApolloQuery();
 
 const activities = ref<ProfileActivity[]>([]);
+const loadingActivities = ref(false);
 
 const activityToday = computed(() => {
   const oneDaySeconds = 24 * 60 * 60;
@@ -37,9 +39,6 @@ const activityOlder = computed(() => {
 
 const { loadBy, loadingMore, stopLoadingMore, loadMore } =
   useInfiniteLoader(20);
-const { endElement } = useScrollMonitor(() =>
-  loadMore(() => loadVotes(activities.value.length))
-);
 
 async function loadVotes(skip = 0) {
   const votes = await apolloQuery(
@@ -82,11 +81,31 @@ async function loadVotes(skip = 0) {
 
   return votes;
 }
+
+useInfiniteScroll(
+  document,
+  () => {
+    loadMore(() => loadVotes(activities.value.length));
+  },
+  { distance: 400 }
+);
+
+onMounted(async () => {
+  loadingActivities.value = true;
+  await loadVotes();
+  loadingActivities.value = false;
+});
 </script>
 
 <template>
   <div>
-    <div class="space-y-3">
+    <LoadingRow v-if="loadingActivities" block />
+
+    <BaseBlock v-else-if="!activities.length" class="text-center">
+      {{ $t('profile.activity.noActivity') }}
+    </BaseBlock>
+
+    <div v-else class="space-y-3">
       <ProfileActivityList
         v-if="activityToday.length"
         :title="$t('profile.activity.today')"
@@ -121,13 +140,6 @@ async function loadVotes(skip = 0) {
       </ProfileActivityList>
 
       <LoadingRow v-if="loadingMore" block />
-
-      <BaseBlock v-else-if="!activities.length" class="text-center">
-        {{ $t('profile.activity.noActivity') }}
-      </BaseBlock>
-    </div>
-    <div class="relative">
-      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
     </div>
   </div>
 </template>

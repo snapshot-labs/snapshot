@@ -1,5 +1,6 @@
 <script setup>
 import { shorten } from '@/helpers/utils';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
@@ -14,11 +15,15 @@ const loadMoreSpaces = () => {
   limit.value += loadBy;
 };
 
-const { endElement } = useScrollMonitor(() => {
-  if (enableInfiniteScroll.value) {
-    limit.value += loadBy;
-  }
-});
+useInfiniteScroll(
+  document,
+  () => {
+    if (enableInfiniteScroll.value) {
+      limit.value += loadBy;
+    }
+  },
+  { distance: 400 }
+);
 </script>
 
 <template>
@@ -105,8 +110,5 @@ const { endElement } = useScrollMonitor(() => {
         </BaseButton>
       </div>
     </BaseContainer>
-    <div class="relative">
-      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
-    </div>
   </div>
 </template>

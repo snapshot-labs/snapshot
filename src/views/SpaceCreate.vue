@@ -297,7 +297,11 @@ onMounted(async () => {
     form.value.choices = formDraft.value.choices;
   }
 
-  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+  if (
+    !!props.space?.template &&
+    !sourceProposal.value &&
+    !formDraft.value.isBodySet
+  ) {
     form.value.body = props.space.template;
   }
 });
