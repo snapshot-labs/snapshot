@@ -15,8 +15,8 @@ onMounted(async () => init());
     <div v-else class="flex min-h-screen">
       <div v-if="!domain" id="sidebar" class="flex flex-col">
         <div
-          class="sticky top-0 z-40 h-screen max-w-[60px] overflow-hidden bg-skin-bg transition-all sm:w-auto"
-          :class="{ '!max-w-0 sm:max-w-none': !showSidebar }"
+          class="sticky top-0 z-40 h-screen overflow-hidden bg-skin-bg transition-all sm:w-[60px]"
+          :class="{ 'max-w-0 sm:max-w-none': !showSidebar }"
         >
           <TheSidebar class="border-r border-skin-border" />
         </div>
