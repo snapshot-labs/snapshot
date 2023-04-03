@@ -1114,7 +1114,7 @@
     "@floating-ui/dom" "^1.0.0"
     "@floating-ui/vue" "^0.2.0"
 
-"@headlessui/vue@^1.7.2":
+"@headlessui/vue@^1.7.12", "@headlessui/vue@^1.7.2":
   version "1.7.12"
   resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.12.tgz#963b2eb2f548278c49f2d1e67f0a4a84f54078da"
   integrity sha512-IV0k1I2I8Bj37HljFF231Y9cpldfiucf+inMCxA/VPoQT6UTxo0N/rb78CrogBxXNfsPxKmz3y/nlv+eRz6zvg==
@@ -1560,6 +1560,17 @@
     cross-fetch "^3.1.5"
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
+
+"@snapshot-labs/tune@^0.1.6":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.6.tgz#9d6e094743682d469c20926e92782ba971b6245a"
+  integrity sha512-SG/cD/lWRM1XPLsKU9zHmf7tkFgCBGyX2IYRlUgbOa1cQLqY4amcqcwvRKn5cq2+Q5f15vWvP7V3wS2Eh3EQrg==
+  dependencies:
+    "@headlessui/vue" "^1.7.12"
+    lodash "^4.17.21"
+    sass "^1.60.0"
+    vue "^3.2.47"
+    vue-tippy "^6.0.0"
 
 "@synthetixio/js@^2.41.0":
   version "2.41.0"
@@ -3022,7 +3033,7 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.8.0:
+ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.12.0, ajv@^8.8.0:
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.12.0.tgz#d1a0527323e22f53562c567c00991577dfbe19d1"
   integrity sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==
@@ -11959,6 +11970,15 @@ sass-loader@^13.2.2:
   dependencies:
     klona "^2.0.6"
     neo-async "^2.6.2"
+
+sass@^1.60.0:
+  version "1.60.0"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.60.0.tgz#657f0c23a302ac494b09a5ba8497b739fb5b5a81"
+  integrity sha512-updbwW6fNb5gGm8qMXzVO7V4sWf7LMXnMly/JEyfbfERbVH46Fn6q02BX7/eHTdKpE7d+oTkMMQpFWNUMfFbgQ==
+  dependencies:
+    chokidar ">=3.0.0 <4.0.0"
+    immutable "^4.0.0"
+    source-map-js ">=0.6.2 <2.0.0"
 
 sass@~1.55.0:
   version "1.55.0"
