@@ -1,17 +1,9 @@
 <script setup lang="ts">
-import { ref, toRefs } from 'vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
 import { Profile } from '@/helpers/interfaces';
-
-import {
-  useI18n,
-  useUsername,
-  useTxStatus,
-  useFlashNotification
-} from '@/composables';
 
 const props = defineProps<{
   open: boolean;

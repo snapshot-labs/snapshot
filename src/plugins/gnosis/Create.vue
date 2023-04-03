@@ -1,6 +1,5 @@
 <script setup>
 import GnosisConfig from './components/Config.vue';
-import { usePlugins } from '@/composables/usePlugins';
 
 const { pluginIndex } = usePlugins();
 

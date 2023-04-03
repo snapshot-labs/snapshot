@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { useCopy } from '@/composables/useCopy';
 
 defineProps<{
   moduleAddress: string;

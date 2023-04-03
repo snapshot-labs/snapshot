@@ -1,7 +1,6 @@
 import { Buffer } from 'buffer';
 (window as any).global = window;
 (window as any).Buffer = Buffer;
-import { createApp, h, provide } from 'vue';
 import { LockPlugin } from '@snapshot-labs/lock/plugins/vue3';
 import options from '@/helpers/auth';
 import '../snapshot-spaces/skins';
@@ -9,6 +8,7 @@ import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/helpers/i18n';
 import '@/helpers/auth';
+import '@snapshot-labs/tune/dist/style.css';
 import '@/style.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';

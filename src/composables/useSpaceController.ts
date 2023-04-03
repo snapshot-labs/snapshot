@@ -1,5 +1,3 @@
-import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -9,8 +7,6 @@ import {
   getEnsOwner,
   getSpaceController
 } from '@snapshot-labs/snapshot.js/src/utils';
-
-import { useI18n, useWeb3, useApp, useFlashNotification } from '@/composables';
 
 const spaceControllerInput = ref('');
 const modalUnsupportedNetworkOpen = ref(false);

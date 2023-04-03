@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useIntl, useImageUpload, useFormSpaceProposal } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
@@ -10,10 +8,27 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form, getValidation } = useFormSpaceProposal();
+const { form, formDraft, getValidation } = useFormSpaceProposal();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
+
+const inputName = computed({
+  get: () => form.value.name,
+  set: value => {
+    form.value.name = value;
+    formDraft.value.name = value;
+  }
+});
+
+const inputBody = computed({
+  get: () => form.value.body,
+  set: value => {
+    form.value.body = value;
+    formDraft.value.body = value;
+    formDraft.value.isBodySet = true;
+  }
+});
 
 const injectImageToBody = image => {
   const cursorPosition = textAreaEl.value?.selectionStart;
@@ -63,7 +78,7 @@ const handleDrop = e => {
       />
       <BaseInput
         v-else
-        v-model="form.name"
+        v-model="inputName"
         :title="$t('create.proposalTitle')"
         :max-length="128"
         :error="getValidation('name')"
@@ -91,7 +106,7 @@ const handleDrop = e => {
           >
             <textarea
               ref="textAreaEl"
-              v-model="form.body"
+              v-model="inputBody"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
               data-testid="input-proposal-body"

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-
 import { FormError } from '@/helpers/interfaces';
 
 import FormObject from '@/components/FormObject.vue';

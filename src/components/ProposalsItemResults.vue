@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Proposal } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
-
-import { useIntl } from '@/composables';
 
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 

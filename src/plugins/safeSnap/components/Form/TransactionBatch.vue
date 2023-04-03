@@ -1,6 +1,5 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useSafe } from '@/composables';
 import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';

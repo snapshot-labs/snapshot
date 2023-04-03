@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{

@@ -1,6 +1,4 @@
-import { ref, watch } from 'vue';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { useFollowSpace, useWeb3 } from '@/composables';
 import { useStorage } from '@vueuse/core';
 
 type proposal = { id: string; created: number; space: { id: string } };

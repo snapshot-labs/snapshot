@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { ExtendedSpace } from '@/helpers/interfaces';
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useCopy } from '@/composables';
-
 const { copyToClipboard } = useCopy();
 
 defineProps<{

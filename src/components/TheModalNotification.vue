@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useModalNotification } from '@/composables';
 import defaults from '@/locales/default.json';
 
 const { items } = useModalNotification();

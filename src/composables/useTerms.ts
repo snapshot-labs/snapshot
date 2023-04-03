@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import { lsSet, lsGet } from '@/helpers/utils';
 
 export function useTerms(spaceKey) {

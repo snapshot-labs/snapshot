@@ -1,28 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
-
-import {
-  useFlashNotification,
-  useFormSpaceProposal,
-  useProposals,
-  usePlugins,
-  useI18n,
-  useModal,
-  useTerms,
-  useApp,
-  useApolloQuery,
-  useWeb3,
-  useClient,
-  useGnosis,
-  useSnapshot,
-  useMeta
-} from '@/composables';
 
 enum Step {
   CONTENT,
@@ -316,7 +297,11 @@ onMounted(async () => {
     form.value.choices = formDraft.value.choices;
   }
 
-  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+  if (
+    !!props.space?.template &&
+    !sourceProposal.value &&
+    !formDraft.value.isBodySet
+  ) {
     form.value.body = props.space.template;
   }
 });

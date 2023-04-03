@@ -1,9 +1,7 @@
-import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { useProfiles, useWeb3, useInfiniteLoader, useEns } from '@/composables';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';
@@ -34,7 +32,7 @@ export function useProposalVotes(
 
   const sortedVotes = computed(() => {
     const votesClone = clone(votes.value);
-    if (userVote) votesClone.push(userVote);
+    if (userVote) votesClone.unshift(userVote);
     const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
     if (uniqVotes.map(vote => vote.voter).includes(web3Account.value)) {
       uniqVotes.unshift(
@@ -130,7 +128,7 @@ export function useProposalVotes(
         return;
       }
 
-      if (isAddress(val)) {
+      if (isAddress(val.toLowerCase())) {
         searchAddress.value = val;
       } else if (isValidEnsDomain(val)) {
         searchAddress.value = await resolveEns(val);

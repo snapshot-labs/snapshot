@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useI18n } from '@/composables';
 import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{

@@ -1,11 +1,6 @@
-import { computed, ref } from 'vue';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
-import { useAliasAction } from '@/composables/useAliasAction';
 import { beams } from '../helpers/beams';
 import { useFlashNotification } from './useFlashNotification';
-import { useI18n } from '@/composables/useI18n';
 import client from '@/helpers/clientEIP712';
 
 const subscriptions = ref<any[] | undefined>(undefined);

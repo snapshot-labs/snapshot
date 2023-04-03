@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useWeb3 } from '@/composables/useWeb3';
 import { Proposal, Choice, Vote } from '@/helpers/interfaces';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 

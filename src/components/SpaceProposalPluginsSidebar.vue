@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePlugins } from '@/composables/usePlugins';
 import {
   ExtendedSpace,
   Proposal,

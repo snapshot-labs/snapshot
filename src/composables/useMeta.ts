@@ -1,4 +1,3 @@
-import { useI18n } from '@/composables';
 import { useHead } from '@vueuse/head';
 
 type metaInfo = {

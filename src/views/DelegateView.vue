@@ -1,6 +1,4 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { debouncedWatch } from '@vueuse/core';
 import { isAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -11,16 +9,6 @@ import {
 import { getDelegates, getDelegators } from '@/helpers/delegation';
 import { shorten } from '@/helpers/utils';
 import { SPACE_DELEGATE_QUERY } from '@/helpers/queries';
-import {
-  useI18n,
-  useProfiles,
-  useWeb3,
-  useIntl,
-  useApolloQuery,
-  useModal,
-  useEns,
-  useDelegate
-} from '@/composables';
 
 const route = useRoute();
 const { t } = useI18n();

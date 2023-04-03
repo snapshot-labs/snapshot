@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useFollowSpace, useTerms, useClient } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{

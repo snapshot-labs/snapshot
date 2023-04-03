@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
 import { mustBeEthereumAddress } from '../../index';
 
 const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);

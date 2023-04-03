@@ -1,8 +1,4 @@
 <script setup>
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables';
-
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -34,7 +30,7 @@ const searchOptions = computed(() => [
 const searchSelectedOption = computed(
   () =>
     searchOptions.value.find(option => option.action === route.query.type)
-      ?.text ?? 'Spaces'
+      ?.text ?? t('spaces')
 );
 
 function redirectSearch(e) {

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings, useApp } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';

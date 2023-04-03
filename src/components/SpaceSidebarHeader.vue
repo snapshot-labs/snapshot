@@ -1,9 +1,4 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useIntl } from '@/composables/useIntl';
-
 const props = defineProps({
   space: {
     type: Object,

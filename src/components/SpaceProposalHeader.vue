@@ -1,18 +1,5 @@
 <script setup lang="ts">
-import { watch, computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { useRouter } from 'vue-router';
-
-import {
-  useI18n,
-  useProfiles,
-  useSharing,
-  useWeb3,
-  useClient,
-  useProposals,
-  useFormSpaceProposal,
-  useFlashNotification
-} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;

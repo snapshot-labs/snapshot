@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, toRefs, watch, computed } from 'vue';
 import { VoteValidation } from '@/helpers/interfaces';
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { validateForm } from '@/helpers/validation';
 
 const DEFAULT_PARAMS: Record<string, any> = {};
 
@@ -12,6 +12,7 @@ const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 
 const isValidJson = ref(true);
+const formRef = ref();
 
 const input = ref({
   name: '',
@@ -30,6 +31,21 @@ type Validations = Record<
 
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
+
+const validationDefinition = computed(() => {
+  return (
+    validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
+    null
+  );
+});
+
+const validationErrors = computed(() => {
+  return validateForm(validationDefinition.value || {}, input.value.params);
+});
+
+const isValid = computed(() => {
+  return Object.values(validationErrors.value).length === 0;
+});
 
 function select(n: string) {
   input.value.name = n;
@@ -58,6 +74,9 @@ function select(n: string) {
 }
 
 function handleSubmit() {
+  if (!isValid.value || !isValidJson.value)
+    return formRef?.value?.forceShowError();
+
   emit('add', clone(input.value));
   emit('close');
 }
@@ -89,20 +108,6 @@ watch(open, () => {
     };
   }
 });
-
-const validationDefinition = computed(() => {
-  return (
-    validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
-    null
-  );
-});
-
-const isValidForm = computed(() => {
-  if (!validationDefinition.value) return true;
-  return (
-    validateSchema(validationDefinition.value, input.value.params) === true
-  );
-});
 </script>
 
 <template>
@@ -119,17 +124,18 @@ const isValidForm = computed(() => {
 
     <div class="my-4 mx-0 min-h-[250px] md:mx-4">
       <div v-if="input.name" class="text-skin-link">
-        <FormObject
+        <TuneForm
           v-if="validationDefinition"
+          ref="formRef"
           v-model="input.params"
           :definition="validationDefinition"
+          :error="validationErrors"
         />
-        <TextareaJson
+        <TuneTextareaJson
           v-else
           v-model="input.params"
-          v-model:is-valid="isValidJson"
           :placeholder="$t('votingValidation.paramPlaceholder')"
-          class="input text-left"
+          @update:is-valid="value => (isValidJson = value)"
         />
       </div>
       <div v-if="!input.name">
@@ -148,12 +154,7 @@ const isValidForm = computed(() => {
       </div>
     </div>
     <template v-if="input.name" #footer>
-      <BaseButton
-        :disabled="!isValidJson || !isValidForm"
-        class="w-full"
-        primary
-        @click="handleSubmit"
-      >
+      <BaseButton class="w-full" primary @click="handleSubmit">
         {{ $t('save') }}
       </BaseButton>
     </template>

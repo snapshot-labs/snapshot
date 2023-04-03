@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import mapKeys from 'lodash/fp/mapKeys';
 import { getAddress } from '@ethersproject/address';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getBlockNumber } from '@snapshot-labs/snapshot.js/src/utils/web3';
 import { getScores } from '@snapshot-labs/snapshot.js/src/utils';
 import { decodeJson, encodeJson } from '@/helpers/b64';
-import { useI18n, useCopy, useStrategies, useIntl } from '@/composables';
 
 const defaultParams = {
   symbol: 'BAL',

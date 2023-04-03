@@ -3,8 +3,6 @@
  * filtered by the search string (case insensitive).
  */
 
-import { ref } from 'vue';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { NETWORKS_COUNT_QUERY } from '@/helpers/queries';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 

@@ -1,4 +1,3 @@
-import { ref } from 'vue';
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
 import { getProposalVotes } from '@/helpers/snapshot';

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useApp, useWeb3, useTxStatus } from '@/composables';
-
 const { pendingCount } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
