@@ -62,6 +62,7 @@ enum Page {
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
+const modalDeleteSpaceConfirmation = ref('');
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -98,16 +99,15 @@ const settingsPages = computed(() => [
 
 async function handleDelete() {
   const result = await send({ id: props.space.id }, 'delete-space', null);
-  // Link to profile page, if on custom domain then the link is external
-  return domain
-    ? window.open(
-        `https://snapshot.org/#/profile/${web3Account.value}`,
-        '_blank'
-      )
-    : router.push({
-        name: 'profileActivity',
-        params: { address: web3Account.value }
-      });
+  console.log(':handleDelete result', result);
+
+  if (result && !result.error) {
+    return domain
+      ? window.open(`https://snapshot.org/#/`, '_blank')
+      : router.push({
+          name: 'home'
+        });
+  }
 }
 
 async function handleSubmit() {
@@ -340,6 +340,7 @@ const isViewOnly = computed(() => {
     </ModalConfirmAction>
     <ModalConfirmAction
       :open="isConfirmDeleteOpen"
+      :disabled="modalDeleteSpaceConfirmation !== space.id"
       show-cancel
       @close="cancelDelete"
       @confirm="handleDelete"
@@ -347,6 +348,14 @@ const isViewOnly = computed(() => {
       <BaseMessageBlock level="warning" class="m-4">
         {{ $t('settings.confirmDeleteSpace') }}
       </BaseMessageBlock>
+      <div class="px-4 pb-4">
+        <BaseInput
+          v-model.trim="modalDeleteSpaceConfirmation"
+          :title="$t('settings.confirmInputDeleteSpace', { space: space.id })"
+          focus-on-mount
+        >
+        </BaseInput>
+      </div>
     </ModalConfirmAction>
   </teleport>
 </template>

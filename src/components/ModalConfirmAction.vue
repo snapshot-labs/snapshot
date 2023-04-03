@@ -2,6 +2,7 @@
 defineProps<{
   open: boolean;
   showCancel?: boolean;
+  disabled?: boolean;
 }>();
 
 defineEmits(['close', 'confirm']);
@@ -25,6 +26,7 @@ defineEmits(['close', 'confirm']);
         <BaseButton
           class="w-full"
           primary
+          :disabled="disabled"
           @click="$emit('confirm'), $emit('close')"
         >
           {{ $t('confirm') }}
