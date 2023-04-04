@@ -160,7 +160,7 @@ const isViewOnly = computed(() => {
 
           <BaseMessageBlock
             v-else-if="isViewOnly"
-            class="mt-3 md:mx-0"
+            class="md:mx-0"
             level="info"
             is-responsive
           >
