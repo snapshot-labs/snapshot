@@ -17,7 +17,7 @@ import { createHead } from '@vueuse/head';
 
 const head = createHead();
 
-const knownHosts = ['app.safe.global'];
+const knownHosts = ['app.safe.global', 'pilot.gnosisguild.org'];
 const parentUrl =
   window.location != window.parent.location
     ? document.referrer ||
