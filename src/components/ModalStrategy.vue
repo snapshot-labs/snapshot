@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { validateForm } from '@/helpers/validation';
 
 const defaultParams = {
   symbol: 'DAI',
@@ -20,13 +21,14 @@ const props = defineProps<{
 const emit = defineEmits(['add', 'close']);
 const { open } = toRefs(props);
 const searchInput = ref('');
-const textAreaJsonIsValid = ref(true);
+const isValidJson = ref(true);
 const loading = ref(false);
 const input = ref({
   name: '',
   network: '1',
   params: {} as Record<string, any>
 });
+const formRef = ref();
 
 const {
   filterStrategies,
@@ -40,11 +42,18 @@ const strategiesResults = computed(() => filterStrategies(searchInput.value));
 
 const { getNetworksSpacesCount } = useNetworksFilter();
 
-const isValid = computed(
-  () => validateSchema(strategyDefinition.value, input.value.params) === true
-);
+const validationErrors = computed(() => {
+  return validateForm(strategyDefinition.value || {}, input.value.params);
+});
+
+const isValid = computed(() => {
+  return Object.values(validationErrors.value).length === 0;
+});
 
 function handleSubmit() {
+  if (!isValid.value || !isValidJson.value)
+    return formRef?.value?.forceShowError();
+
   const strategyObj = clone(input.value);
   emit('add', strategyObj);
   emit('close');
@@ -58,6 +67,7 @@ async function selectStrategy(strategyName) {
   await initStrategy(strategyName);
   const params =
     extendedStrategy.value?.examples?.[0]?.strategy?.params || defaultParams;
+
   input.value.params = strategyDefinition.value ? {} : params;
   loading.value = false;
 }
@@ -98,23 +108,24 @@ watch(open, () => {
     <div v-if="input.name" class="m-4">
       <LoadingRow v-if="loading" class="px-0" />
       <div v-else>
-        <div class="min-h-[250px] space-y-3">
+        <div class="min-h-[250px] space-y-2">
           <ComboboxNetwork
             :network="input.network"
             @select="value => (input.network = value)"
           />
           <div>
-            <FormObject
+            <TuneForm
               v-if="strategyDefinition"
+              ref="formRef"
               v-model="input.params"
               :definition="strategyDefinition"
+              :error="validationErrors"
             />
-            <TextareaJson
+            <TuneTextareaJson
               v-else
               v-model="input.params"
-              v-model:is-valid="textAreaJsonIsValid"
               :placeholder="$t('strategyParameters')"
-              class="input text-left"
+              @update:is-valid="value => (isValidJson = value)"
             />
           </div>
         </div>
@@ -141,9 +152,7 @@ watch(open, () => {
         :params="strategy.params"
       />
       <BaseButton
-        :disabled="
-          !textAreaJsonIsValid || (strategyDefinition && !isValid) || loading
-        "
+        :disabled="loading"
         class="mt-2 w-full"
         primary
         @click="handleSubmit"
