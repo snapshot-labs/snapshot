@@ -74,6 +74,10 @@ export function useClient() {
         space: space.id,
         settings: JSON.stringify(payload)
       });
+    } else if (type === 'delete-space') {
+      return client.deleteSpace(auth.web3, web3.value.account, {
+        space: space.id
+      });
     }
   }
 

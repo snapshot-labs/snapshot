@@ -20,9 +20,12 @@ useMeta({
 });
 
 const { t } = useI18n();
+const { domain } = useApp();
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { reloadSpace } = useExtendedSpaces();
+const { reloadSpace, deleteSpace } = useExtendedSpaces();
+const { loadFollows } = useFollowSpace();
 const {
   validationResult,
   isValid,
@@ -60,6 +63,7 @@ enum Page {
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
+const modalDeleteSpaceConfirmation = ref('');
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -94,6 +98,23 @@ const settingsPages = computed(() => [
   }
 ]);
 
+async function handleDelete() {
+  modalDeleteSpaceConfirmation.value = '';
+
+  const result = await send({ id: props.space.id }, 'delete-space', null);
+  console.log(':handleDelete result', result);
+
+  if (result && result.id) {
+    if (domain) {
+      return window.open(`https://snapshot.org/#/`, '_self');
+    } else {
+      deleteSpace(props.space.id);
+      loadFollows();
+      return router.push({ name: 'home' });
+    }
+  }
+}
+
 async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
@@ -125,6 +146,12 @@ const {
   reveal: openConfirmLeave,
   confirm: confirmLeave,
   cancel: cancelLeave
+} = useConfirmDialog();
+
+const {
+  isRevealed: isConfirmDeleteOpen,
+  reveal: openConfirmDelete,
+  cancel: cancelDelete
 } = useConfirmDialog();
 
 onBeforeRouteLeave(async () => {
@@ -230,8 +257,9 @@ const isViewOnly = computed(() => {
               :ens-owner="ensOwner"
               :is-owner="isEnsOwner"
               :is-setting-ens-record="settingENSRecord"
+              :is-deleting="isConfirmDeleteOpen"
               @change-controller="modalControllerEditOpen = true"
-              @delete-space="null"
+              @delete-space="openConfirmDelete"
             />
           </template>
           <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
@@ -313,6 +341,25 @@ const isViewOnly = computed(() => {
       <BaseMessageBlock level="warning" class="m-4">
         {{ $t('settings.confirmLeaveMessage') }}
       </BaseMessageBlock>
+    </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmDeleteOpen"
+      :disabled="modalDeleteSpaceConfirmation !== space.id"
+      show-cancel
+      @close="cancelDelete"
+      @confirm="handleDelete"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmDeleteSpace') }}
+      </BaseMessageBlock>
+      <div class="px-4 pb-4">
+        <BaseInput
+          v-model.trim="modalDeleteSpaceConfirmation"
+          :title="$t('settings.confirmInputDeleteSpace', { space: space.id })"
+          focus-on-mount
+        >
+        </BaseInput>
+      </div>
     </ModalConfirmAction>
   </teleport>
 </template>
