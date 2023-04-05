@@ -24,7 +24,8 @@ const { domain } = useApp();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { reloadSpace } = useExtendedSpaces();
+const { reloadSpace, deleteSpace } = useExtendedSpaces();
+const { loadFollows } = useFollowSpace();
 const {
   validationResult,
   isValid,
@@ -98,15 +99,19 @@ const settingsPages = computed(() => [
 ]);
 
 async function handleDelete() {
+  modalDeleteSpaceConfirmation.value = '';
+
   const result = await send({ id: props.space.id }, 'delete-space', null);
   console.log(':handleDelete result', result);
 
-  if (result && !result.error) {
-    return domain
-      ? window.open(`https://snapshot.org/#/`, '_blank')
-      : router.push({
-          name: 'home'
-        });
+  if (result && result.id) {
+    if (domain) {
+      return window.open(`https://snapshot.org/#/`, '_self');
+    } else {
+      deleteSpace(props.space.id);
+      loadFollows();
+      return router.push({ name: 'home' });
+    }
   }
 }
 
@@ -146,7 +151,6 @@ const {
 const {
   isRevealed: isConfirmDeleteOpen,
   reveal: openConfirmDelete,
-  confirm: confirmDelete,
   cancel: cancelDelete
 } = useConfirmDialog();
 
