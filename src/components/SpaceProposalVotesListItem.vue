@@ -117,11 +117,3 @@ const { formatCompactNumber } = useIntl();
     </div>
   </div>
 </template>
-
-<style scoped>
-:deep(.tippy-box[data-theme~='urlified']) {
-  max-width: 200px;
-  white-space: pre-wrap;
-  color: inherit;
-}
-</style>

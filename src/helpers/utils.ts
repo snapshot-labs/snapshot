@@ -143,5 +143,8 @@ export async function clearStampCache(id: string, type = 'space') {
 
 export function urlify(text: string, target = '_blank') {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(urlRegex, `<a href="$1" target="${target}">$1</a>`);
+  return text.replace(
+    urlRegex,
+    `<a href="$1" target="${target}" rel="noopener">$1</a>`
+  );
 }
