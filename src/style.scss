@@ -273,6 +273,11 @@ input[type='number'] {
   z-index: 1;
   overflow-wrap: break-word;
 }
+.tippy-box[data-theme~='urlified'] {
+  max-width: 200px;
+  white-space: pre-wrap;
+  color: inherit;
+}
 
 .lazy-loading {
   @apply animate-pulse-fast bg-skin-border;
