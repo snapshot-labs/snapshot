@@ -140,3 +140,8 @@ export async function clearStampCache(id: string, type = 'space') {
   if (type === 'avatar')
     return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
 }
+
+export function urlify(text: string, target = '_blank') {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return text.replace(urlRegex, `<a href="$1" target="${target}">$1</a>`);
+}
