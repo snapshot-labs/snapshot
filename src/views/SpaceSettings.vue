@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useConfirmDialog } from '@vueuse/core';
+import { useConfirmDialog, useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -64,6 +64,11 @@ const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
 const modalDeleteSpaceConfirmation = ref('');
+const modalSettingsSavedOpen = ref(false);
+const modalSettingsSavedIgnore = useStorage(
+  'snapshot.settings.saved.ignore',
+  false
+);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -127,6 +132,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
+    if (!modalSettingsSavedIgnore.value) modalSettingsSavedOpen.value = true;
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
     await reloadSpace(props.space.id);
@@ -361,5 +367,20 @@ const isViewOnly = computed(() => {
         </BaseInput>
       </div>
     </ModalConfirmAction>
+    <ModalNotice
+      :open="modalSettingsSavedOpen"
+      :title="$t('settings.noticeSettingsSavedTitle')"
+      @close="modalSettingsSavedOpen = false"
+    >
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <p v-html="$t('settings.noticeSettingsSavedText')" />
+      <InputCheckbox
+        v-model="modalSettingsSavedIgnore"
+        name=""
+        :label="$t('settings.noticeSettingsSavedInputCheckboxLabel')"
+        class="mx-auto mt-4 max-w-min cursor-pointer whitespace-nowrap"
+        @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
+      />
+    </ModalNotice>
   </teleport>
 </template>
