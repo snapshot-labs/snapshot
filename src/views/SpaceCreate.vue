@@ -314,9 +314,11 @@ onMounted(async () => {
         v-if="currentStep === Step.CONTENT"
         class="mb-3 overflow-hidden px-4 md:px-0"
       >
-        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
-          <ButtonBack />
-        </router-link>
+        <ButtonBack
+          @click="
+            router.push(domain ? { path: '/' } : { name: 'spaceProposals' })
+          "
+        />
       </div>
       <SpaceCreateWarnings
         v-if="!validationLoading"

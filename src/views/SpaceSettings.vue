@@ -169,9 +169,7 @@ const isViewOnly = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <div class="mb-3 px-4 md:px-0">
-      <router-link :to="{ name: 'spaceProposals' }">
-        <ButtonBack />
-      </router-link>
+      <ButtonBack @click="router.push({ name: 'spaceProposals' })" />
     </div>
     <template #content-right>
       <LoadingRow v-if="!loaded" block />
