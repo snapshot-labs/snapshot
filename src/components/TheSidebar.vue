@@ -3,8 +3,6 @@ import draggable from 'vuedraggable';
 
 import { lsSet, lsGet } from '@/helpers/utils';
 
-const router = useRouter();
-
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
@@ -118,14 +116,11 @@ watch(
             :space="element"
             :has-unseen="spaceHasUnseenProposals(element)"
           />
-          <div
-            class="cursor-pointer"
-            @click="
-              router.push({
-                name: 'spaceProposals',
-                params: { key: element }
-              })
-            "
+          <router-link
+            :to="{
+              name: 'spaceProposals',
+              params: { key: extendedSpacesObj[element].id }
+            }"
           >
             <AvatarSpace
               :key="element"
@@ -139,7 +134,7 @@ watch(
               :counter="spaces[element].proposals_active"
               class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
             />
-          </div>
+          </router-link>
         </div>
       </template>
     </draggable>
