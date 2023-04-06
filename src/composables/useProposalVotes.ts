@@ -112,6 +112,22 @@ export function useProposalVotes(
     return addressResolved;
   }
 
+  async function resolveLens(handle: string) {
+    console.log(':resolveEns', handle);
+    const res = await fetch('https://api.lens.dev/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: `query Profiles { profiles(request: { handles: ["${handle}"], limit: 1}) { items { ownedBy }}}`
+      })
+    });
+    const result = await res.json();
+    const addressResolved = result?.data?.profiles?.items[0]?.ownedBy;
+    return addressResolved;
+  }
+
   watch(sortedVotes, () => {
     loadProfiles(sortedVotes.value.map(vote => vote.voter));
   });
@@ -132,6 +148,8 @@ export function useProposalVotes(
         searchAddress.value = val;
       } else if (isValidEnsDomain(val)) {
         searchAddress.value = await resolveEns(val);
+      } else if (val.endsWith('.lens')) {
+        searchAddress.value = await resolveLens(val);
       }
 
       if (!searchAddress.value) {
