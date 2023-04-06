@@ -376,7 +376,7 @@ const isViewOnly = computed(() => {
       <p v-html="$t('settings.noticeSettingsSavedText')" />
       <InputCheckbox
         v-model="modalSettingsSavedIgnore"
-        name=""
+        name="settings-saved-input-checkbox"
         :label="$t('settings.noticeSettingsSavedInputCheckboxLabel')"
         class="mx-auto mt-4 max-w-min cursor-pointer whitespace-nowrap"
         @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
