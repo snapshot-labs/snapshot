@@ -21,13 +21,13 @@ defineEmits(['toggle']);
     @toggle="$emit('toggle')"
   >
     <template #icons>
-      <div
+      <button
         v-if="!hideRemove"
         class="mr-2 flex cursor-pointer items-center"
         @click="copyToClipboard(text)"
       >
         <BaseIcon style="color: #b2b5b2" name="copy" size="20" />
-      </div>
+      </button>
     </template>
     <div
       :class="{ pre }"

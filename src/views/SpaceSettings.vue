@@ -284,14 +284,16 @@ const isViewOnly = computed(() => {
           <div
             class="no-scrollbar mt-0 flex overflow-y-auto md:mt-4 lg:my-3 lg:block"
           >
-            <BaseSidebarNavigationItem
+            <button
               v-for="page in settingsPages"
               :key="page.id"
-              :is-active="currentPage === page.id"
+              class="block w-full text-left"
               @click="currentPage = page.id"
             >
-              {{ page.title }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem :is-active="currentPage === page.id">
+                {{ page.title }}
+              </BaseSidebarNavigationItem>
+            </button>
           </div>
         </div>
       </BaseBlock>
