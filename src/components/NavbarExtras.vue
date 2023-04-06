@@ -48,8 +48,8 @@ function clickNavigationItem(item: any) {
           <PopoverButton
             v-for="item in navigationItems"
             :key="item.name"
-            as="div"
-            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link hover:!opacity-100 group-hover:text-skin-text group-hover:opacity-70"
+            as="button"
+            class="block w-full cursor-pointer py-1 text-left text-xl text-skin-link hover:!text-skin-link hover:!opacity-100 group-hover:text-skin-text group-hover:opacity-70"
             @click="clickNavigationItem(item)"
           >
             {{ item.name }}

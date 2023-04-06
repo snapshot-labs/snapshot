@@ -67,8 +67,8 @@ watch(
     @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
-      <router-link :to="{ name: 'home' }">
-        <ButtonSidebar class="!border-0">
+      <router-link v-slot="{ href }" custom :to="{ name: 'home' }">
+        <ButtonSidebar class="!border-0" :href="href" as="a">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
         </ButtonSidebar>
       </router-link>
@@ -82,8 +82,8 @@ watch(
       }"
       class="mt-2 px-2"
     >
-      <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar>
+      <router-link v-slot="{ href }" custom :to="{ name: 'timeline' }">
+        <ButtonSidebar :href="href" as="a">
           <BaseIcon size="20" name="feed" />
         </ButtonSidebar>
       </router-link>
@@ -154,6 +154,8 @@ watch(
       class="mt-2 flex flex-col items-center space-y-2 px-2"
     >
       <router-link
+        v-slot="{ href }"
+        custom
         :to="{
           name: 'setup',
           query: {
@@ -161,7 +163,7 @@ watch(
           }
         }"
       >
-        <ButtonSidebar>
+        <ButtonSidebar as="a" :href="href">
           <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>
