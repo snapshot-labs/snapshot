@@ -294,7 +294,6 @@ onMounted(async () => {
   if (!sourceProposal.value) {
     form.value.name = formDraft.value.name;
     form.value.body = formDraft.value.body;
-    form.value.choices = formDraft.value.choices;
   }
 
   if (
