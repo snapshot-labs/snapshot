@@ -36,13 +36,13 @@ onMounted(async () => {
     slim
   >
     <template v-if="props.proposal.state === 'closed'" #button>
-      <BaseButtonIcon>
-        <LoadingSpinner v-if="isDownloadingVotes" />
-        <i-ho-download
-          v-else
-          v-tippy="{ content: 'Download as CSV' }"
-          @click="downloadVotes(proposal.id, proposal.space.id)"
-        />
+      <BaseButtonIcon v-if="isDownloadingVotes" :loading="true" />
+      <BaseButtonIcon
+        v-else
+        v-tippy="{ content: 'Download as CSV' }"
+        @click="downloadVotes(proposal.id, proposal.space.id)"
+      >
+        <i-ho-download />
       </BaseButtonIcon>
     </template>
     <SpaceProposalVotesListItem
