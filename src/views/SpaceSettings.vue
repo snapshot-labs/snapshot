@@ -268,7 +268,10 @@ const isViewOnly = computed(() => {
               @delete-space="openConfirmDelete"
             />
           </template>
-          <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
+          <div
+            v-if="isSpaceAdmin || isSpaceController"
+            class="flex gap-5 px-4 pt-2 md:px-0"
+          >
             <BaseButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
             </BaseButton>
@@ -311,6 +314,7 @@ const isViewOnly = computed(() => {
       </BaseBlock>
     </template>
   </TheLayout>
+
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
@@ -372,13 +376,15 @@ const isViewOnly = computed(() => {
       :title="$t('settings.noticeSettingsSavedTitle')"
       @close="modalSettingsSavedOpen = false"
     >
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <p v-html="$t('settings.noticeSettingsSavedText')" />
+      <BaseMessageBlock level="info" class="mb-5">
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <p class="text-left" v-html="$t('settings.noticeSettingsSavedText')" />
+      </BaseMessageBlock>
       <InputCheckbox
         v-model="modalSettingsSavedIgnore"
         name="settings-saved-input-checkbox"
         :label="$t('settings.noticeSettingsSavedInputCheckboxLabel')"
-        class="mx-auto mt-4 max-w-min cursor-pointer whitespace-nowrap"
+        class="ml-4 mt-auto max-w-min cursor-pointer self-start whitespace-nowrap"
         @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
       />
     </ModalNotice>
