@@ -7,6 +7,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
+const router = useRouter();
 const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
   useExtendedSpaces();
 const { spaces } = useSpaces();
@@ -65,27 +66,22 @@ watch(
     @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
-      <router-link v-slot="{ href }" custom :to="{ name: 'home' }">
-        <RoundButton class="!border-0" :href="href" as="a">
-          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </RoundButton>
-      </router-link>
+      <RoundButton class="!border-0" @click="router.push({ name: 'home' })">
+        <BaseIcon size="36" name="snapshot" class="text-snapshot" />
+      </RoundButton>
     </div>
     <div class="mt-2 px-2">
-      <router-link v-slot="{ href }" custom :to="{ name: 'timeline' }">
-        <RoundButton
-          v-tippy="{
-            content: 'Timeline',
-            placement: 'right',
-            delay: [750, 0],
-            touch: ['hold', 500]
-          }"
-          :href="href"
-          as="a"
-        >
-          <BaseIcon size="20" name="feed" />
-        </RoundButton>
-      </router-link>
+      <RoundButton
+        v-tippy="{
+          content: 'Timeline',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
+        }"
+        @click="router.push({ name: 'timeline' })"
+      >
+        <BaseIcon size="20" name="feed" />
+      </RoundButton>
     </div>
     <SidebarSpacesSkeleton
       v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
@@ -141,29 +137,24 @@ watch(
     </draggable>
 
     <div class="mt-2 flex flex-col items-center space-y-2 px-2">
-      <router-link
-        v-slot="{ href }"
-        custom
-        :to="{
-          name: 'setup',
-          query: {
-            step: '0'
-          }
+      <RoundButton
+        v-tippy="{
+          content: 'Create space',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
         }"
+        @click="
+          router.push({
+            name: 'setup',
+            query: {
+              step: '0'
+            }
+          })
+        "
       >
-        <RoundButton
-          v-tippy="{
-            content: 'Create space',
-            placement: 'right',
-            delay: [750, 0],
-            touch: ['hold', 500]
-          }"
-          as="a"
-          :href="href"
-        >
-          <i-ho-plus-sm />
-        </RoundButton>
-      </router-link>
+        <i-ho-plus-sm />
+      </RoundButton>
     </div>
   </div>
 </template>
