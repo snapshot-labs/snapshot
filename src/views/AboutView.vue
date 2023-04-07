@@ -84,7 +84,9 @@ const socials = [
         <div class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <router-link :to="{ path: '/' }">
-            <BaseButton class="origin-left scale-110">Discover</BaseButton>
+            <BaseButton tabindex="-1" class="origin-left scale-110"
+              >Discover</BaseButton
+            >
           </router-link>
         </div>
 
@@ -99,7 +101,7 @@ const socials = [
         <div class="mb-4 flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <router-link :to="{ path: '/setup' }">
-            <BaseButton class="origin-left scale-110">
+            <BaseButton tabindex="-1" class="origin-left scale-110">
               Create a space
             </BaseButton>
           </router-link>
@@ -110,7 +112,9 @@ const socials = [
             link="https://demo.snapshot.org/#/hamsterdao.eth/proposal/0x0630b8672c4e1f2c38e2ca6046acfdd88cc2e888053a45b0511dff2fa54b4eb1"
             hide-external-icon
           >
-            <BaseButton class="origin-left scale-110">Try the demo</BaseButton>
+            <BaseButton tabindex="-1" class="origin-left scale-110"
+              >Try the demo</BaseButton
+            >
           </BaseLink>
         </div>
 

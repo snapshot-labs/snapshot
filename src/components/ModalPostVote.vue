@@ -85,7 +85,7 @@ function share(shareTo: 'twitter' | 'lenster') {
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon
           >
-            <BaseButton class="w-full">
+            <BaseButton tabindex="-1" class="w-full">
               <div class="flex flex-grow items-center justify-center gap-1">
                 {{ $t('proposal.postVoteModal.seeQueue') }}
                 <i-ho-external-link class="text-sm" />

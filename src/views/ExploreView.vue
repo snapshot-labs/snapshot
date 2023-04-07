@@ -95,6 +95,7 @@ useInfiniteScroll(
   <div v-else>
     <BaseContainer class="mb-4 flex items-center">
       <BaseButton
+        tabindex="-1"
         class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
       >
         <TheSearchBar />
@@ -112,7 +113,7 @@ useInfiniteScroll(
           class="ml-3 hidden md:block"
           hide-external-icon
         >
-          <BaseButton>
+          <BaseButton tabindex="-1">
             {{ buttonStr }}
           </BaseButton>
         </BaseLink>

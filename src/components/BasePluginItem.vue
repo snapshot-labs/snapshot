@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <BaseBlock class="cursor-pointer hover:border-skin-text">
+  <BaseBlock>
     <div class="mb-2 flex items-center">
       <BaseAvatar
         v-if="plugin?.icon"

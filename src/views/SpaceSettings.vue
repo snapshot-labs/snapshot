@@ -169,9 +169,7 @@ const isViewOnly = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <div class="mb-3 px-4 md:px-0">
-      <router-link :to="{ name: 'spaceProposals' }">
-        <ButtonBack />
-      </router-link>
+      <ButtonBack @click="router.push({ name: 'spaceProposals' })" />
     </div>
     <template #content-right>
       <LoadingRow v-if="!loaded" block />
@@ -286,14 +284,17 @@ const isViewOnly = computed(() => {
           <div
             class="no-scrollbar mt-0 flex overflow-y-auto md:mt-4 lg:my-3 lg:block"
           >
-            <BaseSidebarNavigationItem
+            <a
               v-for="page in settingsPages"
               :key="page.id"
-              :is-active="currentPage === page.id"
+              tabindex="0"
               @click="currentPage = page.id"
+              @keypress="currentPage = page.id"
             >
-              {{ page.title }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem :is-active="currentPage === page.id">
+                {{ page.title }}
+              </BaseSidebarNavigationItem>
+            </a>
           </div>
         </div>
       </BaseBlock>

@@ -69,7 +69,9 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <BaseButton class="mt-2 w-full">{{ $t('playground') }}</BaseButton>
+          <BaseButton tabindex="-1" class="mt-2 w-full">{{
+            $t('playground')
+          }}</BaseButton>
         </router-link>
       </BaseBlock>
     </template>

@@ -7,6 +7,7 @@ const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
+const router = useRouter();
 const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
   useExtendedSpaces();
 const { spaces } = useSpaces();
@@ -65,26 +66,22 @@ watch(
     @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
-      <router-link :to="{ name: 'home' }">
-        <ButtonSidebar class="!border-0">
-          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </ButtonSidebar>
-      </router-link>
+      <BaseButtonRound class="!border-0" @click="router.push({ name: 'home' })">
+        <BaseIcon size="36" name="snapshot" class="text-snapshot" />
+      </BaseButtonRound>
     </div>
-    <div
-      v-tippy="{
-        content: 'Timeline',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 px-2"
-    >
-      <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar>
-          <BaseIcon size="20" name="feed" />
-        </ButtonSidebar>
-      </router-link>
+    <div class="mt-2 px-2">
+      <BaseButtonRound
+        v-tippy="{
+          content: 'Timeline',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
+        }"
+        @click="router.push({ name: 'timeline' })"
+      >
+        <BaseIcon size="20" name="feed" />
+      </BaseButtonRound>
     </div>
     <SidebarSpacesSkeleton
       v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
@@ -104,12 +101,6 @@ watch(
       <template #item="{ element }">
         <div
           v-if="extendedSpacesObj[element]"
-          v-tippy="{
-            content: extendedSpacesObj[element].name,
-            placement: 'right',
-            delay: [750, 0],
-            touch: ['hold', 500]
-          }"
           class="group relative flex items-center px-2"
         >
           <SidebarUnreadIndicator
@@ -117,6 +108,12 @@ watch(
             :has-unseen="spaceHasUnseenProposals(element)"
           />
           <router-link
+            v-tippy="{
+              content: extendedSpacesObj[element].name,
+              placement: 'right',
+              delay: [750, 0],
+              touch: ['hold', 500]
+            }"
             :to="{
               name: 'spaceProposals',
               params: { key: extendedSpacesObj[element].id }
@@ -139,27 +136,25 @@ watch(
       </template>
     </draggable>
 
-    <div
-      v-tippy="{
-        content: 'Create space',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 flex flex-col items-center space-y-2 px-2"
-    >
-      <router-link
-        :to="{
-          name: 'setup',
-          query: {
-            step: '0'
-          }
+    <div class="mt-2 flex flex-col items-center space-y-2 px-2">
+      <BaseButtonRound
+        v-tippy="{
+          content: 'Create space',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
         }"
+        @click="
+          router.push({
+            name: 'setup',
+            query: {
+              step: '0'
+            }
+          })
+        "
       >
-        <ButtonSidebar>
-          <i-ho-plus-sm />
-        </ButtonSidebar>
-      </router-link>
+        <i-ho-plus-sm />
+      </BaseButtonRound>
     </div>
   </div>
 </template>

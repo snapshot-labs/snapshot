@@ -125,19 +125,29 @@ onMounted(() => {
       <div class="fixed hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <BaseSidebarNavigationItem
-              :is-active="isFeedJoinedSpaces"
+            <a
+              class="w-full text-left"
+              tabindex="0"
               @click="setFeed('joined')"
+              @keypress="setFeed('joined')"
             >
-              {{ $t('joinedSpaces') }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem :is-active="isFeedJoinedSpaces">
+                {{ $t('joinedSpaces') }}
+              </BaseSidebarNavigationItem>
+            </a>
 
-            <BaseSidebarNavigationItem
-              :is-active="route.query.feed === 'all'"
+            <a
+              class="w-full text-left"
+              tabindex="0"
               @click="setFeed('all')"
+              @keypress="setFeed('all')"
             >
-              {{ $t('allSpaces') }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem
+                :is-active="route.query.feed === 'all'"
+              >
+                {{ $t('allSpaces') }}
+              </BaseSidebarNavigationItem>
+            </a>
           </div>
         </BaseBlock>
       </div>
@@ -183,7 +193,7 @@ onMounted(() => {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
+            <BaseButton tabindex="-1">{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <BaseNoResults

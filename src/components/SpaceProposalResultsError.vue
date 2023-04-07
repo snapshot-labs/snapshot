@@ -49,7 +49,7 @@ const retry = async () => {
     class="mt-3 block"
     hide-external-icon
   >
-    <BaseButton class="w-full">
+    <BaseButton tabindex="-1" class="w-full">
       {{ t('getHelp') }}
     </BaseButton>
   </BaseLink>

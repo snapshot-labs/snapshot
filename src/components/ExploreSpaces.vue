@@ -32,6 +32,7 @@ useInfiniteScroll(
       class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
       <BaseButton
+        tabindex="-1"
         class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
       >
         <TheSearchBar />
@@ -41,7 +42,7 @@ useInfiniteScroll(
 
       <div
         v-if="spacesLoaded"
-        class="mt-2 whitespace-nowrap text-right text-skin-text xs:mt-0 xs:ml-auto"
+        class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
         {{
           $tc('spaceCount', [
