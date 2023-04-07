@@ -373,17 +373,16 @@ const isViewOnly = computed(() => {
     </ModalConfirmAction>
     <ModalNotice
       :open="modalSettingsSavedOpen"
-      :title="$t('settings.noticeSettingsSavedTitle')"
+      :title="$t('settings.noticeSavedTitle')"
       @close="modalSettingsSavedOpen = false"
     >
       <BaseMessageBlock level="info" class="mb-5">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <p class="text-left" v-html="$t('settings.noticeSettingsSavedText')" />
+        <p class="text-left">{{ $t('settings.noticeSavedText') }}</p>
       </BaseMessageBlock>
       <InputCheckbox
         v-model="modalSettingsSavedIgnore"
         name="settings-saved-input-checkbox"
-        :label="$t('settings.noticeSettingsSavedInputCheckboxLabel')"
+        :label="$t('settings.noticeSavedInputCheckboxLabel')"
         class="ml-4 mt-auto max-w-min cursor-pointer self-start whitespace-nowrap"
         @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
       />

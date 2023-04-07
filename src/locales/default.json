@@ -293,9 +293,9 @@
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
     "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone.",
     "confirmInputDeleteSpace": "Enter {space} to continue:",
-    "noticeSettingsSavedTitle": "Settings saved",
-    "noticeSettingsSavedText": "New settings only affect future proposals, <br> not existing ones.",
-    "noticeSettingsSavedInputCheckboxLabel": "Don't show again",
+    "noticeSavedTitle": "Settings saved",
+    "noticeSavedText": "New settings only affect future proposals, not existing ones.",
+    "noticeSavedInputCheckboxLabel": "Don't show again",
     "navigation": {
       "general": "General",
       "strategies": "Strategies",
