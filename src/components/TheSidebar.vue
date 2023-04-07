@@ -66,12 +66,12 @@ watch(
     @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
-      <RoundButton class="!border-0" @click="router.push({ name: 'home' })">
+      <BaseButtonRound class="!border-0" @click="router.push({ name: 'home' })">
         <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-      </RoundButton>
+      </BaseButtonRound>
     </div>
     <div class="mt-2 px-2">
-      <RoundButton
+      <BaseButtonRound
         v-tippy="{
           content: 'Timeline',
           placement: 'right',
@@ -81,7 +81,7 @@ watch(
         @click="router.push({ name: 'timeline' })"
       >
         <BaseIcon size="20" name="feed" />
-      </RoundButton>
+      </BaseButtonRound>
     </div>
     <SidebarSpacesSkeleton
       v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
@@ -137,7 +137,7 @@ watch(
     </draggable>
 
     <div class="mt-2 flex flex-col items-center space-y-2 px-2">
-      <RoundButton
+      <BaseButtonRound
         v-tippy="{
           content: 'Create space',
           placement: 'right',
@@ -154,7 +154,7 @@ watch(
         "
       >
         <i-ho-plus-sm />
-      </RoundButton>
+      </BaseButtonRound>
     </div>
   </div>
 </template>
