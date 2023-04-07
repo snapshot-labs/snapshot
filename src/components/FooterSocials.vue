@@ -9,10 +9,6 @@ const socials = [
     link: 'https://discord.snapshot.org/'
   },
   {
-    icon: 'telegram',
-    link: 'https://t.me/snapshotlabs'
-  },
-  {
     icon: 'youtube',
     link: `https://www.youtube.com/channel/UCKiOLUMQNj77m_zhQnfdzsg`
   }
@@ -33,9 +29,6 @@ const socials = [
         </FooterSocialsItem>
         <FooterSocialsItem v-else-if="social.icon === 'discord'">
           <i-s-discord class="text-[23px]" />
-        </FooterSocialsItem>
-        <FooterSocialsItem v-else-if="social.icon === 'telegram'">
-          <i-s-telegram class="text-[21px]" />
         </FooterSocialsItem>
       </BaseLink>
     </span>
