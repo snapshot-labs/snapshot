@@ -57,6 +57,7 @@ onMounted(async () => {
     />
     <a
       v-if="sortedVotes.length < voteCount"
+      tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesmOpen = true"
     >
