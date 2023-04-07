@@ -1,6 +1,6 @@
 {
   "searchPlaceholder": "Search",
-  "searchPlaceholderVotes": "Search by address or ENS",
+  "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
   "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",
@@ -291,6 +291,8 @@
   "settings": {
     "header": "Settings",
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
+    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone.",
+    "confirmInputDeleteSpace": "Enter {space} to continue:",
     "navigation": {
       "general": "General",
       "strategies": "Strategies",

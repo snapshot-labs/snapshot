@@ -1522,10 +1522,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@snapshot-labs/lock@^0.1.1013":
-  version "0.1.1013"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1013.tgz#2d50792894f68b18323f9fb84c85544aee372edd"
-  integrity sha512-PQ8x6MgY0uwF1qo3Q374qWUdwCz1Wl9DvgOOKsgDnpTd6IiUIFAMzPXByefMKvnfCIsc3PsxzR/EUzcFv3LMxw==
+"@snapshot-labs/lock@^0.1.1014":
+  version "0.1.1014"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1014.tgz#1c12a4d5f44b9f369c9e750737b7263cca877236"
+  integrity sha512-nU6HSEGXHkEvjGgn1wXVd3o/pQlAY8uBDh2fGXBmCbJIR8TWqXuFxrz+afsitDltmeSlfXn8dKCNKFLHfuMBVA==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
     "@gnosis.pm/safe-apps-provider" "^0.14.0"
@@ -1561,10 +1561,10 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.6.tgz#9d6e094743682d469c20926e92782ba971b6245a"
-  integrity sha512-SG/cD/lWRM1XPLsKU9zHmf7tkFgCBGyX2IYRlUgbOa1cQLqY4amcqcwvRKn5cq2+Q5f15vWvP7V3wS2Eh3EQrg==
+"@snapshot-labs/tune@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.8.tgz#9f31d92540dc8c9e4f111ff303457b7054848dcb"
+  integrity sha512-0TvnhQJqLu6w+duDDMrxINNe4IkyAW6l+fxYFUmusr5ms9N06EJlgvrMnSIHfsTK6U7xM2WhJURC+VjG6bP5tQ==
   dependencies:
     "@headlessui/vue" "^1.7.12"
     lodash "^4.17.21"
@@ -1651,11 +1651,6 @@
   integrity sha512-y5mb86JUoiUgBjY/o6FJSFZSEttfb3Q5gllE4xoKjAAD+vBrnIhE4dViwUuow3va8mpH4s9jyUbUbrRGoRdc2Q==
   dependencies:
     mini-svg-data-uri "^1.2.3"
-
-"@tailwindcss/line-clamp@^0.4.4":
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.4.4.tgz#767cf8e5d528a5d90c9740ca66eb079f5e87d423"
-  integrity sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==
 
 "@testing-library/cypress@^9.0.0":
   version "9.0.0"

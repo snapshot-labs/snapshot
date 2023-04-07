@@ -6,6 +6,7 @@ const props = defineProps<{
   ensOwner: string | null;
   isOwner: boolean;
   isSettingEnsRecord: boolean;
+  isDeleting: boolean;
 }>();
 
 const emit = defineEmits(['changeController', 'deleteSpace']);
@@ -24,19 +25,18 @@ const items = computed(() => [
     ),
     action: () => emit('changeController'),
     loading: props.isSettingEnsRecord
+  },
+  {
+    title: t('settings.dangerZone.deleteSpace.title'),
+    description: t('settings.dangerZone.deleteSpace.information'),
+    button: t('settings.dangerZone.deleteSpace.button'),
+    disabled: !props.isController,
+    disabledInformation: t(
+      'settings.dangerZone.deleteSpace.disabledInformation'
+    ),
+    action: () => emit('deleteSpace'),
+    loading: props.isDeleting
   }
-
-  // {
-  //   title: t('settings.dangerZone.deleteSpace.title'),
-  //   description: t('settings.dangerZone.deleteSpace.information'),
-  //   button: t('settings.dangerZone.deleteSpace.button'),
-  //   disabled: !props.isController,
-  //   disabledInformation: t(
-  //     'settings.dangerZone.deleteSpace.disabledInformation'
-  //   ),
-  //   action: () => emit('deleteSpace'),
-  //   loading: false
-  // }
 ]);
 </script>
 
