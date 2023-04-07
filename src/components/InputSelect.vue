@@ -20,6 +20,7 @@ const emit = defineEmits(['select']);
         { 'cursor-not-allowed !border-skin-border': isDisabled }
       ]"
       class="relative !h-[42px] w-full truncate pl-3 pr-5 text-left"
+      :disabled="isDisabled"
       @click="isDisabled ? null : emit('select')"
     >
       <span :class="{ 'text-skin-text ': isDisabled }">
