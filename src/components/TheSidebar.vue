@@ -71,17 +71,18 @@ watch(
         </ButtonSidebar>
       </router-link>
     </div>
-    <div
-      v-tippy="{
-        content: 'Timeline',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 px-2"
-    >
+    <div class="mt-2 px-2">
       <router-link v-slot="{ href }" custom :to="{ name: 'timeline' }">
-        <ButtonSidebar :href="href" as="a">
+        <ButtonSidebar
+          v-tippy="{
+            content: 'Timeline',
+            placement: 'right',
+            delay: [750, 0],
+            touch: ['hold', 500]
+          }"
+          :href="href"
+          as="a"
+        >
           <BaseIcon size="20" name="feed" />
         </ButtonSidebar>
       </router-link>
@@ -104,12 +105,6 @@ watch(
       <template #item="{ element }">
         <div
           v-if="extendedSpacesObj[element]"
-          v-tippy="{
-            content: extendedSpacesObj[element].name,
-            placement: 'right',
-            delay: [750, 0],
-            touch: ['hold', 500]
-          }"
           class="group relative flex items-center px-2"
         >
           <SidebarUnreadIndicator
@@ -117,6 +112,12 @@ watch(
             :has-unseen="spaceHasUnseenProposals(element)"
           />
           <router-link
+            v-tippy="{
+              content: extendedSpacesObj[element].name,
+              placement: 'right',
+              delay: [750, 0],
+              touch: ['hold', 500]
+            }"
             :to="{
               name: 'spaceProposals',
               params: { key: extendedSpacesObj[element].id }
@@ -139,15 +140,7 @@ watch(
       </template>
     </draggable>
 
-    <div
-      v-tippy="{
-        content: 'Create space',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 flex flex-col items-center space-y-2 px-2"
-    >
+    <div class="mt-2 flex flex-col items-center space-y-2 px-2">
       <router-link
         v-slot="{ href }"
         custom
@@ -158,7 +151,16 @@ watch(
           }
         }"
       >
-        <ButtonSidebar as="a" :href="href">
+        <ButtonSidebar
+          v-tippy="{
+            content: 'Create space',
+            placement: 'right',
+            delay: [750, 0],
+            touch: ['hold', 500]
+          }"
+          as="a"
+          :href="href"
+        >
           <i-ho-plus-sm />
         </ButtonSidebar>
       </router-link>
