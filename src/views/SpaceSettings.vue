@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useConfirmDialog } from '@vueuse/core';
+import { useConfirmDialog, useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -64,6 +64,11 @@ const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
 const modalDeleteSpaceConfirmation = ref('');
+const modalSettingsSavedOpen = ref(false);
+const modalSettingsSavedIgnore = useStorage(
+  'snapshot.settings.saved.ignore',
+  false
+);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -127,6 +132,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
+    if (!modalSettingsSavedIgnore.value) modalSettingsSavedOpen.value = true;
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
     await reloadSpace(props.space.id);
@@ -260,7 +266,10 @@ const isViewOnly = computed(() => {
               @delete-space="openConfirmDelete"
             />
           </template>
-          <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
+          <div
+            v-if="isSpaceAdmin || isSpaceController"
+            class="flex gap-5 px-4 pt-2 md:px-0"
+          >
             <BaseButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
             </BaseButton>
@@ -306,6 +315,7 @@ const isViewOnly = computed(() => {
       </BaseBlock>
     </template>
   </TheLayout>
+
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
@@ -362,5 +372,21 @@ const isViewOnly = computed(() => {
         </BaseInput>
       </div>
     </ModalConfirmAction>
+    <ModalNotice
+      :open="modalSettingsSavedOpen"
+      :title="$t('settings.noticeSavedTitle')"
+      @close="modalSettingsSavedOpen = false"
+    >
+      <BaseMessageBlock level="info" class="mb-5">
+        <p class="text-left">{{ $t('settings.noticeSavedText') }}</p>
+      </BaseMessageBlock>
+      <InputCheckbox
+        v-model="modalSettingsSavedIgnore"
+        name="settings-saved-input-checkbox"
+        :label="$t('settings.noticeSavedInputCheckboxLabel')"
+        class="ml-4 mt-auto max-w-min cursor-pointer self-start whitespace-nowrap"
+        @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
+      />
+    </ModalNotice>
   </teleport>
 </template>
