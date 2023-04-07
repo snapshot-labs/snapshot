@@ -73,15 +73,19 @@ function isSelectable(year, month, day) {
     <div class="mb-2 flex items-center">
       <div class="w-1/4 text-left">
         <a
+          tabindex="0"
           class="iconfont iconback text-lg font-semibold text-skin-text"
           @click="month--"
+          @keypress="month--"
         />
       </div>
       <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
       <div class="w-1/4 text-right">
         <a
+          tabindex="0"
           class="iconfont icongo text-lg font-semibold text-skin-text"
           @click="month++"
+          @keypress="month++"
         />
       </div>
     </div>
@@ -108,7 +112,9 @@ function isSelectable(year, month, day) {
               formatDate(year, month, day)
             )
           }"
+          tabindex="0"
           @click="toggleDay(year, month, day)"
+          @keypress="toggleDay(year, month, day)"
           v-text="day"
         />
         <div
