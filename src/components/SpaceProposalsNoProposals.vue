@@ -12,7 +12,7 @@ defineProps<{
         {{ $t('noResultsFound') }}
       </div>
       <router-link :to="{ name: 'spaceCreate', params: { step: 0 } }">
-        <BaseButton>
+        <BaseButton tabindex="-1">
           {{ $t('proposals.createProposal') }}
         </BaseButton>
       </router-link>

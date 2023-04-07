@@ -183,7 +183,7 @@ onMounted(() => {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
+            <BaseButton tabindex="-1">{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <BaseNoResults
