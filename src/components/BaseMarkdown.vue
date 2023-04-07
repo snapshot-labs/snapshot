@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  inheritAttrs: true
+};
+</script>
+
 <script setup lang="ts">
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
@@ -16,6 +22,9 @@ const remarkable = new Remarkable({
   linkTarget: '_blank'
 }).use(linkify);
 
+const imgModalOpened = ref(false);
+const imgModalData = ref({ src: '', title: '' });
+
 const markdown = computed(() => {
   let body = props.body;
 
@@ -30,7 +39,7 @@ const markdown = computed(() => {
 
 onMounted(() => {
   const body = document.querySelector('.markdown-body');
-  if (body !== null)
+  if (body !== null) {
     body.querySelectorAll('pre>code').forEach(function (code) {
       const parent = code.parentElement;
       if (parent !== null) parent.classList.add('rounded-lg');
@@ -46,12 +55,45 @@ onMounted(() => {
       });
       code.appendChild(copyButton);
     });
+    body.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('click', function () {
+        imgModalOpened.value = true;
+        imgModalData.value = {
+          src: img.src,
+          title: img.alt
+        };
+      });
+    });
+  }
 });
 </script>
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <div class="markdown-body break-words" v-html="markdown" />
+  <div class="markdown-body break-words" v-bind="$attrs" v-html="markdown" />
+  <teleport to="#modal">
+    <BaseModal
+      :open="imgModalOpened"
+      max-width="1000px"
+      @close="imgModalOpened = false"
+    >
+      <template #header>
+        <div class="flex flex-row items-center justify-center">
+          <h3>{{ imgModalData.title }}</h3>
+        </div>
+      </template>
+      <div class="px-4 pb-4 pt-2">
+        <img
+          class="w-full"
+          :src="imgModalData.src"
+          :alt="imgModalData.title"
+          :style="{
+            minWidth: '100%'
+          }"
+        />
+      </div>
+    </BaseModal>
+  </teleport>
 </template>
 
 <style lang="scss">
@@ -322,6 +364,7 @@ onMounted(() => {
   max-width: 100%;
   box-sizing: content-box;
   background-color: #fff;
+  cursor: pointer;
 }
 
 .markdown-body img[align='right'] {
