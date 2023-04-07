@@ -125,19 +125,29 @@ onMounted(() => {
       <div class="fixed hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <button class="w-full text-left" @click="setFeed('joined')">
+            <a
+              class="w-full text-left"
+              tabindex="0"
+              @click="setFeed('joined')"
+              @keypress="setFeed('joined')"
+            >
               <BaseSidebarNavigationItem :is-active="isFeedJoinedSpaces">
                 {{ $t('joinedSpaces') }}
               </BaseSidebarNavigationItem>
-            </button>
+            </a>
 
-            <button class="w-full text-left" @click="setFeed('all')">
+            <a
+              class="w-full text-left"
+              tabindex="0"
+              @click="setFeed('all')"
+              @keypress="setFeed('all')"
+            >
               <BaseSidebarNavigationItem
                 :is-active="route.query.feed === 'all'"
               >
                 {{ $t('allSpaces') }}
               </BaseSidebarNavigationItem>
-            </button>
+            </a>
           </div>
         </BaseBlock>
       </div>
