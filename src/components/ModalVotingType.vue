@@ -28,30 +28,19 @@ function select(id) {
       <h3>{{ $t('voting.selectVoting') }}</h3>
     </template>
     <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
-      <a
-        v-if="allowAny"
-        tabindex="0"
-        @click="select(undefined)"
-        @keypress="select(undefined)"
-      >
+      <button v-if="allowAny" @click="select(undefined)">
         <BaseModalSelectItem
           :selected="!selected"
           :title="$t('settings.anyType')"
         />
-      </a>
-      <a
-        v-for="(type, key) in types"
-        :key="key"
-        tabindex="0"
-        @click="select(type)"
-        @keypress="select(type)"
-      >
+      </button>
+      <button v-for="(type, key) in types" :key="key" @click="select(type)">
         <BaseModalSelectItem
           :selected="type === selected"
           :title="$t(`voting.${type}.label`)"
           :description="$t(`voting.${type}.description`)"
         />
-      </a>
+      </button>
     </div>
   </BaseModal>
 </template>
