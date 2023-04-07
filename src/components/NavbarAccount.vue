@@ -35,7 +35,7 @@ watchEffect(() => {
         <AvatarUser
           :address="web3Account"
           size="18"
-          class="-mr-1 -ml-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
+          class="-ml-1 -mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
         />
         <span
           v-if="profile?.name || profile?.ens"

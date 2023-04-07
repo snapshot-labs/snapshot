@@ -82,7 +82,7 @@ const selectedItem = computed({
               <li
                 :class="[
                   { 'bg-skin-border': active },
-                  'relative cursor-default select-none py-2 pr-[50px] pl-3'
+                  'relative cursor-default select-none py-2 pl-3 pr-[50px]'
                 ]"
               >
                 <span

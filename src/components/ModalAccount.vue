@@ -50,7 +50,7 @@ watch(open, () => {
               :src="getIpfsUrl(injected.icon)"
               height="28"
               width="28"
-              class="mr-2 -mt-1"
+              class="-mt-1 mr-2"
               :alt="injected.name"
             />
             {{ injected.name }}

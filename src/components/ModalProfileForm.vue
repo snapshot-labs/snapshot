@@ -73,7 +73,7 @@ watch(
               />
               <AvatarOverlayEdit :loading="uploading" :avatar="form?.avatar" />
               <div
-                class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
+                class="absolute bottom-[2px] right-0 rounded-full bg-skin-heading p-1"
               >
                 <i-ho-pencil class="text-[12px] text-skin-bg" />
               </div>

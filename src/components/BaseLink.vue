@@ -21,7 +21,7 @@ defineProps<{
     <slot />
     <i-ho-external-link
       v-if="!hideExternalIcon"
-      class="ml-1 mb-[2px] inline-block text-xs"
+      class="mb-[2px] ml-1 inline-block text-xs"
     />
   </a>
   <router-link

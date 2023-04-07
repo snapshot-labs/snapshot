@@ -115,18 +115,18 @@ const handleDrop = e => {
           </div>
 
           <label
-            class="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border py-1 px-2 peer-focus-within:border-skin-text"
+            class="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border px-2 py-1 peer-focus-within:border-skin-text"
           >
             <input
               accept="image/jpg, image/jpeg, image/png"
               type="file"
-              class="absolute top-0 right-0 bottom-0 left-0 ml-0 w-full p-[5px] opacity-0"
+              class="absolute bottom-0 left-0 right-0 top-0 ml-0 w-full p-[5px] opacity-0"
               @change="e => upload((e.target as HTMLInputElement)?.files?.[0], injectImageToBody)"
             />
 
             <span class="pointer-events-none relative pl-1 text-sm">
               <span v-if="isUploadingImage" class="flex">
-                <LoadingSpinner small class="mr-2 -mt-[2px]" />
+                <LoadingSpinner small class="-mt-[2px] mr-2" />
                 {{ $t('create.uploading') }}
               </span>
               <span v-else-if="imageUploadError !== ''">
