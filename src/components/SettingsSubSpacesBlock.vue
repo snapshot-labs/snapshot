@@ -140,7 +140,7 @@ const removeChild = (child: string) => {
           {{ child }}
           <BaseButtonIcon
             :is-disabled="isViewOnly"
-            class="p-0"
+            class="!p-0"
             @click="removeChild(child)"
           >
             <i-ho-x class="text-xs text-white" />
