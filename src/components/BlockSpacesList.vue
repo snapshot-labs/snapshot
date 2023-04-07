@@ -33,7 +33,7 @@ const numberOfSpacesByScreenSize = computed(() => {
 <template>
   <div>
     <BaseBlock :title="title" :counter="spaces.length" hide-bottom-border slim>
-      <div v-if="loading || spaces.length" class="border-t py-4 px-4">
+      <div v-if="loading || spaces.length" class="border-t px-4 py-4">
         <BlockSpacesListSkeleton
           v-if="loading || !Object.keys(spacesList).length"
           :number-of-spaces="numberOfSpacesByScreenSize"

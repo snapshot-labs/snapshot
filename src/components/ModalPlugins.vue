@@ -72,7 +72,7 @@ watch(open, () => {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-4 min-h-[300px]">
+    <div class="mx-4 my-4 min-h-[300px]">
       <div v-if="selectedPlugin?.key">
         <TextareaJson
           v-model="input"

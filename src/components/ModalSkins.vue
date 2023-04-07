@@ -35,7 +35,7 @@ function select(key) {
       :placeholder="$t('searchPlaceholder')"
       modal
     />
-    <div class="my-4 mx-0 min-h-[339px] md:mx-4">
+    <div class="mx-0 my-4 min-h-[339px] md:mx-4">
       <LoadingRow v-if="loadingSkins" block />
       <div v-else class="space-y-3">
         <div

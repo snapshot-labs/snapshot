@@ -25,7 +25,7 @@ defineEmits(['remove', 'toggle']);
       </span>
       <span
         v-if="!hideRemove"
-        class="ml-1 -mr-2 cursor-pointer px-3"
+        class="-mr-2 ml-1 cursor-pointer px-3"
         @click="$emit('remove')"
       >
         <BaseIcon name="close" size="12" />
