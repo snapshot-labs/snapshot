@@ -31,7 +31,6 @@ const {
   profiles,
   clearVotes,
   noVotesFound,
-  isResolvingEns,
   searchAddress
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
@@ -75,7 +74,7 @@ watch(
     </template>
     <template #default="{ maxHeight }">
       <div
-        v-if="!loadedVotes || isResolvingEns"
+        v-if="!loadedVotes"
         class="block px-4 pt-4"
         :style="{ minHeight: maxHeight }"
       >
