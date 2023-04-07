@@ -108,7 +108,7 @@ function isSelectable(year, month, day) {
           :class="{
             'ring-1 ring-inset ring-primary':
               formatDate(year, month, day) === today,
-            '!bg-skin-link text-skin-bg': input.includes(
+            '!bg-skin-link !text-skin-bg': input.includes(
               formatDate(year, month, day)
             )
           }"
