@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineProps<{
   isDisabled?: boolean;
-  as?: string;
 }>();
 </script>
 
