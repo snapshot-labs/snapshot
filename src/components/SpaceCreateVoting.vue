@@ -120,13 +120,13 @@ onMounted(async () => {
           </draggable>
         </div>
         <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
-          <ButtonSidebar
+          <RoundButton
             v-if="!disableChoiceEdit"
             class="!h-[42px] !w-[42px]"
             @click="addChoices(1)"
           >
             <i-ho-plus-sm class="text-skin-link" />
-          </ButtonSidebar>
+          </RoundButton>
         </div>
       </div>
     </BaseBlock>

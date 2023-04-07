@@ -32,9 +32,9 @@ function clickNavigationItem(item: any) {
 <template>
   <BasePopover>
     <template #button>
-      <ButtonSidebar class="relative !h-[46px] !w-[46px]">
+      <RoundButton class="relative !h-[46px] !w-[46px]">
         <i-ho-dots-horizontal class="text-skin-link" />
-      </ButtonSidebar>
+      </RoundButton>
     </template>
     <template #content>
       <div>

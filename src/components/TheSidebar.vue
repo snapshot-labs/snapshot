@@ -66,14 +66,14 @@ watch(
   >
     <div v-if="!domain" class="relative flex items-center px-2">
       <router-link v-slot="{ href }" custom :to="{ name: 'home' }">
-        <ButtonSidebar class="!border-0" :href="href" as="a">
+        <RoundButton class="!border-0" :href="href" as="a">
           <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </ButtonSidebar>
+        </RoundButton>
       </router-link>
     </div>
     <div class="mt-2 px-2">
       <router-link v-slot="{ href }" custom :to="{ name: 'timeline' }">
-        <ButtonSidebar
+        <RoundButton
           v-tippy="{
             content: 'Timeline',
             placement: 'right',
@@ -84,7 +84,7 @@ watch(
           as="a"
         >
           <BaseIcon size="20" name="feed" />
-        </ButtonSidebar>
+        </RoundButton>
       </router-link>
     </div>
     <SidebarSpacesSkeleton
@@ -151,7 +151,7 @@ watch(
           }
         }"
       >
-        <ButtonSidebar
+        <RoundButton
           v-tippy="{
             content: 'Create space',
             placement: 'right',
@@ -162,7 +162,7 @@ watch(
           :href="href"
         >
           <i-ho-plus-sm />
-        </ButtonSidebar>
+        </RoundButton>
       </router-link>
     </div>
   </div>

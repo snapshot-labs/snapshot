@@ -118,7 +118,7 @@ const removeChild = (child: string) => {
           :failed="!!childInput && childNotFound"
         />
         <div>
-          <ButtonSidebar
+          <RoundButton
             :is-disabled="isViewOnly"
             class="!h-[42px] !w-[42px] whitespace-nowrap text-skin-link"
             :class="{
@@ -128,7 +128,7 @@ const removeChild = (child: string) => {
             @click="addChild()"
           >
             <i-ho-plus class="text-sm" />
-          </ButtonSidebar>
+          </RoundButton>
         </div>
       </div>
       <div class="flex flex-wrap gap-2">
