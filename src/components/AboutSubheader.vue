@@ -2,10 +2,10 @@
 
 <template>
   <h2
-    class="relative mt-[96px] ml-[50px] font-space text-lg font-bold tracking-wide text-white"
+    class="relative ml-[50px] mt-[96px] font-space text-lg font-bold tracking-wide text-white"
   >
     <div
-      class="absolute top-[12px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-white"
+      class="absolute -left-[50px] top-[12px] -ml-[5px] h-2 w-2 rounded-full bg-white"
     />
     <slot />
   </h2>

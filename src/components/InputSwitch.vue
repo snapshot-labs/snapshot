@@ -14,7 +14,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 pt-1 pr-2">
+  <div class="flex items-center space-x-2 pr-2 pt-1">
     <Switch
       :model-value="modelValue"
       :class="[

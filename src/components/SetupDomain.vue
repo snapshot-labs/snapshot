@@ -128,7 +128,10 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :link="`https://app.ens.domains/address/${web3Account}/controller`"
                 hide-external-icon
               >
-                <BaseButton class="flex w-full items-center justify-between">
+                <BaseButton
+                  tabindex="-1"
+                  class="flex w-full items-center justify-between"
+                >
                   {{ shortenInvalidEns(ens.name) }}
                   <i-ho-exclamation-circle
                     v-tippy="{

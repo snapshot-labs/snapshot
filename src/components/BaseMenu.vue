@@ -39,7 +39,7 @@ const emit = defineEmits(['select']);
       :flip="16"
       :z-index="50"
     >
-      <MenuButton class="h-full">
+      <MenuButton class="h-full" as="template">
         <slot v-if="$slots.button" name="button" />
 
         <BaseButton v-else class="flex items-center">

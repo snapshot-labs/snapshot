@@ -12,9 +12,6 @@
     <a href="https://github.com/snapshot-labs/snapshot/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22">
         <img src="https://img.shields.io/github/issues/snapshot-labs/snapshot/help wanted" alt="GitHub issues help wanted">
     </a>
-    <a href="https://telegram.snapshot.org">
-        <img src="https://img.shields.io/badge/Telegram-white?logo=telegram" alt="Telegram">
-    </a>
     <a href="https://discord.snapshot.org/">
         <img src="https://img.shields.io/discord/707079246388133940.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord">
     </a>

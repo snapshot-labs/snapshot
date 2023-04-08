@@ -6,7 +6,7 @@
           <div class="lazy-loading mx-auto h-[80px] w-[80px] rounded-full" />
 
           <div
-            class="ml-3 flex flex-col items-start justify-center lg:mt-3 lg:ml-0 lg:items-center"
+            class="ml-3 flex flex-col items-start justify-center lg:ml-0 lg:mt-3 lg:items-center"
           >
             <div
               class="lazy-loading mb-2 h-[28px] w-[130px] rounded-md bg-skin-text"
