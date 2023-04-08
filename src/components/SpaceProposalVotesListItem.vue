@@ -11,7 +11,6 @@ const props = defineProps<{
 
 defineEmits(['openReceiptModal']);
 
-const authorIpfsHash = ref('');
 const relayerIpfsHash = ref('');
 
 const titles = computed(() =>
@@ -54,7 +53,7 @@ const { formatCompactNumber } = useIntl();
       </span>
       <BasePopover>
         <template #button>
-          <BaseButtonIcon @click="authorIpfsHash = vote.ipfs">
+          <BaseButtonIcon>
             <BaseIcon name="signature" />
           </BaseButtonIcon>
         </template>
@@ -67,11 +66,8 @@ const { formatCompactNumber } = useIntl();
                   class="mr-1 flex-auto text-skin-text"
                   v-text="$t('author')"
                 />
-                <BaseLink
-                  :link="getIpfsUrl(authorIpfsHash)"
-                  class="text-skin-link"
-                >
-                  #{{ authorIpfsHash.slice(0, 7) }}
+                <BaseLink :link="getIpfsUrl(vote.ipfs)" class="text-skin-link">
+                  #{{ vote.ipfs.slice(0, 7) }}
                 </BaseLink>
               </div>
               <div v-if="relayerIpfsHash" class="flex">
@@ -88,7 +84,7 @@ const { formatCompactNumber } = useIntl();
               </div>
             </BaseBlock>
             <BaseLink
-              :link="`https://signator.io/view?ipfs=${authorIpfsHash}`"
+              :link="`https://signator.io/view?ipfs=${vote.ipfs}`"
               class="mb-2 block"
               hide-external-icon
             >
