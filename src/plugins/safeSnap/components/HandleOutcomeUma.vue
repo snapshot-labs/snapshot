@@ -123,9 +123,9 @@ const approveBondUma = async () => {
 
 const getProposalUrl = (chain, txHash) => {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
+    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
   }
-  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
+  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
 };
 
 const submitProposalUma = async () => {
