@@ -1,8 +1,4 @@
 <script setup>
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from '@/composables';
-
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -34,7 +30,7 @@ const searchOptions = computed(() => [
 const searchSelectedOption = computed(
   () =>
     searchOptions.value.find(option => option.action === route.query.type)
-      ?.text ?? 'Spaces'
+      ?.text ?? t('spaces')
 );
 
 function redirectSearch(e) {
@@ -54,10 +50,10 @@ function redirectSearch(e) {
     <div class="flex items-center border-l" style="height: 44px">
       <BaseMenu :items="searchOptions" @select="redirectSearch">
         <template #button>
-          <div class="flex h-full flex-grow items-center">
+          <button class="flex h-full flex-grow items-center">
             <span class="ml-3" v-text="searchSelectedOption" />
             <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-text" />
-          </div>
+          </button>
         </template>
       </BaseMenu>
     </div>

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { computed, watch, onMounted } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
-import { useFormSpaceProposal, useSnapshot } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -76,7 +74,7 @@ onMounted(async () => {
         @update:type="value => (form.type = value)"
       />
 
-      <h4 class="mt-3 mb-1" v-text="$t('create.choices')" />
+      <h4 class="mb-1 mt-3" v-text="$t('create.choices')" />
       <div class="flex">
         <div class="w-full overflow-hidden">
           <draggable
@@ -122,13 +120,13 @@ onMounted(async () => {
           </draggable>
         </div>
         <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
-          <ButtonSidebar
+          <BaseButtonRound
             v-if="!disableChoiceEdit"
             class="!h-[42px] !w-[42px]"
             @click="addChoices(1)"
           >
             <i-ho-plus-sm class="text-skin-link" />
-          </ButtonSidebar>
+          </BaseButtonRound>
         </div>
       </div>
     </BaseBlock>

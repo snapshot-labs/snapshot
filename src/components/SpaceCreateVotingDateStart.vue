@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
-
 const { t, d } = useI18n();
 
 const props = withDefaults(

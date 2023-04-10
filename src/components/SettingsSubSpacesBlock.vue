@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useFormSpaceSettings, useExtendedSpaces } from '@/composables';
 import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
@@ -120,7 +118,7 @@ const removeChild = (child: string) => {
           :failed="!!childInput && childNotFound"
         />
         <div>
-          <ButtonSidebar
+          <BaseButtonRound
             :is-disabled="isViewOnly"
             class="!h-[42px] !w-[42px] whitespace-nowrap text-skin-link"
             :class="{
@@ -130,7 +128,7 @@ const removeChild = (child: string) => {
             @click="addChild()"
           >
             <i-ho-plus class="text-sm" />
-          </ButtonSidebar>
+          </BaseButtonRound>
         </div>
       </div>
       <div class="flex flex-wrap gap-2">
@@ -142,7 +140,7 @@ const removeChild = (child: string) => {
           {{ child }}
           <BaseButtonIcon
             :is-disabled="isViewOnly"
-            class="p-0"
+            class="!p-0"
             @click="removeChild(child)"
           >
             <i-ho-x class="text-xs text-white" />

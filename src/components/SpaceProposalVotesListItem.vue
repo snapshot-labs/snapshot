@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
 import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
-import { useIntl } from '@/composables';
-import { shorten, getIpfsUrl } from '@/helpers/utils';
+import { shorten, getIpfsUrl, urlify } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -94,10 +92,10 @@ const { formatCompactNumber } = useIntl();
               class="mb-2 block"
               hide-external-icon
             >
-              <BaseButton class="w-full">
+              <BaseButton class="w-full" tabindex="-1">
                 {{ $t('verifyOnSignatorio') }}
                 <i-ho-external-link
-                  class="ml-1 mb-[2px] inline-block text-xs"
+                  class="mb-[2px] ml-1 inline-block text-xs"
                 />
               </BaseButton>
             </BaseLink>
@@ -107,7 +105,10 @@ const { formatCompactNumber } = useIntl();
       <BaseButtonIcon
         v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
         v-tippy="{
-          content: vote.reason
+          content: urlify(vote.reason),
+          allowHTML: true,
+          interactive: true,
+          theme: 'urlified'
         }"
         class="cursor-default p-0"
       >

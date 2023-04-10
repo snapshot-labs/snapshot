@@ -1,6 +1,5 @@
 <script setup>
 import GnosisCustomBlock from './components/CustomBlock.vue';
-import { usePlugins } from '@/composables/usePlugins';
 
 const { pluginIndex } = usePlugins();
 

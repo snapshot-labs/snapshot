@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import {
   Combobox,
   ComboboxInput,
@@ -46,7 +45,7 @@ watch(
     <div class="relative">
       <ComboboxButton class="w-full">
         <ComboboxInput
-          class="s-input w-full py-2 pl-3 !pr-[30px] focus:outline-none"
+          class="s-input w-full py-2 !pr-[30px] pl-3 focus:outline-none"
           spellcheck="false"
           :display-value="(item: any) => item.name"
           :class="{ 'cursor-not-allowed': isDisabled }"
@@ -75,7 +74,7 @@ watch(
             <li
               :class="[
                 { 'bg-skin-border': active },
-                'relative cursor-default select-none truncate py-2 pr-[50px] pl-3'
+                'relative cursor-default select-none truncate py-2 pl-3 pr-[50px]'
               ]"
             >
               <span

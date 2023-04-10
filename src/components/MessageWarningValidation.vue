@@ -1,8 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import { useIntl } from '@/composables';
-
 const props = defineProps<{
   context: 'voting' | 'proposal';
   spaceId: string;

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
 import { PluginIndex } from '@/helpers/interfaces';
-import { useIntl, usePlugins } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 const { pluginsSpacesCount } = usePlugins();
@@ -12,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <BaseBlock class="cursor-pointer hover:border-skin-text">
+  <BaseBlock>
     <div class="mb-2 flex items-center">
       <BaseAvatar
         v-if="plugin?.icon"

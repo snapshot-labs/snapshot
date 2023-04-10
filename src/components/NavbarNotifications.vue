@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useNotifications } from '@/composables/useNotifications';
-import { useIntl } from '@/composables/useIntl';
 import { PopoverButton } from '@headlessui/vue';
 
 const {
@@ -27,13 +24,13 @@ onMounted(() => loadNotifications());
 <template>
   <BasePopover>
     <template #button>
-      <ButtonSidebar class="relative !h-[46px] !w-[46px]">
+      <BaseButtonRound class="relative !h-[46px] !w-[46px]">
         <i-ho-bell class="text-skin-link" />
         <BaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"
-          class="absolute right-0 bottom-0 !bg-red"
+          class="absolute bottom-0 right-0 !bg-red"
         />
-      </ButtonSidebar>
+      </BaseButtonRound>
     </template>
     <template #content>
       <div class="my-2 w-full">
@@ -49,9 +46,11 @@ onMounted(() => loadNotifications());
             @select="selectThreedotItem"
           >
             <template #button>
-              <i-ho-dots-horizontal
-                class="cursor-pointer text-[22px] hover:text-skin-link"
-              />
+              <button>
+                <i-ho-dots-horizontal
+                  class="cursor-pointer text-[22px] hover:text-skin-link"
+                />
+              </button>
             </template>
             <template #item="{ item }">
               <div class="flex items-center">
@@ -91,8 +90,9 @@ onMounted(() => loadNotifications());
           as="div"
         >
           <template v-if="item.space">
-            <div
-              class="flex w-full cursor-pointer px-3 pt-3 pb-2 hover:bg-skin-border"
+            <a
+              tabindex="0"
+              class="flex w-full cursor-pointer px-3 pb-2 pt-3 hover:bg-skin-border"
               @click="selectNotification(item.id, item.space!.id)"
             >
               <div class="hidden w-[78px] sm:block">
@@ -115,7 +115,7 @@ onMounted(() => loadNotifications());
                   </div>
                 </div>
                 <div
-                  class="whitespace-normal leading-tight text-skin-link line-clamp-2"
+                  class="line-clamp-2 whitespace-normal leading-tight text-skin-link"
                 >
                   "{{ item.text }}"
                 </div>
@@ -130,7 +130,7 @@ onMounted(() => loadNotifications());
               <div class="ml-2 flex w-[12px] items-center">
                 <BaseIndicator v-if="!item.seen" />
               </div>
-            </div>
+            </a>
           </template>
         </PopoverButton>
       </div>

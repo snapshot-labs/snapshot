@@ -1,7 +1,5 @@
 <script>
 import Plugin from '../index';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useFormSpaceSettings } from '@/composables';
-
 const emit = defineEmits(['next', 'back']);
 
 enum Step {

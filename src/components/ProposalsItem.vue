@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import removeMd from 'remove-markdown';
 import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
 

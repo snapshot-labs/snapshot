@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, toRefs, watch } from 'vue';
 import { useIntersectionObserver } from '@vueuse/core';
-import { useProposalVotes } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,
@@ -33,13 +31,13 @@ const {
   profiles,
   clearVotes,
   noVotesFound,
-  isResolvingEns
+  searchAddress
 } = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
 
 useIntersectionObserver(
   votesEndEl,
-  ([{ isIntersecting }], observerElement) => {
-    if (props.open && isIntersecting) {
+  ([{ isIntersecting }]) => {
+    if (props.open && isIntersecting && searchAddress.value === '') {
       loadMore(loadMoreVotes);
     }
   },
@@ -76,7 +74,7 @@ watch(
     </template>
     <template #default="{ maxHeight }">
       <div
-        v-if="!loadedVotes || isResolvingEns"
+        v-if="!loadedVotes"
         class="block px-4 pt-4"
         :style="{ minHeight: maxHeight }"
       >
@@ -105,7 +103,7 @@ watch(
               :class="{ '!border-0': i === 0 }"
               :data-testid="`proposal-votes-list-item-${i}`"
             />
-            <div ref="votesEndEl" class="mb-3" />
+            <div ref="votesEndEl" />
             <div
               class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
             >

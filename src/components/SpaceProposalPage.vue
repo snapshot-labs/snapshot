@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
-import { useRoute, useRouter } from 'vue-router';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-import { useModal, useTerms, useWeb3, useMeta } from '@/composables';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -36,6 +33,7 @@ const modalOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
+const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
 
 const isAdmin = computed(() => {
@@ -83,13 +81,18 @@ function formatProposalVotes(votes) {
 
 async function loadUserVote() {
   userVote.value = null;
-  if (!web3Account.value) return;
+  isUserVoteResolved.value = false;
+  if (!web3Account.value) {
+    isUserVoteResolved.value = true;
+    return;
+  }
   const userVotesRes = await getProposalVotes(proposalId, {
     first: 1,
     voter: web3Account.value,
     space: props.proposal.space.id
   });
   userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
+  isUserVoteResolved.value = true;
 }
 
 async function loadResults() {
@@ -176,6 +179,7 @@ onMounted(() => {
           @clickVote="clickVote"
         />
         <SpaceProposalVotesList
+          v-if="isUserVoteResolved"
           :space="space"
           :proposal="proposal"
           :strategies="strategies"

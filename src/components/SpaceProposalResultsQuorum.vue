@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
-import { useQuorum, useIntl } from '@/composables';
-
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;

@@ -1,6 +1,5 @@
 <script>
 import Plugin from '../index';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const { web3Account } = useWeb3();
 

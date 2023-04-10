@@ -1,8 +1,6 @@
 <script setup>
-import { ref } from 'vue';
 import { shorten } from '@/helpers/utils';
-
-import { useScrollMonitor, useSpaces, useIntl } from '@/composables';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
@@ -17,11 +15,15 @@ const loadMoreSpaces = () => {
   limit.value += loadBy;
 };
 
-const { endElement } = useScrollMonitor(() => {
-  if (enableInfiniteScroll.value) {
-    limit.value += loadBy;
-  }
-});
+useInfiniteScroll(
+  document,
+  () => {
+    if (enableInfiniteScroll.value) {
+      limit.value += loadBy;
+    }
+  },
+  { distance: 400 }
+);
 </script>
 
 <template>
@@ -30,6 +32,7 @@ const { endElement } = useScrollMonitor(() => {
       class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
       <BaseButton
+        tabindex="-1"
         class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
       >
         <TheSearchBar />
@@ -39,7 +42,7 @@ const { endElement } = useScrollMonitor(() => {
 
       <div
         v-if="spacesLoaded"
-        class="mt-2 whitespace-nowrap text-right text-skin-text xs:mt-0 xs:ml-auto"
+        class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
         {{
           $tc('spaceCount', [
@@ -108,8 +111,5 @@ const { endElement } = useScrollMonitor(() => {
         </BaseButton>
       </div>
     </BaseContainer>
-    <div class="relative">
-      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
-    </div>
   </div>
 </template>

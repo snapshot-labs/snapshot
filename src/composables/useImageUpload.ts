@@ -1,7 +1,5 @@
-import { ref } from 'vue';
 import { upload as pin } from '@snapshot-labs/pineapple';
 import { useI18n } from './useI18n';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 
 const isUploadingImage = ref(false);
 

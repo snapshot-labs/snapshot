@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -46,7 +44,7 @@ const votingPeriod = computed({
           <template #after>
             <select
               v-model="delayUnit"
-              class="input ml-2 -mr-2 text-center !text-skin-text"
+              class="input -mr-2 ml-2 text-center !text-skin-text"
               required
             >
               <option value="h" selected>{{ $t('settings.hours') }}</option>
@@ -65,7 +63,7 @@ const votingPeriod = computed({
           <template #after>
             <select
               v-model="periodUnit"
-              class="input ml-2 -mr-2 text-center !text-skin-text"
+              class="input -mr-2 ml-2 text-center !text-skin-text"
               required
             >
               <option value="h" selected>

@@ -1,25 +1,13 @@
 <script setup lang="ts">
-import { watch, ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
 import draggable from 'vuedraggable';
 
 import { lsSet, lsGet } from '@/helpers/utils';
-
-import {
-  useUnseenProposals,
-  useExtendedSpaces,
-  useFollowSpace,
-  useSpaces,
-  useWeb3,
-  useApp
-} from '@/composables';
-
-const router = useRouter();
 
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
+const router = useRouter();
 const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
   useExtendedSpaces();
 const { spaces } = useSpaces();
@@ -78,26 +66,22 @@ watch(
     @click="showSidebar = false"
   >
     <div v-if="!domain" class="relative flex items-center px-2">
-      <router-link :to="{ name: 'home' }">
-        <ButtonSidebar class="!border-0">
-          <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-        </ButtonSidebar>
-      </router-link>
+      <BaseButtonRound class="!border-0" @click="router.push({ name: 'home' })">
+        <BaseIcon size="36" name="snapshot" class="text-snapshot" />
+      </BaseButtonRound>
     </div>
-    <div
-      v-tippy="{
-        content: 'Timeline',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 px-2"
-    >
-      <router-link :to="{ name: 'timeline' }">
-        <ButtonSidebar>
-          <BaseIcon size="20" name="feed" />
-        </ButtonSidebar>
-      </router-link>
+    <div class="mt-2 px-2">
+      <BaseButtonRound
+        v-tippy="{
+          content: 'Timeline',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
+        }"
+        @click="router.push({ name: 'timeline' })"
+      >
+        <BaseIcon size="20" name="feed" />
+      </BaseButtonRound>
     </div>
     <SidebarSpacesSkeleton
       v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
@@ -117,26 +101,23 @@ watch(
       <template #item="{ element }">
         <div
           v-if="extendedSpacesObj[element]"
-          v-tippy="{
-            content: extendedSpacesObj[element].name,
-            placement: 'right',
-            delay: [750, 0],
-            touch: ['hold', 500]
-          }"
           class="group relative flex items-center px-2"
         >
           <SidebarUnreadIndicator
             :space="element"
             :has-unseen="spaceHasUnseenProposals(element)"
           />
-          <div
-            class="cursor-pointer"
-            @click="
-              router.push({
-                name: 'spaceProposals',
-                params: { key: element }
-              })
-            "
+          <router-link
+            v-tippy="{
+              content: extendedSpacesObj[element].name,
+              placement: 'right',
+              delay: [750, 0],
+              touch: ['hold', 500]
+            }"
+            :to="{
+              name: 'spaceProposals',
+              params: { key: extendedSpacesObj[element].id }
+            }"
           >
             <AvatarSpace
               :key="element"
@@ -150,32 +131,30 @@ watch(
               :counter="spaces[element].proposals_active"
               class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
             />
-          </div>
+          </router-link>
         </div>
       </template>
     </draggable>
 
-    <div
-      v-tippy="{
-        content: 'Create space',
-        placement: 'right',
-        delay: [750, 0],
-        touch: ['hold', 500]
-      }"
-      class="mt-2 flex flex-col items-center space-y-2 px-2"
-    >
-      <router-link
-        :to="{
-          name: 'setup',
-          query: {
-            step: '0'
-          }
+    <div class="mt-2 flex flex-col items-center space-y-2 px-2">
+      <BaseButtonRound
+        v-tippy="{
+          content: 'Create space',
+          placement: 'right',
+          delay: [750, 0],
+          touch: ['hold', 500]
         }"
+        @click="
+          router.push({
+            name: 'setup',
+            query: {
+              step: '0'
+            }
+          })
+        "
       >
-        <ButtonSidebar>
-          <i-ho-plus-sm />
-        </ButtonSidebar>
-      </router-link>
+        <i-ho-plus-sm />
+      </BaseButtonRound>
     </div>
   </div>
 </template>

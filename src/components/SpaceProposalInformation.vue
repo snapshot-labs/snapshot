@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import { explorerUrl, getIpfsUrl } from '@/helpers/utils';
 import { ExtendedSpace, Proposal, SpaceStrategy } from '@/helpers/interfaces';
-
-import { useIntl } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;

@@ -3,13 +3,8 @@
  * Seen proposals are stored in the local storage.
  */
 
-import { watch, ref, computed, onBeforeUnmount } from 'vue';
 import { NOTIFICATION_PROPOSALS_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useWeb3 } from '@/composables/useWeb3';
 import { useStorage } from '@vueuse/core';
-import { useRouter } from 'vue-router';
 import uniqBy from 'lodash/uniqBy';
 
 interface Notification {

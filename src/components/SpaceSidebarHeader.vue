@@ -1,9 +1,4 @@
 <script setup>
-import { ref, watchEffect } from 'vue';
-import { useSpaceSubscription } from '@/composables/useSpaceSubscription';
-import { useFollowSpace } from '@/composables/useFollowSpace';
-import { useIntl } from '@/composables/useIntl';
-
 const props = defineProps({
   space: {
     type: Object,
@@ -72,7 +67,7 @@ watchEffect(() => {
       class="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center"
     >
       <ButtonFollow :space="space" :primary="!isFollowing" />
-      <ButtonSidebar
+      <BaseButton
         v-if="isFollowing"
         class="inline"
         @click="toggleSubscription()"
@@ -84,7 +79,7 @@ watchEffect(() => {
           class="text-skin-link"
           :name="notificationIcon"
         />
-      </ButtonSidebar>
+      </BaseButton>
     </div>
   </div>
 </template>

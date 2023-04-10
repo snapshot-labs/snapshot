@@ -1,18 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
-
-import {
-  useProposals,
-  useWeb3,
-  useGnosis,
-  useI18n,
-  useClient,
-  useIntl
-} from '@/composables';
 
 const { web3Account } = useWeb3();
 

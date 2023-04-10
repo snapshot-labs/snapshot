@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, toRefs, onBeforeUnmount } from 'vue';
+import { useWindowSize } from '@vueuse/core';
 
 const props = withDefaults(
   defineProps<{
@@ -16,6 +16,12 @@ const props = withDefaults(
 const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
+
+const { height } = useWindowSize();
+
+const heightStyle = computed(() => {
+  return `${height.value}px !important`;
+});
 
 function onKeydown(e: KeyboardEvent) {
   if (e.key === 'Escape') emit('close');
@@ -98,8 +104,8 @@ onBeforeUnmount(() => {
       width: 100% !important;
       max-width: 100% !important;
       height: 100% !important;
-      max-height: 100vh !important;
-      min-height: 100vh !important;
+      max-height: v-bind(heightStyle);
+      min-height: v-bind(heightStyle);
       margin-bottom: 0 !important;
 
       .modal-body {
@@ -108,8 +114,6 @@ onBeforeUnmount(() => {
     }
 
     .modal-body {
-      // height: v-bind(maxHeight);
-      // height: auto;
       max-height: v-bind(maxHeight);
       flex: auto;
       text-align: initial;

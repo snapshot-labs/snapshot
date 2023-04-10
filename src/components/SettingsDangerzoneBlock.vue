@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useI18n } from '@/composables';
 import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{
@@ -8,6 +6,7 @@ const props = defineProps<{
   ensOwner: string | null;
   isOwner: boolean;
   isSettingEnsRecord: boolean;
+  isDeleting: boolean;
 }>();
 
 const emit = defineEmits(['changeController', 'deleteSpace']);
@@ -26,19 +25,18 @@ const items = computed(() => [
     ),
     action: () => emit('changeController'),
     loading: props.isSettingEnsRecord
+  },
+  {
+    title: t('settings.dangerZone.deleteSpace.title'),
+    description: t('settings.dangerZone.deleteSpace.information'),
+    button: t('settings.dangerZone.deleteSpace.button'),
+    disabled: !props.isController,
+    disabledInformation: t(
+      'settings.dangerZone.deleteSpace.disabledInformation'
+    ),
+    action: () => emit('deleteSpace'),
+    loading: props.isDeleting
   }
-
-  // {
-  //   title: t('settings.dangerZone.deleteSpace.title'),
-  //   description: t('settings.dangerZone.deleteSpace.information'),
-  //   button: t('settings.dangerZone.deleteSpace.button'),
-  //   disabled: !props.isController,
-  //   disabledInformation: t(
-  //     'settings.dangerZone.deleteSpace.disabledInformation'
-  //   ),
-  //   action: () => emit('deleteSpace'),
-  //   loading: false
-  // }
 ]);
 </script>
 

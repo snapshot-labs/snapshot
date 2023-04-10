@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Config from './components/Config.vue';
-import { computed } from 'vue';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{

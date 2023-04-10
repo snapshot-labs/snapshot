@@ -1,8 +1,4 @@
 <script setup>
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { useStrategies, useMeta } from '@/composables';
-
 const route = useRoute();
 
 const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
@@ -73,7 +69,9 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <BaseButton class="mt-2 w-full">{{ $t('playground') }}</BaseButton>
+          <BaseButton tabindex="-1" class="mt-2 w-full">{{
+            $t('playground')
+          }}</BaseButton>
         </router-link>
       </BaseBlock>
     </template>

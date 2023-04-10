@@ -1,5 +1,3 @@
-import { computed } from 'vue';
-import { useWeb3 } from '@/composables';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
 

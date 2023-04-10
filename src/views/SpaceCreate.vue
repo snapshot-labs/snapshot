@@ -1,28 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
-
-import {
-  useFlashNotification,
-  useFormSpaceProposal,
-  useProposals,
-  usePlugins,
-  useI18n,
-  useModal,
-  useTerms,
-  useApp,
-  useApolloQuery,
-  useWeb3,
-  useClient,
-  useGnosis,
-  useSnapshot,
-  useMeta
-} from '@/composables';
 
 enum Step {
   CONTENT,
@@ -50,7 +31,6 @@ useMeta({
 
 const { notify } = useFlashNotification();
 const router = useRouter();
-const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
@@ -78,6 +58,7 @@ const validationLoading = ref(false);
 const preview = ref(false);
 const hasAuthorValidationFailed = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
+const currentStep = ref(Step.CONTENT);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -98,7 +79,7 @@ const dateEnd = computed(() => {
     : dateStart.value + threeDays;
 });
 
-const isSafeFormValid = computed(() => {
+const isFormValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
@@ -116,8 +97,6 @@ const isSafeFormValid = computed(() => {
     !web3.value.authLoading
   );
 });
-
-const currentStep = computed(() => Number(route.params.step));
 
 const stepIsValid = computed(() => {
   if (
@@ -152,19 +131,11 @@ const isMember = computed(() => {
   );
 });
 
-// Check if has plugins that can be confirgured on proposal creation
 const needsPluginConfigs = computed(() =>
   Object.keys(props.space?.plugins ?? {}).some(
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
-
-const queries = computed(() => {
-  let q: { snapshot?: string; app?: string } = {};
-  if (route.query.snapshot) q.snapshot = route.query.snapshot as string;
-  if (route.query.app) q.app = route.query.app as string;
-  return q;
-});
 
 const validationName = computed(() => props.space.validation?.name ?? 'basic');
 
@@ -236,17 +207,11 @@ async function loadSourceProposal() {
 }
 
 function nextStep() {
-  router.push({
-    params: { step: currentStep.value + 1 },
-    query: queries.value
-  });
+  currentStep.value++;
 }
 
 function previousStep() {
-  router.push({
-    params: { step: currentStep.value - 1 },
-    query: queries.value
-  });
+  currentStep.value--;
 }
 
 function updateTime() {
@@ -302,10 +267,6 @@ watch(
   { immediate: true }
 );
 
-watch(preview, () => {
-  window.scrollTo(0, 0);
-});
-
 onMounted(async () => {
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
@@ -313,10 +274,13 @@ onMounted(async () => {
   if (!sourceProposal.value) {
     form.value.name = formDraft.value.name;
     form.value.body = formDraft.value.body;
-    form.value.choices = formDraft.value.choices;
   }
 
-  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+  if (
+    !!props.space?.template &&
+    !sourceProposal.value &&
+    !formDraft.value.isBodySet
+  ) {
     form.value.body = props.space.template;
   }
 });
@@ -329,9 +293,11 @@ onMounted(async () => {
         v-if="currentStep === Step.CONTENT"
         class="mb-3 overflow-hidden px-4 md:px-0"
       >
-        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
-          <ButtonBack />
-        </router-link>
+        <ButtonBack
+          @click="
+            router.push(domain ? { path: '/' } : { name: 'spaceProposals' })
+          "
+        />
       </div>
       <SpaceCreateWarnings
         v-if="!validationLoading"
@@ -360,7 +326,7 @@ onMounted(async () => {
 
       <!-- Step 3 (only when plugins) -->
       <SpaceCreatePlugins
-        v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
+        v-else
         v-model="form.metadata.plugins"
         :proposal="proposal"
         :space="space"
@@ -383,7 +349,7 @@ onMounted(async () => {
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
-          :disabled="!isSafeFormValid"
+          :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary

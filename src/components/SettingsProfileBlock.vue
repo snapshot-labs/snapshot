@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings, useApp } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -46,7 +44,7 @@ const avatarNotReactive = ref(form.value.avatar);
                       :class="{
                         'cursor-not-allowed': isViewOnly || env === 'demo'
                       }"
-                      class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
+                      class="absolute bottom-[2px] right-0 rounded-full bg-skin-heading p-1"
                     >
                       <i-ho-pencil class="text-[12px] text-skin-bg" />
                     </div>

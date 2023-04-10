@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { toRefs } from 'vue';
 import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
-
-import { useUsername, useApp } from '@/composables';
 
 const { domain } = useApp();
 
@@ -34,6 +31,7 @@ const { username } = useUsername(address, profile);
           : { name: 'profileActivity', params: { address } }
       "
       hide-external-icon
+      tabindex="-1"
       @click.stop=""
     >
       <div :class="[widthClass, 'flex flex-nowrap items-center space-x-1']">

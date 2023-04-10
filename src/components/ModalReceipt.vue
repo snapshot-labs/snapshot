@@ -34,9 +34,9 @@ defineEmits(['close']);
         class="mb-2 block"
         hide-external-icon
       >
-        <BaseButton class="w-full">
+        <BaseButton tabindex="-1" class="w-full">
           {{ $t('verifyOnSignatorio') }}
-          <i-ho-external-link class="ml-1 mb-[2px] inline-block text-xs" />
+          <i-ho-external-link class="mb-[2px] ml-1 inline-block text-xs" />
         </BaseButton>
       </BaseLink>
     </div>

@@ -7,6 +7,7 @@ import visualizer from 'rollup-plugin-visualizer';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
+import AutoImport from 'unplugin-auto-import/vite';
 
 export default defineConfig({
   define: {
@@ -14,6 +15,14 @@ export default defineConfig({
   },
   plugins: [
     vue({ reactivityTransform: true }),
+    AutoImport({
+      dts: true,
+      imports: ['vue', 'vue-router'],
+      dirs: ['./src/composables'],
+      eslintrc: {
+        enabled: true
+      }
+    }),
     ViteComponents({
       directoryAsNamespace: true,
       resolvers: [
@@ -22,7 +31,11 @@ export default defineConfig({
           alias: {
             ho: 'heroicons-outline'
           }
-        })
+        }),
+        componentName => {
+          if (componentName.startsWith('Tune'))
+            return { name: componentName, from: '@snapshot-labs/tune' };
+        }
       ]
     }),
     visualizer({

@@ -1,9 +1,7 @@
-import { computed, ref, watch, Ref } from 'vue';
 import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { useProfiles, useWeb3, useInfiniteLoader, useEns } from '@/composables';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';
@@ -23,7 +21,6 @@ export function useProposalVotes(
   const votes = ref<Vote[]>([]);
   const searchAddress = ref('');
   const searchVote = ref<Vote[]>([]);
-  const isResolvingEns = ref(false);
   const noVotesFound = ref(false);
 
   const isZero = computed(() => {
@@ -34,7 +31,7 @@ export function useProposalVotes(
 
   const sortedVotes = computed(() => {
     const votesClone = clone(votes.value);
-    if (userVote) votesClone.push(userVote);
+    if (userVote) votesClone.unshift(userVote);
     const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
     if (uniqVotes.map(vote => vote.voter).includes(web3Account.value)) {
       uniqVotes.unshift(
@@ -101,17 +98,47 @@ export function useProposalVotes(
   }
 
   async function resolveEns(ens: string) {
-    isResolvingEns.value = true;
-    let addressResolved;
     try {
-      addressResolved = await getProvider('1').resolveName(ens);
-      if (!addressResolved) throw new Error('Wrong ens');
-    } catch (e) {
-      console.log(e);
-    } finally {
-      isResolvingEns.value = false;
+      const provider = getProvider('1');
+      const addressResolved = await provider.resolveName(ens);
+      if (!addressResolved) throw new Error('Invalid ENS name');
+      return addressResolved;
+    } catch (error) {
+      console.error('Error in resolveEns:', error);
+      return null;
     }
-    return addressResolved;
+  }
+
+  async function resolveLens(handle: string) {
+    try {
+      const response = await fetch('https://api.lens.dev/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: `
+          query Profiles {
+            profiles(request: { handles: ["${handle}"], limit: 1 }) {
+              items {
+                ownedBy
+              }
+            }
+          }
+        `
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result.data?.profiles?.items?.[0]?.ownedBy;
+    } catch (error) {
+      console.error('Error in resolveLens:', error);
+      return null;
+    }
   }
 
   watch(sortedVotes, () => {
@@ -130,10 +157,12 @@ export function useProposalVotes(
         return;
       }
 
-      if (isAddress(val)) {
+      if (isAddress(val.toLowerCase())) {
         searchAddress.value = val;
       } else if (isValidEnsDomain(val)) {
         searchAddress.value = await resolveEns(val);
+      } else if (val.endsWith('.lens')) {
+        searchAddress.value = await resolveLens(val);
       }
 
       if (!searchAddress.value) {
@@ -156,7 +185,6 @@ export function useProposalVotes(
     loadingMore,
     profiles,
     searchAddress,
-    isResolvingEns,
     formatProposalVotes,
     loadVotes,
     loadMore,

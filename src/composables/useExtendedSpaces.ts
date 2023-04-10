@@ -1,6 +1,4 @@
-import { ref, computed } from 'vue';
 import { SPACES_QUERY } from '@/helpers/queries';
-import { useApolloQuery } from '@/composables/useApolloQuery';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { mapOldPluginNames } from '@/helpers/utils';
 
@@ -67,9 +65,14 @@ export function useExtendedSpaces() {
     }
   }
 
+  function deleteSpace(id: string) {
+    extendedSpaces.value = extendedSpaces.value.filter(s => s.id !== id);
+  }
+
   return {
     loadExtendedSpaces,
     reloadSpace,
+    deleteSpace,
     extendedSpaces: computed(() => extendedSpaces.value),
     spaceLoading: computed(() => loading.value)
   };

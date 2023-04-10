@@ -1,9 +1,6 @@
 <script setup>
-import { computed } from 'vue';
 import orderBy from 'lodash/orderBy';
-import { getRanking, useSpaces } from '@/composables/useSpaces';
 import { shorten } from '@/helpers/utils';
-import { useIntl } from '@/composables/useIntl';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 
 const { spaces, spacesLoaded } = useSpaces();

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import pkg from '@/../package.json';
-import { useApp } from '@/composables';
-import { useRouter } from 'vue-router';
 import { PopoverButton } from '@headlessui/vue';
 
 const { domain } = useApp();
@@ -34,9 +32,9 @@ function clickNavigationItem(item: any) {
 <template>
   <BasePopover>
     <template #button>
-      <ButtonSidebar class="relative !h-[46px] !w-[46px]">
+      <BaseButtonRound class="relative !h-[46px] !w-[46px]">
         <i-ho-dots-horizontal class="text-skin-link" />
-      </ButtonSidebar>
+      </BaseButtonRound>
     </template>
     <template #content>
       <div>
@@ -50,8 +48,8 @@ function clickNavigationItem(item: any) {
           <PopoverButton
             v-for="item in navigationItems"
             :key="item.name"
-            as="div"
-            class="block cursor-pointer py-1 text-xl text-skin-link hover:!text-skin-link hover:!opacity-100 group-hover:text-skin-text group-hover:opacity-70"
+            as="button"
+            class="block w-full cursor-pointer py-1 text-left text-xl text-skin-link hover:!text-skin-link hover:!opacity-100 group-hover:text-skin-text group-hover:opacity-70"
             @click="clickNavigationItem(item)"
           >
             {{ item.name }}

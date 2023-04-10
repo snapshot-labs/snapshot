@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { encodeJson } from '@/helpers/b64';
-import { useRouter } from 'vue-router';
-
-import { useApp } from '@/composables';
 
 const props = withDefaults(
   defineProps<{

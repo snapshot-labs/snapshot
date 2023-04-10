@@ -398,13 +398,6 @@
       "unicode_decimal": 59134
     },
     {
-      "icon_id": "1899068",
-      "name": "telegram",
-      "font_class": "telegram",
-      "unicode": "e731",
-      "unicode_decimal": 59185
-    },
-    {
       "icon_id": "2612016",
       "name": "mac os的icon",
       "font_class": "macos",

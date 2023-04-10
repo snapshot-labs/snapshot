@@ -19,13 +19,13 @@ defineEmits(['toggle']);
           {{ title }}
         </span>
       </div>
-      <div
+      <button
         v-if="showArrow"
         class="mr-3 flex cursor-pointer items-center"
         @click="$emit('toggle')"
       >
         <i-ho-chevron-up :class="{ rotate: !open }" />
-      </div>
+      </button>
       <slot name="icons"></slot>
     </div>
     <div :class="{ hide: !open }">

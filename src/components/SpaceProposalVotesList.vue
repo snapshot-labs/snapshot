@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useProposalVotes, useReportDownload } from '@/composables';
 import {
   ExtendedSpace,
   Proposal,
@@ -38,13 +36,16 @@ onMounted(async () => {
     slim
   >
     <template v-if="props.proposal.state === 'closed'" #button>
-      <BaseButtonIcon>
-        <LoadingSpinner v-if="isDownloadingVotes" />
-        <i-ho-download
-          v-else
-          v-tippy="{ content: 'Download as CSV' }"
-          @click="downloadVotes(proposal.id, proposal.space.id)"
-        />
+      <BaseButtonIcon
+        v-tippy="{ content: 'Download as CSV' }"
+        :loading="isDownloadingVotes"
+        @click="
+          isDownloadingVotes
+            ? null
+            : downloadVotes(proposal.id, proposal.space.id)
+        "
+      >
+        <i-ho-download />
       </BaseButtonIcon>
     </template>
     <SpaceProposalVotesListItem
@@ -59,6 +60,7 @@ onMounted(async () => {
     />
     <a
       v-if="sortedVotes.length < voteCount"
+      tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesmOpen = true"
     >

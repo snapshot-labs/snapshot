@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Strategy } from '@/helpers/interfaces';
-import { useIntl } from '@/composables';
 
 const { formatCompactNumber } = useIntl();
 

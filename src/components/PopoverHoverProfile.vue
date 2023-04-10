@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { explorerUrl } from '@/helpers/utils';
-import { useApp } from '@/composables/useApp';
 import { useMediaQuery } from '@vueuse/core';
 import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
@@ -46,7 +45,7 @@ const { domain } = useApp();
               "
               hide-external-icon
             >
-              <BaseButton primary class="w-full">
+              <BaseButton primary class="w-full" tabindex="-1">
                 {{ $t('profile.viewProfile') }}
               </BaseButton>
             </BaseLink>
@@ -58,7 +57,7 @@ const { domain } = useApp();
               "
               hide-external-icon
             >
-              <BaseButton class="w-full">
+              <BaseButton class="w-full" tabindex="-1">
                 {{ $t('seeInExplorer') }}
                 <i-ho-external-link class="mb-[2px] inline-block text-xs" />
               </BaseButton>

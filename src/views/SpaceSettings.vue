@@ -1,22 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
-import { onBeforeRouteLeave } from 'vue-router';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useConfirmDialog } from '@vueuse/core';
-
-import {
-  useI18n,
-  useWeb3,
-  useClient,
-  useSpaceController,
-  useExtendedSpaces,
-  useFormSpaceSettings,
-  useTreasury,
-  useFlashNotification,
-  useGnosis,
-  useMeta
-} from '@/composables';
+import { useConfirmDialog, useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -35,9 +20,12 @@ useMeta({
 });
 
 const { t } = useI18n();
+const { domain } = useApp();
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { reloadSpace } = useExtendedSpaces();
+const { reloadSpace, deleteSpace } = useExtendedSpaces();
+const { loadFollows } = useFollowSpace();
 const {
   validationResult,
   isValid,
@@ -75,6 +63,12 @@ enum Page {
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
+const modalDeleteSpaceConfirmation = ref('');
+const modalSettingsSavedOpen = ref(false);
+const modalSettingsSavedIgnore = useStorage(
+  'snapshot.settings.saved.ignore',
+  false
+);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -109,6 +103,23 @@ const settingsPages = computed(() => [
   }
 ]);
 
+async function handleDelete() {
+  modalDeleteSpaceConfirmation.value = '';
+
+  const result = await send({ id: props.space.id }, 'delete-space', null);
+  console.log(':handleDelete result', result);
+
+  if (result && result.id) {
+    if (domain) {
+      return window.open(`https://snapshot.org/#/`, '_self');
+    } else {
+      deleteSpace(props.space.id);
+      loadFollows();
+      return router.push({ name: 'home' });
+    }
+  }
+}
+
 async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
@@ -121,6 +132,7 @@ async function handleSubmit() {
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
+    if (!modalSettingsSavedIgnore.value) modalSettingsSavedOpen.value = true;
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
     await reloadSpace(props.space.id);
@@ -142,6 +154,12 @@ const {
   cancel: cancelLeave
 } = useConfirmDialog();
 
+const {
+  isRevealed: isConfirmDeleteOpen,
+  reveal: openConfirmDelete,
+  cancel: cancelDelete
+} = useConfirmDialog();
+
 onBeforeRouteLeave(async () => {
   if (hasFormChanged.value) {
     const { data } = await openConfirmLeave();
@@ -157,9 +175,7 @@ const isViewOnly = computed(() => {
 <template>
   <TheLayout v-bind="$attrs">
     <div class="mb-3 px-4 md:px-0">
-      <router-link :to="{ name: 'spaceProposals' }">
-        <ButtonBack />
-      </router-link>
+      <ButtonBack @click="router.push({ name: 'spaceProposals' })" />
     </div>
     <template #content-right>
       <LoadingRow v-if="!loaded" block />
@@ -175,7 +191,7 @@ const isViewOnly = computed(() => {
 
           <BaseMessageBlock
             v-else-if="isViewOnly"
-            class="mt-3 md:mx-0"
+            class="md:mx-0"
             level="info"
             is-responsive
           >
@@ -245,11 +261,15 @@ const isViewOnly = computed(() => {
               :ens-owner="ensOwner"
               :is-owner="isEnsOwner"
               :is-setting-ens-record="settingENSRecord"
+              :is-deleting="isConfirmDeleteOpen"
               @change-controller="modalControllerEditOpen = true"
-              @delete-space="null"
+              @delete-space="openConfirmDelete"
             />
           </template>
-          <div v-if="isSpaceAdmin || isSpaceController" class="flex gap-5 pt-2">
+          <div
+            v-if="isSpaceAdmin || isSpaceController"
+            class="flex gap-5 px-4 pt-2 md:px-0"
+          >
             <BaseButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
             </BaseButton>
@@ -273,14 +293,17 @@ const isViewOnly = computed(() => {
           <div
             class="no-scrollbar mt-0 flex overflow-y-auto md:mt-4 lg:my-3 lg:block"
           >
-            <BaseSidebarNavigationItem
+            <a
               v-for="page in settingsPages"
               :key="page.id"
-              :is-active="currentPage === page.id"
+              tabindex="0"
               @click="currentPage = page.id"
+              @keypress="currentPage = page.id"
             >
-              {{ page.title }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem :is-active="currentPage === page.id">
+                {{ page.title }}
+              </BaseSidebarNavigationItem>
+            </a>
           </div>
         </div>
       </BaseBlock>
@@ -292,6 +315,7 @@ const isViewOnly = computed(() => {
       </BaseBlock>
     </template>
   </TheLayout>
+
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
@@ -329,5 +353,40 @@ const isViewOnly = computed(() => {
         {{ $t('settings.confirmLeaveMessage') }}
       </BaseMessageBlock>
     </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmDeleteOpen"
+      :disabled="modalDeleteSpaceConfirmation !== space.id"
+      show-cancel
+      @close="cancelDelete"
+      @confirm="handleDelete"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmDeleteSpace') }}
+      </BaseMessageBlock>
+      <div class="px-4 pb-4">
+        <BaseInput
+          v-model.trim="modalDeleteSpaceConfirmation"
+          :title="$t('settings.confirmInputDeleteSpace', { space: space.id })"
+          focus-on-mount
+        >
+        </BaseInput>
+      </div>
+    </ModalConfirmAction>
+    <ModalNotice
+      :open="modalSettingsSavedOpen"
+      :title="$t('settings.noticeSavedTitle')"
+      @close="modalSettingsSavedOpen = false"
+    >
+      <BaseMessageBlock level="info" class="mb-5">
+        <p class="text-left">{{ $t('settings.noticeSavedText') }}</p>
+      </BaseMessageBlock>
+      <InputCheckbox
+        v-model="modalSettingsSavedIgnore"
+        name="settings-saved-input-checkbox"
+        :label="$t('settings.noticeSavedInputCheckboxLabel')"
+        class="ml-4 mt-auto max-w-min cursor-pointer self-start whitespace-nowrap"
+        @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
+      />
+    </ModalNotice>
   </teleport>
 </template>

@@ -4,9 +4,6 @@
  * Emits waitForRegistration event when Register button is clicked, to trigger domain lookup in background.
  */
 
-import { computed } from 'vue';
-import { useEns } from '@/composables/useEns';
-
 const { validEnsTlds } = useEns();
 
 const props = defineProps<{
@@ -48,7 +45,12 @@ const isValidDomain = computed(() => {
       hide-external-icon
       @click="$emit('waitForRegistration')"
     >
-      <BaseButton :disabled="!isValidDomain" class="mt-2 w-full" primary>
+      <BaseButton
+        tabindex="-1"
+        :disabled="!isValidDomain"
+        class="mt-2 w-full"
+        primary
+      >
         {{ $t('setup.registerEnsButton') }}
       </BaseButton>
     </BaseLink>

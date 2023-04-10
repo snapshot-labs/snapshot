@@ -1,16 +1,6 @@
-import { ref } from 'vue';
 import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useRoute } from 'vue-router';
-
-import {
-  useGnosis,
-  useWeb3,
-  useI18n,
-  useFlashNotification,
-  useModalNotification
-} from '@/composables';
 
 export function useClient() {
   const { t } = useI18n();
@@ -83,6 +73,10 @@ export function useClient() {
       return client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
+      });
+    } else if (type === 'delete-space') {
+      return client.deleteSpace(auth.web3, web3.value.account, {
+        space: space.id
       });
     }
   }

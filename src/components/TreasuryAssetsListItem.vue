@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { formatUnits } from '@ethersproject/units';
-import { useIntl } from '@/composables/useIntl';
 import { TreasuryAsset } from '@/helpers/interfaces';
 
 defineProps<{

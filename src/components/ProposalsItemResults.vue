@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Proposal } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
-
-import { useIntl } from '@/composables';
 
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 
@@ -27,7 +24,7 @@ const winningChoice = computed(() =>
         <div
           class="absolute ml-3 flex items-center leading-[43px] text-skin-link"
         >
-          <i-ho-check v-if="i === winningChoice" class="mr-2 -ml-1 text-sm" />
+          <i-ho-check v-if="i === winningChoice" class="-ml-1 mr-2 text-sm" />
           {{ shorten(choice, 32) }}
           <span class="ml-1 text-skin-text">
             {{ formatCompactNumber(proposal.scores[i]) }}

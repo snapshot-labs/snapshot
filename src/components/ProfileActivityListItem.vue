@@ -14,7 +14,7 @@ defineProps<{ activity: ProfileActivity }>();
         params: { key: activity.space.id, id: activity.vote?.proposalId }
       }"
     >
-      <div class="flex w-full py-4 px-4">
+      <div class="flex w-full px-4 py-4">
         <div class="relative min-w-[52px]">
           <AvatarSpace size="44" :space="activity.space" />
           <div

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 
 const props = defineProps<{
@@ -55,7 +53,7 @@ onMounted(() => {
 <template>
   <div
     class="flex items-center"
-    :class="{ 'border-b bg-skin-bg py-3 px-4': modal }"
+    :class="{ 'border-b bg-skin-bg px-4 py-3': modal }"
   >
     <i-ho-search class="mr-2 text-[19px]" />
     <input

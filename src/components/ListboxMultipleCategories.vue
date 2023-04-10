@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useCategories } from '@/composables';
-
 const props = defineProps<{
   categories: string[];
   isDisabled?: boolean;
