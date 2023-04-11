@@ -19,7 +19,10 @@ const { web3Account } = useWeb3();
 const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
-  const items = [{ text: t('duplicate'), action: 'duplicate' }];
+  const items = [
+    { text: t('duplicate'), action: 'duplicate' },
+    { text: t('report'), action: 'report' }
+  ];
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -48,9 +51,10 @@ const {
 
 const { resetForm } = useFormSpaceProposal();
 
-function selectFromThreedotDropdown(e) {
+function handleSelect(e) {
   if (!props.proposal) return;
   if (e === 'delete') deleteProposal();
+  if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
   if (e === 'duplicate') {
     resetForm();
     router.push({
@@ -64,7 +68,7 @@ function selectFromThreedotDropdown(e) {
   }
 }
 
-function selectFromShareDropdown(e: string) {
+function handleSelectShare(e: string) {
   if (e === 'shareProposalLenster')
     return shareProposalLenster(props.space, props.proposal);
 
@@ -119,7 +123,7 @@ watch(
       <BaseMenu
         class="!ml-auto pl-3"
         :items="sharingItems"
-        @select="selectFromShareDropdown"
+        @select="handleSelectShare"
       >
         <template #button>
           <ButtonShare />
@@ -136,11 +140,7 @@ watch(
           </div>
         </template>
       </BaseMenu>
-      <BaseMenu
-        class="md:ml-2"
-        :items="threeDotItems"
-        @select="selectFromThreedotDropdown"
-      >
+      <BaseMenu class="md:ml-2" :items="threeDotItems" @select="handleSelect">
         <template #button>
           <div>
             <BaseButtonIcon :loading="isSending">
@@ -151,6 +151,7 @@ watch(
         <template #item="{ item }">
           <div class="flex items-center gap-2">
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
+            <i-ho-flag v-if="item.action === 'report'" />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>
