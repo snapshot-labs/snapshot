@@ -4,7 +4,6 @@ node_modules
 .yalc
 components.d.ts
 auto-imports.d.ts
-.eslintrc-auto-import.json
 
 # local env files
 .env.local
