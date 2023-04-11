@@ -6,12 +6,10 @@ const props = withDefaults(
     open: boolean;
     hideClose?: boolean;
     maxHeight?: string;
-    maxWidth?: string;
   }>(),
   {
     hideClose: false,
-    maxHeight: '420px',
-    maxWidth: '440px'
+    maxHeight: '420px'
   }
 );
 
@@ -92,7 +90,7 @@ onBeforeUnmount(() => {
     background-color: var(--bg-color);
     padding-left: 0 !important;
     padding-right: 0 !important;
-    max-width: v-bind(maxWidth);
+    max-width: 440px;
     overflow-y: auto !important;
     max-height: calc(100vh - 120px);
     display: flex;

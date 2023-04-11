@@ -14,6 +14,8 @@ import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
 import VueTippy from 'vue-tippy';
 import { createHead } from '@vueuse/head';
+import 'viewerjs/dist/viewer.css';
+import VueViewer from 'v-viewer';
 
 const head = createHead();
 
@@ -44,7 +46,8 @@ const app = createApp({
   .use(VueTippy, {
     defaultProps: { delay: [400, null] },
     directive: 'tippy' // => v-tippy
-  });
+  })
+  .use(VueViewer, { defaultOptions: { navbar: true, toolbar: false } });
 
 app.mount('#app');
 

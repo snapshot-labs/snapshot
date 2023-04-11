@@ -13600,6 +13600,14 @@ uuid@^9.0.0:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.0.tgz#592f550650024a38ceb0c562f2f6aa435761efb5"
   integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
+v-viewer@^3.0.11:
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/v-viewer/-/v-viewer-3.0.11.tgz#c03855eb56436bd0f5323c34a61c10fa8fd05026"
+  integrity sha512-E8LOdAxhzuktt4HB3PswVCccQ1Q1sYHYnLsS6zaJISpb5EvmAFs5sYNfXnDLFxVb5DQ82v4ZlGxkYlseXwWRJw==
+  dependencies:
+    lodash "^4.17.21"
+    viewerjs "^1.9.0"
+
 v8-compile-cache@^2.0.3:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.3.0.tgz#2de19618c66dc247dcfb6f99338035d8245a2cee"
@@ -13640,6 +13648,11 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+viewerjs@^1.9.0:
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/viewerjs/-/viewerjs-1.11.3.tgz#6569c519590776190f86b531bf43a5888a7a472f"
+  integrity sha512-efG3U61Umuj/1x6JAtdvnY9m407C/RkrkFilsMcLEWKDivpjNU3/FeL+feCY1Vkur9aQeBJ+z6K4CCPP7hv6vA==
 
 vite-node@0.29.8:
   version "0.29.8"
