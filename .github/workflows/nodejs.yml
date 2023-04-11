@@ -39,7 +39,9 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           for file in ${{ steps.changed-files.outputs.changed_files }}; do
-            yarn eslint --fix $file
+            if [[ $file == *.js ]] || [[ $file == *.ts ]] || [[ $file == *.vue ]] || [[ $file == *.json ]]; then
+              yarn eslint --fix $file
+            fi
           done
 
       - name: Build
