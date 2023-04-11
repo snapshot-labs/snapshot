@@ -202,23 +202,6 @@ export default class Plugin {
     yield;
   }
 
-  async *deleteDisputedProposalUma(
-    web3: any,
-    moduleAddress: string,
-    transactionHash: any
-  ) {
-    const tx = await sendTransaction(
-      web3,
-      moduleAddress,
-      UMA_MODULE_ABI,
-      'deleteDisputedProposal',
-      [transactionHash]
-    );
-    yield;
-    const receipt = await tx.wait();
-    console.log('[DAO module] deleted disputed proposal:', receipt);
-  }
-
   async getModuleDetailsUma(
     network: string,
     moduleAddress: string,

@@ -65,24 +65,24 @@ export const getModuleDetailsUma = async (
   needsBondApproval: boolean;
   noTransactions: boolean;
   activeProposal: boolean;
-  proposalEvent: any;
+  assertionEvent: any;
   proposalExecuted: boolean;
   livenessPeriod: string;
 }> => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
     [moduleAddress, 'avatar'],
-    [moduleAddress, 'optimisticOracle'],
+    [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
     [moduleAddress, 'bondAmount'],
-    [moduleAddress, 'liveness'],
-    [moduleAddress, 'PROPOSAL_VALID_RESPONSE']
+    [moduleAddress, 'liveness']
   ]);
   let needsApproval = false;
-  const minimumBond = moduleDetails[3][0];
   const optimisticOracle = moduleDetails[1][0];
-  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
+  const rules = moduleDetails[2][0];
+  const minimumBond = moduleDetails[3][0];
   const livenessPeriod = moduleDetails[4][0];
+  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
 
   if (
     Number(minimumBond) > 0 &&
@@ -103,11 +103,22 @@ export const getModuleDetailsUma = async (
     );
 
     ancillaryData = pack(
-      ['string', 'bytes', 'bytes'],
+      ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
       [
         '',
         pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace('0x', ''))
+        toUtf8Bytes(proposalHash.replace('0x', '')),
+        pack(
+          ['string', 'string', 'string', 'string'],
+          [',', 'explanation', ':', '"']
+        ),
+        toUtf8Bytes(explanation.replace('0x', '')),
+        pack(
+          ['string', 'string', 'string', 'string', 'string'],
+          ['"', ',', 'rules', ':', '"']
+        ),
+        toUtf8Bytes(rules.replace('0x', '')),
+        pack(['string'], ['"'])
       ]
     );
   } else {
@@ -125,16 +136,19 @@ export const getModuleDetailsUma = async (
       needsBondApproval: needsApproval,
       noTransactions: true,
       activeProposal: false,
-      proposalEvent: {},
+      assertionEvent: {},
       proposalExecuted: false,
       livenessPeriod: livenessPeriod
     };
   }
   // Check for active proposals
-  const proposalHashTimestamp = await moduleContract.proposalHashes(
+  const assertionId = await moduleContract.assertionIds(
     proposalHash
   );
-  const activeProposal = proposalHashTimestamp.gt(0);
+
+  const activeProposal =
+    assertionId !==
+    '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   // Search for requests with matching ancillary data
   const oracleContract = new Contract(
@@ -144,40 +158,30 @@ export const getModuleDetailsUma = async (
   );
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const proposalEvents = await oracleContract.queryFilter(
-    oracleContract.filters.ProposePrice(moduleAddress)
+  const assertionEvents = await oracleContract.queryFilter(
+    oracleContract.filters.AssertionMade(assertionId)
   );
 
-  const thisModuleProposalEvent = proposalEvents.filter(
-    event =>
-      event.args?.ancillaryData === ancillaryData &&
-      event.args?.timestamp.toString() === proposalHashTimestamp.toString()
-  );
+  const thisModuleAssertionEvent = assertionEvents.filter(event => {
+    return (
+      event.args?.claim === ancillaryData &&
+      event.args?.callbackRecipient === moduleAddress
+    );
+  });
 
-  // Get the full proposal events (with state and disputer).
-  const thisModuleFullProposalEvent = await Promise.all(
-    thisModuleProposalEvent.map(async event => {
+  // Get the full proposal events (with state).
+  const fullAssertionEvent = await Promise.all(
+    thisModuleAssertionEvent.map(async event => {
       return oracleContract
-        .getRequest(
-          event.args?.requester,
-          event.args?.identifier,
-          event.args?.timestamp,
-          event.args?.ancillaryData
-        )
+        .getAssertion(event.args?.assertionId)
         .then(result => {
-          const isDisputed =
-            result.disputer === '0x0000000000000000000000000000000000000000'
-              ? false
-              : true;
-
           const isExpired =
             Math.floor(Date.now() / 1000) >=
-            Number(event.args?.expirationTimestamp);
+            Number(result.expirationTime);
 
           return {
-            expirationTimestamp: event.args?.expirationTimestamp,
+            expirationTimestamp: result.expirationTime,
             isExpired: isExpired,
-            isDisputed: isDisputed,
             isSettled: result.settled,
             proposalHash: proposalHash,
             proposalTxHash: event.transactionHash
@@ -200,16 +204,14 @@ export const getModuleDetailsUma = async (
     moduleContract.filters.ProposalExecuted(proposalHash)
   );
 
-  const proposalTimes = thisProposalTransactionsProposedEvents.map(tx =>
-    tx.args?.proposalTime.toString()
+  const assertion = thisProposalTransactionsProposedEvents.map(
+    tx => tx.args?.assertionId
   );
 
-  const executionTimes = executionEvents.map(tx =>
-    tx.args?.proposalTime.toString()
-  );
+  const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
 
-  const proposalExecuted = proposalTimes.some(time =>
-    executionTimes.includes(time)
+  const proposalExecuted = assertion.some(assertionId =>
+    assertionIds.includes(assertionId)
   );
 
   return {
@@ -226,7 +228,7 @@ export const getModuleDetailsUma = async (
     needsBondApproval: needsApproval,
     noTransactions: false,
     activeProposal: activeProposal,
-    proposalEvent: thisModuleFullProposalEvent[0],
+    assertionEvent: fullAssertionEvent[0],
     proposalExecuted: proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };

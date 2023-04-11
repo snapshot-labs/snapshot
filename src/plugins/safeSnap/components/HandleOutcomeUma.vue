@@ -34,10 +34,9 @@ const QuestionStates = {
   waitingForVoteConfirmation: 2,
   noTransactions: 3,
   completelyExecuted: 4,
-  disputedButNotResolved: 5,
-  waitingForProposal: 6,
-  waitingForLiveness: 7,
-  proposalApproved: 8
+  waitingForProposal: 5,
+  waitingForLiveness: 6,
+  proposalApproved: 7
 };
 Object.freeze(QuestionStates);
 
@@ -113,9 +112,9 @@ const approveBondUma = async () => {
 
 const getProposalUrl = (chain, txHash) => {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
+    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
   }
-  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV2&eventIndex=0`;
+  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
 };
 
 const submitProposalUma = async () => {
@@ -176,38 +175,6 @@ const executeProposalUma = async () => {
   }
 };
 
-const deleteDisputedProposalUma = async () => {
-  if (!getInstance().isAuthenticated.value) return;
-  action2InProgress.value = 'delete-disputed-proposal';
-  try {
-    await ensureRightNetwork(props.network);
-  } catch (e) {
-    console.error(e);
-    action2InProgress.value = null;
-    return;
-  }
-
-  try {
-    clearBatchError();
-    const deletingDisputedProposal = plugin.deleteDisputedProposalUma(
-      getInstance().web3,
-      props.umaAddress,
-      questionDetails.value.proposalEvent.proposalHash
-    );
-    await deletingDisputedProposal.next();
-    action2InProgress.value = null;
-    pendingCount.value++;
-    await deletingDisputedProposal.next();
-    notify(t('notify.youDidIt'));
-    pendingCount.value--;
-    await sleep(3e3);
-    await updateDetails();
-  } catch (err) {
-    pendingCount.value--;
-    action2InProgress.value = null;
-  }
-};
-
 const usingMetaMask = computed(() => {
   return window.ethereum && getInstance().provider.value?.isMetaMask;
 });
@@ -231,7 +198,7 @@ const questionState = computed(() => {
     return QuestionStates.noTransactions;
 
   const ts = (Date.now() / 1e3).toFixed();
-  const { proposalEvent, proposalExecuted, activeProposal } =
+  const { assertionEvent, proposalExecuted, activeProposal } =
     questionDetails.value;
 
   // If proposal has already been executed, prevents user from proposing again.
@@ -245,18 +212,19 @@ const questionState = computed(() => {
   if (!activeProposal && voteResultsConfirmed)
     return QuestionStates.waitingForProposal;
 
-  // If disputed, a proposal can be deleted to enable a proposal to be proposed again.
-  if (proposalEvent.isDisputed) return QuestionStates.disputedButNotResolved;
-
   // Proposal has been made and is waiting for liveness period to complete.
-  if (!proposalEvent.isExpired) return QuestionStates.waitingForLiveness;
+  if (!assertionEvent.isExpired) return QuestionStates.waitingForLiveness;
 
   // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (proposalEvent.isExpired && !proposalEvent.isSettled)
+  if (assertionEvent.isExpired && !assertionEvent.isSettled)
     return QuestionStates.proposalApproved;
 
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (proposalEvent.isSettled && !proposalEvent.isDisputed && !proposalExecuted)
+  if (
+    assertionEvent.isSettled &&
+    !assertionEvent.isDisputed &&
+    !proposalExecuted
+  )
     return QuestionStates.proposalApproved;
 
   return QuestionStates.error;
@@ -412,7 +380,7 @@ onMounted(async () => {
           <strong>{{
             'Proposal can be executed at ' +
             new Date(
-              questionDetails.proposalEvent.expirationTimestamp * 1000
+              questionDetails.assertionEvent.expirationTimestamp * 1000
             ).toLocaleString()
           }}</strong>
         </div>
@@ -422,7 +390,7 @@ onMounted(async () => {
             :href="
               getProposalUrl(
                 props.network,
-                questionDetails.proposalEvent.proposalTxHash
+                questionDetails.assertionEvent.proposalTxHash
               )
             "
             class="rounded-lg border p-2 text-skin-text"
@@ -435,18 +403,6 @@ onMounted(async () => {
           </a>
         </div>
       </BaseContainer>
-    </div>
-
-    <div
-      v-if="questionState === questionStates.disputedButNotResolved"
-      class="my-4"
-    >
-      <BaseButton
-        :loading="action2InProgress === 'delete-disputed-proposal'"
-        @click="deleteDisputedProposalUma"
-      >
-        {{ $t('safeSnap.labels.deleteDisputedProposal') }}
-      </BaseButton>
     </div>
 
     <div
