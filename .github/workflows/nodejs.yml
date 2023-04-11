@@ -16,8 +16,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, build, lint
+      - name: yarn install, build
         run: |
           yarn
+          yarn lint-staged --diff="origin/${GITHUB_BASE_REF}...origin/${GITHUB_HEAD_REF}"
           yarn run build
-          yarn run lint

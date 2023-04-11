@@ -90,7 +90,7 @@ const switchToDefaultNetwork = async () => {
       </BaseButton>
       <div v-if="defaultNetwork === '1'">
         <BaseLink link="https://demo.snapshot.org" hide-external-icon>
-          <BaseButton class="w-full">
+          <BaseButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
           </BaseButton>
         </BaseLink>

@@ -55,9 +55,10 @@ const delayClose = () => {
       portal
     >
       <PopoverButton
-        class="outline-none"
         @mouseenter="open"
         @mouseleave="delayClose"
+        @focus="open"
+        @focusout="delayClose"
       >
         <slot name="button" />
       </PopoverButton>

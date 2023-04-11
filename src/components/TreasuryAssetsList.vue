@@ -12,6 +12,8 @@ const walletAssets = computed(
   () => treasuryAssets.value?.[props.wallet.address] ?? []
 );
 
+const router = useRouter();
+
 onMounted(() =>
   loadFilteredTokenBalances(props.wallet.address, props.wallet.network)
 );
@@ -19,9 +21,7 @@ onMounted(() =>
 
 <template>
   <div class="mb-3 px-4 md:px-0">
-    <router-link :to="{ name: 'spaceTreasury' }">
-      <ButtonBack />
-    </router-link>
+    <ButtonBack @click="router.push({ name: 'spaceTreasury' })" />
 
     <h3>{{ wallet.name }}</h3>
   </div>
