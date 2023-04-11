@@ -2,15 +2,22 @@
 const { pendingCount } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
+const showDemoBanner = ref(true);
 </script>
 
 <template>
   <div
-    v-if="env === 'demo'"
-    class="bg-primary p-3 text-center"
+    v-if="env === 'demo' && showDemoBanner"
+    class="relative bg-primary p-3 text-center"
     style="color: white; font-size: 20px"
   >
     {{ $t('demoSite') }}
+    <BaseButtonIcon
+      class="absolute right-3 top-[10px]"
+      @click="showDemoBanner = false"
+    >
+      <i-ho-x />
+    </BaseButtonIcon>
   </div>
   <div>
     <BaseContainer class="pl-0 pr-3 sm:!px-4">
