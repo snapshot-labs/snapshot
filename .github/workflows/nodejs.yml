@@ -3,7 +3,7 @@ name: Node CI
 on:
   push:
     branches:
-      - develop
+      - main
   pull_request:
 
 jobs:
@@ -28,9 +28,19 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Get changed files (on pull_request)
+        if: github.event_name == 'pull_request'
+        id: changed-files
+        run: |
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} | tr '\n' ' ')
+          echo "::set-output name=changed_files::$changed_files"
+
       - name: Run lint-staged (on pull_request)
         if: github.event_name == 'pull_request'
-        run: yarn lint-staged --diff='origin/${{ github.base_ref }}...origin/${{ github.head_ref }}'
+        run: |
+          for file in ${{ steps.changed-files.outputs.changed_files }}; do
+            yarn eslint --fix $file
+          done
 
       - name: Build
         run: yarn run build
