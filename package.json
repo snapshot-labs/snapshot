@@ -93,7 +93,7 @@
     "lint-staged": "^13.2.1",
     "postcss": "^8.4.16",
     "prettier": "^2.8.7",
-    "prettier-plugin-tailwindcss": "^0.2.5",
+    "prettier-plugin-tailwindcss": "^0.2.7",
     "rollup-plugin-visualizer": "^5.9.0",
     "sass": "~1.55.0",
     "sass-loader": "^13.2.2",
