@@ -1,6 +1,10 @@
 name: Node CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
 jobs:
   build:
@@ -8,16 +12,35 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x]
+        node-version: [16.x]
 
     steps:
-      - uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, build, lint
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Get changed files (on pull_request)
+        if: github.event_name == 'pull_request'
+        id: changed-files
         run: |
-          yarn
-          yarn run build
-          yarn run lint
+          changed_files=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }} | tr '\n' ' ')
+          echo "::set-output name=changed_files::$changed_files"
+
+      - name: Run lint-staged (on pull_request)
+        if: github.event_name == 'pull_request'
+        run: |
+          for file in ${{ steps.changed-files.outputs.changed_files }}; do
+            yarn eslint --fix $file
+          done
+
+      - name: Build
+        run: yarn run build
