@@ -24,7 +24,7 @@ export function useReportDownload() {
     let resultsSize = 0;
     const maxPage = 5;
     do {
-      const newVotes = await getProposalVotes(proposalId, {
+      let newVotes = await getProposalVotes(proposalId, {
         first: pageSize,
         skip: page * pageSize,
         space: space,
@@ -32,8 +32,15 @@ export function useReportDownload() {
         orderBy: 'created',
         orderDirection: 'asc'
       });
-      votes = [...votes, ...newVotes];
       resultsSize = newVotes.length;
+
+      if (page === 0 && createdPivot > 0) {
+        const existingIpfs = votes.slice(-pageSize).map(vote => vote.ipfs);
+
+        newVotes = newVotes.filter(vote => {
+          return !existingIpfs.includes(vote.ipfs);
+        });
+      }
 
       if (page === maxPage) {
         page = 0;
@@ -41,6 +48,8 @@ export function useReportDownload() {
       } else {
         page++;
       }
+
+      votes = [...votes, ...newVotes];
     } while (resultsSize === pageSize);
     return votes;
   }
