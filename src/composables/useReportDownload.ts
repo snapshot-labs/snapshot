@@ -1,14 +1,15 @@
 import jsonexport from 'jsonexport/dist';
 import pkg from '@/../package.json';
-import { getProposalVotes } from '@/helpers/snapshot';
+import { getProposalVotes, getProposal } from '@/helpers/snapshot';
 import { Vote } from '@/helpers/interfaces';
 
 export function useReportDownload() {
   async function getCsvFile(
     data: any[] | Record<string, any>,
+    headers: string[],
     fileName: string
   ) {
-    const csv = await jsonexport(data);
+    const csv = await jsonexport(data, { headers });
     const link = document.createElement('a');
     link.setAttribute('href', `data:text/csv;charset=utf-8,${csv}`);
     link.setAttribute('download', `${fileName}.csv`);
@@ -71,7 +72,19 @@ export function useReportDownload() {
       };
     });
     try {
-      getCsvFile(data, `${pkg.name}-report-${proposalId}`);
+      const proposal = await getProposal(proposalId);
+      getCsvFile(
+        data,
+        [
+          'address',
+          ...proposal.choices.map((choice, index) => `choice.${index + 1}`),
+          'voting_power',
+          'timestamp',
+          'date_utc',
+          'author_ipfs_hash'
+        ],
+        `${pkg.name}-report-${proposalId}`
+      );
     } catch (e) {
       console.error(e);
       isDownloadingVotes.value = false;
