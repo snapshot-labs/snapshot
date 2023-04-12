@@ -39,7 +39,7 @@ onMounted(async () => {
     <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon
         v-if="!isDownloadingVotes"
-        v-tippy="{ content: 'Download as CSV' }"
+        v-tippy="{ content: $t('proposal.downloadCsvVotes') }"
         @click="downloadVotes(proposal.id, proposal.space.id)"
       >
         <i-ho-download />
@@ -49,7 +49,7 @@ onMounted(async () => {
         :loading="downloadProgress < 1"
         :is-disabled="true"
       >
-        Preparing your file ...
+        {{ $t('proposal.preparingCsvVotes') }}…
         <BaseProgressRadial class="ml-2" :value="downloadProgress" />
       </BaseButtonIcon>
     </template>
