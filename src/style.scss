@@ -300,3 +300,13 @@ input[type='number'] {
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+// v-viewer package styling
+.viewer-backdrop {
+  background-color: rgba(0, 0, 0, 50%) !important;
+}
+
+.viewer-close {
+  scale: 1.4 !important;
+  padding: 20px !important;
+}

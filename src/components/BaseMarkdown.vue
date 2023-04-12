@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <div class="markdown-body break-words" v-html="markdown" />
+  <div v-viewer class="markdown-body break-words" v-html="markdown" />
 </template>
 
 <style lang="scss">
@@ -322,6 +322,7 @@ onMounted(() => {
   max-width: 100%;
   box-sizing: content-box;
   background-color: #fff;
+  cursor: pointer;
 }
 
 .markdown-body img[align='right'] {
