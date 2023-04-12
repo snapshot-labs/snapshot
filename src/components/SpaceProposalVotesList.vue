@@ -20,7 +20,8 @@ const modalVotesmOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
-const { downloadVotes, isDownloadingVotes } = useReportDownload();
+const { downloadVotes, isDownloadingVotes, downloadProgress } =
+  useReportDownload();
 
 onMounted(async () => {
   await loadVotes();
@@ -37,15 +38,19 @@ onMounted(async () => {
   >
     <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon
+        v-if="!isDownloadingVotes"
         v-tippy="{ content: 'Download as CSV' }"
-        :loading="isDownloadingVotes"
-        @click="
-          isDownloadingVotes
-            ? null
-            : downloadVotes(proposal.id, proposal.space.id)
-        "
+        @click="downloadVotes(proposal.id, proposal.space.id)"
       >
         <i-ho-download />
+      </BaseButtonIcon>
+      <BaseButtonIcon
+        v-else
+        :loading="downloadProgress < 1"
+        :is-disabled="true"
+      >
+        Preparing your file ...
+        <BaseProgressRadial class="ml-2" :value="downloadProgress" />
       </BaseButtonIcon>
     </template>
     <SpaceProposalVotesListItem

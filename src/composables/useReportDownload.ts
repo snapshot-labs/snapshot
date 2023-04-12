@@ -4,6 +4,9 @@ import { getProposalVotes, getProposal } from '@/helpers/snapshot';
 import { Vote } from '@/helpers/interfaces';
 
 export function useReportDownload() {
+  const isDownloadingVotes = ref(false);
+  const downloadProgress = ref(0);
+
   async function getCsvFile(
     data: any[] | Record<string, any>,
     headers: string[],
@@ -17,7 +20,11 @@ export function useReportDownload() {
     link.click();
   }
 
-  async function getAllVotes(proposalId: string, space: string) {
+  async function getAllVotes(
+    proposalId: string,
+    space: string,
+    totalVotesCount: number
+  ) {
     let votes: Vote[] = [];
     let page = 0;
     let createdPivot = 0;
@@ -51,15 +58,17 @@ export function useReportDownload() {
       }
 
       votes = [...votes, ...newVotes];
+      downloadProgress.value = Math.floor(
+        (votes.length / totalVotesCount) * 100
+      );
     } while (resultsSize === pageSize);
     return votes;
   }
 
-  const isDownloadingVotes = ref(false);
-
   async function downloadVotes(proposalId: string, space: string) {
     isDownloadingVotes.value = true;
-    const votes = await getAllVotes(proposalId, space);
+    const proposal = await getProposal(proposalId);
+    const votes = await getAllVotes(proposalId, space, proposal.votes);
     if (!votes.length) return;
     const data = votes.map(vote => {
       return {
@@ -72,7 +81,6 @@ export function useReportDownload() {
       };
     });
     try {
-      const proposal = await getProposal(proposalId);
       getCsvFile(
         data,
         [
@@ -94,6 +102,7 @@ export function useReportDownload() {
 
   return {
     downloadVotes,
-    isDownloadingVotes
+    isDownloadingVotes,
+    downloadProgress
   };
 }
