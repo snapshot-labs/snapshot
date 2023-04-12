@@ -19,15 +19,26 @@ export function useReportDownload() {
   async function getAllVotes(proposalId: string, space: string) {
     let votes: Vote[] = [];
     let page = 0;
+    let createdPivot = 0;
     const pageSize = 1000;
+    const maxPage = 5;
     while (votes.length === pageSize * page) {
       const newVotes = await getProposalVotes(proposalId, {
         first: pageSize,
         skip: page * pageSize,
-        space: space
+        space: space,
+        created_gte: createdPivot,
+        orderBy: 'created',
+        orderDirection: 'asc'
       });
       votes = [...votes, ...newVotes];
-      page++;
+
+      if (page === maxPage) {
+        page = 0;
+        createdPivot = newVotes[-1].created;
+      } else {
+        page++;
+      }
     }
     return votes;
   }
