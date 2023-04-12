@@ -21,8 +21,9 @@ export function useReportDownload() {
     let page = 0;
     let createdPivot = 0;
     const pageSize = 1000;
+    let resultsSize = 0;
     const maxPage = 5;
-    while (votes.length === pageSize * page) {
+    do {
       const newVotes = await getProposalVotes(proposalId, {
         first: pageSize,
         skip: page * pageSize,
@@ -32,14 +33,15 @@ export function useReportDownload() {
         orderDirection: 'asc'
       });
       votes = [...votes, ...newVotes];
+      resultsSize = newVotes.length;
 
       if (page === maxPage) {
         page = 0;
-        createdPivot = newVotes[-1].created;
+        createdPivot = newVotes[newVotes.length - 1].created;
       } else {
         page++;
       }
-    }
+    } while (resultsSize === pageSize);
     return votes;
   }
 
