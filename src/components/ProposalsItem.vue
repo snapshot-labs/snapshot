@@ -65,10 +65,7 @@ const body = computed(() => removeMd(props.proposal.body));
           :proposal="proposal"
         />
 
-        <ProposalsItemActive
-          v-if="proposal.scores_state !== 'final'"
-          :proposal="proposal"
-        />
+        <ProposalsItemFooter :proposal="proposal" />
       </div>
     </router-link>
   </div>

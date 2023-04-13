@@ -114,7 +114,7 @@
   "addFavorites": "즐겨찾기 추가",
   "createdBy": "{0} 에 의해",
   "startIn": "시작 {0}",
-  "endIn": "종료 {1}",
+  "endIn": "종료 {0}",
   "proposalTimeLeft": "{0} 남음",
   "endedAgo": "{0} 에 종료됨",
   "proposalBy": "{0} 에 의해",

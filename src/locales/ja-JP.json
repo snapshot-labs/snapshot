@@ -114,7 +114,7 @@
   "addFavorites": "お気に入りに追加",
   "createdBy": "{0} が作成",
   "startIn": "{0} 後に開始",
-  "endIn": "{1} 後に終了",
+  "endIn": "{0} 後に終了",
   "proposalTimeLeft": "残り{0}",
   "endedAgo": "{0} に終了しました",
   "proposalBy": "{0} が作成",

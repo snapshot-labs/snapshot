@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import capitalize from 'lodash/capitalize';
 import { Proposal } from '@/helpers/interfaces';
 
 const { getRelativeProposalPeriod, formatPercentNumber, formatCompactNumber } =
@@ -12,9 +13,11 @@ defineProps<{
 <template>
   <div class="mt-3">
     {{
-      getRelativeProposalPeriod(proposal.state, proposal.start, proposal.end)
+      capitalize(
+        getRelativeProposalPeriod(proposal.state, proposal.start, proposal.end)
+      )
     }}
-    <span v-if="proposal.quorum && proposal.scores_total">
+    <template v-if="proposal.quorum && proposal.scores_total">
       -
       {{
         formatPercentNumber(
@@ -22,6 +25,6 @@ defineProps<{
         )
       }}
       {{ $t('quorumReached') }}
-    </span>
+    </template>
   </div>
 </template>

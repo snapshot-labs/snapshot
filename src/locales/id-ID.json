@@ -114,7 +114,7 @@
   "addFavorites": "Tambahkan favorit",
   "createdBy": "Oleh {0}",
   "startIn": "mulai {0}",
-  "endIn": "akhir {1}",
+  "endIn": "akhir {0}",
   "proposalTimeLeft": "{0} tersisa",
   "endedAgo": "berakhir {0}",
   "proposalBy": "oleh {0}",
