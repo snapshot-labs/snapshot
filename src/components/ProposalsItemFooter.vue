@@ -12,11 +12,24 @@ defineProps<{
 
 <template>
   <div class="mt-3">
-    {{
-      capitalize(
-        getRelativeProposalPeriod(proposal.state, proposal.start, proposal.end)
-      )
-    }}
+    <span
+      v-tippy="{
+        content: new Date(
+          (proposal.state === 'pending' ? proposal.start : proposal.end) * 1000
+        ).toUTCString()
+      }"
+      class="cursor-help text-sm"
+    >
+      {{
+        capitalize(
+          getRelativeProposalPeriod(
+            proposal.state,
+            proposal.start,
+            proposal.end
+          )
+        )
+      }}
+    </span>
     <template v-if="proposal.quorum && proposal.scores_total">
       -
       {{
