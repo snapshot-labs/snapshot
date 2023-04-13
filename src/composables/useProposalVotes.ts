@@ -2,7 +2,7 @@ import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { Proposal, Vote } from '@/helpers/interfaces';
+import { Proposal, Vote, VoteFilters } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';
 
@@ -10,7 +10,7 @@ export function useProposalVotes(
   proposal: Proposal,
   loadBy = 6,
   userVote: Vote | null,
-  search?: Ref<string>
+  filters?: Ref<VoteFilters>
 ) {
   const { web3Account } = useWeb3();
   const { profiles, loadProfiles } = useProfiles();
@@ -55,11 +55,22 @@ export function useProposalVotes(
     });
   }
 
+  function getFilters() {
+    return {
+      space: proposal.space.id,
+      ...(searchAddress.value?.length ? { voter: searchAddress.value } : {}),
+      ...(filters?.value?.orderBy ? { orderBy: filters.value.orderBy } : {}),
+      ...(filters?.value?.orderDirection
+        ? { orderDirection: filters.value.orderDirection }
+        : {}),
+      ...(filters?.value?.onlyWithReason ? { reason_not: '' } : {})
+    };
+  }
+
   async function loadVotes() {
     const votesRes = await getProposalVotes(proposal.id, {
       first: loadBy,
-      space: proposal.space.id,
-      ...(searchAddress.value ? { voter: searchAddress.value } : {})
+      ...getFilters()
     });
 
     votes.value = formatProposalVotes(votesRes);
@@ -67,26 +78,24 @@ export function useProposalVotes(
   }
 
   async function loadMoreVotes() {
-    const votesObj = await getProposalVotes(proposal.id, {
+    const votesRes = await getProposalVotes(proposal.id, {
       first: loadBy,
-      space: proposal.space.id,
       skip: votes.value.length,
-      ...(searchAddress.value ? { voter: searchAddress.value } : {})
+      ...getFilters()
     });
-    votes.value = votes.value.concat(formatProposalVotes(votesObj));
+    votes.value = votes.value.concat(formatProposalVotes(votesRes));
     loadedVotes.value = true;
   }
 
   async function loadSearchVote() {
-    const votesObj = await getProposalVotes(proposal.id, {
-      space: proposal.space.id,
-      voter: searchAddress.value
+    const votesRes = await getProposalVotes(proposal.id, {
+      ...getFilters()
     });
 
-    if (votesObj.length === 0) {
+    if (votesRes.length === 0) {
       noVotesFound.value = true;
     } else {
-      searchVote.value = formatProposalVotes(votesObj);
+      searchVote.value = formatProposalVotes(votesRes);
     }
     loadedVotes.value = true;
   }
@@ -146,33 +155,38 @@ export function useProposalVotes(
   });
 
   watchDebounced(
-    () => search?.value,
+    () => filters?.value,
     async val => {
       searchAddress.value = '';
       loadedVotes.value = false;
       noVotesFound.value = false;
+
       if (!val) {
         searchVote.value = [];
         loadedVotes.value = true;
         return;
       }
 
-      if (isAddress(val.toLowerCase())) {
-        searchAddress.value = val;
-      } else if (isValidEnsDomain(val)) {
-        searchAddress.value = await resolveEns(val);
-      } else if (val.endsWith('.lens')) {
-        searchAddress.value = await resolveLens(val);
+      const voter = val?.voter;
+      if (voter?.length) {
+        if (isAddress(voter.toLowerCase())) {
+          searchAddress.value = voter;
+        } else if (isValidEnsDomain(voter)) {
+          searchAddress.value = await resolveEns(voter);
+        } else if (voter.endsWith('.lens')) {
+          searchAddress.value = await resolveLens(voter);
+        }
+
+        if (!searchAddress.value) {
+          loadedVotes.value = true;
+          noVotesFound.value = true;
+          return;
+        }
       }
 
-      if (!searchAddress.value) {
-        loadedVotes.value = true;
-        noVotesFound.value = true;
-        return;
-      }
       loadSearchVote();
     },
-    { debounce: 300 }
+    { debounce: 300, deep: true }
   );
 
   return {

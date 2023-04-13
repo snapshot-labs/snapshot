@@ -53,7 +53,7 @@ onMounted(() => {
 <template>
   <div
     class="flex items-center"
-    :class="{ 'border-b bg-skin-bg px-4 py-3': modal }"
+    :class="{ 'border-b bg-skin-bg py-3 pl-4': modal }"
   >
     <i-ho-search class="mr-2 text-[19px]" />
     <input
@@ -66,11 +66,11 @@ onMounted(() => {
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />
-    <slot name="after" :clearInput="clearInput" />
     <i-ho-x-mark
-      v-if="!$slots.after && modelValue"
-      class="cursor-pointer text-[12px]"
+      v-if="modelValue"
+      class="mr-4 cursor-pointer text-[12px]"
       @click="clearInput"
     />
+    <slot name="after" :clearInput="clearInput" />
   </div>
 </template>

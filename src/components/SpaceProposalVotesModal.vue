@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useIntersectionObserver } from '@vueuse/core';
 import {
   ExtendedSpace,
@@ -17,11 +18,18 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
+const VOTES_FILTERS_DEFAULT = {
+  voter: '',
+  orderBy: 'vp',
+  orderDirection: 'desc',
+  onlyWithReason: false
+};
+
 const votesEndEl = ref<HTMLElement | null>(null);
-const votesQuery = ref('');
+
+const votesFilters = ref(clone(VOTES_FILTERS_DEFAULT));
 
 const {
-  loadVotes,
   sortedVotes,
   searchVote,
   loadMore,
@@ -32,7 +40,7 @@ const {
   clearVotes,
   noVotesFound,
   searchAddress
-} = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
+} = useProposalVotes(props.proposal, 20, props.userVote, votesFilters);
 
 useIntersectionObserver(
   votesEndEl,
@@ -48,10 +56,9 @@ useIntersectionObserver(
 
 watch(
   () => props.open,
-  val => {
-    votesQuery.value = '';
+  () => {
+    votesFilters.value = clone(VOTES_FILTERS_DEFAULT);
     clearVotes();
-    if (val) loadVotes();
   }
 );
 </script>
@@ -64,12 +71,16 @@ watch(
       >
         <h3>{{ $t('votes') }}</h3>
         <BaseSearch
-          v-model="votesQuery"
+          v-model="votesFilters.voter"
           :placeholder="$t('searchPlaceholderVotes')"
           modal
           focus-on-mount
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
-        />
+        >
+          <template #after>
+            <SpaceProposalVotesFilters v-model="votesFilters" />
+          </template>
+        </BaseSearch>
       </div>
     </template>
     <template #default="{ maxHeight }">

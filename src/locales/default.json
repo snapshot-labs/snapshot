@@ -1,6 +1,13 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchOrderBy": "Order by",
+  "searchVotingPower": "Voting power",
+  "searchChoice": "Choice",
+  "searchOrderDirection": "Order direction",
+  "searchOrderDirectionAsc": "Ascending",
+  "searchOrderDirectionDesc": "Descending",
+  "searchOnlyWithReason": "Only with reason",
   "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",

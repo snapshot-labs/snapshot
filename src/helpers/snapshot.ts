@@ -6,11 +6,14 @@ import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
-  { first, voter, skip, space }: any = {
+  { first, voter, skip, space, orderBy, orderDirection, reason_not }: any = {
     first: 1000,
     voter: '',
     skip: 0,
-    space: ''
+    space: '',
+    orderBy: 'vp',
+    orderDirection: 'desc',
+    reason_not: ''
   }
 ): Promise<Vote[] | []> {
   try {
@@ -19,8 +22,9 @@ export async function getProposalVotes(
       query: VOTES_QUERY,
       variables: {
         id: proposalId,
-        orderBy: 'vp',
-        orderDirection: 'desc',
+        orderBy,
+        orderDirection,
+        reason_not,
         first,
         voter,
         skip,

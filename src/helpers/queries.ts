@@ -7,13 +7,20 @@ export const VOTES_QUERY = gql`
     $skip: Int
     $orderBy: String
     $orderDirection: OrderDirection
+    $reason_not: String
     $voter: String
     $space: String
   ) {
     votes(
       first: $first
       skip: $skip
-      where: { proposal: $id, vp_gt: 0, voter: $voter, space: $space }
+      where: {
+        proposal: $id
+        vp_gt: 0
+        voter: $voter
+        space: $space
+        reason_not: $reason_not
+      }
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
