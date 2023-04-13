@@ -114,7 +114,7 @@
   "addFavorites": "Favorileri ekleyin",
   "createdBy": "{0} Tarafından",
   "startIn": "başlangıç {0}",
-  "endIn": "bitiş {1}",
+  "endIn": "bitiş {0}",
   "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "{0} tarafından",

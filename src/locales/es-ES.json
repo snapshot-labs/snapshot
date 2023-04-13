@@ -114,7 +114,7 @@
   "addFavorites": "Añadir favoritos",
   "createdBy": "Por {0}",
   "startIn": "iniciar {0}",
-  "endIn": "finalizar {1}",
+  "endIn": "finalizar {0}",
   "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "por {0}",

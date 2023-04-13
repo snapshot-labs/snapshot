@@ -114,7 +114,7 @@
   "addFavorites": "添加收藏",
   "createdBy": "由 {0}",
   "startIn": "从 {0} 开始",
-  "endIn": "结束 {1}",
+  "endIn": "结束 {0}",
   "proposalTimeLeft": "还剩 {0}",
   "endedAgo": "结束 {0}",
   "proposalBy": "由 {0}",

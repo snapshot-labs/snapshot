@@ -98,7 +98,7 @@
   "addFavorites": "पसंदीदा में जोड़ें",
   "createdBy": "तक {0}",
   "startIn": "शुरू {0}",
-  "endIn": "ख़त्म {1}",
+  "endIn": "ख़त्म {0}",
   "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "द्वारा{0}",
