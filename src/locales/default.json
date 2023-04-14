@@ -252,7 +252,7 @@
       }
     },
     "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing the CSV file"
+    "preparingCsvVotes": "Preparing file"
   },
   "proposals": {
     "header": "Proposals",
