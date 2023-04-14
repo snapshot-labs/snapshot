@@ -148,24 +148,25 @@ onMounted(() => loadProposals());
         :space="space"
       />
       <div v-else class="mb-4 space-y-4">
-        <BaseBlock
-          v-for="(proposal, i) in spaceProposals"
-          :key="i"
-          slim
-          class="transition-colors md:hover:border-skin-text"
-        >
-          <ProposalsItem
-            :proposal="proposal"
-            :profiles="profiles"
-            :space="space"
-            :voted="userVotedProposalIds.includes(proposal.id)"
-            :hide-space-avatar="proposal.space.id === space.id"
-            :to="{
-              name: 'spaceProposal',
-              params: { id: proposal.id, key: proposal.space.id }
-            }"
-          />
-        </BaseBlock>
+        <template v-for="(proposal, i) in spaceProposals" :key="i">
+          <BaseBlock
+            v-if="!proposal.flagged"
+            slim
+            class="transition-colors md:hover:border-skin-text"
+          >
+            <ProposalsItem
+              :proposal="proposal"
+              :profiles="profiles"
+              :space="space"
+              :voted="userVotedProposalIds.includes(proposal.id)"
+              :hide-space-avatar="proposal.space.id === space.id"
+              :to="{
+                name: 'spaceProposal',
+                params: { id: proposal.id, key: proposal.space.id }
+              }"
+            />
+          </BaseBlock>
+        </template>
       </div>
       <LoadingRow v-if="loadingMore && !loading" block />
     </template>
