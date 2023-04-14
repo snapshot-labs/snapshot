@@ -251,7 +251,9 @@
       "tips": {
         "1": "Votes can be changed while the proposal is active"
       }
-    }
+    },
+    "downloadCsvVotes": "Download as CSV",
+    "preparingCsvVotes": "Preparing file"
   },
   "proposals": {
     "header": "Proposals",
