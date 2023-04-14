@@ -256,7 +256,7 @@
       }
     },
     "downloadCsvVotes": "Télécharger en tant que CSV",
-    "preparingCsvVotes": "Préparation du fichier CSV"
+    "preparingCsvVotes": "Préparation du fichier"
   },
   "proposals": {
     "header": "Propositions",
