@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const props = defineProps({
-  modelValue: { type: Object, required: true }
-});
+import { Proposal, VoteFilters } from '@/helpers/interfaces';
+
+const props = defineProps<{
+  proposal: Proposal;
+  modelValue: VoteFilters;
+}>();
+
 const emit = defineEmits(['update:modelValue']);
 
 const { t } = useI18n();
@@ -58,7 +62,7 @@ function updateFilters(key: string, val: string | boolean) {
             />
           </div>
           <InputCheckbox
-            :model-value="modelValue.onlyWithReason"
+            :model-value="Boolean(modelValue.onlyWithReason)"
             :label="$t('searchOnlyWithReason')"
             name="searchOnlyWithReason"
             class="my-3"

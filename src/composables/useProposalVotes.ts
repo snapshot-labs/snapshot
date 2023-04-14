@@ -20,7 +20,6 @@ export function useProposalVotes(
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
   const searchAddress = ref('');
-  const searchVote = ref<Vote[]>([]);
   const noVotesFound = ref(false);
 
   const isZero = computed(() => {
@@ -30,6 +29,7 @@ export function useProposalVotes(
   });
 
   const sortedVotes = computed(() => {
+    if (filters?.value) return votes.value;
     const votesClone = clone(votes.value);
     if (userVote) votesClone.unshift(userVote);
     const uniqVotes = uniqBy(votesClone, 'ipfs' as any);
@@ -73,6 +73,7 @@ export function useProposalVotes(
       ...getFilters()
     });
 
+    if (votesRes.length === 0) noVotesFound.value = true;
     votes.value = formatProposalVotes(votesRes);
     loadedVotes.value = true;
   }
@@ -84,19 +85,6 @@ export function useProposalVotes(
       ...getFilters()
     });
     votes.value = votes.value.concat(formatProposalVotes(votesRes));
-    loadedVotes.value = true;
-  }
-
-  async function loadSearchVote() {
-    const votesRes = await getProposalVotes(proposal.id, {
-      ...getFilters()
-    });
-
-    if (votesRes.length === 0) {
-      noVotesFound.value = true;
-    } else {
-      searchVote.value = formatProposalVotes(votesRes);
-    }
     loadedVotes.value = true;
   }
 
@@ -162,7 +150,6 @@ export function useProposalVotes(
       noVotesFound.value = false;
 
       if (!val) {
-        searchVote.value = [];
         loadedVotes.value = true;
         return;
       }
@@ -184,7 +171,7 @@ export function useProposalVotes(
         }
       }
 
-      loadSearchVote();
+      loadVotes();
     },
     { debounce: 300, deep: true }
   );
@@ -193,7 +180,6 @@ export function useProposalVotes(
     isZero,
     noVotesFound,
     votes,
-    searchVote,
     loadedVotes,
     sortedVotes,
     loadingMore,

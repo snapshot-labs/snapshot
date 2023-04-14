@@ -31,7 +31,6 @@ const votesFilters = ref(clone(VOTES_FILTERS_DEFAULT));
 
 const {
   sortedVotes,
-  searchVote,
   loadMore,
   loadingMore,
   loadedVotes,
@@ -78,7 +77,10 @@ watch(
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
         >
           <template #after>
-            <SpaceProposalVotesFilters v-model="votesFilters" />
+            <SpaceProposalVotesFilters
+              v-model="votesFilters"
+              :proposal="proposal"
+            />
           </template>
         </BaseSearch>
       </div>
@@ -105,7 +107,7 @@ watch(
             :style="{ minHeight: maxHeight }"
           >
             <SpaceProposalVotesListItem
-              v-for="(vote, i) in searchVote.length ? searchVote : sortedVotes"
+              v-for="(vote, i) in sortedVotes"
               :key="i"
               :vote="vote"
               :profiles="profiles"
