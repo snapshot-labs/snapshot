@@ -20,7 +20,7 @@ const body = computed(() => removeMd(props.proposal.body));
     <router-link class="block p-3 text-skin-text sm:p-4" :to="to">
       <div>
         <div class="mb-2 flex items-center justify-between">
-          <div class="flex items-center space-x-1">
+          <div class="flex items-start gap-1 space-x-1">
             <template v-if="!hideSpaceAvatar">
               <LinkSpace
                 class="text-skin-text"
@@ -49,6 +49,13 @@ const body = computed(() => removeMd(props.proposal.body));
               :space="space"
               :proposal="proposal"
               :hide-avatar="!hideSpaceAvatar"
+            />
+            <i-ho-exclamation-circle
+              v-if="proposal.flagged"
+              v-tippy="{
+                content: $t('warningFlagged')
+              }"
+              class="cursor-help text-red"
             />
           </div>
           <LabelProposalState :state="proposal.state" />
