@@ -114,7 +114,7 @@
   "addFavorites": "Добавить в избранное",
   "createdBy": "От: {0}",
   "startIn": "начать {0}",
-  "endIn": "по {1}",
+  "endIn": "по {0}",
   "proposalTimeLeft": "{0} осталось",
   "endedAgo": "завершился {0}",
   "proposalBy": "от: {0}",

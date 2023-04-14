@@ -114,7 +114,7 @@
   "addFavorites": "Adaugă la favorite",
   "createdBy": "De către {0}",
   "startIn": "pornește {0}",
-  "endIn": "sfârșit {1}",
+  "endIn": "sfârșit {0}",
   "proposalTimeLeft": "{0} rămas",
   "endedAgo": "încheiat {0}",
   "proposalBy": "de către {0}",

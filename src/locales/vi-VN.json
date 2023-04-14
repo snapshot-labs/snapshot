@@ -98,7 +98,7 @@
   "addFavorites": "Thêm yêu thích",
   "createdBy": "Bởi {0}",
   "startIn": "bắt đầu {0}",
-  "endIn": "kết thúc {1}",
+  "endIn": "kết thúc {0}",
   "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "bởi {0}",

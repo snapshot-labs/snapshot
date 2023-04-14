@@ -98,7 +98,7 @@
   "addFavorites": "Додати улюблені",
   "createdBy": "Від {0}",
   "startIn": "початок {0}",
-  "endIn": "кінець {1}",
+  "endIn": "кінець {0}",
   "proposalTimeLeft": "{0} left",
   "endedAgo": "ended {0}",
   "proposalBy": "від {0}",

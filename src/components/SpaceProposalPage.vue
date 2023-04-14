@@ -24,6 +24,7 @@ useMeta({
 
 const route = useRoute();
 const router = useRouter();
+const { isFlaggedProposal } = useProposals();
 
 const { web3, web3Account } = useWeb3();
 
@@ -35,6 +36,7 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
+const isWarningFlaggedOpen = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -143,6 +145,7 @@ watch(
 
 onMounted(() => {
   loadResults();
+  if (isFlaggedProposal(props.proposal)) isWarningFlaggedOpen.value = true;
 });
 </script>
 
@@ -249,5 +252,16 @@ onMounted(() => {
       :selected-choices="selectedChoices"
       @close="isModalPostVoteOpen = false"
     />
+    <ModalNotice
+      title="Warning"
+      :open="isWarningFlaggedOpen"
+      @close="isWarningFlaggedOpen = false"
+    >
+      <div class="space-y-4 text-skin-link">
+        <BaseMessageBlock level="warning-red" class="text-left">
+          {{ $t('warningFlagged') }}
+        </BaseMessageBlock>
+      </div>
+    </ModalNotice>
   </teleport>
 </template>

@@ -142,14 +142,19 @@ export function useIntl() {
     formatNumber(number, percentNumberFormatter.value);
 
   const getRelativeProposalPeriod = (state: any, start: any, end: any): any => {
-    const now: any = new Date().getTime() / 1e3;
     if (state === 'closed') {
-      return t('endedAgo', [formatRelativeTime(end)]);
+      return t('endedAgo', [
+        formatRelativeTime(end, longRelativeTimeFormatter.value)
+      ]);
     }
     if (state === 'active') {
-      return t('proposalTimeLeft', [formatDuration(end - now)]);
+      return t('endIn', [
+        formatRelativeTime(end, longRelativeTimeFormatter.value)
+      ]);
     }
-    return t('startIn', [formatRelativeTime(start)]);
+    return t('startIn', [
+      formatRelativeTime(start, longRelativeTimeFormatter.value)
+    ]);
   };
 
   return {
