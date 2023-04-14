@@ -44,14 +44,12 @@ onMounted(async () => {
       >
         <i-ho-download />
       </BaseButtonIcon>
-      <div
-        v-else
-        :loading="downloadProgress < 1"
-        :is-disabled="true"
-        class="flex"
-      >
-        {{ $t('proposal.preparingCsvVotes') }}…
-        <BaseProgressRadial class="my-1 ml-2" :value="downloadProgress" />
+      <div v-else class="flex">
+        <LoadingSpinner v-if="downloadProgress < 1" :small="true" />
+        <template v-else>
+          {{ $t('proposal.preparingCsvVotes') }}…
+          <BaseProgressRadial class="my-1 ml-2" :value="downloadProgress" />
+        </template>
       </div>
     </template>
     <SpaceProposalVotesListItem
