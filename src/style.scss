@@ -276,6 +276,7 @@ input[type='number'] {
 .tippy-box[data-theme~='urlified'] {
   max-width: 200px;
   white-space: pre-wrap;
+  color: var(--header-bg);
 
   a {
     color: var(--header-bg);
