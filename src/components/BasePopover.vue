@@ -41,7 +41,6 @@ withDefaults(
 
       <PopoverPanel
         v-slot="{ close }"
-        :focus="true"
         class="w-screen max-w-xs outline-none sm:max-w-sm"
       >
         <div

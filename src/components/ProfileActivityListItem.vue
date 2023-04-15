@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ProfileActivity } from '@/helpers/interfaces';
 
+const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
+
 defineProps<{ activity: ProfileActivity }>();
 </script>
 
@@ -24,14 +26,26 @@ defineProps<{ activity: ProfileActivity }>();
           </div>
         </div>
         <div class="ml-4 w-[calc(100%-64px)]">
-          <div class="text-xs leading-5 text-skin-text">
-            {{
-              $t('profile.activity.votedFor', {
-                choice: activity.vote?.choice
-                  ? `"${activity.vote?.choice}"`
-                  : ''
-              })
-            }}
+          <div class="flex text-xs leading-5 text-skin-text">
+            <div class="flex-grow">
+              {{
+                $t('profile.activity.votedFor', {
+                  choice: activity.vote?.choice
+                    ? `"${activity.vote?.choice}"`
+                    : ''
+                })
+              }}
+            </div>
+            <div
+              v-tippy="{
+                content: new Date(activity.created * 1000).toUTCString()
+              }"
+              class="cursor-help"
+            >
+              {{
+                formatRelativeTime(activity.created, longRelativeTimeFormatter)
+              }}
+            </div>
           </div>
           <div class="truncate pr-2">
             {{ activity.title }}
