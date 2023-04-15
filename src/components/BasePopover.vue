@@ -7,12 +7,10 @@ withDefaults(
   defineProps<{
     label?: string;
     placement?: Placement;
-    focus?: boolean;
   }>(),
   {
     label: '',
-    placement: 'bottom-end',
-    focus: true
+    placement: 'bottom-end'
   }
 );
 </script>
@@ -43,7 +41,6 @@ withDefaults(
 
       <PopoverPanel
         v-slot="{ close }"
-        :focus="focus"
         class="w-screen max-w-xs outline-none sm:max-w-sm"
       >
         <div
