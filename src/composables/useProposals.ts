@@ -10,7 +10,7 @@ const FLAGGED_LINKS = [
   'launchmynft.io/collections/0x000000798e0CA40142275dc9C991766cf1571793/u1jk1jHCcdJwr5Lz9ZQ3',
   'bit.ly/3obAcG6',
   'bit.ly/3GKKLpP',
-  'www.launchmynft.io/collections/0x000000798e0CA40142275dc9C991766cf1571793/u1jk1jHCcdJwr5Lz9ZQ3',
+  'launchmynft.io/collections/0x000000798e0CA40142275dc9C991766cf1571793/u1jk1jHCcdJwr5Lz9ZQ3',
   'shortest.link/oiWG',
   'clm.arbitrum-foundation.at'
 ];
