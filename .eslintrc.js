@@ -32,10 +32,5 @@ module.exports = {
     defineProps: 'readonly',
     defineEmits: 'readonly',
     withDefaults: 'readonly'
-  },
-  overrides: [
-    {
-      files: ['*.vue', '*.ts', '*.js', '*.json']
-    }
-  ]
+  }
 };
