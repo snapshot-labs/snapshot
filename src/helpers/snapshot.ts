@@ -2,29 +2,21 @@ import { getVp, validate } from '@snapshot-labs/snapshot.js/src/utils';
 import { apolloClient } from '@/helpers/apollo';
 import { PROPOSAL_QUERY, VOTES_QUERY } from '@/helpers/queries';
 import { ExtendedSpace, Proposal, Vote } from '@/helpers/interfaces';
+import { isAddress } from '@ethersproject/address';
 import cloneDeep from 'lodash/cloneDeep';
 
 export async function getProposalVotes(
   proposalId: string,
   {
-    first,
-    voter,
-    skip,
-    space,
-    orderBy,
-    orderDirection,
-    reason_not,
-    created_gte
-  }: any = {
-    first: 1000,
-    voter: '',
-    skip: 0,
-    space: '',
-    orderBy: 'vp',
-    orderDirection: 'desc',
-    reason_not: '',
-    created_gte: 0
-  }
+    first = 1000,
+    voter = '',
+    skip = 0,
+    space = '',
+    orderBy = 'vp',
+    orderDirection = 'desc',
+    created_gte = 0,
+    reason_not = ''
+  } = {}
 ): Promise<Vote[] | []> {
   try {
     console.time('getProposalVotes');
@@ -36,7 +28,7 @@ export async function getProposalVotes(
         orderDirection,
         reason_not,
         first,
-        voter,
+        voter: isAddress(voter) ? voter : undefined,
         skip,
         space,
         created_gte

@@ -46,6 +46,30 @@ export function useProposalVotes(
     return uniqVotes;
   });
 
+  function getFilters() {
+    const filterOptions: Partial<VoteFilters> = {
+      space: proposal.space.id
+    };
+
+    if (searchAddress.value?.length) {
+      filterOptions.voter = searchAddress.value;
+    }
+
+    if (filters?.value?.orderBy) {
+      filterOptions.orderBy = filters.value.orderBy;
+    }
+
+    if (filters?.value?.orderDirection) {
+      filterOptions.orderDirection = filters.value.orderDirection;
+    }
+
+    if (filters?.value?.onlyWithReason) {
+      filterOptions.reason_not = '';
+    }
+
+    return filterOptions;
+  }
+
   function formatProposalVotes(votes) {
     if (!votes.length) return [];
     return votes.map(vote => {
@@ -55,21 +79,11 @@ export function useProposalVotes(
     });
   }
 
-  function getFilters() {
-    return {
-      space: proposal.space.id,
-      ...(searchAddress.value?.length ? { voter: searchAddress.value } : {}),
-      ...(filters?.value?.orderBy ? { orderBy: filters.value.orderBy } : {}),
-      ...(filters?.value?.orderDirection
-        ? { orderDirection: filters.value.orderDirection }
-        : {}),
-      ...(filters?.value?.onlyWithReason ? { reason_not: '' } : {})
-    };
-  }
-
   async function loadVotes() {
     const votesRes = await getProposalVotes(proposal.id, {
       first: loadBy,
+      space: proposal.space.id,
+      voter: searchAddress.value,
       ...getFilters()
     });
 
@@ -82,6 +96,7 @@ export function useProposalVotes(
     const votesRes = await getProposalVotes(proposal.id, {
       first: loadBy,
       skip: votes.value.length,
+      voter: searchAddress.value,
       ...getFilters()
     });
     votes.value = votes.value.concat(formatProposalVotes(votesRes));

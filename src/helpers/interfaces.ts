@@ -211,10 +211,12 @@ export interface Vote {
 }
 
 export interface VoteFilters {
+  space?: string;
   voter?: string;
   orderBy?: string;
   orderDirection?: string;
   onlyWithReason?: boolean;
+  reason_not?: string;
 }
 
 // Execution
