@@ -59,7 +59,7 @@ export function useProposalVotes(
     const votesRes = await getProposalVotes(proposal.id, {
       first: loadBy,
       space: proposal.space.id,
-      ...(searchAddress.value ? { voter: searchAddress.value } : {})
+      voter: searchAddress.value
     });
 
     votes.value = formatProposalVotes(votesRes);
@@ -71,7 +71,7 @@ export function useProposalVotes(
       first: loadBy,
       space: proposal.space.id,
       skip: votes.value.length,
-      ...(searchAddress.value ? { voter: searchAddress.value } : {})
+      voter: searchAddress.value
     });
     votes.value = votes.value.concat(formatProposalVotes(votesObj));
     loadedVotes.value = true;
