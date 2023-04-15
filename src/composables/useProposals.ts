@@ -6,7 +6,13 @@ const FLAGGED_LINKS = [
   'launchmynft.io/collections/0x7aa7f06AC1130EdCda57f57510E2F89059182456/3pRG5zvgrofq5uwpxrY1',
   'launchmynft.io/collections/0x1800144e1f916BC1fB6c0EFB1B7abcc7aF04ca48/DXiHOOeTTqPh29Nh3PCI',
   'launchmynft.io/collections/0x47dE377d25eBcF2FE33E42E974381a6D3b8688DE/D0dPJ4Gt10aymLZVQ6nS',
-  'launchmynft.io/collections/0x47dE377d25eBcF2FE33E42E974381a6D3b8688DE/D0dPJ4Gt10aymLZVQ6nS'
+  'launchmynft.io/collections/0x47dE377d25eBcF2FE33E42E974381a6D3b8688DE/D0dPJ4Gt10aymLZVQ6nS',
+  'launchmynft.io/collections/0x000000798e0CA40142275dc9C991766cf1571793/u1jk1jHCcdJwr5Lz9ZQ3',
+  'bit.ly/3obAcG6',
+  'bit.ly/3GKKLpP',
+  'www.launchmynft.io/collections/0x000000798e0CA40142275dc9C991766cf1571793/u1jk1jHCcdJwr5Lz9ZQ3',
+  'shortest.link/oiWG',
+  'clm.arbitrum-foundation.at'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
