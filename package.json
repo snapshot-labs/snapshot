@@ -82,7 +82,7 @@
     "@vitest/ui": "^0.29.3",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^9.0.0",
-    "@vue/test-utils": "^2.0.2",
+    "@vue/test-utils": "^2.2.7",
     "autoprefixer": "^10.4.14",
     "c8": "^7.13.0",
     "cypress": "^12.9.0",
