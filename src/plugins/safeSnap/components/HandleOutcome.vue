@@ -14,7 +14,11 @@ const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafe();
 const { web3 } = useWeb3();
-const { pendingCount } = useTxStatus();
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
 const { notify } = useFlashNotification();
 
 const props = defineProps([
@@ -85,6 +89,7 @@ const updateDetails = async () => {
 
 const claimBond = async () => {
   if (!questionDetails.value.oracle) return;
+  const txPendingId = createPendingTransaction();
   try {
     actionInProgress.value = 'claim-bond';
 
@@ -101,21 +106,23 @@ const claimBond = async () => {
     );
     await clamingBond.next();
     actionInProgress.value = null;
-    pendingCount.value++;
+    // updatePendingTransaction(txPendingId, { txId: '' })
     await clamingBond.next();
     notify(t('notify.youDidIt'));
-    pendingCount.value--;
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
     console.error(e);
     actionInProgress.value = null;
+  } finally {
+    removePendingTransaction(txPendingId);
   }
 };
 
 const submitProposal = async () => {
   if (!getInstance().isAuthenticated.value) return;
   actionInProgress.value = 'submit-proposal';
+  const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
     const proposalSubmission = plugin.submitProposalWithHashes(
@@ -126,21 +133,22 @@ const submitProposal = async () => {
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
-    pendingCount.value++;
+    // updatePendingTransaction(txPendingId, { txId: '' })
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
-    pendingCount.value--;
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
     console.error(e);
   } finally {
     actionInProgress.value = null;
+    removePendingTransaction(txPendingId);
   }
 };
 
 const voteOnQuestion = async option => {
   if (!getInstance().isAuthenticated.value) return;
+  const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
     const voting = plugin.voteForQuestion(
@@ -154,20 +162,21 @@ const voteOnQuestion = async option => {
     const step = await voting.next();
     if (step.value === 'erc20-approval') {
       actionInProgress.value = null;
-      pendingCount.value++;
+      // updatePendingTransaction(txPendingId, {})
       await voting.next();
-      pendingCount.value--;
+      // removePendingTransaction(txPendingId)
       await voting.next();
     }
     actionInProgress.value = null;
-    pendingCount.value++;
+    // updatePendingTransaction(txPendingId, {})
     await voting.next();
-    pendingCount.value--;
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
     console.error(e);
     actionInProgress.value = null;
+  } finally {
+    removePendingTransaction(txPendingId);
   }
 };
 
@@ -181,7 +190,7 @@ const executeProposal = async () => {
     action2InProgress.value = null;
     return;
   }
-
+  const txPendingId = createPendingTransaction();
   try {
     clearBatchError();
     const transaction =
@@ -196,16 +205,16 @@ const executeProposal = async () => {
     );
     await executingProposal.next();
     action2InProgress.value = null;
-    pendingCount.value++;
+    // updatePendingTransaction(txPendingId, { txId: transaction.id })
     await executingProposal.next();
     notify(t('notify.youDidIt'));
-    pendingCount.value--;
     await sleep(3e3);
     await updateDetails();
   } catch (err) {
-    pendingCount.value--;
     action2InProgress.value = null;
     setBatchError(questionDetails.value.nextTxIndex, err.reason);
+  } finally {
+    removePendingTransaction(txPendingId);
   }
 };
 

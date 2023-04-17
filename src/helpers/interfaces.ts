@@ -214,6 +214,13 @@ export interface Vote {
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
 
+export interface PendingTransaction {
+  id: string;
+  network: string;
+  createdAt: number;
+  txId: string | null;
+}
+
 export interface SafeTransaction {
   to: string;
   value: string;

@@ -1,8 +1,14 @@
 <script setup lang="ts">
-const { pendingCount } = useTxStatus();
+import { explorerUrl, shorten } from '@/helpers/utils';
+
+const { pendingTransactions } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
 const showDemoBanner = ref(true);
+
+const pendingTransactionsWithLinks = computed(() =>
+  pendingTransactions.value.filter(tx => tx.txId)
+);
 </script>
 
 <template>
@@ -48,10 +54,20 @@ const showDemoBanner = ref(true);
     </BaseContainer>
   </div>
   <div
-    v-if="pendingCount > 0"
+    v-if="pendingTransactions.length > 0"
     class="flex justify-center bg-primary py-2 text-center text-white"
   >
     <LoadingSpinner fill-white class="mr-2" />
-    {{ $tc('delegate.pendingTransaction', pendingCount) }}
+    {{ pendingTransactions.length }}
+    {{ $t('setup.pendingTransactions') }}
+    <BaseLink
+      v-for="tx in pendingTransactionsWithLinks"
+      :key="tx.id"
+      :link="explorerUrl(tx.network, tx.txId, 'tx')"
+      class="ml-2 !text-skin-text hover:!text-skin-link"
+      @click.stop
+    >
+      {{ shorten(tx.txId) }}
+    </BaseLink>
   </div>
 </template>
