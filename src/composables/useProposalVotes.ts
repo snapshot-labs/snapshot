@@ -67,6 +67,10 @@ export function useProposalVotes(
       filterOptions.reason_not = '';
     }
 
+    if (filters?.value?.choice_in) {
+      filterOptions.choice_in = filters.value.choice_in;
+    }
+
     return filterOptions;
   }
 

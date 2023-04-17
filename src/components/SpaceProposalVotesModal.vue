@@ -22,7 +22,8 @@ const VOTES_FILTERS_DEFAULT = {
   voter: '',
   orderBy: 'vp',
   orderDirection: 'desc',
-  onlyWithReason: false
+  onlyWithReason: false,
+  choice_in: []
 };
 
 const votesEndEl = ref<HTMLElement | null>(null);

@@ -25,7 +25,18 @@ const orderDirectionOptions = computed(() => {
 });
 
 function updateFilters(key: string, val: string | boolean) {
-  emit('update:modelValue', { ...props.modelValue, [key]: val });
+  if (key === 'choice') {
+    let choice_in = props.modelValue.choice_in || [];
+    const choice = val as string;
+    if (choice_in?.includes(choice)) {
+      choice_in = choice_in.filter(c => c !== choice);
+    } else {
+      choice_in?.push(choice);
+    }
+    emit('update:modelValue', { ...props.modelValue, choice_in });
+  } else {
+    emit('update:modelValue', { ...props.modelValue, [key]: val });
+  }
 }
 </script>
 
@@ -68,6 +79,16 @@ function updateFilters(key: string, val: string | boolean) {
             class="my-3"
             @update:model-value="updateFilters('onlyWithReason', $event)"
           />
+          <span>Choices:</span>
+          <div v-for="p in proposal.choices" :key="p">
+            <InputCheckbox
+              :model-value="Boolean(modelValue.choice_in?.includes(p))"
+              :label="p"
+              :name="`choice-${p}`"
+              class=""
+              @update:model-value="updateFilters('choice', p)"
+            />
+          </div>
         </div>
       </div>
     </template>

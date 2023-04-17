@@ -10,7 +10,7 @@ export const VOTES_QUERY = gql`
     $reason_not: String
     $voter: String
     $space: String
-    $created_gte: Int
+    $created_gte: Int # $choice_in: [String]
   ) {
     votes(
       first: $first
@@ -22,6 +22,7 @@ export const VOTES_QUERY = gql`
         space: $space
         reason_not: $reason_not
         created_gte: $created_gte
+        # choice_in: $choices_in
       }
       orderBy: $orderBy
       orderDirection: $orderDirection

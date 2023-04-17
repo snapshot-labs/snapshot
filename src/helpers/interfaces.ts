@@ -217,6 +217,7 @@ export interface VoteFilters {
   orderDirection?: string;
   onlyWithReason?: boolean;
   reason_not?: string;
+  choice_in?: string[];
 }
 
 // Execution
