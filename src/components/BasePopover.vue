@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  FocusTrap
+} from '@headlessui/vue';
 import { Float } from '@headlessui-float/vue';
 import type { Placement } from '@floating-ui/dom';
 
@@ -49,7 +54,9 @@ withDefaults(
           <div
             class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
           >
-            <slot name="content" :close="close" />
+            <FocusTrap>
+              <slot name="content" :close="close" />
+            </FocusTrap>
           </div>
         </div>
       </PopoverPanel>
