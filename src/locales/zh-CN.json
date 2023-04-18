@@ -591,12 +591,12 @@
     "basic": {
       "label": "基础",
       "description": "使用任何策略来确定用户是否可以投票。",
-      "invalidVoterMessage": "您不符合就该提案进行投票的最低余额要求。"
+      "invalidMessage": "您不符合就该提案进行投票的最低余额要求。"
     },
     "passport-gated": {
       "label": "Gitcoin Passport门槛",
       "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
-      "invalidVoterMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
+      "invalidMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport加权"
