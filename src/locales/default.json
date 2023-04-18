@@ -649,7 +649,7 @@
     },
     "basic": {
       "label": "Basic",
-      "description": "Use any strategy to determine if a user can create a proposal.",
+      "description": "Use a minimum score along with any strategy to determine if a user can create a proposal.",
       "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal."
     },
     "passport-gated": {
@@ -659,6 +659,10 @@
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"
+    },
+    "arbitrum": {
+      "label": "Percentage of votable supply",
+      "description": "Use with erc20-votes to validate by percentage of votable supply."
     }
   },
   "votingValidation": {
@@ -675,7 +679,7 @@
     },
     "basic": {
       "label": "Basic",
-      "description": "Use any strategy to determine if a user can vote.",
+      "description": "Use a minimum score along with any strategy to determine if a user can vote.",
       "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
     },
     "passport-gated": {

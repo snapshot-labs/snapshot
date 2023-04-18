@@ -86,12 +86,14 @@ async function getValidations() {
   const fetchedValidations: Validations = await fetch(
     `${import.meta.env.VITE_SCORES_URL}/api/validations`
   ).then(res => res.json());
-  const validationsWithAny = {
+  const validationsWithAny: Validations = {
     any: {
       key: 'any'
     },
     ...fetchedValidations
   };
+  delete validationsWithAny?.arbitrum;
+
   validations.value = validationsWithAny || null;
   isValidationsLoaded.value = true;
 }
