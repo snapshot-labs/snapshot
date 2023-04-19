@@ -13,7 +13,15 @@ const FLAGGED_LINKS = [
   'bit.ly/3obAcG6',
   'bit.ly/3GKKLpP',
   'shortest.link/oiWG',
-  'clm.arbitrum-foundation.at'
+  'clm.arbitrum-foundation.at',
+  'shortest.link/oFpq',
+  'shortest.link/nlt0',
+  'zora.co/collect/0xac4a38e31e811a4c771c37240df356de61fc425f',
+  'shortest.link/nR-S',
+  'bit.ly/Layer0NFT',
+  'shortest.link/nTdi',
+  'shortest.link/nTfi',
+  'bit.ly/PolygonzkEVMPioneer'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
