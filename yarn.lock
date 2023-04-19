@@ -1561,13 +1561,15 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.8.tgz#9f31d92540dc8c9e4f111ff303457b7054848dcb"
-  integrity sha512-0TvnhQJqLu6w+duDDMrxINNe4IkyAW6l+fxYFUmusr5ms9N06EJlgvrMnSIHfsTK6U7xM2WhJURC+VjG6bP5tQ==
+"@snapshot-labs/tune@^0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.10.tgz#a52d98c56570e26d1135c707d59bc0e5009aebf3"
+  integrity sha512-0ayV+A5GvI7Rgjj98D8Oza1dC6r9eNHSXC0EBK8o0KwyvxZqO/+bVsLHlcA0d2VFVAWIdzPP+yE/CHqywPAX6g==
   dependencies:
+    "@headlessui-float/vue" "^0.11.0"
     "@headlessui/vue" "^1.7.12"
     lodash "^4.17.21"
+    minisearch "^6.0.1"
     sass "^1.60.0"
     vue "^3.2.47"
     vue-tippy "^6.0.0"
@@ -10008,6 +10010,11 @@ minipass@^2.6.0, minipass@^2.9.0:
   dependencies:
     safe-buffer "^5.1.2"
     yallist "^3.0.0"
+
+minisearch@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.0.1.tgz#55e40135e7e6be60f1c1c2f5ee890c334e179a86"
+  integrity sha512-Ly1w0nHKnlhAAh6/BF/+9NgzXfoJxaJ8nhopFhQ3NcvFJrFIL+iCg9gw9e9UMBD+XIsp/RyznJ/o5UIe5Kw+kg==
 
 minizlib@^1.3.3:
   version "1.3.3"
