@@ -213,11 +213,11 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.VOTING">
-            <SettingsStrategiesBlock
+            <SettingsVotingBlock
               context="settings"
               :is-view-only="isViewOnly"
             />
-            <SettingsVotingBlock
+            <SettingsStrategiesBlock
               context="settings"
               :is-view-only="isViewOnly"
             />
