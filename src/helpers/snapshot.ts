@@ -94,13 +94,22 @@ export async function voteValidation(
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
+
+  const params = proposal.validation?.params || {};
+  if (
+    proposal.validation.name === 'basic' &&
+    proposal.validation?.params?.useVotingStrategies
+  ) {
+    params.strategies = proposal.strategies;
+  }
+
   const validateRes = await validate(
     proposal.validation.name,
     address,
     space.id,
     proposal.network,
     parseInt(proposal.snapshot),
-    proposal.validation.params,
+    params,
     options
   );
   if (typeof validateRes !== 'boolean') {
@@ -125,6 +134,10 @@ export async function proposalValidation(
       space.validation?.params?.minScore || space.filters.minScore;
     params.strategies =
       space.validation?.params?.strategies || space.strategies;
+
+    if (space.validation?.params?.useVotingStrategies) {
+      params.strategies = space.strategies;
+    }
   }
 
   const validateRes = await validate(

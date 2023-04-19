@@ -32,7 +32,21 @@ type Validations = Record<
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
 
+const basicDefinition = computed(() => {
+  if (!validations.value?.basic.schema) return null;
+  const definition = clone(
+    validations.value?.basic.schema?.definitions?.Validation
+  );
+
+  if (input.value.params.useVotingStrategies) {
+    delete definition.properties.strategies;
+  }
+
+  return definition;
+});
+
 const validationDefinition = computed(() => {
+  if (input.value.name === 'basic') return basicDefinition.value;
   return (
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
     null
@@ -55,6 +69,7 @@ function select(n: string) {
     if (n === 'basic') {
       input.value.params = {
         minScore: 1,
+        useVotingStrategies: false,
         strategies: [
           {
             name: 'ticket',
@@ -86,7 +101,7 @@ async function getValidations() {
   const fetchedValidations: Validations = await fetch(
     `${import.meta.env.VITE_SCORES_URL}/api/validations`
   ).then(res => res.json());
-  const validationsWithAny = {
+  const validationsWithAny: Validations = {
     any: {
       key: 'any'
     },

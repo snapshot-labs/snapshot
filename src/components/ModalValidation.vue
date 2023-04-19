@@ -35,7 +35,21 @@ type Validations = Record<
   }
 >;
 
+const basicDefinition = computed(() => {
+  if (!validations.value?.basic.schema) return null;
+  const definition = clone(
+    validations.value?.basic.schema?.definitions?.Validation
+  );
+
+  if (input.value.params.useVotingStrategies) {
+    delete definition.properties.strategies;
+  }
+
+  return definition;
+});
+
 const validationDefinition = computed(() => {
+  if (input.value.name === 'basic') return basicDefinition.value;
   return (
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
     null
@@ -53,9 +67,10 @@ const isValid = computed(() => {
 function handleSelect(n: string) {
   input.value.name = n;
 
-  if (n === 'basic' && Object.keys(input.value.params).length === 0) {
+  if (n === 'basic' && !input.value.params?.strategies?.length) {
     input.value.params = {
-      minScore: 1,
+      minScore: input.value.params.minScore || props.filterMinScore || 1,
+      useVotingStrategies: input.value.params.useVotingStrategies || false,
       strategies: [
         {
           name: 'ticket',
@@ -66,12 +81,6 @@ function handleSelect(n: string) {
         }
       ]
     };
-
-    if (props.filterMinScore) {
-      input.value.params = {
-        minScore: props.filterMinScore
-      };
-    }
 
     return;
   }
@@ -98,7 +107,7 @@ async function getValidations() {
   const fetchedValidations: Validations = await fetch(
     `${import.meta.env.VITE_SCORES_URL}/api/validations`
   ).then(res => res.json());
-  const validationsWithAny = {
+  const validationsWithAny: Validations = {
     any: {
       key: 'any'
     },
