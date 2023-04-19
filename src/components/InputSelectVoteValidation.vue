@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { VoteValidation } from '@/helpers/interfaces';
+import { VoteValidation, ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   validation: VoteValidation;
   isDisabled?: boolean;
+  space?: ExtendedSpace;
 }>();
 
 const emit = defineEmits(['add']);
@@ -25,6 +26,7 @@ const isModalOpen = ref(false);
     <ModalVoteValidation
       :open="isModalOpen"
       :validation="validation"
+      :space="space"
       @close="isModalOpen = false"
       @add="emit('add', $event)"
     />
