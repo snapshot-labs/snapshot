@@ -35,22 +35,9 @@ type Validations = Record<
 
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
-
-const basicDefinition = computed(() => {
-  if (!validations.value?.basic.schema) return null;
-  const definition = clone(
-    validations.value?.basic.schema?.definitions?.Validation
-  );
-
-  if (!props.space) {
-    delete definition.properties.useVotingStrategies;
-  }
-
-  return definition;
-});
+const updateIndex = ref(0);
 
 const validationDefinition = computed(() => {
-  if (input.value.name === 'basic') return basicDefinition.value;
   return (
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
     null
@@ -73,7 +60,6 @@ function select(n: string) {
     if (n === 'basic') {
       input.value.params = {
         minScore: 1,
-        useVotingStrategies: false,
         strategies: [
           {
             name: 'ticket',
@@ -115,6 +101,11 @@ async function getValidations() {
   isValidationsLoaded.value = true;
 }
 
+function handleCopyStrategies() {
+  updateIndex.value++;
+  input.value.params.strategies = props.space?.strategies;
+}
+
 watch(open, () => {
   getValidations();
   input.value.name = '';
@@ -127,15 +118,6 @@ watch(open, () => {
     };
   }
 });
-
-watch(
-  () => input.value.params.useVotingStrategies,
-  (val: boolean) => {
-    if (val && props.space) {
-      input.value.params.strategies = props.space.strategies;
-    }
-  }
-);
 </script>
 
 <template>
@@ -155,7 +137,7 @@ watch(
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
-          :key="input.params?.useVotingStrategies || 0"
+          :key="updateIndex"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
@@ -166,6 +148,14 @@ watch(
           :placeholder="$t('votingValidation.paramPlaceholder')"
           @update:is-valid="value => (isValidJson = value)"
         />
+        <button
+          v-if="space"
+          class="flex items-center gap-1"
+          @click="handleCopyStrategies"
+        >
+          <i-ho-duplicate />
+          Copy voting strategies
+        </button>
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />

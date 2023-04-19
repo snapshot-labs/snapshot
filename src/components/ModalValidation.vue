@@ -20,6 +20,7 @@ const isValidJson = ref(true);
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
 const formRef = ref();
+const updateIndex = ref(0);
 
 const input = ref({
   name: '',
@@ -36,21 +37,7 @@ type Validations = Record<
   }
 >;
 
-const basicDefinition = computed(() => {
-  if (!validations.value?.basic.schema) return null;
-  const definition = clone(
-    validations.value?.basic.schema?.definitions?.Validation
-  );
-
-  if (!props.space) {
-    delete definition.properties.useVotingStrategies;
-  }
-
-  return definition;
-});
-
 const validationDefinition = computed(() => {
-  if (input.value.name === 'basic') return basicDefinition.value;
   return (
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
     null
@@ -71,7 +58,6 @@ function handleSelect(n: string) {
   if (n === 'basic' && !input.value.params?.strategies?.length) {
     input.value.params = {
       minScore: input.value.params.minScore || props.filterMinScore || 1,
-      useVotingStrategies: input.value.params.useVotingStrategies || false,
       strategies: [
         {
           name: 'ticket',
@@ -118,6 +104,11 @@ async function getValidations() {
   isValidationsLoaded.value = true;
 }
 
+function handleCopyStrategies() {
+  updateIndex.value++;
+  input.value.params.strategies = props.space?.strategies;
+}
+
 watch(open, () => {
   getValidations();
   input.value.name = '';
@@ -130,15 +121,6 @@ watch(open, () => {
     };
   }
 });
-
-watch(
-  () => input.value.params.useVotingStrategies,
-  (val: boolean) => {
-    if (val && props.space) {
-      input.value.params.strategies = props.space.strategies;
-    }
-  }
-);
 </script>
 
 <template>
@@ -154,11 +136,11 @@ watch(
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
-          :key="input.params?.useVotingStrategies || 0"
+          :key="updateIndex"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
@@ -169,6 +151,14 @@ watch(
           :placeholder="$t('proposalValidation.paramPlaceholder')"
           @update:is-valid="value => (isValidJson = value)"
         />
+        <button
+          v-if="space"
+          class="flex items-center gap-1"
+          @click="handleCopyStrategies"
+        >
+          <i-ho-duplicate />
+          Copy voting strategies
+        </button>
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />
