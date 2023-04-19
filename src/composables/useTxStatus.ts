@@ -42,13 +42,13 @@ export function useTxStatus() {
   };
 
   const restorePendingTransactions = () => {
-    pendingTransactions.value.map(async tx => {
+    pendingTransactions.value.forEach(async tx => {
       if (tx.txId) {
         if (Date.now() > tx.createdAt + 1000 * 60)
           return removePendingTransaction(tx.id);
         try {
           const provider = getProvider(tx.network);
-          await provider.waitForTransaction(tx.txId);
+          await provider.waitForTransaction(tx.txId, 1, 1000 * 60 * 4);
         } finally {
           removePendingTransaction(tx.id);
         }
