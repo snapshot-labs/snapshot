@@ -18,7 +18,12 @@ defineEmits(['delete', 'edit']);
 <template>
   <BaseBlock slim class="group mb-3 p-4 text-skin-link">
     <div class="items-center justify-between sm:flex">
-      <h3 class="my-0 leading-5" v-text="strategy.name" />
+      <BaseLink
+        hide-external-icon
+        :link="`https://snapshot.org/#/strategy/${strategy.name}`"
+      >
+        <h3 class="my-0 leading-5 hover:underline" v-text="strategy.name" />
+      </BaseLink>
       <div class="flex">
         <div
           class="-mx-[8px] my-2 flex shrink flex-row-reverse items-center gap-3 sm:my-0 sm:flex-row"
