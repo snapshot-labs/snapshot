@@ -356,8 +356,8 @@
     },
     "website": "Website",
     "strategies": {
-      "label": "Strategie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
+      "label": "Strategies",
+      "information": "Strategies are primarily used to determine on-chain voting power, which is used to calculate the weight of a vote. Strategies can be added or removed at any time, but changes will only affect future proposals."
     },
     "network": {
       "label": "Network",
