@@ -217,6 +217,7 @@ const isViewOnly = computed(() => {
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :space="space"
             />
             <SettingsProposalBlock
               context="settings"
@@ -228,6 +229,7 @@ const isViewOnly = computed(() => {
             <SettingsVotingBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :space="space"
             />
           </template>
 
