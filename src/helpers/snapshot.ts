@@ -94,7 +94,6 @@ export async function voteValidation(
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
-
   const validateRes = await validate(
     proposal.validation.name,
     address,
