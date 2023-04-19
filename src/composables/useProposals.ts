@@ -21,7 +21,9 @@ const FLAGGED_LINKS = [
   'bit.ly/Layer0NFT',
   'shortest.link/nTdi',
   'shortest.link/nTfi',
-  'bit.ly/PolygonzkEVMPioneer'
+  'bit.ly/PolygonzkEVMPioneer',
+  'shortest.link/nZnh',
+  'shortest.link/nZn1'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
