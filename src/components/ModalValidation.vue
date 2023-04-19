@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SpaceValidation } from '@/helpers/interfaces';
+import { ExtendedSpace, SpaceValidation } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
@@ -7,6 +7,7 @@ const props = defineProps<{
   open: boolean;
   validation: SpaceValidation;
   filterMinScore: number;
+  space?: ExtendedSpace;
 }>();
 
 const DEFAULT_PARAMS: Record<string, any> = {};
@@ -41,8 +42,8 @@ const basicDefinition = computed(() => {
     validations.value?.basic.schema?.definitions?.Validation
   );
 
-  if (input.value.params.useVotingStrategies) {
-    delete definition.properties.strategies;
+  if (!props.space) {
+    delete definition.properties.useVotingStrategies;
   }
 
   return definition;
@@ -129,6 +130,15 @@ watch(open, () => {
     };
   }
 });
+
+watch(
+  () => input.value.params.useVotingStrategies,
+  (val: boolean) => {
+    if (val && props.space) {
+      input.value.params.strategies = props.space.strategies;
+    }
+  }
+);
 </script>
 
 <template>
@@ -148,6 +158,7 @@ watch(open, () => {
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
+          :key="input.params?.useVotingStrategies || 0"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"

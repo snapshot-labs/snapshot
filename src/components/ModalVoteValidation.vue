@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { VoteValidation } from '@/helpers/interfaces';
+import { ExtendedSpace, VoteValidation } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
 const DEFAULT_PARAMS: Record<string, any> = {};
 
-const props = defineProps<{ open: boolean; validation: VoteValidation }>();
+const props = defineProps<{
+  open: boolean;
+  validation: VoteValidation;
+  space?: ExtendedSpace;
+}>();
 
 const emit = defineEmits(['add', 'close']);
 
@@ -38,8 +42,8 @@ const basicDefinition = computed(() => {
     validations.value?.basic.schema?.definitions?.Validation
   );
 
-  if (input.value.params.useVotingStrategies) {
-    delete definition.properties.strategies;
+  if (!props.space) {
+    delete definition.properties.useVotingStrategies;
   }
 
   return definition;
@@ -123,6 +127,15 @@ watch(open, () => {
     };
   }
 });
+
+watch(
+  () => input.value.params.useVotingStrategies,
+  (val: boolean) => {
+    if (val && props.space) {
+      input.value.params.strategies = props.space.strategies;
+    }
+  }
+);
 </script>
 
 <template>
@@ -142,6 +155,7 @@ watch(open, () => {
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
+          :key="input.params?.useVotingStrategies || 0"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
