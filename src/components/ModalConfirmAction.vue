@@ -1,7 +1,6 @@
 <script setup lang="ts">
 defineProps<{
   open: boolean;
-  title?: string;
   showCancel?: boolean;
   disabled?: boolean;
 }>();
@@ -13,7 +12,7 @@ defineEmits(['close', 'confirm']);
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
       <div class="flex flex-row items-center justify-center">
-        <h3>{{ title ? title : $t('confirmAction') }}</h3>
+        <h3>{{ $t('confirmAction') }}</h3>
       </div>
     </template>
 
