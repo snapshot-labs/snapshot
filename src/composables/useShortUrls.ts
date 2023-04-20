@@ -1,16 +1,32 @@
 const shortUrls = ref<string[]>([]);
 
 export function useShortUrls() {
-  async function getShortUrls(): Promise<string[]> {
-    const response = await fetch(
-      'https://raw.githubusercontent.com/PeterDaveHello/url-shorteners/master/list'
-    );
-    const data = await response.text();
+  async function fetchShortUrlData(): Promise<string> {
+    try {
+      const response = await fetch(
+        'https://raw.githubusercontent.com/PeterDaveHello/url-shorteners/master/list'
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      return await response.text();
+    } catch (error: any) {
+      console.error(`Error fetching short URLs: ${error.message}`);
+      return '';
+    }
+  }
+
+  function parseShortUrlData(data: string): string[] {
     const lines = data.split('\n');
-    const urls = lines.filter(
-      line => !line.startsWith('#') && line.trim() !== ''
-    );
-    return urls;
+
+    return lines.filter(line => !line.startsWith('#') && line.trim() !== '');
+  }
+
+  async function getShortUrls(): Promise<string[]> {
+    const rawData = await fetchShortUrlData();
+    return parseShortUrlData(rawData);
   }
 
   onMounted(async () => {
