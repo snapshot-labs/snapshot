@@ -45,5 +45,10 @@ const { web3Account } = useWeb3();
 
       <ProfileSidebarNavigation />
     </BaseBlock>
+
+    <BaseBlock class="my-3">
+      <div class="mb-2 text-skin-link">Email notifications</div>
+      <InputEmailNotification :address="userAddress" />
+    </BaseBlock>
   </div>
 </template>
