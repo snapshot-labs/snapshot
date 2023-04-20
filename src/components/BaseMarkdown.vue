@@ -16,6 +16,13 @@ const remarkable = new Remarkable({
   linkTarget: '_blank'
 }).use(linkify);
 
+remarkable.renderer.rules.link_open = function () {
+  return '';
+};
+remarkable.renderer.rules.link_close = function () {
+  return '';
+};
+
 const markdown = computed(() => {
   let body = props.body;
 
