@@ -83,8 +83,8 @@ export default {
       this.$emit('update:modelValue', undefined);
     },
     setCollectables() {
-      if (!this.config.preview && this.config.collectables) {
-        this.collectables = this.config.collectables;
+      if (!this.config.preview && this.config.collectables?.results) {
+        this.collectables = this.config.collectables.results;
         if (!this.selectedCollectable && this.collectables.length) {
           this.collectableAddress = this.collectables[0].address;
         }
