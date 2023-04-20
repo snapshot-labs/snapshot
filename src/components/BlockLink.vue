@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getIpfsUrl } from '@/helpers/utils';
-
 const props = defineProps<{
   link: string;
   title?: string;
