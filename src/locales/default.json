@@ -30,6 +30,7 @@
   "spaces": "Spaces",
   "verifiedSpace": "Verified space",
   "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
+  "warningShortUrl": "Short URLs are not allowed. Please use the full URL.",
   "warningFlagged": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
   "version": "Version",
   "timeline": "Timeline",
