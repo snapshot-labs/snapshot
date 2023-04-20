@@ -61,7 +61,6 @@ function handleSelect(e) {
       name: 'spaceCreate',
       params: {
         key: props.proposal.space.id,
-        step: 0,
         sourceProposal: props.proposal.id
       }
     });
