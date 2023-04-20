@@ -34,6 +34,7 @@ const markdown = computed(() => {
 function handleLinkClick(e, url) {
   e.preventDefault();
   clickedUrl.value = url;
+  if (url.includes('snapshot.org/#/')) return handleConfirm();
   showModal.value = true;
 }
 
@@ -70,24 +71,19 @@ onMounted(() => {
 
 <template>
   <!-- eslint-disable vue/no-v-html -->
-  <div v-viewer class="markdown-body break-words" v-html="markdown" />
+  <div
+    v-viewer
+    v-bind="$attrs"
+    class="markdown-body break-words"
+    v-html="markdown"
+  />
   <Teleport to="#modal">
-    <ModalConfirmAction
+    <ModalLinkPreview
       :open="showModal"
-      title="Link preview"
-      show-cancel
+      :clicked-url="clickedUrl"
       @close="showModal = false"
       @confirm="handleConfirm"
-    >
-      <div
-        class="p-4 text-center"
-        v-html="
-          $t('linkPreview', {
-            url: `<span class='text-skin-link font-semibold break-words'>${clickedUrl}</span>`
-          })
-        "
-      />
-    </ModalConfirmAction>
+    />
   </Teleport>
 </template>
 
