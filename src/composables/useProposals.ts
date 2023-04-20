@@ -93,7 +93,7 @@ export function useProposals() {
   }
 
   function mapFlaggedProposals(proposals: Proposal[]) {
-    if (!proposals.length) return [];
+    if (!proposals?.length) return [];
     return proposals.map(proposal => {
       return {
         ...proposal,
