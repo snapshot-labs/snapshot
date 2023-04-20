@@ -83,7 +83,7 @@ onMounted(() => {
         class="p-4 text-center"
         v-html="
           $t('linkPreview', {
-            url: `<span class='text-skin-link font-semibold'>${clickedUrl}</span>`
+            url: `<span class='text-skin-link font-semibold break-words'>${clickedUrl}</span>`
           })
         "
       />
