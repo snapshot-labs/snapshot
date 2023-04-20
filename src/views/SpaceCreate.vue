@@ -42,7 +42,7 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
-const { shortUrls } = useShortUrls();
+const { containsShortUrl } = useShortUrls();
 
 const {
   form,
@@ -102,26 +102,10 @@ const isFormValid = computed(() => {
 const formContainsShortUrl = computed(() => {
   const { body, name, discussion } = form.value;
 
-  const bodyContainsShortUrl = shortUrls.value.some(
-    shortUrl =>
-      body.includes(`http://${shortUrl}`) ||
-      body.includes(`https://${shortUrl}`)
-  );
-
-  const nameContainsShortUrl = shortUrls.value.some(
-    shortUrl =>
-      name.includes(`http://${shortUrl}`) ||
-      name.includes(`https://${shortUrl}`)
-  );
-
-  const discussionContainsShortUrl = shortUrls.value.some(
-    shortUrl =>
-      discussion.includes(`http://${shortUrl}`) ||
-      discussion.includes(`https://${shortUrl}`)
-  );
-
   return (
-    bodyContainsShortUrl || nameContainsShortUrl || discussionContainsShortUrl
+    containsShortUrl(body) ||
+    containsShortUrl(name) ||
+    containsShortUrl(discussion)
   );
 });
 

@@ -29,9 +29,18 @@ export function useShortUrls() {
     return parseShortUrlData(rawData);
   }
 
+  function containsShortUrl(text: string): boolean {
+    if (shortUrls.value.length === 0) return false;
+    return shortUrls.value.some(
+      shortUrl =>
+        text.includes(`http://${shortUrl}`) ||
+        text.includes(`https://${shortUrl}`)
+    );
+  }
+
   onMounted(async () => {
     if (shortUrls.value.length === 0) shortUrls.value = await getShortUrls();
   });
 
-  return { shortUrls };
+  return { containsShortUrl };
 }
