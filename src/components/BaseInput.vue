@@ -48,7 +48,7 @@ defineEmits(['update:modelValue']);
 
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
-const visited = ref(false);
+const visited = ref(true);
 
 const showErrorMessage = computed(() => visited.value || props.error?.push);
 
