@@ -27,7 +27,7 @@ const isHidden = computed(() => {
   <div>
     <div class="block p-3 text-skin-text sm:p-4">
       <div>
-        <div class="mb-2 flex items-center justify-between">
+        <div v-if="!isHidden" class="mb-2 flex items-center justify-between">
           <div class="flex items-start gap-1 space-x-1">
             <template v-if="!hideSpaceAvatar">
               <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
@@ -55,7 +55,7 @@ const isHidden = computed(() => {
               :hide-avatar="!hideSpaceAvatar"
             />
           </div>
-          <LabelProposalState v-if="!isHidden" :state="proposal.state" />
+          <LabelProposalState :state="proposal.state" />
         </div>
         <div v-if="isHidden" class="flex rounded-xl border py-3 pl-4">
           <div>
