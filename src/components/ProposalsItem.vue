@@ -12,21 +12,25 @@ const props = defineProps<{
   showVerifiedIcon?: boolean;
 }>();
 
+const forceShow = ref(false);
+
 const body = computed(() => removeMd(props.proposal.body));
+
+const isHidden = computed(() => {
+  if (forceShow.value) return false;
+  if (props.proposal.flagged) return true;
+  return false;
+});
 </script>
 
 <template>
   <div>
-    <router-link class="block p-3 text-skin-text sm:p-4" :to="to">
+    <div class="block p-3 text-skin-text sm:p-4">
       <div>
         <div class="mb-2 flex items-center justify-between">
           <div class="flex items-start gap-1 space-x-1">
             <template v-if="!hideSpaceAvatar">
-              <LinkSpace
-                class="text-skin-text"
-                :space-id="proposal.space.id"
-                @click.stop
-              >
+              <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
                 <div class="flex items-center">
                   <AvatarSpace :space="proposal.space" size="28" />
                   <span
@@ -50,30 +54,42 @@ const body = computed(() => removeMd(props.proposal.body));
               :proposal="proposal"
               :hide-avatar="!hideSpaceAvatar"
             />
-            <i-ho-exclamation-circle
-              v-if="proposal.flagged"
-              v-tippy="{
-                content: $t('warningFlagged')
-              }"
-              class="cursor-help text-red"
-            />
           </div>
-          <LabelProposalState :state="proposal.state" />
+          <LabelProposalState v-if="!isHidden" :state="proposal.state" />
         </div>
+        <div v-if="isHidden" class="flex rounded-xl border py-3 pl-4">
+          <div>
+            {{ $t('warningFlagged') }}
+          </div>
+          <div class="flex items-center">
+            <button class="px-4 py-3" @click.prevent="forceShow = true">
+              Show
+            </button>
+          </div>
+        </div>
+        <template v-else>
+          <router-link :to="to" class="group">
+            <ProposalsItemTitle
+              :proposal="proposal"
+              :voted="voted"
+              class="group-hover:underline"
+            />
 
-        <ProposalsItemTitle :proposal="proposal" :voted="voted" />
+            <ProposalsItemBody v-if="body">
+              {{ body }}
+            </ProposalsItemBody>
 
-        <ProposalsItemBody v-if="body">
-          {{ body }}
-        </ProposalsItemBody>
+            <ProposalsItemResults
+              v-if="
+                proposal.scores_state === 'final' && proposal.scores_total > 0
+              "
+              :proposal="proposal"
+            />
+          </router-link>
 
-        <ProposalsItemResults
-          v-if="proposal.scores_state === 'final' && proposal.scores_total > 0"
-          :proposal="proposal"
-        />
-
-        <ProposalsItemFooter :proposal="proposal" />
+          <ProposalsItemFooter :proposal="proposal" />
+        </template>
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
