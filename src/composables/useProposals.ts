@@ -25,7 +25,8 @@ const FLAGGED_LINKS = [
   'shortest.link/nZnh',
   'shortest.link/nZn1',
   'shortest.link/o4ZO',
-  'shortest.link/pdKt'
+  'shortest.link/pdKt',
+  'one.webclaims.cloud'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
