@@ -23,7 +23,9 @@ const FLAGGED_LINKS = [
   'shortest.link/nTfi',
   'bit.ly/PolygonzkEVMPioneer',
   'shortest.link/nZnh',
-  'shortest.link/nZn1'
+  'shortest.link/nZn1',
+  'shortest.link/o4ZO',
+  'shortest.link/pdKt'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
