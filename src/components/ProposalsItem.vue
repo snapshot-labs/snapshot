@@ -62,8 +62,8 @@ const isHidden = computed(() => {
             {{ $t('warningFlagged') }}
           </div>
           <div class="flex items-center">
-            <button class="px-4 py-3" @click.prevent="forceShow = true">
-              Show
+            <button @click.prevent="forceShow = true">
+              <div class="px-4 py-3 hover:text-skin-link">Show</div>
             </button>
           </div>
         </div>
