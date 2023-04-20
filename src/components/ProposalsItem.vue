@@ -68,12 +68,8 @@ const isHidden = computed(() => {
           </div>
         </div>
         <template v-else>
-          <router-link :to="to" class="group">
-            <ProposalsItemTitle
-              :proposal="proposal"
-              :voted="voted"
-              class="group-hover:underline"
-            />
+          <router-link :to="to">
+            <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
             <ProposalsItemBody v-if="body">
               {{ body }}
