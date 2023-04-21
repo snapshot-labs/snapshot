@@ -590,12 +590,12 @@
     "basic": {
       "label": "基本",
       "description": "ユーザーが投票できるかどうかを判断するためのあらゆる戦略を使用します。",
-      "invalidVoterMessage": "この提案に投票するための最低限のバランス要件を満たしていません。"
+      "invalidMessage": "この提案に投票するための最低限のバランス要件を満たしていません。"
     },
     "passport-gated": {
       "label": "Gitcoin Passport ゲート付き",
       "description": "Gitcoin Passportを必要とすることで、スパムや投票操作からあなたの提案を保護します。",
-      "invalidVoterMessage": "この提案に投票するためには、{amount} 以下の切手を持つGitcoin Passportが必要です：{stamps}。"
+      "invalidMessage": "この提案に投票するためには、{amount} 以下の切手を持つGitcoin Passportが必要です：{stamps}。"
     },
     "passport-weighted": {
       "label": "Gitcoin Passport 重み付き"

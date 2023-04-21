@@ -592,12 +592,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Accès réservé au Gitcoin Passport",
       "description": "Protégez vos propositions contre le spam et la manipulation des votes en exigeant que les utilisateurs aient un Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Pondéré par Gitcoin Passport"
