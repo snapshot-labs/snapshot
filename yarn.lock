@@ -1115,10 +1115,10 @@
     "@floating-ui/dom" "^1.0.0"
     "@floating-ui/vue" "^0.2.0"
 
-"@headlessui/vue@^1.7.12", "@headlessui/vue@^1.7.2":
-  version "1.7.12"
-  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.12.tgz#963b2eb2f548278c49f2d1e67f0a4a84f54078da"
-  integrity sha512-IV0k1I2I8Bj37HljFF231Y9cpldfiucf+inMCxA/VPoQT6UTxo0N/rb78CrogBxXNfsPxKmz3y/nlv+eRz6zvg==
+"@headlessui/vue@^1.7.12", "@headlessui/vue@^1.7.13":
+  version "1.7.13"
+  resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.13.tgz#bf4c5e324c3a724f6f7911362e7f38989b754590"
+  integrity sha512-obG5TdPdBDfs+jiA1mY29LPFqyJl93Q90EL86ontfRe1B6XvbjPkx+x1aAC5DA18bXbb0Juni1ayDbXo0w1u0A==
 
 "@humanwhocodes/config-array@^0.11.8":
   version "0.11.8"
