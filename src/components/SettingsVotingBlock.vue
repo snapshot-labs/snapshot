@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { calcFromSeconds, calcToSeconds } from '@/helpers/utils';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
   isViewOnly?: boolean;
+  space?: ExtendedSpace;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -101,6 +103,7 @@ const votingPeriod = computed({
         <InputSelectVoteValidation
           :validation="form.voteValidation"
           :is-disabled="isViewOnly"
+          :space="space"
           @add="value => (form.voteValidation = value)"
         />
       </div>

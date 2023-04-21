@@ -6,6 +6,7 @@ const props = defineProps<{
   validationFailed: boolean;
   isValidAuthor: boolean;
   validationName: string;
+  containsShortUrl: boolean;
 }>();
 
 const { web3, web3Account } = useWeb3();
@@ -104,5 +105,9 @@ const strategySymbolsString = computed(() => {
       :min-score="minScore"
       :symbol="strategySymbolsString || space.symbol"
     />
+
+    <BaseMessageBlock v-else-if="containsShortUrl" level="warning">
+      {{ $t('warningShortUrl') }}
+    </BaseMessageBlock>
   </div>
 </template>

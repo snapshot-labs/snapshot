@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { VoteValidation } from '@/helpers/interfaces';
+import { ExtendedSpace, VoteValidation } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
 const DEFAULT_PARAMS: Record<string, any> = {};
 
-const props = defineProps<{ open: boolean; validation: VoteValidation }>();
+const props = defineProps<{
+  open: boolean;
+  validation: VoteValidation;
+  space?: ExtendedSpace;
+}>();
 
 const emit = defineEmits(['add', 'close']);
 
@@ -26,11 +30,13 @@ type Validations = Record<
     example?: Record<string, any>[];
     schema?: Record<string, any>;
     about?: string;
+    proposalValidationOnly?: boolean;
   }
 >;
 
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
+const updateIndex = ref(0);
 
 const validationDefinition = computed(() => {
   return (
@@ -81,19 +87,35 @@ function handleSubmit() {
   emit('close');
 }
 
+function removeProposalValidationOnly(validations: Validations) {
+  Object.keys(validations).forEach(key => {
+    if (validations[key]?.proposalValidationOnly) {
+      delete validations[key];
+    }
+  });
+}
+
 async function getValidations() {
   if (validations.value) return;
   const fetchedValidations: Validations = await fetch(
     `${import.meta.env.VITE_SCORES_URL}/api/validations`
   ).then(res => res.json());
-  const validationsWithAny = {
+  const validationsWithAny: Validations = {
     any: {
       key: 'any'
     },
     ...fetchedValidations
   };
+
+  removeProposalValidationOnly(validationsWithAny);
+
   validations.value = validationsWithAny || null;
   isValidationsLoaded.value = true;
+}
+
+function handleCopyStrategies() {
+  updateIndex.value++;
+  input.value.params.strategies = props.space?.strategies;
 }
 
 watch(open, () => {
@@ -123,10 +145,11 @@ watch(open, () => {
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
+          :key="updateIndex"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
@@ -137,6 +160,14 @@ watch(open, () => {
           :placeholder="$t('votingValidation.paramPlaceholder')"
           @update:is-valid="value => (isValidJson = value)"
         />
+        <button
+          v-if="space && input.name === 'basic'"
+          class="flex items-center gap-1"
+          @click="handleCopyStrategies"
+        >
+          <i-ho-duplicate />
+          Copy voting strategies
+        </button>
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />
