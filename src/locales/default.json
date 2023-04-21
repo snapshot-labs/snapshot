@@ -297,7 +297,7 @@
   "settings": {
     "header": "Settings",
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
-    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone.",
+    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone and you will not be able to create a new space with the same ENS domain name.",
     "confirmInputDeleteSpace": "Enter {space} to continue:",
     "noticeSavedTitle": "Settings saved",
     "noticeSavedText": "New settings only affect future proposals, not existing ones.",
@@ -453,7 +453,7 @@
       },
       "deleteSpace": {
         "title": "Delete space",
-        "information": "Delete this space and all its content. This cannot be undone.",
+        "information": "Delete this space and all its content. This cannot be undone and you will not be able to create a new space with the same ENS domain name.",
         "button": "Delete space",
         "disabledInformation": "You need to be the space controller to delete the space"
       }
