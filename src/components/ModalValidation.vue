@@ -34,6 +34,7 @@ type Validations = Record<
     example?: Record<string, any>[];
     schema?: Record<string, any>;
     about?: string;
+    voteValidationOnly?: boolean;
   }
 >;
 
@@ -89,6 +90,14 @@ function handleSubmit() {
   emit('close');
 }
 
+function removeVoteValidationOnly(validations: Validations) {
+  Object.keys(validations).forEach(key => {
+    if (validations[key]?.voteValidationOnly) {
+      delete validations[key];
+    }
+  });
+}
+
 async function getValidations() {
   if (validations.value) return;
   const fetchedValidations: Validations = await fetch(
@@ -100,6 +109,9 @@ async function getValidations() {
     },
     ...fetchedValidations
   };
+
+  removeVoteValidationOnly(validationsWithAny);
+
   validations.value = validationsWithAny || null;
   isValidationsLoaded.value = true;
 }
@@ -152,7 +164,7 @@ watch(open, () => {
           @update:is-valid="value => (isValidJson = value)"
         />
         <button
-          v-if="space"
+          v-if="space && input.name === 'basic'"
           class="flex items-center gap-1"
           @click="handleCopyStrategies"
         >
