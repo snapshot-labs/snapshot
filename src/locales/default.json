@@ -663,7 +663,7 @@
       "label": "Gitcoin Passport weighted"
     },
     "arbitrum": {
-      "label": "Percentage of votable supply",
+      "label": "Arbitrum DAO votable supply",
       "description": "Use with erc20-votes to validate by percentage of votable supply."
     }
   },
