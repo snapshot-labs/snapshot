@@ -83,8 +83,8 @@ export default {
       this.$emit('update:modelValue', undefined);
     },
     setCollectables() {
-      if (!this.config.preview && this.config.collectables) {
-        this.collectables = this.config.collectables;
+      if (!this.config.preview && this.config.collectables?.results) {
+        this.collectables = this.config.collectables.results;
         if (!this.selectedCollectable && this.collectables.length) {
           this.collectableAddress = this.collectables[0].address;
         }
@@ -97,8 +97,18 @@ export default {
 <template>
   <UiSelect v-model="collectableAddress" :disabled="config.preview">
     <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template v-if="selectedCollectable && selectedCollectable.logoUri" #image>
-      <img :src="selectedCollectable.logoUri" alt="" class="tokenImage" />
+    <template
+      v-if="
+        selectedCollectable &&
+        (selectedCollectable.imageUri || selectedCollectable.logoUri)
+      "
+      #image
+    >
+      <img
+        :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
+        alt=""
+        class="tokenImage"
+      />
     </template>
     <option v-if="!collectables.length" disabled selected>
       - {{ $t('safeSnap.noCollectibles') }} -

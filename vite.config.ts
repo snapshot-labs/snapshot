@@ -20,7 +20,7 @@ export default defineConfig({
       imports: ['vue', 'vue-router'],
       dirs: ['./src/composables'],
       eslintrc: {
-        enabled: true
+        enabled: false
       }
     }),
     ViteComponents({

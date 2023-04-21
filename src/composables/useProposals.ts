@@ -21,7 +21,12 @@ const FLAGGED_LINKS = [
   'bit.ly/Layer0NFT',
   'shortest.link/nTdi',
   'shortest.link/nTfi',
-  'bit.ly/PolygonzkEVMPioneer'
+  'bit.ly/PolygonzkEVMPioneer',
+  'shortest.link/nZnh',
+  'shortest.link/nZn1',
+  'shortest.link/o4ZO',
+  'shortest.link/pdKt',
+  'one.webclaims.cloud'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
@@ -89,6 +94,7 @@ export function useProposals() {
   }
 
   function mapFlaggedProposals(proposals: Proposal[]) {
+    if (!proposals?.length) return [];
     return proposals.map(proposal => {
       return {
         ...proposal,

@@ -42,6 +42,7 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
+const { containsShortUrl } = useShortUrls();
 
 const {
   form,
@@ -98,6 +99,16 @@ const isFormValid = computed(() => {
   );
 });
 
+const formContainsShortUrl = computed(() => {
+  const { body, name, discussion } = form.value;
+
+  return (
+    containsShortUrl(body) ||
+    containsShortUrl(name) ||
+    containsShortUrl(discussion)
+  );
+});
+
 const stepIsValid = computed(() => {
   if (
     currentStep.value === Step.CONTENT &&
@@ -105,7 +116,8 @@ const stepIsValid = computed(() => {
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     isValidAuthor.value &&
     !getValidation('name').message &&
-    !getValidation('discussion').message
+    !getValidation('discussion').message &&
+    !formContainsShortUrl.value
   )
     return true;
   else if (
@@ -207,6 +219,7 @@ async function loadSourceProposal() {
 }
 
 function nextStep() {
+  if (formContainsShortUrl.value) return;
   currentStep.value++;
 }
 
@@ -305,6 +318,7 @@ onMounted(async () => {
         :validation-failed="hasAuthorValidationFailed"
         :is-valid-author="isValidAuthor"
         :validation-name="validationName"
+        :contains-short-url="formContainsShortUrl"
         data-testid="create-proposal-connect-wallet-warning"
       />
 

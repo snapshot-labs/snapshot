@@ -28,7 +28,7 @@ const isLegacySpace = computed(() => {
     </router-link>
     <router-link
       v-slot="{ isExactActive }"
-      :to="{ name: 'spaceCreate', params: { step: 0 } }"
+      :to="{ name: 'spaceCreate' }"
       data-testid="create-proposal-button"
     >
       <BaseSidebarNavigationItem :is-active="isExactActive">

@@ -9,6 +9,9 @@ const props = defineProps<{
 }>();
 const { copyToClipboard } = useCopy();
 
+const showModal = ref(false);
+const clickedUrl = ref('');
+
 const remarkable = new Remarkable({
   html: false,
   breaks: true,
@@ -28,9 +31,20 @@ const markdown = computed(() => {
   return remarkable.render(body);
 });
 
+function handleLinkClick(e, url) {
+  e.preventDefault();
+  clickedUrl.value = url;
+  if (url.includes('snapshot.org/#/')) return handleConfirm();
+  showModal.value = true;
+}
+
+function handleConfirm() {
+  window.open(clickedUrl.value, '_blank', 'noopener,noreferrer');
+}
+
 onMounted(() => {
   const body = document.querySelector('.markdown-body');
-  if (body !== null)
+  if (body !== null) {
     body.querySelectorAll('pre>code').forEach(function (code) {
       const parent = code.parentElement;
       if (parent !== null) parent.classList.add('rounded-lg');
@@ -46,12 +60,31 @@ onMounted(() => {
       });
       code.appendChild(copyButton);
     });
+    body.querySelectorAll('a[href]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        handleLinkClick(e, link.getAttribute('href'));
+      });
+    });
+  }
 });
 </script>
 
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <div v-viewer class="markdown-body break-words" v-html="markdown" />
+  <!-- eslint-disable vue/no-v-html -->
+  <div
+    v-viewer
+    v-bind="$attrs"
+    class="markdown-body break-words"
+    v-html="markdown"
+  />
+  <Teleport to="#modal">
+    <ModalLinkPreview
+      :open="showModal"
+      :clicked-url="clickedUrl"
+      @close="showModal = false"
+      @confirm="handleConfirm"
+    />
+  </Teleport>
 </template>
 
 <style lang="scss">

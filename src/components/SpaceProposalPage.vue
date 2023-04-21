@@ -36,7 +36,7 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
-const isWarningFlaggedOpen = ref(false);
+const forceShow = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -48,6 +48,12 @@ const isModerator = computed(() => {
     moderator.toLowerCase()
   );
   return moderators.includes(web3Account.value?.toLowerCase());
+});
+
+const isHidden = computed(() => {
+  if (forceShow.value) return false;
+  if (isFlaggedProposal(props.proposal)) return true;
+  return false;
 });
 
 const strategies = computed(
@@ -145,7 +151,6 @@ watch(
 
 onMounted(() => {
   loadResults();
-  if (isFlaggedProposal(props.proposal)) isWarningFlaggedOpen.value = true;
 });
 </script>
 
@@ -156,51 +161,67 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <div class="px-3 md:px-0">
-        <SpaceProposalHeader
-          :space="space"
-          :proposal="proposal"
-          :is-admin="isAdmin"
-          :is-moderator="isModerator"
-        />
-        <SpaceProposalContent :space="space" :proposal="proposal" />
+      <div v-if="isHidden">
+        <BaseBlock v-if="isHidden">
+          <div class="flex">
+            <div class="ml-1">
+              {{ $t('warningFlagged') }}
+            </div>
+            <div class="-mr-3 flex items-center">
+              <button @click.prevent="forceShow = true">
+                <div class="px-4 py-2 hover:text-skin-link">Show</div>
+              </button>
+            </div>
+          </div>
+        </BaseBlock>
       </div>
-      <div class="space-y-4">
-        <div v-if="proposal?.discussion" class="px-3 md:px-0">
-          <h3 v-text="$t('discussion')" />
-          <BlockLink
-            :link="proposal.discussion"
-            data-testid="proposal-page-discussion-link"
+      <template v-else>
+        <div class="px-3 md:px-0">
+          <SpaceProposalHeader
+            :space="space"
+            :proposal="proposal"
+            :is-admin="isAdmin"
+            :is-moderator="isModerator"
+          />
+          <SpaceProposalContent :space="space" :proposal="proposal" />
+        </div>
+        <div class="space-y-4">
+          <div v-if="proposal?.discussion" class="px-3 md:px-0">
+            <h3 v-text="$t('discussion')" />
+            <BlockLink
+              :link="proposal.discussion"
+              data-testid="proposal-page-discussion-link"
+            />
+          </div>
+          <SpaceProposalVote
+            v-if="proposal?.state === 'active'"
+            v-model="selectedChoices"
+            :proposal="proposal"
+            :user-vote="userVote"
+            @open="modalOpen = true"
+            @clickVote="clickVote"
+          />
+          <SpaceProposalVotesList
+            v-if="isUserVoteResolved"
+            :space="space"
+            :proposal="proposal"
+            :strategies="strategies"
+            :user-vote="userVote"
+          />
+          <SpaceProposalPlugins
+            v-if="proposal?.plugins && loadedResults && results"
+            :id="proposalId"
+            :space="space"
+            :proposal="proposal"
+            :results="results"
+            :loaded-results="loadedResults"
+            :strategies="strategies"
           />
         </div>
-        <SpaceProposalVote
-          v-if="proposal?.state === 'active'"
-          v-model="selectedChoices"
-          :proposal="proposal"
-          :user-vote="userVote"
-          @open="modalOpen = true"
-          @clickVote="clickVote"
-        />
-        <SpaceProposalVotesList
-          v-if="isUserVoteResolved"
-          :space="space"
-          :proposal="proposal"
-          :strategies="strategies"
-          :user-vote="userVote"
-        />
-        <SpaceProposalPlugins
-          v-if="proposal?.plugins && loadedResults && results"
-          :id="proposalId"
-          :space="space"
-          :proposal="proposal"
-          :results="results"
-          :loaded-results="loadedResults"
-          :strategies="strategies"
-        />
-      </div>
+      </template>
     </template>
     <template #sidebar-right>
-      <div class="mt-4 space-y-4 lg:mt-0">
+      <div v-if="!isHidden" class="mt-4 space-y-4 lg:mt-0">
         <SpaceProposalInformation
           :space="space"
           :proposal="proposal"
@@ -252,16 +273,5 @@ onMounted(() => {
       :selected-choices="selectedChoices"
       @close="isModalPostVoteOpen = false"
     />
-    <ModalNotice
-      title="Warning"
-      :open="isWarningFlaggedOpen"
-      @close="isWarningFlaggedOpen = false"
-    >
-      <div class="space-y-4 text-skin-link">
-        <BaseMessageBlock level="warning-red" class="text-left">
-          {{ $t('warningFlagged') }}
-        </BaseMessageBlock>
-      </div>
-    </ModalNotice>
   </teleport>
 </template>

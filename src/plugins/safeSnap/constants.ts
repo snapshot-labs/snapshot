@@ -33,14 +33,14 @@ export const EXPLORER_API_URLS = {
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
-  '1': 'https://safe-transaction-mainnet.safe.global/api/v1',
-  '5': 'https://safe-transaction-goerli.safe.global/api/v1',
-  '100': 'https://safe-transaction-gnosis-chain.safe.global/api/v1',
-  '73799': 'https://safe-transaction-volta.safe.global/api/v1',
-  '246': 'https://safe-transaction-ewc.safe.global//api/v1',
-  '137': 'https://safe-transaction-polygon.safe.global//api/v1',
-  '56': 'https://safe-transaction-bsc.safe.global//api/v1',
-  '42161': 'https://safe-transaction-arbitrum.safe.global/api/v1'
+  '1': 'https://safe-transaction-mainnet.safe.global/api',
+  '5': 'https://safe-transaction-goerli.safe.global/api',
+  '100': 'https://safe-transaction-gnosis-chain.safe.global/api',
+  '73799': 'https://safe-transaction-volta.safe.global/api',
+  '246': 'https://safe-transaction-ewc.safe.global/api',
+  '137': 'https://safe-transaction-polygon.safe.global/api',
+  '56': 'https://safe-transaction-bsc.safe.global/api',
+  '42161': 'https://safe-transaction-arbitrum.safe.global/api'
 };
 
 // ABIs
