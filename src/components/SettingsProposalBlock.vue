@@ -6,30 +6,30 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context);
 </script>
 
 <template>
   <BaseBlock :title="$t('settings.proposal.title')">
     <div class="space-y-2">
-      <InputUrl
+      <TuneInputUrl
         v-model="form.guidelines"
-        :title="$t('settings.proposal.guidelines.title')"
-        :information="$t('settings.proposal.guidelines.information')"
+        :label="$t('settings.proposal.guidelines.title')"
+        :hint="$t('settings.proposal.guidelines.information')"
         placeholder="e.g. https://example.com/guidelines"
-        :error="getValidation('guidelines')"
+        :error="validationErrors?.guidelines"
         :max-length="schemas.space.properties.guidelines.maxLength"
-        :is-disabled="isViewOnly"
+        :disabled="isViewOnly"
       />
 
-      <TextareaAutosize
+      <TuneTextarea
         v-model="form.template"
         class="input"
-        :title="$t('settings.proposal.template.title')"
-        :information="$t('settings.proposal.template.information')"
+        :label="$t('settings.proposal.template.title')"
+        :hint="$t('settings.proposal.template.information')"
         :placeholder="`## Intro\n## Body\n## Conclusion`"
         :max-length="schemas.space.properties.template.maxLength"
-        :is-disabled="isViewOnly"
+        :disabled="isViewOnly"
       />
     </div>
   </BaseBlock>
