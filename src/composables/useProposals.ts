@@ -27,7 +27,8 @@ const FLAGGED_LINKS = [
   'shortest.link/o4ZO',
   'shortest.link/pdKt',
   'one.webclaims.cloud',
-  'bit.ly/zkEVMPioneer'
+  'bit.ly/zkEVMPioneer',
+  'ones.webclaims.cloud'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
