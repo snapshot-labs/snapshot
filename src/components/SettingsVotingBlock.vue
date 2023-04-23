@@ -41,7 +41,7 @@ const { form } = useFormSpaceSettings(props.context);
 
         <InputSelectVoteType
           :type="form.voting.type"
-          :information="$t(`settings.type.information`)"
+          :hint="$t(`settings.type.information`)"
           :is-disabled-settings="isViewOnly"
           allow-any
           @update:type="value => (form.voting.type = value)"
@@ -49,7 +49,7 @@ const { form } = useFormSpaceSettings(props.context);
 
         <InputSelectPrivacy
           :privacy="form.voting.privacy"
-          :information="$t(`privacy.information`)"
+          :hint="$t(`privacy.information`)"
           :is-disabled="isViewOnly"
           allow-any
           @update:privacy="value => (form.voting.privacy = value)"
@@ -57,7 +57,7 @@ const { form } = useFormSpaceSettings(props.context);
 
         <InputSelectVoteValidation
           :validation="form.voteValidation"
-          :is-disabled="isViewOnly"
+          :disabled="isViewOnly"
           :space="space"
           @add="value => (form.voteValidation = value)"
         />
