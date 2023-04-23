@@ -6,13 +6,14 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const { form, validationErrors } = useFormSpaceSettings(props.context);
+const { form, validationErrors, addRef } = useFormSpaceSettings(props.context);
 </script>
 
 <template>
   <BaseBlock :title="$t('settings.proposal.title')">
     <div class="space-y-2">
       <TuneInputUrl
+        :ref="addRef"
         v-model="form.guidelines"
         :label="$t('settings.proposal.guidelines.title')"
         :hint="$t('settings.proposal.guidelines.information')"
