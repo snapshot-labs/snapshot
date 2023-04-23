@@ -114,7 +114,7 @@
 // Tune component styles
 
 .tune-label {
-  @apply text-base;
+  @apply font-sans text-base;
 }
 
 .tune-input {
@@ -127,6 +127,14 @@
 
 .tune-listbox-button {
   @apply rounded-full text-base;
+}
+
+.tune-button-select {
+  @apply rounded-full text-base text-skin-link;
+}
+
+.tune-input-duration {
+  @apply rounded-full text-base text-skin-link;
 }
 
 // Fade transition for Vue's transition and transition-group

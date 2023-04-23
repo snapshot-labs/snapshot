@@ -2,16 +2,16 @@
 withDefaults(
   defineProps<{
     type?: string;
-    information?: string;
+    hint?: string;
     allowAny?: boolean;
-    isDisabled?: boolean;
+    disabled?: boolean;
     isDisabledSettings?: boolean;
   }>(),
   {
     type: '',
-    information: '',
+    hint: '',
     allowAny: false,
-    isDisabled: false,
+    disabled: false,
     isDisabledSettings: false
   }
 );
@@ -22,13 +22,13 @@ const modalVotingTypeOpen = ref(false);
 </script>
 
 <template>
-  <InputSelect
-    :title="$t(`settings.type.label`)"
-    :information="information"
+  <TuneButtonSelect
+    :label="$t(`settings.type.label`)"
+    :hint="hint"
     :model-value="type ? $t(`voting.${type}.label`) : $t('settings.anyType')"
-    :is-disabled="isDisabled || isDisabledSettings"
+    :disabled="disabled || isDisabledSettings"
     :tooltip="
-      isDisabled
+      disabled
         ? $t('create.typeEnforced', { type: $t(`voting.${type}.label`) })
         : null
     "
