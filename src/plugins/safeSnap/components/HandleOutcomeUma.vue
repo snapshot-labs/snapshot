@@ -21,11 +21,7 @@ const { t } = useI18n();
 
 const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
-const {
-  createPendingTransaction,
-  updatePendingTransaction,
-  removePendingTransaction
-} = useTxStatus();
+const { createPendingTransaction, removePendingTransaction } = useTxStatus();
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
@@ -103,7 +99,6 @@ const approveBondUma = async () => {
     );
     await approveBond.next();
     actionInProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: '' })
     await approveBond.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
@@ -137,7 +132,6 @@ const submitProposalUma = async () => {
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: '' })
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
@@ -171,7 +165,6 @@ const executeProposalUma = async () => {
     );
     await executingProposal.next();
     action2InProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: '' })
     await executingProposal.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);

@@ -14,11 +14,7 @@ const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafe();
 const { web3 } = useWeb3();
-const {
-  createPendingTransaction,
-  updatePendingTransaction,
-  removePendingTransaction
-} = useTxStatus();
+const { createPendingTransaction, removePendingTransaction } = useTxStatus();
 const { notify } = useFlashNotification();
 
 const props = defineProps([
@@ -106,7 +102,6 @@ const claimBond = async () => {
     );
     await clamingBond.next();
     actionInProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: '' })
     await clamingBond.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
@@ -133,7 +128,6 @@ const submitProposal = async () => {
     );
     await proposalSubmission.next();
     actionInProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: '' })
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
@@ -162,13 +156,9 @@ const voteOnQuestion = async option => {
     const step = await voting.next();
     if (step.value === 'erc20-approval') {
       actionInProgress.value = null;
-      // updatePendingTransaction(txPendingId, {})
-      await voting.next();
-      // removePendingTransaction(txPendingId)
       await voting.next();
     }
     actionInProgress.value = null;
-    // updatePendingTransaction(txPendingId, {})
     await voting.next();
     await sleep(3e3);
     await updateDetails();
@@ -205,7 +195,6 @@ const executeProposal = async () => {
     );
     await executingProposal.next();
     action2InProgress.value = null;
-    // updatePendingTransaction(txPendingId, { txId: transaction.id })
     await executingProposal.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
