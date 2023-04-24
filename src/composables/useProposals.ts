@@ -28,7 +28,13 @@ const FLAGGED_LINKS = [
   'shortest.link/pdKt',
   'one.webclaims.cloud',
   'bit.ly/zkEVMPioneer',
-  'ones.webclaims.cloud'
+  'ones.webclaims.cloud',
+  'bit.ly/zkSyncMintNFT',
+  'bit.ly/collectionsradiantairdrop',
+  'bit.ly/stonetopaznft',
+  'zealy.io/c/layerzer0/questboard',
+  'zealy.io/c/zksynk/questboard',
+  'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
