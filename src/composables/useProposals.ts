@@ -28,7 +28,7 @@ const FLAGGED_LINKS = [
   'shortest.link/pdKt',
   'one.webclaims.cloud',
   'bit.ly/zkEVMPioneer',
-  'ones.webclaims.cloud',
+  'webclaims.cloud',
   'bit.ly/zkSyncMintNFT',
   'bit.ly/collectionsradiantairdrop',
   'bit.ly/stonetopaznft',
