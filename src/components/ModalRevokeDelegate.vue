@@ -41,7 +41,7 @@ async function handleSubmit() {
       'clearDelegate',
       [formatBytes32String(props.id || '')]
     );
-    updatePendingTransaction(txPendingId, { txId: tx.id });
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
     loading.value = false;
     const receipt = await tx.wait();

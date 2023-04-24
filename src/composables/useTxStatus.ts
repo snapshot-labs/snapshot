@@ -9,14 +9,16 @@ const pendingTransactions = useStorage(
 );
 
 export function useTxStatus() {
+  const { web3 } = useWeb3();
+
   const createPendingTransaction = () => {
     const createdAt = Date.now();
     const id = createdAt.toString();
     const tx = {
       id,
-      network: '1',
+      network: web3.value.network.key,
       createdAt,
-      txId: null
+      hash: null
     };
     pendingTransactions.value.push(tx);
     return id;
@@ -43,12 +45,12 @@ export function useTxStatus() {
 
   const restorePendingTransactions = () => {
     pendingTransactions.value.forEach(async tx => {
-      if (tx.txId) {
+      if (tx.hash) {
         if (Date.now() > tx.createdAt + 1000 * 60)
           return removePendingTransaction(tx.id);
         try {
           const provider = getProvider(tx.network);
-          await provider.waitForTransaction(tx.txId, 1, 1000 * 60 * 4);
+          await provider.waitForTransaction(tx.hash, 1, 1000 * 60 * 4);
         } finally {
           removePendingTransaction(tx.id);
         }

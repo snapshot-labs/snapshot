@@ -218,7 +218,7 @@ export interface PendingTransaction {
   id: string;
   network: string;
   createdAt: number;
-  txId: string | null;
+  hash: string | null;
 }
 
 export interface SafeTransaction {

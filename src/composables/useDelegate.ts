@@ -46,7 +46,7 @@ export function useDelegate() {
         [formatBytes32String(spaceId), ethAddress]
       );
       notify(t('notify.transactionSent'));
-      updatePendingTransaction(txPendingId, { txId: tx.id });
+      updatePendingTransaction(txPendingId, { hash: tx.hash });
       loading.value = false;
       const receipt = await tx.wait();
       console.log('Receipt', receipt);

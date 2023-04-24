@@ -6,9 +6,9 @@ const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
 const showDemoBanner = ref(true);
 
-const pendingTransactionsWithLinks = computed(() =>
-  pendingTransactions.value.filter(tx => tx.txId)
-);
+const pendingTransactionsWithLinks = computed(() => {
+  return pendingTransactions.value.filter(tx => tx.hash);
+});
 </script>
 
 <template>
@@ -63,11 +63,11 @@ const pendingTransactionsWithLinks = computed(() =>
     <BaseLink
       v-for="tx in pendingTransactionsWithLinks"
       :key="tx.id"
-      :link="explorerUrl(tx.network, tx.txId, 'tx')"
+      :link="explorerUrl(tx.network, tx.hash as string, 'tx')"
       class="ml-2 !text-skin-text hover:!text-skin-link"
       @click.stop
     >
-      {{ shorten(tx.txId) }}
+      {{ shorten(tx.hash as string) }}
     </BaseLink>
   </div>
 </template>
