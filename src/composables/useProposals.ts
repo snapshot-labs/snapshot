@@ -26,11 +26,15 @@ const FLAGGED_LINKS = [
   'shortest.link/nZn1',
   'shortest.link/o4ZO',
   'shortest.link/pdKt',
-  'one.webclaims.cloud'
+  'one.webclaims.cloud',
+  'bit.ly/zkEVMPioneer',
+  'ones.webclaims.cloud'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
-const FLAGGED_PROPOSAL_IDS = {};
+const FLAGGED_PROPOSAL_IDS = {
+  '0x39720d6712fa3fcdf5919600d8c93e4743286dcdd6681042bd586d2be87d3916': 1
+};
 
 interface ProposalsStore {
   space: {
