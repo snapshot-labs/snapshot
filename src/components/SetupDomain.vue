@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, onUnmounted, computed } from 'vue';
-import { useEns } from '@/composables/useEns';
-import { useWeb3 } from '@/composables/useWeb3';
-import { useApp } from '@/composables/useApp';
-import { useExtendedSpaces } from '@/composables/useExtendedSpaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
@@ -133,7 +128,10 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 :link="`https://app.ens.domains/address/${web3Account}/controller`"
                 hide-external-icon
               >
-                <BaseButton class="flex w-full items-center justify-between">
+                <BaseButton
+                  tabindex="-1"
+                  class="flex w-full items-center justify-between"
+                >
                   {{ shortenInvalidEns(ens.name) }}
                   <i-ho-exclamation-circle
                     v-tippy="{
@@ -148,7 +146,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
             </template>
           </div>
           <div class="mt-4">
-            {{ $t('setup.orReigsterNewEns') }}
+            {{ $t('setup.orRegisterNewEns') }}
           </div>
         </div>
         <div>

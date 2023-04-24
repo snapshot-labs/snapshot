@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form, getValidation } = useFormSpaceSettings(props.context);
+const { env } = useApp();
 
 const avatarNotReactive = ref(form.value.avatar);
 </script>
@@ -23,6 +23,7 @@ const avatarNotReactive = ref(form.value.avatar);
                 {{ $t('settings.avatar') }}
               </LabelInput>
               <InputUploadAvatar
+                :is-view-only="isViewOnly || env === 'demo'"
                 class="h-[80px]"
                 @image-uploaded="url => (form.avatar = url)"
                 @image-remove="() => (form.avatar = '')"
@@ -37,9 +38,13 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarOverlayEdit
                       :loading="uploading"
                       :avatar="form?.avatar"
+                      :is-view-only="isViewOnly || env === 'demo'"
                     />
                     <div
-                      class="absolute right-0 bottom-[2px] rounded-full bg-skin-heading p-1"
+                      :class="{
+                        'cursor-not-allowed': isViewOnly || env === 'demo'
+                      }"
+                      class="absolute bottom-[2px] right-0 rounded-full bg-skin-heading p-1"
                     >
                       <i-ho-pencil class="text-[12px] text-skin-bg" />
                     </div>
@@ -55,6 +60,7 @@ const avatarNotReactive = ref(form.value.avatar);
             :error="getValidation('name')"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
+            :is-disabled="isViewOnly"
             focus-on-mount
           />
 
@@ -64,10 +70,12 @@ const avatarNotReactive = ref(form.value.avatar);
             class="s-input !rounded-3xl"
             :max-length="schemas.space.properties.about.maxLength"
             :placeholder="$t('settings.about.placeholder')"
+            :is-disabled="isViewOnly"
           />
 
           <ListboxMultipleCategories
             :categories="form.categories"
+            :is-disabled="isViewOnly"
             @update-categories="value => (form.categories = value)"
           />
 
@@ -76,6 +84,7 @@ const avatarNotReactive = ref(form.value.avatar);
             :title="$t('settings.website')"
             :error="getValidation('website')"
             :max-length="schemas.space.properties.website.maxLength"
+            :is-disabled="isViewOnly"
             placeholder="e.g. https://www.example.com"
           />
 
@@ -84,11 +93,13 @@ const avatarNotReactive = ref(form.value.avatar);
             :title="$t(`settings.terms.label`)"
             :information="$t('settings.terms.information')"
             :error="getValidation('terms')"
+            :is-disabled="isViewOnly"
             placeholder="e.g. https://example.com/terms"
           />
 
           <InputSwitch
             v-model="form.private"
+            :is-disabled="isViewOnly"
             class="!mt-3"
             :text-right="$t('settings.hideSpace')"
           />

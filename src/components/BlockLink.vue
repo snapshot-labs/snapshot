@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getIpfsUrl } from '@/helpers/utils';
-
 const props = defineProps<{
   link: string;
   title?: string;
@@ -18,9 +15,11 @@ const preview = ref<null | {
   };
 }>(null);
 
-onMounted(async () => {
-  await update(props.link);
-});
+const showModal = ref(false);
+
+function handleConfirm() {
+  window.open(props.link, '_blank', 'noopener,noreferrer');
+}
 
 async function update(val: string) {
   try {
@@ -36,12 +35,16 @@ async function update(val: string) {
     console.log(e);
   }
 }
+
+onMounted(async () => {
+  await update(props.link);
+});
 </script>
 
 <template>
   <div v-if="preview?.meta?.title">
     <div v-if="title" class="mb-2" v-text="title" />
-    <BaseLink :link="getIpfsUrl(link)" hide-external-icon>
+    <button @click="showModal = true">
       <div
         class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
       >
@@ -61,15 +64,25 @@ async function update(val: string) {
           </div>
         </div>
         <div class="overflow-hidden px-4 py-3">
-          <div class="truncate text-skin-link">{{ preview.meta.title }}</div>
+          <div class="line-clamp-1 text-left text-skin-link">
+            {{ preview.meta.title }}
+          </div>
           <div
             v-if="preview.meta.description"
-            class="truncate text-sm text-skin-text"
+            class="line-clamp-1 text-left text-sm text-skin-text"
           >
             {{ preview.meta.description }}
           </div>
         </div>
       </div>
-    </BaseLink>
+    </button>
+    <Teleport to="#modal">
+      <ModalLinkPreview
+        :open="showModal"
+        :clicked-url="props.link"
+        @close="showModal = false"
+        @confirm="handleConfirm"
+      />
+    </Teleport>
   </div>
 </template>

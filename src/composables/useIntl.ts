@@ -3,9 +3,6 @@
  * returning computed properties based on current locale from i18n
  */
 
-import { computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
-
 /**
  * This is needed since Intl still doesn't support durations:
  * https://github.com/tc39/proposal-intl-duration-format (hopefully soon!)
@@ -145,14 +142,19 @@ export function useIntl() {
     formatNumber(number, percentNumberFormatter.value);
 
   const getRelativeProposalPeriod = (state: any, start: any, end: any): any => {
-    const now: any = new Date().getTime() / 1e3;
     if (state === 'closed') {
-      return t('endedAgo', [formatRelativeTime(end)]);
+      return t('endedAgo', [
+        formatRelativeTime(end, longRelativeTimeFormatter.value)
+      ]);
     }
     if (state === 'active') {
-      return t('proposalTimeLeft', [formatDuration(end - now)]);
+      return t('endIn', [
+        formatRelativeTime(end, longRelativeTimeFormatter.value)
+      ]);
     }
-    return t('startIn', [formatRelativeTime(start)]);
+    return t('startIn', [
+      formatRelativeTime(start, longRelativeTimeFormatter.value)
+    ]);
   };
 
   return {

@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -27,6 +26,7 @@ function handleRemoveTreasury(i) {
 }
 
 function handleEditTreasury(i) {
+  if (props.isViewOnly) return;
   currentTreasuryIndex.value = i;
   currentTreasury.value = clone(form.value.treasuries[i]);
   modalTreasuryOpen.value = true;
@@ -54,12 +54,17 @@ function handleSubmitTreasury(treasury) {
     <div v-if="form.treasuries.length" class="mb-3 grid gap-3">
       <SettingsTreasuriesBlockItem
         :treasuries="form.treasuries"
+        :is-view-only="isViewOnly"
         @edit-treasury="i => handleEditTreasury(i)"
         @remove-treasury="i => handleRemoveTreasury(i)"
       />
     </div>
 
-    <BaseButton class="block w-full" @click="handleAddTreasury">
+    <BaseButton
+      :disabled="isViewOnly"
+      class="block w-full"
+      @click="handleAddTreasury"
+    >
       {{ $t('settings.treasuries.add') }}
     </BaseButton>
     <teleport to="#modal">

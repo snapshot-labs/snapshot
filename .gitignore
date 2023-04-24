@@ -3,6 +3,7 @@ node_modules
 /dist
 .yalc
 components.d.ts
+auto-imports.d.ts
 
 # local env files
 .env.local

@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
+  space?: ExtendedSpace;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form } = useFormSpaceSettings(props.context);
 
 const modalValidationOpen = ref(false);
 
 function handleSubmitAddValidation(input) {
   form.value.validation = clone(input);
+}
+
+function handleClickSelectValidation() {
+  if (form.value.filters.onlyMembers) return;
+  modalValidationOpen.value = true;
 }
 </script>
 
@@ -22,25 +28,17 @@ function handleSubmitAddValidation(input) {
       <ContainerParallelInput>
         <InputSelect
           class="w-full"
-          :title="$t(`settings.validation`)"
-          :error="getValidation('validation')"
-          :model-value="form.validation.name"
-          @click="modalValidationOpen = true"
-        />
-
-        <InputNumber
-          v-if="form.validation.name === 'basic'"
-          v-model="form.filters.minScore"
-          :title="$t('settings.proposalThreshold.label')"
-          :information="$t('settings.proposalThreshold.information')"
-          :error="getValidation('minScore')"
-          placeholder="1000"
+          :title="$t(`proposalValidation.label`)"
+          :information="$t(`proposalValidation.information`)"
+          :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
+          :is-disabled="form.filters.onlyMembers || isViewOnly"
+          @select="handleClickSelectValidation"
         />
       </ContainerParallelInput>
 
       <InputSwitch
-        v-if="form.validation.name === 'basic'"
         v-model="form.filters.onlyMembers"
+        :is-disabled="isViewOnly"
         :text-right="$t('settings.allowOnlyAuthors')"
       />
     </div>
@@ -48,6 +46,8 @@ function handleSubmitAddValidation(input) {
       <ModalValidation
         :open="modalValidationOpen"
         :validation="form.validation"
+        :filter-min-score="form.filters.minScore"
+        :space="space"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
       />

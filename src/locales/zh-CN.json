@@ -114,12 +114,12 @@
   "addFavorites": "添加收藏",
   "createdBy": "由 {0}",
   "startIn": "从 {0} 开始",
-  "endIn": "结束 {1}",
+  "endIn": "结束 {0}",
   "proposalTimeLeft": "还剩 {0}",
   "endedAgo": "结束 {0}",
   "proposalBy": "由 {0}",
   "endDate": "结束 {0}",
-  "contectHash": "内容哈希",
+  "contentHash": "内容哈希",
   "defaultSkin": "默认皮肤",
   "select": "选择",
   "language": "语言",
@@ -418,7 +418,7 @@
     "example": "例如 yam.eth",
     "chooseExistingEns": "选择您现有的一个ENS域名来创建空间：",
     "useSingleExistingEns": "使用您现有的ENS域名：",
-    "orReigsterNewEns": "或者注册一个新的域名：",
+    "orRegisterNewEns": "或者注册一个新的域名：",
     "demoTestnetEnsMessage": "若要创建测试空间，您需要在 {network} 上的 ENS 域名。",
     "toCreateASpace": "要创建空间，您首先需要一个ENS域名。在下面输入一个，并按照ENS的注册说明进行操作。",
     "createASpace": "创建空间",
@@ -591,12 +591,12 @@
     "basic": {
       "label": "基础",
       "description": "使用任何策略来确定用户是否可以投票。",
-      "invalidVoterMessage": "您不符合就该提案进行投票的最低余额要求。"
+      "invalidMessage": "您不符合就该提案进行投票的最低余额要求。"
     },
     "passport-gated": {
       "label": "Gitcoin Passport门槛",
       "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
-      "invalidVoterMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
+      "invalidMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport加权"

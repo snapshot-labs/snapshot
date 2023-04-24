@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref, computed, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
-
-import {
-  useInfiniteLoader,
-  useScrollMonitor,
-  useApolloQuery,
-  useProfiles,
-  useFollowSpace,
-  useWeb3,
-  useProposals,
-  useMeta
-} from '@/composables';
+import { useInfiniteScroll } from '@vueuse/core';
 
 useMeta({
   title: {
@@ -110,6 +98,14 @@ function setFeed(name: string) {
   });
 }
 
+useInfiniteScroll(
+  document,
+  () => {
+    loadMore(() => loadMoreProposals(store.timeline.proposals.length));
+  },
+  { distance: 400 }
+);
+
 watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
@@ -121,11 +117,6 @@ onMounted(() => {
   if (store.timeline.proposals.length > 0) return;
   loadProposals();
 });
-
-const { endElement } = useScrollMonitor(() => {
-  if (loading.value) return;
-  loadMore(() => loadMoreProposals(store.timeline.proposals.length));
-});
 </script>
 
 <template>
@@ -134,19 +125,29 @@ const { endElement } = useScrollMonitor(() => {
       <div class="fixed hidden w-[240px] lg:block">
         <BaseBlock :slim="true" class="overflow-hidden">
           <div class="py-3">
-            <BaseSidebarNavigationItem
-              :is-active="isFeedJoinedSpaces"
+            <a
+              class="w-full text-left"
+              tabindex="0"
               @click="setFeed('joined')"
+              @keypress="setFeed('joined')"
             >
-              {{ $t('joinedSpaces') }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem :is-active="isFeedJoinedSpaces">
+                {{ $t('joinedSpaces') }}
+              </BaseSidebarNavigationItem>
+            </a>
 
-            <BaseSidebarNavigationItem
-              :is-active="route.query.feed === 'all'"
+            <a
+              class="w-full text-left"
+              tabindex="0"
               @click="setFeed('all')"
+              @keypress="setFeed('all')"
             >
-              {{ $t('allSpaces') }}
-            </BaseSidebarNavigationItem>
+              <BaseSidebarNavigationItem
+                :is-active="route.query.feed === 'all'"
+              >
+                {{ $t('allSpaces') }}
+              </BaseSidebarNavigationItem>
+            </a>
           </div>
         </BaseBlock>
       </div>
@@ -192,7 +193,7 @@ const { endElement } = useScrollMonitor(() => {
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <BaseButton>{{ $t('joinSpaces') }}</BaseButton>
+            <BaseButton tabindex="-1">{{ $t('joinSpaces') }}</BaseButton>
           </router-link>
         </div>
         <BaseNoResults
@@ -211,11 +212,9 @@ const { endElement } = useScrollMonitor(() => {
               name: 'spaceProposal',
               params: { key: proposal.space.id, id: proposal.id }
             }"
+            show-verified-icon
             class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
-        </div>
-        <div class="relative">
-          <div ref="endElement" class="absolute h-[10px] w-[10px]" />
         </div>
         <div v-if="loadingMore">
           <LoadingRow class="border-t" />

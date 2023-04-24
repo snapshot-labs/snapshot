@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useDelegate } from '@/composables/useDelegate';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{

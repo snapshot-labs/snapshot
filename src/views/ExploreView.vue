@@ -1,16 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-
-import {
-  usePlugins,
-  useStrategies,
-  useNetworksFilter,
-  useIntl,
-  useScrollMonitor,
-  useI18n,
-  useMeta
-} from '@/composables';
+import { useInfiniteScroll } from '@vueuse/core';
 
 useMeta({
   title: {
@@ -90,7 +79,13 @@ const loading = computed(() => {
 const loadBy = 15;
 const limit = ref(loadBy);
 
-const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
+useInfiniteScroll(
+  document,
+  () => {
+    limit.value += loadBy;
+  },
+  { distance: 400 }
+);
 </script>
 
 <template>
@@ -100,6 +95,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
   <div v-else>
     <BaseContainer class="mb-4 flex items-center">
       <BaseButton
+        tabindex="-1"
         class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
       >
         <TheSearchBar />
@@ -117,7 +113,7 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
           class="ml-3 hidden md:block"
           hide-external-icon
         >
-          <BaseButton>
+          <BaseButton tabindex="-1">
             {{ buttonStr }}
           </BaseButton>
         </BaseLink>
@@ -164,8 +160,5 @@ const { endElement } = useScrollMonitor(() => (limit.value += loadBy));
         <BaseNoResults v-if="items.length < 1 && !loading" use-block />
       </div>
     </BaseContainer>
-  </div>
-  <div class="relative">
-    <div ref="endElement" class="absolute h-[10px] w-[10px]" />
   </div>
 </template>

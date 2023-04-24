@@ -182,6 +182,7 @@ export interface Proposal {
   plugins: Record<string, any>;
   space: ExtendedSpace;
   strategies: SpaceStrategy[];
+  flagged?: boolean;
 }
 
 export interface VoteValidation {

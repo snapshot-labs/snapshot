@@ -7,19 +7,19 @@
   "poweredBy": "Powered by",
   "results": "投票結果",
   "resultsError": "結果を計算できませんでした。戦略が誤って設定されていたり、または戦略に対してRPCノードが無反応であることが原因かもしれません。",
-  "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
-  "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "votingValidationFailedMessage": "There was an error on our side and we could not verify if you are eligible to vote. This is often due to a misconfigured voting validation or an unresponsive API involved in the validation.",
-  "notValidVoterMessage": "Oops, you don't seem to be eligible to vote on this proposal.",
+  "resultsCalculating": "最終結果を計算中です。数分後にもこのメッセージが表示される場合は、スペースの管理者に連絡してください。",
+  "votingPowerFailedMessage": "投票力を計算できませんでした。これは、誤って設定された戦略や、戦略に関与しているRPCノードが応答しないことが原因の場合があります。",
+  "votingValidationFailedMessage": "当社側でエラーが発生し、あなたが投票に資格があるかどうかを検証できませんでした。これは、投票検証が誤って設定されたか、検証に関与しているAPIが応答しないことが原因の場合があります。",
+  "notValidVoterMessage": "おっと、あなたはこの提案に投票する資格がないようです。",
   "getHelp": "ヘルプ",
   "retry": "リトライ",
   "currentResults": "現在の投票状況",
   "reset": "リセット",
-  "close": "Close",
+  "close": "閉じる",
   "save": "保存",
   "author": "作成者",
   "next": "次へ",
-  "choice": "Choice",
+  "choice": "選択",
   "submit": "提出する",
   "plugins": "プラグイン",
   "information": "情報",
@@ -30,7 +30,7 @@
   "space": "スペース",
   "spaces": "スペース",
   "verifiedSpace": "認証済みのスペース",
-  "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
+  "warningSpace": "このスペースは潜在的な悪意があるとフラグが立てられています。注意して進めてください。",
   "version": "バージョン",
   "timeline": "タイムライン",
   "ended": "が終了しました。",
@@ -41,11 +41,11 @@
   "inSpaces": "{0} 個のスペースが使用",
   "votes": "投票数",
   "seeMore": "もっと見る",
-  "seeAll": "See all",
+  "seeAll": "すべて見る",
   "network": "ネットワーク",
   "networks": "ネットワーク",
   "skins": "スキン",
-  "spaceMembers": "Members",
+  "spaceMembers": "メンバー",
   "members": "メンバーなし | {count} メンバー | {count} メンバー",
   "editStrategy": "ストラテジーを編集",
   "invalidProposals": "無効な提案",
@@ -57,23 +57,23 @@
   "toggleSkin": "スキンの切り替え",
   "about": "Snapshotについて",
   "license": "ライセンス",
-  "showMore": "Show more",
-  "voted": "Voted",
-  "reload": "Reload",
+  "showMore": "もっと表示する",
+  "voted": "投票済み",
+  "reload": "リロード",
   "ipfsServer": "IPFSサーバ",
   "hub": "ハブ",
   "cancel": "キャンセル",
-  "delete": "Delete",
+  "delete": "削除",
   "demoSite": "これはデモサイトです。気軽にお試しください！",
   "removeDelegation": "投票権の委任を削除する",
   "confirmRemove": "以下のアドレスへの投票権の委任を削除してもよろしいですか？",
-  "removeSpace": "for the space {0}",
-  "noVotingPower": "Oops, it seems you don't have any voting power at block {blockNumber}.",
-  "quorumReached": "quorum reached",
+  "removeSpace": "{0} スペースへの委任を削除しますか？",
+  "noVotingPower": "ブロック{blockNumber}には投票権がありません。",
+  "quorumReached": "クオーラムが達成されました",
   "options": "オプション",
   "votingPower": "あなたの投票力",
   "comment": {
-    "placeholder": "Share your reason (optional)"
+    "placeholder": "理由を共有する（任意）"
   },
   "receipt": "レシート",
   "relayer": "リレーヤー",
@@ -83,7 +83,7 @@
   "notificationsBlocked": "お使いのブラウザは通知を無効にしています",
   "notificationsNotSupported": "お使いのブラウザは通知をサポートしていません",
   "walletNotSupported": "ウォレットがサポートされていません",
-  "seeInExplorer": "See explorer",
+  "seeInExplorer": "エクスプローラーを参照する",
   "learnMore": "もっと詳しく知る",
   "logout": "ログアウト",
   "continue": "続行する",
@@ -95,7 +95,7 @@
   "yourChoice": "選択肢 {0}",
   "targetAddress": "ターゲットアドレス",
   "value": "値",
-  "date": "データ",
+  "date": "日付",
   "marketDetails": "マーケット詳細",
   "addMarket": "マーケットを追加する",
   "selectNetwork": "ネットワークを選択する",
@@ -114,17 +114,16 @@
   "addFavorites": "お気に入りに追加",
   "createdBy": "{0} が作成",
   "startIn": "{0} 後に開始",
-  "endIn": "{1} 後に終了",
+  "endIn": "{0} 後に終了",
   "proposalTimeLeft": "残り{0}",
-  "endedAgo": "{0}前に 終了しました",
+  "endedAgo": "{0} に終了しました",
   "proposalBy": "{0} が作成",
   "endDate": "end {0}",
-  "contectHash": "コンテンツのハッシュ",
   "defaultSkin": "デフォルトのスキン",
   "select": "選択する",
   "language": "言語",
   "agree": "同意する",
-  "moderators": "Moderators",
+  "moderators": "モデレーター",
   "playground": "プレイグラウンド",
   "strategyParams": "ストラテジーのパラメータ",
   "addresses": "アドレス",
@@ -133,10 +132,10 @@
   "join": "参加する",
   "joined": "参加中",
   "leave": "退出する",
-  "subspaces": "Sub-spaces",
-  "mainspace": "Main space",
+  "subspaces": "サブスペース",
+  "mainspace": "メインスペース",
   "copyLink": "リンクをコピーする",
-  "duplicate": "Duplicate",
+  "duplicate": "複製する",
   "joinedSpaces": "参加中のスペース",
   "joinSpaces": "スペースに参加する",
   "setDelegationToSpace": "委任を特定のスペースに限定する",
@@ -146,37 +145,37 @@
   "confirmAction": "アクションを確定する",
   "or": "または",
   "share": "共有する",
-  "shareOnTwitter": "Share on Twitter",
-  "shareOnLenster": "Share on Lenster",
+  "shareOnTwitter": "Twitterで共有する",
+  "shareOnLenster": "Lensterで共有する",
   "createButton": "作成する",
-  "discussion": "Discussion",
-  "changeWallet": "Change wallet",
-  "createASpace": "Create a space",
-  "getStarted": "Get started",
-  "skip": "Skip",
+  "discussion": "ディスカッション",
+  "changeWallet": "ウォレットを変更する",
+  "createASpace": "スペースを作成する",
+  "getStarted": "始める",
+  "skip": "スキップ",
   "newSpaceNotice": {
     "header": "スペースが 進行中です！",
-    "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
+    "mainText": "あなたは、{settings}内のストラテジーを使用して投票力の計算方法を変更できます。設定の変更は、新しい提案にのみ影響します。既存の提案は変更できません。",
     "learnMore": "より詳細については{documentation} をご覧ください。またはSnapshotの {discord} に参加してください。",
     "gotIt": "了解"
   },
   "errors": {
     "required": "フィールドが必要です",
-    "minLength": "フィールドが必要です",
+    "minLength": "最小文字数は {0} です",
     "maxLength": "最大文字数は {0} です",
     "pattern": "無効な文字",
     "minItems": "最低 {0} 個のアイテムが必要",
-    "maxItems": "Maximum {0} item(s) allowed",
+    "maxItems": "最大 {0} 個のアイテムが許可されます",
     "minStrategy": "少なくとも１つストラテジーが必要です",
     "website": "URLはhttps://www.example.com の形式でなければなりません",
     "format": "無効な形式",
     "type": "無効なタイプ",
     "unsupportedImageType": "このファイル形式はサポートされていません。サポートされているファイル形式はjpeg、jpg、そしてpngです。",
-    "invalidAddress": "Invalid address"
+    "invalidAddress": "無効なアドレス"
   },
   "create": {
     "proposalTitle": "タイトル",
-    "discussion": "Discussion (optional)",
+    "discussion": "ディスカッション（任意）",
     "categorie(s)": "最大2つのカテゴリを選択してください",
     "proposalDescription": "概要 (任意)",
     "preview": "プレビュー",
@@ -184,8 +183,8 @@
     "addChoice": "選択肢を追加する",
     "startDate": "開始日を選択する",
     "endDate": "終了日を選択する",
-    "startTime": "開始日を選択する",
-    "endTime": "終了日を選択する",
+    "startTime": "開始時刻を選択する",
+    "endTime": "終了時刻を選択する",
     "publish": "公開する",
     "untitled": "タイトル未設定",
     "snapshotBlock": "Snapshotのブロック番号",
@@ -193,7 +192,7 @@
     "votingSystem": "投票システム",
     "choice": "選択肢 {0}",
     "period": "投票期間",
-    "start": "スタート",
+    "start": "開始",
     "end": "終了",
     "days": "日間",
     "hours": "時間",
@@ -201,14 +200,14 @@
     "schedule": "提案を予定する",
     "delayEnforced": "スペースは投票が開始されるまで遅延を強制する",
     "periodEnforced": "スペースは投票期間を強制します",
-    "typeEnforced": "{type} is enforced by the space",
-    "privacyEnforced": "{type} is enforced by the space",
+    "typeEnforced": "{type} はスペースによって強制されます",
+    "privacyEnforced": "{type} はスペースによって強制されます",
     "edit": "編集",
     "continue": "続行する",
     "now": "今すぐ",
     "votingPeriodExplainer": "これはユーザーが投票できる期間です。提案は投票期間が始まる前に表示され、投票が開始されるまで保留状態となります。",
-    "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
-    "uploading": "Uploading image",
+    "uploadImageExplainer": "ドラッグ＆ドロップ、選択、または貼り付けで画像を添付します。",
+    "uploading": "画像をアップロード中",
     "markdown": "マークダウン形式がサポートされています",
     "validationWarning": {
       "basic": {
@@ -218,7 +217,7 @@
       "customValidation": "提案を提出するには、提案検証をクリアする必要があります。",
       "executionError": "このスペースで提案を作成する資格を確認することができませんでした。これはおそらくストラテジーの誤設定によるものです。"
     },
-    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
+    "errorGettingSnapshot": "投票権を計算するために必要なスナップショットブロック番号を取得する際にエラーが発生しました。後でもう一度お試しください。"
   },
   "delegate": {
     "header": "委任",
@@ -245,15 +244,15 @@
     "startDate": "開始日",
     "endDate": "終了日",
     "votingSystem": "投票のシステム",
-    "privacy": "Privacy",
-    "invalidChoice": "Invalid choice",
+    "privacy": "プライバシー",
+    "invalidChoice": "無効な選択",
     "postVoteModal": {
-      "defaultTitle": "Your vote is in!",
-      "gnosisSafeTitle": "Your vote is pending...",
-      "gnosisSafeDescription": " Votes with a Safe require additional signers and will be visible once the transaction is confirmed",
-      "seeQueue": "See queued transactions",
+      "defaultTitle": "あなたの投票が完了しました！",
+      "gnosisSafeTitle": "あなたの投票は保留中です...",
+      "gnosisSafeDescription": " Safeを使用した投票には追加の署名者が必要で、取引が確認された後に表示されます",
+      "seeQueue": "キューに入っている取引を見る",
       "tips": {
-        "1": "Votes can be changed while the proposal is active"
+        "1": "提案がアクティブの間は投票を変更することができます"
       }
     }
   },
@@ -261,7 +260,7 @@
     "header": "提案",
     "new": "新しい提案",
     "noProposals": "まだ提案はありません",
-    "createProposal": "Create proposal",
+    "createProposal": "提案を作成する",
     "showMore": "もっと見る",
     "showLess": "表示を減らす",
     "states": {
@@ -276,141 +275,141 @@
   "notifications": {
     "header": "通知",
     "noNotifications": "通知がありません。",
-    "proposalStarted": "提案が始まりました：",
-    "proposalEnded": "提案が終わりました：",
-    "markAllAsRead": "全て既読にする",
-    "all": "全て",
+    "proposalStarted": "提案が開始されました：",
+    "proposalEnded": "提案が終了しました：",
+    "markAllAsRead": "すべて既読にする",
+    "all": "すべて",
     "unread": "未読"
   },
   "modalTerms": {
-    "mustAgreeTo": "To {action} this space, you must agree to the {spaceName} terms of service.",
-    "actionJoin": "join",
-    "actionCreate": "create a proposal in",
-    "actionVote": "vote in"
+    "mustAgreeTo": "{action} このスペースをするには、{spaceName} 利用規約に同意する必要があります。",
+    "actionJoin": "参加する",
+    "actionCreate": "提案を作成する",
+    "actionVote": "投票する"
   },
   "settings": {
     "header": "設定",
     "editController": "コントローラの編集",
-    "connectWithSpaceOwner": "You are in view only mode, to modify space settings connect with a controller or admin wallet.",
+    "connectWithSpaceOwner": "閲覧専用モードです。スペースの設定を変更するには、コントローラまたは管理者ウォレットと接続してください。",
     "gnosisWrongNetwork": {
-      "base": "Your Gnosis Safe is on the wrong network. Please connect to {network} to {action}.",
-      "settings": "edit the space settings",
-      "create": "create a proposal",
-      "vote": "vote on this proposal"
+      "base": "Gnosis Safeが間違ったネットワーク上にあります。 {action} するには、{network} に接続してください。",
+      "settings": "スペースの設定を編集する",
+      "create": "提案を作成する",
+      "vote": "この提案に投票する"
     },
     "currentSpaceControllerIs": "現在のスペースコントローラは{address} です。",
     "newController": "新しいコントローラ",
-    "noRecord": "No text-record found. Make sure you have registered {id} domain on {network}, then edit the controller text-record to regain access to the space settings.",
-    "set": "設定する",
+    "noRecord": "{id} ドメインを {network} に登録していることを確認してください。その後、コントローラテキストレコードを編集して、スペース設定へのアクセス権を回復してください。",
+    "set": "設定",
     "profile": "プロフィール",
     "avatar": "アバター",
     "name": {
-      "label": "Name",
-      "placeholder": "e.g. Yam Network"
+      "label": "名前",
+      "placeholder": "例：Yam Network"
     },
     "about": {
-      "label": "About",
-      "placeholder": "What is your organisation about?"
+      "label": "概要",
+      "placeholder": "あなたの組織について何ですか？"
     },
     "categories": {
-      "label": "Categorie(s)",
-      "select": "Select categorie(s)"
+      "label": "カテゴリー",
+      "select": "カテゴリーを選択"
     },
     "terms": {
-      "label": "Terms of service",
-      "information": "Users will be required to accept these terms once before they can create a proposal or cast a vote"
+      "label": "利用規約",
+      "information": "ユーザーは、提案を作成したり投票したりする前に、これらの利用規約に1度だけ同意する必要があります"
     },
     "hideSpace": "ホームページからスペースを隠す",
-    "links": "Social accounts",
+    "links": "ソーシャルアカウント",
     "subspaces": {
-      "label": "Sub-spaces",
-      "information": "Sub-spaces will only be shown once configured on both the main space and the sub-space(s). {docs}",
+      "label": "サブスペース",
+      "information": "サブスペースは、メインスペースとサブスペースの両方で設定された場合にのみ表示されます。 {docs}",
       "parent": {
-        "label": "Main space",
+        "label": "メインスペース",
         "placeholder": "pistachiodao.eth",
-        "information": "The space that this space is a sub-space of will be displayed on the space page"
+        "information": "このスペースがサブスペースであるメインスペースがスペースページに表示されます"
       },
       "children": {
-        "label": "Sub-spaces",
+        "label": "サブスペース",
         "placeholder": "pistachiodao.eth",
-        "information": "Related Sub-spaces listed here will be displayed on the space page"
+        "information": "ここにリストされた関連サブスペースは、スペースページに表示されます"
       }
     },
-    "website": "Website",
+    "website": "ウェブサイト",
     "strategies": {
-      "label": "Strategie(s)",
-      "information": "Strategies are used to determine voting power or whether a user is eligible to create a proposal"
+      "label": "戦略（複数可）",
+      "information": "戦略は、投票権またはユーザーが提案を作成する資格があるかどうかを決定するために使用されます"
     },
     "network": {
-      "label": "Network",
-      "information": "The defaul network used for this space. Networks can also be specified in individual strategies"
+      "label": "ネットワーク",
+      "information": "このスペースに使用されるデフォルトのネットワーク。 ネットワークは個々の戦略でも指定できます"
     },
     "symbol": {
-      "label": "Symbol",
-      "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
+      "label": "シンボル",
+      "information": "このスペースに使用されるデフォルトのシンボル、通常はトークンシンボルであるBAL（Balancer）など"
     },
-    "strategiesList": "Select up to 8 strategies",
-    "votingPowerIsCumulative": "Voting power is cumulative",
-    "addStrategy": "ストラテジーを追加する",
-    "testInPlayground": "Test in playground",
+    "strategiesList": "最大8つの戦略を選択してください",
+    "votingPowerIsCumulative": "投票権は累積的です",
+    "addStrategy": "ストラテジーを追加",
+    "testInPlayground": "プレイグラウンドでテスト",
     "admins": {
-      "label": "Admins",
-      "information": "Admins are able to modify the space settings and manage the space's proposals"
+      "label": "管理者",
+      "information": "管理者はスペースの設定を変更し、スペースの提案を管理できます"
     },
     "authors": {
-      "label": "Authors",
-      "information": "Authors are always able to create proposals"
+      "label": "作者",
+      "information": "作者は常に提案を作成できます"
     },
-    "proposalValidation": "提案のバリデーション",
-    "validation": "Type",
+    "proposalValidation": "提案の検証",
+    "validation": "タイプ",
     "proposalThreshold": {
-      "label": "Threshold",
-      "information": "The minimum amount of voting power required to create a proposal"
+      "label": "閾値",
+      "information": "提案を作成するために必要な最小の投票権"
     },
-    "allowOnlyAuthors": "作成者のみ提案を提出可能",
-    "editValidation": "バリデーションを編集",
-    "selectValidation": "バリデーションを選択",
-    "validationParameters": "バリデーションのパラメータ",
+    "allowOnlyAuthors": "作成者のみが提案を提出できます",
+    "editValidation": "検証を編集",
+    "selectValidation": "検証を選択",
+    "validationParameters": "検証パラメータ",
     "voting": "投票",
     "votingDelay": "投票の遅延",
     "votingPeriod": "投票期間",
-    "hours": "Hours",
-    "days": "Days",
+    "hours": "時間",
+    "days": "日",
     "quorum": {
-      "label": "Quorum",
-      "information": "The minimum amount of voting power required for the proposal to pass"
+      "label": "クオーラム",
+      "information": "提案が承認されるために必要な最小の投票権"
     },
     "type": {
-      "label": "Type",
-      "information": "The type of voting system used for this space. (Enforced on all future proposals)"
+      "label": "タイプ",
+      "information": "このスペースで使用される投票システムのタイプ（将来の提案に強制されます）"
     },
     "anyType": "すべて",
     "hideAbstain": "基本的な投票結果において棄権投票を無視する",
     "customDomain": "カスタムドメイン",
     "domain": {
-      "label": "Domain name",
-      "placeholder": "e.g. vote.balancer.fi",
-      "info": "To setup a custom domain you additionally need to open a pull request on github after you have created the space. {docs}"
+      "label": "ドメイン名",
+      "placeholder": "例：vote.balancer.fi",
+      "info": "カスタムドメインを設定するには、スペースを作成した後にGitHub上でプルリクエストを開く必要があります。 {docs}"
     },
     "skin": "スキン",
     "treasuries": {
-      "label": "Treasury",
-      "add": "Add treasury",
-      "edit": "Edit treasury",
-      "information": "Add treasuries of your organization to show them in your space"
+      "label": "財務省",
+      "add": "財務省を追加",
+      "edit": "財務省を編集",
+      "information": "組織の財務省を追加して、スペース内に表示します"
     },
-    "addPlugin": "プラグインを追加する",
-    "editPlugin": "プラグインを編集する",
-    "pluginParameters": "プラグインのパラメータ",
+    "addPlugin": "プラグインを追加",
+    "editPlugin": "プラグインを編集",
+    "pluginParameters": "プラグインパラメータ",
     "proposal": {
-      "title": "Proposal",
+      "title": "提案",
       "guidelines": {
-        "title": "Guidelines",
-        "information": "Display a link to your guidelines on proposal creation to help users understand what constitutes a good/valid proposal"
+        "title": "ガイドライン",
+        "information": "提案作成のガイドラインへのリンクを表示して、ユーザーが良好/有効な提案を構成するかどうかを理解するのに役立ちます"
       },
       "template": {
-        "title": "Template",
-        "information": "Start every proposal with a template to help users understand what information is required"
+        "title": "テンプレート",
+        "information": "テンプレートで始めて、ユーザーが必要な情報を理解するのに役立ちます"
       }
     }
   },
@@ -418,100 +417,100 @@
     "example": "例 yam.eth",
     "chooseExistingEns": "作成するスペースと紐付ける既存のENSドメインを選択してください。",
     "useSingleExistingEns": "既存のENSドメインを使用してください:",
-    "orReigsterNewEns": "または新しいドメインを登録する：",
-    "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
+    "orRegisterNewEns": "または新しいドメインを登録する：",
+    "demoTestnetEnsMessage": "{network}上でテストスペースを作成するには、ENSドメインが必要です。",
     "toCreateASpace": "スペースを作成するためには、まずENSドメインが必要です。ドメインを入力し、ENS登録の指示に従ってください。",
     "createASpace": "スペースを作成する",
     "registerEnsButton": "登録する",
     "supportedEnsTLDs": "サポートされているドメインの拡張子",
-    "helpDocsAndDiscordLinks": "Not sure how to setup your space? Learn more in the {docs} or join Snapshot {discord}.",
-    "setSpaceController": "Space controller",
-    "setSpaceControllerExists": "The snapshot text-record for this domain has already been set. Choose edit to change it, otherwise you can skip to the next step.",
-    "setSpaceControllerInfo": " The space controller is the account that will be able to manage the space settings. Additional space controllers (admins) can be added later.",
-    "setSpaceControllerInfoGnosisSafe": "When creating a space with a Gnosis Safe it's recommended to set the safe address as the space controller. If you don't, you need to follow some additional steps. {link}",
-    "editSpaceController": "ENSのコントローラを編集する",
-    "setController": "コントローラを設定する",
-    "explainControllerAndEns": "Setting the controller requires a transaction on the {network} which will add a \"snapshot\" TEXT record to your ENS domain.",
-    "confirmToSetAddress": "{address} をスペースのコントローラとして設定してもよろしいですか？",
-    "controllerHasAuthority": "コントローラはスペースの設定に対して完全な権限を持っています",
-    "controller": "コントローラ",
-    "selectEnsForSpace": "ENSアドレスを選ぶ",
-    "spaceOwnerAddressPlaceHolder": "e.g. {address}",
-    "controllerAddress": "コントローラのアドレス",
-    "updateController": "コントローラをアップデートする",
+    "helpDocsAndDiscordLinks": "スペースの設定方法がわからない場合は、{docs}を参照してください。Snapshot {discord}に参加してください。",
+    "setSpaceController": "スペースコントローラー",
+    "setSpaceControllerExists": "このドメインのsnapshotテキストレコードはすでに設定されています。変更する場合は編集を選択し、次のステップに進むことができます。",
+    "setSpaceControllerInfo": "スペースコントローラーは、スペースの設定を管理できるアカウントです。後で追加のスペースコントローラー（管理者）を追加できます。",
+    "setSpaceControllerInfoGnosisSafe": "Gnosis Safeを使用してスペースを作成する場合は、安全なアドレスをスペースコントローラーとして設定することをお勧めします。しない場合は、いくつかの追加ステップを実行する必要があります。 {link}",
+    "editSpaceController": "ENSのコントローラーを編集する",
+    "setController": "コントローラーを設定する",
+    "explainControllerAndEns": "{network}上で取引を行うことで、ENSドメインに「snapshot」TEXTレコードが追加されます。",
+    "confirmToSetAddress": "{address} をスペースのコントローラーとして設定してもよろしいですか？",
+    "controllerHasAuthority": "コントローラーはスペースの設定に対して完全な権限を持っています",
+    "controller": "コントローラー",
+    "selectEnsForSpace": "ENSアドレスを選択する",
+    "spaceOwnerAddressPlaceHolder": "例：{address}",
+    "controllerAddress": "コントローラーのアドレス",
+    "updateController": "コントローラーを更新する",
     "seeOnEns": "ENS上で見る",
     "goToSettings": "設定に移動する",
     "setSpaceProfile": "スペースをカスタマイズする",
     "waitForTransaction": "スペースを作成する前に取引の確定が必要です。{txUrl}",
     "pleaseWaitMessage": "取引が確定されるまで少々お待ちください",
-    "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
-    "fillCurrentAccount": "Use currently logged in account",
+    "notControllerAddress": "スペースを作成するには、コントローラーアドレス {wallet} に接続してください。",
+    "fillCurrentAccount": "現在ログインしているアカウントを使用する",
     "domain": {
-      "title": "Setup your space domain",
-      "ensMessage": " One thing you need before you can create your own space, is an ENS domain on Ethereum mainnet.",
-      "ensMessageTestnet": "You can also {link} on the Goerli testnet and mess with things there first.",
-      "tryDemo": "try the demo",
-      "yourExistingSpaces": "Your existing spaces",
-      "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
+      "title": "スペースドメインを設定する",
+      "ensMessage": "スペースを作成する前に必要なものの1つは、Ethereum mainnet上のENSドメインです。",
+      "ensMessageTestnet": "また、Goerliテストネット上で{link}することもできます。",
+      "tryDemo": "デモを試す",
+      "yourExistingSpaces": "既存のスペース",
+      "invalidEns": "このENS名は無効です。通常、登録時に無効な文字を使用したためです。"
     },
     "strategy": {
-      "title": "How would you like to setup your voting strategy?",
-      "subtitle": "You can change your strategy settings any time.",
-      "blockTitle": "Setup voting strategy",
+      "title": "投票戦略をどのように設定しますか？",
+      "subtitle": "戦略の設定はいつでも変更できます。",
+      "blockTitle": "投票戦略を設定する",
       "onePersonOneVote": {
-        "title": "One person, one vote",
-        "description": "Manage a whitelist of people who can vote or simply allow any address to vote. Every vote is equal and no token is required",
-        "whitelistInformation": "Specify a number of accounts that can vote",
-        "ticketInformation": "Any account can vote",
-        "votesEqualInfo": "Each vote is equal and no token is required"
+        "title": "1人1票",
+        "description": "投票できるホワイトリストを管理するか、単にすべてのアドレスが投票できるようにすることができます。すべての投票は等しく、トークンは必要ありません",
+        "whitelistInformation": "投票できるアカウントの数を指定する",
+        "ticketInformation": "すべてのアカウントが投票できます",
+        "votesEqualInfo": "各投票は等しく、トークンは必要ありません"
       },
       "tokenVoting": {
-        "title": "Token weighted voting",
-        "description": "Votes are weighted by a token. The token can be an ERC-20, ERC-721 or ERC-1155 token standard",
-        "tokenNotFound": "Token not found",
-        "seeOnEtherscan": "See on Etherscan"
+        "title": "トークン加重投票",
+        "description": "投票はトークンで重み付けされます。トークンはERC-20、ERC-721、またはERC-1155トークンスタンダードです",
+        "tokenNotFound": "トークンが見つかりません",
+        "seeOnEtherscan": "Etherscanで見る"
       },
       "advanced": {
-        "title": "Custom setup",
-        "description": "Select up to 8 strategies with a wide range of options. If you can't find the right strategy for your use case, you can create your own"
+        "title": "カスタムセットアップ",
+        "description": "多くのオプションから最大8つの戦略を選択できます。あなたの用途に合った戦略が見つからない場合は、独自の戦略を作成することもできます"
       }
     },
-    "validationTitle": "Who can manage this space and create proposals?"
+    "validationTitle": "誰がこのスペースを管理して提案を作成できますか？"
   },
   "profile": {
-    "buttonEdit": "Edit profile",
-    "viewProfile": "View profile",
+    "buttonEdit": "プロフィールを編集",
+    "viewProfile": "プロフィールを表示",
     "about": {
-      "header": "About",
-      "joinedSpaces": "Joined spaces",
-      "createdSpaces": "Created spaces",
-      "biography": "Bio",
-      "notJoinSpacesYet": "Hasn't joined any spaces yet",
-      "notCreatedSpacesYet": "Hasn't created any spaces yet",
-      "delegatorNetworkInfo": "Change by switching network in your wallet",
-      "delegate": "Delegate",
-      "delegated": "Delegated",
-      "delegateTo": "Delegate to",
-      "delegateFor": "Delegator for",
-      "noDelegatorsMessage": "No delegators on {network}",
-      "notSupportedNetwork": "Delegation currently isn't supported on {network} "
+      "header": "情報",
+      "joinedSpaces": "参加したスペース",
+      "createdSpaces": "作成したスペース",
+      "biography": "バイオグラフィー",
+      "notJoinSpacesYet": "まだスペースに参加していません",
+      "notCreatedSpacesYet": "まだスペースを作成していません",
+      "delegatorNetworkInfo": "ウォレット内のネットワークを切り替えて変更します",
+      "delegate": "委任",
+      "delegated": "委任された",
+      "delegateTo": "に委任する",
+      "delegateFor": "の委任者",
+      "noDelegatorsMessage": "{network}上に委任者はいません",
+      "notSupportedNetwork": "{network}では現在委任はサポートされていません"
     },
     "activity": {
-      "header": "Activity",
-      "votedFor": "Voted {choice}",
-      "today": "Today",
-      "thisWeek": "This week",
-      "olderThanWeek": "Older than a week",
-      "noActivity": "No activity yet"
+      "header": "活動",
+      "votedFor": "{choice}に投票しました",
+      "today": "今日",
+      "thisWeek": "今週",
+      "olderThanWeek": "1週間以上前",
+      "noActivity": "まだ活動はありません"
     },
     "settings": {
-      "header": "Edit profile",
-      "name": "Name",
-      "biography": "Bio",
-      "namePlaceholder": "Enter name",
-      "bioPlaceholder": "Tell your story",
-      "change": "Change",
-      "remove": "Remove"
+      "header": "プロフィールを編集",
+      "name": "名前",
+      "biography": "自己紹介",
+      "namePlaceholder": "名前を入力",
+      "bioPlaceholder": "あなたの物語を話してください",
+      "change": "変更",
+      "remove": "削除"
     }
   },
   "notify": {
@@ -537,7 +536,7 @@
     "networks": "ネットワーク",
     "plugins": "プラグイン",
     "results": "結果",
-    "category": "Category",
+    "category": "カテゴリー",
     "categories": {
       "all": "全て",
       "protocol": "プロトコル",
@@ -568,98 +567,98 @@
     }
   },
   "privacy": {
-    "label": "Privacy",
-    "title": "Select voting privacy",
-    "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
-    "any": "Any",
-    "none": "None",
+    "label": "プライバシー",
+    "title": "投票のプライバシーを選択",
+    "information": "提案に使用されるプライバシーの種類（今後のすべての提案で強制されます）",
+    "any": "すべて",
+    "none": "なし",
     "shutter": {
-      "label": "Shutter",
-      "description": "Choices are encrypted and only visible once the voting period is over",
-      "tooltip": "This proposal has Shutter privacy enabled. All votes will be encrypted until the voting period has ended and the final score is calculated",
+      "label": "シャッター",
+      "description": "選択肢は暗号化され、投票期間が終了して最終スコアが計算されるまで表示されません",
+      "tooltip": "この提案にはShutterプライバシーが有効になっています。すべての投票は、投票期間が終了して最終スコアが計算されるまで暗号化されます",
       "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
     }
   },
   "validation": {
-    "label": "Validation",
-    "title": "Select voting validation",
-    "information": "The type of validation used to determine if a user can vote. (Enforced on all future proposals)",
+    "label": "検証",
+    "title": "投票検証を選択",
+    "information": "ユーザーが投票できるかどうかを判断するために使用される検証の種類（今後のすべての提案に強制されます）",
     "any": {
-      "label": "Anyone can vote",
-      "description": "Anyone with voting power can cast a vote."
+      "label": "誰でも投票可能",
+      "description": "投票権を持つ誰でも投票できます。"
     },
     "basic": {
-      "label": "Basic",
-      "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "label": "基本",
+      "description": "ユーザーが投票できるかどうかを判断するためのあらゆる戦略を使用します。",
+      "invalidMessage": "この提案に投票するための最低限のバランス要件を満たしていません。"
     },
     "passport-gated": {
-      "label": "Gitcoin Passport gated",
-      "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "label": "Gitcoin Passport ゲート付き",
+      "description": "Gitcoin Passportを必要とすることで、スパムや投票操作からあなたの提案を保護します。",
+      "invalidMessage": "この提案に投票するためには、{amount} 以下の切手を持つGitcoin Passportが必要です：{stamps}。"
     },
     "passport-weighted": {
-      "label": "Gitcoin Passport weighted"
+      "label": "Gitcoin Passport 重み付き"
     }
   },
   "safeSnap": {
     "currentOutcome": "現在の結果",
-    "currentBond": "Current bond",
-    "finalizedIn": "Finalized {0}",
-    "executableIn": "Executable {0}",
-    "finalOutcome": "結果",
-    "nextBond": "結果を設定するためのボンド",
-    "setOutcomeTo": "アウトカムを設定",
-    "claimBond": "債券を受け取る",
-    "addBatch": "トランザクションを追加",
-    "batch": "トランザクションを追加",
+    "currentBond": "現在のボンド",
+    "finalizedIn": "{0}に最終的に決定されました",
+    "executableIn": "{0}で実行可能",
+    "finalOutcome": "最終結果",
+    "nextBond": "次のボンドを設定する",
+    "setOutcomeTo": "アウトカムを設定する",
+    "claimBond": "ボンドを受け取る",
+    "addBatch": "トランザクションを追加する",
+    "batch": "バッチを追加する",
     "transactions": "トランザクション",
-    "to": "To (アドレス)　　",
+    "to": "宛先（アドレス）",
     "invalidAddress": "無効なアドレス",
     "invalidAmount": "無効な金額",
     "invalidValue": "無効な値",
     "invalidAbi": "無効なABI",
     "invalidData": "無効なデータ",
-    "value": "値 (wei)",
+    "value": "値（wei）",
     "data": "データ",
-    "noCollectibles": "No collectibles",
-    "asset": "アセット",
+    "noCollectibles": "コレクティブルがありません",
+    "asset": "資産",
     "amount": "量",
     "type": "タイプ",
     "transferFunds": "送金する",
     "transferNFT": "NFTを転送する",
-    "contractInteraction": "Contract interaction",
+    "contractInteraction": "コントラクトとの対話",
     "rawTransaction": "生トランザクション",
-    "addTransaction": "トランザクションを追加",
+    "addTransaction": "トランザクションを追加する",
     "transactionLabels": {
-      "contractInteraction": "{functionName}() - {amount}weiを{address}へ",
-      "transferFunds": "{amount}{tokenSymbol}を{address}へ送金",
-      "transferNFT": "Send {name} #{id} to {address}",
+      "contractInteraction": "{functionName}() - {amount}weiを{address}に",
+      "transferFunds": "{amount}{tokenSymbol}を{address}に送金",
+      "transferNFT": "{name} #{id}を{address}に送信",
       "raw": "{amount}weiを{address}に送信"
     },
     "labels": {
       "request": "リクエストの実行",
-      "setOutcome": "アウトカムを設定",
-      "changeOutcome": "Change case outcome",
-      "executeTxs": "Execute transaction batch {0} of {1}",
+      "setOutcome": "結果を設定",
+      "changeOutcome": "結果を変更する",
+      "executeTxs": "{1}の{0}番目のトランザクションバッチを実行する",
       "executed": "すべてのトランザクションが実行されました",
-      "noTransactions": "There are no transactions to execute",
-      "rejected": "Proposal rejected",
+      "noTransactions": "実行するトランザクションがありません",
+      "rejected": "提案が拒否されました",
       "error": "何らかの問題が発生しました",
       "connectWallet": "実行の詳細を表示するにはウォレットに接続してください",
-      "switchChain": "Switch your wallet to {0} to request execution",
-      "question": "この提案が合格し、それを満たしています",
+      "switchChain": "{0}に切り替えて実行をリクエストしてください",
+      "question": "この提案が承認され、条件を満たしていますか？",
       "criteria": "受け入れ基準?",
-      "proposalPassed": "Did the proposal pass?",
-      "expired": "The proposal has expired",
-      "approveBond": "Approve bond",
-      "confirmVoteResults": "Click to confirm the proposal passed",
-      "executeTxsUma": "Execute transaction batch",
-      "deleteDisputedProposal": "Delete disputed proposal",
-      "confirmVoteResultsToolTip": "Make sure this proposal was approved by this Snapshot vote before proposing on-chain. If the Snapshot vote rejected the proposal, the on-chain proposal will be rejected as well and you will lose your bond.",
-      "approveBondToolTip": "On-chain proposals require a bond from the proposer. This will approve tokens from your wallet to be posted as a bond. If you make an invalid proposal, it will be disputed and you will lose your bond. If the proposal is valid, your bond will be returned when the transactions are executed.",
-      "requestToolTip": "This will propose the transactions from this Snapshot vote on-chain. After a challenge window, if the proposal is valid, the transactions can be executed and your bond will be returned.",
-      "executeToolTip": "This will execute the transactions from this proposal and return the proposer's bond."
+      "proposalPassed": "提案が承認されましたか？",
+      "expired": "提案の有効期限が切れました",
+      "approveBond": "保証金を承認する",
+      "confirmVoteResults": "提案が承認されたことを確認するにはクリックしてください",
+      "executeTxsUma": "トランザクションバッチを実行する",
+      "deleteDisputedProposal": "紛争中の提案を削除する",
+      "confirmVoteResultsToolTip": "この提案がこのスナップショット投票で承認されたことを確認してから、チェーン上で提案する前に。もしスナップショット投票で提案が拒否された場合、チェーン上の提案も拒否され、保証金を失うことになります。",
+      "approveBondToolTip": "チェーン上の提案には提案者からの保証金が必要です。これは、あなたのウォレットからトークンを承認することになります。無効な提案を行った場合、それは紛争となり、保証金を失うことになります。提案が有効な場合、トランザクションが実行されるときに保証金が返却されます。",
+      "requestToolTip": "これは、このスナップショット投票からのトランザクションをチェーン上で提案します。チャレンジウィンドウの後、提案が有効な場合、トランザクションを実行して保証金が返却されます。",
+      "executeToolTip": "これは、この提案からのトランザクションを実行し、提案者の保証金を返却します。"
     }
   },
   "poap": {
@@ -674,22 +673,22 @@
     "error_claim": "トークンを発行する際に問題が発生しました。"
   },
   "progress": {
-    "progress": "Progress",
-    "inProgress": "In Progress",
-    "completed": "Completed",
-    "complete": "Complete",
-    "newStep": "New Step",
-    "description": "Description",
-    "add": "Add",
-    "deleteStep": "Delete Step",
-    "deleteConfirm": "Are you sure you want to delete?",
-    "delete": "Delete",
-    "cancel": "Cancel",
-    "comeBack": "Come back after voting is complete to see how this proposal is progressing!",
-    "confirmSignature": "Signing this message will allow us to authorize your request to update the progress of your proposal.",
-    "wentWrong": "Oops something went wrong.",
-    "voting": "Voting",
-    "soon": "Soon"
+    "progress": "進捗",
+    "inProgress": "進行中",
+    "completed": "完了しました",
+    "complete": "完了",
+    "newStep": "新しいステップ",
+    "description": "説明",
+    "add": "追加",
+    "deleteStep": "ステップを削除する",
+    "deleteConfirm": "本当に削除しますか？",
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "comeBack": "投票が完了したら、この提案の進捗状況を確認するために戻ってきてください！",
+    "confirmSignature": "このメッセージの署名を行うと、提案の進捗状況を更新するリクエストを承認できます。",
+    "wentWrong": "何かが間違っています。",
+    "voting": "投票",
+    "soon": "まもなく"
   },
   "charts": {
     "charts": "チャート",
@@ -757,46 +756,46 @@
   },
   "unsupportedNetwork": {
     "unsupportedNetwork": "対応していないネットワーク",
-    "switchNetworkToNetwork": "To continue, you need to change the network in your wallet to {network}.",
-    "switchToNetwork": "Switch to {network}",
-    "goToDemoSite": "Go to demo website"
+    "switchNetworkToNetwork": "続行するには、ウォレット内のネットワークを{network}に変更する必要があります。",
+    "switchToNetwork": "{network}に切り替える",
+    "goToDemoSite": "デモサイトに行く"
   },
   "treasury": {
-    "title": "Treasury",
+    "title": "財務",
     "wallets": {
-      "title": "Wallets",
-      "empty": "This space doesn't have a treasury yet",
-      "addTreasury": "Add a treasury"
+      "title": "ウォレット",
+      "empty": "このスペースにはまだ財務がありません",
+      "addTreasury": "財務を追加する"
     },
     "assets": {
-      "title": "Assets",
-      "empty": "There are no assets in this contract"
+      "title": "資産",
+      "empty": "この契約には資産がありません"
     },
-    "24hChange": "24h change"
+    "24hChange": "24時間変化"
   },
   "newsletter": {
-    "yourEmail": "Your email",
-    "title": "Get the latest Snapshot updates"
+    "yourEmail": "あなたのメールアドレス",
+    "title": "Snapshotの最新情報を受け取る"
   },
-  "joinCommunity": "Join Snapshot community",
+  "joinCommunity": "コミュニティに参加",
   "header": {
-    "title": "Where decisions get made",
-    "description": "Snapshot is a free, open-source platform for community governance. Create your own space now and start making decisions!"
+    "title": "決定が行われる場所",
+    "description": "Snapshotは、コミュニティガバナンスのための無料でオープンソースのプラットフォームです。今すぐ自分のスペースを作成して決定を開始しましょう！"
   },
   "aboutPage": {
-    "description": "Snapshot is a decentralized governance platform that makes it easy to create and vote on proposals - all without spending a fortune on gas fees! Plus, our flexible system supports various voting types and strategies, so you can tailor the voting process to your needs.",
-    "subHeader": "Governance should be a snap",
-    "subDescription": "Web3 governance doesn't have to be complicated. Snapshot is the perfect solution for organizations looking for an easy and efficient way to govern their community or organization."
+    "description": "Snapshotは、投票を行うのにガス料金を大金を使わなくても簡単に作成し投票できる分散型ガバナンスプラットフォームです。さらに、柔軟なシステムは様々な投票タイプと戦略をサポートしているので、投票プロセスをニーズに合わせて調整できます。",
+    "subHeader": "ガバナンスはスナップで行う",
+    "subDescription": "Web3ガバナンスは複雑である必要はありません。Snapshotは、コミュニティや組織を管理するための簡単で効率的な方法を探している組織にとって完璧なソリューションです。"
   },
   "footerView": {
-    "resources": "Resources",
-    "about": "About",
-    "blog": "Blog",
-    "jobs": "Jobs",
-    "discussions": "Discussions",
+    "resources": "リソース",
+    "about": "情報",
+    "blog": "ブログ",
+    "jobs": "求人",
+    "discussions": "ディスカッション",
     "github": "GitHub",
-    "docs": "Docs",
-    "support": "Support",
-    "hiring": "Join us!"
+    "docs": "ドキュメント",
+    "support": "サポート",
+    "hiring": "私たちと一緒に！"
   }
 }

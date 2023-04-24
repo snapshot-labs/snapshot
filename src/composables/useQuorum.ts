@@ -1,5 +1,4 @@
-import { computed, ref } from 'vue';
-import { ExtendedSpace, Proposal, Vote, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { BigNumber } from '@ethersproject/bignumber';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
@@ -8,13 +7,12 @@ import { getSnapshots } from '@snapshot-labs/snapshot.js/src/utils/blockfinder';
 interface QuorumProps {
   space: ExtendedSpace;
   proposal: Proposal;
-  votes: Vote[];
   results: Results;
 }
 
 export function useQuorum(props: QuorumProps) {
   const loading = ref(false);
-  const totalVotingPower = ref(0);
+  const quorum = ref(0);
 
   const totalQuorumScore = computed(() => {
     const basicCount = props.space.plugins?.quorum?.basicCount;
@@ -26,17 +24,13 @@ export function useQuorum(props: QuorumProps) {
     return 0;
   });
 
-  const quorum = computed(() => {
-    return totalVotingPower.value === 0
-      ? 0
-      : totalQuorumScore.value / totalVotingPower.value;
-  });
+  async function getQuorum(web3: any, quorumOptions: any, snapshot: string) {
+    if (props.proposal?.quorum || props.space.voting?.quorum) {
+      return props.proposal?.quorum || props.space.voting?.quorum;
+    }
 
-  async function getTotalVotingPower(
-    web3: any,
-    quorumOptions: any,
-    snapshot: string
-  ) {
+    if (!quorumOptions) return 0;
+
     const { strategy } = quorumOptions;
 
     const quorumModifier = quorumOptions.quorumModifier ?? 1;
@@ -98,9 +92,9 @@ export function useQuorum(props: QuorumProps) {
     }
   }
 
-  async function loadTotalVotingPower() {
+  async function loadQuorum() {
     loading.value = true;
-    totalVotingPower.value = await getTotalVotingPower(
+    quorum.value = await getQuorum(
       getProvider(props.space.network),
       props.space.plugins.quorum,
       props.proposal.snapshot
@@ -108,11 +102,11 @@ export function useQuorum(props: QuorumProps) {
     loading.value = false;
   }
 
+  onMounted(() => loadQuorum());
+
   return {
-    loadTotalVotingPower,
     loadingQuorum: loading,
-    quorum,
     totalQuorumScore,
-    totalVotingPower
+    quorum
   };
 }

@@ -114,12 +114,11 @@
   "addFavorites": "Tambahkan favorit",
   "createdBy": "Oleh {0}",
   "startIn": "mulai {0}",
-  "endIn": "akhir {1}",
+  "endIn": "akhir {0}",
   "proposalTimeLeft": "{0} tersisa",
   "endedAgo": "berakhir {0}",
   "proposalBy": "oleh {0}",
   "endDate": "akhir {0}",
-  "contectHash": "Hash konten",
   "defaultSkin": "Skin bawaan",
   "select": "Pilih",
   "language": "Bahasa",
@@ -418,7 +417,7 @@
     "example": "misalnya yam.eth",
     "chooseExistingEns": "Pilih satu domain ENS anda untuk membuat ruang:",
     "useSingleExistingEns": "Pakai domain ENS anda:",
-    "orReigsterNewEns": "Atau daftarkan domain yang baru:",
+    "orRegisterNewEns": "Atau daftarkan domain yang baru:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Untuk membuat ruang, anda harus punya ENS domain. Masukan satu dibawah dan ikuti instruksi pendaftaran ENS.",
     "createASpace": "Buat sebuah ruang",
@@ -591,12 +590,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

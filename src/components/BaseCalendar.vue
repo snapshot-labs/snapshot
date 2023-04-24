@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from '@/composables/useI18n';
-
 const props = defineProps<{
   modelValue: string;
 }>();
@@ -75,14 +72,14 @@ function isSelectable(year, month, day) {
   <div class="calendar">
     <div class="mb-2 flex items-center">
       <div class="w-1/4 text-left">
-        <a
+        <button
           class="iconfont iconback text-lg font-semibold text-skin-text"
           @click="month--"
         />
       </div>
       <h4 class="h-full w-full text-center">{{ monthName }} {{ fullYear }}</h4>
       <div class="w-1/4 text-right">
-        <a
+        <button
           class="iconfont icongo text-lg font-semibold text-skin-text"
           @click="month++"
         />
@@ -107,11 +104,13 @@ function isSelectable(year, month, day) {
           :class="{
             'ring-1 ring-inset ring-primary':
               formatDate(year, month, day) === today,
-            '!bg-skin-link text-skin-bg': input.includes(
+            '!bg-skin-link !text-skin-bg': input.includes(
               formatDate(year, month, day)
             )
           }"
+          tabindex="0"
           @click="toggleDay(year, month, day)"
+          @keypress="toggleDay(year, month, day)"
           v-text="day"
         />
         <div

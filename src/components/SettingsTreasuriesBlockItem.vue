@@ -3,6 +3,7 @@ import { TreasuryWallet } from '@/helpers/interfaces';
 
 defineProps<{
   treasuries: TreasuryWallet[];
+  isViewOnly?: boolean;
 }>();
 
 const emit = defineEmits(['removeTreasury', 'editTreasury']);
@@ -17,11 +18,16 @@ const emit = defineEmits(['removeTreasury', 'editTreasury']);
   >
     <button
       class="flex w-full items-center justify-between rounded-md border p-4"
+      :class="{ 'cursor-default': isViewOnly }"
     >
       <div class="flex items-center gap-2 truncate pr-[20px] text-left">
         <h4 class="truncate">{{ treasury.name }}</h4>
       </div>
-      <BaseButtonIcon class="-mr-2" @click.stop="emit('removeTreasury', i)">
+      <BaseButtonIcon
+        v-show="!isViewOnly"
+        class="-mr-2"
+        @click.stop="emit('removeTreasury', i)"
+      >
         <BaseIcon name="close" size="14" />
       </BaseButtonIcon>
     </button>

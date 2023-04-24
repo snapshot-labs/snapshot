@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useClient, useSharing, useWeb3 } from '@/composables';
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
@@ -87,7 +85,7 @@ function share(shareTo: 'twitter' | 'lenster') {
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon
           >
-            <BaseButton class="w-full">
+            <BaseButton tabindex="-1" class="w-full">
               <div class="flex flex-grow items-center justify-center gap-1">
                 {{ $t('proposal.postVoteModal.seeQueue') }}
                 <i-ho-external-link class="text-sm" />
@@ -96,7 +94,12 @@ function share(shareTo: 'twitter' | 'lenster') {
           </BaseLink>
         </div>
 
-        <BaseButton primary class="!h-[42px] w-full" @click="emit('close')">
+        <BaseButton
+          primary
+          class="!h-[42px] w-full"
+          data-testid="post-vote-modal-close"
+          @click="emit('close')"
+        >
           {{ $t('close') }}
         </BaseButton>
       </div>

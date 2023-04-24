@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
 import { Float } from '@headlessui-float/vue';
 import type { Placement } from '@floating-ui/dom';
@@ -56,9 +55,10 @@ const delayClose = () => {
       portal
     >
       <PopoverButton
-        class="outline-none"
         @mouseenter="open"
         @mouseleave="delayClose"
+        @focus="open"
+        @focusout="delayClose"
       >
         <slot name="button" />
       </PopoverButton>

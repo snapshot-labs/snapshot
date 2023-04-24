@@ -1,5 +1,16 @@
+<script lang="ts" setup>
+withDefaults(
+  defineProps<{
+    slim?: boolean;
+  }>(),
+  {
+    slim: true
+  }
+);
+</script>
+
 <template>
-  <BaseContainer :slim="true">
+  <BaseContainer :slim="slim">
     <slot />
     <div
       v-if="$slots['sidebar-left']"

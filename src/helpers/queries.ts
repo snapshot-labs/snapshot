@@ -9,11 +9,18 @@ export const VOTES_QUERY = gql`
     $orderDirection: OrderDirection
     $voter: String
     $space: String
+    $created_gte: Int
   ) {
     votes(
       first: $first
       skip: $skip
-      where: { proposal: $id, vp_gt: 0, voter: $voter, space: $space }
+      where: {
+        proposal: $id
+        vp_gt: 0
+        voter: $voter
+        space: $space
+        created_gte: $created_gte
+      }
       orderBy: $orderBy
       orderDirection: $orderDirection
     ) {
@@ -80,6 +87,7 @@ export const PROPOSALS_QUERY = gql`
     $space: String
     $space_in: [String]
     $author_in: [String]
+    $title_contains: String
   ) {
     proposals(
       first: $first
@@ -89,6 +97,7 @@ export const PROPOSALS_QUERY = gql`
         state: $state
         space_in: $space_in
         author_in: $author_in
+        title_contains: $title_contains
       }
     ) {
       id

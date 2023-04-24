@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, toRefs, onBeforeUnmount } from 'vue';
+import { useWindowSize } from '@vueuse/core';
 
 const props = withDefaults(
   defineProps<{
@@ -17,8 +17,20 @@ const emit = defineEmits(['close']);
 
 const { open } = toRefs(props);
 
+const { height } = useWindowSize();
+
+const heightStyle = computed(() => {
+  return `${height.value}px !important`;
+});
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') emit('close');
+}
+
 watch(open, isOpen => {
   document.body.classList[isOpen ? 'add' : 'remove']('overflow-hidden');
+  if (isOpen) document.addEventListener('keydown', onKeydown);
+  else document.removeEventListener('keydown', onKeydown);
 });
 
 onBeforeUnmount(() => {
@@ -35,7 +47,7 @@ onBeforeUnmount(() => {
           <slot name="header" />
         </div>
         <div class="modal-body">
-          <slot />
+          <slot :max-height="maxHeight" />
         </div>
         <div v-if="$slots.footer" class="border-t p-4 text-center">
           <slot name="footer" />
@@ -91,8 +103,9 @@ onBeforeUnmount(() => {
       border: 0;
       width: 100% !important;
       max-width: 100% !important;
-      max-height: 100% !important;
-      min-height: 100% !important;
+      height: 100% !important;
+      max-height: v-bind(heightStyle);
+      min-height: v-bind(heightStyle);
       margin-bottom: 0 !important;
 
       .modal-body {

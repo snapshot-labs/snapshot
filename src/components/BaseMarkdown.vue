@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
-import { onMounted } from 'vue';
-import { useCopy } from '@/composables/useCopy';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{
   body: string;
 }>();
 const { copyToClipboard } = useCopy();
+
+const showModal = ref(false);
+const clickedUrl = ref('');
 
 const remarkable = new Remarkable({
   html: false,
@@ -31,9 +31,20 @@ const markdown = computed(() => {
   return remarkable.render(body);
 });
 
+function handleLinkClick(e, url) {
+  e.preventDefault();
+  clickedUrl.value = url;
+  if (url.includes('snapshot.org/#/')) return handleConfirm();
+  showModal.value = true;
+}
+
+function handleConfirm() {
+  window.open(clickedUrl.value, '_blank', 'noopener,noreferrer');
+}
+
 onMounted(() => {
   const body = document.querySelector('.markdown-body');
-  if (body !== null)
+  if (body !== null) {
     body.querySelectorAll('pre>code').forEach(function (code) {
       const parent = code.parentElement;
       if (parent !== null) parent.classList.add('rounded-lg');
@@ -49,12 +60,31 @@ onMounted(() => {
       });
       code.appendChild(copyButton);
     });
+    body.querySelectorAll('a[href]').forEach(function (link) {
+      link.addEventListener('click', function (e) {
+        handleLinkClick(e, link.getAttribute('href'));
+      });
+    });
+  }
 });
 </script>
 
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <div class="markdown-body break-words" v-html="markdown" />
+  <!-- eslint-disable vue/no-v-html -->
+  <div
+    v-viewer
+    v-bind="$attrs"
+    class="markdown-body break-words"
+    v-html="markdown"
+  />
+  <Teleport to="#modal">
+    <ModalLinkPreview
+      :open="showModal"
+      :clicked-url="clickedUrl"
+      @close="showModal = false"
+      @confirm="handleConfirm"
+    />
+  </Teleport>
 </template>
 
 <style lang="scss">
@@ -325,6 +355,7 @@ onMounted(() => {
   max-width: 100%;
   box-sizing: content-box;
   background-color: #fff;
+  cursor: pointer;
 }
 
 .markdown-body img[align='right'] {

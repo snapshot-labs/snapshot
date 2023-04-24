@@ -1,14 +1,14 @@
-import { ref, computed } from 'vue';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useClient, useFormValidation, useImageUpload } from '@/composables';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
 
-const BASIC_VALIDATION = { name: 'basic', params: {} };
-const ANY_VOTE_VALIDATION = { name: 'any', params: {} };
+const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
+const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
@@ -29,8 +29,8 @@ const EMPTY_SPACE_FORM = {
     type: '',
     privacy: ''
   },
-  validation: BASIC_VALIDATION,
-  voteValidation: ANY_VOTE_VALIDATION,
+  validation: clone(DEFAULT_PROPOSAL_VALIDATION),
+  voteValidation: clone(DEFAULT_VOTE_VALIDATION),
   name: '',
   about: '',
   avatar: '',
@@ -64,6 +64,18 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
         : (formSettings.value = newVal)
   });
 
+  const hasFormChanged = computed(() => {
+    return !isEqual(formSettings.value, initialFormState.value);
+  });
+
+  const prunedForm = computed(() => {
+    const formData = clone(form.value);
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value === null || value === '') delete formData[key];
+    });
+    return formData;
+  });
+
   function populateForm(extendedSpace: ExtendedSpace) {
     const formData = clone(extendedSpace);
     delete formData.id;
@@ -73,8 +85,10 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
-    formData.validation = formData.validation || BASIC_VALIDATION;
-    formData.voteValidation = formData.voteValidation || ANY_VOTE_VALIDATION;
+    formData.validation =
+      formData.validation || clone(DEFAULT_PROPOSAL_VALIDATION);
+    formData.voteValidation =
+      formData.voteValidation || clone(DEFAULT_VOTE_VALIDATION);
     formData.filters = formData.filters || {};
     formData.voting = formData.voting || {};
     formData.voting.delay = formData.voting?.delay || undefined;
@@ -85,20 +99,26 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     formData.children = formData.children.map(child => child.id) || [];
     formData.parent = formData.parent?.id || '';
 
-    form.value = formData;
-    initialFormState.value = clone(formData);
-  }
+    if (
+      formData.validation.name === 'basic' &&
+      !formData.filters.minScore &&
+      !formData.validation.params.minScore &&
+      isEmpty(formData.validation.params)
+    )
+      formData.validation.name = 'any';
+    if (
+      formData.validation.name === 'nouns' ||
+      formData.validation.name === 'aave'
+    )
+      formData.validation.name = 'basic';
 
-  function pruneForm(formData) {
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value === null || value === '') delete formData[key];
-    });
-    return formData;
+    form.value = clone(formData);
+    initialFormState.value = clone(formData);
   }
 
   const { getValidationMessage, validationResult, isValid } = useFormValidation(
     schemas.space,
-    computed(() => pruneForm(form.value))
+    computed(() => prunedForm.value)
   );
 
   function getValidation(field: string): { message: string; push: boolean } {
@@ -132,10 +152,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   return {
     form,
+    prunedForm,
     validationResult,
     isValid,
     isReadyToSubmit,
     showAllValidationErrors,
+    hasFormChanged,
     populateForm,
     getValidation,
     resetForm,

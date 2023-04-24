@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form, getValidation } = useFormSpaceSettings(props.context);
@@ -19,6 +19,7 @@ const { form, getValidation } = useFormSpaceSettings(props.context);
         placeholder="e.g. https://example.com/guidelines"
         :error="getValidation('guidelines')"
         :max-length="schemas.space.properties.guidelines.maxLength"
+        :is-disabled="isViewOnly"
       />
 
       <TextareaAutosize
@@ -28,6 +29,7 @@ const { form, getValidation } = useFormSpaceSettings(props.context);
         :information="$t('settings.proposal.template.information')"
         :placeholder="`## Intro\n## Body\n## Conclusion`"
         :max-length="schemas.space.properties.template.maxLength"
+        :is-disabled="isViewOnly"
       />
     </div>
   </BaseBlock>

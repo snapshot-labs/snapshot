@@ -114,12 +114,11 @@
   "addFavorites": "즐겨찾기 추가",
   "createdBy": "{0} 에 의해",
   "startIn": "시작 {0}",
-  "endIn": "종료 {1}",
+  "endIn": "종료 {0}",
   "proposalTimeLeft": "{0} 남음",
   "endedAgo": "{0} 에 종료됨",
   "proposalBy": "{0} 에 의해",
   "endDate": "말단 {0}",
-  "contectHash": "콘텐츠 해시",
   "defaultSkin": "기본 스킨",
   "select": "선택",
   "language": "언어",
@@ -418,7 +417,7 @@
     "example": "예시 yam.eth",
     "chooseExistingEns": "공간을 만드는데 사용할 ENS 도메인 선택:",
     "useSingleExistingEns": "당신의 ENS 도메인을 사용하세요:",
-    "orReigsterNewEns": "또는 새로운 도메인을 등록하세요:",
+    "orRegisterNewEns": "또는 새로운 도메인을 등록하세요:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "공간을 만들려면, 먼저 ENS 도메인이 필요합니다. 아래에 하나를 작성하고 ENS 등록 지침을 따라주세요.",
     "createASpace": "공간 만들기",
@@ -591,12 +590,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

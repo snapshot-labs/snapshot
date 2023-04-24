@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-
-import { useFormSpaceSettings } from '@/composables';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  isViewOnly?: boolean;
 }>();
 
 const { form, getValidation } = useFormSpaceSettings(props.context);
@@ -31,12 +29,14 @@ const modalSkinsOpen = ref(false);
         :title="$t('settings.domain.label')"
         :error="getValidation('domain')"
         :max-length="schemas.space.properties.domain.maxLength"
+        :is-disabled="isViewOnly"
         placeholder="e.g. vote.balancer.fi"
       />
 
       <InputSelect
         :title="$t(`settings.skin`)"
         :model-value="form.skin ? form.skin : $t('defaultSkin')"
+        :is-disabled="isViewOnly"
         @select="modalSkinsOpen = true"
       />
     </ContainerParallelInput>

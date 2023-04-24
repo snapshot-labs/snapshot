@@ -1,9 +1,6 @@
-import { ref, watch, computed } from 'vue';
 import { useStorage } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useRoute } from 'vue-router';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import { useFormValidation } from '@/composables';
 
 interface ProposalForm {
   name: string;
@@ -38,6 +35,16 @@ const EMPTY_PROPOSAL: ProposalForm = {
   type: 'single-choice'
 };
 
+const EMPTY_PROPOSAL_DRAFT = {
+  name: '',
+  body: '',
+  choices: [
+    { key: 0, text: '' },
+    { key: 1, text: '' }
+  ],
+  isBodySet: false
+};
+
 const form = ref<ProposalForm>(clone(EMPTY_PROPOSAL));
 const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
@@ -50,30 +57,13 @@ export function useFormSpaceProposal() {
     name: string;
     body: string;
     choices: { key: number; text: string }[];
-  }>(`snapshot.proposal.${route.params.key}`, {
-    name: '',
-    body: '',
-    choices: [
-      { key: 0, text: '' },
-      { key: 1, text: '' }
-    ]
-  });
+    isBodySet: boolean;
+  }>(`snapshot.proposal.${route.params.key}`, clone(EMPTY_PROPOSAL_DRAFT));
 
   const sourceProposal = computed(() => route.params.sourceProposal);
 
-  watch(
-    form,
-    () => {
-      formDraft.value = {
-        name: form.value.name,
-        body: form.value.body,
-        choices: form.value.choices
-      };
-    },
-    { deep: true }
-  );
-
   function resetForm() {
+    formDraft.value = clone(EMPTY_PROPOSAL_DRAFT);
     form.value = clone(EMPTY_PROPOSAL);
     sourceProposalLoaded.value = false;
     userSelectedDateEnd.value = false;

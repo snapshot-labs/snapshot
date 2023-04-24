@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import debounce from 'lodash/debounce';
 
 const props = defineProps<{
   modelValue: string;
   placeholder?: string;
   modal?: boolean;
+  focusOnMount?: boolean;
 }>();
+
 const emit = defineEmits(['update:modelValue']);
 
 const router = useRouter();
 
 const input = ref(props.modelValue || '');
+const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
 function updateRouteQuery() {
   if (!props.modal) {
@@ -38,17 +39,25 @@ function clearInput() {
     const { query } = router.currentRoute.value;
     router.push({ query: { ...query, q: undefined } });
   }
+  input.value = '';
   emit('update:modelValue', '');
 }
+
+onMounted(() => {
+  if (props.focusOnMount) {
+    BaseInputEL?.value?.focus();
+  }
+});
 </script>
 
 <template>
   <div
     class="flex items-center"
-    :class="{ 'border-b bg-skin-bg py-3 px-4': modal }"
+    :class="{ 'border-b bg-skin-bg px-4 py-3': modal }"
   >
     <i-ho-search class="mr-2 text-[19px]" />
     <input
+      ref="BaseInputEL"
       :value="input"
       :placeholder="placeholder"
       type="text"
@@ -57,8 +66,11 @@ function clearInput() {
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />
-    <a @click="clearInput">
-      <BaseIcon v-if="modelValue" name="close" size="12" class="mb-1" />
-    </a>
+    <slot name="after" :clearInput="clearInput" />
+    <i-ho-x-mark
+      v-if="!$slots.after && modelValue"
+      class="cursor-pointer text-[12px]"
+      @click="clearInput"
+    />
   </div>
 </template>

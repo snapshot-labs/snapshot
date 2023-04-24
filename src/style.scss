@@ -111,6 +111,24 @@
   }
 }
 
+// Tune component styles
+
+.tune-label {
+  @apply text-base;
+}
+
+.tune-input {
+  @apply rounded-full text-base;
+}
+
+.tune-textarea {
+  @apply no-scrollbar overflow-x-scroll whitespace-pre rounded-2xl text-base;
+}
+
+.tune-listbox-button {
+  @apply rounded-full text-base;
+}
+
 // Fade transition for Vue's transition and transition-group
 .fade-enter-active,
 .fade-leave-active {
@@ -255,6 +273,15 @@ input[type='number'] {
   z-index: 1;
   overflow-wrap: break-word;
 }
+.tippy-box[data-theme~='urlified'] {
+  max-width: 200px;
+  white-space: pre-wrap;
+  color: var(--header-bg);
+
+  a {
+    color: var(--header-bg);
+  }
+}
 
 .lazy-loading {
   @apply animate-pulse-fast bg-skin-border;
@@ -263,7 +290,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply block w-full rounded-full border border-skin-border bg-skin-bg py-2 px-3 text-skin-link outline-none focus-within:border-skin-text;
+  @apply block w-full rounded-full border border-skin-border bg-skin-bg px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
 }
 
 .s-error {
@@ -276,4 +303,25 @@ input[type='number'] {
 .break-words {
   overflow-wrap: break-word;
   word-break: break-word;
+}
+
+// v-viewer package styling
+.viewer-backdrop {
+  background-color: rgba(0, 0, 0, 80%) !important;
+}
+
+.viewer-close {
+  scale: 1.5 !important;
+  margin-top: 50px !important;
+  margin-right: 66px !important;
+  width: 50px !important;
+  height: 50px !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (max-width: 544px) {
+  .viewer-close {
+    margin-right: 50px !important;
+  }
 }

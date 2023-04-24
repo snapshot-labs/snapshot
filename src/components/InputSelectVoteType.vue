@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 withDefaults(
   defineProps<{
     type?: string;
     information?: string;
     allowAny?: boolean;
-    disabled?: boolean;
+    isDisabled?: boolean;
+    isDisabledSettings?: boolean;
   }>(),
   {
     type: '',
     information: '',
     allowAny: false,
-    disabled: false
+    isDisabled: false,
+    isDisabledSettings: false
   }
 );
 
@@ -25,11 +25,11 @@ const modalVotingTypeOpen = ref(false);
   <InputSelect
     :title="$t(`settings.type.label`)"
     :information="information"
-    :model-value="type ? $t(`voting.${type}`) : $t('settings.anyType')"
-    :disabled="disabled"
+    :model-value="type ? $t(`voting.${type}.label`) : $t('settings.anyType')"
+    :is-disabled="isDisabled || isDisabledSettings"
     :tooltip="
-      disabled
-        ? $t('create.typeEnforced', { type: $t(`voting.${type}`) })
+      isDisabled
+        ? $t('create.typeEnforced', { type: $t(`voting.${type}.label`) })
         : null
     "
     @select="modalVotingTypeOpen = true"

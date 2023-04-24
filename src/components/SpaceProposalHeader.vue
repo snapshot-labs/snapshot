@@ -1,18 +1,5 @@
 <script setup lang="ts">
-import { watch, computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { useRouter } from 'vue-router';
-
-import {
-  useI18n,
-  useProfiles,
-  useSharing,
-  useWeb3,
-  useClient,
-  useProposals,
-  useFormSpaceProposal,
-  useFlashNotification
-} from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -32,7 +19,10 @@ const { web3Account } = useWeb3();
 const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
-  const items = [{ text: t('duplicate'), action: 'duplicate' }];
+  const items = [
+    { text: t('duplicate'), action: 'duplicate' },
+    { text: t('report'), action: 'report' }
+  ];
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -61,23 +51,23 @@ const {
 
 const { resetForm } = useFormSpaceProposal();
 
-function selectFromThreedotDropdown(e) {
+function handleSelect(e) {
   if (!props.proposal) return;
   if (e === 'delete') deleteProposal();
+  if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
   if (e === 'duplicate') {
     resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
         key: props.proposal.space.id,
-        step: 0,
         sourceProposal: props.proposal.id
       }
     });
   }
 }
 
-function selectFromShareDropdown(e: string) {
+function handleSelectShare(e: string) {
   if (e === 'shareProposalLenster')
     return shareProposalLenster(props.space, props.proposal);
 
@@ -105,6 +95,7 @@ watch(
 <template>
   <h1
     class="mb-3 break-words text-xl leading-8 sm:text-2xl"
+    data-testid="proposal-page-title"
     v-text="proposal.title"
   />
 
@@ -131,7 +122,7 @@ watch(
       <BaseMenu
         class="!ml-auto pl-3"
         :items="sharingItems"
-        @select="selectFromShareDropdown"
+        @select="handleSelectShare"
       >
         <template #button>
           <ButtonShare />
@@ -148,11 +139,7 @@ watch(
           </div>
         </template>
       </BaseMenu>
-      <BaseMenu
-        class="md:ml-2"
-        :items="threeDotItems"
-        @select="selectFromThreedotDropdown"
-      >
+      <BaseMenu class="md:ml-2" :items="threeDotItems" @select="handleSelect">
         <template #button>
           <div>
             <BaseButtonIcon :loading="isSending">
@@ -163,6 +150,7 @@ watch(
         <template #item="{ item }">
           <div class="flex items-center gap-2">
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
+            <i-ho-flag v-if="item.action === 'report'" />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>

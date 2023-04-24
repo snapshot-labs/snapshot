@@ -1,28 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
-
-import {
-  useFlashNotification,
-  useFormSpaceProposal,
-  useProposals,
-  usePlugins,
-  useI18n,
-  useModal,
-  useTerms,
-  useApp,
-  useApolloQuery,
-  useWeb3,
-  useClient,
-  useGnosis,
-  useSnapshot,
-  useMeta
-} from '@/composables';
 
 enum Step {
   CONTENT,
@@ -50,7 +31,6 @@ useMeta({
 
 const { notify } = useFlashNotification();
 const router = useRouter();
-const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
@@ -62,6 +42,7 @@ const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
+const { containsShortUrl } = useShortUrls();
 
 const {
   form,
@@ -76,8 +57,9 @@ const {
 const isValidAuthor = ref(false);
 const validationLoading = ref(false);
 const preview = ref(false);
-const executingValidationFailed = ref(false);
+const hasAuthorValidationFailed = ref(false);
 const timeSeconds = ref(Number((Date.now() / 1e3).toFixed()));
+const currentStep = ref(Step.CONTENT);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
@@ -98,7 +80,7 @@ const dateEnd = computed(() => {
     : dateStart.value + threeDays;
 });
 
-const isSafeFormValid = computed(() => {
+const isFormValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
@@ -117,7 +99,15 @@ const isSafeFormValid = computed(() => {
   );
 });
 
-const currentStep = computed(() => Number(route.params.step));
+const formContainsShortUrl = computed(() => {
+  const { body, name, discussion } = form.value;
+
+  return (
+    containsShortUrl(body) ||
+    containsShortUrl(name) ||
+    containsShortUrl(discussion)
+  );
+});
 
 const stepIsValid = computed(() => {
   if (
@@ -126,7 +116,8 @@ const stepIsValid = computed(() => {
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     isValidAuthor.value &&
     !getValidation('name').message &&
-    !getValidation('discussion').message
+    !getValidation('discussion').message &&
+    !formContainsShortUrl.value
   )
     return true;
   else if (
@@ -141,27 +132,22 @@ const stepIsValid = computed(() => {
 });
 
 const isMember = computed(() => {
+  function findAccount(object: string[], account: string) {
+    return object.map(a => a.toLowerCase()).includes(account.toLowerCase());
+  }
   return (
-    props.space.members?.includes(web3Account.value) ||
-    props.space.admins?.includes(web3Account.value) ||
-    props.space.moderators?.includes(web3Account.value) ||
+    findAccount(props.space.members, web3Account.value) ||
+    findAccount(props.space.admins, web3Account.value) ||
+    findAccount(props.space.moderators, web3Account.value) ||
     false
   );
 });
 
-// Check if has plugins that can be confirgured on proposal creation
 const needsPluginConfigs = computed(() =>
   Object.keys(props.space?.plugins ?? {}).some(
     pluginKey => pluginIndex[pluginKey]?.defaults?.proposal
   )
 );
-
-const queries = computed(() => {
-  let q: { snapshot?: string; app?: string } = {};
-  if (route.query.snapshot) q.snapshot = route.query.snapshot as string;
-  if (route.query.app) q.app = route.query.app as string;
-  return q;
-});
 
 const validationName = computed(() => props.space.validation?.name ?? 'basic');
 
@@ -233,17 +219,12 @@ async function loadSourceProposal() {
 }
 
 function nextStep() {
-  router.push({
-    params: { step: currentStep.value + 1 },
-    query: queries.value
-  });
+  if (formContainsShortUrl.value) return;
+  currentStep.value++;
 }
 
 function previousStep() {
-  router.push({
-    params: { step: currentStep.value - 1 },
-    query: queries.value
-  });
+  currentStep.value--;
 }
 
 function updateTime() {
@@ -263,6 +244,16 @@ async function validateAuthor() {
       return;
     }
 
+    if (
+      props.space.validation.name === 'any' ||
+      (props.space.validation.name === 'basic' &&
+        !props.space.filters.minScore &&
+        !props.space.validation.params?.minScore)
+    ) {
+      isValidAuthor.value = true;
+      return;
+    }
+
     try {
       validationLoading.value = true;
       const validationRes = await proposalValidation(
@@ -273,7 +264,7 @@ async function validateAuthor() {
       isValidAuthor.value = validationRes;
       console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
-      executingValidationFailed.value = true;
+      hasAuthorValidationFailed.value = true;
       console.log(e);
     } finally {
       validationLoading.value = false;
@@ -289,10 +280,6 @@ watch(
   { immediate: true }
 );
 
-watch(preview, () => {
-  window.scrollTo(0, 0);
-});
-
 onMounted(async () => {
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
@@ -300,10 +287,13 @@ onMounted(async () => {
   if (!sourceProposal.value) {
     form.value.name = formDraft.value.name;
     form.value.body = formDraft.value.body;
-    form.value.choices = formDraft.value.choices;
   }
 
-  if (!!props.space?.template && !sourceProposal.value && !form.value.body) {
+  if (
+    !!props.space?.template &&
+    !sourceProposal.value &&
+    !formDraft.value.isBodySet
+  ) {
     form.value.body = props.space.template;
   }
 });
@@ -316,17 +306,19 @@ onMounted(async () => {
         v-if="currentStep === Step.CONTENT"
         class="mb-3 overflow-hidden px-4 md:px-0"
       >
-        <router-link :to="domain ? { path: '/' } : { name: 'spaceProposals' }">
-          <ButtonBack />
-        </router-link>
+        <ButtonBack
+          @click="
+            router.push(domain ? { path: '/' } : { name: 'spaceProposals' })
+          "
+        />
       </div>
-
       <SpaceCreateWarnings
         v-if="!validationLoading"
         :space="space"
-        :executing-validation-failed="executingValidationFailed"
+        :validation-failed="hasAuthorValidationFailed"
         :is-valid-author="isValidAuthor"
         :validation-name="validationName"
+        :contains-short-url="formContainsShortUrl"
         data-testid="create-proposal-connect-wallet-warning"
       />
 
@@ -347,16 +339,12 @@ onMounted(async () => {
       />
 
       <!-- Step 3 (only when plugins) -->
-      <div
-        v-else-if="space?.plugins && (!sourceProposal || sourceProposalLoaded)"
-        class="space-y-3"
-      >
-        <SpaceCreatePlugins
-          v-model="form.metadata.plugins"
-          :proposal="proposal"
-          :space="space"
-        />
-      </div>
+      <SpaceCreatePlugins
+        v-else
+        v-model="form.metadata.plugins"
+        :proposal="proposal"
+        :space="space"
+      />
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
@@ -375,10 +363,11 @@ onMounted(async () => {
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
-          :disabled="!isSafeFormValid"
+          :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
+          data-testid="create-proposal-publish-button"
           @click="
             !termsAccepted && space.terms
               ? (modalTermsOpen = true)
@@ -394,7 +383,7 @@ onMounted(async () => {
           :disabled="
             (!stepIsValid && !!web3Account) ||
             web3.authLoading ||
-            executingValidationFailed ||
+            hasAuthorValidationFailed ||
             validationLoading ||
             isGnosisAndNotSpaceNetwork
           "

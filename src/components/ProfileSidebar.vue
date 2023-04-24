@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useWeb3 } from '@/composables/useWeb3';
-
 defineProps<{
   userAddress: string;
   profiles: {

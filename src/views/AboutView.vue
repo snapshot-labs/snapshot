@@ -1,8 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
-import { useSkin, DARK } from '@/composables/useSkin';
-import { useApp } from '@/composables/useApp';
-
 const { userTheme } = useSkin();
 const { env } = useApp();
 
@@ -26,10 +22,6 @@ const socials = [
     link: 'https://discord.snapshot.org/'
   },
   {
-    icon: 'telegram',
-    link: 'https://t.me/snapshotlabs'
-  },
-  {
     icon: 'github',
     link: `https://github.com/snapshot-labs`
   },
@@ -45,11 +37,11 @@ const socials = [
     <div class="hidden md:block">
       <img
         src="/about/main.png"
-        class="absolute -top-[0px] -right-[108px] scale-50 lg:top-[36px] lg:-right-[54px] lg:scale-75 2xl:top-[136px] 2xl:scale-100"
+        class="absolute -right-[108px] -top-[0px] scale-50 lg:-right-[54px] lg:top-[36px] lg:scale-75 2xl:top-[136px] 2xl:scale-100"
       />
       <img
         src="/about/big_planet.png"
-        class="absolute top-[160px] right-[240px] scale-50 lg:right-[440px] lg:top-[160px] lg:scale-75 2xl:right-[640px] 2xl:scale-100"
+        class="absolute right-[240px] top-[160px] scale-50 lg:right-[440px] lg:top-[160px] lg:scale-75 2xl:right-[640px] 2xl:scale-100"
       />
       <img
         src="/about/small_planet.png"
@@ -80,19 +72,21 @@ const socials = [
           class="relative ml-[50px] mt-[100px] font-space text-[40px] font-bold leading-[3rem] text-white md:mt-[135px]"
         >
           <div
-            class="absolute top-[22px] -left-[50px] -ml-[5px] h-2 w-2 rounded-full bg-white"
+            class="absolute -left-[50px] top-[22px] -ml-[5px] h-2 w-2 rounded-full bg-white"
           />
           Where decisions<br />get made
         </h1>
         <p
-          class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[501px]"
+          class="mb-[50px] mt-4 pl-[50px] !text-skin-text text-gray-300 sm:w-[501px]"
         >
           {{ $t('aboutPage.description') }}
         </p>
         <div class="flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <router-link :to="{ path: '/' }">
-            <BaseButton class="origin-left scale-110">Discover</BaseButton>
+            <BaseButton tabindex="-1" class="origin-left scale-110"
+              >Discover</BaseButton
+            >
           </router-link>
         </div>
 
@@ -100,14 +94,14 @@ const socials = [
           {{ $t('aboutPage.subHeader') }}
         </AboutSubheader>
         <p
-          class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text sm:w-[500px]"
+          class="mb-[50px] mt-4 pl-[50px] !text-skin-text text-gray-300 sm:w-[500px]"
         >
           {{ $t('aboutPage.subDescription') }}
         </p>
         <div class="mb-4 flex items-center">
           <hr class="w-[50px] border-skin-border" />
           <router-link :to="{ path: '/setup' }">
-            <BaseButton class="origin-left scale-110">
+            <BaseButton tabindex="-1" class="origin-left scale-110">
               Create a space
             </BaseButton>
           </router-link>
@@ -118,12 +112,14 @@ const socials = [
             link="https://demo.snapshot.org/#/hamsterdao.eth/proposal/0x0630b8672c4e1f2c38e2ca6046acfdd88cc2e888053a45b0511dff2fa54b4eb1"
             hide-external-icon
           >
-            <BaseButton class="origin-left scale-110">Try the demo</BaseButton>
+            <BaseButton tabindex="-1" class="origin-left scale-110"
+              >Try the demo</BaseButton
+            >
           </BaseLink>
         </div>
 
         <AboutSubheader> Read </AboutSubheader>
-        <p class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text">
+        <p class="mb-[50px] mt-4 pl-[50px] !text-skin-text text-gray-300">
           What is Snapshot
           <BaseLink
             link="https://decrypt.co/resources/what-is-snapshot-the-decentralized-voting-system"
@@ -143,7 +139,7 @@ const socials = [
           </BaseLink>
         </p>
         <AboutSubheader> Explore </AboutSubheader>
-        <p class="mt-4 mb-[50px] pl-[50px] text-gray-300 !text-skin-text">
+        <p class="mb-[50px] mt-4 pl-[50px] !text-skin-text text-gray-300">
           Knowledge base
           <BaseLink
             link="https://docs.snapshot.org/"
@@ -172,7 +168,7 @@ const socials = [
           </BaseLink>
         </p>
         <AboutSubheader> Newsletter </AboutSubheader>
-        <div class="mt-4 mb-[50px] pl-[50px]">
+        <div class="mb-[50px] mt-4 pl-[50px]">
           <div class="mb-2">
             {{ $t('newsletter.title') }}
           </div>
@@ -182,7 +178,7 @@ const socials = [
     </div>
 
     <footer
-      class="space-x-3 bg-skin-bg pb-[50px] pl-[50px] md:fixed md:right-0 md:bottom-0 md:bg-transparent md:p-4 2xl:pr-6"
+      class="space-x-3 bg-skin-bg pb-[50px] pl-[50px] md:fixed md:bottom-0 md:right-0 md:bg-transparent md:p-4 2xl:pr-6"
     >
       <BaseLink
         v-for="social in socials"

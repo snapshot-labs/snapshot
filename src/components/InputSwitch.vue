@@ -7,16 +7,21 @@ defineProps<{
   textRight?: string;
   definition?: any;
   information?: string;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 pt-1 pr-2">
+  <div class="flex items-center space-x-2 pr-2 pt-1">
     <Switch
       :model-value="modelValue"
-      :class="modelValue ? 'bg-green' : 'bg-skin-border'"
+      :class="[
+        modelValue ? 'bg-green' : 'bg-skin-border',
+        { '!cursor-not-allowed': isDisabled }
+      ]"
+      :disabled="isDisabled"
       class="relative inline-flex h-[22px] w-[38px] flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent outline-offset-2 transition-colors duration-200 ease-in-out"
       @update:model-value="value => emit('update:modelValue', value)"
     >

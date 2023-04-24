@@ -1,4 +1,3 @@
-import { computed, ref } from 'vue';
 import snapshot from '@snapshot-labs/snapshot.js';
 import { getTokenBalances, ETHER_CONTRACT } from '@/helpers/covalent';
 import { TreasuryAsset } from '@/helpers/interfaces';

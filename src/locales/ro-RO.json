@@ -114,12 +114,12 @@
   "addFavorites": "Adaugă la favorite",
   "createdBy": "De către {0}",
   "startIn": "pornește {0}",
-  "endIn": "sfârșit {1}",
+  "endIn": "sfârșit {0}",
   "proposalTimeLeft": "{0} rămas",
   "endedAgo": "încheiat {0}",
   "proposalBy": "de către {0}",
   "endDate": "sfârșit {0}",
-  "contectHash": "Hash conținut",
+  "contentHash": "Hash conținut",
   "defaultSkin": "Skin implicit",
   "select": "Selectează",
   "language": "Limbă",
@@ -418,7 +418,7 @@
     "example": "e.g. yam.eth",
     "chooseExistingEns": "Alege unul dintre domeniile tale ENS existente pentru a crea un spațiu:",
     "useSingleExistingEns": "Utilizează domeniul tău ENS existent:",
-    "orReigsterNewEns": "Sau înregistrează un nou domeniu:",
+    "orRegisterNewEns": "Sau înregistrează un nou domeniu:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Pentru a crea un spațiu, ai nevoie mai întâi de un domeniu ENS. Introdu unul mai jos și urmează instrucțiunile de înregistrare ENS.",
     "createASpace": "Crează un spațiu",
@@ -591,12 +591,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

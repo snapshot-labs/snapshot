@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import legacySpaces from '@/../snapshot-spaces/spaces/legacy.json';
 
@@ -29,7 +28,7 @@ const isLegacySpace = computed(() => {
     </router-link>
     <router-link
       v-slot="{ isExactActive }"
-      :to="{ name: 'spaceCreate', params: { step: 0 } }"
+      :to="{ name: 'spaceCreate' }"
       data-testid="create-proposal-button"
     >
       <BaseSidebarNavigationItem :is-active="isExactActive">

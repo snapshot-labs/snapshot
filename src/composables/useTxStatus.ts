@@ -1,5 +1,3 @@
-import { ref, watch, nextTick } from 'vue';
-
 const pendingCount = ref(0);
 
 export function useTxStatus() {

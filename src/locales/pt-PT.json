@@ -114,12 +114,12 @@
   "addFavorites": "Adicionar favoritos",
   "createdBy": "Por {0}",
   "startIn": "iniciar: {0}",
-  "endIn": "terminar {1}",
+  "endIn": "terminar {0}",
   "proposalTimeLeft": "{0} esquerda",
   "endedAgo": "finalizado {0}",
   "proposalBy": "por {0}",
   "endDate": "termina {0}",
-  "contectHash": "Hash do conteúdo",
+  "contentHash": "Hash do conteúdo",
   "defaultSkin": "Skin padrão",
   "select": "Selecionar",
   "language": "Idioma",
@@ -418,7 +418,7 @@
     "example": "p. ex. yam.eth",
     "chooseExistingEns": "Choose one of your existing ENS domains to create a space with:",
     "useSingleExistingEns": "Use your existing ENS domain:",
-    "orReigsterNewEns": "Or register a new domain:",
+    "orRegisterNewEns": "Or register a new domain:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "To create a space, you first need an ENS domain. Enter one below and follow the ENS registration instructions.",
     "createASpace": "Criar comunidade",
@@ -591,12 +591,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

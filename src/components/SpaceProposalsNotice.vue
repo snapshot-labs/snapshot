@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useWeb3 } from '@/composables';
 
 defineProps<{
   spaceId: string;

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import Config from './components/Config.vue';
-import { computed } from 'vue';
-import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
+  results: Results;
 }>();
 
 const mapLegacyConfig = (config: Record<string, any>): Record<string, any> => {
@@ -44,5 +44,7 @@ const safeSnapInput = computed(
     :preview="true"
     :config="space.plugins.safeSnap"
     :network="space.network"
+    :space="space"
+    :results="results"
   />
 </template>

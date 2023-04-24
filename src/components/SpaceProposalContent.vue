@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 defineProps<{
   space: ExtendedSpace;
@@ -59,7 +58,10 @@ const truncateMarkdownBody = computed(() => {
       }"
     >
       <div ref="markdownBody">
-        <BaseMarkdown :body="proposal.body" />
+        <BaseMarkdown
+          :body="proposal.body"
+          data-testid="proposal-page-content"
+        />
       </div>
     </div>
   </div>

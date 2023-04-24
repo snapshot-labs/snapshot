@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useStorage } from '@vueuse/core';
 import { clearStampCache } from '@/helpers/utils';
-
-import {
-  useWeb3,
-  useI18n,
-  useClient,
-  useExtendedSpaces,
-  useFormSpaceSettings,
-  useFlashNotification,
-  useMeta
-} from '@/composables';
 
 useMeta({
   title: {
@@ -36,7 +24,7 @@ const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
-const { form, isValid, showAllValidationErrors, resetForm } =
+const { prunedForm, isValid, showAllValidationErrors, resetForm } =
   useFormSpaceSettings('setup');
 const { t } = useI18n();
 const { send } = useClient();
@@ -64,7 +52,11 @@ async function handleSubmit() {
   creatingSpace.value = true;
 
   // Create the space
-  const result = await send({ id: route.params.ens }, 'settings', form.value);
+  const result = await send(
+    { id: route.params.ens },
+    'settings',
+    prunedForm.value
+  );
   if (result.id) {
     // Wait for the space to be available on the HUB
     await checkIfSpaceExists();

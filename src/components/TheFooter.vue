@@ -11,17 +11,17 @@ const snapshotTextLinks = [
   {
     text: 'blog',
     link: 'https://snapshot.mirror.xyz/'
-  },
-  {
-    text: 'jobs',
-    link: 'https://angel.co/company/snapshot-labs_/jobs'
   }
+  // {
+  //   text: 'jobs',
+  //   link: 'https://angel.co/company/snapshot-labs_/jobs'
+  // }
 ];
 
 const resourcesTextLinks = [
   {
-    text: 'discussions',
-    link: 'https://github.com/snapshot-labs/snapshot/discussions'
+    text: 'faqs',
+    link: 'https://docs.snapshot.org/faq'
   },
   {
     text: 'github',

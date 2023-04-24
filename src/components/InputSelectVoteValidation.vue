@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { VoteValidation } from '@/helpers/interfaces';
+import { VoteValidation, ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   validation: VoteValidation;
+  isDisabled?: boolean;
+  space?: ExtendedSpace;
 }>();
 
 const emit = defineEmits(['add']);
@@ -17,13 +18,15 @@ const isModalOpen = ref(false);
     :title="$t(`votingValidation.label`)"
     :information="$t(`votingValidation.information`)"
     :model-value="$t(`votingValidation.${validation.name}.label`)"
-    @click="isModalOpen = true"
+    :is-disabled="isDisabled"
+    @select="isModalOpen = true"
   />
 
   <teleport to="#modal">
     <ModalVoteValidation
       :open="isModalOpen"
       :validation="validation"
+      :space="space"
       @close="isModalOpen = false"
       @add="emit('add', $event)"
     />

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-
-import { useProfiles, useMeta } from '@/composables';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -31,11 +28,20 @@ type Moderator = {
   roles: string[];
 };
 
+const isModalStrategiesOpen = ref(false);
+
 const spaceMembers = computed(() => {
   const authors = props.space.members.map(member => {
     return {
       id: member,
       roles: ['author']
+    };
+  });
+
+  const moderators = props.space.moderators.map(moderator => {
+    return {
+      id: moderator,
+      roles: ['moderator']
     };
   });
 
@@ -46,15 +52,20 @@ const spaceMembers = computed(() => {
     };
   });
 
-  return authors.concat(admins).reduce<Moderator[]>((acc, curr) => {
-    const existing = acc.find(member => member.id === curr.id);
-    if (existing) {
-      existing.roles = existing.roles.concat(curr.roles);
-    } else {
-      acc.push(curr);
-    }
-    return acc;
-  }, [] as Moderator[]);
+  return authors
+    .concat(moderators)
+    .concat(admins)
+    .reduce<Moderator[]>((acc, curr) => {
+      const existing = acc.find(member => member.id === curr.id);
+      if (existing) {
+        if (curr.roles[0] === 'admin') {
+          existing.roles = curr.roles;
+        }
+      } else {
+        acc.push(curr);
+      }
+      return acc;
+    }, [] as Moderator[]);
 });
 
 onMounted(() => {
@@ -64,7 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <TheLayout>
+  <TheLayout v-bind="$attrs">
     <template #sidebar-left>
       <SpaceSidebar :space="space" />
     </template>
@@ -98,15 +109,27 @@ onMounted(() => {
       <BaseBlock
         v-if="space.strategies"
         :title="$t('settings.strategies.label')"
-        class="mt-3"
+        :counter="space.strategies.length"
+        :show-more-button="space.strategies.length > 2"
+        show-more-button-label="seeAll"
         slim
+        class="mt-3"
+        @show-more="isModalStrategiesOpen = true"
       >
-        <SpaceAboutStrategiesList :strategies="space.strategies" />
+        <div class="grid grid-cols-1 gap-4 p-4 px-0 md:px-4">
+          <StrategiesListItem
+            v-for="(strategy, i) in space.strategies.slice(0, 2)"
+            :key="i"
+            :strategy="strategy"
+            class="!mb-0"
+          />
+        </div>
       </BaseBlock>
 
       <BaseBlock
-        v-if="space?.admins?.length"
+        v-if="spaceMembers.length"
         :title="$t('spaceMembers')"
+        :counter="spaceMembers.length"
         class="mt-3"
         slim
       >
@@ -115,14 +138,23 @@ onMounted(() => {
           <div class="space-x-2">
             <BasePill
               v-if="mod.roles.includes('admin')"
-              v-tippy="{ content: $t('settings.admins.information') }"
+              v-tippy="{ content: $t('settings.members.admin.description') }"
               class="cursor-help py-1"
             >
               admin
             </BasePill>
             <BasePill
+              v-if="mod.roles.includes('moderator')"
+              v-tippy="{
+                content: $t('settings.members.moderator.description')
+              }"
+              class="cursor-help py-1"
+            >
+              moderator
+            </BasePill>
+            <BasePill
               v-if="mod.roles.includes('author')"
-              v-tippy="{ content: $t('settings.authors.information') }"
+              v-tippy="{ content: $t('settings.members.author.description') }"
               class="cursor-help py-1"
             >
               author
@@ -132,4 +164,11 @@ onMounted(() => {
       </BaseBlock>
     </template>
   </TheLayout>
+  <teleport to="#modal">
+    <ModalStrategies
+      :open="isModalStrategiesOpen"
+      :strategies="space.strategies"
+      @close="isModalStrategiesOpen = false"
+    />
+  </teleport>
 </template>

@@ -1,6 +1,5 @@
 <script>
 import Plugin from '../index';
-import { useWeb3 } from '@/composables/useWeb3';
 
 const { web3Account } = useWeb3();
 
@@ -53,7 +52,7 @@ const CLAIMING = 'CLAIMING';
 const CLAIMED = 'CLAIMED';
 
 export default {
-  props: ['space', 'proposal', 'results', 'loaded', 'strategies', 'votes'],
+  props: ['space', 'proposal', 'results', 'loaded', 'strategies'],
   data() {
     return {
       disabled: false,
@@ -107,12 +106,6 @@ export default {
       // Update the state if the address
       this.loading = true;
       this.address = newAccount;
-      await this.updateState();
-      this.loading = false;
-    },
-    votes: async function () {
-      // Update the state if the votes change
-      this.loading = true;
       await this.updateState();
       this.loading = false;
     }

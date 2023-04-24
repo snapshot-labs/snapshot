@@ -1,14 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useModal } from '@/composables/useModal';
-import { useWeb3 } from '@/composables/useWeb3';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { useProfiles } from '@/composables/useProfiles';
-import { useFlashNotification } from '@/composables/useFlashNotification';
-import { useScrollMonitor } from '@/composables/useScrollMonitor';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
-import { useI18n } from '@/composables/useI18n';
 import CommentBoxCommentBlock from './CommentBlock.vue';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const { t } = useI18n();
 const props = defineProps({
@@ -66,7 +60,15 @@ async function getCommentData() {
     loadingMore.value = false;
   }
 }
-const { endElement } = useScrollMonitor(() => getCommentData());
+
+useInfiniteScroll(
+  document,
+  () => {
+    getCommentData();
+  },
+  { distance: 400 }
+);
+
 onMounted(async () => {
   getCommentData();
 });
@@ -193,9 +195,6 @@ function deleteItem(key) {
         @updateItem="updateItem($event)"
         @deleteItem="deleteItem($event)"
       />
-    </div>
-    <div class="relative">
-      <div ref="endElement" class="absolute h-[10px] w-[10px]" />
     </div>
 
     <LoadingRow v-if="loadingMore" class="my-2" />

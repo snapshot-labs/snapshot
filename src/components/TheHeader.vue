@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useStorage } from '@vueuse/core';
-import { useApp } from '@/composables';
 
 const { env } = useApp();
 
@@ -17,7 +16,7 @@ const visible = useStorage('snapshot.showHomeHeader', true);
         {{ $t('header.description') }}
       </p>
       <div
-        class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-3"
+        class="mt-4 flex flex-col space-y-2 sm:flex-row sm:space-x-3 sm:space-y-0"
       >
         <BaseButton
           class="w-full md:w-auto"

@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
-import { useApp } from '@/composables/useApp';
 
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
@@ -41,15 +40,9 @@ const spaceRoutes = [
     component: SpaceProposal
   },
   {
-    path: 'create/:step?/:sourceProposal?',
+    path: 'create/:sourceProposal?',
     name: 'spaceCreate',
-    component: SpaceCreate,
-    beforeEnter: to => {
-      // set step to 0 if it is not set
-      if (!to.params.step) {
-        to.params.step = 0;
-      }
-    }
+    component: SpaceCreate
   },
 
   {

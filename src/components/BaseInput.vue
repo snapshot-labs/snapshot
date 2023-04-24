@@ -5,7 +5,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
 import { FormError } from '@/helpers/interfaces';
 
 const props = withDefaults(
@@ -95,7 +94,7 @@ onMounted(() => {
       />
       <div
         v-if="loading || success || failed"
-        class="absolute inset-y-0 right-0 top-[1px] mr-1 hidden h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pr-2 pl-2 group-focus-within:flex"
+        class="absolute inset-y-0 right-0 top-[1px] mr-1 hidden h-[40px] items-center overflow-hidden rounded-r-full bg-skin-bg pl-2 pr-2 group-focus-within:flex"
       >
         <LoadingSpinner v-if="loading" class="pb-[3px]" />
         <i-ho-check v-if="success" class="text-md text-green" />

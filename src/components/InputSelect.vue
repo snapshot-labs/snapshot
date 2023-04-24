@@ -3,7 +3,7 @@ defineProps<{
   modelValue: string;
   title: string;
   information?: string;
-  disabled?: boolean;
+  isDisabled?: boolean;
   tooltip?: string | null;
 }>();
 
@@ -15,11 +15,15 @@ const emit = defineEmits(['select']);
     <LabelInput :information="information">{{ title }}</LabelInput>
     <BaseButton
       v-tippy="{ content: tooltip }"
-      :class="[$attrs.class, { 'cursor-not-allowed': disabled }]"
+      :class="[
+        $attrs.class,
+        { 'cursor-not-allowed !border-skin-border': isDisabled }
+      ]"
       class="relative !h-[42px] w-full truncate pl-3 pr-5 text-left"
-      @click="disabled ? null : emit('select')"
+      :disabled="isDisabled"
+      @click="isDisabled ? null : emit('select')"
     >
-      <span :class="{ 'text-skin-text opacity-60': disabled }">
+      <span :class="{ 'text-skin-text ': isDisabled }">
         {{ modelValue }}
       </span>
       <i-ho-chevron-down

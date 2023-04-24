@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { toRefs, computed, ref, watch } from 'vue';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
 import connectors from '@/helpers/connectors.json';
 import { getIpfsUrl } from '@/helpers/utils';
@@ -45,12 +44,13 @@ watch(open, () => {
           <BaseButton
             v-if="cId === 'injected' && injected"
             class="flex w-full items-center justify-center"
+            data-testid="button-connnect-wallet-injected"
           >
             <img
               :src="getIpfsUrl(injected.icon)"
               height="28"
               width="28"
-              class="mr-2 -mt-1"
+              class="-mt-1 mr-2"
               :alt="injected.name"
             />
             {{ injected.name }}

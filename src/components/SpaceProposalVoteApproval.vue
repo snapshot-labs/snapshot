@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -33,7 +32,7 @@ watch(
 </script>
 
 <template>
-  <div class="mb-3">
+  <div class="mb-3" data-testid="approval-choice-list">
     <BaseButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
@@ -44,6 +43,7 @@ watch(
           i + 1
         )
       }"
+      :data-testid="`approval-choice-button-${i}`"
       @click="selectChoice(i + 1)"
     >
       <i-ho-check v-if="selectedChoices.includes(i + 1)" class="absolute" />

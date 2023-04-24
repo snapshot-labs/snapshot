@@ -1,34 +1,37 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
-
-import { useQuorum } from '@/composables';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
-  votes: Vote[];
 }>();
 
-const { totalQuorumScore } = useQuorum(props);
-
-const quorum = computed(
-  () => props.proposal?.quorum || props.space.voting?.quorum || 0
-);
+const { totalQuorumScore, quorum, loadingQuorum } = useQuorum(props);
+const { formatCompactNumber, formatPercentNumber } = useIntl();
 </script>
 
 <template>
-  <div class="pt-2">
-    <ProgressQuorum
-      v-if="proposal.quorum || space.voting?.quorum"
-      :score="totalQuorumScore"
-      :total="quorum"
-    />
-
-    <SpaceProposalResultsQuorumPlugin
-      v-else-if="space?.plugins?.quorum"
-      v-bind="props"
-    />
+  <div class="pt-2 text-skin-link">
+    <div class="flex justify-between">
+      <div class="flex items-center gap-1">
+        {{ $t('settings.quorum.label') }}
+      </div>
+      <LoadingSpinner v-if="loadingQuorum" class="mr-1" />
+      <div v-else class="flex gap-2">
+        <i-ho-check
+          v-if="quorum && totalQuorumScore >= quorum"
+          class="text-skin-success text-green"
+        />
+        <span
+          v-tippy="{ content: formatPercentNumber(totalQuorumScore / quorum) }"
+        >
+          {{ formatCompactNumber(totalQuorumScore) }}
+          /
+          {{ formatCompactNumber(quorum) }}
+        </span>
+      </div>
+    </div>
+    <BaseProgressBar :value="(totalQuorumScore / quorum) * 100" />
   </div>
 </template>

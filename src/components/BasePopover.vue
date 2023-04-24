@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue';
+import {
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  FocusTrap
+} from '@headlessui/vue';
 import { Float } from '@headlessui-float/vue';
 import type { Placement } from '@floating-ui/dom';
 
@@ -31,12 +36,12 @@ withDefaults(
       :z-index="50"
       portal
     >
-      <PopoverButton class="outline-none">
+      <PopoverButton as="template">
         <slot v-if="$slots.button" name="button" />
-        <div v-else>
+        <BaseButton v-else class="flex items-center">
           <span>{{ label }}</span>
           <i-ho-chevron-down class="ml-2 h-5 w-5" aria-hidden="true" />
-        </div>
+        </BaseButton>
       </PopoverButton>
 
       <PopoverPanel
@@ -49,7 +54,9 @@ withDefaults(
           <div
             class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
           >
-            <slot name="content" :close="close" />
+            <FocusTrap>
+              <slot name="content" :close="close" />
+            </FocusTrap>
           </div>
         </div>
       </PopoverPanel>

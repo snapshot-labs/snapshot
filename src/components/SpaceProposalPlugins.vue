@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { usePlugins } from '@/composables/usePlugins';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -8,7 +7,6 @@ const props = defineProps<{
   space: ExtendedSpace;
   results: Results;
   loadedResults: boolean;
-  votes: Record<string, any>[];
   strategies: Record<string, any>[];
 }>();
 

@@ -8,7 +8,7 @@ defineEmits(['close']);
     <template #header>
       <h3>{{ title }}</h3>
     </template>
-    <div class="my-2 p-4 text-center">
+    <div class="my-2 flex h-full flex-col p-4 text-center">
       <slot />
     </div>
     <template #footer>

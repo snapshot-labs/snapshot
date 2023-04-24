@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { useTreasury } from '@/composables/useTreasury';
-import { useIntl } from '@/composables/useIntl';
 
 const { formatNumber } = useIntl();
 

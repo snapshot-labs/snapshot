@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { computed, ref } from 'vue';
-import { useI18n } from '@/composables/useI18n';
-import { useFlashNotification } from '@/composables/useFlashNotification';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
@@ -93,7 +90,7 @@ const switchToDefaultNetwork = async () => {
       </BaseButton>
       <div v-if="defaultNetwork === '1'">
         <BaseLink link="https://demo.snapshot.org" hide-external-icon>
-          <BaseButton class="w-full">
+          <BaseButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
           </BaseButton>
         </BaseLink>

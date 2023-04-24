@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
@@ -36,6 +35,7 @@ watch(
       :key="i"
       class="relative mb-2 block w-full"
       :class="selectedChoice === i + 1 && '!border-skin-link'"
+      :data-testid="`sc-choice-button-${i}`"
       @click="selectChoice(i + 1)"
     >
       <i-ho-check v-if="selectedChoice === i + 1" class="absolute" />

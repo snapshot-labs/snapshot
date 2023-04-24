@@ -114,12 +114,11 @@
   "addFavorites": "Ajouter aux favoris",
   "createdBy": "Par {0}",
   "startIn": "début {0}",
-  "endIn": "fin {1}",
+  "endIn": "fin {0}",
   "proposalTimeLeft": "{0} restant(s)",
   "endedAgo": "terminé {0}",
   "proposalBy": "par {0}",
   "endDate": "fin {0}",
-  "contectHash": "Hash du contenu",
   "defaultSkin": "Thème par défaut",
   "select": "Sélectionnez",
   "language": "Langage",
@@ -255,7 +254,9 @@
       "tips": {
         "1": "Les votes peuvent être modifiés tant que la proposition est active"
       }
-    }
+    },
+    "downloadCsvVotes": "Télécharger en tant que CSV",
+    "preparingCsvVotes": "Préparation du fichier"
   },
   "proposals": {
     "header": "Propositions",
@@ -418,7 +419,7 @@
     "example": "ex : yam.eth",
     "chooseExistingEns": "Choisissez un de vos domaines ENS existants pour créer un espace avec :",
     "useSingleExistingEns": "Utiliser votre domaine ENS existant :",
-    "orReigsterNewEns": "Ou enregistrer un nouveau domaine :",
+    "orRegisterNewEns": "Ou enregistrer un nouveau domaine :",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Pour créer un espace, premièrement vous avez besoin d’un domaine ENS. En saisir un ci-dessous et suivre les instructions d’enregistrement ENS.",
     "createASpace": "Créer un espace",
@@ -591,12 +592,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Accès réservé au Gitcoin Passport",
       "description": "Protégez vos propositions contre le spam et la manipulation des votes en exigeant que les utilisateurs aient un Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Pondéré par Gitcoin Passport"

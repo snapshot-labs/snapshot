@@ -1,20 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue';
 import { shorten, clearStampCache } from '@/helpers/utils';
 import { ExtendedSpace } from '@/helpers/interfaces';
-
-import {
-  useI18n,
-  useWeb3,
-  useClient,
-  useSpaceController,
-  useExtendedSpaces,
-  useFormSpaceSettings,
-  useTreasury,
-  useFlashNotification,
-  useGnosis,
-  useMeta
-} from '@/composables';
+import { useConfirmDialog, useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -33,14 +20,18 @@ useMeta({
 });
 
 const { t } = useI18n();
+const { domain } = useApp();
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const { reloadSpace } = useExtendedSpaces();
+const { reloadSpace, deleteSpace } = useExtendedSpaces();
+const { loadFollows } = useFollowSpace();
 const {
-  form,
   validationResult,
   isValid,
   isReadyToSubmit,
+  hasFormChanged,
+  prunedForm,
   populateForm,
   resetForm
 } = useFormSpaceSettings('settings');
@@ -56,11 +47,28 @@ const {
   loadEnsOwner,
   isEnsOwner,
   loadSpaceController,
-  isSpaceController
+  isSpaceController,
+  ensOwner
 } = useSpaceController();
+
+enum Page {
+  GENERAL,
+  STRATEGIES,
+  PROPOSAL,
+  VOTING,
+  MEMBERS,
+  ADVANCED
+}
 
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
+const currentPage = ref(Page.GENERAL);
+const modalDeleteSpaceConfirmation = ref('');
+const modalSettingsSavedOpen = ref(false);
+const modalSettingsSavedIgnore = useStorage(
+  'snapshot.settings.saved.ignore',
+  false
+);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -68,25 +76,67 @@ const isSpaceAdmin = computed(() => {
   return admins.includes(web3Account.value?.toLowerCase());
 });
 
+const settingsPages = computed(() => [
+  {
+    id: Page.GENERAL,
+    title: t('settings.navigation.general')
+  },
+  {
+    id: Page.STRATEGIES,
+    title: t('settings.navigation.strategies')
+  },
+  {
+    id: Page.PROPOSAL,
+    title: t('settings.navigation.proposal')
+  },
+  {
+    id: Page.VOTING,
+    title: t('settings.navigation.voting')
+  },
+  {
+    id: Page.MEMBERS,
+    title: t('settings.navigation.members')
+  },
+  {
+    id: Page.ADVANCED,
+    title: t('settings.navigation.advanced')
+  }
+]);
+
+async function handleDelete() {
+  modalDeleteSpaceConfirmation.value = '';
+
+  const result = await send({ id: props.space.id }, 'delete-space', null);
+  console.log(':handleDelete result', result);
+
+  if (result && result.id) {
+    if (domain) {
+      return window.open(`https://snapshot.org/#/`, '_self');
+    } else {
+      deleteSpace(props.space.id);
+      loadFollows();
+      return router.push({ name: 'home' });
+    }
+  }
+}
+
 async function handleSubmit() {
   if (!isValid.value)
     return console.log('Invalid schema', validationResult.value);
 
-  const result = await send({ id: props.space.id }, 'settings', form.value);
+  const result = await send(
+    { id: props.space.id },
+    'settings',
+    prunedForm.value
+  );
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
+    if (!modalSettingsSavedIgnore.value) modalSettingsSavedOpen.value = true;
     resetTreasuryAssets();
     await clearStampCache(props.space.id);
-    reloadSpace(props.space.id);
-  }
-}
-
-async function handleSetRecord() {
-  const tx = await setRecord();
-  const receipt = await tx.wait();
-  if (receipt) {
-    reloadSpace(props.space.id);
+    await reloadSpace(props.space.id);
+    populateForm(props.space);
   }
 }
 
@@ -96,23 +146,42 @@ onMounted(async () => {
   await loadSpaceController();
   loaded.value = true;
 });
+
+const {
+  isRevealed: isConfirmLeaveOpen,
+  reveal: openConfirmLeave,
+  confirm: confirmLeave,
+  cancel: cancelLeave
+} = useConfirmDialog();
+
+const {
+  isRevealed: isConfirmDeleteOpen,
+  reveal: openConfirmDelete,
+  cancel: cancelDelete
+} = useConfirmDialog();
+
+onBeforeRouteLeave(async () => {
+  if (hasFormChanged.value) {
+    const { data } = await openConfirmLeave();
+    if (!data) return false;
+  }
+});
+
+const isViewOnly = computed(() => {
+  return !(isSpaceController.value || isSpaceAdmin.value);
+});
 </script>
 
 <template>
   <TheLayout v-bind="$attrs">
-    <template #content-left>
-      <div class="mb-3 px-4 md:px-0">
-        <router-link :to="{ name: 'spaceProposals' }">
-          <ButtonBack />
-        </router-link>
-      </div>
-      <div class="px-4 md:px-0">
-        <h1 class="mb-4" v-text="$t('settings.header')" />
-      </div>
+    <div class="mb-3 px-4 md:px-0">
+      <ButtonBack @click="router.push({ name: 'spaceProposals' })" />
+    </div>
+    <template #content-right>
       <LoadingRow v-if="!loaded" block />
 
       <template v-else>
-        <div class="space-y-3">
+        <div class="mt-3 space-y-3 sm:mt-0">
           <MessageWarningGnosisNetwork
             v-if="isGnosisAndNotDefaultNetwork"
             :space="space"
@@ -121,84 +190,134 @@ onMounted(async () => {
           />
 
           <BaseMessageBlock
-            v-else-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)"
-            class="mx-4 mb-3 md:mx-0"
+            v-else-if="isViewOnly"
+            class="md:mx-0"
             level="info"
+            is-responsive
           >
             {{ $t('settings.connectWithSpaceOwner') }}
           </BaseMessageBlock>
 
-          <SettingsProfileBlock context="settings" />
+          <template v-if="currentPage === Page.GENERAL">
+            <SettingsProfileBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsLinkBlock context="settings" :is-view-only="isViewOnly" />
+          </template>
 
-          <SettingsLinkBlock context="settings" />
+          <template v-if="currentPage === Page.STRATEGIES">
+            <SettingsStrategiesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+          </template>
 
-          <SettingsSubSpacesBlock context="settings" />
+          <template v-if="currentPage === Page.PROPOSAL">
+            <SettingsValidationBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+              :space="space"
+            />
+            <SettingsProposalBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+          </template>
 
-          <SettingsStrategiesBlock context="settings" />
+          <template v-if="currentPage === Page.VOTING">
+            <SettingsVotingBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+              :space="space"
+            />
+          </template>
 
-          <SettingsMembersBlock
-            context="settings"
-            :space="space"
-            :is-space-controller="isSpaceController"
-          />
+          <template v-if="currentPage === Page.MEMBERS">
+            <SettingsMembersBlock
+              context="settings"
+              :space="space"
+              :is-space-controller="isSpaceController"
+            />
+          </template>
 
-          <SettingsProposalBlock context="settings" />
-
-          <SettingsValidationBlock context="settings" />
-
-          <SettingsVotingBlock context="settings" />
-
-          <SettingsDomainBlock context="settings" />
-
-          <SettingsTreasuriesBlock context="settings" />
-
-          <SettingsPluginsBlock context="settings" />
+          <template v-if="currentPage === Page.ADVANCED">
+            <SettingsPluginsBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsTreasuriesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsSubSpacesBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsDomainBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+            <SettingsDangerzoneBlock
+              :is-controller="isSpaceController"
+              :ens-owner="ensOwner"
+              :is-owner="isEnsOwner"
+              :is-setting-ens-record="settingENSRecord"
+              :is-deleting="isConfirmDeleteOpen"
+              @change-controller="modalControllerEditOpen = true"
+              @delete-space="openConfirmDelete"
+            />
+          </template>
+          <div
+            v-if="isSpaceAdmin || isSpaceController"
+            class="flex gap-5 px-4 pt-2 md:px-0"
+          >
+            <BaseButton class="mb-2 block w-full" @click="resetForm">
+              {{ $t('reset') }}
+            </BaseButton>
+            <BaseButton
+              :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
+              :loading="isSending"
+              class="block w-full"
+              primary
+              @click="handleSubmit"
+            >
+              {{ $t('save') }}
+            </BaseButton>
+          </div>
         </div>
       </template>
     </template>
 
-    <template #sidebar-right>
-      <div class="mt-5 lg:mt-0" />
-      <div v-if="!(isSpaceController || isSpaceAdmin || isEnsOwner)" />
-      <div v-else-if="loaded" class="lg:fixed lg:w-[318px]">
-        <BaseBlock v-if="isEnsOwner || isSpaceAdmin || isSpaceController">
-          <div class="space-y-2">
-            <BaseButton
-              v-if="isEnsOwner"
-              :loading="settingENSRecord"
-              class="block w-full"
-              @click="modalControllerEditOpen = true"
+    <template #sidebar-left>
+      <BaseBlock slim class="overflow-hidden !border-t-0 md:!border-t">
+        <div class="lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
+          <div
+            class="no-scrollbar mt-0 flex overflow-y-auto md:mt-4 lg:my-3 lg:block"
+          >
+            <a
+              v-for="page in settingsPages"
+              :key="page.id"
+              tabindex="0"
+              @click="currentPage = page.id"
+              @keypress="currentPage = page.id"
             >
-              {{ $t('settings.editController') }}
-            </BaseButton>
-            <div v-if="isSpaceAdmin || isSpaceController">
-              <BaseButton class="mb-2 block w-full" @click="resetForm">
-                {{ $t('reset') }}
-              </BaseButton>
-              <BaseButton
-                :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
-                :loading="isSending"
-                class="block w-full"
-                primary
-                @click="handleSubmit"
-              >
-                {{ $t('save') }}
-              </BaseButton>
-            </div>
+              <BaseSidebarNavigationItem :is-active="currentPage === page.id">
+                {{ page.title }}
+              </BaseSidebarNavigationItem>
+            </a>
           </div>
-        </BaseBlock>
-
-        <BaseBlock class="mt-3">
-          <div>
-            <div class="mb-2 text-skin-link">
-              {{ $t('newsletter.title') }}
-            </div>
-            <InputNewsletter tag="6449077" />
-          </div>
-        </BaseBlock>
-      </div>
+        </div>
+      </BaseBlock>
+      <BaseBlock class="my-3">
+        <div class="mb-2 text-skin-link">
+          {{ $t('newsletter.join') }}
+        </div>
+        <InputNewsletter tag="6449077" />
+      </BaseBlock>
     </template>
   </TheLayout>
+
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
@@ -213,7 +332,7 @@ onMounted(async () => {
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"
       @close="modalConfirmSetTextRecordOpen = false"
-      @confirm="handleSetRecord"
+      @confirm="setRecord"
     >
       <div class="m-4 space-y-4 text-skin-link">
         <p>
@@ -226,5 +345,50 @@ onMounted(async () => {
         </p>
       </div>
     </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmLeaveOpen"
+      show-cancel
+      @close="cancelLeave"
+      @confirm="confirmLeave(true)"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmLeaveMessage') }}
+      </BaseMessageBlock>
+    </ModalConfirmAction>
+    <ModalConfirmAction
+      :open="isConfirmDeleteOpen"
+      :disabled="modalDeleteSpaceConfirmation !== space.id"
+      show-cancel
+      @close="cancelDelete"
+      @confirm="handleDelete"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('settings.confirmDeleteSpace') }}
+      </BaseMessageBlock>
+      <div class="px-4 pb-4">
+        <BaseInput
+          v-model.trim="modalDeleteSpaceConfirmation"
+          :title="$t('settings.confirmInputDeleteSpace', { space: space.id })"
+          focus-on-mount
+        >
+        </BaseInput>
+      </div>
+    </ModalConfirmAction>
+    <ModalNotice
+      :open="modalSettingsSavedOpen"
+      :title="$t('settings.noticeSavedTitle')"
+      @close="modalSettingsSavedOpen = false"
+    >
+      <BaseMessageBlock level="info" class="mb-5">
+        <p class="text-left">{{ $t('settings.noticeSavedText') }}</p>
+      </BaseMessageBlock>
+      <InputCheckbox
+        v-model="modalSettingsSavedIgnore"
+        name="settings-saved-input-checkbox"
+        :label="$t('settings.noticeSavedInputCheckboxLabel')"
+        class="ml-4 mt-auto max-w-min cursor-pointer self-start whitespace-nowrap"
+        @click="modalSettingsSavedIgnore = !modalSettingsSavedIgnore"
+      />
+    </ModalNotice>
   </teleport>
 </template>

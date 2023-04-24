@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { getNumberWithOrdinal } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
@@ -45,31 +44,35 @@ watch(
         v-model="selectedChoices"
         :component-data="{ name: 'list' }"
         item-key="id"
+        data-testid="ranked-choice-selected-list"
         @change="updateChoices"
       >
         <template #item="{ element, index }">
-          <div class="mb-2">
-            <BaseButton
-              class="flex w-full items-center justify-between !border-skin-link !px-3"
+          <BaseButton
+            class="!mb-2 flex w-full items-center justify-between !border-skin-link !px-3"
+          >
+            <div class="min-w-[60px] text-left">
+              ({{ getNumberWithOrdinal(index + 1) }})
+            </div>
+            <div class="mx-2 w-full truncate text-center">
+              {{ proposal.choices[element - 1] }}
+            </div>
+            <div
+              class="ml-[40px] min-w-[20px] text-right"
+              :data-testid="`ranked-choice-selected-delete-${index}`"
+              @click="removeChoice(index)"
             >
-              <div class="min-w-[60px] text-left">
-                ({{ getNumberWithOrdinal(index + 1) }})
-              </div>
-              <div class="mx-2 w-full truncate text-center">
-                {{ proposal.choices[element - 1] }}
-              </div>
-              <div
-                class="ml-[40px] min-w-[20px] text-right"
-                @click="removeChoice(index)"
-              >
-                <BaseIcon name="close" size="12" />
-              </div>
-            </BaseButton>
-          </div>
+              <BaseIcon name="close" size="12" />
+            </div>
+          </BaseButton>
         </template>
       </draggable>
     </div>
-    <div v-for="(choice, i) in proposal.choices" :key="i">
+    <div
+      v-for="(choice, i) in proposal.choices"
+      :key="i"
+      data-testid="ranked-choice-select-list"
+    >
       <BaseButton
         v-if="!selectedChoices.includes(i + 1)"
         class="mb-2 block w-full"

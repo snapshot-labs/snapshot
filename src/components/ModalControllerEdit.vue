@@ -1,9 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
-
-import { useSpaceController } from '@/composables';
 
 const {
   spaceControllerInput,

@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
-import { useApolloQuery, useEns, useExtendedSpaces } from '@/composables';
 
 const props = defineProps<{
   userAddress: string;

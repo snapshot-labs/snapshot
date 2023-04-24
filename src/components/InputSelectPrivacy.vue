@@ -1,18 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 withDefaults(
   defineProps<{
     privacy?: string;
     information?: string;
     allowAny?: boolean;
-    disabled?: boolean;
+    isDisabled?: boolean;
   }>(),
   {
     privacy: '',
     information: '',
     allowAny: false,
-    disabled: false
+    isDisabled: false
   }
 );
 
@@ -29,14 +27,7 @@ const modalVotingPrivacyOpen = ref(false);
       :model-value="
         privacy ? $t(`privacy.${privacy}.label`) : $t('privacy.any')
       "
-      :disabled="disabled"
-      :tooltip="
-        disabled
-          ? $t('create.privacyEnforced', {
-              type: $t(`privacy.${privacy}.label`)
-            })
-          : null
-      "
+      :is-disabled="isDisabled"
       @select="modalVotingPrivacyOpen = true"
     />
     <teleport to="#modal">

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useIntl } from '@/composables/useIntl';
-
 defineProps<{
   quote: {
     quote: number;

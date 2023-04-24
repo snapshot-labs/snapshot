@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import {
   Combobox,
   ComboboxInput,
@@ -14,6 +13,7 @@ const props = defineProps<{
   items: { id: number | string; name: string }[];
   selectedId?: number | string;
   information?: string;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['select', 'search']);
@@ -33,21 +33,29 @@ watch(
 </script>
 
 <template>
-  <Combobox v-model="selectedItem" as="div" class="w-full">
+  <Combobox
+    v-model="selectedItem"
+    :disabled="isDisabled"
+    as="div"
+    class="w-full"
+  >
     <ComboboxLabel class="block">
       <LabelInput :information="information">{{ label }}</LabelInput>
     </ComboboxLabel>
     <div class="relative">
       <ComboboxButton class="w-full">
         <ComboboxInput
-          class="s-input w-full py-2 pl-3 !pr-[30px] focus:outline-none"
+          class="s-input w-full py-2 !pr-[30px] pl-3 focus:outline-none"
           spellcheck="false"
           :display-value="(item: any) => item.name"
+          :class="{ 'cursor-not-allowed': isDisabled }"
+          :disabled="isDisabled"
           @change="emit('search', $event.target.value)"
         />
       </ComboboxButton>
       <ComboboxButton
         class="absolute inset-y-0 right-1 flex items-center px-2 focus:outline-none"
+        :class="{ 'cursor-not-allowed': isDisabled }"
       >
         <i-ho-chevron-down class="text-[14px] text-skin-text" />
       </ComboboxButton>
@@ -66,7 +74,7 @@ watch(
             <li
               :class="[
                 { 'bg-skin-border': active },
-                'relative cursor-default select-none truncate py-2 pr-[50px] pl-3'
+                'relative cursor-default select-none truncate py-2 pl-3 pr-[50px]'
               ]"
             >
               <span

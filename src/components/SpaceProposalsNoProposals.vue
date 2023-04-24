@@ -11,8 +11,8 @@ defineProps<{
       <div class="mb-3">
         {{ $t('noResultsFound') }}
       </div>
-      <router-link :to="{ name: 'spaceCreate', params: { step: 0 } }">
-        <BaseButton>
+      <router-link :to="{ name: 'spaceCreate' }">
+        <BaseButton tabindex="-1">
           {{ $t('proposals.createProposal') }}
         </BaseButton>
       </router-link>

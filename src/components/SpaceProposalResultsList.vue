@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 import {
   ExtendedSpace,
   Proposal,
   Results,
-  SpaceStrategy,
-  Vote
+  SpaceStrategy
 } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -13,7 +11,6 @@ const props = defineProps<{
   proposal: Proposal;
   results: Results;
   strategies: SpaceStrategy[];
-  votes: Vote[];
 }>();
 
 const choices = computed<{ i: number; choice: string }[]>(() =>
@@ -24,8 +21,9 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
 
 const showQuorum = computed(
   () =>
-    props.proposal.privacy !== 'shutter' ||
-    props.proposal.scores_state === 'final'
+    props.proposal?.quorum ||
+    props.space.voting?.quorum ||
+    props.space?.plugins?.quorum
 );
 </script>
 
@@ -45,7 +43,6 @@ const showQuorum = computed(
       :space="space"
       :proposal="proposal"
       :results="results"
-      :votes="votes"
     />
   </div>
 </template>

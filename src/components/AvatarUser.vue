@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useProfiles } from '@/composables/useProfiles';
-
 const props = withDefaults(
   defineProps<{
     address: string;

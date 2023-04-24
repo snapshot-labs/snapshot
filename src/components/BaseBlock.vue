@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 defineProps<{
   title?: string;
   counter?: number;
@@ -11,7 +9,12 @@ defineProps<{
   labelTooltip?: string;
   information?: string;
   isCollapsable?: boolean;
+  showMoreButton?: boolean;
+  showMoreButtonLabel?: string;
+  loadingMore?: boolean;
 }>();
+
+defineEmits(['showMore']);
 
 const isCollapsed = ref(true);
 </script>
@@ -22,7 +25,7 @@ const isCollapsed = ref(true);
   >
     <div
       v-if="title"
-      class="group flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pt-3 pb-[12px] md:rounded-t-lg"
+      class="group flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pb-[12px] pt-3 md:rounded-t-lg"
       :class="[
         {
           'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)
@@ -60,11 +63,7 @@ const isCollapsed = ref(true);
       </BaseButtonIcon>
     </div>
     <div v-if="loading" class="block px-4 py-4">
-      <div
-        class="lazy-loading mb-2 rounded-md"
-        style="width: 80%; height: 20px"
-      />
-      <div class="lazy-loading rounded-md" style="width: 50%; height: 20px" />
+      <LoadingList />
     </div>
     <Transition name="fade">
       <div
@@ -73,6 +72,15 @@ const isCollapsed = ref(true);
         class="leading-5 sm:leading-6"
       >
         <slot />
+        <div
+          v-if="showMoreButton"
+          class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+        >
+          <LoadingSpinner v-if="loadingMore" />
+          <button v-else @click="$emit('showMore')">
+            <span v-text="$t(showMoreButtonLabel || 'seeMore')" />
+          </button>
+        </div>
       </div>
     </Transition>
   </div>

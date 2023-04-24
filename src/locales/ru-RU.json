@@ -114,12 +114,12 @@
   "addFavorites": "Добавить в избранное",
   "createdBy": "От: {0}",
   "startIn": "начать {0}",
-  "endIn": "по {1}",
+  "endIn": "по {0}",
   "proposalTimeLeft": "{0} осталось",
   "endedAgo": "завершился {0}",
   "proposalBy": "от: {0}",
   "endDate": "по {0}",
-  "contectHash": "Хэш содержимого",
+  "contentHash": "Хэш содержимого",
   "defaultSkin": "Тема по умолчанию",
   "select": "Выбрать",
   "language": "Язык",
@@ -418,7 +418,7 @@
     "example": "например, yam.eth",
     "chooseExistingEns": "Выберите один из существующих доменов ENS для создания сообщества:",
     "useSingleExistingEns": "Используйте свой существующий домен ENS:",
-    "orReigsterNewEns": "Или зарегистрируйте новый домен:",
+    "orRegisterNewEns": "Или зарегистрируйте новый домен:",
     "demoTestnetEnsMessage": "To create a test space you need an ENS domain on {network}.",
     "toCreateASpace": "Чтобы создать сообщество, вам сначала нужен домен ENS. Введите его ниже и следуйте инструкциям по регистрации ENS.",
     "createASpace": "Создать сообщество",
@@ -591,12 +591,12 @@
     "basic": {
       "label": "Basic",
       "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

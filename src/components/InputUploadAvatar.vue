@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useImageUpload } from '@/composables/useImageUpload';
+const props = defineProps<{
+  isViewOnly?: boolean;
+}>();
 
 const emit = defineEmits(['image-uploaded', 'image-remove']);
 
 const fileInput = ref<HTMLInputElement | null>(null);
 
 function openFilePicker() {
+  if (props.isViewOnly) return;
   fileInput.value?.click();
 }
 
