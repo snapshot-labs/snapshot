@@ -142,9 +142,7 @@ export const getModuleDetailsUma = async (
     };
   }
   // Check for active proposals
-  const assertionId = await moduleContract.assertionIds(
-    proposalHash
-  );
+  const assertionId = await moduleContract.assertionIds(proposalHash);
 
   const activeProposal =
     assertionId !==
@@ -158,7 +156,8 @@ export const getModuleDetailsUma = async (
   );
 
   const latestBlock = await provider.getBlock('latest');
-  const fromBlock = latestBlock.number - 20000;
+  let fromBlock = 0;
+  if (network === '1') fromBlock = latestBlock.number - 3000;
 
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
   const assertionEvents = await oracleContract.queryFilter(
@@ -180,8 +179,7 @@ export const getModuleDetailsUma = async (
         .getAssertion(event.args?.assertionId)
         .then(result => {
           const isExpired =
-            Math.floor(Date.now() / 1000) >=
-            Number(result.expirationTime);
+            Math.floor(Date.now() / 1000) >= Number(result.expirationTime);
 
           return {
             expirationTimestamp: result.expirationTime,
