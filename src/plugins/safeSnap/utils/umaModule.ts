@@ -7,6 +7,7 @@ import { keccak256 } from '@ethersproject/keccak256';
 import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
+import { pageEvents } from './events';
 
 const getBondDetailsUma = async (
   provider: StaticJsonRpcProvider,
@@ -142,9 +143,7 @@ export const getModuleDetailsUma = async (
     };
   }
   // Check for active proposals
-  const assertionId = await moduleContract.assertionIds(
-    proposalHash
-  );
+  const assertionId = await moduleContract.assertionIds(proposalHash);
 
   const activeProposal =
     assertionId !==
@@ -157,11 +156,22 @@ export const getModuleDetailsUma = async (
     provider
   );
 
-  // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const assertionEvents = await oracleContract.queryFilter(
-    oracleContract.filters.AssertionMade(assertionId)
-  );
+  const latestBlock = await provider.getBlock('latest');
+  // modify this per chain
+  const maxRange = 5000;
 
+  const assertionEvents = await pageEvents(
+    0,
+    maxRange,
+    latestBlock.number,
+    ({ start, end }: { start: number; end: number }) => {
+      return oracleContract.queryFilter(
+        oracleContract.filters.AssertionMade(assertionId),
+        start,
+        end
+      );
+    }
+  );
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
       event.args?.claim === ancillaryData &&
@@ -176,8 +186,7 @@ export const getModuleDetailsUma = async (
         .getAssertion(event.args?.assertionId)
         .then(result => {
           const isExpired =
-            Math.floor(Date.now() / 1000) >=
-            Number(result.expirationTime);
+            Math.floor(Date.now() / 1000) >= Number(result.expirationTime);
 
           return {
             expirationTimestamp: result.expirationTime,
@@ -191,17 +200,41 @@ export const getModuleDetailsUma = async (
   );
 
   // Check if this specific proposal has already been executed.
-  const transactionsProposedEvents = await moduleContract.queryFilter(
-    moduleContract.filters.TransactionsProposed()
+  const transactionsProposedEvents = await pageEvents(
+    0,
+    maxRange,
+    latestBlock.number,
+    ({ start, end }: { start: number; end: number }) => {
+      return moduleContract.queryFilter(
+        moduleContract.filters.TransactionsProposed(),
+        start,
+        end
+      );
+    }
   );
 
-  const thisProposalTransactionsProposedEvents =
-    transactionsProposedEvents.filter(
-      event => toUtf8String(event.args?.explanation) === explanation
-    );
+  const thisProposalTransactionsProposedEvents = await pageEvents(
+    0,
+    maxRange,
+    latestBlock.number,
+    ({ start, end }: { start: number; end: number }) => {
+      return transactionsProposedEvents.filter(
+        event => toUtf8String(event.args?.explanation) === explanation
+      );
+    }
+  );
 
-  const executionEvents = await moduleContract.queryFilter(
-    moduleContract.filters.ProposalExecuted(proposalHash)
+  const executionEvents = await pageEvents(
+    0,
+    maxRange,
+    latestBlock.number,
+    ({ start, end }: { start: number; end: number }) => {
+      return moduleContract.queryFilter(
+        moduleContract.filters.ProposalExecuted(proposalHash),
+        start,
+        end
+      );
+    }
   );
 
   const assertion = thisProposalTransactionsProposedEvents.map(
