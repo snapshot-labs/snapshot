@@ -110,7 +110,7 @@ const avatarNotReactive = ref(form.value.avatar);
             placeholder="e.g. https://example.com/terms"
           />
 
-          <TuneInputSwitch
+          <TuneSwitch
             v-model="form.private"
             :disabled="isViewOnly"
             :hint="$t('settings.hideSpace')"

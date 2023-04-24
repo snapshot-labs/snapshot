@@ -122,7 +122,7 @@
 }
 
 .tune-textarea {
-  @apply no-scrollbar overflow-x-scroll whitespace-pre rounded-3xl px-3 text-base;
+  @apply no-scrollbar overflow-x-scroll whitespace-pre rounded-3xl px-3 text-base text-skin-link;
 }
 
 .tune-listbox-button {
@@ -298,7 +298,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply block w-full rounded-full border border-skin-border bg-skin-bg px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
+  @apply block w-full rounded-full border border-skin-border bg-transparent px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
 }
 
 .s-error {

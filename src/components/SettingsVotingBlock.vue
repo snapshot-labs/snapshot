@@ -63,7 +63,7 @@ const { form } = useFormSpaceSettings(props.context);
         />
       </div>
 
-      <TuneInputSwitch
+      <TuneSwitch
         v-model="form.voting.hideAbstain"
         :hint="$t('settings.hideAbstain')"
         :disabled="isViewOnly"

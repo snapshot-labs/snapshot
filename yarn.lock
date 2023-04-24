@@ -1562,10 +1562,10 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.10":
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.10.tgz#a52d98c56570e26d1135c707d59bc0e5009aebf3"
-  integrity sha512-0ayV+A5GvI7Rgjj98D8Oza1dC6r9eNHSXC0EBK8o0KwyvxZqO/+bVsLHlcA0d2VFVAWIdzPP+yE/CHqywPAX6g==
+"@snapshot-labs/tune@^0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.12.tgz#23e294662de0685991f8c9f9f83d0489fea2e966"
+  integrity sha512-fBw0BG5A0bBNaiMaPWW6X3IwBaZnYT84NbdF2Tkj6TSN22WMy8iT9BThHfC6Z+0wXpdJ8vgZIDZN9zZ8hhg5ag==
   dependencies:
     "@headlessui-float/vue" "^0.11.0"
     "@headlessui/vue" "^1.7.12"

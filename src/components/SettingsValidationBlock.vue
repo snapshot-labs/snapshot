@@ -36,7 +36,7 @@ function handleClickSelectValidation() {
         />
       </ContainerParallelInput>
 
-      <TuneInputSwitch
+      <TuneSwitch
         v-model="form.filters.onlyMembers"
         :disabled="isViewOnly"
         :hint="$t('settings.allowOnlyAuthors')"
