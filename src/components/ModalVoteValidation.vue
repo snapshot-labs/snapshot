@@ -145,7 +145,7 @@ watch(open, () => {
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="mx-4 text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link md:mx-0">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"

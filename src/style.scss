@@ -117,6 +117,10 @@
   @apply font-sans;
 }
 
+.tune-button {
+  @apply rounded-full;
+}
+
 .tune-input {
   @apply rounded-full;
 }
@@ -135,6 +139,10 @@
 
 .tune-input-duration {
   @apply rounded-full;
+}
+
+.tune-error-text {
+  @apply font-sans;
 }
 
 // Fade transition for Vue's transition and transition-group

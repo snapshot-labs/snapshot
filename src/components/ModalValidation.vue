@@ -16,11 +16,11 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const isValidJson = ref(true);
+const isValidParams = ref(true);
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
 const formRef = ref();
-const updateIndex = ref(0);
+const strategiesFormRef = ref();
 
 const input = ref({
   name: '',
@@ -83,8 +83,11 @@ function handleSelect(n: string) {
 }
 
 function handleSubmit() {
-  if (!isValid.value || !isValidJson.value)
-    return formRef?.value?.forceShowError();
+  if (!isValid.value || !isValidParams.value) {
+    strategiesFormRef.value?.forceShowError();
+    formRef?.value?.forceShowError();
+    return;
+  }
 
   emit('add', clone(input.value));
   emit('close');
@@ -116,11 +119,6 @@ async function getValidations() {
   isValidationsLoaded.value = true;
 }
 
-function handleCopyStrategies() {
-  updateIndex.value++;
-  input.value.params.strategies = props.space?.strategies;
-}
-
 watch(open, () => {
   getValidations();
   input.value.name = '';
@@ -148,29 +146,29 @@ watch(open, () => {
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="mx-4 text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link md:mx-0">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
-          :key="updateIndex"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
         />
+
         <TuneTextareaJson
           v-else
           v-model="input.params"
           :placeholder="$t('proposalValidation.paramPlaceholder')"
-          @update:is-valid="value => (isValidJson = value)"
+          @update:is-valid="value => (isValidParams = value)"
         />
-        <button
-          v-if="space && input.name === 'basic'"
-          class="flex items-center gap-1"
-          @click="handleCopyStrategies"
-        >
-          <i-ho-duplicate />
-          Copy voting strategies
-        </button>
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic'"
+          ref="strategiesFormRef"
+          v-model="input.params.strategies"
+          :space="space"
+          @update:is-valid="value => (isValidParams = value)"
+        />
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />
