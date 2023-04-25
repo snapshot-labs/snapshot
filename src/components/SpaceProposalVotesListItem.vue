@@ -18,6 +18,11 @@ const titles = computed(() =>
 );
 
 const { formatCompactNumber } = useIntl();
+
+const balanceFormatted = computed(() => {
+  const balance = formatCompactNumber(props.vote.balance);
+  return balance.length > 10 ? shorten(balance) : balance;
+});
 </script>
 
 <template>
@@ -45,7 +50,7 @@ const { formatCompactNumber } = useIntl();
         }"
       >
         {{
-          `${formatCompactNumber(vote.balance)} ${shorten(
+          `${balanceFormatted} ${shorten(
             proposal.symbol || space.symbol,
             'symbol'
           )}`
