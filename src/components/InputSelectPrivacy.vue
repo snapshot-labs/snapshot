@@ -2,15 +2,15 @@
 withDefaults(
   defineProps<{
     privacy?: string;
-    information?: string;
+    hint?: string;
     allowAny?: boolean;
-    isDisabled?: boolean;
+    disabled?: boolean;
   }>(),
   {
     privacy: '',
-    information: '',
+    hint: '',
     allowAny: false,
-    isDisabled: false
+    disabled: false
   }
 );
 
@@ -21,13 +21,13 @@ const modalVotingPrivacyOpen = ref(false);
 
 <template>
   <div>
-    <InputSelect
-      :title="$t(`privacy.label`)"
-      :information="information"
+    <TuneButtonSelect
+      :label="$t(`privacy.label`)"
+      :hint="hint"
       :model-value="
         privacy ? $t(`privacy.${privacy}.label`) : $t('privacy.any')
       "
-      :is-disabled="isDisabled"
+      :disabled="disabled"
       @select="modalVotingPrivacyOpen = true"
     />
     <teleport to="#modal">

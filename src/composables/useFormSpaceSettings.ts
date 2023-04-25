@@ -3,6 +3,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import { validateForm } from '@/helpers/validation';
 
 const { isSending } = useClient();
 const { isUploadingImage } = useImageUpload();
@@ -54,6 +55,7 @@ const formSetup = ref(clone(EMPTY_SPACE_FORM));
 const formSettings = ref(clone(EMPTY_SPACE_FORM));
 const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const showAllValidationErrors = ref(false);
+const inputRefs = ref<any[]>([]);
 
 export function useFormSpaceSettings(context: 'setup' | 'settings') {
   const form = computed({
@@ -116,21 +118,16 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     initialFormState.value = clone(formData);
   }
 
-  const { getValidationMessage, validationResult, isValid } = useFormValidation(
-    schemas.space,
-    computed(() => prunedForm.value)
-  );
+  const validationErrors = computed(() => {
+    return validateForm(schemas.space, prunedForm.value);
+  });
 
-  function getValidation(field: string): { message: string; push: boolean } {
-    const message = getValidationMessage(field);
-    return {
-      message: message || '',
-      push: showAllValidationErrors.value
-    };
-  }
+  const isValid = computed(() => {
+    return Object.values(validationErrors.value).length === 0;
+  });
 
   const isReadyToSubmit = computed(
-    () => !isUploadingImage.value && !isSending.value && isValid.value
+    () => !isUploadingImage.value && !isSending.value
   );
 
   function resetForm() {
@@ -150,17 +147,28 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     form.value.symbol = 'VOTE';
   }
 
+  function forceShowError() {
+    inputRefs?.value?.forEach((ref: any) => {
+      if (ref?.forceShowError) ref?.forceShowError();
+    });
+  }
+
+  function addRef(ref: any) {
+    if (ref) inputRefs.value.push(ref);
+  }
+
   return {
     form,
     prunedForm,
-    validationResult,
+    validationErrors,
     isValid,
     isReadyToSubmit,
     showAllValidationErrors,
     hasFormChanged,
     populateForm,
-    getValidation,
     resetForm,
-    setDefaultStrategy
+    setDefaultStrategy,
+    addRef,
+    forceShowError
   };
 }

@@ -114,19 +114,27 @@
 // Tune component styles
 
 .tune-label {
-  @apply text-base;
+  @apply font-sans;
 }
 
 .tune-input {
-  @apply rounded-full text-base;
+  @apply rounded-full;
 }
 
 .tune-textarea {
-  @apply no-scrollbar overflow-x-scroll whitespace-pre rounded-2xl text-base;
+  @apply rounded-3xl px-3;
 }
 
 .tune-listbox-button {
-  @apply rounded-full text-base;
+  @apply rounded-full;
+}
+
+.tune-button-select {
+  @apply rounded-full;
+}
+
+.tune-input-duration {
+  @apply rounded-full;
 }
 
 // Fade transition for Vue's transition and transition-group
@@ -290,7 +298,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply block w-full rounded-full border border-skin-border bg-skin-bg px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
+  @apply block w-full rounded-full border border-skin-border bg-transparent px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
 }
 
 .s-error {
