@@ -15,8 +15,9 @@ const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const isValidJson = ref(true);
+const isValidParams = ref(true);
 const formRef = ref();
+const strategiesFormRef = ref();
 
 const input = ref({
   name: '',
@@ -80,8 +81,11 @@ function select(n: string) {
 }
 
 function handleSubmit() {
-  if (!isValid.value || !isValidJson.value)
-    return formRef?.value?.forceShowError();
+  if (!isValid.value || !isValidParams.value) {
+    strategiesFormRef.value?.forceShowError();
+    formRef?.value?.forceShowError();
+    return;
+  }
 
   emit('add', clone(input.value));
   emit('close');
@@ -154,20 +158,21 @@ watch(open, () => {
           :definition="validationDefinition"
           :error="validationErrors"
         />
+
         <TuneTextareaJson
           v-else
           v-model="input.params"
           :placeholder="$t('votingValidation.paramPlaceholder')"
-          @update:is-valid="value => (isValidJson = value)"
+          @update:is-valid="value => (isValidParams = value)"
         />
-        <button
-          v-if="space && input.name === 'basic'"
-          class="flex items-center gap-1"
-          @click="handleCopyStrategies"
-        >
-          <i-ho-duplicate />
-          Copy voting strategies
-        </button>
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic'"
+          ref="strategiesFormRef"
+          v-model="input.params.strategies"
+          :space="space"
+          @update:is-valid="value => (isValidParams = value)"
+        />
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />
