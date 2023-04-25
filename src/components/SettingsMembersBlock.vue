@@ -239,7 +239,7 @@ const errorMessage = computed(() => {
     </div>
 
     <div class="mt-3">
-      <div class="flex items-end gap-1">
+      <div class="flex gap-1">
         <TuneInput
           :model-value="inputAddMembers"
           :error="errorMessage"
@@ -254,6 +254,7 @@ const errorMessage = computed(() => {
         <BasePopover>
           <template #button>
             <SettingsMembersPopoverButton
+              class="mt-[12px]"
               :selected-role="capitalize(inputAddRole)"
               :is-able-to-change-admins="isAbleToChangeAdmins"
               :is-able-to-change-members="isAbleToChangeMembers"
