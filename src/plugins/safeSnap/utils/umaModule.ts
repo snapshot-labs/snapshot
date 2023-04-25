@@ -158,7 +158,7 @@ export const getModuleDetailsUma = async (
 
   const latestBlock = await provider.getBlock('latest');
   // modify this per chain
-  const maxRange = 5000;
+  const maxRange = network === '1' ? 3000 : 10000;
 
   const assertionEvents = await pageEvents(
     0,
@@ -223,6 +223,7 @@ export const getModuleDetailsUma = async (
       );
     }
   );
+
 
   const executionEvents = await pageEvents(
     0,

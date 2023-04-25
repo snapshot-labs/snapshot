@@ -6,7 +6,7 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context);
 
 const modalSkinsOpen = ref(false);
 </script>
@@ -24,19 +24,19 @@ const modalSkinsOpen = ref(false);
     </BaseMessageBlock>
 
     <ContainerParallelInput>
-      <BaseInput
+      <TuneInput
         v-model="form.domain"
-        :title="$t('settings.domain.label')"
-        :error="getValidation('domain')"
+        :label="$t('settings.domain.label')"
+        :error="validationErrors?.domain"
         :max-length="schemas.space.properties.domain.maxLength"
-        :is-disabled="isViewOnly"
+        :disabled="isViewOnly"
         placeholder="e.g. vote.balancer.fi"
       />
 
-      <InputSelect
-        :title="$t(`settings.skin`)"
+      <TuneButtonSelect
+        :label="$t(`settings.skin`)"
         :model-value="form.skin ? form.skin : $t('defaultSkin')"
-        :is-disabled="isViewOnly"
+        :disabled="isViewOnly"
         @select="modalSkinsOpen = true"
       />
     </ContainerParallelInput>

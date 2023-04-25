@@ -3,7 +3,7 @@ import { VoteValidation, ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   validation: VoteValidation;
-  isDisabled?: boolean;
+  disabled?: boolean;
   space?: ExtendedSpace;
 }>();
 
@@ -13,12 +13,12 @@ const isModalOpen = ref(false);
 </script>
 
 <template>
-  <InputSelect
+  <TuneButtonSelect
     class="w-full"
-    :title="$t(`votingValidation.label`)"
-    :information="$t(`votingValidation.information`)"
+    :label="$t(`votingValidation.label`)"
+    :hint="$t(`votingValidation.information`)"
     :model-value="$t(`votingValidation.${validation.name}.label`)"
-    :is-disabled="isDisabled"
+    :disabled="disabled"
     @select="isModalOpen = true"
   />
 

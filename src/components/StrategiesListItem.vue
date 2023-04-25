@@ -5,7 +5,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 import { Proposal, SpaceStrategy } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   strategy: SpaceStrategy;
   proposal?: Proposal;
   showDelete?: boolean;
@@ -13,6 +13,23 @@ defineProps<{
 }>();
 
 defineEmits(['delete', 'edit']);
+
+const { domain } = useApp();
+const router = useRouter();
+
+function openStrategy() {
+  if (domain) {
+    return window.open(
+      `https://snapshot.org/#/strategy/${props.strategy.name}`,
+      '_blank'
+    );
+  }
+  const strategyRoute = router.resolve({
+    name: 'strategy',
+    params: { name: props.strategy.name }
+  });
+  window.open(strategyRoute.href, '_blank');
+}
 </script>
 
 <template>
@@ -35,6 +52,9 @@ defineEmits(['delete', 'edit']);
             :params="strategy.params"
             :snapshot="proposal?.snapshot"
           />
+          <BaseButtonIcon @click="openStrategy()">
+            <i-ho-information-circle />
+          </BaseButtonIcon>
         </div>
       </div>
     </div>
