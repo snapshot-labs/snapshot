@@ -15,6 +15,7 @@ const DEFAULT_PARAMS: Record<string, any> = {};
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
+const { t } = useI18n();
 
 const isValidParams = ref(true);
 const validations = ref<Validations | null>(null);
@@ -103,6 +104,10 @@ async function getValidations() {
     },
     ...fetchedValidations
   };
+
+  if (validationsWithAny.basic.schema)
+    validationsWithAny.basic.schema.definitions.Validation.properties.minScore.description =
+      t('proposalValidation.basic.minScoreHint');
 
   removeVoteValidationOnly(validationsWithAny);
 
