@@ -33,7 +33,8 @@ const FLAGGED_LINKS = [
   'bit.ly/stonetopaznft',
   'zealy.io/c/layerzer0/questboard',
   'zealy.io/c/zksynk/questboard',
-  'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf'
+  'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf',
+  'clc.to'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
