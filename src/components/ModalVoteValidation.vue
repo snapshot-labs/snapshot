@@ -117,11 +117,6 @@ async function getValidations() {
   isValidationsLoaded.value = true;
 }
 
-function handleCopyStrategies() {
-  updateIndex.value++;
-  input.value.params.strategies = props.space?.strategies;
-}
-
 watch(open, () => {
   getValidations();
   input.value.name = '';
