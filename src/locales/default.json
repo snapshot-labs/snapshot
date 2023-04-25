@@ -298,6 +298,7 @@
     "header": "Settings",
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
     "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone and you will not be able to create a new space with the same ENS domain name.",
+    "validationErrorsMessage": "Please fix the following fields before saving:",
     "confirmInputDeleteSpace": "Enter {space} to continue:",
     "noticeSavedTitle": "Settings saved",
     "noticeSavedText": "New settings only affect future proposals, not existing ones.",

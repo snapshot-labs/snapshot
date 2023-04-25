@@ -6,8 +6,9 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form, validationErrors, addRef } = useFormSpaceSettings(props.context);
 const { env } = useApp();
+const { categories } = useCategories();
 
 const avatarNotReactive = ref(form.value.avatar);
 </script>
@@ -54,54 +55,65 @@ const avatarNotReactive = ref(form.value.avatar);
             </div>
           </div>
 
-          <BaseInput
+          <TuneInput
+            :ref="addRef"
             v-model="form.name"
-            :title="$t(`settings.name.label`)"
-            :error="getValidation('name')"
+            :label="$t(`settings.name.label`)"
+            :error="validationErrors?.name"
             :max-length="schemas.space.properties.name.maxLength"
             :placeholder="$t('settings.name.placeholder')"
-            :is-disabled="isViewOnly"
-            focus-on-mount
+            :disabled="isViewOnly"
+            autofocus
           />
 
-          <LabelInput> {{ $t(`settings.about.label`) }} </LabelInput>
-          <TextareaAutosize
+          <TuneTextarea
+            :ref="addRef"
             v-model="form.about"
-            class="s-input !rounded-3xl"
+            :label="$t(`settings.about.label`)"
             :max-length="schemas.space.properties.about.maxLength"
             :placeholder="$t('settings.about.placeholder')"
-            :is-disabled="isViewOnly"
+            :disabled="isViewOnly"
           />
 
-          <ListboxMultipleCategories
-            :categories="form.categories"
-            :is-disabled="isViewOnly"
-            @update-categories="value => (form.categories = value)"
+          <TuneListboxMultiple
+            :ref="addRef"
+            v-model="form.categories"
+            :placeholder="$t('settings.categories.select')"
+            :label="$t(`settings.categories.label`)"
+            :items="
+              categories.map(category => ({
+                value: category,
+                name: $t(`explore.categories.${category}`)
+              }))
+            "
+            :limit="2"
+            :disabled="isViewOnly"
           />
 
-          <InputUrl
+          <TuneInputUrl
+            :ref="addRef"
             v-model="form.website"
-            :title="$t('settings.website')"
-            :error="getValidation('website')"
+            :label="$t('settings.website')"
+            :error="validationErrors?.website"
             :max-length="schemas.space.properties.website.maxLength"
-            :is-disabled="isViewOnly"
+            :disabled="isViewOnly"
             placeholder="e.g. https://www.example.com"
           />
 
-          <InputUrl
+          <TuneInputUrl
+            :ref="addRef"
             v-model="form.terms"
-            :title="$t(`settings.terms.label`)"
-            :information="$t('settings.terms.information')"
-            :error="getValidation('terms')"
-            :is-disabled="isViewOnly"
+            :label="$t(`settings.terms.label`)"
+            :hint="$t('settings.terms.information')"
+            :error="validationErrors?.terms"
+            :disabled="isViewOnly"
             placeholder="e.g. https://example.com/terms"
           />
 
-          <InputSwitch
+          <TuneSwitch
             v-model="form.private"
-            :is-disabled="isViewOnly"
-            class="!mt-3"
-            :text-right="$t('settings.hideSpace')"
+            :disabled="isViewOnly"
+            :hint="$t('settings.hideSpace')"
           />
         </div>
       </div>
