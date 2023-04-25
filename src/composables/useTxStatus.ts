@@ -11,6 +11,10 @@ const pendingTransactions = useStorage(
 export function useTxStatus() {
   const { web3 } = useWeb3();
 
+  const pendingTransactionsWithHash = computed(() => {
+    return pendingTransactions.value.filter(tx => tx.hash);
+  });
+
   const createPendingTransaction = () => {
     const createdAt = Date.now();
     const id = createdAt.toString();
@@ -63,6 +67,7 @@ export function useTxStatus() {
 
   return {
     pendingTransactions,
+    pendingTransactionsWithHash,
     createPendingTransaction,
     updatePendingTransaction,
     removePendingTransaction,

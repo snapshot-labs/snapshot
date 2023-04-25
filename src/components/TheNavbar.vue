@@ -1,14 +1,17 @@
 <script setup lang="ts">
-import { explorerUrl, shorten } from '@/helpers/utils';
-
-const { pendingTransactions } = useTxStatus();
+const { pendingTransactions, pendingTransactionsWithHash } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
-const showDemoBanner = ref(true);
 
-const pendingTransactionsWithLinks = computed(() => {
-  return pendingTransactions.value.filter(tx => tx.hash);
-});
+const showDemoBanner = ref(true);
+const showPendingTransactionsModal = ref(false);
+
+watch(
+  () => pendingTransactionsWithHash.value.length === 0,
+  () => {
+    showPendingTransactionsModal.value = false;
+  }
+);
 </script>
 
 <template>
@@ -55,19 +58,23 @@ const pendingTransactionsWithLinks = computed(() => {
   </div>
   <div
     v-if="pendingTransactions.length > 0"
-    class="flex justify-center bg-primary py-2 text-center text-white"
+    class="relative flex flex-row items-center justify-center bg-primary py-4 text-center text-white"
   >
     <LoadingSpinner fill-white class="mr-2" />
+    {{ $t('setup.pendingTransactions') }}:
     {{ pendingTransactions.length }}
-    {{ $t('setup.pendingTransactions') }}
-    <BaseLink
-      v-for="tx in pendingTransactionsWithLinks"
-      :key="tx.id"
-      :link="explorerUrl(tx.network, tx.hash as string, 'tx')"
-      class="ml-2 !text-skin-text hover:!text-skin-link"
-      @click.stop
+    <BaseButton
+      v-if="pendingTransactionsWithHash.length > 0"
+      class="absolute right-4"
+      @click="showPendingTransactionsModal = true"
     >
-      {{ shorten(tx.hash as string) }}
-    </BaseLink>
+      {{ $t('proposals.showMore') }}
+    </BaseButton>
   </div>
+  <Teleport to="#modal">
+    <ModalPendingTransactions
+      :open="showPendingTransactionsModal"
+      @close="showPendingTransactionsModal = false"
+    />
+  </Teleport>
 </template>
