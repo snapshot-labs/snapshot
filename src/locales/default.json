@@ -132,6 +132,7 @@
   "playground": "Playground",
   "strategyDetails": "Strategy details",
   "strategyParams": "Strategy params",
+  "useCustomStrategies": "Use custom strategies",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
@@ -656,7 +657,8 @@
     "basic": {
       "label": "Basic",
       "description": "Use a minimum score along with any strategy to determine if a user can create a proposal.",
-      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal."
+      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal.",
+      "customStrategiesHint": "Toggle on to enable custom strategies for the minimum score. If off, the space's voting strategies apply."
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",

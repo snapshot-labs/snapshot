@@ -21,6 +21,7 @@ const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
 const formRef = ref();
 const strategiesFormRef = ref();
+const showStrategies = ref(false);
 
 const input = ref({
   name: '',
@@ -58,18 +59,8 @@ function handleSelect(n: string) {
 
   if (n === 'basic' && !input.value.params?.strategies?.length) {
     input.value.params = {
-      minScore: input.value.params.minScore || props.filterMinScore || 1,
-      strategies: [
-        {
-          name: 'ticket',
-          network: '1',
-          params: {
-            symbol: 'DAI'
-          }
-        }
-      ]
+      minScore: input.value.params.minScore || props.filterMinScore || 1
     };
-
     return;
   }
 
@@ -131,6 +122,12 @@ watch(open, () => {
     };
   }
 });
+
+watch(showStrategies, () => {
+  if (!showStrategies.value) {
+    delete input.value.params.strategies;
+  }
+});
 </script>
 
 <template>
@@ -162,8 +159,15 @@ watch(open, () => {
           @update:is-valid="value => (isValidParams = value)"
         />
 
-        <FormArrayStrategies
+        <TuneSwitch
           v-if="input.name === 'basic'"
+          v-model="showStrategies"
+          :label="$t('useCustomStrategies')"
+          :hint="$t('proposalValidation.basic.customStrategiesHint')"
+        />
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic' && showStrategies"
           ref="strategiesFormRef"
           v-model="input.params.strategies"
           :space="space"

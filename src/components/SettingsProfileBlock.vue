@@ -113,7 +113,7 @@ const avatarNotReactive = ref(form.value.avatar);
           <TuneSwitch
             v-model="form.private"
             :disabled="isViewOnly"
-            :hint="$t('settings.hideSpace')"
+            :label="$t('settings.hideSpace')"
           />
         </div>
       </div>

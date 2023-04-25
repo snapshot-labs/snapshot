@@ -3,7 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
-  modelValue: { name: string; network: string; params: any }[];
+  modelValue?: { name: string; network: string; params: any }[];
   space?: ExtendedSpace;
 }>();
 
@@ -65,13 +65,13 @@ watch(
 onMounted(() => {
   if (!strategies.value.length) getStrategies();
   if (!input.value.length)
-    input.value.push({ name: 'erc20-balance-of', network: '1', params: {} });
+    input.value.push({ name: 'ticket', network: '1', params: {} });
 });
 </script>
 
 <template>
   <div>
-    <div v-if="!strategies.length" class="flex justify-center">
+    <div v-if="!strategies.length" class="mt-3 flex justify-center">
       <LoadingSpinner />
     </div>
     <div v-else class="mt-3">
