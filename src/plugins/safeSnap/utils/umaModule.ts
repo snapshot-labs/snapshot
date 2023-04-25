@@ -142,9 +142,7 @@ export const getModuleDetailsUma = async (
     };
   }
   // Check for active proposals
-  const assertionId = await moduleContract.assertionIds(
-    proposalHash
-  );
+  const assertionId = await moduleContract.assertionIds(proposalHash);
 
   const activeProposal =
     assertionId !==
@@ -157,9 +155,14 @@ export const getModuleDetailsUma = async (
     provider
   );
 
+  const latestBlock = await provider.getBlock('latest');
+  let fromBlock = 0;
+  if (network === '1') fromBlock = latestBlock.number - 3000;
+
   // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
   const assertionEvents = await oracleContract.queryFilter(
-    oracleContract.filters.AssertionMade(assertionId)
+    oracleContract.filters.AssertionMade(assertionId),
+    fromBlock
   );
 
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
@@ -176,8 +179,7 @@ export const getModuleDetailsUma = async (
         .getAssertion(event.args?.assertionId)
         .then(result => {
           const isExpired =
-            Math.floor(Date.now() / 1000) >=
-            Number(result.expirationTime);
+            Math.floor(Date.now() / 1000) >= Number(result.expirationTime);
 
           return {
             expirationTimestamp: result.expirationTime,
@@ -192,7 +194,8 @@ export const getModuleDetailsUma = async (
 
   // Check if this specific proposal has already been executed.
   const transactionsProposedEvents = await moduleContract.queryFilter(
-    moduleContract.filters.TransactionsProposed()
+    moduleContract.filters.TransactionsProposed(),
+    fromBlock
   );
 
   const thisProposalTransactionsProposedEvents =
@@ -201,7 +204,8 @@ export const getModuleDetailsUma = async (
     );
 
   const executionEvents = await moduleContract.queryFilter(
-    moduleContract.filters.ProposalExecuted(proposalHash)
+    moduleContract.filters.ProposalExecuted(proposalHash),
+    fromBlock
   );
 
   const assertion = thisProposalTransactionsProposedEvents.map(
