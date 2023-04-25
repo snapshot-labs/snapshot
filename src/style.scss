@@ -298,7 +298,7 @@ input[type='number'] {
 // Shot UI kit
 
 .s-input {
-  @apply block w-full rounded-full border border-skin-border bg-transparent px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
+  @apply block w-full rounded-full border border-skin-border bg-skin-bg px-3 py-2 text-skin-link outline-none focus-within:border-skin-text;
 }
 
 .s-error {

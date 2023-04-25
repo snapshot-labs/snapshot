@@ -54,7 +54,6 @@ const EMPTY_SPACE_FORM = {
 const formSetup = ref(clone(EMPTY_SPACE_FORM));
 const formSettings = ref(clone(EMPTY_SPACE_FORM));
 const initialFormState = ref(clone(EMPTY_SPACE_FORM));
-const showAllValidationErrors = ref(false);
 const inputRefs = ref<any[]>([]);
 
 export function useFormSpaceSettings(context: 'setup' | 'settings') {
@@ -132,7 +131,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   function resetForm() {
     form.value = clone(initialFormState.value);
-    showAllValidationErrors.value = false;
   }
 
   function setDefaultStrategy() {
@@ -163,7 +161,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     validationErrors,
     isValid,
     isReadyToSubmit,
-    showAllValidationErrors,
     hasFormChanged,
     populateForm,
     resetForm,
