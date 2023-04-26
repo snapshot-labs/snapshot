@@ -103,6 +103,7 @@ watch(open, () => {
       v-if="!strategy.name && !input.name"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
+      focus-on-mount
       modal
     />
     <div v-if="input.name" class="m-4">
