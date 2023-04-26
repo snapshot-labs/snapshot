@@ -45,31 +45,29 @@ export function useEns() {
   async function fetchDomainData(domain) {
     const hash = domain.name.match(/\[(.*?)\]/)?.[1];
 
-    if (hash) {
-      const response = await ensApolloQuery({
-        query: ENS_DOMAIN_BY_HASH_QUERY,
-        variables: {
-          id: `0x${hash}`
-        }
-      });
+    if (!hash) return domain;
 
-      if (response.registration?.domain?.labelName) {
-        return {
-          ...domain,
-          name: domain.name.replace(
-            `[${hash}]`,
-            response.registration.domain.labelName
-          )
-        };
+    const response = await ensApolloQuery({
+      query: ENS_DOMAIN_BY_HASH_QUERY,
+      variables: {
+        id: `0x${hash}`
       }
+    });
 
+    if (response.registration?.domain?.labelName) {
       return {
         ...domain,
-        isInvalid: true
+        name: domain.name.replace(
+          `[${hash}]`,
+          response.registration.domain.labelName
+        )
       };
     }
 
-    return domain;
+    return {
+      ...domain,
+      isInvalid: true
+    };
   }
 
   // Check if a domain is valid based on the TLD
