@@ -92,7 +92,7 @@
     "happy-dom": "^9.9.2",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.1",
-    "postcss": "^8.4.16",
+    "postcss": "^8.4.23",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "0.2.5",
     "rollup-plugin-visualizer": "^5.9.0",
