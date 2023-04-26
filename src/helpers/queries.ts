@@ -272,6 +272,9 @@ export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
       domains {
         name
       }
+      wrappedDomains {
+        name
+      }
     }
   }
 `;
