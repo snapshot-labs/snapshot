@@ -58,18 +58,21 @@ watch(
   </div>
   <div
     v-if="pendingTransactions.length > 0"
-    class="relative flex flex-row items-center justify-center bg-primary py-4 text-center text-white"
+    class="flex flex-row items-center justify-center gap-x-3 bg-primary py-2 text-center text-white"
+    :class="{
+      'cursor-pointer': pendingTransactions.length > 0
+    }"
+    @click="
+      pendingTransactionsWithHash.length
+        ? (showPendingTransactionsModal = true)
+        : null
+    "
   >
-    <LoadingSpinner fill-white class="mr-2" />
-    {{ $t('setup.pendingTransactions') }}:
-    {{ pendingTransactions.length }}
-    <BaseButton
-      v-if="pendingTransactionsWithHash.length > 0"
-      class="absolute right-4"
-      @click="showPendingTransactionsModal = true"
-    >
-      {{ $t('proposals.showMore') }}
-    </BaseButton>
+    <LoadingSpinner fill-white class="mb-1" />
+    <span>
+      {{ $t('setup.pendingTransactions') }}:
+      {{ pendingTransactions.length }}
+    </span>
   </div>
   <Teleport to="#modal">
     <ModalPendingTransactions
