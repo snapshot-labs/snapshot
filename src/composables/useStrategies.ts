@@ -78,6 +78,7 @@ export function useStrategies() {
     strategies,
     isLoadingStrategies,
     extendedStrategy,
-    strategyDefinition
+    strategyDefinition,
+    loadingExtendedStrategy
   };
 }
