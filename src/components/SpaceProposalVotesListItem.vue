@@ -21,7 +21,7 @@ const { formatCompactNumber } = useIntl();
 
 const balanceFormatted = computed(() => {
   const balance = formatCompactNumber(props.vote.balance);
-  return balance.length > 10 ? shorten(balance) : balance;
+  return balance.length >= 8 ? shorten(balance) : balance;
 });
 </script>
 
