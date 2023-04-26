@@ -58,10 +58,13 @@ const isValid = computed(() => {
 function handleSelect(n: string) {
   input.value.name = n;
 
-  if (n === 'basic' && !input.value.params?.strategies?.length) {
-    input.value.params = {
-      minScore: input.value.params.minScore || props.filterMinScore || 1
-    };
+  if (n === 'basic') {
+    input.value.params.minScore =
+      input.value.params.minScore || props.filterMinScore || 1;
+
+    if (input.value.params.strategies) {
+      showStrategies.value = true;
+    }
     return;
   }
 
