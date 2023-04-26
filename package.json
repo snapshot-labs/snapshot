@@ -37,7 +37,7 @@
     "@ethersproject/strings": "^5.7.0",
     "@ethersproject/units": "^5.7.0",
     "@ethersproject/wallet": "^5.7.0",
-    "@headlessui-float/vue": "^0.11.0",
+    "@headlessui-float/vue": "^0.11.1",
     "@headlessui/vue": "^1.7.13",
     "@pusher/push-notifications-web": "^1.1.0",
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
