@@ -39,7 +39,7 @@ function handleClickSelectValidation() {
       <TuneSwitch
         v-model="form.filters.onlyMembers"
         :disabled="isViewOnly"
-        :hint="$t('settings.allowOnlyAuthors')"
+        :label="$t('settings.allowOnlyAuthors')"
       />
     </div>
     <teleport to="#modal">
