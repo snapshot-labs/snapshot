@@ -35,7 +35,7 @@ const FLAGGED_LINKS = [
   'zealy.io/c/zksynk/questboard',
   'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf',
   'clc.to',
-  'clc.am/questsLayerZeroLabs',
+  'clc.am',
   'zealy.io/c/polygonzkevm/questboard',
   'app.questn.com/quest/764088010009522347',
   'app.questn.com/quest/762646918666248236'
