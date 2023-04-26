@@ -134,6 +134,7 @@ watch(open, () => {
 watch(showStrategies, () => {
   if (!showStrategies.value) {
     delete input.value.params.strategies;
+    isValidParams.value = true;
   }
 });
 </script>
