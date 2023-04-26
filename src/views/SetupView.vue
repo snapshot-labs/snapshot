@@ -24,8 +24,7 @@ const route = useRoute();
 const router = useRouter();
 const { web3Account } = useWeb3();
 const { notify } = useFlashNotification();
-const { prunedForm, isValid, showAllValidationErrors, resetForm } =
-  useFormSpaceSettings('setup');
+const { prunedForm, isValid, resetForm } = useFormSpaceSettings('setup');
 const { t } = useI18n();
 const { send } = useClient();
 const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
@@ -46,7 +45,6 @@ async function checkIfSpaceExists() {
 
 async function handleSubmit() {
   if (!isValid.value) {
-    showAllValidationErrors.value = true;
     return;
   }
   creatingSpace.value = true;

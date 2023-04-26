@@ -6,11 +6,10 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 const props = defineProps<{
   context: 'setup' | 'settings';
   title?: string;
-  hideError?: boolean;
   isViewOnly?: boolean;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context);
 
 const strategies = computed(() => form.value.strategies);
 
@@ -59,18 +58,18 @@ function handleSubmitStrategy(strategy) {
     <ContainerParallelInput class="mb-4 w-full">
       <ComboboxNetwork
         :network="form.network"
-        :information="$t('settings.network.information')"
-        :is-disabled="isViewOnly"
+        :hint="$t('settings.network.information')"
+        :disabled="isViewOnly"
         @select="value => (form.network = value)"
       />
-      <BaseInput
+      <TuneInput
         v-model="form.symbol"
-        :title="$t(`settings.symbol.label`)"
-        :information="$t(`settings.symbol.information`)"
+        :label="$t(`settings.symbol.label`)"
+        :hint="$t(`settings.symbol.information`)"
         placeholder="e.g. BAL"
-        :error="getValidation('symbol')"
+        :error="validationErrors?.symbol"
         :max-length="schemas.space.properties.symbol.maxLength"
-        :is-disabled="isViewOnly"
+        :disabled="isViewOnly"
       />
     </ContainerParallelInput>
 
@@ -112,8 +111,8 @@ function handleSubmitStrategy(strategy) {
     </div>
 
     <StrategiesBlockWarning
-      v-if="!hideError"
-      :error="getValidation('strategies')"
+      v-if="context === 'settings'"
+      :error="validationErrors?.strategies"
     />
   </BaseBlock>
 

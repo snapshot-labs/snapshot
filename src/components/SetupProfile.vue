@@ -1,10 +1,15 @@
 <script setup lang="ts">
 const emit = defineEmits(['next', 'back']);
 
-const { form, showAllValidationErrors } = useFormSpaceSettings('setup');
+const { validationErrors, forceShowError } = useFormSpaceSettings('setup');
 
 function nextStep() {
-  if (!form.value.name) return (showAllValidationErrors.value = true);
+  if (
+    ['name', 'website', 'terms', 'twitter', 'github', 'coingecko'].some(item =>
+      Object.keys(validationErrors.value).includes(item)
+    )
+  )
+    return forceShowError();
   emit('next');
 }
 </script>
