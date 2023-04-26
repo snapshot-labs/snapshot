@@ -28,7 +28,7 @@ const threeDotItems = computed(() => {
 
 function handleSelect(e) {
   if (!props.space) return;
-  if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
+  if (e === 'report') window.open('https://tally.so/r/mKzXo7', '_blank');
 }
 
 watchEffect(() => {
