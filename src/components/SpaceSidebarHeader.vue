@@ -26,6 +26,11 @@ const threeDotItems = computed(() => {
   return items;
 });
 
+function handleSelect(e) {
+  if (!props.space) return;
+  if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
+}
+
 watchEffect(() => {
   if (subscriptions.value === undefined) {
     loadSubscriptions();
@@ -40,23 +45,25 @@ watchEffect(() => {
   <div
     class="relative block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0"
   >
-    <BaseMenu class="md:ml-2" :items="threeDotItems" @select="handleSelect">
-      <template #button>
-        <div>
-          <BaseButtonIcon :loading="isSending" class="absolute right-2 top-0">
-            <i-ho-dots-horizontal />
-          </BaseButtonIcon>
-        </div>
-      </template>
-      <template #item="{ item }">
-        <div class="flex items-center gap-2">
-          <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
-          <i-ho-flag v-if="item.action === 'report'" />
-          <i-ho-trash v-if="item.action === 'delete'" />
-          {{ item.text }}
-        </div>
-      </template>
-    </BaseMenu>
+    <div class="absolute -top-2 right-2">
+      <BaseMenu class="md:ml-2" :items="threeDotItems" @select="handleSelect">
+        <template #button>
+          <div>
+            <BaseButtonIcon :loading="isSending">
+              <i-ho-dots-horizontal />
+            </BaseButtonIcon>
+          </div>
+        </template>
+        <template #item="{ item }">
+          <div class="flex items-center gap-2">
+            <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
+            <i-ho-flag v-if="item.action === 'report'" />
+            <i-ho-trash v-if="item.action === 'delete'" />
+            {{ item.text }}
+          </div>
+        </template>
+      </BaseMenu>
+    </div>
     <div class="flex lg:block">
       <AvatarSpace
         :space="space"
