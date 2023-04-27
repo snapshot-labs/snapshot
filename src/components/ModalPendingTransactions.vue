@@ -15,7 +15,7 @@ const { pendingTransactionsWithHash } = useTxStatus();
     <template #header>
       <h3>{{ $t('setup.pendingTransactions') }}</h3>
     </template>
-    <div class="flex w-full flex-col p-4">
+    <div class="flex w-full flex-col space-y-2 p-4">
       <BaseLink
         v-for="tx in pendingTransactionsWithHash"
         :key="tx.id"
