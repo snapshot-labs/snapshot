@@ -20,8 +20,16 @@ const modalVotesmOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
-const { downloadVotes, isDownloadingVotes, downloadProgress } =
-  useReportDownload();
+const modalVotesDownloadOpen = ref(false);
+const { downloadVotes, isDownloadingVotes, errorCode } = useReportDownload();
+
+async function downloadReport(proposalId: string) {
+  const response = await downloadVotes(proposalId);
+
+  if (!response) {
+    modalVotesDownloadOpen.value = true;
+  }
+}
 
 onMounted(async () => {
   await loadVotes();
@@ -38,19 +46,28 @@ onMounted(async () => {
   >
     <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon
-        v-if="!isDownloadingVotes"
-        v-tippy="{ content: $t('proposal.downloadCsvVotes') }"
-        @click="downloadVotes(proposal.id, proposal.space.id)"
+        v-tippy="{ content: $t('proposal.downloadCsvVotes.title') }"
+        :loading="isDownloadingVotes"
+        @click="downloadReport(proposal.id)"
       >
         <i-ho-download />
       </BaseButtonIcon>
-      <div v-else class="flex">
-        <LoadingSpinner v-if="downloadProgress < 1" :small="true" />
-        <template v-else>
-          {{ $t('proposal.preparingCsvVotes') }}…
-          <BaseProgressRadial class="my-1 ml-2" :value="downloadProgress" />
-        </template>
-      </div>
+      <ModalMessage
+        :open="modalVotesDownloadOpen"
+        :title="$t('proposal.downloadCsvVotes.postDownloadModal.title')"
+        :message="
+          $t(
+            `proposal.downloadCsvVotes.postDownloadModal.message.${
+              errorCode?.message === 'PENDING_GENERATION'
+                ? 'pendingGeneration'
+                : 'unknownError'
+            }`
+          )
+        "
+        :level="'warning'"
+        @close="modalVotesDownloadOpen = false"
+      >
+      </ModalMessage>
     </template>
     <SpaceProposalVotesListItem
       v-for="(vote, i) in sortedVotes"

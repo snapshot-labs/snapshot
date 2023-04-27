@@ -255,8 +255,16 @@
         "1": "Les votes peuvent être modifiés tant que la proposition est active"
       }
     },
-    "downloadCsvVotes": "Télécharger en tant que CSV",
-    "preparingCsvVotes": "Préparation du fichier"
+    "downloadCsvVotes": {
+      "title": "Télécharger en tant que CSV",
+      "postDownloadModal": {
+        "title": "Téléchargement du rapport",
+        "message": {
+          "pendingGeneration": "Le rapport est en cours de génération… Veuillez réessayer dans quelques minutes.",
+          "unknownError": "Échec de la connexion au serveur de téléchargement. Veuillez réessayer plus tard."
+        }
+      }
+    }
   },
   "proposals": {
     "header": "Propositions",

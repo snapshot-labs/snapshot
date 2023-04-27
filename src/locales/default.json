@@ -258,8 +258,16 @@
         "1": "Votes can be changed while the proposal is active"
       }
     },
-    "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing file"
+    "downloadCsvVotes": {
+      "title": "Download as CSV",
+      "postDownloadModal": {
+        "title": "Download votes report",
+        "message": {
+          "pendingGeneration": "The report is generating… Please try again in a few minutes.",
+          "unknownError": "Unable to contact the download server. Please try again later."
+        }
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",
