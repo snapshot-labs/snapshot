@@ -15,7 +15,7 @@ defineProps<{
     ]"
   >
     <div class="relative inset-y-0 flex items-center">
-      <div :class="['w-full', { 'pr-[44px]': selected }]">
+      <div :class="['w-full text-left', { 'pr-[44px]': selected }]">
         <div class="mb-2 flex items-center gap-2">
           <h3
             :class="['mb-0 truncate', { 'mt-0': description }]"

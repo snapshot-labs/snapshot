@@ -1,9 +1,6 @@
 name: Update Snapshot packages
 
-on:
- workflow_dispatch:
- schedule:
-   - cron: 0 10 * * 1
+on: workflow_dispatch
 
 jobs:
   update-dep:

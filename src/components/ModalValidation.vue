@@ -15,12 +15,14 @@ const DEFAULT_PARAMS: Record<string, any> = {};
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
+const { t } = useI18n();
 
-const isValidJson = ref(true);
+const isValidParams = ref(true);
 const validations = ref<Validations | null>(null);
 const isValidationsLoaded = ref(false);
 const formRef = ref();
-const updateIndex = ref(0);
+const strategiesFormRef = ref();
+const showStrategies = ref(false);
 
 const input = ref({
   name: '',
@@ -34,6 +36,7 @@ type Validations = Record<
     example?: Record<string, any>[];
     schema?: Record<string, any>;
     about?: string;
+    voteValidationOnly?: boolean;
   }
 >;
 
@@ -55,20 +58,13 @@ const isValid = computed(() => {
 function handleSelect(n: string) {
   input.value.name = n;
 
-  if (n === 'basic' && !input.value.params?.strategies?.length) {
-    input.value.params = {
-      minScore: input.value.params.minScore || props.filterMinScore || 1,
-      strategies: [
-        {
-          name: 'ticket',
-          network: '1',
-          params: {
-            symbol: 'DAI'
-          }
-        }
-      ]
-    };
+  if (n === 'basic') {
+    input.value.params.minScore =
+      input.value.params.minScore || props.filterMinScore || 1;
 
+    if (input.value.params.strategies) {
+      showStrategies.value = true;
+    }
     return;
   }
 
@@ -82,11 +78,22 @@ function handleSelect(n: string) {
 }
 
 function handleSubmit() {
-  if (!isValid.value || !isValidJson.value)
-    return formRef?.value?.forceShowError();
+  if (!isValid.value || !isValidParams.value) {
+    strategiesFormRef.value?.forceShowError();
+    formRef?.value?.forceShowError();
+    return;
+  }
 
   emit('add', clone(input.value));
   emit('close');
+}
+
+function removeVoteValidationOnly(validations: Validations) {
+  Object.keys(validations).forEach(key => {
+    if (validations[key]?.voteValidationOnly) {
+      delete validations[key];
+    }
+  });
 }
 
 async function getValidations() {
@@ -100,13 +107,15 @@ async function getValidations() {
     },
     ...fetchedValidations
   };
+
+  if (validationsWithAny.basic.schema)
+    validationsWithAny.basic.schema.definitions.Validation.properties.minScore.description =
+      t('proposalValidation.basic.minScoreHint');
+
+  removeVoteValidationOnly(validationsWithAny);
+
   validations.value = validationsWithAny || null;
   isValidationsLoaded.value = true;
-}
-
-function handleCopyStrategies() {
-  updateIndex.value++;
-  input.value.params.strategies = props.space?.strategies;
 }
 
 watch(open, () => {
@@ -119,6 +128,13 @@ watch(open, () => {
       name: '',
       params: clone(DEFAULT_PARAMS)
     };
+  }
+});
+
+watch(showStrategies, () => {
+  if (!showStrategies.value) {
+    delete input.value.params.strategies;
+    isValidParams.value = true;
   }
 });
 </script>
@@ -136,29 +152,36 @@ watch(open, () => {
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="mx-4 text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link md:mx-0">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
-          :key="updateIndex"
           v-model="input.params"
           :definition="validationDefinition"
           :error="validationErrors"
         />
+
         <TuneTextareaJson
           v-else
           v-model="input.params"
           :placeholder="$t('proposalValidation.paramPlaceholder')"
-          @update:is-valid="value => (isValidJson = value)"
+          @update:is-valid="value => (isValidParams = value)"
         />
-        <button
-          v-if="space"
-          class="flex items-center gap-1"
-          @click="handleCopyStrategies"
-        >
-          <i-ho-duplicate />
-          Copy voting strategies
-        </button>
+
+        <TuneSwitch
+          v-if="input.name === 'basic'"
+          v-model="showStrategies"
+          :label="$t('useCustomStrategies')"
+          :hint="$t('proposalValidation.basic.customStrategiesHint')"
+        />
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic' && showStrategies"
+          ref="strategiesFormRef"
+          v-model="input.params.strategies"
+          :space="space"
+          @update:is-valid="value => (isValidParams = value)"
+        />
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />

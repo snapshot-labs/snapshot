@@ -13,7 +13,7 @@ const FLAGGED_LINKS = [
   'bit.ly/3obAcG6',
   'bit.ly/3GKKLpP',
   'shortest.link/oiWG',
-  'clm.arbitrum-foundation.at',
+  'arbitrum-foundation.at',
   'shortest.link/oFpq',
   'shortest.link/nlt0',
   'zora.co/collect/0xac4a38e31e811a4c771c37240df356de61fc425f',
@@ -21,11 +21,30 @@ const FLAGGED_LINKS = [
   'bit.ly/Layer0NFT',
   'shortest.link/nTdi',
   'shortest.link/nTfi',
-  'bit.ly/PolygonzkEVMPioneer'
+  'bit.ly/PolygonzkEVMPioneer',
+  'shortest.link/nZnh',
+  'shortest.link/nZn1',
+  'shortest.link/o4ZO',
+  'shortest.link/pdKt',
+  'bit.ly/zkEVMPioneer',
+  'webclaims.cloud',
+  'bit.ly/zkSyncMintNFT',
+  'bit.ly/collectionsradiantairdrop',
+  'bit.ly/stonetopaznft',
+  'zealy.io/c/layerzer0/questboard',
+  'zealy.io/c/zksynk/questboard',
+  'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf',
+  'clc.to',
+  'clc.am',
+  'zealy.io/c/polygonzkevm/questboard',
+  'app.questn.com/quest/764088010009522347',
+  'app.questn.com/quest/762646918666248236'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
-const FLAGGED_PROPOSAL_IDS = {};
+const FLAGGED_PROPOSAL_IDS = {
+  '0x39720d6712fa3fcdf5919600d8c93e4743286dcdd6681042bd586d2be87d3916': 1
+};
 
 interface ProposalsStore {
   space: {
@@ -89,6 +108,7 @@ export function useProposals() {
   }
 
   function mapFlaggedProposals(proposals: Proposal[]) {
+    if (!proposals?.length) return [];
     return proposals.map(proposal => {
       return {
         ...proposal,
