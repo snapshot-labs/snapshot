@@ -33,9 +33,9 @@ export function useShortUrls() {
     if (shortUrls.value.length === 0) return false;
     return shortUrls.value.some(
       shortUrl =>
-        text.includes(`http://${shortUrl}`) ||
-        text.includes(`https://${shortUrl}`) ||
-        text.includes(`.${shortUrl}`)
+        text.includes(`http://${shortUrl}/`) ||
+        text.includes(`https://${shortUrl}/`) ||
+        text.includes(`.${shortUrl}/`)
     );
   }
 
