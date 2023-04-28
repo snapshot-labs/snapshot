@@ -89,7 +89,7 @@
     "happy-dom": "^9.9.2",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
-    "patch-package": "^6.5.1",
+    "patch-package": "^7.0.0",
     "postcss": "^8.4.23",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.8.8",
