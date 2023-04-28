@@ -1,8 +1,17 @@
 <script setup lang="ts">
-const { pendingCount } = useTxStatus();
+const { pendingTransactions, pendingTransactionsWithHash } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
+
 const showDemoBanner = ref(true);
+const showPendingTransactionsModal = ref(false);
+
+watch(
+  () => pendingTransactionsWithHash.value.length === 0,
+  () => {
+    showPendingTransactionsModal.value = false;
+  }
+);
 </script>
 
 <template>
@@ -48,10 +57,27 @@ const showDemoBanner = ref(true);
     </BaseContainer>
   </div>
   <div
-    v-if="pendingCount > 0"
-    class="flex justify-center bg-primary py-2 text-center text-white"
+    v-if="pendingTransactions.length > 0"
+    class="flex flex-row items-center justify-center gap-x-3 bg-primary py-2 text-center text-white"
+    :class="{
+      'cursor-pointer': pendingTransactions.length > 0
+    }"
+    @click="
+      pendingTransactionsWithHash.length
+        ? (showPendingTransactionsModal = true)
+        : null
+    "
   >
-    <LoadingSpinner fill-white class="mr-2" />
-    {{ $tc('delegate.pendingTransaction', pendingCount) }}
+    <LoadingSpinner fill-white class="mb-1" />
+    <span>
+      {{ $t('setup.pendingTransactions') }}:
+      {{ pendingTransactions.length }}
+    </span>
   </div>
+  <Teleport to="#modal">
+    <ModalPendingTransactions
+      :open="showPendingTransactionsModal"
+      @close="showPendingTransactionsModal = false"
+    />
+  </Teleport>
 </template>

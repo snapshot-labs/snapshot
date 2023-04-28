@@ -493,6 +493,7 @@
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pendingTransactions": "Pending transactions",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
