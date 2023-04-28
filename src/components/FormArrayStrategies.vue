@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   modelValue?: { name: string; network: string; params: any }[];
-  space?: ExtendedSpace;
+  votingStrategies: SpaceStrategy[];
 }>();
 
 const emit = defineEmits(['update:modelValue', 'update:isValid']);
@@ -26,9 +26,8 @@ function handleDelete(index: number) {
 }
 
 function handleCopyStrategies() {
-  if (!props.space) return;
   updateIndex.value++;
-  input.value = clone(props.space.strategies);
+  input.value = clone(props.votingStrategies);
 }
 
 function forceShowError() {
@@ -122,7 +121,7 @@ onMounted(() => {
         </TuneButton>
 
         <TuneButton
-          v-if="space"
+          v-if="votingStrategies.length"
           class="flex w-full items-center justify-center gap-2"
           @click="handleCopyStrategies"
         >
