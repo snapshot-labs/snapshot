@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, VoteValidation } from '@/helpers/interfaces';
+import { VoteValidation, SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
@@ -8,7 +8,7 @@ const DEFAULT_PARAMS: Record<string, any> = {};
 const props = defineProps<{
   open: boolean;
   validation: VoteValidation;
-  space?: ExtendedSpace;
+  votingStrategies: SpaceStrategy[];
 }>();
 
 const emit = defineEmits(['add', 'close']);
@@ -165,7 +165,7 @@ watch(open, () => {
           v-if="input.name === 'basic'"
           ref="strategiesFormRef"
           v-model="input.params.strategies"
-          :space="space"
+          :voting-strategies="votingStrategies"
           @update:is-valid="value => (isValidParams = value)"
         />
       </div>
