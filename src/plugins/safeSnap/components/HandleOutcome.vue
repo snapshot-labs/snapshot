@@ -14,7 +14,11 @@ const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafe();
 const { web3 } = useWeb3();
-const { createPendingTransaction, removePendingTransaction } = useTxStatus();
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
 const { notify } = useFlashNotification();
 
 const props = defineProps([
@@ -100,7 +104,9 @@ const claimBond = async () => {
       questionDetails.value.questionId,
       params
     );
-    await clamingBond.next();
+    const step = await clamingBond.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionInProgress.value = null;
     await clamingBond.next();
     notify(t('notify.youDidIt'));
@@ -126,7 +132,9 @@ const submitProposal = async () => {
       questionDetails.value.proposalId,
       getTxHashes()
     );
-    await proposalSubmission.next();
+    const step = await proposalSubmission.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionInProgress.value = null;
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
@@ -159,7 +167,9 @@ const voteOnQuestion = async option => {
       await voting.next();
     }
     actionInProgress.value = null;
-    await voting.next();
+    const stepTx = await voting.next();
+    if (stepTx.value)
+      updatePendingTransaction(txPendingId, { hash: stepTx.value.hash });
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
@@ -193,7 +203,9 @@ const executeProposal = async () => {
       transaction,
       questionDetails.value.nextTxIndex
     );
-    await executingProposal.next();
+    const step = await executingProposal.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     action2InProgress.value = null;
     await executingProposal.next();
     notify(t('notify.youDidIt'));

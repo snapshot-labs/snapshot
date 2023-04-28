@@ -21,7 +21,11 @@ const { t } = useI18n();
 
 const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
-const { createPendingTransaction, removePendingTransaction } = useTxStatus();
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
@@ -92,12 +96,14 @@ const approveBondUma = async () => {
 
     await ensureRightNetwork(props.network);
 
-    const approveBond = await plugin.approveBondUma(
+    const approveBond = plugin.approveBondUma(
       props.network,
       getInstance().web3,
       props.umaAddress
     );
-    await approveBond.next();
+    const step = await approveBond.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionInProgress.value = null;
     await approveBond.next();
     notify(t('notify.youDidIt'));
@@ -130,7 +136,9 @@ const submitProposalUma = async () => {
       props.proposal.ipfs,
       getTransactionsUma()
     );
-    await proposalSubmission.next();
+    const step = await proposalSubmission.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionInProgress.value = null;
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
@@ -163,7 +171,9 @@ const executeProposalUma = async () => {
       props.umaAddress,
       getTransactionsUma()
     );
-    await executingProposal.next();
+    const step = await executingProposal.next();
+    if (step.value)
+      updatePendingTransaction(txPendingId, { hash: step.value.hash });
     action2InProgress.value = null;
     await executingProposal.next();
     notify(t('notify.youDidIt'));
