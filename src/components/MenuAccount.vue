@@ -4,10 +4,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['switchWallet']);
+const { t } = useI18n();
 
 const { domain } = useApp();
 const { logout } = useWeb3();
 const router = useRouter();
+const modalEmailSubscriptionOpen = ref(false);
 
 function handleAction(e) {
   if (e === 'viewProfile')
@@ -23,6 +25,10 @@ function handleAction(e) {
     return router.push({
       name: 'delegate'
     });
+  if (e === 'subscribeEmail') {
+    modalEmailSubscriptionOpen.value = true;
+    return true;
+  }
   return logout();
 }
 </script>
@@ -46,6 +52,11 @@ function handleAction(e) {
           action: 'switchWallet',
           extras: { icon: 'switch' }
         },
+        {
+          text: t('emailSubscription.subscribe'),
+          action: 'subscribeEmail',
+          extras: { icon: 'mail' }
+        },
         { text: 'Log out', action: 'logout', extras: { icon: 'logout' } }
       ]"
       @select="handleAction($event)"
@@ -65,6 +76,7 @@ function handleAction(e) {
               class="ml-[2px]"
             />
             <i-ho-refresh v-if="item.extras.icon === 'switch'" />
+            <i-ho-mail v-if="item.extras.icon === 'mail'" />
             <i-ho-logout
               v-if="item.extras.icon === 'logout'"
               class="ml-[2px]"
@@ -77,4 +89,11 @@ function handleAction(e) {
       </template>
     </BaseMenu>
   </div>
+  <teleport to="#modal">
+    <ModalEmailSubscription
+      :open="modalEmailSubscriptionOpen"
+      :address="address"
+      @close="modalEmailSubscriptionOpen = false"
+    />
+  </teleport>
 </template>
