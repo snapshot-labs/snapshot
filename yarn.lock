@@ -11979,11 +11979,6 @@ schema-utils@^4.0.0:
     ajv-formats "^2.1.1"
     ajv-keywords "^5.0.0"
 
-scrollmonitor@^1.2.11:
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/scrollmonitor/-/scrollmonitor-1.2.11.tgz#fdb53d78871a3c04ae8938796873ec399e5addb8"
-  integrity sha512-M2BKxme/eYq6mEIWUvILdyKI6kv8m3c787WUFNKqZdtyBcvSn/VKI9c9owuNGq84tcjg5inCCmpRIEQN17b8ag==
-
 scrypt-js@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/scrypt-js/-/scrypt-js-2.0.4.tgz#32f8c5149f0797672e551c07e230f834b6af5f16"
