@@ -33,6 +33,7 @@ function select(key) {
     <BaseSearch
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
+      focus-on-mount
       modal
     />
     <div class="mx-0 my-4 min-h-[339px] md:mx-4">
