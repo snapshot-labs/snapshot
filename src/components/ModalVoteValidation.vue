@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, VoteValidation } from '@/helpers/interfaces';
+import { VoteValidation, SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
@@ -8,15 +8,16 @@ const DEFAULT_PARAMS: Record<string, any> = {};
 const props = defineProps<{
   open: boolean;
   validation: VoteValidation;
-  space?: ExtendedSpace;
+  votingStrategies: SpaceStrategy[];
 }>();
 
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
 
-const isValidJson = ref(true);
+const isValidParams = ref(true);
 const formRef = ref();
+const strategiesFormRef = ref();
 
 const input = ref({
   name: '',
@@ -80,8 +81,11 @@ function select(n: string) {
 }
 
 function handleSubmit() {
-  if (!isValid.value || !isValidJson.value)
-    return formRef?.value?.forceShowError();
+  if (!isValid.value || !isValidParams.value) {
+    strategiesFormRef.value?.forceShowError();
+    formRef?.value?.forceShowError();
+    return;
+  }
 
   emit('add', clone(input.value));
   emit('close');
@@ -113,11 +117,6 @@ async function getValidations() {
   isValidationsLoaded.value = true;
 }
 
-function handleCopyStrategies() {
-  updateIndex.value++;
-  input.value.params.strategies = props.space?.strategies;
-}
-
 watch(open, () => {
   getValidations();
   input.value.name = '';
@@ -145,7 +144,7 @@ watch(open, () => {
     </template>
 
     <div class="mx-0 my-4 min-h-[250px] md:mx-4">
-      <div v-if="input.name" class="mx-4 text-skin-link">
+      <div v-if="input.name" class="mx-4 text-skin-link md:mx-0">
         <TuneForm
           v-if="validationDefinition"
           ref="formRef"
@@ -154,20 +153,21 @@ watch(open, () => {
           :definition="validationDefinition"
           :error="validationErrors"
         />
+
         <TuneTextareaJson
           v-else
           v-model="input.params"
           :placeholder="$t('votingValidation.paramPlaceholder')"
-          @update:is-valid="value => (isValidJson = value)"
+          @update:is-valid="value => (isValidParams = value)"
         />
-        <button
-          v-if="space && input.name === 'basic'"
-          class="flex items-center gap-1"
-          @click="handleCopyStrategies"
-        >
-          <i-ho-duplicate />
-          Copy voting strategies
-        </button>
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic'"
+          ref="strategiesFormRef"
+          v-model="input.params.strategies"
+          :voting-strategies="votingStrategies"
+          @update:is-valid="value => (isValidParams = value)"
+        />
       </div>
       <div v-if="!input.name">
         <LoadingRow v-if="!isValidationsLoaded" block class="px-0" />

@@ -70,6 +70,7 @@ watch(open, () => {
       v-if="!selectedPlugin?.key"
       v-model="searchInput"
       :placeholder="$t('searchPlaceholder')"
+      focus-on-mount
       modal
     />
     <div class="mx-4 my-4 min-h-[300px]">
