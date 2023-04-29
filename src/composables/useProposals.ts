@@ -38,7 +38,8 @@ const FLAGGED_LINKS = [
   'clc.am',
   'zealy.io/c/polygonzkevm/questboard',
   'app.questn.com/quest/764088010009522347',
-  'app.questn.com/quest/762646918666248236'
+  'app.questn.com/quest/762646918666248236',
+  'clc.la/ZkSyncNFT'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
