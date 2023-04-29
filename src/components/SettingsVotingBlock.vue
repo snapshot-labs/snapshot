@@ -28,12 +28,13 @@ const { form } = useFormSpaceSettings(props.context);
         />
 
         <TuneInput
-          v-model="form.voting.quorum"
+          :model-value="form.voting.quorum"
           :label="$t('settings.quorum.label')"
           :hint="$t('settings.quorum.information')"
           :disabled="isViewOnly"
           placeholder="1000"
           type="number"
+          @update:model-value="value => (form.voting.quorum = Number(value))"
         />
 
         <InputSelectVoteType
