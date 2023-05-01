@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ExtendedSpace, SpaceValidation } from '@/helpers/interfaces';
+import { SpaceValidation, SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { validateForm } from '@/helpers/validation';
 
 const props = defineProps<{
   open: boolean;
   validation: SpaceValidation;
+  votingStrategies: SpaceStrategy[];
   filterMinScore: number;
-  space?: ExtendedSpace;
 }>();
 
 const DEFAULT_PARAMS: Record<string, any> = {};
@@ -179,7 +179,7 @@ watch(showStrategies, () => {
           v-if="input.name === 'basic' && showStrategies"
           ref="strategiesFormRef"
           v-model="input.params.strategies"
-          :space="space"
+          :voting-strategies="votingStrategies"
           @update:is-valid="value => (isValidParams = value)"
         />
       </div>

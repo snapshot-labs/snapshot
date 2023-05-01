@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
   isViewOnly?: boolean;
-  space?: ExtendedSpace;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -46,8 +44,8 @@ function handleClickSelectValidation() {
       <ModalValidation
         :open="modalValidationOpen"
         :validation="form.validation"
+        :voting-strategies="form.strategies"
         :filter-min-score="form.filters.minScore"
-        :space="space"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
       />

@@ -24,10 +24,15 @@ const { profile, delegate } = toRefs(props);
 const { username } = useUsername(delegate, profile);
 
 const loading = ref(false);
-const { pendingCount } = useTxStatus();
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
 
 async function handleSubmit() {
   loading.value = true;
+  const txPendingId = createPendingTransaction();
   try {
     const tx = await sendTransaction(
       auth.web3,
@@ -36,17 +41,17 @@ async function handleSubmit() {
       'clearDelegate',
       [formatBytes32String(props.id || '')]
     );
-    pendingCount.value++;
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
     loading.value = false;
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
     notify(t('notify.delegationRemoved'));
-    pendingCount.value--;
+    removePendingTransaction(txPendingId);
     emit('reload');
   } catch (e) {
-    pendingCount.value--;
+    removePendingTransaction(txPendingId);
     console.log(e);
   }
   loading.value = false;

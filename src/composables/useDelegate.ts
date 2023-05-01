@@ -14,7 +14,11 @@ export function useDelegate() {
 
   const auth = getInstance();
   const { notify } = useFlashNotification();
-  const { pendingCount } = useTxStatus();
+  const {
+    createPendingTransaction,
+    updatePendingTransaction,
+    removePendingTransaction
+  } = useTxStatus();
   const { validEnsTlds } = useEns();
   const { t } = useI18n();
   const { web3 } = useWeb3();
@@ -29,7 +33,7 @@ export function useDelegate() {
 
   async function delegateTo(address, spaceId = '') {
     loading.value = true;
-
+    const txPendingId = createPendingTransaction();
     try {
       let ethAddress = address;
       if (validEnsTlds.includes(address.split('.').pop()))
@@ -42,19 +46,18 @@ export function useDelegate() {
         [formatBytes32String(spaceId), ethAddress]
       );
       notify(t('notify.transactionSent'));
-      pendingCount.value++;
+      updatePendingTransaction(txPendingId, { hash: tx.hash });
       loading.value = false;
       const receipt = await tx.wait();
       console.log('Receipt', receipt);
       await sleep(3e3);
       notify(t('notify.delegationSuccess'));
-      pendingCount.value--;
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
-      pendingCount.value--;
       console.log(e);
     } finally {
       loading.value = false;
+      removePendingTransaction(txPendingId);
     }
   }
 
