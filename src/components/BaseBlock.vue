@@ -21,7 +21,7 @@ const isCollapsed = ref(true);
 
 <template>
   <div
-    class="border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border"
+    class="border-x border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl"
   >
     <div
       v-if="title"
