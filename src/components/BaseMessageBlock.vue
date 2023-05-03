@@ -12,7 +12,7 @@ defineProps<{
       { '!border-skin-text': level === 'warning' },
       { '!border-red': level === 'warning-red' },
       {
-        ' rounded-none border-x-0': isResponsive
+        '!rounded-none border-x-0 md:!rounded-xl': isResponsive
       }
     ]"
   >
