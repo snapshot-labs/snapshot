@@ -2,28 +2,35 @@
 import { shorten } from '@/helpers/utils';
 import { useInfiniteScroll } from '@vueuse/core';
 
-const { orderedSpacesByCategory, spacesLoaded } = useSpaces();
+const { loadSpacesHome, loadMoreSpaceHome, isLoadingSpacesHome, spacesHome } =
+  useSpaces();
 const { formatCompactNumber } = useIntl();
-
-const loadBy = 12;
-const limit = ref(loadBy);
+const route = useRoute();
 
 const enableInfiniteScroll = ref(false);
 
-const loadMoreSpaces = () => {
-  enableInfiniteScroll.value = true;
-  limit.value += loadBy;
-};
+const routeQuery = computed(() => route.query || null);
+const queryVariables = computed(() => ({
+  category: routeQuery.value?.category
+}));
 
 useInfiniteScroll(
   document,
   () => {
     if (enableInfiniteScroll.value) {
-      limit.value += loadBy;
+      loadMoreSpaceHome(queryVariables.value, spacesHome.value.length);
     }
   },
   { distance: 400 }
 );
+
+watch(routeQuery, () => {
+  loadSpacesHome(queryVariables.value);
+});
+
+onMounted(() => {
+  loadSpacesHome();
+});
 </script>
 
 <template>
@@ -31,24 +38,17 @@ useInfiniteScroll(
     <BaseContainer
       class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
-      <BaseButton
-        tabindex="-1"
-        class="w-full pl-3 pr-0 focus-within:!border-skin-link md:max-w-[420px]"
-      >
+      <div tabindex="-1" class="w-full md:max-w-[420px]">
         <TheSearchBar />
-      </BaseButton>
+      </div>
 
       <ExploreMenuCategories />
 
       <div
-        v-if="spacesLoaded"
+        v-if="!isLoadingSpacesHome"
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
-        {{
-          $tc('spaceCount', [
-            formatCompactNumber(orderedSpacesByCategory.length)
-          ])
-        }}
+        {{ $tc('spaceCount', [formatCompactNumber(spacesHome.length)]) }}
       </div>
     </BaseContainer>
 
@@ -58,10 +58,7 @@ useInfiniteScroll(
         tag="div"
         class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
       >
-        <div
-          v-for="space in orderedSpacesByCategory.slice(0, limit)"
-          :key="space.id"
-        >
+        <div v-for="space in spacesHome" :key="space.id">
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
@@ -86,8 +83,8 @@ useInfiniteScroll(
               </div>
               <div class="mb-[12px] text-skin-text">
                 {{
-                  $tc('members', space.followers, {
-                    count: formatCompactNumber(space.followers)
+                  $tc('members', space.followersCount, {
+                    count: formatCompactNumber(space.followersCount)
                   })
                 }}
               </div>
@@ -96,17 +93,13 @@ useInfiniteScroll(
           </router-link>
         </div>
       </TransitionGroup>
-      <ExploreSkeletonLoading v-if="!spacesLoaded" is-spaces />
-      <BaseNoResults
-        v-else-if="Object.keys(orderedSpacesByCategory).length < 1"
-        use-block
-      />
-      <div class="px-4 text-center md:px-0">
-        <BaseButton
-          v-if="!enableInfiniteScroll && orderedSpacesByCategory.length > limit"
-          class="mt-4 w-full"
-          @click="loadMoreSpaces()"
-        >
+      <ExploreSkeletonLoading v-if="isLoadingSpacesHome" is-spaces />
+      <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
+      <div
+        v-if="!enableInfiniteScroll && spacesHome.length"
+        class="px-4 text-center md:px-0"
+      >
+        <BaseButton class="mt-4 w-full" @click="enableInfiniteScroll = true">
           {{ $t('homeLoadmore') }}
         </BaseButton>
       </div>

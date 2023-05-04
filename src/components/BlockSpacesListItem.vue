@@ -20,7 +20,7 @@ defineProps<{
     </div>
     <div class="flex items-center justify-center">
       <div class="truncate text-xs">
-        {{ space?.name }}
+        {{ space.name }}
       </div>
       <IconVerifiedSpace
         :space-id="space.id"

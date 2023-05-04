@@ -1,4 +1,4 @@
-import { SPACES_QUERY } from '@/helpers/queries';
+import { SPACE_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { mapOldPluginNames } from '@/helpers/utils';
 
@@ -8,26 +8,23 @@ export function useExtendedSpaces() {
   const loading = ref(false);
 
   const { apolloQuery } = useApolloQuery();
-  async function loadExtendedSpaces(id_in: string[] = []) {
-    const filteredLoadedSpaces = id_in.filter(
-      id => !extendedSpaces.value?.find(space => space.id === id)
-    );
-    if (!filteredLoadedSpaces.length) return;
+  async function loadExtendedSpace(spaceId: string) {
+    if (!spaceId || extendedSpaces.value.some(s => s.id === spaceId)) return;
 
     loading.value = true;
     try {
-      const spaces = await apolloQuery(
+      const response = await apolloQuery(
         {
-          query: SPACES_QUERY,
+          query: SPACE_QUERY,
           variables: {
-            id_in: filteredLoadedSpaces
+            id: spaceId
           }
         },
-        'spaces'
+        'space'
       );
 
-      const mappedSpaces = spaces.map(mapOldPluginNames);
-      extendedSpaces.value = [...extendedSpaces.value, ...mappedSpaces];
+      const mappedSpace = mapOldPluginNames(response);
+      extendedSpaces.value.push(mappedSpace);
 
       // Remove any duplicates incase two requests were made at the same time
       extendedSpaces.value = extendedSpaces.value.filter(
@@ -42,23 +39,23 @@ export function useExtendedSpaces() {
     }
   }
 
-  async function reloadSpace(id: string) {
+  async function reloadSpace(spaceId: string) {
     try {
-      const space = await apolloQuery(
+      const response = await apolloQuery(
         {
-          query: SPACES_QUERY,
+          query: SPACE_QUERY,
           variables: {
-            id_in: [id]
+            id: spaceId
           }
         },
-        'spaces'
+        'space'
       );
-      space.map(mapOldPluginNames);
+      const mappedSpace = mapOldPluginNames(response);
 
       extendedSpaces.value = extendedSpaces.value.filter(
-        s => s.id !== space[0].id
+        s => s.id !== mappedSpace[0].id
       );
-      extendedSpaces.value = [...extendedSpaces.value, ...space];
+      extendedSpaces.value = [...extendedSpaces.value, ...mappedSpace];
     } catch (e) {
       console.error(e);
       return e;
@@ -70,7 +67,7 @@ export function useExtendedSpaces() {
   }
 
   return {
-    loadExtendedSpaces,
+    loadExtendedSpace,
     reloadSpace,
     deleteSpace,
     extendedSpaces: computed(() => extendedSpaces.value),

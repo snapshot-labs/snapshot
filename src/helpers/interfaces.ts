@@ -104,6 +104,16 @@ export interface ExploreSpace {
   followers_7d?: number;
 }
 
+export interface Space {
+  id: string;
+  name: string;
+  followersCount: number;
+  terms?: string;
+  verified: number;
+  rank: number;
+  avatar: string;
+}
+
 export interface ExtendedSpace {
   id: string;
   name: string;

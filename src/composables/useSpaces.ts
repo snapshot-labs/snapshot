@@ -1,106 +1,120 @@
-import orderBy from 'lodash/orderBy';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
-import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
-import { mapOldPluginNames } from '@/helpers/utils';
-import { ExploreSpace } from '@/helpers/interfaces';
-
-const spaces: any = ref([]);
-const spacesLoaded = ref(false);
-const selectedCategory = ref('');
-
-export function getRanking(key: string, space): number {
-  let ranking =
-    (space.votes || 0) / 50 +
-    (space.votes_7d || 0) +
-    (space.proposals_7d || 0) * 50 +
-    (space.followers_7d || 0);
-  if (verified[key]) {
-    ranking = ranking * 5;
-    ranking += 100;
-  }
-  return ranking;
-}
+import { Space } from '@/helpers/interfaces';
+import { SPACES_QUERY } from '@/helpers/queries';
 
 export function useSpaces() {
-  const route = useRoute();
+  const { apolloQuery } = useApolloQuery();
 
-  async function getSpaces() {
-    const exploreObj: { spaces: Record<string, ExploreSpace> } = await fetch(
-      `${import.meta.env.VITE_HUB_URL}/api/explore`
-    ).then(res => res.json());
+  const isLoadingSpacesHome = ref(false);
+  const spacesHome = ref<Space[]>([]);
 
-    exploreObj.spaces = Object.fromEntries(
-      Object.entries(exploreObj.spaces).map(([id, space]: any) => {
-        // map manually selected categories for verified spaces that don't have set their categories yet
-        // set to empty array if space.categories is missing
-        if (!space.categories?.length) {
-          if (verifiedSpacesCategories[id]?.length) {
-            space.categories = verifiedSpacesCategories[id];
-          } else {
-            space.categories = [];
-          }
+  const isLoadingSpaces = ref(false);
+  const spaces = ref<Space[]>([]);
+
+  function spacesHomeQuery(variables: any = {}, skip = 0) {
+    return apolloQuery(
+      {
+        query: SPACES_QUERY,
+        variables: {
+          skip: skip,
+          first: 12,
+          orderBy: variables.orderBy || 'rank',
+          orderDirection: variables.orderDirection || 'desc',
+          private: false,
+          network: variables.network || undefined,
+          category:
+            variables.category === 'all'
+              ? undefined
+              : variables.category || undefined
         }
-
-        space = mapOldPluginNames(space);
-
-        return [id, { id, ...space }];
-      })
+      },
+      'spaces'
     );
-
-    spaces.value = exploreObj.spaces;
-    spacesLoaded.value = true;
   }
 
-  const testnetNetworks = Object.entries(networks)
-    .filter((network: any) => network[1].testnet)
-    .map(([id]) => id);
-
-  const orderedSpaces = computed(() => {
-    const network = route.query.network || '';
-    const q = route.query.q?.toString() || '';
-    const list = Object.keys(spaces.value)
-      .map(key => {
-        const followers = spaces.value[key].followers ?? 0;
-        const score = getRanking(key, spaces.value[key]);
-        const testnet = testnetNetworks.includes(spaces.value[key].network);
-        return {
-          ...spaces.value[key],
-          followers,
-          // Hide private spaces, unless the search query exactly matches
-          // the space key
-          private:
-            route.query.q?.toString() === key
-              ? false
-              : spaces.value[key].private ?? false,
-          score,
-          testnet
-        };
-      })
-      .filter(space => !space.private && verified[space.id] !== -1)
-      .filter(space => space.networks.includes(network) || !network)
-      .filter(space =>
-        JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+  async function loadSpacesHome(variables: any = {}) {
+    if (isLoadingSpacesHome.value) return;
+    isLoadingSpacesHome.value = true;
+    try {
+      const response = await spacesHomeQuery(variables);
+      console.log(
+        '🚀 ~ file: useSpaces.ts:48 ~ loadSpacesHome ~ response:',
+        response
       );
+      if (!response) return;
 
-    return orderBy(list, ['score', 'testnet'], ['desc', 'asc', 'desc']);
-  });
+      spacesHome.value = response;
 
-  const orderedSpacesByCategory = computed(() =>
-    orderedSpaces.value.filter(
-      space =>
-        !selectedCategory.value ||
-        selectedCategory.value === 'all' ||
-        (space.categories && space.categories.includes(selectedCategory.value))
-    )
-  );
+      isLoadingSpacesHome.value = false;
+    } catch (e) {
+      isLoadingSpacesHome.value = false;
+      console.error(e);
+    } finally {
+      isLoadingSpacesHome.value = false;
+    }
+  }
+
+  async function loadMoreSpaceHome(variables: any = {}, skip: number) {
+    if (isLoadingSpacesHome.value) return;
+    isLoadingSpacesHome.value = true;
+    try {
+      const response = await spacesHomeQuery(variables, skip);
+
+      if (!response) return;
+
+      spacesHome.value = [...spacesHome.value, ...response];
+
+      isLoadingSpacesHome.value = false;
+    } catch (e) {
+      isLoadingSpacesHome.value = false;
+      console.error(e);
+    } finally {
+      isLoadingSpacesHome.value = false;
+    }
+  }
+
+  async function loadSpaces(id_in: string[]) {
+    if (isLoadingSpaces.value || !id_in.length) return;
+
+    isLoadingSpaces.value = true;
+    try {
+      const response = await apolloQuery(
+        {
+          query: SPACES_QUERY,
+          variables: {
+            id_in,
+            skip: 0,
+            first: 100,
+            orderBy: 'created',
+            orderDirection: 'desc'
+          }
+        },
+        'spaces'
+      );
+      console.log(
+        '🚀 ~ file: useSpaces.ts:48 ~ loadSpacesHome ~ response:',
+        response,
+        id_in
+      );
+      if (!response) return;
+
+      spaces.value = response;
+
+      isLoadingSpaces.value = false;
+    } catch (e) {
+      isLoadingSpaces.value = false;
+      console.error(e);
+    } finally {
+      isLoadingSpaces.value = false;
+    }
+  }
 
   return {
-    getSpaces,
+    loadSpaces,
+    loadSpacesHome,
+    loadMoreSpaceHome,
     spaces,
-    spacesLoaded,
-    orderedSpaces,
-    orderedSpacesByCategory,
-    selectedCategory
+    spacesHome,
+    isLoadingSpaces,
+    isLoadingSpacesHome
   };
 }

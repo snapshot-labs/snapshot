@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { Space } from '@/helpers/interfaces';
+
 const { formatCompactNumber } = useIntl();
 
 defineProps<{
-  space: any;
+  space: Space;
 }>();
 </script>
 
@@ -26,7 +28,7 @@ defineProps<{
             <div class="text-xs leading-5 text-skin-text">
               {{
                 $tc('members', {
-                  count: formatCompactNumber(space.followers || 0)
+                  count: formatCompactNumber(space.followersCount || 0)
                 })
               }}
             </div>

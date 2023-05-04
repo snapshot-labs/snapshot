@@ -5,7 +5,7 @@ const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
-const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
+const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -25,7 +25,7 @@ watch(
   spaceKey,
   async () => {
     if (!spaceKey.value) return;
-    await loadExtendedSpaces([spaceKey.value.toLowerCase()]);
+    await loadExtendedSpace(spaceKey.value.toLowerCase());
     if (!space.value) {
       router.push('/');
     }

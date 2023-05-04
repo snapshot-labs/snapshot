@@ -3,23 +3,19 @@ import draggable from 'vuedraggable';
 
 import { lsSet, lsGet } from '@/helpers/utils';
 
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
-const router = useRouter();
-const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
-  useExtendedSpaces();
-const { spaces } = useSpaces();
+const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
 
 const draggableSpaces = ref<string[]>([]);
 
 const extendedSpacesObj = computed(() => {
   return (
-    extendedSpaces.value?.reduce(
-      (acc, space) => ({ ...acc, [space.id]: space }),
-      {}
-    ) ?? {}
+    spaces.value?.reduce((acc, space) => ({ ...acc, [space.id]: space }), {}) ??
+    {}
   );
 });
 
@@ -48,7 +44,7 @@ watch(followingSpaces, () => {
 });
 
 watch(followingSpaces, () => {
-  loadExtendedSpaces(followingSpaces.value);
+  loadSpaces(followingSpaces.value);
 });
 
 watch(
@@ -84,7 +80,7 @@ watch(
       </BaseButtonRound>
     </div>
     <SidebarSpacesSkeleton
-      v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+      v-if="spaces.length === 0 && (isLoadingSpaces || loadingFollows)"
     />
 
     <draggable
@@ -126,11 +122,11 @@ watch(
               size="44"
               class="pointer-events-none"
             />
-            <BaseCounter
+            <!-- <BaseCounter
               v-if="spaces?.[element]?.proposals_active"
               :counter="spaces[element].proposals_active"
               class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
-            />
+            /> -->
           </router-link>
         </div>
       </template>

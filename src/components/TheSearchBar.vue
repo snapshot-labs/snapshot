@@ -3,47 +3,47 @@ const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 
-const routeQuery = computed(() => route.query.q || '');
+const routeQuery = computed(() => route.query.q || undefined);
 const searchOptions = computed(() => [
   {
     text: t('spaces'),
     action: 'spaces',
-    extras: { selected: route.query.type === 'spaces' }
+    extras: { selected: route.query.filter === 'spaces' }
   },
   {
     text: t('networks'),
     action: 'networks',
-    extras: { selected: route.query.type === 'networks' }
+    extras: { selected: route.query.filter === 'networks' }
   },
   {
     text: t('strategiesPage'),
     action: 'strategies',
-    extras: { selected: route.query.type === 'strategies' }
+    extras: { selected: route.query.filter === 'strategies' }
   },
   {
     text: t('plugins'),
     action: 'plugins',
-    extras: { selected: route.query.type === 'plugins' }
+    extras: { selected: route.query.filter === 'plugins' }
   }
 ]);
 
 const searchSelectedOption = computed(
   () =>
-    searchOptions.value.find(option => option.action === route.query.type)
+    searchOptions.value.find(option => option.action === route.query.filter)
       ?.text ?? t('spaces')
 );
 
 function redirectSearch(e) {
   router.push({
-    query: { q: routeQuery.value || undefined, type: e }
+    query: { q: routeQuery.value, filter: e }
   });
 }
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex rounded-full border pl-3 pr-0 focus-within:border-skin-text">
     <BaseSearch
-      :model-value="routeQuery"
+      :model-value="routeQuery || ''"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
     />

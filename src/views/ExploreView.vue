@@ -15,11 +15,11 @@ const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
 const isSpaces = computed(
-  () => !route.query.type || route.query.type === 'spaces'
+  () => !route.query.filter || route.query.filter === 'spaces'
 );
-const isStrategies = computed(() => route.query.type === 'strategies');
-const isNetworks = computed(() => route.query.type === 'networks');
-const isPlugins = computed(() => route.query.type === 'plugins');
+const isStrategies = computed(() => route.query.filter === 'strategies');
+const isNetworks = computed(() => route.query.filter === 'networks');
+const isPlugins = computed(() => route.query.filter === 'plugins');
 
 const buttonStr = computed(() => {
   if (isStrategies.value) return t('explore.createStrategy');
@@ -60,7 +60,7 @@ const items = computed(() => {
 });
 
 watch(
-  () => route.query.type,
+  () => route.query.filter,
   () => {
     if (isStrategies.value) getStrategies();
     if (isNetworks.value) getNetworksSpacesCount();
@@ -94,12 +94,9 @@ useInfiniteScroll(
   </div>
   <div v-else>
     <BaseContainer class="mb-4 flex items-center">
-      <BaseButton
-        tabindex="-1"
-        class="mr-auto w-full max-w-[420px] pl-3 pr-0 focus-within:!border-skin-link"
-      >
+      <div tabindex="-1" class="mr-auto w-full max-w-[420px]">
         <TheSearchBar />
-      </BaseButton>
+      </div>
       <div
         class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex"
       >

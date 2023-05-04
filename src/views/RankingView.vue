@@ -1,33 +1,45 @@
-<script setup>
+<script setup lang="ts">
 import orderBy from 'lodash/orderBy';
 import { shorten } from '@/helpers/utils';
 import verified from '@/../snapshot-spaces/spaces/verified.json';
 
-const { spaces, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 
 const limit = 200;
 
-const spacesSorted = computed(() => {
-  const spacesArr = Object.values(spaces.value)
-    .map(space => {
-      space.proposals = space.proposals || 0;
-      space.proposals_7d = space.proposals_7d || 0;
-      space.votes = space.votes || 0;
-      space.votes_7d = space.votes_7d || 0;
-      space.followers = space.followers || 0;
-      space.followers_7d = space.followers_7d || 0;
-      space.ranking = getRanking(space.id, space);
-      return space;
-    })
-    .filter(space => verified[space.id] !== -1);
-  return orderBy(spacesArr, ['ranking'], ['desc']).slice(0, limit);
-});
+function getRanking(key: string, space): number {
+  let ranking =
+    (space.votes || 0) / 50 +
+    (space.votes_7d || 0) +
+    (space.proposals_7d || 0) * 50 +
+    (space.followers_7d || 0);
+  if (verified[key]) {
+    ranking = ranking * 5;
+    ranking += 100;
+  }
+  return ranking;
+}
+
+// const spacesSorted = computed(() => {
+//   const spacesArr = Object.values(spaces.value)
+//     .map(space => {
+//       space.proposals = space.proposals || 0;
+//       space.proposals_7d = space.proposals_7d || 0;
+//       space.votes = space.votes || 0;
+//       space.votes_7d = space.votes_7d || 0;
+//       space.followers = space.followers || 0;
+//       space.followers_7d = space.followers_7d || 0;
+//       space.ranking = getRanking(space.id, space);
+//       return space;
+//     })
+//     .filter(space => verified[space.id] !== -1);
+//   return orderBy(spacesArr, ['ranking'], ['desc']).slice(0, limit);
+// });
 </script>
 
 <template>
   <div>
-    <BaseContainer :slim="true">
+    <!-- <BaseContainer :slim="true">
       <BaseBlock slim>
         <div class="flex border-b p-3 text-right">
           <div class="mr-2 w-[40px] text-left" v-text="'Rank'" />
@@ -77,6 +89,6 @@ const spacesSorted = computed(() => {
         </router-link>
         <LoadingSpinner v-if="!spacesLoaded" class="p-3" />
       </BaseBlock>
-    </BaseContainer>
+    </BaseContainer> -->
   </div>
 </template>

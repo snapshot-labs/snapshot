@@ -188,84 +188,6 @@ export const ALIASES_QUERY = gql`
   }
 `;
 
-export const SPACES_QUERY = gql`
-  query Spaces($id_in: [String]) {
-    spaces(where: { id_in: $id_in }, first: 200) {
-      id
-      name
-      about
-      network
-      symbol
-      network
-      terms
-      skin
-      avatar
-      twitter
-      website
-      github
-      coingecko
-      private
-      domain
-      admins
-      moderators
-      members
-      categories
-      plugins
-      followersCount
-      template
-      guidelines
-      parent {
-        id
-        name
-        avatar
-        followersCount
-        children {
-          id
-        }
-      }
-      children {
-        id
-        name
-        avatar
-        followersCount
-        parent {
-          id
-        }
-      }
-      voting {
-        delay
-        period
-        type
-        quorum
-        privacy
-        hideAbstain
-      }
-      strategies {
-        name
-        network
-        params
-      }
-      validation {
-        name
-        params
-      }
-      voteValidation {
-        name
-        params
-      }
-      filters {
-        minScore
-        onlyMembers
-      }
-      treasuries {
-        name
-        address
-        network
-      }
-    }
-  }
-`;
-
 export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
   query Domain($id: String!) {
     account(id: $id) {
@@ -423,6 +345,117 @@ export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
     votes(where: { voter: $voter, proposal_in: $proposals }) {
       proposal {
         id
+      }
+    }
+  }
+`;
+
+export const SPACES_QUERY = gql`
+  query Spaces(
+    $id_in: [String]
+    $first: Int
+    $skip: Int
+    $orderBy: String
+    $orderDirection: OrderDirection
+    $private: Boolean
+    $network: String
+    $category: String
+  ) {
+    spaces(
+      first: $first
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: {
+        id_in: $id_in
+        private: $private
+        network: $network
+        category: $category
+      }
+    ) {
+      id
+      name
+      avatar
+      verified
+      rank
+      followersCount
+    }
+  }
+`;
+
+export const SPACE_QUERY = gql`
+  query Space($id: String!) {
+    space(id: $id) {
+      id
+      name
+      about
+      network
+      symbol
+      network
+      terms
+      skin
+      avatar
+      twitter
+      website
+      github
+      coingecko
+      private
+      domain
+      admins
+      moderators
+      members
+      categories
+      plugins
+      followersCount
+      template
+      guidelines
+      parent {
+        id
+        name
+        avatar
+        followersCount
+        children {
+          id
+        }
+      }
+      children {
+        id
+        name
+        avatar
+        followersCount
+        parent {
+          id
+        }
+      }
+      voting {
+        delay
+        period
+        type
+        quorum
+        privacy
+        hideAbstain
+      }
+      strategies {
+        name
+        network
+        params
+      }
+      validation {
+        name
+        params
+      }
+      voteValidation {
+        name
+        params
+      }
+      filters {
+        minScore
+        onlyMembers
+      }
+      treasuries {
+        name
+        address
+        network
       }
     }
   }

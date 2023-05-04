@@ -1,11 +1,13 @@
 <script setup lang="ts">
-const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
-const { selectedCategory, orderedSpaces } = useSpaces();
-const { tc } = useI18n();
+import categories from '@/helpers/categories.json';
 
-function selectCategory(c) {
-  selectedCategory.value = c;
-}
+const selectedCategory = ref('');
+
+const { tc } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const routeQuery = computed(() => route.query.q || undefined);
 
 const categoryItems = computed(() => {
   return [
@@ -13,22 +15,27 @@ const categoryItems = computed(() => {
       text: tc('explore.categories.all'),
       action: 'all',
       extras: {
-        count: orderedSpaces.value.length,
+        count: 0,
         selected: !selectedCategory.value
       }
     },
-    ...categoriesOrderedBySpaceCount.value
-      .filter(c => spacesPerCategory.value[c])
-      .map(c => ({
-        text: tc(`explore.categories.${c}`),
-        action: c,
-        extras: {
-          count: spacesPerCategory.value[c],
-          selected: selectedCategory.value === c
-        }
-      }))
+    ...categories.map(c => ({
+      text: tc(`explore.categories.${c}`),
+      action: c,
+      extras: {
+        count: 0,
+        selected: selectedCategory.value === c
+      }
+    }))
   ];
 });
+
+function selectCategory(c: string) {
+  selectedCategory.value = c;
+  router.push({
+    query: { q: routeQuery.value, category: c }
+  });
+}
 </script>
 
 <template>
@@ -38,10 +45,7 @@ const categoryItems = computed(() => {
     @select="selectCategory"
   >
     <template #button>
-      <BaseButton
-        class="w-full whitespace-nowrap pr-3"
-        :disabled="!orderedSpaces.length"
-      >
+      <BaseButton class="w-full whitespace-nowrap pr-3">
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
           <span v-if="selectedCategory">

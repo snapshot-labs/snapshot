@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import categories from '@/helpers/categories.json';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -8,7 +9,6 @@ const props = defineProps<{
 
 const { form, validationErrors, addRef } = useFormSpaceSettings(props.context);
 const { env } = useApp();
-const { categories } = useCategories();
 
 const avatarNotReactive = ref(form.value.avatar);
 </script>

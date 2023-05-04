@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { Space } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: ExtendedSpace;
+  space: Space;
 }>();
 
 const { isGnosisSafe } = useClient();
