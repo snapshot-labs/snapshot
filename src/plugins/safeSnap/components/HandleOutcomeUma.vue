@@ -110,11 +110,11 @@ const approveBondUma = async () => {
   }
 };
 
-const getProposalUrl = (chain, txHash) => {
+const getProposalUrl = (chain, txHash, logIndex) => {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
+    return `https://oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
   }
-  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
+  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
 };
 
 const submitProposalUma = async () => {
@@ -308,7 +308,7 @@ onMounted(async () => {
             <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
           </template>
           <div class="my-3 p-3">
-            <div class="pr-3 pl-3">
+            <div class="pl-3 pr-3">
               <p>{{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}</p>
             </div>
             <div class="my-3 rounded-lg border p-3">
@@ -390,7 +390,8 @@ onMounted(async () => {
             :href="
               getProposalUrl(
                 props.network,
-                questionDetails.assertionEvent.proposalTxHash
+                questionDetails.assertionEvent.proposalTxHash,
+                questionDetails.assertionEvent.logIndex
               )
             "
             class="rounded-lg border p-2 text-skin-text"
