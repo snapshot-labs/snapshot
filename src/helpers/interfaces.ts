@@ -276,6 +276,7 @@ export interface CollectableAsset extends SafeAsset {
 export interface TokenAsset extends SafeAsset {
   symbol: string;
   decimals: number;
+  verified?: any;
 }
 
 export interface CollectableAssetTransaction extends SafeTransaction {

@@ -8,9 +8,14 @@ import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputAmount from '../Input/Amount.vue';
+import SafeSnapTokensModal from './TokensModal.vue';
 
 export default {
-  components: { SafeSnapInputAddress, SafeSnapInputAmount },
+  components: {
+    SafeSnapInputAddress,
+    SafeSnapInputAmount,
+    SafeSnapTokensModal
+  },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -24,7 +29,8 @@ export default {
       value: amount,
       tokenAddress: 'main',
 
-      validValue: true
+      validValue: true,
+      modalTokensOpen: false
     };
   },
   computed: {
@@ -93,25 +99,28 @@ export default {
           ...this.config.tokens
         ];
       }
+    },
+    openModal() {
+      if (!this.config.tokens.length) return;
+      this.modalTokensOpen = true;
     }
   }
 };
 </script>
 
 <template>
-  <UiSelect v-model="tokenAddress" :disabled="config.preview">
-    <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template v-if="selectedToken" #image>
+  <BaseButton
+    class="mb-2 flex w-full flex-row items-center justify-between !px-3"
+    @click="openModal()"
+  >
+    <div class="flex flex-row">
+      <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
+      <span v-if="selectedToken" class="mx-2">{{ selectedToken.symbol }}</span>
       <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
-    </template>
-    <option
-      v-for="(token, index) in tokens"
-      :key="index"
-      :value="token.address"
-    >
-      {{ token.symbol }}
-    </option>
-  </UiSelect>
+    </div>
+    <i-ho-chevron-down class="text-xs text-skin-link" />
+  </BaseButton>
+
   <div class="space-y-2">
     <SafeSnapInputAddress
       v-model="to"
@@ -129,12 +138,21 @@ export default {
       :disabled="config.preview"
     />
   </div>
+
+  <teleport to="#modal">
+    <SafeSnapTokensModal
+      :tokens="tokens"
+      :token-address="tokenAddress"
+      :open="modalTokensOpen"
+      @token-address="tokenAddress = $event"
+      @close="modalTokensOpen = false"
+    />
+  </teleport>
 </template>
 
 <style scoped>
 .tokenImage {
   width: 24px;
-  margin-left: 8px;
   vertical-align: middle;
 }
 </style>

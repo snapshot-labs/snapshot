@@ -73,11 +73,27 @@ async function fetchBalances(network, gnosisSafeAddress) {
   if (gnosisSafeAddress) {
     try {
       const balances = await getGnosisSafeBalances(network, gnosisSafeAddress);
+      console.log(':fetchBalances -> balances', balances);
+
+      const tokensReq = await fetch(
+        'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
+      );
+      const tokensRes = await tokensReq.json();
+      const tokens = tokensRes.tokens;
+      console.log(':fetchBalances -> tokens', tokens);
+
+      const isVerified = tokenAddress => {
+        return tokens.find(
+          token => token.address.toLowerCase() === tokenAddress.toLowerCase()
+        );
+      };
+
       return balances
         .filter(balance => balance.token)
         .map(balance => ({
           ...balance.token,
-          address: balance.tokenAddress
+          address: balance.tokenAddress,
+          verified: isVerified(balance.tokenAddress)
         }));
     } catch (e) {
       console.warn('Error fetching balances');
@@ -253,7 +269,7 @@ export default {
 <template>
   <div>
     <h4
-      class="flex rounded-t-none border-b px-4 pt-3 pb-[12px] md:rounded-t-md"
+      class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
     >
       <BaseAvatar class="float-left mr-2" :src="networkIcon" size="28" />
       {{ networkName }} Safe
@@ -273,6 +289,7 @@ export default {
         :multi-send-address="multiSendAddress"
         :module-type="moduleType"
       />
+      <LoadingSpinner v-else />
     </h4>
     <UiCollapsibleText
       v-if="hash"
