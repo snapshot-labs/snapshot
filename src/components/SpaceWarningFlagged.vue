@@ -33,7 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseContainer v-if="isWarningFlaggedShowing" class="mb-4 px-0 md:px-4">
+  <BaseContainer v-if="isWarningFlaggedShowing" class="mb-4 !px-0 md:!px-4">
     <BaseMessageBlock is-responsive level="warning-red">
       {{ $t('warningSpace') }}
       <BaseLink link="https://docs.snapshot.org/spaces/badges-and-warnings">{{

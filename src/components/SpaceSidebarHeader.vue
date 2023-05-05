@@ -31,7 +31,9 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0">
+  <div
+    class="relative block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0"
+  >
     <div class="flex lg:block">
       <AvatarSpace
         :space="space"

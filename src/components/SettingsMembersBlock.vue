@@ -133,7 +133,7 @@ function addMembers(addresses: string) {
 
   const addressesArray = addresses
     .split(',')
-    .map(address => address.trim())
+    .map(address => address.trim().toLowerCase())
     .filter(address => isAddress(address))
     .filter(address => {
       const isNotMember =
@@ -168,7 +168,7 @@ const errorMessage = computed(() => {
 
   const membersArray = inputAddMembers.value
     .split(',')
-    .map(address => address.trim());
+    .map(address => address.trim().toLowerCase());
 
   let message = '';
 

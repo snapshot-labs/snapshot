@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
-
 const props = defineProps<{
   context: 'setup' | 'settings';
   isViewOnly?: boolean;
-  space?: ExtendedSpace;
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
@@ -31,12 +28,13 @@ const { form } = useFormSpaceSettings(props.context);
         />
 
         <TuneInput
-          v-model="form.voting.quorum"
+          :model-value="form.voting.quorum"
           :label="$t('settings.quorum.label')"
           :hint="$t('settings.quorum.information')"
           :disabled="isViewOnly"
           placeholder="1000"
           type="number"
+          @update:model-value="value => (form.voting.quorum = Number(value))"
         />
 
         <InputSelectVoteType
@@ -57,8 +55,8 @@ const { form } = useFormSpaceSettings(props.context);
 
         <InputSelectVoteValidation
           :validation="form.voteValidation"
+          :voting-strategies="form.strategies"
           :disabled="isViewOnly"
-          :space="space"
           @add="value => (form.voteValidation = value)"
         />
       </div>
