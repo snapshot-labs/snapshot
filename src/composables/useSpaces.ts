@@ -36,10 +36,7 @@ export function useSpaces() {
     isLoadingSpacesHome.value = true;
     try {
       const response = await spacesHomeQuery(variables);
-      console.log(
-        '🚀 ~ file: useSpaces.ts:48 ~ loadSpacesHome ~ response:',
-        response
-      );
+
       if (!response) return;
 
       spacesHome.value = response;
@@ -90,11 +87,7 @@ export function useSpaces() {
         },
         'spaces'
       );
-      console.log(
-        '🚀 ~ file: useSpaces.ts:48 ~ loadSpacesHome ~ response:',
-        response,
-        id_in
-      );
+
       if (!response) return;
 
       spaces.value = response;
