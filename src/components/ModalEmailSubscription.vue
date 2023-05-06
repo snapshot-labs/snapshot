@@ -1,83 +1,22 @@
 <script setup lang="ts">
-enum Status {
-  wating,
-  success,
-  error
-}
-enum Level {
-  info = 'info',
-  warning = 'warning',
-  'warning-red' = 'warning-red'
-}
-
 const props = defineProps<{
   open: boolean;
   address: string;
 }>();
-const { t } = useI18n();
 
 const emit = defineEmits(['close']);
-
 const email = ref('');
-const status: Ref<Status> = ref(Status.wating);
-const postSubscribeLevel: Ref<Level> = ref(Level.info);
-const postSubscribeMessage = ref('');
-const loading = ref(false);
+const { subscribe, reset, postSubscribeState, status, loading, Status } =
+  useEmailSubscription();
 
 function close() {
-  resetForm();
+  reset();
+  email.value = '';
   emit('close');
 }
 
-function resetForm() {
-  email.value = '';
-  status.value = Status.wating;
-  postSubscribeLevel.value = Level.info;
-  postSubscribeMessage.value = '';
-}
-
-async function subscribe() {
-  loading.value = true;
-
-  try {
-    const response = await fetch('https://envelop.fyi', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        params: {
-          email: email.value,
-          address: props.address
-        },
-        method: 'snapshot.subscribe'
-      })
-    });
-
-    const result = await response.json();
-
-    if (result.result === 'OK') {
-      status.value = Status.success;
-      postSubscribeLevel.value = Level.info;
-      postSubscribeMessage.value = t(
-        'emailSubscription.postSubscribeMessage.success'
-      );
-    } else {
-      status.value = Status.error;
-      postSubscribeLevel.value = Level.warning;
-      postSubscribeMessage.value = t(
-        'emailSubscription.postSubscribeMessage.apiError'
-      );
-    }
-  } catch (e) {
-    status.value = Status.error;
-    postSubscribeLevel.value = Level.warning;
-    postSubscribeMessage.value = t(
-      'emailSubscription.postSubscribeMessage.unknownError'
-    );
-  } finally {
-    loading.value = false;
-  }
+function submit() {
+  subscribe(email.value, props.address);
 }
 </script>
 
@@ -88,22 +27,17 @@ async function subscribe() {
         <h3>{{ $t('emailSubscription.title') }}</h3>
       </div>
     </template>
-
     <BaseMessageBlock
-      v-if="postSubscribeMessage"
-      :level="postSubscribeLevel"
+      v-if="postSubscribeState.message.value"
+      :level="postSubscribeState.level.value"
       class="m-4"
     >
-      {{ postSubscribeMessage }}
+      {{ postSubscribeState.message.value }}
     </BaseMessageBlock>
     <div v-else class="m-4">
       {{ $t('emailSubscription.description') }}
     </div>
-    <form
-      v-if="status !== Status.success"
-      class="m-4"
-      @submit.prevent="subscribe"
-    >
+    <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
       <InputEmail v-model="email" name="email" autocomplete="off" required>
         <button
           type="submit"
