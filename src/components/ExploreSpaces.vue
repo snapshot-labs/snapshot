@@ -10,8 +10,10 @@ const route = useRoute();
 const enableInfiniteScroll = ref(false);
 
 const routeQuery = computed(() => route.query || null);
+
 const queryVariables = computed(() => ({
-  category: routeQuery.value?.category
+  category: routeQuery.value?.category,
+  network: routeQuery.value?.network
 }));
 
 useInfiniteScroll(
