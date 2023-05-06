@@ -7,7 +7,7 @@ const { tc } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
-const routeQuery = computed(() => route.query.q || undefined);
+const routeQuery = computed(() => route.query || undefined);
 
 const categoryItems = computed(() => {
   return [
@@ -33,7 +33,7 @@ const categoryItems = computed(() => {
 function selectCategory(c: string) {
   selectedCategory.value = c;
   router.push({
-    query: { q: routeQuery.value, category: c }
+    query: { ...routeQuery.value, category: c }
   });
 }
 </script>
