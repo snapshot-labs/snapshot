@@ -4,7 +4,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'update:modelValue']);
 const email = ref('');
 const { subscribe, reset, postSubscribeState, status, loading, Status } =
   useEmailSubscription();
@@ -38,8 +38,25 @@ function submit() {
       {{ $t('emailSubscription.description') }}
     </div>
     <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
-      <InputEmail v-model="email" name="email" autocomplete="off" required>
-      </InputEmail>
+      <BaseInput
+        v-bind="$attrs"
+        :model-value="email"
+        type="email"
+        :placeholder="'johndoe@gmail.com'"
+        class="!pl-[40px]"
+        required
+        autocomplete="off"
+        @update:model-value="emit('update:modelValue', $event)"
+      >
+        <template #before>
+          <i-ho-mail class="text-[16px]" />
+        </template>
+      </BaseInput>
+
+      <small>
+        You may be asked to sign a transaction to verify wallet ownership
+      </small>
+
       <BaseButton
         class="mt-3 w-full"
         primary

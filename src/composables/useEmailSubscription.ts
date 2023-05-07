@@ -1,3 +1,4 @@
+import sign, { SubscribeType } from '@/helpers/sign';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useEmailSubscription() {
@@ -13,50 +14,26 @@ export function useEmailSubscription() {
     'warning-red' = 'warning-red'
   }
 
-  const domain = {
-    name: 'snapshot',
-    version: '0.1.4'
-  };
-
   const status: Ref<Status> = ref(Status.waiting);
   const postSubscribeLevel: Ref<Level> = ref(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
-  const auth = getInstance();
+
   const { t } = useI18n();
   const { web3 } = useWeb3();
-
-  async function sign(
-    message: {
-      email: string;
-      from: string;
-      timestamp: number;
-    },
-    types: any
-  ) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const signer = auth.web3?.getSigner ? auth.web3.getSigner() : auth.web3;
-    return await signer._signTypedData(domain, types, message);
-  }
+  const auth = getInstance();
 
   async function subscribe(email: string, address: string) {
     loading.value = true;
 
     try {
       const signature = await sign(
+        auth.web3,
+        web3.value.account,
         {
-          email,
-          from: web3.value.account,
-          timestamp: parseInt((Date.now() / 1e3).toFixed())
+          email
         },
-        {
-          Subscribe: [
-            { name: 'from', type: 'address' },
-            { name: 'email', type: 'string' },
-            { name: 'timestamp', type: 'uint64' }
-          ]
-        }
+        SubscribeType
       );
 
       const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
@@ -77,33 +54,31 @@ export function useEmailSubscription() {
       const result = await response.json();
 
       if (result.result === 'OK') {
-        status.value = Status.success;
-        postSubscribeLevel.value = Level.info;
-        postSubscribeMessage.value = t(
-          'emailSubscription.postSubscribeMessage.success'
-        );
+        setPostSubscribeState(Status.success, Level.info, 'success');
       } else {
-        status.value = Status.error;
-        postSubscribeLevel.value = Level.warning;
-        postSubscribeMessage.value = t(
-          'emailSubscription.postSubscribeMessage.apiError'
-        );
+        setPostSubscribeState(Status.error, Level.warning, 'apiError');
       }
     } catch (e) {
-      status.value = Status.error;
-      postSubscribeLevel.value = Level.warning;
-      postSubscribeMessage.value = t(
-        'emailSubscription.postSubscribeMessage.unknownError'
-      );
+      setPostSubscribeState(Status.error, Level.warning, 'unknownError');
     } finally {
       loading.value = false;
     }
   }
 
+  function setPostSubscribeState(
+    newStatus: Status,
+    level: Level,
+    messageKey?: string
+  ) {
+    status.value = newStatus;
+    postSubscribeLevel.value = level;
+    postSubscribeMessage.value = messageKey
+      ? t(`emailSubscription.postSubscribeMessage.${messageKey}`)
+      : '';
+  }
+
   function reset() {
-    status.value = Status.waiting;
-    postSubscribeLevel.value = Level.info;
-    postSubscribeMessage.value = '';
+    setPostSubscribeState(Status.waiting, Level.info);
   }
 
   return {
