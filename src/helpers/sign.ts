@@ -12,8 +12,7 @@ type DataType = Record<string, { name: string; type: string }[]>;
 export const SubscribeType: DataType = {
   Subscribe: [
     { name: 'from', type: 'address' },
-    { name: 'email', type: 'string' },
-    { name: 'timestamp', type: 'uint64' }
+    { name: 'email', type: 'string' }
   ]
 };
 
@@ -34,8 +33,6 @@ export default async function sign(
   const signer = web3?.getSigner ? web3.getSigner() : web3;
   const checksumAddress = getAddress(address);
   message.from = message.from ? getAddress(message.from) : checksumAddress;
-  if (!message.timestamp)
-    message.timestamp = parseInt((Date.now() / 1e3).toFixed());
 
   return await signer._signTypedData(domain, types, message);
 }
