@@ -39,14 +39,13 @@ function submit() {
     </div>
     <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
       <BaseInput
-        v-bind="$attrs"
-        :model-value="email"
-        type="email"
+        v-model="email"
         :placeholder="'johndoe@gmail.com'"
         class="!pl-[40px]"
-        required
+        type="email"
         autocomplete="off"
-        @update:model-value="emit('update:modelValue', $event)"
+        required
+        focus-on-mount
       >
         <template #before>
           <i-ho-mail class="text-[16px]" />
