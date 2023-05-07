@@ -39,15 +39,13 @@ function submit() {
     </div>
     <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
       <InputEmail v-model="email" name="email" autocomplete="off" required>
-        <button
-          type="submit"
-          class="absolute right-0 h-[42px] rounded-r-full px-3"
-        >
-          <LoadingSpinner v-if="loading" />
-          <i-ho-paper-airplane v-else class="rotate-90 text-skin-link" />
-        </button>
       </InputEmail>
-      <BaseButton class="mt-3 w-full" primary :type="'submit'">
+      <BaseButton
+        class="mt-3 w-full"
+        primary
+        :type="'submit'"
+        :loading="loading"
+      >
         {{ $t('emailSubscription.subscribe') }}
       </BaseButton>
     </form>
