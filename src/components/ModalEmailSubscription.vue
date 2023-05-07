@@ -40,7 +40,7 @@ function submit() {
     <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
       <BaseInput
         v-model="email"
-        :placeholder="'johndoe@gmail.com'"
+        placeholder="johndoe@gmail.com"
         class="!pl-[40px]"
         type="email"
         autocomplete="off"
