@@ -898,7 +898,7 @@
     "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
     "postSubscribeMessage": {
       "success": "You have been subscribed to email notifications. You will receive an email shortly with a verification link in order to confirm your subscription.",
-      "apiError": "An error occured while adding your email to the subscriptions list",
+      "apiError": "An error ocurred while adding your email to the subscriptions list",
       "unknownError": "Unable to subscribe to email notifications, please try again later"
     }
   },
