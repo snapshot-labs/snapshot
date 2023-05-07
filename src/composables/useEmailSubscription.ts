@@ -2,7 +2,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useEmailSubscription() {
   enum Status {
-    wating,
+    waiting,
     success,
     error
   }
@@ -18,7 +18,7 @@ export function useEmailSubscription() {
     version: '0.1.4'
   };
 
-  const status: Ref<Status> = ref(Status.wating);
+  const status: Ref<Status> = ref(Status.waiting);
   const postSubscribeLevel: Ref<Level> = ref(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
@@ -101,7 +101,7 @@ export function useEmailSubscription() {
   }
 
   function reset() {
-    status.value = Status.wating;
+    status.value = Status.waiting;
     postSubscribeLevel.value = Level.info;
     postSubscribeMessage.value = '';
   }
