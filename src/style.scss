@@ -114,19 +114,35 @@
 // Tune component styles
 
 .tune-label {
-  @apply text-base;
+  @apply font-sans;
+}
+
+.tune-button {
+  @apply rounded-full;
 }
 
 .tune-input {
-  @apply rounded-full text-base;
+  @apply rounded-full;
 }
 
 .tune-textarea {
-  @apply no-scrollbar overflow-x-scroll whitespace-pre rounded-2xl text-base;
+  @apply rounded-3xl px-3;
 }
 
 .tune-listbox-button {
-  @apply rounded-full text-base;
+  @apply rounded-full;
+}
+
+.tune-button-select {
+  @apply rounded-full;
+}
+
+.tune-input-duration {
+  @apply rounded-full;
+}
+
+.tune-error-text {
+  @apply font-sans;
 }
 
 // Fade transition for Vue's transition and transition-group

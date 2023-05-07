@@ -149,7 +149,7 @@ onMounted(() => loadProposals());
       />
       <div v-else class="mb-4 space-y-4">
         <template v-for="(proposal, i) in spaceProposals" :key="i">
-          <BaseBlock slim class="transition-colors md:hover:border-skin-text">
+          <BaseBlock slim class="transition-colors">
             <ProposalsItem
               :proposal="proposal"
               :profiles="profiles"

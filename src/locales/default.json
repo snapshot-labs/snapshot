@@ -14,6 +14,9 @@
   "retry": "Retry",
   "currentResults": "Current results",
   "reset": "Reset",
+  "strategy": "Strategy",
+  "addStrategy": "Add a strategy",
+  "copyVotingStrategies": "Copy voting strategies",
   "close": "Close",
   "save": "Save",
   "author": "Author",
@@ -30,7 +33,9 @@
   "spaces": "Spaces",
   "verifiedSpace": "Verified space",
   "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
-  "warningFlagged": "The proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningShortUrl": "Short URLs are not allowed. Please use the full URL.",
+  "warningFlagged": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "linkPreview": "This link will take you to {url}.</br> Are you sure you want to continue?",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "ended",
@@ -127,6 +132,7 @@
   "playground": "Playground",
   "strategyDetails": "Strategy details",
   "strategyParams": "Strategy params",
+  "useCustomStrategies": "Use custom strategies",
   "addresses": "Addresses",
   "networkErrorPlayground": "Network error - please open your browser console for more information",
   "upload": "Upload",
@@ -295,7 +301,8 @@
   "settings": {
     "header": "Settings",
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
-    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone.",
+    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone and you will not be able to create a new space with the same ENS domain name.",
+    "validationErrorsMessage": "Please fix the following fields before saving:",
     "confirmInputDeleteSpace": "Enter {space} to continue:",
     "noticeSavedTitle": "Settings saved",
     "noticeSavedText": "New settings only affect future proposals, not existing ones.",
@@ -451,7 +458,7 @@
       },
       "deleteSpace": {
         "title": "Delete space",
-        "information": "Delete this space and all its content. This cannot be undone.",
+        "information": "Delete this space and all its content. This cannot be undone and you will not be able to create a new space with the same ENS domain name.",
         "button": "Delete space",
         "disabledInformation": "You need to be the space controller to delete the space"
       }
@@ -486,6 +493,7 @@
     "goToSettings": "Go to settings",
     "setSpaceProfile": "Customize your space",
     "waitForTransaction": "The transaction need to confirm before you can create your space. {txUrl}",
+    "pendingTransactions": "Pending transactions",
     "pleaseWaitMessage": "This can take a few minutes, please wait while the transaction is being confirmed",
     "notControllerAddress": "Please connect with the controller address {wallet} to create the space.",
     "fillCurrentAccount": "Use currently logged in account",
@@ -649,16 +657,22 @@
     },
     "basic": {
       "label": "Basic",
-      "description": "Use any strategy to determine if a user can create a proposal.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal."
+      "description": "Use a minimum score along with any strategy to determine if a user can create a proposal.",
+      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to create a proposal.",
+      "minScoreHint": "The score is calculated with Voting Strategies used by the space.",
+      "customStrategiesHint": "Calculate the score with a different configuration of Voting Strategies"
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {operator} of the following stamps to create a proposal: {stamps}"
+      "invalidMessage": "You need a Gitcoin Passport with {operator} of the following stamps to create a proposal: {stamps}"
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"
+    },
+    "arbitrum": {
+      "label": "Arbitrum DAO votable supply",
+      "description": "Use with erc20-votes to validate by percentage of votable supply."
     }
   },
   "votingValidation": {
@@ -675,13 +689,13 @@
     },
     "basic": {
       "label": "Basic",
-      "description": "Use any strategy to determine if a user can vote.",
-      "invalidVoterMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
+      "description": "Use a minimum score along with any strategy to determine if a user can vote.",
+      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidVoterMessage": "You need a Gitcoin Passport with {operator} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with {operator} of the following stamps to vote on this proposal: {stamps}. "
     },
     "passport-weighted": {
       "label": "Gitcoin Passport weighted"

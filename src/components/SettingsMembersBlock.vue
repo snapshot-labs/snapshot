@@ -9,7 +9,7 @@ const props = defineProps<{
   isSpaceController?: boolean;
 }>();
 
-const { form, getValidation } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context);
 const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 const { t } = useI18n();
@@ -133,7 +133,7 @@ function addMembers(addresses: string) {
 
   const addressesArray = addresses
     .split(',')
-    .map(address => address.trim())
+    .map(address => address.trim().toLowerCase())
     .filter(address => isAddress(address))
     .filter(address => {
       const isNotMember =
@@ -164,11 +164,11 @@ function addMembers(addresses: string) {
 }
 
 const errorMessage = computed(() => {
-  if (inputAddMembers.value === '') return { message: '' };
+  if (inputAddMembers.value === '') return '';
 
   const membersArray = inputAddMembers.value
     .split(',')
-    .map(address => address.trim());
+    .map(address => address.trim().toLowerCase());
 
   let message = '';
 
@@ -187,7 +187,7 @@ const errorMessage = computed(() => {
     }
   });
 
-  return { message, push: true };
+  return message;
 });
 </script>
 
@@ -239,13 +239,13 @@ const errorMessage = computed(() => {
     </div>
 
     <div class="mt-3">
-      <div class="flex items-end gap-1">
-        <BaseInput
+      <div class="flex gap-1">
+        <TuneInput
           :model-value="inputAddMembers"
           :error="errorMessage"
-          :is-disabled="!isAbleToChangeMembers"
-          :title="$t('settings.members.addMembers')"
-          :information="$t('settings.members.addMembersInformation')"
+          :disabled="!isAbleToChangeMembers"
+          :label="$t('settings.members.addMembers')"
+          :hint="$t('settings.members.addMembersInformation')"
           placeholder="0x3901D0fDe202aF1427216b79f5243f8A022d68cf, 0x3901D0fDe202aF1427216b79f5243f8A022d68cf"
           class="w-full"
           @update:model-value="addMembers"
@@ -254,6 +254,7 @@ const errorMessage = computed(() => {
         <BasePopover>
           <template #button>
             <SettingsMembersPopoverButton
+              class="mt-[12px]"
               :selected-role="capitalize(inputAddRole)"
               :is-able-to-change-admins="isAbleToChangeAdmins"
               :is-able-to-change-members="isAbleToChangeMembers"
@@ -274,20 +275,20 @@ const errorMessage = computed(() => {
       </div>
       <BaseBlock
         v-if="
-          getValidation('admins')?.message ||
-          getValidation('moderators')?.message ||
-          getValidation('members')?.message
+          validationErrors?.admins ||
+          validationErrors?.moderators ||
+          validationErrors?.members
         "
         class="mt-2 !border-red"
       >
         <BaseIcon name="warning" class="mr-2 !text-red" />
         <span class="!text-red">
           {{
-            getValidation('admins').message ||
-            getValidation('moderators').message ||
-            getValidation('members').message
-          }}</span
-        >
+            validationErrors?.admins ||
+            validationErrors?.moderators ||
+            validationErrors?.members
+          }}
+        </span>
       </BaseBlock>
     </div>
   </BaseBlock>

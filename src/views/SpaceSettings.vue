@@ -27,13 +27,14 @@ const { send, isSending } = useClient();
 const { reloadSpace, deleteSpace } = useExtendedSpaces();
 const { loadFollows } = useFollowSpace();
 const {
-  validationResult,
+  validationErrors,
   isValid,
   isReadyToSubmit,
   hasFormChanged,
   prunedForm,
   populateForm,
-  resetForm
+  resetForm,
+  forceShowError
 } = useFormSpaceSettings('settings');
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
@@ -69,6 +70,7 @@ const modalSettingsSavedIgnore = useStorage(
   'snapshot.settings.saved.ignore',
   false
 );
+const showFormErrors = ref(false);
 
 const isSpaceAdmin = computed(() => {
   if (!props.space) return false;
@@ -121,8 +123,12 @@ async function handleDelete() {
 }
 
 async function handleSubmit() {
-  if (!isValid.value)
-    return console.log('Invalid schema', validationResult.value);
+  if (!isValid.value) {
+    showFormErrors.value = true;
+    forceShowError();
+    window.scrollTo(0, 0);
+    return console.log('Invalid form', validationErrors.value);
+  }
 
   const result = await send(
     { id: props.space.id },
@@ -182,8 +188,22 @@ const isViewOnly = computed(() => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
+          <BaseMessageBlock
+            v-if="showFormErrors && Object.keys(validationErrors).length"
+            level="warning-red"
+          >
+            {{ $t('settings.validationErrorsMessage') }}
+            <span class="font-bold">
+              {{
+                Object.keys(validationErrors)
+                  .map(key => key)
+                  .join(', ')
+              }}
+            </span>
+          </BaseMessageBlock>
+
           <MessageWarningGnosisNetwork
-            v-if="isGnosisAndNotDefaultNetwork"
+            v-else-if="isGnosisAndNotDefaultNetwork"
             :space="space"
             action="settings"
             is-responsive
@@ -217,7 +237,6 @@ const isViewOnly = computed(() => {
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
-              :space="space"
             />
             <SettingsProposalBlock
               context="settings"
@@ -229,7 +248,6 @@ const isViewOnly = computed(() => {
             <SettingsVotingBlock
               context="settings"
               :is-view-only="isViewOnly"
-              :space="space"
             />
           </template>
 

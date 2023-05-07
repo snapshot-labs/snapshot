@@ -2,8 +2,12 @@
 const { domain } = useApp();
 const { init, isReady, showSidebar } = useApp();
 const route = useRoute();
+const { restorePendingTransactions } = useTxStatus();
 
-onMounted(async () => init());
+onMounted(async () => {
+  await init();
+  restorePendingTransactions();
+});
 </script>
 
 <template>
