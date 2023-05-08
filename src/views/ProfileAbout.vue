@@ -11,11 +11,9 @@ const { loadSpaces, spaces } = useSpaces();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
 const followingSpaceIds = ref<string[]>([]);
-const isLoadingFollowingSpaceIds = ref(true);
-const loadingOwnedSpaces = ref(false);
+const isLoading = ref(false);
 
 async function loadSpacesFollowed() {
-  isLoadingFollowingSpaceIds.value = true;
   try {
     const response = await apolloQuery(
       {
@@ -28,10 +26,7 @@ async function loadSpacesFollowed() {
     );
 
     followingSpaceIds.value = response.map(f => f.space.id);
-
-    isLoadingFollowingSpaceIds.value = false;
   } catch (e) {
-    isLoadingFollowingSpaceIds.value = false;
     console.error(e);
   }
 }
@@ -46,14 +41,14 @@ const followingSpaces = computed(() => {
 });
 
 onMounted(async () => {
-  loadingOwnedSpaces.value = true;
+  isLoading.value = true;
   await loadSpacesFollowed();
   await loadOwnedEnsDomains(props.userAddress);
   await loadSpaces([
     ...ownedEnsDomains.value.map(d => d.name),
     ...followingSpaceIds.value
   ]);
-  loadingOwnedSpaces.value = false;
+  isLoading.value = false;
 });
 </script>
 
@@ -65,20 +60,20 @@ onMounted(async () => {
         :spaces="domainsWithExistingSpace"
         :title="$t('profile.about.createdSpaces')"
         :message="$t('profile.about.notCreatedSpacesYet')"
-        :loading="loadingOwnedSpaces"
+        :loading="isLoading"
       />
 
       <BlockSpacesList
         :spaces="followingSpaces"
         :title="$t('profile.about.joinedSpaces')"
         :message="$t('profile.about.notJoinSpacesYet')"
-        :loading="isLoadingFollowingSpaceIds"
+        :loading="isLoading"
       />
 
       <ProfileAboutDelegate
         :user-address="userAddress"
         :following-spaces="followingSpaces"
-        :loading="isLoadingFollowingSpaceIds"
+        :loading="isLoading"
       />
     </div>
   </div>
