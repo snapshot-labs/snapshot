@@ -245,6 +245,11 @@ onMounted(() => {
           :loaded-results="loadedResults"
           :strategies="strategies"
         />
+        <SpaceProposalNFTSidebar
+          v-if="space?.nftMinterEnabled || true"
+          :space="space"
+          :proposal="proposal"
+        />
       </div>
     </template>
   </TheLayout>
