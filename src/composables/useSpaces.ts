@@ -50,7 +50,7 @@ export function useSpaces() {
     }
   }
 
-  async function loadMoreSpaceHome(variables: any = {}, skip: number) {
+  async function loadMoreSpaceHome(variables: any, skip: number) {
     if (isLoadingSpacesHome.value) return;
     isLoadingSpacesHome.value = true;
     try {
@@ -80,7 +80,7 @@ export function useSpaces() {
           variables: {
             id_in,
             skip: 0,
-            first: 100,
+            first: 1000,
             orderBy: 'created',
             orderDirection: 'desc'
           }
