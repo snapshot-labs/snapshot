@@ -18,14 +18,9 @@ export function useSpaces() {
         variables: {
           skip: skip,
           first: 12,
-          orderBy: variables.orderBy || 'rank',
-          orderDirection: variables.orderDirection || 'desc',
           private: false,
           network: variables.network || undefined,
-          category:
-            variables.category === 'all'
-              ? undefined
-              : variables.category || undefined
+          category: variables.category || undefined
         }
       },
       'spaces'
@@ -40,7 +35,7 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spacesHome.value = response.spaces;
+      spacesHome.value = response.items;
       spacesHomeTotal.value = response.total;
 
       isLoadingSpacesHome.value = false;
@@ -60,7 +55,7 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spacesHome.value = [...spacesHome.value, ...response];
+      spacesHome.value = [...spacesHome.value, ...response.items];
 
       isLoadingSpacesHome.value = false;
     } catch (e) {
@@ -82,9 +77,7 @@ export function useSpaces() {
           variables: {
             id_in,
             skip: 0,
-            first: 1000,
-            orderBy: 'created',
-            orderDirection: 'desc'
+            first: 1000
           }
         },
         'spaces'
@@ -92,7 +85,7 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spaces.value = response.spaces;
+      spaces.value = response.items;
 
       isLoadingSpaces.value = false;
     } catch (e) {

@@ -355,8 +355,6 @@ export const SPACES_QUERY = gql`
     $id_in: [String]
     $first: Int
     $skip: Int
-    $orderBy: String
-    $orderDirection: OrderDirection
     $private: Boolean
     $network: String
     $category: String
@@ -364,8 +362,6 @@ export const SPACES_QUERY = gql`
     spaces(
       first: $first
       skip: $skip
-      orderBy: $orderBy
-      orderDirection: $orderDirection
       where: {
         id_in: $id_in
         private: $private
@@ -374,12 +370,12 @@ export const SPACES_QUERY = gql`
       }
     ) {
       total
-      spaces {
+      items {
         id
         name
         avatar
         verified
-        rank
+        popularity
         followersCount
       }
     }

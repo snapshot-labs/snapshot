@@ -110,7 +110,7 @@ export interface Space {
   followersCount: number;
   terms?: string;
   verified: number;
-  rank: number;
+  popularity: number;
   avatar: string;
 }
 
