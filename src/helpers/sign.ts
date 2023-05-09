@@ -28,9 +28,7 @@ export default async function sign(
   message: ISubscribe,
   types: DataType
 ) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const signer = web3?.getSigner ? web3.getSigner() : web3;
+  const signer = 'getSigner' in web3 ? web3.getSigner() : web3;
   const checksumAddress = getAddress(address);
   message.from = message.from ? getAddress(message.from) : checksumAddress;
 
