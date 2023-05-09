@@ -52,7 +52,7 @@ function submit() {
         </template>
       </BaseInput>
 
-      <small>{{ $t('emailSubscription.buttonCaption') }}</small>
+      <small>{{ $t('emailSubscription.inputCaption') }}</small>
 
       <BaseButton
         class="mt-3 w-full"
