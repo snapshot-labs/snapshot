@@ -13,7 +13,12 @@ const props = defineProps<{
   selectedChoices: any;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'subscribeEmail']);
+
+const subscribeEmail = () => {
+  emit('subscribeEmail');
+  emit('close');
+};
 
 const imgPath = computed(() => {
   return isGnosisSafe.value
@@ -78,6 +83,14 @@ function share(shareTo: 'twitter' | 'lenster') {
         >
           <i-s-lenster class="text-[#8B5CF6]" />
           {{ $t('shareOnLenster') }}
+        </BaseButton>
+
+        <BaseButton
+          class="flex !h-[42px] w-full items-center justify-center gap-2"
+          @click="subscribeEmail"
+        >
+          <i-ho-mail class="text-skin-link" />
+          {{ $t('proposal.postVoteModal.subscribe') }}
         </BaseButton>
 
         <div v-if="isGnosisSafe">

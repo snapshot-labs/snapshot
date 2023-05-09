@@ -256,7 +256,8 @@
       "seeQueue": "See queued transactions",
       "tips": {
         "1": "Votes can be changed while the proposal is active"
-      }
+      },
+      "subscribe": "Subscribe with Email"
     },
     "downloadCsvVotes": "Download as CSV",
     "preparingCsvVotes": "Preparing file"
