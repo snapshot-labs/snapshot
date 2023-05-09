@@ -65,6 +65,7 @@
     "useCssModule": true,
     "useCssVars": true,
     "useDelegate": true,
+    "useEmailSubscription": true,
     "useEns": true,
     "useExtendedSpaces": true,
     "useFlashNotification": true,

@@ -4,7 +4,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close', 'update:modelValue']);
+const emit = defineEmits(['close']);
 const email = ref('');
 const { subscribe, reset, postSubscribeState, status, loading, Status } =
   useEmailSubscription();
