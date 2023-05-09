@@ -6,6 +6,7 @@ export function useSpaces() {
 
   const isLoadingSpacesHome = ref(false);
   const spacesHome = ref<Space[]>([]);
+  const spacesHomeTotal = ref(0);
 
   const isLoadingSpaces = ref(false);
   const spaces = ref<Space[]>([]);
@@ -39,7 +40,8 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spacesHome.value = response;
+      spacesHome.value = response.spaces;
+      spacesHomeTotal.value = response.total;
 
       isLoadingSpacesHome.value = false;
     } catch (e) {
@@ -90,7 +92,7 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spaces.value = response;
+      spaces.value = response.spaces;
 
       isLoadingSpaces.value = false;
     } catch (e) {
@@ -108,6 +110,7 @@ export function useSpaces() {
     spaces,
     spacesHome,
     isLoadingSpaces,
-    isLoadingSpacesHome
+    isLoadingSpacesHome,
+    spacesHomeTotal
   };
 }

@@ -2,8 +2,13 @@
 import { shorten } from '@/helpers/utils';
 import { useInfiniteScroll } from '@vueuse/core';
 
-const { loadSpacesHome, loadMoreSpaceHome, isLoadingSpacesHome, spacesHome } =
-  useSpaces();
+const {
+  loadSpacesHome,
+  loadMoreSpaceHome,
+  isLoadingSpacesHome,
+  spacesHome,
+  spacesHomeTotal
+} = useSpaces();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
 
@@ -26,9 +31,13 @@ useInfiniteScroll(
   { distance: 400 }
 );
 
-watch(routeQuery, () => {
-  loadSpacesHome(queryVariables.value);
-});
+watch(
+  routeQuery,
+  () => {
+    loadSpacesHome(queryVariables.value);
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
   loadSpacesHome();
@@ -47,15 +56,15 @@ onMounted(() => {
       <ExploreMenuCategories />
 
       <div
-        v-if="!isLoadingSpacesHome"
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
-        {{ $tc('spaceCount', [formatCompactNumber(spacesHome.length)]) }}
+        {{ $tc('spaceCount', [formatCompactNumber(spacesHomeTotal)]) }}
       </div>
     </BaseContainer>
 
-    <BaseContainer :slim="true">
+    <BaseContainer slim>
       <TransitionGroup
+        v-if="!isLoadingSpacesHome"
         name="fade"
         tag="div"
         class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
@@ -95,7 +104,7 @@ onMounted(() => {
           </router-link>
         </div>
       </TransitionGroup>
-      <ExploreSkeletonLoading v-if="isLoadingSpacesHome" is-spaces />
+      <ExploreSkeletonLoading v-else-if="isLoadingSpacesHome" is-spaces />
       <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
       <div
         v-if="!enableInfiniteScroll && spacesHome.length"

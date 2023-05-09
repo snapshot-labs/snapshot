@@ -373,12 +373,15 @@ export const SPACES_QUERY = gql`
         category: $category
       }
     ) {
-      id
-      name
-      avatar
-      verified
-      rank
-      followersCount
+      total
+      spaces {
+        id
+        name
+        avatar
+        verified
+        rank
+        followersCount
+      }
     }
   }
 `;
