@@ -52,9 +52,7 @@ function submit() {
         </template>
       </BaseInput>
 
-      <small>
-        You may be asked to sign a transaction to verify wallet ownership
-      </small>
+      <small>{{ $t('emailSubscription.buttonCaption') }}</small>
 
       <BaseButton
         class="mt-3 w-full"

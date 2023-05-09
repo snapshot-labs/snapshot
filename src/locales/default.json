@@ -910,6 +910,7 @@
     "title": "Email subscription",
     "subscribe": "Subscribe",
     "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
+    "buttonCaption": "Sign message",
     "postSubscribeMessage": {
       "success": "You have been subscribed to email notifications. You will receive an email shortly with a verification link in order to confirm your subscription.",
       "apiError": "An error ocurred while adding your email to the subscriptions list",
