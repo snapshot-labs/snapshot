@@ -20,6 +20,7 @@ export function useSpaces() {
           skip: skip,
           first: 12,
           private: false,
+          search: variables.search || undefined,
           network: variables.network || undefined,
           category: variables.category || undefined
         }

@@ -19,7 +19,8 @@ const routeQuery = computed(() => route.query || null);
 
 const queryVariables = computed(() => ({
   category: routeQuery.value?.category,
-  network: routeQuery.value?.network
+  network: routeQuery.value?.network,
+  search: routeQuery.value?.q
 }));
 
 function handleClickMore() {

@@ -352,6 +352,7 @@ export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
 
 export const SPACES_QUERY = gql`
   query Spaces(
+    $search: String
     $id_in: [String]
     $first: Int
     $skip: Int
@@ -363,6 +364,7 @@ export const SPACES_QUERY = gql`
       first: $first
       skip: $skip
       where: {
+        search: $search
         id_in: $id_in
         private: $private
         network: $network
