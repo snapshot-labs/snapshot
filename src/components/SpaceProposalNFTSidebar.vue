@@ -7,18 +7,26 @@ const props = defineProps<{
 }>();
 
 const isModalMinterOpen = ref(false);
+const mintCurrency = 'MATIC';
 const minMintPrice = ref('0.001');
 const mintedCount = ref('23');
 const mintedCountTotal = ref('500');
+
+const isModalExploreOpen = ref(false);
 </script>
 
 <template>
   <BaseBlock :title="$t('NFT Claimer')">
+    <template #button>
+      <BaseButton variant="flat" @click="isModalExploreOpen = true">
+        Explore all
+      </BaseButton>
+    </template>
     <div class="flex flex-col items-center space-y-2">
       <div class="h-[186px] w-[186px] rounded-xl bg-primary"></div>
       <span class="text-skin-link">{{ proposal.title }}</span>
       <BaseButton primary @click="isModalMinterOpen = true">
-        MINT for {{ minMintPrice }} ETH
+        MINT for {{ minMintPrice }} {{ mintCurrency }}
       </BaseButton>
       <span>{{ mintedCount }} / {{ mintedCountTotal }} minted</span>
     </div>
@@ -29,6 +37,12 @@ const mintedCountTotal = ref('500');
       :space="space"
       :proposal="proposal"
       @close="isModalMinterOpen = false"
+    />
+    <SpaceProposalNFTExploreModal
+      :open="isModalExploreOpen"
+      :space="space"
+      :proposal="proposal"
+      @close="isModalExploreOpen = false"
     />
   </teleport>
 </template>

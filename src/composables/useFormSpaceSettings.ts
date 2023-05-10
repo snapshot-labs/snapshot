@@ -48,7 +48,14 @@ const EMPTY_SPACE_FORM = {
   domain: '',
   skin: '',
   guidelines: '',
-  template: ''
+  template: '',
+  nftClaimer: {
+    minSupply: 0,
+    maxSupply: 10000,
+    minPrice: 0,
+    sharing: 0,
+    enabled: false
+  }
 };
 
 const formSetup = ref(clone(EMPTY_SPACE_FORM));

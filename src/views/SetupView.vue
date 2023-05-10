@@ -14,6 +14,7 @@ useMeta({
 
 enum Step {
   GETTING_STARTED,
+  NFTCLAIMER,
   ENS,
   PROFILE,
   STRATEGY,
@@ -142,7 +143,15 @@ onMounted(() => {
           v-else-if="currentStep === Step.EXTRAS && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
-          @next="handleSubmit"
+          @next="previousStep"
+        />
+
+        <SetupNFTClaimer
+          v-else-if="currentStep === Step.NFTCLAIMER"
+          context="setup"
+          :space="prunedForm"
+          @next="nextStep"
+          @back="handleSubmit"
         />
       </template>
     </template>

@@ -25,7 +25,7 @@ const isCollapsed = ref(true);
   >
     <div
       v-if="title"
-      class="group flex h-[57px] justify-between rounded-t-none border-b border-skin-border px-4 pb-[12px] pt-3 md:rounded-t-lg"
+      class="group flex h-[57px] items-center justify-between rounded-t-none border-b border-skin-border px-4 pb-[12px] pt-3 md:rounded-t-lg"
       :class="[
         {
           'border-b-0': hideBottomBorder || (isCollapsable && isCollapsed)

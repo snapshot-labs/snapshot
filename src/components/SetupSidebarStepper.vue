@@ -9,6 +9,7 @@ const emit = defineEmits(['changeStep']);
 
 const steps = [
   { name: 'Getting started' },
+  { name: 'NFT Claimer' },
   { name: 'ENS' },
   { name: 'Profile' },
   { name: 'Strategy' },

@@ -15,12 +15,8 @@ defineEmits(['close']);
 //   }
 // );
 
-const mintCurrency = 'MATIC';
-const minMintPrice = ref('0.001');
-
-async function mint() {
-  // sign message
-  // fetch BE with spaceId, proposalId, salt?
+async function explore() {
+  // goto opensea?
 }
 </script>
 
@@ -30,7 +26,7 @@ async function mint() {
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
-        <h3>{{ $t('Mint NFT') }}</h3>
+        <h3>Explore nfts</h3>
       </div>
     </template>
     <template #default="{ maxHeight }">
@@ -38,9 +34,7 @@ async function mint() {
         class="flex flex-row justify-center p-4"
         :style="{ minHeight: maxHeight }"
       >
-        <BaseButton primary @click="mint()">
-          MINT for {{ minMintPrice }} {{ mintCurrency }}
-        </BaseButton>
+        <span>All proposals nfts here...</span>
       </div>
     </template>
   </BaseModal>

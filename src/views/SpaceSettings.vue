@@ -58,6 +58,7 @@ enum Page {
   PROPOSAL,
   VOTING,
   MEMBERS,
+  NFTCLAIMER,
   ADVANCED
 }
 
@@ -98,6 +99,10 @@ const settingsPages = computed(() => [
   {
     id: Page.MEMBERS,
     title: t('settings.navigation.members')
+  },
+  {
+    id: Page.NFTCLAIMER,
+    title: t('settings.navigation.nftclaimer')
   },
   {
     id: Page.ADVANCED,
@@ -253,6 +258,14 @@ const isViewOnly = computed(() => {
 
           <template v-if="currentPage === Page.MEMBERS">
             <SettingsMembersBlock
+              context="settings"
+              :space="space"
+              :is-space-controller="isSpaceController"
+            />
+          </template>
+
+          <template v-if="currentPage === Page.NFTCLAIMER">
+            <SetupNFTClaimer
               context="settings"
               :space="space"
               :is-space-controller="isSpaceController"
