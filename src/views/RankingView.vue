@@ -1,13 +1,28 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
+import { useInfiniteScroll } from '@vueuse/core';
 
 const { formatCompactNumber } = useIntl();
 
-const { spaces, loadSpacesHome, isLoadingSpacesHome } = useSpaces();
+const {
+  spacesHome,
+  loadSpacesHome,
+  loadMoreSpaceHome,
+  isLoadingSpacesHome,
+  isLoadingMoreSpacesHome
+} = useSpaces();
 
 onMounted(() => {
   loadSpacesHome();
 });
+
+useInfiniteScroll(
+  document,
+  () => {
+    loadMoreSpaceHome({}, spacesHome.value.length);
+  },
+  { distance: 250, interval: 500 }
+);
 </script>
 
 <template>
@@ -21,8 +36,9 @@ onMounted(() => {
           <div class="w-[120px]" v-text="'Votes'" />
           <div class="w-[120px]" v-text="'Members'" />
         </div>
+
         <router-link
-          v-for="(space, i) in spaces"
+          v-for="(space, i) in spacesHome"
           :key="space.id"
           :to="{ name: 'spaceProposals', params: { key: space.id } }"
           class="flex border-b p-3 text-right last:border-b-0"
@@ -36,31 +52,33 @@ onMounted(() => {
             </div>
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.proposals)" />
+            <div v-text="formatCompactNumber(space.proposalsCount)" />
             <div
-              v-if="space.proposals_7d"
+              v-if="space.proposalsCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.proposals_7d)}`"
+              v-text="`+${formatCompactNumber(space.proposalsCount7d)}`"
             />
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.votes)" />
+            <div v-text="formatCompactNumber(space.votesCount)" />
             <div
-              v-if="space.votes_7d"
+              v-if="space.votesCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.votes_7d)}`"
+              v-text="`+${formatCompactNumber(space.votesCount7d)}`"
             />
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.followers)" />
+            <div v-text="formatCompactNumber(space.followersCount)" />
             <div
-              v-if="space.followers_7d"
+              v-if="space.followersCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.followers_7d)}`"
+              v-text="`+${formatCompactNumber(space.followersCount7d)}`"
             />
           </div>
         </router-link>
-        <LoadingSpinner v-if="!isLoadingSpacesHome" class="p-3" />
+        <div v-if="isLoadingSpacesHome || isLoadingMoreSpacesHome" class="flex">
+          <LoadingSpinner class="mx-auto py-3" big />
+        </div>
       </BaseBlock>
     </BaseContainer>
   </div>
