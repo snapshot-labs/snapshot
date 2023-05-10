@@ -11,7 +11,8 @@ export function useEmailSubscription() {
   enum Level {
     info = 'info',
     warning = 'warning',
-    'warning-red' = 'warning-red'
+    'warning-red' = 'warning-red',
+    success = 'success'
   }
 
   const status: Ref<Status> = ref(Status.waiting);
@@ -54,7 +55,7 @@ export function useEmailSubscription() {
       const result = await response.json();
 
       if (result.result === 'OK') {
-        setPostSubscribeState(Status.success, Level.info, 'success');
+        setPostSubscribeState(Status.success, Level.success, 'success');
       } else {
         setPostSubscribeState(Status.error, Level.warning, 'apiError');
       }
