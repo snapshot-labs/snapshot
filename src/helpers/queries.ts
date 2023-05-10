@@ -377,6 +377,13 @@ export const SPACES_QUERY = gql`
         verified
         popularity
         followersCount
+        activeProposals
+        proposalsCount
+        proposalsCount7d
+        followersCount
+        followersCount7d
+        votesCount
+        votesCount7d
       }
     }
   }

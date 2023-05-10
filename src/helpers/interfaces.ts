@@ -107,11 +107,17 @@ export interface ExploreSpace {
 export interface Space {
   id: string;
   name: string;
-  followersCount: number;
   terms?: string;
   verified: number;
   popularity: number;
   avatar: string;
+  activeProposals: number;
+  proposalsCount: number;
+  proposalsCount7d: number;
+  followersCount: number;
+  followersCount7d: number;
+  votesCount: number;
+  votesCount7d: number;
 }
 
 export interface ExtendedSpace {
