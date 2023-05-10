@@ -36,11 +36,19 @@ function selectCategory(c: string) {
     query: { ...routeQuery.value, category: c }
   });
 }
+
+onMounted(() => {
+  const category = routeQuery.value.category;
+  if (category) {
+    selectedCategory.value = category as string;
+  }
+});
 </script>
 
 <template>
   <BaseMenu
     class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
+    :selected="selectedCategory"
     :items="categoryItems"
     @select="selectCategory"
   >

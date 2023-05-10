@@ -6,6 +6,7 @@ const {
   loadSpacesHome,
   loadMoreSpaceHome,
   isLoadingSpacesHome,
+  isLoadingMoreSpacesHome,
   spacesHome,
   spacesHomeTotal
 } = useSpaces();
@@ -21,6 +22,11 @@ const queryVariables = computed(() => ({
   network: routeQuery.value?.network
 }));
 
+function handleClickMore() {
+  loadMoreSpaceHome(queryVariables.value, spacesHome.value.length);
+  enableInfiniteScroll.value = true;
+}
+
 useInfiniteScroll(
   document,
   () => {
@@ -28,7 +34,7 @@ useInfiniteScroll(
       loadMoreSpaceHome(queryVariables.value, spacesHome.value.length);
     }
   },
-  { distance: 400 }
+  { distance: 250, interval: 500 }
 );
 
 watch(
@@ -63,8 +69,11 @@ onMounted(() => {
     </BaseContainer>
 
     <BaseContainer slim>
+      <ExploreSkeletonLoading v-if="isLoadingSpacesHome" is-spaces />
+      <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
+
       <TransitionGroup
-        v-if="!isLoadingSpacesHome"
+        v-else-if="!isLoadingSpacesHome"
         name="fade"
         tag="div"
         class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
@@ -104,15 +113,16 @@ onMounted(() => {
           </router-link>
         </div>
       </TransitionGroup>
-      <ExploreSkeletonLoading v-else-if="isLoadingSpacesHome" is-spaces />
-      <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
       <div
-        v-if="!enableInfiniteScroll && spacesHome.length"
-        class="px-4 text-center md:px-0"
+        v-if="!enableInfiniteScroll && spacesHomeTotal > spacesHome.length"
+        class="px-3 text-center md:px-0"
       >
-        <BaseButton class="mt-4 w-full" @click="enableInfiniteScroll = true">
+        <BaseButton class="mt-4 w-full" @click="handleClickMore">
           {{ $t('homeLoadmore') }}
         </BaseButton>
+      </div>
+      <div v-else-if="isLoadingMoreSpacesHome" class="mt-4 flex">
+        <LoadingSpinner class="mx-auto" big />
       </div>
     </BaseContainer>
   </div>

@@ -5,6 +5,7 @@ export function useSpaces() {
   const { apolloQuery } = useApolloQuery();
 
   const isLoadingSpacesHome = ref(false);
+  const isLoadingMoreSpacesHome = ref(false);
   const spacesHome = ref<Space[]>([]);
   const spacesHomeTotal = ref(0);
 
@@ -48,8 +49,8 @@ export function useSpaces() {
   }
 
   async function loadMoreSpaceHome(variables: any, skip: number) {
-    if (isLoadingSpacesHome.value) return;
-    isLoadingSpacesHome.value = true;
+    if (isLoadingMoreSpacesHome.value || spacesHomeTotal.value <= skip) return;
+    isLoadingMoreSpacesHome.value = true;
     try {
       const response = await spacesHomeQuery(variables, skip);
 
@@ -57,12 +58,12 @@ export function useSpaces() {
 
       spacesHome.value = [...spacesHome.value, ...response.items];
 
-      isLoadingSpacesHome.value = false;
+      isLoadingMoreSpacesHome.value = false;
     } catch (e) {
-      isLoadingSpacesHome.value = false;
+      isLoadingMoreSpacesHome.value = false;
       console.error(e);
     } finally {
-      isLoadingSpacesHome.value = false;
+      isLoadingMoreSpacesHome.value = false;
     }
   }
 
@@ -104,6 +105,7 @@ export function useSpaces() {
     spacesHome,
     isLoadingSpaces,
     isLoadingSpacesHome,
+    isLoadingMoreSpacesHome,
     spacesHomeTotal
   };
 }
