@@ -326,3 +326,16 @@ export interface FormError {
   message: string;
   push?: boolean;
 }
+
+export interface ApiDelegate {
+  id: string;
+  delegatedVotes: string;
+  delegatedVotesRaw: string;
+  tokenHoldersRepresentedAmount: number;
+}
+
+export interface Delegate extends ApiDelegate {
+  delegatorsPercentage: number;
+  votesPercentage: number;
+  statement?: string;
+}

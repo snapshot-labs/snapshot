@@ -1,16 +1,5 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-
-type ApiDelegate = {
-  id: string;
-  delegatedVotes: string;
-  delegatedVotesRaw: string;
-  tokenHoldersRepresentedAmount: number;
-};
-
-type Delegate = ApiDelegate & {
-  delegatorsPercentage: number;
-  votesPercentage: number;
-};
+import { ApiDelegate, Delegate } from '@/helpers/interfaces';
 
 type Governance = {
   delegatedVotes: string;
@@ -18,7 +7,7 @@ type Governance = {
   totalDelegates: string;
 };
 
-const DELEGATES_LIMIT = 50;
+const DELEGATES_LIMIT = 18;
 
 function adjustUrl(apiUrl: string) {
   const hostedPattern =
@@ -45,7 +34,9 @@ export function useDelegates() {
       delegates: {
         __args: {
           first: DELEGATES_LIMIT,
-          skip: overwrite ? 0 : delegates.value.length
+          skip: overwrite ? 0 : delegates.value.length,
+          orderBy: 'delegatedVotes',
+          orderDirection: 'desc'
         },
         id: true,
         delegatedVotes: true,
@@ -67,10 +58,6 @@ export function useDelegates() {
         'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
       ),
       query
-    );
-    console.log(
-      '🚀 ~ file: useDelegates.ts:92 ~ _fetchDelegates ~ data:',
-      data
     );
 
     const governanceData = data.governance as Governance;
@@ -116,7 +103,12 @@ export function useDelegates() {
   }
 
   async function fetchMoreDelegates() {
-    if (isLoadingDelegates.value || !loadedDelegates.value) return;
+    if (
+      isLoadingDelegates.value ||
+      isLoadingMoreDelegates.value ||
+      !loadedDelegates.value
+    )
+      return;
     isLoadingMoreDelegates.value = true;
 
     await _fetchDelegates(false);
