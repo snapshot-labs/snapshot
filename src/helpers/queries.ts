@@ -468,3 +468,14 @@ export const SPACE_QUERY = gql`
     }
   }
 `;
+
+export const METRICS_QUERY = gql`
+  query Metrics {
+    metrics {
+      strategies
+      categories
+      networks
+      plugins
+    }
+  }
+`;
