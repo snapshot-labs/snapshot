@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Delegate, Profile, ExtendedSpace } from '@/helpers/interfaces';
 
+const { domain } = useApp();
+
 defineProps<{
   delegate: Delegate;
   profiles: Record<string, Profile>;
@@ -18,18 +20,29 @@ const { formatCompactNumber } = useIntl();
       :profile="profiles[delegate.id]"
       :space="space"
     >
-      <div class="flex text-left">
-        <AvatarUser :address="delegate.id" size="48" />
-        <div class="ml-3">
-          <div class="font-semibold text-skin-heading">
-            {{ getUsername(delegate.id, profiles[delegate.id]) }}
-          </div>
-          <div>
-            {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
-            {{ space.symbol }}
+      <BaseLink
+        :link="
+          domain
+            ? `https://snapshot.org/#/profile/${delegate.id}`
+            : { name: 'profileActivity', params: { address: delegate.id } }
+        "
+        hide-external-icon
+        tabindex="-1"
+        @click.stop=""
+      >
+        <div class="flex text-left">
+          <AvatarUser :address="delegate.id" size="48" />
+          <div class="ml-3">
+            <div class="font-semibold text-skin-heading">
+              {{ getUsername(delegate.id, profiles[delegate.id]) }}
+            </div>
+            <div>
+              {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
+              {{ space.symbol }}
+            </div>
           </div>
         </div>
-      </div>
+      </BaseLink>
     </PopoverHoverProfile>
     <div class="mt-4 line-clamp-4 h-full">
       <span v-if="delegate?.statement">
