@@ -23,7 +23,11 @@ const isModalExploreOpen = ref(false);
       </BaseButton>
     </template>
     <div class="flex flex-col items-center space-y-2">
-      <div class="h-[186px] w-[186px] rounded-xl bg-primary"></div>
+      <div
+        class="flex h-[186px] w-[186px] flex-row items-center justify-center rounded-xl border border-skin-link bg-skin-border"
+      >
+        <BaseIcon name="snapshot" size="50" class="text-primary" />
+      </div>
       <span class="text-skin-link">{{ proposal.title }}</span>
       <BaseButton primary @click="isModalMinterOpen = true">
         MINT for {{ minMintPrice }} {{ mintCurrency }}
