@@ -38,10 +38,10 @@ const isLegacySpace = computed(() => {
     <router-link
       v-if="hasDelegationStrategy"
       v-slot="{ isExactActive }"
-      :to="{ name: 'delegate', params: { key: space.id } }"
+      :to="{ name: 'spaceDelegates' }"
     >
       <BaseSidebarNavigationItem :is-active="isExactActive">
-        {{ $t('delegate.header') }}
+        {{ $t('delegates.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link

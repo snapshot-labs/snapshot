@@ -3,7 +3,7 @@ import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { domain } = useApp();
 
-const props = defineProps<{
+defineProps<{
   address: string;
   space?: ExtendedSpace;
   proposal?: Proposal;
@@ -13,8 +13,7 @@ const props = defineProps<{
   widthClass?: string;
 }>();
 
-const { profile, address } = toRefs(props);
-const { username } = useUsername(address, profile);
+const { getUsername } = useUsername();
 </script>
 
 <template>
@@ -40,7 +39,7 @@ const { username } = useUsername(address, profile);
           v-if="!hideUsername"
           class="w-full cursor-pointer truncate text-skin-link"
         >
-          {{ username }}
+          {{ getUsername(address, profile) }}
         </span>
         <BaseBadge :address="address" :members="space?.members" />
       </div>

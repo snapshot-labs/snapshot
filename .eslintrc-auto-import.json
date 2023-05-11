@@ -108,6 +108,7 @@
     "useUnseenProposals": true,
     "useUsername": true,
     "useWeb3": true,
+    "useDelegates": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,

@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 
-import DelegateView from '@/views/DelegateView.vue';
+// import DelegateView from '@/views/DelegateView.vue'; // TODO: delete file
 import ExploreView from '@/views/ExploreView.vue';
 import AboutView from '@/views/AboutView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
@@ -20,6 +20,7 @@ import SpaceCreate from '@/views/SpaceCreate.vue';
 import SpaceSettings from '@/views/SpaceSettings.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceTreasury from './views/SpaceTreasury.vue';
+import SpaceDelegates from './views/SpaceDelegates.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -59,6 +60,11 @@ const spaceRoutes = [
     path: 'treasury/:wallet?',
     name: 'spaceTreasury',
     component: SpaceTreasury
+  },
+  {
+    path: 'delegates',
+    name: 'spaceDelegates',
+    component: SpaceDelegates
   }
 ];
 
@@ -81,7 +87,6 @@ const profileRoutes = [
 if (domain) {
   routes.push(
     { path: '/', name: 'home', component: SpaceView, children: spaceRoutes },
-    { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     {
       path: `/${domain}`,
       alias: `/${domainAlias ?? domain}`,
@@ -106,7 +111,6 @@ if (domain) {
       name: 'setup',
       component: SetupView
     },
-    { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     { path: '/timeline', name: 'timeline', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },
     {
