@@ -41,7 +41,7 @@ onMounted(() => {
           <SpaceDelegatesListItem
             :delegate="delegate"
             :profiles="profiles"
-            :symbol="space.symbol"
+            :space="space"
           />
         </div>
       </template>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Delegate, Profile } from '@/helpers/interfaces';
+import { Delegate, Profile, ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   delegate: Delegate;
   profiles: Record<string, Profile>;
-  symbol: string;
+  space: ExtendedSpace;
 }>();
 
 const { getUsername } = useUsername();
@@ -13,18 +13,24 @@ const { formatCompactNumber } = useIntl();
 
 <template>
   <div class="flex flex-col justify-between rounded-xl border p-4">
-    <div class="flex">
-      <AvatarUser :address="delegate.id" size="48" />
-      <div class="ml-3">
-        <div class="font-semibold text-skin-heading">
-          {{ getUsername(delegate.id, profiles[delegate.id]) }}
-        </div>
-        <div>
-          {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
-          {{ symbol }}
+    <PopoverHoverProfile
+      :address="delegate.id"
+      :profile="profiles[delegate.id]"
+      :space="space"
+    >
+      <div class="flex text-left">
+        <AvatarUser :address="delegate.id" size="48" />
+        <div class="ml-3">
+          <div class="font-semibold text-skin-heading">
+            {{ getUsername(delegate.id, profiles[delegate.id]) }}
+          </div>
+          <div>
+            {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
+            {{ space.symbol }}
+          </div>
         </div>
       </div>
-    </div>
+    </PopoverHoverProfile>
     <div class="mt-4 line-clamp-3 h-full">
       <span v-if="delegate?.statement">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui repudiandae
