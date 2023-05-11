@@ -7,7 +7,7 @@ const {
   fetchMoreDelegates,
   delegates,
   isLoadingDelegates,
-  isLoadingMoreDelegates
+  hasMoreDelegates
 } = useDelegates();
 const { profiles, loadProfiles } = useProfiles();
 
@@ -28,7 +28,7 @@ watch(delegates, () => {
 });
 
 onMounted(() => {
-  fetchDelegates();
+  if (!delegates.value.length) fetchDelegates();
 });
 </script>
 
@@ -46,7 +46,7 @@ onMounted(() => {
         </div>
       </template>
     </div>
-    <div v-if="isLoadingMoreDelegates" class="mt-4 flex">
+    <div v-if="hasMoreDelegates" class="mt-4 flex">
       <LoadingSpinner class="mx-auto" big />
     </div>
   </BaseContainer>

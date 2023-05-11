@@ -21,11 +21,11 @@ function adjustUrl(apiUrl: string) {
   return apiUrl;
 }
 
+const delegates: Ref<Delegate[]> = ref([]);
+
 export function useDelegates() {
-  const delegates: Ref<Delegate[]> = ref([]);
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
-  const loadedDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
 
@@ -92,13 +92,11 @@ export function useDelegates() {
   }
 
   async function fetchDelegates() {
-    if (isLoadingDelegates.value || loadedDelegates.value) return;
+    if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
 
     try {
       await _fetchDelegates(true);
-
-      loadedDelegates.value = true;
     } catch (err) {
       hasDelegatesLoadFailed.value = true;
     } finally {
@@ -107,12 +105,7 @@ export function useDelegates() {
   }
 
   async function fetchMoreDelegates() {
-    if (
-      isLoadingDelegates.value ||
-      isLoadingMoreDelegates.value ||
-      !loadedDelegates.value
-    )
-      return;
+    if (isLoadingDelegates.value || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
 
     await _fetchDelegates(false);
@@ -123,7 +116,6 @@ export function useDelegates() {
   return {
     isLoadingDelegates,
     isLoadingMoreDelegates,
-    loadedDelegates,
     hasDelegatesLoadFailed,
     hasMoreDelegates,
     delegates,
