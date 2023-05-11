@@ -76,7 +76,11 @@ export function useDelegates() {
       return {
         ...delegate,
         delegatorsPercentage,
-        votesPercentage
+        votesPercentage,
+        statement:
+          Math.random() > 0.5
+            ? 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero commodi error unde harum facilis eveniet fugit, ut placeat rerum officiis autem.'
+            : ''
       };
     });
 

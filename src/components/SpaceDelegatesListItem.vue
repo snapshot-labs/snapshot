@@ -12,7 +12,7 @@ const { formatCompactNumber } = useIntl();
 </script>
 
 <template>
-  <div class="flex flex-col justify-between rounded-xl border p-4">
+  <div class="flex h-full flex-col justify-between rounded-xl border p-4">
     <PopoverHoverProfile
       :address="delegate.id"
       :profile="profiles[delegate.id]"
@@ -31,11 +31,9 @@ const { formatCompactNumber } = useIntl();
         </div>
       </div>
     </PopoverHoverProfile>
-    <div class="mt-4 line-clamp-3 h-full">
+    <div class="mt-4 line-clamp-4 h-full">
       <span v-if="delegate?.statement">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui repudiandae
-        reprehenderit repellat, reiciendis modi tempora eaque velit magnam rem
-        perferendis.
+        {{ delegate.statement }}
       </span>
 
       <span v-else> This delegate hasn't added a statement yet. </span>
