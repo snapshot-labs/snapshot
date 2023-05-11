@@ -50,10 +50,11 @@ const EMPTY_SPACE_FORM = {
   guidelines: '',
   template: '',
   nftClaimer: {
-    minSupply: 0,
     maxSupply: 10000,
-    minPrice: 0,
-    sharing: 0,
+    mintPrice: 0,
+    proposerCut: 0,
+    address: '',
+    network: '137',
     enabled: false
   }
 };
