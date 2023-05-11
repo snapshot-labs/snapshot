@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { Space } from '@/helpers/interfaces';
+
 defineProps<{
-  space: { name: string; id: string };
+  space: Space;
 }>();
 </script>
 
