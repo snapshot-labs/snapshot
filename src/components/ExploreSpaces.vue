@@ -138,7 +138,7 @@ onMounted(() => {
         v-if="
           !enableSpaceHomeScroll &&
           spacesHomeMetrics.total > spacesHome.length &&
-          spaces.length > 12
+          spaces.length >= 12
         "
         class="px-3 text-center md:px-0"
       >

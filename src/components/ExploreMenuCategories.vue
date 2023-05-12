@@ -5,8 +5,6 @@ const props = defineProps<{
   metrics: Record<string, number>;
 }>();
 
-const selectedCategory = ref('');
-
 const { tc } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -20,7 +18,7 @@ const categoryItems = computed(() => {
       action: 'all',
       extras: {
         count: props.metrics?.all || 0,
-        selected: !selectedCategory.value
+        selected: !routeQuery.value.category
       }
     },
     ...categories
@@ -29,7 +27,7 @@ const categoryItems = computed(() => {
         action: c,
         extras: {
           count: props.metrics?.[c] || 0,
-          selected: selectedCategory.value === c
+          selected: routeQuery.value.category === c
         }
       }))
       .sort((a, b) => b.extras.count - a.extras.count)
@@ -37,24 +35,16 @@ const categoryItems = computed(() => {
 });
 
 function selectCategory(c: string) {
-  selectedCategory.value = c;
   router.push({
     query: { ...routeQuery.value, category: c }
   });
 }
-
-onMounted(() => {
-  const category = routeQuery.value.category;
-  if (category) {
-    selectedCategory.value = category as string;
-  }
-});
 </script>
 
 <template>
   <BaseMenu
     class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
-    :selected="selectedCategory"
+    :selected="(routeQuery.category as string)"
     :items="categoryItems"
     @select="selectCategory"
   >
@@ -62,8 +52,8 @@ onMounted(() => {
       <BaseButton class="w-full whitespace-nowrap pr-3">
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
-          <span v-if="selectedCategory">
-            {{ $tc('explore.categories.' + selectedCategory) }}
+          <span v-if="routeQuery.category">
+            {{ $tc('explore.categories.' + routeQuery.category) }}
           </span>
           <span v-else>
             {{ $tc('explore.category') }}
