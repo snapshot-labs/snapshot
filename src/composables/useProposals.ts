@@ -113,7 +113,7 @@ export function useProposals() {
   }
 
   function isFlaggedProposal(proposal: Proposal) {
-    if (FLAGGED_PROPOSAL_IDS.some(id => id === proposal.id)) return true;
+    if (FLAGGED_PROPOSAL_IDS.includes(proposal.id)) return true;
     if (FLAGGED_LINKS.some(link => proposal.body.includes(link))) return true;
     return false;
   }
