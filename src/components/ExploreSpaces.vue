@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { shorten } from '@/helpers/utils';
 import { useInfiniteScroll } from '@vueuse/core';
 
@@ -13,18 +13,40 @@ const {
 } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
+const { validEnsTlds } = useEns();
+const { loadExtendedSpace, extendedSpaces, spaceLoading } = useExtendedSpaces();
 
 const routeQuery = computed(() => route.query || null);
 
 const queryVariables = computed(() => ({
   category: routeQuery.value?.category,
   network: routeQuery.value?.network,
-  search: routeQuery.value?.q
+  search: routeQuery.value?.q as string
 }));
+
+const isSearchInputTld = computed(() =>
+  validEnsTlds.includes(queryVariables.value.search)
+);
+
+const spaces = computed(() => {
+  if (isSearchInputTld.value) {
+    const space = extendedSpaces.value.find(
+      s => s.id === queryVariables.value.search
+    );
+    return space ? [space] : [];
+  }
+  return spacesHome.value;
+});
 
 function handleClickMore() {
   loadMoreSpacesHome(queryVariables.value);
   enableSpaceHomeScroll.value = true;
+}
+
+function loadSpaces() {
+  if (isSearchInputTld.value)
+    return loadExtendedSpace(queryVariables.value.search);
+  loadSpacesHome(queryVariables.value);
 }
 
 useInfiniteScroll(
@@ -37,16 +59,12 @@ useInfiniteScroll(
   { distance: 250, interval: 500 }
 );
 
-watch(
-  routeQuery,
-  () => {
-    loadSpacesHome(queryVariables.value);
-  },
-  { immediate: true }
-);
+watch(routeQuery, () => {
+  loadSpaces();
+});
 
 onMounted(() => {
-  loadSpacesHome();
+  if (!spaces.value.length) loadSpaces();
 });
 </script>
 
@@ -69,16 +87,19 @@ onMounted(() => {
     </BaseContainer>
 
     <BaseContainer slim>
-      <ExploreSkeletonLoading v-if="loadingSpacesHome" is-spaces />
-      <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
+      <ExploreSkeletonLoading
+        v-if="loadingSpacesHome || spaceLoading"
+        is-spaces
+      />
+      <BaseNoResults v-else-if="spaces.length < 1" use-block />
 
       <TransitionGroup
-        v-else-if="!loadingSpacesHome"
+        v-else-if="!loadingSpacesHome && !spaceLoading"
         name="fade"
         tag="div"
         class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
       >
-        <div v-for="space in spacesHome" :key="space.id">
+        <div v-for="space in spaces" :key="space.id">
           <router-link
             :to="{ name: 'spaceProposals', params: { key: space.id } }"
           >
@@ -115,7 +136,9 @@ onMounted(() => {
       </TransitionGroup>
       <div
         v-if="
-          !enableSpaceHomeScroll && spacesHomeMetrics.total > spacesHome.length
+          !enableSpaceHomeScroll &&
+          spacesHomeMetrics.total > spacesHome.length &&
+          spaces.length > 12
         "
         class="px-3 text-center md:px-0"
       >

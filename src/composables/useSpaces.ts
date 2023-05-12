@@ -41,14 +41,14 @@ export function useSpaces() {
   }
 
   async function loadSpacesHome(variables?: any) {
-    if (loadingSpacesHome.value || spacesHome.value.length) return;
+    if (loadingSpacesHome.value) return;
     loadingSpacesHome.value = true;
     try {
       const response = await _fetchRankedSpaces(variables);
 
       if (!response) return;
 
-      spacesHome.value = response.items;
+      spacesHome.value = response.items || [];
       spacesHomeMetrics.value = response.metrics as Metrics;
 
       loadingSpacesHome.value = false;

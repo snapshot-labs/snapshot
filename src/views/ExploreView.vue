@@ -89,10 +89,10 @@ useInfiniteScroll(
 </script>
 
 <template>
-  <div v-if="isSpaces">
+  <div v-show="isSpaces">
     <ExploreSpaces />
   </div>
-  <div v-else>
+  <div v-show="!isSpaces">
     <BaseContainer class="mb-4 flex items-center">
       <div tabindex="-1" class="mr-auto w-full max-w-[420px]">
         <TheSearchBar />

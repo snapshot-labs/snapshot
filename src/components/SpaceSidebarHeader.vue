@@ -1,10 +1,8 @@
-<script setup>
-const props = defineProps({
-  space: {
-    type: Object,
-    default: null
-  }
-});
+<script setup lang="ts">
+import { Space, ExtendedSpace } from '@/helpers/interfaces';
+const props = defineProps<{
+  space: Space | ExtendedSpace;
+}>();
 
 const { formatCompactNumber } = useIntl();
 
