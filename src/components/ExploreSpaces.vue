@@ -4,11 +4,11 @@ import { useInfiniteScroll } from '@vueuse/core';
 
 const {
   loadSpacesHome,
-  loadMoreSpaceHome,
-  isLoadingSpacesHome,
-  isLoadingMoreSpacesHome,
+  loadMoreSpacesHome,
+  loadingSpacesHome,
+  loadingMoreSpacesHome,
   spacesHome,
-  spacesHomeTotal
+  spacesHomeMetrics
 } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
@@ -24,7 +24,7 @@ const queryVariables = computed(() => ({
 }));
 
 function handleClickMore() {
-  loadMoreSpaceHome(queryVariables.value, spacesHome.value.length);
+  loadMoreSpacesHome(queryVariables.value);
   enableInfiniteScroll.value = true;
 }
 
@@ -32,7 +32,7 @@ useInfiniteScroll(
   document,
   () => {
     if (enableInfiniteScroll.value) {
-      loadMoreSpaceHome(queryVariables.value, spacesHome.value.length);
+      loadMoreSpacesHome(queryVariables.value);
     }
   },
   { distance: 250, interval: 500 }
@@ -60,21 +60,21 @@ onMounted(() => {
         <TheSearchBar />
       </div>
 
-      <ExploreMenuCategories />
+      <ExploreMenuCategories :metrics="spacesHomeMetrics.categories" />
 
       <div
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
-        {{ $tc('spaceCount', [formatCompactNumber(spacesHomeTotal)]) }}
+        {{ $tc('spaceCount', [formatCompactNumber(spacesHomeMetrics.total)]) }}
       </div>
     </BaseContainer>
 
     <BaseContainer slim>
-      <ExploreSkeletonLoading v-if="isLoadingSpacesHome" is-spaces />
+      <ExploreSkeletonLoading v-if="loadingSpacesHome" is-spaces />
       <BaseNoResults v-else-if="spacesHome.length < 1" use-block />
 
       <TransitionGroup
-        v-else-if="!isLoadingSpacesHome"
+        v-else-if="!loadingSpacesHome"
         name="fade"
         tag="div"
         class="grid gap-4 md:grid-cols-3 lg:grid-cols-4"
@@ -115,14 +115,16 @@ onMounted(() => {
         </div>
       </TransitionGroup>
       <div
-        v-if="!enableInfiniteScroll && spacesHomeTotal > spacesHome.length"
+        v-if="
+          !enableInfiniteScroll && spacesHomeMetrics.total > spacesHome.length
+        "
         class="px-3 text-center md:px-0"
       >
         <BaseButton class="mt-4 w-full" @click="handleClickMore">
           {{ $t('homeLoadmore') }}
         </BaseButton>
       </div>
-      <div v-else-if="isLoadingMoreSpacesHome" class="mt-4 flex">
+      <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex">
         <LoadingSpinner class="mx-auto" big />
       </div>
     </BaseContainer>

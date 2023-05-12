@@ -1,23 +1,33 @@
 import { Space } from '@/helpers/interfaces';
-import { SPACES_QUERY } from '@/helpers/queries';
+import { SPACES_QUERY, SPACES_RANKING_QUERY } from '@/helpers/queries';
+
+interface Metrics {
+  total: number;
+  categories: Record<string, number>;
+}
 
 export function useSpaces() {
   const { apolloQuery } = useApolloQuery();
 
-  const isLoadingSpacesHome = ref(false);
-  const isLoadingMoreSpacesHome = ref(false);
+  const loadingSpacesHome = ref(false);
+  const loadingMoreSpacesHome = ref(false);
   const spacesHome = ref<Space[]>([]);
-  const spacesHomeTotal = ref(0);
+  const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
+
+  const loadingSpacesRanking = ref(false);
+  const loadingMoreSpacesRanking = ref(false);
+  const spacesRanking = ref<Space[]>([]);
+  const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 
   const isLoadingSpaces = ref(false);
   const spaces = ref<Space[]>([]);
 
-  function spacesHomeQuery(variables: any = {}, skip = 0) {
+  function _fetchRankedSpaces(variables: any = {}, skip = 0) {
     return apolloQuery(
       {
-        query: SPACES_QUERY,
+        query: SPACES_RANKING_QUERY,
         variables: {
-          skip: skip,
+          skip,
           first: 12,
           private: false,
           search: variables.search || undefined,
@@ -25,46 +35,97 @@ export function useSpaces() {
           category: variables.category || undefined
         }
       },
-      'spaces'
+      'ranking'
     );
   }
 
-  async function loadSpacesHome(variables: any = {}) {
-    if (isLoadingSpacesHome.value) return;
-    isLoadingSpacesHome.value = true;
+  async function loadSpacesHome(variables?: any) {
+    if (loadingSpacesHome.value) return;
+    loadingSpacesHome.value = true;
     try {
-      const response = await spacesHomeQuery(variables);
+      const response = await _fetchRankedSpaces(variables);
 
       if (!response) return;
 
       spacesHome.value = response.items;
-      spacesHomeTotal.value = response.total;
+      spacesHomeMetrics.value = response.metrics as Metrics;
 
-      isLoadingSpacesHome.value = false;
+      loadingSpacesHome.value = false;
     } catch (e) {
-      isLoadingSpacesHome.value = false;
       console.error(e);
     } finally {
-      isLoadingSpacesHome.value = false;
+      loadingSpacesHome.value = false;
     }
   }
 
-  async function loadMoreSpaceHome(variables: any, skip: number) {
-    if (isLoadingMoreSpacesHome.value || spacesHomeTotal.value <= skip) return;
-    isLoadingMoreSpacesHome.value = true;
+  async function loadMoreSpacesHome(variables?: any) {
+    if (
+      loadingMoreSpacesHome.value ||
+      spacesHomeMetrics.value.total <= spacesHome.value.length
+    )
+      return;
+    loadingMoreSpacesHome.value = true;
     try {
-      const response = await spacesHomeQuery(variables, skip);
+      const response = await _fetchRankedSpaces(
+        variables,
+        spacesHome.value.length
+      );
 
       if (!response) return;
 
       spacesHome.value = [...spacesHome.value, ...response.items];
+      spacesHomeMetrics.value = response.metrics as Metrics;
 
-      isLoadingMoreSpacesHome.value = false;
+      loadingMoreSpacesHome.value = false;
     } catch (e) {
-      isLoadingMoreSpacesHome.value = false;
       console.error(e);
     } finally {
-      isLoadingMoreSpacesHome.value = false;
+      loadingMoreSpacesHome.value = false;
+    }
+  }
+
+  async function loadSpacesRanking(variables?: any) {
+    if (loadingSpacesRanking.value) return;
+    loadingSpacesRanking.value = true;
+    try {
+      const response = await _fetchRankedSpaces(variables);
+
+      if (!response) return;
+
+      spacesRanking.value = response.items;
+      spacesRankingMetrics.value = response.metrics as Metrics;
+
+      loadingSpacesRanking.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingSpacesRanking.value = false;
+    }
+  }
+
+  async function loadMoreSpacesRanking(variables?: any) {
+    if (
+      loadingMoreSpacesRanking.value ||
+      spacesRankingMetrics.value.total <= spacesRanking.value.length
+    )
+      return;
+    loadingMoreSpacesRanking.value = true;
+    try {
+      const response = await _fetchRankedSpaces(
+        variables,
+        spacesRanking.value.length
+      );
+
+      if (!response) return;
+
+      spacesRanking.value = [...spacesRanking.value, ...response.items];
+      spacesRankingMetrics.value = response.metrics as Metrics;
+
+      loadingMoreSpacesRanking.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingMoreSpacesRanking.value = false;
     }
   }
 
@@ -87,11 +148,10 @@ export function useSpaces() {
 
       if (!response) return;
 
-      spaces.value = response.items;
+      spaces.value = response;
 
       isLoadingSpaces.value = false;
     } catch (e) {
-      isLoadingSpaces.value = false;
       console.error(e);
     } finally {
       isLoadingSpaces.value = false;
@@ -101,12 +161,18 @@ export function useSpaces() {
   return {
     loadSpaces,
     loadSpacesHome,
-    loadMoreSpaceHome,
+    loadMoreSpacesHome,
+    loadSpacesRanking,
+    loadMoreSpacesRanking,
     spaces,
     spacesHome,
+    spacesHomeMetrics,
     isLoadingSpaces,
-    isLoadingSpacesHome,
-    isLoadingMoreSpacesHome,
-    spacesHomeTotal
+    loadingSpacesHome,
+    loadingMoreSpacesHome,
+    spacesRanking,
+    spacesRankingMetrics,
+    loadingSpacesRanking,
+    loadingMoreSpacesRanking
   };
 }

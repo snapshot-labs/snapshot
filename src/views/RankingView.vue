@@ -5,21 +5,21 @@ import { useInfiniteScroll } from '@vueuse/core';
 const { formatCompactNumber } = useIntl();
 
 const {
-  spacesHome,
-  loadSpacesHome,
-  loadMoreSpaceHome,
-  isLoadingSpacesHome,
-  isLoadingMoreSpacesHome
+  spacesRanking,
+  loadSpacesRanking,
+  loadMoreSpacesRanking,
+  loadingSpacesRanking,
+  loadingMoreSpacesRanking
 } = useSpaces();
 
 onMounted(() => {
-  loadSpacesHome();
+  loadSpacesRanking();
 });
 
 useInfiniteScroll(
   document,
   () => {
-    loadMoreSpaceHome({}, spacesHome.value.length);
+    loadMoreSpacesRanking();
   },
   { distance: 250, interval: 500 }
 );
@@ -38,7 +38,7 @@ useInfiniteScroll(
         </div>
 
         <router-link
-          v-for="(space, i) in spacesHome"
+          v-for="(space, i) in spacesRanking"
           :key="space.id"
           :to="{ name: 'spaceProposals', params: { key: space.id } }"
           class="flex border-b p-3 text-right last:border-b-0"
@@ -76,7 +76,10 @@ useInfiniteScroll(
             />
           </div>
         </router-link>
-        <div v-if="isLoadingSpacesHome || isLoadingMoreSpacesHome" class="flex">
+        <div
+          v-if="loadingSpacesRanking || loadingMoreSpacesRanking"
+          class="flex"
+        >
           <LoadingSpinner class="mx-auto py-3" big />
         </div>
       </BaseBlock>

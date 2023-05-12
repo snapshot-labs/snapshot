@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import categories from '@/helpers/categories.json';
-import { METRICS_QUERY } from '@/helpers/queries';
 
-type Category = string;
-
-type CategoryMetrics = {
-  [key in Category]: number;
-};
+const props = defineProps<{
+  metrics: Record<string, number>;
+}>();
 
 const selectedCategory = ref('');
-const categoryMetrics = ref<CategoryMetrics>({});
 
 const { tc } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const { apolloQuery } = useApolloQuery();
 
 const routeQuery = computed(() => route.query || undefined);
 
@@ -24,19 +19,21 @@ const categoryItems = computed(() => {
       text: tc('explore.categories.all'),
       action: 'all',
       extras: {
-        count: categoryMetrics.value?.all || 0,
+        count: props.metrics?.all || 0,
         selected: !selectedCategory.value
       }
     },
-    ...categories.map(c => ({
-      text: tc(`explore.categories.${c}`),
-      action: c,
-      extras: {
-        count: categoryMetrics.value?.[c] || 0,
-        selected: selectedCategory.value === c
-      }
-    }))
-  ].sort((a, b) => b.extras.count - a.extras.count);
+    ...categories
+      .map(c => ({
+        text: tc(`explore.categories.${c}`),
+        action: c,
+        extras: {
+          count: props.metrics?.[c] || 0,
+          selected: selectedCategory.value === c
+        }
+      }))
+      .sort((a, b) => b.extras.count - a.extras.count)
+  ];
 });
 
 function selectCategory(c: string) {
@@ -46,24 +43,11 @@ function selectCategory(c: string) {
   });
 }
 
-async function loadCategoryMetrics() {
-  const response = await apolloQuery(
-    {
-      query: METRICS_QUERY,
-      variables: {}
-    },
-    'metrics'
-  );
-  categoryMetrics.value = response.categories;
-}
-
 onMounted(() => {
   const category = routeQuery.value.category;
   if (category) {
     selectedCategory.value = category as string;
   }
-
-  loadCategoryMetrics();
 });
 </script>
 

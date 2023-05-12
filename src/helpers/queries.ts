@@ -350,35 +350,30 @@ export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
   }
 `;
 
-export const SPACES_QUERY = gql`
-  query Spaces(
-    $search: String
-    $id_in: [String]
+export const SPACES_RANKING_QUERY = gql`
+  query Ranking(
     $first: Int
     $skip: Int
-    $private: Boolean
+    $search: String
     $network: String
     $category: String
   ) {
-    spaces(
+    ranking(
       first: $first
       skip: $skip
-      where: {
-        search: $search
-        id_in: $id_in
-        private: $private
-        network: $network
-        category: $category
-      }
+      where: { search: $search, network: $network, category: $category }
     ) {
-      total
+      metrics {
+        total
+        categories
+      }
       items {
         id
         name
-        avatar
+        private
         verified
-        popularity
-        followersCount
+        categories
+        rank
         activeProposals
         proposalsCount
         proposalsCount7d
@@ -387,6 +382,18 @@ export const SPACES_QUERY = gql`
         votesCount
         votesCount7d
       }
+    }
+  }
+`;
+
+export const SPACES_QUERY = gql`
+  query Spaces($id_in: [String], $first: Int, $skip: Int) {
+    spaces(first: $first, skip: $skip, where: { id_in: $id_in }) {
+      id
+      name
+      avatar
+      verified
+      activeProposals
     }
   }
 `;
@@ -465,17 +472,6 @@ export const SPACE_QUERY = gql`
         address
         network
       }
-    }
-  }
-`;
-
-export const METRICS_QUERY = gql`
-  query Metrics {
-    metrics {
-      strategies
-      categories
-      networks
-      plugins
     }
   }
 `;
