@@ -42,7 +42,14 @@ const FLAGGED_LINKS = [
   'clc.la/ZkSyncNFT',
   'zealy.io/c/cyberconnectofficial/questboard',
   'launchmynft.io/collections/0x954Fe3E2Cb92cadD5f5b9Bfdb79F477df8c1cFFB/zNIig3WZXtMkNcIrnkTu',
-  'zealy.io/c/layerzerolabs'
+  'zealy.io/c/layerzerolabs',
+  'snapshot.org/#/landlorddao.eth/proposal/0x8ccf2ee2b328fdfee9ca06cca286fb71f76a8b86fc79ecb5d9b1aba830b1ced7',
+  'snapshot.org/#/landlorddao.eth/proposal/0x3c52728f3eeebac44b2ef580ab9173c66cee2a4bb09c83374cd3298ada3b47e7',
+  'snapshot.org/#/magicappstore.eth/proposal/0x29a572ca57e9648c5d4d0715d895724ae5782d10276bbfbc25afc973be62af74',
+  'snapshot.org/#/dao.amkt.eth/proposal/0x5d80f3b11111faaa38dcc3c79d82f66a2adf5a0f0f3885513a608c594b3ef424',
+  'snapshot.org/#/catmousedao.eth/proposal/0x2e7fd810f0f398366a510c455d17fcda3e22ba9b6197c2e2e7d08a427a209514',
+  'snapshot.org/#/cakevote.eth/proposal/0xdd85b2ffc6757ecf55f63340651843d1ea872608217f105f12d4328159ac21ea',
+  'snapshot.org/#/lido-snapshot.eth/proposal/0x07db27a2237085195e2327ba3bc0e70ece0007217073f67cd0d5686e9b35cd54'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
