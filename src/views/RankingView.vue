@@ -13,7 +13,7 @@ const {
 } = useSpaces();
 
 onMounted(() => {
-  loadSpacesRanking();
+  if (!spacesRanking.value.length) loadSpacesRanking();
 });
 
 useInfiniteScroll(
