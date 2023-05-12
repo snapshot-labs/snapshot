@@ -7,13 +7,12 @@ const {
   loadMoreSpacesHome,
   loadingSpacesHome,
   loadingMoreSpacesHome,
+  enableSpaceHomeScroll,
   spacesHome,
   spacesHomeMetrics
 } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
-
-const enableInfiniteScroll = ref(false);
 
 const routeQuery = computed(() => route.query || null);
 
@@ -25,13 +24,13 @@ const queryVariables = computed(() => ({
 
 function handleClickMore() {
   loadMoreSpacesHome(queryVariables.value);
-  enableInfiniteScroll.value = true;
+  enableSpaceHomeScroll.value = true;
 }
 
 useInfiniteScroll(
   document,
   () => {
-    if (enableInfiniteScroll.value) {
+    if (enableSpaceHomeScroll.value) {
       loadMoreSpacesHome(queryVariables.value);
     }
   },
@@ -116,7 +115,7 @@ onMounted(() => {
       </TransitionGroup>
       <div
         v-if="
-          !enableInfiniteScroll && spacesHomeMetrics.total > spacesHome.length
+          !enableSpaceHomeScroll && spacesHomeMetrics.total > spacesHome.length
         "
         class="px-3 text-center md:px-0"
       >

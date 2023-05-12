@@ -6,18 +6,19 @@ interface Metrics {
   categories: Record<string, number>;
 }
 
+const loadingSpacesHome = ref(false);
+const loadingMoreSpacesHome = ref(false);
+const spacesHome = ref<Space[]>([]);
+const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
+const enableSpaceHomeScroll = ref(false);
+
+const loadingSpacesRanking = ref(false);
+const loadingMoreSpacesRanking = ref(false);
+const spacesRanking = ref<Space[]>([]);
+const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
+
 export function useSpaces() {
   const { apolloQuery } = useApolloQuery();
-
-  const loadingSpacesHome = ref(false);
-  const loadingMoreSpacesHome = ref(false);
-  const spacesHome = ref<Space[]>([]);
-  const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
-
-  const loadingSpacesRanking = ref(false);
-  const loadingMoreSpacesRanking = ref(false);
-  const spacesRanking = ref<Space[]>([]);
-  const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 
   const isLoadingSpaces = ref(false);
   const spaces = ref<Space[]>([]);
@@ -40,7 +41,7 @@ export function useSpaces() {
   }
 
   async function loadSpacesHome(variables?: any) {
-    if (loadingSpacesHome.value) return;
+    if (loadingSpacesHome.value || spacesHome.value.length) return;
     loadingSpacesHome.value = true;
     try {
       const response = await _fetchRankedSpaces(variables);
@@ -170,6 +171,7 @@ export function useSpaces() {
     isLoadingSpaces,
     loadingSpacesHome,
     loadingMoreSpacesHome,
+    enableSpaceHomeScroll,
     spacesRanking,
     spacesRankingMetrics,
     loadingSpacesRanking,
