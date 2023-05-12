@@ -11,11 +11,13 @@ const loadingMoreSpacesHome = ref(false);
 const spacesHome = ref<Space[]>([]);
 const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
 const enableSpaceHomeScroll = ref(false);
+const hasLoadedSpacesHome = ref(false);
 
 const loadingSpacesRanking = ref(false);
 const loadingMoreSpacesRanking = ref(false);
 const spacesRanking = ref<Space[]>([]);
 const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
+const hasLoadedSpacesRanking = ref(false);
 
 export function useSpaces() {
   const { apolloQuery } = useApolloQuery();
@@ -52,6 +54,7 @@ export function useSpaces() {
       spacesHomeMetrics.value = response.metrics as Metrics;
 
       loadingSpacesHome.value = false;
+      hasLoadedSpacesHome.value = true;
     } catch (e) {
       console.error(e);
     } finally {
@@ -97,6 +100,7 @@ export function useSpaces() {
       spacesRankingMetrics.value = response.metrics as Metrics;
 
       loadingSpacesRanking.value = false;
+      hasLoadedSpacesRanking.value = true;
     } catch (e) {
       console.error(e);
     } finally {
@@ -175,6 +179,8 @@ export function useSpaces() {
     spacesRanking,
     spacesRankingMetrics,
     loadingSpacesRanking,
-    loadingMoreSpacesRanking
+    loadingMoreSpacesRanking,
+    hasLoadedSpacesHome,
+    hasLoadedSpacesRanking
   };
 }

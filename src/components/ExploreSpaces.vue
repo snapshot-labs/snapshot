@@ -9,7 +9,8 @@ const {
   loadingMoreSpacesHome,
   enableSpaceHomeScroll,
   spacesHome,
-  spacesHomeMetrics
+  spacesHomeMetrics,
+  hasLoadedSpacesHome
 } = useSpaces();
 const { formatCompactNumber } = useIntl();
 const route = useRoute();
@@ -47,6 +48,7 @@ function loadSpaces() {
   if (isSearchInputTld.value)
     return loadExtendedSpace(queryVariables.value.search);
   loadSpacesHome(queryVariables.value);
+  hasLoadedSpacesHome.value = true;
 }
 
 useInfiniteScroll(
@@ -64,7 +66,7 @@ watch(routeQuery, () => {
 });
 
 onMounted(() => {
-  if (!spaces.value.length) loadSpaces();
+  if (!hasLoadedSpacesHome.value) loadSpaces();
 });
 </script>
 
