@@ -48,6 +48,13 @@ onMounted(() => {
     BaseInputEL?.value?.focus();
   }
 });
+
+watch(
+  () => props.modelValue,
+  () => {
+    input.value = props.modelValue;
+  }
+);
 </script>
 
 <template>
