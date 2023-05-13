@@ -394,6 +394,8 @@ export const SPACES_QUERY = gql`
       avatar
       verified
       activeProposals
+      followersCount
+      terms
     }
   }
 `;

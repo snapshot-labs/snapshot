@@ -107,14 +107,19 @@ export interface ExploreSpace {
 export interface Space {
   id: string;
   name: string;
-  terms?: string;
-  verified: number;
-  popularity: number;
   avatar: string;
+  verified: number;
   activeProposals: number;
+  followersCount: number;
+  terms?: string;
+}
+
+export interface RankedSpace extends Space {
+  rank: number;
+  private: boolean;
+  categories: string[];
   proposalsCount: number;
   proposalsCount7d: number;
-  followersCount: number;
   followersCount7d: number;
   votesCount: number;
   votesCount7d: number;

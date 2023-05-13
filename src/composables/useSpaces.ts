@@ -1,4 +1,4 @@
-import { Space } from '@/helpers/interfaces';
+import { RankedSpace, Space } from '@/helpers/interfaces';
 import { SPACES_QUERY, SPACES_RANKING_QUERY } from '@/helpers/queries';
 
 interface Metrics {
@@ -8,14 +8,14 @@ interface Metrics {
 
 const loadingSpacesHome = ref(false);
 const loadingMoreSpacesHome = ref(false);
-const spacesHome = ref<Space[]>([]);
+const spacesHome = ref<RankedSpace[]>([]);
 const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
 const enableSpaceHomeScroll = ref(false);
 const hasLoadedSpacesHome = ref(false);
 
 const loadingSpacesRanking = ref(false);
 const loadingMoreSpacesRanking = ref(false);
-const spacesRanking = ref<Space[]>([]);
+const spacesRanking = ref<RankedSpace[]>([]);
 const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 const hasLoadedSpacesRanking = ref(false);
 
