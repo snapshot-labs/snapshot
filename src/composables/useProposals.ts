@@ -42,7 +42,9 @@ const FLAGGED_LINKS = [
   'clc.la',
   'zealy.io/c/cyberconnectofficial/questboard',
   'launchmynft.io/collections/0x954Fe3E2Cb92cadD5f5b9Bfdb79F477df8c1cFFB/zNIig3WZXtMkNcIrnkTu',
-  'zealy.io/c/layerzerolabs'
+  'zealy.io/c/layerzerolabs',
+  'drive.google.com/file/d/1-KVIXmLgWc8cbhu5U6QV0CmiE9BXOsDK/view?usp=sharing',
+  'zealy.io/c/pepeofficial'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
