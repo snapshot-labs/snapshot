@@ -21,9 +21,12 @@ export function useReportDownload() {
     isDownloadingVotes.value = true;
     errorCode.value = null;
 
-    return fetch(`${import.meta.env.VITE_SIDEKICK_URL}/votes/${proposalId}`, {
-      method: 'POST'
-    })
+    return fetch(
+      `${import.meta.env.VITE_SIDEKICK_URL}/api/votes/${proposalId}`,
+      {
+        method: 'POST'
+      }
+    )
       .then(async response => {
         if (response.status !== 200) {
           throw new Error((await response.json()).error.message);
