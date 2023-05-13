@@ -42,14 +42,7 @@ const FLAGGED_LINKS = [
   'clc.la',
   'zealy.io/c/cyberconnectofficial/questboard',
   'launchmynft.io/collections/0x954Fe3E2Cb92cadD5f5b9Bfdb79F477df8c1cFFB/zNIig3WZXtMkNcIrnkTu',
-  'zealy.io/c/layerzerolabs',
-  'snapshot.org/#/landlorddao.eth/proposal/0x8ccf2ee2b328fdfee9ca06cca286fb71f76a8b86fc79ecb5d9b1aba830b1ced7',
-  'snapshot.org/#/landlorddao.eth/proposal/0x3c52728f3eeebac44b2ef580ab9173c66cee2a4bb09c83374cd3298ada3b47e7',
-  'snapshot.org/#/magicappstore.eth/proposal/0x29a572ca57e9648c5d4d0715d895724ae5782d10276bbfbc25afc973be62af74',
-  'snapshot.org/#/dao.amkt.eth/proposal/0x5d80f3b11111faaa38dcc3c79d82f66a2adf5a0f0f3885513a608c594b3ef424',
-  'snapshot.org/#/catmousedao.eth/proposal/0x2e7fd810f0f398366a510c455d17fcda3e22ba9b6197c2e2e7d08a427a209514',
-  'snapshot.org/#/cakevote.eth/proposal/0xdd85b2ffc6757ecf55f63340651843d1ea872608217f105f12d4328159ac21ea',
-  'snapshot.org/#/lido-snapshot.eth/proposal/0x07db27a2237085195e2327ba3bc0e70ece0007217073f67cd0d5686e9b35cd54'
+  'zealy.io/c/layerzerolabs'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
@@ -62,7 +55,8 @@ const FLAGGED_PROPOSAL_IDS = [
   '0x2e7fd810f0f398366a510c455d17fcda3e22ba9b6197c2e2e7d08a427a209514',
   '0xdd85b2ffc6757ecf55f63340651843d1ea872608217f105f12d4328159ac21ea',
   '0x07db27a2237085195e2327ba3bc0e70ece0007217073f67cd0d5686e9b35cd54',
-  '0xae5784ab2288b54d52b35e1807f971c3d7569522c13607bba4b67c5a992a42c2'
+  '0xae5784ab2288b54d52b35e1807f971c3d7569522c13607bba4b67c5a992a42c2',
+  '0xd604ecce9fe18d2fa1a665a5860cdaf0e690825a564058b5229c5930e175228d'
 ];
 
 interface ProposalsStore {
