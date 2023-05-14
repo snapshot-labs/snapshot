@@ -116,6 +116,7 @@ export const PROPOSALS_QUERY = gql`
         members
         avatar
         symbol
+        verified
       }
       scores_state
       scores_total
@@ -426,6 +427,7 @@ export const SPACE_QUERY = gql`
       followersCount
       template
       guidelines
+      verified
       parent {
         id
         name

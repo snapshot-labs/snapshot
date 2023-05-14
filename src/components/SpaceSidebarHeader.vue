@@ -51,7 +51,7 @@ watchEffect(() => {
           >
             {{ space.name }}
           </div>
-          <IconVerifiedSpace :space-id="props.space.id" />
+          <IconVerifiedSpace v-if="space.verified" />
         </h3>
         <div class="mb-[12px] text-skin-text">
           {{

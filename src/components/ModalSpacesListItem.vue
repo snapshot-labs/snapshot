@@ -20,8 +20,8 @@ defineProps<{
                 {{ space.name }}
               </div>
               <IconVerifiedSpace
+                v-if="space.verified"
                 class="ml-1 flex text-primary"
-                :space-id="space.id"
                 size="18"
               />
             </div>

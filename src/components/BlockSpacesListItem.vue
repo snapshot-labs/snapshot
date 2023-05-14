@@ -25,7 +25,7 @@ defineProps<{
         {{ space.name }}
       </div>
       <IconVerifiedSpace
-        :space-id="space.id"
+        v-if="space.verified"
         size="14"
         class="pl-1 text-primary"
       />

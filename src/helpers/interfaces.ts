@@ -108,7 +108,7 @@ export interface Space {
   id: string;
   name: string;
   avatar: string;
-  verified: number;
+  verified: boolean;
   activeProposals: number;
   followersCount: number;
   terms?: string;
@@ -155,6 +155,7 @@ export interface ExtendedSpace {
   treasuries: TreasuryAsset[];
   template: string;
   guidelines: string;
+  verified: boolean;
   voting: {
     delay: number | null;
     hideAbstain: boolean;
@@ -174,6 +175,15 @@ export interface SpaceStrategy {
   name: string;
   network: string;
   params: Record<string, unknown>;
+}
+
+export interface ProposalSpace {
+  id: string;
+  name: string;
+  members: string[];
+  avatar: string;
+  symbol: string;
+  verified: boolean;
 }
 
 export interface Proposal {

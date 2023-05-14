@@ -29,7 +29,7 @@ defineEmits(['delegate']);
               {{ space.name }}
             </h4>
             <IconVerifiedSpace
-              :space-id="space.id"
+              v-if="space.verified"
               size="19"
               class="ml-1 flex text-primary"
             />
