@@ -44,7 +44,8 @@ const FLAGGED_LINKS = [
   'launchmynft.io/collections/0x954Fe3E2Cb92cadD5f5b9Bfdb79F477df8c1cFFB/zNIig3WZXtMkNcIrnkTu',
   'zealy.io/c/layerzerolabs',
   'https://zealy.io/c/pepeofficial',
-  'drive.google.com/file/d/1-KVIXmLgWc8cbhu5U6QV0CmiE9BXOsDK/view?usp=sharing'
+  'drive.google.com/file/d/1-KVIXmLgWc8cbhu5U6QV0CmiE9BXOsDK/view?usp=sharing',
+  'drive.google.com/file/d/10qx9fgzwQmJny4TnsdsPxdk5-WAxSQw5/view?usp=sharing'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
@@ -57,7 +58,8 @@ const FLAGGED_PROPOSAL_IDS = [
   '0x2e7fd810f0f398366a510c455d17fcda3e22ba9b6197c2e2e7d08a427a209514',
   '0xdd85b2ffc6757ecf55f63340651843d1ea872608217f105f12d4328159ac21ea',
   '0x07db27a2237085195e2327ba3bc0e70ece0007217073f67cd0d5686e9b35cd54',
-  '0xae5784ab2288b54d52b35e1807f971c3d7569522c13607bba4b67c5a992a42c2'
+  '0xae5784ab2288b54d52b35e1807f971c3d7569522c13607bba4b67c5a992a42c2',
+  '0x462513291396d7a11e357b8147fd3c140d45b03ffcfb291979b4d5f4e64ec594'
 ];
 
 interface ProposalsStore {
