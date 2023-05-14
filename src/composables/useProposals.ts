@@ -33,6 +33,7 @@ const FLAGGED_LINKS = [
   'bit.ly/stonetopaznft',
   'zealy.io/c/layerzer0/questboard',
   'zealy.io/c/zksynk/questboard',
+  'zealy.io/c/pepetoken',
   'launchmynft.io/collections/9AbvZvqiUs5hqjYJbFFm2z7KoskCB1G22tWwzmap5Qw/Vdrnuzd0piIQz7BQLwcf',
   'clc.to',
   'clc.am',
