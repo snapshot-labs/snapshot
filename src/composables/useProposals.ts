@@ -46,7 +46,8 @@ const FLAGGED_LINKS = [
   'zealy.io/c/layerzerolabs',
   'https://zealy.io/c/pepeofficial',
   'drive.google.com/file/d/1-KVIXmLgWc8cbhu5U6QV0CmiE9BXOsDK/view?usp=sharing',
-  'drive.google.com/file/d/10qx9fgzwQmJny4TnsdsPxdk5-WAxSQw5/view?usp=sharing'
+  'drive.google.com/file/d/10qx9fgzwQmJny4TnsdsPxdk5-WAxSQw5/view?usp=sharing',
+  'drive.google.com/file/d/125Xmv58swymaD08wOvoIcSyPAlZxmBxI/view?usp=sharing'
 ];
 
 // Only add proposal ids if the proposal body has not unique urls
