@@ -25,9 +25,12 @@ const queryVariables = computed(() => ({
   search: routeQuery.value?.q as string
 }));
 
-const isSearchInputTld = computed(() =>
-  validEnsTlds.includes(queryVariables.value.search.split('.').pop() ?? '')
-);
+const isSearchInputTld = computed(() => {
+  if (!queryVariables.value.search) return false;
+  return validEnsTlds.includes(
+    queryVariables.value.search.split('.').pop() ?? ''
+  );
+});
 
 const spaces = computed(() => {
   if (isSearchInputTld.value) {
