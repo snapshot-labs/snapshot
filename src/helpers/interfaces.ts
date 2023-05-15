@@ -111,18 +111,25 @@ export interface Space {
   verified: boolean;
   activeProposals: number;
   followersCount: number;
-  terms?: string;
+  flagged: boolean;
+  terms: string;
 }
 
-export interface RankedSpace extends Space {
+export interface RankedSpace {
+  id: string;
+  name: string;
+  avatar: string;
+  verified: boolean;
   rank: number;
-  private: boolean;
   categories: string[];
+  activeProposals: number;
   proposalsCount: number;
   proposalsCount7d: number;
+  followersCount: number;
   followersCount7d: number;
   votesCount: number;
   votesCount7d: number;
+  terms: string;
 }
 
 export interface ExtendedSpace {
@@ -156,6 +163,7 @@ export interface ExtendedSpace {
   template: string;
   guidelines: string;
   verified: boolean;
+  flagged: boolean;
   voting: {
     delay: number | null;
     hideAbstain: boolean;
@@ -213,7 +221,7 @@ export interface Proposal {
   plugins: Record<string, any>;
   space: ExtendedSpace;
   strategies: SpaceStrategy[];
-  flagged?: boolean;
+  flagged: boolean;
 }
 
 export interface VoteValidation {

@@ -26,7 +26,7 @@ const queryVariables = computed(() => ({
 }));
 
 const isSearchInputTld = computed(() =>
-  validEnsTlds.includes(queryVariables.value.search)
+  validEnsTlds.includes(queryVariables.value.search.split('.').pop() ?? '')
 );
 
 const spaces = computed(() => {

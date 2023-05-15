@@ -35,9 +35,11 @@ watch(
 </script>
 
 <template>
-  <SpaceWarningFlagged :space-key="spaceKey" />
+  <template v-if="space">
+    <SpaceWarningFlagged v-if="space.flagged" />
 
-  <router-view v-if="space" :space="space" :space-key="spaceKey" />
+    <router-view :space="space" :space-key="spaceKey" />
+  </template>
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
     <TheLayout

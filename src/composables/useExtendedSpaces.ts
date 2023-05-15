@@ -53,9 +53,10 @@ export function useExtendedSpaces() {
       const mappedSpace = mapOldPluginNames(response);
 
       extendedSpaces.value = extendedSpaces.value.filter(
-        s => s.id !== mappedSpace[0].id
+        s => s.id !== mappedSpace.id
       );
-      extendedSpaces.value = [...extendedSpaces.value, ...mappedSpace];
+
+      extendedSpaces.value.push(mappedSpace);
     } catch (e) {
       console.error(e);
       return e;

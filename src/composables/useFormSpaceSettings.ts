@@ -97,6 +97,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   function removeUnnecessaryFields(formData: any) {
     delete formData.id;
     delete formData.followersCount;
+    delete formData.verified;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
   }

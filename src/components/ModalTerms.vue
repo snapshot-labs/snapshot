@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import { Space, ExtendedSpace } from '@/helpers/interfaces';
+import { Space, RankedSpace, ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
   open: boolean;
-  space: Space | ExtendedSpace;
+  space: Space | RankedSpace | ExtendedSpace;
   action: string;
 }>();
 

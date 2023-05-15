@@ -74,7 +74,7 @@ export const PROPOSAL_QUERY = gql`
       scores_by_strategy
       scores_total
       votes
-      # delegation
+      flagged
     }
   }
 `;
@@ -88,6 +88,7 @@ export const PROPOSALS_QUERY = gql`
     $space_in: [String]
     $author_in: [String]
     $title_contains: String
+    $space_verified: Boolean
   ) {
     proposals(
       first: $first
@@ -98,6 +99,7 @@ export const PROPOSALS_QUERY = gql`
         space_in: $space_in
         author_in: $author_in
         title_contains: $title_contains
+        space_verified: $space_verified
       }
     ) {
       id
@@ -124,6 +126,7 @@ export const PROPOSALS_QUERY = gql`
       votes
       quorum
       symbol
+      flagged
     }
   }
 `;
@@ -382,6 +385,7 @@ export const SPACES_RANKING_QUERY = gql`
         followersCount7d
         votesCount
         votesCount7d
+        terms
       }
     }
   }
@@ -397,6 +401,7 @@ export const SPACES_QUERY = gql`
       activeProposals
       followersCount
       terms
+      flagged
     }
   }
 `;
