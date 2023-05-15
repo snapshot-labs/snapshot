@@ -89,10 +89,10 @@ useInfiniteScroll(
 </script>
 
 <template>
-  <div v-show="isSpaces">
+  <div v-if="isSpaces">
     <ExploreSpaces />
   </div>
-  <div v-show="!isSpaces">
+  <div v-else>
     <BaseContainer class="mb-4 flex items-center">
       <div tabindex="-1" class="mr-auto w-full max-w-[420px]">
         <TheSearchBar />
@@ -138,13 +138,9 @@ useInfiniteScroll(
         </template>
         <template v-else-if="isNetworks">
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <router-link
-              v-for="item in items.slice(0, limit)"
-              :key="item.key"
-              :to="`/?network=${item.key}`"
-            >
+            <div v-for="item in items.slice(0, limit)" :key="item.key">
               <BaseNetworkItem :network="item" />
-            </router-link>
+            </div>
           </div>
         </template>
         <template v-else-if="isPlugins">

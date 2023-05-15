@@ -6,21 +6,19 @@ interface Metrics {
   categories: Record<string, number>;
 }
 
-const loadingSpacesHome = ref(false);
-const loadingMoreSpacesHome = ref(false);
-const spacesHome = ref<RankedSpace[]>([]);
-const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
-const enableSpaceHomeScroll = ref(false);
-const hasLoadedSpacesHome = ref(false);
-
-const loadingSpacesRanking = ref(false);
-const loadingMoreSpacesRanking = ref(false);
-const spacesRanking = ref<RankedSpace[]>([]);
-const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
-const hasLoadedSpacesRanking = ref(false);
-
 export function useSpaces() {
   const { apolloQuery } = useApolloQuery();
+
+  const loadingSpacesHome = ref(false);
+  const loadingMoreSpacesHome = ref(false);
+  const spacesHome = ref<RankedSpace[]>([]);
+  const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
+  const enableSpaceHomeScroll = ref(false);
+
+  const loadingSpacesRanking = ref(false);
+  const loadingMoreSpacesRanking = ref(false);
+  const spacesRanking = ref<RankedSpace[]>([]);
+  const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 
   const isLoadingSpaces = ref(false);
   const spaces = ref<Space[]>([]);
@@ -54,7 +52,6 @@ export function useSpaces() {
       spacesHomeMetrics.value = response.metrics as Metrics;
 
       loadingSpacesHome.value = false;
-      hasLoadedSpacesHome.value = true;
     } catch (e) {
       console.error(e);
     } finally {
@@ -100,7 +97,6 @@ export function useSpaces() {
       spacesRankingMetrics.value = response.metrics as Metrics;
 
       loadingSpacesRanking.value = false;
-      hasLoadedSpacesRanking.value = true;
     } catch (e) {
       console.error(e);
     } finally {
@@ -179,8 +175,6 @@ export function useSpaces() {
     spacesRanking,
     spacesRankingMetrics,
     loadingSpacesRanking,
-    loadingMoreSpacesRanking,
-    hasLoadedSpacesHome,
-    hasLoadedSpacesRanking
+    loadingMoreSpacesRanking
   };
 }

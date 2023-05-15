@@ -2,6 +2,10 @@
 import { shorten } from '@/helpers/utils';
 import { useInfiniteScroll } from '@vueuse/core';
 
+const route = useRoute();
+const { validEnsTlds } = useEns();
+const { formatCompactNumber } = useIntl();
+const { loadExtendedSpace, extendedSpaces, spaceLoading } = useExtendedSpaces();
 const {
   loadSpacesHome,
   loadMoreSpacesHome,
@@ -9,33 +13,23 @@ const {
   loadingMoreSpacesHome,
   enableSpaceHomeScroll,
   spacesHome,
-  spacesHomeMetrics,
-  hasLoadedSpacesHome
+  spacesHomeMetrics
 } = useSpaces();
-const { formatCompactNumber } = useIntl();
-const route = useRoute();
-const { validEnsTlds } = useEns();
-const { loadExtendedSpace, extendedSpaces, spaceLoading } = useExtendedSpaces();
 
-const routeQuery = computed(() => route.query || null);
-
-const queryVariables = computed(() => ({
-  category: routeQuery.value?.category,
-  network: routeQuery.value?.network,
-  search: routeQuery.value?.q as string
-}));
+const queryInput = ref({
+  search: (route.query.q as string) || '',
+  category: route.query.category || undefined
+});
 
 const isSearchInputTld = computed(() => {
-  if (!queryVariables.value.search) return false;
-  return validEnsTlds.includes(
-    queryVariables.value.search.split('.').pop() ?? ''
-  );
+  if (!queryInput.value.search) return false;
+  return validEnsTlds.includes(queryInput.value.search.split('.').pop() ?? '');
 });
 
 const spaces = computed(() => {
   if (isSearchInputTld.value) {
     const space = extendedSpaces.value.find(
-      s => s.id === queryVariables.value.search
+      s => s.id === queryInput.value.search
     );
     return space ? [space] : [];
   }
@@ -43,33 +37,35 @@ const spaces = computed(() => {
 });
 
 function handleClickMore() {
-  loadMoreSpacesHome(queryVariables.value);
+  loadMoreSpacesHome(queryInput.value);
   enableSpaceHomeScroll.value = true;
 }
 
 function loadSpaces() {
-  if (isSearchInputTld.value)
-    return loadExtendedSpace(queryVariables.value.search);
-  loadSpacesHome(queryVariables.value);
-  hasLoadedSpacesHome.value = true;
+  if (isSearchInputTld.value) return loadExtendedSpace(queryInput.value.search);
+  loadSpacesHome(queryInput.value);
 }
 
 useInfiniteScroll(
   document,
   () => {
     if (enableSpaceHomeScroll.value) {
-      loadMoreSpacesHome(queryVariables.value);
+      loadMoreSpacesHome(queryInput.value);
     }
   },
   { distance: 250, interval: 500 }
 );
 
-watch(routeQuery, () => {
-  loadSpaces();
-});
+watch(
+  queryInput,
+  () => {
+    loadSpaces();
+  },
+  { deep: true }
+);
 
 onMounted(() => {
-  if (!hasLoadedSpacesHome.value) loadSpaces();
+  loadSpaces();
 });
 </script>
 
@@ -79,10 +75,13 @@ onMounted(() => {
       class="mb-4 flex flex-col flex-wrap items-center xs:flex-row md:flex-nowrap"
     >
       <div tabindex="-1" class="w-full md:max-w-[420px]">
-        <TheSearchBar />
+        <TheSearchBar @update:input-search="queryInput.search = $event" />
       </div>
 
-      <ExploreMenuCategories :metrics="spacesHomeMetrics.categories" />
+      <ExploreMenuCategories
+        :metrics="spacesHomeMetrics.categories"
+        @update:category="queryInput.category = $event"
+      />
 
       <div
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"

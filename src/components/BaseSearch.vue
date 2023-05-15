@@ -10,35 +10,20 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-const router = useRouter();
-
 const input = ref(props.modelValue || '');
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
-function updateRouteQuery() {
-  if (!props.modal) {
-    const { query } = router.currentRoute.value;
-    router.push({
-      query: input.value
-        ? { ...query, q: input.value }
-        : { ...query, q: undefined }
-    });
-  }
-}
-
-const debouncedUpdateRouteQuery = debounce(updateRouteQuery, 300);
+const debounceEmittedValue = debounce((value: string) => {
+  emit('update:modelValue', value);
+}, 500);
 
 function handleInput(e) {
   input.value = e.target.value;
-  debouncedUpdateRouteQuery();
-  emit('update:modelValue', input.value);
+  if (props.modal) emit('update:modelValue', e.target.value);
+  debounceEmittedValue(e.target.value);
 }
 
 function clearInput() {
-  if (!props.modal) {
-    const { query } = router.currentRoute.value;
-    router.push({ query: { ...query, q: undefined } });
-  }
   input.value = '';
   emit('update:modelValue', '');
 }

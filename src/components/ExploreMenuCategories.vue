@@ -5,6 +5,8 @@ const props = defineProps<{
   metrics: Record<string, number>;
 }>();
 
+const emit = defineEmits(['update:category']);
+
 const { tc } = useI18n();
 const route = useRoute();
 const router = useRouter();
@@ -35,6 +37,7 @@ const categoryItems = computed(() => {
 });
 
 function selectCategory(c: string) {
+  emit('update:category', c);
   router.push({
     query: { ...routeQuery.value, category: c }
   });

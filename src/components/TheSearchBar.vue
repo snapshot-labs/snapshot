@@ -1,7 +1,9 @@
-<script setup>
+<script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
+
+const emit = defineEmits(['update:inputSearch']);
 
 const routeQuery = computed(() => route.query.q || undefined);
 const searchOptions = computed(() => [
@@ -33,9 +35,16 @@ const searchSelectedOption = computed(
       ?.text ?? t('spaces')
 );
 
-function redirectSearch(e) {
+function selectFilter(e) {
   router.push({
     query: { q: routeQuery.value, filter: e }
+  });
+}
+
+function handleUpdateSearch(e: string) {
+  emit('update:inputSearch', e);
+  router.push({
+    query: { ...route.query, q: e || undefined }
   });
 }
 </script>
@@ -43,12 +52,13 @@ function redirectSearch(e) {
 <template>
   <div class="flex rounded-full border pl-3 pr-0 focus-within:border-skin-text">
     <BaseSearch
-      :model-value="routeQuery || ''"
+      :model-value="routeQuery as string || ''"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
+      @update:model-value="handleUpdateSearch"
     />
     <div class="flex items-center border-l" style="height: 44px">
-      <BaseMenu :items="searchOptions" @select="redirectSearch">
+      <BaseMenu :items="searchOptions" @select="selectFilter">
         <template #button>
           <button class="flex h-full flex-grow items-center">
             <span class="ml-3" v-text="searchSelectedOption" />
