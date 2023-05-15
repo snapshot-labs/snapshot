@@ -10,18 +10,14 @@ const props = defineProps<{
 
 const emit = defineEmits(['select']);
 
+const logoNotFound = ref(false);
+
 const exploreUrl = computed(() => {
   let network = '1';
   if (props.token.verified !== undefined)
     network = String(props.token.verified.chainId);
   return explorerUrl(network, props.token.address);
 });
-
-function handleImgError(e: Event) {
-  const img = e.target as HTMLImageElement;
-  img.src =
-    'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png';
-}
 </script>
 
 <template>
@@ -33,13 +29,22 @@ function handleImgError(e: Event) {
     @click="emit('select', token)"
   >
     <div class="mb-2 flex w-full flex-row justify-between">
-      <div class="flex flex-row gap-x-2">
+      <div class="flex flex-row content-center items-center gap-x-2">
         <img
+          v-if="!logoNotFound"
           :src="token.logoUri"
           alt="token-logo"
-          class="w-[24px] min-w-[24px]"
-          @error="handleImgError"
+          class="w-[34px] min-w-[34px]"
+          @error="logoNotFound = true"
         />
+        <div
+          v-else
+          class="flex h-[34px] w-[34px] flex-row items-center justify-center rounded-2xl bg-skin-text"
+        >
+          <small class="text-skin-link">{{
+            token.name.slice(0, 3).toLocaleUpperCase()
+          }}</small>
+        </div>
         <span class="text-skin-link">{{ token.symbol }}</span>
         <span class="text-skin-text">{{ shorten(token.name, 'choice') }}</span>
       </div>
@@ -58,9 +63,9 @@ function handleImgError(e: Event) {
               <div class="m-4">
                 <p>
                   Information of this token has been verified by Snapshot.
-                  <a href="https://docs.snapshot.org/" target="_blank"
-                    >Click for more info.</a
-                  >
+                  <a href="https://docs.snapshot.org/" target="_blank">
+                    Click for more info.
+                  </a>
                 </p>
               </div>
             </template>
@@ -81,9 +86,9 @@ function handleImgError(e: Event) {
               <div class="m-4">
                 <p>
                   Information of this token has NOT been verified by Snapshot.
-                  <a href="https://tally.so/r/mKzXo7" target="_blank"
-                    >Click to verify token.</a
-                  >
+                  <a href="https://tally.so/r/mKzXo7" target="_blank">
+                    Click to verify token.
+                  </a>
                 </p>
               </div>
             </template>
