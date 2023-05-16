@@ -18,7 +18,7 @@ const {
 
 const queryInput = ref({
   search: (route.query.q as string) || '',
-  category: route.query.category || undefined
+  category: (route.query.category as string) || ''
 });
 
 const isSearchInputTld = computed(() => {
@@ -62,6 +62,14 @@ watch(
     loadSpaces();
   },
   { deep: true }
+);
+
+watch(
+  () => [route.query.q, route.query.category],
+  () => {
+    queryInput.value.search = (route.query.q as string) || '';
+    queryInput.value.category = (route.query.category as string) || '';
+  }
 );
 
 onMounted(() => {
