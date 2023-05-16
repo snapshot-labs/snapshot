@@ -1,6 +1,7 @@
 <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { coerceConfig, isValidInput, getSafeHash } from '../index';
+import { getIpfsUrl } from '@/helpers/utils';
 
 import SafeTransactions from './SafeTransactions.vue';
 
@@ -38,7 +39,7 @@ export default {
       input = coerceConfig(value, this.network);
     }
 
-    return { input };
+    return { input, ipfs: getIpfsUrl(this?.proposal?.ipfs) };
   },
   methods: {
     updateSafeTransactions() {
@@ -59,11 +60,22 @@ export default {
 <template>
   <div
     v-if="!preview || input.safes.length > 0"
-    class="mb-4 rounded-none border-t border-b bg-skin-block-bg md:rounded-xl md:border"
+    class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
   >
-    <h4 class="block border-b px-4 pt-3" style="padding-bottom: 12px">
-      {{ $t('safeSnap.transactions') }}
-    </h4>
+    <div
+      class="block border-b px-4 pt-3"
+      style="
+        padding-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+      "
+    >
+      <h4>
+        {{ $t('safeSnap.transactions') }}
+      </h4>
+      <BaseLink v-if="ipfs" :link="ipfs"> View Strategy </BaseLink>
+    </div>
+
     <div
       v-for="(safe, index) in input.safes"
       :key="index"
