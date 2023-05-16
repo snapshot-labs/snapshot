@@ -913,7 +913,7 @@
     "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
     "inputCaption": "You may be asked to sign a message to verify wallet ownership",
     "postSubscribeMessage": {
-      "success": "Thanks for subscribing! Please click the confirmation link that has been sent to your email.",
+      "success": "Thanks for subscribing!\nPlease click the confirmation link that has been sent to your email.",
       "apiError": "An error ocurred while adding your email to the subscriptions list",
       "unknownError": "Unable to subscribe to email notifications, please try again later"
     }

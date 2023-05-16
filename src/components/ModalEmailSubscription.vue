@@ -27,8 +27,17 @@ function submit() {
         <h3>{{ $t('emailSubscription.title') }}</h3>
       </div>
     </template>
+    <div v-if="status === Status.success" class="m-4 text-center">
+      <i-ho-check-circle
+        class="mx-auto my-4 text-center text-[3em] text-green"
+      />
+      <h3>{{ postSubscribeState.message.value.split('\n')[0] }}</h3>
+      <p class="mt-3 italic">
+        {{ postSubscribeState.message.value.split('\n')[1] }}
+      </p>
+    </div>
     <BaseMessageBlock
-      v-if="postSubscribeState.message.value"
+      v-else-if="postSubscribeState.message.value"
       :level="postSubscribeState.level.value"
       class="m-4"
     >
