@@ -117,11 +117,11 @@ const approveBondUma = async () => {
   }
 };
 
-const getProposalUrl = (chain, txHash) => {
+const getProposalUrl = (chain, txHash, logIndex) => {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
+    return `https://oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
   }
-  return `https://testnet.oracle.umaproject.org/request?transactionHash=${txHash}&chainId=${chain}&oracleType=OptimisticV3&eventIndex=0`;
+  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
 };
 
 const submitProposalUma = async () => {
@@ -401,7 +401,8 @@ onMounted(async () => {
             :href="
               getProposalUrl(
                 props.network,
-                questionDetails.assertionEvent.proposalTxHash
+                questionDetails.assertionEvent.proposalTxHash,
+                questionDetails.assertionEvent.logIndex
               )
             "
             class="rounded-lg border p-2 text-skin-text"
