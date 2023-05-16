@@ -5,6 +5,8 @@ const { t } = useI18n();
 
 const emit = defineEmits(['update:inputSearch']);
 
+const input = ref((route.query.q as string) || '');
+
 const routeQuery = computed(() => route.query.q || undefined);
 const searchOptions = computed(() => [
   {
@@ -42,6 +44,7 @@ function selectFilter(e) {
 }
 
 function handleUpdateSearch(e: string) {
+  input.value = e;
   emit('update:inputSearch', e);
   router.push({
     query: { ...route.query, q: e || undefined }
@@ -52,7 +55,7 @@ function handleUpdateSearch(e: string) {
 <template>
   <div class="flex rounded-full border pl-3 pr-0 focus-within:border-skin-text">
     <BaseSearch
-      :model-value="routeQuery as string || ''"
+      :model-value="input"
       :placeholder="$t('searchPlaceholder')"
       class="flex-auto pr-2"
       @update:model-value="handleUpdateSearch"
