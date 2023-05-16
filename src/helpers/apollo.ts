@@ -8,7 +8,7 @@ import {
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: `https://sea-turtle-app-hdjod.ondigitalocean.app/graphql`
+  uri: `${import.meta.env.VITE_HUB_URL}/graphql`
 });
 
 // Create the apollo client
