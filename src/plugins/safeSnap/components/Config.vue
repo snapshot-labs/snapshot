@@ -73,7 +73,7 @@ export default {
       <h4>
         {{ $t('safeSnap.transactions') }}
       </h4>
-      <BaseLink v-if="ipfs" :link="ipfs"> View Strategy </BaseLink>
+      <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
 
     <div
