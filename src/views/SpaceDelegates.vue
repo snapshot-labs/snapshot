@@ -2,6 +2,10 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll } from '@vueuse/core';
 
+const props = defineProps<{
+  space: ExtendedSpace;
+}>();
+
 const {
   fetchDelegates,
   fetchMoreDelegates,
@@ -10,10 +14,6 @@ const {
   hasMoreDelegates
 } = useDelegates();
 const { profiles, loadProfiles } = useProfiles();
-
-const props = defineProps<{
-  space: ExtendedSpace;
-}>();
 
 useInfiniteScroll(
   document,

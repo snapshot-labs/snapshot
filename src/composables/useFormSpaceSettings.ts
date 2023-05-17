@@ -10,6 +10,11 @@ const { isUploadingImage } = useImageUpload();
 
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
+const DEFAULT_DELEGATION = {
+  standard: 'governor-subgraph',
+  api: '',
+  contract: ''
+};
 const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
@@ -18,6 +23,7 @@ const EMPTY_SPACE_FORM = {
   moderators: [],
   members: [],
   plugins: {},
+  delegation: clone(DEFAULT_DELEGATION),
   filters: {
     minScore: 0,
     onlyMembers: false
@@ -104,6 +110,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   function ensureDefaultValues(formData: any) {
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
+    formData.delegation = formData.delegation || clone(DEFAULT_DELEGATION);
     formData.validation =
       formData.validation || clone(DEFAULT_PROPOSAL_VALIDATION);
     formData.voteValidation =

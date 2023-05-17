@@ -57,6 +57,7 @@ enum Page {
   STRATEGIES,
   PROPOSAL,
   VOTING,
+  DELEGATION,
   MEMBERS,
   ADVANCED
 }
@@ -94,6 +95,10 @@ const settingsPages = computed(() => [
   {
     id: Page.VOTING,
     title: t('settings.navigation.voting')
+  },
+  {
+    id: Page.DELEGATION,
+    title: t('settings.navigation.delegation')
   },
   {
     id: Page.MEMBERS,
@@ -246,6 +251,13 @@ const isViewOnly = computed(() => {
 
           <template v-if="currentPage === Page.VOTING">
             <SettingsVotingBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+          </template>
+
+          <template v-if="currentPage === Page.DELEGATION">
+            <SettingsDelegationBlock
               context="settings"
               :is-view-only="isViewOnly"
             />
