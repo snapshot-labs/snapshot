@@ -24,7 +24,6 @@ useMeta({
 
 const route = useRoute();
 const router = useRouter();
-const { isFlaggedProposal } = useProposals();
 
 const { web3, web3Account } = useWeb3();
 
@@ -52,7 +51,7 @@ const isModerator = computed(() => {
 
 const isHidden = computed(() => {
   if (forceShow.value) return false;
-  if (isFlaggedProposal(props.proposal)) return true;
+  if (props.proposal.flagged) return true;
   return false;
 });
 

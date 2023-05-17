@@ -55,8 +55,8 @@ defineProps({
 
   &.big {
     svg {
-      width: 34px;
-      height: 34px;
+      width: 24px;
+      height: 24px;
     }
   }
 

@@ -87,11 +87,30 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   function populateForm(extendedSpace: ExtendedSpace) {
     const formData = clone(extendedSpace);
+    removeUnnecessaryFields(formData);
+    ensureDefaultValues(formData);
+
+    if (shouldUseAnyValidation(formData)) {
+      formData.validation.name = 'any';
+    }
+
+    if (shouldUseBasicValidation(formData)) {
+      formData.validation.name = 'basic';
+    }
+
+    form.value = clone(formData);
+    initialFormState.value = clone(formData);
+  }
+
+  function removeUnnecessaryFields(formData: any) {
     delete formData.id;
     delete formData.followersCount;
+    delete formData.verified;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
+  }
 
+  function ensureDefaultValues(formData: any) {
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
     formData.validation =
@@ -100,29 +119,34 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
       formData.voteValidation || clone(DEFAULT_VOTE_VALIDATION);
     formData.filters = formData.filters || {};
     formData.voting = formData.voting || {};
-    formData.voting.delay = formData.voting?.delay || undefined;
-    formData.voting.period = formData.voting?.period || undefined;
-    formData.voting.type = formData.voting?.type || undefined;
-    formData.voting.quorum = formData.voting?.quorum || undefined;
-    formData.voting.privacy = formData.voting?.privacy || undefined;
-    formData.children = formData.children.map(child => child.id) || [];
+    formData.voting = {
+      ...formData.voting,
+      delay: formData.voting.delay || undefined,
+      period: formData.voting.period || undefined,
+      type: formData.voting.type || undefined,
+      quorum: formData.voting?.quorum || undefined,
+      privacy: formData.voting.privacy || undefined
+    };
+    formData.children = formData.children
+      ? formData.children.map((child: any) => child.id)
+      : [];
     formData.parent = formData.parent?.id || '';
+  }
 
-    if (
+  function shouldUseAnyValidation(formData: any) {
+    return (
       formData.validation.name === 'basic' &&
       !formData.filters.minScore &&
       !formData.validation.params.minScore &&
       isEmpty(formData.validation.params)
-    )
-      formData.validation.name = 'any';
-    if (
+    );
+  }
+
+  function shouldUseBasicValidation(formData: any) {
+    return (
       formData.validation.name === 'nouns' ||
       formData.validation.name === 'aave'
-    )
-      formData.validation.name = 'basic';
-
-    form.value = clone(formData);
-    initialFormState.value = clone(formData);
+    );
   }
 
   const validationErrors = computed(() => {

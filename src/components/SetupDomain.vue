@@ -9,8 +9,7 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
-  useExtendedSpaces();
+const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
@@ -23,19 +22,19 @@ watch(
     await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
     if (ownedEnsDomains.value.map(d => d.name).length)
-      await loadExtendedSpaces(ownedEnsDomains.value.map(d => d.name));
+      await loadSpaces(ownedEnsDomains.value.map(d => d.name));
   },
   { immediate: true }
 );
 
 const domainsWithoutExistingSpace = computed(() => {
-  const spaces = clone(extendedSpaces.value.map(space => space.id));
-  return ownedEnsDomains.value.filter(d => !spaces.includes(d.name));
+  const spaceIds = clone(spaces.value.map(space => space.id));
+  return ownedEnsDomains.value.filter(d => !spaceIds.includes(d.name));
 });
 
 const domainsWithExistingSpace = computed(() => {
-  const spaces = ownedEnsDomains.value.map(d => d.name);
-  return extendedSpaces.value.filter(d => spaces.includes(d.id));
+  const spaceIds = ownedEnsDomains.value.map(d => d.name);
+  return spaces.value.filter(d => spaceIds.includes(d.id));
 });
 
 const emit = defineEmits(['next']);
@@ -58,7 +57,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
 <template>
   <div>
-    <LoadingRow v-if="loadingOwnedEnsDomains || spaceLoading" block />
+    <LoadingRow v-if="loadingOwnedEnsDomains || isLoadingSpaces" block />
     <div v-else>
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.domain.title') }}</h4>
       <BaseMessageBlock
@@ -83,7 +82,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
       <BlockSpacesList
         v-if="domainsWithExistingSpace.length"
-        :spaces="domainsWithExistingSpace.map(space => space.id)"
+        :spaces="domainsWithExistingSpace"
         :title="$t('setup.domain.yourExistingSpaces')"
         class="mb-3"
       />

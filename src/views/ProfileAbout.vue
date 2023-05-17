@@ -7,14 +7,15 @@ const props = defineProps<{
 }>();
 
 const { apolloQuery } = useApolloQuery();
+const { loadSpaces, spaces } = useSpaces();
+const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
-const followedSpaces = ref([]);
-const loadingFollowedSpaces = ref(true);
+const followingSpaceIds = ref<string[]>([]);
+const isLoading = ref(false);
 
 async function loadSpacesFollowed() {
-  loadingFollowedSpaces.value = true;
   try {
-    followedSpaces.value = await apolloQuery(
+    const response = await apolloQuery(
       {
         query: FOLLOWS_QUERY,
         variables: {
@@ -23,29 +24,31 @@ async function loadSpacesFollowed() {
       },
       'follows'
     );
-    loadingFollowedSpaces.value = false;
+
+    followingSpaceIds.value = response.map(f => f.space.id);
   } catch (e) {
-    loadingFollowedSpaces.value = false;
     console.error(e);
   }
 }
-onMounted(() => loadSpacesFollowed());
-
-const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
 
 const domainsWithExistingSpace = computed(() => {
-  const spaces = ownedEnsDomains.value.map(d => d.name);
-  return extendedSpaces.value.filter(d => spaces.includes(d.id));
+  const ownedEnsNames = ownedEnsDomains.value.map(d => d.name);
+  return spaces.value.filter(d => ownedEnsNames.includes(d.id));
 });
 
-const loadingOwnedSpaces = ref(false);
+const followingSpaces = computed(() => {
+  return spaces.value.filter(d => followingSpaceIds.value.includes(d.id));
+});
 
 onMounted(async () => {
-  loadingOwnedSpaces.value = true;
+  isLoading.value = true;
+  await loadSpacesFollowed();
   await loadOwnedEnsDomains(props.userAddress);
-  await loadExtendedSpaces(ownedEnsDomains.value.map(d => d.name));
-  loadingOwnedSpaces.value = false;
+  await loadSpaces([
+    ...ownedEnsDomains.value.map(d => d.name),
+    ...followingSpaceIds.value
+  ]);
+  isLoading.value = false;
 });
 </script>
 
@@ -54,23 +57,23 @@ onMounted(async () => {
     <div class="space-y-4">
       <ProfileAboutBiography v-if="profile?.about" :about="profile.about" />
       <BlockSpacesList
-        :spaces="domainsWithExistingSpace.map(f => f.id)"
+        :spaces="domainsWithExistingSpace"
         :title="$t('profile.about.createdSpaces')"
         :message="$t('profile.about.notCreatedSpacesYet')"
-        :loading="loadingOwnedSpaces"
+        :loading="isLoading"
       />
 
       <BlockSpacesList
-        :spaces="followedSpaces.map(f => f.space.id)"
+        :spaces="followingSpaces"
         :title="$t('profile.about.joinedSpaces')"
         :message="$t('profile.about.notJoinSpacesYet')"
-        :loading="loadingFollowedSpaces"
+        :loading="isLoading"
       />
 
       <ProfileAboutDelegate
         :user-address="userAddress"
-        :following-spaces="followedSpaces"
-        :loading-followed-spaces="loadingFollowedSpaces"
+        :following-spaces="followingSpaces"
+        :loading="isLoading"
       />
     </div>
   </div>
