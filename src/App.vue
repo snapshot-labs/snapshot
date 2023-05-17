@@ -40,7 +40,11 @@ onMounted(async () => {
           <TheNavbar />
         </div>
         <div id="content" class="pb-6 pt-4">
-          <router-view :key="route.path" />
+          <router-view v-slot="{ Component }">
+            <KeepAlive :include="['ExploreView', 'RankingView']">
+              <component :is="Component" :key="route.path" />
+            </KeepAlive>
+          </router-view>
         </div>
         <footer v-if="route.name === 'home'" class="mt-auto">
           <TheFooter />
