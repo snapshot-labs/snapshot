@@ -3,25 +3,24 @@ import { getDelegators } from '@/helpers/delegation';
 import uniqBy from 'lodash/uniqBy';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { SNAPSHOT_SUBGRAPH_URL } from '@snapshot-labs/snapshot.js/src/utils';
+import { Space } from '@/helpers/interfaces';
 
 const props = defineProps<{
   userAddress: string;
-  followingSpaces: { space: { id: string } }[];
-  loadingFollowedSpaces: boolean;
+  followingSpaces: Space[];
+  loading: boolean;
 }>();
 
-const { spaces, spacesLoaded } = useSpaces();
 const { web3Account } = useWeb3();
 const { networkKey } = useDelegate();
 const { t } = useI18n();
 
 const delegators = ref<{ delegator: string; space: string }[] | null>(null);
 
-// Filter delegators by the spaces the user is following
-const delegatorsFilteredBySpaces = computed(() => {
+const followingDelegatorSpaceIds = computed(() => {
   if (!delegators.value) return [];
 
-  const followingSpaceIds = props.followingSpaces.map(s => s.space.id);
+  const followingSpaceIds = props.followingSpaces.map(s => s.id);
   const delegatorSpaceIds = delegators.value
     .map(d => d.space)
     .filter(d => d !== '');
@@ -71,20 +70,17 @@ const networkString = computed(() => {
 <template>
   <div>
     <BaseBlock
-      :loading="
-        !spacesLoaded || loadingFollowedSpaces || loadingDelegators === true
-      "
+      :loading="loading || loadingDelegators === true"
       :title="$t('profile.about.delegateFor')"
-      :counter="delegatorsFilteredBySpaces.length"
+      :counter="followingDelegatorSpaceIds.length"
       :label="networkString"
       :label-tooltip="$t('profile.about.delegatorNetworkInfo')"
       hide-bottom-border
       slim
     >
       <ProfileAboutDelegateListItem
-        v-if="delegatorsFilteredBySpaces.length && spacesLoaded && delegators"
-        :spaces="spaces"
-        :delegators-filtered-by-spaces="delegatorsFilteredBySpaces"
+        v-if="followingDelegatorSpaceIds.length && delegators"
+        :spaces="followingDelegatorSpaceIds"
         :delegators="delegators"
         :user-address="userAddress"
         :web3-account="web3Account"

@@ -59,7 +59,6 @@
     "useApolloQuery": true,
     "useApp": true,
     "useAttrs": true,
-    "useCategories": true,
     "useClient": true,
     "useCopy": true,
     "useCssModule": true,

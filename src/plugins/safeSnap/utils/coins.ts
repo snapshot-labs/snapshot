@@ -5,7 +5,7 @@ export const ETHEREUM_COIN: TokenAsset = {
   decimals: 18,
   symbol: 'ETH',
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/1/currency_logo.png',
+    'https://safe-transaction-assets.safe.global/chains/1/currency_logo.png',
   address: 'main'
 };
 export const MATIC_COIN: TokenAsset = {
@@ -14,7 +14,7 @@ export const MATIC_COIN: TokenAsset = {
   symbol: 'MATIC',
   address: 'main',
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/137/currency_logo.png'
+    'https://safe-transaction-assets.safe.global/chains/137/currency_logo.png'
 };
 const EWC_COIN: TokenAsset = {
   name: 'Energy Web Token',
@@ -22,7 +22,7 @@ const EWC_COIN: TokenAsset = {
   address: 'main',
   decimals: 18,
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/246/currency_logo.png'
+    'https://safe-transaction-assets.safe.global/chains/246/currency_logo.png'
 };
 const XDAI_COIN: TokenAsset = {
   name: 'XDAI',
@@ -30,7 +30,7 @@ const XDAI_COIN: TokenAsset = {
   address: 'main',
   decimals: 18,
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/100/currency_logo.png'
+    'https://safe-transaction-assets.safe.global/chains/100/currency_logo.png'
 };
 const BNB_COIN: TokenAsset = {
   name: 'BNB',
@@ -38,7 +38,7 @@ const BNB_COIN: TokenAsset = {
   address: 'main',
   decimals: 18,
   logoUri:
-    'https://safe-transaction-assets.gnosis-safe.io/chains/56/currency_logo.png'
+    'https://safe-transaction-assets.safe.global/chains/56/currency_logo.png'
 };
 
 export function getNativeAsset(network) {
