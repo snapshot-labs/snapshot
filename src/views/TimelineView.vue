@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
 import { useInfiniteScroll } from '@vueuse/core';
 
 useMeta({
@@ -16,6 +15,10 @@ const route = useRoute();
 const router = useRouter();
 const { followingSpaces, loadingFollows } = useFollowSpace();
 const { web3, web3Account } = useWeb3();
+const { apolloQuery } = useApolloQuery();
+const { profiles, loadProfiles } = useProfiles();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } =
+  useInfiniteLoader(12);
 
 const {
   store,
@@ -31,19 +34,12 @@ const isFeedJoinedSpaces = computed(
   () => !route.query.feed || route.query.feed === 'joined'
 );
 
-const spaces = computed(() => {
-  const verifiedSpaces = Object.entries(verified)
-    .filter(space => space[1] === 1)
-    .map(space => space[0]);
-  if (isFeedJoinedSpaces.value) return followingSpaces.value;
-  else return verifiedSpaces;
-});
-
-const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-
-const { apolloQuery } = useApolloQuery();
 async function getProposals(skip = 0) {
   if (!web3Account.value && isFeedJoinedSpaces.value) return [];
+
+  const spaces = isFeedJoinedSpaces.value ? followingSpaces.value : undefined;
+
+  const verified = route.query.feed === 'all' ? true : undefined;
 
   return (
     apolloQuery(
@@ -52,8 +48,9 @@ async function getProposals(skip = 0) {
         variables: {
           first: loadBy,
           skip,
-          space_in: spaces.value,
-          state: stateFilter.value
+          space_in: spaces,
+          state: stateFilter.value,
+          space_verified: verified
         }
       },
       'proposals'
@@ -75,11 +72,6 @@ async function loadProposals() {
   loading.value = false;
 }
 
-const { profiles, loadProfiles } = useProfiles();
-watch(store.timeline.proposals, () => {
-  loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
-});
-
 function setStateFilter(name: string) {
   router.push({
     query: {
@@ -98,25 +90,26 @@ function setFeed(name: string) {
   });
 }
 
-useInfiniteScroll(
-  document,
-  () => {
-    loadMore(() => loadMoreProposals(store.timeline.proposals.length));
-  },
-  { distance: 400 }
-);
-
 watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
     loadProposals();
-  }
+  },
+  { immediate: true }
 );
 
-onMounted(() => {
-  if (store.timeline.proposals.length > 0) return;
-  loadProposals();
+watch(store.timeline.proposals, () => {
+  loadProfiles(store.timeline.proposals.map(proposal => proposal.author));
 });
+
+useInfiniteScroll(
+  document,
+  () => {
+    if (!store.timeline.proposals.length) return;
+    loadMore(() => loadMoreProposals(store.timeline.proposals.length));
+  },
+  { distance: 250, interval: 500 }
+);
 </script>
 
 <template>
@@ -186,7 +179,7 @@ onMounted(() => {
         <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
         <div
           v-else-if="
-            (isFeedJoinedSpaces && spaces.length < 1) ||
+            (isFeedJoinedSpaces && followingSpaces.length < 1) ||
             (isFeedJoinedSpaces && !web3.account)
           "
           class="p-4 text-center"
@@ -216,9 +209,8 @@ onMounted(() => {
             class="border-b border-skin-border transition-colors first:border-t last:border-b-0 md:border-b md:first:border-t-0"
           />
         </div>
-        <div v-if="loadingMore">
-          <LoadingRow class="border-t" />
-        </div>
+
+        <LoadingRow v-if="loadingMore" class="border-t" />
       </div>
     </template>
   </TheLayout>

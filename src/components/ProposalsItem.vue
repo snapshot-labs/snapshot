@@ -38,8 +38,7 @@ const isHidden = computed(() => {
                     v-text="proposal.space.name"
                   />
                   <IconVerifiedSpace
-                    v-if="showVerifiedIcon"
-                    :space-id="space.id"
+                    v-if="showVerifiedIcon && space.verified"
                     class="pl-[2px]"
                     size="18"
                   />

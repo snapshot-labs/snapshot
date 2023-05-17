@@ -1,106 +1,180 @@
-import orderBy from 'lodash/orderBy';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
-import verifiedSpacesCategories from '@/../snapshot-spaces/spaces/categories.json';
-import { mapOldPluginNames } from '@/helpers/utils';
-import { ExploreSpace } from '@/helpers/interfaces';
+import { RankedSpace, Space } from '@/helpers/interfaces';
+import { SPACES_QUERY, SPACES_RANKING_QUERY } from '@/helpers/queries';
 
-const spaces: any = ref([]);
-const spacesLoaded = ref(false);
-const selectedCategory = ref('');
-
-export function getRanking(key: string, space): number {
-  let ranking =
-    (space.votes || 0) / 50 +
-    (space.votes_7d || 0) +
-    (space.proposals_7d || 0) * 50 +
-    (space.followers_7d || 0);
-  if (verified[key]) {
-    ranking = ranking * 5;
-    ranking += 100;
-  }
-  return ranking;
+interface Metrics {
+  total: number;
+  categories: Record<string, number>;
 }
 
 export function useSpaces() {
-  const route = useRoute();
+  const { apolloQuery } = useApolloQuery();
 
-  async function getSpaces() {
-    const exploreObj: { spaces: Record<string, ExploreSpace> } = await fetch(
-      `${import.meta.env.VITE_HUB_URL}/api/explore`
-    ).then(res => res.json());
+  const loadingSpacesHome = ref(false);
+  const loadingMoreSpacesHome = ref(false);
+  const spacesHome = ref<RankedSpace[]>([]);
+  const spacesHomeMetrics = ref<Metrics>({ total: 0, categories: {} });
+  const enableSpaceHomeScroll = ref(false);
 
-    exploreObj.spaces = Object.fromEntries(
-      Object.entries(exploreObj.spaces).map(([id, space]: any) => {
-        // map manually selected categories for verified spaces that don't have set their categories yet
-        // set to empty array if space.categories is missing
-        if (!space.categories?.length) {
-          if (verifiedSpacesCategories[id]?.length) {
-            space.categories = verifiedSpacesCategories[id];
-          } else {
-            space.categories = [];
-          }
+  const loadingSpacesRanking = ref(false);
+  const loadingMoreSpacesRanking = ref(false);
+  const spacesRanking = ref<RankedSpace[]>([]);
+  const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
+
+  const isLoadingSpaces = ref(false);
+  const spaces = ref<Space[]>([]);
+
+  function _fetchRankedSpaces(variables: any = {}, skip = 0) {
+    return apolloQuery(
+      {
+        query: SPACES_RANKING_QUERY,
+        variables: {
+          skip,
+          first: 12,
+          private: false,
+          search: variables.search || undefined,
+          network: variables.network || undefined,
+          category: variables.category || undefined
         }
-
-        space = mapOldPluginNames(space);
-
-        return [id, { id, ...space }];
-      })
+      },
+      'ranking'
     );
-
-    spaces.value = exploreObj.spaces;
-    spacesLoaded.value = true;
   }
 
-  const testnetNetworks = Object.entries(networks)
-    .filter((network: any) => network[1].testnet)
-    .map(([id]) => id);
+  async function loadSpacesHome(variables?: any) {
+    if (loadingSpacesHome.value) return;
+    loadingSpacesHome.value = true;
+    try {
+      const response = await _fetchRankedSpaces(variables);
 
-  const orderedSpaces = computed(() => {
-    const network = route.query.network || '';
-    const q = route.query.q?.toString() || '';
-    const list = Object.keys(spaces.value)
-      .map(key => {
-        const followers = spaces.value[key].followers ?? 0;
-        const score = getRanking(key, spaces.value[key]);
-        const testnet = testnetNetworks.includes(spaces.value[key].network);
-        return {
-          ...spaces.value[key],
-          followers,
-          // Hide private spaces, unless the search query exactly matches
-          // the space key
-          private:
-            route.query.q?.toString() === key
-              ? false
-              : spaces.value[key].private ?? false,
-          score,
-          testnet
-        };
-      })
-      .filter(space => !space.private && verified[space.id] !== -1)
-      .filter(space => space.networks.includes(network) || !network)
-      .filter(space =>
-        JSON.stringify(space).toLowerCase().includes(q.toLowerCase())
+      if (!response) return;
+
+      spacesHome.value = response.items || [];
+      spacesHomeMetrics.value = response.metrics as Metrics;
+
+      loadingSpacesHome.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingSpacesHome.value = false;
+    }
+  }
+
+  async function loadMoreSpacesHome(variables?: any) {
+    if (
+      loadingMoreSpacesHome.value ||
+      spacesHomeMetrics.value.total <= spacesHome.value.length
+    )
+      return;
+    loadingMoreSpacesHome.value = true;
+    try {
+      const response = await _fetchRankedSpaces(
+        variables,
+        spacesHome.value.length
       );
 
-    return orderBy(list, ['score', 'testnet'], ['desc', 'asc', 'desc']);
-  });
+      if (!response) return;
 
-  const orderedSpacesByCategory = computed(() =>
-    orderedSpaces.value.filter(
-      space =>
-        !selectedCategory.value ||
-        selectedCategory.value === 'all' ||
-        (space.categories && space.categories.includes(selectedCategory.value))
+      spacesHome.value = [...spacesHome.value, ...response.items];
+      spacesHomeMetrics.value = response.metrics as Metrics;
+
+      loadingMoreSpacesHome.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingMoreSpacesHome.value = false;
+    }
+  }
+
+  async function loadSpacesRanking(variables?: any) {
+    if (loadingSpacesRanking.value) return;
+    loadingSpacesRanking.value = true;
+    try {
+      const response = await _fetchRankedSpaces(variables);
+
+      if (!response) return;
+
+      spacesRanking.value = response.items;
+      spacesRankingMetrics.value = response.metrics as Metrics;
+
+      loadingSpacesRanking.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingSpacesRanking.value = false;
+    }
+  }
+
+  async function loadMoreSpacesRanking(variables?: any) {
+    if (
+      loadingMoreSpacesRanking.value ||
+      spacesRankingMetrics.value.total <= spacesRanking.value.length
     )
-  );
+      return;
+    loadingMoreSpacesRanking.value = true;
+    try {
+      const response = await _fetchRankedSpaces(
+        variables,
+        spacesRanking.value.length
+      );
+
+      if (!response) return;
+
+      spacesRanking.value = [...spacesRanking.value, ...response.items];
+      spacesRankingMetrics.value = response.metrics as Metrics;
+
+      loadingMoreSpacesRanking.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      loadingMoreSpacesRanking.value = false;
+    }
+  }
+
+  async function loadSpaces(id_in: string[]) {
+    if (isLoadingSpaces.value || !id_in.length) return;
+
+    isLoadingSpaces.value = true;
+    try {
+      const response = await apolloQuery(
+        {
+          query: SPACES_QUERY,
+          variables: {
+            id_in,
+            skip: 0,
+            first: 1000
+          }
+        },
+        'spaces'
+      );
+
+      if (!response) return;
+
+      spaces.value = response;
+
+      isLoadingSpaces.value = false;
+    } catch (e) {
+      console.error(e);
+    } finally {
+      isLoadingSpaces.value = false;
+    }
+  }
 
   return {
-    getSpaces,
+    loadSpaces,
+    loadSpacesHome,
+    loadMoreSpacesHome,
+    loadSpacesRanking,
+    loadMoreSpacesRanking,
     spaces,
-    spacesLoaded,
-    orderedSpaces,
-    orderedSpacesByCategory,
-    selectedCategory
+    spacesHome,
+    spacesHomeMetrics,
+    isLoadingSpaces,
+    loadingSpacesHome,
+    loadingMoreSpacesHome,
+    enableSpaceHomeScroll,
+    spacesRanking,
+    spacesRankingMetrics,
+    loadingSpacesRanking,
+    loadingMoreSpacesRanking
   };
 }

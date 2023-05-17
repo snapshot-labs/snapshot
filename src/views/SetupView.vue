@@ -28,15 +28,15 @@ const { notify } = useFlashNotification();
 const { prunedForm, isValid, resetForm } = useFormSpaceSettings('setup');
 const { t } = useI18n();
 const { send } = useClient();
-const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
+const { loadSpaces, spaces } = useSpaces();
 
 const creatingSpace = ref(false);
 
 const currentStep = computed(() => Number(route.query.step));
 
 async function checkIfSpaceExists() {
-  await loadExtendedSpaces([route.params.ens as string]);
-  if (extendedSpaces.value?.some(space => space.id === route.params.ens)) {
+  await loadSpaces([route.params.ens as string]);
+  if (spaces.value?.some(space => space.id === route.params.ens)) {
     return;
   } else {
     await sleep(5000);
