@@ -1,10 +1,10 @@
 import uniqBy from 'lodash/uniqBy';
 import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
 import { isAddress } from '@ethersproject/address';
+import { resolveEns, resolveLens } from '@/helpers/utils';
 
 export function useProposalVotes(
   proposal: Proposal,
@@ -95,50 +95,6 @@ export function useProposalVotes(
     loadedVotes.value = false;
     votes.value = [];
     searchAddress.value = '';
-  }
-
-  async function resolveEns(ens: string) {
-    try {
-      const provider = getProvider('1');
-      const addressResolved = await provider.resolveName(ens);
-      if (!addressResolved) throw new Error('Invalid ENS name');
-      return addressResolved;
-    } catch (error) {
-      console.error('Error in resolveEns:', error);
-      return null;
-    }
-  }
-
-  async function resolveLens(handle: string) {
-    try {
-      const response = await fetch('https://api.lens.dev/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          query: `
-          query Profiles {
-            profiles(request: { handles: ["${handle}"], limit: 1 }) {
-              items {
-                ownedBy
-              }
-            }
-          }
-        `
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}`);
-      }
-
-      const result = await response.json();
-      return result.data?.profiles?.items?.[0]?.ownedBy;
-    } catch (error) {
-      console.error('Error in resolveLens:', error);
-      return null;
-    }
   }
 
   watch(sortedVotes, () => {
