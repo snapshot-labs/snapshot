@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { Space } from '@/helpers/interfaces';
+
 defineProps<{
-  space: { name: string; id: string };
+  space: Space;
 }>();
 </script>
 
@@ -20,10 +22,10 @@ defineProps<{
     </div>
     <div class="flex items-center justify-center">
       <div class="truncate text-xs">
-        {{ space?.name }}
+        {{ space.name }}
       </div>
       <IconVerifiedSpace
-        :space-id="space.id"
+        v-if="space.verified"
         size="14"
         class="pl-1 text-primary"
       />

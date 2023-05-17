@@ -1,33 +1,33 @@
-<script setup>
-import orderBy from 'lodash/orderBy';
+<script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import verified from '@/../snapshot-spaces/spaces/verified.json';
+import { useInfiniteScroll } from '@vueuse/core';
 
-const { spaces, spacesLoaded } = useSpaces();
 const { formatCompactNumber } = useIntl();
 
-const limit = 200;
+const {
+  spacesRanking,
+  loadSpacesRanking,
+  loadMoreSpacesRanking,
+  loadingSpacesRanking,
+  loadingMoreSpacesRanking
+} = useSpaces();
 
-const spacesSorted = computed(() => {
-  const spacesArr = Object.values(spaces.value)
-    .map(space => {
-      space.proposals = space.proposals || 0;
-      space.proposals_7d = space.proposals_7d || 0;
-      space.votes = space.votes || 0;
-      space.votes_7d = space.votes_7d || 0;
-      space.followers = space.followers || 0;
-      space.followers_7d = space.followers_7d || 0;
-      space.ranking = getRanking(space.id, space);
-      return space;
-    })
-    .filter(space => verified[space.id] !== -1);
-  return orderBy(spacesArr, ['ranking'], ['desc']).slice(0, limit);
+onMounted(() => {
+  loadSpacesRanking();
 });
+
+useInfiniteScroll(
+  document,
+  () => {
+    loadMoreSpacesRanking();
+  },
+  { distance: 250, interval: 500 }
+);
 </script>
 
 <template>
   <div>
-    <BaseContainer :slim="true">
+    <BaseContainer slim>
       <BaseBlock slim>
         <div class="flex border-b p-3 text-right">
           <div class="mr-2 w-[40px] text-left" v-text="'Rank'" />
@@ -36,8 +36,9 @@ const spacesSorted = computed(() => {
           <div class="w-[120px]" v-text="'Votes'" />
           <div class="w-[120px]" v-text="'Members'" />
         </div>
+
         <router-link
-          v-for="(space, i) in spacesSorted"
+          v-for="(space, i) in spacesRanking"
           :key="space.id"
           :to="{ name: 'spaceProposals', params: { key: space.id } }"
           class="flex border-b p-3 text-right last:border-b-0"
@@ -51,31 +52,36 @@ const spacesSorted = computed(() => {
             </div>
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.proposals)" />
+            <div v-text="formatCompactNumber(space.proposalsCount)" />
             <div
-              v-if="space.proposals_7d"
+              v-if="space.proposalsCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.proposals_7d)}`"
+              v-text="`+${formatCompactNumber(space.proposalsCount7d)}`"
             />
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.votes)" />
+            <div v-text="formatCompactNumber(space.votesCount)" />
             <div
-              v-if="space.votes_7d"
+              v-if="space.votesCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.votes_7d)}`"
+              v-text="`+${formatCompactNumber(space.votesCount7d)}`"
             />
           </div>
           <div class="w-[120px]">
-            <div v-text="formatCompactNumber(space.followers)" />
+            <div v-text="formatCompactNumber(space.followersCount)" />
             <div
-              v-if="space.followers_7d"
+              v-if="space.followersCount7d"
               class="text-green"
-              v-text="`+${formatCompactNumber(space.followers_7d)}`"
+              v-text="`+${formatCompactNumber(space.followersCount7d)}`"
             />
           </div>
         </router-link>
-        <LoadingSpinner v-if="!spacesLoaded" class="p-3" />
+        <div
+          v-if="loadingSpacesRanking || loadingMoreSpacesRanking"
+          class="flex"
+        >
+          <LoadingSpinner class="mx-auto py-3" big />
+        </div>
       </BaseBlock>
     </BaseContainer>
   </div>

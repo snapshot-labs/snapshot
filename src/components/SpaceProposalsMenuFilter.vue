@@ -44,6 +44,12 @@ function redirectSearch(e: string) {
     query: { q: routeQuery.value || undefined, state: e }
   });
 }
+
+function handleUpdateSearch(e: string) {
+  router.push({
+    query: { ...route.query, q: e || undefined }
+  });
+}
 </script>
 
 <template>
@@ -55,6 +61,7 @@ function redirectSearch(e: string) {
         :model-value="routeQuery"
         :placeholder="$t('searchPlaceholder')"
         class="flex-auto pr-2"
+        @update:model-value="handleUpdateSearch"
       />
       <div class="flex items-center border-l" style="height: 44px">
         <BaseMenu

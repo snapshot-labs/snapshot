@@ -11,7 +11,7 @@ const space = ref<ExtendedSpace | null>(null);
 const route = useRoute();
 const router = useRouter();
 
-const { loadExtendedSpaces, extendedSpaces } = useExtendedSpaces();
+const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
 
 const proposalId = route.params.id as string;
 
@@ -30,7 +30,7 @@ async function loadProposal() {
   proposal.value = await getProposal(proposalId);
   if (!proposal.value) return router.push({ name: 'error-404' });
 
-  await loadExtendedSpaces([proposal.value.space.id]);
+  await loadExtendedSpace(proposal.value.space.id);
   space.value =
     extendedSpaces.value.find(
       space => space.id.toLowerCase() === proposal.value?.space.id.toLowerCase()

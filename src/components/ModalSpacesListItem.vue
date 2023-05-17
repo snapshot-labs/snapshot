@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { Space } from '@/helpers/interfaces';
+
 const { formatCompactNumber } = useIntl();
 
 defineProps<{
-  space: any;
+  space: Space;
 }>();
 </script>
 
@@ -18,15 +20,15 @@ defineProps<{
                 {{ space.name }}
               </div>
               <IconVerifiedSpace
+                v-if="space.verified"
                 class="ml-1 flex text-primary"
-                :space-id="space.id"
                 size="18"
               />
             </div>
             <div class="text-xs leading-5 text-skin-text">
               {{
                 $tc('members', {
-                  count: formatCompactNumber(space.followers || 0)
+                  count: formatCompactNumber(space.followersCount || 0)
                 })
               }}
             </div>
