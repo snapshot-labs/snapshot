@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { Space } from '@/helpers/interfaces';
+
 defineProps<{
-  spaces: Record<string, any>;
-  delegatorsFilteredBySpaces: string[];
+  spaces: Space[];
   delegators: { delegator: string; space: string }[];
   userAddress: string;
   web3Account: string;
@@ -13,22 +14,22 @@ defineEmits(['delegate']);
 <template>
   <div>
     <div
-      v-for="space in delegatorsFilteredBySpaces"
-      :key="space"
+      v-for="space in spaces"
+      :key="space.id"
       class="border-b px-4 py-2 first:border-t last:border-b-0"
     >
       <div class="flex justify-between">
         <router-link
           class="flex items-center"
-          :to="{ name: 'spaceProposals', params: { key: space } }"
+          :to="{ name: 'spaceProposals', params: { key: space.id } }"
         >
-          <AvatarSpace :space="spaces[space]" size="35" />
+          <AvatarSpace :space="space" size="35" />
           <div class="flex items-center">
             <h4 class="ml-3">
-              {{ spaces[space].name }}
+              {{ space.name }}
             </h4>
             <IconVerifiedSpace
-              :space-id="space"
+              v-if="space.verified"
               size="19"
               class="ml-1 flex text-primary"
             />
@@ -39,7 +40,8 @@ defineEmits(['delegate']);
           v-if="
             delegators.find(
               d =>
-                d.delegator === web3Account.toLowerCase() && d.space === space
+                d.delegator === web3Account.toLowerCase() &&
+                d.space === space.id
             )
           "
           class="flex h-[44px] items-center space-x-2 rounded-full border px-4"

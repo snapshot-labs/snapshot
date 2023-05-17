@@ -1,10 +1,8 @@
-<script setup>
-const props = defineProps({
-  space: {
-    type: Object,
-    default: null
-  }
-});
+<script setup lang="ts">
+import { Space, ExtendedSpace } from '@/helpers/interfaces';
+const props = defineProps<{
+  space: Space | ExtendedSpace;
+}>();
 
 const { formatCompactNumber } = useIntl();
 
@@ -53,7 +51,7 @@ watchEffect(() => {
           >
             {{ space.name }}
           </div>
-          <IconVerifiedSpace :space-id="props.space.id" />
+          <IconVerifiedSpace v-if="space.verified" />
         </h3>
         <div class="mb-[12px] text-skin-text">
           {{
