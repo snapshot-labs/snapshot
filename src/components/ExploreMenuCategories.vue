@@ -1,11 +1,19 @@
 <script setup lang="ts">
-const { spacesPerCategory, categoriesOrderedBySpaceCount } = useCategories();
-const { selectedCategory, orderedSpaces } = useSpaces();
-const { tc } = useI18n();
+import categories from '@/helpers/categories.json';
 
-function selectCategory(c) {
-  selectedCategory.value = c;
-}
+const props = defineProps<{
+  metrics: Record<string, number>;
+}>();
+
+const emit = defineEmits(['update:category']);
+
+const { tc } = useI18n();
+const route = useRoute();
+const router = useRouter();
+
+const selected = ref((route.query.category as string) || undefined);
+
+const routeQuery = computed(() => route.query || undefined);
 
 const categoryItems = computed(() => {
   return [
@@ -13,22 +21,30 @@ const categoryItems = computed(() => {
       text: tc('explore.categories.all'),
       action: 'all',
       extras: {
-        count: orderedSpaces.value.length,
-        selected: !selectedCategory.value
+        count: props.metrics?.all || 0,
+        selected: !selected.value
       }
     },
-    ...categoriesOrderedBySpaceCount.value
-      .filter(c => spacesPerCategory.value[c])
+    ...categories
       .map(c => ({
         text: tc(`explore.categories.${c}`),
         action: c,
         extras: {
-          count: spacesPerCategory.value[c],
-          selected: selectedCategory.value === c
+          count: props.metrics?.[c] || 0,
+          selected: selected.value === c
         }
       }))
+      .sort((a, b) => b.extras.count - a.extras.count)
   ];
 });
+
+function selectCategory(c: string) {
+  selected.value = c;
+  emit('update:category', c);
+  router.push({
+    query: { ...routeQuery.value, category: c }
+  });
+}
 </script>
 
 <template>
@@ -38,14 +54,11 @@ const categoryItems = computed(() => {
     @select="selectCategory"
   >
     <template #button>
-      <BaseButton
-        class="w-full whitespace-nowrap pr-3"
-        :disabled="!orderedSpaces.length"
-      >
+      <BaseButton class="w-full whitespace-nowrap pr-3">
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
-          <span v-if="selectedCategory">
-            {{ $tc('explore.categories.' + selectedCategory) }}
+          <span v-if="selected">
+            {{ $tc('explore.categories.' + selected) }}
           </span>
           <span v-else>
             {{ $tc('explore.category') }}

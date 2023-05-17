@@ -1,54 +1,49 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable';
-
 import { lsSet, lsGet } from '@/helpers/utils';
 
+const router = useRouter();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
 const { domain, showSidebar } = useApp();
-const router = useRouter();
-const { loadExtendedSpaces, extendedSpaces, spaceLoading } =
-  useExtendedSpaces();
-const { spaces } = useSpaces();
+const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
 
-const draggableSpaces = ref<string[]>([]);
+const orderedSpaces = ref<string[]>([]);
 
-const extendedSpacesObj = computed(() => {
+const spacesMap = computed(() => {
   return (
-    extendedSpaces.value?.reduce(
-      (acc, space) => ({ ...acc, [space.id]: space }),
-      {}
-    ) ?? {}
+    spaces.value?.reduce((acc, space) => ({ ...acc, [space.id]: space }), {}) ??
+    {}
   );
 });
 
-function saveSpaceOrder() {
+function updateSpaceOrder() {
   if (web3Account.value)
     lsSet(
-      `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
-      draggableSpaces.value
+      `savedSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
+      orderedSpaces.value
     );
 }
 
 watch(followingSpaces, () => {
-  draggableSpaces.value = followingSpaces.value;
-  const sidebarSpaceOrder = lsGet(
-    `sidebarSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
+  orderedSpaces.value = followingSpaces.value;
+  const savedSpaceOrder = lsGet(
+    `savedSpaceOrder.${web3Account.value.slice(0, 8).toLowerCase()}`,
     []
   );
   // Order side bar and add new spaces to the end of the sidebar
-  draggableSpaces.value.sort((a, b) => {
-    if (!sidebarSpaceOrder.includes(a)) return -1;
-    if (!sidebarSpaceOrder.includes(b)) return 1;
-    return sidebarSpaceOrder.indexOf(a) - sidebarSpaceOrder.indexOf(b);
+  orderedSpaces.value.sort((a, b) => {
+    if (!savedSpaceOrder.includes(a)) return -1;
+    if (!savedSpaceOrder.includes(b)) return 1;
+    return savedSpaceOrder.indexOf(a) - savedSpaceOrder.indexOf(b);
   });
 
-  saveSpaceOrder();
+  updateSpaceOrder();
 });
 
 watch(followingSpaces, () => {
-  loadExtendedSpaces(followingSpaces.value);
+  loadSpaces(followingSpaces.value);
 });
 
 watch(
@@ -84,23 +79,23 @@ watch(
       </BaseButtonRound>
     </div>
     <SidebarSpacesSkeleton
-      v-if="extendedSpaces.length === 0 && (spaceLoading || loadingFollows)"
+      v-if="spaces.length === 0 && (isLoadingSpaces || loadingFollows)"
     />
 
     <draggable
       v-else
-      v-model="draggableSpaces"
+      v-model="orderedSpaces"
       :component-data="{ type: 'transition-group' }"
       v-bind="{ animation: 200 }"
       item-key="id"
       class="mt-2 space-y-2"
       :delay="200"
       :delay-on-touch-only="true"
-      @update="saveSpaceOrder"
+      @update="updateSpaceOrder"
     >
       <template #item="{ element }">
         <div
-          v-if="extendedSpacesObj[element]"
+          v-if="spacesMap[element]"
           class="group relative flex items-center px-2"
         >
           <SidebarUnreadIndicator
@@ -109,26 +104,26 @@ watch(
           />
           <router-link
             v-tippy="{
-              content: extendedSpacesObj[element].name,
+              content: spacesMap[element].name,
               placement: 'right',
               delay: [750, 0],
               touch: ['hold', 500]
             }"
             :to="{
               name: 'spaceProposals',
-              params: { key: extendedSpacesObj[element].id }
+              params: { key: spacesMap[element].id }
             }"
           >
             <AvatarSpace
               :key="element"
-              :space="extendedSpacesObj[element]"
+              :space="spacesMap[element]"
               symbol-index="space"
               size="44"
               class="pointer-events-none"
             />
             <BaseCounter
-              v-if="spaces?.[element]?.proposals_active"
-              :counter="spaces[element].proposals_active"
+              v-if="spacesMap[element].activeProposals"
+              :counter="spacesMap[element].activeProposals"
               class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
             />
           </router-link>

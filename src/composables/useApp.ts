@@ -23,7 +23,6 @@ const showSidebar = ref(false);
 export function useApp() {
   const { loadLocale } = useI18n();
   const { getSkin } = useSkin();
-  const { getSpaces } = useSpaces();
   const { login } = useWeb3();
 
   function connectWallet() {
@@ -50,7 +49,6 @@ export function useApp() {
     await loadLocale();
     await getSkin(domain);
     isReady.value = true;
-    getSpaces();
     connectWallet();
   }
 
