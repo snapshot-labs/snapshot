@@ -58,13 +58,11 @@ watch(
       class="input w-full flex-auto border-none"
       @input="handleInput"
     />
+    <slot name="after" :clearInput="clearInput" />
     <i-ho-x
       v-if="modelValue"
       class="mr-4 cursor-pointer text-[18px]"
       @click="clearInput"
     />
-    <slot name="after" :clearInput="clearInput" />
-
-    <slot name="after" :clearInput="clearInput" />
   </div>
 </template>
