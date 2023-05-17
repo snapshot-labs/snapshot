@@ -50,7 +50,7 @@ const { formatCompactNumber } = useIntl();
 
       <span v-else> This delegate hasn't added a statement yet. </span>
     </div>
-    <div class="mt-4 flex items-end justify-between">
+    <div class="mt-4 flex items-center justify-between">
       {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
       delegators
 

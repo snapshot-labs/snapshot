@@ -14,11 +14,83 @@ const {
   hasMoreDelegates
 } = useDelegates();
 const { profiles, loadProfiles } = useProfiles();
+const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+const { domain } = useApp();
+
+const searchInput = ref((route.query.search as string) || '');
+const selectedFilter = ref(route.query.filter || 'mostVotingPower');
+
+const matchFilter = computed(() => {
+  switch (selectedFilter.value) {
+    case 'mostDelegators':
+      return 'tokenHoldersRepresentedAmount';
+    case 'mostProposals':
+      return 'proposalsCount';
+    case 'mostVotes':
+      return 'votesCount';
+    default:
+      return 'delegatedVotes';
+  }
+});
+
+const queryVariables = computed(() => {
+  return {
+    orderBy: matchFilter.value,
+    search: searchInput.value
+  };
+});
+
+const filterItems = computed(() => {
+  return [
+    {
+      text: t('delegates.filters.mostVotingPower'),
+      action: 'mostVotingPower',
+      extras: { selected: selectedFilter.value === 'mostVotingPower' }
+    },
+    {
+      text: t('delegates.filters.mostDelegators'),
+      action: 'mostDelegators',
+      extras: { selected: selectedFilter.value === 'mostDelegators' }
+    }
+    // {
+    //   text: t('delegates.filters.mostProposals'),
+    //   action: 'mostProposals',
+    //   extras: { selected: selectedFilter.value === 'mostProposals' }
+    // },
+    // {
+    //   text: t('delegates.filters.mostVotes'),
+    //   action: 'mostVotes',
+    //   extras: { selected: selectedFilter.value === 'mostVotes' }
+    // }
+  ];
+});
+
+function handleSearchInput(value: string) {
+  searchInput.value = value;
+  router.push({
+    query: {
+      ...route.query,
+      search: value || undefined
+    }
+  });
+}
+
+function handleSelectFilter(e: string) {
+  selectedFilter.value = e;
+  router.push({
+    query: {
+      ...route.query,
+      filter: e
+    }
+  });
+}
 
 useInfiniteScroll(
   document,
   () => {
-    fetchMoreDelegates();
+    fetchMoreDelegates(queryVariables.value);
   },
   { distance: 250, interval: 500 }
 );
@@ -27,13 +99,56 @@ watch(delegates, () => {
   loadProfiles(delegates.value.map(delegate => delegate.id));
 });
 
+watch(queryVariables, () => {
+  fetchDelegates(queryVariables.value);
+});
+
 onMounted(() => {
-  if (!delegates.value.length) fetchDelegates();
+  if (!delegates.value.length) fetchDelegates(queryVariables.value);
 });
 </script>
 
 <template>
   <BaseContainer>
+    <div class="mb-3 px-4 md:px-0">
+      <ButtonBack
+        @click="
+          router.push(domain ? { path: '/' } : { name: 'spaceProposals' })
+        "
+      />
+      <h1 v-text="$t('delegates.header')" />
+    </div>
+    <BaseBlock class="mb-4">
+      <div class="flex justify-between">
+        <div class="flex gap-2">
+          <div
+            class="flex w-[330px] rounded-full border pl-3 pr-0 focus-within:border-skin-text"
+          >
+            <BaseSearch
+              :model-value="searchInput"
+              :placeholder="$t('searchPlaceholderVotes')"
+              class="flex-auto pr-3"
+              @update:model-value="handleSearchInput"
+            />
+          </div>
+          <TuneMenu :items="filterItems" @select="handleSelectFilter">
+            <template #button>
+              <TuneButton class="h-full">
+                <div class="leading-2 flex items-center leading-3">
+                  <span>
+                    {{ $t(`delegates.filters.${selectedFilter}`) }}
+                  </span>
+                  <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
+                </div>
+              </TuneButton>
+            </template>
+          </TuneMenu>
+        </div>
+        <div>
+          <TuneButton primary class="px-5"> Delegate </TuneButton>
+        </div>
+      </div>
+    </BaseBlock>
     <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
       <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
       <template v-else>

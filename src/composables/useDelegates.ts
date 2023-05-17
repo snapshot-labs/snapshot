@@ -7,6 +7,11 @@ type Governance = {
   totalDelegates: string;
 };
 
+type queryVariables = {
+  orderBy: string;
+  search: string;
+};
+
 const DELEGATES_LIMIT = 18;
 
 function adjustUrl(apiUrl: string) {
@@ -29,14 +34,20 @@ export function useDelegates() {
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
 
-  async function _fetchDelegates(overwrite: boolean) {
+  async function _fetchDelegates(
+    overwrite: boolean,
+    queryVariables: queryVariables
+  ) {
     const query = {
       delegates: {
         __args: {
           first: DELEGATES_LIMIT,
           skip: overwrite ? 0 : delegates.value.length,
-          orderBy: 'delegatedVotes',
-          orderDirection: 'desc'
+          orderBy: queryVariables.orderBy,
+          orderDirection: 'desc',
+          where: {
+            ...(queryVariables.search ? { id: queryVariables.search } : {})
+          }
         },
         id: true,
         delegatedVotes: true,
@@ -91,26 +102,32 @@ export function useDelegates() {
     hasMoreDelegates.value = delegatesData.length === DELEGATES_LIMIT;
   }
 
-  async function fetchDelegates() {
+  async function fetchDelegates(variables: queryVariables) {
     if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
 
     try {
-      await _fetchDelegates(true);
+      await _fetchDelegates(true, variables);
     } catch (err) {
+      console.error(err);
       hasDelegatesLoadFailed.value = true;
     } finally {
       isLoadingDelegates.value = false;
     }
   }
 
-  async function fetchMoreDelegates() {
+  async function fetchMoreDelegates(variables: queryVariables) {
     if (isLoadingDelegates.value || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
 
-    await _fetchDelegates(false);
-
-    isLoadingMoreDelegates.value = false;
+    try {
+      await _fetchDelegates(false, variables);
+    } catch (err) {
+      console.error(err);
+      hasDelegatesLoadFailed.value = true;
+    } finally {
+      isLoadingMoreDelegates.value = false;
+    }
   }
 
   return {
