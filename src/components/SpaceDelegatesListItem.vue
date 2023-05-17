@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Delegate, Profile, ExtendedSpace } from '@/helpers/interfaces';
 
-const { domain } = useApp();
-
 defineProps<{
   delegate: Delegate;
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
 }>();
 
+const { domain } = useApp();
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
 </script>
