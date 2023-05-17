@@ -104,6 +104,34 @@ export interface ExploreSpace {
   followers_7d?: number;
 }
 
+export interface Space {
+  id: string;
+  name: string;
+  avatar: string;
+  verified: boolean;
+  activeProposals: number;
+  followersCount: number;
+  flagged: boolean;
+  terms: string;
+}
+
+export interface RankedSpace {
+  id: string;
+  name: string;
+  avatar: string;
+  verified: boolean;
+  rank: number;
+  categories: string[];
+  activeProposals: number;
+  proposalsCount: number;
+  proposalsCount7d: number;
+  followersCount: number;
+  followersCount7d: number;
+  votesCount: number;
+  votesCount7d: number;
+  terms: string;
+}
+
 export interface ExtendedSpace {
   id: string;
   name: string;
@@ -134,6 +162,8 @@ export interface ExtendedSpace {
   treasuries: TreasuryAsset[];
   template: string;
   guidelines: string;
+  verified: boolean;
+  flagged: boolean;
   voting: {
     delay: number | null;
     hideAbstain: boolean;
@@ -153,6 +183,15 @@ export interface SpaceStrategy {
   name: string;
   network: string;
   params: Record<string, unknown>;
+}
+
+export interface ProposalSpace {
+  id: string;
+  name: string;
+  members: string[];
+  avatar: string;
+  symbol: string;
+  verified: boolean;
 }
 
 export interface Proposal {
@@ -182,7 +221,7 @@ export interface Proposal {
   plugins: Record<string, any>;
   space: ExtendedSpace;
   strategies: SpaceStrategy[];
-  flagged?: boolean;
+  flagged: boolean;
 }
 
 export interface VoteValidation {
