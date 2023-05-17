@@ -47,7 +47,7 @@ watch(
     class="flex items-center"
     :class="{ 'border-b bg-skin-bg px-4 py-3': modal }"
   >
-    <i-ho-search class="mr-2 text-[19px]" />
+    <i-ho-search class="mr-2 text-[19px] text-skin-link" />
     <input
       ref="BaseInputEL"
       :value="input"
