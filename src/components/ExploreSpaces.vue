@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { useInfiniteScroll } from '@vueuse/core';
+import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const route = useRoute();
 const { validEnsTlds } = useEns();
@@ -56,12 +56,12 @@ useInfiniteScroll(
   { distance: 250, interval: 500 }
 );
 
-watch(
+watchDebounced(
   queryInput,
   () => {
     loadSpaces();
   },
-  { deep: true }
+  { deep: true, debounce: 300 }
 );
 
 onMounted(() => {
