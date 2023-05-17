@@ -59,9 +59,9 @@ watch(
       @input="handleInput"
     />
     <slot name="after" :clearInput="clearInput" />
-    <i-ho-x-mark
+    <i-ho-x
       v-if="!$slots.after && modelValue"
-      class="cursor-pointer text-[12px]"
+      class="cursor-pointer text-[18px]"
       @click="clearInput"
     />
   </div>

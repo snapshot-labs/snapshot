@@ -50,7 +50,6 @@ function selectCategory(c: string) {
 <template>
   <BaseMenu
     class="mt-2 w-full xs:w-auto sm:mr-2 md:ml-2 md:mt-0"
-    :selected="selected"
     :items="categoryItems"
     @select="selectCategory"
   >

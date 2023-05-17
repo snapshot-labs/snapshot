@@ -60,7 +60,7 @@ function handleUpdateSearch(e: string) {
       class="flex-auto pr-2"
       @update:model-value="handleUpdateSearch"
     />
-    <div class="flex items-center border-l" style="height: 44px">
+    <div class="flex items-center border-l text-skin-link" style="height: 44px">
       <BaseMenu :items="searchOptions" @select="selectFilter">
         <template #button>
           <button class="flex h-full flex-grow items-center">
