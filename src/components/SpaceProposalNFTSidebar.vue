@@ -6,12 +6,10 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const isModalMinterOpen = ref(false);
-const mintCurrency = 'MATIC';
-const minMintPrice = ref('0.001');
-const mintedCount = ref('23');
-const mintedCountTotal = ref('500');
+const { mintCurrency, mintPrice, mintCount, mintCountTotal, minting, mint } =
+  useNFTClaimer(props.space, props.proposal);
 
+const isModalMinterOpen = ref(false);
 const isModalExploreOpen = ref(false);
 </script>
 
@@ -29,12 +27,13 @@ const isModalExploreOpen = ref(false);
         <BaseIcon name="snapshot" size="50" class="text-primary" />
       </div>
       <span class="text-skin-link">{{ proposal.title }}</span>
-      <BaseButton primary @click="isModalMinterOpen = true">
-        MINT for {{ minMintPrice }} {{ mintCurrency }}
+      <BaseButton primary :loading="minting" @click="mint()">
+        MINT for {{ mintPrice }} {{ mintCurrency }}
       </BaseButton>
-      <span>{{ mintedCount }} / {{ mintedCountTotal }} minted</span>
+      <span>{{ mintCount }} / {{ mintCountTotal }} minted</span>
     </div>
   </BaseBlock>
+
   <teleport to="#modal">
     <SpaceProposalNFTMinterModal
       :open="isModalMinterOpen"

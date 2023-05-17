@@ -81,6 +81,7 @@
     "useMeta": true,
     "useModal": true,
     "useModalNotification": true,
+    "useNFTClaimer": true,
     "useNetworksFilter": true,
     "useNotifications": true,
     "usePlugins": true,
@@ -111,7 +112,6 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true,
-    "watchTxStatus": true
+    "watchSyncEffect": true
   }
 }
