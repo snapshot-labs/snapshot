@@ -433,6 +433,7 @@ export const SPACE_QUERY = gql`
       template
       guidelines
       verified
+      flagged
       parent {
         id
         name
