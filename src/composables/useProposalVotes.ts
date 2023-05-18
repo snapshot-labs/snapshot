@@ -3,8 +3,6 @@ import { watchDebounced } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { Proposal, Vote } from '@/helpers/interfaces';
 import { getProposalVotes } from '@/helpers/snapshot';
-import { isAddress } from '@ethersproject/address';
-import { resolveEns, resolveLens } from '@/helpers/utils';
 
 export function useProposalVotes(
   proposal: Proposal,
@@ -14,8 +12,8 @@ export function useProposalVotes(
 ) {
   const { web3Account } = useWeb3();
   const { profiles, loadProfiles } = useProfiles();
-  const { isValidEnsDomain } = useEns();
   const { loadMore, loadingMore } = useInfiniteLoader(loadBy);
+  const { resolveName } = useResolveName();
 
   const loadedVotes = ref(false);
   const votes = ref<Vote[]>([]);
@@ -113,13 +111,7 @@ export function useProposalVotes(
         return;
       }
 
-      if (isAddress(val.toLowerCase())) {
-        searchAddress.value = val;
-      } else if (isValidEnsDomain(val)) {
-        searchAddress.value = await resolveEns(val);
-      } else if (val.endsWith('.lens')) {
-        searchAddress.value = await resolveLens(val);
-      }
+      searchAddress.value = (await resolveName(val)) || '';
 
       if (!searchAddress.value) {
         loadedVotes.value = true;

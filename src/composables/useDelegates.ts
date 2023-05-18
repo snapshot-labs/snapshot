@@ -7,7 +7,7 @@ type Governance = {
   totalDelegates: string;
 };
 
-type queryVariables = {
+type QueryVariables = {
   orderBy: string;
   search: string;
 };
@@ -17,18 +17,18 @@ const DELEGATES_LIMIT = 18;
 function adjustUrl(apiUrl: string) {
   const hostedPattern =
     /https:\/\/thegraph\.com\/hosted-service\/subgraph\/([\w-]+)\/([\w-]+)/;
-
   const hostedMatch = apiUrl.match(hostedPattern);
-  if (hostedMatch) {
-    return `https://api.thegraph.com/subgraphs/name/${hostedMatch[1]}/${hostedMatch[2]}`;
-  }
 
-  return apiUrl;
+  return hostedMatch
+    ? `https://api.thegraph.com/subgraphs/name/${hostedMatch[1]}/${hostedMatch[2]}`
+    : apiUrl;
 }
 
 const delegates: Ref<Delegate[]> = ref([]);
 
 export function useDelegates() {
+  const { resolveName } = useResolveName();
+
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
@@ -36,18 +36,18 @@ export function useDelegates() {
 
   async function _fetchDelegates(
     overwrite: boolean,
-    queryVariables: queryVariables
+    queryVariables: QueryVariables
   ) {
-    const query = {
+    const address = await resolveName(queryVariables.search);
+
+    const query: any = {
       delegates: {
         __args: {
           first: DELEGATES_LIMIT,
           skip: overwrite ? 0 : delegates.value.length,
           orderBy: queryVariables.orderBy,
           orderDirection: 'desc',
-          where: {
-            ...(queryVariables.search ? { id: queryVariables.search } : {})
-          }
+          where: address ? { id: address } : {}
         },
         id: true,
         delegatedVotes: true,
@@ -102,7 +102,7 @@ export function useDelegates() {
     hasMoreDelegates.value = delegatesData.length === DELEGATES_LIMIT;
   }
 
-  async function fetchDelegates(variables: queryVariables) {
+  async function fetchDelegates(variables: QueryVariables) {
     if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
 
@@ -116,7 +116,7 @@ export function useDelegates() {
     }
   }
 
-  async function fetchMoreDelegates(variables: queryVariables) {
+  async function fetchMoreDelegates(variables: QueryVariables) {
     if (isLoadingDelegates.value || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
 

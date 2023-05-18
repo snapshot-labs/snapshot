@@ -108,6 +108,7 @@
     "useUsername": true,
     "useWeb3": true,
     "useDelegates": true,
+    "useResolveName": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useInfiniteScroll } from '@vueuse/core';
+import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -99,9 +99,13 @@ watch(delegates, () => {
   loadProfiles(delegates.value.map(delegate => delegate.id));
 });
 
-watch(queryVariables, () => {
-  fetchDelegates(queryVariables.value);
-});
+watchDebounced(
+  queryVariables,
+  () => {
+    fetchDelegates(queryVariables.value);
+  },
+  { debounce: 300 }
+);
 
 onMounted(() => {
   if (!delegates.value.length) fetchDelegates(queryVariables.value);
