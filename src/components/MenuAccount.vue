@@ -8,6 +8,7 @@ const { t } = useI18n();
 
 const { domain } = useApp();
 const { logout } = useWeb3();
+const { isSubscribed } = useEmailSubscription();
 const router = useRouter();
 const modalEmailSubscriptionOpen = ref(false);
 
@@ -53,7 +54,9 @@ function handleAction(e) {
           extras: { icon: 'switch' }
         },
         {
-          text: t('emailSubscription.subscribe'),
+          text: isSubscribed
+            ? 'Manage subscriptions'
+            : t('emailSubscription.subscribe'),
           action: 'subscribeEmail',
           extras: { icon: 'mail' }
         },
@@ -89,10 +92,18 @@ function handleAction(e) {
       </template>
     </BaseMenu>
   </div>
-  <teleport to="#modal">
+
+  <teleport v-if="!isSubscribed" to="#modal">
     <ModalEmailSubscription
       :open="modalEmailSubscriptionOpen"
       :address="address"
+      @close="modalEmailSubscriptionOpen = false"
+    />
+  </teleport>
+
+  <teleport v-else to="#modal">
+    <EmailSubscriptionManagementForm
+      :open="modalEmailSubscriptionOpen"
       @close="modalEmailSubscriptionOpen = false"
     />
   </teleport>
