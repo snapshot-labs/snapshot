@@ -144,7 +144,7 @@ onMounted(() => {
             <template #button>
               <TuneButton class="h-full">
                 <div class="leading-2 flex items-center leading-3">
-                  <span>
+                  <span class="text-skin-link">
                     {{ $t(`delegates.filters.${selectedFilter}`) }}
                   </span>
                   <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />

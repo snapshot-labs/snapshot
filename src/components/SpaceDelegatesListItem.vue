@@ -35,7 +35,7 @@ const { formatCompactNumber } = useIntl();
             <div class="font-semibold text-skin-heading">
               {{ getUsername(delegate.id, profiles[delegate.id]) }}
             </div>
-            <div>
+            <div class="text-skin-text">
               {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
               {{ space.symbol }}
             </div>
@@ -43,10 +43,13 @@ const { formatCompactNumber } = useIntl();
         </div>
       </BaseLink>
     </PopoverHoverProfile>
-    <div class="mt-4 line-clamp-4 h-full">
-      <span v-if="delegate?.statement">
-        {{ delegate.statement }}
-      </span>
+    <div class="mt-4 h-full">
+      <template v-if="delegate?.statement">
+        <span class="line-clamp-4">
+          {{ delegate.statement }}
+        </span>
+        <span class="cursor-pointer text-skin-link">Lean more</span>
+      </template>
 
       <span v-else> This delegate hasn't added a statement yet. </span>
     </div>
@@ -54,7 +57,7 @@ const { formatCompactNumber } = useIntl();
       {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
       delegators
 
-      <TuneButton> Delegate </TuneButton>
+      <TuneButton class="text-skin-link"> Delegate </TuneButton>
     </div>
   </div>
 </template>
