@@ -1,6 +1,5 @@
 import sign, { DataType } from '@/helpers/sign';
 import { JSONRPCSuccess, JSONRPCError } from '@/helpers/interfaces';
-// import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 let isInitialized = false;
 let isSubscriptionsLoading = false;
