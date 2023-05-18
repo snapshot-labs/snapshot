@@ -1,5 +1,12 @@
-import sign, { SubscribeType } from '@/helpers/sign';
+import sign, { DataType } from '@/helpers/sign';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+
+const SubscribeSchema: DataType = {
+  Subscribe: [
+    { name: 'address', type: 'address' },
+    { name: 'email', type: 'string' }
+  ]
+};
 
 export function useEmailSubscription() {
   enum Status {
@@ -30,11 +37,11 @@ export function useEmailSubscription() {
     try {
       const signature = await sign(
         auth.web3,
-        web3.value.account,
         {
+          address: web3.value.account,
           email
         },
-        SubscribeType
+        SubscribeSchema
       );
 
       const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
