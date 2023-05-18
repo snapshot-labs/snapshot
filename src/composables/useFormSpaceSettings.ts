@@ -12,8 +12,8 @@ const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_DELEGATION = {
   standard: 'governor-subgraph',
-  api: '',
-  contract: ''
+  contract: '',
+  subgraphUrl: ''
 };
 const EMPTY_SPACE_FORM = {
   strategies: [],

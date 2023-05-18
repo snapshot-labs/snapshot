@@ -138,6 +138,11 @@ export interface ExtendedSpace {
   symbol: string;
   network: string;
   strategies: SpaceStrategy[];
+  delegation: {
+    standard: string;
+    contract: string;
+    subgraphUrl: string;
+  };
   about: string;
   avatar: string;
   skin: string;

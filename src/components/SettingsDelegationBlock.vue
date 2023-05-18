@@ -14,7 +14,7 @@ const def = computed(() => {
         type: 'string',
         title: 'Standard',
         description: 'The standard used by your delegation contract',
-        anyOf: [{ const: 'governor-subgraph', title: 'Compound governor' }]
+        anyOf: [{ const: 'compound-governor', title: 'Compound governor' }]
       },
       contract: {
         type: 'string',
@@ -23,7 +23,7 @@ const def = computed(() => {
         description: 'The address of your delegation contract',
         examples: ['0x3901D0fDe202aF1427216b79f5243f8A022d68cf']
       },
-      api: {
+      subgraphUrl: {
         type: 'string',
         format: 'uri',
         title: 'Subgraph URL',
