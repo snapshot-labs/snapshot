@@ -14,10 +14,6 @@ const {
 } = useEmailSubscription();
 const { t } = useI18n();
 
-function close() {
-  emit('close');
-}
-
 const canRemoveEmail = computed(() => {
   const { newProposal, closedProposal, summary } = clientSubscriptions.value;
   return !newProposal && !closedProposal && !summary;
@@ -32,13 +28,13 @@ const submit = async () => {
   // TODO: canRemoveEmail check should be removed when `shouldRemoveEmail` will be implemented
   if (shouldRemoveEmail.value && canRemoveEmail.value) {
     isSubscribed.value = false;
-    close();
+    emit('close');
   }
 };
 </script>
 
 <template>
-  <BaseModal :open="open" max-height="510px" @close="close">
+  <BaseModal :open="open" max-height="510px" @close="$emit('close')">
     <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('emailManagement.title') }}</h3>
