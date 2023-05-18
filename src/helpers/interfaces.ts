@@ -371,14 +371,11 @@ export interface FormError {
   push?: boolean;
 }
 
-export interface ApiDelegate {
+export interface Delegate {
   id: string;
   delegatedVotes: string;
   delegatedVotesRaw: string;
   tokenHoldersRepresentedAmount: number;
-}
-
-export interface Delegate extends ApiDelegate {
   delegatorsPercentage: number;
   votesPercentage: number;
   statement?: string;

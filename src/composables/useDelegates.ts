@@ -1,15 +1,16 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { ApiDelegate, Delegate } from '@/helpers/interfaces';
-
-type Governance = {
-  delegatedVotes: string;
-  totalTokenHolders: string;
-  totalDelegates: string;
-};
+import { Delegate } from '@/helpers/interfaces';
+import { createStandardConfig } from '@/helpers/delegates';
 
 type QueryVariables = {
   orderBy: string;
   search: string;
+};
+
+type DelegatesConfig = {
+  standard: string;
+  contract: string;
+  subgraphUrl: string;
 };
 
 const DELEGATES_LIMIT = 18;
@@ -26,7 +27,7 @@ function adjustUrl(apiUrl: string) {
 
 const delegates: Ref<Delegate[]> = ref([]);
 
-export function useDelegates() {
+export function useDelegates(delegatesConfig: DelegatesConfig) {
   const { resolveName } = useResolveName();
 
   const isLoadingDelegates = ref(false);
@@ -40,66 +41,25 @@ export function useDelegates() {
   ) {
     const address = await resolveName(queryVariables.search);
 
-    const query: any = {
-      delegates: {
-        __args: {
-          first: DELEGATES_LIMIT,
-          skip: overwrite ? 0 : delegates.value.length,
-          orderBy: queryVariables.orderBy,
-          orderDirection: 'desc',
-          where: address ? { id: address } : {}
-        },
-        id: true,
-        delegatedVotes: true,
-        delegatedVotesRaw: true,
-        tokenHoldersRepresentedAmount: true
-      },
-      governance: {
-        __args: {
-          id: 'GOVERNANCE'
-        },
-        delegatedVotes: true,
-        totalTokenHolders: true,
-        totalDelegates: true
-      }
-    };
+    const standardConfig = createStandardConfig(delegatesConfig.standard);
+    const query: any = standardConfig.getQuery({
+      first: DELEGATES_LIMIT,
+      skip: overwrite ? 0 : delegates.value.length,
+      orderBy: queryVariables.orderBy,
+      id: address ? address : ''
+    });
 
-    const data = await subgraphRequest(
-      adjustUrl(
-        'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
-      ),
+    const response = await subgraphRequest(
+      adjustUrl(delegatesConfig.subgraphUrl),
       query
     );
-
-    const governanceData = data.governance as Governance;
-    const delegatesData = data.delegates as ApiDelegate[];
-
-    const newDelegates = delegatesData.map((delegate: ApiDelegate) => {
-      const delegatorsPercentage =
-        (Number(delegate.tokenHoldersRepresentedAmount) /
-          Number(governanceData.totalTokenHolders)) *
-        100;
-      const votesPercentage =
-        (Number(delegate.delegatedVotes) /
-          Number(governanceData.delegatedVotes)) *
-        100;
-
-      return {
-        ...delegate,
-        delegatorsPercentage,
-        votesPercentage,
-        statement:
-          Math.random() > 0.5
-            ? 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero commodi error unde harum facilis eveniet fugit, ut placeat rerum officiis autem.'
-            : ''
-      };
-    });
+    const newDelegates = standardConfig.formatResponse(response);
 
     delegates.value = overwrite
       ? newDelegates
       : [...delegates.value, ...newDelegates];
 
-    hasMoreDelegates.value = delegatesData.length === DELEGATES_LIMIT;
+    hasMoreDelegates.value = newDelegates.length === DELEGATES_LIMIT;
   }
 
   async function fetchDelegates(variables: QueryVariables) {

@@ -12,7 +12,12 @@ const {
   delegates,
   isLoadingDelegates,
   hasMoreDelegates
-} = useDelegates();
+} = useDelegates({
+  standard: 'compound-governor',
+  contract: '0x3901D0fDe202aF1427216b79f5243f8A022d68cf',
+  subgraphUrl:
+    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
+});
 const { profiles, loadProfiles } = useProfiles();
 const route = useRoute();
 const router = useRouter();
@@ -108,7 +113,7 @@ watchDebounced(
 );
 
 onMounted(() => {
-  if (!delegates.value.length) fetchDelegates(queryVariables.value);
+  fetchDelegates(queryVariables.value);
 });
 </script>
 
