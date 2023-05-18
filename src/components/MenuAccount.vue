@@ -96,7 +96,6 @@ function handleAction(e) {
   <teleport v-if="!isSubscribed" to="#modal">
     <ModalEmailSubscription
       :open="modalEmailSubscriptionOpen"
-      :address="address"
       @close="modalEmailSubscriptionOpen = false"
     />
   </teleport>

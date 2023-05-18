@@ -1,22 +1,30 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   open: boolean;
-  address: string;
 }>();
 
 const emit = defineEmits(['close']);
+const { web3Account } = useWeb3();
 const email = ref('');
-const { subscribe, reset, postSubscribeState, status, loading, Status } =
-  useEmailSubscription();
+const {
+  subscribe,
+  reset,
+  postSubscribeState,
+  status,
+  loading,
+  Status,
+  loadEmailSubscriptions
+} = useEmailSubscription();
 
 function close() {
   reset();
   email.value = '';
   emit('close');
+  loadEmailSubscriptions();
 }
 
 function submit() {
-  subscribe(email.value, props.address);
+  subscribe(email.value, web3Account);
 }
 </script>
 
