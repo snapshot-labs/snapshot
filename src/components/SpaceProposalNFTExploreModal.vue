@@ -34,7 +34,7 @@ async function explore() {
         class="flex flex-row justify-center p-4"
         :style="{ minHeight: maxHeight }"
       >
-        <span>All proposals nfts here...</span>
+        <span>All proposal NFTs here...</span>
       </div>
     </template>
   </BaseModal>
