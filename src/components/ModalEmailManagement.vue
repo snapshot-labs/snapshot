@@ -29,7 +29,7 @@ const updateSubscriptions = (key, value) => {
 
 const submit = async () => {
   await update();
-  // canRemoveEmail check should be removed when `shouldRemoveEmail` will be implemented
+  // TODO: canRemoveEmail check should be removed when `shouldRemoveEmail` will be implemented
   if (shouldRemoveEmail.value && canRemoveEmail.value) {
     isSubscribed.value = false;
     close();
