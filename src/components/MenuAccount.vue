@@ -101,7 +101,7 @@ function handleAction(e) {
   </teleport>
 
   <teleport v-else to="#modal">
-    <EmailSubscriptionManagementForm
+    <ModalEmailManagement
       :open="modalEmailSubscriptionOpen"
       @close="modalEmailSubscriptionOpen = false"
     />
