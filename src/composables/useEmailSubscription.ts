@@ -1,8 +1,7 @@
 import sign, { DataType } from '@/helpers/sign';
 import { JSONRPCSuccess, JSONRPCError } from '@/helpers/interfaces';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+// import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
-let auth;
 let isInitialized = false;
 let isSubscriptionsLoading = false;
 
@@ -46,6 +45,7 @@ const shouldRemoveEmail = ref(true);
 
 const { t } = useI18n();
 const { web3Account } = useWeb3();
+const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
 const apiSubscriptions: Ref<SubscriptionType[]> = ref([]);
 const clientSubscriptions = computed({
   get() {
@@ -61,6 +61,27 @@ const clientSubscriptions = computed({
       .map(key => key as SubscriptionType);
   }
 });
+
+async function signWithAlias(message, typesSchema) {
+  let signature;
+  try {
+    await checkAlias();
+    if (!aliasWallet.value || !isValidAlias.value) {
+      await setAlias();
+    }
+
+    const wallet = aliasWallet.value;
+    const address = aliasWallet.value.address;
+    signature = await sign(wallet, address, message, typesSchema);
+    console.log('signature', signature);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
+
+  return signature;
+}
 
 async function loadEmailSubscriptions() {
   const address = web3Account.value;
@@ -100,15 +121,13 @@ async function loadEmailSubscriptions() {
 async function subscribe(email: string, address: string) {
   loading.value = true;
 
+  const message = {
+    address,
+    email
+  };
+
   try {
-    const signature = await sign(
-      auth.web3,
-      {
-        address,
-        email
-      },
-      SubscribeSchema
-    );
+    const signature = await signWithAlias(message, SubscribeSchema);
 
     const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
       method: 'POST',
@@ -153,7 +172,7 @@ async function updateSubscriptions() {
   };
 
   try {
-    const signature = await sign(auth.web3, params, UpdateSubscriptionsSchema);
+    const signature = await signWithAlias(params, UpdateSubscriptionsSchema);
 
     const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
       method: 'POST',
@@ -206,9 +225,6 @@ function reset() {
 export function useEmailSubscription() {
   onBeforeMount(async () => {
     if (isInitialized) return;
-
-    auth = getInstance();
-
     if (!web3Account.value) return;
 
     try {

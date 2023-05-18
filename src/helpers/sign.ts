@@ -15,10 +15,11 @@ export type ISubscribe = {
 
 export default async function sign(
   web3: Web3Provider | Wallet,
+  address: string,
   message: ISubscribe,
   types: DataType
 ) {
   const signer = 'getSigner' in web3 ? web3.getSigner() : web3;
-  message.address = getAddress(message.address);
+  message.address = getAddress(address);
   return await signer._signTypedData(domain, types, message);
 }
