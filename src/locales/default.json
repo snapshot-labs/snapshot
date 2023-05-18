@@ -910,6 +910,7 @@
   "emailSubscription": {
     "title": "Email subscription",
     "subscribe": "Subscribe",
+    "manage": "Manage subscriptions",
     "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
     "inputCaption": "You may be asked to sign a message to verify wallet ownership",
     "postSubscribeMessage": {
@@ -917,6 +918,18 @@
       "apiError": "An error ocurred while adding your email to the subscriptions list",
       "unknownError": "Unable to subscribe to email notifications, please try again later"
     }
+  },
+  "emailManagement": {
+    "title": "Subscription management",
+    "subtitle": "Choose the types of email updates that matter to you:",
+    "optionNewProposal": "Proposal creation",
+    "optionNewProposalDescription": "Get informed when a new proposal is submitted in your followed spaces.",
+    "optionClosedProposal": "Proposal closure",
+    "optionClosedProposalDescription": "Get informed when a proposal is closed in your followed spaces.",
+    "optionSummary": "Weekly summary",
+    "optionSummaryDescription": "Get a weekly report detailing the activity in your followed spaces.",
+    "removeEmail": "Also remove my email from Snapshot's database",
+    "updatePreferences": "Update preferences"
   },
   "joinCommunity": "Join Snapshot community",
   "header": {

@@ -55,7 +55,7 @@ function handleAction(e) {
         },
         {
           text: isSubscribed
-            ? 'Manage subscriptions'
+            ? t('emailSubscription.manage')
             : t('emailSubscription.subscribe'),
           action: 'subscribeEmail',
           extras: { icon: 'mail' }

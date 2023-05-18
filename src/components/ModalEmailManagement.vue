@@ -12,6 +12,7 @@ const {
   updateSubscriptions: update,
   isSubscribed
 } = useEmailSubscription();
+const { t } = useI18n();
 
 function close() {
   emit('close');
@@ -40,13 +41,13 @@ const submit = async () => {
   <BaseModal :open="open" max-height="510px" @close="close">
     <template #header>
       <div class="flex flex-row items-center justify-center">
-        <h3>Subscription management</h3>
+        <h3>{{ $t('emailManagement.title') }}</h3>
       </div>
     </template>
 
     <div class="m-4 text-center">
       <p class="text-sm text-skin-text opacity-60">
-        Choose the types of email updates that matter to you:
+        {{ t('emailManagement.subtitle') }}
       </p>
     </div>
 
@@ -57,10 +58,9 @@ const submit = async () => {
           @update:model-value="updateSubscriptions('newProposal', $event)"
         />
         <div class="flex flex-col">
-          <span>Proposal creation</span>
+          <span>{{ t('emailManagement.optionNewProposal') }}</span>
           <span class="text-sm text-skin-text opacity-60">
-            Get informed when a new proposal is submitted in your followed
-            spaces.
+            {{ t('emailManagement.optionNewProposalDescription') }}
           </span>
         </div>
       </div>
@@ -71,9 +71,9 @@ const submit = async () => {
           @update:model-value="updateSubscriptions('closedProposal', $event)"
         />
         <div class="flex flex-col">
-          <span>Proposal closure</span>
+          <span>{{ t('emailManagement.optionClosedProposal') }}</span>
           <span class="text-sm text-skin-text opacity-60">
-            Get informed when a proposal is closed in your followed spaces.
+            {{ t('emailManagement.optionClosedProposalDescription') }}
           </span>
         </div>
       </div>
@@ -84,9 +84,9 @@ const submit = async () => {
           @update:model-value="updateSubscriptions('summary', $event)"
         />
         <div class="flex flex-col">
-          <span>Weekly summary</span>
+          <span>{{ t('emailManagement.optionSummary') }}</span>
           <span class="text-sm text-skin-text opacity-60">
-            Get a weekly report detailing the activity in your followed spaces.
+            {{ t('emailManagement.optionSummaryDescription') }}
           </span>
         </div>
       </div>
@@ -95,12 +95,12 @@ const submit = async () => {
         v-if="canRemoveEmail"
         v-model="shouldRemoveEmail"
         name="settings-saved-input-checkbox"
-        :label="'Also remove my email from Snapshot\'s database'"
+        :label="t('emailManagement.removeEmail')"
         class="pointer-events-none ml-4 mt-auto cursor-pointer self-start text-sm text-skin-text opacity-60"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
-        Update preferences
+        {{ t('emailManagement.updatePreferences') }}}
       </BaseButton>
     </form>
   </BaseModal>
