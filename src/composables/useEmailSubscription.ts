@@ -1,4 +1,5 @@
 import sign, { DataType } from '@/helpers/sign';
+import { JSONRPCError } from '@/helpers/interfaces';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 let auth;
@@ -25,6 +26,9 @@ enum Level {
   success = 'success'
 }
 
+const subscriptionTypes = ['summary', 'newProposal', 'closedProposal'] as const;
+type SubscriptionType = (typeof subscriptionTypes)[number];
+
 const status: Ref<Status> = ref(Status.waiting);
 const postSubscribeLevel: Ref<Level> = ref(Level.info);
 const postSubscribeMessage = ref('');
@@ -33,7 +37,21 @@ const isSubscribed = ref(false);
 
 const { t } = useI18n();
 const { web3Account } = useWeb3();
-const apiSubscriptions = ref([]);
+const apiSubscriptions: Ref<SubscriptionType[]> = ref([]);
+const clientSubscriptions = computed({
+  get() {
+    return subscriptionTypes.reduce((acc, type) => {
+      acc[type] = apiSubscriptions.value.includes(type);
+      return acc;
+    }, {} as Record<SubscriptionType, boolean>);
+  },
+  set(value) {
+    apiSubscriptions.value = Object.entries(value)
+      .map(([key, value]) => (value ? key : undefined))
+      .filter(Boolean)
+      .map(key => key as SubscriptionType);
+  }
+});
 
 async function loadEmailSubscriptions() {
   const address = web3Account.value;
@@ -53,7 +71,7 @@ async function loadEmailSubscriptions() {
       body: JSON.stringify({ address })
     });
 
-    const result = await response.json();
+    const result: SubscriptionType[] | JSONRPCError = await response.json();
 
     if ('error' in result) {
       isSubscribed.value = false;
@@ -144,6 +162,7 @@ export function useEmailSubscription() {
   });
 
   return {
+    clientSubscriptions,
     subscribe,
     loadEmailSubscriptions,
     status,
