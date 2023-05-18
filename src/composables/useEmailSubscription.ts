@@ -104,7 +104,7 @@ async function subscribe(email: string, address: string) {
     const signature = await sign(
       auth.web3,
       {
-        address: web3Account.value,
+        address,
         email
       },
       SubscribeSchema
@@ -227,6 +227,7 @@ export function useEmailSubscription() {
     status,
     loading,
     reset,
+    isSubscribed,
     postSubscribeState: {
       level: postSubscribeLevel,
       message: postSubscribeMessage
