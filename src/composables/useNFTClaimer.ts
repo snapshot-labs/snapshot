@@ -1,35 +1,53 @@
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { formatBytes32String } from '@ethersproject/strings';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { formatBytes32String } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
+import { randomBytes } from '@ethersproject/random';
+import { useStorage } from '@vueuse/core';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+
+const collectionsInfo = useStorage('snapshot.proposals.nftCollections', {});
 
 export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
   const NETWORK_KEY = '5';
   const WETH_CONTRACT_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6';
   const WETH_CONTRACT_ABI = [
     'function balanceOf(address) view returns (uint256)',
-    'function allowance(address owner, address spender) external view returns (uint256)'
+    'function allowance(address owner, address spender) external view returns (uint256)',
+    'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const MINT_CONTRACT_ADDRESS = '0xdDEd2972fB62907723463322b2C709CC9F5466C2';
+  const FACTORY_ADDRESS = '0x1ff32aE352C07eB95Ce8FDD672E9568936b331e4';
+  const FACTORY_ABI = [
+    'deployProxy(address implementation, bytes initializer, bytes32 salt, uint8 v, bytes32 r, bytes32 s)'
+  ];
+  // TODO get mint contract address from space
+  // const MINT_CONTRACT_ADDRESS = '0x8D153aFB2e6a9D088e1f4409554a26466a25E0f1';
+  const MINT_CONTRACT_ADDRESS = '0xed2a6161948F57dEBd2865040B287BD70a6323aa'; // no sign check collection
   const MINT_CONTRACT_ABI = [
-    'function mint(uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
+    'function balanceOf(address, uint256 id) view returns (uint256)',
+    'function mint(uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
+    'function mintPrice() view returns (uint256)',
+    'function mintPrices(uint256 proposalId) view returns (uint256)',
+    'function maxSupply() view returns (uint128)',
+    'function supplies(uint256 proposalId) view returns (uint256)'
   ];
 
-  const mintPrice = ref('0.1');
   const mintCurrency = ref('WETH');
+  const mintPrice = ref('0.1');
   const mintCount = ref('0');
   const mintCountTotal = ref('500');
 
+  const inited = ref(false);
   const minting = ref(false);
 
   const auth = getInstance();
   const { web3, web3Account } = useWeb3();
+  const { modalAccountOpen } = useModal();
 
   const networkKey = computed(() => web3.value.network.key);
   const provider = getProvider(NETWORK_KEY);
@@ -69,12 +87,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       ? await contractWETH.balanceOf(web3Account.value)
       : 0;
     const balance = formatUnits(balanceRaw, 18);
+    console.log(':_checkWETHBalance balance', balance);
 
     const mintPriceWei = parseUnits(mintPrice.value, 18);
     if (BigNumber.from(balanceRaw).lt(mintPriceWei))
       throw new Error('Not enough WETH balance');
-
-    console.log(':_checkWETHBalance balance', balanceRaw, balance);
   }
 
   async function _checkWETHApproval() {
@@ -82,45 +99,158 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       ? await contractWETH.allowance(web3Account.value, MINT_CONTRACT_ADDRESS)
       : 0;
     const allowance = formatUnits(allowanceRaw, 18);
-    console.log(':_checkWETHApproval allowance', allowanceRaw, allowance);
+    console.log(':_checkWETHApproval allowance', allowance);
 
     const mintPriceWei = parseUnits(mintPrice.value, 18);
-    if (BigNumber.from(allowanceRaw).lt(mintPriceWei))
-      throw new Error('Not enough WETH allowance');
+    if (BigNumber.from(allowanceRaw).lt(mintPriceWei)) {
+      // TODO check id for next? to throttle?
+      const txPendingId = createPendingTransaction();
+      try {
+        const tx = await sendTransaction(
+          auth.web3,
+          WETH_CONTRACT_ADDRESS,
+          WETH_CONTRACT_ABI,
+          'approve',
+          [MINT_CONTRACT_ADDRESS, mintPriceWei]
+        );
+        console.log(':_checkWETHApproval tx', tx);
+        updatePendingTransaction(txPendingId, { hash: tx.hash });
+        await tx.wait();
+      } catch (e) {
+        notify(['red', t('notify.somethingWentWrong')]);
+        console.log(e);
+      } finally {
+        removePendingTransaction(txPendingId);
+      }
+    }
   }
 
-  async function _getSignature() {
-    // throw new Error('Wrong signature');
+  async function _getSignature(type = 'space', salt) {
+    const id = type === 'space' ? space.id : proposal.id;
+    const res = await fetch(`https://sh5.co/api/nft-claimer/${type}/sign`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id,
+        address: web3Account.value,
+        salt
+      })
+    });
+    const data = await res.json();
+    return data;
   }
 
   async function _init() {
-    console.log('_init start');
-    // set mintPrice, mintCurrency, mintCount, mintCountTotal
+    if (!proposal || !space) return;
+
+    let collectionInfo = collectionsInfo.value[proposal.id];
+
+    if (!collectionInfo || collectionInfo.createdAt < Date.now() - 1000 * 60) {
+      console.log('_init FRESH', proposal.id);
+      const contractCollection = new Contract(
+        MINT_CONTRACT_ADDRESS,
+        MINT_CONTRACT_ABI,
+        provider
+      );
+
+      const maxSupply = await contractCollection.maxSupply();
+      const supplies = await contractCollection.supplies(proposal.id);
+      const mintPrices = await contractCollection.mintPrices(proposal.id);
+      const mintPriceRaw = await contractCollection.mintPrice();
+      const balanceOf = await contractCollection.balanceOf(
+        web3Account.value,
+        proposal.id
+      );
+
+      collectionInfo = {
+        mintCountTotal: maxSupply.toString(),
+        mintCount: balanceOf.toString(),
+        mintPrice: formatUnits(mintPriceRaw, 18),
+        balanceOf: balanceOf.toString(),
+        createdAt: Date.now()
+      };
+      collectionsInfo.value[proposal.id] = collectionInfo;
+    }
+
+    mintCountTotal.value = collectionInfo.mintCountTotal;
+    mintCount.value = collectionInfo.mintCount;
+    mintPrice.value = collectionInfo.mintPrice;
+
+    inited.value = true;
   }
 
-  // check network => switch network
-  // check balance => break with notify about WETH (contract info, instructions)
-  // check approval => approve
-  // sign message
-  // fetch BE with spaceId, proposalId, salt?
-  // check, approve, WETH flow
+  async function enableNFTClaimer() {
+    if (!web3Account.value) {
+      modalAccountOpen.value = true;
+      return;
+    }
+    const txPendingId = createPendingTransaction();
+    try {
+      console.log(':enableNFTClaimer start');
+      await _switchNetwork();
+
+      const salt = BigNumber.from(randomBytes(32)).toString();
+      const signature = await _getSignature('proposal', salt);
+      console.log(':enableNFTClaimer signature', signature);
+      return;
+      const tx = await sendTransaction(
+        auth.web3,
+        FACTORY_ADDRESS,
+        FACTORY_ABI,
+        'deployProxy',
+        [
+          space.id,
+          web3Account.value,
+          salt,
+          signature.v,
+          signature.r,
+          signature.s
+        ]
+      );
+      console.log(':enableNFTClaimer tx', tx);
+    } catch (e) {
+      notify(['red', t('notify.somethingWentWrong')]);
+      console.log(e);
+    } finally {
+      removePendingTransaction(txPendingId);
+    }
+  }
+
+  async function disableNFTClaimer() {
+    const txPendingId = createPendingTransaction();
+    try {
+      console.log(':disableNFTClaimer start');
+    } catch (e) {
+      notify(['red', t('notify.somethingWentWrong')]);
+      console.log(e);
+    } finally {
+      removePendingTransaction(txPendingId);
+    }
+  }
+
   async function mint() {
-    console.log(':mint start', auth, web3);
+    if (!web3Account.value) {
+      modalAccountOpen.value = true;
+      return;
+    }
     const txPendingId = createPendingTransaction();
     minting.value = true;
     try {
       await _switchNetwork();
       await _checkWETHBalance();
       await _checkWETHApproval();
-      await _getSignature();
-      await sleep(1000);
+
+      const salt = BigNumber.from(randomBytes(32)).toString();
+      const signature = await _getSignature('proposal', salt);
 
       const tx = await sendTransaction(
         auth.web3,
         MINT_CONTRACT_ADDRESS,
         MINT_CONTRACT_ABI,
         'mint',
-        [proposal.id, 0, 1, formatBytes32String('2'), formatBytes32String('3')]
+        [proposal.id, salt, signature.v, signature.r, signature.s]
       );
       console.log(':mint tx', tx);
 
@@ -129,7 +259,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       minting.value = false;
       const receipt = await tx.wait();
       console.log('Receipt', receipt);
-      notify(t('notify.delegationSuccess'));
+      notify(t('notify.youDidIt'));
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
       console.log(e);
@@ -147,7 +277,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     mintCount,
     mintCountTotal,
     minting,
+    inited,
 
+    enableNFTClaimer,
+    disableNFTClaimer,
     mint
   };
 }

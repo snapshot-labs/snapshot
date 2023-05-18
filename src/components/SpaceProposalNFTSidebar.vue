@@ -6,15 +6,30 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { mintCurrency, mintPrice, mintCount, mintCountTotal, minting, mint } =
-  useNFTClaimer(props.space, props.proposal);
+const {
+  mintCurrency,
+  mintPrice,
+  mintCount,
+  mintCountTotal,
+  minting,
+  mint,
+  enableNFTClaimer,
+  inited
+} = useNFTClaimer(props.space, props.proposal);
 
 const isModalMinterOpen = ref(false);
 const isModalExploreOpen = ref(false);
+
+async function mintLocal() {
+  // TODO check space.nftClaimer enabled
+  // if (!props.space?.nftClaimer)
+  //   return enableNFTClaimer()
+  mint();
+}
 </script>
 
 <template>
-  <BaseBlock :title="$t('NFT Claimer')">
+  <BaseBlock v-if="inited" :title="$t('NFT Claimer')">
     <template #button>
       <BaseButton variant="flat" @click="isModalExploreOpen = true">
         Explore all
@@ -22,12 +37,16 @@ const isModalExploreOpen = ref(false);
     </template>
     <div class="flex flex-col items-center space-y-2">
       <div
-        class="flex h-[186px] w-[186px] flex-row items-center justify-center rounded-xl border border-skin-link bg-skin-border"
+        class="group flex h-[186px] w-[186px] flex-row items-center justify-center rounded-xl border border-skin-link bg-skin-border"
       >
-        <BaseIcon name="snapshot" size="50" class="text-primary" />
+        <BaseIcon
+          name="snapshot"
+          size="50"
+          class="text-primary group-hover:text-snapshot"
+        />
       </div>
-      <span class="text-skin-link">{{ proposal.title }}</span>
-      <BaseButton primary :loading="minting" @click="mint()">
+      <span class="text-center text-skin-link">{{ proposal.title }}</span>
+      <BaseButton primary :loading="minting" @click="mintLocal()">
         MINT for {{ mintPrice }} {{ mintCurrency }}
       </BaseButton>
       <span>{{ mintCount }} / {{ mintCountTotal }} minted</span>
