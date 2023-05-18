@@ -24,7 +24,7 @@ function close() {
 }
 
 function submit() {
-  subscribe(email.value, web3Account);
+  subscribe(email.value, web3Account.value);
 }
 </script>
 

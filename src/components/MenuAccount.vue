@@ -93,15 +93,8 @@ function handleAction(e) {
     </BaseMenu>
   </div>
 
-  <teleport v-if="!isSubscribed" to="#modal">
-    <ModalEmailSubscription
-      :open="modalEmailSubscriptionOpen"
-      @close="modalEmailSubscriptionOpen = false"
-    />
-  </teleport>
-
-  <teleport v-else to="#modal">
-    <ModalEmailManagement
+  <teleport to="#modal">
+    <ModalEmailHOC
       :open="modalEmailSubscriptionOpen"
       @close="modalEmailSubscriptionOpen = false"
     />
