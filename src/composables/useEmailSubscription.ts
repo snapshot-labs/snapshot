@@ -1,5 +1,5 @@
 import sign, { DataType } from '@/helpers/sign';
-import { JSONRPCError } from '@/helpers/interfaces';
+import { JSONRPCSuccess, JSONRPCError } from '@/helpers/interfaces';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 let auth;
@@ -10,6 +10,14 @@ const SubscribeSchema: DataType = {
   Subscribe: [
     { name: 'address', type: 'address' },
     { name: 'email', type: 'string' }
+  ]
+};
+
+const UpdateSubscriptionsSchema: DataType = {
+  Subscriptions: [
+    { name: 'address', type: 'address' },
+    { name: 'email', type: 'string' },
+    { name: 'subscriptions', type: 'string[]' }
   ]
 };
 
@@ -34,6 +42,7 @@ const postSubscribeLevel: Ref<Level> = ref(Level.info);
 const postSubscribeMessage = ref('');
 const loading = ref(false);
 const isSubscribed = ref(false);
+const shouldRemoveEmail = ref(true);
 
 const { t } = useI18n();
 const { web3Account } = useWeb3();
@@ -130,6 +139,54 @@ async function subscribe(email: string, address: string) {
   }
 }
 
+async function updateSubscriptions() {
+  if (loading.value) return;
+
+  const address = web3Account.value;
+
+  if (!address) return;
+
+  const params = {
+    address,
+    email: 'dmytro@snapshot.org',
+    subscriptions: apiSubscriptions.value
+  };
+
+  try {
+    const signature = await sign(auth.web3, params, UpdateSubscriptionsSchema);
+
+    const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        method: 'snapshot.update',
+        params: {
+          ...params,
+          signature
+        }
+      })
+    });
+
+    const result: JSONRPCSuccess | JSONRPCError = await response.json();
+
+    if ('error' in result) {
+      throw new Error(result.error.message);
+    }
+
+    // TODO: refactor this when BE will be ready for removing email
+    if (shouldRemoveEmail.value && !apiSubscriptions.value.length) {
+      apiSubscriptions.value = [];
+    }
+  } catch (error) {
+    await loadEmailSubscriptions();
+  } finally {
+    loading.value = false;
+  }
+}
+
 function setPostSubscribeState(
   newStatus: Status,
   level: Level,
@@ -163,7 +220,9 @@ export function useEmailSubscription() {
 
   return {
     clientSubscriptions,
+    shouldRemoveEmail,
     subscribe,
+    updateSubscriptions,
     loadEmailSubscriptions,
     status,
     loading,
