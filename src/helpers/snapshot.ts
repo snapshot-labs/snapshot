@@ -11,7 +11,7 @@ export async function getProposalVotes(
     first = 1000,
     voter = '',
     skip = 0,
-    space = '',
+    space = undefined,
     orderBy = 'vp',
     orderDirection = 'desc',
     created_gte = 0
