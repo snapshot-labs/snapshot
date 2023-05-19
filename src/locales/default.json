@@ -229,6 +229,10 @@
       "mostDelegators": "Most delegators",
       "mostProposals": "Most proposals",
       "mostVotes": "Most votes"
+    },
+    "delegateModal": {
+      "title": "Delegate voting power",
+      "description": "Select your delegation preferences and delegate your voting power"
     }
   },
   "delegate": {

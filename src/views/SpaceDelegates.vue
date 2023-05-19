@@ -26,6 +26,8 @@ const { domain } = useApp();
 
 const searchInput = ref((route.query.search as string) || '');
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
+const showDelegateModal = ref(false);
+const selectedDelegate = ref('');
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
@@ -92,6 +94,16 @@ function handleSelectFilter(e: string) {
   });
 }
 
+function handleClickDelegateUser(id: string) {
+  selectedDelegate.value = id;
+  showDelegateModal.value = true;
+}
+
+function handleClickDelegate() {
+  selectedDelegate.value = '';
+  showDelegateModal.value = true;
+}
+
 useInfiniteScroll(
   document,
   () => {
@@ -154,7 +166,9 @@ onMounted(() => {
           </TuneMenu>
         </div>
         <div>
-          <TuneButton primary class="px-5"> Delegate </TuneButton>
+          <TuneButton primary class="px-5" @click="handleClickDelegate">
+            Delegate
+          </TuneButton>
         </div>
       </div>
     </BaseBlock>
@@ -166,6 +180,7 @@ onMounted(() => {
             :delegate="delegate"
             :profiles="profiles"
             :space="space"
+            @click-delegate="handleClickDelegateUser(delegate.id)"
           />
         </div>
       </template>
@@ -173,5 +188,13 @@ onMounted(() => {
     <div v-if="hasMoreDelegates" class="mt-4 flex">
       <LoadingSpinner class="mx-auto" big />
     </div>
+    <Teleport to="body">
+      <SpaceDelegatesDelegateModal
+        :open="showDelegateModal"
+        :space="space"
+        :selected-delegate="selectedDelegate"
+        @close="showDelegateModal = false"
+      />
+    </Teleport>
   </BaseContainer>
 </template>

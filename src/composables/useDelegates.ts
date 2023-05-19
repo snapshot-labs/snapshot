@@ -80,7 +80,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   }
 
   async function fetchMoreDelegates(variables: QueryVariables) {
-    if (isLoadingDelegates.value || isLoadingMoreDelegates.value) return;
+    if (!delegates.value.length || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
 
     try {

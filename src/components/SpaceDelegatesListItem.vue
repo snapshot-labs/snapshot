@@ -11,6 +11,8 @@ defineProps<{
   space: ExtendedSpace;
 }>();
 
+const emit = defineEmits(['clickDelegate']);
+
 const { domain } = useApp();
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
@@ -61,7 +63,9 @@ const { formatCompactNumber } = useIntl();
       {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
       delegators
 
-      <TuneButton class="text-skin-link"> Delegate </TuneButton>
+      <TuneButton class="text-skin-link" @click="emit('clickDelegate')">
+        Delegate
+      </TuneButton>
     </div>
   </div>
 </template>
