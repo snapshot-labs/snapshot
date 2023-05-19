@@ -109,6 +109,7 @@
   "quoteAddress": "Quote currency address",
   "removeMarket": "Remove market",
   "back": "Back",
+  "set": "Set",
   "loading": "Loading...",
   "predictedImpact": "Predicted impact",
   "marketSymbol": "{0} market",

@@ -2,7 +2,7 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   open: boolean;
@@ -10,9 +10,22 @@ const props = defineProps<{
   selectedDelegate: string;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'reload']);
 
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
+const { notify } = useFlashNotification();
+const { t } = useI18n();
 const { resolveName } = useResolveName();
+const { setDelegate } = useDelegates({
+  standard: 'compound-governor',
+  contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+  subgraphUrl:
+    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
+});
 
 const form = ref({
   scope: 'space',
@@ -21,6 +34,7 @@ const form = ref({
 const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const formRef = ref();
+const isAwaitingSignature = ref(false);
 
 const definition = computed(() => {
   return {
@@ -61,13 +75,31 @@ const isValid = computed(() => {
   return Object.values(validationErrors.value).length === 0;
 });
 
-function handleConfirm() {
+async function handleConfirm() {
   if (!isValid.value) {
     formRef?.value?.forceShowError();
     return;
   }
 
-  emit('close');
+  const txPendingId = createPendingTransaction();
+  try {
+    isAwaitingSignature.value = true;
+    const tx = await setDelegate(resolvedAddress.value);
+    isAwaitingSignature.value = false;
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
+    emit('close');
+    notify(t('notify.transactionSent'));
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    notify(t('notify.delegationRemoved'));
+    removePendingTransaction(txPendingId);
+    emit('reload');
+  } catch (e) {
+    console.log(e);
+    isAwaitingSignature.value = false;
+    removePendingTransaction(txPendingId);
+  }
 }
 
 async function resolveToAddress(value: string) {
@@ -115,12 +147,12 @@ watch(
     </div>
     <div class="p-4">
       <BaseButton
-        :loading="isResolvingName"
+        :loading="isResolvingName || isAwaitingSignature"
         class="w-full"
         primary
         @click="handleConfirm"
       >
-        {{ $t('confirm') }}
+        {{ $t('set') }}
       </BaseButton>
     </div>
   </BaseModal>

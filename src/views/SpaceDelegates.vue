@@ -14,7 +14,7 @@ const {
   hasMoreDelegates
 } = useDelegates({
   standard: 'compound-governor',
-  contract: '0x3901D0fDe202aF1427216b79f5243f8A022d68cf',
+  contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
   subgraphUrl:
     'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
 });
@@ -194,6 +194,7 @@ onMounted(() => {
         :space="space"
         :selected-delegate="selectedDelegate"
         @close="showDelegateModal = false"
+        @reload="fetchDelegates(queryVariables)"
       />
     </Teleport>
   </BaseContainer>

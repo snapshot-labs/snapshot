@@ -1,6 +1,8 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { Delegate } from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegates';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 type QueryVariables = {
   orderBy: string;
@@ -27,6 +29,9 @@ function adjustUrl(apiUrl: string) {
 
 export function useDelegates(delegatesConfig: DelegatesConfig) {
   const { resolveName } = useResolveName();
+  const auth = getInstance();
+
+  const standardConfig = createStandardConfig(delegatesConfig.standard);
 
   const delegates: Ref<Delegate[]> = ref([]);
   const isLoadingDelegates = ref(false);
@@ -40,7 +45,6 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   ) {
     const address = await resolveName(queryVariables.search);
 
-    const standardConfig = createStandardConfig(delegatesConfig.standard);
     const query: any = standardConfig.getQuery({
       first: DELEGATES_LIMIT,
       skip: overwrite ? 0 : delegates.value.length,
@@ -93,12 +97,25 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     }
   }
 
+  async function setDelegate(address: string) {
+    const contractMethod = standardConfig.getContractDelegateMethod();
+    const tx = await sendTransaction(
+      auth.web3,
+      delegatesConfig.contract,
+      contractMethod.abi,
+      contractMethod.action,
+      [address]
+    );
+    return tx;
+  }
+
   return {
     isLoadingDelegates,
     isLoadingMoreDelegates,
     hasDelegatesLoadFailed,
     hasMoreDelegates,
     delegates,
+    setDelegate,
     fetchDelegates,
     fetchMoreDelegates
   };
