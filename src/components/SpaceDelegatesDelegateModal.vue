@@ -22,7 +22,7 @@ const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const formRef = ref();
 
-const def = computed(() => {
+const definition = computed(() => {
   return {
     type: 'object',
     properties: {
@@ -49,7 +49,7 @@ const def = computed(() => {
 
 const validationErrors = computed(() => {
   return validateForm(
-    def.value || {},
+    definition.value || {},
     clone({
       scope: form.value.scope,
       to: resolvedAddress.value
@@ -70,7 +70,7 @@ function handleConfirm() {
   emit('close');
 }
 
-async function resolveTo(value: string) {
+async function resolveToAddress(value: string) {
   if (value) {
     isResolvingName.value = true;
     resolvedAddress.value = '';
@@ -82,7 +82,7 @@ async function resolveTo(value: string) {
 watchDebounced(
   () => form.value.to,
   async value => {
-    resolveTo(value);
+    resolveToAddress(value);
   },
   { debounce: 300 }
 );
@@ -109,7 +109,7 @@ watch(
       <TuneForm
         ref="formRef"
         v-model="form"
-        :definition="def"
+        :definition="definition"
         :error="validationErrors"
       />
     </div>

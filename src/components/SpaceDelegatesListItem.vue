@@ -51,7 +51,7 @@ const { formatCompactNumber } = useIntl();
     </PopoverHoverProfile>
     <div class="mt-4 h-full">
       <template v-if="delegate?.statement">
-        <span class="line-clamp-4">
+        <span class="line-clamp-3">
           {{ delegate.statement }}
         </span>
         <span class="cursor-pointer text-skin-link"> Lean more </span>
