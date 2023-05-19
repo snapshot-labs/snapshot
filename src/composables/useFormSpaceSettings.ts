@@ -12,8 +12,9 @@ const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_DELEGATION = {
   standard: 'compound-governor',
-  contract: '',
-  subgraphUrl: ''
+  contract: '0x3901D0fDe202aF1427216b79f5243f8A022d68cf',
+  subgraphUrl:
+    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
 };
 const EMPTY_SPACE_FORM = {
   strategies: [],
