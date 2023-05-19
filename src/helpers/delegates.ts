@@ -11,7 +11,7 @@ abstract class StandardConfig {
   abstract getQuery(params: QueryParams): Record<string, any>;
   abstract formatResponse(response: Record<string, any>): Delegate[];
   abstract initializeUser(address: string): Delegate[];
-  abstract getContractDelegateMethod(): Record<string, any>;
+  abstract getContractDelegateMethod(): { abi: string[]; action: string };
 }
 
 export class CompoundGovernorConfig extends StandardConfig {
@@ -95,7 +95,7 @@ export class CompoundGovernorConfig extends StandardConfig {
     ];
   }
 
-  getContractDelegateMethod() {
+  getContractDelegateMethod(): { abi: string[]; action: string } {
     return {
       abi: ['function delegate(address delegatee)'],
       action: 'delegate'

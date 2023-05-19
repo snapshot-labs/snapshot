@@ -39,7 +39,11 @@ const def = computed(() => {
 </script>
 
 <template>
-  <BaseBlock title="Delegation">
+  <BaseBlock title="Delegates portal">
+    <BaseMessageBlock class="mb-3">
+      Please ensure your token adheres to a compatible delegation standard to
+      enable delegate discovery and activity within your Snapshot space.
+    </BaseMessageBlock>
     <TuneForm v-model="form.delegation" :definition="def" :error="{}" />
   </BaseBlock>
 </template>

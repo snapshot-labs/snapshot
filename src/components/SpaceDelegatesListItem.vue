@@ -49,7 +49,7 @@ const { formatCompactNumber } = useIntl();
         </div>
       </BaseLink>
     </PopoverHoverProfile>
-    <div class="mt-4 h-full">
+    <div class="mt-2 h-full">
       <template v-if="delegate?.statement">
         <span class="line-clamp-3">
           {{ delegate.statement }}
@@ -57,9 +57,9 @@ const { formatCompactNumber } = useIntl();
         <span class="cursor-pointer text-skin-link"> Lean more </span>
       </template>
 
-      <span v-else> This delegate hasn't added a statement yet. </span>
+      <span v-else> No statement provided yet </span>
     </div>
-    <div class="mt-4 flex items-center justify-between">
+    <div class="mt-3 flex items-center justify-between">
       {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
       delegators
 
