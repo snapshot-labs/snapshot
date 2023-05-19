@@ -11,7 +11,7 @@ export async function getProposalVotes(
     first = 1000,
     voter = '',
     skip = 0,
-    space = undefined,
+    space = '',
     orderBy = 'vp',
     orderDirection = 'desc',
     created_gte = 0
@@ -28,7 +28,7 @@ export async function getProposalVotes(
         first,
         voter: isAddress(voter) ? voter : undefined,
         skip,
-        space,
+        space: space || undefined,
         created_gte
       }
     });
