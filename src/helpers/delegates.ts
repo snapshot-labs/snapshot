@@ -1,4 +1,4 @@
-import { Delegate } from '@/helpers/interfaces';
+import { Delegate, DelegateWithPercent } from '@/helpers/interfaces';
 
 type QueryParams = {
   first: number;
@@ -10,6 +10,7 @@ type QueryParams = {
 abstract class StandardConfig {
   abstract getQuery(params: QueryParams): Record<string, any>;
   abstract formatResponse(response: Record<string, any>): Delegate[];
+  abstract initializeUser(address: string): Delegate[];
 }
 
 export class CompoundGovernorConfig extends StandardConfig {
@@ -40,7 +41,10 @@ export class CompoundGovernorConfig extends StandardConfig {
     };
   }
 
-  formatResponse(response: { governance: any; delegates: any }): Delegate[] {
+  formatResponse(response: {
+    governance: any;
+    delegates: any;
+  }): DelegateWithPercent[] {
     type Governance = {
       delegatedVotes: string;
       totalTokenHolders: string;
@@ -77,6 +81,17 @@ export class CompoundGovernorConfig extends StandardConfig {
             : ''
       };
     });
+  }
+
+  initializeUser(address: string): Delegate[] {
+    return [
+      {
+        id: address,
+        delegatedVotes: '0',
+        delegatedVotesRaw: '0',
+        tokenHoldersRepresentedAmount: 0
+      }
+    ];
   }
 }
 

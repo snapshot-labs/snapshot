@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { Delegate, Profile, ExtendedSpace } from '@/helpers/interfaces';
+import {
+  DelegateWithPercent,
+  Profile,
+  ExtendedSpace
+} from '@/helpers/interfaces';
 
 defineProps<{
-  delegate: Delegate;
+  delegate: DelegateWithPercent;
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
 }>();
@@ -48,7 +52,7 @@ const { formatCompactNumber } = useIntl();
         <span class="line-clamp-4">
           {{ delegate.statement }}
         </span>
-        <span class="cursor-pointer text-skin-link">Lean more</span>
+        <span class="cursor-pointer text-skin-link"> Lean more </span>
       </template>
 
       <span v-else> This delegate hasn't added a statement yet. </span>

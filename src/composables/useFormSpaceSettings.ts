@@ -11,7 +11,7 @@ const { isUploadingImage } = useImageUpload();
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_DELEGATION = {
-  standard: 'governor-subgraph',
+  standard: 'compound-governor',
   contract: '',
   subgraphUrl: ''
 };

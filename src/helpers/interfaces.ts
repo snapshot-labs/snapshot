@@ -376,6 +376,9 @@ export interface Delegate {
   delegatedVotes: string;
   delegatedVotesRaw: string;
   tokenHoldersRepresentedAmount: number;
+}
+
+export interface DelegateWithPercent extends Delegate {
   delegatorsPercentage: number;
   votesPercentage: number;
   statement?: string;

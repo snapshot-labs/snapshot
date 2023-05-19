@@ -25,11 +25,10 @@ function adjustUrl(apiUrl: string) {
     : apiUrl;
 }
 
-const delegates: Ref<Delegate[]> = ref([]);
-
 export function useDelegates(delegatesConfig: DelegatesConfig) {
   const { resolveName } = useResolveName();
 
+  const delegates: Ref<Delegate[]> = ref([]);
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
@@ -46,13 +45,17 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       first: DELEGATES_LIMIT,
       skip: overwrite ? 0 : delegates.value.length,
       orderBy: queryVariables.orderBy,
-      id: address ? address : ''
+      id: address ? address : queryVariables.search
     });
 
     const response = await subgraphRequest(
       adjustUrl(delegatesConfig.subgraphUrl),
       query
     );
+
+    if (address && !response.delegates.length)
+      response.delegates = standardConfig.initializeUser(address);
+
     const newDelegates = standardConfig.formatResponse(response);
 
     delegates.value = overwrite
