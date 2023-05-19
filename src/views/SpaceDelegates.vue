@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
-import { useTippy } from 'vue-tippy';
-import { useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -26,7 +24,6 @@ const router = useRouter();
 const { t } = useI18n();
 const { domain } = useApp();
 const { web3Account } = useWeb3();
-const { formatCompactNumber } = useIntl();
 
 const searchInput = ref((route.query.search as string) || '');
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
@@ -131,19 +128,6 @@ watchDebounced(
 onMounted(() => {
   fetchDelegates(queryVariables.value);
 });
-
-const loggedAvatar = ref();
-const showOnboarding = useStorage('snapshot.showOnboardingDelegates', true);
-
-const loggedAvatarTooltip = useTippy(loggedAvatar, {
-  content: 'You can edit your delegate profile here',
-  placement: 'bottom-end',
-  trigger: 'manual',
-  showOnCreate: showOnboarding.value,
-  onHide: () => {
-    showOnboarding.value = false;
-  }
-});
 </script>
 
 <template>
@@ -186,55 +170,11 @@ const loggedAvatarTooltip = useTippy(loggedAvatar, {
           <TuneButton primary class="px-5" @click="handleClickDelegate">
             Delegate
           </TuneButton>
-          <BasePopoverHover>
-            <template #button>
-              <div ref="loggedAvatar" @mouseenter="loggedAvatarTooltip.hide()">
-                <AvatarUser
-                  :address="web3Account"
-                  size="42"
-                  class="cursor-pointer"
-                />
-              </div>
-            </template>
-            <template #content>
-              <div class="p-4">
-                <div class="flex">
-                  <div>
-                    <AvatarUser :address="web3Account" size="69" />
-                  </div>
-                  <div>
-                    <ProfileName
-                      :profile="profiles[web3Account]"
-                      :address="web3Account"
-                    />
-                    <div class="flex gap-3 pl-3 text-skin-text">
-                      <div>
-                        {{ formatCompactNumber(Number(0)) }}
-                        {{ space.symbol }}
-                      </div>
-                      <div>
-                        {{ formatCompactNumber(Number(0)) }}
-                        delegators
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <p class="mt-4">
-                  <span class="line-clamp-3">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Cupiditate sit rerum corrupti odit et quos facere saepe
-                    tempore ipsam facilis, doloremque ex ratione repellat cum
-                    repudiandae, quis consectetur distinctio deleniti!
-                  </span>
-                  <span
-                    class="flex cursor-pointer items-center gap-1 text-skin-link"
-                  >
-                    Edit statement
-                  </span>
-                </p>
-              </div>
-            </template>
-          </BasePopoverHover>
+          <SpaceDelegatesLoggedUser
+            v-if="web3Account"
+            :space="space"
+            :profiles="profiles"
+          />
         </div>
       </div>
     </BaseBlock>
