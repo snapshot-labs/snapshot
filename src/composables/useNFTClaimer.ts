@@ -142,7 +142,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     return data;
   }
 
-  async function _init() {
+  async function init() {
     if (!proposal || !space) return;
 
     let collectionInfo = collectionsInfo.value[proposal.id];
@@ -269,8 +269,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     }
   }
 
-  _init();
-
   return {
     mintPrice,
     mintCurrency,
@@ -281,6 +279,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
 
     enableNFTClaimer,
     disableNFTClaimer,
-    mint
+    mint,
+    init
   };
 }

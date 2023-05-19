@@ -6,6 +6,7 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
+const { web3, web3Account } = useWeb3();
 const {
   mintCurrency,
   mintPrice,
@@ -14,6 +15,7 @@ const {
   minting,
   mint,
   enableNFTClaimer,
+  init,
   inited
 } = useNFTClaimer(props.space, props.proposal);
 
@@ -26,6 +28,16 @@ async function mintLocal() {
   //   return enableNFTClaimer()
   mint();
 }
+
+watch(
+  () => web3Account.value,
+  to => {
+    if (to) init();
+  },
+  {
+    immediate: true
+  }
+);
 </script>
 
 <template>
