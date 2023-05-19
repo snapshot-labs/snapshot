@@ -244,8 +244,9 @@ onMounted(() => {
           :loaded-results="loadedResults"
           :strategies="strategies"
         />
+        <!-- space?.nfrClaimer.enabled  -->
         <SpaceProposalNFTSidebar
-          v-if="space?.nftMinterEnabled || true"
+          v-if="web3Account"
           :space="space"
           :proposal="proposal"
         />
