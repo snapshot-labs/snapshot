@@ -150,7 +150,7 @@ onMounted(() => {
           {{ $t('homeLoadmore') }}
         </BaseButton>
       </div>
-      <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex">
+      <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex h-[46px]">
         <LoadingSpinner class="mx-auto" big />
       </div>
     </BaseContainer>
