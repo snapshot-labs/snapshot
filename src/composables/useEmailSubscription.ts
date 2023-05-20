@@ -34,6 +34,14 @@ enum Level {
 
 const subscriptionTypes = ['summary', 'newProposal', 'closedProposal'] as const;
 type SubscriptionType = (typeof subscriptionTypes)[number];
+type AliasActionReturnType = ReturnType<typeof useAliasAction>;
+type AliasActionKeys = Pick<
+  AliasActionReturnType,
+  'aliasWallet' | 'actionWithAlias'
+>;
+
+const { t } = useI18n();
+const { web3Account } = useWeb3();
 
 const status: Ref<Status> = ref(Status.waiting);
 const postSubscribeLevel: Ref<Level> = ref(Level.info);
@@ -41,11 +49,12 @@ const postSubscribeMessage = ref('');
 const loading = ref(false);
 const isSubscribed = ref(false);
 const shouldRemoveEmail = ref(true);
-
-const { t } = useI18n();
-const { web3Account } = useWeb3();
-const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
+const aliasAction: AliasActionKeys = reactive({
+  aliasWallet: null as any,
+  actionWithAlias: () => Promise.reject()
+});
 const apiSubscriptions: Ref<SubscriptionType[]> = ref([]);
+
 const clientSubscriptions = computed({
   get() {
     return subscriptionTypes.reduce((acc, type) => {
@@ -62,28 +71,17 @@ const clientSubscriptions = computed({
 });
 
 async function signWithAlias(message, typesSchema) {
-  let signature;
-  try {
-    await checkAlias();
-    if (!aliasWallet.value || !isValidAlias.value) {
-      await setAlias();
-    }
+  const { aliasWallet, actionWithAlias } = aliasAction;
 
-    const wallet = aliasWallet.value;
-    const address = aliasWallet.value.address;
-    signature = await sign(wallet, address, message, typesSchema);
-    console.log('signature', signature);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    loading.value = false;
-  }
-
-  return signature;
+  return actionWithAlias(() => {
+    const wallet = aliasWallet;
+    const address = aliasWallet.address;
+    return sign(wallet, address, message, typesSchema);
+  });
 }
 
 async function loadEmailSubscriptions() {
-  const address = web3Account.value;
+  const address = aliasAction.aliasWallet.address;
 
   if (!address) return;
   if (isSubscriptionsLoading) return;
@@ -135,8 +133,7 @@ async function subscribe(email: string, address: string) {
       },
       body: JSON.stringify({
         params: {
-          email,
-          address,
+          ...message,
           signature
         },
         method: 'snapshot.subscribe'
@@ -166,7 +163,7 @@ async function updateSubscriptions() {
 
   const params = {
     address,
-    email: 'dmytro@snapshot.org',
+    email: '', // TODO: this should be removed, when BE will be fixed
     subscriptions: apiSubscriptions.value
   };
 
@@ -227,6 +224,10 @@ export function useEmailSubscription() {
     if (!web3Account.value) return;
 
     try {
+      const { aliasWallet, actionWithAlias } = useAliasAction();
+      aliasAction.aliasWallet = aliasWallet;
+      aliasAction.actionWithAlias = actionWithAlias;
+
       await loadEmailSubscriptions();
     } finally {
       isInitialized = true;

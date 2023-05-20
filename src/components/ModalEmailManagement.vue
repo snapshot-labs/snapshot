@@ -96,7 +96,7 @@ const submit = async () => {
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
-        {{ t('emailManagement.updatePreferences') }}}
+        {{ t('emailManagement.updatePreferences') }}
       </BaseButton>
     </form>
   </BaseModal>
