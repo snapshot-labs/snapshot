@@ -17,9 +17,20 @@ if (aliasedSpace) {
 }
 
 const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
-const space = computed(() =>
-  extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
-);
+const space = computed(() => {
+  const s = extendedSpaces.value?.find(
+    s => s.id === spaceKey.value.toLowerCase()
+  );
+  // TODO remove this mock data once added to query
+  if (!s) return;
+  s.delegation = {
+    standard: 'compound-governor',
+    contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    subgraphUrl:
+      'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
+  };
+  return s;
+});
 
 watch(
   spaceKey,

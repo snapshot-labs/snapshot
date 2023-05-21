@@ -3,13 +3,13 @@ import { Delegate, DelegateWithPercent } from '@/helpers/interfaces';
 type QueryParams = {
   first: number;
   skip: number;
-  orderBy: string;
   id: string;
+  orderBy?: string;
 };
 
 abstract class StandardConfig {
   abstract getQuery(params: QueryParams): Record<string, any>;
-  abstract formatResponse(response: Record<string, any>): Delegate[];
+  abstract formatResponse(response: Record<string, any>): DelegateWithPercent[];
   abstract initializeUser(address: string): Delegate[];
   abstract getContractDelegateMethod(): { abi: string[]; action: string };
 }
@@ -22,7 +22,7 @@ export class CompoundGovernorConfig extends StandardConfig {
         __args: {
           first,
           skip,
-          orderBy,
+          orderBy: orderBy ? orderBy : 'delegatedVotes',
           orderDirection: 'desc',
           where: id ? { id } : {}
         },

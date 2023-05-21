@@ -10,19 +10,38 @@ const props = defineProps<{
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
+const {
+  fetchDelegates,
+
+  delegates
+} = useDelegates(props.space.delegation);
 
 const loggedAvatar = ref();
 const showOnboarding = useStorage('snapshot.showOnboardingDelegates', true);
 
 const loggedAvatarTooltip = useTippy(loggedAvatar, {
-  content: 'You can edit your delegate profile here',
-  placement: 'bottom-end',
+  content: 'Delegation profile',
+  placement: 'top-end',
   trigger: 'manual',
   showOnCreate: showOnboarding.value,
   onHide: () => {
     showOnboarding.value = false;
   }
 });
+
+const userDelegate = computed(() => {
+  return delegates.value[0];
+});
+
+watch(
+  web3Account,
+  () => {
+    fetchDelegates({
+      id: web3Account.value
+    });
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -45,11 +64,15 @@ const loggedAvatarTooltip = useTippy(loggedAvatar, {
             />
             <div class="flex gap-3 pl-3 text-skin-text">
               <div>
-                {{ formatCompactNumber(Number(0)) }}
+                {{ formatCompactNumber(Number(userDelegate.delegatedVotes)) }}
                 {{ space.symbol }}
               </div>
               <div>
-                {{ formatCompactNumber(Number(0)) }}
+                {{
+                  formatCompactNumber(
+                    Number(userDelegate.tokenHoldersRepresentedAmount)
+                  )
+                }}
                 delegators
               </div>
             </div>
@@ -62,9 +85,9 @@ const loggedAvatarTooltip = useTippy(loggedAvatar, {
             doloremque ex ratione repellat cum repudiandae, quis consectetur
             distinctio deleniti!
           </span>
-          <span class="flex cursor-pointer items-center gap-1 text-skin-link">
+          <button class="flex cursor-pointer items-center gap-1 text-skin-link">
             Edit statement
-          </span>
+          </button>
         </p>
       </div>
     </template>

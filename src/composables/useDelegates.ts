@@ -5,8 +5,8 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 type QueryVariables = {
-  orderBy: string;
-  search: string;
+  id: string;
+  orderBy?: string;
 };
 
 type DelegatesConfig = {
@@ -39,17 +39,14 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
 
-  async function _fetchDelegates(
-    overwrite: boolean,
-    queryVariables: QueryVariables
-  ) {
-    const address = await resolveName(queryVariables.search);
+  async function _fetchDelegates(queryVariables: QueryVariables, skip = 0) {
+    const address = await resolveName(queryVariables.id || '');
 
     const query: any = standardConfig.getQuery({
+      skip,
       first: DELEGATES_LIMIT,
-      skip: overwrite ? 0 : delegates.value.length,
-      orderBy: queryVariables.orderBy,
-      id: address ? address : queryVariables.search
+      orderBy: queryVariables.orderBy || undefined,
+      id: address ? address : queryVariables.id
     });
 
     const response = await subgraphRequest(
@@ -60,13 +57,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     if (address && !response.delegates.length)
       response.delegates = standardConfig.initializeUser(address);
 
-    const newDelegates = standardConfig.formatResponse(response);
-
-    delegates.value = overwrite
-      ? newDelegates
-      : [...delegates.value, ...newDelegates];
-
-    hasMoreDelegates.value = newDelegates.length === DELEGATES_LIMIT;
+    return standardConfig.formatResponse(response);
   }
 
   async function fetchDelegates(variables: QueryVariables) {
@@ -74,7 +65,11 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     isLoadingDelegates.value = true;
 
     try {
-      await _fetchDelegates(true, variables);
+      const response = await _fetchDelegates(variables);
+
+      delegates.value = response;
+
+      hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
     } catch (err) {
       console.error(err);
       hasDelegatesLoadFailed.value = true;
@@ -88,7 +83,11 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     isLoadingMoreDelegates.value = true;
 
     try {
-      await _fetchDelegates(false, variables);
+      const response = await _fetchDelegates(variables, delegates.value.length);
+
+      delegates.value = [...delegates.value, ...response];
+
+      hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
     } catch (err) {
       console.error(err);
       hasDelegatesLoadFailed.value = true;

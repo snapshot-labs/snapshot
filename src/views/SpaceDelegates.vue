@@ -12,12 +12,7 @@ const {
   delegates,
   isLoadingDelegates,
   hasMoreDelegates
-} = useDelegates({
-  standard: 'compound-governor',
-  contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-  subgraphUrl:
-    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
-});
+} = useDelegates(props.space.delegation);
 const { profiles, loadProfiles } = useProfiles();
 const route = useRoute();
 const router = useRouter();
@@ -46,7 +41,7 @@ const matchFilter = computed(() => {
 const queryVariables = computed(() => {
   return {
     orderBy: matchFilter.value,
-    search: searchInput.value
+    id: searchInput.value
   };
 });
 
@@ -108,7 +103,7 @@ function handleClickDelegate() {
 useInfiniteScroll(
   document,
   () => {
-    fetchMoreDelegates(queryVariables.value);
+    if (hasMoreDelegates.value) fetchMoreDelegates(queryVariables.value);
   },
   { distance: 250, interval: 500 }
 );

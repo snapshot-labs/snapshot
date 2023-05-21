@@ -20,12 +20,7 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate } = useDelegates({
-  standard: 'compound-governor',
-  contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-  subgraphUrl:
-    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
-});
+const { setDelegate } = useDelegates(props.space.delegation);
 
 const form = ref({
   scope: 'space',
