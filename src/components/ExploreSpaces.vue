@@ -84,6 +84,7 @@ onMounted(() => {
       />
 
       <div
+        v-if="spacesHomeMetrics.total"
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
         {{ $tc('spaceCount', [formatCompactNumber(spacesHomeMetrics.total)]) }}
