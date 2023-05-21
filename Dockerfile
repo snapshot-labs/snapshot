@@ -10,8 +10,8 @@ COPY . .
 RUN yarn install --frozen-lockfile
 RUN yarn install --frozen-lockfile
 
-RUN npm run build
+RUN yarn run build
 
-EXPOSE 3002
+EXPOSE 8080
 
 CMD ["yarn", "run", "dev", "--host"]
