@@ -2,7 +2,6 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { formatBytes32String } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
@@ -37,10 +36,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     'function supplies(uint256 proposalId) view returns (uint256)'
   ];
 
+  const mintNetwork = ref(NETWORK_KEY);
+  const mintAddress = ref(MINT_CONTRACT_ADDRESS);
   const mintCurrency = ref('WETH');
   const mintPrice = ref('0.1');
-  const mintCount = ref('0');
-  const mintCountTotal = ref('500');
+  const mintCount = ref(0);
+  const mintCountTotal = ref(500);
 
   const inited = ref(false);
   const minting = ref(false);
@@ -270,6 +271,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
   }
 
   return {
+    mintNetwork,
+    mintAddress,
     mintPrice,
     mintCurrency,
     mintCount,
