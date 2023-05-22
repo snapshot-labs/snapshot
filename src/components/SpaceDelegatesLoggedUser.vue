@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useTippy } from 'vue-tippy';
 import { useStorage } from '@vueuse/core';
-import { ExtendedSpace, Profile } from '@/helpers/interfaces';
+import {
+  DelegateWithPercent,
+  ExtendedSpace,
+  Profile
+} from '@/helpers/interfaces';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
   profiles: Record<string, Profile>;
+  accountDelegate: DelegateWithPercent;
 }>();
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
-const {
-  fetchDelegates,
-
-  delegates
-} = useDelegates(props.space.delegation);
 
 const loggedAvatar = ref();
 const showOnboarding = useStorage('snapshot.showOnboardingDelegates', true);
@@ -28,20 +28,6 @@ const loggedAvatarTooltip = useTippy(loggedAvatar, {
     showOnboarding.value = false;
   }
 });
-
-const userDelegate = computed(() => {
-  return delegates.value[0];
-});
-
-watch(
-  web3Account,
-  () => {
-    fetchDelegates({
-      id: web3Account.value
-    });
-  },
-  { immediate: true }
-);
 </script>
 
 <template>
@@ -64,13 +50,15 @@ watch(
             />
             <div class="flex gap-3 pl-3 text-skin-text">
               <div>
-                {{ formatCompactNumber(Number(userDelegate.delegatedVotes)) }}
+                {{
+                  formatCompactNumber(Number(accountDelegate.delegatedVotes))
+                }}
                 {{ space.symbol }}
               </div>
               <div>
                 {{
                   formatCompactNumber(
-                    Number(userDelegate.tokenHoldersRepresentedAmount)
+                    Number(accountDelegate.tokenHoldersRepresentedAmount)
                   )
                 }}
                 delegators

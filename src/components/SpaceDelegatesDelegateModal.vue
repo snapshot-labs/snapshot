@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, DelegateWithBalance } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -8,6 +8,7 @@ const props = defineProps<{
   open: boolean;
   space: ExtendedSpace;
   selectedDelegate: string;
+  accountDelegate: DelegateWithBalance;
 }>();
 
 const emit = defineEmits(['close', 'reload']);
@@ -21,6 +22,7 @@ const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
 const { setDelegate } = useDelegates(props.space.delegation);
+const { formatCompactNumber } = useIntl();
 
 const form = ref({
   scope: 'space',
@@ -39,15 +41,14 @@ const definition = computed(() => {
         type: 'string',
         title: 'Delegation scope',
         description:
-          'Please select whether you want to delegate your voting power globally or for a specific space',
+          'Choose whether you want to delegate globally or within the scope a specific space',
         anyOf: [{ const: 'space', title: `This space (${props.space.id})` }]
       },
       to: {
         type: 'string',
         format: 'address',
         title: 'Delegate to',
-        description:
-          'Please enter the address, ENS or Lens of the recipient who will receive your delegated voting power',
+        description: 'The address, ENS or Lens of who you want to delegate to',
         examples: ['Enter: Address, ENS or Lens']
       }
     },
@@ -128,7 +129,9 @@ watch(
     <template #header>
       <div class="items-center justify-center px-6 pb-3">
         <h3>{{ $t('delegates.delegateModal.title') }}</h3>
-        <span>{{ $t('delegates.delegateModal.description') }}</span>
+        <span>{{ $t('delegates.delegateModal.sub') }}</span>
+        {{ formatCompactNumber(Number(accountDelegate.tokenBalance)) }}
+        {{ space.symbol }}
       </div>
     </template>
 
@@ -147,7 +150,7 @@ watch(
         primary
         @click="handleConfirm"
       >
-        {{ $t('set') }}
+        {{ $t('confirm') }}
       </BaseButton>
     </div>
   </BaseModal>

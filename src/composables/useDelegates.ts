@@ -1,8 +1,10 @@
-import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
-import { Delegate } from '@/helpers/interfaces';
+import { DelegateWithPercent } from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegates';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import {
+  subgraphRequest,
+  sendTransaction
+} from '@snapshot-labs/snapshot.js/src/utils';
 
 type QueryVariables = {
   id: string;
@@ -33,20 +35,19 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
 
   const standardConfig = createStandardConfig(delegatesConfig.standard);
 
-  const delegates: Ref<Delegate[]> = ref([]);
+  const delegates: Ref<DelegateWithPercent[]> = ref([]);
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
+  const resolvedAddress = ref<string | null>(null);
 
   async function _fetchDelegates(queryVariables: QueryVariables, skip = 0) {
-    const address = await resolveName(queryVariables.id || '');
-
-    const query: any = standardConfig.getQuery({
+    const query: any = standardConfig.getDelegatesQuery({
       skip,
       first: DELEGATES_LIMIT,
       orderBy: queryVariables.orderBy || undefined,
-      id: address ? address : queryVariables.id
+      id: resolvedAddress.value ? resolvedAddress.value : queryVariables.id
     });
 
     const response = await subgraphRequest(
@@ -54,10 +55,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       query
     );
 
-    if (address && !response.delegates.length)
-      response.delegates = standardConfig.initializeUser(address);
-
-    return standardConfig.formatResponse(response);
+    return standardConfig.formatDelegatesResponse(response);
   }
 
   async function fetchDelegates(variables: QueryVariables) {
@@ -65,7 +63,12 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     isLoadingDelegates.value = true;
 
     try {
-      const response = await _fetchDelegates(variables);
+      resolvedAddress.value = await resolveName(variables.id || '');
+
+      let response = await _fetchDelegates(variables);
+
+      if (resolvedAddress.value && !response.length)
+        response = standardConfig.initializeUser(resolvedAddress.value);
 
       delegates.value = response;
 
@@ -96,6 +99,17 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     }
   }
 
+  async function fetchDelegate(id: string) {
+    const query: any = standardConfig.getDelegateQuery(id.toLowerCase());
+
+    const response = await subgraphRequest(
+      adjustUrl(delegatesConfig.subgraphUrl),
+      query
+    );
+
+    return standardConfig.formatDelegateResponse(response);
+  }
+
   async function setDelegate(address: string) {
     const contractMethod = standardConfig.getContractDelegateMethod();
     const tx = await sendTransaction(
@@ -116,6 +130,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     delegates,
     setDelegate,
     fetchDelegates,
-    fetchMoreDelegates
+    fetchMoreDelegates,
+    fetchDelegate
   };
 }

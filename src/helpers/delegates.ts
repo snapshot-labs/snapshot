@@ -1,4 +1,4 @@
-import { Delegate, DelegateWithPercent } from '@/helpers/interfaces';
+import { DelegateWithPercent, DelegateWithBalance } from '@/helpers/interfaces';
 
 type QueryParams = {
   first: number;
@@ -8,14 +8,22 @@ type QueryParams = {
 };
 
 abstract class StandardConfig {
-  abstract getQuery(params: QueryParams): Record<string, any>;
-  abstract formatResponse(response: Record<string, any>): DelegateWithPercent[];
-  abstract initializeUser(address: string): Delegate[];
+  abstract getDelegatesQuery(params: QueryParams): Record<string, any>;
+  abstract formatDelegatesResponse(
+    response: Record<string, any>
+  ): DelegateWithPercent[];
+
+  abstract getDelegateQuery(id: string): Record<string, any>;
+  abstract formatDelegateResponse(
+    response: Record<string, any>
+  ): DelegateWithBalance;
+
+  abstract initializeUser(address: string): DelegateWithPercent[];
   abstract getContractDelegateMethod(): { abi: string[]; action: string };
 }
 
 export class CompoundGovernorConfig extends StandardConfig {
-  getQuery(params: QueryParams) {
+  getDelegatesQuery(params: QueryParams): Record<string, any> {
     const { first, skip, orderBy, id } = params;
     return {
       delegates: {
@@ -42,10 +50,7 @@ export class CompoundGovernorConfig extends StandardConfig {
     };
   }
 
-  formatResponse(response: {
-    governance: any;
-    delegates: any;
-  }): DelegateWithPercent[] {
+  formatDelegatesResponse(response: any): DelegateWithPercent[] {
     type Governance = {
       delegatedVotes: string;
       totalTokenHolders: string;
@@ -84,13 +89,45 @@ export class CompoundGovernorConfig extends StandardConfig {
     });
   }
 
-  initializeUser(address: string): Delegate[] {
+  getDelegateQuery(id: string): Record<string, any> {
+    return {
+      delegate: {
+        __args: {
+          id
+        },
+        id: true,
+        delegatedVotes: true,
+        delegatedVotesRaw: true,
+        tokenHoldersRepresentedAmount: true
+      },
+      tokenHolder: {
+        __args: {
+          id
+        },
+        id: true,
+        tokenBalance: true
+      }
+    };
+  }
+
+  formatDelegateResponse(response: any): DelegateWithBalance {
+    const tokenHolder = response.tokenHolder;
+    const delegate = response.delegate;
+    return {
+      ...delegate,
+      tokenBalance: tokenHolder?.tokenBalance || '0'
+    };
+  }
+
+  initializeUser(address: string): DelegateWithPercent[] {
     return [
       {
         id: address,
         delegatedVotes: '0',
         delegatedVotesRaw: '0',
-        tokenHoldersRepresentedAmount: 0
+        tokenHoldersRepresentedAmount: 0,
+        delegatorsPercentage: 0,
+        votesPercentage: 0
       }
     ];
   }

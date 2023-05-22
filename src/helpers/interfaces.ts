@@ -383,3 +383,7 @@ export interface DelegateWithPercent extends Delegate {
   votesPercentage: number;
   statement?: string;
 }
+
+export interface DelegateWithBalance extends Delegate {
+  tokenBalance: string;
+}

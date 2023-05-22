@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, DelegateWithBalance } from '@/helpers/interfaces';
 import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
@@ -9,6 +9,7 @@ const props = defineProps<{
 const {
   fetchDelegates,
   fetchMoreDelegates,
+  fetchDelegate,
   delegates,
   isLoadingDelegates,
   hasMoreDelegates
@@ -24,6 +25,7 @@ const searchInput = ref((route.query.search as string) || '');
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 const showDelegateModal = ref(false);
 const selectedDelegate = ref('');
+const accountDelegate = ref<DelegateWithBalance | null>(null);
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
@@ -112,6 +114,15 @@ watch(delegates, () => {
   loadProfiles(delegates.value.map(delegate => delegate.id));
 });
 
+watch(
+  web3Account,
+  async () => {
+    if (!web3Account.value) return;
+    accountDelegate.value = await fetchDelegate(web3Account.value);
+  },
+  { immediate: true }
+);
+
 watchDebounced(
   queryVariables,
   () => {
@@ -169,6 +180,7 @@ onMounted(() => {
             v-if="web3Account"
             :space="space"
             :profiles="profiles"
+            :account-delegate="accountDelegate"
           />
         </div>
       </div>
@@ -194,6 +206,7 @@ onMounted(() => {
         :open="showDelegateModal"
         :space="space"
         :selected-delegate="selectedDelegate"
+        :account-delegate="accountDelegate"
         @close="showDelegateModal = false"
         @reload="fetchDelegates(queryVariables)"
       />

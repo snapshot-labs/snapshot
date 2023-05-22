@@ -232,8 +232,8 @@
       "mostVotes": "Most votes"
     },
     "delegateModal": {
-      "title": "Delegate voting power",
-      "description": "Select your delegation preferences and delegate your voting power"
+      "title": "Delegate",
+      "sub": "You are about to delegate "
     }
   },
   "delegate": {
