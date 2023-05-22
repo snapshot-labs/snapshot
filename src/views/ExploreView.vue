@@ -100,7 +100,7 @@ useInfiniteScroll(
       <div
         class="ml-3 hidden items-center whitespace-nowrap text-right sm:flex"
       >
-        <div class="flex flex-col">
+        <div v-if="items.length" class="flex flex-col">
           {{ formatCompactNumber(items.length) }} {{ resultsStr }}
         </div>
 

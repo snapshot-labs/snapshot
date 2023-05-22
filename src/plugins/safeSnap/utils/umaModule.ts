@@ -7,6 +7,7 @@ import { keccak256 } from '@ethersproject/keccak256';
 import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
+import { pageEvents } from './events';
 
 const getBondDetailsUma = async (
   provider: StaticJsonRpcProvider,
@@ -156,15 +157,24 @@ export const getModuleDetailsUma = async (
   );
 
   const latestBlock = await provider.getBlock('latest');
-  let fromBlock = 0;
-  if (network === '1') fromBlock = latestBlock.number - 3000;
+  // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
+  // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
+  const oGstartBlock = network === '1' ? 17167414 : 0;
+  const oOStartBlock = network === '1' ? 16636058 : 0;
+  const maxRange = network === '1' ? 3000 : 10000;
 
-  // TODO: Customize this block lookback based on chain and test with L2 network (Polygon)
-  const assertionEvents = await oracleContract.queryFilter(
-    oracleContract.filters.AssertionMade(assertionId),
-    fromBlock
+  const assertionEvents = await pageEvents(
+    oOStartBlock,
+    latestBlock.number,
+    maxRange,
+    ({ start, end }: { start: number; end: number }) => {
+      return oracleContract.queryFilter(
+        oracleContract.filters.AssertionMade(assertionId),
+        start,
+        end
+      );
+    }
   );
-
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
       event.args?.claim === ancillaryData &&
@@ -193,9 +203,19 @@ export const getModuleDetailsUma = async (
   );
 
   // Check if this specific proposal has already been executed.
-  const transactionsProposedEvents = await moduleContract.queryFilter(
-    moduleContract.filters.TransactionsProposed(),
-    fromBlock
+  // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
+  // this prevents block range too large errors.
+  const transactionsProposedEvents = await pageEvents(
+    oGstartBlock,
+    latestBlock.number,
+    maxRange,
+    ({ start, end }: { start: number; end: number }) => {
+      return moduleContract.queryFilter(
+        moduleContract.filters.TransactionsProposed(),
+        start,
+        end
+      );
+    }
   );
 
   const thisProposalTransactionsProposedEvents =
@@ -203,9 +223,17 @@ export const getModuleDetailsUma = async (
       event => toUtf8String(event.args?.explanation) === explanation
     );
 
-  const executionEvents = await moduleContract.queryFilter(
-    moduleContract.filters.ProposalExecuted(proposalHash),
-    fromBlock
+  const executionEvents = await pageEvents(
+    oGstartBlock,
+    latestBlock.number,
+    maxRange,
+    ({ start, end }: { start: number; end: number }) => {
+      return moduleContract.queryFilter(
+        moduleContract.filters.ProposalExecuted(proposalHash),
+        start,
+        end
+      );
+    }
   );
 
   const assertion = thisProposalTransactionsProposedEvents.map(
