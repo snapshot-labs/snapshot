@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, DelegateWithBalance } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -8,7 +8,6 @@ const props = defineProps<{
   open: boolean;
   space: ExtendedSpace;
   selectedDelegate: string;
-  accountDelegate: DelegateWithBalance;
 }>();
 
 const emit = defineEmits(['close', 'reload']);
@@ -21,8 +20,9 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate } = useDelegates(props.space.delegation);
+const { setDelegate, fetchDelegate } = useDelegates(props.space.delegation);
 const { formatCompactNumber } = useIntl();
+const { web3Account } = useWeb3();
 
 const form = ref({
   scope: 'space',
@@ -32,6 +32,7 @@ const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const formRef = ref();
 const isAwaitingSignature = ref(false);
+const accountBalance = ref('');
 
 const definition = computed(() => {
   return {
@@ -107,6 +108,11 @@ async function resolveToAddress(value: string) {
   }
 }
 
+async function loadAccountBalance() {
+  const response = await fetchDelegate(web3Account.value);
+  accountBalance.value = response.tokenBalance;
+}
+
 watchDebounced(
   () => form.value.to,
   async value => {
@@ -122,6 +128,14 @@ watch(
     resolvedAddress.value = props.selectedDelegate;
   }
 );
+
+watch(
+  web3Account,
+  () => {
+    loadAccountBalance();
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -130,7 +144,7 @@ watch(
       <div class="items-center justify-center px-6 pb-3">
         <h3>{{ $t('delegates.delegateModal.title') }}</h3>
         <span>{{ $t('delegates.delegateModal.sub') }}</span>
-        {{ formatCompactNumber(Number(accountDelegate.tokenBalance)) }}
+        {{ formatCompactNumber(Number(accountBalance)) }}
         {{ space.symbol }}
       </div>
     </template>
@@ -143,15 +157,16 @@ watch(
         :error="validationErrors"
       />
     </div>
-    <div class="p-4">
-      <BaseButton
+
+    <template #footer>
+      <TuneButton
         :loading="isResolvingName || isAwaitingSignature"
         class="w-full"
         primary
         @click="handleConfirm"
       >
         {{ $t('confirm') }}
-      </BaseButton>
-    </div>
+      </TuneButton>
+    </template>
   </BaseModal>
 </template>

@@ -11,50 +11,37 @@ defineProps<{
   space: ExtendedSpace;
 }>();
 
-const emit = defineEmits(['clickDelegate']);
+const emit = defineEmits(['clickDelegate', 'clickUser']);
 
-const { domain } = useApp();
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
 </script>
 
 <template>
   <div class="flex h-full flex-col justify-between rounded-xl border p-4">
-    <PopoverHoverProfile
-      :address="delegate.id"
-      :profile="profiles[delegate.id]"
-      :space="space"
-    >
-      <BaseLink
-        :link="
-          domain
-            ? `https://snapshot.org/#/profile/${delegate.id}`
-            : { name: 'profileActivity', params: { address: delegate.id } }
-        "
-        hide-external-icon
-        tabindex="-1"
-        @click.stop=""
-      >
-        <div class="flex text-left">
-          <AvatarUser :address="delegate.id" size="48" />
-          <div class="ml-3">
-            <div class="font-semibold text-skin-heading">
-              {{ getUsername(delegate.id, profiles[delegate.id]) }}
-            </div>
-            <div class="text-skin-text">
-              {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
-              {{ space.symbol }}
-            </div>
+    <button @click="emit('clickUser')">
+      <div class="flex text-left">
+        <AvatarUser :address="delegate.id" size="48" />
+        <div class="ml-3">
+          <div class="font-semibold text-skin-heading">
+            {{ getUsername(delegate.id, profiles[delegate.id]) }}
+          </div>
+          <div class="text-skin-text">
+            {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
+            {{ space.symbol }}
           </div>
         </div>
-      </BaseLink>
-    </PopoverHoverProfile>
+      </div>
+    </button>
+
     <div class="mt-2 h-full">
       <template v-if="delegate?.statement">
         <span class="line-clamp-3">
           {{ delegate.statement }}
         </span>
-        <span class="cursor-pointer text-skin-link"> Lean more </span>
+        <span class="cursor-pointer text-skin-link" @click="emit('clickUser')">
+          Lean more
+        </span>
       </template>
 
       <span v-else> No statement provided yet </span>

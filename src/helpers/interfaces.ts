@@ -374,7 +374,6 @@ export interface FormError {
 export interface Delegate {
   id: string;
   delegatedVotes: string;
-  delegatedVotesRaw: string;
   tokenHoldersRepresentedAmount: number;
 }
 

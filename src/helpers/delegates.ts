@@ -36,7 +36,6 @@ export class CompoundGovernorConfig extends StandardConfig {
         },
         id: true,
         delegatedVotes: true,
-        delegatedVotesRaw: true,
         tokenHoldersRepresentedAmount: true
       },
       governance: {
@@ -60,7 +59,6 @@ export class CompoundGovernorConfig extends StandardConfig {
     type Delegate = {
       id: string;
       delegatedVotes: string;
-      delegatedVotesRaw: string;
       tokenHoldersRepresentedAmount: number;
     };
 
@@ -97,7 +95,6 @@ export class CompoundGovernorConfig extends StandardConfig {
         },
         id: true,
         delegatedVotes: true,
-        delegatedVotesRaw: true,
         tokenHoldersRepresentedAmount: true
       },
       tokenHolder: {
@@ -114,7 +111,12 @@ export class CompoundGovernorConfig extends StandardConfig {
     const tokenHolder = response.tokenHolder;
     const delegate = response.delegate;
     return {
-      ...delegate,
+      ...{
+        id: delegate?.id || '',
+        delegatedVotes: delegate?.delegatedVotes || '0',
+        tokenHoldersRepresentedAmount:
+          delegate?.tokenHoldersRepresentedAmount || 0
+      },
       tokenBalance: tokenHolder?.tokenBalance || '0'
     };
   }
@@ -124,7 +126,6 @@ export class CompoundGovernorConfig extends StandardConfig {
       {
         id: address,
         delegatedVotes: '0',
-        delegatedVotesRaw: '0',
         tokenHoldersRepresentedAmount: 0,
         delegatorsPercentage: 0,
         votesPercentage: 0

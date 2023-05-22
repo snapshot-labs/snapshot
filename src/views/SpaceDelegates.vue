@@ -9,7 +9,6 @@ const props = defineProps<{
 const {
   fetchDelegates,
   fetchMoreDelegates,
-  fetchDelegate,
   delegates,
   isLoadingDelegates,
   hasMoreDelegates
@@ -23,9 +22,9 @@ const { web3Account } = useWeb3();
 
 const searchInput = ref((route.query.search as string) || '');
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
-const showDelegateModal = ref(false);
+const showModalDelegate = ref(false);
+const showModalProfile = ref(false);
 const selectedDelegate = ref('');
-const accountDelegate = ref<DelegateWithBalance | null>(null);
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
@@ -92,14 +91,14 @@ function handleSelectFilter(e: string) {
   });
 }
 
-function handleClickDelegateUser(id: string) {
+function handleClickDelegate(id = '') {
   selectedDelegate.value = id;
-  showDelegateModal.value = true;
+  showModalDelegate.value = true;
 }
 
-function handleClickDelegate() {
-  selectedDelegate.value = '';
-  showDelegateModal.value = true;
+function handleClickProfile(id = '') {
+  selectedDelegate.value = id;
+  showModalProfile.value = true;
 }
 
 useInfiniteScroll(
@@ -113,15 +112,6 @@ useInfiniteScroll(
 watch(delegates, () => {
   loadProfiles(delegates.value.map(delegate => delegate.id));
 });
-
-watch(
-  web3Account,
-  async () => {
-    if (!web3Account.value) return;
-    accountDelegate.value = await fetchDelegate(web3Account.value);
-  },
-  { immediate: true }
-);
 
 watchDebounced(
   queryVariables,
@@ -173,14 +163,12 @@ onMounted(() => {
           </TuneMenu>
         </div>
         <div class="flex gap-2">
-          <TuneButton primary class="px-5" @click="handleClickDelegate">
+          <TuneButton primary class="px-5" @click="handleClickDelegate()">
             Delegate
           </TuneButton>
-          <SpaceDelegatesLoggedUser
+          <SpaceDelegatesAccount
             v-if="web3Account"
-            :space="space"
-            :profiles="profiles"
-            :account-delegate="accountDelegate"
+            @click="handleClickProfile(web3Account)"
           />
         </div>
       </div>
@@ -193,7 +181,8 @@ onMounted(() => {
             :delegate="delegate"
             :profiles="profiles"
             :space="space"
-            @click-delegate="handleClickDelegateUser(delegate.id)"
+            @click-delegate="handleClickDelegate(delegate.id)"
+            @click-user="handleClickProfile(delegate.id)"
           />
         </div>
       </template>
@@ -203,12 +192,19 @@ onMounted(() => {
     </div>
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
-        :open="showDelegateModal"
+        :open="showModalDelegate"
         :space="space"
         :selected-delegate="selectedDelegate"
-        :account-delegate="accountDelegate"
-        @close="showDelegateModal = false"
+        @close="showModalDelegate = false"
         @reload="fetchDelegates(queryVariables)"
+      />
+
+      <SpaceDelegatesProfileModal
+        :open="showModalProfile"
+        :space="space"
+        :profiles="profiles"
+        :address="selectedDelegate"
+        @close="showModalProfile = false"
       />
     </Teleport>
   </BaseContainer>

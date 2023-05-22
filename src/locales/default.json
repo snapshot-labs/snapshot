@@ -234,6 +234,9 @@
     "delegateModal": {
       "title": "Delegate",
       "sub": "You are about to delegate "
+    },
+    "profileModal": {
+      "title": "Profile"
     }
   },
   "delegate": {
