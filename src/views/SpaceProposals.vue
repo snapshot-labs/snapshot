@@ -2,7 +2,7 @@
 import { PROPOSALS_QUERY } from '@/helpers/queries';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useInfiniteScroll } from '@vueuse/core';
+import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -103,10 +103,19 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch([stateFilter, titleFilter], () => {
+watch(stateFilter, () => {
   resetSpaceProposals();
   loadProposals();
 });
+
+watchDebounced(
+  titleFilter,
+  () => {
+    resetSpaceProposals();
+    loadProposals();
+  },
+  { debounce: 300 }
+);
 
 watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
