@@ -22,7 +22,7 @@ const exploreUrl = computed(() => {
 
 <template>
   <button
-    class="flex h-[64px] w-full cursor-pointer flex-row flex-wrap content-center items-center justify-between border-b border-skin-border px-4 py-2"
+    class="flex h-[64px] w-full cursor-pointer flex-row flex-wrap content-center items-center justify-between border-b border-skin-border px-4 py-2 hover:bg-skin-border"
     :class="{
       '!bg-skin-border': isSelected
     }"

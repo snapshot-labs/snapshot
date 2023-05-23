@@ -2,6 +2,7 @@
 import { useConfirmDialog } from '@vueuse/core';
 import { TokenAsset } from '@/helpers/interfaces';
 import TokensModalItem from './TokensModalItem.vue';
+import { TuneListbox } from '@snapshot-labs/tune';
 
 const props = defineProps<{
   open: boolean;
@@ -12,6 +13,11 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'tokenAddress']);
 
 const query = ref('');
+const filter = ref('defaultTokens');
+const filters = [
+  { value: 'defaultTokens', name: 'Default tokens' },
+  { value: 'allTokens', name: 'All tokens' }
+];
 
 const confirmDialogOpen = ref(false);
 const confirmDialogData = ref(null);
@@ -23,12 +29,23 @@ confirmDialog.onConfirm(token => {
 });
 
 const tokensFiltered = computed(() => {
-  if (!query.value) return props.tokens;
   return props.tokens.filter(token => {
-    const queryLower = query.value.toLowerCase();
-    const symbol = token.symbol.toLowerCase();
-    const name = token.name.toLowerCase();
-    return symbol.includes(queryLower) || name.includes(queryLower);
+    const filters: boolean[] = [];
+
+    if (query.value) {
+      const queryLower = query.value.toLowerCase();
+      const symbol = token.symbol.toLowerCase();
+      const name = token.name.toLowerCase();
+      filters.push(symbol.includes(queryLower) || name.includes(queryLower));
+    }
+
+    filters.push(
+      filter.value === 'defaultTokens'
+        ? token.address === 'main' || token.verified !== undefined
+        : true
+    );
+
+    return !filters.includes(false);
   });
 });
 
@@ -59,12 +76,23 @@ function handleTokenClick(token) {
           modal
           focus-on-mount
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
-        />
+        >
+          <template #after>
+            <TuneListbox
+              v-model="filter"
+              :items="filters"
+              class="min-w-[180px]"
+            />
+          </template>
+        </BaseSearch>
       </div>
     </template>
 
     <template #default="{ maxHeight }">
-      <div class="flex w-full flex-col overflow-auto">
+      <div
+        class="flex w-full flex-col overflow-auto"
+        :style="{ minHeight: maxHeight }"
+      >
         <TokensModalItem
           v-for="token in tokensFiltered"
           :key="token.address"
