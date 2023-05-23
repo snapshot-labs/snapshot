@@ -12,8 +12,6 @@ const statement = ref(
 </script>
 
 <template>
-  <div></div>
-
   <BaseModal :open="open" @close="emit('close')">
     <template #header>
       <h3>Edit statement</h3>
