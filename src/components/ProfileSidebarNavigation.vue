@@ -5,14 +5,6 @@
         {{ $t('profile.activity.header') }}
       </BaseSidebarNavigationItem>
     </router-link>
-    <router-link
-      v-slot="{ isExactActive }"
-      :to="{ name: 'profileCollectibles' }"
-    >
-      <BaseSidebarNavigationItem :is-active="isExactActive">
-        {{ $t('profile.collectibles.header') }}
-      </BaseSidebarNavigationItem>
-    </router-link>
     <router-link v-slot="{ isExactActive }" :to="{ name: 'profileAbout' }">
       <BaseSidebarNavigationItem :is-active="isExactActive">
         {{ $t('profile.about.header') }}

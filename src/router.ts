@@ -12,7 +12,6 @@ import RankingView from '@/views/RankingView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
 import ProfileActivity from '@/views/ProfileActivity.vue';
-import ProfileCollectibles from '@/views/ProfileCollectibles.vue';
 
 import SpaceView from '@/views/SpaceView.vue';
 import SpaceProposals from '@/views/SpaceProposals.vue';
@@ -68,11 +67,6 @@ const profileRoutes = [
     path: '',
     name: 'profileActivity',
     component: ProfileActivity
-  },
-  {
-    path: 'collectibles',
-    name: 'profileCollectibles',
-    component: ProfileCollectibles
   },
   {
     path: 'about/',

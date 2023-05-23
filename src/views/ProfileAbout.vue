@@ -70,6 +70,8 @@ onMounted(async () => {
         :loading="isLoading"
       />
 
+      <ProfileAboutNFTs />
+
       <ProfileAboutDelegate
         :user-address="userAddress"
         :following-spaces="followingSpaces"

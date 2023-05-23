@@ -34,7 +34,7 @@ watch(
 <template>
   <BaseBlock v-if="inited" :title="$t('NFT Claimer')">
     <div class="flex flex-col items-center space-y-4">
-      <div class="group flex cursor-pointer flex-col">
+      <div class="group flex cursor-pointer flex-col items-center">
         <div
           class="flex h-[186px] w-[186px] flex-row items-center justify-center rounded-xl border border-skin-link bg-skin-border"
           @click="isModalExploreOpen = true"

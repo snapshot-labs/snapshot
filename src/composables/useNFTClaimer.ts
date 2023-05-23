@@ -166,10 +166,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       );
 
       collectionInfo = {
-        mintCountTotal: maxSupply.toString(),
-        mintCount: balanceOf.toString(),
+        mintCountTotal: maxSupply.toNumber(),
+        mintCount: balanceOf.toNumber(),
         mintPrice: formatUnits(mintPriceRaw, 18),
-        balanceOf: balanceOf.toString(),
+        balanceOf: balanceOf.toNumber(),
         createdAt: Date.now()
       };
       collectionsInfo.value[proposal.id] = collectionInfo;
@@ -257,9 +257,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
 
       notify(t('notify.transactionSent'));
       updatePendingTransaction(txPendingId, { hash: tx.hash });
-      minting.value = false;
       const receipt = await tx.wait();
       console.log('Receipt', receipt);
+      minting.value = false;
+      // Optimistic update mint count
+      mintCount.value += 1;
       notify(t('notify.youDidIt'));
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
