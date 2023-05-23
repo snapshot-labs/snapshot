@@ -76,14 +76,25 @@ async function fetchBalances(network, gnosisSafeAddress) {
       const balances = await getGnosisSafeBalances(network, gnosisSafeAddress);
       // console.log(':fetchBalances -> balances', balances);
 
-      const tokensReq = await fetch(
-        'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
-      );
-      const tokensRes = await tokensReq.json();
-      const tokens = tokensRes.tokens;
-      // console.log(':fetchBalances -> tokens', tokens);
+      const getTokensUniswap = new Promise(resolve => {
+        fetch('https://gateway.ipfs.io/ipns/tokens.uniswap.org')
+          .then(res => res.json())
+          .then(list => resolve(list.tokens))
+          .catch(() => resolve([]));
+      });
+      const getTokensSnapshot = new Promise(resolve => {
+        fetch('https://sh5.co/api/moderation?list=verifiedTokens')
+          .then(res => res.json())
+          .then(list => resolve(list.verifiedTokens.tokens))
+          .catch(() => resolve([]));
+      });
 
-      // TODO get verified tokens from snapshot
+      const tokensLists = await Promise.all([
+        getTokensUniswap,
+        getTokensSnapshot
+      ]);
+      const tokens = tokensLists.flat();
+      // console.log(':fetchBalances -> tokens', tokens);
 
       const isVerified = tokenAddress => {
         return tokens.find(
