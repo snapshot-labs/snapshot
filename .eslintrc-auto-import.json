@@ -112,6 +112,7 @@
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
+    "watchTxStatus": true,
     "toValue": true
   }
 }
