@@ -127,19 +127,12 @@ export async function pageEvents<E>(
   //start and end block range to query
   fetchEvents: (query: { start: number; end: number }) => Promise<E[]>
 ): Promise<E[]> {
-  const events = [];
   let state = rangeStart({ startBlock, endBlock, maxRange });
+  const ranges = [];
   do {
-    try {
-      const e = await fetchEvents({
-        start: state.currentStart,
-        end: state.currentEnd
-      });
-      events.push(...e);
-      state = rangeSuccessDescending(state);
-    } catch (err) {
-      state = rangeFailureDescending(state);
-    }
+    ranges.push({ start: state.currentStart, end: state.currentEnd });
+    state = rangeSuccessDescending(state);
   } while (!state.done);
-  return events;
+
+  return (await Promise.all(ranges.map(fetchEvents))).flat();
 }
