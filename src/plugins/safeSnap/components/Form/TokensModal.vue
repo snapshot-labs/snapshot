@@ -13,12 +13,14 @@ const emit = defineEmits(['close', 'tokenAddress']);
 
 const query = ref('');
 
-const {
-  isRevealed: isConfirmLeaveOpen,
-  reveal: openConfirmLeave,
-  confirm: confirmLeave,
-  cancel: cancelLeave
-} = useConfirmDialog();
+const confirmDialogOpen = ref(false);
+const confirmDialogData = ref(null);
+const confirmDialog = useConfirmDialog(confirmDialogOpen);
+confirmDialog.onConfirm(token => {
+  // console.log(':confirmDialog.onConfirm', token);
+  emit('tokenAddress', token.address);
+  emit('close');
+});
 
 const tokensFiltered = computed(() => {
   if (!query.value) return props.tokens;
@@ -34,17 +36,13 @@ function handleTokenClick(token) {
   // console.log(':handleTokenClick', token);
   const isVerified = token.address === 'main' || token.verified !== undefined;
 
-  if (!isVerified) return openConfirmLeave(token);
+  if (!isVerified) {
+    confirmDialogData.value = token;
+    return confirmDialog.reveal();
+  }
 
   emit('tokenAddress', token.address);
   emit('close');
-}
-
-function handleConfirmToken(token) {
-  // console.log(':handleConfirmToken', token);
-  emit('tokenAddress', token.address);
-  emit('close');
-  confirmLeave(true);
 }
 </script>
 
@@ -87,10 +85,10 @@ function handleConfirmToken(token) {
 
   <teleport to="#modal">
     <ModalConfirmAction
-      :open="isConfirmLeaveOpen"
+      :open="confirmDialogOpen"
       show-cancel
-      @close="cancelLeave"
-      @confirm="handleConfirmToken"
+      @close="confirmDialog.cancel"
+      @confirm="confirmDialog.confirm(confirmDialogData)"
     >
       <BaseMessageBlock level="warning" class="m-4">
         {{ $t('Token is not verified by Snapshot. Confirm to continue.') }}
