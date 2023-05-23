@@ -12,11 +12,13 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'tokenAddress']);
 
+const { t } = useI18n();
+
 const query = ref('');
-const filter = ref('defaultTokens');
+const filter = ref('verifiedTokens');
 const filters = [
-  { value: 'defaultTokens', name: 'Default tokens' },
-  { value: 'allTokens', name: 'All tokens' }
+  { value: 'verifiedTokens', name: t('Verified tokens') },
+  { value: 'allTokens', name: t('All tokens') }
 ];
 
 const confirmDialogOpen = ref(false);
@@ -40,7 +42,7 @@ const tokensFiltered = computed(() => {
     }
 
     filters.push(
-      filter.value === 'defaultTokens'
+      filter.value === 'verifiedTokens'
         ? token.address === 'main' || token.verified !== undefined
         : true
     );
@@ -69,10 +71,10 @@ function handleTokenClick(token) {
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
-        <h3>Assets</h3>
+        <h3>{{ $t('Assets') }}</h3>
         <BaseSearch
           v-model="query"
-          :placeholder="'Search token'"
+          :placeholder="$t('Search token')"
           modal
           focus-on-mount
           class="min-h-[60px] w-full flex-auto px-3 pb-3"
@@ -121,7 +123,7 @@ function handleTokenClick(token) {
       <BaseMessageBlock level="warning" class="m-4">
         {{ $t('Token is not verified by Snapshot. Confirm to continue.') }}
         <a href="https://docs.snapshot.org/" target="_blank">
-          Click for more info.
+          {{ $t('Click for more info.') }}
         </a>
       </BaseMessageBlock>
     </ModalConfirmAction>

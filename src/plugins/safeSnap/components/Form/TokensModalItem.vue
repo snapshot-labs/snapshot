@@ -58,9 +58,11 @@ const exploreUrl = computed(() => {
         <template #content>
           <div class="m-4">
             <p>
-              Information of this token has been verified by Snapshot.
+              {{
+                $t('Information of this token has been verified by Snapshot.')
+              }}
               <a href="https://docs.snapshot.org/" target="_blank">
-                Click for more info.
+                {{ $t('Click for more info.') }}
               </a>
             </p>
           </div>
@@ -77,7 +79,7 @@ const exploreUrl = computed(() => {
         <span class="">{{ shorten(token.address) }}</span>
         <i-ho-arrow-top-right-on-square class="mb-1 text-xs" />
       </a>
-      <div v-else>Ethereum</div>
+      <div v-else>{{ $t('Ethereum') }}</div>
     </div>
   </button>
 </template>
