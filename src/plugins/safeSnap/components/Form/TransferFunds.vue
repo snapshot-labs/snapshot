@@ -118,6 +118,7 @@ export default {
       <span v-if="selectedToken" class="mx-2">{{ selectedToken.symbol }}</span>
       <AvatarToken
         v-if="selectedToken"
+        :key="selectedToken.address"
         :src="selectedToken.address === 'main' ? selectedToken.logoUri : ''"
         :address="selectedToken.address"
       />
