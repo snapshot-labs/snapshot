@@ -116,7 +116,11 @@ export default {
     <div class="flex flex-row">
       <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
       <span v-if="selectedToken" class="mx-2">{{ selectedToken.symbol }}</span>
-      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
+      <AvatarToken
+        v-if="selectedToken"
+        :src="selectedToken.address === 'main' ? selectedToken.logoUri : ''"
+        :address="selectedToken.address"
+      />
     </div>
     <i-ho-chevron-down class="text-xs text-skin-link" />
   </BaseButton>
@@ -149,10 +153,3 @@ export default {
     />
   </teleport>
 </template>
-
-<style scoped>
-.tokenImage {
-  width: 24px;
-  vertical-align: middle;
-}
-</style>

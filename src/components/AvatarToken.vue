@@ -25,7 +25,7 @@ withDefaults(
     @error="
       (
         $event.target as HTMLImageElement
-      ).src = `https://cdn.stamp.fyi/avatar/eth:${address}?s=100`
+      ).src = `https://cdn.stamp.fyi/token/eth:${address}?s=100`
     "
   />
 </template>

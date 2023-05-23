@@ -22,96 +22,62 @@ const exploreUrl = computed(() => {
 
 <template>
   <button
-    class="flex w-full cursor-pointer flex-row flex-wrap content-center items-center justify-between rounded-xl border border-skin-border p-3 hover:border-skin-link"
+    class="flex h-[64px] w-full cursor-pointer flex-row flex-wrap content-center items-center justify-between border-b border-skin-border px-4 py-2"
     :class="{
-      '!border-skin-link': isSelected
+      '!bg-skin-border': isSelected
     }"
     @click="emit('select', token)"
   >
-    <div class="mb-2 flex w-full flex-row justify-between">
-      <div class="flex flex-row content-center items-center gap-x-2">
-        <img
-          v-if="!logoNotFound"
-          :src="token.logoUri"
-          alt="token-logo"
-          class="w-[34px] min-w-[34px]"
-          @error="logoNotFound = true"
+    <div class="flex flex-row items-center">
+      <div class="flex w-[44px] flex-col">
+        <AvatarToken
+          :src="token.address === 'main' ? String(token.logoUri) : ''"
+          :address="token.address"
+          size="32"
         />
-        <div
-          v-else
-          class="flex h-[34px] w-[34px] flex-row items-center justify-center rounded-2xl bg-skin-text"
-        >
-          <small class="text-skin-link">{{
-            token.name.slice(0, 3).toLocaleUpperCase()
-          }}</small>
-        </div>
+      </div>
+
+      <div class="flex flex-col items-start">
         <span class="text-skin-link">{{ token.symbol }}</span>
         <span class="text-skin-text">{{ shorten(token.name, 'choice') }}</span>
       </div>
-      <div class="flex flex-row content-center items-center gap-x-1">
-        <template v-if="token.verified || token.address === 'main'">
-          <BasePopover placement="top-end">
-            <template #button>
-              <div
-                class="flex flex-row items-center gap-x-1 text-skin-text hover:!text-skin-link"
-              >
-                <span>{{ $t('verified') }}</span>
-                <i-ho-check-badge class="text-xs text-green" />
-              </div>
-            </template>
-            <template #content>
-              <div class="m-4">
-                <p>
-                  Information of this token has been verified by Snapshot.
-                  <a href="https://docs.snapshot.org/" target="_blank">
-                    Click for more info.
-                  </a>
-                </p>
-              </div>
-            </template>
-          </BasePopover>
-        </template>
-
-        <template v-else>
-          <BasePopover placement="top-end">
-            <template #button>
-              <div
-                class="flex flex-row items-center gap-x-1 text-skin-text hover:!text-skin-link"
-              >
-                <span>{{ $t('unverified') }}</span>
-                <i-ho-question-mark-circle class="text-xs" />
-              </div>
-            </template>
-            <template #content>
-              <div class="m-4">
-                <p>
-                  Information of this token has NOT been verified by Snapshot.
-                  <a href="https://tally.so/r/mKzXo7" target="_blank">
-                    Click to verify token.
-                  </a>
-                </p>
-              </div>
-            </template>
-          </BasePopover>
-        </template>
-      </div>
     </div>
 
-    <div class="flex w-full flex-row items-center justify-between">
-      <div>
-        <span>{{ networks[token?.verified?.chainId || '1']?.name }}</span>
-      </div>
+    <div class="flex h-full flex-col items-end justify-end">
+      <BasePopover
+        v-if="token.verified || token.address === 'main'"
+        placement="top-end"
+      >
+        <template #button>
+          <div
+            class="flex flex-row items-center gap-x-1 text-skin-text hover:!text-skin-link"
+          >
+            <i-ho-check-badge class="!text-[22px] text-xs text-green" />
+          </div>
+        </template>
+        <template #content>
+          <div class="m-4">
+            <p>
+              Information of this token has been verified by Snapshot.
+              <a href="https://docs.snapshot.org/" target="_blank">
+                Click for more info.
+              </a>
+            </p>
+          </div>
+        </template>
+      </BasePopover>
       <a
         v-if="token.address !== 'main'"
         :href="exploreUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex flex-row content-center items-center gap-x-1 text-skin-text hover:!text-skin-link"
+        class="mr-1 flex flex-row content-center items-center gap-x-1 text-skin-text hover:!text-skin-link"
         @click.stop
       >
         <span class="">{{ shorten(token.address) }}</span>
         <i-ho-arrow-top-right-on-square class="mb-1 text-xs" />
       </a>
+      <div v-else>Ethereum</div>
     </div>
   </button>
 </template>

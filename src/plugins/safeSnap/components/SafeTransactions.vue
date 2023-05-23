@@ -72,15 +72,18 @@ export const ensureRightNetwork = async chainId => {
 async function fetchBalances(network, gnosisSafeAddress) {
   if (gnosisSafeAddress) {
     try {
+      // TODO get safe tokens from contract?
       const balances = await getGnosisSafeBalances(network, gnosisSafeAddress);
-      console.log(':fetchBalances -> balances', balances);
+      // console.log(':fetchBalances -> balances', balances);
 
       const tokensReq = await fetch(
         'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
       );
       const tokensRes = await tokensReq.json();
       const tokens = tokensRes.tokens;
-      console.log(':fetchBalances -> tokens', tokens);
+      // console.log(':fetchBalances -> tokens', tokens);
+
+      // TODO get verified tokens from snapshot
 
       const isVerified = tokenAddress => {
         return tokens.find(
@@ -94,7 +97,12 @@ async function fetchBalances(network, gnosisSafeAddress) {
           ...balance.token,
           address: balance.tokenAddress,
           verified: isVerified(balance.tokenAddress)
-        }));
+        }))
+        .sort((a, b) => {
+          if (a.verified && !b.verified) return -1;
+          if (!a.verified && b.verified) return 1;
+          return 0;
+        });
     } catch (e) {
       console.warn('Error fetching balances');
     }

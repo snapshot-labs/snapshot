@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useConfirmDialog } from '@vueuse/core';
 import { TokenAsset } from '@/helpers/interfaces';
 import TokensModalItem from './TokensModalItem.vue';
 
@@ -12,6 +13,13 @@ const emit = defineEmits(['close', 'tokenAddress']);
 
 const query = ref('');
 
+const {
+  isRevealed: isConfirmLeaveOpen,
+  reveal: openConfirmLeave,
+  confirm: confirmLeave,
+  cancel: cancelLeave
+} = useConfirmDialog();
+
 const tokensFiltered = computed(() => {
   if (!query.value) return props.tokens;
   return props.tokens.filter(token => {
@@ -23,17 +31,20 @@ const tokensFiltered = computed(() => {
 });
 
 function handleTokenClick(token) {
-  console.log(':handleTokenClick', token);
+  // console.log(':handleTokenClick', token);
   const isVerified = token.address === 'main' || token.verified !== undefined;
 
-  if (!isVerified) {
-    // TODO confirm through modal
-    const isApproved = confirm('Token not verified. Confirm to continue.');
-    if (!isApproved) return;
-  }
+  if (!isVerified) return openConfirmLeave(token);
 
   emit('tokenAddress', token.address);
   emit('close');
+}
+
+function handleConfirmToken(token) {
+  // console.log(':handleConfirmToken', token);
+  emit('tokenAddress', token.address);
+  emit('close');
+  confirmLeave(true);
 }
 </script>
 
@@ -55,12 +66,12 @@ function handleTokenClick(token) {
     </template>
 
     <template #default="{ maxHeight }">
-      <div class="flex w-full flex-col gap-y-2 overflow-auto p-4">
+      <div class="flex w-full flex-col overflow-auto">
         <TokensModalItem
           v-for="token in tokensFiltered"
           :key="token.address"
           :token="token"
-          :is-selected="false"
+          :is-selected="token.address === tokenAddress"
           @select="handleTokenClick"
         />
 
@@ -73,4 +84,20 @@ function handleTokenClick(token) {
       </div>
     </template>
   </BaseModal>
+
+  <teleport to="#modal">
+    <ModalConfirmAction
+      :open="isConfirmLeaveOpen"
+      show-cancel
+      @close="cancelLeave"
+      @confirm="handleConfirmToken"
+    >
+      <BaseMessageBlock level="warning" class="m-4">
+        {{ $t('Token is not verified by Snapshot. Confirm to continue.') }}
+        <a href="https://docs.snapshot.org/" target="_blank">
+          Click for more info.
+        </a>
+      </BaseMessageBlock>
+    </ModalConfirmAction>
+  </teleport>
 </template>
