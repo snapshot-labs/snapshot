@@ -87,11 +87,10 @@ const submit = async () => {
         </div>
       </div>
 
-      <InputCheckbox
+      <TuneCheckbox
         v-if="canRemoveEmail"
         v-model="shouldRemoveEmail"
-        name="settings-saved-input-checkbox"
-        :label="t('emailManagement.removeEmail')"
+        :hint="t('emailManagement.removeEmail')"
         class="pointer-events-none ml-4 mt-auto cursor-pointer self-start text-sm text-skin-text opacity-60"
       />
 

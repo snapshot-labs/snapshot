@@ -157,6 +157,8 @@ async function subscribe(email: string, address: string) {
 async function updateSubscriptions() {
   if (loading.value) return;
 
+  loading.value = true;
+
   const address = web3Account.value;
 
   if (!address) return;
