@@ -10,7 +10,7 @@ const { domain } = useApp();
 const { logout } = useWeb3();
 const { isSubscribed } = useEmailSubscription();
 const router = useRouter();
-const modalEmailSubscriptionOpen = ref(false);
+const showModalEmail = ref(false);
 
 function handleAction(e) {
   if (e === 'viewProfile')
@@ -27,7 +27,7 @@ function handleAction(e) {
       name: 'delegate'
     });
   if (e === 'subscribeEmail') {
-    modalEmailSubscriptionOpen.value = true;
+    showModalEmail.value = true;
     return true;
   }
   return logout();
@@ -94,9 +94,15 @@ function handleAction(e) {
   </div>
 
   <teleport to="#modal">
-    <ModalEmailHOC
-      :open="modalEmailSubscriptionOpen"
-      @close="modalEmailSubscriptionOpen = false"
+    <ModalEmailSubscription
+      v-if="!isSubscribed"
+      :open="showModalEmail"
+      @close="showModalEmail = false"
+    />
+    <ModalEmailManagement
+      v-else
+      :open="showModalEmail"
+      @close="showModalEmail = false"
     />
   </teleport>
 </template>
