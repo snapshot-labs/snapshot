@@ -97,7 +97,7 @@ export class CompoundGovernorConfig extends StandardConfig {
   }
 
   formatBalanceResponse(response: any): string {
-    return response.tokenHolder.tokenBalance;
+    return response.tokenHolder?.tokenBalance || '0';
   }
 
   formatDelegateResponse(response: any): DelegateWithPercent {
