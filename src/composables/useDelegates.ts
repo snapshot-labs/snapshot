@@ -1,5 +1,5 @@
 import { DelegateWithPercent } from '@/helpers/interfaces';
-import { createStandardConfig } from '@/helpers/delegates';
+import { createStandardConfig } from '@/helpers/delegation/index';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import {
   subgraphRequest,
