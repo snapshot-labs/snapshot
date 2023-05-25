@@ -380,9 +380,9 @@ export interface Delegate {
 export interface DelegateWithPercent extends Delegate {
   delegatorsPercentage: number;
   votesPercentage: number;
-  statement?: string;
+  statement?: string; // TODO: remove this
 }
 
-export interface DelegateWithBalance extends Delegate {
+export interface DelegateWithBalance extends DelegateWithPercent {
   tokenBalance: string;
 }

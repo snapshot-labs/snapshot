@@ -16,7 +16,7 @@ const props = defineProps<{
 const emit = defineEmits(['close']);
 
 const { web3Account } = useWeb3();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatPercentNumber } = useIntl();
 const { fetchDelegate } = useDelegates(props.space.delegation);
 const { domain } = useApp();
 
@@ -43,11 +43,19 @@ watch(
           <ProfileName :profile="profiles[address]" :address="address" />
           <div class="flex gap-3 pl-3 text-skin-text">
             <template v-if="delegate">
-              <div>
+              <div
+                v-tippy="{
+                  content: formatPercentNumber(delegate.votesPercentage)
+                }"
+              >
                 {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
                 {{ space.symbol }}
               </div>
-              <div>
+              <div
+                v-tippy="{
+                  content: formatPercentNumber(delegate.delegatorsPercentage)
+                }"
+              >
                 {{
                   formatCompactNumber(
                     Number(delegate.tokenHoldersRepresentedAmount)

@@ -67,13 +67,10 @@ export class CompoundGovernorConfig extends StandardConfig {
 
     return delegatesData.map(delegate => {
       const delegatorsPercentage =
-        (Number(delegate.tokenHoldersRepresentedAmount) /
-          Number(governanceData.totalTokenHolders)) *
-        100;
+        Number(delegate.tokenHoldersRepresentedAmount) /
+        Number(governanceData.totalTokenHolders);
       const votesPercentage =
-        (Number(delegate.delegatedVotes) /
-          Number(governanceData.delegatedVotes)) *
-        100;
+        Number(delegate.delegatedVotes) / Number(governanceData.delegatedVotes);
 
       return {
         ...delegate,
@@ -103,6 +100,14 @@ export class CompoundGovernorConfig extends StandardConfig {
         },
         id: true,
         tokenBalance: true
+      },
+      governance: {
+        __args: {
+          id: 'GOVERNANCE'
+        },
+        delegatedVotes: true,
+        totalTokenHolders: true,
+        totalDelegates: true
       }
     };
   }
@@ -110,14 +115,23 @@ export class CompoundGovernorConfig extends StandardConfig {
   formatDelegateResponse(response: any): DelegateWithBalance {
     const tokenHolder = response.tokenHolder;
     const delegate = response.delegate;
+    const governanceData = response.governance;
+    const delegatorsPercentage =
+      Number(delegate.tokenHoldersRepresentedAmount) /
+      Number(governanceData.totalTokenHolders);
+    const votesPercentage =
+      Number(delegate.delegatedVotes) / Number(governanceData.delegatedVotes);
+
     return {
       ...{
-        id: delegate?.id || '',
+        id: delegate.id,
         delegatedVotes: delegate?.delegatedVotes || '0',
         tokenHoldersRepresentedAmount:
           delegate?.tokenHoldersRepresentedAmount || 0
       },
-      tokenBalance: tokenHolder?.tokenBalance || '0'
+      tokenBalance: tokenHolder?.tokenBalance || '0',
+      delegatorsPercentage: delegatorsPercentage || 0,
+      votesPercentage: votesPercentage || 0
     };
   }
 
