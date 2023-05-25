@@ -1,4 +1,4 @@
-import { DelegateWithPercent, DelegateWithBalance } from '@/helpers/interfaces';
+import { DelegateWithPercent } from '@/helpers/interfaces';
 
 export type QueryParams = {
   first: number;
@@ -16,7 +16,10 @@ export abstract class StandardConfig {
   abstract getDelegateQuery(id: string): Record<string, any>;
   abstract formatDelegateResponse(
     response: Record<string, any>
-  ): DelegateWithBalance;
+  ): DelegateWithPercent;
+
+  abstract getBalanceQuery(id: string): Record<string, any>;
+  abstract formatBalanceResponse(response: Record<string, any>): string;
 
   abstract initializeUser(address: string): DelegateWithPercent[];
   abstract getContractDelegateMethod(): { abi: string[]; action: string };

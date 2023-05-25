@@ -20,7 +20,9 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate, fetchDelegate } = useDelegates(props.space.delegation);
+const { setDelegate, fetchDelegateBalance } = useDelegates(
+  props.space.delegation
+);
 const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 
@@ -109,8 +111,8 @@ async function resolveToAddress(value: string) {
 }
 
 async function loadAccountBalance() {
-  const response = await fetchDelegate(web3Account.value);
-  accountBalance.value = response.tokenBalance;
+  const balance = await fetchDelegateBalance(web3Account.value);
+  accountBalance.value = balance;
 }
 
 watchDebounced(

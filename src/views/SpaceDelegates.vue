@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, DelegateWithBalance } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{

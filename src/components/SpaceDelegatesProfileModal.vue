@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {
-  DelegateWithBalance,
+  DelegateWithPercent,
   ExtendedSpace,
   Profile
 } from '@/helpers/interfaces';
@@ -20,7 +20,7 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
 const { fetchDelegate } = useDelegates(props.space.delegation);
 const { domain } = useApp();
 
-const delegate = ref<DelegateWithBalance | null>(null);
+const delegate = ref<DelegateWithPercent | null>(null);
 const showModalStatement = ref(false);
 
 watch(

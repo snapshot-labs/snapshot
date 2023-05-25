@@ -1,4 +1,4 @@
-import { DelegateWithPercent, DelegateWithBalance } from '@/helpers/interfaces';
+import { DelegateWithPercent } from '@/helpers/interfaces';
 import { StandardConfig, QueryParams } from './standardConfig';
 
 export class CompoundGovernorConfig extends StandardConfig {
@@ -73,13 +73,6 @@ export class CompoundGovernorConfig extends StandardConfig {
         delegatedVotes: true,
         tokenHoldersRepresentedAmount: true
       },
-      tokenHolder: {
-        __args: {
-          id
-        },
-        id: true,
-        tokenBalance: true
-      },
       governance: {
         __args: {
           id: 'GOVERNANCE'
@@ -91,8 +84,23 @@ export class CompoundGovernorConfig extends StandardConfig {
     };
   }
 
-  formatDelegateResponse(response: any): DelegateWithBalance {
-    const tokenHolder = response.tokenHolder;
+  getBalanceQuery(id: string): Record<string, any> {
+    return {
+      tokenHolder: {
+        __args: {
+          id
+        },
+        id: true,
+        tokenBalance: true
+      }
+    };
+  }
+
+  formatBalanceResponse(response: any): string {
+    return response.tokenHolder.tokenBalance;
+  }
+
+  formatDelegateResponse(response: any): DelegateWithPercent {
     const delegate = response.delegate;
     const governanceData = response.governance;
     const delegatorsPercentage =
@@ -108,7 +116,6 @@ export class CompoundGovernorConfig extends StandardConfig {
         tokenHoldersRepresentedAmount:
           delegate?.tokenHoldersRepresentedAmount || 0
       },
-      tokenBalance: tokenHolder?.tokenBalance || '0',
       delegatorsPercentage: delegatorsPercentage || 0,
       votesPercentage: votesPercentage || 0
     };

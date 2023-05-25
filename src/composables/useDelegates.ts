@@ -110,6 +110,17 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     return standardConfig.formatDelegateResponse(response);
   }
 
+  async function fetchDelegateBalance(id: string) {
+    const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
+
+    const response = await subgraphRequest(
+      adjustUrl(delegatesConfig.subgraphUrl),
+      query
+    );
+
+    return standardConfig.formatBalanceResponse(response);
+  }
+
   async function setDelegate(address: string) {
     const contractMethod = standardConfig.getContractDelegateMethod();
     const tx = await sendTransaction(
@@ -131,6 +142,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     setDelegate,
     fetchDelegates,
     fetchMoreDelegates,
-    fetchDelegate
+    fetchDelegate,
+    fetchDelegateBalance
   };
 }
