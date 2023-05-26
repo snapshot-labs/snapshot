@@ -152,7 +152,9 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
       form.value.voteValidation.name === 'any' ||
       form.value.voteValidation.name === 'basic';
 
-    if (!isDemo && isTicket && isAnyOrBasic) {
+    const isMultipleStrategies = form.value.strategies.length > 1;
+
+    if (!isDemo && !isMultipleStrategies && isTicket && isAnyOrBasic) {
       errors.strategies =
         'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport.';
     }
