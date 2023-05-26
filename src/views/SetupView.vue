@@ -127,19 +127,19 @@ onMounted(() => {
         <SetupDomain v-if="currentStep === Step.ENS" @next="nextStep" />
 
         <SetupProfile
-          v-else-if="currentStep === Step.PROFILE && route.params.ens"
+          v-if="currentStep === Step.PROFILE && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupStrategy
-          v-else-if="currentStep === Step.STRATEGY && route.params.ens"
+          v-show="currentStep === Step.STRATEGY && route.params.ens"
           @next="nextStep"
           @back="previousStep"
         />
 
         <SetupExtras
-          v-else-if="currentStep === Step.EXTRAS && route.params.ens"
+          v-if="currentStep === Step.EXTRAS && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
           @next="handleSubmit"
