@@ -51,9 +51,19 @@ const isNotValidTicket = computed(
     (validation.value.name === 'any' || validation.value.name === 'basic')
 );
 
+const isNotValidWhitelist = computed(
+  () => strategyName.value === 'whitelist' && whitelist.value.length === 0
+);
+
+const whitelistRef = ref();
+
+function forceShowError() {
+  whitelistRef?.value?.forceShowError();
+}
+
 function nextStep() {
-  if (strategyName.value === 'whitelist' && whitelist.value.length === 0) {
-    showError.value = true;
+  if (isNotValidWhitelist.value) {
+    forceShowError();
     return;
   }
   if (isNotValidTicket.value) {
@@ -146,9 +156,13 @@ function nextStep() {
         </template>
         <template v-if="strategyName === 'whitelist'" class="md:w-2/3">
           <TuneTextareaArray
+            ref="whitelistRef"
             v-model="whitelist"
             label="Whitelisted addresses"
             :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
+            :error="
+              isNotValidWhitelist ? 'Please add at least one address' : ''
+            "
           />
         </template>
       </div>
