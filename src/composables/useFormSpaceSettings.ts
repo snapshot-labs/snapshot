@@ -143,7 +143,21 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   }
 
   const validationErrors = computed(() => {
-    return validateForm(schemas.space, prunedForm.value);
+    const errors = validateForm(schemas.space, prunedForm.value);
+
+    const isTicket = form.value.strategies.some(
+      (strategy: any) => strategy.name === 'ticket'
+    );
+    const isAnyOrBasic =
+      form.value.voteValidation.name === 'any' ||
+      form.value.voteValidation.name === 'basic';
+
+    if (isTicket && isAnyOrBasic) {
+      errors.strategies =
+        'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport.';
+    }
+
+    return errors;
   });
 
   const isValid = computed(() => {
