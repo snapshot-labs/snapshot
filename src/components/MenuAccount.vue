@@ -8,7 +8,10 @@ const { t } = useI18n();
 
 const { domain } = useApp();
 const { logout } = useWeb3();
-const { isSubscribed } = useEmailSubscription();
+const { isSubscribed, loadEmailSubscriptions } = useEmailSubscription();
+
+onMounted(loadEmailSubscriptions);
+
 const router = useRouter();
 const showModalEmail = ref(false);
 
