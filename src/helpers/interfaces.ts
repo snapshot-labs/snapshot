@@ -365,21 +365,3 @@ export interface FormError {
   message: string;
   push?: boolean;
 }
-
-export interface JSONRPCError {
-  jsonrpc: '1.0' | '2.0';
-  id?: number;
-  error: {
-    code: number;
-    data?: unknown;
-    message: string;
-  };
-}
-
-export interface JSONRPCResponse<T> {
-  jsonrpc: '1.0' | '2.0';
-  id?: number;
-  result: T;
-}
-
-export type JSONRPCSuccess = JSONRPCResponse<string>;
