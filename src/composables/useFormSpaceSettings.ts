@@ -5,9 +5,6 @@ import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import { validateForm } from '@/helpers/validation';
 
-const { isSending } = useClient();
-const { isUploadingImage } = useImageUpload();
-
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const EMPTY_SPACE_FORM = {
@@ -57,6 +54,10 @@ const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const inputRefs = ref<any[]>([]);
 
 export function useFormSpaceSettings(context: 'setup' | 'settings') {
+  const { isSending } = useClient();
+  const { isUploadingImage } = useImageUpload();
+  const { env } = useApp();
+
   const form = computed({
     get: () => (context === 'setup' ? formSetup.value : formSettings.value),
     set: newVal =>
@@ -142,9 +143,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     );
   }
 
-  const validationErrors = computed(() => {
-    const errors = validateForm(schemas.space, prunedForm.value);
-
+  function validateStrategies(errors: any) {
+    const isDemo = env === 'demo';
     const isTicket = form.value.strategies.some(
       (strategy: any) => strategy.name === 'ticket'
     );
@@ -152,10 +152,16 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
       form.value.voteValidation.name === 'any' ||
       form.value.voteValidation.name === 'basic';
 
-    if (isTicket && isAnyOrBasic) {
+    if (!isDemo && isTicket && isAnyOrBasic) {
       errors.strategies =
         'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport.';
     }
+  }
+
+  const validationErrors = computed(() => {
+    const errors = validateForm(schemas.space, prunedForm.value);
+
+    validateStrategies(errors);
 
     return errors;
   });
