@@ -5,25 +5,9 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { ERC20ABI } from '@/helpers/abi';
 import { isAddress } from '@ethersproject/address';
 
-const emit = defineEmits(['next']);
-
-const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
-const { t } = useI18n();
-
 const BROVIDER_URL = 'https://rpc.snapshot.org';
 
-const tokenStandards = computed(() => {
-  return ['ERC-20', 'ERC-721', 'ERC-1155'].map(name => ({
-    value: name
-  }));
-});
-
-const input = ref({
-  network: '1',
-  address: ''
-});
-
-const defaultToken = {
+const DEFAULT_TOKEN = {
   name: '',
   logo: '',
   standard: 'ERC-20',
@@ -31,7 +15,16 @@ const defaultToken = {
   decimals: null
 };
 
-const token = ref(clone(defaultToken));
+const emit = defineEmits(['next']);
+
+const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
+const { t } = useI18n();
+
+const isTokenLoading = ref(false);
+const tokenError = ref('');
+const network = ref('1');
+const contract = ref('');
+const token = ref(clone(DEFAULT_TOKEN));
 
 const strategy = computed(() => {
   let name = 'erc20-balance-of';
@@ -43,36 +36,21 @@ const strategy = computed(() => {
 
   return {
     name,
-    network: input.value.network,
+    network: network.value,
     params: {
-      network: input.value.network,
-      address: input.value.address,
+      network: network.value,
+      address: contract.value,
       decimals: token.value.decimals,
       symbol: token.value.symbol
     }
   };
 });
 
-function setFormValues() {
-  if (
-    form.value.strategies.length === 1 &&
-    !['whitelist', 'ticket'].includes(form.value.strategies[0].name)
-  ) {
-    input.value = {
-      network: form.value.strategies[0].params.network,
-      address: form.value.strategies[0].params.address
-    };
-
-    if (form.value.strategies[0].name === 'erc721') {
-      token.value.standard = 'ERC-721';
-    } else if (form.value.strategies[0].name === 'erc1155-balance-of') {
-      token.value.standard = 'ERC-1155';
-    }
-
-    token.value.symbol = form.value.strategies[0].params.symbol;
-    token.value.decimals = form.value.strategies[0].params.decimals;
-  }
-}
+const tokenStandards = computed(() => {
+  return ['ERC-20', 'ERC-721', 'ERC-1155'].map(name => ({
+    value: name
+  }));
+});
 
 function nextStep() {
   emit('next');
@@ -86,24 +64,18 @@ function nextStep() {
   form.value.symbol = strategy.value.params.symbol;
 }
 
-const isTokenLoading = ref(false);
-const tokenError = ref('');
-
 async function getTokenInfo() {
   tokenError.value = '';
 
-  if (!input.value.address || !isAddress(input.value.address)) {
+  if (!contract.value || !isAddress(contract.value)) {
     tokenError.value = t('errors.invalidAddress');
-    token.value = clone(defaultToken);
+    token.value = clone(DEFAULT_TOKEN);
     return;
   }
 
   isTokenLoading.value = true;
 
-  const { data } = await getTokenPrices(
-    input.value.address,
-    input.value.network
-  );
+  const { data } = await getTokenPrices(contract.value, network.value);
 
   if (data?.[0]?.contract_name) {
     token.value.name = data[0].contract_name;
@@ -113,20 +85,18 @@ async function getTokenInfo() {
     isTokenLoading.value = false;
   } else {
     try {
-      const provider = new JsonRpcProvider(
-        `${BROVIDER_URL}/${input.value.network}`
-      );
+      const provider = new JsonRpcProvider(`${BROVIDER_URL}/${network.value}`);
       const tokenInfo = await Promise.all([
-        call(provider, ERC20ABI, [input.value.address, 'name', []]),
-        call(provider, ERC20ABI, [input.value.address, 'symbol', []]),
-        call(provider, ERC20ABI, [input.value.address, 'decimals', []])
+        call(provider, ERC20ABI, [contract.value, 'name', []]),
+        call(provider, ERC20ABI, [contract.value, 'symbol', []]),
+        call(provider, ERC20ABI, [contract.value, 'decimals', []])
       ]);
       token.value.name = tokenInfo[0];
       token.value.symbol = tokenInfo[1];
       token.value.decimals = tokenInfo[2];
     } catch {
       tokenError.value = t('setup.strategy.tokenVoting.tokenNotFound');
-      token.value = clone(defaultToken);
+      token.value = clone(DEFAULT_TOKEN);
     } finally {
       isTokenLoading.value = false;
     }
@@ -134,14 +104,12 @@ async function getTokenInfo() {
 }
 
 watch(
-  input,
+  [contract, network],
   async () => {
-    getTokenInfo();
+    await getTokenInfo();
   },
   { deep: true }
 );
-
-onMounted(setFormValues);
 </script>
 
 <template>
@@ -150,8 +118,8 @@ onMounted(setFormValues);
       <div class="flex md:w-2/3">
         <div class="w-full space-y-3">
           <ComboboxNetwork
-            :network="input.network"
-            @select="value => (input.network = value)"
+            :network="network"
+            @select="value => (network = value)"
           />
           <BaseListbox
             v-model="token.standard"
@@ -160,7 +128,7 @@ onMounted(setFormValues);
           />
           <div>
             <BaseInput
-              v-model.trim="input.address"
+              v-model.trim="contract"
               title="Token contract"
               placeholder="Enter address"
               :error="{ message: !token.name ? tokenError : '', push: true }"
@@ -178,7 +146,7 @@ onMounted(setFormValues);
           <AvatarToken
             v-if="token.logo"
             :src="token.logo"
-            :address="input.address"
+            :address="contract"
             class="mr-1"
             size="30"
           />
@@ -191,9 +159,9 @@ onMounted(setFormValues);
         </div>
         <div class="flex items-center">
           <BaseLink
-            v-if="input.network == '1'"
+            v-if="network == '1'"
             class="text-skin-text hover:text-skin-link"
-            :link="`https://etherscan.io/token/${input.address}`"
+            :link="`https://etherscan.io/token/${contract}`"
           >
             {{ $t('setup.strategy.tokenVoting.seeOnEtherscan') }}
           </BaseLink>
