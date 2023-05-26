@@ -153,8 +153,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
       form.value.voteValidation.name === 'basic';
 
     if (!isDemo && isTicket && isAnyOrBasic) {
-      errors.strategies =
-        'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport. For testing purposes please use <a href="https://demo.snapshot.org/#/" target="_blank">demo.snapshot.org</a>';
+      errors.strategies = 'ticketWithAnyOrBasicError';
     }
   }
 
@@ -178,18 +177,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     form.value = clone(initialFormState.value);
   }
 
-  function setDefaultStrategy() {
-    form.value.strategies = [];
-    form.value.strategies.push({
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    });
-    form.value.symbol = 'VOTE';
-  }
-
   function forceShowError() {
     inputRefs?.value?.forEach((ref: any) => {
       if (ref?.forceShowError) ref?.forceShowError();
@@ -209,8 +196,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     hasFormChanged,
     populateForm,
     resetForm,
-    setDefaultStrategy,
     addRef,
-    forceShowError
+    forceShowError,
+    DEFAULT_VOTE_VALIDATION
   };
 }

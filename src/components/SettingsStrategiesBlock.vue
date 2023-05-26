@@ -111,7 +111,10 @@ function handleSubmitStrategy(strategy) {
         />
       </div>
 
-      <StrategiesBlockWarning :error="validationErrors?.strategies" />
+      <StrategiesBlockWarning
+        :error="validationErrors?.strategies"
+        :context="context"
+      />
     </BaseBlock>
 
     <teleport to="#modal">

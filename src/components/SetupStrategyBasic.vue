@@ -17,7 +17,7 @@ const DEFAULT_TOKEN = {
 
 const emit = defineEmits(['next']);
 
-const { form, setDefaultStrategy } = useFormSpaceSettings('setup');
+const { form } = useFormSpaceSettings('setup');
 const { t } = useI18n();
 
 const isTokenLoading = ref(false);
@@ -53,11 +53,9 @@ const tokenStandards = computed(() => {
 });
 
 function nextStep() {
+  if (!token.value.symbol) return;
+
   emit('next');
-  if (!strategy.value?.params?.symbol) {
-    setDefaultStrategy();
-    return;
-  }
 
   form.value.strategies = [];
   form.value.strategies.push(strategy.value);
@@ -173,7 +171,6 @@ watch(
       <SetupButtonNext
         class="!mt-0"
         :disabled="isTokenLoading"
-        :text="strategy?.params?.symbol ? 'next' : 'skip'"
         @click="nextStep"
       />
     </div>

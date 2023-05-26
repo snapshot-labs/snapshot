@@ -1,8 +1,37 @@
 <script setup lang="ts">
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+
 const emit = defineEmits(['next']);
 
-const { form } = useFormSpaceSettings('setup');
+const { form, DEFAULT_VOTE_VALIDATION } = useFormSpaceSettings('setup');
 const { t } = useI18n();
+
+const strategyName = ref('whitelist');
+const symbol = ref('VOTE');
+const whitelist = ref([]);
+const validation = ref(clone(DEFAULT_VOTE_VALIDATION));
+const showError = ref(false);
+
+const strategy = computed(() => {
+  const strategy: {
+    name: string;
+    params: {
+      symbol: string;
+      addresses?: string[];
+    };
+  } = {
+    name: strategyName.value,
+    params: {
+      symbol: symbol.value
+    }
+  };
+
+  if (strategyName.value === 'whitelist') {
+    strategy.params.addresses = whitelist.value;
+  }
+
+  return strategy;
+});
 
 const votingItems = computed(() => {
   return ['whitelist', 'ticket'].map(name => ({
@@ -16,55 +45,32 @@ const votingItems = computed(() => {
   }));
 });
 
-const input = ref('whitelist');
-const symbol = ref('VOTE');
-const whitelist = ref([]);
-
-const strategy = computed(() => {
-  const strategy: {
-    name: string;
-    params: {
-      symbol: string;
-      addresses?: string[];
-    };
-  } = {
-    name: 'whitelist',
-    params: {
-      symbol: ''
-    }
-  };
-
-  strategy.name = input.value;
-  strategy.params.symbol = symbol.value;
-
-  if (strategy.name === 'whitelist')
-    strategy.params.addresses = whitelist.value;
-
-  return strategy;
-});
-
-function setFormValues() {
-  if (
-    form.value.strategies.length === 1 &&
-    ['whitelist', 'ticket'].includes(form.value.strategies[0].name)
-  ) {
-    input.value = form.value.strategies[0].name;
-    symbol.value = form.value.strategies[0].params.symbol;
-    if (form.value.strategies[0].name === 'whitelist') {
-      whitelist.value = form.value.strategies[0].params.addresses || [];
-    }
-  }
-}
+const isNotValidTicket = computed(
+  () =>
+    strategyName.value === 'ticket' &&
+    (validation.value.name === 'any' || validation.value.name === 'basic')
+);
 
 function nextStep() {
-  emit('next');
-  form.value.strategies = [];
-  form.value.strategies.push(strategy.value);
-  const symbol = strategy.value.params.symbol || 'VOTE';
-  form.value.symbol = symbol;
-}
+  if (strategyName.value === 'whitelist' && whitelist.value.length === 0) {
+    showError.value = true;
+    return;
+  }
+  if (isNotValidTicket.value) {
+    showError.value = true;
+    return;
+  }
 
-onMounted(setFormValues);
+  form.value.voteValidation = clone(DEFAULT_VOTE_VALIDATION);
+  form.value.strategies = [strategy.value];
+  form.value.symbol = symbol.value;
+
+  if (strategyName.value === 'ticket') {
+    form.value.voteValidation = validation.value;
+  }
+
+  emit('next');
+}
 </script>
 
 <template>
@@ -75,8 +81,8 @@ onMounted(setFormValues);
     <BaseBlock :title="t('setup.strategy.blockTitle')">
       <div class="space-y-3">
         <div class="space-y-3 md:w-2/3">
-          <BaseListbox
-            v-model="input"
+          <TuneListbox
+            v-model="strategyName"
             :items="votingItems"
             label="Strategy"
             class="w-full"
@@ -103,20 +109,52 @@ onMounted(setFormValues);
                 />
               </span>
             </template>
-          </BaseListbox>
-          <BaseInput v-model="symbol" title="Symbol" />
+          </TuneListbox>
+          <TuneInput v-model="symbol" label="Symbol" />
         </div>
-        <div v-if="input === 'whitelist'" class="md:w-2/3">
-          <TextareaArray
+        <template v-if="strategyName === 'ticket'" class="md:w-2/3">
+          <InputSelectVoteValidation
+            :validation="validation"
+            :voting-strategies="form.strategies"
+            @add="validation = $event"
+          />
+
+          <BaseMessageBlock
+            v-if="isNotValidTicket && showError"
+            level="warning-red"
+            class="mt-3"
+          >
+            <i18n-t
+              keypath="ticketWithAnyOrBasicError"
+              tag="span"
+              scope="global"
+            >
+              <template #demo>
+                <BaseLink link="https://demo.snapshot.org">
+                  demo.snapshot.org</BaseLink
+                >
+              </template>
+              <template #article>
+                <BaseLink
+                  link="https://snapshot.mirror.xyz/-uSylOUP82hGAyWUlVn4lCg9ESzKX9QCvsUgvv-ng84"
+                >
+                  {{ $t('learnMore') }}
+                </BaseLink>
+              </template>
+            </i18n-t>
+          </BaseMessageBlock>
+        </template>
+        <template v-if="strategyName === 'whitelist'" class="md:w-2/3">
+          <TuneTextareaArray
             v-model="whitelist"
-            title="Whitelisted addresses"
+            label="Whitelisted addresses"
             :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
           />
-        </div>
+        </template>
       </div>
     </BaseBlock>
     <div class="float-right mx-4 md:mx-0">
-      <SetupButtonNext text="next" @click="nextStep" />
+      <SetupButtonNext @click="nextStep" />
     </div>
   </div>
 </template>
