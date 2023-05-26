@@ -37,9 +37,7 @@ export function useEmailFetchClient() {
   }
 
   const fetchSubscriptions = (body) => {
-    return useEmailFetch('/subscriber', {
-      method: 'POST'
-    }).post(body).json();
+    return useEmailFetch('/subscriber').post(body).json();
   };
 
   const subscribeWithEmail = async (unsignedParams) => {
@@ -52,9 +50,7 @@ export function useEmailFetchClient() {
       }
     }
     
-    return useEmailFetch('/', {
-      method: 'POST'
-    }).post(body).json();
+    return useEmailFetch('/').post(body).json();
   };
 
   const updateEmailSubscriptions = async (unsignedParams) => {
@@ -67,9 +63,7 @@ export function useEmailFetchClient() {
       }
     }
     
-    return useEmailFetch('/', {
-      method: 'POST'
-    }).post(body).json();
+    return useEmailFetch('/').post(body).json();
   };
 
   return {
