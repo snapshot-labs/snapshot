@@ -17,11 +17,6 @@ defineProps<{
         tag="span"
         scope="global"
       >
-        <template #demo>
-          <BaseLink link="https://demo.snapshot.org">
-            demo.snapshot.org</BaseLink
-          >
-        </template>
         <template #article>
           <BaseLink
             link="https://snapshot.mirror.xyz/-uSylOUP82hGAyWUlVn4lCg9ESzKX9QCvsUgvv-ng84"

@@ -56,7 +56,6 @@ const inputRefs = ref<any[]>([]);
 export function useFormSpaceSettings(context: 'setup' | 'settings') {
   const { isSending } = useClient();
   const { isUploadingImage } = useImageUpload();
-  const { env } = useApp();
 
   const form = computed({
     get: () => (context === 'setup' ? formSetup.value : formSettings.value),
@@ -144,7 +143,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   }
 
   function validateStrategies(errors: any) {
-    const isDemo = env === 'demo';
     const isTicket = form.value.strategies.some(
       (strategy: any) => strategy.name === 'ticket'
     );
@@ -152,7 +150,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
       form.value.voteValidation.name === 'any' ||
       form.value.voteValidation.name === 'basic';
 
-    if (!isDemo && isTicket && isAnyOrBasic) {
+    if (isTicket && isAnyOrBasic) {
       errors.strategies = 'ticketWithAnyOrBasicError';
     }
   }
