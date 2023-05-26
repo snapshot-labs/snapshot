@@ -154,7 +154,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
     if (!isDemo && isTicket && isAnyOrBasic) {
       errors.strategies =
-        'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport.';
+        'Use of the ticket strategy requires setting a vote validation that reduced the risk of sybil attacks, e.g Gitcoin Passport. For testing purposes please use <a href="https://demo.snapshot.org/#/" target="_blank">demo.snapshot.org</a>';
     }
   }
 
