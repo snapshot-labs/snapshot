@@ -46,7 +46,7 @@ export function useProposalVotes(
     return uniqVotes;
   });
 
-  function getFilters() {
+  const filterOptions = computed(() => {
     const filterOptions: Partial<VoteFilters> = {
       space: proposal.space.id
     };
@@ -55,24 +55,16 @@ export function useProposalVotes(
       filterOptions.voter = searchAddress.value;
     }
 
-    if (filters?.value?.orderBy) {
-      filterOptions.orderBy = filters.value.orderBy;
-    }
-
     if (filters?.value?.orderDirection) {
       filterOptions.orderDirection = filters.value.orderDirection;
     }
 
     if (filters?.value?.onlyWithReason) {
-      filterOptions.reason_not = '';
-    }
-
-    if (filters?.value?.choice_in) {
-      filterOptions.choice_in = filters.value.choice_in;
+      filterOptions.onlyWithReason = true;
     }
 
     return filterOptions;
-  }
+  });
 
   function formatProposalVotes(votes) {
     if (!votes.length) return [];
@@ -88,7 +80,7 @@ export function useProposalVotes(
       first: loadBy,
       space: proposal.space.id,
       voter: searchAddress.value,
-      ...getFilters()
+      ...filterOptions.value
     });
 
     if (votesRes.length === 0) noVotesFound.value = true;
@@ -101,7 +93,7 @@ export function useProposalVotes(
       first: loadBy,
       skip: votes.value.length,
       voter: searchAddress.value,
-      ...getFilters()
+      ...filterOptions.value
     });
     votes.value = votes.value.concat(formatProposalVotes(votesRes));
     loadedVotes.value = true;

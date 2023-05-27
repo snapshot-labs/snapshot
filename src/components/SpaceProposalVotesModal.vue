@@ -20,10 +20,8 @@ defineEmits(['close']);
 
 const VOTES_FILTERS_DEFAULT = {
   voter: '',
-  orderBy: 'vp',
   orderDirection: 'desc',
-  onlyWithReason: false,
-  choice_in: []
+  onlyWithReason: false
 };
 
 const votesEndEl = ref<HTMLElement | null>(null);
