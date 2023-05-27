@@ -1,20 +1,13 @@
 <script setup lang="ts">
-import {
-  ExtendedSpace,
-  Proposal,
-  Vote,
-  SpaceStrategy
-} from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  strategies: SpaceStrategy[];
-  userVote: Vote | null;
 }>();
 
-const { isZero, loadedVotes, sortedVotes, loadVotes, profiles } =
-  useProposalVotes(props.proposal, 6, props.userVote);
+const { isZero, loadedVotes, userPrioritizedVotes, loadVotes, profiles } =
+  useProposalVotes(props.proposal, 6);
 
 const modalVotesmOpen = ref(false);
 
@@ -53,7 +46,7 @@ onMounted(async () => {
       </div>
     </template>
     <SpaceProposalVotesListItem
-      v-for="(vote, i) in sortedVotes"
+      v-for="(vote, i) in userPrioritizedVotes.slice(0, 6)"
       :key="i"
       :vote="vote"
       :profiles="profiles"
@@ -63,7 +56,7 @@ onMounted(async () => {
       :data-testid="`proposal-votes-list-item-${i}`"
     />
     <a
-      v-if="sortedVotes.length < voteCount"
+      v-if="userPrioritizedVotes.length < voteCount"
       tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesmOpen = true"
@@ -74,8 +67,6 @@ onMounted(async () => {
       <SpaceProposalVotesModal
         :space="space"
         :proposal="proposal"
-        :strategies="strategies"
-        :user-vote="userVote"
         :open="modalVotesmOpen"
         @close="modalVotesmOpen = false"
       />

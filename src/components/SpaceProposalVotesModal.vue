@@ -1,22 +1,8 @@
 <script setup lang="ts">
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useIntersectionObserver } from '@vueuse/core';
-import {
-  ExtendedSpace,
-  Proposal,
-  Vote,
-  SpaceStrategy
-} from '@/helpers/interfaces';
-
-const props = defineProps<{
-  space: ExtendedSpace;
-  proposal: Proposal;
-  strategies: SpaceStrategy[];
-  userVote: Vote | null;
-  open: boolean;
-}>();
-
-defineEmits(['close']);
+import { watchDebounced } from '@vueuse/core';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const VOTES_FILTERS_DEFAULT = {
   voter: '',
@@ -24,27 +10,42 @@ const VOTES_FILTERS_DEFAULT = {
   onlyWithReason: false
 };
 
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: Proposal;
+  open: boolean;
+}>();
+
+defineEmits(['close']);
+
+const { resolveName } = useResolveName();
+const {
+  userPrioritizedVotes,
+  loadingVotes,
+  loadingMoreVotes,
+  profiles,
+  noVotesFound,
+  loadVotes,
+  loadMoreVotes
+} = useProposalVotes(props.proposal, 20);
+
 const votesEndEl = ref<HTMLElement | null>(null);
 
-const votesFilters = ref(clone(VOTES_FILTERS_DEFAULT));
+const filterOptions = ref(clone(VOTES_FILTERS_DEFAULT));
 
-const {
-  sortedVotes,
-  loadMore,
-  loadingMore,
-  loadedVotes,
-  loadMoreVotes,
-  profiles,
-  clearVotes,
-  noVotesFound,
-  searchAddress
-} = useProposalVotes(props.proposal, 20, props.userVote, votesFilters);
+const filters = computed(() => {
+  return {
+    voter: filterOptions.value.voter,
+    orderDirection: filterOptions?.value?.orderDirection || 'desc',
+    onlyWithReason: filterOptions?.value?.onlyWithReason || false
+  };
+});
 
 useIntersectionObserver(
   votesEndEl,
   ([{ isIntersecting }]) => {
-    if (props.open && isIntersecting && searchAddress.value === '') {
-      loadMore(loadMoreVotes);
+    if (props.open && isIntersecting && filterOptions.value.voter === '') {
+      loadMoreVotes(filters.value);
     }
   },
   {
@@ -55,9 +56,30 @@ useIntersectionObserver(
 watch(
   () => props.open,
   () => {
-    votesFilters.value = clone(VOTES_FILTERS_DEFAULT);
-    clearVotes();
+    filterOptions.value = clone(VOTES_FILTERS_DEFAULT);
   }
+);
+
+watchDebounced(
+  filters,
+  async val => {
+    filterOptions.value.voter = '';
+    noVotesFound.value = false;
+
+    const voter = val?.voter;
+    if (voter?.length) {
+      const response = await resolveName(voter);
+      filterOptions.value.voter = response || voter;
+
+      if (!filterOptions.value.voter) {
+        noVotesFound.value = true;
+        return;
+      }
+    }
+
+    loadVotes(filters.value);
+  },
+  { debounce: 300, deep: true }
 );
 </script>
 
@@ -69,15 +91,15 @@ watch(
       >
         <h3>{{ $t('votes') }}</h3>
         <BaseSearch
-          v-model="votesFilters.voter"
+          v-model="filterOptions.voter"
           :placeholder="$t('searchPlaceholderVotes')"
           modal
           focus-on-mount
-          class="min-h-[60px] w-full flex-auto px-3 pb-3"
+          class="w-full px-3 pb-3"
         >
           <template #after>
             <SpaceProposalVotesFilters
-              v-model="votesFilters"
+              v-model="filterOptions"
               :proposal="proposal"
             />
           </template>
@@ -86,7 +108,7 @@ watch(
     </template>
     <template #default="{ maxHeight }">
       <div
-        v-if="!loadedVotes"
+        v-if="loadingVotes"
         class="block px-4 pt-4"
         :style="{ minHeight: maxHeight }"
       >
@@ -106,7 +128,7 @@ watch(
             :style="{ minHeight: maxHeight }"
           >
             <SpaceProposalVotesListItem
-              v-for="(vote, i) in sortedVotes"
+              v-for="(vote, i) in userPrioritizedVotes"
               :key="i"
               :vote="vote"
               :profiles="profiles"
@@ -119,7 +141,7 @@ watch(
             <div
               class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
             >
-              <LoadingSpinner v-if="loadingMore" />
+              <LoadingSpinner v-if="loadingMoreVotes" />
             </div>
           </div>
         </Transition>
