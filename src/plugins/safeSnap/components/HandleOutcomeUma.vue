@@ -62,14 +62,11 @@ function showProposeModal() {
   voteResultsConfirmed.value = true;
 }
 
-const getTransactionsUma = () => {
-  return props.batches.map(batch => [
-    batch.transactions[0].to,
-    Number(batch.transactions[0].operation),
-    batch.transactions[0].value,
-    batch.transactions[0].data
-  ]);
-};
+const getTransactionsUma = () =>
+  props.batches.map(batch => {
+    const mainTx = batch.mainTransaction;
+    return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data];
+  });
 
 const updateDetails = async () => {
   loading.value = true;
