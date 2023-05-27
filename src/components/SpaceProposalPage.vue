@@ -160,8 +160,8 @@ onMounted(() => {
       </div>
 
       <WarningHiddenContent
-        type="proposal"
         v-if="isHidden"
+        type="proposal"
         @forceShow="forceShow = true"
       />
 
