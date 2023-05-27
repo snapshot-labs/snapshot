@@ -20,14 +20,14 @@ const modalVotesmOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
-const modalVotesDownloadOpen = ref(false);
+const showModalDownloadMessage = ref(false);
 const { downloadVotes, isDownloadingVotes, errorCode } = useReportDownload();
 
 async function downloadReport(proposalId: string) {
   const response = await downloadVotes(proposalId);
 
   if (!response) {
-    modalVotesDownloadOpen.value = true;
+    showModalDownloadMessage.value = true;
   }
 }
 
@@ -53,7 +53,7 @@ onMounted(async () => {
         <i-ho-download />
       </BaseButtonIcon>
       <ModalMessage
-        :open="modalVotesDownloadOpen"
+        :open="showModalDownloadMessage"
         :title="$t('proposal.downloadCsvVotes.postDownloadModal.title')"
         :message="
           $t(
@@ -65,7 +65,7 @@ onMounted(async () => {
           )
         "
         :level="'warning'"
-        @close="modalVotesDownloadOpen = false"
+        @close="showModalDownloadMessage = false"
       >
       </ModalMessage>
     </template>
