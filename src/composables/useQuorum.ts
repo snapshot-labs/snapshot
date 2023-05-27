@@ -20,6 +20,11 @@ export function useQuorum(props: QuorumProps) {
       return props.results.scores
         .filter((c, i) => basicCount.includes(i))
         .reduce((a, b) => a + b, 0);
+    if (props.space.voting.hideAbstain && props.proposal.type === 'basic') {
+      return props.results.scores
+        .filter((c, i) => i !== 2)
+        .reduce((a, b) => a + b, 0);
+    }
     if (props.results.scoresTotal) return props.results.scoresTotal;
     return 0;
   });

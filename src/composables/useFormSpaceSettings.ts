@@ -5,9 +5,6 @@ import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import { validateForm } from '@/helpers/validation';
 
-const { isSending } = useClient();
-const { isUploadingImage } = useImageUpload();
-
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const EMPTY_SPACE_FORM = {
@@ -57,6 +54,9 @@ const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const inputRefs = ref<any[]>([]);
 
 export function useFormSpaceSettings(context: 'setup' | 'settings') {
+  const { isSending } = useClient();
+  const { isUploadingImage } = useImageUpload();
+
   const form = computed({
     get: () => (context === 'setup' ? formSetup.value : formSettings.value),
     set: newVal =>
@@ -98,6 +98,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     delete formData.id;
     delete formData.followersCount;
     delete formData.verified;
+    delete formData.flagged;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
   }
@@ -141,8 +142,25 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     );
   }
 
+  function validateStrategies(errors: any) {
+    const isTicket = form.value.strategies.some(
+      (strategy: any) => strategy.name === 'ticket'
+    );
+    const isAnyOrBasic =
+      form.value.voteValidation.name === 'any' ||
+      form.value.voteValidation.name === 'basic';
+
+    if (isTicket && isAnyOrBasic) {
+      errors.strategies = 'ticketWithAnyOrBasicError';
+    }
+  }
+
   const validationErrors = computed(() => {
-    return validateForm(schemas.space, prunedForm.value);
+    const errors = validateForm(schemas.space, prunedForm.value);
+
+    validateStrategies(errors);
+
+    return errors;
   });
 
   const isValid = computed(() => {
@@ -155,18 +173,6 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
   function resetForm() {
     form.value = clone(initialFormState.value);
-  }
-
-  function setDefaultStrategy() {
-    form.value.strategies = [];
-    form.value.strategies.push({
-      name: 'ticket',
-      network: '1',
-      params: {
-        symbol: 'VOTE'
-      }
-    });
-    form.value.symbol = 'VOTE';
   }
 
   function forceShowError() {
@@ -188,8 +194,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     hasFormChanged,
     populateForm,
     resetForm,
-    setDefaultStrategy,
     addRef,
-    forceShowError
+    forceShowError,
+    DEFAULT_VOTE_VALIDATION
   };
 }

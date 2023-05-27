@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import debounce from 'lodash/debounce';
-
 const props = defineProps<{
   modelValue: string;
   placeholder?: string;
@@ -13,14 +11,9 @@ const emit = defineEmits(['update:modelValue']);
 const input = ref(props.modelValue || '');
 const BaseInputEL = ref<HTMLDivElement | undefined>(undefined);
 
-const debounceEmittedValue = debounce((value: string) => {
-  emit('update:modelValue', value);
-}, 500);
-
 function handleInput(e) {
   input.value = e.target.value;
-  if (props.modal) emit('update:modelValue', e.target.value);
-  debounceEmittedValue(e.target.value);
+  emit('update:modelValue', e.target.value);
 }
 
 function clearInput() {

@@ -122,6 +122,7 @@ export const PROPOSALS_QUERY = gql`
         avatar
         symbol
         verified
+        plugins
       }
       scores_state
       scores_total

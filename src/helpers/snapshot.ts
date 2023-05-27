@@ -32,7 +32,7 @@ export async function getProposalVotes(
         first,
         voter: isAddress(voter) ? voter : undefined,
         skip,
-        space,
+        space: space || undefined,
         created_gte
       }
     });
