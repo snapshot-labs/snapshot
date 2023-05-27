@@ -6,6 +6,12 @@ const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
 const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
+const forceShow = ref(false);
+
+const isHidden = computed(() => {
+  if (forceShow.value) return false;
+  return space.value.flagged;
+});
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -36,9 +42,14 @@ watch(
 
 <template>
   <template v-if="space">
-    <SpaceWarningFlagged v-if="space.flagged" />
+    <WarningHiddenContent
+      v-if="isHidden"
+      type="space"
+      class="mb-4 mx-4"
+      @forceShow="forceShow = true"
+    />
 
-    <router-view :space="space" :space-key="spaceKey" />
+    <router-view v-else :space="space" :space-key="spaceKey" />
   </template>
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->
