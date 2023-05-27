@@ -8,11 +8,6 @@ const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
 const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
 const forceShow = ref(false);
 
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return space.value.flagged;
-});
-
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
   const updatedPath = route.path.replace(
@@ -26,6 +21,11 @@ const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
 const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
+
+const isHidden = computed(() => {
+  if (forceShow.value) return false;
+  return space.value.flagged;
+});
 
 watch(
   spaceKey,
@@ -45,7 +45,7 @@ watch(
     <WarningHiddenContent
       v-if="isHidden"
       type="space"
-      class="mb-4 mx-4"
+      class="mx-4 mb-4"
       @forceShow="forceShow = true"
     />
 

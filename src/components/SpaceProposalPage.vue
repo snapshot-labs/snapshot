@@ -51,8 +51,7 @@ const isModerator = computed(() => {
 
 const isHidden = computed(() => {
   if (forceShow.value) return false;
-  if (props.proposal.flagged) return true;
-  return false;
+  return props.proposal.flagged;
 });
 
 const strategies = computed(
@@ -160,20 +159,12 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <div v-if="isHidden">
-        <BaseBlock v-if="isHidden">
-          <div class="flex">
-            <div class="ml-1">
-              {{ $t('warningFlagged') }}
-            </div>
-            <div class="-mr-3 flex items-center">
-              <button @click.prevent="forceShow = true">
-                <div class="px-4 py-2 hover:text-skin-link">Show</div>
-              </button>
-            </div>
-          </div>
-        </BaseBlock>
-      </div>
+      <WarningHiddenContent
+        type="proposal"
+        v-if="isHidden"
+        @forceShow="forceShow = true"
+      />
+
       <template v-else>
         <div class="px-3 md:px-0">
           <SpaceProposalHeader

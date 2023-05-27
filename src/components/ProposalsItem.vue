@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import removeMd from 'remove-markdown';
 import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
-import { before } from 'node:test';
-import { tryOnBeforeMount } from '@vueuse/core';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -71,7 +69,9 @@ const isHidden = computed(() => {
             </ProposalsItemBody>
 
             <ProposalsItemResults
-              v-if="proposal.scores_state === 'final' && proposal.scores_total > 0"
+              v-if="
+                proposal.scores_state === 'final' && proposal.scores_total > 0
+              "
               :proposal="proposal"
             />
           </router-link>

@@ -3,6 +3,8 @@ const props = defineProps<{
   type: string;
 }>();
 
+const emit = defineEmits(['forceShow']);
+
 const { t } = useI18n();
 
 const warningText = computed(() => {
@@ -19,8 +21,10 @@ const warningText = computed(() => {
       {{ warningText }}
     </div>
     <div>
-      <button @click.prevent="$emit('forceShow')">
-        <div class="px-4 py-3 hover:text-skin-link">{{ $t('warningFlaggedActionShow') }}</div>
+      <button @click.prevent="emit('forceShow')">
+        <div class="px-4 py-3 hover:text-skin-link">
+          {{ $t('warningFlaggedActionShow') }}
+        </div>
       </button>
     </div>
   </div>
