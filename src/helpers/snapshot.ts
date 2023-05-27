@@ -14,8 +14,7 @@ export async function getProposalVotes(
     space = '',
     orderBy = 'vp',
     orderDirection = 'desc',
-    created_gte = 0,
-    onlyWithReason = false
+    created_gte = 0
   } = {}
 ): Promise<Vote[] | []> {
   try {
@@ -26,7 +25,6 @@ export async function getProposalVotes(
         id: proposalId,
         orderBy,
         orderDirection,
-        reason_not: onlyWithReason ? '' : undefined,
         first,
         voter: isAddress(voter) ? voter : undefined,
         skip,
