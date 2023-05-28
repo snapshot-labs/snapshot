@@ -263,8 +263,8 @@
       "postDownloadModal": {
         "title": "Download votes report",
         "message": {
-          "pendingGeneration": "The report is generating… Please try again in a few minutes.",
-          "unknownError": "Unable to contact the download server. Please try again later."
+          "pendingGeneration": "Your report is currently being generated. It may take a few minutes. Please check back shortly.",
+          "unknownError": "We're having trouble connecting to the server responsible for downloads. Please try again in a few moments. If the problem persists, consider contacting our support team."
         }
       }
     }
