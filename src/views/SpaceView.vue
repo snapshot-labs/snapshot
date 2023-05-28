@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useWarningScamMessage } from '@/composables/useWarningScamMessage';
 
 const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
 const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
 const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
-const forceShow = ref(false);
 
 // Redirect the user to the ENS address if the space is aliased.
 if (aliasedSpace) {
@@ -22,10 +22,7 @@ const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return space.value.flagged;
-});
+const { isHidden, setHidden } = useWarningScamMessage(spaceKey);
 
 watch(
   spaceKey,
@@ -35,6 +32,7 @@ watch(
     if (!space.value) {
       router.push('/');
     }
+    setHidden(space.value.flagged);
   },
   { immediate: true }
 );
@@ -42,8 +40,8 @@ watch(
 
 <template>
   <template v-if="space">
-    <div v-if="isHidden" class="px-0 md:px-4 mx-auto max-w-[1012px]">
-      <WarningHiddenContent type="space" @forceShow="forceShow = true" />
+    <div v-if="isHidden" class="mx-auto max-w-[1012px] px-0 md:px-4">
+      <WarningHiddenContent type="space" @forceShow="setHidden(false)" />
     </div>
 
     <router-view v-else :space="space" :space-key="spaceKey" />

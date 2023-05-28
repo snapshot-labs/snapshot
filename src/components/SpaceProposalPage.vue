@@ -35,7 +35,11 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
-const forceShow = ref(false);
+
+const { isHidden, setHidden } = useWarningScamMessage(proposalId);
+watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
+  immediate: true
+});
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -47,11 +51,6 @@ const isModerator = computed(() => {
     moderator.toLowerCase()
   );
   return moderators.includes(web3Account.value?.toLowerCase());
-});
-
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return props.proposal.flagged;
 });
 
 const strategies = computed(
@@ -162,7 +161,7 @@ onMounted(() => {
       <WarningHiddenContent
         v-if="isHidden"
         type="proposal"
-        @forceShow="forceShow = true"
+        @forceShow="setHidden(false)"
       />
 
       <template v-else>

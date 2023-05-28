@@ -12,13 +12,11 @@ const props = defineProps<{
   showVerifiedIcon?: boolean;
 }>();
 
-const forceShow = ref(false);
-
 const body = computed(() => removeMd(props.proposal.body));
 
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return props.proposal.flagged;
+const { isHidden, setHidden } = useWarningScamMessage(props.proposal.id);
+watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
+  immediate: true
 });
 </script>
 
@@ -58,7 +56,7 @@ const isHidden = computed(() => {
         <WarningHiddenContent
           v-if="isHidden"
           type="proposal"
-          @forceShow="forceShow = true"
+          @forceShow="setHidden(false)"
         />
         <template v-else>
           <router-link :to="to">
