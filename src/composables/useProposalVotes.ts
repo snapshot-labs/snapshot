@@ -13,18 +13,11 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const { apolloQuery } = useApolloQuery();
   const { resolveName } = useResolveName();
 
-  const loadedVotes = ref(false);
   const loadingVotes = ref(false);
   const loadingMoreVotes = ref(false);
   const votes = ref<Vote[]>([]);
   const userVote = ref<Vote | null>(null);
   const noVotesFound = ref(false);
-
-  const isZero = computed(() => {
-    if (!loadedVotes.value) return false;
-    if (votes.value.length === 0) return true;
-    return false;
-  });
 
   const userPrioritizedVotes = computed(() => {
     const votesClone = clone(votes.value);
@@ -89,7 +82,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
       const response = await _fetchVotes(filter);
 
       votes.value = formatProposalVotes(response);
-      loadedVotes.value = true;
     } catch (e) {
       console.log(e);
     } finally {
@@ -141,10 +133,8 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   });
 
   return {
-    isZero,
     noVotesFound,
     votes,
-    loadedVotes,
     userPrioritizedVotes,
     profiles,
     loadingVotes,

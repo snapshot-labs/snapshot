@@ -8,12 +8,11 @@ const props = defineProps<{
 
 const { web3Account } = useWeb3();
 const {
-  isZero,
-  loadedVotes,
+  profiles,
   userPrioritizedVotes,
+  loadingVotes,
   loadVotes,
-  loadUserVote,
-  profiles
+  loadUserVote
 } = useProposalVotes(props.proposal, 6);
 
 const modalVotesmOpen = ref(false);
@@ -32,10 +31,10 @@ watch(web3Account, loadUserVote, { immediate: true });
 
 <template>
   <BaseBlock
-    v-if="!isZero"
+    v-if="proposal.votes > 0"
     :title="$t('votes')"
     :counter="voteCount"
-    :loading="!loadedVotes"
+    :loading="loadingVotes"
     slim
   >
     <template v-if="props.proposal.state === 'closed'" #button>
