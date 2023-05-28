@@ -42,7 +42,7 @@ const showNoResults = computed(() => {
   return (
     !loadingVotes.value &&
     votes.value.length === 0 &&
-    (searchInput.value || filters.value !== VOTES_FILTERS_DEFAULT)
+    (searchInput.value || filters.value.onlyWithReason)
   );
 });
 
