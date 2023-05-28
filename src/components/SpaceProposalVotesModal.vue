@@ -49,7 +49,13 @@ const showNoResults = computed(() => {
 useIntersectionObserver(
   votesEndEl,
   ([{ isIntersecting }]) => {
-    if (props.open && isIntersecting && searchInput.value === '') {
+    const hasMoreVotes = props.proposal.votes > votes.value.length;
+    if (
+      props.open &&
+      isIntersecting &&
+      searchInput.value === '' &&
+      hasMoreVotes
+    ) {
       loadMoreVotes(filters.value);
     }
   },
