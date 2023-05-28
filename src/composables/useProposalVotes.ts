@@ -17,7 +17,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const loadingMoreVotes = ref(false);
   const votes = ref<Vote[]>([]);
   const userVote = ref<Vote | null>(null);
-  const noVotesFound = ref(false);
 
   const userPrioritizedVotes = computed(() => {
     const votesClone = clone(votes.value);
@@ -133,7 +132,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   });
 
   return {
-    noVotesFound,
     votes,
     userPrioritizedVotes,
     profiles,

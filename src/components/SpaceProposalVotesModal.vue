@@ -22,7 +22,6 @@ const {
   loadingVotes,
   loadingMoreVotes,
   profiles,
-  noVotesFound,
   loadVotes,
   loadMoreVotes,
   loadSingleVote
@@ -37,6 +36,14 @@ const filters = computed(() => {
     orderDirection: filterOptions?.value?.orderDirection || 'desc',
     onlyWithReason: filterOptions?.value?.onlyWithReason || false
   };
+});
+
+const showNoResults = computed(() => {
+  return (
+    !loadingVotes.value &&
+    votes.value.length === 0 &&
+    (searchInput.value || filters.value !== VOTES_FILTERS_DEFAULT)
+  );
 });
 
 useIntersectionObserver(
@@ -110,7 +117,7 @@ watch(filters, value => {
         <LoadingList />
       </div>
       <div
-        v-else-if="noVotesFound"
+        v-else-if="showNoResults"
         class="flex flex-row content-start items-start justify-center pt-4"
         :style="{ minHeight: maxHeight }"
       >
