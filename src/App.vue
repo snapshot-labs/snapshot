@@ -42,7 +42,7 @@ onMounted(async () => {
         <div id="content" class="pb-6 pt-4">
           <router-view v-slot="{ Component }">
             <KeepAlive :include="['ExploreView', 'RankingView']">
-              <component :is="Component" />
+              <component :is="Component" :key="route.path" />
             </KeepAlive>
           </router-view>
         </div>
