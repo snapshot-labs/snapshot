@@ -261,7 +261,7 @@
     "downloadCsvVotes": {
       "title": "Download as CSV",
       "postDownloadModal": {
-        "title": "Download votes report",
+        "title": "Generating votes report",
         "message": {
           "pendingGeneration": "Your report is currently being generated. It may take a few minutes. Please check back shortly.",
           "unknownError": "We're having trouble connecting to the server responsible for downloads. Please try again in a few moments. If the problem persists, consider contacting our support team."
