@@ -267,7 +267,16 @@
       }
     },
     "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing file"
+    "preparingCsvVotes": "Preparing file",
+    "votesModal": {
+      "title": "Votes",
+      "filtersPopover": {
+        "title": "Filters",
+        "votingPower": "Voting power",
+        "onlyVotesWithReason": "Only show votes with a reason",
+        "more": "More"
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",

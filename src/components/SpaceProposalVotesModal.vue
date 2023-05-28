@@ -90,7 +90,7 @@ watch(filters, value => {
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
-        <h3>{{ $t('votes') }}</h3>
+        <h3>{{ $t('proposal.votesModal.title') }}</h3>
         <BaseSearch
           v-model="searchInput"
           :placeholder="$t('searchPlaceholderVotes')"

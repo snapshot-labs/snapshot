@@ -30,26 +30,42 @@ function updateFilters(key: string, val: string | boolean) {
       </BaseButtonRound>
     </template>
     <template #content>
-      <div class="flex">
-        <div class="m-4 flex w-full flex-col gap-y-3">
-          <div
-            class="flex w-full flex-row content-center items-center justify-between gap-x-2"
-          >
-            <span>{{ $t('searchOrderDirection') }}:</span>
-            <BaseListbox
+      <div>
+        <h3 class="-mb-2 mt-3 text-center text-skin-heading">
+          {{ $t('proposal.votesModal.filtersPopover.title') }}
+        </h3>
+        <div class="m-4 space-y-3">
+          <div class="space-y-2">
+            <span class="text-skin-heading">
+              {{ $t('proposal.votesModal.filtersPopover.votingPower') }}
+            </span>
+
+            <TuneRadio
+              value="asc"
+              hint="Asc"
               :model-value="modelValue.orderDirection"
-              :items="orderDirectionOptions"
-              class="min-w-[156px]"
+              @update:model-value="updateFilters('orderDirection', $event)"
+            />
+            <TuneRadio
+              value="desc"
+              hint="Desc"
+              :model-value="modelValue.orderDirection"
               @update:model-value="updateFilters('orderDirection', $event)"
             />
           </div>
-          <InputCheckbox
-            :model-value="Boolean(modelValue.onlyWithReason)"
-            :label="$t('searchOnlyWithReason')"
-            name="searchOnlyWithReason"
-            class="my-3"
-            @update:model-value="updateFilters('onlyWithReason', $event)"
-          />
+          <div class="space-y-2">
+            <span class="text-skin-heading">
+              {{ $t('proposal.votesModal.filtersPopover.more') }}
+            </span>
+            <TuneCheckbox
+              :model-value="Boolean(modelValue.onlyWithReason)"
+              :hint="
+                $t('proposal.votesModal.filtersPopover.onlyVotesWithReason')
+              "
+              name="searchOnlyWithReason"
+              @update:model-value="updateFilters('onlyWithReason', $event)"
+            />
+          </div>
         </div>
       </div>
     </template>
