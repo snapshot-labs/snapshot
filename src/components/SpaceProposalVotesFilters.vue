@@ -8,15 +8,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-const { t } = useI18n();
-
-const orderDirectionOptions = computed(() => {
-  return [
-    { value: 'desc', title: t('searchOrderDirectionDesc') },
-    { value: 'asc', title: t('searchOrderDirectionAsc') }
-  ];
-});
-
 function updateFilters(key: string, val: string | boolean) {
   emit('update:modelValue', { ...props.modelValue, [key]: val });
 }
