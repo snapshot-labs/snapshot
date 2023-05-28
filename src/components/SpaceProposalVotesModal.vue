@@ -5,7 +5,6 @@ import { watchDebounced } from '@vueuse/core';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const VOTES_FILTERS_DEFAULT = {
-  voter: '',
   orderDirection: 'desc',
   onlyWithReason: false
 };
@@ -18,24 +17,23 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
-const { resolveName } = useResolveName();
 const {
-  userPrioritizedVotes,
+  votes,
   loadingVotes,
   loadingMoreVotes,
   profiles,
   noVotesFound,
   loadVotes,
-  loadMoreVotes
+  loadMoreVotes,
+  loadSingleVote
 } = useProposalVotes(props.proposal, 20);
 
 const votesEndEl = ref<HTMLElement | null>(null);
-
 const filterOptions = ref(clone(VOTES_FILTERS_DEFAULT));
+const searchInput = ref('');
 
 const filters = computed(() => {
   return {
-    voter: filterOptions.value.voter,
     orderDirection: filterOptions?.value?.orderDirection || 'desc',
     onlyWithReason: filterOptions?.value?.onlyWithReason || false
   };
@@ -44,7 +42,7 @@ const filters = computed(() => {
 useIntersectionObserver(
   votesEndEl,
   ([{ isIntersecting }]) => {
-    if (props.open && isIntersecting && filterOptions.value.voter === '') {
+    if (props.open && isIntersecting && searchInput.value === '') {
       loadMoreVotes(filters.value);
     }
   },
@@ -57,30 +55,26 @@ watch(
   () => props.open,
   () => {
     filterOptions.value = clone(VOTES_FILTERS_DEFAULT);
+    searchInput.value = '';
   }
 );
 
 watchDebounced(
-  filters,
-  async val => {
-    filterOptions.value.voter = '';
-    noVotesFound.value = false;
-
-    const voter = val?.voter;
-    if (voter?.length) {
-      const response = await resolveName(voter);
-      filterOptions.value.voter = response || voter;
-
-      if (!filterOptions.value.voter) {
-        noVotesFound.value = true;
-        return;
-      }
+  searchInput,
+  async value => {
+    if (value) {
+      loadSingleVote(searchInput.value);
     }
-
-    loadVotes(filters.value);
+    if (votes.value.length < 2 && value === '') {
+      loadVotes(filters.value);
+    }
   },
   { debounce: 300, deep: true }
 );
+
+watch(filters, value => {
+  loadVotes(value);
+});
 </script>
 
 <template>
@@ -91,14 +85,15 @@ watchDebounced(
       >
         <h3>{{ $t('votes') }}</h3>
         <BaseSearch
-          v-model="filterOptions.voter"
+          v-model="searchInput"
           :placeholder="$t('searchPlaceholderVotes')"
           modal
           focus-on-mount
-          class="w-full px-3 pb-3"
+          class="max-h-[56px] w-full px-3 pb-3"
         >
           <template #after>
             <SpaceProposalVotesFilters
+              v-if="!searchInput"
               v-model="filterOptions"
               :proposal="proposal"
             />
@@ -128,7 +123,7 @@ watchDebounced(
             :style="{ minHeight: maxHeight }"
           >
             <SpaceProposalVotesListItem
-              v-for="(vote, i) in userPrioritizedVotes"
+              v-for="(vote, i) in votes"
               :key="i"
               :vote="vote"
               :profiles="profiles"

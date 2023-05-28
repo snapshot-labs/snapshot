@@ -1,10 +1,17 @@
 import { Proposal, Vote, VoteFilters } from '@/helpers/interfaces';
 import { VOTES_QUERY } from '@/helpers/queries';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+
+type QueryParams = {
+  voter?: string;
+  orderDirection?: string;
+  onlyWithReason?: boolean;
+};
 
 export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const { profiles, loadProfiles } = useProfiles();
   const { apolloQuery } = useApolloQuery();
-  const { web3Account } = useWeb3();
+  const { resolveName } = useResolveName();
 
   const loadedVotes = ref(false);
   const loadingVotes = ref(false);
@@ -20,20 +27,21 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   });
 
   const userPrioritizedVotes = computed(() => {
+    const votesClone = clone(votes.value);
     if (userVote.value) {
-      const index = votes.value.findIndex(
+      const index = votesClone.findIndex(
         vote => vote.ipfs === userVote.value?.ipfs
       );
       if (index !== -1) {
-        votes.value.splice(index, 1);
+        votesClone.splice(index, 1);
       }
-      votes.value.unshift(userVote.value);
+      votesClone.unshift(userVote.value);
     }
 
-    return votes.value;
+    return votesClone;
   });
 
-  async function _fetchVotes(queryParams, skip = 0) {
+  async function _fetchVotes(queryParams: QueryParams, skip = 0) {
     return apolloQuery(
       {
         query: VOTES_QUERY,
@@ -42,15 +50,16 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
           first: loadBy,
           skip,
           orderBy: 'vp',
-          orderDirection: 'desc',
-          onlyWithReason: false
+          orderDirection: queryParams.orderDirection || 'desc',
+          reason_not: queryParams.onlyWithReason ? '' : undefined,
+          voter: queryParams.voter || undefined
         }
       },
       'votes'
     );
   }
 
-  async function _fetchVote(queryParams) {
+  async function _fetchVote(queryParams: QueryParams) {
     return apolloQuery(
       {
         query: VOTES_QUERY,
@@ -63,7 +72,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     );
   }
 
-  function formatProposalVotes(votes) {
+  function formatProposalVotes(votes: Vote[]) {
     if (!votes.length) return [];
     return votes.map(vote => {
       vote.balance = vote.vp;
@@ -73,18 +82,29 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadVotes(filter: VoteFilters = {}) {
-    if (loadingVotes.value || loadedVotes.value) return;
+    if (loadingVotes.value) return;
 
     loadingVotes.value = true;
     try {
-      const response = await _fetchVotes({
-        first: loadBy,
-        space: proposal.space.id,
-        ...filter
-      });
+      const response = await _fetchVotes(filter);
 
       votes.value = formatProposalVotes(response);
       loadedVotes.value = true;
+    } catch (e) {
+      console.log(e);
+    } finally {
+      loadingVotes.value = false;
+    }
+  }
+
+  async function loadSingleVote(search: string) {
+    loadingVotes.value = true;
+
+    const response = await resolveName(search);
+    const voter = response || search;
+    try {
+      const response = await _fetchVote({ voter });
+      votes.value = formatProposalVotes(response);
     } catch (e) {
       console.log(e);
     } finally {
@@ -97,15 +117,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
 
     loadingMoreVotes.value = true;
     try {
-      const response = await _fetchVotes(
-        {
-          first: loadBy,
-          space: proposal.space.id,
-          skip: votes.value.length,
-          ...filter
-        },
-        votes.value.length
-      );
+      const response = await _fetchVotes(filter, votes.value.length);
 
       votes.value = votes.value.concat(formatProposalVotes(response));
     } catch (e) {
@@ -128,8 +140,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     loadProfiles(userPrioritizedVotes.value.map(vote => vote.voter));
   });
 
-  watch(web3Account, loadUserVote, { immediate: true });
-
   return {
     isZero,
     noVotesFound,
@@ -142,6 +152,8 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     userVote,
     formatProposalVotes,
     loadVotes,
-    loadMoreVotes
+    loadMoreVotes,
+    loadSingleVote,
+    loadUserVote
   };
 }

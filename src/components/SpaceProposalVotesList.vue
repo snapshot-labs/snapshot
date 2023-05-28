@@ -6,8 +6,15 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { isZero, loadedVotes, userPrioritizedVotes, loadVotes, profiles } =
-  useProposalVotes(props.proposal, 6);
+const { web3Account } = useWeb3();
+const {
+  isZero,
+  loadedVotes,
+  userPrioritizedVotes,
+  loadVotes,
+  loadUserVote,
+  profiles
+} = useProposalVotes(props.proposal, 6);
 
 const modalVotesmOpen = ref(false);
 
@@ -19,6 +26,8 @@ const { downloadVotes, isDownloadingVotes, downloadProgress } =
 onMounted(async () => {
   await loadVotes();
 });
+
+watch(web3Account, loadUserVote, { immediate: true });
 </script>
 
 <template>

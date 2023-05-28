@@ -250,8 +250,6 @@ export interface Vote {
 }
 
 export interface VoteFilters {
-  space?: string;
-  voter?: string;
   orderDirection?: string;
   onlyWithReason?: boolean;
 }
