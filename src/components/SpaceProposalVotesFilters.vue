@@ -25,9 +25,9 @@ function updateFilters(key: string, val: string | boolean) {
 <template>
   <BasePopover :focus="false">
     <template #button>
-      <BaseButtonRound class="relative !h-[36px] !w-[36px] border-none">
+      <BaseButtonIcon>
         <i-ho-funnel class="text-skin-link" />
-      </BaseButtonRound>
+      </BaseButtonIcon>
     </template>
     <template #content>
       <div>
