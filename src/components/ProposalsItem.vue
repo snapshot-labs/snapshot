@@ -64,7 +64,7 @@ const isProposalContentAvailable = computed(() => !isWarningVisible.value);
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-        <WarningHiddenContent
+        <WarningFlaggedContent
           v-if="isWarningVisible"
           type="proposal"
           @forceShow="setWarningVisibility(false)"

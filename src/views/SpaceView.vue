@@ -44,7 +44,7 @@ watch(
 <template>
   <template v-if="space">
     <BaseContainer v-if="isWarningVisible">
-      <WarningHiddenContent
+      <WarningFlaggedContent
         type="space"
         @forceShow="setWarningVisibility(false)"
       />

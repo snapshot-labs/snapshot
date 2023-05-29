@@ -166,7 +166,7 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <WarningHiddenContent
+      <WarningFlaggedContent
         v-if="isWarningVisible"
         type="proposal"
         @forceShow="setWarningVisibility(false)"
