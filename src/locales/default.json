@@ -8,6 +8,8 @@
   "poweredBy": "Powered by",
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a Voting Validation. Head to Voting in the sidebar to set it up. This combination reduces the risk of spam and sybil attacks. {article}",
+  "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a vote validation. To continue go one step back and select the \"One person, one vote\" option. {article}",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "getHelp": "Get help",
@@ -34,7 +36,9 @@
   "verifiedSpace": "Verified space",
   "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "warningShortUrl": "Short URLs are not allowed. Please use the full URL.",
-  "warningFlagged": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningFlaggedProposal": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningFlaggedSpace": "This space might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
+  "warningFlaggedActionShow": "Show",
   "linkPreview": "This link will take you to {url}.</br> Are you sure you want to continue?",
   "version": "Version",
   "timeline": "Timeline",
@@ -507,8 +511,8 @@
       "invalidEns": "This ENS name is invalid. Usually this is due the use of invalid characters during registration."
     },
     "strategy": {
-      "title": "How would you like to setup your voting strategy?",
-      "subtitle": "You can change your strategy settings any time.",
+      "title": "How would you like to setup voting?",
+      "subtitle": "You can change these settings any time.",
       "blockTitle": "Setup voting strategy",
       "onePersonOneVote": {
         "title": "One person, one vote",

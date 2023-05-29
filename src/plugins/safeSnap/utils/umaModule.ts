@@ -108,17 +108,17 @@ export const getModuleDetailsUma = async (
       [
         '',
         pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace('0x', '')),
+        toUtf8Bytes(proposalHash.replace(/^0x/, '')),
         pack(
           ['string', 'string', 'string', 'string'],
           [',', 'explanation', ':', '"']
         ),
-        toUtf8Bytes(explanation.replace('0x', '')),
+        toUtf8Bytes(explanation.replace(/^0x/, '')),
         pack(
           ['string', 'string', 'string', 'string', 'string'],
           ['"', ',', 'rules', ':', '"']
         ),
-        toUtf8Bytes(rules.replace('0x', '')),
+        toUtf8Bytes(rules.replace(/^0x/, '')),
         pack(['string'], ['"'])
       ]
     );
@@ -163,18 +163,48 @@ export const getModuleDetailsUma = async (
   const oOStartBlock = network === '1' ? 16636058 : 0;
   const maxRange = network === '1' ? 3000 : 10000;
 
-  const assertionEvents = await pageEvents(
-    oOStartBlock,
-    latestBlock.number,
-    maxRange,
-    ({ start, end }: { start: number; end: number }) => {
-      return oracleContract.queryFilter(
-        oracleContract.filters.AssertionMade(assertionId),
-        start,
-        end
-      );
-    }
-  );
+  const [assertionEvents, transactionsProposedEvents, executionEvents] =
+    await Promise.all([
+      pageEvents(
+        oOStartBlock,
+        latestBlock.number,
+        maxRange,
+        ({ start, end }: { start: number; end: number }) => {
+          return oracleContract.queryFilter(
+            oracleContract.filters.AssertionMade(assertionId),
+            start,
+            end
+          );
+        }
+      ),
+      // Check if this specific proposal has already been executed.
+      // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
+      // this prevents block range too large errors.
+      pageEvents(
+        oGstartBlock,
+        latestBlock.number,
+        maxRange,
+        ({ start, end }: { start: number; end: number }) => {
+          return moduleContract.queryFilter(
+            moduleContract.filters.TransactionsProposed(),
+            start,
+            end
+          );
+        }
+      ),
+      pageEvents(
+        oGstartBlock,
+        latestBlock.number,
+        maxRange,
+        ({ start, end }: { start: number; end: number }) => {
+          return moduleContract.queryFilter(
+            moduleContract.filters.ProposalExecuted(proposalHash),
+            start,
+            end
+          );
+        }
+      )
+    ]);
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
       event.args?.claim === ancillaryData &&
@@ -202,39 +232,10 @@ export const getModuleDetailsUma = async (
     })
   );
 
-  // Check if this specific proposal has already been executed.
-  // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
-  // this prevents block range too large errors.
-  const transactionsProposedEvents = await pageEvents(
-    oGstartBlock,
-    latestBlock.number,
-    maxRange,
-    ({ start, end }: { start: number; end: number }) => {
-      return moduleContract.queryFilter(
-        moduleContract.filters.TransactionsProposed(),
-        start,
-        end
-      );
-    }
-  );
-
   const thisProposalTransactionsProposedEvents =
     transactionsProposedEvents.filter(
       event => toUtf8String(event.args?.explanation) === explanation
     );
-
-  const executionEvents = await pageEvents(
-    oGstartBlock,
-    latestBlock.number,
-    maxRange,
-    ({ start, end }: { start: number; end: number }) => {
-      return moduleContract.queryFilter(
-        moduleContract.filters.ProposalExecuted(proposalHash),
-        start,
-        end
-      );
-    }
-  );
 
   const assertion = thisProposalTransactionsProposedEvents.map(
     tx => tx.args?.assertionId
