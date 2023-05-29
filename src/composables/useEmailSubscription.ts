@@ -101,7 +101,7 @@ function useEmailSubscriptionComposable() {
       ? t(`emailSubscription.postSubscribeMessage.${messageKey}`)
       : '';
   }
-  
+
   function reset() {
     setPostSubscribeState(Status.waiting, Level.info);
   }

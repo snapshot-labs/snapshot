@@ -114,6 +114,8 @@
     "watchSyncEffect": true,
     "watchTxStatus": true,
     "toValue": true,
-    "useFlaggedMessageStatus": true
+    "useFlaggedMessageStatus": true,
+    "useEmailFetch": true,
+    "useEmailFetchClient": true
   }
 }
