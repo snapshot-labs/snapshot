@@ -260,7 +260,8 @@
       "seeQueue": "See queued transactions",
       "tips": {
         "1": "Votes can be changed while the proposal is active"
-      }
+      },
+      "subscribe": "Subscribe with email"
     },
     "downloadCsvVotes": "Download as CSV",
     "preparingCsvVotes": "Preparing file"
@@ -909,6 +910,17 @@
     "yourEmail": "Your email",
     "title": "Get the latest Snapshot updates",
     "join": "Join Snapshot newsletter"
+  },
+  "emailSubscription": {
+    "title": "Email subscription",
+    "subscribe": "Subscribe",
+    "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
+    "inputCaption": "You may be asked to sign a message to verify wallet ownership",
+    "postSubscribeMessage": {
+      "success": "Thanks for subscribing!\nPlease click the confirmation link that has been sent to your email.",
+      "apiError": "An error ocurred while adding your email to the subscriptions list",
+      "unknownError": "Unable to subscribe to email notifications, please try again later"
+    }
   },
   "joinCommunity": "Join Snapshot community",
   "header": {

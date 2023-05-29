@@ -32,6 +32,7 @@ const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
+const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
@@ -260,6 +261,12 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :proposal="proposal"
       :selected-choices="selectedChoices"
       @close="isModalPostVoteOpen = false"
+      @subscribeEmail="modalEmailSubscriptionOpen = true"
+    />
+    <ModalEmailSubscription
+      :open="modalEmailSubscriptionOpen"
+      :address="web3Account"
+      @close="modalEmailSubscriptionOpen = false"
     />
   </teleport>
 </template>
