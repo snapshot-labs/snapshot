@@ -20,7 +20,7 @@ const useFlaggedMessageHiddenState = createGlobalState(() => {
   };
 });
 
-export function useFlaggedMessageHiddenStatus(pageId: Ref<string> | string) {
+export function useFlaggedMessageStatus(pageId: Ref<string> | string) {
   const { setHiddenFlaggedMessage, isFlaggedMessageVisible } =
     useFlaggedMessageHiddenState();
   const id = typeof pageId === 'string' ? pageId : pageId.value;

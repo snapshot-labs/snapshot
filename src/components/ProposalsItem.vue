@@ -17,7 +17,7 @@ const body = computed(() => removeMd(props.proposal.body));
 const {
   isMessageVisible: isWarningVisible,
   setMessageVisibility: setWarningVisibility
-} = useFlaggedMessageHiddenStatus(props.proposal.id);
+} = useFlaggedMessageStatus(props.proposal.id);
 watch(
   () => props.proposal,
   () => setWarningVisibility(props.proposal.flagged),

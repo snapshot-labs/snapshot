@@ -39,7 +39,7 @@ const results = ref<Results | null>(null);
 const {
   isMessageVisible: isWarningVisible,
   setMessageVisibility: setWarningVisibility
-} = useFlaggedMessageHiddenStatus(proposalId);
+} = useFlaggedMessageStatus(proposalId);
 watch(
   () => props.proposal,
   () => setWarningVisibility(props.proposal.flagged),

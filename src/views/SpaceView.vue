@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { useFlaggedMessageHiddenStatus } from '@/composables/useFlaggedMessageHiddenStatus';
+import { useFlaggedMessageStatus } from '@/composables/useFlaggedMessageStatus';
 
 const route = useRoute();
 const router = useRouter();
@@ -25,7 +25,7 @@ const space = computed(() =>
 const {
   isMessageVisible: isWarningVisible,
   setMessageVisibility: setWarningVisibility
-} = useFlaggedMessageHiddenStatus(spaceKey);
+} = useFlaggedMessageStatus(spaceKey);
 
 watch(
   spaceKey,
