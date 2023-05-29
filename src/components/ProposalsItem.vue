@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const body = computed(() => removeMd(props.proposal.body));
 
-const { isHidden, setHidden } = useWarningScamMessage(props.proposal.id);
+const { isHidden, setHidden } = useFlaggedMessageHiddenStatus(props.proposal.id);
 watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
   immediate: true
 });

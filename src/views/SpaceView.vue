@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
-import { useWarningScamMessage } from '@/composables/useWarningScamMessage';
+import { useFlaggedMessageHiddenStatus } from '@/composables/useFlaggedMessageHiddenStatus';
 
 const route = useRoute();
 const router = useRouter();
@@ -22,7 +22,10 @@ const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
-const { isHidden, setHidden } = useWarningScamMessage(spaceKey);
+const {
+  isHidden,
+  setHidden,
+} = useFlaggedMessageHiddenStatus(spaceKey);
 
 watch(
   spaceKey,

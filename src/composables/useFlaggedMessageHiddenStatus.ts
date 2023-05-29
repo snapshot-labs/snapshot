@@ -1,10 +1,10 @@
 import { createGlobalState } from '@vueuse/core';
 
-const useScamMessageStateStorage = createGlobalState(() => {
+const useFlaggedMessageHiddenState = createGlobalState(() => {
   const scamMessagesHiddenMap = ref({});
 
   return {
-    setScamMessages: (id, state) => {
+    setHiddenFlaggedMessage: (id, state) => {
       const isAlreadyHidden = scamMessagesHiddenMap.value[id] === false;
 
       if (isAlreadyHidden) return;
@@ -20,14 +20,14 @@ const useScamMessageStateStorage = createGlobalState(() => {
   }
 });
 
-export function useWarningScamMessage(pageId: Ref<string> | string) {
-  const { setScamMessages, isMessageVisible } = useScamMessageStateStorage();
+export function useFlaggedMessageHiddenStatus(pageId: Ref<string> | string) {
+  const { setHiddenFlaggedMessage, isMessageVisible } = useFlaggedMessageHiddenState();
   const id = typeof pageId === 'string' ? pageId : pageId.value;
 
   const isHidden = computed(() => isMessageVisible(id));
 
   return {
     isHidden,
-    setHidden: (state: boolean) => setScamMessages(id, state)
+    setHidden: (state: boolean) => setHiddenFlaggedMessage(id, state)
   }
 }

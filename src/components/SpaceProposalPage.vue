@@ -36,7 +36,7 @@ const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
 
-const { isHidden, setHidden } = useWarningScamMessage(proposalId);
+const { isHidden, setHidden } = useFlaggedMessageHiddenStatus(proposalId);
 watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
   immediate: true
 });
