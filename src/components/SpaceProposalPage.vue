@@ -24,8 +24,10 @@ useMeta({
 
 const route = useRoute();
 const router = useRouter();
-
 const { web3, web3Account } = useWeb3();
+const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
+  route.params.id as string
+);
 
 const proposalId: string = route.params.id as string;
 
@@ -36,7 +38,6 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
-const forceShow = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -48,12 +49,6 @@ const isModerator = computed(() => {
     moderator.toLowerCase()
   );
   return moderators.includes(web3Account.value?.toLowerCase());
-});
-
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  if (props.proposal.flagged) return true;
-  return false;
 });
 
 const strategies = computed(
@@ -152,6 +147,8 @@ watch(
 onMounted(() => {
   loadResults();
 });
+
+onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
@@ -161,20 +158,12 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <div v-if="isHidden">
-        <BaseBlock v-if="isHidden">
-          <div class="flex">
-            <div class="ml-1">
-              {{ $t('warningFlagged') }}
-            </div>
-            <div class="-mr-3 flex items-center">
-              <button @click.prevent="forceShow = true">
-                <div class="px-4 py-2 hover:text-skin-link">Show</div>
-              </button>
-            </div>
-          </div>
-        </BaseBlock>
-      </div>
+      <MessageWarningFlagged
+        v-if="isMessageVisible"
+        type="proposal"
+        @forceShow="setMessageVisibility(false)"
+      />
+
       <template v-else>
         <div class="px-3 md:px-0">
           <SpaceProposalHeader
@@ -221,7 +210,7 @@ onMounted(() => {
       </template>
     </template>
     <template #sidebar-right>
-      <div v-if="!isHidden" class="mt-4 space-y-4 lg:mt-0">
+      <div v-if="!isMessageVisible" class="mt-4 space-y-4 lg:mt-0">
         <SpaceProposalInformation
           :space="space"
           :proposal="proposal"
