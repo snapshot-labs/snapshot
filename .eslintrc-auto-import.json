@@ -113,6 +113,7 @@
     "watchPostEffect": true,
     "watchSyncEffect": true,
     "watchTxStatus": true,
-    "toValue": true
+    "toValue": true,
+    "useFlaggedMessageStatus": true
   }
 }
