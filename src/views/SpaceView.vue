@@ -23,8 +23,8 @@ const space = computed(() =>
 );
 
 const {
-  isHidden,
-  setHidden,
+  isMessageVisible: isWarningVisible,
+  setMessageVisibility: setWarningVisibility
 } = useFlaggedMessageHiddenStatus(spaceKey);
 
 watch(
@@ -35,7 +35,7 @@ watch(
     if (!space.value) {
       router.push('/');
     }
-    setHidden(space.value.flagged);
+    setWarningVisibility(space.value.flagged);
   },
   { immediate: true }
 );
@@ -43,8 +43,11 @@ watch(
 
 <template>
   <template v-if="space">
-    <BaseContainer v-if="isHidden">
-      <WarningHiddenContent type="space" @forceShow="setHidden(false)" />
+    <BaseContainer v-if="isWarningVisible">
+      <WarningHiddenContent
+        type="space"
+        @forceShow="setWarningVisibility(false)"
+      />
     </BaseContainer>
 
     <router-view v-else :space="space" :space-key="spaceKey" />

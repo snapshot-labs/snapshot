@@ -14,17 +14,28 @@ const props = defineProps<{
 
 const body = computed(() => removeMd(props.proposal.body));
 
-const { isHidden, setHidden } = useFlaggedMessageHiddenStatus(props.proposal.id);
-watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
-  immediate: true
-});
+const {
+  isMessageVisible: isWarningVisible,
+  setMessageVisibility: setWarningVisibility
+} = useFlaggedMessageHiddenStatus(props.proposal.id);
+watch(
+  () => props.proposal,
+  () => setWarningVisibility(props.proposal.flagged),
+  {
+    immediate: true
+  }
+);
+const isProposalContentAvailable = computed(() => !isWarningVisible.value);
 </script>
 
 <template>
   <div>
     <div class="block p-3 text-skin-text sm:p-4">
       <div>
-        <div v-if="!isHidden" class="mb-2 flex items-center justify-between">
+        <div
+          v-if="isProposalContentAvailable"
+          class="mb-2 flex items-center justify-between"
+        >
           <div class="flex items-start gap-1 space-x-1">
             <template v-if="!hideSpaceAvatar">
               <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
@@ -54,9 +65,9 @@ watch(() => props.proposal, () => setHidden(props.proposal.flagged), {
           <LabelProposalState :state="proposal.state" />
         </div>
         <WarningHiddenContent
-          v-if="isHidden"
+          v-if="isWarningVisible"
           type="proposal"
-          @forceShow="setHidden(false)"
+          @forceShow="setWarningVisibility(false)"
         />
         <template v-else>
           <router-link :to="to">

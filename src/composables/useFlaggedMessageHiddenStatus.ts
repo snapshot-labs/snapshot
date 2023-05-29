@@ -12,22 +12,23 @@ const useFlaggedMessageHiddenState = createGlobalState(() => {
       scamMessagesHiddenMap.value = {
         ...scamMessagesHiddenMap.value,
         [id]: state
-      }
+      };
     },
-    isMessageVisible: (id) => {
+    isFlaggedMessageVisible: id => {
       return scamMessagesHiddenMap.value[id] || false;
     }
-  }
+  };
 });
 
 export function useFlaggedMessageHiddenStatus(pageId: Ref<string> | string) {
-  const { setHiddenFlaggedMessage, isMessageVisible } = useFlaggedMessageHiddenState();
+  const { setHiddenFlaggedMessage, isFlaggedMessageVisible } =
+    useFlaggedMessageHiddenState();
   const id = typeof pageId === 'string' ? pageId : pageId.value;
 
-  const isHidden = computed(() => isMessageVisible(id));
+  const isMessageVisible = computed(() => isFlaggedMessageVisible(id));
 
   return {
-    isHidden,
-    setHidden: (state: boolean) => setHiddenFlaggedMessage(id, state)
-  }
+    isMessageVisible,
+    setMessageVisibility: (state: boolean) => setHiddenFlaggedMessage(id, state)
+  };
 }
