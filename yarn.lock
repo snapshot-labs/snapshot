@@ -1543,10 +1543,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.83":
-  version "0.4.83"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.83.tgz#28a07d968a64ee03e6085c77d3f675948c66c5f2"
-  integrity sha512-8sVSBv9yAK47v+geQ1TgSLku+KW+9Y8m+LKRmJzcBKBfLEUs2GDSsesc4X+gn4JZkufDI6JSXjDsowpd4bJy5A==
+"@snapshot-labs/snapshot.js@^0.4.86":
+  version "0.4.86"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.86.tgz#c2255aa8bb8cdd1cd20fd9b9db8954b847af286b"
+  integrity sha512-c7B0YrWQQfgzssbhVX/wb7EszA19v43lJbxysQumov5Z/HjvIPwHIBnaJDxai+nWU5vXGa+RX9yoYYywXKnNhw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1562,13 +1562,14 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.18":
-  version "0.1.18"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.18.tgz#5b0c7cf25caf52d32f8ea74e7c9bf6b8028ce686"
-  integrity sha512-VQIpksjWnkOnNN2gvOssl27c2kmF1Bdz0xy0i25NP8zcXNuWFrTPuOeIx8mjcnb1OjKrhn1sxcRiIgZHSl0Bhg==
+"@snapshot-labs/tune@^0.1.21":
+  version "0.1.21"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.21.tgz#9715b895a2bdc56156e8ea67d7f63fbe8f37452e"
+  integrity sha512-M2W3QFdSH7cAim20+jPCBITiylu8SSR6afHGL/diy8FPu4MxUSMfV9zVwxhGhilNCKtp9wpCS8fX8EGORmf8Kw==
   dependencies:
     "@headlessui-float/vue" "^0.11.0"
     "@headlessui/vue" "^1.7.12"
+    "@vueuse/core" "^10.1.2"
     lodash "^4.17.21"
     minisearch "^6.0.1"
     sass "^1.60.0"
