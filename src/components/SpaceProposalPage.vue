@@ -24,8 +24,10 @@ useMeta({
 
 const route = useRoute();
 const router = useRouter();
-
 const { web3, web3Account } = useWeb3();
+const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
+  route.params.id as string
+);
 
 const proposalId: string = route.params.id as string;
 
@@ -35,19 +37,6 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
-
-const {
-  isMessageVisible: isWarningVisible,
-  setMessageVisibility: setWarningVisibility
-} = useFlaggedMessageStatus(proposalId);
-watch(
-  () => props.proposal,
-  () => setWarningVisibility(props.proposal.flagged),
-  {
-    immediate: true
-  }
-);
-const isSpaceContentAvailable = computed(() => !isWarningVisible.value);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -157,6 +146,8 @@ watch(
 onMounted(() => {
   loadResults();
 });
+
+onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
@@ -166,10 +157,10 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <WarningFlaggedContent
-        v-if="isWarningVisible"
+      <MessageWarningFlagged
+        v-if="isMessageVisible"
         type="proposal"
-        @forceShow="setWarningVisibility(false)"
+        @forceShow="setMessageVisibility(false)"
       />
 
       <template v-else>
@@ -218,7 +209,7 @@ onMounted(() => {
       </template>
     </template>
     <template #sidebar-right>
-      <div v-if="isSpaceContentAvailable" class="mt-4 space-y-4 lg:mt-0">
+      <div v-if="!isMessageVisible" class="mt-4 space-y-4 lg:mt-0">
         <SpaceProposalInformation
           :space="space"
           :proposal="proposal"

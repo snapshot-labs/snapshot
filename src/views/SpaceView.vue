@@ -22,10 +22,8 @@ const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
-const {
-  isMessageVisible: isWarningVisible,
-  setMessageVisibility: setWarningVisibility
-} = useFlaggedMessageStatus(spaceKey);
+const { isMessageVisible, setMessageVisibility } =
+  useFlaggedMessageStatus(spaceKey);
 
 watch(
   spaceKey,
@@ -35,7 +33,7 @@ watch(
     if (!space.value) {
       router.push('/');
     }
-    setWarningVisibility(space.value.flagged);
+    setMessageVisibility(space.value?.flagged || false);
   },
   { immediate: true }
 );
@@ -43,10 +41,10 @@ watch(
 
 <template>
   <template v-if="space">
-    <BaseContainer v-if="isWarningVisible">
-      <WarningFlaggedContent
+    <BaseContainer v-if="isMessageVisible">
+      <MessageWarningFlagged
         type="space"
-        @forceShow="setWarningVisibility(false)"
+        @forceShow="setMessageVisibility(false)"
       />
     </BaseContainer>
 

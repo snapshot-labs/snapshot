@@ -1,34 +1,31 @@
 import { createGlobalState } from '@vueuse/core';
 
-const useFlaggedMessageHiddenState = createGlobalState(() => {
-  const scamMessagesHiddenMap = ref({});
+const useFlaggedMessageState = createGlobalState(() => {
+  const flaggedMessageStateMap = ref({});
 
   return {
-    setHiddenFlaggedMessage: (id, state) => {
-      const isAlreadyHidden = scamMessagesHiddenMap.value[id] === false;
+    setVisibility: (id, state) => {
+      const isNotVisible = flaggedMessageStateMap.value[id] === false;
 
-      if (isAlreadyHidden) return;
+      if (isNotVisible) return;
 
-      scamMessagesHiddenMap.value = {
-        ...scamMessagesHiddenMap.value,
+      flaggedMessageStateMap.value = {
+        ...flaggedMessageStateMap.value,
         [id]: state
       };
     },
     isFlaggedMessageVisible: id => {
-      return scamMessagesHiddenMap.value[id] || false;
+      return flaggedMessageStateMap.value[id] || false;
     }
   };
 });
 
 export function useFlaggedMessageStatus(pageId: Ref<string> | string) {
-  const { setHiddenFlaggedMessage, isFlaggedMessageVisible } =
-    useFlaggedMessageHiddenState();
+  const { setVisibility, isFlaggedMessageVisible } = useFlaggedMessageState();
   const id = typeof pageId === 'string' ? pageId : pageId.value;
 
-  const isMessageVisible = computed(() => isFlaggedMessageVisible(id));
-
   return {
-    isMessageVisible,
-    setMessageVisibility: (state: boolean) => setHiddenFlaggedMessage(id, state)
+    isMessageVisible: computed(() => isFlaggedMessageVisible(id)),
+    setMessageVisibility: (state: boolean) => setVisibility(id, state)
   };
 }
