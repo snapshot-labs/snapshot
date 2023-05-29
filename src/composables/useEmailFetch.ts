@@ -21,7 +21,7 @@ export const useEmailFetch = createFetch({
   options: {
     headers: {
       'Content-Type': 'application/json'
-    },
+    }
   }
 });
 
@@ -36,11 +36,11 @@ export function useEmailFetchClient() {
     });
   }
 
-  const fetchSubscriptions = (body) => {
+  const fetchSubscriptions = body => {
     return useEmailFetch('/subscriber').post(body).json();
   };
 
-  const subscribeWithEmail = async (unsignedParams) => {
+  const subscribeWithEmail = async unsignedParams => {
     const signature = await signWithAlias(unsignedParams, SubscribeSchema);
     const body = {
       method: 'snapshot.subscribe',
@@ -48,21 +48,24 @@ export function useEmailFetchClient() {
         ...unsignedParams,
         signature
       }
-    }
-    
+    };
+
     return useEmailFetch('/').post(body).json();
   };
 
-  const updateEmailSubscriptions = async (unsignedParams) => {
-    const signature = await signWithAlias(unsignedParams, UpdateSubscriptionsSchema);
+  const updateEmailSubscriptions = async unsignedParams => {
+    const signature = await signWithAlias(
+      unsignedParams,
+      UpdateSubscriptionsSchema
+    );
     const body = {
       method: 'snapshot.update',
       params: {
         ...unsignedParams,
         signature
       }
-    }
-    
+    };
+
     return useEmailFetch('/').post(body).json();
   };
 

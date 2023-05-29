@@ -1,7 +1,5 @@
 import { createSharedComposable } from '@vueuse/core';
-import {
-  useEmailFetchClient,
-} from './useEmailFetch';
+import { useEmailFetchClient } from './useEmailFetch';
 
 enum Status {
   waiting,
@@ -21,20 +19,19 @@ type SubscriptionType = (typeof subscriptionTypes)[number];
 
 function useEmailSubscriptionComposable() {
   const { t } = useI18n();
-  
+
   const status: Ref<Status> = ref(Status.waiting);
-  const isSuccessfullyFinished = computed(() => status.value === Status.success);
+  const isSuccessfullyFinished = computed(
+    () => status.value === Status.success
+  );
   const postSubscribeLevel: Ref<Level> = ref(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
   const isSubscribed = ref(false);
   const shouldRemoveEmail = ref(true);
   const { aliasWallet } = useAliasAction();
-  const {
-    fetchSubscriptions,
-    subscribeWithEmail,
-    updateEmailSubscriptions,
-  } = useEmailFetchClient();
+  const { fetchSubscriptions, subscribeWithEmail, updateEmailSubscriptions } =
+    useEmailFetchClient();
 
   const apiSubscriptions: Ref<SubscriptionType[]> = ref([]);
   const clientSubscriptions = computed({
@@ -52,7 +49,7 @@ function useEmailSubscriptionComposable() {
     }
   });
 
-  const loadEmailSubscriptions = async () => {  
+  const loadEmailSubscriptions = async () => {
     loading.value = true;
     const { error, data } = await fetchSubscriptions({
       address: aliasWallet.value.address
@@ -62,9 +59,9 @@ function useEmailSubscriptionComposable() {
       apiSubscriptions.value = data.value;
       isSubscribed.value = true;
     }
-  }
+  };
 
-  const subscribe = async (email: string, address) => {
+  const subscribe = async (email: string) => {
     loading.value = true;
     const { data } = await subscribeWithEmail({
       address: aliasWallet.value.address,
