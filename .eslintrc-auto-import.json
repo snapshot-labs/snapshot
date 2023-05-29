@@ -113,7 +113,6 @@
     "watchSyncEffect": true,
     "watchTxStatus": true,
     "toValue": true,
-    "useFlaggedMessageHiddenStatus": true,
-    "useWarningScamMessage": true
+    "useFlaggedMessageHiddenStatus": true
   }
 }
