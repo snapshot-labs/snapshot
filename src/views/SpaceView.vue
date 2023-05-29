@@ -40,9 +40,9 @@ watch(
 
 <template>
   <template v-if="space">
-    <div v-if="isHidden" class="mx-auto max-w-[1012px] px-0 md:px-4">
+    <BaseContainer v-if="isHidden">
       <WarningHiddenContent type="space" @forceShow="setHidden(false)" />
-    </div>
+    </BaseContainer>
 
     <router-view v-else :space="space" :space-key="spaceKey" />
   </template>
