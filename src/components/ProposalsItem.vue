@@ -12,61 +12,55 @@ const props = defineProps<{
   showVerifiedIcon?: boolean;
 }>();
 
-const forceShow = ref(false);
+const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
+  props.proposal.id
+);
 
 const body = computed(() => removeMd(props.proposal.body));
 
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  if (props.proposal.flagged) return true;
-  return false;
-});
+onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
   <div>
     <div class="block p-3 text-skin-text sm:p-4">
       <div>
-        <div v-if="!isHidden" class="mb-2 flex items-center justify-between">
-          <div class="flex items-start gap-1 space-x-1">
-            <template v-if="!hideSpaceAvatar">
-              <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
-                <div class="flex items-center">
-                  <AvatarSpace :space="proposal.space" size="28" />
-                  <span
-                    class="ml-2 text-skin-link"
-                    v-text="proposal.space.name"
-                  />
-                  <IconVerifiedSpace
-                    v-if="showVerifiedIcon && space.verified"
-                    class="pl-[2px]"
-                    size="18"
-                  />
-                </div>
-              </LinkSpace>
-              <span v-text="$tc('proposalBy')" />
-            </template>
-            <BaseUser
-              :address="proposal.author"
-              :profile="profiles[proposal.author]"
-              :space="space"
-              :proposal="proposal"
-              :hide-avatar="!hideSpaceAvatar"
-            />
-          </div>
-          <LabelProposalState :state="proposal.state" />
-        </div>
-        <div v-if="isHidden" class="flex rounded-xl border py-3 pl-4">
-          <div>
-            {{ $t('warningFlagged') }}
-          </div>
-          <div class="flex items-center">
-            <button @click.prevent="forceShow = true">
-              <div class="px-4 py-3 hover:text-skin-link">Show</div>
-            </button>
-          </div>
-        </div>
+        <MessageWarningFlagged
+          v-if="isMessageVisible"
+          type="proposal"
+          @forceShow="setMessageVisibility(false)"
+        />
         <template v-else>
+          <div class="mb-2 flex items-center justify-between">
+            <div class="flex items-start gap-1 space-x-1">
+              <template v-if="!hideSpaceAvatar">
+                <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
+                  <div class="flex items-center">
+                    <AvatarSpace :space="proposal.space" size="28" />
+                    <span
+                      class="ml-2 text-skin-link"
+                      v-text="proposal.space.name"
+                    />
+                    <IconVerifiedSpace
+                      v-if="showVerifiedIcon && space.verified"
+                      class="pl-[2px]"
+                      size="18"
+                    />
+                  </div>
+                </LinkSpace>
+                <span v-text="$tc('proposalBy')" />
+              </template>
+              <BaseUser
+                :address="proposal.author"
+                :profile="profiles[proposal.author]"
+                :space="space"
+                :proposal="proposal"
+                :hide-avatar="!hideSpaceAvatar"
+              />
+            </div>
+            <LabelProposalState :state="proposal.state" />
+          </div>
+
           <router-link :to="to">
             <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
