@@ -12,21 +12,30 @@ const props = defineProps<{
   showVerifiedIcon?: boolean;
 }>();
 
-const forceShow = ref(false);
-
 const body = computed(() => removeMd(props.proposal.body));
 
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return props.proposal.flagged;
-});
+const {
+  isMessageVisible: isWarningVisible,
+  setMessageVisibility: setWarningVisibility
+} = useFlaggedMessageStatus(props.proposal.id);
+watch(
+  () => props.proposal,
+  () => setWarningVisibility(props.proposal.flagged),
+  {
+    immediate: true
+  }
+);
+const isProposalContentAvailable = computed(() => !isWarningVisible.value);
 </script>
 
 <template>
   <div>
     <div class="block p-3 text-skin-text sm:p-4">
       <div>
-        <div v-if="!isHidden" class="mb-2 flex items-center justify-between">
+        <div
+          v-if="isProposalContentAvailable"
+          class="mb-2 flex items-center justify-between"
+        >
           <div class="flex items-start gap-1 space-x-1">
             <template v-if="!hideSpaceAvatar">
               <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
@@ -55,10 +64,10 @@ const isHidden = computed(() => {
           </div>
           <LabelProposalState :state="proposal.state" />
         </div>
-        <WarningHiddenContent
-          v-if="isHidden"
+        <WarningFlaggedContent
+          v-if="isWarningVisible"
           type="proposal"
-          @forceShow="forceShow = true"
+          @forceShow="setWarningVisibility(false)"
         />
         <template v-else>
           <router-link :to="to">

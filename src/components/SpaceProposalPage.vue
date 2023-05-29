@@ -35,7 +35,19 @@ const loadedResults = ref(false);
 const userVote = ref<Vote | null>(null);
 const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
-const forceShow = ref(false);
+
+const {
+  isMessageVisible: isWarningVisible,
+  setMessageVisibility: setWarningVisibility
+} = useFlaggedMessageStatus(proposalId);
+watch(
+  () => props.proposal,
+  () => setWarningVisibility(props.proposal.flagged),
+  {
+    immediate: true
+  }
+);
+const isSpaceContentAvailable = computed(() => !isWarningVisible.value);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -47,11 +59,6 @@ const isModerator = computed(() => {
     moderator.toLowerCase()
   );
   return moderators.includes(web3Account.value?.toLowerCase());
-});
-
-const isHidden = computed(() => {
-  if (forceShow.value) return false;
-  return props.proposal.flagged;
 });
 
 const strategies = computed(
@@ -159,10 +166,10 @@ onMounted(() => {
         <ButtonBack @click="handleBackClick" />
       </div>
 
-      <WarningHiddenContent
-        v-if="isHidden"
+      <WarningFlaggedContent
+        v-if="isWarningVisible"
         type="proposal"
-        @forceShow="forceShow = true"
+        @forceShow="setWarningVisibility(false)"
       />
 
       <template v-else>
@@ -211,7 +218,7 @@ onMounted(() => {
       </template>
     </template>
     <template #sidebar-right>
-      <div v-if="!isHidden" class="mt-4 space-y-4 lg:mt-0">
+      <div v-if="isSpaceContentAvailable" class="mt-4 space-y-4 lg:mt-0">
         <SpaceProposalInformation
           :space="space"
           :proposal="proposal"
