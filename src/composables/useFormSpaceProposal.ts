@@ -71,10 +71,9 @@ export function useFormSpaceProposal() {
     userSelectedDateStart.value = false;
   }
 
-  const validationErrors = computed(() => {
-    const errors = validateForm(schemas.proposal, form.value);
-    return errors;
-  });
+  const validationErrors = computed(() =>
+    validateForm(schemas.proposal, form.value)
+  );
 
   const isValid = computed(() => {
     return Object.values(validationErrors.value).length === 0;
