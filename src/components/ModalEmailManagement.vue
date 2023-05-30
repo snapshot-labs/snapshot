@@ -48,44 +48,29 @@ const submit = async () => {
     </div>
 
     <form class="m-4 flex flex-col space-y-4" @submit.prevent="submit">
-      <div class="ml-4 mt-auto flex items-start space-x-2">
-        <InputSwitch
-          :model-value="clientSubscriptions.newProposal"
-          @update:model-value="updateSubscriptions('newProposal', $event)"
-        />
-        <div class="flex flex-col">
-          <span>{{ t('emailManagement.optionNewProposal') }}</span>
-          <span class="text-sm text-skin-text opacity-60">
-            {{ t('emailManagement.optionNewProposalDescription') }}
-          </span>
-        </div>
-      </div>
+      <TuneSwitch
+        :model-value="clientSubscriptions.newProposal"
+        class="ml-4 mt-auto flex items-start space-x-2"
+        :label="t('emailManagement.optionNewProposal')"
+        :sublabel="t('emailManagement.optionNewProposalDescription')"
+        @update:model-value="updateSubscriptions('newProposal', $event)"
+      />
 
-      <div class="ml-4 mt-auto flex items-start space-x-2">
-        <InputSwitch
-          :model-value="clientSubscriptions.closedProposal"
-          @update:model-value="updateSubscriptions('closedProposal', $event)"
-        />
-        <div class="flex flex-col">
-          <span>{{ t('emailManagement.optionClosedProposal') }}</span>
-          <span class="text-sm text-skin-text opacity-60">
-            {{ t('emailManagement.optionClosedProposalDescription') }}
-          </span>
-        </div>
-      </div>
+      <TuneSwitch
+        :model-value="clientSubscriptions.closedProposal"
+        class="ml-4 mt-auto flex items-start space-x-2"
+        :label="t('emailManagement.optionClosedProposal')"
+        :sublabel="t('emailManagement.optionClosedProposalDescription')"
+        @update:model-value="updateSubscriptions('closedProposal', $event)"
+      />
 
-      <div class="ml-4 mt-auto flex items-start space-x-2">
-        <InputSwitch
-          :model-value="clientSubscriptions.summary"
-          @update:model-value="updateSubscriptions('summary', $event)"
-        />
-        <div class="flex flex-col">
-          <span>{{ t('emailManagement.optionSummary') }}</span>
-          <span class="text-sm text-skin-text opacity-60">
-            {{ t('emailManagement.optionSummaryDescription') }}
-          </span>
-        </div>
-      </div>
+      <TuneSwitch
+        :model-value="clientSubscriptions.summary"
+        class="ml-4 mt-auto flex items-start space-x-2"
+        :label="t('emailManagement.optionSummary')"
+        :sublabel="t('emailManagement.optionSummaryDescription')"
+        @update:model-value="updateSubscriptions('summary', $event)"
+      />
 
       <TuneCheckbox
         v-if="canRemoveEmail"
