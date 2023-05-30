@@ -4,6 +4,27 @@ import addFormats from 'ajv-formats';
 import { isAddress } from '@ethersproject/address';
 import { parseUnits } from '@ethersproject/units';
 
+function getErrorMessage(errorObject: ErrorObject): string {
+  if (!errorObject.message) return 'Invalid field.';
+
+  if (errorObject.keyword === 'format') {
+    switch (errorObject.params.format) {
+      case 'address':
+        return 'Must be a valid address.';
+      case 'ethValue':
+        return 'Must be a number.';
+      case 'customUrl':
+        return 'Must be a valid URL.';
+      default:
+        return 'Invalid format.';
+    }
+  }
+
+  return `${errorObject.message
+    .charAt(0)
+    .toLocaleUpperCase()}${errorObject.message.slice(1).toLocaleLowerCase()}.`;
+}
+
 export function validateForm(
   schema: Record<string, any>,
   form: Record<string, any>
@@ -90,7 +111,7 @@ function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
         output,
         path
       );
-      targetObject[path[path.length - 1]] = 'Invalid field';
+      targetObject[path[path.length - 1]] = getErrorMessage(error);
       return output;
     },
     {}
