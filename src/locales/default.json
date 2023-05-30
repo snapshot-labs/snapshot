@@ -1,6 +1,8 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchVotingPower": "Voting power",
+  "searchChoice": "Choice",
   "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",
@@ -263,7 +265,16 @@
       }
     },
     "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing file"
+    "preparingCsvVotes": "Preparing file",
+    "votesModal": {
+      "title": "Votes",
+      "filtersPopover": {
+        "title": "Filters",
+        "votingPower": "Voting power",
+        "onlyVotesWithReason": "Only show votes with a reason",
+        "more": "More"
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",

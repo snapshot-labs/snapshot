@@ -44,7 +44,7 @@
     "@snapshot-labs/lock": "^0.1.1015",
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
     "@snapshot-labs/snapshot.js": "^0.4.86",
-    "@snapshot-labs/tune": "^0.1.21",
+    "@snapshot-labs/tune": "^0.1.22",
     "@vue/apollo-composable": "4.0.0-beta.4",
     "@vueuse/core": "^10.1.2",
     "@vueuse/head": "^1.1.26",
