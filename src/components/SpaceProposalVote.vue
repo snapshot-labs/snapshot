@@ -12,6 +12,8 @@ const emit = defineEmits(['update:modelValue', 'clickVote']);
 const { web3, web3Account } = useWeb3();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 
+const key = ref(0);
+
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
   if (typeof props.modelValue === 'object' && props.modelValue !== null)
@@ -37,6 +39,10 @@ function emitChoice(c) {
 }
 
 watch(web3Account, loadUserVote, { immediate: true });
+
+watch(validatedUserChoice, () => {
+  key.value++;
+});
 </script>
 
 <template>
@@ -44,28 +50,28 @@ watch(web3Account, loadUserVote, { immediate: true });
     <div class="mb-3">
       <SpaceProposalVoteSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
-        :key="validatedUserChoice"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number)"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
-        :key="validatedUserChoice"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number[])"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
-        :key="validatedUserChoice"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as Record<string, number>)"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
-        :key="validatedUserChoice"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number[])"
         @selectChoice="emitChoice"
