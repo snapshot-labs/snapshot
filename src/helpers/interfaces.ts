@@ -250,8 +250,8 @@ export interface Vote {
 }
 
 export interface VoteFilters {
-  orderDirection?: string;
-  onlyWithReason?: boolean;
+  orderDirection: string;
+  onlyWithReason: boolean;
 }
 
 // Execution

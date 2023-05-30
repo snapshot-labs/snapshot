@@ -2,9 +2,9 @@
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useIntersectionObserver } from '@vueuse/core';
 import { watchDebounced } from '@vueuse/core';
-import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, VoteFilters } from '@/helpers/interfaces';
 
-const VOTES_FILTERS_DEFAULT = {
+const VOTES_FILTERS_DEFAULT: VoteFilters = {
   orderDirection: 'desc',
   onlyWithReason: false
 };
@@ -28,13 +28,13 @@ const {
 } = useProposalVotes(props.proposal, 20);
 
 const votesEndEl = ref<HTMLElement | null>(null);
-const filterOptions = ref(clone(VOTES_FILTERS_DEFAULT));
+const filterOptions = ref<VoteFilters>(clone(VOTES_FILTERS_DEFAULT));
 const searchInput = ref('');
 
 const filters = computed(() => {
   return {
-    orderDirection: filterOptions?.value?.orderDirection || 'desc',
-    onlyWithReason: filterOptions?.value?.onlyWithReason || false
+    orderDirection: filterOptions.value.orderDirection,
+    onlyWithReason: filterOptions.value.onlyWithReason
   };
 });
 

@@ -8,7 +8,10 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue']);
 
-function updateFilters(key: string, val: string | boolean) {
+function updateFilters(
+  key: keyof VoteFilters,
+  val: VoteFilters[keyof VoteFilters]
+) {
   emit('update:modelValue', { ...props.modelValue, [key]: val });
 }
 </script>

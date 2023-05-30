@@ -4,9 +4,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 type QueryParams = {
   voter?: string;
-  orderDirection?: string;
-  onlyWithReason?: boolean;
-};
+} & Partial<VoteFilters>;
 
 export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   const { profiles, loadProfiles } = useProfiles();
@@ -73,7 +71,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     });
   }
 
-  async function loadVotes(filter: VoteFilters = {}) {
+  async function loadVotes(filter: Partial<VoteFilters> = {}) {
     if (loadingVotes.value) return;
 
     loadingVotes.value = true;
@@ -103,7 +101,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     }
   }
 
-  async function loadMoreVotes(filter: VoteFilters = {}) {
+  async function loadMoreVotes(filter: Partial<VoteFilters> = {}) {
     if (loadingMoreVotes.value || loadingVotes.value) return;
 
     loadingMoreVotes.value = true;
