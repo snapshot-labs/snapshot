@@ -1106,7 +1106,16 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui-float/vue@^0.11.0", "@headlessui-float/vue@^0.11.1":
+"@headlessui-float/vue@^0.11.0":
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.2.tgz#6ecf6bedd6bbce3aebcc74f5c2c2dcf7c108289b"
+  integrity sha512-9yWN6LHeaXZKyU9y/rj6SmujCzkRxxf4bhg7nRs2RSwfSRI9E+JPvM/Tl7AA2lFQAJegWTRcElt3dSJ0Nkth0Q==
+  dependencies:
+    "@floating-ui/core" "^1.0.0"
+    "@floating-ui/dom" "^1.0.0"
+    "@floating-ui/vue" "^0.2.0"
+
+"@headlessui-float/vue@^0.11.1":
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.1.tgz#d089e5a9d3b244c8046c0e176e3ad537f29b5c7c"
   integrity sha512-QWqyfNLhWimCVfmCpv/NBNyhpads1ubkOmuCob8RHD1DO+TQEY0DDg3cy8zBC75EOqWfTEdA94jPGlM5UnIthw==
@@ -1562,10 +1571,10 @@
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.21":
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.21.tgz#9715b895a2bdc56156e8ea67d7f63fbe8f37452e"
-  integrity sha512-M2W3QFdSH7cAim20+jPCBITiylu8SSR6afHGL/diy8FPu4MxUSMfV9zVwxhGhilNCKtp9wpCS8fX8EGORmf8Kw==
+"@snapshot-labs/tune@0.1.24":
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.24.tgz#4a1e7f80c8e5d3a17a6ac309a73b0fd291b46d9c"
+  integrity sha512-RJN6fmPgcXfQE5ofPT1ysjVQtDk2Ml6qvhJu+jEwWdB3cJ9blfqrnRmSyQSq8wGjh6tBAmYI3J3EfuIqSgDt5Q==
   dependencies:
     "@headlessui-float/vue" "^0.11.0"
     "@headlessui/vue" "^1.7.12"
@@ -10047,9 +10056,9 @@ minipass@^2.6.0, minipass@^2.9.0:
     yallist "^3.0.0"
 
 minisearch@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.0.1.tgz#55e40135e7e6be60f1c1c2f5ee890c334e179a86"
-  integrity sha512-Ly1w0nHKnlhAAh6/BF/+9NgzXfoJxaJ8nhopFhQ3NcvFJrFIL+iCg9gw9e9UMBD+XIsp/RyznJ/o5UIe5Kw+kg==
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.1.0.tgz#6e74e743dbd0e88fa5ca52fef2391e0aa7055252"
+  integrity sha512-PNxA/X8pWk+TiqPbsoIYH0GQ5Di7m6326/lwU/S4mlo4wGQddIcf/V//1f9TB0V4j59b57b+HZxt8h3iMROGvg==
 
 minizlib@^1.3.3:
   version "1.3.3"

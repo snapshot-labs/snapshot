@@ -1,22 +1,29 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   open: boolean;
-  address: string;
 }>();
 
 const emit = defineEmits(['close']);
+const { web3Account } = useWeb3();
 const email = ref('');
-const { subscribe, reset, postSubscribeState, status, loading, Status } =
-  useEmailSubscription();
+const {
+  subscribe,
+  reset,
+  postSubscribeState,
+  isSuccessful,
+  loading,
+  loadEmailSubscriptions
+} = useEmailSubscription();
 
 function close() {
   reset();
   email.value = '';
   emit('close');
+  loadEmailSubscriptions();
 }
 
 function submit() {
-  subscribe(email.value, props.address);
+  subscribe(email.value, web3Account.value);
 }
 </script>
 
@@ -27,7 +34,7 @@ function submit() {
         <h3>{{ $t('emailSubscription.title') }}</h3>
       </div>
     </template>
-    <div v-if="status === Status.success" class="m-4 text-center">
+    <div v-if="isSuccessful" class="m-4 text-center">
       <i-ho-check-circle
         class="mx-auto my-4 text-center text-[3em] text-green"
       />
@@ -46,7 +53,7 @@ function submit() {
     <div v-else class="m-4">
       {{ $t('emailSubscription.description') }}
     </div>
-    <form v-if="status !== Status.success" class="m-4" @submit.prevent="submit">
+    <form v-if="!isSuccessful" class="m-4" @submit.prevent="submit">
       <BaseInput
         v-model="email"
         placeholder="Your email"
@@ -73,7 +80,7 @@ function submit() {
       </BaseButton>
     </form>
 
-    <template v-if="status === Status.success" #footer>
+    <template v-if="isSuccessful" #footer>
       <BaseButton class="w-full" primary @click="close">
         {{ $t('close') }}
       </BaseButton>

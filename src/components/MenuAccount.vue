@@ -8,8 +8,12 @@ const { t } = useI18n();
 
 const { domain } = useApp();
 const { logout } = useWeb3();
+const { isSubscribed, loadEmailSubscriptions } = useEmailSubscription();
+
+onMounted(loadEmailSubscriptions);
+
 const router = useRouter();
-const modalEmailSubscriptionOpen = ref(false);
+const showModalEmail = ref(false);
 
 function handleAction(e) {
   if (e === 'viewProfile')
@@ -26,7 +30,7 @@ function handleAction(e) {
       name: 'delegate'
     });
   if (e === 'subscribeEmail') {
-    modalEmailSubscriptionOpen.value = true;
+    showModalEmail.value = true;
     return true;
   }
   return logout();
@@ -53,7 +57,9 @@ function handleAction(e) {
           extras: { icon: 'switch' }
         },
         {
-          text: t('emailSubscription.subscribe'),
+          text: isSubscribed
+            ? t('emailSubscription.manage')
+            : t('emailSubscription.subscribe'),
           action: 'subscribeEmail',
           extras: { icon: 'mail' }
         },
@@ -89,11 +95,17 @@ function handleAction(e) {
       </template>
     </BaseMenu>
   </div>
+
   <teleport to="#modal">
     <ModalEmailSubscription
-      :open="modalEmailSubscriptionOpen"
-      :address="address"
-      @close="modalEmailSubscriptionOpen = false"
+      v-if="!isSubscribed"
+      :open="showModalEmail"
+      @close="showModalEmail = false"
+    />
+    <ModalEmailManagement
+      v-else
+      :open="showModalEmail"
+      @close="showModalEmail = false"
     />
   </teleport>
 </template>

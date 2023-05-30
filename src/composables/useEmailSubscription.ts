@@ -1,70 +1,88 @@
-import sign, { SubscribeType } from '@/helpers/sign';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { createSharedComposable } from '@vueuse/core';
 
-export function useEmailSubscription() {
-  enum Status {
-    waiting,
-    success,
-    error
-  }
+enum Status {
+  waiting,
+  success,
+  error
+}
 
-  enum Level {
-    info = 'info',
-    warning = 'warning',
-    'warning-red' = 'warning-red',
-    success = 'success'
-  }
+enum Level {
+  info = 'info',
+  warning = 'warning',
+  'warning-red' = 'warning-red',
+  success = 'success'
+}
 
-  const status: Ref<Status> = ref(Status.waiting);
-  const postSubscribeLevel: Ref<Level> = ref(Level.info);
+const subscriptionTypes = ['summary', 'newProposal', 'closedProposal'] as const;
+type SubscriptionType = (typeof subscriptionTypes)[number];
+
+function useEmailSubscriptionComposable() {
+  const { t } = useI18n();
+
+  const status = ref<Status>(Status.waiting);
+  const isSuccessful = computed(() => status.value === Status.success);
+  const postSubscribeLevel = ref<Level>(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
+  const isSubscribed = ref(false);
+  const shouldRemoveEmail = ref(true);
+  const { aliasWallet } = useAliasAction();
+  const { fetchSubscriptions, subscribeWithEmail, updateEmailSubscriptions } =
+    useEmailFetchClient();
 
-  const { t } = useI18n();
-  const { web3 } = useWeb3();
-  const auth = getInstance();
-
-  async function subscribe(email: string, address: string) {
-    loading.value = true;
-
-    try {
-      const signature = await sign(
-        auth.web3,
-        web3.value.account,
-        {
-          email
-        },
-        SubscribeType
-      );
-
-      const response = await fetch(import.meta.env.VITE_ENVELOP_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          params: {
-            email,
-            address,
-            signature
-          },
-          method: 'snapshot.subscribe'
-        })
-      });
-
-      const result = await response.json();
-
-      if (result.result === 'OK') {
-        setPostSubscribeState(Status.success, Level.success, 'success');
-      } else {
-        setPostSubscribeState(Status.error, Level.warning, 'apiError');
-      }
-    } catch (e) {
-      setPostSubscribeState(Status.error, Level.warning, 'unknownError');
-    } finally {
-      loading.value = false;
+  const apiSubscriptions = ref<SubscriptionType[]>([]);
+  const clientSubscriptions = computed({
+    get() {
+      return subscriptionTypes.reduce((acc, type) => {
+        acc[type] = apiSubscriptions.value.includes(type);
+        return acc;
+      }, {} as Record<SubscriptionType, boolean>);
+    },
+    set(value) {
+      apiSubscriptions.value = Object.entries(value)
+        .map(([key, value]) => (value ? key : undefined))
+        .filter(Boolean)
+        .map(key => key as SubscriptionType);
     }
-  }
+  });
+
+  const loadEmailSubscriptions = async () => {
+    loading.value = true;
+    const { error, data } = await fetchSubscriptions({
+      address: aliasWallet.value.address
+    });
+    loading.value = false;
+    if (!error.value && data.value) {
+      apiSubscriptions.value = data.value;
+      isSubscribed.value = true;
+    }
+  };
+
+  const subscribe = async (email: string) => {
+    loading.value = true;
+    const { data } = await subscribeWithEmail({
+      address: aliasWallet.value.address,
+      email
+    });
+    loading.value = false;
+
+    if (data.value?.result === 'OK') {
+      setPostSubscribeState(Status.success, Level.success, 'success');
+    } else {
+      setPostSubscribeState(Status.error, Level.warning, 'error');
+    }
+  };
+
+  const updateSubscriptions = async () => {
+    loading.value = true;
+    await updateEmailSubscriptions({
+      address: aliasWallet.value.address,
+      email: '',
+      subscriptions: apiSubscriptions.value
+    });
+    loading.value = false;
+    loadEmailSubscriptions();
+  };
 
   function setPostSubscribeState(
     newStatus: Status,
@@ -83,14 +101,23 @@ export function useEmailSubscription() {
   }
 
   return {
+    clientSubscriptions,
+    shouldRemoveEmail,
     subscribe,
+    updateSubscriptions,
+    loadEmailSubscriptions,
     status,
     loading,
     reset,
+    isSuccessful,
+    isSubscribed,
     postSubscribeState: {
       level: postSubscribeLevel,
       message: postSubscribeMessage
-    },
-    Status
+    }
   };
 }
+
+export const useEmailSubscription = createSharedComposable(
+  useEmailSubscriptionComposable
+);
