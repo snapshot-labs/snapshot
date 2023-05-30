@@ -107,7 +107,7 @@ const handleDrop = e => {
           >
             <textarea
               ref="textAreaEl"
-              v-model="inputBody"
+              v-model.trim="inputBody"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
               data-testid="input-proposal-body"
