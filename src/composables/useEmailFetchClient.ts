@@ -16,7 +16,7 @@ const UpdateSubscriptionsSchema: DataType = {
   ]
 };
 
-export const useEmailFetch = createFetch({
+const useEmailFetch = createFetch({
   baseUrl: import.meta.env.VITE_ENVELOP_URL,
   options: {
     headers: {

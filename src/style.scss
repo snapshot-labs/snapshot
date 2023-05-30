@@ -118,11 +118,11 @@
 }
 
 .tune-input-checkbox {
-  @apply rounded-full;
+  @apply rounded-lg mr-4;
 }
 
-.tune-label-container {
-  margin-left: 1.5rem !important;
+.tune-switch {
+  @apply mr-3;
 }
 
 .tune-button {

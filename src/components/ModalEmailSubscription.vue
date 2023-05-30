@@ -10,7 +10,7 @@ const {
   subscribe,
   reset,
   postSubscribeState,
-  isSuccessfullyFinished,
+  isSuccessful,
   loading,
   loadEmailSubscriptions
 } = useEmailSubscription();
@@ -34,7 +34,7 @@ function submit() {
         <h3>{{ $t('emailSubscription.title') }}</h3>
       </div>
     </template>
-    <div v-if="isSuccessfullyFinished" class="m-4 text-center">
+    <div v-if="isSuccessful" class="m-4 text-center">
       <i-ho-check-circle
         class="mx-auto my-4 text-center text-[3em] text-green"
       />
@@ -53,7 +53,7 @@ function submit() {
     <div v-else class="m-4">
       {{ $t('emailSubscription.description') }}
     </div>
-    <form v-if="!isSuccessfullyFinished" class="m-4" @submit.prevent="submit">
+    <form v-if="!isSuccessful" class="m-4" @submit.prevent="submit">
       <BaseInput
         v-model="email"
         placeholder="Your email"
@@ -80,7 +80,7 @@ function submit() {
       </BaseButton>
     </form>
 
-    <template v-if="isSuccessfullyFinished" #footer>
+    <template v-if="isSuccessful" #footer>
       <BaseButton class="w-full" primary @click="close">
         {{ $t('close') }}
       </BaseButton>

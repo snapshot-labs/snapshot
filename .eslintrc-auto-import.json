@@ -64,7 +64,6 @@
     "useCssModule": true,
     "useCssVars": true,
     "useDelegate": true,
-    "useEmailSubscription": true,
     "useEns": true,
     "useExtendedSpaces": true,
     "useFlashNotification": true,
@@ -115,7 +114,7 @@
     "watchTxStatus": true,
     "toValue": true,
     "useFlaggedMessageStatus": true,
-    "useEmailFetch": true,
+    "useEmailSubscription": true,
     "useEmailFetchClient": true
   }
 }

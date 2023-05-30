@@ -1,5 +1,4 @@
 import { createSharedComposable } from '@vueuse/core';
-import { useEmailFetchClient } from './useEmailFetch';
 
 enum Status {
   waiting,
@@ -20,11 +19,9 @@ type SubscriptionType = (typeof subscriptionTypes)[number];
 function useEmailSubscriptionComposable() {
   const { t } = useI18n();
 
-  const status: Ref<Status> = ref(Status.waiting);
-  const isSuccessfullyFinished = computed(
-    () => status.value === Status.success
-  );
-  const postSubscribeLevel: Ref<Level> = ref(Level.info);
+  const status = ref<Status>(Status.waiting);
+  const isSuccessful = computed(() => status.value === Status.success);
+  const postSubscribeLevel = ref<Level>(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
   const isSubscribed = ref(false);
@@ -33,7 +30,7 @@ function useEmailSubscriptionComposable() {
   const { fetchSubscriptions, subscribeWithEmail, updateEmailSubscriptions } =
     useEmailFetchClient();
 
-  const apiSubscriptions: Ref<SubscriptionType[]> = ref([]);
+  const apiSubscriptions = ref<SubscriptionType[]>([]);
   const clientSubscriptions = computed({
     get() {
       return subscriptionTypes.reduce((acc, type) => {
@@ -112,7 +109,7 @@ function useEmailSubscriptionComposable() {
     status,
     loading,
     reset,
-    isSuccessfullyFinished,
+    isSuccessful,
     isSubscribed,
     postSubscribeState: {
       level: postSubscribeLevel,

@@ -41,16 +41,15 @@ const submit = async () => {
       </div>
     </template>
 
-    <div class="m-4 text-center">
+    <div class="mx-4 mb-4 mt-2 text-center">
       <p class="text-sm text-skin-text opacity-60">
         {{ t('emailManagement.subtitle') }}
       </p>
     </div>
 
-    <form class="m-4 flex flex-col space-y-4" @submit.prevent="submit">
+    <form class="mx-6 my-4 flex flex-col space-y-4" @submit.prevent="submit">
       <TuneSwitch
         :model-value="clientSubscriptions.newProposal"
-        class="ml-4 mt-auto flex items-start space-x-2"
         :label="t('emailManagement.optionNewProposal')"
         :sublabel="t('emailManagement.optionNewProposalDescription')"
         @update:model-value="updateSubscriptions('newProposal', $event)"
@@ -58,7 +57,6 @@ const submit = async () => {
 
       <TuneSwitch
         :model-value="clientSubscriptions.closedProposal"
-        class="ml-4 mt-auto flex items-start space-x-2"
         :label="t('emailManagement.optionClosedProposal')"
         :sublabel="t('emailManagement.optionClosedProposalDescription')"
         @update:model-value="updateSubscriptions('closedProposal', $event)"
@@ -66,7 +64,6 @@ const submit = async () => {
 
       <TuneSwitch
         :model-value="clientSubscriptions.summary"
-        class="ml-4 mt-auto flex items-start space-x-2"
         :label="t('emailManagement.optionSummary')"
         :sublabel="t('emailManagement.optionSummaryDescription')"
         @update:model-value="updateSubscriptions('summary', $event)"
@@ -76,7 +73,7 @@ const submit = async () => {
         v-if="canRemoveEmail"
         v-model="shouldRemoveEmail"
         :hint="t('emailManagement.removeEmail')"
-        class="pointer-events-none ml-4 mt-auto cursor-pointer self-start text-sm text-skin-text opacity-60"
+        class="pointer-events-none ml-2 text-sm opacity-60"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
