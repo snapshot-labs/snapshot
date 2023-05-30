@@ -1,6 +1,7 @@
 import { useStorage } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { validateForm } from '@/helpers/validation';
 
 interface ProposalForm {
   name: string;
@@ -70,15 +71,14 @@ export function useFormSpaceProposal() {
     userSelectedDateStart.value = false;
   }
 
-  const { getValidationMessage } = useFormValidation(schemas.proposal, form);
+  const validationErrors = computed(() => {
+    const errors = validateForm(schemas.proposal, form.value);
+    return errors;
+  });
 
-  function getValidation(field: string): { message: string; push: boolean } {
-    const message = getValidationMessage(field);
-    return {
-      message: message || '',
-      push: false
-    };
-  }
+  const isValid = computed(() => {
+    return Object.values(validationErrors.value).length === 0;
+  });
 
   return {
     form,
@@ -87,7 +87,8 @@ export function useFormSpaceProposal() {
     userSelectedDateEnd,
     sourceProposalLoaded,
     sourceProposal,
-    resetForm,
-    getValidation
+    validationErrors,
+    isValid,
+    resetForm
   };
 }

@@ -50,8 +50,9 @@ const {
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
-  resetForm,
-  getValidation
+  validationErrors,
+  isValid,
+  resetForm
 } = useFormSpaceProposal();
 
 const isValidAuthor = ref(false);
@@ -115,8 +116,9 @@ const stepIsValid = computed(() => {
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     isValidAuthor.value &&
-    !getValidation('name').message &&
-    !getValidation('discussion').message &&
+    !validationErrors.value.name &&
+    !validationErrors.value.body &&
+    !validationErrors.value.discussion &&
     !formContainsShortUrl.value
   )
     return true;
@@ -363,7 +365,7 @@ onMounted(async () => {
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
-          :disabled="!isFormValid"
+          :disabled="!isFormValid || !isValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
