@@ -73,7 +73,7 @@ const submit = async () => {
         v-if="canRemoveEmail"
         v-model="shouldRemoveEmail"
         :hint="t('emailManagement.removeEmail')"
-        class="pointer-events-none ml-2 text-sm opacity-60"
+        class="pointer-events-none ml-3 text-sm opacity-60"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
