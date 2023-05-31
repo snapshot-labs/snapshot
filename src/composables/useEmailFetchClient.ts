@@ -1,5 +1,6 @@
 import sign, { DataType } from '@/helpers/sign';
 import { createFetch } from '@vueuse/core';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const SubscribeSchema: DataType = {
   Subscribe: [
@@ -26,14 +27,12 @@ const useEmailFetch = createFetch({
 });
 
 export function useEmailFetchClient() {
-  function signWithAlias(message, typesSchema) {
-    const { aliasWallet, actionWithAlias } = useAliasAction();
+  const { web3Account } = useWeb3();
 
-    return actionWithAlias(() => {
-      const wallet = aliasWallet.value;
-      const address = aliasWallet.value.address;
-      return sign(wallet, address, message, typesSchema);
-    });
+  function plainSign(message, typesSchema) {
+    const { web3 } = getInstance();
+
+    return sign(web3, web3Account.value, message, typesSchema);
   }
 
   const fetchSubscriptions = body => {
@@ -41,7 +40,7 @@ export function useEmailFetchClient() {
   };
 
   const subscribeWithEmail = async unsignedParams => {
-    const signature = await signWithAlias(unsignedParams, SubscribeSchema);
+    const signature = await plainSign(unsignedParams, SubscribeSchema);
     const body = {
       method: 'snapshot.subscribe',
       params: {
@@ -54,7 +53,7 @@ export function useEmailFetchClient() {
   };
 
   const updateEmailSubscriptions = async unsignedParams => {
-    const signature = await signWithAlias(
+    const signature = await plainSign(
       unsignedParams,
       UpdateSubscriptionsSchema
     );

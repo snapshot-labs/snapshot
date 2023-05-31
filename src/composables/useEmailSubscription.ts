@@ -26,7 +26,7 @@ function useEmailSubscriptionComposable() {
   const loading = ref(false);
   const isSubscribed = ref(false);
   const shouldRemoveEmail = ref(true);
-  const { aliasWallet } = useAliasAction();
+  const { web3Account } = useWeb3();
   const { fetchSubscriptions, subscribeWithEmail, updateEmailSubscriptions } =
     useEmailFetchClient();
 
@@ -49,7 +49,7 @@ function useEmailSubscriptionComposable() {
   const loadEmailSubscriptions = async () => {
     loading.value = true;
     const { error, data } = await fetchSubscriptions({
-      address: aliasWallet.value.address
+      address: web3Account.value
     });
     loading.value = false;
     if (!error.value && data.value) {
@@ -61,7 +61,7 @@ function useEmailSubscriptionComposable() {
   const subscribe = async (email: string) => {
     loading.value = true;
     const { data } = await subscribeWithEmail({
-      address: aliasWallet.value.address,
+      address: web3Account.value,
       email
     });
     loading.value = false;
@@ -76,7 +76,7 @@ function useEmailSubscriptionComposable() {
   const updateSubscriptions = async () => {
     loading.value = true;
     await updateEmailSubscriptions({
-      address: aliasWallet.value.address,
+      address: web3Account.value,
       email: '',
       subscriptions: apiSubscriptions.value
     });
