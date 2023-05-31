@@ -18,7 +18,9 @@ const { formatCompactNumber } = useIntl();
 </script>
 
 <template>
-  <div class="flex h-full flex-col justify-between rounded-xl border p-4">
+  <div
+    class="flex h-full flex-col justify-between border-y p-4 md:rounded-xl md:border"
+  >
     <button @click="emit('clickUser')">
       <div class="flex text-left">
         <AvatarUser :address="delegate.id" size="48" />

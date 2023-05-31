@@ -7,10 +7,13 @@ const props = defineProps<{
 }>();
 
 const {
+  fetchDelegate,
   fetchDelegates,
   fetchMoreDelegates,
+  delegate,
   delegates,
   isLoadingDelegates,
+  isLoadingDelegate,
   hasMoreDelegates
 } = useDelegates(props.space.delegation);
 const { profiles, loadProfiles } = useProfiles();
@@ -40,35 +43,16 @@ const matchFilter = computed(() => {
   }
 });
 
-const queryVariables = computed(() => {
-  return {
-    orderBy: matchFilter.value,
-    id: searchInput.value
-  };
-});
-
 const filterItems = computed(() => {
   return [
     {
-      text: t('delegates.filters.mostVotingPower'),
-      action: 'mostVotingPower',
-      extras: { selected: selectedFilter.value === 'mostVotingPower' }
+      value: 'mostVotingPower',
+      name: t('delegates.filters.mostVotingPower')
     },
     {
-      text: t('delegates.filters.mostDelegators'),
-      action: 'mostDelegators',
-      extras: { selected: selectedFilter.value === 'mostDelegators' }
+      value: 'mostDelegators',
+      name: t('delegates.filters.mostDelegators')
     }
-    // {
-    //   text: t('delegates.filters.mostProposals'),
-    //   action: 'mostProposals',
-    //   extras: { selected: selectedFilter.value === 'mostProposals' }
-    // },
-    // {
-    //   text: t('delegates.filters.mostVotes'),
-    //   action: 'mostVotes',
-    //   extras: { selected: selectedFilter.value === 'mostVotes' }
-    // }
   ];
 });
 
@@ -109,7 +93,7 @@ function handleClickProfile(id = '') {
 useInfiniteScroll(
   document,
   () => {
-    if (hasMoreDelegates.value) fetchMoreDelegates(queryVariables.value);
+    if (hasMoreDelegates.value) fetchMoreDelegates(matchFilter.value);
   },
   { distance: 250, interval: 500 }
 );
@@ -119,20 +103,25 @@ watch(delegates, () => {
 });
 
 watchDebounced(
-  queryVariables,
+  searchInput,
   () => {
-    fetchDelegates(queryVariables.value);
+    fetchDelegate(searchInput.value);
   },
   { debounce: 300 }
 );
 
+watch(matchFilter, () => {
+  fetchDelegates(matchFilter.value);
+});
+
 onMounted(() => {
-  fetchDelegates(queryVariables.value);
+  if (searchInput.value) fetchDelegate(searchInput.value);
+  fetchDelegates(matchFilter.value);
 });
 </script>
 
 <template>
-  <BaseContainer>
+  <BaseContainer class="!px-0 md:!px-4">
     <div class="mb-3 px-4 md:px-0">
       <ButtonBack
         @click="
@@ -142,32 +131,26 @@ onMounted(() => {
       <h1 v-text="$t('delegates.header')" />
     </div>
     <BaseBlock class="mb-4">
-      <div class="flex h-[42px] justify-between">
-        <div class="flex gap-2">
+      <div class="justify-between md:flex">
+        <div class="gap-2 sm:flex">
           <div
-            class="flex w-[330px] rounded-full border pl-3 pr-0 focus-within:border-skin-text"
+            class="flex w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[330px]"
           >
             <BaseSearch
               :model-value="searchInput"
               :placeholder="$t('searchPlaceholderVotes')"
-              class="flex-auto pr-3"
+              class="h-[42px] flex-auto pr-3"
               @update:model-value="handleSearchInput"
             />
           </div>
-          <TuneMenu :items="filterItems" @select="handleSelectFilter">
-            <template #button>
-              <TuneButton class="h-full">
-                <div class="leading-2 flex items-center leading-3">
-                  <span class="text-skin-link">
-                    {{ $t(`delegates.filters.${selectedFilter}`) }}
-                  </span>
-                  <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
-                </div>
-              </TuneButton>
-            </template>
-          </TuneMenu>
+          <TuneListbox
+            class="mt-2 sm:mt-0"
+            :model-value="selectedFilter"
+            :items="filterItems"
+            @update:model-value="handleSelectFilter"
+          />
         </div>
-        <div class="flex gap-2">
+        <div class="mt-4 flex justify-center gap-2 md:mt-0">
           <TuneButton primary class="px-5" @click="handleClickDelegate()">
             Delegate
           </TuneButton>
@@ -178,34 +161,51 @@ onMounted(() => {
         </div>
       </div>
     </BaseBlock>
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-      <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
-      <template v-else>
-        <div v-for="(delegate, i) in delegates" :key="i">
-          <SpaceDelegatesListItem
-            :delegate="delegate"
-            :profiles="profiles"
-            :space="space"
-            @click-delegate="handleClickDelegate(delegate.id)"
-            @click-user="handleClickProfile(delegate.id)"
-          />
-        </div>
-      </template>
-    </div>
-    <div v-if="hasMoreDelegates" class="mt-4 flex">
-      <LoadingSpinner class="mx-auto" big />
-    </div>
-    <BaseNoResults
-      v-else-if="!delegates.length && !isLoadingDelegates"
-      use-block
-    />
+    <template v-if="searchInput">
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
+        <SpaceDelegatesListItem
+          v-else-if="delegate"
+          :delegate="delegate"
+          :profiles="profiles"
+          :space="space"
+          @click-delegate="handleClickDelegate(delegate.id)"
+          @click-user="handleClickProfile(delegate.id)"
+        />
+      </div>
+      <BaseNoResults v-if="!delegate" use-block />
+    </template>
+    <template v-else>
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+        <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
+        <template v-else>
+          <div v-for="(d, i) in delegates" :key="i">
+            <SpaceDelegatesListItem
+              :delegate="d"
+              :profiles="profiles"
+              :space="space"
+              @click-delegate="handleClickDelegate(d.id)"
+              @click-user="handleClickProfile(d.id)"
+            />
+          </div>
+        </template>
+      </div>
+      <div v-if="hasMoreDelegates" class="mt-4 flex">
+        <LoadingSpinner class="mx-auto" big />
+      </div>
+      <BaseNoResults
+        v-else-if="!delegates.length && !isLoadingDelegates"
+        use-block
+      />
+    </template>
+
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
         :open="showModalDelegate"
         :space="space"
         :selected-delegate="selectedDelegate"
         @close="showModalDelegate = false"
-        @reload="fetchDelegates(queryVariables)"
+        @reload="fetchDelegates(matchFilter)"
       />
 
       <SpaceDelegatesProfileModal

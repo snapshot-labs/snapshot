@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import {
-  DelegateWithPercent,
-  ExtendedSpace,
-  Profile
-} from '@/helpers/interfaces';
+import { ExtendedSpace, Profile } from '@/helpers/interfaces';
 import { explorerUrl } from '@/helpers/utils';
 
 const props = defineProps<{
@@ -17,17 +13,15 @@ const emit = defineEmits(['close']);
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber, formatPercentNumber } = useIntl();
-const { fetchDelegate } = useDelegates(props.space.delegation);
+const { fetchDelegate, delegate } = useDelegates(props.space.delegation);
 const { domain } = useApp();
 
-const delegate = ref<DelegateWithPercent | null>(null);
 const showModalStatement = ref(false);
 
 watch(
   () => props.address,
   async () => {
-    delegate.value = null;
-    delegate.value = await fetchDelegate(props.address);
+    fetchDelegate(props.address);
   }
 );
 </script>

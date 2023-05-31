@@ -1,17 +1,27 @@
 import { DelegateWithPercent } from '@/helpers/interfaces';
 import { StandardConfig, QueryParams } from './standardConfig';
 
+type Governance = {
+  delegatedVotes: string;
+  totalTokenHolders: string;
+  totalDelegates: string;
+};
+
+type Delegate = {
+  id: string;
+  delegatedVotes: string;
+  tokenHoldersRepresentedAmount: number;
+};
 export class CompoundGovernorConfig extends StandardConfig {
   getDelegatesQuery(params: QueryParams): Record<string, any> {
-    const { first, skip, orderBy, id } = params;
+    const { first, skip, orderBy } = params;
     return {
       delegates: {
         __args: {
           first,
           skip,
           orderBy: orderBy ? orderBy : 'delegatedVotes',
-          orderDirection: 'desc',
-          where: id ? { id } : {}
+          orderDirection: 'desc'
         },
         id: true,
         delegatedVotes: true,
@@ -29,18 +39,6 @@ export class CompoundGovernorConfig extends StandardConfig {
   }
 
   formatDelegatesResponse(response: any): DelegateWithPercent[] {
-    type Governance = {
-      delegatedVotes: string;
-      totalTokenHolders: string;
-      totalDelegates: string;
-    };
-
-    type Delegate = {
-      id: string;
-      delegatedVotes: string;
-      tokenHoldersRepresentedAmount: number;
-    };
-
     const governanceData = response.governance as Governance;
     const delegatesData = response.delegates as Delegate[];
 
@@ -101,8 +99,9 @@ export class CompoundGovernorConfig extends StandardConfig {
   }
 
   formatDelegateResponse(response: any): DelegateWithPercent {
-    const delegate = response.delegate;
-    const governanceData = response.governance;
+    const delegate = response.delegate as Delegate;
+    const governanceData = response.governance as Governance;
+
     const delegatorsPercentage =
       Number(delegate.tokenHoldersRepresentedAmount) /
       Number(governanceData.totalTokenHolders);
@@ -121,16 +120,14 @@ export class CompoundGovernorConfig extends StandardConfig {
     };
   }
 
-  initializeUser(address: string): DelegateWithPercent[] {
-    return [
-      {
-        id: address,
-        delegatedVotes: '0',
-        tokenHoldersRepresentedAmount: 0,
-        delegatorsPercentage: 0,
-        votesPercentage: 0
-      }
-    ];
+  initEmptyDelegate(address: string): DelegateWithPercent {
+    return {
+      id: address,
+      delegatedVotes: '0',
+      tokenHoldersRepresentedAmount: 0,
+      delegatorsPercentage: 0,
+      votesPercentage: 0
+    };
   }
 
   getContractDelegateMethod(): { abi: string[]; action: string } {

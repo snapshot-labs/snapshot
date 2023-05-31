@@ -3,8 +3,7 @@ import { DelegateWithPercent } from '@/helpers/interfaces';
 export type QueryParams = {
   first: number;
   skip: number;
-  id: string;
-  orderBy?: string;
+  orderBy: string;
 };
 
 export abstract class StandardConfig {
@@ -21,6 +20,6 @@ export abstract class StandardConfig {
   abstract getBalanceQuery(id: string): Record<string, any>;
   abstract formatBalanceResponse(response: Record<string, any>): string;
 
-  abstract initializeUser(address: string): DelegateWithPercent[];
+  abstract initEmptyDelegate(address: string): DelegateWithPercent;
   abstract getContractDelegateMethod(): { abi: string[]; action: string };
 }

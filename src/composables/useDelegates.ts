@@ -6,11 +6,6 @@ import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 
-type QueryVariables = {
-  id: string;
-  orderBy?: string;
-};
-
 type DelegatesConfig = {
   standard: string;
   contract: string;
@@ -35,19 +30,20 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
 
   const standardConfig = createStandardConfig(delegatesConfig.standard);
 
-  const delegates: Ref<DelegateWithPercent[]> = ref([]);
+  const delegates = ref<DelegateWithPercent[]>([]);
+  const delegate = ref<DelegateWithPercent | null>(null);
+  const isLoadingDelegate = ref(false);
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
   const resolvedAddress = ref<string | null>(null);
 
-  async function _fetchDelegates(queryVariables: QueryVariables, skip = 0) {
+  async function _fetchDelegates(orderBy: string, skip = 0) {
     const query: any = standardConfig.getDelegatesQuery({
       skip,
       first: DELEGATES_LIMIT,
-      orderBy: queryVariables.orderBy || undefined,
-      id: resolvedAddress.value ? resolvedAddress.value : queryVariables.id
+      orderBy
     });
 
     const response = await subgraphRequest(
@@ -58,17 +54,12 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     return standardConfig.formatDelegatesResponse(response);
   }
 
-  async function fetchDelegates(variables: QueryVariables) {
+  async function fetchDelegates(orderBy: string) {
     if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
 
     try {
-      resolvedAddress.value = await resolveName(variables.id || '');
-
-      let response = await _fetchDelegates(variables);
-
-      if (resolvedAddress.value && !response.length)
-        response = standardConfig.initializeUser(resolvedAddress.value);
+      const response = await _fetchDelegates(orderBy);
 
       delegates.value = response;
 
@@ -81,12 +72,12 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     }
   }
 
-  async function fetchMoreDelegates(variables: QueryVariables) {
+  async function fetchMoreDelegates(orderBy: string) {
     if (!delegates.value.length || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
 
     try {
-      const response = await _fetchDelegates(variables, delegates.value.length);
+      const response = await _fetchDelegates(orderBy, delegates.value.length);
 
       delegates.value = [...delegates.value, ...response];
 
@@ -100,14 +91,32 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   }
 
   async function fetchDelegate(id: string) {
-    const query: any = standardConfig.getDelegateQuery(id.toLowerCase());
+    if (isLoadingDelegate.value) return;
+    delegate.value = null;
+    isLoadingDelegate.value = true;
+    try {
+      resolvedAddress.value = await resolveName(id);
 
-    const response = await subgraphRequest(
-      adjustUrl(delegatesConfig.subgraphUrl),
-      query
-    );
+      if (!resolvedAddress.value) return;
+      const query: any = standardConfig.getDelegateQuery(resolvedAddress.value);
 
-    return standardConfig.formatDelegateResponse(response);
+      const response = await subgraphRequest(
+        adjustUrl(delegatesConfig.subgraphUrl),
+        query
+      );
+
+      if (resolvedAddress.value && !response.delegate)
+        response.delegate = standardConfig.initEmptyDelegate(
+          resolvedAddress.value
+        );
+
+      if (response.delegate)
+        delegate.value = standardConfig.formatDelegateResponse(response);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isLoadingDelegate.value = false;
+    }
   }
 
   async function fetchDelegateBalance(id: string) {
@@ -134,15 +143,17 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   }
 
   return {
+    isLoadingDelegate,
     isLoadingDelegates,
     isLoadingMoreDelegates,
     hasDelegatesLoadFailed,
     hasMoreDelegates,
+    delegate,
     delegates,
-    setDelegate,
+    fetchDelegate,
     fetchDelegates,
     fetchMoreDelegates,
-    fetchDelegate,
+    setDelegate,
     fetchDelegateBalance
   };
 }
