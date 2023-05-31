@@ -14,6 +14,7 @@ const {
   hasMoreDelegates
 } = useDelegates(props.space.delegation);
 const { profiles, loadProfiles } = useProfiles();
+const { modalAccountOpen } = useModal();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -92,6 +93,10 @@ function handleSelectFilter(e: string) {
 }
 
 function handleClickDelegate(id = '') {
+  if (!web3Account.value) {
+    modalAccountOpen.value = true;
+    return;
+  }
   selectedDelegate.value = id;
   showModalDelegate.value = true;
 }
@@ -190,6 +195,10 @@ onMounted(() => {
     <div v-if="hasMoreDelegates" class="mt-4 flex">
       <LoadingSpinner class="mx-auto" big />
     </div>
+    <BaseNoResults
+      v-else-if="!delegates.length && !isLoadingDelegates"
+      use-block
+    />
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
         :open="showModalDelegate"
