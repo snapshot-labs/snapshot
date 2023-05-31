@@ -365,7 +365,7 @@ onMounted(async () => {
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING)
           "
-          :disabled="!isFormValid || !isValid"
+          :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
           class="block w-full"
           primary
