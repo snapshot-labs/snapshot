@@ -2,7 +2,6 @@
 defineProps<{
   open: boolean;
   title: string;
-  message: string;
   level: 'info' | 'warning' | 'warning-red';
 }>();
 
@@ -17,8 +16,8 @@ defineEmits(['close']);
       </div>
     </template>
 
-    <BaseMessageBlock :level="level" class="m-4">
-      {{ message }}
+    <BaseMessageBlock :level="level" class="m-4 whitespace-pre-line">
+      <slot name="message" />
     </BaseMessageBlock>
     <template #footer>
       <BaseButton class="w-full" primary @click="$emit('close')">
