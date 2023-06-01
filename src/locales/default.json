@@ -1,6 +1,8 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchVotingPower": "Voting power",
+  "searchChoice": "Choice",
   "spaceCount": "{0} space(s)",
   "createSpace": "Create space",
   "backToHome": "Home",
@@ -8,7 +10,7 @@
   "poweredBy": "Powered by",
   "results": "Results",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
-  "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a Voting Validation. Head to Voting in the sidebar to set it up. This combination reduces the risk of spam and sybil attacks. {article}",
+  "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a Gitcoin Passport voting validation. This combination reduces the risk of spam and sybil attacks. {article}",
   "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a vote validation. To continue go one step back and select the \"One person, one vote\" option. {article}",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
@@ -265,7 +267,16 @@
       }
     },
     "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing file"
+    "preparingCsvVotes": "Preparing file",
+    "votesModal": {
+      "title": "Votes",
+      "filtersPopover": {
+        "title": "Filters",
+        "votingPower": "Voting power",
+        "onlyVotesWithReason": "Only show votes with a reason",
+        "more": "More"
+      }
+    }
   },
   "proposals": {
     "header": "Proposals",
@@ -295,7 +306,15 @@
   "modalNotifications": {
     "wrong timestamp": {
       "title": "Wrong timestamp",
-      "message": "The message timestamp is not valid. Please check the clock on your device, make sure it is set to the correct date and time and try again."
+      "message": "The message timestamp is not valid. Please check the clock on your device, make sure it is set to the correct date and time and try again.\n\n If you need further assistance, feel free to reach out to our support team on {discord}."
+    },
+    "space with ticket requires voting validation": {
+      "title": "Missing voting validation",
+      "message": "Your proposal cannot be submitted due to a missing Gitcoin Passport voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation.\n\n If further assistance is needed, contact our support team on {discord}."
+    },
+    "space missing proposal validation": {
+      "title": "Missing proposal validation",
+      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. To prevent unauthorized proposals and spam, add a validation rule in your space settings.\n\n For assistance, reach out to our support team on {discord}."
     }
   },
   "modalTerms": {
@@ -696,7 +715,9 @@
     "basic": {
       "label": "Basic",
       "description": "Use a minimum score along with any strategy to determine if a user can vote.",
-      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal. "
+      "invalidMessage": "You do not meet the minimum balance requirement of {amount} {symbol} to vote on this proposal.",
+      "minScoreHint": "The score is calculated with Voting Strategies used by the space.",
+      "customStrategiesHint": "Calculate the score with a different configuration of Voting Strategies"
     },
     "passport-gated": {
       "label": "Gitcoin Passport gated",

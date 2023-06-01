@@ -249,6 +249,11 @@ export interface Vote {
   created: number;
 }
 
+export interface VoteFilters {
+  orderDirection: string;
+  onlyWithReason: boolean;
+}
+
 // Execution
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
