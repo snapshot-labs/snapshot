@@ -308,11 +308,11 @@
     },
     "space with ticket requires voting validation": {
       "title": "Missing voting validation",
-      "message": "The system is unable to submit this proposal due to a missing validation rule.\n\n In order to use the \"ticket\" strategy you are required to set a Gitcoin Passport voting validation. This combination reduces the risk of spam and sybil attacks.\n\n Please update your settings accordingly and try again. If you need further assistance, feel free to reach out to our support team on {discord}."
+      "message": "Your proposal cannot be submitted due to a missing Gitcoin Passport voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation. If further assistance is needed, contact our support team on {discord}."
     },
     "space missing proposal validation": {
       "title": "Missing proposal validation",
-      "message": "The system is unable to submit this proposal due to a missing validation rule.\n\n This rule has been recently enforced to prevent unauthorized and spam proposals. In order to resolve this issue, you need to enforce some form of proposal validation in your space settings. This could be as simple as allowing only members of the space to post proposals or defining a minimum amount of voting power to be able to propose.\n\n Please update your settings accordingly and try again. If you need further assistance, feel free to reach out to our support team on {discord}."
+      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. For preventing unauthorized proposals and spam, add a validation rule in your space settings. For assistance, reach out to our support team on {discord}."
     }
   },
   "modalTerms": {
