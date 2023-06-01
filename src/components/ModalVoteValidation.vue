@@ -159,18 +159,18 @@ watch(showStrategies, () => {
           :error="validationErrors"
         />
 
-        <TuneSwitch
-          v-if="input.name === 'basic'"
-          v-model="showStrategies"
-          :label="$t('useCustomStrategies')"
-          :hint="$t('votingValidation.basic.customStrategiesHint')"
-        />
-
         <TuneTextareaJson
           v-else
           v-model="input.params"
           :placeholder="$t('votingValidation.paramPlaceholder')"
           @update:is-valid="value => (isValidParams = value)"
+        />
+
+        <TuneSwitch
+          v-if="input.name === 'basic'"
+          v-model="showStrategies"
+          :label="$t('useCustomStrategies')"
+          :hint="$t('votingValidation.basic.customStrategiesHint')"
         />
 
         <FormArrayStrategies
