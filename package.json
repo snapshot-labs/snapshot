@@ -83,7 +83,7 @@
     "cypress": "^12.11.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.39.0",
-    "eslint-plugin-cypress": "^2.13.2",
+    "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^9.9.2",
