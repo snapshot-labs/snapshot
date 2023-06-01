@@ -308,11 +308,11 @@
     },
     "space with ticket requires voting validation": {
       "title": "Missing voting validation",
-      "message": "Your proposal cannot be submitted due to a missing Gitcoin Passport voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation. If further assistance is needed, contact our support team on {discord}."
+      "message": "Your proposal cannot be submitted due to a missing Gitcoin Passport voting validation rule required with the 'ticket' strategy. Please adjust your settings by either using another strategy or adding the required validation.\n\n If further assistance is needed, contact our support team on {discord}."
     },
     "space missing proposal validation": {
       "title": "Missing proposal validation",
-      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. For preventing unauthorized proposals and spam, add a validation rule in your space settings. For assistance, reach out to our support team on {discord}."
+      "message": "Your proposal cannot be submitted due to a missing proposal validation rule. To prevent unauthorized proposals and spam, add a validation rule in your space settings.\n\n For assistance, reach out to our support team on {discord}."
     }
   },
   "modalTerms": {
