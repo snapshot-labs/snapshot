@@ -11,10 +11,20 @@ const { items } = useModalNotification();
         v-if="defaults.modalNotifications?.[item.description]"
         :open="items.length > 0"
         :title="$t(`modalNotifications.${item.description}.title`)"
-        :message="$t(`modalNotifications.${item.description}.message`)"
         :level="item.type"
         @close="item.remove()"
       >
+        <template #message>
+          <i18n-t
+            :keypath="`modalNotifications.${item.description}.message`"
+            tag="span"
+            scope="global"
+          >
+            <template #discord>
+              <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+            </template>
+          </i18n-t>
+        </template>
       </ModalMessage>
     </template>
   </teleport>

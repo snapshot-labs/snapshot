@@ -130,6 +130,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       <MessageWarningFlagged
         v-if="isMessageVisible"
         type="proposal"
+        responsive
         @forceShow="setMessageVisibility(false)"
       />
 
