@@ -251,7 +251,7 @@ export default {
       this.moduleType = moduleType;
       this.moduleAddress = moduleAddress;
       this.moduleTypeReady = true;
-      this.gnosisSafeAddress = '0x78E1F985e36A2F5CF3b15a9d7214E71eCaEADFB0';
+      this.gnosisSafeAddress = dao;
       this.transactionConfig = {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,
