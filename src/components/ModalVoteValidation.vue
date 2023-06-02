@@ -72,6 +72,10 @@ function select(n: string) {
       showStrategies.value = true;
     }
   }
+
+  if (n === 'passport-gated' && !input.value.params.operator) {
+    input.value.params.operator = 'OR';
+  }
 }
 
 function handleSubmit() {
