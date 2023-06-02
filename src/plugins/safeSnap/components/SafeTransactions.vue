@@ -1,13 +1,6 @@
 <script>
-import Plugin, {
-  createBatch,
-  EIP3770_PREFIXES,
-  getGnosisSafeBalances,
-  getGnosisSafeCollectibles
-} from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
-
 import SafeSnapTooltip from './Tooltip.vue';
 import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
@@ -15,6 +8,13 @@ import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButto
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { formatUnits } from '@ethersproject/units';
+import Plugin, {
+  createBatch,
+  EIP3770_PREFIXES,
+  getGnosisSafeBalances,
+  getGnosisSafeCollectibles
+} from '../index';
 
 const plugin = new Plugin();
 
@@ -69,56 +69,73 @@ export const ensureRightNetwork = async chainId => {
   }
 };
 
-async function fetchBalances(network, gnosisSafeAddress) {
-  if (gnosisSafeAddress) {
-    try {
-      // TODO get safe tokens from contract?
-      const balances = await getGnosisSafeBalances(network, gnosisSafeAddress);
-      // console.log(':fetchBalances -> balances', balances);
-
-      const getTokensUniswap = new Promise(resolve => {
-        fetch('https://gateway.ipfs.io/ipns/tokens.uniswap.org')
-          .then(res => res.json())
-          .then(list => resolve(list.tokens))
-          .catch(() => resolve([]));
-      });
-      const getTokensSnapshot = new Promise(resolve => {
-        fetch('https://sh5.co/api/moderation?list=verifiedTokens')
-          .then(res => res.json())
-          .then(list => resolve(list.verifiedTokens.tokens))
-          .catch(() => resolve([]));
-      });
-
-      const tokensLists = await Promise.all([
-        getTokensUniswap,
-        getTokensSnapshot
-      ]);
-      const tokens = tokensLists.flat();
-      // console.log(':fetchBalances -> tokens', tokens);
-
-      const isVerified = tokenAddress => {
-        return tokens.find(
-          token => token.address.toLowerCase() === tokenAddress.toLowerCase()
-        );
-      };
-
-      return balances
-        .filter(balance => balance.token)
-        .map(balance => ({
-          ...balance.token,
-          address: balance.tokenAddress,
-          verified: isVerified(balance.tokenAddress)
-        }))
-        .sort((a, b) => {
-          if (a.verified && !b.verified) return -1;
-          if (!a.verified && b.verified) return 1;
-          return 0;
-        });
-    } catch (e) {
-      console.warn('Error fetching balances');
-    }
+async function fetchBalances(network, safeAddress) {
+  if (!safeAddress) {
+    return [];
   }
-  return [];
+
+  try {
+    const balances = await getGnosisSafeBalances(network, safeAddress);
+
+    const uniswapTokensPromise = fetchTokens(
+      'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
+    );
+    const snapshotTokensPromise = fetchTokens(
+      'https://sh5.co/api/moderation?list=verifiedTokens'
+    );
+
+    const tokensLists = await Promise.all([
+      uniswapTokensPromise,
+      snapshotTokensPromise
+    ]);
+    const tokens = tokensLists.flat();
+
+    return sortBalances(enhanceBalances(balances, tokens));
+  } catch (e) {
+    console.warn('Error fetching balances');
+    return [];
+  }
+}
+
+function fetchTokens(url, isNested) {
+  return fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (isNested && 'verifiedTokens' in data) {
+        return data.verifiedTokens.tokens;
+      }
+      return 'tokens' in data ? data.tokens : [];
+    })
+    .catch(() => []);
+}
+
+function enhanceBalances(balances, tokens) {
+  return balances
+    .filter(balance => balance.token)
+    .map(balance => enhanceBalance(balance, tokens));
+}
+
+function enhanceBalance(balance, tokens) {
+  const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
+  return {
+    ...balance.token,
+    address: balance.tokenAddress,
+    balance: balance.balance
+      ? formatUnits(balance.balance, balance.token.decimals)
+      : 0,
+    verified: !!verifiedToken,
+    chainId: verifiedToken ? verifiedToken.chainId : undefined
+  };
+}
+
+function getVerifiedToken(tokenAddress, tokens) {
+  return tokens.find(
+    token => token.address.toLowerCase() === tokenAddress.toLowerCase()
+  );
+}
+
+function sortBalances(balances) {
+  return balances.sort((a, b) => b.verified - a.verified);
 }
 
 async function fetchCollectibles(network, gnosisSafeAddress) {
@@ -234,7 +251,7 @@ export default {
       this.moduleType = moduleType;
       this.moduleAddress = moduleAddress;
       this.moduleTypeReady = true;
-      this.gnosisSafeAddress = dao;
+      this.gnosisSafeAddress = '0x78E1F985e36A2F5CF3b15a9d7214E71eCaEADFB0';
       this.transactionConfig = {
         ...this.transactionConfig,
         gnosisSafeAddress: this.gnosisSafeAddress,

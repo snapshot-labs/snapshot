@@ -39,7 +39,7 @@ const tokensFiltered = computed(() => {
     filters.push(
       showUnverifiedTokens.value
         ? true
-        : token.address === 'main' || token.verified !== undefined
+        : token.address === 'main' || token.verified
     );
 
     return !filters.includes(false);
@@ -48,7 +48,7 @@ const tokensFiltered = computed(() => {
 
 function handleTokenClick(token) {
   // console.log(':handleTokenClick', token);
-  const isVerified = token.address === 'main' || token.verified !== undefined;
+  const isVerified = token.address === 'main' || token.verified;
 
   if (!isVerified) {
     confirmDialogData.value = token;

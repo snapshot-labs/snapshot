@@ -9,10 +9,11 @@ const props = defineProps<{
 
 const emit = defineEmits(['select']);
 
+const { formatNumber } = useIntl();
+
 const exploreUrl = computed(() => {
   let network = '1';
-  if (props.token.verified !== undefined)
-    network = String(props.token.verified.chainId);
+  if (props.token.verified) network = String(props.token.chainId);
   return explorerUrl(network, props.token.address);
 });
 </script>
@@ -51,13 +52,16 @@ const exploreUrl = computed(() => {
       </div>
     </div>
 
-    <div class="flex h-full flex-col items-end justify-end">
+    <div class="h-full text-right">
+      <span v-if="token.address !== 'main'" class="text-skin-link">
+        {{ formatNumber(Number(token.balance)) }}
+      </span>
       <a
         v-if="token.address !== 'main'"
         :href="exploreUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="mr-1 flex flex-row content-center items-center gap-x-1 text-skin-text hover:!text-skin-link"
+        class="flex flex-row content-center items-center gap-x-1 text-skin-text hover:!text-skin-link"
         @click.stop
       >
         <span class="">{{ shorten(token.address) }}</span>
