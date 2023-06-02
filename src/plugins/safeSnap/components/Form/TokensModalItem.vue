@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { TokenAsset } from '@/helpers/interfaces';
+import { ETH_CONTRACT } from '@/helpers/constants';
 
 const props = defineProps<{
   token: TokenAsset;
@@ -29,8 +30,7 @@ const exploreUrl = computed(() => {
     <div class="flex items-center">
       <div class="mr-3 flex">
         <AvatarToken
-          :src="token.address === 'main' ? String(token.logoUri) : ''"
-          :address="token.address"
+          :address="token.address === 'main' ? ETH_CONTRACT : token.address"
           size="38"
         />
       </div>
@@ -61,11 +61,11 @@ const exploreUrl = computed(() => {
         :href="exploreUrl"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex flex-row content-center items-center gap-x-1 text-skin-text hover:!text-skin-link"
+        class="flex items-center gap-x-1 text-skin-text hover:!text-skin-link"
         @click.stop
       >
         <span class="">{{ shorten(token.address) }}</span>
-        <i-ho-external-link class="mb-1 text-xs" />
+        <i-ho-external-link class="mb-[1px] text-xs" />
       </a>
     </div>
   </button>

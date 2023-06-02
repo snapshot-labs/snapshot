@@ -20,7 +20,6 @@ const confirmDialogOpen = ref(false);
 const confirmDialogData = ref(null);
 const confirmDialog = useConfirmDialog(confirmDialogOpen);
 confirmDialog.onConfirm(token => {
-  // console.log(':confirmDialog.onConfirm', token);
   emit('tokenAddress', token.address);
   emit('close');
 });
@@ -47,7 +46,6 @@ const tokensFiltered = computed(() => {
 });
 
 function handleTokenClick(token) {
-  // console.log(':handleTokenClick', token);
   const isVerified = token.address === 'main' || token.verified;
 
   if (!isVerified) {

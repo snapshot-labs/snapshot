@@ -1,11 +1,12 @@
 <script setup lang="ts">
 withDefaults(
   defineProps<{
-    src: string;
+    src?: string;
     address?: string;
     size?: string;
   }>(),
   {
+    src: '',
     size: '22',
     address: '0x3901D0fDe232aF1427216b79f5243f8A022d28cf'
   }
@@ -14,7 +15,7 @@ withDefaults(
 
 <template>
   <img
-    :src="src"
+    :src="src || `https://cdn.stamp.fyi/token/eth:${address}?s=100`"
     class="rounded-full bg-skin-border object-cover"
     :style="{
       width: `${Number(size)}px`,
