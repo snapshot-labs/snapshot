@@ -9,6 +9,7 @@ import { isAddress } from '@ethersproject/address';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputAmount from '../Input/Amount.vue';
 import SafeSnapTokensModal from './TokensModal.vue';
+import { ETH_CONTRACT } from '@/helpers/constants';
 
 export default {
   components: {
@@ -30,7 +31,8 @@ export default {
       tokenAddress: 'main',
 
       validValue: true,
-      modalTokensOpen: false
+      modalTokensOpen: false,
+      ETH_CONTRACT: ETH_CONTRACT
     };
   },
   computed: {
@@ -117,10 +119,11 @@ export default {
       <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
       <span v-if="selectedToken" class="mx-2">{{ selectedToken.symbol }}</span>
       <AvatarToken
-        v-if="selectedToken"
-        :key="selectedToken.address"
-        :src="selectedToken.address === 'main' ? selectedToken.logoUri : ''"
-        :address="selectedToken.address"
+        :address="
+          selectedToken.address === 'main'
+            ? ETH_CONTRACT
+            : selectedToken.address
+        "
       />
     </div>
     <i-ho-chevron-down class="text-xs text-skin-link" />
