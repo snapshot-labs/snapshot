@@ -109,7 +109,7 @@ export default {
       :key="index"
       :value="token.address"
     >
-      {{ token.symbol }}
+      {{ token.symbol }} ({{ token.address }})
     </option>
   </UiSelect>
   <div class="space-y-2">
