@@ -8,12 +8,14 @@
     "name": "WalletConnect",
     "network": "1",
     "options": {
-      "rpc": {
+      "projectId": "e6454bd61aba40b786e866a69bd4c5c6",
+      "rpcMap": {
         "1": "https://rpc.snapshot.org/1",
         "4": "https://rpc.snapshot.org/4",
         "42": "https://rpc.snapshot.org/42",
         "10": "https://rpc.snapshot.org/10"
-      }
+      },
+      "showQrModal": true
     },
     "icon": "ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x"
   },
