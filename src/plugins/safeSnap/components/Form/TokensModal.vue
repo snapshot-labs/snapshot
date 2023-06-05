@@ -130,11 +130,12 @@ function handleTokenClick(token) {
       @close="confirmDialog.cancel"
       @confirm="confirmDialog.confirm(confirmDialogData)"
     >
-      <BaseMessageBlock level="warning" class="m-4">
-        {{ $t('Token is not verified by Snapshot. Confirm to continue.') }}
-        <a href="https://docs.snapshot.org/" target="_blank">
-          {{ $t('Click for more info.') }}
-        </a>
+      <BaseMessageBlock level="warning-red" class="m-4">
+        This token isn't known to us. Please make sure it is the correct address
+        before proceeding.
+        <BaseLink link="https://docs.snapshot.org/">
+          {{ $t('learnMore') }}</BaseLink
+        >
       </BaseMessageBlock>
     </ModalConfirmAction>
   </teleport>
