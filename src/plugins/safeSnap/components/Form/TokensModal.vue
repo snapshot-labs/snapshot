@@ -11,9 +11,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'tokenAddress']);
 
-const { t } = useI18n();
-
-const query = ref('');
+const searchInput = ref('');
 const showUnverifiedTokens = ref(false);
 
 const confirmDialogOpen = ref(false);
@@ -25,24 +23,25 @@ confirmDialog.onConfirm(token => {
 });
 
 const tokensFiltered = computed(() => {
-  return props.tokens.filter(token => {
-    const filters: boolean[] = [];
-
-    if (query.value) {
-      const queryLower = query.value.toLowerCase();
-      const symbol = token.symbol.toLowerCase();
-      const name = token.name.toLowerCase();
-      filters.push(symbol.includes(queryLower) || name.includes(queryLower));
-    }
-
-    filters.push(
-      showUnverifiedTokens.value
-        ? true
-        : token.address === 'main' || token.verified
+  const filterTokens = (token: TokenAsset) => {
+    const tokenProperties = [token.symbol, token.name, token.address].map(
+      property => property.toLowerCase()
     );
 
-    return !filters.includes(false);
-  });
+    const searchQuery = searchInput.value.toLowerCase();
+
+    const searchMatch = tokenProperties.some(property =>
+      property.includes(searchQuery)
+    );
+    const isVerified = token.address === 'main' || token.verified;
+
+    return (
+      (searchMatch || !searchInput.value) &&
+      (showUnverifiedTokens.value || isVerified)
+    );
+  };
+
+  return props.tokens.filter(filterTokens);
 });
 
 function handleTokenClick(token) {
@@ -64,10 +63,10 @@ function handleTokenClick(token) {
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
-        <h3>{{ $t('Assets') }}</h3>
+        <h3>Assets</h3>
         <BaseSearch
-          v-model="query"
-          :placeholder="$t('Search token')"
+          v-model="searchInput"
+          :placeholder="$t('searchPlaceholderTokens')"
           modal
           focus-on-mount
           class="min-h-[60px] w-full flex-auto !px-3 pb-3 sm:!px-4"
@@ -115,7 +114,7 @@ function handleTokenClick(token) {
         />
 
         <div
-          v-if="query.length && tokensFiltered.length === 0"
+          v-if="searchInput.length && tokensFiltered.length === 0"
           class="flex flex-row content-start items-start justify-center py-4"
         >
           <span>{{ $t('noResultsFound') }}</span>

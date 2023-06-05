@@ -1,6 +1,7 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchPlaceholderTokens": "Search: Name, Symbol, or Address",
   "searchVotingPower": "Voting power",
   "searchChoice": "Choice",
   "spaceCount": "{0} space(s)",
