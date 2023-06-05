@@ -272,8 +272,6 @@ async function validateAuthor() {
       validationLoading.value = false;
     }
   }
-  // TODO FOR TESTING PURPOSES ONLY FOR SAFE SNAP
-  isValidAuthor.value = true;
 }
 
 watch(
