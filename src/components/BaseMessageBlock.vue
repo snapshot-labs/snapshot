@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  level: 'info' | 'warning' | 'warning-red' | 'success';
+  level: 'info' | 'warning' | 'warning-red';
   isResponsive?: boolean;
 }>();
 </script>
