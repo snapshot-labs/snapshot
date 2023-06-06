@@ -1,44 +1,62 @@
 <script setup lang="ts">
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useIntersectionObserver } from '@vueuse/core';
-import {
-  ExtendedSpace,
-  Proposal,
-  Vote,
-  SpaceStrategy
-} from '@/helpers/interfaces';
+import { watchDebounced } from '@vueuse/core';
+import { ExtendedSpace, Proposal, VoteFilters } from '@/helpers/interfaces';
+
+const VOTES_FILTERS_DEFAULT: VoteFilters = {
+  orderDirection: 'desc',
+  onlyWithReason: false
+};
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  strategies: SpaceStrategy[];
-  userVote: Vote | null;
   open: boolean;
 }>();
 
 defineEmits(['close']);
 
-const votesEndEl = ref<HTMLElement | null>(null);
-const votesQuery = ref('');
-
 const {
-  loadVotes,
-  sortedVotes,
-  searchVote,
-  loadMore,
-  loadingMore,
-  loadedVotes,
-  loadMoreVotes,
+  votes,
+  loadingVotes,
+  loadingMoreVotes,
   profiles,
-  clearVotes,
-  noVotesFound,
-  searchAddress
-} = useProposalVotes(props.proposal, 20, props.userVote, votesQuery);
+  loadVotes,
+  loadMoreVotes,
+  loadSingleVote
+} = useProposalVotes(props.proposal, 20);
+
+const votesEndEl = ref<HTMLElement | null>(null);
+const filterOptions = ref<VoteFilters>(clone(VOTES_FILTERS_DEFAULT));
+const searchInput = ref('');
+
+const filters = computed(() => {
+  return {
+    orderDirection: filterOptions.value.orderDirection,
+    onlyWithReason: filterOptions.value.onlyWithReason
+  };
+});
+
+const showNoResults = computed(() => {
+  return (
+    !loadingVotes.value &&
+    votes.value.length === 0 &&
+    (searchInput.value || filters.value.onlyWithReason)
+  );
+});
 
 useIntersectionObserver(
   votesEndEl,
   ([{ isIntersecting }]) => {
-    if (props.open && isIntersecting && searchAddress.value === '') {
-      loadMore(loadMoreVotes);
+    const hasMoreVotes = props.proposal.votes > votes.value.length;
+    if (
+      props.open &&
+      isIntersecting &&
+      searchInput.value === '' &&
+      hasMoreVotes
+    ) {
+      loadMoreVotes(filters.value);
     }
   },
   {
@@ -48,12 +66,28 @@ useIntersectionObserver(
 
 watch(
   () => props.open,
-  val => {
-    votesQuery.value = '';
-    clearVotes();
-    if (val) loadVotes();
+  () => {
+    filterOptions.value = clone(VOTES_FILTERS_DEFAULT);
+    searchInput.value = '';
   }
 );
+
+watchDebounced(
+  searchInput,
+  async value => {
+    if (value) {
+      loadSingleVote(searchInput.value);
+    }
+    if (votes.value.length < 2 && value === '') {
+      loadVotes(filters.value);
+    }
+  },
+  { debounce: 300, deep: true }
+);
+
+watch(filters, value => {
+  loadVotes(value);
+});
 </script>
 
 <template>
@@ -62,26 +96,34 @@ watch(
       <div
         class="flex flex-col content-center items-center justify-center gap-x-4"
       >
-        <h3>{{ $t('votes') }}</h3>
+        <h3>{{ $t('proposal.votesModal.title') }}</h3>
         <BaseSearch
-          v-model="votesQuery"
+          v-model="searchInput"
           :placeholder="$t('searchPlaceholderVotes')"
           modal
           focus-on-mount
-          class="min-h-[60px] w-full flex-auto px-3 pb-3"
-        />
+          class="max-h-[56px] w-full px-3 pb-3"
+        >
+          <template #after>
+            <SpaceProposalVotesFilters
+              v-if="!searchInput"
+              v-model="filterOptions"
+              :proposal="proposal"
+            />
+          </template>
+        </BaseSearch>
       </div>
     </template>
     <template #default="{ maxHeight }">
       <div
-        v-if="!loadedVotes"
+        v-if="loadingVotes"
         class="block px-4 pt-4"
         :style="{ minHeight: maxHeight }"
       >
         <LoadingList />
       </div>
       <div
-        v-else-if="noVotesFound"
+        v-else-if="showNoResults"
         class="flex flex-row content-start items-start justify-center pt-4"
         :style="{ minHeight: maxHeight }"
       >
@@ -94,7 +136,7 @@ watch(
             :style="{ minHeight: maxHeight }"
           >
             <SpaceProposalVotesListItem
-              v-for="(vote, i) in searchVote.length ? searchVote : sortedVotes"
+              v-for="(vote, i) in votes"
               :key="i"
               :vote="vote"
               :profiles="profiles"
@@ -107,7 +149,7 @@ watch(
             <div
               class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
             >
-              <LoadingSpinner v-if="loadingMore" />
+              <LoadingSpinner v-if="loadingMoreVotes" />
             </div>
           </div>
         </Transition>

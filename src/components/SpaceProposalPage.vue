@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import voting from '@snapshot-labs/snapshot.js/src/voting';
-import { getProposalVotes } from '@/helpers/snapshot';
-import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -35,8 +34,6 @@ const modalOpen = ref(false);
 const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
-const userVote = ref<Vote | null>(null);
-const isUserVoteResolved = ref(false);
 const results = ref<Results | null>(null);
 
 const isAdmin = computed(() => {
@@ -73,31 +70,6 @@ function reloadProposal() {
   emit('reload-proposal');
 }
 
-function formatProposalVotes(votes) {
-  if (!votes.length) return [];
-  return votes.map(vote => {
-    vote.balance = vote.vp;
-    vote.scores = vote.vp_by_strategy;
-    return vote;
-  });
-}
-
-async function loadUserVote() {
-  userVote.value = null;
-  isUserVoteResolved.value = false;
-  if (!web3Account.value) {
-    isUserVoteResolved.value = true;
-    return;
-  }
-  const userVotesRes = await getProposalVotes(proposalId, {
-    first: 1,
-    voter: web3Account.value,
-    space: props.proposal.space.id
-  });
-  userVote.value = formatProposalVotes(userVotesRes)?.[0] || null;
-  isUserVoteResolved.value = true;
-}
-
 async function loadResults() {
   if (props.proposal.scores.length === 0) {
     const votingClass = new voting[props.proposal.type](
@@ -118,7 +90,6 @@ async function loadResults() {
     };
   }
   loadedResults.value = true;
-  loadUserVote();
 }
 
 function handleBackClick() {
@@ -138,7 +109,6 @@ function handleChoiceQuery() {
 watch(
   web3Account,
   () => {
-    loadUserVote();
     handleChoiceQuery();
   },
   { immediate: true }
@@ -161,6 +131,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       <MessageWarningFlagged
         v-if="isMessageVisible"
         type="proposal"
+        responsive
         @forceShow="setMessageVisibility(false)"
       />
 
@@ -186,17 +157,10 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             v-if="proposal?.state === 'active'"
             v-model="selectedChoices"
             :proposal="proposal"
-            :user-vote="userVote"
             @open="modalOpen = true"
             @clickVote="clickVote"
           />
-          <SpaceProposalVotesList
-            v-if="isUserVoteResolved"
-            :space="space"
-            :proposal="proposal"
-            :strategies="strategies"
-            :user-vote="userVote"
-          />
+          <SpaceProposalVotesList :space="space" :proposal="proposal" />
           <SpaceProposalPlugins
             v-if="proposal?.plugins && loadedResults && results"
             :id="proposalId"

@@ -41,9 +41,10 @@ watch(
 
 <template>
   <template v-if="space">
-    <BaseContainer v-if="isMessageVisible">
+    <BaseContainer v-if="isMessageVisible" slim>
       <MessageWarningFlagged
         type="space"
+        responsive
         @forceShow="setMessageVisibility(false)"
       />
     </BaseContainer>
