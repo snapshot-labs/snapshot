@@ -10,6 +10,7 @@ import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputAmount from '../Input/Amount.vue';
 import SafeSnapTokensModal from './TokensModal.vue';
 import { ETH_CONTRACT } from '@/helpers/constants';
+import { shorten } from '@/helpers/utils';
 
 export default {
   components: {
@@ -105,7 +106,8 @@ export default {
     openModal() {
       if (!this.config.tokens.length) return;
       this.modalTokensOpen = true;
-    }
+    },
+    shorten: shorten
   }
 };
 </script>
@@ -115,16 +117,24 @@ export default {
     class="mb-2 flex w-full flex-row items-center justify-between !px-3"
     @click="openModal()"
   >
-    <div class="flex flex-row">
+    <div class="flex flex-row space-x-2">
       <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
-      <span v-if="selectedToken" class="mx-2">{{ selectedToken.symbol }}</span>
       <AvatarToken
         :address="
           selectedToken.address === 'main'
             ? ETH_CONTRACT
             : selectedToken.address
         "
+        class="ml-2"
       />
+      <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
+      <span>
+        {{
+          selectedToken.address === 'main'
+            ? ''
+            : `(${shorten(selectedToken.address)})`
+        }}
+      </span>
     </div>
     <i-ho-chevron-down class="text-xs text-skin-link" />
   </BaseButton>
