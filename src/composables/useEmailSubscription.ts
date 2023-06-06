@@ -60,7 +60,7 @@ function useEmailSubscriptionComposable() {
 
     error.value = err.value;
 
-    if (data.value.result !== 'OK') {
+    if (!data.value || data.value.result !== 'OK') {
       error.value = 'unknown';
     }
 
