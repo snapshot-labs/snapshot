@@ -3,27 +3,33 @@ defineProps<{
   open: boolean;
 }>();
 
+type ModalView = 'SUBSCRIBE' | 'SUCCESS' | 'ERROR';
+
 const emit = defineEmits(['close']);
 const { web3Account } = useWeb3();
 const email = ref('');
-const {
-  subscribe,
-  reset,
-  postSubscribeState,
-  isSuccessful,
-  loading,
-  loadEmailSubscriptions
-} = useEmailSubscription();
+const { subscribe, error, loading, loadEmailSubscriptions } =
+  useEmailSubscription();
+
+const modalView = ref<ModalView>('SUBSCRIBE');
+
+watchEffect(() => {
+  if (error.value) modalView.value = 'ERROR';
+});
 
 function close() {
-  reset();
   email.value = '';
   emit('close');
+  modalView.value = 'SUBSCRIBE';
   loadEmailSubscriptions();
 }
 
-function submit() {
-  subscribe(email.value, web3Account.value);
+async function submit() {
+  const isSucceed = await subscribe(email.value, web3Account.value);
+
+  if (isSucceed) {
+    modalView.value = 'SUCCESS';
+  }
 }
 </script>
 
@@ -34,53 +40,57 @@ function submit() {
         <h3>{{ $t('emailSubscription.title') }}</h3>
       </div>
     </template>
-    <div v-if="isSuccessful" class="m-4 text-center">
+
+    <template v-if="modalView === 'SUBSCRIBE'">
+      <div class="m-4">
+        {{ $t('emailSubscription.description') }}
+      </div>
+
+      <form class="m-4" @submit.prevent="submit">
+        <BaseInput
+          v-model="email"
+          :placeholder="$t('emailSubscription.inputPlaceholder')"
+          class="!pl-[40px]"
+          type="email"
+          autocomplete="off"
+          required
+          focus-on-mount
+        >
+          <template #before>
+            <i-ho-mail class="text-[16px]" />
+          </template>
+        </BaseInput>
+
+        <small>{{ $t('emailSubscription.inputCaption') }}</small>
+
+        <BaseButton
+          class="mt-3 w-full"
+          primary
+          :type="'submit'"
+          :loading="loading"
+        >
+          {{ $t('emailSubscription.subscribe') }}
+        </BaseButton>
+      </form>
+    </template>
+
+    <div v-if="modalView === 'SUCCESS'" class="m-4 text-center">
       <i-ho-check-circle
         class="mx-auto my-4 text-center text-[3em] text-green"
       />
-      <h3>{{ postSubscribeState.message.value.split('\n')[0] }}</h3>
+      <h3>
+        {{ $t('emailSubscription.postSubscribeMessage.successThanks') }}
+      </h3>
       <p class="mt-3 italic">
-        {{ postSubscribeState.message.value.split('\n')[1] }}
+        {{ $t('emailSubscription.postSubscribeMessage.successConfirmation') }}
       </p>
     </div>
-    <BaseMessageBlock
-      v-else-if="postSubscribeState.message.value"
-      :level="postSubscribeState.level.value"
-      class="m-4"
-    >
-      {{ postSubscribeState.message.value }}
+
+    <BaseMessageBlock v-if="modalView === 'ERROR'" level="warning" class="m-4">
+      {{ $t('emailSubscription.postSubscribeMessage.error') }}
     </BaseMessageBlock>
-    <div v-else class="m-4">
-      {{ $t('emailSubscription.description') }}
-    </div>
-    <form v-if="!isSuccessful" class="m-4" @submit.prevent="submit">
-      <BaseInput
-        v-model="email"
-        placeholder="Your email"
-        class="!pl-[40px]"
-        type="email"
-        autocomplete="off"
-        required
-        focus-on-mount
-      >
-        <template #before>
-          <i-ho-mail class="text-[16px]" />
-        </template>
-      </BaseInput>
 
-      <small>{{ $t('emailSubscription.inputCaption') }}</small>
-
-      <BaseButton
-        class="mt-3 w-full"
-        primary
-        :type="'submit'"
-        :loading="loading"
-      >
-        {{ $t('emailSubscription.subscribe') }}
-      </BaseButton>
-    </form>
-
-    <template v-if="isSuccessful" #footer>
+    <template v-if="['ERROR', 'SUCCESS'].includes(modalView)" #footer>
       <BaseButton class="w-full" primary @click="close">
         {{ $t('close') }}
       </BaseButton>

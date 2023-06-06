@@ -8,16 +8,9 @@ const emit = defineEmits(['close']);
 const {
   loading,
   clientSubscriptions,
-  shouldRemoveEmail,
-  updateSubscriptions: update,
-  isSubscribed
+  updateSubscriptions: update
 } = useEmailSubscription();
 const { t } = useI18n();
-
-const canRemoveEmail = computed(() => {
-  const { newProposal, closedProposal, summary } = clientSubscriptions.value;
-  return !newProposal && !closedProposal && !summary;
-});
 
 const updateSubscriptions = (key, value) => {
   clientSubscriptions.value = { ...clientSubscriptions.value, [key]: value };
@@ -25,16 +18,12 @@ const updateSubscriptions = (key, value) => {
 
 const submit = async () => {
   await update();
-  // TODO: canRemoveEmail check should be removed when `shouldRemoveEmail` will be implemented
-  if (shouldRemoveEmail.value && canRemoveEmail.value) {
-    isSubscribed.value = false;
-    emit('close');
-  }
+  emit('close');
 };
 </script>
 
 <template>
-  <BaseModal :open="open" max-height="510px" @close="$emit('close')">
+  <BaseModal :open="open" max-height="510px" @close="emit('close')">
     <template #header>
       <div class="flex flex-row items-center justify-center">
         <h3>{{ $t('emailManagement.title') }}</h3>
@@ -67,13 +56,6 @@ const submit = async () => {
         :label="t('emailManagement.optionSummary')"
         :sublabel="t('emailManagement.optionSummaryDescription')"
         @update:model-value="updateSubscriptions('summary', $event)"
-      />
-
-      <TuneCheckbox
-        v-if="canRemoveEmail"
-        v-model="shouldRemoveEmail"
-        :hint="t('emailManagement.removeEmail')"
-        class="pointer-events-none ml-3 text-sm opacity-60"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">

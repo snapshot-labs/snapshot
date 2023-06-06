@@ -40,7 +40,15 @@ export function useEmailFetchClient() {
   };
 
   const subscribeWithEmail = async unsignedParams => {
-    const signature = await plainSign(unsignedParams, SubscribeSchema);
+    let signature;
+    try {
+      signature = await plainSign(unsignedParams, SubscribeSchema);
+    } catch (error: any) {
+      return {
+        error: { value: 'sign_error' },
+        data: { value: null }
+      };
+    }
     const body = {
       method: 'snapshot.subscribe',
       params: {
@@ -53,10 +61,15 @@ export function useEmailFetchClient() {
   };
 
   const updateEmailSubscriptions = async unsignedParams => {
-    const signature = await plainSign(
-      unsignedParams,
-      UpdateSubscriptionsSchema
-    );
+    let signature;
+    try {
+      signature = await plainSign(unsignedParams, UpdateSubscriptionsSchema);
+    } catch (error: any) {
+      return {
+        error: { value: 'sign_error' },
+        data: { value: null }
+      };
+    }
     const body = {
       method: 'snapshot.update',
       params: {
