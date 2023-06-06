@@ -15,20 +15,26 @@ enum Level {
 
 const subscriptionTypes = ['summary', 'newProposal', 'closedProposal'] as const;
 type SubscriptionType = (typeof subscriptionTypes)[number];
+type SubscriptionStatus = 'RECORD_NOT_FOUND' | 'VERIFIED' | 'UNVERIFIED';
 
 function useEmailSubscriptionComposable() {
   const { t } = useI18n();
 
   const status = ref<Status>(Status.waiting);
+  const maskedEmail = ref('');
   const isSuccessful = computed(() => status.value === Status.success);
   const postSubscribeLevel = ref<Level>(Level.info);
   const postSubscribeMessage = ref('');
   const loading = ref(false);
+  // TODO: `isSubscribed` should be replaced with `state: SubscriptionStatus` when the API is ready
   const isSubscribed = ref(false);
   const shouldRemoveEmail = ref(true);
   const { web3Account } = useWeb3();
-  const { fetchSubscriptions, subscribeWithEmail, updateEmailSubscriptions } =
-    useEmailFetchClient();
+  const {
+    fetchSubscriptionsDetails,
+    subscribeWithEmail,
+    updateEmailSubscriptions
+  } = useEmailFetchClient();
 
   const apiSubscriptions = ref<SubscriptionType[]>([]);
   const clientSubscriptions = computed({
@@ -48,14 +54,34 @@ function useEmailSubscriptionComposable() {
 
   const loadEmailSubscriptions = async () => {
     loading.value = true;
-    const { error, data } = await fetchSubscriptions({
+    const { error, data } = await fetchSubscriptionsDetails({
       address: web3Account.value
     });
-    loading.value = false;
-    if (!error.value && data.value) {
-      apiSubscriptions.value = data.value;
-      isSubscribed.value = true;
+
+    if (error.value) {
+      setPostSubscribeState(Status.error, Level.warning, 'error');
+      isSubscribed.value = false;
+      loading.value = false;
+      return;
     }
+
+    const { status, email, subscriptions } = data.value;
+    switch (status as SubscriptionStatus) {
+      case 'VERIFIED':
+        isSubscribed.value = true;
+        apiSubscriptions.value = subscriptions;
+        maskedEmail.value = email;
+        break;
+      case 'UNVERIFIED':
+        isSubscribed.value = false;
+        maskedEmail.value = email;
+        break;
+      case 'RECORD_NOT_FOUND':
+        isSubscribed.value = false;
+        break;
+    }
+
+    loading.value = false;
   };
 
   const subscribe = async (email: string) => {

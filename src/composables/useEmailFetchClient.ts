@@ -35,7 +35,7 @@ export function useEmailFetchClient() {
     return sign(web3, web3Account.value, message, typesSchema);
   }
 
-  const fetchSubscriptions = body => {
+  const fetchSubscriptionsDetails = body => {
     return useEmailFetch('/subscriber').post(body).json();
   };
 
@@ -69,7 +69,7 @@ export function useEmailFetchClient() {
   };
 
   return {
-    fetchSubscriptions,
+    fetchSubscriptionsDetails,
     subscribeWithEmail,
     updateEmailSubscriptions
   };
