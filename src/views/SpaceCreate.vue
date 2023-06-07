@@ -4,6 +4,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import Plugin from '@/plugins/safeSnap';
 
 enum Step {
   CONTENT,
@@ -29,6 +30,7 @@ useMeta({
   }
 });
 
+const safeSnapPlugin = new Plugin();
 const { notify } = useFlashNotification();
 const router = useRouter();
 const { t } = useI18n();
@@ -85,7 +87,6 @@ const isFormValid = computed(() => {
   const isSafeSnapPluginValid = form.value.metadata.plugins?.safeSnap
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
-
   return (
     !isSending.value &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
@@ -169,7 +170,6 @@ const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
-  console.log('Result', result);
   if (result.id) {
     resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
@@ -264,10 +264,9 @@ async function validateAuthor() {
       );
 
       isValidAuthor.value = validationRes;
-      console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
       hasAuthorValidationFailed.value = true;
-      console.log(e);
+      console.warn(e);
     } finally {
       validationLoading.value = false;
     }
@@ -282,7 +281,16 @@ watch(
   { immediate: true }
 );
 
+// We need to know if the space is using osnap, this will change what types of voting we can do
+const isUsingOsnap = ref<boolean>(false);
 onMounted(async () => {
+  const network = props?.space?.network;
+  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  if (network && umaAddress) {
+    // this is how we check if osnap is enabled and valid.
+    isUsingOsnap.value =
+      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
+  }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
@@ -338,6 +346,7 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
+        :is-using-osnap="isUsingOsnap"
       />
 
       <!-- Step 3 (only when plugins) -->

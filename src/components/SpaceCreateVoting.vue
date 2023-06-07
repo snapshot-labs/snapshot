@@ -6,6 +6,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   dateStart: number;
   dateEnd: number;
+  isUsingOsnap?: boolean;
 }>();
 
 const {
@@ -60,7 +61,12 @@ onMounted(async () => {
   if (!sourceProposalLoaded.value && !userSelectedDateStart.value)
     form.value.start = Number((Date.now() / 1e3).toFixed());
   // Initialize the proposal type if set in space
-  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
+  // If using osnap, we can only allow basic voting, for, against, abstain
+  if (props.isUsingOsnap) {
+    form.value.type = 'basic';
+  } else {
+    if (props.space?.voting?.type) form.value.type = props.space.voting.type;
+  }
   form.value.snapshot = await getSnapshot(props.space.network);
 });
 </script>
@@ -68,7 +74,9 @@ onMounted(async () => {
 <template>
   <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
+      <InputSelectVoteType v-if="isUsingOsnap" type="basic" disabled />
       <InputSelectVoteType
+        v-else
         :type="space.voting?.type || form.type"
         :disabled="!!space.voting?.type"
         @update:type="value => (form.type = value)"
