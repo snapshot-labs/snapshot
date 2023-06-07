@@ -31,6 +31,14 @@ async function downloadReport(proposalId: string) {
   }
 }
 
+const errorMessagekeyPrefix = computed(() => {
+  return `proposal.downloadCsvVotes.postDownloadModal.message.${
+    errorCode?.value?.message === 'PENDING_GENERATION'
+      ? 'pendingGeneration'
+      : 'unknownError'
+  }`;
+});
+
 onMounted(async () => {
   await loadVotes();
 });
@@ -52,22 +60,45 @@ onMounted(async () => {
       >
         <i-ho-download />
       </BaseButtonIcon>
-      <ModalMessage
+      <BaseModal
         :open="showModalDownloadMessage"
-        :title="$t('proposal.downloadCsvVotes.postDownloadModal.title')"
-        :message="
-          $t(
-            `proposal.downloadCsvVotes.postDownloadModal.message.${
-              errorCode?.message === 'PENDING_GENERATION'
-                ? 'pendingGeneration'
-                : 'unknownError'
-            }`
-          )
-        "
-        :level="'warning'"
         @close="showModalDownloadMessage = false"
       >
-      </ModalMessage>
+        <template #header>
+          <div class="flex flex-row items-center justify-center">
+            <h3>
+              {{ $t('proposal.downloadCsvVotes.postDownloadModal.title') }}
+            </h3>
+          </div>
+        </template>
+
+        <div class="m-4 text-center">
+          <i-ho-clock
+            v-if="errorCode?.message === 'PENDING_GENERATION'"
+            class="mx-auto my-4 text-center text-[3em]"
+          />
+          <i-ho-exclamation
+            v-else
+            class="mx-auto my-4 text-center text-[3em] text-red"
+          />
+          <h3>
+            {{ $t(`${errorMessagekeyPrefix}.title`) }}
+          </h3>
+          <p class="mt-3 italic">
+            {{ $t(`${errorMessagekeyPrefix}.description`) }}
+          </p>
+        </div>
+
+        <template #footer>
+          <BaseButton
+            class="w-full"
+            primary
+            @click="showModalDownloadMessage = false"
+          >
+            {{ $t('close') }}
+          </BaseButton>
+        </template>
+      </BaseModal>
     </template>
     <SpaceProposalVotesListItem
       v-for="(vote, i) in sortedVotes"
