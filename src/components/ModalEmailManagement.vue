@@ -38,6 +38,13 @@ const submit = async () => {
 
     <form class="mx-6 my-4 flex flex-col space-y-4" @submit.prevent="submit">
       <TuneSwitch
+        :model-value="clientSubscriptions.summary"
+        :label="t('emailManagement.optionSummary')"
+        :sublabel="t('emailManagement.optionSummaryDescription')"
+        @update:model-value="updateSubscriptions('summary', $event)"
+      />
+
+      <TuneSwitch
         :model-value="clientSubscriptions.newProposal"
         :label="t('emailManagement.optionNewProposal')"
         :sublabel="t('emailManagement.optionNewProposalDescription')"
@@ -49,13 +56,6 @@ const submit = async () => {
         :label="t('emailManagement.optionClosedProposal')"
         :sublabel="t('emailManagement.optionClosedProposalDescription')"
         @update:model-value="updateSubscriptions('closedProposal', $event)"
-      />
-
-      <TuneSwitch
-        :model-value="clientSubscriptions.summary"
-        :label="t('emailManagement.optionSummary')"
-        :sublabel="t('emailManagement.optionSummaryDescription')"
-        @update:model-value="updateSubscriptions('summary', $event)"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
