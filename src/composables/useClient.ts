@@ -39,8 +39,6 @@ export function useClient() {
   function voteWithAlias(client, votePayload) {
     const provider = aliasWallet.value;
     const address = aliasWallet.value.address;
-    // const address = web3.value.account;
-    console.log('voteWithAlias', votePayload);
 
     return actionWithAlias(() => {
       return client.vote(provider, address, votePayload);
