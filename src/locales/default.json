@@ -432,6 +432,8 @@
     "voting": "Voting",
     "votingDelay": "Voting delay",
     "votingPeriod": "Voting period",
+    "enableAliased": "Allow actions with session keys",
+    "enableAliasedHint": "Voting, creating and deleting proposals will no longer require the user to manually sign each time.",
     "hours": "Hours",
     "days": "Days",
     "quorum": {

@@ -171,6 +171,7 @@ export interface ExtendedSpace {
     quorum: number | null;
     type: string | null;
     privacy: string | null;
+    aliased: boolean;
   };
 }
 

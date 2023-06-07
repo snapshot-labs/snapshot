@@ -10,6 +10,7 @@ export function useClient() {
   const { web3 } = useWeb3();
   const auth = getInstance();
   const route = useRoute();
+  const { aliasWallet, actionWithAlias } = useAliasAction();
 
   const DEFINED_APP = (route?.query.app as string) || 'snapshot';
 
@@ -35,6 +36,24 @@ export function useClient() {
     }
   }
 
+  function voteWithAlias(client, votePayload) {
+    const provider = aliasWallet.value;
+    const address = aliasWallet.value.address;
+    // const address = web3.value.account;
+    console.log('voteWithAlias', votePayload);
+
+    return actionWithAlias(() => {
+      return client.vote(provider, address, votePayload);
+    });
+  }
+
+  function voteWithAddress(client, votePayload) {
+    const provider = auth.web3;
+    const address = web3.value.account;
+
+    return client.vote(provider, address, votePayload);
+  }
+
   async function sendEIP712(space, type, payload) {
     const client = isGnosisSafe.value ? clientGnosisSafe : clientEIP712;
     if (type === 'proposal') {
@@ -55,15 +74,21 @@ export function useClient() {
         app: DEFINED_APP
       });
     } else if (type === 'vote') {
-      return client.vote(auth.web3, web3.value.account, {
+      const shouldUseAlias = space.voting?.aliased && !isGnosisSafe.value;
+      const voteFn = shouldUseAlias ? voteWithAlias : voteWithAddress;
+
+      const votePayload = {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
         choice: payload.choice,
         privacy: payload.privacy,
         app: DEFINED_APP,
-        reason: payload.reason
-      });
+        reason: payload.reason,
+        from: web3.value.account
+      };
+
+      return voteFn(client, votePayload);
     } else if (type === 'delete-proposal') {
       return client.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,

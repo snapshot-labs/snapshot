@@ -66,6 +66,13 @@ const { form } = useFormSpaceSettings(props.context);
         :label="$t('settings.hideAbstain')"
         :disabled="isViewOnly"
       />
+
+      <TuneSwitch
+        v-model="form.voting.aliased"
+        :label="$t('settings.enableAliased')"
+        :disabled="isViewOnly"
+        :hint="$t('settings.enableAliasedHint')"
+      />
     </div>
   </BaseBlock>
 </template>
