@@ -21,29 +21,26 @@ export function useReportDownload() {
     isDownloadingVotes.value = true;
     errorCode.value = null;
 
-    return fetch(
-      `${import.meta.env.VITE_SIDEKICK_URL}/api/votes/${proposalId}`,
-      {
-        method: 'POST'
-      }
-    )
-      .then(async response => {
-        if (response.status !== 200) {
-          throw new Error((await response.json()).error.message);
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SIDEKICK_URL}/api/votes/${proposalId}`,
+        {
+          method: 'POST'
         }
-        return response.blob();
-      })
-      .then(blob => {
-        downloadFile(blob, `${pkg.name}-report-${proposalId}`);
-        return true;
-      })
-      .catch((e: Error) => {
-        errorCode.value = e;
-        return false;
-      })
-      .finally(() => {
-        isDownloadingVotes.value = false;
-      });
+      );
+
+      if (response.status !== 200) {
+        throw new Error((await response.json()).error.message);
+      }
+
+      downloadFile(await response.blob(), `${pkg.name}-report-${proposalId}`);
+      return true;
+    } catch (e: any) {
+      errorCode.value = e;
+      return false;
+    } finally {
+      isDownloadingVotes.value = false;
+    }
   }
 
   return {
