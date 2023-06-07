@@ -21,7 +21,7 @@ const { maskedEmail } = useEmailSubscription();
         v-model="maskedEmail"
         class="my-4 !pl-[40px]"
         type="email"
-        :is-disabled="true"
+        is-disabled
       >
         <template #before>
           <i-ho-mail class="text-[16px]" />
