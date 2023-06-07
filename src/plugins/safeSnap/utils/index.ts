@@ -3,10 +3,10 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
 import memoize from 'lodash/memoize';
 
+import { SafeExecutionData, SafeTransaction } from '@/helpers/interfaces';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
-import { SafeTransaction, SafeExecutionData } from '@/helpers/interfaces';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export const mustBeEthereumAddress = memoize((address: string) => {
   const startsWith0x = address?.startsWith('0x');
@@ -81,7 +81,7 @@ export function getSafeHash(safe: SafeExecutionData) {
   return keccak256(['bytes32[]'], [hashes]);
 }
 
-export function validateSafeData(safe) {
+export function validateSafeData(safe: SafeExecutionData) {
   return (
     safe.txs.length === 0 ||
     safe.txs
@@ -91,7 +91,9 @@ export function validateSafeData(safe) {
   );
 }
 
-export function isValidInput(input) {
+export function isValidInput<Input extends { safes: SafeExecutionData[] }>(
+  input: Input
+) {
   return input.safes.every(validateSafeData);
 }
 
