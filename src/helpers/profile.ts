@@ -1,9 +1,8 @@
 import namehash from '@ensdomains/eth-ens-namehash';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
 import { getAddress } from '@ethersproject/address';
-
-const UD_TOKEN = '5dpellhz6ma2rxcz9g5us82jh50x46sy';
 
 async function ensReverseRecordRequest(addresses) {
   const network = '1';
@@ -30,26 +29,28 @@ async function ensReverseRecordRequest(addresses) {
 }
 
 async function udReverseRecordRequest(addresses) {
-  addresses = [...new Set(addresses)];
+  addresses = addresses.slice(0, 250);
+  const network = '137';
+  const abi = [
+    'function reverseNameOf(address addr) view returns (string reverseUri)'
+  ];
 
   try {
-    const res = await fetch(
-      `https://resolve.unstoppabledomains.com/reverse/query`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${UD_TOKEN}`
-        },
-        body: JSON.stringify({ addresses })
-      }
-    );
-    const data = await res.json();
+    const multi = new Multicaller(network, getProvider(network), abi);
+    addresses.forEach(address => {
+      address = getAddress(address);
+      multi.call(
+        `${address}`,
+        '0xa9a6A3626993D487d2Dbda3173cf58cA1a9D9e9f',
+        'reverseNameOf',
+        [address]
+      );
+    });
+
+    const names = await multi.execute();
 
     return Object.fromEntries(
-      data?.data?.map(item => {
-        return [getAddress(item.meta.owner), item.meta.domain];
-      })
+      Object.entries(names).filter(([, name]) => !!name)
     );
   } catch (e) {
     return {};
