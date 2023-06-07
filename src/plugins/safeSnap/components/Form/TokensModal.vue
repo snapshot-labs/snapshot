@@ -133,7 +133,9 @@ function handleTokenClick(token) {
       <BaseMessageBlock level="warning-red" class="m-4">
         This token isn't known to us. Please make sure it is the correct address
         before proceeding.
-        <BaseLink link="https://docs.snapshot.org/">
+        <BaseLink
+          link="https://docs.snapshot.org/faq#the-token-i-want-to-use-for-executing-transaction-is-not-verified.-can-i-verify-it"
+        >
           {{ $t('learnMore') }}</BaseLink
         >
       </BaseMessageBlock>
