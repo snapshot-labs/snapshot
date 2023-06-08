@@ -214,7 +214,8 @@ export const getModuleDetailsUma = async (
           isExpired: isExpired,
           isSettled: result.settled,
           proposalHash: proposalHash,
-          proposalTxHash: event.transactionHash
+          proposalTxHash: event.transactionHash,
+          logIndex: event.logIndex
         };
       });
     })
