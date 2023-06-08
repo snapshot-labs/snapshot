@@ -58,22 +58,25 @@ const isValid = computed(() => {
 function handleSelect(n: string) {
   input.value.name = n;
 
-  if (n === 'basic') {
-    input.value.params.minScore =
-      input.value.params.minScore || props.filterMinScore || 1;
-
-    if (input.value.params.strategies) {
-      showStrategies.value = true;
-    }
-    return;
-  }
-
   if (props.validation.name !== n) {
     input.value.params = clone(DEFAULT_PARAMS);
   }
 
   if (n === 'any') {
     handleSubmit();
+  }
+
+  if (n === 'basic') {
+    input.value.params.minScore =
+      input.value.params.minScore || props.filterMinScore || undefined;
+
+    if (input.value.params.strategies) {
+      showStrategies.value = true;
+    }
+  }
+
+  if (n === 'passport-gated' && !input.value.params.operator) {
+    input.value.params.operator = 'OR';
   }
 }
 

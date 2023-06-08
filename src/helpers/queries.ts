@@ -7,6 +7,7 @@ export const VOTES_QUERY = gql`
     $skip: Int
     $orderBy: String
     $orderDirection: OrderDirection
+    $reason_not: String
     $voter: String
     $space: String
     $created_gte: Int
@@ -19,6 +20,7 @@ export const VOTES_QUERY = gql`
         vp_gt: 0
         voter: $voter
         space: $space
+        reason_not: $reason_not
         created_gte: $created_gte
       }
       orderBy: $orderBy
@@ -119,6 +121,7 @@ export const PROPOSALS_QUERY = gql`
         avatar
         symbol
         verified
+        plugins
       }
       scores_state
       scores_total

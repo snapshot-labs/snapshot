@@ -2,12 +2,12 @@
 import capitalize from 'lodash/capitalize';
 import { Proposal } from '@/helpers/interfaces';
 
-const { getRelativeProposalPeriod, formatPercentNumber, formatCompactNumber } =
-  useIntl();
-
 defineProps<{
   proposal: Proposal;
 }>();
+
+const { getRelativeProposalPeriod, formatPercentNumber, formatCompactNumber } =
+  useIntl();
 </script>
 
 <template>
@@ -30,7 +30,13 @@ defineProps<{
         )
       }}
     </span>
-    <template v-if="proposal.quorum && proposal.scores_total">
+    <template
+      v-if="
+        proposal.quorum &&
+        proposal.scores_total &&
+        !proposal.space.plugins?.quorum
+      "
+    >
       -
       {{
         formatPercentNumber(

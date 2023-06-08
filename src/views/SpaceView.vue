@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
+import { useFlaggedMessageStatus } from '@/composables/useFlaggedMessageStatus';
 
 const route = useRoute();
 const router = useRouter();
@@ -21,6 +22,9 @@ const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
+const { isMessageVisible, setMessageVisibility } =
+  useFlaggedMessageStatus(spaceKey);
+
 watch(
   spaceKey,
   async () => {
@@ -29,6 +33,7 @@ watch(
     if (!space.value) {
       router.push('/');
     }
+    setMessageVisibility(space.value?.flagged || false);
   },
   { immediate: true }
 );
@@ -36,9 +41,15 @@ watch(
 
 <template>
   <template v-if="space">
-    <SpaceWarningFlagged v-if="space.flagged" />
+    <BaseContainer v-if="isMessageVisible" slim>
+      <MessageWarningFlagged
+        type="space"
+        responsive
+        @forceShow="setMessageVisibility(false)"
+      />
+    </BaseContainer>
 
-    <router-view :space="space" :space-key="spaceKey" />
+    <router-view v-else :space="space" :space-key="spaceKey" />
   </template>
   <div v-else>
     <!-- Lazy loading skeleton for space page with left sidebar layout -->

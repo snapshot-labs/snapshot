@@ -45,7 +45,8 @@ export function useSpaceController() {
   async function setRecord() {
     settingENSRecord.value = true;
     try {
-      const ensPublicResolverAddress = networks[networkKey.value].ensResolver;
+      const ensResolvers = networks[networkKey.value].ensResolvers;
+      const ensPublicResolverAddress = ensResolvers[0];
       if (!ensPublicResolverAddress) {
         throw new Error('No ENS resolver address for this network');
       }

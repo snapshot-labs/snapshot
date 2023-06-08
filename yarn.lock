@@ -1377,10 +1377,10 @@
   dependencies:
     "cross-fetch" "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.83":
-  "integrity" "sha512-8sVSBv9yAK47v+geQ1TgSLku+KW+9Y8m+LKRmJzcBKBfLEUs2GDSsesc4X+gn4JZkufDI6JSXjDsowpd4bJy5A=="
-  "resolved" "https://registry.npmjs.org/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.83.tgz"
-  "version" "0.4.83"
+"@snapshot-labs/snapshot.js@^0.4.96":
+  version "0.4.96"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.96.tgz#141be3285ab0b25053ace6963f70b4225b2407ca"
+  integrity sha512-ZilCjKSHx4j6gl4g0+ABCYSsK/5zo4jjNz+DaeimXDZIH+e5mtT1HHFaR+kI14hqYNxTkyTinxJ39q5/gSuzjw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1390,24 +1390,25 @@
     "@ethersproject/hash" "^5.6.1"
     "@ethersproject/providers" "^5.6.8"
     "@ethersproject/wallet" "^5.6.2"
-    "ajv" "^8.11.0"
-    "ajv-formats" "^2.1.1"
-    "cross-fetch" "^3.1.5"
-    "json-to-graphql-query" "^2.2.4"
-    "lodash.set" "^4.3.2"
+    ajv "^8.11.0"
+    ajv-formats "^2.1.1"
+    cross-fetch "^3.1.6"
+    json-to-graphql-query "^2.2.4"
+    lodash.set "^4.3.2"
 
-"@snapshot-labs/tune@^0.1.18":
-  "integrity" "sha512-VQIpksjWnkOnNN2gvOssl27c2kmF1Bdz0xy0i25NP8zcXNuWFrTPuOeIx8mjcnb1OjKrhn1sxcRiIgZHSl0Bhg=="
-  "resolved" "https://registry.npmjs.org/@snapshot-labs/tune/-/tune-0.1.18.tgz"
-  "version" "0.1.18"
+"@snapshot-labs/tune@^0.1.25":
+  version "0.1.25"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.25.tgz#7152371b1db6a52383479aaa35656b8f9c497248"
+  integrity sha512-/zujwfyUnTHsWpZ3sb0756oCwL7mubmDrlQQpbr1jhIQGQVf1YvEYBmmpAH0MbUD+nhp5v9TzUrITDRtHg/w5A==
   dependencies:
     "@headlessui-float/vue" "^0.11.0"
     "@headlessui/vue" "^1.7.12"
-    "lodash" "^4.17.21"
-    "minisearch" "^6.0.1"
-    "sass" "^1.60.0"
-    "vue" "^3.2.47"
-    "vue-tippy" "^6.0.0"
+    "@vueuse/core" "^10.1.2"
+    lodash "^4.17.21"
+    minisearch "^6.0.1"
+    sass "^1.60.0"
+    vue "^3.2.47"
+    vue-tippy "^6.0.0"
 
 "@synthetixio/js@^2.41.0":
   "integrity" "sha512-t09q0JKtbOw6nCGUffd06m/+Jgsev79A0PaNKyQImxlgw2olGZGqeA/Z7AEqlDH0+6NU25jYVhMPip0r63cHtQ=="
@@ -5031,10 +5032,17 @@
   dependencies:
     "node-fetch" "2.6.7"
 
-"cross-spawn@^7.0.0", "cross-spawn@^7.0.2", "cross-spawn@^7.0.3":
-  "integrity" "sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w=="
-  "resolved" "https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.3.tgz"
-  "version" "7.0.3"
+cross-fetch@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.6.tgz#bae05aa31a4da760969756318feeee6e70f15d6c"
+  integrity sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==
+  dependencies:
+    node-fetch "^2.6.11"
+
+cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
+  integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
   dependencies:
     "path-key" "^3.1.0"
     "shebang-command" "^2.0.0"
@@ -10288,10 +10296,17 @@
   dependencies:
     "whatwg-url" "^5.0.0"
 
-"node-fetch@~1.7.1":
-  "integrity" "sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ=="
-  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-1.7.3.tgz"
-  "version" "1.7.3"
+node-fetch@^2.6.11:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@~1.7.1:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.7.3.tgz#980f6f72d85211a5347c6b2bc18c5b84c3eb47ef"
+  integrity sha512-NhZ4CsKx7cYm2vSrBAr2PvFOe6sWDf0UYLRqA6svUYg7+/TSfVAu49jYC4BvQ4Sms9SZgdqGBgroqfDhJdTyKQ==
   dependencies:
     "encoding" "^0.1.11"
     "is-stream" "^1.0.1"

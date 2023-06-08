@@ -91,17 +91,17 @@ export const getModuleDetailsUma = async (
       [
         '',
         pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace('0x', '')),
+        toUtf8Bytes(proposalHash.replace(/^0x/, '')),
         pack(
           ['string', 'string', 'string', 'string'],
           [',', 'explanation', ':', '"']
         ),
-        toUtf8Bytes(explanation.replace('0x', '')),
+        toUtf8Bytes(explanation.replace(/^0x/, '')),
         pack(
           ['string', 'string', 'string', 'string', 'string'],
           ['"', ',', 'rules', ':', '"']
         ),
-        toUtf8Bytes(rules.replace('0x', '')),
+        toUtf8Bytes(rules.replace(/^0x/, '')),
         pack(['string'], ['"'])
       ]
     );

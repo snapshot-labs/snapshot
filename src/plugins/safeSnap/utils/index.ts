@@ -20,7 +20,7 @@ export const mustBeEthereumContractAddress = memoize(
     const contractCode = await provider.getCode(address);
 
     return (
-      contractCode && contractCode.replace('0x', '').replace(/0/g, '') !== ''
+      contractCode && contractCode.replace(/^0x/, '').replace(/0/g, '') !== ''
     );
   },
   (url, contractAddress) => `${url}_${contractAddress}`
