@@ -113,7 +113,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   function ensureDefaultValues(formData: any) {
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
-    formData.delegation = formData.delegation || clone(DEFAULT_DELEGATION);
+    formData.delegationPortal =
+      formData.delegationPortal || clone(DEFAULT_DELEGATION);
     formData.validation =
       formData.validation || clone(DEFAULT_PROPOSAL_VALIDATION);
     formData.voteValidation =
