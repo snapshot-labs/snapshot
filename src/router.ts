@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 
-// import DelegateView from '@/views/DelegateView.vue'; // TODO: delete file
+import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
 import AboutView from '@/views/AboutView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
@@ -125,6 +125,7 @@ if (domain) {
       component: ProfileView,
       children: profileRoutes
     },
+    { path: '/delegate/:key?/:to?', name: 'delegate', component: DelegateView },
     {
       path: '/:key',
       name: 'space',

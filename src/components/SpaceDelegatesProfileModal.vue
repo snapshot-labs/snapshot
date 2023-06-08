@@ -13,7 +13,7 @@ const emit = defineEmits(['close']);
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber, formatPercentNumber } = useIntl();
-const { fetchDelegate, delegate } = useDelegates(props.space.delegation);
+const { fetchDelegate, delegate } = useDelegates(props.space.delegationPortal);
 const { domain } = useApp();
 
 const showModalStatement = ref(false);

@@ -15,7 +15,7 @@ const {
   isLoadingDelegates,
   isLoadingDelegate,
   hasMoreDelegates
-} = useDelegates(props.space.delegation);
+} = useDelegates(props.space.delegationPortal);
 const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const route = useRoute();

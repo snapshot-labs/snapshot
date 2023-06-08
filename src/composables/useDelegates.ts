@@ -7,9 +7,9 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 
 type DelegatesConfig = {
-  standard: string;
-  contract: string;
-  subgraphUrl: string;
+  delegationType: string;
+  delegationContract: string;
+  delegationApi: string;
 };
 
 const DELEGATES_LIMIT = 18;
@@ -28,7 +28,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   const { resolveName } = useResolveName();
   const auth = getInstance();
 
-  const standardConfig = createStandardConfig(delegatesConfig.standard);
+  const standardConfig = createStandardConfig(delegatesConfig.delegationType);
 
   const delegates = ref<DelegateWithPercent[]>([]);
   const delegate = ref<DelegateWithPercent | null>(null);
@@ -47,7 +47,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     });
 
     const response = await subgraphRequest(
-      adjustUrl(delegatesConfig.subgraphUrl),
+      adjustUrl(delegatesConfig.delegationApi),
       query
     );
 
@@ -101,7 +101,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       const query: any = standardConfig.getDelegateQuery(resolvedAddress.value);
 
       const response = await subgraphRequest(
-        adjustUrl(delegatesConfig.subgraphUrl),
+        adjustUrl(delegatesConfig.delegationApi),
         query
       );
 
@@ -123,7 +123,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
 
     const response = await subgraphRequest(
-      adjustUrl(delegatesConfig.subgraphUrl),
+      adjustUrl(delegatesConfig.delegationApi),
       query
     );
 
@@ -134,7 +134,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     const contractMethod = standardConfig.getContractDelegateMethod();
     const tx = await sendTransaction(
       auth.web3,
-      delegatesConfig.contract,
+      delegatesConfig.delegationContract,
       contractMethod.abi,
       contractMethod.action,
       [address]

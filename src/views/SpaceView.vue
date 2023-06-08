@@ -24,10 +24,10 @@ const space = computed(() => {
   );
   // TODO remove this mock data once added to query
   if (!s) return;
-  s.delegation = {
-    standard: 'compound-governor',
-    contract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-    subgraphUrl:
+  s.delegationPortal = {
+    delegationType: 'compound-governor',
+    delegationContract: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+    delegationApi:
       'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
   };
   return s;
