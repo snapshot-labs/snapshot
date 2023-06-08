@@ -51,7 +51,6 @@ const {
   sourceProposalLoaded,
   sourceProposal,
   validationErrors,
-  isValid,
   resetForm
 } = useFormSpaceProposal();
 
