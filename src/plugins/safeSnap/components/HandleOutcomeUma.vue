@@ -131,11 +131,11 @@ const approveBondUma = async () => {
   }
 };
 
-const getProposalUrl = (chain: string, txHash: string, logIndex: string) => {
+const getProposalUrl = (chain: string, txHash: string, logIndex: number) => {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
+    return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
-  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&logIndex=${logIndex}`;
+  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
 };
 
 const submitProposalUma = async () => {
@@ -257,204 +257,219 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="questionState === 'error'" class="my-4">
-    {{ $t('safeSnap.labels.error') }}
-  </div>
-
-  <div v-if="questionState === 'no-wallet-connection'" class="my-4">
-    {{ $t('safeSnap.labels.connectWallet') }}
-  </div>
-
-  <div v-if="questionState === 'loading'" class="my-4">
-    <LoadingSpinner />
-  </div>
-
-  <div v-if="connectedToRightChain || usingMetaMask">
-    <div
-      v-if="questionState === 'waiting-for-vote-confirmation'"
-      class="my-4 inline-block"
-    >
-      <BaseContainer class="flex items-center">
-        <BaseButton @click="showProposeModal" class="mr-2">
-          {{ $t('safeSnap.labels.confirmVoteResults') }}
-        </BaseButton>
-      </BaseContainer>
-    </div>
-
-    <div v-if="questionState === 'no-transactions'" class="my-4">
-      {{ $t('safeSnap.labels.noTransactions') }}
-    </div>
-
-    <div
-      v-if="
-        questionState === 'waiting-for-proposal' &&
-        questionDetails?.needsBondApproval === true
-      "
-      class="my-4 inline-block"
-    >
-      <BaseContainer class="flex items-center">
-        <BaseButton
-          :loading="action1State === 'approve-bond'"
-          @click="approveBondUma"
-          class="mr-2"
-        >
-          {{ $t('safeSnap.labels.approveBond') }}
-        </BaseButton>
-        <BasePopoverHover placement="top">
-          <template #button>
-            <i-ho-information-circle />
-          </template>
-          <template #content>
-            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
-              {{ $t('safeSnap.labels.approveBondToolTip') }}
-            </div>
-          </template>
-        </BasePopoverHover>
-      </BaseContainer>
-    </div>
-    <div
-      v-if="
-        questionState === 'waiting-for-proposal' &&
-        questionDetails?.needsBondApproval === false
-      "
-      class="my-4 inline-block"
-    >
-      <BaseContainer class="flex items-center">
-        <BaseModal :open="closeModal" @close="closeEvent">
-          <template #header>
-            <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
-          </template>
-          <div class="my-3 p-3">
-            <div class="pl-3 pr-3">
-              <p>{{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}</p>
-            </div>
-            <div class="my-3 rounded-lg border p-3">
-              <div>
-                <strong class="pr-3">{{
-                  $t('safeSnap.labels.requiredBond')
-                }}</strong>
-                <span class="float-right text-skin-link">
-                  {{
-                    formatUnits(
-                      questionDetails?.minimumBond ?? 0,
-                      questionDetails?.decimals
-                    ) +
-                    ' ' +
-                    questionDetails?.symbol
-                  }}
-                </span>
-              </div>
-              <div>
-                <strong class="pr-3">{{
-                  $t('safeSnap.labels.challengePeriod')
-                }}</strong>
-                <span class="float-right text-skin-link">
-                  {{ formatDuration(Number(questionDetails?.livenessPeriod)) }}
-                </span>
-              </div>
-            </div>
-            <div>
-              <BaseMessage
-                v-if="Number(props.proposal.scores_total) < Number(quorum)"
-                level="warning-red"
-              >
-                {{ $t('safeSnap.labels.quorumWarning') }}
-              </BaseMessage>
-              <BaseMessage
-                v-if="
-                  Number(questionDetails?.minimumBond.toString()) >
-                  Number(questionDetails?.userBalance.toString())
-                "
-                level="warning-red"
-              >
-                {{ $t('safeSnap.labels.bondWarning') }}
-              </BaseMessage>
-            </div>
-
-            <BaseButton
-              :loading="action1State === 'submit-proposal'"
-              @click="submitProposalUma"
-              class="my-1 w-full"
-              :disabled="
-                Number(questionDetails?.minimumBond.toString()) >
-                  Number(questionDetails?.userBalance.toString()) ||
-                Number(props.proposal.scores_total) < Number(quorum)
-              "
-            >
-              {{ $t('safeSnap.labels.request') }}
-            </BaseButton>
-          </div>
-        </BaseModal>
-      </BaseContainer>
-    </div>
-
-    <div
-      v-if="questionState === 'waiting-for-liveness'"
-      class="flex items-center justify-center self-stretch p-3 text-skin-link"
-    >
-      <BaseContainer class="my-1 inline-block">
-        <div>
-          <strong>{{
-            'Proposal can be executed at ' +
-            new Date(
-              questionDetails?.assertionEvent.expirationTimestamp * 1000
-            ).toLocaleString()
-          }}</strong>
-        </div>
-
-        <div style="text-align: center" class="mt-3">
-          <a
-            :href="
-              getProposalUrl(
-                props.network,
-                questionDetails?.assertionEvent.proposalTxHash,
-                questionDetails?.assertionEvent.logIndex
-              )
-            "
-            class="rounded-lg border p-2 text-skin-text"
-            rel="noreferrer noopener"
-            target="_blank"
-            style="font-size: 16px"
-          >
-            {{ $t('safeSnap.labels.disputeProposal') }}
-            <em style="font-size: 14px" class="iconfont iconexternal-link" />
-          </a>
-        </div>
-      </BaseContainer>
-    </div>
-
-    <div v-if="questionState === 'proposal-approved'" class="my-4 inline-block">
-      <BaseContainer class="flex items-center">
-        <BaseButton
-          :loading="action2State === 'execute-proposal'"
-          @click="executeProposalUma"
-          class="mr-2"
-        >
-          {{ $t('safeSnap.labels.executeTxsUma', [batches.length]) }}
-        </BaseButton>
-        <BasePopoverHover placement="top">
-          <template #button>
-            <i-ho-information-circle />
-          </template>
-          <template #content>
-            <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
-              {{ $t('safeSnap.labels.executeToolTip') }}
-            </div>
-          </template>
-        </BasePopoverHover>
-      </BaseContainer>
-    </div>
-  </div>
   <div
-    v-else-if="
-      questionState !== 'loading' && questionState !== 'no-wallet-connection'
-    "
+    v-if="questionState === 'error' || questionDetails === undefined"
     class="my-4"
   >
-    {{ $t('safeSnap.labels.switchChain', [networkName]) }}
+    {{ $t('safeSnap.labels.error') }}
   </div>
+  <template v-else>
+    <div v-if="questionState === 'no-wallet-connection'" class="my-4">
+      {{ $t('safeSnap.labels.connectWallet') }}
+    </div>
 
-  <div v-if="questionState === 'completely-executed'" class="my-4">
-    {{ $t('safeSnap.labels.executed') }}
-  </div>
+    <div v-if="questionState === 'loading'" class="my-4">
+      <LoadingSpinner />
+    </div>
+
+    <div v-if="connectedToRightChain || usingMetaMask">
+      <div
+        v-if="questionState === 'waiting-for-vote-confirmation'"
+        class="my-4 inline-block"
+      >
+        <BaseContainer class="flex items-center">
+          <BaseButton @click="showProposeModal" class="mr-2">
+            {{ $t('safeSnap.labels.confirmVoteResults') }}
+          </BaseButton>
+        </BaseContainer>
+      </div>
+
+      <div v-if="questionState === 'no-transactions'" class="my-4">
+        {{ $t('safeSnap.labels.noTransactions') }}
+      </div>
+
+      <div
+        v-if="
+          questionState === 'waiting-for-proposal' &&
+          questionDetails.needsBondApproval === true
+        "
+        class="my-4 inline-block"
+      >
+        <BaseContainer class="flex items-center">
+          <BaseButton
+            :loading="action1State === 'approve-bond'"
+            @click="approveBondUma"
+            class="mr-2"
+          >
+            {{ $t('safeSnap.labels.approveBond') }}
+          </BaseButton>
+          <BasePopoverHover placement="top">
+            <template #button>
+              <i-ho-information-circle />
+            </template>
+            <template #content>
+              <div
+                class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
+              >
+                {{ $t('safeSnap.labels.approveBondToolTip') }}
+              </div>
+            </template>
+          </BasePopoverHover>
+        </BaseContainer>
+      </div>
+      <div
+        v-if="
+          questionState === 'waiting-for-proposal' &&
+          questionDetails.needsBondApproval === false
+        "
+        class="my-4 inline-block"
+      >
+        <BaseContainer class="flex items-center">
+          <BaseModal :open="closeModal" @close="closeEvent">
+            <template #header>
+              <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
+            </template>
+            <div class="my-3 p-3">
+              <div class="pl-3 pr-3">
+                <p>{{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}</p>
+              </div>
+              <div class="my-3 rounded-lg border p-3">
+                <div>
+                  <strong class="pr-3">{{
+                    $t('safeSnap.labels.requiredBond')
+                  }}</strong>
+                  <span class="float-right text-skin-link">
+                    {{
+                      formatUnits(
+                        questionDetails.minimumBond ?? 0,
+                        questionDetails.decimals
+                      ) +
+                      ' ' +
+                      questionDetails.symbol
+                    }}
+                  </span>
+                </div>
+                <div>
+                  <strong class="pr-3">{{
+                    $t('safeSnap.labels.challengePeriod')
+                  }}</strong>
+                  <span class="float-right text-skin-link">
+                    {{ formatDuration(Number(questionDetails.livenessPeriod)) }}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <BaseMessage
+                  v-if="Number(props.proposal.scores_total) < Number(quorum)"
+                  level="warning-red"
+                >
+                  {{ $t('safeSnap.labels.quorumWarning') }}
+                </BaseMessage>
+                <BaseMessage
+                  v-if="
+                    Number(questionDetails.minimumBond.toString()) >
+                    Number(questionDetails.userBalance.toString())
+                  "
+                  level="warning-red"
+                >
+                  {{ $t('safeSnap.labels.bondWarning') }}
+                </BaseMessage>
+              </div>
+
+              <BaseButton
+                :loading="action1State === 'submit-proposal'"
+                @click="submitProposalUma"
+                class="my-1 w-full"
+                :disabled="
+                  Number(questionDetails.minimumBond.toString()) >
+                    Number(questionDetails.userBalance.toString()) ||
+                  Number(props.proposal.scores_total) < Number(quorum)
+                "
+              >
+                {{ $t('safeSnap.labels.request') }}
+              </BaseButton>
+            </div>
+          </BaseModal>
+        </BaseContainer>
+      </div>
+
+      <div
+        v-if="
+          questionState === 'waiting-for-liveness' &&
+          questionDetails.assertionEvent !== undefined
+        "
+        class="flex items-center justify-center self-stretch p-3 text-skin-link"
+      >
+        <BaseContainer class="my-1 inline-block">
+          <div>
+            <strong>{{
+              'Proposal can be executed at ' +
+              new Date(
+                questionDetails.assertionEvent.expirationTimestamp.toNumber() *
+                  1000
+              ).toLocaleString()
+            }}</strong>
+          </div>
+
+          <div style="text-align: center" class="mt-3">
+            <a
+              :href="
+                getProposalUrl(
+                  props.network,
+                  questionDetails.assertionEvent.proposalTxHash,
+                  questionDetails.assertionEvent.logIndex
+                )
+              "
+              class="rounded-lg border p-2 text-skin-text"
+              rel="noreferrer noopener"
+              target="_blank"
+              style="font-size: 16px"
+            >
+              {{ $t('safeSnap.labels.disputeProposal') }}
+              <em style="font-size: 14px" class="iconfont iconexternal-link" />
+            </a>
+          </div>
+        </BaseContainer>
+      </div>
+
+      <div
+        v-if="questionState === 'proposal-approved'"
+        class="my-4 inline-block"
+      >
+        <BaseContainer class="flex items-center">
+          <BaseButton
+            :loading="action2State === 'execute-proposal'"
+            @click="executeProposalUma"
+            class="mr-2"
+          >
+            {{ $t('safeSnap.labels.executeTxsUma', [batches.length]) }}
+          </BaseButton>
+          <BasePopoverHover placement="top">
+            <template #button>
+              <i-ho-information-circle />
+            </template>
+            <template #content>
+              <div
+                class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
+              >
+                {{ $t('safeSnap.labels.executeToolTip') }}
+              </div>
+            </template>
+          </BasePopoverHover>
+        </BaseContainer>
+      </div>
+    </div>
+    <div
+      v-else-if="
+        questionState !== 'loading' && questionState !== 'no-wallet-connection'
+      "
+      class="my-4"
+    >
+      {{ $t('safeSnap.labels.switchChain', [networkName]) }}
+    </div>
+
+    <div v-if="questionState === 'completely-executed'" class="my-4">
+      {{ $t('safeSnap.labels.executed') }}
+    </div>
+  </template>
 </template>
