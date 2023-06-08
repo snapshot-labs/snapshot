@@ -81,8 +81,7 @@ async function fetchBalances(network, safeAddress) {
       'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
     );
     const snapshotTokensPromise = fetchTokens(
-      'https://sh5.co/api/moderation?list=verifiedTokens',
-      true
+      'https://sh5.co/api/moderation?list=verifiedTokens'
     );
 
     const tokensLists = await Promise.all([
@@ -98,14 +97,11 @@ async function fetchBalances(network, safeAddress) {
   }
 }
 
-function fetchTokens(url, isNested = false) {
+function fetchTokens(url) {
   return fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (isNested && 'verifiedTokens' in data) {
-        return data.verifiedTokens.tokens;
-      }
-      return 'tokens' in data ? data.tokens : [];
+      return data.verifiedTokens?.tokens || data.tokens || [];
     })
     .catch(() => []);
 }
