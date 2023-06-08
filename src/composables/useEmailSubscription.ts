@@ -7,7 +7,6 @@ type SubscriptionStatus = 'NOT_SUBSCRIBED' | 'VERIFIED' | 'UNVERIFIED';
 function useEmailSubscriptionComposable() {
   const userState = ref<SubscriptionStatus>('NOT_SUBSCRIBED');
   const error = ref('');
-  const maskedEmail = ref('');
   const loading = ref(false);
   const { web3Account } = useWeb3();
   const {
@@ -43,9 +42,8 @@ function useEmailSubscriptionComposable() {
       return;
     }
 
-    const { status: usrState, email = '', subscriptions } = data.value;
+    const { status: usrState, subscriptions } = data.value;
     userState.value = usrState;
-    maskedEmail.value = email;
     apiSubscriptions.value = subscriptions || [];
     loading.value = false;
   };
@@ -81,7 +79,6 @@ function useEmailSubscriptionComposable() {
   return {
     userState,
     error,
-    maskedEmail,
     clientSubscriptions,
     subscribe,
     updateSubscriptions,

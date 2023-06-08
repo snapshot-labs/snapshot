@@ -3,8 +3,6 @@ defineProps<{
   open: boolean;
 }>();
 const emit = defineEmits(['close']);
-
-const { maskedEmail } = useEmailSubscription();
 </script>
 
 <template>
@@ -17,18 +15,7 @@ const { maskedEmail } = useEmailSubscription();
     <div class="m-4 mb-6 text-center">
       {{ $t('emailResend.description') }}
 
-      <BaseInput
-        v-model="maskedEmail"
-        class="my-4 !pl-[40px]"
-        type="email"
-        is-disabled
-      >
-        <template #before>
-          <i-ho-mail class="text-[16px]" />
-        </template>
-      </BaseInput>
-
-      <BaseButton class="w-full" primary @click="emit('close')">
+      <BaseButton class="mt-4 w-full" primary @click="emit('close')">
         {{ $t('close') }}
       </BaseButton>
     </div>
