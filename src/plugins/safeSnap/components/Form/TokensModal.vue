@@ -134,7 +134,7 @@ function handleTokenClick(token) {
         This token isn't known to us. Please make sure it is the correct address
         before proceeding.
         <BaseLink
-          link="https://docs.snapshot.org/faq#the-token-i-want-to-use-for-executing-transaction-is-not-verified.-can-i-verify-it"
+          link="https://docs.snapshot.org/user-guides/token-verification"
         >
           {{ $t('learnMore') }}</BaseLink
         >
