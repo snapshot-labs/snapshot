@@ -957,7 +957,7 @@
     "updatePreferences": "Update preferences"
   },
   "emailResend": {
-    "title": "Resend confirmation email",
+    "title": "Verify email",
     "description": "Email validation letter has been sent to your email address. Please click the confirmation link to complete the subscription."
   },
   "joinCommunity": "Join Snapshot community",
