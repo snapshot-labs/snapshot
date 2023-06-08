@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['select']);
 
-const { formatNumber } = useIntl();
+const { formatNumber, getNumberFormatter } = useIntl();
 
 const exploreUrl = computed(() => {
   let network = '1';
@@ -54,7 +54,12 @@ const exploreUrl = computed(() => {
 
     <div class="h-full text-right">
       <span v-if="token.address !== 'main'" class="text-skin-link">
-        {{ formatNumber(Number(token.balance)) }}
+        {{
+          formatNumber(
+            Number(token.balance),
+            getNumberFormatter({ maximumFractionDigits: 6 }).value
+          )
+        }}
       </span>
       <a
         v-if="token.address !== 'main'"
