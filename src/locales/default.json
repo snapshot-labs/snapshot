@@ -484,6 +484,10 @@
         "button": "Delete space",
         "disabledInformation": "You need to be the space controller to delete the space"
       }
+    },
+    "delegationPortal": {
+      "title": "Delegation portal",
+      "information": "Please ensure your token adheres to a compatible delegation standard to enable delegate discovery and activity within your Snapshot space."
     }
   },
   "setup": {

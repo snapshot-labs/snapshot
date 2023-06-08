@@ -10,10 +10,9 @@ const { form } = useFormSpaceSettings(props.context);
 </script>
 
 <template>
-  <BaseBlock title="Delegates portal">
+  <BaseBlock :title="$t('settings.delegationPortal.title')">
     <BaseMessageBlock level="info" class="mb-3">
-      Please ensure your token adheres to a compatible delegation standard to
-      enable delegate discovery and activity within your Snapshot space.
+      {{ $t('settings.delegationPortal.information') }}
     </BaseMessageBlock>
     <TuneForm
       v-model="form.delegation"
