@@ -36,29 +36,57 @@ export function useClient() {
     }
   }
 
-  function voteWithAlias(client, votePayload) {
+  const signParams = {
+    get provider() {
+      return auth.web3;
+    },
+    get address() {
+      return web3.value.account;
+    }
+  };
+
+  function vote(client, votePayload, { provider, address } = signParams) {
+    return client.vote(provider, address, votePayload);
+  }
+
+  function proposal(
+    client,
+    proposalPayload,
+    { provider, address } = signParams
+  ) {
+    return client.proposal(provider, address, proposalPayload);
+  }
+
+  function deleteProposal(
+    client,
+    deleteProposalPayload,
+    { provider, address } = signParams
+  ) {
+    return client.cancelProposal(provider, address, deleteProposalPayload);
+  }
+
+  function bindWithAlias(actionFn) {
     const provider = aliasWallet.value;
     const address = aliasWallet.value.address;
 
-    return actionWithAlias(() => {
-      return client.vote(provider, address, votePayload);
-    });
-  }
-
-  function voteWithAddress(client, votePayload) {
-    const provider = auth.web3;
-    const address = web3.value.account;
-
-    return client.vote(provider, address, votePayload);
+    return (client, payload) => {
+      return actionWithAlias(() =>
+        actionFn(client, payload, { provider, address })
+      );
+    };
   }
 
   async function sendEIP712(space, type, payload) {
     const client = isGnosisSafe.value ? clientGnosisSafe : clientEIP712;
     if (type === 'proposal') {
+      const shouldUseAlias = space.voting?.aliased && !isGnosisSafe.value;
+      const proposalFn = shouldUseAlias ? bindWithAlias(proposal) : proposal;
+
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)
         plugins = payload.metadata.plugins;
-      return client.proposal(auth.web3, web3.value.account, {
+
+      const proposalPayload = {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -69,11 +97,14 @@ export function useClient() {
         end: payload.end,
         snapshot: payload.snapshot,
         plugins: JSON.stringify(plugins),
-        app: DEFINED_APP
-      });
+        app: DEFINED_APP,
+        from: web3.value.account
+      };
+
+      return proposalFn(client, proposalPayload);
     } else if (type === 'vote') {
       const shouldUseAlias = space.voting?.aliased && !isGnosisSafe.value;
-      const voteFn = shouldUseAlias ? voteWithAlias : voteWithAddress;
+      const voteFn = shouldUseAlias ? bindWithAlias(vote) : vote;
 
       const votePayload = {
         space: space.id,
@@ -88,10 +119,18 @@ export function useClient() {
 
       return voteFn(client, votePayload);
     } else if (type === 'delete-proposal') {
-      return client.cancelProposal(auth.web3, web3.value.account, {
+      const shouldUseAlias = space.voting?.aliased && !isGnosisSafe.value;
+      const deleteProposalFn = shouldUseAlias
+        ? bindWithAlias(deleteProposal)
+        : deleteProposal;
+
+      const deleteProposalPayload = {
         space: space.id,
-        proposal: payload.proposal.id
-      });
+        proposal: payload.proposal.id,
+        from: web3.value.account
+      };
+
+      return deleteProposalFn(client, deleteProposalPayload);
     } else if (type === 'settings') {
       return client.space(auth.web3, web3.value.account, {
         space: space.id,
