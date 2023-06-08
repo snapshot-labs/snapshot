@@ -11,10 +11,11 @@ const props = defineProps<{
 const emit = defineEmits(['select']);
 
 const { formatNumber, getNumberFormatter } = useIntl();
+const { copyToClipboard } = useCopy();
 
 const exploreUrl = computed(() => {
-  let network = '1';
-  if (props.token.verified) network = String(props.token.chainId);
+  const network = props.token.verified ? String(props.token.chainId) : null;
+  if (!network) return null;
   return explorerUrl(network, props.token.address);
 });
 </script>
@@ -61,17 +62,21 @@ const exploreUrl = computed(() => {
           )
         }}
       </span>
-      <a
-        v-if="token.address !== 'main'"
-        :href="exploreUrl"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center gap-x-1 text-skin-text hover:!text-skin-link"
-        @click.stop
-      >
-        <span class="">{{ shorten(token.address) }}</span>
-        <i-ho-external-link class="mb-[1px] text-xs" />
-      </a>
+      <div>
+        <BaseLink
+          v-if="token.address !== 'main' && exploreUrl"
+          :link="exploreUrl"
+          @click.stop
+        >
+          {{ shorten(token.address) }}</BaseLink
+        >
+        <span
+          v-else-if="token.address !== 'main'"
+          @click.stop="copyToClipboard(token.address)"
+        >
+          {{ shorten(token.address) }}
+        </span>
+      </div>
     </div>
   </button>
 </template>
