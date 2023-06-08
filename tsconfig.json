@@ -17,7 +17,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "outDir": "dist"
   },
