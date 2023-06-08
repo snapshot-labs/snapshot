@@ -1543,10 +1543,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@^0.4.86":
-  version "0.4.86"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.86.tgz#c2255aa8bb8cdd1cd20fd9b9db8954b847af286b"
-  integrity sha512-c7B0YrWQQfgzssbhVX/wb7EszA19v43lJbxysQumov5Z/HjvIPwHIBnaJDxai+nWU5vXGa+RX9yoYYywXKnNhw==
+"@snapshot-labs/snapshot.js@^0.4.96":
+  version "0.4.96"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.4.96.tgz#141be3285ab0b25053ace6963f70b4225b2407ca"
+  integrity sha512-ZilCjKSHx4j6gl4g0+ABCYSsK/5zo4jjNz+DaeimXDZIH+e5mtT1HHFaR+kI14hqYNxTkyTinxJ39q5/gSuzjw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1558,7 +1558,7 @@
     "@ethersproject/wallet" "^5.6.2"
     ajv "^8.11.0"
     ajv-formats "^2.1.1"
-    cross-fetch "^3.1.5"
+    cross-fetch "^3.1.6"
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
 
@@ -5119,6 +5119,13 @@ cross-fetch@^3.0.6, cross-fetch@^3.1.4, cross-fetch@^3.1.5:
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
   dependencies:
     node-fetch "2.6.7"
+
+cross-fetch@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.6.tgz#bae05aa31a4da760969756318feeee6e70f15d6c"
+  integrity sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==
+  dependencies:
+    node-fetch "^2.6.11"
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
@@ -10253,6 +10260,13 @@ node-fetch@2.6.7, node-fetch@^2.6.0, node-fetch@^2.6.1, node-fetch@^2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
   integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
+
+node-fetch@^2.6.11:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.11.tgz#cde7fc71deef3131ef80a738919f999e6edfff25"
+  integrity sha512-4I6pdBY1EthSqDmJkiNk3JIT8cswwR9nfeW/cPdUagJYEQG7R95WRH74wpz7ma8Gh/9dI9FP+OU+0E4FvtA55w==
   dependencies:
     whatwg-url "^5.0.0"
 
