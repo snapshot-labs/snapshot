@@ -8,10 +8,11 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
-const { form, formDraft, getValidation } = useFormSpaceProposal();
+const { form, formDraft, validationErrors } = useFormSpaceProposal();
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
+const visitedBodyInput = ref(false);
 
 const inputName = computed({
   get: () => form.value.name,
@@ -76,12 +77,12 @@ const handleDrop = e => {
         class="w-full break-all"
         v-text="form.name || $t('create.untitled')"
       />
-      <BaseInput
+      <TuneInput
         v-else
         v-model="inputName"
-        :title="$t('create.proposalTitle')"
+        :label="$t('create.proposalTitle')"
         :max-length="128"
-        :error="getValidation('name')"
+        :error="validationErrors?.name"
         focus-on-mount
         data-testid="input-proposal-title"
       />
@@ -106,11 +107,13 @@ const handleDrop = e => {
           >
             <textarea
               ref="textAreaEl"
-              v-model="inputBody"
+              v-model.trim="inputBody"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               :maxlength="bodyLimit"
               data-testid="input-proposal-body"
               @paste="handlePaste"
+              @blur="visitedBodyInput = true"
+              @focus="visitedBodyInput = false"
             />
           </div>
 
@@ -146,18 +149,22 @@ const handleDrop = e => {
             </BaseLink>
           </label>
         </div>
+        <TuneErrorInput
+          v-if="visitedBodyInput"
+          :error="validationErrors?.body"
+        />
       </div>
 
       <div v-if="form.body && preview" class="mb-4">
         <BaseMarkdown :body="form.body" />
       </div>
 
-      <InputUrl
+      <TuneInputUrl
         v-if="!preview"
         v-model.trim="form.discussion"
         placeholder="https://forum.balancer.fi/proposal"
-        :title="$t('create.discussion')"
-        :error="getValidation('discussion')"
+        :label="$t('create.discussion')"
+        :error="validationErrors?.discussion"
         data-testid="input-proposal-discussion"
       />
     </div>

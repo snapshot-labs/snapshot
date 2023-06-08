@@ -49,8 +49,8 @@ const tPath = computed(() => {
       </template>
 
       <BaseLink link="https://passport.gitcoin.co/#/dashboard">
-        Gitcoin Passport
-      </BaseLink>
+        Gitcoin Passport</BaseLink
+      >
     </template>
 
     <template v-else>

@@ -254,6 +254,11 @@ export interface Vote {
   created: number;
 }
 
+export interface VoteFilters {
+  orderDirection: string;
+  onlyWithReason: boolean;
+}
+
 // Execution
 
 export type ABI = string | Array<Fragment | JsonFragment | string>;
@@ -320,6 +325,9 @@ export interface CollectableAsset extends SafeAsset {
 export interface TokenAsset extends SafeAsset {
   symbol: string;
   decimals: number;
+  balance: string;
+  verified?: any;
+  chainId?: number;
 }
 
 export interface CollectableAssetTransaction extends SafeTransaction {
