@@ -12,12 +12,17 @@ const {
 } = useEmailSubscription();
 const { t } = useI18n();
 
+const shouldRemoveEmail = ref(false);
+const canRemoveEmail = computed(() => {
+  return Object.values(clientSubscriptions.value).every(v => !v);
+});
+
 const updateSubscriptions = (key, value) => {
   clientSubscriptions.value = { ...clientSubscriptions.value, [key]: value };
 };
 
 const submit = async () => {
-  await update();
+  await update({ removeEmail: shouldRemoveEmail.value });
   emit('close');
 };
 </script>
@@ -56,6 +61,13 @@ const submit = async () => {
         :label="t('emailManagement.optionClosedProposal')"
         :sublabel="t('emailManagement.optionClosedProposalDescription')"
         @update:model-value="updateSubscriptions('closedProposal', $event)"
+      />
+
+      <TuneCheckbox
+        v-if="canRemoveEmail"
+        v-model="shouldRemoveEmail"
+        :hint="t('emailManagement.removeEmail')"
+        class="ml-3 text-sm opacity-60"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">

@@ -954,6 +954,7 @@
     "optionClosedProposalDescription": "Get informed when a proposal is closed in your followed spaces.",
     "optionSummary": "Weekly summary",
     "optionSummaryDescription": "Get a weekly report detailing the activity in your followed spaces.",
+    "removeEmail": "Also remove my email from Snapshot's database",
     "updatePreferences": "Update preferences"
   },
   "emailResend": {

@@ -12,7 +12,8 @@ function useEmailSubscriptionComposable() {
   const {
     fetchSubscriptionsDetails,
     subscribeWithEmail,
-    updateEmailSubscriptions
+    updateEmailSubscriptions,
+    completelyUnsubscribe
   } = useEmailFetchClient();
 
   const apiSubscriptions = ref<SubscriptionType[]>([]);
@@ -65,9 +66,12 @@ function useEmailSubscriptionComposable() {
     return data.value.result === 'OK';
   };
 
-  const updateSubscriptions = async () => {
+  const updateSubscriptions = async ({ removeEmail }) => {
+    const updateAction = removeEmail
+      ? completelyUnsubscribe
+      : updateEmailSubscriptions;
     loading.value = true;
-    await updateEmailSubscriptions({
+    await updateAction({
       address: web3Account.value,
       email: '',
       subscriptions: apiSubscriptions.value

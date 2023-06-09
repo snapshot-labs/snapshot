@@ -17,6 +17,13 @@ const UpdateSubscriptionsSchema: DataType = {
   ]
 };
 
+const UnsubscribeSchema: DataType = {
+  Unsubscribe: [
+    { name: 'address', type: 'address' },
+    { name: 'email', type: 'string' }
+  ]
+};
+
 const useEmailFetch = createFetch({
   baseUrl: import.meta.env.VITE_ENVELOP_URL,
   options: {
@@ -81,9 +88,31 @@ export function useEmailFetchClient() {
     return useEmailFetch('/').post(body).json();
   };
 
+  const completelyUnsubscribe = async unsignedParams => {
+    let signature;
+    try {
+      signature = await plainSign(unsignedParams, UnsubscribeSchema);
+    } catch (error: any) {
+      return {
+        error: { value: 'sign_error' },
+        data: { value: null }
+      };
+    }
+    const body = {
+      method: 'snapshot.unsubscribe',
+      params: {
+        ...unsignedParams,
+        signature
+      }
+    };
+
+    return useEmailFetch('/').post(body).json();
+  };
+
   return {
     fetchSubscriptionsDetails,
     subscribeWithEmail,
-    updateEmailSubscriptions
+    updateEmailSubscriptions,
+    completelyUnsubscribe
   };
 }
