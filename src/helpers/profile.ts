@@ -3,6 +3,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
 import { getAddress } from '@ethersproject/address';
+import { lensClient } from './lens';
 
 async function ensReverseRecordRequest(addresses) {
   const network = '1';
@@ -57,17 +58,40 @@ async function udReverseRecordRequest(addresses) {
   }
 }
 
+async function lensReverseRecordRequest(addresses) {
+  try {
+    const profilesResponse = await lensClient.profile.fetchAll({
+      ownedBy: addresses.map(address => getAddress(address)),
+      limit: 50
+    });
+
+    const lensProfiles = profilesResponse.items
+      .filter(profile => profile.handle)
+      .reduce((acc, profile) => {
+        return {
+          ...acc,
+          [profile.ownedBy]: profile.handle
+        };
+      }, {});
+
+    return lensProfiles;
+  } catch {
+    return [];
+  }
+}
+
 async function lookupAddresses(
   addresses: string[]
 ): Promise<{ [k: string]: string }> {
-  const [ens, ud] = await Promise.all([
+  const [ens, ud, lens] = await Promise.all([
     ensReverseRecordRequest(addresses),
-    udReverseRecordRequest(addresses)
+    udReverseRecordRequest(addresses),
+    lensReverseRecordRequest(addresses)
   ]);
 
   return Object.fromEntries(
     addresses.map(address => {
-      return [address, ens[address] || ud[address] || ''];
+      return [address, ens[address] || lens[address] || ud[address] || ''];
     })
   );
 }

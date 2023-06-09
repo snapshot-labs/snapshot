@@ -39,6 +39,7 @@
     "@ethersproject/wallet": "^5.7.0",
     "@headlessui-float/vue": "^0.11.1",
     "@headlessui/vue": "^1.7.13",
+    "@lens-protocol/client": "^1.1.0",
     "@pusher/push-notifications-web": "^1.1.0",
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/lock": "^0.1.1015",
