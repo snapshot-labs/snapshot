@@ -480,6 +480,11 @@ export const SPACE_QUERY = gql`
         minScore
         onlyMembers
       }
+      delegationPortal {
+        delegationType
+        delegationContract
+        delegationApi
+      }
       treasuries {
         name
         address

@@ -6,7 +6,7 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const { form } = useFormSpaceSettings(props.context);
+const { form, validationErrors, addRef } = useFormSpaceSettings(props.context);
 </script>
 
 <template>
@@ -15,9 +15,10 @@ const { form } = useFormSpaceSettings(props.context);
       {{ $t('settings.delegationPortal.information') }}
     </BaseMessageBlock>
     <TuneForm
-      v-model="form.delegation"
+      :ref="addRef"
+      v-model="form.delegationPortal"
       :definition="schemas.space.properties.delegationPortal"
-      :error="{}"
+      :error="validationErrors?.delegationPortal || {}"
     />
   </BaseBlock>
 </template>

@@ -15,7 +15,7 @@ const hasDelegationStrategy = computed(() => {
 });
 
 const hasDelegatesSettings = computed(() => {
-  return props.space.delegationPortal.delegationType;
+  return props.space.delegationPortal?.delegationType;
 });
 
 const isLegacySpace = computed(() => {

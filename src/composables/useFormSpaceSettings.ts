@@ -9,9 +9,8 @@ const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_DELEGATION = {
   delegationType: 'compound-governor',
-  delegationContract: '0x3901D0fDe202aF1427216b79f5243f8A022d68cf',
-  delegationApi:
-    'https://thegraph.com/hosted-service/subgraph/arr00/uniswap-governance-v2'
+  delegationContract: '',
+  delegationApi: ''
 };
 const EMPTY_SPACE_FORM = {
   strategies: [],
@@ -81,6 +80,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     Object.entries(formData).forEach(([key, value]) => {
       if (value === null || value === '') delete formData[key];
     });
+    if (
+      !formData.delegationPortal.delegationContract &&
+      !formData.delegationPortal.delegationApi
+    ) {
+      delete formData.delegationPortal;
+    }
     return formData;
   });
 
