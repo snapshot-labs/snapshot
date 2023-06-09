@@ -25,8 +25,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     'deployProxy(address implementation, bytes initializer, bytes32 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
   // TODO get mint contract address from space
-  // const MINT_CONTRACT_ADDRESS = '0x8D153aFB2e6a9D088e1f4409554a26466a25E0f1';
-  const MINT_CONTRACT_ADDRESS = '0xed2a6161948F57dEBd2865040B287BD70a6323aa'; // no sign check collection
+  const MINT_CONTRACT_ADDRESS = '0x8d153afb2e6a9d088e1f4409554a26466a25e0f1';
   const MINT_CONTRACT_ABI = [
     'function balanceOf(address, uint256 id) view returns (uint256)',
     'function mint(uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
@@ -126,9 +125,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     }
   }
 
-  async function _getSignature(type = 'space', salt) {
-    const id = type === 'space' ? space.id : proposal.id;
-    const res = await fetch(`https://sh5.co/api/nft-claimer/${type}/sign`, {
+  async function _getPayload(type = 'deploy', salt) {
+    const id = type === 'deploy' ? space.id : proposal.id;
+    const res = await fetch(`https://sh5.co/api/nft-claimer/${type}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -193,24 +192,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       await _switchNetwork();
 
       const salt = BigNumber.from(randomBytes(32)).toString();
-      const signature = await _getSignature('proposal', salt);
+      const signature = await _getPayload('proposal', salt);
       console.log(':enableNFTClaimer signature', signature);
       return;
-      const tx = await sendTransaction(
-        auth.web3,
-        FACTORY_ADDRESS,
-        FACTORY_ABI,
-        'deployProxy',
-        [
-          space.id,
-          web3Account.value,
-          salt,
-          signature.v,
-          signature.r,
-          signature.s
-        ]
-      );
-      console.log(':enableNFTClaimer tx', tx);
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
       console.log(e);
@@ -244,14 +228,20 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       await _checkWETHApproval();
 
       const salt = BigNumber.from(randomBytes(32)).toString();
-      const signature = await _getSignature('proposal', salt);
+      const { signature } = await _getPayload('mint', salt);
 
       const tx = await sendTransaction(
         auth.web3,
         MINT_CONTRACT_ADDRESS,
         MINT_CONTRACT_ABI,
         'mint',
-        [proposal.id, salt, signature.v, signature.r, signature.s]
+        [
+          BigNumber.from(proposal.id).toString(),
+          salt,
+          signature.v,
+          signature.r,
+          signature.s
+        ]
       );
       console.log(':mint tx', tx);
 
