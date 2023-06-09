@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
+import { useInfiniteScroll, refDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -25,6 +25,7 @@ const { domain } = useApp();
 const { web3Account } = useWeb3();
 
 const searchInput = ref((route.query.search as string) || '');
+const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 const showModalDelegate = ref(false);
 const showModalProfile = ref(false);
@@ -102,13 +103,9 @@ watch(delegates, () => {
   loadProfiles(delegates.value.map(delegate => delegate.id));
 });
 
-watchDebounced(
-  searchInput,
-  () => {
-    fetchDelegate(searchInput.value);
-  },
-  { debounce: 300 }
-);
+watch(searchInputDebounced, () => {
+  fetchDelegate(searchInput.value);
+});
 
 watch(matchFilter, () => {
   fetchDelegates(matchFilter.value);
@@ -161,7 +158,7 @@ onMounted(() => {
         </div>
       </div>
     </BaseBlock>
-    <template v-if="searchInput">
+    <template v-if="searchInputDebounced">
       <div class="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
         <SpaceDelegatesListItem
