@@ -19,7 +19,7 @@ const { formatCompactNumber } = useIntl();
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border-y p-4 md:rounded-xl md:border"
+    class="flex h-full flex-col justify-between border-y border-skin-border p-4 md:rounded-xl md:border"
   >
     <button @click="emit('clickUser')">
       <div class="flex text-left">
