@@ -107,7 +107,7 @@ function handleAction(e) {
       :open="showModalEmail"
       @close="showModalEmail = false"
     />
-    <ModalEmailResend
+    <ModalEmailVerify
       v-else-if="userState === 'UNVERIFIED'"
       :open="showModalEmail"
       @close="showModalEmail = false"

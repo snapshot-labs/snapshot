@@ -1,8 +1,19 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   open: boolean;
 }>();
 const emit = defineEmits(['close']);
+
+const { loadEmailSubscriptions } = useEmailSubscription();
+
+watch(
+  () => props.open,
+  isModalOpen => {
+    if (isModalOpen) {
+      loadEmailSubscriptions();
+    }
+  }
+);
 </script>
 
 <template>
