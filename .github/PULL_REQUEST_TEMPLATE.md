@@ -24,7 +24,6 @@ Fixes #
 - [ ] I have tested my changes on a preview deployment
 - [ ] I have tested my changes on different screen sizes (sm, md)
 - [ ] I have tested my changes on a custom domain
-- [ ] I have run end-to-end tests `yarn cypress:test:e2e`, and they have passed
 
 ### Additional notes or considerations
 *_(Include any other relevant information or context that may be helpful for the reviewer)_*
