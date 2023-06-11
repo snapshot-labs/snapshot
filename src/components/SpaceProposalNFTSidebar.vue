@@ -15,7 +15,7 @@ const {
   minting,
   init,
   inited
-} = useNFTClaimer(props.space, props.proposal);
+} = useNFTClaimer(props.proposal);
 
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);

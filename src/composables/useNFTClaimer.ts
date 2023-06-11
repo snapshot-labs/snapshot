@@ -9,10 +9,6 @@ import { randomBytes } from '@ethersproject/random';
 import { useStorage } from '@vueuse/core';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import {
-  formatBytes32String,
-  parseBytes32String
-} from '@ethersproject/strings';
 import { hexZeroPad, hexlify } from '@ethersproject/bytes';
 
 const collectionsInfo = useStorage('snapshot.proposals.nftCollections', {});
@@ -183,8 +179,8 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
       );
 
       const maxSupply = await contractCollection.maxSupply();
-      const supplies = await contractCollection.supplies(proposal.id);
-      const mintPrices = await contractCollection.mintPrices(proposal.id);
+      const supplies = await contractCollection.supplies(model.id);
+      const mintPrices = await contractCollection.mintPrices(model.id);
       const mintPriceRaw = await contractCollection.mintPrice();
       const balanceOf = await contractCollection.balanceOf(
         web3Account.value,

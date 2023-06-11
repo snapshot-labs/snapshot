@@ -17,7 +17,7 @@ const {
   minting,
   init,
   inited
-} = useNFTClaimer(props.space, props.proposal);
+} = useNFTClaimer(props.proposal);
 
 const nfts = ref([]);
 
