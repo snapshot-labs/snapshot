@@ -9,10 +9,17 @@ import { randomBytes } from '@ethersproject/random';
 import { useStorage } from '@vueuse/core';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import {
+  formatBytes32String,
+  parseBytes32String
+} from '@ethersproject/strings';
+import { hexZeroPad, hexlify } from '@ethersproject/bytes';
 
 const collectionsInfo = useStorage('snapshot.proposals.nftCollections', {});
 
-export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
+const SIDEKICK_URL = 'http://localhost:3005';
+
+export function useNFTClaimer(model: ExtendedSpace | Proposal) {
   const NETWORK_KEY = '5';
   const WETH_CONTRACT_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6';
   const WETH_CONTRACT_ABI = [
@@ -20,9 +27,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     'function allowance(address owner, address spender) external view returns (uint256)',
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const FACTORY_ADDRESS = '0x1ff32aE352C07eB95Ce8FDD672E9568936b331e4';
-  const FACTORY_ABI = [
-    'deployProxy(address implementation, bytes initializer, bytes32 salt, uint8 v, bytes32 r, bytes32 s)'
+  const DEPLOY_CONTRACT_ADDRESS = '0x918261f6fba5b48ca2ff28b4abf5d1c3238fa758';
+  const DEPLOY_ABI = [
+    'function deployProxy(address implementation, bytes initializer, bytes32 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
   // TODO get mint contract address from space
   const MINT_CONTRACT_ADDRESS = '0x8d153afb2e6a9d088e1f4409554a26466a25e0f1';
@@ -125,30 +132,50 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     }
   }
 
-  async function _getPayload(type = 'deploy', salt) {
-    const id = type === 'deploy' ? space.id : proposal.id;
-    const res = await fetch(`https://sh5.co/api/nft-claimer/${type}`, {
+  async function _getMintPayload(salt: string) {
+    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/mint`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id,
+        id: model.id,
         address: web3Account.value,
         salt
       })
     });
-    const data = await res.json();
-    return data;
+    return await res.json();
+  }
+
+  async function _getDeployPayload(
+    salt: string,
+    params: Record<string, string | number>
+  ) {
+    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/deploy`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: model.id,
+        address: web3Account.value,
+        salt,
+        maxSupply: params.maxSupply,
+        mintPrice: params.mintPrice,
+        proposerFee: params.proposerCut,
+        spaceTreasury: params.treasuryAddress
+      })
+    });
+    return await res.json();
   }
 
   async function init() {
-    if (!proposal || !space) return;
+    if (!model) return;
 
-    let collectionInfo = collectionsInfo.value[proposal.id];
+    let collectionInfo = collectionsInfo.value[model.id];
 
     if (!collectionInfo || collectionInfo.createdAt < Date.now() - 1000 * 60) {
-      console.log('_init FRESH', proposal.id);
+      console.log('_init FRESH', model.id);
       const contractCollection = new Contract(
         MINT_CONTRACT_ADDRESS,
         MINT_CONTRACT_ABI,
@@ -161,7 +188,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       const mintPriceRaw = await contractCollection.mintPrice();
       const balanceOf = await contractCollection.balanceOf(
         web3Account.value,
-        proposal.id
+        model.id
       );
 
       collectionInfo = {
@@ -171,7 +198,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
         balanceOf: balanceOf.toNumber(),
         createdAt: Date.now()
       };
-      collectionsInfo.value[proposal.id] = collectionInfo;
+      collectionsInfo.value[model.id] = collectionInfo;
     }
 
     mintCountTotal.value = collectionInfo.mintCountTotal;
@@ -181,39 +208,39 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     inited.value = true;
   }
 
-  async function enableNFTClaimer() {
-    if (!web3Account.value) {
-      modalAccountOpen.value = true;
-      return;
-    }
-    const txPendingId = createPendingTransaction();
-    try {
-      console.log(':enableNFTClaimer start');
-      await _switchNetwork();
+  // async function enableNFTClaimer() {
+  //   if (!web3Account.value) {
+  //     modalAccountOpen.value = true;
+  //     return;
+  //   }
+  //   const txPendingId = createPendingTransaction();
+  //   try {
+  //     console.log(':enableNFTClaimer start');
+  //     await _switchNetwork();
 
-      const salt = BigNumber.from(randomBytes(32)).toString();
-      const signature = await _getPayload('proposal', salt);
-      console.log(':enableNFTClaimer signature', signature);
-      return;
-    } catch (e) {
-      notify(['red', t('notify.somethingWentWrong')]);
-      console.log(e);
-    } finally {
-      removePendingTransaction(txPendingId);
-    }
-  }
+  //     const salt = BigNumber.from(randomBytes(32)).toString();
+  //     const signature = await _getPayload('proposal', salt);
+  //     console.log(':enableNFTClaimer signature', signature);
+  //     return;
+  //   } catch (e) {
+  //     notify(['red', t('notify.somethingWentWrong')]);
+  //     console.log(e);
+  //   } finally {
+  //     removePendingTransaction(txPendingId);
+  //   }
+  // }
 
-  async function disableNFTClaimer() {
-    const txPendingId = createPendingTransaction();
-    try {
-      console.log(':disableNFTClaimer start');
-    } catch (e) {
-      notify(['red', t('notify.somethingWentWrong')]);
-      console.log(e);
-    } finally {
-      removePendingTransaction(txPendingId);
-    }
-  }
+  // async function disableNFTClaimer() {
+  //   const txPendingId = createPendingTransaction();
+  //   try {
+  //     console.log(':disableNFTClaimer start');
+  //   } catch (e) {
+  //     notify(['red', t('notify.somethingWentWrong')]);
+  //     console.log(e);
+  //   } finally {
+  //     removePendingTransaction(txPendingId);
+  //   }
+  // }
 
   async function mint() {
     if (!web3Account.value) {
@@ -228,7 +255,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
       await _checkWETHApproval();
 
       const salt = BigNumber.from(randomBytes(32)).toString();
-      const { signature } = await _getPayload('mint', salt);
+      const { signature } = await _getMintPayload(salt);
 
       const tx = await sendTransaction(
         auth.web3,
@@ -236,7 +263,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
         MINT_CONTRACT_ABI,
         'mint',
         [
-          BigNumber.from(proposal.id).toString(),
+          BigNumber.from(model.id).toString(),
           salt,
           signature.v,
           signature.r,
@@ -262,6 +289,54 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     }
   }
 
+  async function deploy(params: Record<string, string | number>) {
+    if (!web3Account.value) {
+      modalAccountOpen.value = true;
+      return;
+    }
+    const txPendingId = createPendingTransaction();
+    minting.value = true;
+    try {
+      await _switchNetwork();
+      await _checkWETHBalance();
+      await _checkWETHApproval();
+
+      const salt = hexZeroPad(hexlify(Math.floor(Math.random() * 1000)), 32);
+      const { signature, initializer } = await _getDeployPayload(salt, params);
+
+      const tx = await sendTransaction(
+        auth.web3,
+        DEPLOY_CONTRACT_ADDRESS,
+        DEPLOY_ABI,
+        'deployProxy',
+        [
+          '0xf798ef55ab67fb0b69b036b09a928cd5e51124d0',
+          initializer,
+          salt,
+          signature.v,
+          signature.r,
+          signature.s
+        ]
+      );
+      console.log(':mint tx', tx);
+
+      // notify(t('notify.transactionSent'));
+      // updatePendingTransaction(txPendingId, { hash: tx.hash });
+      // const receipt = await tx.wait();
+      // console.log('Receipt', receipt);
+      // minting.value = false;
+      // // Optimistic update mint count
+      // mintCount.value += 1;
+      // notify(t('notify.youDidIt'));
+    } catch (e) {
+      notify(['red', t('notify.somethingWentWrong')]);
+      console.log(e);
+    } finally {
+      minting.value = false;
+      removePendingTransaction(txPendingId);
+    }
+  }
+
   return {
     mintNetwork,
     mintAddress,
@@ -271,10 +346,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal: Proposal) {
     mintCountTotal,
     minting,
     inited,
-
-    enableNFTClaimer,
-    disableNFTClaimer,
+    // enableNFTClaimer,
+    // disableNFTClaimer,
     mint,
+    deploy,
     init
   };
 }

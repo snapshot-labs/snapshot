@@ -20,7 +20,7 @@ const {
   minting,
   mint,
   init
-} = useNFTClaimer(props.space, props.proposal);
+} = useNFTClaimer(props.proposal);
 
 watch(
   () => props.open,
