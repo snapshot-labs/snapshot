@@ -942,8 +942,7 @@
     "inputPlaceholder": "Your email",
     "postSubscribeMessage": {
       "successThanks": "Thanks for subscribing!",
-      "successConfirmation": "Please click the confirmation link that has been sent to your email.",
-      "error": "Unable to subscribe to email notifications, please try again later"
+      "successConfirmation": "Please click the confirmation link that has been sent to your email."
     }
   },
   "emailManagement": {

@@ -58,11 +58,11 @@ function useEmailSubscriptionComposable() {
 
     error.value = err.value;
 
-    if (!data.value || data.value.result !== 'OK') {
+    if (!data.value || data.value?.result !== 'OK') {
       error.value = 'unknown';
     }
 
-    return data.value.result === 'OK';
+    return data.value?.result === 'OK';
   };
 
   const updateSubscriptions = async () => {
