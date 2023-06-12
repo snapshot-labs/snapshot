@@ -87,7 +87,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         </BaseButton>
 
         <BaseButton
-          v-if="userState.value !== 'VERIFIED'"
+          v-if="userState !== 'VERIFIED'"
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="subscribeEmail"
         >
