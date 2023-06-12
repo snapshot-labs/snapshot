@@ -600,7 +600,8 @@
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "transactionSent": "Transaction sent",
+    "emailPreferencesUpdated": "Email preferences updated"
   },
   "explore": {
     "createStrategy": "Create strategy",

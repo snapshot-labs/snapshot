@@ -7,18 +7,31 @@ const emit = defineEmits(['close']);
 
 const {
   loading,
+  error,
   clientSubscriptions,
   updateSubscriptions: update
 } = useEmailSubscription();
 const { t } = useI18n();
+const { notify } = useFlashNotification();
 
 const updateSubscriptions = (key, value) => {
   clientSubscriptions.value = { ...clientSubscriptions.value, [key]: value };
 };
 
+watchEffect(() => {
+  if (error.value) {
+    notify(['red', t('notify.somethingWentWrong')]);
+  }
+});
+
 const submit = async () => {
   await update();
-  emit('close');
+  if (error.value) {
+    error.value = null;
+  } else {
+    notify(['green', t('notify.emailPreferencesUpdated')]);
+    emit('close');
+  }
 };
 </script>
 
