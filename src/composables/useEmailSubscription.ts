@@ -67,11 +67,12 @@ function useEmailSubscriptionComposable() {
 
   const updateSubscriptions = async () => {
     loading.value = true;
-    await updateEmailSubscriptions({
+    const { error: err } = await updateEmailSubscriptions({
       address: web3Account.value,
       email: '',
       subscriptions: apiSubscriptions.value
     });
+    error.value = err.value;
     loading.value = false;
     loadEmailSubscriptions();
   };
