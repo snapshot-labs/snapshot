@@ -28,7 +28,8 @@ function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
   const dateString = `${input.value} ${time.value}:00`;
   const timestamp = new Date(dateString).getTime() / 1000;
-  emit('input', timestamp);
+  const now = parseInt((Date.now() / 1e3).toFixed());
+  emit('input', timestamp > now ? timestamp : now);
   emit('close');
 }
 
@@ -38,6 +39,17 @@ watch(open, () => {
   const { dateString, h, m } = formatDate(props.value);
   time.value = `${h}:${m}`;
   input.value = dateString;
+});
+
+watchEffect(() => {
+  const startDateString = `${input.value} ${time.value}:00`;
+  const startTimestamp = new Date(startDateString).getTime();
+
+  if (startTimestamp < Date.now()) {
+    const { dateString, h, m } = formatDate(Date.now() / 1000);
+    input.value = dateString;
+    time.value = `${h}:${m}`;
+  }
 });
 </script>
 
