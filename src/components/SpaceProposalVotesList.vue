@@ -71,6 +71,7 @@ watch(web3Account, loadUserVote, { immediate: true });
       tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesmOpen = true"
+      @keypress="modalVotesmOpen = true"
     >
       <span v-text="$t('seeMore')" />
     </a>
