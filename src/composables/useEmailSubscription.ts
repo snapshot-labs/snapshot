@@ -58,20 +58,21 @@ function useEmailSubscriptionComposable() {
 
     error.value = err.value;
 
-    if (!data.value || data.value.result !== 'OK') {
+    if (!data.value || data.value?.result !== 'OK') {
       error.value = 'unknown';
     }
 
-    return data.value.result === 'OK';
+    return data.value?.result === 'OK';
   };
 
   const updateSubscriptions = async () => {
     loading.value = true;
-    await updateEmailSubscriptions({
+    const { error: err } = await updateEmailSubscriptions({
       address: web3Account.value,
       email: '',
       subscriptions: apiSubscriptions.value
     });
+    error.value = err.value;
     loading.value = false;
     loadEmailSubscriptions();
   };

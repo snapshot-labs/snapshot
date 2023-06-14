@@ -1,6 +1,7 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchPlaceholderTokens": "Search: Name, Symbol, or Address",
   "searchVotingPower": "Voting power",
   "searchChoice": "Choice",
   "spaceCount": "{0} space(s)",
@@ -35,6 +36,7 @@
   "strategiesPage": "Strategies",
   "space": "Space",
   "spaces": "Spaces",
+  "verified": "Verified",
   "verifiedSpace": "Verified space",
   "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "warningShortUrl": "Short URLs are not allowed. Please use the full URL.",
@@ -600,7 +602,8 @@
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "transactionSent": "Transaction sent",
+    "emailPreferencesUpdated": "Email preferences updated"
   },
   "explore": {
     "createStrategy": "Create strategy",
@@ -941,8 +944,7 @@
     "inputPlaceholder": "Your email",
     "postSubscribeMessage": {
       "successThanks": "Thanks for subscribing!",
-      "successConfirmation": "Please click the confirmation link that has been sent to your email.",
-      "error": "Unable to subscribe to email notifications, please try again later"
+      "successConfirmation": "Please click the confirmation link that has been sent to your email."
     }
   },
   "emailManagement": {

@@ -5,6 +5,7 @@ import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 const { isGnosisSafe } = useClient();
 const { shareVote, shareProposalTwitter, shareProposalLenster } = useSharing();
 const { web3Account } = useWeb3();
+const { userState } = useEmailSubscription();
 
 const props = defineProps<{
   open: boolean;
@@ -86,6 +87,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         </BaseButton>
 
         <BaseButton
+          v-if="userState !== 'VERIFIED'"
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="subscribeEmail"
         >

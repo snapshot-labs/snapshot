@@ -320,6 +320,9 @@ export interface CollectableAsset extends SafeAsset {
 export interface TokenAsset extends SafeAsset {
   symbol: string;
   decimals: number;
+  balance: string;
+  verified?: any;
+  chainId?: number;
 }
 
 export interface CollectableAssetTransaction extends SafeTransaction {

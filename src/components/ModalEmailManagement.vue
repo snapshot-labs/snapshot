@@ -5,20 +5,29 @@ defineProps<{
 
 const emit = defineEmits(['close']);
 
-const {
-  loading,
-  clientSubscriptions,
-  updateSubscriptions: update
-} = useEmailSubscription();
+const { loading, error, clientSubscriptions, updateSubscriptions } =
+  useEmailSubscription();
 const { t } = useI18n();
+const { notify } = useFlashNotification();
 
-const updateSubscriptions = (key, value) => {
+const updateSubscriptionKeys = (key, value) => {
   clientSubscriptions.value = { ...clientSubscriptions.value, [key]: value };
 };
 
+watchEffect(() => {
+  if (error.value) {
+    notify(['red', t('notify.somethingWentWrong')]);
+  }
+});
+
 const submit = async () => {
-  await update();
-  emit('close');
+  await updateSubscriptions();
+  if (error.value) {
+    error.value = null;
+  } else {
+    notify(['green', t('notify.emailPreferencesUpdated')]);
+    emit('close');
+  }
 };
 </script>
 
@@ -41,21 +50,21 @@ const submit = async () => {
         :model-value="clientSubscriptions.summary"
         :label="t('emailManagement.optionSummary')"
         :sublabel="t('emailManagement.optionSummaryDescription')"
-        @update:model-value="updateSubscriptions('summary', $event)"
+        @update:model-value="updateSubscriptionKeys('summary', $event)"
       />
 
       <TuneSwitch
         :model-value="clientSubscriptions.newProposal"
         :label="t('emailManagement.optionNewProposal')"
         :sublabel="t('emailManagement.optionNewProposalDescription')"
-        @update:model-value="updateSubscriptions('newProposal', $event)"
+        @update:model-value="updateSubscriptionKeys('newProposal', $event)"
       />
 
       <TuneSwitch
         :model-value="clientSubscriptions.closedProposal"
         :label="t('emailManagement.optionClosedProposal')"
         :sublabel="t('emailManagement.optionClosedProposalDescription')"
-        @update:model-value="updateSubscriptions('closedProposal', $event)"
+        @update:model-value="updateSubscriptionKeys('closedProposal', $event)"
       />
 
       <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
