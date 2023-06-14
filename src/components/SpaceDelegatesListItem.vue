@@ -42,7 +42,7 @@ const { formatCompactNumber } = useIntl();
           {{ delegate.statement }}
         </span>
         <span class="cursor-pointer text-skin-link" @click="emit('clickUser')">
-          Lean more
+          Learn more
         </span>
       </template>
 
