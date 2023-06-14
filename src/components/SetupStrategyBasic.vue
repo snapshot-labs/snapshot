@@ -4,6 +4,7 @@ import { call, clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { ERC20ABI } from '@/helpers/abi';
 import { isAddress } from '@ethersproject/address';
+import { shorten } from '@/helpers/utils';
 
 const BROVIDER_URL = 'https://rpc.snapshot.org';
 
@@ -141,27 +142,21 @@ watch(
     <BaseBlock v-if="token.name" class="!mt-3 space-x-1 text-left text-sm">
       <div class="flex justify-between">
         <div class="flex items-center gap-1 truncate">
-          <AvatarToken
-            v-if="token.logo"
-            :src="token.logo"
-            :address="contract"
-            class="mr-1"
-            size="30"
-          />
+          <AvatarToken :address="contract" class="mr-1" size="38" />
           <div class="truncate">
             <div class="mr-4 truncate whitespace-nowrap text-skin-link">
               {{ token.name }}
             </div>
-            <BasePill class="py-1">${{ token.symbol }}</BasePill>
+            {{ token.symbol }}
           </div>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-end">
           <BaseLink
             v-if="network == '1'"
             class="text-skin-text hover:text-skin-link"
             :link="`https://etherscan.io/token/${contract}`"
           >
-            {{ $t('setup.strategy.tokenVoting.seeOnEtherscan') }}
+            {{ shorten(contract) }}
           </BaseLink>
         </div>
       </div>

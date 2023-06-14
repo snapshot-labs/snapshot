@@ -3,20 +3,24 @@ defineProps<{
   open: boolean;
 }>();
 
-type ModalView = 'SUBSCRIBE' | 'SUCCESS' | 'ERROR';
+type ModalView = 'SUBSCRIBE' | 'SUCCESS';
 
 const emit = defineEmits(['close']);
 const { web3Account } = useWeb3();
 const email = ref('');
 const { subscribe, error, loading, loadEmailSubscriptions } =
   useEmailSubscription();
+const { t } = useI18n();
+const { notify } = useFlashNotification();
 
 const modalView = ref<ModalView>('SUBSCRIBE');
 
 watchEffect(() => {
-  if (error.value) modalView.value = 'ERROR';
+  if (error.value) {
+    notify(['red', t('notify.somethingWentWrong')]);
+    error.value = null;
+  }
 });
-
 function close() {
   email.value = '';
   emit('close');
@@ -86,11 +90,7 @@ async function submit() {
       </p>
     </div>
 
-    <BaseMessageBlock v-if="modalView === 'ERROR'" level="warning" class="m-4">
-      {{ $t('emailSubscription.postSubscribeMessage.error') }}
-    </BaseMessageBlock>
-
-    <template v-if="['ERROR', 'SUCCESS'].includes(modalView)" #footer>
+    <template v-if="modalView === 'SUCCESS'" #footer>
       <BaseButton class="w-full" primary @click="close">
         {{ $t('close') }}
       </BaseButton>

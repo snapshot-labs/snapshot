@@ -8,9 +8,16 @@ import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputAmount from '../Input/Amount.vue';
+import SafeSnapTokensModal from './TokensModal.vue';
+import { ETH_CONTRACT } from '@/helpers/constants';
+import { shorten } from '@/helpers/utils';
 
 export default {
-  components: { SafeSnapInputAddress, SafeSnapInputAmount },
+  components: {
+    SafeSnapInputAddress,
+    SafeSnapInputAmount,
+    SafeSnapTokensModal
+  },
   props: ['modelValue', 'nonce', 'config'],
   emits: ['update:modelValue'],
   data() {
@@ -24,7 +31,9 @@ export default {
       value: amount,
       tokenAddress: 'main',
 
-      validValue: true
+      validValue: true,
+      modalTokensOpen: false,
+      ETH_CONTRACT: ETH_CONTRACT
     };
   },
   computed: {
@@ -93,25 +102,43 @@ export default {
           ...this.config.tokens
         ];
       }
-    }
+    },
+    openModal() {
+      if (!this.config.tokens.length) return;
+      this.modalTokensOpen = true;
+    },
+    shorten: shorten
   }
 };
 </script>
 
 <template>
-  <UiSelect v-model="tokenAddress" :disabled="config.preview">
-    <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template v-if="selectedToken" #image>
-      <img :src="selectedToken.logoUri" alt="" class="tokenImage" />
-    </template>
-    <option
-      v-for="(token, index) in tokens"
-      :key="index"
-      :value="token.address"
-    >
-      {{ token.symbol }}
-    </option>
-  </UiSelect>
+  <BaseButton
+    class="mb-2 flex w-full flex-row items-center justify-between !px-3"
+    @click="openModal()"
+  >
+    <div class="flex flex-row space-x-2">
+      <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
+      <AvatarToken
+        :address="
+          selectedToken.address === 'main'
+            ? ETH_CONTRACT
+            : selectedToken.address
+        "
+        class="ml-2"
+      />
+      <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
+      <span>
+        {{
+          selectedToken.address === 'main'
+            ? ''
+            : `(${shorten(selectedToken.address)})`
+        }}
+      </span>
+    </div>
+    <i-ho-chevron-down class="text-xs text-skin-link" />
+  </BaseButton>
+
   <div class="space-y-2">
     <SafeSnapInputAddress
       v-model="to"
@@ -129,12 +156,14 @@ export default {
       :disabled="config.preview"
     />
   </div>
-</template>
 
-<style scoped>
-.tokenImage {
-  width: 24px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-</style>
+  <teleport to="#modal">
+    <SafeSnapTokensModal
+      :tokens="tokens"
+      :token-address="tokenAddress"
+      :open="modalTokensOpen"
+      @token-address="tokenAddress = $event"
+      @close="modalTokensOpen = false"
+    />
+  </teleport>
+</template>
