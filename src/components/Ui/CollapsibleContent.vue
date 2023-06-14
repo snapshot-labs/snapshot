@@ -21,10 +21,10 @@ defineEmits(['toggle']);
       </div>
       <button
         v-if="showArrow"
-        class="mr-3 flex cursor-pointer items-center"
+        class="mr-2 flex cursor-pointer items-center"
         @click="$emit('toggle')"
       >
-        <i-ho-chevron-up :class="{ rotate: !open }" />
+        <i-ho-chevron-up :class="{ rotate: !open }" class="text-xs" />
       </button>
       <slot name="icons"></slot>
     </div>
