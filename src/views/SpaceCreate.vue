@@ -4,6 +4,8 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import Plugin from '@/plugins/safeSnap';
+const safeSnapPlugin = new Plugin();
 
 enum Step {
   CONTENT,
@@ -169,7 +171,6 @@ const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
-  console.log('Result', result);
   if (result.id) {
     resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
@@ -264,10 +265,9 @@ async function validateAuthor() {
       );
 
       isValidAuthor.value = validationRes;
-      console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
       hasAuthorValidationFailed.value = true;
-      console.log(e);
+      console.warn(e);
     } finally {
       validationLoading.value = false;
     }
@@ -282,7 +282,28 @@ watch(
   { immediate: true }
 );
 
+// We need to know if the space is using osnap, this will change what types of voting we can do
+// We also need to know if the user plans to use osnap
+const osnap = ref<{
+  enabled: boolean;
+  selection: boolean;
+}>({
+  selection: false,
+  enabled: false
+});
+
+const handleOsnapSelectionChange = ref(value => {
+  osnap.value.selection = value === 'yes';
+});
+
 onMounted(async () => {
+  const network = props?.space?.network;
+  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  if (network && umaAddress) {
+    // this is how we check if osnap is enabled and valid.
+    osnap.value.enabled =
+      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
+  }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
@@ -330,6 +351,8 @@ onMounted(async () => {
         :space="space"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
+        :osnap="osnap"
+        @osnapSelectionChange="handleOsnapSelectionChange"
       />
 
       <!-- Step 2 -->
@@ -338,6 +361,7 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
+        :is-using-osnap="osnap.selection"
       />
 
       <!-- Step 3 (only when plugins) -->
