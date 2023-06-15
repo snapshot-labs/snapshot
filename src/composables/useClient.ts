@@ -10,7 +10,7 @@ export function useClient() {
   const { web3 } = useWeb3();
   const auth = getInstance();
   const route = useRoute();
-  const { aliasWallet, actionWithAlias } = useAliasAction();
+  const { actionWithAlias } = useAliasAction();
 
   const DEFINED_APP = (route?.query.app as string) || 'snapshot';
 
@@ -66,12 +66,12 @@ export function useClient() {
   }
 
   function bindWithAlias(actionFn) {
-    const provider = aliasWallet.value;
-    const address = aliasWallet.value.address;
-
     return (client, payload) => {
-      return actionWithAlias(() =>
-        actionFn(client, payload, { provider, address })
+      return actionWithAlias(aliasWallet =>
+        actionFn(client, payload, {
+          provider: aliasWallet,
+          address: aliasWallet.address
+        })
       );
     };
   }

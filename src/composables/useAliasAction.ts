@@ -76,10 +76,10 @@ export function useAliasAction() {
     try {
       await checkAlias();
       if (aliasWallet.value && isValidAlias.value) {
-        return await action();
+        return await action(aliasWallet.value);
       }
       await setAlias();
-      return await action();
+      return await action(aliasWallet.value);
     } catch (e) {
       console.error(e);
       loading.value = false;
