@@ -223,6 +223,8 @@ async function loadSourceProposal() {
 
 function nextStep() {
   if (formContainsShortUrl.value) return;
+  // skip transaction page if user has osnap, but chosen not to use it for this vote
+  if (shouldSkipTransactions()) return;
   currentStep.value++;
 }
 
@@ -291,6 +293,15 @@ const osnap = ref<{
   selection: false,
   enabled: false
 });
+
+// Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
+function shouldSkipTransactions() {
+  return (
+    osnap.value.enabled &&
+    !osnap.value.selection &&
+    currentStep.value === Step.VOTING
+  );
+}
 
 const handleOsnapSelectionChange = ref(value => {
   osnap.value.selection = value === 'yes';
@@ -387,7 +398,8 @@ onMounted(async () => {
         <BaseButton
           v-if="
             currentStep === Step.PLUGINS ||
-            (!needsPluginConfigs && currentStep === Step.VOTING)
+            (!needsPluginConfigs && currentStep === Step.VOTING) ||
+            shouldSkipTransactions()
           "
           :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"
