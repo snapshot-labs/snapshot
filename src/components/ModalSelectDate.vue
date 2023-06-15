@@ -29,7 +29,7 @@ function handleSubmit() {
   const dateString = `${input.value} ${time.value}:00`;
   const timestamp = new Date(dateString).getTime() / 1000;
   const now = parseInt((Date.now() / 1e3).toFixed());
-  emit('input', timestamp > now ? timestamp : now);
+  emit('input', Math.max(timestamp, now));
   emit('close');
 }
 
