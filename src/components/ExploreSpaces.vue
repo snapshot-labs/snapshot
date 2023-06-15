@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { useInfiniteScroll } from '@vueuse/core';
+import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 
 const route = useRoute();
 const { validEnsTlds } = useEns();
@@ -56,12 +56,12 @@ useInfiniteScroll(
   { distance: 250, interval: 500 }
 );
 
-watch(
+watchDebounced(
   queryInput,
   () => {
     loadSpaces();
   },
-  { deep: true }
+  { deep: true, debounce: 300 }
 );
 
 onMounted(() => {
@@ -84,6 +84,7 @@ onMounted(() => {
       />
 
       <div
+        v-if="spacesHomeMetrics.total"
         class="mt-2 whitespace-nowrap text-right text-skin-text xs:ml-auto xs:mt-0"
       >
         {{ $tc('spaceCount', [formatCompactNumber(spacesHomeMetrics.total)]) }}
@@ -150,7 +151,7 @@ onMounted(() => {
           {{ $t('homeLoadmore') }}
         </BaseButton>
       </div>
-      <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex">
+      <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex h-[46px]">
         <LoadingSpinner class="mx-auto" big />
       </div>
     </BaseContainer>

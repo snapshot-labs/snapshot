@@ -55,6 +55,7 @@ withDefaults(
             class="no-scrollbar max-h-[85vh] overflow-y-auto overscroll-contain"
           >
             <FocusTrap>
+              <span tabindex="0"></span>
               <slot name="content" :close="close" />
             </FocusTrap>
           </div>

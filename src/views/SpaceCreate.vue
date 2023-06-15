@@ -50,8 +50,8 @@ const {
   userSelectedDateEnd,
   sourceProposalLoaded,
   sourceProposal,
-  resetForm,
-  getValidation
+  validationErrors,
+  resetForm
 } = useFormSpaceProposal();
 
 const isValidAuthor = ref(false);
@@ -115,8 +115,9 @@ const stepIsValid = computed(() => {
     form.value.name &&
     form.value.body.length <= BODY_LIMIT_CHARACTERS &&
     isValidAuthor.value &&
-    !getValidation('name').message &&
-    !getValidation('discussion').message &&
+    !validationErrors.value.name &&
+    !validationErrors.value.body &&
+    !validationErrors.value.discussion &&
     !formContainsShortUrl.value
   )
     return true;

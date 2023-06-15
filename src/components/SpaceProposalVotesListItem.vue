@@ -106,7 +106,7 @@ const balanceFormatted = computed(() => {
       <BaseButtonIcon
         v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
         v-tippy="{
-          content: urlify(vote.reason),
+          content: urlify(vote.reason.replace(/^[\s\n]+|[\s\n]+$/g, '')),
           allowHTML: true,
           interactive: true,
           theme: 'urlified'

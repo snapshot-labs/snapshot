@@ -13,13 +13,7 @@ const { formatCompactNumber, formatNumber } = useIntl();
   <li
     class="flex items-center gap-2 border-b border-skin-border px-4 py-[12px] last:border-b-0"
   >
-    <AvatarToken
-      v-if="asset.logo_url"
-      :src="asset.logo_url"
-      :address="asset.contract_address"
-      class="mr-1"
-      size="38"
-    />
+    <AvatarToken :address="asset.contract_address" class="mr-1" size="38" />
 
     <div class="flex w-full justify-between">
       <div class="leading-6">
