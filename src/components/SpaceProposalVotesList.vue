@@ -53,10 +53,7 @@ watch(web3Account, loadUserVote, { immediate: true });
     :loading="loadingVotes"
     slim
   >
-    <template
-      v-if="props.proposal.state === 'closed' && proposal.votes < 50000"
-      #button
-    >
+    <template v-if="props.proposal.state === 'closed'" #button>
       <BaseButtonIcon
         v-tippy="{ content: $t('proposal.downloadCsvVotes.title') }"
         :loading="isDownloadingVotes"
