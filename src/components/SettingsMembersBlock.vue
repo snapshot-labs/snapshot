@@ -63,7 +63,8 @@ const isAbleToChangeMembers = computed(() => {
   if (props.context === 'setup') return true;
   if (props.context === 'settings') {
     if (props.isSpaceController) return true;
-    if (props.space?.admins?.includes(web3Account.value)) return true;
+    if (props.space?.admins?.includes(web3Account.value.toLowerCase()))
+      return true;
   }
   return false;
 });
