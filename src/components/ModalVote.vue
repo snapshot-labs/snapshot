@@ -44,7 +44,7 @@ const validationStrategySymbolsString = computed(() => {
     ?.map(strategy => strategy.params.symbol)
     .filter(symbol => symbol);
 
-  if (symbols.length === 0) return '';
+  if (!symbols) return '';
 
   symbols = symbols.map(symbol => `$${symbol}`);
 

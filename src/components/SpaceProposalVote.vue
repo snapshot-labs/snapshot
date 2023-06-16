@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { Proposal, Choice, Vote } from '@/helpers/interfaces';
+import { Proposal, Choice } from '@/helpers/interfaces';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 const props = defineProps<{
   proposal: Proposal;
   modelValue: Choice;
-  userVote: Vote | null;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'clickVote']);
 
-const { web3 } = useWeb3();
+const { web3, web3Account } = useWeb3();
+const { userVote, loadUserVote } = useProposalVotes(props.proposal);
+
+const key = ref(0);
 
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
@@ -20,14 +22,14 @@ const selectedChoices = computed(() => {
 });
 
 const validatedUserChoice = computed(() => {
-  if (!props.userVote?.choice) return null;
+  if (!userVote.value?.choice) return null;
   if (
     voting[props.proposal.type].isValidChoice(
-      props.userVote.choice,
+      userVote.value.choice,
       props.proposal.choices
     )
   ) {
-    return props.userVote.choice;
+    return userVote.value.choice;
   }
   return null;
 });
@@ -35,6 +37,12 @@ const validatedUserChoice = computed(() => {
 function emitChoice(c) {
   emit('update:modelValue', c);
 }
+
+watch(web3Account, loadUserVote, { immediate: true });
+
+watch(validatedUserChoice, () => {
+  key.value++;
+});
 </script>
 
 <template>
@@ -42,24 +50,28 @@ function emitChoice(c) {
     <div class="mb-3">
       <SpaceProposalVoteSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number)"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number[])"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as Record<string, number>)"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
+        :key="key"
         :proposal="proposal"
         :user-choice="(validatedUserChoice as number[])"
         @selectChoice="emitChoice"
