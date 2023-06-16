@@ -234,11 +234,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :strategies="strategies"
         />
         <!-- space?.nfrClaimer.enabled  -->
-        <SpaceProposalNFTSidebar
-          v-if="web3Account"
-          :space="space"
-          :proposal="proposal"
-        />
+        <SpaceProposalNFTSidebar :space="space" :proposal="proposal" />
       </div>
     </template>
   </TheLayout>
