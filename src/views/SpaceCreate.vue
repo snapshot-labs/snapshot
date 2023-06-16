@@ -308,7 +308,7 @@ const handleOsnapSelectionChange = ref(value => {
 });
 
 onMounted(async () => {
-  const network = props?.space?.network;
+  const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
