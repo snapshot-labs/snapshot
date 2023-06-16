@@ -2,7 +2,7 @@
   "name": "snapshot",
   "version": "0.1.4",
   "scripts": {
-    "dev": "vite --port=8080",
+    "dev": "vite  --port=8080",
     "cypress:test:e2e": "start-server-and-test 'yarn cypress:serve:build' http-get://localhost:8081 'yarn cypress:run'",
     "cypress:dev:e2e": "start-server-and-test 'yarn cypress:serve:dev' http-get://localhost:8081 'yarn cypress:open'",
     "cypress:run": "env-cmd -f .env.test cypress run --browser chrome --headed",
