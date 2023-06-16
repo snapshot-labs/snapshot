@@ -25,6 +25,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
   const DEPLOY_CONTRACT_ADDRESS = '0xb2A5750dB0Be196b33C09D4037864DF66b2826C4';
+  const DEPLOY_IMPLEMENTATION_ADDRESS =
+    '0x45AE362C00Ec3f932a59197cDD976d0975393bBF';
   const DEPLOY_ABI = [
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
@@ -129,41 +131,15 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
-  async function _getMintPayload(salt: string) {
-    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/mint`, {
+  async function _getBackendPayload(type: string, payload: any) {
+    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/${type}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        id: proposal.id,
-        address: web3Account.value,
-        salt
-      })
+      body: JSON.stringify(payload)
     });
-    return await res.json();
-  }
-
-  async function _getDeployPayload(
-    salt: string,
-    params: Record<string, string | number>
-  ) {
-    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/deploy`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: space.id,
-        address: web3Account.value,
-        salt,
-        maxSupply: params.maxSupply,
-        mintPrice: params.mintPrice,
-        proposerFee: params.proposerCut,
-        spaceTreasury: params.treasuryAddress
-      })
-    });
-    return await res.json();
+    return res.json();
   }
 
   function getSpaceCollectionInfo() {
@@ -230,7 +206,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   // }
 
   async function mint() {
-    if (!web3Account.value) {
+    if (!web3Account.value || !proposal) {
       modalAccountOpen.value = true;
       return;
     }
@@ -242,7 +218,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       await _checkWETHApproval();
 
       const salt = BigNumber.from(randomBytes(32)).toString();
-      const { signature } = await _getMintPayload(salt);
+      const { signature } = await _getBackendPayload('mint', {
+        id: proposal.id,
+        address: web3Account.value,
+        salt
+      });
 
       const tx = await sendTransaction(
         auth.web3,
@@ -289,7 +269,15 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       await _checkWETHApproval();
 
       const salt = hexZeroPad(hexlify(Math.floor(Math.random() * 1000)), 32);
-      const { signature, initializer } = await _getDeployPayload(salt, params);
+      const { signature, initializer } = await _getBackendPayload('deploy', {
+        id: space.id,
+        address: web3Account.value,
+        salt,
+        maxSupply: params.maxSupply,
+        mintPrice: params.mintPrice,
+        proposerFee: params.proposerCut,
+        spaceTreasury: params.treasuryAddress
+      });
 
       const tx = await sendTransaction(
         auth.web3,
@@ -297,7 +285,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         DEPLOY_ABI,
         'deployProxy',
         [
-          '0x45AE362C00Ec3f932a59197cDD976d0975393bBF',
+          DEPLOY_IMPLEMENTATION_ADDRESS,
           initializer,
           salt,
           signature.v,
