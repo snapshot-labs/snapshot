@@ -9,16 +9,18 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 
-const { deploy } = useNFTClaimer(props.space);
+const { deploy, collectionsInfo, init } = useNFTClaimer(props.space);
 
 const isReadonly = ref(false);
 const isValidJson = ref(false);
-const input = ref({
-  maxSupply: 10,
-  mintPrice: 100,
-  proposerCut: 5,
-  treasuryAddress: '0x91FD2c8d24767db4Ece7069AA27832ffaf8590f3'
-});
+const input = ref(
+  collectionsInfo.value[props.space.id] ?? {
+    maxSupply: '',
+    mintPrice: '',
+    proposerCut: '',
+    treasuryAddress: ''
+  }
+);
 
 function submit() {
   deploy(input.value);
@@ -28,6 +30,8 @@ function nextStep() {
   if (!isReadonly || !isValidJson) return forceShowError();
   emit('next');
 }
+
+onMounted(init);
 </script>
 
 <template>

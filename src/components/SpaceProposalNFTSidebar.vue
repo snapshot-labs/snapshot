@@ -7,15 +7,10 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
-const {
-  mintCurrency,
-  mintPrice,
-  mintCount,
-  mintCountTotal,
-  minting,
-  init,
-  inited
-} = useNFTClaimer(props.proposal);
+const { minting, init, inited, collectionsInfo } = useNFTClaimer(
+  props.space,
+  props.proposal
+);
 
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);
@@ -29,10 +24,14 @@ watch(
     immediate: true
   }
 );
+
+const collectionInfo = computed(() => {
+  return collectionsInfo.value[props.space.id];
+});
 </script>
 
 <template>
-  <BaseBlock v-if="inited" :title="$t('NFT Claimer')">
+  <BaseBlock v-if="inited && collectionInfo" :title="$t('NFT Claimer')">
     <div class="flex flex-col items-center space-y-4">
       <div class="group flex cursor-pointer flex-col items-center">
         <div
@@ -51,8 +50,8 @@ watch(
       </div>
 
       <SpaceProposalNFTProgress
-        :max-supply="mintCountTotal"
-        :supply="mintCount"
+        :max-supply="collectionInfo.maxSupply"
+        :supply="collectionInfo.mintedCount"
         @click="isModalExploreOpen = true"
       />
 
@@ -63,7 +62,7 @@ watch(
           <div class="flex flex-col">
             <span>Mint price</span>
             <span class="text-lg font-bold text-skin-link"
-              >{{ mintPrice }} {{ mintCurrency }}</span
+              >{{ collectionInfo.mintPrice }} WETH</span
             >
           </div>
           <BaseButton

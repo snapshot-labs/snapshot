@@ -7,6 +7,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import { randomBytes } from '@ethersproject/random';
 import { useStorage } from '@vueuse/core';
+import { getSpaceCollection } from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { hexZeroPad, hexlify } from '@ethersproject/bytes';
@@ -15,7 +16,7 @@ const collectionsInfo = useStorage('snapshot.proposals.nftCollections', {});
 
 const SIDEKICK_URL = 'http://localhost:3005';
 
-export function useNFTClaimer(model: ExtendedSpace | Proposal) {
+export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const NETWORK_KEY = '5';
   const WETH_CONTRACT_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6';
   const WETH_CONTRACT_ABI = [
@@ -23,9 +24,9 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
     'function allowance(address owner, address spender) external view returns (uint256)',
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const DEPLOY_CONTRACT_ADDRESS = '0x918261f6fba5b48ca2ff28b4abf5d1c3238fa758';
+  const DEPLOY_CONTRACT_ADDRESS = '0xb2A5750dB0Be196b33C09D4037864DF66b2826C4';
   const DEPLOY_ABI = [
-    'function deployProxy(address implementation, bytes initializer, bytes32 salt, uint8 v, bytes32 r, bytes32 s)'
+    'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
   // TODO get mint contract address from space
   const MINT_CONTRACT_ADDRESS = '0x8d153afb2e6a9d088e1f4409554a26466a25e0f1';
@@ -135,7 +136,7 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: model.id,
+        id: proposal.id,
         address: web3Account.value,
         salt
       })
@@ -153,7 +154,7 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: model.id,
+        id: space.id,
         address: web3Account.value,
         salt,
         maxSupply: params.maxSupply,
@@ -165,41 +166,31 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
     return await res.json();
   }
 
-  async function init() {
-    if (!model) return;
+  function getSpaceCollectionInfo() {
+    return getSpaceCollection(space.id);
+  }
 
-    let collectionInfo = collectionsInfo.value[model.id];
+  async function init() {
+    if (!space) return;
+    const collectionInfo = collectionsInfo.value[space.id];
 
     if (!collectionInfo || collectionInfo.createdAt < Date.now() - 1000 * 60) {
-      console.log('_init FRESH', model.id);
-      const contractCollection = new Contract(
-        MINT_CONTRACT_ADDRESS,
-        MINT_CONTRACT_ABI,
-        provider
-      );
+      console.log('_init FRESH', space.id);
+      const info = await getSpaceCollectionInfo();
 
-      const maxSupply = await contractCollection.maxSupply();
-      const supplies = await contractCollection.supplies(model.id);
-      const mintPrices = await contractCollection.mintPrices(model.id);
-      const mintPriceRaw = await contractCollection.mintPrice();
-      const balanceOf = await contractCollection.balanceOf(
-        web3Account.value,
-        model.id
-      );
+      if (info) {
+        const collectionInfo = {
+          maxSupply: info.maxSupply,
+          mintPrice: info.mintPrice,
+          proposerCut: info.proposerFee,
+          treasuryAddress: info.spaceTreasury,
+          enabled: info.enabled,
+          createdAt: Date.now()
+        };
 
-      collectionInfo = {
-        mintCountTotal: maxSupply.toNumber(),
-        mintCount: balanceOf.toNumber(),
-        mintPrice: formatUnits(mintPriceRaw, 18),
-        balanceOf: balanceOf.toNumber(),
-        createdAt: Date.now()
-      };
-      collectionsInfo.value[model.id] = collectionInfo;
+        collectionsInfo.value[space.id] = collectionInfo;
+      }
     }
-
-    mintCountTotal.value = collectionInfo.mintCountTotal;
-    mintCount.value = collectionInfo.mintCount;
-    mintPrice.value = collectionInfo.mintPrice;
 
     inited.value = true;
   }
@@ -259,7 +250,7 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
         MINT_CONTRACT_ABI,
         'mint',
         [
-          BigNumber.from(model.id).toString(),
+          BigNumber.from(proposal.id).toString(),
           salt,
           signature.v,
           signature.r,
@@ -306,7 +297,7 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
         DEPLOY_ABI,
         'deployProxy',
         [
-          '0xf798ef55ab67fb0b69b036b09a928cd5e51124d0',
+          '0x45AE362C00Ec3f932a59197cDD976d0975393bBF',
           initializer,
           salt,
           signature.v,
@@ -334,12 +325,7 @@ export function useNFTClaimer(model: ExtendedSpace | Proposal) {
   }
 
   return {
-    mintNetwork,
-    mintAddress,
-    mintPrice,
-    mintCurrency,
-    mintCount,
-    mintCountTotal,
+    collectionsInfo,
     minting,
     inited,
     // enableNFTClaimer,
