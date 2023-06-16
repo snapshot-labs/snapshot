@@ -25,13 +25,14 @@ watch(
   }
 );
 
-const collectionInfo = computed(() => {
+const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
 });
 </script>
 
 <template>
-  <BaseBlock v-if="inited && collectionInfo" :title="$t('NFT Claimer')">
+  {{ spaceCollectionInfo }}
+  <BaseBlock v-if="inited && spaceCollectionInfo" :title="$t('NFT Claimer')">
     <div class="flex flex-col items-center space-y-4">
       <div class="group flex cursor-pointer flex-col items-center">
         <div
@@ -50,8 +51,8 @@ const collectionInfo = computed(() => {
       </div>
 
       <SpaceProposalNFTProgress
-        :max-supply="collectionInfo.maxSupply"
-        :supply="collectionInfo.proposals[proposal.id].mintedCount"
+        :max-supply="spaceCollectionInfo.maxSupply"
+        :supply="spaceCollectionInfo.proposals[proposal.id].mintedCount"
         @click="isModalExploreOpen = true"
       />
 
@@ -62,7 +63,7 @@ const collectionInfo = computed(() => {
           <div class="flex flex-col">
             <span>Mint price</span>
             <span class="text-lg font-bold text-skin-link"
-              >{{ collectionInfo.mintPrice }} WETH</span
+              >{{ spaceCollectionInfo.mintPrice }} WETH</span
             >
           </div>
           <BaseButton

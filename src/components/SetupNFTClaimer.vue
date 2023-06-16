@@ -9,12 +9,12 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 
-const { deploy, collectionsInfo, init } = useNFTClaimer(props.space);
+const { deploy, spaceCollectionsInfo, init } = useNFTClaimer(props.space);
 
 const isReadonly = ref(false);
 const isValidJson = ref(false);
 const input = ref(
-  collectionsInfo.value[props.space.id] ?? {
+  spaceCollectionsInfo.value[props.space.id] ?? {
     maxSupply: '',
     mintPrice: '',
     proposerCut: '',

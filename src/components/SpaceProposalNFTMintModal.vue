@@ -10,17 +10,8 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
-const {
-  mintNetwork,
-  mintAddress,
-  mintCurrency,
-  mintPrice,
-  mintCount,
-  mintCountTotal,
-  minting,
-  mint,
-  init
-} = useNFTClaimer(props.space, props.proposal);
+const { mintNetwork, mintCurrency, minting, mint, init, spaceCollectionsInfo } =
+  useNFTClaimer(props.space, props.proposal);
 
 watch(
   () => props.open,
@@ -28,6 +19,10 @@ watch(
     if (val) init();
   }
 );
+
+const spaceCollectionInfo = computed(() => {
+  return spaceCollectionsInfo.value[props.space.id];
+});
 </script>
 
 <template>
@@ -47,10 +42,10 @@ watch(
             <span>Contract</span>
             <a
               class="flex flex-row"
-              :href="explorerUrl(mintNetwork, mintAddress)"
+              :href="explorerUrl(mintNetwork, spaceCollectionInfo.id)"
               target="_blank"
             >
-              <span>{{ shorten(mintAddress) }}</span>
+              <span>{{ shorten(spaceCollectionInfo.id) }}</span>
               <i-ho-arrow-top-right-on-square class="ml-2" />
             </a>
           </div>
@@ -60,24 +55,29 @@ watch(
           </div>
           <div class="flex flex-row justify-between py-2">
             <span>Max supply</span>
-            <span>{{ mintCountTotal }}</span>
+            <span>{{ spaceCollectionInfo.maxSupply }}</span>
           </div>
           <div class="flex flex-row justify-between py-2">
             <span>Remaining supply</span>
-            <span>{{ mintCountTotal - mintCount }}</span>
+            <span>{{
+              spaceCollectionInfo.maxSupply -
+              spaceCollectionInfo.proposals[proposal.id].mintedCount
+            }}</span>
           </div>
           <div class="flex flex-row justify-between py-2">
             <span>Mint price</span>
             <div class="flex flex-col">
               <span class="text-lg font-bold text-skin-link">
-                {{ mintPrice }} {{ mintCurrency }}
+                {{ spaceCollectionInfo.mintPrice }}
+                {{ mintCurrency }}
               </span>
               <!-- <span>~2000 USD</span> -->
             </div>
           </div>
         </BaseBlock>
         <BaseButton primary :loading="minting" @click="mint()">
-          MINT for {{ mintPrice }} {{ mintCurrency }}
+          MINT for {{ spaceCollectionInfo.mintPrice }}
+          {{ mintCurrency }}
         </BaseButton>
       </div>
     </template>

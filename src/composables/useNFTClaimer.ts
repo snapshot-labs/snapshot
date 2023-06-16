@@ -33,8 +33,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const DEPLOY_ABI = [
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
-  // TODO get mint contract address from space
-  const MINT_CONTRACT_ADDRESS = '0x8d153afb2e6a9d088e1f4409554a26466a25e0f1';
   const MINT_CONTRACT_ABI = [
     'function balanceOf(address, uint256 id) view returns (uint256)',
     'function mint(uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
@@ -45,7 +43,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   ];
 
   const mintNetwork = ref(NETWORK_KEY);
-  const mintAddress = ref(MINT_CONTRACT_ADDRESS);
   const mintCurrency = ref('WETH');
   const mintPrice = ref('0.1');
   const mintCount = ref(0);
@@ -102,9 +99,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       throw new Error('Not enough WETH balance');
   }
 
-  async function _checkWETHApproval() {
+  async function _checkWETHApproval(address: string) {
     const allowanceRaw = web3Account.value
-      ? await contractWETH.allowance(web3Account.value, MINT_CONTRACT_ADDRESS)
+      ? await contractWETH.allowance(web3Account.value, address)
       : 0;
     const allowance = formatUnits(allowanceRaw, 18);
     console.log(':_checkWETHApproval allowance', allowance);
@@ -119,7 +116,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           WETH_CONTRACT_ADDRESS,
           WETH_CONTRACT_ABI,
           'approve',
-          [MINT_CONTRACT_ADDRESS, mintPriceWei]
+          [address, mintPriceWei]
         );
         console.log(':_checkWETHApproval tx', tx);
         updatePendingTransaction(txPendingId, { hash: tx.hash });
@@ -155,7 +152,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   async function init() {
     if (!space) return;
 
-    const spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
+    let spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
 
     if (
       !spaceCollectionInfo ||
@@ -165,7 +162,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       const info = await getSpaceCollectionInfo();
 
       if (info) {
-        const spaceCollectionInfo = {
+        spaceCollectionInfo = {
+          id: info.id,
           maxSupply: parseInt(info.maxSupply),
           mintPrice: parseInt(info.mintPrice),
           proposerCut: parseInt(info.proposerFee),
@@ -178,12 +176,15 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       }
     }
 
+    console.log(proposal);
+    console.log(spaceCollectionInfo);
     if (proposal && spaceCollectionInfo) {
       const info = await getCollectionInfo();
 
       spaceCollectionsInfo.value[space.id].proposals ||= {};
       spaceCollectionsInfo.value[space.id].proposals[proposal.id] ||= {
-        mintedCount: 0
+        mintedCount: 0,
+        id: null
       };
       if (info) {
         spaceCollectionsInfo.value[space.id].proposals[proposal.id] = info;
@@ -237,7 +238,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     try {
       await _switchNetwork();
       await _checkWETHBalance();
-      await _checkWETHApproval();
+      await _checkWETHApproval(spaceCollectionsInfo.value[space.id].id);
 
       const salt = BigNumber.from(randomBytes(32)).toString();
       const { signature } = await _getBackendPayload('mint', {
@@ -245,10 +246,22 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         address: web3Account.value,
         salt
       });
-
+      console.log(
+        auth.web3,
+        spaceCollectionsInfo.value[space.id].id,
+        MINT_CONTRACT_ABI,
+        'mint',
+        [
+          BigNumber.from(proposal.id).toString(),
+          salt,
+          signature.v,
+          signature.r,
+          signature.s
+        ]
+      );
       const tx = await sendTransaction(
         auth.web3,
-        MINT_CONTRACT_ADDRESS,
+        spaceCollectionsInfo.value[space.id].id,
         MINT_CONTRACT_ABI,
         'mint',
         [
@@ -288,7 +301,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     try {
       await _switchNetwork();
       await _checkWETHBalance();
-      await _checkWETHApproval();
+      await _checkWETHApproval(DEPLOY_CONTRACT_ADDRESS);
 
       const salt = hexZeroPad(hexlify(Math.floor(Math.random() * 1000)), 32);
       const { signature, initializer } = await _getBackendPayload('deploy', {
@@ -337,6 +350,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   return {
     spaceCollectionsInfo,
     minting,
+    mintNetwork,
+    mintCurrency,
     inited,
     // enableNFTClaimer,
     // disableNFTClaimer,
