@@ -178,7 +178,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       }
     }
 
-    if (proposal) {
+    if (proposal && spaceCollectionInfo) {
       const info = await getCollectionInfo();
 
       spaceCollectionsInfo.value[space.id].proposals ||= {};
