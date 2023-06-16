@@ -7,7 +7,7 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
-const { minting, init, inited, collectionsInfo } = useNFTClaimer(
+const { minting, init, inited, spaceCollectionsInfo } = useNFTClaimer(
   props.space,
   props.proposal
 );
@@ -26,7 +26,7 @@ watch(
 );
 
 const collectionInfo = computed(() => {
-  return collectionsInfo.value[props.space.id];
+  return spaceCollectionsInfo.value[props.space.id];
 });
 </script>
 
@@ -51,7 +51,7 @@ const collectionInfo = computed(() => {
 
       <SpaceProposalNFTProgress
         :max-supply="collectionInfo.maxSupply"
-        :supply="collectionInfo.mintedCount"
+        :supply="collectionInfo.proposals[proposal.id].mintedCount"
         @click="isModalExploreOpen = true"
       />
 

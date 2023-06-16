@@ -7,12 +7,15 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
 import { randomBytes } from '@ethersproject/random';
 import { useStorage } from '@vueuse/core';
-import { getSpaceCollection } from '@/helpers/nftClaimer';
+import { getCollection, getSpaceCollection } from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { hexZeroPad, hexlify } from '@ethersproject/bytes';
 
-const collectionsInfo = useStorage('snapshot.proposals.nftCollections', {});
+const spaceCollectionsInfo = useStorage(
+  'snapshot.proposals.nftCollections',
+  {}
+);
 
 const SIDEKICK_URL = 'http://localhost:3005';
 
@@ -46,7 +49,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const mintCurrency = ref('WETH');
   const mintPrice = ref('0.1');
   const mintCount = ref(0);
-  const mintCountTotal = ref(500);
 
   const inited = ref(false);
   const minting = ref(false);
@@ -146,25 +148,45 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     return getSpaceCollection(space.id);
   }
 
+  function getCollectionInfo() {
+    return getCollection(BigInt(proposal?.id as string));
+  }
+
   async function init() {
     if (!space) return;
-    const collectionInfo = collectionsInfo.value[space.id];
 
-    if (!collectionInfo || collectionInfo.createdAt < Date.now() - 1000 * 60) {
+    const spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
+
+    if (
+      !spaceCollectionInfo ||
+      spaceCollectionInfo.createdAt < Date.now() - 1000 * 60
+    ) {
       console.log('_init FRESH', space.id);
       const info = await getSpaceCollectionInfo();
 
       if (info) {
-        const collectionInfo = {
-          maxSupply: info.maxSupply,
-          mintPrice: info.mintPrice,
-          proposerCut: info.proposerFee,
+        const spaceCollectionInfo = {
+          maxSupply: parseInt(info.maxSupply),
+          mintPrice: parseInt(info.mintPrice),
+          proposerCut: parseInt(info.proposerFee),
           treasuryAddress: info.spaceTreasury,
           enabled: info.enabled,
           createdAt: Date.now()
         };
 
-        collectionsInfo.value[space.id] = collectionInfo;
+        spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
+      }
+    }
+
+    if (proposal) {
+      const info = await getCollectionInfo();
+
+      spaceCollectionsInfo.value[space.id].proposals ||= {};
+      spaceCollectionsInfo.value[space.id].proposals[proposal.id] ||= {
+        mintedCount: 0
+      };
+      if (info) {
+        spaceCollectionsInfo.value[space.id].proposals[proposal.id] = info;
       }
     }
 
@@ -313,7 +335,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   return {
-    collectionsInfo,
+    spaceCollectionsInfo,
     minting,
     inited,
     // enableNFTClaimer,

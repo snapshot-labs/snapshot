@@ -45,3 +45,29 @@ export async function getSpaceCollection(spaceId: string) {
 
   return spaceCollections[0];
 }
+
+export async function getCollection(proposalId: bigint) {
+  const {
+    data: { proposals }
+  }: { data: { proposals: any[] } } = await client.query({
+    query: gql`
+      query proposals($proposalId: BigInt) {
+        proposals(where: { proposalId: $proposalId }) {
+          id
+          spaceCollection {
+            id
+            spaceId
+          }
+          mints {
+            id
+          }
+        }
+      }
+    `,
+    variables: {
+      proposalId: proposalId.toString()
+    }
+  });
+
+  return proposals[0];
+}
