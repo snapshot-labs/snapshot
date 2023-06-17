@@ -1,12 +1,12 @@
-import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { UMA_MODULE_ABI, ERC20_ABI, UMA_ORACLE_ABI } from '../constants';
-import { Contract } from '@ethersproject/contracts';
-import { BigNumber } from '@ethersproject/bignumber';
-import { keccak256 } from '@ethersproject/keccak256';
-import { pack } from '@ethersproject/solidity';
 import { defaultAbiCoder } from '@ethersproject/abi';
+import { BigNumber } from '@ethersproject/bignumber';
+import { Contract } from '@ethersproject/contracts';
+import { keccak256 } from '@ethersproject/keccak256';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
+import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import { ERC20_ABI, UMA_MODULE_ABI, UMA_ORACLE_ABI } from '../constants';
 import { pageEvents } from './events';
 
 const getBondDetailsUma = async (
@@ -52,24 +52,7 @@ export const getModuleDetailsUma = async (
   moduleAddress: string,
   explanation: string,
   transactions: any
-): Promise<{
-  dao: string;
-  oracle: string;
-  rules: string;
-  minimumBond: number;
-  expiration: number;
-  allowance: BigNumber;
-  collateral: string;
-  decimals: number;
-  symbol: string;
-  userBalance: BigNumber;
-  needsBondApproval: boolean;
-  noTransactions: boolean;
-  activeProposal: boolean;
-  assertionEvent: any;
-  proposalExecuted: boolean;
-  livenessPeriod: string;
-}> => {
+) => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
     [moduleAddress, 'avatar'],
@@ -94,7 +77,7 @@ export const getModuleDetailsUma = async (
 
   // Create ancillary data for proposal hash
   let ancillaryData = '';
-  let proposalHash;
+  let proposalHash: string;
   if (transactions !== undefined) {
     proposalHash = keccak256(
       defaultAbiCoder.encode(
@@ -137,7 +120,7 @@ export const getModuleDetailsUma = async (
       needsBondApproval: needsApproval,
       noTransactions: true,
       activeProposal: false,
-      assertionEvent: {},
+      assertionEvent: undefined,
       proposalExecuted: false,
       livenessPeriod: livenessPeriod
     };
@@ -215,20 +198,26 @@ export const getModuleDetailsUma = async (
   // Get the full proposal events (with state).
   const fullAssertionEvent = await Promise.all(
     thisModuleAssertionEvent.map(async event => {
-      return oracleContract
-        .getAssertion(event.args?.assertionId)
-        .then(result => {
-          const isExpired =
-            Math.floor(Date.now() / 1000) >= Number(result.expirationTime);
+      const assertion = oracleContract.getAssertion(
+        event.args?.assertionId
+      ) as Promise<{
+        expirationTime: BigNumber;
+        settled: boolean;
+      }>;
 
-          return {
-            expirationTimestamp: result.expirationTime,
-            isExpired: isExpired,
-            isSettled: result.settled,
-            proposalHash: proposalHash,
-            proposalTxHash: event.transactionHash
-          };
-        });
+      return assertion.then(result => {
+        const isExpired =
+          Math.floor(Date.now() / 1000) >= Number(result.expirationTime);
+
+        return {
+          expirationTimestamp: result.expirationTime,
+          isExpired: isExpired,
+          isSettled: result.settled,
+          proposalHash: proposalHash,
+          proposalTxHash: event.transactionHash,
+          logIndex: event.logIndex
+        };
+      });
     })
   );
 

@@ -36,6 +36,7 @@ import {
 import { getModuleDetailsUma } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
+import { Network } from './types';
 
 export * from './constants';
 
@@ -155,12 +156,12 @@ export default class Plugin {
   }
 
   async getExecutionDetailsUma(
-    network: string,
+    network: Network,
     moduleAddress: string,
     proposalId: string,
     explanation: string,
     transactions: any
-  ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
+  ) {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
@@ -176,10 +177,10 @@ export default class Plugin {
   }
 
   async *approveBondUma(
-    network: string,
+    network: Network,
     web3: any,
     moduleAddress: string,
-    transactions: any
+    transactions?: any
   ) {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
@@ -203,7 +204,7 @@ export default class Plugin {
   }
 
   async getModuleDetailsUma(
-    network: string,
+    network: Network,
     moduleAddress: string,
     explanation: string,
     transactions: any
@@ -258,7 +259,7 @@ export default class Plugin {
 
   async loadClaimBondData(
     web3: any,
-    network: string,
+    network: Network,
     questionId: string,
     oracleAddress: string,
     block: string
