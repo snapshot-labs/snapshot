@@ -71,7 +71,7 @@
     "@iconify-json/heroicons-outline": "^1.1.6",
     "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.3",
-    "@types/lodash": "^4.14.194",
+    "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.3",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.1",
