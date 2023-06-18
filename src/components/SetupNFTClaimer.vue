@@ -3,6 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
   context: string;
+  isViewOnly: boolean;
   space: ExtendedSpace;
 }>();
 const emit = defineEmits(['back', 'next']);
@@ -11,7 +12,7 @@ const { forceShowError } = useFormSpaceSettings('setup');
 
 const { deploy, spaceCollectionsInfo, init } = useNFTClaimer(props.space);
 
-const isReadonly = ref(false);
+const isReadonly = ref(props.isViewOnly);
 const isValidJson = ref(false);
 const input = ref(
   spaceCollectionsInfo.value[props.space.id] ?? {
@@ -36,44 +37,38 @@ onMounted(init);
 
 <template>
   <div class="flex w-full flex-col">
-    <TuneForm
-      ref="formRef"
-      v-model="input"
-      :definition="{
-        type: 'object',
-        title: 'NftClaimer',
-        additionalProperties: true,
-        required: ['maxSupply', 'mintPrice', 'proposerCut', 'treasuryAddress'],
-        properties: {
-          maxSupply: {
-            type: 'number',
-            title: 'Max Supply',
-            examples: ['100']
-          },
-          mintPrice: {
-            type: 'number',
-            title: 'Mint price',
-            hint: 'Price in WETH',
-            examples: ['1000']
-          },
-          proposerCut: {
-            type: 'number',
-            title: 'Proposer cut',
-            hint: 'In percentage',
-            examples: ['5']
-          },
-          treasuryAddress: {
-            type: 'string',
-            title: 'Proposer cut address',
-            examples: ['0x0000']
-          }
-        }
-      }"
-      :error="{}"
+    <TuneInput
+      v-model="input.maxSupply"
+      label="Max supply"
+      placeholder="100"
+      :disabled="isReadonly"
+      autofocus
     />
-    <TuneButton primary class="mt-3" @click="submit">
+
+    <TuneInput
+      v-model="input.mintPrice"
+      label="Mint price"
+      placeholder="100000"
+      :disabled="isReadonly"
+    />
+
+    <TuneInput
+      v-model="input.proposerCut"
+      label="Proposer cut"
+      placeholder="5"
+      :disabled="isReadonly"
+    />
+
+    <TuneInput
+      v-model="input.treasuryAddress"
+      label="Proposer cut address"
+      placeholder="0x0000"
+      :disabled="isReadonly"
+    />
+
+    <BaseButton primary class="mt-3" :disabled="isReadonly" @click="submit">
       Setup NFT Claimer
-    </TuneButton>
+    </BaseButton>
 
     <div v-if="context !== 'settings'" class="px-4 md:px-0">
       <SetupButtonBack @click="emit('back')" />

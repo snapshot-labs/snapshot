@@ -269,6 +269,7 @@ const isViewOnly = computed(() => {
               context="settings"
               :space="space"
               :is-space-controller="isSpaceController"
+              :is-view-only="isViewOnly"
             />
           </template>
 
