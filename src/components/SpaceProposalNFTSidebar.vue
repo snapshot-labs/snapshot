@@ -68,6 +68,7 @@ const spaceCollectionInfo = computed(() => {
           <BaseButton
             primary
             :loading="minting"
+            :disabled="!spaceCollectionInfo.enabled"
             @click="isModalMintOpen = true"
           >
             MINT

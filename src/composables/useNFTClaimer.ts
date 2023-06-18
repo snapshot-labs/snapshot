@@ -176,8 +176,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       }
     }
 
-    console.log(proposal);
-    console.log(spaceCollectionInfo);
     if (proposal && spaceCollectionInfo) {
       const info = await getCollectionInfo();
 
@@ -188,6 +186,13 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       };
       if (info) {
         spaceCollectionsInfo.value[space.id].proposals[proposal.id] = info;
+      }
+
+      if (
+        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints
+          .length >= spaceCollectionsInfo.value[space.id].maxSupply
+      ) {
+        spaceCollectionsInfo.value[space.id].enabled = false;
       }
     }
 

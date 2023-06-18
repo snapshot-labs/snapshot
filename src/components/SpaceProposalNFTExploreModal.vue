@@ -46,17 +46,22 @@ watch(
           >
             <div class="flex flex-col">
               <span class="text-xl font-bold text-skin-link">
-                {{ mintCountTotal }}
+                {{ spaceCollectionInfo.maxSupply }}
               </span>
               <span>Max supply</span>
             </div>
             <div class="flex flex-col">
               <span class="text-xl font-bold text-skin-link">
-                {{ mintPrice }} {{ mintCurrency }}
+                {{ spaceCollectionInfo.mintPrice }} {{ mintCurrency }}
               </span>
               <span>Mint price</span>
             </div>
-            <BaseButton primary :loading="minting" @click="$emit('mint')">
+            <BaseButton
+              primary
+              :loading="minting"
+              :disabled="!spaceCollectionInfo.enabled"
+              @click="$emit('mint')"
+            >
               MINT
             </BaseButton>
           </div>
