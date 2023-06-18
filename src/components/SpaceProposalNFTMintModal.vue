@@ -61,7 +61,7 @@ const spaceCollectionInfo = computed(() => {
             <span>Remaining supply</span>
             <span>{{
               spaceCollectionInfo.maxSupply -
-              spaceCollectionInfo.proposals[proposal.id].mintedCount
+              spaceCollectionInfo.proposals[proposal.id].mintCount
             }}</span>
           </div>
           <div class="flex flex-row justify-between py-2">

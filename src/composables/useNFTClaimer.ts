@@ -65,6 +65,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     removePendingTransaction
   } = useTxStatus();
 
+  const { profiles, loadProfiles } = useProfiles();
+
   async function _switchNetwork() {
     // check current network
     if (networkKey.value === NETWORK_KEY) return;
@@ -180,17 +182,23 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       const info = await getCollectionInfo();
 
       spaceCollectionsInfo.value[space.id].proposals ||= {};
-      spaceCollectionsInfo.value[space.id].proposals[proposal.id] ||= {
-        mintedCount: 0,
-        id: null
+      const defaultInfo = {
+        id: null,
+        mintCount: 0,
+        mints: []
       };
-      if (info) {
-        spaceCollectionsInfo.value[space.id].proposals[proposal.id] = info;
-      }
+
+      spaceCollectionsInfo.value[space.id].proposals[proposal.id] =
+        info ?? defaultInfo;
+      loadProfiles(
+        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints.map(
+          p => p.minterAddress
+        )
+      );
 
       if (
-        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints
-          .length >= spaceCollectionsInfo.value[space.id].maxSupply
+        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mintCount >=
+        spaceCollectionsInfo.value[space.id].maxSupply
       ) {
         spaceCollectionsInfo.value[space.id].enabled = false;
       }
@@ -348,6 +356,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     mintNetwork,
     mintCurrency,
     inited,
+    profiles,
     // enableNFTClaimer,
     // disableNFTClaimer,
     mint,

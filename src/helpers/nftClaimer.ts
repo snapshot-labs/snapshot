@@ -6,7 +6,7 @@ import {
 } from '@apollo/client/core';
 
 const uri =
-  'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/v0.0.2';
+  'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/v0.0.5';
 
 const httpLink = createHttpLink({ uri });
 
@@ -54,12 +54,11 @@ export async function getCollection(proposalId: bigint) {
       query proposals($proposalId: BigInt) {
         proposals(where: { proposalId: $proposalId }) {
           id
-          spaceCollection {
-            id
-            spaceId
-          }
+          mintCount
           mints {
             id
+            minterAddress
+            timestamp
           }
         }
       }

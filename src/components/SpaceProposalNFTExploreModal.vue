@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { shortenAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -9,13 +10,18 @@ const props = defineProps<{
 
 defineEmits(['close', 'mint']);
 
-const { mintCurrency, spaceCollectionsInfo, minting, init, inited } =
+const { mintCurrency, spaceCollectionsInfo, minting, init, inited, profiles } =
   useNFTClaimer(props.space, props.proposal);
 
-const nfts = ref([]);
+const { formatRelativeTime } = useIntl();
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
+});
+
+const nfts = computed(() => {
+  return spaceCollectionsInfo.value[props.space.id].proposals[props.proposal.id]
+    .mints;
 });
 
 watch(
@@ -68,21 +74,27 @@ watch(
 
           <SpaceProposalNFTProgress
             :max-supply="spaceCollectionInfo.maxSupply"
-            :supply="spaceCollectionInfo.proposals[proposal.id].mints.length"
+            :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
             :show-info="false"
           />
         </div>
 
         <div
-          v-for="n in 100"
-          :key="n"
+          v-for="nft in nfts"
+          :key="nft.id"
           class="mt-3 flex w-full flex-row content-center items-center justify-between px-4"
         >
           <div class="flex flex-row gap-x-4">
             <div class="h-[52px] w-[52px] rounded bg-skin-border"></div>
             <div class="flex flex-col">
-              <span>#{{ n }}</span>
-              <span>0x000000</span>
+              <BaseUser
+                :address="nft.minterAddress"
+                :profile="profiles[nft.minterAddress]"
+                :space="space"
+                :proposal="proposal"
+                hide-avatar
+              />
+              <span>{{ formatRelativeTime(nft.timestamp) }}</span>
             </div>
           </div>
           <a href="https://snapshot.org" target="_blank">
