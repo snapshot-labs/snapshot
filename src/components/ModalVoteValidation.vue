@@ -14,10 +14,12 @@ const props = defineProps<{
 const emit = defineEmits(['add', 'close']);
 
 const { open } = toRefs(props);
+const { t } = useI18n();
 
 const isValidParams = ref(true);
 const formRef = ref();
 const strategiesFormRef = ref();
+const showStrategies = ref(false);
 
 const input = ref({
   name: '',
@@ -59,24 +61,20 @@ function select(n: string) {
 
   if (props.validation.name !== n) {
     input.value.params = clone(DEFAULT_PARAMS);
-    if (n === 'basic') {
-      input.value.params = {
-        minScore: 1,
-        strategies: [
-          {
-            name: 'ticket',
-            network: '1',
-            params: {
-              symbol: 'DAI'
-            }
-          }
-        ]
-      };
-    }
   }
 
   if (n === 'any') {
     handleSubmit();
+  }
+
+  if (n === 'basic') {
+    if (input.value.params.strategies) {
+      showStrategies.value = true;
+    }
+  }
+
+  if (n === 'passport-gated' && !input.value.params.operator) {
+    input.value.params.operator = 'OR';
   }
 }
 
@@ -111,6 +109,10 @@ async function getValidations() {
     ...fetchedValidations
   };
 
+  if (validationsWithAny.basic.schema)
+    validationsWithAny.basic.schema.definitions.Validation.properties.minScore.description =
+      t('votingValidation.basic.minScoreHint');
+
   removeProposalValidationOnly(validationsWithAny);
 
   validations.value = validationsWithAny || null;
@@ -127,6 +129,13 @@ watch(open, () => {
       name: '',
       params: clone(DEFAULT_PARAMS)
     };
+  }
+});
+
+watch(showStrategies, () => {
+  if (!showStrategies.value) {
+    delete input.value.params.strategies;
+    isValidParams.value = true;
   }
 });
 </script>
@@ -161,8 +170,15 @@ watch(open, () => {
           @update:is-valid="value => (isValidParams = value)"
         />
 
-        <FormArrayStrategies
+        <TuneSwitch
           v-if="input.name === 'basic'"
+          v-model="showStrategies"
+          :label="$t('useCustomStrategies')"
+          :hint="$t('votingValidation.basic.customStrategiesHint')"
+        />
+
+        <FormArrayStrategies
+          v-if="input.name === 'basic' && showStrategies"
           ref="strategiesFormRef"
           v-model="input.params.strategies"
           :voting-strategies="votingStrategies"

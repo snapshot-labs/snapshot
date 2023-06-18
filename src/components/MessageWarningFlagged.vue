@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   type: string;
+  responsive?: boolean;
 }>();
 
 const emit = defineEmits(['forceShow']);
@@ -16,7 +17,13 @@ const warningText = computed(() => {
 </script>
 
 <template>
-  <div class="flex justify-between rounded-xl border py-3 pl-4">
+  <div
+    class="flex justify-between py-3 pl-4"
+    :class="[
+      { 'rounded-xl border': !responsive },
+      { 'rounded-none border-y md:rounded-xl md:border': responsive }
+    ]"
+  >
     <div class="flex items-center">
       {{ warningText }}
     </div>
