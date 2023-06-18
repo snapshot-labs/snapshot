@@ -15,8 +15,8 @@ const { mintNetwork, mintCurrency, minting, mint, init, spaceCollectionsInfo } =
 
 watch(
   () => props.open,
-  val => {
-    if (val) init();
+  () => {
+    init();
   }
 );
 

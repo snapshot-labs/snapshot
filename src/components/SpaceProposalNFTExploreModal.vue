@@ -26,8 +26,8 @@ const nfts = computed(() => {
 
 watch(
   () => props.open,
-  val => {
-    if (val) init();
+  () => {
+    init();
   }
 );
 </script>

@@ -17,8 +17,8 @@ const isModalExploreOpen = ref(false);
 
 watch(
   () => web3Account.value,
-  to => {
-    if (to) init();
+  () => {
+    init();
   },
   {
     immediate: true
