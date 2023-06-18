@@ -9,17 +9,14 @@ const props = defineProps<{
 
 defineEmits(['close', 'mint']);
 
-const {
-  mintCurrency,
-  mintPrice,
-  mintCount,
-  mintCountTotal,
-  minting,
-  init,
-  inited
-} = useNFTClaimer(props.space, props.proposal);
+const { mintCurrency, spaceCollectionsInfo, minting, init, inited } =
+  useNFTClaimer(props.space, props.proposal);
 
 const nfts = ref([]);
+
+const spaceCollectionInfo = computed(() => {
+  return spaceCollectionsInfo.value[props.space.id];
+});
 
 watch(
   () => props.open,
@@ -65,8 +62,8 @@ watch(
           </div>
 
           <SpaceProposalNFTProgress
-            :max-supply="mintCountTotal"
-            :supply="mintCount"
+            :max-supply="spaceCollectionInfo.maxSupply"
+            :supply="spaceCollectionInfo.proposals[proposal.id].mints.length"
             :show-info="false"
           />
         </div>

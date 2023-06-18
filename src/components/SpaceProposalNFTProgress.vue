@@ -12,8 +12,10 @@ const mintPercent = computed(() => (props.supply / props.maxSupply) * 100);
   <div class="flex w-full cursor-pointer flex-col">
     <div v-if="showInfo" class="flex flex-row justify-between pb-1">
       <div>
-        <span class="mr-1 text-skin-link">{{ mintPercent }}%</span>
-        <span>minted</span>
+        <span class="mr-1 text-skin-link">
+          {{ props.supply }}
+        </span>
+        <span>/ {{ props.maxSupply }} minted</span>
       </div>
       <i-ho-arrow-top-right-on-square class="ml-2" />
     </div>

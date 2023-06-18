@@ -31,7 +31,6 @@ const spaceCollectionInfo = computed(() => {
 </script>
 
 <template>
-  {{ spaceCollectionInfo }}
   <BaseBlock v-if="inited && spaceCollectionInfo" :title="$t('NFT Claimer')">
     <div class="flex flex-col items-center space-y-4">
       <div class="group flex cursor-pointer flex-col items-center">
@@ -52,7 +51,7 @@ const spaceCollectionInfo = computed(() => {
 
       <SpaceProposalNFTProgress
         :max-supply="spaceCollectionInfo.maxSupply"
-        :supply="spaceCollectionInfo.proposals[proposal.id].mintedCount"
+        :supply="spaceCollectionInfo.proposals[proposal.id].mints.length"
         @click="isModalExploreOpen = true"
       />
 
