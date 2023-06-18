@@ -25,7 +25,9 @@ export function rangeStart(
   const { startBlock, endBlock, multiplier = 2 } = state;
   if (state.maxRange && state.maxRange > 0) {
     const range = endBlock - startBlock;
-    if ((!(range >= 0), 'End block must be higher than start block'));
+    if (!(range >= 0)) {
+      throw new Error('End block must be higher than start block');
+    }
     const currentRange = Math.min(state.maxRange, range);
     const currentStart = endBlock - currentRange;
     const currentEnd = endBlock;
@@ -42,7 +44,9 @@ export function rangeStart(
   } else {
     // the largest range we can have, since this is the users query for start and end
     const maxRange = endBlock - startBlock;
-    if ((!(maxRange > 0), 'End block must be higher than start block'));
+    if (!(maxRange > 0)) {
+      throw new Error('End block must be higher than start block');
+    }
     const currentStart = startBlock;
     const currentEnd = endBlock;
     const currentRange = maxRange;
@@ -128,7 +132,7 @@ export async function pageEvents<E>(
   fetchEvents: (query: { start: number; end: number }) => Promise<E[]>
 ): Promise<E[]> {
   let state = rangeStart({ startBlock, endBlock, maxRange });
-  const ranges = [];
+  const ranges: { start: number; end: number }[] = [];
   do {
     ranges.push({ start: state.currentStart, end: state.currentEnd });
     state = rangeSuccessDescending(state);
