@@ -35,7 +35,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   ];
   const MINT_CONTRACT_ABI = [
     'function balanceOf(address, uint256 id) view returns (uint256)',
-    'function mint(uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
+    'function mint(address proposer, uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
     'function mintPrice() view returns (uint256)',
     'function mintPrices(uint256 proposalId) view returns (uint256)',
     'function maxSupply() view returns (uint128)',
@@ -242,29 +242,19 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
       const salt = BigNumber.from(randomBytes(32)).toString();
       const { signature } = await _getBackendPayload('mint', {
+        proposalAuthor: proposal.author,
         id: proposal.id,
         address: web3Account.value,
         salt
       });
-      console.log(
-        auth.web3,
-        spaceCollectionsInfo.value[space.id].id,
-        MINT_CONTRACT_ABI,
-        'mint',
-        [
-          BigNumber.from(proposal.id).toString(),
-          salt,
-          signature.v,
-          signature.r,
-          signature.s
-        ]
-      );
+
       const tx = await sendTransaction(
         auth.web3,
         spaceCollectionsInfo.value[space.id].id,
         MINT_CONTRACT_ABI,
         'mint',
         [
+          proposal.author,
           BigNumber.from(proposal.id).toString(),
           salt,
           signature.v,
