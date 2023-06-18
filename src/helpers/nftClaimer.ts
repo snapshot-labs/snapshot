@@ -70,3 +70,28 @@ export async function getCollection(proposalId: bigint) {
 
   return proposals[0];
 }
+
+export async function getUserNfts(minterAddress: string) {
+  const {
+    data: { mints }
+  }: { data: { mints: any[] } } = await client.query({
+    query: gql`
+      query mints($minterAddress: String) {
+        mints(first: 100, where: { minterAddress: $minterAddress }) {
+          id
+          proposal {
+            id
+            spaceCollection {
+              spaceId
+            }
+          }
+        }
+      }
+    `,
+    variables: {
+      minterAddress
+    }
+  });
+
+  return mints;
+}

@@ -45,7 +45,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const mintNetwork = ref(NETWORK_KEY);
   const mintCurrency = ref('WETH');
   const mintPrice = ref('0.1');
-  const mintCount = ref(0);
 
   const inited = ref(false);
   const minting = ref(false);
@@ -283,8 +282,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       const receipt = await tx.wait();
       console.log('Receipt', receipt);
       minting.value = false;
-      // Optimistic update mint count
-      mintCount.value += 1;
       notify(t('notify.youDidIt'));
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
@@ -339,8 +336,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       // const receipt = await tx.wait();
       // console.log('Receipt', receipt);
       // minting.value = false;
-      // // Optimistic update mint count
-      // mintCount.value += 1;
       // notify(t('notify.youDidIt'));
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);

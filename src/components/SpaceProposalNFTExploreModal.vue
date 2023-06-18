@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { shortenAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;

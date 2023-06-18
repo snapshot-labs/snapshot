@@ -1,11 +1,26 @@
 <script lang="ts" setup>
+import { getUserNfts } from '@/helpers/nftClaimer';
+
+const props = defineProps<{
+  address: string;
+}>();
+
 const loading = ref(false);
-const nfts = ref([]);
+const nfts = ref<any[]>([]);
 const modalNFTsOpen = ref(false);
+
+onMounted(async () => {
+  nfts.value = await getUserNfts(props.address);
+});
 </script>
 
 <template>
-  <BaseBlock :title="'NFTs collected'" :counter="10" hide-bottom-border slim>
+  <BaseBlock
+    :title="'NFTs collected'"
+    :counter="nfts.length"
+    hide-bottom-border
+    slim
+  >
     <div v-if="loading || nfts.length" class="border-t px-4 py-4">
       <div v-if="loading" />
 
