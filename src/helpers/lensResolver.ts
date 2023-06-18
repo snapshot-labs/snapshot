@@ -7,27 +7,20 @@ type Handle = string;
 type Address = string;
 type ProfileId = number;
 
-class LensResolver {
-  network = '137';
-  abi: string[] = [
-    'function balanceOf(address owner) view returns (uint256)',
-    'function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)',
-    'function getHandle(uint256 profileId) view returns (string)'
-  ];
-  contractAddress = '0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d';
-  _multicaller!: Multicaller;
+const network = '137';
+const abi: string[] = [
+  'function balanceOf(address owner) view returns (uint256)',
+  'function tokenOfOwnerByIndex(address owner, uint256 index) view returns (uint256)',
+  'function getHandle(uint256 profileId) view returns (string)'
+];
+const contractAddress = '0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d';
 
-  get provider() {
-    return getProvider(this.network);
-  }
+class LensResolver {
+  _multicaller!: Multicaller;
 
   get multi() {
     if (!this._multicaller) {
-      this._multicaller = new Multicaller(
-        this.network,
-        this.provider,
-        this.abi
-      );
+      this._multicaller = new Multicaller(network, getProvider(network), abi);
     }
     return this._multicaller;
   }
@@ -36,7 +29,7 @@ class LensResolver {
     if (!addresses.length) return [];
     addresses.forEach(address => {
       address = getAddress(address).toString();
-      this.multi.call(address, this.contractAddress, 'balanceOf', [address]);
+      this.multi.call(address, contractAddress, 'balanceOf', [address]);
     });
 
     const balances: Record<Address, BigNumber> = await this.multi.execute();
@@ -52,7 +45,7 @@ class LensResolver {
     if (!addresses.length) return [];
     addresses.forEach(address => {
       address = getAddress(address).toString();
-      this.multi.call(address, this.contractAddress, 'tokenOfOwnerByIndex', [
+      this.multi.call(address, contractAddress, 'tokenOfOwnerByIndex', [
         address,
         0
       ]);
@@ -71,7 +64,7 @@ class LensResolver {
   ): Promise<Record<Address, Handle>> {
     if (!tokenMapping.length) return {};
     tokenMapping.forEach(([address, token]) => {
-      this.multi.call(address, this.contractAddress, 'getHandle', [token]);
+      this.multi.call(address, contractAddress, 'getHandle', [token]);
     });
 
     const handles: Record<Address, Handle> = await this.multi.execute();
@@ -96,4 +89,7 @@ class LensResolver {
   }
 }
 
-export default new LensResolver();
+export const resolveLensAddresses = async (addresses: Address[]) => {
+  const resolver = new LensResolver();
+  return await resolver.resolveAddresses(addresses);
+};
