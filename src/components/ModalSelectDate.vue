@@ -11,6 +11,16 @@ const { open } = toRefs(props);
 const step = ref(0);
 const input = ref('');
 const time = ref('12:00');
+const isTimeValid = computed(() => {
+  const isTimeEnteringStep = step.value === 1;
+  if (!isTimeEnteringStep) return true;
+  if (!input.value) return false;
+
+  const startDateString = `${input.value} ${time.value}:00`;
+  const startTimestamp = new Date(startDateString).getTime();
+
+  return startTimestamp >= Date.now();
+});
 
 function formatDate(date) {
   const output = { h: '12', m: '00', dateString: '' };
@@ -39,17 +49,6 @@ watch(open, () => {
   const { dateString, h, m } = formatDate(props.value);
   time.value = `${h}:${m}`;
   input.value = dateString;
-});
-
-watchEffect(() => {
-  const startDateString = `${input.value} ${time.value}:00`;
-  const startTimestamp = new Date(startDateString).getTime();
-
-  if (startTimestamp < Date.now()) {
-    const { dateString, h, m } = formatDate(Date.now() / 1000);
-    input.value = dateString;
-    time.value = `${h}:${m}`;
-  }
 });
 </script>
 
@@ -84,7 +83,7 @@ watchEffect(() => {
       <div class="float-left w-2/4 pl-2">
         <BaseButton
           type="submit"
-          :disabled="!input"
+          :disabled="!isTimeValid"
           class="w-full"
           primary
           @click="handleSubmit"
