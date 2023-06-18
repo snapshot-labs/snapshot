@@ -6,7 +6,7 @@ import {
 } from '@apollo/client/core';
 
 const uri =
-  'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/v0.0.5';
+  'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
 
 const httpLink = createHttpLink({ uri });
 
