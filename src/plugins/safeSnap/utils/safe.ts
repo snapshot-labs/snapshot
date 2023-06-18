@@ -2,7 +2,10 @@ import { GNOSIS_SAFE_TRANSACTION_API_URLS } from '../constants';
 import { TokenAsset } from '@/helpers/interfaces';
 import memoize from 'lodash/memoize';
 
-async function callGnosisSafeTransactionApi(network: string, url: string) {
+async function callGnosisSafeTransactionApi(
+  network: keyof typeof GNOSIS_SAFE_TRANSACTION_API_URLS,
+  url: string
+) {
   const apiUrl = GNOSIS_SAFE_TRANSACTION_API_URLS[network];
   const response = await fetch(apiUrl + url);
   return response.json();
