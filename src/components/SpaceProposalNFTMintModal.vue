@@ -68,7 +68,7 @@ const spaceCollectionInfo = computed(() => {
             <span>Mint price</span>
             <div class="flex flex-col">
               <span class="text-lg font-bold text-skin-link">
-                {{ spaceCollectionInfo.mintPrice }}
+                {{ spaceCollectionInfo.formattedMintPrice }}
                 {{ mintCurrency }}
               </span>
               <!-- <span>~2000 USD</span> -->
@@ -76,7 +76,7 @@ const spaceCollectionInfo = computed(() => {
           </div>
         </BaseBlock>
         <BaseButton primary :loading="minting" @click="mint()">
-          MINT for {{ spaceCollectionInfo.mintPrice }}
+          MINT for {{ spaceCollectionInfo.formattedMintPrice }}
           {{ mintCurrency }}
         </BaseButton>
       </div>

@@ -62,7 +62,7 @@ const spaceCollectionInfo = computed(() => {
           <div class="flex flex-col">
             <span>Mint price</span>
             <span class="text-lg font-bold text-skin-link"
-              >{{ spaceCollectionInfo.mintPrice }} WETH</span
+              >{{ spaceCollectionInfo.formattedMintPrice }} WETH</span
             >
           </div>
           <BaseButton

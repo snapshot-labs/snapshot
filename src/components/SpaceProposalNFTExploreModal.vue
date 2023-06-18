@@ -58,7 +58,7 @@ watch(
             </div>
             <div class="flex flex-col">
               <span class="text-xl font-bold text-skin-link">
-                {{ spaceCollectionInfo.mintPrice }} {{ mintCurrency }}
+                {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
               </span>
               <span>Mint price</span>
             </div>
