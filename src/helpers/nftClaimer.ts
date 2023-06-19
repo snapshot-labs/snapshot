@@ -4,6 +4,8 @@ import {
   gql,
   InMemoryCache
 } from '@apollo/client/core';
+import { BigNumber } from '@ethersproject/bignumber';
+import { randomBytes } from '@ethersproject/random';
 
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
@@ -94,4 +96,8 @@ export async function getUserNfts(minterAddress: string) {
   });
 
   return mints;
+}
+
+export function generateSalt() {
+  return BigNumber.from(randomBytes(32)).toString();
 }

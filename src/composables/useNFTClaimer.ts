@@ -5,12 +5,15 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-import { randomBytes } from '@ethersproject/random';
 import { useStorage } from '@vueuse/core';
-import { getCollection, getSpaceCollection } from '@/helpers/nftClaimer';
+import {
+  generateSalt,
+  getCollection,
+  getSpaceCollection
+} from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { hexZeroPad, hexlify } from '@ethersproject/bytes';
+import SingleChoiceVoting from '@snapshot-labs/snapshot.js/src/voting/singleChoice';
 
 const spaceCollectionsInfo = useStorage(
   'snapshot.proposals.nftCollections',
@@ -254,27 +257,20 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       await _checkWETHBalance();
       await _checkWETHApproval(spaceCollectionsInfo.value[space.id].id);
 
-      const salt = BigNumber.from(randomBytes(32)).toString();
-      const { signature } = await _getBackendPayload('mint', {
-        proposalAuthor: proposal.author,
-        id: proposal.id,
-        address: web3Account.value,
-        salt
-      });
+      const { signature, salt, proposer, proposalId } =
+        await _getBackendPayload('mint', {
+          proposalAuthor: proposal.author,
+          id: proposal.id,
+          address: web3Account.value,
+          salt: generateSalt()
+        });
 
       const tx = await sendTransaction(
         auth.web3,
         spaceCollectionsInfo.value[space.id].id,
         MINT_CONTRACT_ABI,
         'mint',
-        [
-          proposal.author,
-          BigNumber.from(proposal.id).toString(),
-          salt,
-          signature.v,
-          signature.r,
-          signature.s
-        ]
+        [proposer, proposalId, salt, signature.v, signature.r, signature.s]
       );
       console.log(':mint tx', tx);
 
@@ -305,20 +301,22 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       await _checkWETHBalance();
       await _checkWETHApproval(DEPLOY_CONTRACT_ADDRESS);
 
-      const salt = hexZeroPad(hexlify(Math.floor(Math.random() * 1000)), 32);
-      const { signature, initializer } = await _getBackendPayload('deploy', {
-        id: space.id,
-        address: web3Account.value,
-        salt,
-        maxSupply: params.maxSupply,
-        mintPrice: parseUnits(
-          params.formattedMintPrice.toString(),
-          18
-        ).toString(),
-        proposerFee: params.proposerCut,
-        spaceTreasury: params.treasuryAddress
-      });
-
+      const { signature, initializer, salt } = await _getBackendPayload(
+        'deploy',
+        {
+          id: space.id,
+          address: web3Account.value,
+          salt: generateSalt(),
+          maxSupply: params.maxSupply,
+          mintPrice: parseUnits(
+            params.formattedMintPrice.toString(),
+            18
+          ).toString(),
+          proposerFee: params.proposerCut,
+          spaceTreasury: params.treasuryAddress
+        }
+      );
+      console.log(signature, initializer, salt);
       const tx = await sendTransaction(
         auth.web3,
         DEPLOY_CONTRACT_ADDRESS,
