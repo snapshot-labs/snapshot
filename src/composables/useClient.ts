@@ -23,7 +23,7 @@ export function useClient() {
     notifyModal('warning', description);
   }
 
-  async function send(space, type, payload) {
+  async function send(space: { id: string }, type: string, payload: any) {
     isSending.value = true;
     try {
       return await sendEIP712(space, type, payload);
@@ -35,7 +35,7 @@ export function useClient() {
     }
   }
 
-  async function sendEIP712(space, type, payload) {
+  async function sendEIP712(space: { id: string }, type: string, payload: any) {
     const client = isGnosisSafe.value ? clientGnosisSafe : clientEIP712;
     if (type === 'proposal') {
       let plugins = {};
