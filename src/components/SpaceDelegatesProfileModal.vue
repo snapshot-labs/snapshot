@@ -114,8 +114,15 @@ watch(
 
         <div
           v-if="!getStatementAbout(address) && !getStatementStatement(address)"
+          @click="
+            emit('close');
+            showModalStatement = true;
+          "
         >
           No statement provided yet
+          <button class="flex items-center text-skin-link">
+            Add statement
+          </button>
         </div>
       </div>
     </div>
