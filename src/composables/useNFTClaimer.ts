@@ -311,7 +311,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         address: web3Account.value,
         salt,
         maxSupply: params.maxSupply,
-        mintPrice: params.mintPrice,
+        mintPrice: parseUnits(
+          params.formattedMintPrice.toString(),
+          18
+        ).toString(),
         proposerFee: params.proposerCut,
         spaceTreasury: params.treasuryAddress
       });

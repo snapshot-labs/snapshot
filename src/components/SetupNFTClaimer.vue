@@ -19,7 +19,7 @@ const isValidJson = ref(false);
 const input = ref(
   spaceCollectionsInfo.value[props.space.id] ?? {
     maxSupply: '',
-    mintPrice: '',
+    formattedMintPrice: '',
     proposerCut: '',
     treasuryAddress: ''
   }
@@ -60,7 +60,7 @@ onMounted(init);
     />
 
     <TuneInput
-      v-model="input.mintPrice"
+      v-model="input.formattedMintPrice"
       label="Mint price"
       :hint="`In ${mintCurrency}`"
       placeholder="2.65"
