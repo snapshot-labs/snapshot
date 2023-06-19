@@ -215,7 +215,7 @@ const isViewOnly = computed(() => {
           />
 
           <BaseMessageBlock
-            v-else-if="isViewOnly"
+            v-else-if="isViewOnly && currentPage !== Page.NFTCLAIMER"
             class="md:mx-0"
             level="info"
             is-responsive
@@ -269,7 +269,7 @@ const isViewOnly = computed(() => {
               context="settings"
               :space="space"
               :is-space-controller="isSpaceController"
-              :is-view-only="isViewOnly"
+              :is-view-only="false"
             />
           </template>
 
