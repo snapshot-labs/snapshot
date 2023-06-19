@@ -131,7 +131,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function _getBackendPayload(type: string, payload: any) {
     const res = await fetch(
-      `${process.env.VITE_SIDEKICK_URL}/api/nft-claimer/${type}`,
+      `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/${type}`,
       {
         method: 'POST',
         headers: {
