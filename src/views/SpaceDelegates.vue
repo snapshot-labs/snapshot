@@ -23,6 +23,7 @@ const router = useRouter();
 const { t } = useI18n();
 const { domain } = useApp();
 const { web3Account } = useWeb3();
+const { loadingStatements, loadStatements, getStatementAbout } = useStatement();
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -94,13 +95,26 @@ function handleClickProfile(id = '') {
 useInfiniteScroll(
   document,
   () => {
-    if (hasMoreDelegates.value) fetchMoreDelegates(matchFilter.value);
+    if (hasMoreDelegates.value && !searchInput.value)
+      fetchMoreDelegates(matchFilter.value);
   },
   { distance: 250, interval: 500 }
 );
 
-watch(delegates, () => {
-  loadProfiles(delegates.value.map(delegate => delegate.id));
+watch([delegate, delegates], ([newDelegate, newDelegates], [prevDelegate]) => {
+  const delegateChanged = newDelegate !== prevDelegate;
+  if (delegateChanged && newDelegate) {
+    loadStatements(props.space.id, [newDelegate.id]);
+    loadProfiles([newDelegate.id]);
+    return;
+  }
+  if (newDelegates && newDelegates.length > 0) {
+    loadStatements(
+      props.space.id,
+      newDelegates.map(d => d.id)
+    );
+    loadProfiles(newDelegates.map(d => d.id));
+  }
 });
 
 watch(searchInputDebounced, () => {
@@ -166,6 +180,8 @@ onMounted(() => {
           :delegate="delegate"
           :profiles="profiles"
           :space="space"
+          :about="getStatementAbout(delegate.id)"
+          :loading="loadingStatements"
           @click-delegate="handleClickDelegate(delegate.id)"
           @click-user="handleClickProfile(delegate.id)"
         />
@@ -181,6 +197,8 @@ onMounted(() => {
               :delegate="d"
               :profiles="profiles"
               :space="space"
+              :about="getStatementAbout(d.id)"
+              :loading="loadingStatements"
               @click-delegate="handleClickDelegate(d.id)"
               @click-user="handleClickProfile(d.id)"
             />

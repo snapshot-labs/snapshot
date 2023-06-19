@@ -52,11 +52,7 @@ export class CompoundGovernorConfig extends StandardConfig {
       return {
         ...delegate,
         delegatorsPercentage,
-        votesPercentage,
-        statement:
-          Math.random() > 0.5
-            ? 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero commodi error unde harum facilis eveniet fugit, ut placeat rerum officiis autem.'
-            : ''
+        votesPercentage
       };
     });
   }

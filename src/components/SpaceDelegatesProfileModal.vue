@@ -15,13 +15,25 @@ const { web3Account } = useWeb3();
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 const { fetchDelegate, delegate } = useDelegates(props.space.delegationPortal);
 const { domain } = useApp();
+const {
+  loadingStatements,
+  loadStatements,
+  reloadStatement,
+  getStatementAbout,
+  getStatementStatement
+} = useStatement();
 
 const showModalStatement = ref(false);
+
+const isLoggedUser = computed(() => {
+  return web3Account.value.toLowerCase() === props.address.toLowerCase();
+});
 
 watch(
   () => props.address,
   async () => {
     fetchDelegate(props.address);
+    loadStatements(props.space.id, [props.address]);
   }
 );
 </script>
@@ -62,25 +74,50 @@ watch(
         </div>
       </div>
 
-      <LoadingList v-if="!delegate" class="mt-4" />
-      <p v-else class="mt-4">
-        <span class="">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate
-          sit rerum corrupti odit et quos facere saepe tempore ipsam facilis,
-          doloremque ex ratione repellat cum repudiandae, quis consectetur
-          distinctio deleniti!
-        </span>
-        <button
-          v-if="web3Account === address"
-          class="flex cursor-pointer items-center gap-1 text-skin-link"
-          @click="
-            emit('close');
-            showModalStatement = true;
-          "
+      <LoadingList v-if="loadingStatements" class="mt-4" />
+      <div v-else class="mt-4 space-y-3">
+        <div v-if="getStatementAbout(address)">
+          <div class="flex items-center">
+            About
+            <BaseButtonIcon v-if="isLoggedUser">
+              <i-ho-pencil
+                class="text-xs"
+                @click="
+                  emit('close');
+                  showModalStatement = true;
+                "
+              />
+            </BaseButtonIcon>
+          </div>
+          <p class="text-skin-heading">
+            {{ getStatementAbout(address) }}
+          </p>
+        </div>
+
+        <div v-if="getStatementStatement(address)">
+          <div class="flex items-center">
+            Statement
+            <BaseButtonIcon v-if="isLoggedUser">
+              <i-ho-pencil
+                class="text-xs"
+                @click="
+                  emit('close');
+                  showModalStatement = true;
+                "
+              />
+            </BaseButtonIcon>
+          </div>
+          <p class="text-skin-heading">
+            {{ getStatementStatement(address) }}
+          </p>
+        </div>
+
+        <div
+          v-if="!getStatementAbout(address) && !getStatementStatement(address)"
         >
-          Edit statement
-        </button>
-      </p>
+          No statement provided yet
+        </div>
+      </div>
     </div>
     <template #footer>
       <div class="flex w-full">
@@ -116,10 +153,14 @@ watch(
   </BaseModal>
   <Teleport to="body">
     <SpaceDelegatesStatementModal
+      v-if="!loadingStatements"
       :open="showModalStatement"
-      :profiles="profiles"
+      :space="space"
       :address="address"
+      :about="getStatementAbout(address)"
+      :statement="getStatementStatement(address)"
       @close="showModalStatement = false"
+      @reload="reloadStatement(space.id, address)"
     />
   </Teleport>
 </template>

@@ -78,6 +78,12 @@ export function useClient() {
       return client.deleteSpace(auth.web3, web3.value.account, {
         space: space.id
       });
+    } else if (type === 'set-statement') {
+      return client.statement(auth.web3, web3.value.account, {
+        space: space.id,
+        about: payload.about,
+        statement: payload.statement
+      });
     }
   }
 

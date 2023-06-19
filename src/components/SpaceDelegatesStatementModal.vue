@@ -1,14 +1,40 @@
 <script setup lang="ts">
+import { ExtendedSpace } from '@/helpers/interfaces';
+import schemas from '@snapshot-labs/snapshot.js/src/schemas';
+import { validateForm } from '@/helpers/validation';
+
 const props = defineProps<{
   open: boolean;
+  space: ExtendedSpace;
   address: string;
+  about?: string;
+  statement?: string;
 }>();
 
 const emit = defineEmits(['close', 'reload']);
 
-const statement = ref(
-  `Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate sit rerum corrupti odit et quos facere saepe tempore ipsam facilis, doloremque ex ratione repellat cum repudiandae, quis consectetur distinctio deleniti!`
-);
+const { setStatement, settingStatement } = useStatement();
+
+const form = ref<any>({
+  about: props.about || '',
+  statement: props.statement || ''
+});
+const formRef = ref<any>(null);
+
+const validationErrors = computed(() => {
+  return validateForm(schemas.statement, form.value);
+});
+
+const isValid = computed(() => {
+  return Object.values(validationErrors.value).length === 0;
+});
+
+async function handleClickSave() {
+  if (!isValid.value) return;
+  await setStatement(props.space, form.value.about, form.value.statement);
+  emit('reload');
+  emit('close');
+}
 </script>
 
 <template>
@@ -18,11 +44,21 @@ const statement = ref(
     </template>
 
     <div class="space-y-2 p-4">
-      <TuneTextarea v-model="statement" />
+      <TuneForm
+        ref="formRef"
+        v-model="form"
+        :definition="schemas.statement"
+        :error="validationErrors || {}"
+      />
     </div>
 
     <template #footer>
-      <TuneButton class="w-full" primary @click="null">
+      <TuneButton
+        class="w-full"
+        :loading="settingStatement"
+        primary
+        @click="handleClickSave"
+      >
         {{ $t('save') }}
       </TuneButton>
     </template>

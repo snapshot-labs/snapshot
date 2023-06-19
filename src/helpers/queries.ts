@@ -409,6 +409,19 @@ export const SPACES_QUERY = gql`
   }
 `;
 
+export const STATEMENTS_QUERY = gql`
+  query Statements($space: String, $delegate_in: [String]) {
+    statements(where: { space: $space, delegate_in: $delegate_in }) {
+      delegate
+      space
+      statement
+      about
+      ipfs
+      id
+    }
+  }
+`;
+
 export const SPACE_QUERY = gql`
   query Space($id: String!) {
     space(id: $id) {

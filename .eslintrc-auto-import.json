@@ -115,6 +115,7 @@
     "watchSyncEffect": true,
     "watchTxStatus": true,
     "toValue": true,
-    "useFlaggedMessageStatus": true
+    "useFlaggedMessageStatus": true,
+    "useStatement": true
   }
 }

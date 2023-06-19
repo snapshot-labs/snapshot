@@ -388,5 +388,13 @@ export interface Delegate {
 export interface DelegateWithPercent extends Delegate {
   delegatorsPercentage: number;
   votesPercentage: number;
-  statement?: string; // TODO: remove this
+}
+
+export interface Statement {
+  delegate: string;
+  space: string;
+  statement: string;
+  about: string;
+  ipfs: string;
+  id: string;
 }

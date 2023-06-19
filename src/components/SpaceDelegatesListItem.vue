@@ -9,6 +9,8 @@ defineProps<{
   delegate: DelegateWithPercent;
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
+  loading: boolean;
+  about?: string;
 }>();
 
 const emit = defineEmits(['clickDelegate', 'clickUser']);
@@ -36,10 +38,15 @@ const { formatCompactNumber } = useIntl();
       </div>
     </button>
 
-    <div class="mt-2 h-full">
-      <template v-if="delegate?.statement">
-        <span class="line-clamp-3">
-          {{ delegate.statement }}
+    <div class="mt-3 h-full">
+      <template v-if="loading">
+        <div class="lazy-loading h-3 w-11/12 rounded-md" />
+        <div class="lazy-loading mt-1 h-3 w-7/12 rounded-md" />
+      </template>
+
+      <template v-else-if="about">
+        <span class="line-clamp-2">
+          {{ about }}
         </span>
         <span class="cursor-pointer text-skin-link" @click="emit('clickUser')">
           Learn more
