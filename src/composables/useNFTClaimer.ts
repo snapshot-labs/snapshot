@@ -17,8 +17,6 @@ const spaceCollectionsInfo = useStorage(
   {}
 );
 
-const SIDEKICK_URL = 'http://localhost:3005';
-
 export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const NETWORK_KEY = '5';
   const WETH_CONTRACT_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6';
@@ -132,13 +130,16 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function _getBackendPayload(type: string, payload: any) {
-    const res = await fetch(`${SIDEKICK_URL}/api/nft-claimer/${type}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
+    const res = await fetch(
+      `${process.env.VITE_SIDEKICK_URL}/api/nft-claimer/${type}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }
+    );
     return res.json();
   }
 
