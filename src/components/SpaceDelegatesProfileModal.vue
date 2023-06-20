@@ -120,7 +120,7 @@ watch(
           "
         >
           No statement provided yet
-          <button class="flex items-center text-skin-link">
+          <button v-if="isLoggedUser" class="flex items-center text-skin-link">
             Add statement
           </button>
         </div>
