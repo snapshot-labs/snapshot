@@ -20,7 +20,7 @@ const input = ref(
   spaceCollectionsInfo.value[props.space.id] ?? {
     maxSupply: '',
     formattedMintPrice: '',
-    proposerCut: '',
+    proposerFee: '',
     treasuryAddress: ''
   }
 );
@@ -68,8 +68,8 @@ onMounted(init);
     />
 
     <TuneInput
-      v-model="input.proposerCut"
-      label="Proposer cut"
+      v-model="input.proposerFee"
+      label="Proposer fees"
       hint="In percentage"
       placeholder="5"
       :disabled="isViewOnly"

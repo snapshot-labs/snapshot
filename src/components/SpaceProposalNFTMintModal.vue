@@ -38,7 +38,7 @@ const spaceCollectionInfo = computed(() => {
       <div class="flex flex-col justify-between gap-y-4 p-4">
         <!-- TODO nft preview block -->
         <BaseBlock>
-          <div class="flex flex-row justify-between py-2">
+          <div class="flex flex-row justify-between py-1">
             <span>Contract</span>
             <a
               class="flex flex-row"
@@ -49,29 +49,29 @@ const spaceCollectionInfo = computed(() => {
               <i-ho-arrow-top-right-on-square class="ml-2" />
             </a>
           </div>
-          <div class="flex flex-row justify-between py-2">
+          <div class="flex flex-row justify-between py-1">
             <span>Proposal author's share</span>
-            <span>0%</span>
+            <span>{{ spaceCollectionInfo.proposerFee }}%</span>
           </div>
-          <div class="flex flex-row justify-between py-2">
+          <div class="flex flex-row justify-between py-1">
             <span>Max supply</span>
             <span>{{ spaceCollectionInfo.maxSupply }}</span>
           </div>
-          <div class="flex flex-row justify-between py-2">
+          <div class="flex flex-row justify-between py-1">
             <span>Remaining supply</span>
             <span>{{
               spaceCollectionInfo.maxSupply -
               spaceCollectionInfo.proposals[proposal.id].mintCount
             }}</span>
           </div>
-          <div class="flex flex-row justify-between py-2">
+          <div class="flex flex-row justify-between py-1">
             <span>Mint price</span>
             <div class="flex flex-col">
-              <span class="text-lg font-bold text-skin-link">
+              <span class="text-md font-bold text-skin-link">
                 {{ spaceCollectionInfo.formattedMintPrice }}
                 {{ mintCurrency }}
               </span>
-              <!-- <span>~2000 USD</span> -->
+              <span class="text-end">~xxx USD</span>
             </div>
           </div>
         </BaseBlock>

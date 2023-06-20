@@ -13,7 +13,6 @@ import {
 } from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import SingleChoiceVoting from '@snapshot-labs/snapshot.js/src/voting/singleChoice';
 
 const spaceCollectionsInfo = useStorage(
   'snapshot.proposals.nftCollections',
@@ -172,7 +171,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           maxSupply: parseInt(info.maxSupply),
           mintPrice: parseInt(info.mintPrice),
           formattedMintPrice: formatUnits(info.mintPrice, 18),
-          proposerCut: parseInt(info.proposerFee),
+          proposerFee: parseInt(info.proposerFee),
           treasuryAddress: info.spaceTreasury,
           enabled: info.enabled,
           createdAt: Date.now()
@@ -316,7 +315,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           params.formattedMintPrice.toString(),
           18
         ).toString(),
-        proposerFee: params.proposerCut,
+        proposerFee: params.proposerFee,
         spaceTreasury: params.treasuryAddress
       }
     );

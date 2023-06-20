@@ -49,7 +49,7 @@ const EMPTY_SPACE_FORM = {
   nftClaimer: {
     maxSupply: 10000,
     mintPrice: 0,
-    proposerCut: 0,
+    proposerFee: 0,
     address: '',
     network: '137',
     enabled: false
