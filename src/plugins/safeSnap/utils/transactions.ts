@@ -1,25 +1,32 @@
-import { FunctionFragment } from '@ethersproject/abi';
-import { isHexString } from '@ethersproject/bytes';
-import { BigNumber } from '@ethersproject/bignumber';
 import {
   CollectableAsset,
+  CollectableAssetTransaction,
   CustomContractTransaction,
   SafeTransaction,
-  CollectableAssetTransaction,
+  TokenAsset,
   TokenAssetTransaction
 } from '@/helpers/interfaces';
-import { InterfaceDecoder } from './decoder';
-import { getNativeAsset } from './coins';
+import { Fragment, FunctionFragment, JsonFragment } from '@ethersproject/abi';
+import { BigNumber } from '@ethersproject/bignumber';
+import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { fetchTextSignatures } from './index';
 import { getContractABI, parseMethodToABI } from './abi';
+import { getNativeAsset } from './coins';
+import { InterfaceDecoder } from './decoder';
+import { fetchTextSignatures } from './index';
 import { getGnosisSafeToken } from './safe';
+import { Network } from '../types';
 
 export function rawToModuleTransaction({
   to,
   value,
   data,
   nonce
+}: {
+  to: string;
+  value: string;
+  data: string;
+  nonce: string;
 }): SafeTransaction {
   return {
     to,
@@ -35,14 +42,12 @@ export function sendAssetToModuleTransaction({
   collectable,
   data,
   nonce
+}: {
+  recipient: string;
+  collectable: CollectableAsset;
+  data: string;
+  nonce: string;
 }): CollectableAssetTransaction {
-  const _collectable = {
-    id: collectable.id,
-    name: collectable.name,
-    address: collectable.address,
-    tokenName: collectable.tokenName,
-    logoUri: collectable.logoUri
-  };
   return {
     data,
     nonce,
@@ -51,7 +56,7 @@ export function sendAssetToModuleTransaction({
     operation: '0',
     type: 'transferNFT',
     to: collectable.address,
-    collectable: _collectable
+    collectable
   };
 }
 
@@ -61,6 +66,12 @@ export function transferFundsToModuleTransaction({
   token,
   data,
   nonce
+}: {
+  recipient: string;
+  amount: string;
+  token: TokenAsset;
+  data: string;
+  nonce: string;
 }): TokenAssetTransaction {
   const base = {
     operation: '0',
@@ -89,7 +100,19 @@ export function transferFundsToModuleTransaction({
 }
 
 export function contractInteractionToModuleTransaction(
-  { to, value, data, nonce, method },
+  {
+    to,
+    value,
+    data,
+    nonce,
+    method
+  }: {
+    to: string;
+    value: string;
+    data: string;
+    nonce: string;
+    method: FunctionFragment;
+  },
   multiSendAddress: string
 ): CustomContractTransaction {
   const operation = to === multiSendAddress ? '1' : '0';
@@ -116,10 +139,10 @@ export async function decodeContractTransaction(
     return contractInteractionToModuleTransaction(
       {
         data: transaction.data,
-        nonce: 0,
+        nonce: '0',
         to: transaction.to,
         value: transaction.value,
-        method
+        method: method as FunctionFragment
       },
       multiSendAddress
     );
@@ -166,7 +189,7 @@ function decodeERC721TransferTransaction(transaction: SafeTransaction) {
 }
 
 export async function decodeTransactionData(
-  network: string,
+  network: Network,
   transaction: SafeTransaction,
   multiSendAddress: string
 ) {
@@ -176,7 +199,7 @@ export async function decodeTransactionData(
       amount: transaction.value,
       data: '0x',
       token: getNativeAsset(network),
-      nonce: 0
+      nonce: '0'
     });
   }
 
@@ -189,7 +212,7 @@ export async function decodeTransactionData(
         recipient: params[0],
         amount: params[1],
         data: transaction.data,
-        nonce: 0,
+        nonce: '0',
         token
       });
     } catch (e) {
@@ -206,7 +229,7 @@ export async function decodeTransactionData(
     };
     return sendAssetToModuleTransaction({
       collectable,
-      nonce: 0,
+      nonce: '0',
       data: transaction.data,
       recipient: erc721DecodedParams[1]
     });
@@ -219,7 +242,7 @@ export function parseAmount(input: string) {
   return BigNumber.from(input).toString();
 }
 
-export function parseValueInput(input) {
+export function parseValueInput(input: string) {
   try {
     return parseAmount(input);
   } catch (e) {

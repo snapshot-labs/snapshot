@@ -1,4 +1,5 @@
 import { TokenAsset } from '@/helpers/interfaces';
+import { Network } from '../types';
 
 export const ETHEREUM_COIN: TokenAsset = {
   name: 'Ether',
@@ -41,7 +42,7 @@ const BNB_COIN: TokenAsset = {
     'https://safe-transaction-assets.safe.global/chains/56/currency_logo.png'
 };
 
-export function getNativeAsset(network) {
+export function getNativeAsset(network: Network) {
   switch (parseInt(network)) {
     case 137:
     case 80001:
