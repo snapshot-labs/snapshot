@@ -159,7 +159,8 @@ function getFormattedForm() {
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
   updateTime();
-  clonedForm.start = dateStart.value;
+  const thisMomentTimestamp = parseInt((Date.now() / 1e3).toFixed());
+  clonedForm.start = Math.max(thisMomentTimestamp, dateStart.value);
   clonedForm.end = dateEnd.value;
   return clonedForm;
 }

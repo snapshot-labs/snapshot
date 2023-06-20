@@ -11,6 +11,16 @@ const { open } = toRefs(props);
 const step = ref(0);
 const input = ref('');
 const time = ref('12:00');
+const isTimeValid = computed(() => {
+  const isTimeEnteringStep = step.value === 1;
+  if (!isTimeEnteringStep) return true;
+  if (!input.value) return false;
+
+  const startDateString = `${input.value} ${time.value}:59`;
+  const startTimestamp = new Date(startDateString).getTime();
+
+  return startTimestamp >= Date.now();
+});
 
 function formatDate(date) {
   const output = { h: '12', m: '00', dateString: '' };
@@ -28,7 +38,8 @@ function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
   const dateString = `${input.value} ${time.value}:00`;
   const timestamp = new Date(dateString).getTime() / 1000;
-  emit('input', timestamp);
+  const now = parseInt((Date.now() / 1e3).toFixed());
+  emit('input', Math.max(timestamp, now));
   emit('close');
 }
 
@@ -36,6 +47,17 @@ watch(open, () => {
   step.value = 0;
   if (!props.value) return;
   const { dateString, h, m } = formatDate(props.value);
+  time.value = `${h}:${m}`;
+  input.value = dateString;
+});
+
+watch(step, () => {
+  if (step.value === 0) return;
+  const timestamp = Math.max(
+    props.value,
+    parseInt((Date.now() / 1e3 + 10).toFixed())
+  );
+  const { dateString, h, m } = formatDate(timestamp);
   time.value = `${h}:${m}`;
   input.value = dateString;
 });
@@ -56,11 +78,16 @@ watch(open, () => {
         <BaseCalendar v-model="input" class="mx-auto mb-2" />
       </div>
     </div>
-    <div v-else class="m-4 mx-auto max-w-[140px]">
+    <div v-else class="m-4">
       <input
         v-model="time"
         type="time"
-        class="s-input form-input text-center text-lg"
+        class="s-input form-input mx-auto max-w-[140px] text-center text-lg"
+      />
+      <TuneErrorInput
+        v-if="!isTimeValid"
+        class="mx-auto mt-2 text-center"
+        :error="$t('create.errorTimeInPast')"
       />
     </div>
     <template #footer>
@@ -72,7 +99,7 @@ watch(open, () => {
       <div class="float-left w-2/4 pl-2">
         <BaseButton
           type="submit"
-          :disabled="!input"
+          :disabled="!isTimeValid"
           class="w-full"
           primary
           @click="handleSubmit"
