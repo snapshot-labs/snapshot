@@ -245,40 +245,23 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   //   }
   // }
 
-  async function mint() {
-    if (!web3Account.value || !proposal) {
-      modalAccountOpen.value = true;
-      return;
-    }
+  async function sendTx(address: string, callback: () => Promise<any>) {
     const txPendingId = createPendingTransaction();
     minting.value = true;
+
     try {
       await _switchNetwork();
       await _checkWETHBalance();
-      await _checkWETHApproval(spaceCollectionsInfo.value[space.id].id);
+      await _checkWETHApproval(address);
 
-      const { signature, salt, proposer, proposalId } =
-        await _getBackendPayload('mint', {
-          proposalAuthor: proposal.author,
-          id: proposal.id,
-          address: web3Account.value,
-          salt: generateSalt()
-        });
+      const tx: any = await callback();
 
-      const tx = await sendTransaction(
-        auth.web3,
-        spaceCollectionsInfo.value[space.id].id,
-        MINT_CONTRACT_ABI,
-        'mint',
-        [proposer, proposalId, salt, signature.v, signature.r, signature.s]
-      );
       console.log(':mint tx', tx);
 
       notify(t('notify.transactionSent'));
       updatePendingTransaction(txPendingId, { hash: tx.hash });
       const receipt = await tx.wait();
       console.log('Receipt', receipt);
-      minting.value = false;
       notify(t('notify.youDidIt'));
     } catch (e) {
       notify(['red', t('notify.somethingWentWrong')]);
@@ -289,35 +272,57 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
+  async function mint() {
+    if (!web3Account.value) {
+      modalAccountOpen.value = true;
+      return;
+    }
+
+    const { signature, salt, proposer, proposalId } = await _getBackendPayload(
+      'mint',
+      {
+        proposalAuthor: proposal?.author,
+        id: proposal?.id,
+        address: web3Account.value,
+        salt: generateSalt()
+      }
+    );
+
+    sendTx(spaceCollectionsInfo.value[space.id].id, () => {
+      return sendTransaction(
+        auth.web3,
+        spaceCollectionsInfo.value[space.id].id,
+        MINT_CONTRACT_ABI,
+        'mint',
+        [proposer, proposalId, salt, signature.v, signature.r, signature.s]
+      );
+    });
+  }
+
   async function deploy(params: Record<string, string | number>) {
     if (!web3Account.value) {
       modalAccountOpen.value = true;
       return;
     }
-    const txPendingId = createPendingTransaction();
-    minting.value = true;
-    try {
-      await _switchNetwork();
-      await _checkWETHBalance();
-      await _checkWETHApproval(DEPLOY_CONTRACT_ADDRESS);
 
-      const { signature, initializer, salt } = await _getBackendPayload(
-        'deploy',
-        {
-          id: space.id,
-          address: web3Account.value,
-          salt: generateSalt(),
-          maxSupply: params.maxSupply,
-          mintPrice: parseUnits(
-            params.formattedMintPrice.toString(),
-            18
-          ).toString(),
-          proposerFee: params.proposerCut,
-          spaceTreasury: params.treasuryAddress
-        }
-      );
-      console.log(signature, initializer, salt);
-      const tx = await sendTransaction(
+    const { signature, initializer, salt } = await _getBackendPayload(
+      'deploy',
+      {
+        id: space.id,
+        address: web3Account.value,
+        salt: generateSalt(),
+        maxSupply: params.maxSupply,
+        mintPrice: parseUnits(
+          params.formattedMintPrice.toString(),
+          18
+        ).toString(),
+        proposerFee: params.proposerCut,
+        spaceTreasury: params.treasuryAddress
+      }
+    );
+
+    sendTx(DEPLOY_IMPLEMENTATION_ADDRESS, () => {
+      return sendTransaction(
         auth.web3,
         DEPLOY_CONTRACT_ADDRESS,
         DEPLOY_ABI,
@@ -331,21 +336,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           signature.s
         ]
       );
-      console.log(':mint tx', tx);
-
-      // notify(t('notify.transactionSent'));
-      // updatePendingTransaction(txPendingId, { hash: tx.hash });
-      // const receipt = await tx.wait();
-      // console.log('Receipt', receipt);
-      // minting.value = false;
-      // notify(t('notify.youDidIt'));
-    } catch (e) {
-      notify(['red', t('notify.somethingWentWrong')]);
-      console.log(e);
-    } finally {
-      minting.value = false;
-      removePendingTransaction(txPendingId);
-    }
+    });
   }
 
   return {
