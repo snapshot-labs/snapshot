@@ -23,6 +23,12 @@ watch(
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
 });
+
+const collectionInfo = computed(() => {
+  return spaceCollectionsInfo.value[props.space.id].proposals[
+    props.proposal.id
+  ];
+});
 </script>
 
 <template>
@@ -36,7 +42,6 @@ const spaceCollectionInfo = computed(() => {
     </template>
     <template #default>
       <div class="flex flex-col justify-between gap-y-4 p-4">
-        <!-- TODO nft preview block -->
         <BaseBlock>
           <div class="flex flex-row justify-between py-1">
             <span>Contract</span>
@@ -60,8 +65,7 @@ const spaceCollectionInfo = computed(() => {
           <div class="flex flex-row justify-between py-1">
             <span>Remaining supply</span>
             <span>{{
-              spaceCollectionInfo.maxSupply -
-              spaceCollectionInfo.proposals[proposal.id].mintCount
+              spaceCollectionInfo.maxSupply - collectionInfo.mintCount
             }}</span>
           </div>
           <div class="flex flex-row justify-between py-1">
