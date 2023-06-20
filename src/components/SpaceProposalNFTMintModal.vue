@@ -42,10 +42,10 @@ const spaceCollectionInfo = computed(() => {
             <span>Contract</span>
             <a
               class="flex flex-row"
-              :href="explorerUrl(mintNetwork, spaceCollectionInfo.id)"
+              :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
               target="_blank"
             >
-              <span>{{ shorten(spaceCollectionInfo.id) }}</span>
+              <span>{{ shorten(spaceCollectionInfo.address) }}</span>
               <i-ho-arrow-top-right-on-square class="ml-2" />
             </a>
           </div>

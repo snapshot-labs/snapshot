@@ -167,7 +167,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
       if (info) {
         spaceCollectionInfo = {
-          id: info.id,
+          address: info.id,
           maxSupply: parseInt(info.maxSupply),
           mintPrice: parseInt(info.mintPrice),
           formattedMintPrice: formatUnits(info.mintPrice, 18),
