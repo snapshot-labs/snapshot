@@ -61,6 +61,7 @@ export async function getCollection(proposalId: bigint) {
             id
             minterAddress
             timestamp
+            txHash
           }
         }
       }

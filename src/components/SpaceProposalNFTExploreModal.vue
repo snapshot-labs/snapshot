@@ -96,7 +96,10 @@ watch(
               <span>{{ formatRelativeTime(nft.timestamp) }}</span>
             </div>
           </div>
-          <a href="https://snapshot.org" target="_blank">
+          <a
+            :href="`https://goerli.etherscan.io/tx/${nft.txHash}`"
+            target="_blank"
+          >
             <i-ho-arrow-top-right-on-square class="ml-2" />
           </a>
         </div>
