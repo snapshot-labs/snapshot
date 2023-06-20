@@ -229,7 +229,8 @@
     "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
-    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
+    "errorTimeInPast": "Entered time is in the past. Please select a future time."
   },
   "delegates": {
     "header": "Delegates",
