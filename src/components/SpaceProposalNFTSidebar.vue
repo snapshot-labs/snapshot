@@ -52,6 +52,7 @@ const spaceCollectionInfo = computed(() => {
       <SpaceProposalNFTProgress
         :max-supply="spaceCollectionInfo.maxSupply"
         :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
+        class="cursor-pointer"
         @click="isModalExploreOpen = true"
       />
 
