@@ -56,13 +56,13 @@ watch(
             class="flex w-full flex-row content-center items-center justify-between"
           >
             <div class="flex flex-col">
-              <span class="text-xl font-bold text-skin-link">
+              <span class="text-xl font-bold leading-tight text-skin-link">
                 {{ spaceCollectionInfo.maxSupply }}
               </span>
               <span>Max supply</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-xl font-bold text-skin-link">
+              <span class="text-xl font-bold leading-tight text-skin-link">
                 {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
               </span>
               <span>Mint price</span>

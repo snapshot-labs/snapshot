@@ -31,21 +31,25 @@ const spaceCollectionInfo = computed(() => {
 </script>
 
 <template>
-  <BaseBlock v-if="inited && spaceCollectionInfo" :title="$t('NFT Claimer')">
-    <div class="flex flex-col items-center space-y-4">
-      <div class="group flex cursor-pointer flex-col items-center">
+  <BaseBlock
+    v-if="inited && spaceCollectionInfo"
+    :title="$t('NFT Claimer')"
+    :slim="true"
+  >
+    <div class="flex flex-col space-y-4 p-4">
+      <div class="group flex flex-row gap-3">
         <div
-          class="flex h-[186px] w-[186px] flex-row items-center justify-center rounded-xl border border-skin-link bg-skin-border"
-          @click="isModalExploreOpen = true"
+          class="flex flex-row items-center justify-center rounded border border-skin-link bg-skin-border p-2"
         >
           <BaseIcon
             name="snapshot"
-            size="50"
+            size="36"
             class="text-primary group-hover:text-snapshot"
           />
         </div>
-        <span class="mt-4 text-center text-skin-link">
-          {{ proposal.title }}
+        <span class="text-sm leading-tight">
+          Mint your NFT now to show your support for this proposal.
+          <a href="https://docs.snapshot.org/">Learn more</a>
         </span>
       </div>
 
@@ -55,27 +59,24 @@ const spaceCollectionInfo = computed(() => {
         class="cursor-pointer"
         @click="isModalExploreOpen = true"
       />
-
-      <BaseBlock class="w-full">
-        <div
-          class="flex w-full flex-row content-center items-center justify-between"
+    </div>
+    <div
+      class="flex w-full flex-row content-center items-center justify-between border-t px-4 py-3"
+    >
+      <div class="flex flex-col">
+        <span>Mint price</span>
+        <span class="text-base font-bold text-skin-link"
+          >{{ spaceCollectionInfo.formattedMintPrice }} WETH</span
         >
-          <div class="flex flex-col">
-            <span>Mint price</span>
-            <span class="text-lg font-bold text-skin-link"
-              >{{ spaceCollectionInfo.formattedMintPrice }} WETH</span
-            >
-          </div>
-          <BaseButton
-            primary
-            :loading="minting"
-            :disabled="!spaceCollectionInfo.enabled"
-            @click="isModalMintOpen = true"
-          >
-            MINT
-          </BaseButton>
-        </div>
-      </BaseBlock>
+      </div>
+      <BaseButton
+        primary
+        :loading="minting"
+        :disabled="!spaceCollectionInfo.enabled"
+        @click="isModalMintOpen = true"
+      >
+        MINT
+      </BaseButton>
     </div>
   </BaseBlock>
 
