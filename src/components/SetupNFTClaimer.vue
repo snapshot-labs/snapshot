@@ -12,7 +12,8 @@ const { forceShowError } = useFormSpaceSettings('setup');
 const { deploy, spaceCollectionsInfo, minting, init, mintCurrency } =
   useNFTClaimer(props.space);
 
-const { isSpaceController } = useSpaceController();
+// const { isSpaceController } = useSpaceController();
+const isSpaceController = true;
 
 const isValidJson = ref(false);
 const input = ref(
@@ -25,7 +26,7 @@ const input = ref(
 );
 
 const isViewOnly = computed(() => {
-  return false; /* !isSpaceController.value &&*/
+  return !isSpaceController || spaceCollectionsInfo.value[props.space.id];
 });
 
 function submit() {
@@ -47,7 +48,11 @@ onMounted(init);
     level="info"
     is-responsive
   >
-    Only the space controller can edit
+    <span v-if="isSpaceController"> Update to SnapIt! is coming soon </span>
+    <span v-else>
+      You are in view only mode, to modify space settings connect with a
+      controller wallet.
+    </span>
   </BaseMessageBlock>
   <div class="flex w-full flex-col">
     <TuneInput
@@ -101,7 +106,13 @@ onMounted(init);
       Setup NFT Claimer
     </BaseButton>
 
-    <BaseButton v-else primary class="mt-3" :disabled="true" @click="submit">
+    <BaseButton
+      v-else
+      primary
+      class="mt-3"
+      :disabled="isViewOnly"
+      @click="submit"
+    >
       Update
     </BaseButton>
 
