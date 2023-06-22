@@ -41,11 +41,7 @@ const spaceCollectionInfo = computed(() => {
         <div
           class="flex flex-row items-center justify-center rounded border border-skin-link bg-skin-border p-2"
         >
-          <BaseIcon
-            name="snapshot"
-            size="36"
-            class="text-primary group-hover:text-snapshot"
-          />
+          <BaseIcon name="snapshot" size="36" class="text-snapshot" />
         </div>
         <span class="text-sm leading-tight">
           Mint your NFT now to show your support for this proposal.
@@ -57,6 +53,8 @@ const spaceCollectionInfo = computed(() => {
         :max-supply="spaceCollectionInfo.maxSupply"
         :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
         class="cursor-pointer"
+        tabindex="0"
+        title="View list of minted NFTs"
         @click="isModalExploreOpen = true"
       />
     </div>
@@ -65,9 +63,9 @@ const spaceCollectionInfo = computed(() => {
     >
       <div class="flex flex-col">
         <span>Mint price</span>
-        <span class="text-base font-bold text-skin-link"
-          >{{ spaceCollectionInfo.formattedMintPrice }} WETH</span
-        >
+        <span class="text-base font-bold text-skin-link">
+          {{ spaceCollectionInfo.formattedMintPrice }} WETH
+        </span>
       </div>
       <BaseButton
         primary

@@ -287,10 +287,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       }
     );
 
-    sendTx(spaceCollectionsInfo.value[space.id].id, () => {
+    sendTx(spaceCollectionsInfo.value[space.id].address, () => {
       return sendTransaction(
         auth.web3,
-        spaceCollectionsInfo.value[space.id].id,
+        spaceCollectionsInfo.value[space.id].address,
         MINT_CONTRACT_ABI,
         'mint',
         [proposer, proposalId, salt, signature.v, signature.r, signature.s]

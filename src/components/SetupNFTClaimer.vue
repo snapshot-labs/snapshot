@@ -9,9 +9,8 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 
-const { deploy, spaceCollectionsInfo, init, mintCurrency } = useNFTClaimer(
-  props.space
-);
+const { deploy, spaceCollectionsInfo, minting, init, mintCurrency } =
+  useNFTClaimer(props.space);
 
 const { isSpaceController } = useSpaceController();
 
@@ -53,31 +52,40 @@ onMounted(init);
   <div class="flex w-full flex-col">
     <TuneInput
       v-model="input.maxSupply"
+      class="mb-3 mt-2"
       label="Max supply"
+      hint="Maximum number of NFTs per proposal"
       placeholder="100"
+      type="number"
       :disabled="isViewOnly"
       autofocus
     />
 
     <TuneInput
       v-model="input.formattedMintPrice"
+      class="mb-3 mt-2"
       label="Mint price"
       :hint="`In ${mintCurrency}`"
-      placeholder="2.65"
+      type="number"
+      placeholder="0.5"
       :disabled="isViewOnly"
     />
 
     <TuneInput
       v-model="input.proposerFee"
+      class="mb-3 mt-2"
       label="Proposer fees"
-      hint="In percentage"
+      type="number"
+      hint="Percentage of the mint price, shared with the proposal author"
       placeholder="5"
       :disabled="isViewOnly"
     />
 
     <TuneInput
       v-model="input.treasuryAddress"
-      label="Proposer cut address"
+      class="mb-3 mt-2"
+      label="Space treasury wallet"
+      hint="Wallet address"
       placeholder="0x0000"
       :disabled="isViewOnly"
     />
@@ -87,18 +95,13 @@ onMounted(init);
       primary
       class="mt-3"
       :disabled="isViewOnly"
+      :loading="minting"
       @click="submit"
     >
       Setup NFT Claimer
     </BaseButton>
 
-    <BaseButton
-      v-else
-      primary
-      class="mt-3"
-      :disabled="isViewOnly"
-      @click="submit"
-    >
+    <BaseButton v-else primary class="mt-3" :disabled="true" @click="submit">
       Update
     </BaseButton>
 
