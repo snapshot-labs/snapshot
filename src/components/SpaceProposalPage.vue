@@ -197,7 +197,6 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :loaded-results="loadedResults"
           :strategies="strategies"
         />
-        <!-- space?.nfrClaimer.enabled  -->
         <SpaceProposalNFTSidebar :space="space" :proposal="proposal" />
       </div>
     </template>

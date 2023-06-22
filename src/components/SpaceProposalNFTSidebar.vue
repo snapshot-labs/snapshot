@@ -11,6 +11,8 @@ const { minting, init, inited, spaceCollectionsInfo } = useNFTClaimer(
   props.space,
   props.proposal
 );
+// const { isSpaceController } = useSpaceController();
+const isSpaceController = true;
 
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);
@@ -31,66 +33,82 @@ const spaceCollectionInfo = computed(() => {
 </script>
 
 <template>
-  <BaseBlock
-    v-if="inited && spaceCollectionInfo"
-    :title="$t('NFT Claimer')"
-    :slim="true"
-  >
-    <div class="flex flex-col space-y-4 p-4">
-      <div class="group flex flex-row gap-3">
-        <div
-          class="flex flex-row items-center justify-center rounded border border-skin-link bg-skin-border p-2"
-        >
-          <BaseIcon name="snapshot" size="36" class="text-snapshot" />
+  <template v-if="inited">
+    <BaseBlock v-if="spaceCollectionInfo" :title="$t('SnapIt!')" :slim="true">
+      <div class="flex flex-col space-y-4 p-4">
+        <div class="group flex flex-row gap-3">
+          <div
+            class="flex flex-row items-center justify-center rounded border border-skin-link bg-skin-border p-2"
+          >
+            <BaseIcon name="snapshot" size="36" class="text-snapshot" />
+          </div>
+          <span class="text-sm leading-tight">
+            Mint your NFT now to show your support for this proposal.
+            <a href="https://docs.snapshot.org/">Learn more</a>
+          </span>
         </div>
-        <span class="text-sm leading-tight">
-          Mint your NFT now to show your support for this proposal.
-          <a href="https://docs.snapshot.org/">Learn more</a>
-        </span>
-      </div>
 
-      <SpaceProposalNFTProgress
-        :max-supply="spaceCollectionInfo.maxSupply"
-        :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
-        class="cursor-pointer"
-        tabindex="0"
-        title="View list of minted NFTs"
-        @click="isModalExploreOpen = true"
-      />
-    </div>
-    <div
-      class="flex w-full flex-row content-center items-center justify-between border-t px-4 py-3"
-    >
-      <div class="flex flex-col">
-        <span>Mint price</span>
-        <span class="text-base font-bold text-skin-link">
-          {{ spaceCollectionInfo.formattedMintPrice }} WETH
-        </span>
+        <SpaceProposalNFTProgress
+          :max-supply="spaceCollectionInfo.maxSupply"
+          :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
+          class="cursor-pointer"
+          tabindex="0"
+          title="View list of minted NFTs"
+          @click="isModalExploreOpen = true"
+        />
       </div>
-      <BaseButton
-        primary
-        :loading="minting"
-        :disabled="!spaceCollectionInfo.enabled"
-        @click="isModalMintOpen = true"
+      <div
+        class="flex w-full flex-row content-center items-center justify-between border-t px-4 py-3"
       >
-        MINT
-      </BaseButton>
-    </div>
-  </BaseBlock>
+        <div class="flex flex-col">
+          <span>Mint price</span>
+          <span class="text-base font-bold text-skin-link">
+            {{ spaceCollectionInfo.formattedMintPrice }} WETH
+          </span>
+        </div>
+        <BaseButton
+          primary
+          :loading="minting"
+          :disabled="!spaceCollectionInfo.enabled"
+          @click="isModalMintOpen = true"
+        >
+          MINT
+        </BaseButton>
+      </div>
 
-  <teleport to="#modal">
-    <SpaceProposalNFTMintModal
-      :open="isModalMintOpen"
-      :space="space"
-      :proposal="proposal"
-      @close="isModalMintOpen = false"
-    />
-    <SpaceProposalNFTExploreModal
-      :open="isModalExploreOpen"
-      :space="space"
-      :proposal="proposal"
-      @close="isModalExploreOpen = false"
-      @mint="(isModalExploreOpen = false), (isModalMintOpen = true)"
-    />
-  </teleport>
+      <teleport to="#modal">
+        <SpaceProposalNFTMintModal
+          :open="isModalMintOpen"
+          :space="space"
+          :proposal="proposal"
+          @close="isModalMintOpen = false"
+        />
+        <SpaceProposalNFTExploreModal
+          :open="isModalExploreOpen"
+          :space="space"
+          :proposal="proposal"
+          @close="isModalExploreOpen = false"
+          @mint="(isModalExploreOpen = false), (isModalMintOpen = true)"
+        />
+      </teleport>
+    </BaseBlock>
+    <BaseBlock
+      v-else-if="!spaceCollectionInfo && isSpaceController"
+      :title="$t('SnapIt!')"
+    >
+      <p class="mb-3">
+        Setup SnapIt! now, and let your community mint NFT for each proposals.
+        <a href="https://docs.snapshot.org">Learn more</a>
+      </p>
+
+      <router-link
+        :to="{
+          name: 'spaceSettings',
+          params: { key: space.id }
+        }"
+      >
+        <BaseButton :primary="true">Setup SnapIt!</BaseButton>
+      </router-link>
+    </BaseBlock>
+  </template>
 </template>
