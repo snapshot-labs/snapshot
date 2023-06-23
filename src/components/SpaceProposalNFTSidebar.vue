@@ -6,8 +6,7 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { web3Account } = useWeb3();
-const { minting, init, inited, spaceCollectionsInfo } = useNFTClaimer(
+const { init, inited, spaceCollectionsInfo } = useNFTClaimer(
   props.space,
   props.proposal
 );
@@ -17,15 +16,9 @@ const isSpaceController = true;
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);
 
-watch(
-  () => web3Account.value,
-  () => {
-    init();
-  },
-  {
-    immediate: true
-  }
-);
+onMounted(() => {
+  init();
+});
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -68,7 +61,6 @@ const spaceCollectionInfo = computed(() => {
         </div>
         <BaseButton
           primary
-          :loading="minting"
           :disabled="!spaceCollectionInfo.enabled"
           @click="isModalMintOpen = true"
         >

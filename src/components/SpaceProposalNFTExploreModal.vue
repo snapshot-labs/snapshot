@@ -9,8 +9,10 @@ const props = defineProps<{
 
 defineEmits(['close', 'mint']);
 
-const { mintCurrency, spaceCollectionsInfo, minting, init, profiles } =
-  useNFTClaimer(props.space, props.proposal);
+const { mintCurrency, spaceCollectionsInfo, init, profiles } = useNFTClaimer(
+  props.space,
+  props.proposal
+);
 
 const { formatRelativeTime } = useIntl();
 
@@ -29,12 +31,9 @@ const nfts = computed(() => {
     .mints;
 });
 
-watch(
-  () => props.open,
-  () => {
-    init();
-  }
-);
+onMounted(() => {
+  init();
+});
 </script>
 
 <template>
@@ -69,7 +68,6 @@ watch(
             </div>
             <BaseButton
               primary
-              :loading="minting"
               :disabled="!spaceCollectionInfo.enabled"
               @click="$emit('mint')"
             >
