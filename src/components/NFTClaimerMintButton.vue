@@ -3,11 +3,11 @@ withDefaults(
   defineProps<{
     spaceCollectionInfo: any;
     collectionInfo: any;
+    currency: string;
     loading?: boolean;
     showPrice?: boolean;
-    currency?: string;
   }>(),
-  { loading: false, showPrice: false, currency: 'WETH' }
+  { loading: false, showPrice: false }
 );
 </script>
 

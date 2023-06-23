@@ -69,6 +69,7 @@ const collectionInfo = computed(() => {
         <NFTClaimerMintButton
           :space-collection-info="spaceCollectionInfo"
           :collection-info="collectionInfo"
+          :currency="mintCurrency"
           @click="isModalMintOpen = true"
         />
       </div>

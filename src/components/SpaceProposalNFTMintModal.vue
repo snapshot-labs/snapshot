@@ -83,6 +83,7 @@ const collectionInfo = computed(() => {
           :space-collection-info="spaceCollectionInfo"
           :collection-info="collectionInfo"
           :loading="loading"
+          :currency="mintCurrency"
           :show-price="true"
           @click="mint()"
         />

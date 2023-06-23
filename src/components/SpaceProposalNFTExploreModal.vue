@@ -69,6 +69,7 @@ onMounted(() => {
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"
               :collection-info="collectionInfo"
+              :currency="mintCurrency"
               @click="$emit('mint')"
             />
           </div>
