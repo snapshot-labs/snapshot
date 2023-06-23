@@ -97,7 +97,6 @@ watch(
                 :profile="profiles[nft.minterAddress]"
                 :space="space"
                 :proposal="proposal"
-                hide-avatar
               />
               <span>{{ formatRelativeTime(nft.timestamp) }}</span>
             </div>
