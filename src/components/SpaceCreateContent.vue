@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
   preview: boolean;
   bodyLimit: number;
-  osnap: { enabled: boolean; selection: boolean };
 }>();
 
 const { formatNumber } = useIntl();
@@ -32,13 +31,6 @@ const inputBody = computed({
   }
 });
 
-const osnapSelectedValue = computed(() =>
-  props.osnap.selection ? 'yes' : 'no'
-);
-
-defineEmits<{
-  (event: 'osnapSelectionChange'): void;
-}>();
 const injectImageToBody = image => {
   const cursorPosition = textAreaEl.value?.selectionStart;
   const currentBody = textAreaEl.value?.value;
@@ -175,26 +167,6 @@ const handleDrop = e => {
         :error="validationErrors?.discussion"
         data-testid="input-proposal-discussion"
       />
-      <div v-if="osnap.enabled">
-        <h6>OSnap Proposal</h6>
-        <p>
-          Are you planning for this proposal to initiate a transaction that your
-          organizations safe will execute if approved? (Remember, oSnap enables
-          trustless and permissionless execution):
-        </p>
-        <br />
-        <select
-          v-model="osnapSelectedValue"
-          @change="$emit('osnapSelectionChange', $event.target.value)"
-        >
-          <option key="no" value="no">
-            No, this proposal does not include an executable transaction
-          </option>
-          <option key="yes" value="yes">
-            Yes, this proposal includes an executable transaction
-          </option>
-        </select>
-      </div>
     </div>
   </div>
 </template>

@@ -303,9 +303,9 @@ function shouldSkipTransactions() {
   );
 }
 
-const handleOsnapSelectionChange = ref(value => {
-  osnap.value.selection = value === 'yes';
-});
+function handleOsnapToggle() {
+  osnap.value.selection = !osnap.value.selection;
+}
 
 onMounted(async () => {
   const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
@@ -362,8 +362,6 @@ onMounted(async () => {
         :space="space"
         :preview="preview"
         :body-limit="BODY_LIMIT_CHARACTERS"
-        :osnap="osnap"
-        @osnapSelectionChange="handleOsnapSelectionChange"
       />
 
       <!-- Step 2 -->
@@ -372,7 +370,8 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
-        :is-using-osnap="osnap.selection"
+        :osnap="osnap"
+        @osnapToggle="handleOsnapToggle"
       />
 
       <!-- Step 3 (only when plugins) -->
