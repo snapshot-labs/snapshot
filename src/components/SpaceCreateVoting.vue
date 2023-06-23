@@ -83,12 +83,12 @@ defineEmits<{
 </script>
 
 <template>
-  <div v-if="osnap.enabled">
-    <h6>OSnap Proposal</h6>
+  <div v-if="osnap.enabled" class="mb-4">
+    <h6>oSnap Proposal</h6>
     <p>
       Are you planning for this proposal to initiate a transaction that your
-      organizations safe will execute if approved? (Remember, oSnap enables
-      trustless and permissionless execution):
+      organizations Safe will execute if approved? (Remember, oSnap enables
+      trustless and permissionless execution)
     </p>
     <br />
     <input
@@ -98,16 +98,14 @@ defineEmits<{
       @change="$emit('osnapToggle')"
     />
     <label for="toggleOsnap">
-      Yes, use Osnap for transactions ( this will restrict voting types ).
+      Yes, use oSnap for transactions (this will restrict voting types).
     </label>
-    <br />
-    <br />
   </div>
   <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
       <InputSelectVoteType
         :type="space.voting?.type || form.type"
-        :disabled="!!space.voting?.type"
+        :disabled="!!space.voting?.type || osnap.selection"
         @update:type="value => (form.type = value)"
       />
 

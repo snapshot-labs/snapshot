@@ -5,6 +5,7 @@ import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import Plugin from '@/plugins/safeSnap';
+
 const safeSnapPlugin = new Plugin();
 
 enum Step {
