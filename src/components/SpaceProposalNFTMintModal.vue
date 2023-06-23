@@ -10,7 +10,7 @@ const props = defineProps<{
 
 defineEmits(['close']);
 
-const { mintNetwork, mintCurrency, minting, mint, init, spaceCollectionsInfo } =
+const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
   useNFTClaimer(props.space, props.proposal);
 
 watch(
@@ -79,7 +79,7 @@ const collectionInfo = computed(() => {
             </div>
           </div>
         </BaseBlock>
-        <BaseButton primary :loading="minting" @click="mint()">
+        <BaseButton primary :loading="loading" @click="mint()">
           MINT for {{ spaceCollectionInfo.formattedMintPrice }}
           {{ mintCurrency }}
         </BaseButton>

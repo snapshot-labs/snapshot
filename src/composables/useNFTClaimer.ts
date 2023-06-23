@@ -47,7 +47,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const mintPrice = ref('0.1');
 
   const inited = ref(false);
-  const minting = ref(false);
+  const loading = ref(false);
 
   const auth = getInstance();
   const { web3, web3Account } = useWeb3();
@@ -246,7 +246,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function sendTx(address: string, callback: () => Promise<any>) {
     const txPendingId = createPendingTransaction();
-    minting.value = true;
 
     try {
       await _switchNetwork();
@@ -266,7 +265,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       notify(['red', t('notify.somethingWentWrong')]);
       console.log(e);
     } finally {
-      minting.value = false;
       removePendingTransaction(txPendingId);
     }
   }
@@ -277,25 +275,29 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       return;
     }
 
-    const { signature, salt, proposer, proposalId } = await _getBackendPayload(
-      'mint',
-      {
-        proposalAuthor: proposal?.author,
-        id: proposal?.id,
-        address: web3Account.value,
-        salt: generateSalt()
-      }
-    );
+    loading.value = true;
 
-    sendTx(spaceCollectionsInfo.value[space.id].address, () => {
-      return sendTransaction(
-        auth.web3,
-        spaceCollectionsInfo.value[space.id].address,
-        MINT_CONTRACT_ABI,
-        'mint',
-        [proposer, proposalId, salt, signature.v, signature.r, signature.s]
-      );
-    });
+    try {
+      const { signature, salt, proposer, proposalId } =
+        await _getBackendPayload('mint', {
+          proposalAuthor: proposal?.author,
+          id: proposal?.id,
+          address: web3Account.value,
+          salt: generateSalt()
+        });
+
+      await sendTx(spaceCollectionsInfo.value[space.id].address, () => {
+        return sendTransaction(
+          auth.web3,
+          spaceCollectionsInfo.value[space.id].address,
+          MINT_CONTRACT_ABI,
+          'mint',
+          [proposer, proposalId, salt, signature.v, signature.r, signature.s]
+        );
+      });
+    } finally {
+      loading.value = false;
+    }
   }
 
   async function deploy(params: Record<string, string | number>) {
@@ -304,43 +306,49 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       return;
     }
 
-    const { signature, initializer, salt } = await _getBackendPayload(
-      'deploy',
-      {
-        id: space.id,
-        address: web3Account.value,
-        salt: generateSalt(),
-        maxSupply: params.maxSupply,
-        mintPrice: parseUnits(
-          params.formattedMintPrice.toString(),
-          18
-        ).toString(),
-        proposerFee: params.proposerFee,
-        spaceTreasury: params.treasuryAddress
-      }
-    );
+    loading.value = true;
 
-    sendTx(DEPLOY_IMPLEMENTATION_ADDRESS, () => {
-      return sendTransaction(
-        auth.web3,
-        DEPLOY_CONTRACT_ADDRESS,
-        DEPLOY_ABI,
-        'deployProxy',
-        [
-          DEPLOY_IMPLEMENTATION_ADDRESS,
-          initializer,
-          salt,
-          signature.v,
-          signature.r,
-          signature.s
-        ]
+    try {
+      const { signature, initializer, salt } = await _getBackendPayload(
+        'deploy',
+        {
+          id: space.id,
+          address: web3Account.value,
+          salt: generateSalt(),
+          maxSupply: params.maxSupply,
+          mintPrice: parseUnits(
+            params.formattedMintPrice.toString(),
+            18
+          ).toString(),
+          proposerFee: params.proposerFee,
+          spaceTreasury: params.treasuryAddress
+        }
       );
-    });
+
+      await sendTx(DEPLOY_IMPLEMENTATION_ADDRESS, () => {
+        return sendTransaction(
+          auth.web3,
+          DEPLOY_CONTRACT_ADDRESS,
+          DEPLOY_ABI,
+          'deployProxy',
+          [
+            DEPLOY_IMPLEMENTATION_ADDRESS,
+            initializer,
+            salt,
+            signature.v,
+            signature.r,
+            signature.s
+          ]
+        );
+      });
+    } finally {
+      loading.value = false;
+    }
   }
 
   return {
     spaceCollectionsInfo,
-    minting,
+    loading,
     mintNetwork,
     mintCurrency,
     inited,

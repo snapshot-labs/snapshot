@@ -9,7 +9,7 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 
-const { deploy, spaceCollectionsInfo, minting, init, mintCurrency } =
+const { deploy, spaceCollectionsInfo, loading, init, mintCurrency } =
   useNFTClaimer(props.space);
 
 // const { isSpaceController } = useSpaceController();
@@ -100,7 +100,7 @@ onMounted(init);
       primary
       class="mt-3"
       :disabled="isViewOnly"
-      :loading="minting"
+      :loading="loading"
       @click="submit"
     >
       Setup NFT Claimer
