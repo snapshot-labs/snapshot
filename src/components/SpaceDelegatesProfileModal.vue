@@ -108,7 +108,7 @@ watch(
             </BaseButtonIcon>
           </div>
           <p class="text-skin-heading">
-            {{ getStatementStatement(address) }}
+            <BaseMarkdown :body="getStatementStatement(address)!" />
           </p>
         </div>
 
