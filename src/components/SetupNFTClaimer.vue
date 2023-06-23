@@ -12,6 +12,7 @@ const { forceShowError } = useFormSpaceSettings('setup');
 const { deploy, spaceCollectionsInfo, loading, init, mintCurrency } =
   useNFTClaimer(props.space);
 
+// TODO Enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = true;
 

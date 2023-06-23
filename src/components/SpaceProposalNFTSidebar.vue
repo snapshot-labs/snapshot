@@ -6,10 +6,11 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { init, inited, spaceCollectionsInfo } = useNFTClaimer(
+const { init, inited, spaceCollectionsInfo, mintCurrency } = useNFTClaimer(
   props.space,
   props.proposal
 );
+// TODO enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = true;
 
@@ -22,6 +23,12 @@ onMounted(() => {
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
+});
+
+const collectionInfo = computed(() => {
+  return spaceCollectionsInfo.value[props.space.id].proposals[
+    props.proposal.id
+  ];
 });
 </script>
 
@@ -43,7 +50,7 @@ const spaceCollectionInfo = computed(() => {
 
         <SpaceProposalNFTProgress
           :max-supply="spaceCollectionInfo.maxSupply"
-          :supply="spaceCollectionInfo.proposals[proposal.id].mintCount"
+          :supply="collectionInfo.mintCount"
           class="cursor-pointer"
           tabindex="0"
           title="View list of minted NFTs"
@@ -56,16 +63,14 @@ const spaceCollectionInfo = computed(() => {
         <div class="flex flex-col">
           <span>Mint price</span>
           <span class="text-base font-bold text-skin-link">
-            {{ spaceCollectionInfo.formattedMintPrice }} WETH
+            {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
           </span>
         </div>
-        <BaseButton
-          primary
-          :disabled="!spaceCollectionInfo.enabled"
+        <NFTClaimerMintButton
+          :space-collection-info="spaceCollectionInfo"
+          :collection-info="collectionInfo"
           @click="isModalMintOpen = true"
-        >
-          MINT
-        </BaseButton>
+        />
       </div>
 
       <teleport to="#modal">

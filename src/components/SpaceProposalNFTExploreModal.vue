@@ -66,13 +66,11 @@ onMounted(() => {
               </span>
               <span>Mint price</span>
             </div>
-            <BaseButton
-              primary
-              :disabled="!spaceCollectionInfo.enabled"
+            <NFTClaimerMintButton
+              :space-collection-info="spaceCollectionInfo"
+              :collection-info="collectionInfo"
               @click="$emit('mint')"
-            >
-              MINT
-            </BaseButton>
+            />
           </div>
 
           <SpaceProposalNFTProgress

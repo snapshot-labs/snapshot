@@ -79,10 +79,13 @@ const collectionInfo = computed(() => {
             </div>
           </div>
         </BaseBlock>
-        <BaseButton primary :loading="loading" @click="mint()">
-          MINT for {{ spaceCollectionInfo.formattedMintPrice }}
-          {{ mintCurrency }}
-        </BaseButton>
+        <NFTClaimerMintButton
+          :space-collection-info="spaceCollectionInfo"
+          :collection-info="collectionInfo"
+          :loading="loading"
+          :show-price="true"
+          @click="mint()"
+        />
       </div>
     </template>
   </BaseModal>
