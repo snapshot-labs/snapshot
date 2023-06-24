@@ -10,16 +10,31 @@ const { init, inited, spaceCollectionsInfo, mintCurrency } = useNFTClaimer(
   props.space,
   props.proposal
 );
+const { web3Account } = useWeb3();
+const { modalAccountOpen } = useModal();
 // TODO enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = true;
 
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);
+const shouldReopenMintModal = ref(false);
+
+function reopenMintModal() {
+  if (shouldReopenMintModal.value) {
+    isModalMintOpen.value = true;
+    shouldReopenMintModal.value = false;
+  }
+}
 
 onMounted(() => {
   init();
 });
+
+watch(
+  () => web3Account.value,
+  () => reopenMintModal()
+);
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -80,6 +95,11 @@ const collectionInfo = computed(() => {
           :space="space"
           :proposal="proposal"
           @close="isModalMintOpen = false"
+          @switchConnectAccount="
+            (shouldReopenMintModal = true),
+              (isModalMintOpen = false),
+              (modalAccountOpen = true)
+          "
         />
         <SpaceProposalNFTExploreModal
           :open="isModalExploreOpen"

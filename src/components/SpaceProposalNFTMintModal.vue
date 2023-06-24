@@ -8,17 +8,11 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-defineEmits(['close']);
+const emit = defineEmits(['close', 'switchConnectAccount']);
 
 const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
   useNFTClaimer(props.space, props.proposal);
-
-watch(
-  () => props.open,
-  () => {
-    init();
-  }
-);
+const { web3Account } = useWeb3();
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -29,6 +23,21 @@ const collectionInfo = computed(() => {
     props.proposal.id
   ];
 });
+
+function _mint() {
+  if (web3Account.value) {
+    mint();
+  } else {
+    emit('switchConnectAccount');
+  }
+}
+
+watch(
+  () => props.open,
+  () => {
+    init();
+  }
+);
 </script>
 
 <template>
@@ -85,7 +94,7 @@ const collectionInfo = computed(() => {
           :loading="loading"
           :currency="mintCurrency"
           :show-price="true"
-          @click="mint()"
+          @click="_mint()"
         />
       </div>
     </template>

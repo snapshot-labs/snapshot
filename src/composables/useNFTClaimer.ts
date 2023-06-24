@@ -51,7 +51,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   const auth = getInstance();
   const { web3, web3Account } = useWeb3();
-  const { modalAccountOpen } = useModal();
 
   const networkKey = computed(() => web3.value.network.key);
   const provider = getProvider(NETWORK_KEY);
@@ -211,10 +210,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   // async function enableNFTClaimer() {
-  //   if (!web3Account.value) {
-  //     modalAccountOpen.value = true;
-  //     return;
-  //   }
   //   const txPendingId = createPendingTransaction();
   //   try {
   //     console.log(':enableNFTClaimer start');
@@ -270,11 +265,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function mint() {
-    if (!web3Account.value) {
-      modalAccountOpen.value = true;
-      return;
-    }
-
     loading.value = true;
 
     try {
@@ -301,11 +291,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function deploy(params: Record<string, string | number>) {
-    if (!web3Account.value) {
-      modalAccountOpen.value = true;
-      return;
-    }
-
     loading.value = true;
 
     try {
