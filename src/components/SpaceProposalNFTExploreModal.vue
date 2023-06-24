@@ -87,7 +87,7 @@ onMounted(() => {
           class="mt-3 flex w-full flex-row content-center items-center justify-between px-4"
         >
           <div class="flex flex-row gap-x-4">
-            <div class="h-[52px] w-[52px] rounded bg-skin-border"></div>
+            <NFTClaimerLogo />
             <div class="flex flex-col">
               <BaseUser
                 :address="nft.minterAddress"

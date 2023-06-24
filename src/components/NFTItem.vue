@@ -16,14 +16,8 @@ const props = defineProps<{
       }
     }"
   >
-    <div class="flex justify-center">
-      <div
-        class="flex justify-center rounded-full !border-[1px] !border-skin-text p-[2px]"
-      >
-        <div class="h-[52px] w-[52px] rounded-full bg-skin-border"></div>
-      </div>
-    </div>
-    <div class="flex items-center justify-center">
+    <NFTClaimerLogo />
+    <div class="mt-2 flex items-center justify-center">
       <div class="truncate text-xs">
         {{ nft.proposal.spaceCollection.spaceId }}
       </div>

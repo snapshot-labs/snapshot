@@ -51,12 +51,8 @@ const collectionInfo = computed(() => {
   <template v-if="inited">
     <BaseBlock v-if="spaceCollectionInfo" :title="$t('SnapIt!')" :slim="true">
       <div class="flex flex-col space-y-4 p-4">
-        <div class="group flex flex-row gap-3">
-          <div
-            class="flex flex-row items-center justify-center rounded border border-skin-link bg-skin-border p-2"
-          >
-            <BaseIcon name="snapshot" size="36" class="text-snapshot" />
-          </div>
+        <div class="group flex flex-row gap-4">
+          <NFTClaimerLogo class="shrink-0" />
           <span class="text-sm leading-tight">
             Mint your NFT now to show your support for this proposal.
             <a href="https://docs.snapshot.org/">Learn more</a>
