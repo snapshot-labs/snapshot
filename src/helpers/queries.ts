@@ -410,7 +410,7 @@ export const SPACES_QUERY = gql`
 `;
 
 export const STATEMENTS_QUERY = gql`
-  query Statements($space: String, $delegate_in: [String]) {
+  query Statements($space: String!, $delegate_in: [String]!) {
     statements(where: { space: $space, delegate_in: $delegate_in }) {
       delegate
       space

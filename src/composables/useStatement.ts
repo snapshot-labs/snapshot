@@ -1,12 +1,14 @@
 import { STATEMENTS_QUERY } from '@/helpers/queries';
 import { Statement } from '@/helpers/interfaces';
 
+const statements = ref<Record<string, Statement>>({});
+const savedSpaceId = ref<string>('');
+
 export function useStatement() {
   const { send, isSending } = useClient();
   const { apolloQuery } = useApolloQuery();
   const { notify } = useFlashNotification();
 
-  const statements = ref<Record<string, Statement>>({});
   const loadingStatements = ref(false);
 
   async function setStatement(
@@ -24,15 +26,22 @@ export function useStatement() {
   }
 
   async function loadStatements(spaceId: string, delegates: string[]) {
-    delegates = delegates.filter(id => !statements.value[id]);
     loadingStatements.value = true;
+
+    if (savedSpaceId.value !== spaceId) {
+      statements.value = {};
+      savedSpaceId.value = spaceId;
+    }
+    delegates = delegates.filter(id => !statements.value[id]);
+    if (!delegates.length) return;
+
     try {
       const response: Statement[] = await apolloQuery(
         {
           query: STATEMENTS_QUERY,
           variables: {
             space: spaceId,
-            delegates_in: delegates
+            delegate_in: delegates
           }
         },
         'statements'
