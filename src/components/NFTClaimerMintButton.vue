@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { formatUnits } from '@ethersproject/units';
+
 withDefaults(
   defineProps<{
     spaceCollectionInfo: any;
     collectionInfo: any;
     currency: string;
+    count?: number;
     loading?: boolean;
     showPrice?: boolean;
   }>(),
-  { loading: false, showPrice: false }
+  { loading: false, showPrice: false, count: 1 }
 );
 </script>
 
@@ -23,7 +26,9 @@ withDefaults(
     <template v-else>
       MINT
       <template v-if="showPrice">
-        for {{ spaceCollectionInfo.formattedMintPrice }} {{ currency }}
+        {{ count }} for
+        {{ formatUnits(BigInt(spaceCollectionInfo.mintPrice * count), 18) }}
+        {{ currency }}
       </template></template
     >
   </BaseButton>

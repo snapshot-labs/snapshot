@@ -264,7 +264,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
-  async function mint() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async function mint(_count = 1) {
     loading.value = true;
 
     try {
