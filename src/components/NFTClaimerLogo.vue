@@ -1,8 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+withDefaults(
+  defineProps<{
+    size?: string;
+  }>(),
+  { size: 'base' }
+);
+</script>
 
 <template>
-  <div class="relative -z-10 h-[44px] w-[44px]">
-    <div class="hexagon left-[6px] top-[6px]"></div>
+  <div :class="['relative -z-10 h-[44px] w-[44px]', size]">
+    <div class="hexagon left-[7px] top-[7px]"></div>
     <BaseIcon
       name="snapshot"
       size="58"
@@ -11,7 +18,17 @@
   </div>
 </template>
 
-<style>
+<style lang="scss">
+.lg {
+  height: 72px !important;
+  width: 72px !important;
+
+  i {
+    font-size: 86px !important;
+    line-height: 86px !important;
+  }
+}
+
 .hexagon {
   position: relative;
   height: 100%;

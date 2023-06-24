@@ -109,16 +109,20 @@ const collectionInfo = computed(() => {
     <BaseBlock
       v-else-if="!spaceCollectionInfo && isSpaceController"
       :title="$t('SnapIt!')"
+      class="text-center"
     >
-      <p class="mb-3">
-        Setup SnapIt! now, and let your community mint NFT for each proposals.
-        <a href="https://docs.snapshot.org">Learn more</a>
-      </p>
+      <div class="flex flex-col items-center">
+        <NFTClaimerLogo size="lg" />
+        <span class="my-4 text-skin-link">
+          Setup SnapIt! now, and let your community mint NFT for each proposals.
+          <a href="https://docs.snapshot.org">Learn more</a>
+        </span>
+      </div>
 
       <router-link
         :to="{
           name: 'spaceSettings',
-          params: { key: space.id }
+          params: { key: space.id, hash: '#NFTCLAIMER' }
         }"
       >
         <BaseButton :primary="true">Setup SnapIt!</BaseButton>
