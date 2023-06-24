@@ -8,8 +8,8 @@ withDefaults(
 </script>
 
 <template>
-  <div :class="['relative -z-10 h-[44px] w-[44px]', size]">
-    <div class="hexagon left-[7px] top-[7px]"></div>
+  <div :class="['relative -z-10 h-[44px] w-[40px]', size]">
+    <div class="hexagon left-[8px] top-[7px]"></div>
     <BaseIcon
       name="snapshot"
       size="58"
@@ -21,11 +21,12 @@ withDefaults(
 <style lang="scss">
 .lg {
   height: 72px !important;
-  width: 72px !important;
+  width: 64px !important;
 
   i {
     font-size: 86px !important;
     line-height: 86px !important;
+    left: -3px;
   }
 }
 
