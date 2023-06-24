@@ -160,7 +160,6 @@ watch(
   </BaseModal>
   <Teleport to="body">
     <SpaceDelegatesStatementModal
-      v-if="!loadingStatements"
       :open="showModalStatement"
       :space="space"
       :address="address"

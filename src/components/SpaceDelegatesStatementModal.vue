@@ -35,6 +35,18 @@ async function handleClickSave() {
   emit('reload');
   emit('close');
 }
+
+watch(
+  () => props.open,
+  async () => {
+    if (props.open) {
+      form.value = {
+        about: props.about || '',
+        statement: props.statement || ''
+      };
+    }
+  }
+);
 </script>
 
 <template>
