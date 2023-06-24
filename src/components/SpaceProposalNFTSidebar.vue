@@ -122,7 +122,8 @@ const collectionInfo = computed(() => {
       <router-link
         :to="{
           name: 'spaceSettings',
-          params: { key: space.id, hash: '#NFTCLAIMER' }
+          params: { key: space.id },
+          hash: '#NFTCLAIMER'
         }"
       >
         <BaseButton :primary="true">Setup SnapIt!</BaseButton>
