@@ -13,7 +13,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'reload']);
 
-const { setStatement, settingStatement } = useStatement();
+const { saveStatement, savingStatement } = useStatement();
 
 const form = ref<any>({
   about: props.about || '',
@@ -31,7 +31,7 @@ const isValid = computed(() => {
 
 async function handleClickSave() {
   if (!isValid.value) return;
-  await setStatement(props.space, form.value.about, form.value.statement);
+  await saveStatement(props.space.id, form.value.about, form.value.statement);
   emit('reload');
   emit('close');
 }
@@ -67,7 +67,7 @@ watch(
     <template #footer>
       <TuneButton
         class="w-full"
-        :loading="settingStatement"
+        :loading="savingStatement"
         primary
         @click="handleClickSave"
       >

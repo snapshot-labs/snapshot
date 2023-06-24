@@ -1,6 +1,8 @@
 import { STATEMENTS_QUERY } from '@/helpers/queries';
 import { Statement } from '@/helpers/interfaces';
 
+const SET_STATEMENT_ACTION = 'set-statement';
+
 const statements = ref<Record<string, Statement>>({});
 const savedSpaceId = ref<string>('');
 
@@ -11,43 +13,46 @@ export function useStatement() {
 
   const loadingStatements = ref(false);
 
-  async function setStatement(
-    space: { id: string },
+  async function saveStatement(
+    spaceId: string,
     about: string,
     statement: string
   ) {
-    const result = await send(space, 'set-statement', {
+    const result = await send({ id: spaceId }, SET_STATEMENT_ACTION, {
       about,
       statement
     });
     if (result) {
-      notify(['green', 'Statement set successfully']);
+      notify(['green', 'Statement saved successfully']);
     }
   }
 
-  async function loadStatements(spaceId: string, delegates: string[]) {
+  async function loadStatements(spaceId: string, delegateIds: string[]) {
     loadingStatements.value = true;
 
     if (savedSpaceId.value !== spaceId) {
       statements.value = {};
       savedSpaceId.value = spaceId;
     }
-    delegates = delegates.filter(id => !statements.value[id]);
-    if (!delegates.length) return;
 
     try {
+      const filteredDelegateIds = delegateIds.filter(
+        id => !statements.value[id]
+      );
+      if (!filteredDelegateIds.length) return;
+
       const response: Statement[] = await apolloQuery(
         {
           query: STATEMENTS_QUERY,
           variables: {
             space: spaceId,
-            delegate_in: delegates
+            delegate_in: filteredDelegateIds
           }
         },
         'statements'
       );
 
-      if (!response) return;
+      if (!response) throw new Error('No statements found');
 
       const newStatements = response.reduce((acc, statement) => {
         acc[statement.delegate.toLowerCase()] = statement;
@@ -68,18 +73,18 @@ export function useStatement() {
   }
 
   function getStatementAbout(id: string): string | undefined {
-    return statements.value?.[id.toLowerCase()]?.about;
+    return statements.value[id.toLowerCase()]?.about;
   }
 
   function getStatementStatement(id: string): string | undefined {
-    return statements.value?.[id.toLowerCase()]?.statement;
+    return statements.value[id.toLowerCase()]?.statement;
   }
 
   return {
     statements: computed(() => statements.value),
     loadingStatements: computed(() => loadingStatements.value),
-    settingStatement: computed(() => isSending.value),
-    setStatement,
+    savingStatement: computed(() => isSending.value),
+    saveStatement,
     loadStatements,
     reloadStatement,
     getStatementAbout,
