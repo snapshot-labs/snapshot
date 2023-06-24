@@ -10,6 +10,8 @@ export function useStatement() {
   const { send, isSending } = useClient();
   const { apolloQuery } = useApolloQuery();
   const { notify } = useFlashNotification();
+  const { formatNumber, getNumberFormatter, getPercentFractionDigits } =
+    useIntl();
 
   const loadingStatements = ref(false);
 
@@ -80,6 +82,18 @@ export function useStatement() {
     return statements.value[id.toLowerCase()]?.statement;
   }
 
+  function formatPercentageNumber(value: string | number) {
+    const fractionDigits = getPercentFractionDigits(Number(value));
+    return formatNumber(
+      Number(value),
+      getNumberFormatter({
+        style: 'percent',
+        minimumFractionDigits: fractionDigits,
+        maximumFractionDigits: fractionDigits
+      }).value
+    );
+  }
+
   return {
     statements: computed(() => statements.value),
     loadingStatements: computed(() => loadingStatements.value),
@@ -88,6 +102,7 @@ export function useStatement() {
     loadStatements,
     reloadStatement,
     getStatementAbout,
-    getStatementStatement
+    getStatementStatement,
+    formatPercentageNumber
   };
 }

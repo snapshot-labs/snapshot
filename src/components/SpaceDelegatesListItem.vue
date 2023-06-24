@@ -17,6 +17,7 @@ const emit = defineEmits(['clickDelegate', 'clickUser']);
 
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
+const { formatPercentageNumber } = useStatement();
 </script>
 
 <template>
@@ -30,7 +31,12 @@ const { formatCompactNumber } = useIntl();
           <div class="font-semibold text-skin-heading">
             {{ getUsername(delegate.id, profiles[delegate.id]) }}
           </div>
-          <div class="text-skin-text">
+          <div
+            v-tippy="{
+              content: formatPercentageNumber(delegate.votesPercentage)
+            }"
+            class="text-skin-text"
+          >
             {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
             {{ space.symbol }}
           </div>
@@ -55,7 +61,12 @@ const { formatCompactNumber } = useIntl();
 
       <span v-else> No statement provided yet </span>
     </div>
-    <div class="mt-3 flex items-center justify-between">
+    <div
+      v-tippy="{
+        content: formatPercentageNumber(delegate.delegatorsPercentage)
+      }"
+      class="mt-3 flex items-center justify-between"
+    >
       {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
       delegators
 
