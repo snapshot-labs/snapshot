@@ -55,16 +55,16 @@ onMounted(() => {
             class="flex w-full flex-row content-center items-center justify-between"
           >
             <div class="flex flex-col">
-              <span class="text-xl font-bold leading-tight text-skin-link">
+              <span class="text-lg font-bold leading-none text-skin-link">
                 {{ spaceCollectionInfo.maxSupply }}
               </span>
-              <span>Max supply</span>
+              <span class="leading-tight">Max supply</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-xl font-bold leading-tight text-skin-link">
+              <span class="text-lg font-bold leading-none text-skin-link">
                 {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
               </span>
-              <span>Mint price</span>
+              <span class="leading-tight">Mint price</span>
             </div>
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"
@@ -87,7 +87,7 @@ onMounted(() => {
           class="mt-3 flex w-full flex-row content-center items-center justify-between px-4"
         >
           <div class="flex flex-row gap-x-4">
-            <NFTClaimerLogo />
+            <NFTClaimerLogo class="-top-1" />
             <div class="flex flex-col">
               <BaseUser
                 :address="nft.minterAddress"

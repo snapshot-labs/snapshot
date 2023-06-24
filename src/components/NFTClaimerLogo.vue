@@ -55,15 +55,15 @@ withDefaults(
     0% 25%,
     /* We make sure to close the hexagon and go back to the start */ 50% 0%,
     /* We then go down inside the hexagon (feel free to change the border size, here it is of 5px)*/
-      50% 5px,
+      50% 6px,
     /* We finally go around the pseudo element in reverse to carve a smaller hexagon inside */
       /* 0.49999999999999994 is sin(30deg) as it's only supported in Safari for now */
-      5px calc(25% + 5px * 0.49999999999999994),
-    5px calc(75% + 5px * -0.49999999999999994),
-    50% calc(100% - 5px),
-    calc(100% - 5px) calc(75% + 5px * -0.49999999999999994),
-    calc(100% - 5px) calc(25% + 5px * 0.49999999999999994),
-    50% 5px
+      6px calc(25% + 6px * 0.49999999999999994),
+    6px calc(75% + 6px * -0.49999999999999994),
+    50% calc(100% - 6px),
+    calc(100% - 6px) calc(75% + 6px * -0.49999999999999994),
+    calc(100% - 6px) calc(25% + 6px * 0.49999999999999994),
+    50% 6px
   );
 }
 </style>
