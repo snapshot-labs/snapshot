@@ -12,7 +12,12 @@ const props = defineProps<{
 const emit = defineEmits(['close']);
 
 const { web3Account } = useWeb3();
-const { formatCompactNumber, formatPercentNumber } = useIntl();
+const {
+  formatCompactNumber,
+  formatNumber,
+  getNumberFormatter,
+  getPercentFractionDigits
+} = useIntl();
 const { fetchDelegate, delegate } = useDelegates(props.space.delegationPortal);
 const { domain } = useApp();
 const {
@@ -28,6 +33,18 @@ const showModalStatement = ref(false);
 const isLoggedUser = computed(() => {
   return web3Account.value.toLowerCase() === props.address.toLowerCase();
 });
+
+function getPercentage(value: string | number) {
+  const fractionDigits = getPercentFractionDigits(Number(value));
+  return formatNumber(
+    Number(value),
+    getNumberFormatter({
+      style: 'percent',
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits
+    }).value
+  );
+}
 
 watch(
   () => props.address,
@@ -51,7 +68,7 @@ watch(
             <template v-if="delegate">
               <div
                 v-tippy="{
-                  content: formatPercentNumber(delegate.votesPercentage)
+                  content: getPercentage(delegate.votesPercentage)
                 }"
               >
                 {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
@@ -59,7 +76,7 @@ watch(
               </div>
               <div
                 v-tippy="{
-                  content: formatPercentNumber(delegate.delegatorsPercentage)
+                  content: getPercentage(delegate.delegatorsPercentage)
                 }"
               >
                 {{
