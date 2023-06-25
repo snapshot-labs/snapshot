@@ -51,40 +51,44 @@ watch(
     </template>
     <template #default>
       <div class="flex flex-col justify-between gap-y-4 p-4">
-        <BaseBlock>
-          <div class="flex flex-row justify-between py-1">
-            <span>Contract</span>
-            <a
-              class="flex flex-row"
-              :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
-              target="_blank"
-            >
-              <span>{{ shorten(spaceCollectionInfo.address) }}</span>
-              <i-ho-arrow-top-right-on-square class="ml-2" />
-            </a>
+        <BaseBlock :slim="true">
+          <div class="p-4">
+            <div class="flex flex-row justify-between py-1">
+              <span>Contract</span>
+              <a
+                class="flex flex-row"
+                :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+                target="_blank"
+              >
+                <span>{{ shorten(spaceCollectionInfo.address) }}</span>
+                <i-ho-arrow-top-right-on-square class="ml-2" />
+              </a>
+            </div>
+            <div class="flex flex-row justify-between py-1">
+              <span>Proposal author's share</span>
+              <span>{{ spaceCollectionInfo.proposerFee }}%</span>
+            </div>
+            <div class="flex flex-row justify-between py-1">
+              <span>Max supply</span>
+              <span>{{ spaceCollectionInfo.maxSupply }}</span>
+            </div>
+            <div class="flex flex-row justify-between py-1">
+              <span>Remaining supply</span>
+              <span>{{
+                spaceCollectionInfo.maxSupply - collectionInfo.mintCount
+              }}</span>
+            </div>
           </div>
-          <div class="flex flex-row justify-between py-1">
-            <span>Proposal author's share</span>
-            <span>{{ spaceCollectionInfo.proposerFee }}%</span>
-          </div>
-          <div class="flex flex-row justify-between py-1">
-            <span>Max supply</span>
-            <span>{{ spaceCollectionInfo.maxSupply }}</span>
-          </div>
-          <div class="flex flex-row justify-between py-1">
-            <span>Remaining supply</span>
-            <span>{{
-              spaceCollectionInfo.maxSupply - collectionInfo.mintCount
-            }}</span>
-          </div>
-          <div class="flex flex-row justify-between py-1">
-            <span>Mint price</span>
-            <div class="flex flex-col">
-              <span class="text-md font-bold text-skin-link">
-                {{ spaceCollectionInfo.formattedMintPrice }}
-                {{ mintCurrency }}
-              </span>
-              <span class="text-end">~xxx USD</span>
+          <div class="border-t bg-slate-500/5 p-4 py-2">
+            <div class="flex flex-row justify-between py-1">
+              <span>Mint price</span>
+              <div class="flex flex-col">
+                <span class="text-md font-bold text-skin-link">
+                  {{ spaceCollectionInfo.formattedMintPrice }}
+                  {{ mintCurrency }}
+                </span>
+                <span class="text-end">~xxx USD</span>
+              </div>
             </div>
           </div>
         </BaseBlock>
