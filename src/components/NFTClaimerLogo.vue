@@ -9,11 +9,11 @@ withDefaults(
 
 <template>
   <div :class="['relative -z-10 h-[44px] w-[40px]', size]">
-    <div class="hexagon left-[8px] top-[7px]"></div>
+    <div class="hexagon top-[7px]"></div>
     <BaseIcon
       name="snapshot"
       size="58"
-      class="absolute left-0 top-0 text-snapshot"
+      class="absolute -left-[9px] top-0 text-snapshot"
     />
   </div>
 </template>
@@ -26,7 +26,7 @@ withDefaults(
   i {
     font-size: 86px !important;
     line-height: 86px !important;
-    left: -3px;
+    left: -11px;
   }
 }
 
