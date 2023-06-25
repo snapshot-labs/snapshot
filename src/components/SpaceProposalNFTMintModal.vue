@@ -10,9 +10,23 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'switchConnectAccount']);
 
-const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
-  useNFTClaimer(props.space, props.proposal);
+enum MintStep {
+  INFO,
+  MINT
+}
+
+const {
+  mintNetwork,
+  mintCurrency,
+  progress,
+  loading,
+  mint,
+  init,
+  spaceCollectionsInfo
+} = useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
+const ethPrice = ref(1900);
+const currentStep = ref(MintStep.MINT);
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -51,55 +65,75 @@ watch(
     </template>
     <template #default>
       <div class="flex flex-col justify-between gap-y-4 p-4">
-        <BaseBlock :slim="true">
-          <div class="p-4">
-            <div class="flex flex-row justify-between py-1">
-              <span>Contract</span>
-              <a
-                class="flex flex-row"
-                :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
-                target="_blank"
-              >
-                <span>{{ shorten(spaceCollectionInfo.address) }}</span>
-                <i-ho-arrow-top-right-on-square class="ml-2" />
-              </a>
-            </div>
-            <div class="flex flex-row justify-between py-1">
-              <span>Proposal author's share</span>
-              <span>{{ spaceCollectionInfo.proposerFee }}%</span>
-            </div>
-            <div class="flex flex-row justify-between py-1">
-              <span>Max supply</span>
-              <span>{{ spaceCollectionInfo.maxSupply }}</span>
-            </div>
-            <div class="flex flex-row justify-between py-1">
-              <span>Remaining supply</span>
-              <span>{{
-                spaceCollectionInfo.maxSupply - collectionInfo.mintCount
-              }}</span>
-            </div>
-          </div>
-          <div class="border-t bg-slate-500/5 p-4 py-2">
-            <div class="flex flex-row justify-between py-1">
-              <span>Mint price</span>
-              <div class="flex flex-col">
-                <span class="text-md font-bold text-skin-link">
-                  {{ spaceCollectionInfo.formattedMintPrice }}
-                  {{ mintCurrency }}
-                </span>
-                <span class="text-end">~xxx USD</span>
+        <template v-if="currentStep === MintStep.INFO">
+          <BaseBlock :slim="true">
+            <div class="p-4">
+              <div class="flex flex-row justify-between py-1">
+                <span>Contract</span>
+                <a
+                  class="flex flex-row"
+                  :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+                  target="_blank"
+                >
+                  <span>{{ shorten(spaceCollectionInfo.address) }}</span>
+                  <i-ho-arrow-top-right-on-square class="ml-2" />
+                </a>
+              </div>
+              <div class="flex flex-row justify-between py-1">
+                <span>Proposal author's share</span>
+                <span>{{ spaceCollectionInfo.proposerFee }}%</span>
+              </div>
+              <div class="flex flex-row justify-between py-1">
+                <span>Max supply</span>
+                <span>{{ spaceCollectionInfo.maxSupply }}</span>
+              </div>
+              <div class="flex flex-row justify-between py-1">
+                <span>Remaining supply</span>
+                <span>{{
+                  spaceCollectionInfo.maxSupply - collectionInfo.mintCount
+                }}</span>
               </div>
             </div>
+            <div class="border-t bg-slate-500/5 p-4 py-2">
+              <div class="flex flex-row justify-between py-1">
+                <span>Mint price</span>
+                <div class="flex flex-col">
+                  <span class="text-md font-bold text-skin-link">
+                    {{ spaceCollectionInfo.formattedMintPrice }}
+                    {{ mintCurrency }}
+                  </span>
+                  <span class="text-end">
+                    ~{{ ethPrice * spaceCollectionInfo.formattedMintPrice }} USD
+                  </span>
+                </div>
+              </div>
+            </div>
+          </BaseBlock>
+          <NFTClaimerMintButton
+            :space-collection-info="spaceCollectionInfo"
+            :collection-info="collectionInfo"
+            :loading="loading"
+            :currency="mintCurrency"
+            :show-price="true"
+            @click="_mint()"
+          />
+        </template>
+        <template v-if="currentStep === MintStep.MINT">
+          <SpaceProposalNFTMintModalStepper :progress="progress" />
+          <div class="flex flex-col justify-between gap-y-3">
+            <NFTClaimerMintButton
+              :space-collection-info="spaceCollectionInfo"
+              :collection-info="collectionInfo"
+              :loading="loading"
+              :currency="mintCurrency"
+              :show-price="true"
+              @click="_mint()"
+            >
+              Mint again
+            </NFTClaimerMintButton>
+            <BaseButton @click="$emit('close')">Close</BaseButton>
           </div>
-        </BaseBlock>
-        <NFTClaimerMintButton
-          :space-collection-info="spaceCollectionInfo"
-          :collection-info="collectionInfo"
-          :loading="loading"
-          :currency="mintCurrency"
-          :show-price="true"
-          @click="_mint()"
-        />
+        </template>
       </div>
     </template>
   </BaseModal>

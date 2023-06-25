@@ -17,14 +17,21 @@ withDefaults(
     :loading="loading"
     :disabled="!spaceCollectionInfo.enabled"
   >
-    <template v-if="spaceCollectionInfo.maxSupply === collectionInfo.mintCount">
-      Sold out
+    <template v-if="$slots.default">
+      <slot />
     </template>
     <template v-else>
-      MINT
-      <template v-if="showPrice">
-        for {{ spaceCollectionInfo.formattedMintPrice }} {{ currency }}
-      </template></template
-    >
+      <template
+        v-if="spaceCollectionInfo.maxSupply === collectionInfo.mintCount"
+      >
+        Sold out
+      </template>
+      <template v-else>
+        MINT
+        <template v-if="showPrice">
+          for {{ spaceCollectionInfo.formattedMintPrice }} {{ currency }}
+        </template></template
+      >
+    </template>
   </BaseButton>
 </template>
