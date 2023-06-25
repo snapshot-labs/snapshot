@@ -51,6 +51,9 @@ watch(
   () => props.open,
   () => {
     init();
+    if (!loading.value) {
+      currentStep.value = MintStep.INFO;
+    }
   }
 );
 </script>
@@ -121,7 +124,7 @@ watch(
         </template>
         <template v-if="currentStep === MintStep.MINT">
           <SpaceProposalNFTMintModalStepper :progress="progress" />
-          <div class="flex flex-col justify-between gap-y-3">
+          <div class="flex flex-col justify-between gap-y-2">
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"
               :collection-info="collectionInfo"
