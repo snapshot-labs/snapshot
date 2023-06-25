@@ -26,7 +26,7 @@ const {
 } = useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
 const ethPrice = ref(1900);
-const currentStep = ref(MintStep.MINT);
+const currentStep = ref(MintStep.INFO);
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -40,6 +40,7 @@ const collectionInfo = computed(() => {
 
 function _mint() {
   if (web3Account.value) {
+    currentStep.value = MintStep.MINT;
     mint();
   } else {
     emit('switchConnectAccount');
