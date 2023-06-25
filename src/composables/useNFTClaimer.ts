@@ -122,9 +122,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   );
 
   async function _checkWETHBalance() {
-    progress.value[ProgressStep.CHECK_WETH_BALANCE].status = 'WORKING';
-    progress.value[ProgressStep.CHECK_WETH_BALANCE].description =
-      'Checking your wallet balance...';
+    updateProgress(
+      ProgressStep.CHECK_WETH_BALANCE,
+      'WORKING',
+      'Checking your wallet balance...'
+    );
 
     const balanceRaw = web3Account.value
       ? await contractWETH.balanceOf(web3Account.value)
@@ -132,28 +134,32 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const balance = formatUnits(balanceRaw, 'ether');
     console.log(':_checkWETHBalance balance', balance);
 
-    progress.value[ProgressStep.CHECK_WETH_BALANCE].status = 'SUCCESS';
-    progress.value[
-      ProgressStep.CHECK_WETH_BALANCE
-    ].description = `${(+balance).toFixed(4)} WETH safe to spend`;
+    updateProgress(
+      ProgressStep.CHECK_WETH_BALANCE,
+      'SUCCESS',
+      `${(+balance).toFixed(4)} WETH safe to spend`
+    );
 
     const mintPriceWei = parseUnits(mintPrice.value, 18);
     if (BigNumber.from(balanceRaw).lt(mintPriceWei)) {
-      progress.value[ProgressStep.CHECK_WETH_BALANCE].status = 'ERROR';
-      progress.value[
-        ProgressStep.CHECK_WETH_BALANCE
-      ].description = `You do not have enough fund, need at least ${mintPriceWei} WETH`;
+      updateProgress(
+        ProgressStep.CHECK_WETH_BALANCE,
+        'ERROR',
+        `You do not have sufficient fund, need at least ${mintPriceWei} WETH`
+      );
 
-      throw new Error('Not enough WETH balance');
+      return false;
     }
 
     return true;
   }
 
   async function _checkWETHApproval(address: string) {
-    progress.value[ProgressStep.APPROVE_WETH_BALANCE].status = 'WORKING';
-    progress.value[ProgressStep.APPROVE_WETH_BALANCE].description =
-      'Checking if contract is allowed to spend your WETH...';
+    updateProgress(
+      ProgressStep.APPROVE_WETH_BALANCE,
+      'WORKING',
+      'Checking if contract is allowed to spend your WETH...'
+    );
 
     const allowanceRaw = web3Account.value
       ? await contractWETH.allowance(web3Account.value, address)
@@ -163,11 +169,13 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
     const mintPriceWei = parseUnits(mintPrice.value, 18);
     if (BigNumber.from(allowanceRaw).lt(mintPriceWei)) {
-      progress.value[
-        ProgressStep.APPROVE_WETH_BALANCE
-      ].description = `Please allow the contract to spend at least ${(+mintPrice.value).toFixed(
-        4
-      )} WETH`;
+      updateProgress(
+        ProgressStep.APPROVE_WETH_BALANCE,
+        'WORKING',
+        `Please allow the contract to spend at least ${(+mintPrice.value).toFixed(
+          4
+        )} WETH`
+      );
 
       // TODO check id for next? to throttle?
       const txPendingId = createPendingTransaction();
@@ -184,9 +192,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         return tx.wait();
       } catch (e: any) {
         if (e.code === 'ACTION_REJECTED') {
-          progress.value[ProgressStep.APPROVE_WETH_BALANCE].status = 'ERROR';
-          progress.value[ProgressStep.APPROVE_WETH_BALANCE].description =
-            'Transaction rejected';
+          updateProgress(
+            ProgressStep.APPROVE_WETH_BALANCE,
+            'ERROR',
+            'Transaction rejected'
+          );
         } else {
           notify(['red', t('notify.somethingWentWrong')]);
           console.log(e);
@@ -344,9 +354,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       return receipt;
     } catch (e: any) {
       if (e.code === 'ACTION_REJECTED') {
-        progress.value[ProgressStep.SEND_TX].status = 'ERROR';
-        progress.value[ProgressStep.SEND_TX].description =
-          'Transaction rejected';
+        updateProgress(ProgressStep.SEND_TX, 'ERROR', 'Transaction rejected');
       } else {
         notify(['red', t('notify.somethingWentWrong')]);
         console.log(e);
@@ -381,23 +389,24 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           );
         },
         () => {
-          progress.value[ProgressStep.SEND_TX].status = 'WORKING';
-          progress.value[ProgressStep.SEND_TX].description =
-            'Waiting for your wallet confirmation...';
+          updateProgress(
+            ProgressStep.SEND_TX,
+            'WORKING',
+            'Waiting for your wallet confirmation...'
+          );
         },
         tx => {
-          progress.value[ProgressStep.SEND_TX].status = 'SUCCESS';
-          progress.value[ProgressStep.SEND_TX].description = tx.hash;
-
-          progress.value[ProgressStep.RESULT].status = 'WORKING';
-          progress.value[ProgressStep.RESULT].description =
-            'Waiting for confirmation';
+          updateProgress(ProgressStep.SEND_TX, 'SUCCESS', tx.hash);
+          updateProgress(
+            ProgressStep.RESULT,
+            'WORKING',
+            'Waiting for confirmation'
+          );
         }
       );
 
       if (receipt) {
-        progress.value[ProgressStep.RESULT].status = 'SUCCESS';
-        progress.value[ProgressStep.RESULT].description = 'Confirmed';
+        updateProgress(ProgressStep.RESULT, 'SUCCESS', 'Confirmed');
       }
     } finally {
       loading.value = false;
@@ -452,6 +461,15 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     } finally {
       loading.value = false;
     }
+  }
+
+  function updateProgress(
+    key: ProgressStep,
+    status: string,
+    description: string
+  ) {
+    progress.value[key].status = status;
+    progress.value[key].description = description;
   }
 
   return {
