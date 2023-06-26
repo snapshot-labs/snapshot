@@ -1,10 +1,5 @@
 <script setup lang="ts">
-defineProps<{
-  progress: Record<
-    string,
-    { name: string; description: string; status: string }
-  >;
-}>();
+const { progress, Status } = useNFTClaimerProgress();
 </script>
 
 <template>
@@ -14,7 +9,7 @@ defineProps<{
         <div>
           <span class="flex">
             <span
-              v-if="step.status === 'SUCCESS'"
+              v-if="step.status === Status.SUCCESS"
               class="relative flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-primary"
             >
               <i-ho-check class="text-[12px] text-white" aria-hidden="true" />
@@ -24,7 +19,7 @@ defineProps<{
               />
             </span>
             <span
-              v-else-if="step.status === 'WORKING'"
+              v-else-if="step.status === Status.WORKING"
               class="relative flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full"
               aria-hidden="true"
             >
@@ -35,7 +30,7 @@ defineProps<{
               />
             </span>
             <span
-              v-else-if="step.status === 'ERROR'"
+              v-else-if="step.status === Status.ERROR"
               class="relative flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full bg-red"
               aria-hidden="true"
             >
@@ -53,7 +48,8 @@ defineProps<{
             >
               <span
                 v-if="
-                  i > 0 && Object.values(progress)[i - 1].status !== 'FUTURE'
+                  i > 0 &&
+                  Object.values(progress)[i - 1].status !== Status.FUTURE
                 "
                 class="absolute -top-[48px] h-[48px] w-[1px] w-[1px] bg-skin-border"
               />
@@ -66,21 +62,23 @@ defineProps<{
             <div
               :class="{
                 'ml-3 flex flex-col text-base': true,
-                'opacity-60': step.status === 'FUTURE',
-                'text-red': step.status === 'ERROR'
+                'opacity-60': step.status === Status.FUTURE,
+                'text-red': step.status === Status.ERROR
               }"
             >
               <span
                 :class="{
                   'font-medium': true,
-                  'text-red': step.status === 'ERROR',
-                  'text-skin-link': step.status !== 'ERROR'
+                  'text-red': step.status === Status.ERROR,
+                  'text-skin-link': step.status !== Status.ERROR
                 }"
               >
                 {{ step.name }}
               </span>
               <span
-                :class="step.status === 'ERROR' ? 'text-red' : 'text-slate-500'"
+                :class="
+                  step.status === Status.ERROR ? 'text-red' : 'text-slate-500'
+                "
               >
                 {{ step.description }}
               </span>

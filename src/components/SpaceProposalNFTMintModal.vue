@@ -15,15 +15,8 @@ enum MintStep {
   MINT
 }
 
-const {
-  mintNetwork,
-  mintCurrency,
-  progress,
-  loading,
-  mint,
-  init,
-  spaceCollectionsInfo
-} = useNFTClaimer(props.space, props.proposal);
+const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
+  useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
 const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
@@ -123,7 +116,7 @@ watch(
           />
         </template>
         <template v-if="currentStep === MintStep.MINT">
-          <SpaceProposalNFTMintModalStepper :progress="progress" />
+          <SpaceProposalNFTMintModalProgress />
           <div class="flex flex-col justify-between gap-y-2">
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"

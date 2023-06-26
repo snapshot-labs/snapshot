@@ -115,6 +115,7 @@
     "watchTxStatus": true,
     "toValue": true,
     "useResolveName": true,
-    "useFlaggedMessageStatus": true
+    "useFlaggedMessageStatus": true,
+    "useNFTClaimerProgress": true
   }
 }
