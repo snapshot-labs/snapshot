@@ -444,7 +444,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         updateProgress(
           Step.RESULT,
           Status.SUCCESS,
-          `Completed with ${receipt.confirmations} confirmations`
+          `Completed with ${receipt.confirmations} confirmation(s)`
         );
       }
     } catch (e: any) {

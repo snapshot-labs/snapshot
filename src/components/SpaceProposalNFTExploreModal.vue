@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { shorten } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -88,7 +89,7 @@ watch(
         <div
           v-for="nft in nfts"
           :key="nft.id"
-          class="mt-3 flex w-full flex-row content-center items-center justify-between px-4"
+          class="mt-3 flex w-full flex-row content-center items-start justify-between px-4"
         >
           <div class="flex flex-row gap-x-4">
             <NFTClaimerLogo class="-top-1" />
@@ -102,12 +103,9 @@ watch(
               <span>{{ formatRelativeTime(nft.timestamp) }}</span>
             </div>
           </div>
-          <a
-            :href="`https://goerli.etherscan.io/tx/${nft.txHash}`"
-            target="_blank"
-          >
-            <i-ho-arrow-top-right-on-square class="ml-2" />
-          </a>
+          <BaseLink :link="`https://goerli.etherscan.io/tx/${nft.txHash}`">
+            {{ shorten(nft.txHash) }}
+          </BaseLink>
         </div>
 
         <div v-if="nfts.length === 0" class="flex flex-row justify-center p-4">

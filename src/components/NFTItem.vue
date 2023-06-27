@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { BigNumber } from '@ethersproject/bignumber';
+import { shorten } from '@/helpers/utils';
 
-const props = defineProps<{
+defineProps<{
   nft: any;
 }>();
 </script>
@@ -16,10 +17,10 @@ const props = defineProps<{
       }
     }"
   >
-    <NFTClaimerLogo />
+    <NFTClaimerLogo class="mx-auto" />
     <div class="mt-2 flex items-center justify-center">
       <div class="truncate text-xs">
-        {{ nft.proposal.spaceCollection.spaceId }}
+        {{ shorten(nft.proposal.id) }}
       </div>
     </div>
   </router-link>

@@ -58,7 +58,7 @@ onMounted(init);
   <div class="flex w-full flex-col">
     <TuneInput
       v-model="input.maxSupply"
-      class="mb-3 mt-2"
+      class="mb-3"
       label="Max supply"
       hint="Maximum number of NFTs per proposal"
       placeholder="100"
@@ -69,7 +69,7 @@ onMounted(init);
 
     <TuneInput
       v-model="input.formattedMintPrice"
-      class="mb-3 mt-2"
+      class="mb-3"
       label="Mint price"
       :hint="`In ${mintCurrency}`"
       type="number"
@@ -79,7 +79,7 @@ onMounted(init);
 
     <TuneInput
       v-model="input.proposerFee"
-      class="mb-3 mt-2"
+      class="mb-3"
       label="Proposer fees"
       type="number"
       hint="Percentage of the mint price, shared with the proposal author"
@@ -89,7 +89,7 @@ onMounted(init);
 
     <TuneInput
       v-model="input.treasuryAddress"
-      class="mb-3 mt-2"
+      class="mb-3"
       label="Space treasury wallet"
       hint="Wallet address"
       placeholder="0x0000"

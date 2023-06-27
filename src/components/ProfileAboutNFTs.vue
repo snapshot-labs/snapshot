@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { getUserNfts } from '@/helpers/nftClaimer';
+import { useMediaQuery } from '@vueuse/core';
 
 const props = defineProps<{
   address: string;
@@ -8,6 +9,23 @@ const props = defineProps<{
 const loading = ref(false);
 const nfts = ref<any[]>([]);
 const modalNFTsOpen = ref(false);
+
+const isXSmallScreen = useMediaQuery('(max-width: 420px)');
+const isSmallScreen = useMediaQuery('(max-width: 544px)');
+const isMediumScreen = useMediaQuery('(max-width: 768px)');
+
+const numberOfSpacesByScreenSize = computed(() => {
+  if (isXSmallScreen.value) {
+    return 3;
+  }
+  if (isSmallScreen.value) {
+    return 4;
+  }
+  if (isMediumScreen.value) {
+    return 5;
+  }
+  return 7;
+});
 
 onMounted(async () => {
   nfts.value = await getUserNfts(props.address);
@@ -27,15 +45,17 @@ onMounted(async () => {
       <div v-else class="flex justify-between">
         <div class="flex w-full overflow-x-hidden">
           <div
-            v-for="n in nfts"
+            v-for="n in nfts.slice(0, numberOfSpacesByScreenSize + 1)"
             :key="n"
             class="mx-2 min-w-[66px] max-w-[66px] text-center first:ml-0"
           >
             <NFTItem :nft="n" />
           </div>
         </div>
-        <!-- TODO more btn -->
-        <span @click="modalNFTsOpen = true">more</span>
+        <BlockSpacesListButtonMore
+          v-if="numberOfSpacesByScreenSize < nfts.length"
+          @click="modalNFTsOpen = true"
+        />
       </div>
     </div>
     <div v-else class="border-t p-4">

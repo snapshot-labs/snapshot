@@ -7,6 +7,7 @@ import {
 import { BigNumber } from '@ethersproject/bignumber';
 import { randomBytes } from '@ethersproject/random';
 import { shorten } from './utils';
+import { apolloClient } from './apollo';
 
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
@@ -81,8 +82,14 @@ export async function getUserNfts(minterAddress: string) {
   }: { data: { mints: any[] } } = await client.query({
     query: gql`
       query mints($minterAddress: String) {
-        mints(first: 100, where: { minterAddress: $minterAddress }) {
+        mints(
+          first: 100
+          where: { minterAddress: $minterAddress }
+          orderBy: "timestamp"
+          orderDirection: desc
+        ) {
           id
+          timestamp
           proposal {
             id
             spaceCollection {
@@ -117,4 +124,36 @@ export function nftLinkTag(contract: string, id: string) {
             target="_blank"
             title="View transaction"
           >Token [${shorten(id)}]</a>`;
+}
+
+const PROPOSALS_QUERY = gql`
+  query Proposals($id_in: [String]) {
+    proposals(where: { id_in: $id_in }) {
+      id
+      title
+      space {
+        id
+        name
+        avatar
+      }
+    }
+  }
+`;
+
+export async function getProposals(ids: string[]) {
+  try {
+    console.time('getProposals');
+    const response = await apolloClient.query({
+      query: PROPOSALS_QUERY,
+      variables: {
+        id_in: ids
+      }
+    });
+    console.timeEnd('getProposals');
+
+    return response.data.proposals;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
 }
