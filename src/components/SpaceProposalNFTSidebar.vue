@@ -126,7 +126,7 @@ const collectionInfo = computed(() => {
           hash: '#NFTCLAIMER'
         }"
       >
-        <BaseButton :primary="true">Setup SnapIt!</BaseButton>
+        <BaseButton>Setup SnapIt!</BaseButton>
       </router-link>
     </BaseBlock>
   </template>
