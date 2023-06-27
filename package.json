@@ -58,7 +58,7 @@
     "readable-stream": "3.6.0",
     "remarkable": "^2.0.1",
     "remove-markdown": "^0.5.0",
-    "snapshot-labs-lock-dev": "^0.0.1",
+    "snapshot-labs-lock-dev": "0.0.3",
     "typescript": "^5.0.4",
     "v-viewer": "^3.0.11",
     "vue": "^3.2.47",
