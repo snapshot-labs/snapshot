@@ -27,9 +27,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function allowance(address owner, address spender) external view returns (uint256)',
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const DEPLOY_CONTRACT_ADDRESS = '0x054a600d8B766c786270E25872236507D8459D8F';
+  const DEPLOY_CONTRACT_ADDRESS = '0x541acad0f4b9b683ffc43a39836eb4312044c59c';
   const DEPLOY_IMPLEMENTATION_ADDRESS =
-    '0x33505720a7921d23E6b02EB69623Ed6A008Ca511';
+    '0x07c3641ef7b2994e5029eab74f32a18b0944b70e';
   const DEPLOY_ABI = [
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
