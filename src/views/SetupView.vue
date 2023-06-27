@@ -142,7 +142,7 @@ onMounted(() => {
           v-if="currentStep === Step.EXTRAS && route.params.ens"
           :creating-space="creatingSpace"
           @back="previousStep"
-          @next="previousStep"
+          @next="handleSubmit"
         />
       </template>
     </template>
