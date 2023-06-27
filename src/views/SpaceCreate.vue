@@ -4,6 +4,9 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import Plugin from '@/plugins/safeSnap';
+
+const safeSnapPlugin = new Plugin();
 
 enum Step {
   CONTENT,
@@ -169,7 +172,6 @@ const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
-  console.log('Result', result);
   if (result.id) {
     resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
@@ -222,6 +224,8 @@ async function loadSourceProposal() {
 
 function nextStep() {
   if (formContainsShortUrl.value) return;
+  // skip transaction page if user has osnap, but chosen not to use it for this vote
+  if (shouldSkipTransactions()) return;
   currentStep.value++;
 }
 
@@ -264,10 +268,9 @@ async function validateAuthor() {
       );
 
       isValidAuthor.value = validationRes;
-      console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
       hasAuthorValidationFailed.value = true;
-      console.log(e);
+      console.warn(e);
     } finally {
       validationLoading.value = false;
     }
@@ -282,7 +285,37 @@ watch(
   { immediate: true }
 );
 
+// We need to know if the space is using osnap, this will change what types of voting we can do
+// We also need to know if the user plans to use osnap
+const osnap = ref<{
+  enabled: boolean;
+  selection: boolean;
+}>({
+  selection: false,
+  enabled: false
+});
+
+// Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
+function shouldSkipTransactions() {
+  return (
+    osnap.value.enabled &&
+    !osnap.value.selection &&
+    currentStep.value === Step.VOTING
+  );
+}
+
+function handleOsnapToggle() {
+  osnap.value.selection = !osnap.value.selection;
+}
+
 onMounted(async () => {
+  const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
+  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  if (network && umaAddress) {
+    // this is how we check if osnap is enabled and valid.
+    osnap.value.enabled =
+      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
+  }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
@@ -338,6 +371,8 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
+        :osnap="osnap"
+        @osnapToggle="handleOsnapToggle"
       />
 
       <!-- Step 3 (only when plugins) -->
@@ -363,7 +398,8 @@ onMounted(async () => {
         <BaseButton
           v-if="
             currentStep === Step.PLUGINS ||
-            (!needsPluginConfigs && currentStep === Step.VOTING)
+            (!needsPluginConfigs && currentStep === Step.VOTING) ||
+            shouldSkipTransactions()
           "
           :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"

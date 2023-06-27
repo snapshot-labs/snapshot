@@ -15,10 +15,8 @@ const isTimeValid = computed(() => {
   const isTimeEnteringStep = step.value === 1;
   if (!isTimeEnteringStep) return true;
   if (!input.value) return false;
-
   const startDateString = `${input.value} ${time.value}:59`;
   const startTimestamp = new Date(startDateString).getTime();
-
   return startTimestamp >= Date.now();
 });
 
@@ -34,10 +32,14 @@ function formatDate(date) {
   return output;
 }
 
+function combineDateAndTime(date, time) {
+  const dateString = `${date} ${time}:00`;
+  return new Date(dateString).getTime() / 1000;
+}
+
 function handleSubmit() {
   if (step.value === 0) return (step.value = 1);
-  const dateString = `${input.value} ${time.value}:00`;
-  const timestamp = new Date(dateString).getTime() / 1000;
+  const timestamp = combineDateAndTime(input.value, time.value);
   const now = parseInt((Date.now() / 1e3).toFixed());
   emit('input', Math.max(timestamp, now));
   emit('close');
@@ -53,8 +55,9 @@ watch(open, () => {
 
 watch(step, () => {
   if (step.value === 0) return;
+  const selectedDateTimestamp = combineDateAndTime(input.value, time.value);
   const timestamp = Math.max(
-    props.value,
+    selectedDateTimestamp,
     parseInt((Date.now() / 1e3 + 10).toFixed())
   );
   const { dateString, h, m } = formatDate(timestamp);
