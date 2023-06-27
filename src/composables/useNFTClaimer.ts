@@ -40,7 +40,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   const mintNetwork = ref(NETWORK_KEY);
   const mintCurrency = ref('WETH');
-  const mintPrice = ref('0.1');
+  const mintPriceWei = ref(0);
 
   const inited = ref(false);
   const loading = ref(false);
@@ -49,6 +49,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const { web3, web3Account } = useWeb3();
   const { updateProgress, resetProgress, Step, Status } =
     useNFTClaimerProgress();
+  const { formatNumber } = useIntl();
 
   const networkKey = computed(() => web3.value.network.key);
   const provider = getProvider(NETWORK_KEY);
@@ -92,10 +93,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       'Checking your wallet balance...'
     );
 
-    const balanceRaw = web3Account.value
+    const balanceWei = web3Account.value
       ? await contractWETH.balanceOf(web3Account.value)
       : 0;
-    const balance = formatUnits(balanceRaw, 'ether');
+    const balance = formatUnits(balanceWei, 'ether');
     console.debug(':_checkWETHBalance balance', balance);
 
     updateProgress(
@@ -104,12 +105,13 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       `${(+balance).toFixed(4)} WETH safe to spend`
     );
 
-    const mintPriceWei = parseUnits(mintPrice.value, 18);
-    if (BigNumber.from(balanceRaw).lt(mintPriceWei)) {
+    if (BigNumber.from(balanceWei).lt(mintPriceWei.value)) {
       updateProgress(
         Step.CHECK_WETH_BALANCE,
         Status.ERROR,
-        `You do not have sufficient fund, need at least ${mintPriceWei} WETH`
+        `You do not have sufficient fund, need at least ${formatNumber(
+          parseFloat(formatUnits(mintPriceWei.value, 'ether'))
+        )} WETH`
       );
 
       return false;
@@ -131,12 +133,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const allowance = formatUnits(allowanceRaw, 18);
     console.debug(':_checkWETHApproval allowance', allowance);
 
-    const mintPriceWei = parseUnits(mintPrice.value, 18);
-    if (BigNumber.from(allowanceRaw).lt(mintPriceWei)) {
+    if (BigNumber.from(allowanceRaw).lt(mintPriceWei.value)) {
       updateProgress(
         Step.APPROVE_WETH_BALANCE,
         Status.WORKING,
-        `Please allow the contract to spend at least ${(+mintPrice.value).toFixed(
+        `Please allow the contract to spend at least ${(+mintPriceWei.value).toFixed(
           4
         )} WETH`
       );
@@ -227,7 +228,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           spaceCollectionInfo = {
             address: info.id,
             maxSupply: parseInt(info.maxSupply),
-            mintPrice: parseInt(info.mintPrice),
+            mintPrice: BigNumber.from(info.mintPrice),
             formattedMintPrice: formatUnits(info.mintPrice, 18),
             proposerFee: parseInt(info.proposerFee),
             treasuryAddress: info.spaceTreasury,
@@ -236,7 +237,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           };
 
           spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
-          mintPrice.value = info.mintPrice;
         }
       }
 
@@ -268,6 +268,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         }
       }
 
+      if (spaceCollectionInfo) {
+        mintPriceWei.value = spaceCollectionInfo.mintPrice;
+      }
       inited.value = true;
     } catch (e) {
       console.error('NFTClaimer: unable to fetch data from Subgraph');
