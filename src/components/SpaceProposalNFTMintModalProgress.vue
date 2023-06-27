@@ -79,8 +79,8 @@ const { progress, Status } = useNFTClaimerProgress();
                 :class="
                   step.status === Status.ERROR ? 'text-red' : 'text-slate-500'
                 "
+                v-html="step.description"
               >
-                {{ step.description }}
               </span>
             </div>
           </span>

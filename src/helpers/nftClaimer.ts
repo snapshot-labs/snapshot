@@ -6,6 +6,7 @@ import {
 } from '@apollo/client/core';
 import { BigNumber } from '@ethersproject/bignumber';
 import { randomBytes } from '@ethersproject/random';
+import { shorten } from './utils';
 
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
@@ -101,4 +102,19 @@ export async function getUserNfts(minterAddress: string) {
 
 export function generateSalt() {
   return BigNumber.from(randomBytes(32)).toString();
+}
+
+export function mintTxLinkTag(hash: string) {
+  return `<a
+            href="https://goerli.etherscan.io/tx/${hash}"
+            target="_blank"
+          >Tx: ${shorten(hash)}</a>`;
+}
+
+export function nftLinkTag(contract: string, id: string) {
+  return `<a
+            href="https://goerli.etherscan.io/token/${contract}/${id}"
+            target="_blank"
+            title="View transaction"
+          >Token [${shorten(id)}]</a>`;
 }

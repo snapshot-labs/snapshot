@@ -5,19 +5,16 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-import { useStorage } from '@vueuse/core';
 import {
   generateSalt,
   getCollection,
-  getSpaceCollection
+  getSpaceCollection,
+  mintTxLinkTag,
+  nftLinkTag
 } from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-
-const spaceCollectionsInfo = useStorage(
-  'snapshot.proposals.nftCollections',
-  {}
-);
+const spaceCollectionsInfo = ref({});
 
 export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const NETWORK_KEY = '5';
@@ -102,7 +99,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       ? await contractWETH.balanceOf(web3Account.value)
       : 0;
     const balance = formatUnits(balanceRaw, 'ether');
-    console.log(':_checkWETHBalance balance', balance);
+    console.debug(':_checkWETHBalance balance', balance);
 
     updateProgress(
       Step.CHECK_WETH_BALANCE,
@@ -135,7 +132,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       ? await contractWETH.allowance(web3Account.value, address)
       : 0;
     const allowance = formatUnits(allowanceRaw, 18);
-    console.log(':_checkWETHApproval allowance', allowance);
+    console.debug(':_checkWETHApproval allowance', allowance);
 
     const mintPriceWei = parseUnits(mintPrice.value, 18);
     if (BigNumber.from(allowanceRaw).lt(mintPriceWei)) {
@@ -147,7 +144,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         )} WETH`
       );
 
-      // TODO check id for next? to throttle?
       const txPendingId = createPendingTransaction();
       try {
         const tx = await sendTransaction(
@@ -157,9 +153,23 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           'approve',
           [address, mintPriceWei]
         );
-        console.log(':_checkWETHApproval tx', tx);
+        updateProgress(
+          Step.APPROVE_WETH_BALANCE,
+          Status.WORKING,
+          'Waiting for confirmation...'
+        );
+        console.debug(':_checkWETHApproval tx', tx);
         updatePendingTransaction(txPendingId, { hash: tx.hash });
-        return tx.wait();
+
+        const receipt = await tx.wait();
+
+        updateProgress(
+          Step.APPROVE_WETH_BALANCE,
+          Status.SUCCESS,
+          'Contract approved'
+        );
+
+        return receipt;
       } catch (e: any) {
         if (e.code === 'ACTION_REJECTED') {
           updateProgress(
@@ -168,8 +178,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
             'Transaction rejected'
           );
         } else {
-          notify(['red', t('notify.somethingWentWrong')]);
-          console.log(e);
+          updateProgress(
+            Step.APPROVE_WETH_BALANCE,
+            Status.ERROR,
+            'An unexpected error occured'
+          );
+          console.error(e);
         }
       } finally {
         removePendingTransaction(txPendingId);
@@ -185,98 +199,97 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function _getBackendPayload(type: string, payload: any) {
-    const res = await fetch(
-      `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/${type}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      }
-    );
-    return res.json();
-  }
-
-  function getSpaceCollectionInfo() {
-    return getSpaceCollection(space.id);
-  }
-
-  function getCollectionInfo() {
-    return getCollection(BigInt(proposal?.id as string));
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/${type}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+      return res.json();
+    } catch (e) {
+      throw new Error('TRUSTED_BACKEND_ERROR');
+    }
   }
 
   async function init() {
-    if (!space) return;
+    try {
+      if (!space) return;
 
-    let spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
+      let spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
 
-    if (
-      !spaceCollectionInfo ||
-      spaceCollectionInfo.createdAt < Date.now() - 1000 * 60
-    ) {
-      console.log('_init FRESH', space.id);
-      const info = await getSpaceCollectionInfo();
+      if (!spaceCollectionInfo) {
+        console.debug('_init FRESH:space', space.id);
+        const info = await getSpaceCollection(space.id);
 
-      if (info) {
-        spaceCollectionInfo = {
-          address: info.id,
-          maxSupply: parseInt(info.maxSupply),
-          mintPrice: parseInt(info.mintPrice),
-          formattedMintPrice: formatUnits(info.mintPrice, 18),
-          proposerFee: parseInt(info.proposerFee),
-          treasuryAddress: info.spaceTreasury,
-          enabled: info.enabled,
-          createdAt: Date.now()
+        if (info) {
+          spaceCollectionInfo = {
+            address: info.id,
+            maxSupply: parseInt(info.maxSupply),
+            mintPrice: parseInt(info.mintPrice),
+            formattedMintPrice: formatUnits(info.mintPrice, 18),
+            proposerFee: parseInt(info.proposerFee),
+            treasuryAddress: info.spaceTreasury,
+            enabled: info.enabled,
+            createdAt: Date.now()
+          };
+
+          spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
+          mintPrice.value = info.mintPrice;
+        }
+      }
+
+      if (proposal && spaceCollectionInfo) {
+        console.debug('_init FRESH:proposal', proposal.id);
+
+        const info = await getCollection(BigInt(proposal?.id as string));
+
+        spaceCollectionsInfo.value[space.id].proposals ||= {};
+        const defaultInfo = {
+          id: null,
+          mintCount: 0,
+          mints: []
         };
 
-        spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
-        mintPrice.value = info.mintPrice;
+        spaceCollectionsInfo.value[space.id].proposals[proposal.id] =
+          info ?? defaultInfo;
+        loadProfiles(
+          spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints.map(
+            p => p.minterAddress
+          )
+        );
+
+        if (
+          spaceCollectionsInfo.value[space.id].proposals[proposal.id]
+            .mintCount >= spaceCollectionsInfo.value[space.id].maxSupply
+        ) {
+          spaceCollectionsInfo.value[space.id].enabled = false;
+        }
       }
+
+      inited.value = true;
+    } catch (e) {
+      console.error('NFTClaimer: unable to fetch data from Subgraph');
     }
-
-    if (proposal && spaceCollectionInfo) {
-      const info = await getCollectionInfo();
-
-      spaceCollectionsInfo.value[space.id].proposals ||= {};
-      const defaultInfo = {
-        id: null,
-        mintCount: 0,
-        mints: []
-      };
-
-      spaceCollectionsInfo.value[space.id].proposals[proposal.id] =
-        info ?? defaultInfo;
-      loadProfiles(
-        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints.map(
-          p => p.minterAddress
-        )
-      );
-
-      if (
-        spaceCollectionsInfo.value[space.id].proposals[proposal.id].mintCount >=
-        spaceCollectionsInfo.value[space.id].maxSupply
-      ) {
-        spaceCollectionsInfo.value[space.id].enabled = false;
-      }
-    }
-
-    inited.value = true;
   }
 
   // async function enableNFTClaimer() {
   //   const txPendingId = createPendingTransaction();
   //   try {
-  //     console.log(':enableNFTClaimer start');
+  //     console.debug(':enableNFTClaimer start');
   //     await _switchNetwork();
 
   //     const salt = BigNumber.from(randomBytes(32)).toString();
   //     const signature = await _getPayload('proposal', salt);
-  //     console.log(':enableNFTClaimer signature', signature);
+  //     console.debug(':enableNFTClaimer signature', signature);
   //     return;
   //   } catch (e) {
   //     notify(['red', t('notify.somethingWentWrong')]);
-  //     console.log(e);
+  //     console.debug(e);
   //   } finally {
   //     removePendingTransaction(txPendingId);
   //   }
@@ -285,10 +298,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   // async function disableNFTClaimer() {
   //   const txPendingId = createPendingTransaction();
   //   try {
-  //     console.log(':disableNFTClaimer start');
+  //     console.debug(':disableNFTClaimer start');
   //   } catch (e) {
   //     notify(['red', t('notify.somethingWentWrong')]);
-  //     console.log(e);
+  //     console.debug(e);
   //   } finally {
   //     removePendingTransaction(txPendingId);
   //   }
@@ -297,7 +310,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   async function sendTx(
     address: string,
     callback: () => Promise<any>,
-    beforeSend: () => void,
+    beforeSend: () => boolean,
     afterSend: (tx: any) => void
   ) {
     const txPendingId = createPendingTransaction();
@@ -311,25 +324,31 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         return false;
       }
 
-      beforeSend();
+      if (!beforeSend()) {
+        return false;
+      }
       const tx: any = await callback();
 
-      console.log(':mint tx', tx);
+      if (tx) {
+        console.debug(':mint tx', tx);
+        updatePendingTransaction(txPendingId, { hash: tx.hash });
+        afterSend(tx);
 
-      notify(t('notify.transactionSent'));
-      updatePendingTransaction(txPendingId, { hash: tx.hash });
-      afterSend(tx);
+        const receipt = await tx.wait();
+        console.debug('Receipt', receipt);
 
-      const receipt = await tx.wait();
-      console.log('Receipt', receipt);
-
-      return receipt;
+        return receipt;
+      }
     } catch (e: any) {
       if (e.code === 'ACTION_REJECTED') {
         updateProgress(Step.SEND_TX, Status.ERROR, 'Transaction rejected');
       } else {
-        notify(['red', t('notify.somethingWentWrong')]);
-        console.log(e);
+        updateProgress(
+          Step.SEND_TX,
+          Status.ERROR,
+          'An unexpected error occured'
+        );
+        console.error(e);
       }
     } finally {
       removePendingTransaction(txPendingId);
@@ -341,45 +360,96 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     resetProgress();
 
     try {
-      const { signature, salt, proposer, proposalId } =
-        await _getBackendPayload('mint', {
-          proposalAuthor: proposal?.author,
-          id: proposal?.id,
-          address: web3Account.value,
-          salt: generateSalt()
-        });
-
       const receipt = await sendTx(
         spaceCollectionsInfo.value[space.id].address,
-        () => {
-          return sendTransaction(
-            auth.web3,
-            spaceCollectionsInfo.value[space.id].address,
-            MINT_CONTRACT_ABI,
-            'mint',
-            [proposer, proposalId, salt, signature.v, signature.r, signature.s]
-          );
+        async () => {
+          try {
+            const { signature, salt, proposer, proposalId } =
+              await _getBackendPayload('mint', {
+                proposalAuthor: proposal?.author,
+                id: proposal?.id,
+                address: web3Account.value,
+                salt: generateSalt()
+              });
+
+            // User has submitted data rejected by the trusted backend
+            if (!signature) {
+              updateProgress(
+                Step.SEND_TX,
+                Status.ERROR,
+                'Invalid data submitted'
+              );
+              return;
+            }
+
+            updateProgress(
+              Step.SEND_TX,
+              Status.WORKING,
+              'Waiting for your wallet confirmation...'
+            );
+
+            return sendTransaction(
+              auth.web3,
+              spaceCollectionsInfo.value[space.id].address,
+              MINT_CONTRACT_ABI,
+              'mint',
+              [
+                proposer,
+                proposalId,
+                salt,
+                signature.v,
+                signature.r,
+                signature.s
+              ]
+            );
+          } catch (e: any) {
+            // Trusted backend server is unavailable
+            if (e.message === 'TRUSTED_BACKEND_ERROR') {
+              updateProgress(
+                Step.SEND_TX,
+                Status.ERROR,
+                'Unable to verify and sign your data'
+              );
+              return;
+            }
+
+            updateProgress(
+              Step.SEND_TX,
+              Status.ERROR,
+              'An unexpected error occured'
+            );
+            console.error(e);
+          }
         },
         () => {
           updateProgress(
             Step.SEND_TX,
             Status.WORKING,
-            'Waiting for your wallet confirmation...'
+            'Verifying your data...'
           );
+
+          return true;
         },
         tx => {
-          updateProgress(Step.SEND_TX, Status.SUCCESS, tx.hash);
+          updateProgress(Step.SEND_TX, Status.SUCCESS, mintTxLinkTag(tx.hash));
           updateProgress(
             Step.RESULT,
             Status.WORKING,
-            'Waiting for confirmation'
+            'Waiting for confirmation...'
           );
         }
       );
 
       if (receipt) {
-        updateProgress(Step.RESULT, Status.SUCCESS, 'Confirmed');
+        updateProgress(
+          Step.RESULT,
+          Status.SUCCESS,
+          `Completed with ${receipt.confirmations} confirmations`
+        );
       }
+    } catch (e: any) {
+      updateProgress(Step.SEND_TX, Status.ERROR, 'An unexpected error occured');
+      console.error(e);
     } finally {
       loading.value = false;
     }
@@ -424,7 +494,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           );
         },
         () => {
-          return '';
+          return true;
         },
         () => {
           return '';
