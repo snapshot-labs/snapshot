@@ -1,0 +1,15 @@
+diff --git a/node_modules/readable-stream/readable-browser.js b/node_modules/readable-stream/readable-browser.js
+index adbf60d..6777487 100644
+--- a/node_modules/readable-stream/readable-browser.js
++++ b/node_modules/readable-stream/readable-browser.js
+@@ -1,8 +1,9 @@
++const Duplex = require('./lib/_stream_duplex.js');
+ exports = module.exports = require('./lib/_stream_readable.js');
+ exports.Stream = exports;
+ exports.Readable = exports;
+ exports.Writable = require('./lib/_stream_writable.js');
+-exports.Duplex = require('./lib/_stream_duplex.js');
++exports.Duplex = Duplex;
+ exports.Transform = require('./lib/_stream_transform.js');
+ exports.PassThrough = require('./lib/_stream_passthrough.js');
+ exports.finished = require('./lib/internal/streams/end-of-stream.js');

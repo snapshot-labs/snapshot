@@ -1,6 +1,7 @@
 {
   "searchPlaceholder": "Search",
   "searchPlaceholderVotes": "Search: Address, ENS, or Lens",
+  "searchPlaceholderTokens": "Search: Name, Symbol, or Address",
   "searchVotingPower": "Voting power",
   "searchChoice": "Choice",
   "spaceCount": "{0} space(s)",
@@ -35,6 +36,7 @@
   "strategiesPage": "Strategies",
   "space": "Space",
   "spaces": "Spaces",
+  "verified": "Verified",
   "verifiedSpace": "Verified space",
   "warningSpace": "This space has been flagged as potentially malicious. Proceed with caution.",
   "warningShortUrl": "Short URLs are not allowed. Please use the full URL.",
@@ -226,7 +228,8 @@
     "uploadImageExplainer": "Attach images by dragging & dropping, selecting or pasting them.",
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
-    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later."
+    "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
+    "errorTimeInPast": "Entered time is in the past. Please select a future time."
   },
   "delegate": {
     "header": "Delegate",
@@ -264,8 +267,22 @@
         "1": "Votes can be changed while the proposal is active"
       }
     },
-    "downloadCsvVotes": "Download as CSV",
-    "preparingCsvVotes": "Preparing file",
+    "downloadCsvVotes": {
+      "title": "Download as CSV",
+      "postDownloadModal": {
+        "title": "Generating votes report",
+        "message": {
+          "pendingGeneration": {
+            "title": "Your report is currently being generated",
+            "description": "It may take a few minutes. Please check back shortly."
+          },
+          "unknownError": {
+            "title": "We're having trouble connecting to the server responsible for downloads",
+            "description": "Please try again in a few moments. If the problem persists, consider contacting our support team."
+          }
+        }
+      }
+    },
     "votesModal": {
       "title": "Votes",
       "filtersPopover": {
