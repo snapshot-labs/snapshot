@@ -20,6 +20,7 @@ const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
 const { web3Account } = useWeb3();
 const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
+const refreshInfo = ref(false);
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -34,6 +35,7 @@ const collectionInfo = computed(() => {
 function _mint() {
   if (web3Account.value) {
     currentStep.value = MintStep.MINT;
+    refreshInfo.value = true;
     mint();
   } else {
     emit('switchConnectAccount');
@@ -43,7 +45,10 @@ function _mint() {
 watch(
   () => props.open,
   () => {
-    init();
+    if (props.open || refreshInfo.value) {
+      refreshInfo.value = false;
+      init();
+    }
     if (!loading.value) {
       currentStep.value = MintStep.INFO;
     }

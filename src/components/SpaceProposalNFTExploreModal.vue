@@ -31,9 +31,12 @@ const nfts = computed(() => {
     .mints;
 });
 
-onMounted(() => {
-  init();
-});
+watch(
+  () => props.open,
+  () => {
+    props.open && init();
+  }
+);
 </script>
 
 <template>
