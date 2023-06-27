@@ -14,7 +14,7 @@ const { mintCurrency, spaceCollectionsInfo, init, profiles } = useNFTClaimer(
   props.proposal
 );
 
-const { formatRelativeTime } = useIntl();
+const { formatRelativeTime, formatNumber } = useIntl();
 
 const spaceCollectionInfo = computed(() => {
   return spaceCollectionsInfo.value[props.space.id];
@@ -65,7 +65,8 @@ watch(
             </div>
             <div class="flex flex-col">
               <span class="text-lg font-bold leading-none text-skin-link">
-                {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
+                {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+                {{ mintCurrency }}
               </span>
               <span class="leading-tight">Mint price</span>
             </div>

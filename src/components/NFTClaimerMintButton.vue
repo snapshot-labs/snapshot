@@ -9,6 +9,8 @@ withDefaults(
   }>(),
   { loading: false, showPrice: false }
 );
+
+const { formatNumber } = useIntl();
 </script>
 
 <template>
@@ -29,7 +31,8 @@ withDefaults(
       <template v-else>
         MINT
         <template v-if="showPrice">
-          for {{ spaceCollectionInfo.formattedMintPrice }} {{ currency }}
+          for {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+          {{ currency }}
         </template></template
       >
     </template>

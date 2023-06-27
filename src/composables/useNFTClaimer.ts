@@ -9,8 +9,7 @@ import {
   generateSalt,
   getCollection,
   getSpaceCollection,
-  mintTxLinkTag,
-  nftLinkTag
+  mintTxLinkTag
 } from '@/helpers/nftClaimer';
 
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
@@ -54,8 +53,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const networkKey = computed(() => web3.value.network.key);
   const provider = getProvider(NETWORK_KEY);
 
-  const { t } = useI18n();
-  const { notify } = useFlashNotification();
   const {
     createPendingTransaction,
     updatePendingTransaction,

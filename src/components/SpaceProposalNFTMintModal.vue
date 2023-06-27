@@ -18,6 +18,7 @@ enum MintStep {
 const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
   useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
+const { formatNumber } = useIntl();
 const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
@@ -99,13 +100,18 @@ watch(
             <div class="border-t bg-slate-500/5 p-4 py-2">
               <div class="flex flex-row justify-between py-1">
                 <span>Mint price</span>
-                <div class="flex flex-col">
+                <div class="flex flex-col text-end">
                   <span class="text-md font-bold text-skin-link">
-                    {{ spaceCollectionInfo.formattedMintPrice }}
+                    {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
                     {{ mintCurrency }}
                   </span>
-                  <span class="text-end">
-                    ~{{ ethPrice * spaceCollectionInfo.formattedMintPrice }} USD
+                  <span>
+                    ~{{
+                      formatNumber(
+                        ethPrice * spaceCollectionInfo.formattedMintPrice
+                      )
+                    }}
+                    USD
                   </span>
                 </div>
               </div>

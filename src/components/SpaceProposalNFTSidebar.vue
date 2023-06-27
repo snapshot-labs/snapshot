@@ -12,6 +12,7 @@ const { init, inited, spaceCollectionsInfo, mintCurrency } = useNFTClaimer(
 );
 const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
+const { formatNumber } = useIntl();
 // TODO enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = true;
@@ -74,7 +75,8 @@ const collectionInfo = computed(() => {
         <div class="flex flex-col">
           <span>Mint price</span>
           <span class="text-base font-bold text-skin-link">
-            {{ spaceCollectionInfo.formattedMintPrice }} {{ mintCurrency }}
+            {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+            {{ mintCurrency }}
           </span>
         </div>
         <NFTClaimerMintButton
