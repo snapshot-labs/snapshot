@@ -14,9 +14,9 @@
       "methods": [
         "eth_sendTransaction",
         "personal_sign",
-        "eth_accounts",
         "eth_signTypedData_v4"
       ],
+      "optionalMethods": ["eth_accounts"],
       "rpcMap": {
         "1": "https://rpc.snapshot.org/1",
         "4": "https://rpc.snapshot.org/4",
