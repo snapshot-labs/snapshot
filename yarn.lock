@@ -1634,6 +1634,20 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
+"@snapshot-labs/lock@^0.1.1019":
+  version "0.1.1019"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.1.1019.tgz#2fdc833eb9b92fdf9384a04a7090ac7796a78fb3"
+  integrity sha512-oe7Me/gcLEF4sMa9hKLq62nVy3NiLLIL/QQ6JXDm/vH4qz107jrydT6n8dtAc0sKhk6lazGXtr07K3DSaDD6Mg==
+  dependencies:
+    "@coinbase/wallet-sdk" "^3.4.0"
+    "@gnosis.pm/safe-apps-provider" "^0.14.0"
+    "@gnosis.pm/safe-apps-sdk" "^7.8.0"
+    "@portis/web3" "^4.0.6"
+    "@toruslabs/torus-embed" "^1.12.1"
+    "@walletconnect/ethereum-provider" "^2.8.3"
+    "@walletconnect/modal" "^2.5.4"
+    fortmatic "^2.2.1"
+
 "@snapshot-labs/pineapple@^0.1.0-beta.1":
   version "0.1.0-beta.1"
   resolved "https://registry.yarnpkg.com/@snapshot-labs/pineapple/-/pineapple-0.1.0-beta.1.tgz#4b136b778bff741c85df474ebfa202e8b1c9969a"
@@ -3035,7 +3049,7 @@
   dependencies:
     tslib "1.14.1"
 
-"@walletconnect/ethereum-provider@^2.7.8":
+"@walletconnect/ethereum-provider@^2.8.3":
   version "2.8.4"
   resolved "https://registry.yarnpkg.com/@walletconnect/ethereum-provider/-/ethereum-provider-2.8.4.tgz#c627c237b479194efc542b8475596bae12fde52d"
   integrity sha512-z7Yz4w8t3eEFv8vQ8DLCgDWPah2aIIyC0iQdwhXgJenQTVuz7JJZRrJUUntzudipHK/owA394c1qTPF0rsMSeQ==
@@ -3169,31 +3183,31 @@
   resolved "https://registry.yarnpkg.com/@walletconnect/mobile-registry/-/mobile-registry-1.4.0.tgz#502cf8ab87330841d794819081e748ebdef7aee5"
   integrity sha512-ZtKRio4uCZ1JUF7LIdecmZt7FOLnX72RPSY7aUVu7mj7CSfxDwUn6gBuK6WGtH+NZCldBqDl5DenI5fFSvkKYw==
 
-"@walletconnect/modal-core@2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@walletconnect/modal-core/-/modal-core-2.5.4.tgz#7d739a90a9cf103067eea46507ea649e8dada436"
-  integrity sha512-ISe4LqmEDFU7b6rLgonqaEtMXzG6ko13HA7S8Ty3d7GgfAEe29LM1dq3zo8ehEOghhofhj1PiiNfvaogZKzT1g==
+"@walletconnect/modal-core@2.5.5":
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@walletconnect/modal-core/-/modal-core-2.5.5.tgz#dc2ee96b1dd7cd9a1dc5e276c46068ee6349616a"
+  integrity sha512-M2BKcI5aqnGfMAz+MgTsvnTRzD25uz9YJ3/xuzy+ovgFCl2VCGH2Vdrf6Ptu+UR6UMuPdssG1TXXe1rd907Dxw==
   dependencies:
     buffer "6.0.3"
     valtio "1.10.6"
 
-"@walletconnect/modal-ui@2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@walletconnect/modal-ui/-/modal-ui-2.5.4.tgz#0433fb0226dd47e17fede620c5a5ff332baed155"
-  integrity sha512-5qLLjwbE3YC4AsCVhf8J87otklkApcQ5DCMykOcS0APPv8lKQ46JxpQhfWwRYaUkuIiHonI9h1YxFARDkoaI9g==
+"@walletconnect/modal-ui@2.5.5":
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@walletconnect/modal-ui/-/modal-ui-2.5.5.tgz#f2ab96ab72f0f1325252224560ec610b73d1684c"
+  integrity sha512-g0LJ/gRhZ5E30gk4GnMpDlQzLFWyRjsJp57s9rZmlVkry5mfhCZ3Oh0mfgv2/ILVxdB4fUo1BjatKyOpSogOmg==
   dependencies:
-    "@walletconnect/modal-core" "2.5.4"
+    "@walletconnect/modal-core" "2.5.5"
     lit "2.7.5"
     motion "10.16.2"
     qrcode "1.5.3"
 
 "@walletconnect/modal@^2.5.4":
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/@walletconnect/modal/-/modal-2.5.4.tgz#66659051f9c0f35c151d3a8d940f8c64d42fab74"
-  integrity sha512-JAKMcCd4JQvSEr7pNitg3OBke4DN1JyaQ7bdi3x4T7oLgOr9Y88qdkeOXko/0aJonDHJsM88hZ10POQWmKfEMA==
+  version "2.5.5"
+  resolved "https://registry.yarnpkg.com/@walletconnect/modal/-/modal-2.5.5.tgz#703eb076af4442dcd14a3b0b87863f17283f6514"
+  integrity sha512-y1PH1xXzFDtVZErfQErPPJzPU9DKLp4M0IEaza8LfegqHfTFaGa0s3AL+i5+7FIk9+5OHSv0Wv+e5tmSZt96yA==
   dependencies:
-    "@walletconnect/modal-core" "2.5.4"
-    "@walletconnect/modal-ui" "2.5.4"
+    "@walletconnect/modal-core" "2.5.5"
+    "@walletconnect/modal-ui" "2.5.5"
 
 "@walletconnect/qrcode-modal@^1.8.0":
   version "1.8.0"
@@ -13155,20 +13169,6 @@ snake-case@^2.1.0:
   integrity sha512-FMR5YoPFwOLuh4rRz92dywJjyKYZNLpMn1R5ujVpIYkbA9p01fq8RMg0FkO4M+Yobt4MjHeLTJVm5xFFBHSV2Q==
   dependencies:
     no-case "^2.2.0"
-
-snapshot-labs-lock-dev@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/snapshot-labs-lock-dev/-/snapshot-labs-lock-dev-0.0.3.tgz#de5adaa5df7e3fd48d9d231b41a837949ec176ef"
-  integrity sha512-kUr+BvFqsR8nGqEPD4/rwyf0VWg+n6ZHNs1iSLC/1GcCzpKb6xHEuE8sG37hy4er1q3rGwGgvCVpRweSlHCgUQ==
-  dependencies:
-    "@coinbase/wallet-sdk" "^3.4.0"
-    "@gnosis.pm/safe-apps-provider" "^0.14.0"
-    "@gnosis.pm/safe-apps-sdk" "^7.8.0"
-    "@portis/web3" "^4.0.6"
-    "@toruslabs/torus-embed" "^1.12.1"
-    "@walletconnect/ethereum-provider" "^2.7.8"
-    "@walletconnect/modal" "^2.5.4"
-    fortmatic "^2.2.1"
 
 sockjs@^0.3.24:
   version "0.3.24"

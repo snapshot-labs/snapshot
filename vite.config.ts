@@ -55,11 +55,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@snapshot-labs/lock': path.resolve(
-        __dirname,
-        'node_modules/snapshot-labs-lock-dev'
-      )
+      '@': path.resolve(__dirname, './src')
     }
   },
   test: {
