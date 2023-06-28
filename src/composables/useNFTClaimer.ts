@@ -150,7 +150,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           WETH_CONTRACT_ADDRESS,
           WETH_CONTRACT_ABI,
           'approve',
-          [address, mintPriceWei]
+          [address, mintPriceWei.value]
         );
         updateProgress(
           Step.APPROVE_WETH_BALANCE,
