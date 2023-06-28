@@ -28,21 +28,18 @@ const enabled = computed(() => {
 const isSpaceController = true;
 
 const isValidJson = ref(false);
-const input = ref(
-  spaceCollectionsInfo.value[props.space.id] ?? {
-    maxSupply: '',
-    formattedMintPrice: '',
-    proposerFee: '',
-    treasuryAddress: ''
-  }
-);
+const input = ref();
 
 const isViewOnly = computed(() => {
-  return !isSpaceController || spaceCollectionsInfo.value[props.space.id];
+  return !isSpaceController;
 });
 
 function submit() {
-  deploy(input.value);
+  if (spaceCollectionsInfo.value[props.space.id].address) {
+    console.log('Update not implemented yet!');
+  } else {
+    deploy(input.value);
+  }
 }
 
 function toggleStatus() {
@@ -54,7 +51,17 @@ function nextStep() {
   emit('next');
 }
 
-onMounted(init);
+watch(
+  () => init(),
+  () => {
+    input.value = spaceCollectionsInfo.value[props.space.id] ?? {
+      maxSupply: '',
+      formattedMintPrice: '',
+      proposerFee: '',
+      treasuryAddress: ''
+    };
+  }
+);
 </script>
 
 <template>
