@@ -69,26 +69,25 @@ watch(
               </span>
               <span class="text-sm leading-tight">Mint price</span>
             </div>
-            <div class="flex flex-col">
-              <a
-                v-tippy="{ content: 'View this collection on OpenSea' }"
-                class="flex flex-row"
-                :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
-                target="_blank"
-              >
-                <IconOpensea />
-              </a>
-            </div>
-            <div class="flex flex-col">
-              <a
-                v-tippy="{ content: 'View this contract on etherscan' }"
-                class="flex flex-row"
-                :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
-                target="_blank"
-              >
-                <IconEtherscan />
-              </a>
-            </div>
+
+            <a
+              v-tippy="{ content: 'View this collection on OpenSea' }"
+              class="flex flex-row"
+              :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
+              target="_blank"
+            >
+              <IconOpensea />
+            </a>
+
+            <a
+              v-tippy="{ content: 'View this contract on etherscan' }"
+              class="flex flex-row"
+              :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+              target="_blank"
+            >
+              <IconEtherscan />
+            </a>
+
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"
               :collection-info="collectionInfo"
@@ -121,9 +120,15 @@ watch(
           </div>
           <div class="flex gap-x-3">
             <BaseLink
-              :link="`https://goerli.etherscan.io/tx/${nft.txHash}`"
+              :link="
+                explorerUrl(
+                  '5',
+                  `${spaceCollectionInfo.address}?a=${collectionInfo.id}`,
+                  'token'
+                )
+              "
               :hide-external-icon="true"
-              title="View the transaction on Etherscan"
+              title="View this token on Etherscan"
             >
               <IconEtherscan />
             </BaseLink>

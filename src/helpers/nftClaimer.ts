@@ -93,6 +93,7 @@ export async function getUserNfts(minterAddress: string) {
           proposal {
             id
             spaceCollection {
+              id
               spaceId
             }
           }
@@ -159,7 +160,7 @@ export async function getProposals(ids: string[]) {
 }
 
 export function openseaLink(
-  _mintNetwork: number,
+  _mintNetwork: string,
   address: string,
   tokenId?: string
 ) {

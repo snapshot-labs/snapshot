@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getProposals } from '@/helpers/nftClaimer';
 import { BigNumber } from '@ethersproject/bignumber';
+import { explorerUrl } from '@/helpers/utils';
+import { openseaLink } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   open: boolean;
@@ -43,7 +45,7 @@ defineEmits(['close']);
           <div class="flex justify-between">
             <NFTClaimerLogo class="shrink-0" />
             <div class="mx-3 grow">
-              <div class="flex items-center">
+              <div class="flex items-start gap-x-3">
                 <div>
                   <router-link
                     :to="{
@@ -57,6 +59,35 @@ defineEmits(['close']);
                     {{ proposals[n.proposal.id].title }}
                   </router-link>
                 </div>
+                <a
+                  v-tippy="{ content: 'View this token on OpenSea' }"
+                  class="flex flex-row"
+                  :href="
+                    openseaLink(
+                      '5',
+                      n.proposal.spaceCollection.id,
+                      n.proposal.id
+                    )
+                  "
+                  target="_blank"
+                >
+                  <IconOpensea />
+                </a>
+
+                <a
+                  v-tippy="{ content: 'View this token on etherscan' }"
+                  class="flex flex-row"
+                  :href="
+                    explorerUrl(
+                      '5',
+                      `${n.proposal.spaceCollection.id}?a=${n.proposal.id}`,
+                      'token'
+                    )
+                  "
+                  target="_blank"
+                >
+                  <IconEtherscan />
+                </a>
               </div>
               <div class="flex">
                 <LinkSpace
