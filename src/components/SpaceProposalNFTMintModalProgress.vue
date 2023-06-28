@@ -10,7 +10,7 @@ function nextStepStatus(step: number) {
   if (step + 1 > steps.length - 1) {
     return false;
   }
-  console.log(progress.value[steps[step]].status);
+
   return progress.value[steps[step + 1]].status;
 }
 </script>
