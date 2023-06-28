@@ -35,7 +35,7 @@ const isViewOnly = computed(() => {
 });
 
 function submit() {
-  if (spaceCollectionsInfo.value[props.space.id].address) {
+  if (spaceCollectionsInfo.value[props.space.id]?.address) {
     console.log('Update not implemented yet!');
   } else {
     deploy(input.value);
@@ -60,7 +60,8 @@ watch(
       proposerFee: '',
       treasuryAddress: ''
     };
-  }
+  },
+  { immediate: true }
 );
 </script>
 
@@ -80,17 +81,17 @@ watch(
       </span>
     </BaseMessageBlock>
     <BaseBlock
-      v-if="spaceCollectionsInfo[props.space.id]"
+      v-if="spaceCollectionsInfo[props.space.id]?.address"
       class="mb-2 mt-3"
       title="Mint status"
     >
       <div class="flex gap-x-4">
         <div class="grow">
-          <div>
+          <p>
             At any time, you can disable/enable the minting status of this
             space. Disabling will only prevent minting of future NFTs, and does
             not affect existing tokens.
-          </div>
+          </p>
         </div>
         <div>
           <BaseButton
@@ -156,6 +157,7 @@ watch(
     <BaseButton
       v-if="!spaceCollectionsInfo[props.space.id]"
       primary
+      class="w-full"
       :disabled="isViewOnly"
       :loading="loading"
       @click="submit"

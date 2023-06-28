@@ -215,19 +215,20 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
-  async function init() {
+  async function init(force = false) {
     try {
       if (!space) return;
 
       let spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
 
-      if (!spaceCollectionInfo) {
+      if (!spaceCollectionInfo || force) {
         console.debug('_init FRESH:space', space.id);
         const info = await getSpaceCollection(space.id);
 
         if (info) {
           spaceCollectionInfo = {
             address: info.id,
+            mintCount: parseInt(info.mintCount),
             maxSupply: parseInt(info.maxSupply),
             mintPrice: BigNumber.from(info.mintPrice),
             formattedMintPrice: formatUnits(info.mintPrice, 18),
@@ -273,26 +274,38 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         mintPriceWei.value = spaceCollectionInfo.mintPrice;
       }
       inited.value = true;
+
+      return true;
     } catch (e) {
       console.error('NFTClaimer: unable to fetch data from Subgraph');
     }
   }
 
-  async function toggleMintStatus(status) {
+  async function toggleMintStatus(status: boolean) {
     const txPendingId = createPendingTransaction();
     try {
       console.debug(':toggleMintStatus start');
-      return sendTransaction(
+      const tx = await sendTransaction(
         auth.web3,
         spaceCollectionsInfo.value[space.id].address,
         MINT_CONTRACT_ABI,
         'setPowerSwitch',
         [status]
       );
-    } catch (e) {
-      console.debug(e);
+
+      updatePendingTransaction(txPendingId, { hash: tx.hash });
+
+      const receipt = await tx.wait();
+
+      init(true);
+      return receipt;
+    } catch (e: any) {
+      if (e.code !== 'ACTION_REJECTED') {
+        console.error(e);
+      }
     } finally {
       removePendingTransaction(txPendingId);
+      console.debug(':toggleMintStatus end');
     }
   }
 
