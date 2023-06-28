@@ -17,7 +17,7 @@ const mintPercent = computed(() => (props.supply / props.maxSupply) * 100);
         </span>
         <span>/ {{ props.maxSupply }} minted</span>
       </div>
-      <i-ho-arrow-top-right-on-square class="ml-2 mt-2 text-xs" />
+      <slot name="secondary" />
     </div>
 
     <div

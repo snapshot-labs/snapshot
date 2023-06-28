@@ -67,7 +67,11 @@ const collectionInfo = computed(() => {
           tabindex="0"
           title="View list of minted NFTs"
           @click="isModalExploreOpen = true"
-        />
+        >
+          <template #secondary>
+            <i-ho-arrow-top-right-on-square class="ml-2 mt-2 text-xs" />
+          </template>
+        </SpaceProposalNFTProgress>
       </div>
       <div
         class="flex w-full flex-row content-center items-center justify-between border-t px-4 py-3"

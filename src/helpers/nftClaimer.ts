@@ -157,3 +157,13 @@ export async function getProposals(ids: string[]) {
     return e;
   }
 }
+
+export function openseaLink(
+  _mintNetwork: number,
+  address: string,
+  tokenId?: string
+) {
+  return `https://testnets.opensea.io/assets/goerli/${address}${
+    tokenId ? `/${tokenId}` : ''
+  }`;
+}
