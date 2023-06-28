@@ -35,7 +35,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function mintPrice() view returns (uint256)',
     'function mintPrices(uint256 proposalId) view returns (uint256)',
     'function maxSupply() view returns (uint128)',
-    'function supplies(uint256 proposalId) view returns (uint256)'
+    'function supplies(uint256 proposalId) view returns (uint256)',
+    'function setPowerSwitch(bool enable)'
   ];
 
   const mintNetwork = ref(NETWORK_KEY);
@@ -277,35 +278,23 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
-  // async function enableNFTClaimer() {
-  //   const txPendingId = createPendingTransaction();
-  //   try {
-  //     console.debug(':enableNFTClaimer start');
-  //     await _switchNetwork();
-
-  //     const salt = BigNumber.from(randomBytes(32)).toString();
-  //     const signature = await _getPayload('proposal', salt);
-  //     console.debug(':enableNFTClaimer signature', signature);
-  //     return;
-  //   } catch (e) {
-  //     notify(['red', t('notify.somethingWentWrong')]);
-  //     console.debug(e);
-  //   } finally {
-  //     removePendingTransaction(txPendingId);
-  //   }
-  // }
-
-  // async function disableNFTClaimer() {
-  //   const txPendingId = createPendingTransaction();
-  //   try {
-  //     console.debug(':disableNFTClaimer start');
-  //   } catch (e) {
-  //     notify(['red', t('notify.somethingWentWrong')]);
-  //     console.debug(e);
-  //   } finally {
-  //     removePendingTransaction(txPendingId);
-  //   }
-  // }
+  async function toggleMintStatus(status) {
+    const txPendingId = createPendingTransaction();
+    try {
+      console.debug(':toggleMintStatus start');
+      return sendTransaction(
+        auth.web3,
+        spaceCollectionsInfo.value[space.id].address,
+        MINT_CONTRACT_ABI,
+        'setPowerSwitch',
+        [status]
+      );
+    } catch (e) {
+      console.debug(e);
+    } finally {
+      removePendingTransaction(txPendingId);
+    }
+  }
 
   async function sendTx(
     address: string,
@@ -512,8 +501,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     mintCurrency,
     inited,
     profiles,
-    // enableNFTClaimer,
-    // disableNFTClaimer,
+    toggleMintStatus,
     mint,
     deploy,
     init
