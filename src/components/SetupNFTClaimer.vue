@@ -113,6 +113,7 @@ watch(
           label="Max supply"
           hint="Maximum number of NFTs per proposal"
           placeholder="100"
+          min="1"
           type="number"
           :disabled="isViewOnly"
           autofocus
@@ -135,6 +136,8 @@ watch(
           type="number"
           hint="Percentage of the mint price, shared with the proposal author"
           placeholder="5"
+          min="0"
+          max="100"
           :disabled="isViewOnly"
         />
 
