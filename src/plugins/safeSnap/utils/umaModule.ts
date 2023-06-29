@@ -6,8 +6,20 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { ERC20_ABI, UMA_MODULE_ABI, UMA_ORACLE_ABI } from '../constants';
+import {
+  ERC20_ABI,
+  UMA_MODULE_ABI,
+  UMA_ORACLE_ABI,
+  contractData
+} from '../constants';
 import { pageEvents } from './events';
+import filter from 'lodash/filter';
+
+function getDeployBlock(network: string, name: string): number {
+  const data = filter(contractData, { network, name });
+  if (data.length === 1) return data[0].deployBlock;
+  return 0;
+}
 
 const getBondDetailsUma = async (
   provider: StaticJsonRpcProvider,
@@ -138,13 +150,12 @@ export const getModuleDetailsUma = async (
     UMA_ORACLE_ABI,
     provider
   );
-
   const latestBlock = await provider.getBlock('latest');
   // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
   // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
-  const oGstartBlock = network === '1' ? 17167414 : 0;
-  const oOStartBlock = network === '1' ? 16636058 : 0;
-  const maxRange = network === '1' ? 3000 : 10000;
+  const oGstartBlock = getDeployBlock(network, 'OptimisticGovernor');
+  const oOStartBlock = getDeployBlock(network, 'OptimisticOracleV3');
+  const maxRange = network === '1' || network === '5' ? 3000 : 10000;
 
   const [assertionEvents, transactionsProposedEvents, executionEvents] =
     await Promise.all([
@@ -160,9 +171,6 @@ export const getModuleDetailsUma = async (
           );
         }
       ),
-      // Check if this specific proposal has already been executed.
-      // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
-      // this prevents block range too large errors.
       pageEvents(
         oGstartBlock,
         latestBlock.number,
