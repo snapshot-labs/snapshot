@@ -30,12 +30,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
   const MINT_CONTRACT_ABI = [
-    'function balanceOf(address, uint256 id) view returns (uint256)',
     'function mint(address proposer, uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
-    'function mintPrice() view returns (uint256)',
-    'function mintPrices(uint256 proposalId) view returns (uint256)',
-    'function maxSupply() view returns (uint128)',
-    'function supplies(uint256 proposalId) view returns (uint256)',
     'function setPowerSwitch(bool enable)'
   ];
 
