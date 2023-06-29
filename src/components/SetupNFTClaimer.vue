@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { validateForm } from '@/helpers/validation';
+import pick from 'lodash/pick';
 
 const props = defineProps<{
   context: string;
@@ -19,6 +21,23 @@ const {
   toggleMintStatus
 } = useNFTClaimer(props.space);
 
+const schema = {
+  type: 'object',
+  properties: {
+    maxSupply: { type: 'integer', minimum: 1 },
+    formattedMintPrice: { type: 'number', format: 'ethValue' },
+    proposerFee: { type: 'integer', minimum: 0, maximum: 100 },
+    treasuryAddress: { type: 'string', format: 'address' }
+  },
+  required: [
+    'maxSupply',
+    'formattedMintPrice',
+    'proposerFee',
+    'treasuryAddress'
+  ],
+  additionalProperties: false
+};
+
 const enabled = computed(() => {
   return spaceCollectionsInfo.value[props.space.id]?.enabled;
 });
@@ -29,6 +48,10 @@ const isSpaceController = true;
 
 const isValidJson = ref(false);
 const input = ref();
+
+const validationErrors = computed(() => {
+  return validateForm(schema, input.value);
+});
 
 const isViewOnly = computed(() => {
   return !isSpaceController;
@@ -54,12 +77,19 @@ function nextStep() {
 watch(
   () => init(),
   () => {
-    input.value = spaceCollectionsInfo.value[props.space.id] ?? {
-      maxSupply: '',
-      formattedMintPrice: '',
-      proposerFee: '',
-      treasuryAddress: ''
-    };
+    input.value = spaceCollectionsInfo.value[props.space.id]
+      ? pick(spaceCollectionsInfo.value[props.space.id], [
+          'maxSupply',
+          'formattedMintPrice',
+          'proposerFee',
+          'treasuryAddress'
+        ])
+      : {
+          maxSupply: '',
+          formattedMintPrice: '',
+          proposerFee: '',
+          treasuryAddress: ''
+        };
   },
   { immediate: true }
 );
@@ -106,47 +136,47 @@ watch(
     </BaseBlock>
 
     <BaseBlock title="SnapIt!">
-      <div class="flex w-full flex-col">
+      <div class="flex w-full flex-col gap-y-3">
         <TuneInput
-          v-model="input.maxSupply"
-          class="mb-3"
+          v-model.number="input.maxSupply"
           label="Max supply"
           hint="Maximum number of NFTs per proposal"
           placeholder="100"
           min="1"
           type="number"
           :disabled="isViewOnly"
+          :error="validationErrors?.maxSupply"
           autofocus
         />
 
         <TuneInput
-          v-model="input.formattedMintPrice"
-          class="mb-3"
+          v-model.number="input.formattedMintPrice"
           label="Mint price"
           :hint="`In ${mintCurrency}`"
           type="number"
           placeholder="0.5"
+          :error="validationErrors?.formattedMintPrice"
           :disabled="isViewOnly"
         />
 
         <TuneInput
-          v-model="input.proposerFee"
-          class="mb-3"
+          v-model.number="input.proposerFee"
           label="Proposer fees"
           type="number"
           hint="Percentage of the mint price, shared with the proposal author"
           placeholder="5"
           min="0"
           max="100"
+          :error="validationErrors?.proposerFee"
           :disabled="isViewOnly"
         />
 
         <TuneInput
-          v-model="input.treasuryAddress"
-          class="mb-3"
+          v-model.trim="input.treasuryAddress"
           label="Space treasury wallet"
           hint="Wallet address"
           placeholder="0x0000"
+          :error="validationErrors?.treasuryAddress"
           :disabled="isViewOnly"
         />
 
@@ -167,10 +197,14 @@ watch(
     >
       Setup SnapIt!
     </BaseButton>
-
     <div v-else class="flex">
       <div class="grow"></div>
-      <BaseButton class="grow" primary :disabled="isViewOnly" @click="submit">
+      <BaseButton
+        class="grow"
+        primary
+        :disabled="isViewOnly || Object.keys(validationErrors).length > 0"
+        @click="submit"
+      >
         Save
       </BaseButton>
     </div>
