@@ -23,9 +23,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function allowance(address owner, address spender) external view returns (uint256)',
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const DEPLOY_CONTRACT_ADDRESS = '0x541acad0f4b9b683ffc43a39836eb4312044c59c';
-  const DEPLOY_IMPLEMENTATION_ADDRESS =
-    '0x07c3641ef7b2994e5029eab74f32a18b0944b70e';
   const DEPLOY_ABI = [
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
@@ -456,32 +453,35 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     loading.value = true;
 
     try {
-      const { signature, initializer, salt } = await _getBackendPayload(
-        'deploy',
-        {
-          id: space.id,
-          address: web3Account.value,
-          salt: generateSalt(),
-          maxSupply: params.maxSupply,
-          mintPrice: parseUnits(
-            params.formattedMintPrice.toString(),
-            18
-          ).toString(),
-          proposerFee: params.proposerFee,
-          spaceTreasury: params.treasuryAddress
-        }
-      );
+      const {
+        signature,
+        initializer,
+        salt,
+        verifyingContract,
+        implementation
+      } = await _getBackendPayload('deploy', {
+        id: space.id,
+        address: web3Account.value,
+        salt: generateSalt(),
+        maxSupply: params.maxSupply,
+        mintPrice: parseUnits(
+          params.formattedMintPrice.toString(),
+          18
+        ).toString(),
+        proposerFee: params.proposerFee,
+        spaceTreasury: params.treasuryAddress
+      });
 
       await sendTx(
-        DEPLOY_IMPLEMENTATION_ADDRESS,
+        implementation,
         () => {
           return sendTransaction(
             auth.web3,
-            DEPLOY_CONTRACT_ADDRESS,
+            verifyingContract,
             DEPLOY_ABI,
             'deployProxy',
             [
-              DEPLOY_IMPLEMENTATION_ADDRESS,
+              implementation,
               initializer,
               salt,
               signature.v,
