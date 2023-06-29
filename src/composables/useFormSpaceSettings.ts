@@ -45,15 +45,7 @@ const EMPTY_SPACE_FORM = {
   domain: '',
   skin: '',
   guidelines: '',
-  template: '',
-  nftClaimer: {
-    maxSupply: 10000,
-    mintPrice: 0,
-    proposerFee: 0,
-    address: '',
-    network: '137',
-    enabled: false
-  }
+  template: ''
 };
 
 const formSetup = ref(clone(EMPTY_SPACE_FORM));
