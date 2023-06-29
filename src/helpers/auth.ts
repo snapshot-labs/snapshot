@@ -18,11 +18,11 @@ const lockConnectors = {
   kaikas
 };
 
-Object.entries(connectors).forEach((connector: any) => {
+Object.entries(connectors).forEach(([connectorName, params]: [string, any]) => {
   options.connectors.push({
-    key: connector[0],
-    connector: lockConnectors[connector[0]],
-    options: connector[1].options
+    key: connectorName,
+    connector: lockConnectors[connectorName],
+    options: params.options
   });
 });
 
