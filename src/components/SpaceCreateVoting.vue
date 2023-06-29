@@ -74,6 +74,8 @@ onMounted(async () => {
   // Initialize the start date to current
   if (!sourceProposalLoaded.value && !userSelectedDateStart.value)
     form.value.start = Number((Date.now() / 1e3).toFixed());
+  // Initialize the proposal type if set in space
+  if (props.space?.voting?.type) form.value.type = props.space.voting.type;
   form.value.snapshot = await getSnapshot(props.space.network);
 });
 
