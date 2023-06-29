@@ -497,6 +497,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           return '';
         }
       );
+      init(true);
     } finally {
       loading.value = false;
     }
