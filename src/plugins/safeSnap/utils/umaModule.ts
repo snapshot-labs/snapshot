@@ -1,3 +1,4 @@
+import gql from 'graphql-tag';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -20,6 +21,70 @@ function getDeployBlock(network: string, name: string): number {
   if (data.length === 1) return data[0].deployBlock;
   return 0;
 }
+function getOracleV3Subgraph(network: string): string {
+  const results = filter(contractData, { network, name: 'OptimisticOracleV3' });
+  if (results.length > 1)
+    throw new Error(
+      `Too many results finding oracle v3 subgraph on network ${network}`
+    );
+  if (results.length < 1)
+    throw new Error(
+      `No results finding oracle v3 subgraph on network ${network}`
+    );
+  if (!results[0].subgraph)
+    throw new Error(
+      `No subgraph url defined for oracle v3 on network ${network}`
+    );
+  return results[0].subgraph;
+}
+
+export const queryGql = async (url: string, query: string) => {
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({ query: query })
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `Network Error: ${response.status}, message: ${errorData.message}`
+      );
+    }
+    const data = await response.json();
+    // Throw an error if there are errors in the GraphQL response
+    if (data.errors) {
+      throw new Error(
+        `GraphQL Error: ${data.errors.map(error => error.message).join(', ')}`
+      );
+    }
+    return data.data;
+  } catch (error) {
+    throw new Error(`Network error: ${error.message}`);
+  }
+};
+
+const findAssertionsGql = async (
+  network: string,
+  params: { assertionId: string; claim: string; callbackRecipient }
+) => {
+  const oracleUrl = getOracleV3Subgraph(network);
+  const request = `
+  {
+    assertions(where:{assertionId:"${params.assertionId}",claim:"${params.claim}",callbackRecipient:"${params.callbackRecipient}"}){
+      expirationTime
+      assertionHash,
+      assertionLogIndex
+      settlementHash
+    }
+  }
+  `;
+  const result = await queryGql(oracleUrl, request);
+  return result?.assertions ?? [];
+};
 
 const getBondDetailsUma = async (
   provider: StaticJsonRpcProvider,
@@ -137,7 +202,8 @@ export const getModuleDetailsUma = async (
       livenessPeriod: livenessPeriod
     };
   }
-  // Check for active proposals
+  // Check for active proposals. proposal hash can be identical across assertions
+  // but the explanation field should be unique. we will filter this out later.
   const assertionId = await moduleContract.assertionIds(proposalHash);
 
   const activeProposal =
@@ -196,6 +262,7 @@ export const getModuleDetailsUma = async (
         }
       )
     ]);
+
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
       event.args?.claim === ancillaryData &&
@@ -259,6 +326,191 @@ export const getModuleDetailsUma = async (
     noTransactions: false,
     activeProposal: activeProposal,
     assertionEvent: fullAssertionEvent[0],
+    proposalExecuted: proposalExecuted,
+    livenessPeriod: livenessPeriod.toString()
+  };
+};
+
+// This is intended to function identically to getModuleDetailsUma but use subgraphs rather than web3 events.
+// This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
+// and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
+export const getModuleDetailsUmaGql = async (
+  provider: StaticJsonRpcProvider,
+  network: string,
+  moduleAddress: string,
+  explanation: string,
+  transactions: any
+) => {
+  const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
+  const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
+    [moduleAddress, 'avatar'],
+    [moduleAddress, 'optimisticOracleV3'],
+    [moduleAddress, 'rules'],
+    [moduleAddress, 'bondAmount'],
+    [moduleAddress, 'liveness']
+  ]);
+  let needsApproval = false;
+  const optimisticOracle = moduleDetails[1][0];
+  const rules = moduleDetails[2][0];
+  const minimumBond = moduleDetails[3][0];
+  const livenessPeriod = moduleDetails[4][0];
+  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
+
+  if (
+    Number(minimumBond) > 0 &&
+    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)
+  ) {
+    needsApproval = true;
+  }
+
+  // Create ancillary data for proposal hash
+  let ancillaryData = '';
+  let proposalHash: string;
+  if (transactions !== undefined) {
+    proposalHash = keccak256(
+      defaultAbiCoder.encode(
+        ['(address to, uint8 operation, uint256 value, bytes data)[]'],
+        [transactions]
+      )
+    );
+
+    ancillaryData = pack(
+      ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
+      [
+        '',
+        pack(['string', 'string'], ['proposalHash', ':']),
+        toUtf8Bytes(proposalHash.replace(/^0x/, '')),
+        pack(
+          ['string', 'string', 'string', 'string'],
+          [',', 'explanation', ':', '"']
+        ),
+        toUtf8Bytes(explanation.replace(/^0x/, '')),
+        pack(
+          ['string', 'string', 'string', 'string', 'string'],
+          ['"', ',', 'rules', ':', '"']
+        ),
+        toUtf8Bytes(rules.replace(/^0x/, '')),
+        pack(['string'], ['"'])
+      ]
+    );
+  } else {
+    return {
+      dao: moduleDetails[0][0],
+      oracle: moduleDetails[1][0],
+      rules: moduleDetails[2][0],
+      minimumBond: minimumBond,
+      expiration: moduleDetails[4][0],
+      allowance: bondDetails.currentUserBondAllowance,
+      collateral: bondDetails.collateral,
+      decimals: bondDetails.decimals,
+      symbol: bondDetails.symbol,
+      userBalance: bondDetails.currentUserBalance,
+      needsBondApproval: needsApproval,
+      noTransactions: true,
+      activeProposal: false,
+      assertionEvent: undefined,
+      proposalExecuted: false,
+      livenessPeriod: livenessPeriod
+    };
+  }
+  // Check for active proposals. proposal hash can be identical across assertions
+  // but the explanation field should be unique. we will filter this out later.
+  const assertionId = await moduleContract.assertionIds(proposalHash);
+
+  const activeProposal =
+    assertionId !==
+    '0x0000000000000000000000000000000000000000000000000000000000000000';
+
+  // Search for requests with matching ancillary data
+  const oracleContract = new Contract(
+    optimisticOracle,
+    UMA_ORACLE_ABI,
+    provider
+  );
+
+  const latestBlock = await provider.getBlock('latest');
+  // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
+  // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
+  const oGstartBlock = network === '1' ? 17167414 : 0;
+  const maxRange = network === '1' ? 3000 : 10000;
+
+  // TODO: use og subgraph to replace need for these calls
+  const [transactionsProposedEvents, executionEvents] = await Promise.all([
+    // Check if this specific proposal has already been executed.
+    // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
+    // this prevents block range too large errors.
+    pageEvents(
+      oGstartBlock,
+      latestBlock.number,
+      maxRange,
+      ({ start, end }: { start: number; end: number }) => {
+        return moduleContract.queryFilter(
+          moduleContract.filters.TransactionsProposed(),
+          start,
+          end
+        );
+      }
+    ),
+    pageEvents(
+      oGstartBlock,
+      latestBlock.number,
+      maxRange,
+      ({ start, end }: { start: number; end: number }) => {
+        return moduleContract.queryFilter(
+          moduleContract.filters.ProposalExecuted(proposalHash),
+          start,
+          end
+        );
+      }
+    )
+  ]);
+  const [assertion0] = await findAssertionsGql(network, {
+    assertionId,
+    claim: ancillaryData,
+    callbackRecipient: moduleAddress
+  });
+  const assertionEvent = assertion0
+    ? {
+        expirationTimestamp: assertion0.expirationTime,
+        isExpired:
+          Math.floor(Date.now() / 1000) >= Number(assertion0.expirationTime),
+        isSettled: assertion0.settlementHash ? true : false,
+        proposalHash,
+        proposalTxHash: assertion0.assertionHash,
+        logIndex: assertion0.assertionLogIndex
+      }
+    : undefined;
+
+  const thisProposalTransactionsProposedEvents =
+    transactionsProposedEvents.filter(
+      event => toUtf8String(event.args?.explanation) === explanation
+    );
+
+  const assertion = thisProposalTransactionsProposedEvents.map(
+    tx => tx.args?.assertionId
+  );
+
+  const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
+
+  const proposalExecuted = assertion.some(assertionId =>
+    assertionIds.includes(assertionId)
+  );
+
+  return {
+    dao: moduleDetails[0][0],
+    oracle: moduleDetails[1][0],
+    rules: moduleDetails[2][0],
+    minimumBond: minimumBond,
+    expiration: moduleDetails[4][0],
+    allowance: bondDetails.currentUserBondAllowance,
+    collateral: bondDetails.collateral,
+    decimals: bondDetails.decimals,
+    symbol: bondDetails.symbol,
+    userBalance: bondDetails.currentUserBalance,
+    needsBondApproval: needsApproval,
+    noTransactions: false,
+    activeProposal: activeProposal,
+    assertionEvent,
     proposalExecuted: proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };
