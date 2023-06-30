@@ -35,7 +35,7 @@ const schema = computed(() => {
     type: 'object',
     properties: {
       maxSupply: { type: 'integer', minimum: 1 },
-      formattedMintPrice: { type: 'number', format: 'ethValue' },
+      formattedMintPrice: { type: 'number', format: 'ethValue', minimum: 0 },
       proposerFee: {
         type: 'integer',
         minimum: 0,
@@ -192,6 +192,7 @@ watch(
         <TuneInput
           v-model.number="input.formattedMintPrice"
           label="Mint price"
+          min="0"
           :hint="`In ${mintCurrency}`"
           type="number"
           placeholder="0.5"
