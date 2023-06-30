@@ -65,18 +65,6 @@ const isValidJson = ref(false);
 const input = ref();
 
 const validationErrors = computed(() => {
-  console.log(Object.values(input.value));
-  console.log(
-    Object.values(
-      pick(spaceCollectionsInfo.value[props.space.id], [
-        'maxSupply',
-        'formattedMintPrice',
-        'proposerFee',
-        'treasuryAddress'
-      ])
-    )
-  );
-
   dirtyFields.value =
     Object.values(input.value).toString() !==
     Object.values(
@@ -105,6 +93,15 @@ function submit() {
 
 function toggleStatus() {
   toggleMintStatus(!spaceCollectionsInfo.value[props.space.id].enabled);
+}
+
+function resetForm() {
+  input.value = pick(spaceCollectionsInfo.value[props.space.id], [
+    'maxSupply',
+    'formattedMintPrice',
+    'proposerFee',
+    'treasuryAddress'
+  ]);
 }
 
 function nextStep() {
@@ -238,11 +235,13 @@ watch(
     >
       Setup SnapIt!
     </BaseButton>
-    <div v-else class="flex">
-      <div class="grow"></div>
+    <div v-else class="flex gap-5 px-4 pt-2 md:px-0">
+      <BaseButton class="mb-2 block w-full" @click="resetForm">
+        {{ $t('reset') }}
+      </BaseButton>
       <BaseButton
-        class="grow"
         primary
+        class="block w-full"
         :disabled="
           isViewOnly || Object.keys(validationErrors).length > 0 || !dirtyFields
         "
