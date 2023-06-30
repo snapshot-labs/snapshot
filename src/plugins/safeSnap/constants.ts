@@ -409,7 +409,7 @@ export const contractData: ContractData[] = [
     name: 'OptimisticGovernor',
     address: '0x28CeBFE94a03DbCA9d17143e9d2Bd1155DC26D5d',
     subgraph:
-      'https://api.thegraph.com/subgraphs/name/md0x/mainnet-optimistic-governor',
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/mainnet-optimistic-governor',
     deployBlock: 16890621
   },
   {
@@ -424,7 +424,9 @@ export const contractData: ContractData[] = [
     network: '5',
     name: 'OptimisticGovernor',
     address: '0x07a7Be7AA4AaD42696A17e974486cb64A4daC47b',
-    deployBlock: 8700589
+    deployBlock: 8700589,
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/goerli-optimistic-governor'
   },
   {
     network: '137',
@@ -448,18 +450,30 @@ export const contractData: ContractData[] = [
     network: '137',
     name: 'OptimisticGovernor',
     subgraph:
-      'https://api.thegraph.com/subgraphs/name/md0x/polygon-optimistic-governor'
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/polygon-optimistic-governor'
   },
   {
     network: '42161',
     name: 'OptimisticGovernor',
     subgraph:
-      'https://api.thegraph.com/subgraphs/name/md0x/arbitrum-optimistic-governor'
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/arbitrum-optimistic-governor'
   },
   {
     network: '10',
     name: 'OptimisticGovernor',
     subgraph:
-      'https://api.thegraph.com/subgraphs/name/md0x/optimism-optimistic-governor'
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/optimism-optimistic-governor'
+  },
+  {
+    network: '43114',
+    name: 'OptimisticGovernor',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-governor'
+  },
+  {
+    network: '100',
+    name: 'OptimisticGovernor',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/gnosis-optimistic-governor'
   }
 ];
