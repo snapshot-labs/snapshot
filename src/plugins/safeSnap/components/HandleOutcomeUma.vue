@@ -93,7 +93,7 @@ const updateDetails = async () => {
       getTransactionsUma()
     );
   } catch (e) {
-    console.error(e);
+    console.error('Error loading uma execution details', e);
   } finally {
     loading.value = false;
   }
@@ -254,10 +254,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div
-    v-if="questionState === 'error' || questionDetails === undefined"
-    class="my-4"
-  >
+  <div v-if="questionState === 'error'" class="my-4">
     {{ $t('safeSnap.labels.error') }}
   </div>
   <template v-else>
