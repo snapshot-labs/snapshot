@@ -21,21 +21,30 @@ function getDeployBlock(network: string, name: string): number {
   if (data.length === 1) return data[0].deployBlock;
   return 0;
 }
-function getOracleV3Subgraph(network: string): string {
-  const results = filter(contractData, { network, name: 'OptimisticOracleV3' });
+function getContractSubgraph(search: {
+  network: string;
+  name: string;
+}): string {
+  const results = filter(contractData, search);
   if (results.length > 1)
     throw new Error(
-      `Too many results finding oracle v3 subgraph on network ${network}`
+      `Too many results finding ${search.name} subgraph on network ${search.network}`
     );
   if (results.length < 1)
     throw new Error(
-      `No results finding oracle v3 subgraph on network ${network}`
+      `No results finding ${search.name} subgraph on network ${search.network}`
     );
   if (!results[0].subgraph)
     throw new Error(
-      `No subgraph url defined for oracle v3 on network ${network}`
+      `No subgraph url defined for ${search.name} on network ${search.network}`
     );
   return results[0].subgraph;
+}
+function getOptimisticGovernorSubgraph(network: string): string {
+  return getContractSubgraph({ network, name: 'OptimisticGovernor' });
+}
+function getOracleV3Subgraph(network: string): string {
+  return getContractSubgraph({ network, name: 'OptimisticOracleV3' });
 }
 
 export const queryGql = async (url: string, query: string) => {
@@ -84,6 +93,27 @@ const findAssertionsGql = async (
   `;
   const result = await queryGql(oracleUrl, request);
   return result?.assertions ?? [];
+};
+// Search optimistic governor proposals
+const findProposalsGql = async (
+  network: string,
+  params: { assertionId: string; explanation: string }
+) => {
+  const subgraph = getOptimisticGovernorSubgraph(network);
+  // the data is stored in hex on the graph for now, it seems awkward to convert the plaintext.
+  const explanationBytes =
+    '0x' +
+    Buffer.from(toUtf8Bytes(params.explanation.replace(/^0x/))).toString('hex');
+  const request = `
+  {
+    proposals(where:{assertionId:"${params.assertionId}",explanation:"${explanationBytes}"}){
+      id
+      executed
+    }
+  }
+  `;
+  const result = await queryGql(subgraph, request);
+  return result?.proposals ?? [];
 };
 
 const getBondDetailsUma = async (
@@ -421,54 +451,12 @@ export const getModuleDetailsUmaGql = async (
     assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
-  // Search for requests with matching ancillary data
-  const oracleContract = new Contract(
-    optimisticOracle,
-    UMA_ORACLE_ABI,
-    provider
-  );
-
-  const latestBlock = await provider.getBlock('latest');
-  // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
-  // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
-  const oGstartBlock = network === '1' ? 17167414 : 0;
-  const maxRange = network === '1' ? 3000 : 10000;
-
-  // TODO: use og subgraph to replace need for these calls
-  const [transactionsProposedEvents, executionEvents] = await Promise.all([
-    // Check if this specific proposal has already been executed.
-    // note usage of pageEvents, which query only based on a limit number of blocks within a broader range
-    // this prevents block range too large errors.
-    pageEvents(
-      oGstartBlock,
-      latestBlock.number,
-      maxRange,
-      ({ start, end }: { start: number; end: number }) => {
-        return moduleContract.queryFilter(
-          moduleContract.filters.TransactionsProposed(),
-          start,
-          end
-        );
-      }
-    ),
-    pageEvents(
-      oGstartBlock,
-      latestBlock.number,
-      maxRange,
-      ({ start, end }: { start: number; end: number }) => {
-        return moduleContract.queryFilter(
-          moduleContract.filters.ProposalExecuted(proposalHash),
-          start,
-          end
-        );
-      }
-    )
-  ]);
   const [assertion0] = await findAssertionsGql(network, {
     assertionId,
     claim: ancillaryData,
     callbackRecipient: moduleAddress
   });
+
   const assertionEvent = assertion0
     ? {
         expirationTimestamp: assertion0.expirationTime,
@@ -481,20 +469,11 @@ export const getModuleDetailsUmaGql = async (
       }
     : undefined;
 
-  const thisProposalTransactionsProposedEvents =
-    transactionsProposedEvents.filter(
-      event => toUtf8String(event.args?.explanation) === explanation
-    );
-
-  const assertion = thisProposalTransactionsProposedEvents.map(
-    tx => tx.args?.assertionId
-  );
-
-  const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
-
-  const proposalExecuted = assertion.some(assertionId =>
-    assertionIds.includes(assertionId)
-  );
+  const proposals = await findProposalsGql(network, {
+    assertionId,
+    explanation
+  });
+  const proposalExecuted = proposals?.[0]?.executed ? true : false;
 
   return {
     dao: moduleDetails[0][0],
@@ -509,9 +488,9 @@ export const getModuleDetailsUmaGql = async (
     userBalance: bondDetails.currentUserBalance,
     needsBondApproval: needsApproval,
     noTransactions: false,
-    activeProposal: activeProposal,
+    activeProposal,
     assertionEvent,
-    proposalExecuted: proposalExecuted,
+    proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };
 };
