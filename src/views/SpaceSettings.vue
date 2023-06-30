@@ -267,12 +267,7 @@ const isViewOnly = computed(() => {
           </template>
 
           <template v-if="currentPage === Page.NFTCLAIMER">
-            <SetupNFTClaimer
-              context="settings"
-              :space="space"
-              :is-space-controller="isSpaceController"
-              :is-view-only="false"
-            />
+            <SetupNFTClaimer context="settings" :space="space" />
           </template>
 
           <template v-if="currentPage === Page.ADVANCED">

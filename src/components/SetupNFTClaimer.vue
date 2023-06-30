@@ -2,6 +2,7 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { validateForm } from '@/helpers/validation';
 import pick from 'lodash/pick';
+import { getSnapshotFee } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   context: string;
@@ -10,6 +11,7 @@ const props = defineProps<{
 const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
+const snapshotFee = ref(0);
 
 const {
   deploy,
@@ -21,22 +23,32 @@ const {
   toggleMintStatus
 } = useNFTClaimer(props.space);
 
-const schema = {
-  type: 'object',
-  properties: {
-    maxSupply: { type: 'integer', minimum: 1 },
-    formattedMintPrice: { type: 'number', format: 'ethValue' },
-    proposerFee: { type: 'integer', minimum: 0, maximum: 100 },
-    treasuryAddress: { type: 'string', format: 'address' }
-  },
-  required: [
-    'maxSupply',
-    'formattedMintPrice',
-    'proposerFee',
-    'treasuryAddress'
-  ],
-  additionalProperties: false
-};
+const maxProposerCut = computed(() => {
+  return 100 - snapshotFee.value;
+});
+
+const schema = computed(() => {
+  return {
+    type: 'object',
+    properties: {
+      maxSupply: { type: 'integer', minimum: 1 },
+      formattedMintPrice: { type: 'number', format: 'ethValue' },
+      proposerFee: {
+        type: 'integer',
+        minimum: 0,
+        maximum: maxProposerCut.value
+      },
+      treasuryAddress: { type: 'string', format: 'address' }
+    },
+    required: [
+      'maxSupply',
+      'formattedMintPrice',
+      'proposerFee',
+      'treasuryAddress'
+    ],
+    additionalProperties: false
+  };
+});
 
 const enabled = computed(() => {
   return spaceCollectionsInfo.value[props.space.id]?.enabled;
@@ -50,7 +62,7 @@ const isValidJson = ref(false);
 const input = ref();
 
 const validationErrors = computed(() => {
-  return validateForm(schema, input.value);
+  return validateForm(schema.value, input.value);
 });
 
 const isViewOnly = computed(() => {
@@ -76,7 +88,7 @@ function nextStep() {
 
 watch(
   () => init(),
-  () => {
+  async () => {
     input.value = spaceCollectionsInfo.value[props.space.id]
       ? pick(spaceCollectionsInfo.value[props.space.id], [
           'maxSupply',
@@ -90,6 +102,8 @@ watch(
           proposerFee: '',
           treasuryAddress: ''
         };
+
+    snapshotFee.value = await getSnapshotFee();
   },
   { immediate: true }
 );
@@ -166,7 +180,7 @@ watch(
           hint="Percentage of the mint price, shared with the proposal author"
           placeholder="5"
           min="0"
-          max="100"
+          :max="maxProposerCut"
           :error="validationErrors?.proposerFee"
           :disabled="isViewOnly"
         />

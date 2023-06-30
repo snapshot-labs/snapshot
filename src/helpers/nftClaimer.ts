@@ -159,6 +159,23 @@ export async function getProposals(ids: string[]) {
   }
 }
 
+export async function getSnapshotFee() {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return (await res.json()).snapshotFee;
+  } catch (e) {
+    console.error('Unable to retrieve snapshotFee, default to fallback value');
+    return 5;
+  }
+}
+
 export function openseaLink(
   _mintNetwork: string,
   address: string,
