@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   primary?: boolean;
-  variant?: string;
+  variant?: 'danger';
   loading?: boolean;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
@@ -15,8 +15,7 @@ defineProps<{
       'button px-[22px] ',
       {
         'button--primary hover:brightness-95': primary,
-        'button--danger': variant === 'danger',
-        'button--flat': variant === 'flat'
+        'button--danger': variant === 'danger'
       }
     ]"
     :disabled="disabled || loading"
@@ -62,10 +61,6 @@ defineProps<{
       border: 1px solid var(--border-color);
       color: var(--border-color) !important;
     }
-  }
-
-  &.button--flat {
-    border: none !important;
   }
 
   &:hover {

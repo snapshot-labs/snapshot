@@ -353,7 +353,6 @@
       "proposal": "Proposal",
       "voting": "Voting",
       "members": "Members",
-      "nftclaimer": "SnapIt!",
       "advanced": "Advanced"
     },
     "editController": "Edit controller",
@@ -604,9 +603,6 @@
       "bioPlaceholder": "Tell your story",
       "change": "Change",
       "remove": "Remove"
-    },
-    "collectibles": {
-      "header": "Collectibles"
     }
   },
   "notify": {
