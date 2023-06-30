@@ -15,7 +15,7 @@
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
-    "test:unit:coverage": "vitest run --coverage"
+    "test:unit:coverage": "vitest run --coverage "
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": [
