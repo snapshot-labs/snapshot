@@ -28,7 +28,7 @@ export function useGnosis(space?: ExtendedSpace) {
       web3.value?.walletConnectType === 'WalletConnect Safe App' ||
       web3.value?.walletConnectType === 'Den' ||
       connectorName.value === 'gnosis' ||
-      isContract
+      isContract.value
   );
 
   const isGnosisAndNotDefaultNetwork = computed(() => {
