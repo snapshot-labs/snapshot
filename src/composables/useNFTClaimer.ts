@@ -516,6 +516,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const NO_UPDATE_U8 = '0xf2';
 
     const contractAddress = spaceCollectionsInfo.value[space.id].address;
+    let needUpdate = false;
     const updatedParams = {
       maxSupply: NO_UPDATE_U128,
       formattedMintPrice: NO_UPDATE_U256,
@@ -525,30 +526,33 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
     Object.keys(updatedParams).forEach(field => {
       if (spaceCollectionsInfo.value[space.id][field] !== params[field]) {
+        needUpdate = true;
         updatedParams[field] = params[field];
       }
     });
 
     try {
-      await sendTx(
-        contractAddress,
-        () => {
-          return sendTransaction(
-            auth.web3,
-            contractAddress,
-            UPDATE_ABI,
-            'updateSettings',
-            Object.values(updatedParams)
-          );
-        },
-        () => {
-          return true;
-        },
-        () => {
-          return '';
-        }
-      );
-      init(true);
+      if (needUpdate) {
+        await sendTx(
+          contractAddress,
+          () => {
+            return sendTransaction(
+              auth.web3,
+              contractAddress,
+              UPDATE_ABI,
+              'updateSettings',
+              Object.values(updatedParams)
+            );
+          },
+          () => {
+            return true;
+          },
+          () => {
+            return '';
+          }
+        );
+        init(true);
+      }
     } finally {
       loading.value = false;
     }
