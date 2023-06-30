@@ -28,6 +28,8 @@ const maxProposerCut = computed(() => {
   return 100 - snapshotFee.value;
 });
 
+const dirtyFields = ref(false);
+
 const schema = computed(() => {
   return {
     type: 'object',
@@ -63,6 +65,29 @@ const isValidJson = ref(false);
 const input = ref();
 
 const validationErrors = computed(() => {
+  console.log(Object.values(input.value));
+  console.log(
+    Object.values(
+      pick(spaceCollectionsInfo.value[props.space.id], [
+        'maxSupply',
+        'formattedMintPrice',
+        'proposerFee',
+        'treasuryAddress'
+      ])
+    )
+  );
+
+  dirtyFields.value =
+    Object.values(input.value).toString() !==
+    Object.values(
+      pick(spaceCollectionsInfo.value[props.space.id], [
+        'maxSupply',
+        'formattedMintPrice',
+        'proposerFee',
+        'treasuryAddress'
+      ])
+    ).toString();
+
   return validateForm(schema.value, input.value);
 });
 
@@ -217,7 +242,9 @@ watch(
       <BaseButton
         class="grow"
         primary
-        :disabled="isViewOnly || Object.keys(validationErrors).length > 0"
+        :disabled="
+          isViewOnly || Object.keys(validationErrors).length > 0 || !dirtyFields
+        "
         @click="submit"
       >
         Save
