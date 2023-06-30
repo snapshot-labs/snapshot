@@ -15,6 +15,7 @@ const snapshotFee = ref(0);
 
 const {
   deploy,
+  update,
   spaceCollectionsInfo,
   loading,
   init,
@@ -71,7 +72,7 @@ const isViewOnly = computed(() => {
 
 function submit() {
   if (spaceCollectionsInfo.value[props.space.id]?.address) {
-    console.log('Update not implemented yet!');
+    update(input.value);
   } else {
     deploy(input.value);
   }

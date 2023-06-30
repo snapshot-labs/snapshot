@@ -26,6 +26,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const DEPLOY_ABI = [
     'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
   ];
+  const UPDATE_ABI = [
+    'function updateSettings(uint128 _maxSupply, uint256 _mintPrice, uint8 _proposerFee, address _spaceTreasury)'
+  ];
   const MINT_CONTRACT_ABI = [
     'function mint(address proposer, uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
     'function setPowerSwitch(bool enable)'
@@ -503,6 +506,54 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
+  async function update(params: Record<string, string | number>) {
+    loading.value = true;
+
+    const NO_UPDATE_U256 =
+      '0xf2cda9b13ed04e585461605c0d6e804933ca828111bd94d4e6a96c75e8b048ba';
+    const NO_UPDATE_U128 = '0xf2cda9b13ed04e585461605c0d6e8049';
+    const NO_UPDATE_ADDRESS = '0xf2cda9b13ed04e585461605c0d6e804933ca8281';
+    const NO_UPDATE_U8 = '0xf2';
+
+    const contractAddress = spaceCollectionsInfo.value[space.id].address;
+    const updatedParams = {
+      maxSupply: NO_UPDATE_U128,
+      formattedMintPrice: NO_UPDATE_U256,
+      proposerFee: NO_UPDATE_U8,
+      treasuryAddress: NO_UPDATE_ADDRESS
+    };
+
+    Object.keys(updatedParams).forEach(field => {
+      if (spaceCollectionsInfo.value[space.id][field] !== params[field]) {
+        updatedParams[field] = params[field];
+      }
+    });
+
+    try {
+      await sendTx(
+        contractAddress,
+        () => {
+          return sendTransaction(
+            auth.web3,
+            contractAddress,
+            UPDATE_ABI,
+            'updateSettings',
+            Object.values(updatedParams)
+          );
+        },
+        () => {
+          return true;
+        },
+        () => {
+          return '';
+        }
+      );
+      init(true);
+    } finally {
+      loading.value = false;
+    }
+  }
+
   return {
     spaceCollectionsInfo,
     loading,
@@ -512,6 +563,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     profiles,
     toggleMintStatus,
     mint,
+    update,
     deploy,
     init
   };
