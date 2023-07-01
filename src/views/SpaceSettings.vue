@@ -104,7 +104,7 @@ const settingsPages = computed(() => [
   },
   {
     id: Page.NFTCLAIMER,
-    title: t('settings.navigation.nftclaimer')
+    title: 'SnapIt!'
   },
   {
     id: Page.ADVANCED,
