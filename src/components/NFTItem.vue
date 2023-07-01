@@ -18,10 +18,8 @@ defineProps<{
     }"
   >
     <NFTClaimerLogo class="mx-auto" />
-    <div class="mt-2 flex items-center justify-center">
-      <div class="truncate text-xs">
-        {{ shorten(nft.proposal.id) }}
-      </div>
+    <div class="mt-2 truncate text-xs">
+      {{ shorten(nft.proposal.id) }}
     </div>
   </router-link>
 </template>

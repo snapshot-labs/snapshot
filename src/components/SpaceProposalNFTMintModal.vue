@@ -132,7 +132,7 @@ watch(
         </template>
         <template v-if="currentStep === MintStep.MINT">
           <SpaceProposalNFTMintModalProgress />
-          <div class="flex flex-col justify-between gap-y-2">
+          <div class="flex flex-col justify-between gap-y-3">
             <NFTClaimerMintButton
               :space-collection-info="spaceCollectionInfo"
               :collection-info="collectionInfo"
