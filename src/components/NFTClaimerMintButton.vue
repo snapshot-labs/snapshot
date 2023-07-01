@@ -1,14 +1,11 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    spaceCollectionInfo: any;
-    collectionInfo: any;
-    currency: string;
-    loading?: boolean;
-    showPrice?: boolean;
-  }>(),
-  { loading: false, showPrice: false }
-);
+defineProps<{
+  spaceCollectionInfo: any;
+  collectionInfo: any;
+  currency: string;
+  loading?: boolean;
+  showPrice?: boolean;
+}>();
 
 const { formatNumber } = useIntl();
 </script>
@@ -33,8 +30,8 @@ const { formatNumber } = useIntl();
         <template v-if="showPrice">
           for {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
           {{ currency }}
-        </template></template
-      >
+        </template>
+      </template>
     </template>
   </BaseButton>
 </template>

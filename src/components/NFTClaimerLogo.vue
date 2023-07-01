@@ -1,10 +1,7 @@
 <script setup lang="ts">
-withDefaults(
-  defineProps<{
-    size?: string;
-  }>(),
-  { size: 'base' }
-);
+defineProps<{
+  size?: string;
+}>();
 </script>
 
 <template>

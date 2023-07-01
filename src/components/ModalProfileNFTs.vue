@@ -35,9 +35,7 @@ defineEmits(['close']);
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <div class="flex flex-row items-center justify-center">
-        <h3>NFTs</h3>
-      </div>
+      <h3>NFTs</h3>
     </template>
     <div v-if="inited" class="space-y-3 py-4 md:px-4">
       <div v-for="n in nfts" :key="n">

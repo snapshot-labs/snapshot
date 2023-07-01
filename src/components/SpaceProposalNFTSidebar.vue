@@ -74,7 +74,7 @@ const collectionInfo = computed(() => {
         </SpaceProposalNFTProgress>
       </div>
       <div
-        class="flex w-full flex-row content-center items-center justify-between border-t px-4 py-3"
+        class="flex flex-row content-center items-center justify-between border-t px-4 py-3"
       >
         <div class="flex flex-col">
           <span>Mint price</span>
@@ -117,23 +117,23 @@ const collectionInfo = computed(() => {
       :title="$t('SnapIt!')"
       class="text-center"
     >
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col items-center gap-y-3">
         <NFTClaimerLogo size="lg" />
-        <span class="my-4 text-skin-link">
+        <span class="text-skin-link">
           Setup SnapIt! now, and let your community mint NFT for each proposals.
           <a href="https://docs.snapshot.org">Learn more</a>
         </span>
-      </div>
 
-      <router-link
-        :to="{
-          name: 'spaceSettings',
-          params: { key: space.id },
-          hash: '#NFTCLAIMER'
-        }"
-      >
-        <BaseButton>Setup SnapIt!</BaseButton>
-      </router-link>
+        <router-link
+          :to="{
+            name: 'spaceSettings',
+            params: { key: space.id },
+            hash: '#NFTCLAIMER'
+          }"
+        >
+          <BaseButton>Setup SnapIt!</BaseButton>
+        </router-link>
+      </div>
     </BaseBlock>
   </template>
 </template>

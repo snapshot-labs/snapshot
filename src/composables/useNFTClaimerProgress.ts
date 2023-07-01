@@ -19,26 +19,23 @@ type Progress = Record<
   { name: string; description: string; status: Status }
 >;
 
+const defaultProgressItem = { description: '', status: Status.FUTURE };
 const defaultProgress: Progress = {
   [Step.CHECK_WETH_BALANCE]: {
     name: 'Checking WETH balance',
-    description: '',
-    status: Status.FUTURE
+    ...defaultProgressItem
   },
   [Step.APPROVE_WETH_BALANCE]: {
     name: 'Approving WETH spending',
-    description: '',
-    status: Status.FUTURE
+    ...defaultProgressItem
   },
   [Step.SEND_TX]: {
     name: 'Minting',
-    description: '',
-    status: Status.FUTURE
+    ...defaultProgressItem
   },
   [Step.RESULT]: {
     name: 'Confirming',
-    description: '',
-    status: Status.FUTURE
+    ...defaultProgressItem
   }
 };
 

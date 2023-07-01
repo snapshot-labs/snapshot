@@ -13,7 +13,6 @@ defineEmits(['close', 'mint']);
 
 const { mintCurrency, mintNetwork, spaceCollectionsInfo, init, profiles } =
   useNFTClaimer(props.space, props.proposal);
-
 const { formatRelativeTime, formatNumber } = useIntl();
 
 const spaceCollectionInfo = computed(() => {
@@ -42,20 +41,16 @@ watch(
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <div
-        class="flex flex-col content-center items-center justify-center gap-x-4 pb-2"
-      >
+      <div class="flex justify-center pb-2">
         <h3>View all NFTs</h3>
       </div>
     </template>
     <template #default="{ maxHeight }">
       <div class="flex flex-col" :style="{ minHeight: maxHeight }">
         <div
-          class="sticky top-0 flex flex-col gap-y-3 border-b border-t bg-skin-bg p-4 py-3"
+          class="sticky top-0 flex flex-col gap-y-3 border-b border-t p-4 py-3"
         >
-          <div
-            class="flex w-full flex-row content-center items-center justify-between"
-          >
+          <div class="flex flex-row items-center justify-between">
             <div class="flex flex-col">
               <span class="text-[20px] font-bold leading-none text-skin-link">
                 {{ collectionInfo.maxSupply }}
@@ -72,7 +67,6 @@ watch(
 
             <a
               v-tippy="{ content: 'View this collection on OpenSea' }"
-              class="flex flex-row"
               :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
               target="_blank"
             >
@@ -81,7 +75,6 @@ watch(
 
             <a
               v-tippy="{ content: 'View this contract on etherscan' }"
-              class="flex flex-row"
               :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
               target="_blank"
             >

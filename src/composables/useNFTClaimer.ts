@@ -250,9 +250,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           };
 
           spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
+          mintPriceWei.value = spaceCollectionInfo.mintPrice;
         }
-
-        mintPriceWei.value = spaceCollectionInfo.mintPrice;
       }
 
       if (proposal && spaceCollectionInfo) {
@@ -301,6 +300,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
       return true;
     } catch (e) {
+      console.error(e);
       console.error('NFTClaimer: unable to fetch data from Subgraph');
     }
   }

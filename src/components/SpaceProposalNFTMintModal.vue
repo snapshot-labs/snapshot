@@ -20,6 +20,7 @@ const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
   useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
 const { formatNumber } = useIntl();
+
 const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
@@ -61,11 +62,7 @@ watch(
 <template>
   <BaseModal :open="open" @close="$emit('close')">
     <template #header>
-      <div
-        class="flex flex-col content-center items-center justify-center gap-x-4"
-      >
-        <h3>{{ $t('Mint NFT') }}</h3>
-      </div>
+      <h3>{{ $t('Mint NFT') }}</h3>
     </template>
     <template #default>
       <div class="flex flex-col justify-between gap-y-4 p-4">
@@ -74,20 +71,16 @@ watch(
             <div class="p-4">
               <div class="flex flex-row justify-between py-1">
                 <span>Contract</span>
-                <a
-                  class="flex flex-row"
-                  :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
-                  target="_blank"
-                  title="View this contract on Etherscan"
+                <BaseLink
+                  :link="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+                  title="View this contract in Etherscan"
                 >
-                  <span>{{ shorten(spaceCollectionInfo.address) }}</span>
-                  <i-ho-arrow-top-right-on-square class="ml-2" />
-                </a>
+                  {{ shorten(spaceCollectionInfo.address) }}
+                </BaseLink>
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>OpenSea collection</span>
                 <a
-                  class="flex flex-row"
                   :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
                   target="_blank"
                   title="View this collection on OpenSea"
