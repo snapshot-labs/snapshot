@@ -311,6 +311,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function sendTx(
     address: string,
+    skipWethChecking = false,
     callback: () => Promise<any>,
     beforeSend: () => boolean,
     afterSend: (tx: any) => void
@@ -320,8 +321,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     try {
       if (
         !(await _switchNetwork()) ||
-        !(await _checkWETHBalance()) ||
-        !(await _checkWETHApproval(address))
+        !(skipWethChecking || (await _checkWETHBalance())) ||
+        !(skipWethChecking || (await _checkWETHApproval(address)))
       ) {
         return false;
       }
@@ -364,6 +365,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     try {
       const receipt = await sendTx(
         spaceCollectionsInfo.value[space.id].address,
+        false,
         async () => {
           try {
             const { signature, salt, proposer, proposalId, abi } =
@@ -483,6 +485,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
       await sendTx(
         implementation,
+        true,
         () => {
           return sendTransaction(
             auth.web3,
