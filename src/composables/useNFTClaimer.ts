@@ -23,16 +23,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     'function allowance(address owner, address spender) external view returns (uint256)',
     'function approve(address guy, uint256 wad) external returns (bool)'
   ];
-  const DEPLOY_ABI = [
-    'function deployProxy(address implementation, bytes initializer, uint256 salt, uint8 v, bytes32 r, bytes32 s)'
-  ];
   const UPDATE_ABI = [
     'function updateSettings(uint128 _maxSupply, uint256 _mintPrice, uint8 _proposerFee, address _spaceTreasury)'
   ];
-  const MINT_CONTRACT_ABI = [
-    'function mint(address proposer, uint256 proposalId, uint256 salt, uint8 v, bytes32 r, bytes32 s)',
-    'function setPowerSwitch(bool enable)'
-  ];
+  const MINT_CONTRACT_ABI = ['function setPowerSwitch(bool enable)'];
 
   const mintNetwork = ref(NETWORK_KEY);
   const mintCurrency = ref('WETH');
@@ -362,7 +356,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         spaceCollectionsInfo.value[space.id].address,
         async () => {
           try {
-            const { signature, salt, proposer, proposalId } =
+            const { signature, salt, proposer, proposalId, abi } =
               await _getBackendPayload('mint', {
                 proposalAuthor: proposal?.author,
                 id: proposal?.id,
@@ -389,7 +383,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
             return sendTransaction(
               auth.web3,
               spaceCollectionsInfo.value[space.id].address,
-              MINT_CONTRACT_ABI,
+              [abi],
               'mint',
               [
                 proposer,
@@ -461,6 +455,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         signature,
         initializer,
         salt,
+        abi,
         verifyingContract,
         implementation
       } = await _getBackendPayload('deploy', {
@@ -482,7 +477,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           return sendTransaction(
             auth.web3,
             verifyingContract,
-            DEPLOY_ABI,
+            [abi],
             'deployProxy',
             [
               implementation,
