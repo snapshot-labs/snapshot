@@ -49,6 +49,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     updatePendingTransaction,
     removePendingTransaction
   } = useTxStatus();
+  const { notify } = useFlashNotification();
 
   const { profiles, loadProfiles } = useProfiles();
 
@@ -272,6 +273,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function toggleMintStatus(status: boolean) {
+    loading.value = true;
     const txPendingId = createPendingTransaction();
     try {
       console.debug(':toggleMintStatus start');
@@ -288,14 +290,22 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       const receipt = await tx.wait();
 
       init(true);
+      notify([
+        'green',
+        `Minting on the space has been ${status ? 'enabled' : 'disabled'}`
+      ]);
       return receipt;
     } catch (e: any) {
       if (e.code !== 'ACTION_REJECTED') {
+        notify(['red', 'An unexpected error occured']);
         console.error(e);
+      } else {
+        return notify(['red', 'Transaction rejected']);
       }
     } finally {
       removePendingTransaction(txPendingId);
       console.debug(':toggleMintStatus end');
+      loading.value = false;
     }
   }
 
@@ -527,29 +537,34 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       }
     });
 
+    if (!needUpdate) {
+      return false;
+    }
+
+    const txPendingId = createPendingTransaction();
     try {
-      if (needUpdate) {
-        await sendTx(
-          contractAddress,
-          () => {
-            return sendTransaction(
-              auth.web3,
-              contractAddress,
-              UPDATE_ABI,
-              'updateSettings',
-              Object.values(updatedParams)
-            );
-          },
-          () => {
-            return true;
-          },
-          () => {
-            return '';
-          }
-        );
-        init(true);
+      const tx = await sendTransaction(
+        auth.web3,
+        contractAddress,
+        UPDATE_ABI,
+        'updateSettings',
+        Object.values(updatedParams)
+      );
+      updatePendingTransaction(txPendingId, { hash: tx.hash });
+
+      const receipt = await tx.wait();
+      init(true);
+      notify(['green', 'Settings have been updated']);
+      return receipt;
+    } catch (e: any) {
+      if (e.code !== 'ACTION_REJECTED') {
+        notify(['red', 'An unexpected error occured']);
+        console.error(e);
+      } else {
+        return notify(['red', 'Transaction rejected']);
       }
     } finally {
+      removePendingTransaction(txPendingId);
       loading.value = false;
     }
   }

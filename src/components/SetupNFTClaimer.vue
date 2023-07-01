@@ -80,7 +80,7 @@ const validationErrors = computed(() => {
 });
 
 const isViewOnly = computed(() => {
-  return !isSpaceController;
+  return !isSpaceController || loading.value;
 });
 
 function submit() {
@@ -164,6 +164,7 @@ watch(
           <BaseButton
             class="whitespace-nowrap"
             :variant="enabled && 'danger'"
+            :disabled="isViewOnly"
             @click="toggleStatus()"
           >
             {{ enabled ? 'Disable' : 'Enable' }} minting
@@ -236,7 +237,11 @@ watch(
       Setup SnapIt!
     </BaseButton>
     <div v-else class="flex gap-5 px-4 pt-2 md:px-0">
-      <BaseButton class="mb-2 block w-full" @click="resetForm">
+      <BaseButton
+        class="mb-2 block w-full"
+        :disabled="isViewOnly"
+        @click="resetForm"
+      >
         {{ $t('reset') }}
       </BaseButton>
       <BaseButton
