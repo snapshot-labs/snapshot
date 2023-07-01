@@ -39,6 +39,7 @@ export async function getSpaceCollection(spaceId: string) {
           proposerFee
           spaceTreasury
           enabled
+          mintCount
         }
       }
     `,
@@ -59,6 +60,9 @@ export async function getCollection(proposalId: bigint) {
         proposals(where: { proposalId: $proposalId }) {
           id
           mintCount
+          maxSupply
+          mintPrice
+          proposerFee
           mints {
             id
             minterAddress

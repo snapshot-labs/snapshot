@@ -97,16 +97,16 @@ watch(
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>Proposal author's share</span>
-                <span>{{ spaceCollectionInfo.proposerFee }}%</span>
+                <span>{{ collectionInfo.proposerFee }}%</span>
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>Max supply</span>
-                <span>{{ spaceCollectionInfo.maxSupply }}</span>
+                <span>{{ collectionInfo.maxSupply }}</span>
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>Remaining supply</span>
                 <span>{{
-                  spaceCollectionInfo.maxSupply - collectionInfo.mintCount
+                  collectionInfo.maxSupply - collectionInfo.mintCount
                 }}</span>
               </div>
             </div>
@@ -115,14 +115,12 @@ watch(
                 <span>Mint price</span>
                 <div class="flex flex-col text-end">
                   <span class="text-md font-bold text-skin-link">
-                    {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+                    {{ formatNumber(collectionInfo.formattedMintPrice) }}
                     {{ mintCurrency }}
                   </span>
                   <span>
                     ~{{
-                      formatNumber(
-                        ethPrice * spaceCollectionInfo.formattedMintPrice
-                      )
+                      formatNumber(ethPrice * collectionInfo.formattedMintPrice)
                     }}
                     USD
                   </span>

@@ -61,7 +61,7 @@ const collectionInfo = computed(() => {
         </div>
 
         <SpaceProposalNFTProgress
-          :max-supply="spaceCollectionInfo.maxSupply"
+          :max-supply="collectionInfo.maxSupply"
           :supply="collectionInfo.mintCount"
           class="cursor-pointer"
           tabindex="0"
@@ -79,7 +79,7 @@ const collectionInfo = computed(() => {
         <div class="flex flex-col">
           <span>Mint price</span>
           <span class="text-base font-bold text-skin-link">
-            {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+            {{ formatNumber(collectionInfo.formattedMintPrice) }}
             {{ mintCurrency }}
           </span>
         </div>

@@ -58,13 +58,13 @@ watch(
           >
             <div class="flex flex-col">
               <span class="text-[20px] font-bold leading-none text-skin-link">
-                {{ spaceCollectionInfo.maxSupply }}
+                {{ collectionInfo.maxSupply }}
               </span>
               <span class="text-sm leading-tight">Max supply</span>
             </div>
             <div class="flex flex-col">
               <span class="text-[20px] font-bold leading-none text-skin-link">
-                {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+                {{ formatNumber(collectionInfo.formattedMintPrice) }}
                 {{ mintCurrency }}
               </span>
               <span class="text-sm leading-tight">Mint price</span>
@@ -97,7 +97,7 @@ watch(
           </div>
 
           <SpaceProposalNFTProgress
-            :max-supply="spaceCollectionInfo.maxSupply"
+            :max-supply="collectionInfo.maxSupply"
             :supply="collectionInfo.mintCount"
             :show-info="false"
           />

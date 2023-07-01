@@ -242,8 +242,19 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         const defaultInfo = {
           id: null,
           mintCount: 0,
-          mints: []
+          mints: [],
+          proposerFee: spaceCollectionInfo.proposerFee,
+          mintPrice: spaceCollectionInfo.mintPrice,
+          formattedMintPrice: spaceCollectionInfo.formattedMintPrice,
+          maxSupply: spaceCollectionInfo.maxSupply
         };
+
+        if (info) {
+          info.proposerFee = parseInt(info.proposerFee);
+          info.maxSupply = parseInt(info.maxSupply);
+          info.formattedMintPrice = parseFloat(formatUnits(info.mintPrice, 18));
+          info.mintPrice = BigNumber.from(info.mintPrice);
+        }
 
         spaceCollectionsInfo.value[space.id].proposals[proposal.id] =
           info ?? defaultInfo;
@@ -523,6 +534,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const NO_UPDATE_U128 = '0xf2cda9b13ed04e585461605c0d6e8049';
     const NO_UPDATE_ADDRESS = '0xf2cda9b13ed04e585461605c0d6e804933ca8281';
     const NO_UPDATE_U8 = '0xf2';
+    console.log(params);
+    console.log(spaceCollectionsInfo.value[space.id]);
 
     const contractAddress = spaceCollectionsInfo.value[space.id].address;
     let needUpdate = false;
@@ -537,6 +550,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       if (spaceCollectionsInfo.value[space.id][field] !== params[field]) {
         needUpdate = true;
         updatedParams[field] = params[field];
+        if (field === 'formattedMintPrice') {
+          updatedParams[field] = parseUnits(
+            params[field].toString(),
+            18
+          ).toString();
+        }
       }
     });
 
