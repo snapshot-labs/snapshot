@@ -51,7 +51,7 @@ async function handleSubmit() {
 
   // Create the space
   const result = await send(
-    { id: route.params.ens },
+    { id: route.params.ens as string },
     'settings',
     prunedForm.value
   );
