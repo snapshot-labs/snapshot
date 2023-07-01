@@ -386,3 +386,37 @@ export const MULTI_SEND_VERSIONS: Record<
   [MULTI_SEND_VERSION.V1_2_0]: MULTI_SEND_V1_2_0,
   [MULTI_SEND_VERSION.V1_3_0]: MULTI_SEND_V1_3_0
 };
+
+// to potnetially cut down on event ranges we query, hard code some deploy blocks for contracts
+export type ContractData = {
+  network: string;
+  name: string;
+  address: string;
+  deployBlockNumber;
+};
+export const contractData: ContractData[] = [
+  {
+    network: '1',
+    name: 'OptimisticOracleV3',
+    address: '0xfb55F43fB9F48F63f9269DB7Dde3BbBe1ebDC0dE',
+    deployBlock: 16636058
+  },
+  {
+    network: '1',
+    name: 'OptimisticGovernor',
+    address: '0x28CeBFE94a03DbCA9d17143e9d2Bd1155DC26D5d',
+    deployBlock: 16890621
+  },
+  {
+    network: '5',
+    name: 'OptimisticOracleV3',
+    address: '0x9923D42eF695B5dd9911D05Ac944d4cAca3c4EAB',
+    deployBlock: 8497481
+  },
+  {
+    network: '5',
+    name: 'OptimisticGovernor',
+    address: '0x07a7Be7AA4AaD42696A17e974486cb64A4daC47b',
+    deployBlock: 8700589
+  }
+];
