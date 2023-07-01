@@ -133,9 +133,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       updateProgress(
         Step.APPROVE_WETH_BALANCE,
         Status.WORKING,
-        `Please allow the contract to spend at least ${(+mintPriceWei.value).toFixed(
-          4
-        )} WETH`
+        `Please allow the contract to spend at least ${(+formatUnits(
+          mintPriceWei.value,
+          18
+        )).toFixed(4)} WETH`
       );
 
       const txPendingId = createPendingTransaction();
