@@ -153,13 +153,33 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
         const receipt = await tx.wait();
 
-        updateProgress(
-          Step.APPROVE_WETH_BALANCE,
-          Status.SUCCESS,
-          'Contract approved'
-        );
+        // Check the balance again, to ensure the user
+        // has not approved an amount less than the minimum
+        const newAllowanceWei = web3Account.value
+          ? await contractWETH.allowance(web3Account.value, address)
+          : 0;
+        const balance = formatUnits(newAllowanceWei, 'ether');
 
-        return receipt;
+        if (
+          BigNumber.from(newAllowanceWei).gte(
+            BigNumber.from(mintPriceWei.value)
+          )
+        ) {
+          updateProgress(
+            Step.APPROVE_WETH_BALANCE,
+            Status.SUCCESS,
+            'Contract approved'
+          );
+          return receipt;
+        } else {
+          updateProgress(
+            Step.APPROVE_WETH_BALANCE,
+            Status.ERROR,
+            `The approved amount (${(+balance).toFixed(
+              4
+            )} WETH) is not enough to cover the mint price`
+          );
+        }
       } catch (e: any) {
         if (e.code === 'ACTION_REJECTED') {
           updateProgress(
@@ -231,6 +251,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
           spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
         }
+
+        mintPriceWei.value = spaceCollectionInfo.mintPrice;
       }
 
       if (proposal && spaceCollectionInfo) {
@@ -270,11 +292,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         ) {
           spaceCollectionsInfo.value[space.id].enabled = false;
         }
+
+        mintPriceWei.value =
+          spaceCollectionsInfo.value[space.id].proposals[proposal.id].mintPrice;
       }
 
-      if (spaceCollectionInfo) {
-        mintPriceWei.value = spaceCollectionInfo.mintPrice;
-      }
       inited.value = true;
 
       return true;
