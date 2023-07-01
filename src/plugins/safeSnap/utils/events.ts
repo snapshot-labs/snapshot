@@ -1,3 +1,4 @@
+import bb from 'bluebird';
 // This state is meant for adjusting a start/end block when querying events. Some apis will fail if the range
 // is too big, so the following functions will adjust range dynamically.
 export type RangeState = {
@@ -129,14 +130,20 @@ export async function pageEvents<E>(
   endBlock: number,
   maxRange: number,
   //start and end block range to query
-  fetchEvents: (query: { start: number; end: number }) => Promise<E[]>
+  fetchEvents: (query: { start: number; end: number }) => Promise<E[]>,
+  concurrency: number = 5
 ): Promise<E[]> {
   let state = rangeStart({ startBlock, endBlock, maxRange });
   const ranges: { start: number; end: number }[] = [];
+  let index = 0;
   do {
-    ranges.push({ start: state.currentStart, end: state.currentEnd });
+    ranges.push({
+      start: state.currentStart,
+      end: state.currentEnd,
+      index: index++
+    });
     state = rangeSuccessDescending(state);
   } while (!state.done);
 
-  return (await Promise.all(ranges.map(fetchEvents))).flat();
+  return (await bb.map(ranges, fetchEvents, { concurrency })).flat();
 }
