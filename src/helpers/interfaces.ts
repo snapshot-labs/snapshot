@@ -138,6 +138,11 @@ export interface ExtendedSpace {
   symbol: string;
   network: string;
   strategies: SpaceStrategy[];
+  delegationPortal: {
+    delegationType: string;
+    delegationContract: string;
+    delegationApi: string;
+  };
   about: string;
   avatar: string;
   skin: string;
@@ -372,4 +377,24 @@ export interface PluginIndex extends Plugin {
 export interface FormError {
   message: string;
   push?: boolean;
+}
+
+export interface Delegate {
+  id: string;
+  delegatedVotes: string;
+  tokenHoldersRepresentedAmount: number;
+}
+
+export interface DelegateWithPercent extends Delegate {
+  delegatorsPercentage: number;
+  votesPercentage: number;
+}
+
+export interface Statement {
+  delegate: string;
+  space: string;
+  statement: string;
+  about: string;
+  ipfs: string;
+  id: string;
 }

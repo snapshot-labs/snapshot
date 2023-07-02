@@ -57,6 +57,7 @@ enum Page {
   STRATEGIES,
   PROPOSAL,
   VOTING,
+  DELEGATION,
   MEMBERS,
   NFTCLAIMER,
   ADVANCED
@@ -99,6 +100,10 @@ const settingsPages = computed(() => [
     title: t('settings.navigation.voting')
   },
   {
+    id: Page.DELEGATION,
+    title: t('settings.navigation.delegation')
+  },
+  {
     id: Page.MEMBERS,
     title: t('settings.navigation.members')
   },
@@ -115,7 +120,7 @@ const settingsPages = computed(() => [
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
 
-  const result = await send({ id: props.space.id }, 'delete-space', null);
+  const result = await send(props.space, 'delete-space', null);
   console.log(':handleDelete result', result);
 
   if (result && result.id) {
@@ -137,11 +142,7 @@ async function handleSubmit() {
     return console.log('Invalid form', validationErrors.value);
   }
 
-  const result = await send(
-    { id: props.space.id },
-    'settings',
-    prunedForm.value
-  );
+  const result = await send(props.space, 'settings', prunedForm.value);
   console.log('Result', result);
   if (result.id) {
     notify(['green', t('notify.saved')]);
@@ -253,6 +254,13 @@ const isViewOnly = computed(() => {
 
           <template v-if="currentPage === Page.VOTING">
             <SettingsVotingBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
+          </template>
+
+          <template v-if="currentPage === Page.DELEGATION">
+            <SettingsDelegationBlock
               context="settings"
               :is-view-only="isViewOnly"
             />
