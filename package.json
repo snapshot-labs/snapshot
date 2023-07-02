@@ -75,7 +75,7 @@
     "@types/bluebird": "^3.5.38",
     "@types/lodash": "^4.14.195",
     "@types/node": "^18.16.3",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.59.1",
     "@vitejs/plugin-vue": "^2.3.4",
     "@vitest/ui": "^0.30.1",
