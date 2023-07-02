@@ -40,6 +40,7 @@
     "@headlessui-float/vue": "^0.11.1",
     "@headlessui/vue": "^1.7.13",
     "@pusher/push-notifications-web": "^1.1.0",
+    "@sentry/vue": "^7.55.2",
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/lock": "^0.1.1019",
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
