@@ -1,4 +1,4 @@
-name: Test
+name: Tests
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Test
+      - name: Run tests
         run: yarn test:unit:coverage
 
       - name: Upload coverage reports to Codecov
