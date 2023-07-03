@@ -387,30 +387,37 @@ export const MULTI_SEND_VERSIONS: Record<
   [MULTI_SEND_VERSION.V1_3_0]: MULTI_SEND_V1_3_0
 };
 
-// to potnetially cut down on event ranges we query, hard code some deploy blocks for contracts
+// to potentially cut down on event ranges we query, hard code some deploy blocks for contracts
 export type ContractData = {
   network: string;
   name: string;
-  address: string;
-  deployBlockNumber;
+  address?: string;
+  deployBlockNumber?: number;
+  subgraph?: string;
 };
 export const contractData: ContractData[] = [
   {
     network: '1',
     name: 'OptimisticOracleV3',
     address: '0xfb55F43fB9F48F63f9269DB7Dde3BbBe1ebDC0dE',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/mainnet-optimistic-oracle-v3',
     deployBlock: 16636058
   },
   {
     network: '1',
     name: 'OptimisticGovernor',
     address: '0x28CeBFE94a03DbCA9d17143e9d2Bd1155DC26D5d',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/mainnet-optimistic-governor',
     deployBlock: 16890621
   },
   {
     network: '5',
     name: 'OptimisticOracleV3',
     address: '0x9923D42eF695B5dd9911D05Ac944d4cAca3c4EAB',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/goerli-optimistic-oracle-v3',
     deployBlock: 8497481
   },
   {
@@ -418,5 +425,41 @@ export const contractData: ContractData[] = [
     name: 'OptimisticGovernor',
     address: '0x07a7Be7AA4AaD42696A17e974486cb64A4daC47b',
     deployBlock: 8700589
+  },
+  {
+    network: '137',
+    name: 'OptimisticOracleV3',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/polygon-optimistic-oracle-v3'
+  },
+  {
+    network: '42161',
+    name: 'OptimisticOracleV3',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/arbitrum-optimistic-oracle-v3'
+  },
+  {
+    network: '10',
+    name: 'OptimisticOracleV3',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/umaprotocol/optimism-optimistic-oracle-v3'
+  },
+  {
+    network: '137',
+    name: 'OptimisticGovernor',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/polygon-optimistic-governor'
+  },
+  {
+    network: '42161',
+    name: 'OptimisticGovernor',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/arbitrum-optimistic-governor'
+  },
+  {
+    network: '10',
+    name: 'OptimisticGovernor',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/md0x/optimism-optimistic-governor'
   }
 ];
