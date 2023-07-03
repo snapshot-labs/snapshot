@@ -107,13 +107,15 @@
     "useUnseenProposals": true,
     "useUsername": true,
     "useWeb3": true,
+    "useDelegates": true,
+    "useResolveName": true,
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
     "watchSyncEffect": true,
     "watchTxStatus": true,
     "toValue": true,
-    "useResolveName": true,
-    "useFlaggedMessageStatus": true
+    "useFlaggedMessageStatus": true,
+    "useStatement": true
   }
 }

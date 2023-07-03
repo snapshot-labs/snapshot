@@ -157,6 +157,23 @@ export function useIntl() {
     ]);
   };
 
+  const getPercentFractionDigits = value => {
+    const absValue = Math.abs(value);
+
+    if (absValue === 0) {
+      return 0;
+    }
+
+    let leadingZeros = 0;
+    let tempValue = absValue;
+    while (tempValue < 1) {
+      tempValue *= 10;
+      leadingZeros++;
+    }
+
+    return Math.max(1, Math.min(leadingZeros, 8));
+  };
+
   return {
     getRelativeTimeFormatter,
     getNumberFormatter,
@@ -166,6 +183,7 @@ export function useIntl() {
     formatCompactNumber,
     formatPercentNumber,
     getRelativeProposalPeriod,
+    getPercentFractionDigits,
     longRelativeTimeFormatter
   };
 }

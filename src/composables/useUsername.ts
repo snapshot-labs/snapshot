@@ -1,26 +1,21 @@
 import { shorten } from '@/helpers/utils';
 import { Profile } from '@/helpers/interfaces';
 
-export function useUsername(
-  address: Ref<string>,
-  profile?: Ref<Profile | undefined>
-) {
+export function useUsername() {
   const { web3Account } = useWeb3();
 
-  const username = computed(() => {
+  function getUsername(address: string, profile?: Profile) {
     if (
       web3Account &&
-      address.value.toLowerCase() === web3Account.value.toLowerCase()
+      address.toLowerCase() === web3Account.value.toLowerCase()
     ) {
       return 'You';
     }
 
-    if (profile?.value?.name) return profile.value.name;
-    if (profile?.value?.ens) return profile.value.ens;
-    return shorten(address.value);
-  });
+    if (profile?.name) return profile.name;
+    if (profile?.ens) return profile.ens;
+    return shorten(address);
+  }
 
-  return {
-    username
-  };
+  return { getUsername };
 }

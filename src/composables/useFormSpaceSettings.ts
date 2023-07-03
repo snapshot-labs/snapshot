@@ -7,6 +7,11 @@ import { validateForm } from '@/helpers/validation';
 
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
+const DEFAULT_DELEGATION = {
+  delegationType: 'compound-governor',
+  delegationContract: '',
+  delegationApi: ''
+};
 const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
@@ -15,6 +20,7 @@ const EMPTY_SPACE_FORM = {
   moderators: [],
   members: [],
   plugins: {},
+  delegationPortal: clone(DEFAULT_DELEGATION),
   filters: {
     minScore: 0,
     onlyMembers: false
@@ -74,6 +80,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     Object.entries(formData).forEach(([key, value]) => {
       if (value === null || value === '') delete formData[key];
     });
+    if (
+      !formData.delegationPortal.delegationContract &&
+      !formData.delegationPortal.delegationApi
+    ) {
+      delete formData.delegationPortal;
+    }
     return formData;
   });
 
@@ -106,6 +118,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   function ensureDefaultValues(formData: any) {
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
+    formData.delegationPortal =
+      formData.delegationPortal || clone(DEFAULT_DELEGATION);
     formData.validation =
       formData.validation || clone(DEFAULT_PROPOSAL_VALIDATION);
     formData.voteValidation =
