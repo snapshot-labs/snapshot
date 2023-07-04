@@ -15,6 +15,7 @@
   "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a vote validation. To continue go one step back and select the \"One person, one vote\" option. {article}",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
+  "votingValidationFailedMessage": "Your vote validation could not be calculated. This is often due to a misconfigured validation or an unresponsive RPC node involved in the validation.",
   "getHelp": "Get help",
   "retry": "Retry",
   "currentResults": "Current results",
