@@ -6,7 +6,8 @@ defineProps<{
   proposal: Proposal;
 }>();
 
-const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
+const { getRelativeProposalPeriod, formatPercentNumber, formatCompactNumber } =
+  useIntl();
 </script>
 
 <template>
@@ -37,7 +38,11 @@ const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
       "
     >
       -
-      {{ formatPercentNumber(proposal.scores_total / proposal.quorum) }}
+      {{
+        formatPercentNumber(
+          Number(formatCompactNumber(proposal.scores_total / proposal.quorum))
+        )
+      }}
       {{ $t('quorumReached') }}
     </template>
   </div>
