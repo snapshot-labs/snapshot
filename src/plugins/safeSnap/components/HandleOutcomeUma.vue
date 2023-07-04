@@ -219,11 +219,10 @@ const questionState = computed<QuestionState>(() => {
 
   if (!questionDetails.value) return 'error';
 
-  const { assertionEvent, proposalExecuted, activeProposal } =
+  const { assertionEvent, proposalExecuted, activeProposal, noTransactions } =
     questionDetails.value;
 
-  if (assertionEvent === undefined || questionDetails.value.noTransactions)
-    return 'no-transactions';
+  if (noTransactions) return 'no-transactions';
 
   // If proposal has already been executed, prevents user from proposing again.
   if (proposalExecuted) return 'completely-executed';
