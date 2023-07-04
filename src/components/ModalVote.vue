@@ -255,6 +255,24 @@ watch(
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
             {{ t('votingPowerFailedMessage') }}
           </BaseMessageBlock>
+
+          <!-- Voting validation messages -->
+          <BaseMessageBlock
+            v-else-if="hasVotingValidationFailed"
+            level="warning"
+          >
+            {{ t('votingValidationFailedMessage') }}
+          </BaseMessageBlock>
+          <MessageWarningValidation
+            v-else-if="!isValidVoter && proposal.validation?.name"
+            context="voting"
+            :space-id="proposal.space.id"
+            :validation-name="proposal.validation.name"
+            :validation-params="proposal.validation?.params || {}"
+            :min-score="proposal.validation?.params?.minScore || 0"
+            :symbol="validationStrategySymbolsString"
+          />
+          <!-- No voting power -->
           <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
             {{
               $t('noVotingPower', {
@@ -267,24 +285,6 @@ watch(
               {{ $t('learnMore') }}</BaseLink
             >
           </BaseMessageBlock>
-
-          <!-- Voting validation messages -->
-          <BaseMessageBlock
-            v-else-if="hasVotingValidationFailed"
-            level="warning"
-          >
-            {{ t('votingPowerFailedMessage') }}
-          </BaseMessageBlock>
-          <MessageWarningValidation
-            v-else-if="!isValidVoter && proposal.validation?.name"
-            context="voting"
-            :space-id="proposal.space.id"
-            :validation-name="proposal.validation.name"
-            :validation-params="proposal.validation?.params || {}"
-            :min-score="proposal.validation?.params?.minScore || 0"
-            :symbol="validationStrategySymbolsString"
-          />
-
           <!-- Reason field -->
           <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
             <TextareaAutosize

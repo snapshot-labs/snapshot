@@ -23,7 +23,7 @@ const symbols = computed((): string[] =>
       <div>
         <b>{{ $t('strategies') }}</b>
         <span
-          class="float-right flex text-skin-link"
+          class="float-right flex cursor-pointer text-skin-link"
           @click="isModalStrategiesOpen = true"
         >
           <span
