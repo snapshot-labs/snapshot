@@ -68,19 +68,50 @@ const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
 
+type DateRange = {
+  dateStart: number;
+  dateEnd?: number;
+};
+function sanitizeDateRange({ dateStart, dateEnd }: DateRange): DateRange {
+  const { delay = 0, period = 0 } = props.space?.voting ?? {};
+  console.log('sanitizeDateRange', { dateStart, dateEnd, delay, period });
+  const threeDays = 259200;
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+
+  const sanitizedDateStart = delay
+    ? timeSeconds.value + delay
+    : Math.max(dateStart, currentTimestamp);
+
+  if (typeof dateEnd === 'undefined') {
+    return { dateStart: sanitizedDateStart };
+  }
+
+  if (period) {
+    const sanitizedDateEnd = sanitizedDateStart + period;
+    return { dateStart: sanitizedDateStart, dateEnd: sanitizedDateEnd };
+  }
+
+  if (userSelectedDateEnd.value || sourceProposalLoaded.value) {
+    return { dateStart: sanitizedDateStart, dateEnd };
+  }
+
+  return {
+    dateStart: sanitizedDateStart,
+    dateEnd: sanitizedDateStart + threeDays
+  };
+}
+
 const dateStart = computed(() => {
-  return props.space?.voting?.delay
-    ? timeSeconds.value + props.space.voting.delay
-    : form.value.start;
+  const { dateStart } = sanitizeDateRange({ dateStart: form.value.start });
+  return dateStart;
 });
 
 const dateEnd = computed(() => {
-  const threeDays = 259200;
-  return props.space?.voting?.period
-    ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value || sourceProposalLoaded.value
-    ? form.value.end
-    : dateStart.value + threeDays;
+  const { dateEnd } = sanitizeDateRange({
+    dateStart: form.value.start,
+    dateEnd: form.value.end
+  });
+  return dateEnd;
 });
 
 const isFormValid = computed(() => {
@@ -162,9 +193,13 @@ function getFormattedForm() {
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
   updateTime();
-  const thisMomentTimestamp = parseInt((Date.now() / 1e3).toFixed());
-  clonedForm.start = Math.max(thisMomentTimestamp, dateStart.value);
-  clonedForm.end = dateEnd.value;
+  const { dateStart: sanitizedDateStart, dateEnd: sanitizedDateEnd } =
+    sanitizeDateRange({
+      dateStart: dateStart.value,
+      dateEnd: dateEnd.value
+    });
+  clonedForm.start = sanitizedDateStart;
+  clonedForm.end = sanitizedDateEnd;
   return clonedForm;
 }
 
