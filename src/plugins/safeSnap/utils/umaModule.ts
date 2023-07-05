@@ -69,14 +69,15 @@ export const queryGql = async (url: string, query: string) => {
 
 const findAssertionsGql = async (
   network: string,
-  params: { assertionId: string; claim: string; callbackRecipient }
+  params: { claim: string; callbackRecipient }
 ) => {
   const oracleUrl = getOracleV3Subgraph(network);
   const request = `
   {
-    assertions(where:{assertionId:"${params.assertionId}",claim:"${params.claim}",callbackRecipient:"${params.callbackRecipient}"}){
+    assertions(where:{claim:"${params.claim}",callbackRecipient:"${params.callbackRecipient}"}){
+      assertionId
       expirationTime
-      assertionHash,
+      assertionHash
       assertionLogIndex
       settlementHash
     }
@@ -231,7 +232,7 @@ export const getModuleDetailsUma = async (
         maxRange,
         ({ start, end }: { start: number; end: number }) => {
           return oracleContract.queryFilter(
-            oracleContract.filters.AssertionMade(assertionId),
+            oracleContract.filters.AssertionMade(),
             start,
             end
           );
@@ -465,12 +466,12 @@ export const getModuleDetailsUmaGql = async (
     )
   ]);
   const [assertion0] = await findAssertionsGql(network, {
-    assertionId,
     claim: ancillaryData,
     callbackRecipient: moduleAddress
   });
   const assertionEvent = assertion0
     ? {
+        assertionId: assertion0.assertionId,
         expirationTimestamp: assertion0.expirationTime,
         isExpired:
           Math.floor(Date.now() / 1000) >= Number(assertion0.expirationTime),
@@ -493,7 +494,7 @@ export const getModuleDetailsUmaGql = async (
   const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
 
   const proposalExecuted = assertion.some(assertionId =>
-    assertionIds.includes(assertionId)
+    assertionIds.includes(assertionEvent.assertionId)
   );
 
   return {
