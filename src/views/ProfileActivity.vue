@@ -85,6 +85,7 @@ async function loadVotes(skip = 0) {
 useInfiniteScroll(
   document,
   () => {
+    if (activities.value.length === 0) return;
     loadMore(() => loadVotes(activities.value.length));
   },
   { distance: 400 }
