@@ -160,9 +160,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     const isTicket = form.value.strategies.some(
       (strategy: any) => strategy.name === 'ticket'
     );
-    const isAnyOrBasic =
-      form.value.voteValidation.name === 'any' ||
-      form.value.voteValidation.name === 'basic';
+    const isAnyOrBasic = form.value.voteValidation.name === 'any';
 
     if (isTicket && isAnyOrBasic) {
       errors.strategies = 'ticketWithAnyOrBasicError';
