@@ -42,7 +42,7 @@ const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
-const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
+const { isGnosisAndNotSpaceNetwork, isGnosisSafe } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
 const { containsShortUrl } = useShortUrls();
@@ -163,7 +163,9 @@ function getFormattedForm() {
     .filter(choiceText => choiceText.length > 0);
   updateTime();
   const thisMomentTimestamp = parseInt((Date.now() / 1e3).toFixed());
-  clonedForm.start = Math.max(thisMomentTimestamp, dateStart.value);
+  clonedForm.start = isGnosisSafe.value
+    ? dateStart.value
+    : Math.max(thisMomentTimestamp, dateStart.value);
   clonedForm.end = dateEnd.value;
   return clonedForm;
 }
