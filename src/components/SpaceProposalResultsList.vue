@@ -20,10 +20,7 @@ const choices = computed<{ i: number; choice: string }[]>(() =>
 );
 
 const showQuorum = computed(
-  () =>
-    props.proposal?.quorum ||
-    props.space.voting?.quorum ||
-    props.space?.plugins?.quorum
+  () => props.proposal?.quorum || props.space?.plugins?.quorum
 );
 </script>
 
