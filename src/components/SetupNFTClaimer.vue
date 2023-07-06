@@ -213,7 +213,7 @@ watch(
           <TuneInput
             v-model.trim="input.treasuryAddress"
             label="Space treasury wallet"
-            hint="Wallet address"
+            hint="Address receiving the funds from the mints"
             placeholder="0x0000"
             :error="validationErrors?.treasuryAddress"
             :disabled="isViewOnly"
