@@ -302,7 +302,7 @@ export const getModuleDetailsUma = async (
       );
 
       const isExpired =
-        Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime);
+        Math.floor(Date.now() / 1000) >= assertion.expirationTime.toNumber();
 
       return {
         assertionId: event?.args?.assertionId,
@@ -449,7 +449,7 @@ export const getModuleDetailsUmaGql = async (
   const assertionEvent = assertion0
     ? {
         assertionId: assertion0.assertionId,
-        expirationTimestamp: assertion0.expirationTime,
+        expirationTimestamp: BigNumber.from(assertion0.expirationTime),
         isExpired:
           Math.floor(Date.now() / 1000) >= Number(assertion0.expirationTime),
         isSettled: assertion0.settlementHash ? true : false,
