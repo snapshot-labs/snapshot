@@ -7,6 +7,7 @@ const props = defineProps<{
   open: boolean;
   tokenAddress: string;
   tokens: TokenAsset[];
+  network: string;
 }>();
 
 const emit = defineEmits(['close', 'tokenAddress']);
@@ -110,6 +111,7 @@ function handleTokenClick(token) {
           :key="token.address"
           :token="token"
           :is-selected="token.address === tokenAddress"
+          :network="network"
           @select="handleTokenClick"
         />
 
