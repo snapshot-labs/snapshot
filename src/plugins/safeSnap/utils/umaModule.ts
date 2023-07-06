@@ -100,7 +100,7 @@ const findProposalGql = async (network: string, params: { assertionId }) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposal(id:"${assertionId}"){
+    proposal(id:"${params.assertionId}"){
       id
       executed
     }
@@ -459,7 +459,7 @@ export const getModuleDetailsUmaGql = async (
       }
     : undefined;
 
-  const proposal = assertionEvent.assertionId
+  const proposal = assertionEvent?.assertionId
     ? await findProposalGql(network, {
         assertionId: assertionEvent.assertionId
       })
