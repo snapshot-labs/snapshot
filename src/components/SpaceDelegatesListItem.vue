@@ -9,6 +9,10 @@ defineProps<{
   delegate: DelegateWithPercent;
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
+  stats?: {
+    votes: any;
+    proposals: any;
+  };
   loading: boolean;
   about?: string;
 }>();
@@ -61,14 +65,28 @@ const { formatPercentageNumber } = useStatement();
 
       <span v-else> No statement provided yet </span>
     </div>
-    <div
-      v-tippy="{
-        content: formatPercentageNumber(delegate.delegatorsPercentage)
-      }"
-      class="mt-3 flex items-center justify-between"
-    >
-      {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
-      delegators
+    <div class="mt-3 flex items-center justify-between">
+      <div>
+        <div
+          v-tippy="{
+            content: formatPercentageNumber(delegate.delegatorsPercentage)
+          }"
+        >
+          {{
+            formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount))
+          }}
+          delegators
+        </div>
+
+        <div>
+          {{ formatCompactNumber(stats?.votes.length || 0) }}
+          votes
+        </div>
+        <div>
+          {{ formatCompactNumber(stats?.proposals.length || 0) }}
+          proposals
+        </div>
+      </div>
 
       <TuneButton class="text-skin-link" @click="emit('clickDelegate')">
         Delegate

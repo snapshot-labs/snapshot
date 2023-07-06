@@ -10,11 +10,13 @@ const {
   fetchDelegate,
   fetchDelegates,
   fetchMoreDelegates,
+  fetchDelegateVotesAndProposals,
   delegate,
   delegates,
   isLoadingDelegates,
   isLoadingDelegate,
-  hasMoreDelegates
+  hasMoreDelegates,
+  delegatesStats
 } = useDelegates(props.space.delegationPortal);
 const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
@@ -102,10 +104,12 @@ useInfiniteScroll(
 );
 
 watch([delegate, delegates], ([newDelegate, newDelegates], [prevDelegate]) => {
+  if (searchInput.value && !newDelegate) return;
   const delegateChanged = newDelegate !== prevDelegate;
   if (delegateChanged && newDelegate) {
     loadStatements(props.space.id, [newDelegate.id]);
     loadProfiles([newDelegate.id]);
+    fetchDelegateVotesAndProposals([newDelegate.id], props.space.id);
     return;
   }
   if (newDelegates && newDelegates.length > 0) {
@@ -114,6 +118,10 @@ watch([delegate, delegates], ([newDelegate, newDelegates], [prevDelegate]) => {
       newDelegates.map(d => d.id)
     );
     loadProfiles(newDelegates.map(d => d.id));
+    fetchDelegateVotesAndProposals(
+      newDelegates.map(d => d.id),
+      props.space.id
+    );
   }
 });
 
@@ -181,6 +189,7 @@ onMounted(() => {
           :profiles="profiles"
           :space="space"
           :about="getStatementAbout(delegate.id)"
+          :stats="delegatesStats[delegate.id]"
           :loading="loadingStatements"
           @click-delegate="handleClickDelegate(delegate.id)"
           @click-user="handleClickProfile(delegate.id)"
@@ -198,6 +207,7 @@ onMounted(() => {
               :profiles="profiles"
               :space="space"
               :about="getStatementAbout(d.id)"
+              :stats="delegatesStats[d.id]"
               :loading="loadingStatements"
               @click-delegate="handleClickDelegate(d.id)"
               @click-user="handleClickProfile(d.id)"

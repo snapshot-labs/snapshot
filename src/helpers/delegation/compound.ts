@@ -49,6 +49,8 @@ export class CompoundGovernorConfig extends StandardConfig {
       const votesPercentage =
         Number(delegate.delegatedVotes) / Number(governanceData.delegatedVotes);
 
+      delegate.id = delegate.id.toLowerCase();
+
       return {
         ...delegate,
         delegatorsPercentage,
@@ -106,7 +108,7 @@ export class CompoundGovernorConfig extends StandardConfig {
 
     return {
       ...{
-        id: delegate.id,
+        id: delegate.id.toLowerCase(),
         delegatedVotes: delegate?.delegatedVotes || '0',
         tokenHoldersRepresentedAmount:
           delegate?.tokenHoldersRepresentedAmount || 0

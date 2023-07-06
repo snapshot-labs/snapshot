@@ -1,6 +1,7 @@
 import { DelegateWithPercent } from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegation/index';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
 import {
   subgraphRequest,
   sendTransaction
@@ -11,6 +12,10 @@ type DelegatesConfig = {
   delegationContract: string;
   delegationApi: string;
 };
+
+type Vote = { created: number; voter: string; choice: any; vp: number };
+type Proposal = { created: number; author: string; title: string };
+type DelegatesStats = Record<string, { votes: Vote[]; proposals: Proposal[] }>;
 
 const DELEGATES_LIMIT = 18;
 
@@ -26,6 +31,7 @@ function adjustUrl(apiUrl: string) {
 
 export function useDelegates(delegatesConfig: DelegatesConfig) {
   const { resolveName } = useResolveName();
+  const { apolloQuery } = useApolloQuery();
   const auth = getInstance();
 
   const standardConfig = createStandardConfig(delegatesConfig.delegationType);
@@ -38,6 +44,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   const hasDelegatesLoadFailed = ref(false);
   const hasMoreDelegates = ref(false);
   const resolvedAddress = ref<string | null>(null);
+  const delegatesStats = ref<DelegatesStats>({});
 
   async function _fetchDelegates(orderBy: string, skip = 0) {
     const query: any = standardConfig.getDelegatesQuery({
@@ -142,6 +149,43 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     return tx;
   }
 
+  async function fetchDelegateVotesAndProposals(
+    delegates: string[],
+    space: string
+  ) {
+    const response: { votes: Vote[]; proposals: Proposal[] } =
+      await apolloQuery({
+        query: DELEGATE_VOTES_AND_PROPOSALS,
+        variables: {
+          delegates,
+          space: 'uniswap'
+        }
+      });
+
+    if (!response) return {};
+
+    const votesAndProposals: DelegatesStats = {};
+
+    delegates.forEach(delegate => {
+      votesAndProposals[delegate] = {
+        votes: [],
+        proposals: []
+      };
+    });
+
+    response.votes.forEach(vote => {
+      const delegate = vote.voter.toLowerCase();
+      votesAndProposals[delegate].votes.push(vote);
+    });
+
+    response.proposals.forEach(proposal => {
+      const delegate = proposal.author.toLowerCase();
+      votesAndProposals[delegate].proposals.push(proposal);
+    });
+
+    delegatesStats.value = votesAndProposals;
+  }
+
   return {
     isLoadingDelegate,
     isLoadingDelegates,
@@ -150,10 +194,12 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     hasMoreDelegates,
     delegate,
     delegates,
+    delegatesStats,
     fetchDelegate,
     fetchDelegates,
     fetchMoreDelegates,
     setDelegate,
-    fetchDelegateBalance
+    fetchDelegateBalance,
+    fetchDelegateVotesAndProposals
   };
 }
