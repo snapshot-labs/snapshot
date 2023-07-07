@@ -94,13 +94,20 @@ export async function voteValidation(
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
+
+  const params = space.validation?.params || {};
+  if (space.validation.name === 'basic') {
+    params.strategies =
+      space.validation?.params?.strategies || space.strategies;
+  }
+
   const validateRes = await validate(
     proposal.validation.name,
     address,
     space.id,
     proposal.network,
     parseInt(proposal.snapshot),
-    proposal.validation.params,
+    params,
     options
   );
   if (typeof validateRes !== 'boolean') {
