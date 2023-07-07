@@ -38,7 +38,7 @@ const connectors = {
       appName: 'Snapshot',
       darkMode: false,
       chainId: 1,
-      ethJsonrpcUrl: '${import.meta.env.VITE_BROVIDER_URL}/1'
+      ethJsonrpcUrl: `${import.meta.env.VITE_BROVIDER_URL}/1`
     },
     icon: 'ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q'
   },
