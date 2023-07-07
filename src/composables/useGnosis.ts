@@ -1,9 +1,14 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import utils from '@snapshot-labs/snapshot.js/src/utils';
-import { computedAsync } from '@vueuse/core';
+import { computedAsync, useMemoize } from '@vueuse/core';
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+
+const getCode = useMemoize(async (networkKey: string, account: string) => {
+  const provider = utils.getProvider(networkKey);
+  return await provider.getCode(account);
+});
 
 export function useGnosis(space?: ExtendedSpace) {
   const { web3 } = useWeb3();
@@ -17,8 +22,7 @@ export function useGnosis(space?: ExtendedSpace) {
 
   const isContract = computedAsync(async () => {
     if (!web3.value.account) return false;
-    const provider = utils.getProvider(networkKey.value);
-    const code = await provider.getCode(web3.value.account);
+    const code = await getCode(networkKey.value, web3.value.account);
     return code !== '0x';
   }, false);
 
