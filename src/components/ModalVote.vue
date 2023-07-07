@@ -200,7 +200,10 @@ watch(
               v-text="$t('votingValidation.label')"
             />
             <div class="flex items-center gap-1">
-              <i-ho-exclamation-circle v-if="hasVotingValidationFailed" />
+              <i-ho-exclamation-circle
+                v-if="hasVotingValidationFailed"
+                class="text-sm text-red"
+              />
               <i-ho-check v-else-if="isValidVoter" class="text-green" />
               <i-ho-x v-else class="text-red" />
               {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
@@ -212,14 +215,8 @@ watch(
               class="mr-1 flex-auto text-skin-text"
               v-text="$t('votingPower')"
             />
-            <span
-              v-if="hasVotingPowerFailed || hasVotingValidationFailed"
-              class="item-center flex"
-            >
-              <BaseButtonIcon class="p-0 pr-2" @click="loadValidationAndPower">
-                <i-ho-refresh class="text-sm" />
-              </BaseButtonIcon>
-              <i-ho-exclamation-circle class="mt-[1px]" />
+            <span v-if="hasVotingPowerFailed">
+              <i-ho-exclamation-circle class="text-sm text-red" />
             </span>
             <span
               v-else-if="
@@ -253,7 +250,15 @@ watch(
         >
           <!-- Voting power messages -->
           <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
-            {{ t('votingPowerFailedMessage') }}
+            <i18n-t
+              keypath="votingPowerFailedMessage"
+              tag="span"
+              scope="global"
+            >
+              <template #discord>
+                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              </template>
+            </i18n-t>
           </BaseMessageBlock>
 
           <!-- Voting validation messages -->
@@ -261,7 +266,17 @@ watch(
             v-else-if="hasVotingValidationFailed"
             level="warning"
           >
-            {{ t('votingValidationFailedMessage') }}
+            <!-- {{ t('votingValidationFailedMessage') }} -->
+
+            <i18n-t
+              keypath="votingValidationFailedMessage"
+              tag="span"
+              scope="global"
+            >
+              <template #discord>
+                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              </template>
+            </i18n-t>
           </BaseMessageBlock>
           <MessageWarningValidation
             v-else-if="!isValidVoter && proposal.validation?.name"
