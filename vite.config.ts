@@ -61,6 +61,9 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     setupFiles: ['vitest.ts'],
+    coverage: {
+      all: true
+    },
     deps: {
       inline: ['@pusher/push-notifications-web']
     }
