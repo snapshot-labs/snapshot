@@ -60,7 +60,6 @@ export default defineConfig({
   },
   test: {
     environment: 'happy-dom',
-    setupFiles: ['vitest.ts'],
     coverage: {
       all: true
     },
