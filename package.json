@@ -90,7 +90,7 @@
     "eslint-plugin-cypress": "^2.13.3",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^7.15.1",
-    "happy-dom": "^9.9.2",
+    "happy-dom": "^10.0.3",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.2",
     "patch-package": "^7.0.0",
