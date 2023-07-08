@@ -15,6 +15,7 @@
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
+    "test:e2e": "start-server-and-test 'yarn cypress:serve:build' http-get://localhost:8081 'cypress run'",
     "test:unit:coverage": "vitest run --coverage"
   },
   "lint-staged": {
