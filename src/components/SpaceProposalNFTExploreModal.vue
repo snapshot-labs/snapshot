@@ -48,7 +48,7 @@ watch(
     <template #default="{ maxHeight }">
       <div class="flex flex-col" :style="{ minHeight: maxHeight }">
         <div
-          class="sticky top-0 flex flex-col gap-y-3 border-b border-t p-4 py-3"
+          class="sticky top-0 flex flex-col gap-y-3 border-b border-t bg-skin-bg p-4 py-3"
         >
           <div class="flex flex-row items-center justify-between">
             <div class="flex flex-col">
