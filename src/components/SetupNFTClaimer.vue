@@ -11,6 +11,8 @@ const props = defineProps<{
 const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
+const { web3Account } = useWeb3();
+
 const snapshotFee = ref(0);
 
 const {
@@ -29,6 +31,7 @@ const maxProposerCut = computed(() => {
 });
 
 const dirtyFields = ref(false);
+const isSpaceController = ref(false);
 
 const schema = computed(() => {
   return {
@@ -59,7 +62,6 @@ const enabled = computed(() => {
 
 // TODO Enable in production
 // const { isSpaceController } = useSpaceController();
-const isSpaceController = true;
 
 const isValidJson = ref(false);
 const input = ref();
@@ -80,7 +82,7 @@ const validationErrors = computed(() => {
 });
 
 const isViewOnly = computed(() => {
-  return !isSpaceController || loading.value;
+  return !isSpaceController.value || loading.value;
 });
 
 function submit() {
@@ -110,6 +112,14 @@ function nextStep() {
 }
 
 watch(
+  () => web3Account.value,
+  () => {
+    isSpaceController.value = !!web3Account.value;
+  },
+  { immediate: true }
+);
+
+watch(
   () => init(),
   async () => {
     input.value = spaceCollectionsInfo.value[props.space.id]
@@ -136,7 +146,7 @@ watch(
   <LoadingRow v-if="!inited" block />
   <template v-else>
     <BaseMessageBlock
-      v-if="isViewOnly || true"
+      v-if="isViewOnly"
       class="md:mx-0"
       level="info"
       is-responsive
@@ -169,7 +179,7 @@ watch(
         </div>
       </div>
     </BaseBlock>
-    <form>
+    <form class="flex flex-col gap-y-3">
       <BaseBlock title="SnapIt!">
         <div class="flex w-full flex-col gap-y-3">
           <TuneInput
@@ -228,17 +238,21 @@ watch(
         </div>
       </BaseBlock>
 
-      <BaseButton
+      <div
         v-if="!spaceCollectionsInfo[props.space.id]"
-        primary
-        class="w-full"
-        :disabled="isViewOnly"
-        :loading="loading"
-        type="submit"
-        @click="submit"
+        class="flex gap-5 px-4 pt-2 md:px-0"
       >
-        Setup SnapIt!
-      </BaseButton>
+        <BaseButton
+          primary
+          class="w-full"
+          :disabled="isViewOnly"
+          :loading="loading"
+          type="submit"
+          @click="submit"
+        >
+          Setup SnapIt!
+        </BaseButton>
+      </div>
       <div v-else class="flex gap-5 px-4 pt-2 md:px-0">
         <BaseButton
           class="mb-2 block w-full"
