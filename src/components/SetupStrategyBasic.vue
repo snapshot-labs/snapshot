@@ -6,8 +6,6 @@ import { ERC20ABI } from '@/helpers/abi';
 import { isAddress } from '@ethersproject/address';
 import { shorten } from '@/helpers/utils';
 
-const BROVIDER_URL = 'https://rpc.snapshot.org';
-
 const DEFAULT_TOKEN = {
   name: '',
   logo: '',
@@ -84,7 +82,9 @@ async function getTokenInfo() {
     isTokenLoading.value = false;
   } else {
     try {
-      const provider = new JsonRpcProvider(`${BROVIDER_URL}/${network.value}`);
+      const provider = new JsonRpcProvider(
+        `${import.meta.env.VITE_BROVIDER_URL}/${network.value}`
+      );
       const tokenInfo = await Promise.all([
         call(provider, ERC20ABI, [contract.value, 'name', []]),
         call(provider, ERC20ABI, [contract.value, 'symbol', []]),
