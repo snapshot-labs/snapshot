@@ -136,16 +136,13 @@ watch(
   <LoadingRow v-if="!inited" block />
   <template v-else>
     <BaseMessageBlock
-      v-if="isViewOnly"
+      v-if="isViewOnly || true"
       class="md:mx-0"
       level="info"
       is-responsive
     >
-      <span v-if="isSpaceController"> Update to SnapIt! is coming soon </span>
-      <span v-else>
-        You are in view only mode, to modify space settings connect with a
-        controller wallet.
-      </span>
+      You are in view only mode, to modify space settings connect with a
+      controller wallet.
     </BaseMessageBlock>
     <BaseBlock
       v-if="spaceCollectionsInfo[props.space.id]?.address"
