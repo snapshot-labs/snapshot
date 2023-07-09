@@ -349,7 +349,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     beforeSend: () => boolean,
     afterSend: (tx: any) => void
   ) {
-    const txPendingId = createPendingTransaction();
+    let txPendingId: string | null = null;
 
     try {
       if (
@@ -363,6 +363,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       if (!beforeSend()) {
         return false;
       }
+
+      txPendingId = createPendingTransaction();
       const tx: any = await callback();
 
       if (tx) {
@@ -387,7 +389,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         console.error(e);
       }
     } finally {
-      removePendingTransaction(txPendingId);
+      if (txPendingId) {
+        removePendingTransaction(txPendingId);
+      }
     }
   }
 
