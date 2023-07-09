@@ -190,7 +190,6 @@ watch(
           <TuneInput
             v-model.number="input.formattedMintPrice"
             label="Mint price"
-            min="0"
             :hint="`In ${mintCurrency}`"
             type="number"
             placeholder="0.5"
@@ -208,7 +207,6 @@ watch(
             type="number"
             hint="Percentage of the mint price, shared with the proposal author"
             placeholder="5"
-            min="0"
             :max="maxProposerCut"
             :error="validationErrors?.proposerFee"
             :disabled="isViewOnly"
