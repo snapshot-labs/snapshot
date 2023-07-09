@@ -235,14 +235,15 @@ const questionState = computed<QuestionState>(() => {
   if (!activeProposal && voteResultsConfirmed) return 'waiting-for-proposal';
 
   // Proposal has been made and is waiting for liveness period to complete.
-  if (!assertionEvent.isExpired) return 'waiting-for-liveness';
+  if (!assertionEvent?.isExpired) return 'waiting-for-liveness';
 
   // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (assertionEvent.isExpired && !assertionEvent.isSettled)
+  if (assertionEvent?.isExpired && !assertionEvent?.isSettled)
     return 'proposal-approved';
 
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (assertionEvent.isSettled && !proposalExecuted) return 'proposal-approved';
+  if (assertionEvent?.isSettled && !proposalExecuted)
+    return 'proposal-approved';
 
   return 'error';
 });
