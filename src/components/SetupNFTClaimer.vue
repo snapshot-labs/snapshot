@@ -182,6 +182,9 @@ watch(
             :disabled="isViewOnly"
             :error="validationErrors?.maxSupply"
             autofocus
+            @update:model-value="
+              value => (input.maxSupply = value !== '' ? Number(value) : null)
+            "
           />
 
           <TuneInput
@@ -193,6 +196,10 @@ watch(
             placeholder="0.5"
             :error="validationErrors?.formattedMintPrice"
             :disabled="isViewOnly"
+            @update:model-value="
+              value =>
+                (input.formattedMintPrice = value !== '' ? Number(value) : null)
+            "
           />
 
           <TuneInput
@@ -205,6 +212,9 @@ watch(
             :max="maxProposerCut"
             :error="validationErrors?.proposerFee"
             :disabled="isViewOnly"
+            @update:model-value="
+              value => (input.proposerFee = value !== '' ? Number(value) : null)
+            "
           />
 
           <TuneInput
