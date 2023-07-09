@@ -20,8 +20,7 @@ const auth = getInstance();
 const { t } = useI18n();
 const { notify } = useFlashNotification();
 
-const { profile, delegate } = toRefs(props);
-const { username } = useUsername(delegate, profile);
+const { getUsername } = useUsername();
 
 const loading = ref(false);
 const {
@@ -66,7 +65,7 @@ async function handleSubmit() {
     <form class="flex flex-auto flex-col" @submit.prevent="handleSubmit">
       <h4 class="m-4 text-center">
         {{ $t('confirmRemove') }}
-        {{ username }}
+        {{ getUsername(delegate, profile) }}
         <template v-if="id">{{ $tc('removeSpace', [id]) }}</template
         >?
       </h4>

@@ -117,6 +117,7 @@
   "quoteAddress": "Quote currency address",
   "removeMarket": "Remove market",
   "back": "Back",
+  "set": "Set",
   "loading": "Loading...",
   "predictedImpact": "Predicted impact",
   "marketSymbol": "{0} market",
@@ -230,6 +231,22 @@
     "markdown": "Styling with Markdown is supported",
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
     "errorTimeInPast": "Entered time is in the past. Please select a future time."
+  },
+  "delegates": {
+    "header": "Delegates",
+    "filters": {
+      "mostVotingPower": "Most voting power",
+      "mostDelegators": "Most delegators",
+      "mostProposals": "Most proposals",
+      "mostVotes": "Most votes"
+    },
+    "delegateModal": {
+      "title": "Delegate",
+      "sub": "You are about to delegate "
+    },
+    "profileModal": {
+      "title": "Profile"
+    }
   },
   "delegate": {
     "header": "Delegate",
@@ -352,6 +369,7 @@
       "strategies": "Strategies",
       "proposal": "Proposal",
       "voting": "Voting",
+      "delegation": "Delegation",
       "members": "Members",
       "advanced": "Advanced"
     },
@@ -502,6 +520,10 @@
         "button": "Delete space",
         "disabledInformation": "You need to be the space controller to delete the space"
       }
+    },
+    "delegationPortal": {
+      "title": "Delegation portal",
+      "information": "Please ensure your token adheres to a compatible delegation standard to enable delegate discovery and activity within your Snapshot space."
     }
   },
   "setup": {
