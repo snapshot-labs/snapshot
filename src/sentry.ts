@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/vue';
 export const initSentry = (app, router) => {
   Sentry.init({
     app,
+    tunnel: `${import.meta.env.VITE_SIDEKICK_URL}/sentry`,
     dsn: import.meta.env.VITE_SENTRY_DSN,
     release: `snapshot@${process.env.npm_package_version}`,
     integrations: [
