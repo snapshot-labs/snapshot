@@ -256,7 +256,7 @@ watch(
       <div v-else class="flex gap-5 px-4 pt-2 md:px-0">
         <BaseButton
           class="mb-2 block w-full"
-          :disabled="isViewOnly"
+          :disabled="isViewOnly || !dirtyFields"
           @click="resetForm"
         >
           {{ $t('reset') }}
