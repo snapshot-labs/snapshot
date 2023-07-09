@@ -60,7 +60,7 @@ watch(
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
+  <BaseModal max-height="550px" :open="open" @close="$emit('close')">
     <template #header>
       <h3>{{ $t('Mint NFT') }}</h3>
     </template>
