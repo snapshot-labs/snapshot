@@ -16,8 +16,15 @@ enum MintStep {
   MINT
 }
 
-const { mintNetwork, mintCurrency, loading, mint, init, spaceCollectionsInfo } =
-  useNFTClaimer(props.space, props.proposal);
+const {
+  mintNetwork,
+  mintCurrency,
+  loading,
+  mint,
+  init,
+  spaceCollectionsInfo,
+  errored
+} = useNFTClaimer(props.space, props.proposal);
 const { web3Account } = useWeb3();
 const { formatNumber } = useIntl();
 
@@ -134,6 +141,7 @@ watch(
           <SpaceProposalNFTMintModalProgress />
           <div class="flex flex-col justify-between gap-y-3">
             <NFTClaimerMintButton
+              v-if="errored"
               :space-collection-info="spaceCollectionInfo"
               :collection-info="collectionInfo"
               :loading="loading"
@@ -141,7 +149,7 @@ watch(
               :show-price="true"
               @click="_mint()"
             >
-              Mint again
+              Try again
             </NFTClaimerMintButton>
             <BaseButton @click="$emit('close')">Close</BaseButton>
           </div>

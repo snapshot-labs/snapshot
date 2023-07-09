@@ -37,7 +37,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   const auth = getInstance();
   const { web3, web3Account } = useWeb3();
-  const { updateProgress, resetProgress, Step, Status } =
+  const { updateProgress, resetProgress, Step, Status, errored } =
     useNFTClaimerProgress();
   const { formatNumber } = useIntl();
 
@@ -624,6 +624,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     mint,
     update,
     deploy,
-    init
+    init,
+    errored
   };
 }

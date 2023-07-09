@@ -42,13 +42,20 @@ const defaultProgress: Progress = {
 const progress = ref<Progress>(clone(defaultProgress));
 
 export function useNFTClaimerProgress() {
+  const errored = ref(false);
+
   function updateProgress(key: Step, status: Status, description: string) {
     progress.value[key].status = status;
     progress.value[key].description = description;
+
+    if (status === Status.ERROR) {
+      errored.value = true;
+    }
   }
 
   function resetProgress() {
     progress.value = clone(defaultProgress);
+    errored.value = false;
   }
 
   return {
@@ -56,6 +63,7 @@ export function useNFTClaimerProgress() {
     Status,
     progress,
     updateProgress,
-    resetProgress
+    resetProgress,
+    errored
   };
 }
