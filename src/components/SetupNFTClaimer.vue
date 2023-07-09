@@ -173,7 +173,7 @@ watch(
       <BaseBlock title="SnapIt!">
         <div class="flex w-full flex-col gap-y-3">
           <TuneInput
-            v-model.number="input.maxSupply"
+            v-model="input.maxSupply"
             label="Max supply"
             hint="Maximum number of NFTs per proposal"
             placeholder="100"
@@ -182,37 +182,34 @@ watch(
             :disabled="isViewOnly"
             :error="validationErrors?.maxSupply"
             autofocus
-            @update:model-value="
-              value => (input.maxSupply = value !== '' ? Number(value) : null)
-            "
+            @update:model-value="value => (input.maxSupply = Number(value))"
           />
 
           <TuneInput
-            v-model.number="input.formattedMintPrice"
+            v-model="input.formattedMintPrice"
             label="Mint price"
+            min="0"
             :hint="`In ${mintCurrency}`"
             type="number"
             placeholder="0.5"
             :error="validationErrors?.formattedMintPrice"
             :disabled="isViewOnly"
             @update:model-value="
-              value =>
-                (input.formattedMintPrice = value !== '' ? Number(value) : null)
+              value => (input.formattedMintPrice = Number(value))
             "
           />
 
           <TuneInput
-            v-model.number="input.proposerFee"
+            v-model="input.proposerFee"
             label="Proposer fees"
             type="number"
             hint="Percentage of the mint price, shared with the proposal author"
             placeholder="5"
+            min="0"
             :max="maxProposerCut"
             :error="validationErrors?.proposerFee"
             :disabled="isViewOnly"
-            @update:model-value="
-              value => (input.proposerFee = value !== '' ? Number(value) : null)
-            "
+            @update:model-value="value => (input.proposerFee = Number(value))"
           />
 
           <TuneInput
