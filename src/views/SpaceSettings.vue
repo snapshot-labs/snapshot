@@ -306,7 +306,10 @@ const isViewOnly = computed(() => {
             />
           </template>
           <div
-            v-if="isSpaceAdmin || isSpaceController"
+            v-if="
+              (isSpaceAdmin || isSpaceController) &&
+              currentPage !== Page.NFTCLAIMER
+            "
             class="flex gap-5 px-4 pt-2 md:px-0"
           >
             <BaseButton class="mb-2 block w-full" @click="resetForm">
