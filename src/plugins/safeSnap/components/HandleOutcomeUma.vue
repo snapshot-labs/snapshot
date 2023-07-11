@@ -226,14 +226,15 @@ function didProposalPass(proposal: Proposal) {
   // ensure the vote has ended
   if (proposal.state !== 'closed') return false;
   // ensure total votes are more than quorum
-  if (proposal.scores_total < proposal.quorum) return false;
+  if (proposal.scores_total && proposal.scores_total < proposal.quorum)
+    return false;
   const votes = Object.fromEntries(
     proposal.choices.map((choice, i) => {
-      return [choice.toLowerCase(), proposal.scores[i]];
+      return [choice.toLowerCase(), proposal.scores[i] ?? 0];
     })
   );
   // ensure the for votes pass quorum and that there are more for votes than against
-  return votes['for'] > votes['against'];
+  return votes['for'] > proposal.scores_total / 2;
 }
 
 const questionState = computed<QuestionState>(() => {
@@ -269,6 +270,9 @@ const questionState = computed<QuestionState>(() => {
   if (assertionEvent && !assertionEvent.isExpired)
     return 'waiting-for-liveness';
 
+  // this is  above proposal-approved stated because we dont want to ever execute on proposals that did not pass vote
+  if (!proposalPassed) return 'proposal-denied';
+
   // Proposal is approved if it expires without a dispute and hasn't been settled.
   if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
     return 'proposal-approved';
@@ -276,8 +280,6 @@ const questionState = computed<QuestionState>(() => {
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
   if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
     return 'proposal-approved';
-
-  if (!proposalPassed) return 'proposal-denied';
 
   return 'error';
 });
