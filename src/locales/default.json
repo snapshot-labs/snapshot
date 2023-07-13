@@ -294,6 +294,10 @@
             "title": "Your report is currently being generated",
             "description": "It may take a few minutes. Please check back shortly."
           },
+          "unsupportedNetwork": {
+            "title": "Unsuppoted network",
+            "description": "Votes report are available only on the main network."
+          },
           "unknownError": {
             "title": "We're having trouble connecting to the server responsible for downloads",
             "description": "Please try again in a few moments. If the problem persists, consider contacting our support team."
