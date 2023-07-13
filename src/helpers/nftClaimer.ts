@@ -26,10 +26,38 @@ export const client = new ApolloClient({
   }
 });
 
+type Mintable = {
+  maxSupply: string;
+  mintPrice: string;
+  proposerFee: string;
+  mintCount: string;
+};
+
+type SpaceCollection = {
+  id: string;
+  spaceId?: string;
+  spaceTreasury?: string;
+  enabled?: boolean;
+} & Mintable;
+
+type ProposalCollection = {
+  id: number;
+  mints?: Mint[];
+  spaceCollection?: SpaceCollection;
+} & Mintable;
+
+type Mint = {
+  id: string;
+  minterAddress?: string;
+  timestamp: number;
+  txHash: string;
+  propoposal?: ProposalCollection;
+};
+
 export async function getSpaceCollection(spaceId: string) {
   const {
     data: { spaceCollections }
-  }: { data: { spaceCollections: any[] } } = await client.query({
+  }: { data: { spaceCollections: SpaceCollection[] } } = await client.query({
     query: gql`
       query SpaceCollections($spaceId: String) {
         spaceCollections(where: { spaceId: $spaceId }) {
@@ -54,7 +82,7 @@ export async function getSpaceCollection(spaceId: string) {
 export async function getCollection(proposalId: bigint) {
   const {
     data: { proposals }
-  }: { data: { proposals: any[] } } = await client.query({
+  }: { data: { proposals: ProposalCollection[] } } = await client.query({
     query: gql`
       query proposals($proposalId: BigInt) {
         proposals(where: { proposalId: $proposalId }) {
@@ -83,7 +111,7 @@ export async function getCollection(proposalId: bigint) {
 export async function getUserNfts(minterAddress: string) {
   const {
     data: { mints }
-  }: { data: { mints: any[] } } = await client.query({
+  }: { data: { mints: Mint[] } } = await client.query({
     query: gql`
       query mints($minterAddress: String) {
         mints(
@@ -94,6 +122,7 @@ export async function getUserNfts(minterAddress: string) {
         ) {
           id
           timestamp
+          txHash
           proposal {
             id
             spaceCollection {
