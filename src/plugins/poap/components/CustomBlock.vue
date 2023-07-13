@@ -147,7 +147,11 @@ export default {
 </script>
 
 <template>
-  <BaseBlock title="I voted POAP" :loading="loading">
+  <BaseBlock
+    title="I voted POAP"
+    :loading="loading"
+    v-if="currentState !== 'NO_POAP'"
+  >
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
       <div class="mb-2 text-center text-skin-link">{{ $t(header) }}</div>
