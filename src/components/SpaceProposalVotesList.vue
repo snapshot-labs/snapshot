@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import camelCase from 'lodash.camelCase';
+import camelCase from 'lodash/camelCase';
 
 const props = defineProps<{
   space: ExtendedSpace;
