@@ -70,7 +70,7 @@ onMounted(async () => {
         :loading="isLoading"
       />
 
-      <ProfileAboutNFTs :address="userAddress" />
+      <ProfileAboutNFT :address="userAddress" />
 
       <ProfileAboutDelegate
         :user-address="userAddress"

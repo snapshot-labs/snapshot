@@ -49,7 +49,7 @@ onMounted(async () => {
             :key="n"
             class="mx-2 min-w-[66px] max-w-[66px] text-center first:ml-0"
           >
-            <NFTItem :nft="n" />
+            <ProfileAboutNFTItem :mint="n" />
           </div>
         </div>
         <BlockSpacesListButtonMore
@@ -64,7 +64,7 @@ onMounted(async () => {
   </BaseBlock>
 
   <teleport to="#modal">
-    <ModalProfileNFTs
+    <ProfileAboutNFTExploreModal
       :nfts="nfts"
       :open="modalNFTsOpen"
       @close="modalNFTsOpen = false"

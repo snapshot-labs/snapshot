@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { shorten } from '@/helpers/utils';
 
 defineProps<{
-  nft: any;
+  mint: any;
 }>();
 </script>
 
@@ -12,14 +12,14 @@ defineProps<{
     :to="{
       name: 'spaceProposal',
       params: {
-        key: nft.proposal.spaceCollection.spaceId,
-        id: BigNumber.from(nft.proposal.id).toHexString()
+        key: mint.proposal.spaceCollection.spaceId,
+        id: BigNumber.from(mint.proposal.id).toHexString()
       }
     }"
   >
     <NFTClaimerLogo class="mx-auto" />
     <div class="mt-2 truncate text-xs">
-      {{ shorten(nft.proposal.id) }}
+      {{ shorten(mint.proposal.id) }}
     </div>
   </router-link>
 </template>
