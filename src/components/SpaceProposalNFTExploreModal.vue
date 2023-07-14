@@ -16,7 +16,7 @@ const { mintCurrency, mintNetwork } = useNFTClaimer(
   props.proposal
 );
 const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
-const { formatRelativeTime, formatNumber } = useIntl();
+const { formatNumber } = useIntl();
 
 const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
@@ -90,44 +90,14 @@ const collectionInfo = computed(() => {
           :key="mint.id"
           class="mt-3 flex flex-row items-start justify-between gap-x-4 px-4"
         >
-          <NFTClaimerLogo />
-          <div class="flex grow flex-col">
-            <BaseUser
-              :address="mint.minterAddress"
-              :profile="mint.userProfile"
-              :space="space"
-              :proposal="proposal"
-            />
-            <span>{{ formatRelativeTime(mint.timestamp) }}</span>
-          </div>
-          <div class="flex gap-x-3">
-            <BaseLink
-              :link="
-                explorerUrl(
-                  '5',
-                  `${contractInfo.address}?a=${collectionInfo.id}`,
-                  'token'
-                )
-              "
-              :hide-external-icon="true"
-              title="View this token on Etherscan"
-            >
-              <IconEtherscan />
-            </BaseLink>
-            <BaseLink
-              :link="
-                openseaLink(
-                  mintNetwork,
-                  contractInfo.address,
-                  collectionInfo.id
-                )
-              "
-              :hide-external-icon="true"
-              title="View this token on Opensea"
-            >
-              <IconOpensea />
-            </BaseLink>
-          </div>
+          <SpaceProposalNFTExploreModalItem
+            :contract-info="contractInfo"
+            :collection-info="collectionInfo"
+            :mint="mint"
+            :space="space"
+            :proposal="proposal"
+            :mint-network="mintNetwork"
+          />
         </div>
 
         <div
