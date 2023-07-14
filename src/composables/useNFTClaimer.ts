@@ -254,27 +254,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   async function sendTx(
-    address: string,
-    skipWethChecking = false,
     callback: () => Promise<any>,
-    beforeSend: () => boolean,
     afterSend: (tx: any) => void
   ) {
     let txPendingId: string | null = null;
 
     try {
-      if (
-        !(await _switchNetwork()) ||
-        !(skipWethChecking || (await _checkWETHBalance())) ||
-        !(skipWethChecking || (await _checkWETHApproval(address)))
-      ) {
-        return false;
-      }
-
-      if (!beforeSend()) {
-        return false;
-      }
-
       txPendingId = createPendingTransaction();
       const tx: any = await callback();
 
@@ -317,10 +302,55 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         proposal?.id as string
       ).mintPrice;
       const receipt = await sendTx(
-        address,
-        false,
         async () => {
           try {
+            updateProgress(
+              Step.CHECK_REMAINING_SUPPLY,
+              Status.WORKING,
+              'Checking remaining supply...'
+            );
+            await refresh(proposal as Proposal);
+
+            const info = getCollectionInfo(space.id, proposal?.id as string);
+
+            if (info.maxSupply > info.mintCount) {
+              updateProgress(
+                Step.CHECK_REMAINING_SUPPLY,
+                Status.SUCCESS,
+                `${info.maxSupply - info.mintCount} NFTs available`
+              );
+            } else {
+              updateProgress(
+                Step.CHECK_REMAINING_SUPPLY,
+                Status.ERROR,
+                'All NFTs have been minted'
+              );
+              return;
+            }
+          } catch (e: any) {
+            updateProgress(
+              Step.CHECK_REMAINING_SUPPLY,
+              Status.ERROR,
+              'Unable to check the remaining supply'
+            );
+            return;
+          }
+
+          if (
+            !(await _switchNetwork()) ||
+            !(await _checkWETHBalance()) ||
+            !(await _checkWETHApproval(address))
+          ) {
+            return false;
+          }
+
+          try {
+            updateProgress(
+              Step.SEND_TX,
+              Status.WORKING,
+              'Verifying your data...'
+            );
+
             const { signature, salt, proposer, proposalId, abi } =
               await _getBackendPayload('mint', {
                 proposalAuthor: proposal?.author,
@@ -371,15 +401,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
             );
             console.error(e);
           }
-        },
-        () => {
-          updateProgress(
-            Step.SEND_TX,
-            Status.WORKING,
-            'Verifying your data...'
-          );
-
-          return true;
         },
         tx => {
           updateProgress(Step.SEND_TX, Status.SUCCESS, mintTxLinkTag(tx.hash));
@@ -432,8 +453,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       });
 
       await sendTx(
-        implementation,
-        true,
         () => {
           return sendTransaction(
             auth.web3,
@@ -449,9 +468,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
               signature.s
             ]
           );
-        },
-        () => {
-          return true;
         },
         () => {
           return '';

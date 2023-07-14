@@ -1,6 +1,7 @@
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 enum Step {
+  CHECK_REMAINING_SUPPLY,
   CHECK_WETH_BALANCE,
   APPROVE_WETH_BALANCE,
   SEND_TX,
@@ -21,6 +22,10 @@ type Progress = Record<
 
 const defaultProgressItem = { description: '', status: Status.FUTURE };
 const defaultProgress: Progress = {
+  [Step.CHECK_REMAINING_SUPPLY]: {
+    name: 'Checking remaining supply',
+    ...defaultProgressItem
+  },
   [Step.CHECK_WETH_BALANCE]: {
     name: 'Checking WETH balance',
     ...defaultProgressItem
