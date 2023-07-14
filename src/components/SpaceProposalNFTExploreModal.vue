@@ -15,7 +15,7 @@ const { mintCurrency, mintNetwork } = useNFTClaimer(
   props.space,
   props.proposal
 );
-const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
+const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
 const { formatRelativeTime, formatNumber } = useIntl();
 
 const contractInfo = computed(() => {
@@ -25,13 +25,6 @@ const contractInfo = computed(() => {
 const collectionInfo = computed(() => {
   return getCollectionInfo(props.space.id, props.proposal.id);
 });
-
-watch(
-  () => props.open,
-  () => {
-    props.open && refresh(props.proposal);
-  }
-);
 </script>
 
 <template>

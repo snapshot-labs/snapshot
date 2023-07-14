@@ -62,13 +62,13 @@ export function useNFTClaimerStorage() {
   }
 
   async function initContract(space: ExtendedSpace, force = false) {
-    console.debug('NFTClaimer/Storage: init contract', space.id);
-
     const { id } = space;
-    const existingInfo = getContractInfo(id);
 
-    if (!existingInfo || force) {
-      console.debug('NFTClaimer/Storage: init contract - set data');
+    if (!getContractInfo(id) || force) {
+      console.debug(
+        'NFTClaimer/Storage/initContract: Fetching data from subgraph',
+        force
+      );
       const info = await getSpaceCollection(id);
 
       if (info) {
@@ -82,23 +82,23 @@ export function useNFTClaimerStorage() {
           ...formattedMintableInfo(info)
         });
       }
+    } else {
+      console.debug('NFTClaimer/Storage/initContract: Skipped');
     }
+
+    return getContractInfo(id);
   }
 
   async function initCollection(proposal: Proposal, force = false) {
-    console.debug('NFTClaimer/Storage: init collection', proposal.id);
-
     const spaceId = proposal.space.id;
-    let spaceInfo = getContractInfo(spaceId);
+    const proposalId = proposal.id;
 
-    if (!spaceInfo) {
-      await initContract(proposal.space);
-      spaceInfo = getContractInfo(spaceId);
-    }
-
-    if (spaceInfo || force) {
-      console.debug('NFTClaimer/Storage: init collection - set data');
-      const proposalId = proposal.id;
+    const spaceInfo = await initContract(proposal.space);
+    if (!getCollectionInfo(spaceId, proposalId) || force) {
+      console.debug(
+        'NFTClaimer/Storage/initCollection: Fetching data from subgraph',
+        force
+      );
       const info = await getCollection(BigInt(proposalId));
 
       setCollectionInfo(spaceId, proposalId, {
@@ -116,12 +116,13 @@ export function useNFTClaimerStorage() {
       getCollectionInfo(spaceId, proposalId).mints.map(m => {
         m.userProfile = profiles[m.minterAddress];
       });
+    } else {
+      console.debug('NFTClaimer/Storage/initCollection: Skipped');
     }
   }
 
   async function init(item: ExtendedSpace | Proposal, force = false) {
     try {
-      console.debug('NFTClaimer/Storage: init', force);
       if (Object.prototype.hasOwnProperty.call(item, 'space')) {
         await initCollection(item as Proposal, force);
       } else if (item) {
