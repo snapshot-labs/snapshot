@@ -35,7 +35,7 @@ type Mintable = {
 
 type SpaceCollection = {
   id: string;
-  spaceId?: string;
+  spaceId: string;
   spaceTreasury?: string;
   enabled?: boolean;
 } & Mintable;
@@ -63,6 +63,7 @@ export async function getSpaceCollection(spaceId: string) {
         query SpaceCollections($spaceId: String) {
           spaceCollections(where: { spaceId: $spaceId }) {
             id
+            spaceId
             maxSupply
             mintPrice
             proposerFee
@@ -163,35 +164,36 @@ export function nftLinkTag(contract: string, id: string) {
           >Token [${shorten(id)}]</a>`;
 }
 
-const PROPOSALS_QUERY = gql`
-  query Proposals($id_in: [String]) {
-    proposals(where: { id_in: $id_in }) {
-      id
-      title
-      space {
-        id
-        name
-        avatar
-      }
-    }
-  }
-`;
-
 export async function getProposals(ids: string[]) {
   try {
     console.time('getProposals');
-    const response = await snapshotApolloClient.query({
-      query: PROPOSALS_QUERY,
-      variables: {
-        id_in: ids
-      }
-    });
+    const {
+      data: { proposals }
+    }: { data: { proposals: ProposalCollection[] } } =
+      await snapshotApolloClient.query({
+        query: gql`
+          query Proposals($id_in: [String]) {
+            proposals(where: { id_in: $id_in }) {
+              id
+              title
+              space {
+                id
+                name
+                avatar
+              }
+            }
+          }
+        `,
+        variables: {
+          id_in: ids
+        }
+      });
     console.timeEnd('getProposals');
 
-    return response.data.proposals;
+    return proposals;
   } catch (e) {
     console.log(e);
-    return e;
+    return [];
   }
 }
 
@@ -205,7 +207,7 @@ export async function getSnapshotFee() {
         }
       }
     );
-    return (await res.json()).snapshotFee;
+    return parseInt((await res.json()).snapshotFee);
   } catch (e) {
     console.error('Unable to retrieve snapshotFee, default to fallback value');
     return 5;
