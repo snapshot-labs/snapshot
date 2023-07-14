@@ -5,7 +5,9 @@ const props = defineProps({
   showInfo: { type: Boolean, default: true }
 });
 
-const mintPercent = computed(() => (props.supply / props.maxSupply) * 100);
+const mintPercent = computed(() =>
+  Math.min((props.supply / props.maxSupply) * 100, 100)
+);
 </script>
 
 <template>
