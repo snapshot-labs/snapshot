@@ -20,7 +20,7 @@ export function useReportDownload() {
 
   async function downloadVotes(proposalId: string) {
     if (env === 'demo') {
-      errorCode.value = new Error('UNSUPPORTED_NETWORK');
+      errorCode.value = new Error('UNSUPPORTED_ENV');
       return false;
     }
 

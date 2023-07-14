@@ -32,7 +32,7 @@ async function downloadReport(proposalId: string) {
 }
 
 const errorMessagekeyPrefix = computed(() => {
-  const knownErrors = ['PENDING_GENERATION', 'UNSUPPORTED_NETWORK'];
+  const knownErrors = ['PENDING_GENERATION', 'UNSUPPORTED_ENV'];
 
   return `proposal.downloadCsvVotes.postDownloadModal.message.${camelCase(
     knownErrors.includes(errorCode?.value?.message as string)
