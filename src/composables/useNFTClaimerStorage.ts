@@ -147,7 +147,6 @@ export function useNFTClaimerStorage() {
   return {
     getContractInfo,
     getCollectionInfo,
-    data,
     init,
     refresh,
     inited
