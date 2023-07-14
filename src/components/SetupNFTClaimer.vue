@@ -173,6 +173,9 @@ watch(
     <form class="flex flex-col gap-y-3">
       <BaseBlock title="SnapIt!">
         <div class="flex w-full flex-col gap-y-3">
+          <BaseMessage level="info" class="mb-3">
+            Updates will only be applied to future proposals
+          </BaseMessage>
           <TuneInput
             v-model="input.maxSupply"
             label="Max supply"
@@ -190,7 +193,7 @@ watch(
             v-model="input.formattedMintPrice"
             label="Mint price"
             min="0"
-            :hint="`In ${mintCurrency}`"
+            :hint="`The mint price for each NFT, in ${mintCurrency}`"
             type="number"
             placeholder="0.5"
             :error="validationErrors?.formattedMintPrice"
@@ -204,7 +207,7 @@ watch(
             v-model="input.proposerFee"
             label="Proposer fees"
             type="number"
-            hint="Percentage of the mint price, shared with the proposal author"
+            hint="Percentage of the mint price shared with the proposal author"
             placeholder="5"
             min="0"
             :max="maxProposerCut"
@@ -216,7 +219,7 @@ watch(
           <TuneInput
             v-model.trim="input.treasuryAddress"
             label="Space treasury wallet"
-            hint="Address receiving the funds from the mints"
+            hint="Wallet address receiving the funds from the mint"
             placeholder="0x0000"
             :error="validationErrors?.treasuryAddress"
             :disabled="isViewOnly"
