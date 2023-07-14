@@ -5,12 +5,6 @@ const { notify } = useFlashNotification();
 const { web3Account } = useWeb3();
 
 const STATES = {
-  NO_POAP: {
-    header: 'poap.no_poap_header',
-    headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/empty.svg',
-    mainImage:
-      'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png'
-  },
   NOT_VOTED: {
     headerImage: 'https://snapshotsplugin.s3.us-west-2.amazonaws.com/vote.svg',
     header: 'poap.no_voted_header',
@@ -48,7 +42,7 @@ export default {
     return {
       loading: false,
       plugin: new Plugin(),
-      currentState: NO_POAP,
+      currentState: LOADING,
       address: '',
       poapImg: '',
       loadButton: false
@@ -148,7 +142,7 @@ export default {
 
 <template>
   <BaseBlock
-    v-if="currentState !== 'NO_POAP'"
+    v-if="currentState === 'LOADING' || currentState !== 'NO_POAP'"
     title="I voted POAP"
     :loading="loading"
   >
