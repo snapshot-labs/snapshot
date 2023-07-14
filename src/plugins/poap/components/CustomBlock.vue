@@ -148,9 +148,9 @@ export default {
 
 <template>
   <BaseBlock
+    v-if="currentState !== 'NO_POAP'"
     title="I voted POAP"
     :loading="loading"
-    v-if="currentState !== 'NO_POAP'"
   >
     <div class="flex flex-col items-center">
       <img :src="headerImg" alt="" class="mb-2" />
