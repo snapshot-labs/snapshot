@@ -6,10 +6,8 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { init, inited, spaceCollectionsInfo, mintCurrency } = useNFTClaimer(
-  props.space,
-  props.proposal
-);
+const { mintCurrency } = useNFTClaimer(props.space, props.proposal);
+const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 const { formatNumber } = useIntl();
@@ -28,29 +26,23 @@ function reopenMintModal() {
   }
 }
 
-onMounted(() => {
-  init();
-});
-
 watch(
   () => web3Account.value,
   () => reopenMintModal()
 );
 
-const spaceCollectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id];
+const contractInfo = computed(() => {
+  return getContractInfo(props.space.id);
 });
 
 const collectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id].proposals[
-    props.proposal.id
-  ];
+  return getCollectionInfo(props.space.id, props.proposal.id);
 });
 </script>
 
 <template>
-  <template v-if="inited">
-    <BaseBlock v-if="spaceCollectionInfo" :title="$t('SnapIt!')" :slim="true">
+  <template v-if="collectionInfo">
+    <BaseBlock v-if="contractInfo" :title="$t('SnapIt!')" :slim="true">
       <div class="flex flex-col space-y-4 p-4">
         <div class="group flex flex-row gap-4">
           <NFTClaimerLogo class="shrink-0" />
@@ -84,7 +76,7 @@ const collectionInfo = computed(() => {
           </span>
         </div>
         <NFTClaimerMintButton
-          :space-collection-info="spaceCollectionInfo"
+          :contract-info="contractInfo"
           :collection-info="collectionInfo"
           :currency="mintCurrency"
           @click="isModalMintOpen = true"
@@ -113,7 +105,7 @@ const collectionInfo = computed(() => {
       </teleport>
     </BaseBlock>
     <BaseBlock
-      v-else-if="!spaceCollectionInfo && isSpaceController"
+      v-else-if="!contractInfo && isSpaceController"
       :title="$t('SnapIt!')"
       class="text-center"
     >

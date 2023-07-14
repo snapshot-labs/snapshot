@@ -16,15 +16,11 @@ enum MintStep {
   MINT
 }
 
-const {
-  mintNetwork,
-  mintCurrency,
-  loading,
-  mint,
-  init,
-  spaceCollectionsInfo,
-  errored
-} = useNFTClaimer(props.space, props.proposal);
+const { mintNetwork, mintCurrency, loading, mint, errored } = useNFTClaimer(
+  props.space,
+  props.proposal
+);
+const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { formatNumber } = useIntl();
 
@@ -32,14 +28,12 @@ const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
 
-const spaceCollectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id];
+const contractInfo = computed(() => {
+  return getContractInfo(props.space.id);
 });
 
 const collectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id].proposals[
-    props.proposal.id
-  ];
+  return getCollectionInfo(props.space.id, props.proposal.id);
 });
 
 function _mint() {
@@ -57,7 +51,7 @@ watch(
   () => {
     if (props.open || refreshInfo.value) {
       refreshInfo.value = false;
-      init();
+      refresh(props.proposal);
     }
     if (!loading.value) {
       currentStep.value = MintStep.INFO;
@@ -79,16 +73,16 @@ watch(
               <div class="flex flex-row justify-between py-1">
                 <span>Contract</span>
                 <BaseLink
-                  :link="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+                  :link="explorerUrl(mintNetwork, contractInfo.address)"
                   title="View this contract in Etherscan"
                 >
-                  {{ shorten(spaceCollectionInfo.address) }}
+                  {{ shorten(contractInfo.address) }}
                 </BaseLink>
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>OpenSea collection</span>
                 <a
-                  :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
+                  :href="openseaLink(mintNetwork, contractInfo.address)"
                   target="_blank"
                   title="View this collection on OpenSea"
                 >
@@ -129,7 +123,7 @@ watch(
             </div>
           </BaseBlock>
           <NFTClaimerMintButton
-            :space-collection-info="spaceCollectionInfo"
+            :contract-info="contractInfo"
             :collection-info="collectionInfo"
             :loading="loading"
             :currency="mintCurrency"
@@ -142,7 +136,7 @@ watch(
           <div class="flex flex-col justify-between gap-y-3">
             <NFTClaimerMintButton
               v-if="errored"
-              :space-collection-info="spaceCollectionInfo"
+              :contract-info="contractInfo"
               :collection-info="collectionInfo"
               :loading="loading"
               :currency="mintCurrency"

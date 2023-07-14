@@ -7,14 +7,14 @@ import {
 import { BigNumber } from '@ethersproject/bignumber';
 import { randomBytes } from '@ethersproject/random';
 import { shorten } from './utils';
-import { apolloClient } from './apollo';
+import { apolloClient as snapshotApolloClient } from './apollo';
 
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
 
 const httpLink = createHttpLink({ uri });
 
-export const client = new ApolloClient({
+export const subgraphApolloClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache({
     addTypename: false
@@ -27,10 +27,10 @@ export const client = new ApolloClient({
 });
 
 type Mintable = {
-  maxSupply: string;
-  mintPrice: string;
-  proposerFee: string;
-  mintCount: string;
+  maxSupply: number;
+  mintPrice: number;
+  proposerFee: number;
+  mintCount: number;
 };
 
 type SpaceCollection = {
@@ -46,9 +46,9 @@ type ProposalCollection = {
   spaceCollection?: SpaceCollection;
 } & Mintable;
 
-type Mint = {
+export type Mint = {
   id: string;
-  minterAddress?: string;
+  minterAddress: string;
   timestamp: number;
   txHash: string;
   propoposal?: ProposalCollection;
@@ -57,53 +57,55 @@ type Mint = {
 export async function getSpaceCollection(spaceId: string) {
   const {
     data: { spaceCollections }
-  }: { data: { spaceCollections: SpaceCollection[] } } = await client.query({
-    query: gql`
-      query SpaceCollections($spaceId: String) {
-        spaceCollections(where: { spaceId: $spaceId }) {
-          id
-          maxSupply
-          mintPrice
-          proposerFee
-          spaceTreasury
-          enabled
-          mintCount
+  }: { data: { spaceCollections: SpaceCollection[] } } =
+    await subgraphApolloClient.query({
+      query: gql`
+        query SpaceCollections($spaceId: String) {
+          spaceCollections(where: { spaceId: $spaceId }) {
+            id
+            maxSupply
+            mintPrice
+            proposerFee
+            spaceTreasury
+            enabled
+            mintCount
+          }
         }
+      `,
+      variables: {
+        spaceId
       }
-    `,
-    variables: {
-      spaceId
-    }
-  });
+    });
 
   return spaceCollections[0];
 }
 
-export async function getCollection(proposalId: bigint) {
+export async function getCollection(proposalIntId: bigint) {
   const {
     data: { proposals }
-  }: { data: { proposals: ProposalCollection[] } } = await client.query({
-    query: gql`
-      query proposals($proposalId: BigInt) {
-        proposals(where: { proposalId: $proposalId }) {
-          id
-          mintCount
-          maxSupply
-          mintPrice
-          proposerFee
-          mints {
+  }: { data: { proposals: ProposalCollection[] } } =
+    await subgraphApolloClient.query({
+      query: gql`
+        query proposals($proposalId: BigInt) {
+          proposals(where: { proposalId: $proposalId }) {
             id
-            minterAddress
-            timestamp
-            txHash
+            mintCount
+            maxSupply
+            mintPrice
+            proposerFee
+            mints {
+              id
+              minterAddress
+              timestamp
+              txHash
+            }
           }
         }
+      `,
+      variables: {
+        proposalId: proposalIntId.toString()
       }
-    `,
-    variables: {
-      proposalId: proposalId.toString()
-    }
-  });
+    });
 
   return proposals[0];
 }
@@ -111,7 +113,7 @@ export async function getCollection(proposalId: bigint) {
 export async function getUserNfts(minterAddress: string) {
   const {
     data: { mints }
-  }: { data: { mints: Mint[] } } = await client.query({
+  }: { data: { mints: Mint[] } } = await subgraphApolloClient.query({
     query: gql`
       query mints($minterAddress: String) {
         mints(
@@ -122,6 +124,7 @@ export async function getUserNfts(minterAddress: string) {
         ) {
           id
           timestamp
+          minterAddress
           txHash
           proposal {
             id
@@ -177,7 +180,7 @@ const PROPOSALS_QUERY = gql`
 export async function getProposals(ids: string[]) {
   try {
     console.time('getProposals');
-    const response = await apolloClient.query({
+    const response = await snapshotApolloClient.query({
       query: PROPOSALS_QUERY,
       variables: {
         id_in: ids

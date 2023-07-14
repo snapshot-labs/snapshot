@@ -1,6 +1,6 @@
 <script setup lang="ts">
-defineProps<{
-  spaceCollectionInfo: any;
+const props = defineProps<{
+  contractInfo: any;
   collectionInfo: any;
   currency: string;
   loading?: boolean;
@@ -8,27 +8,27 @@ defineProps<{
 }>();
 
 const { formatNumber } = useIntl();
+
+const soldOut = computed(() => {
+  return props.collectionInfo.maxSupply === props.collectionInfo.mintCount;
+});
 </script>
 
 <template>
   <BaseButton
     primary
     :loading="loading"
-    :disabled="!spaceCollectionInfo.enabled"
+    :disabled="!contractInfo.enabled || soldOut"
   >
     <template v-if="$slots.default">
       <slot />
     </template>
     <template v-else>
-      <template
-        v-if="spaceCollectionInfo.maxSupply === collectionInfo.mintCount"
-      >
-        Sold out
-      </template>
+      <template v-if="soldOut"> Sold out </template>
       <template v-else>
         MINT
         <template v-if="showPrice">
-          for {{ formatNumber(spaceCollectionInfo.formattedMintPrice) }}
+          for {{ formatNumber(collectionInfo.formattedMintPrice) }}
           {{ currency }}
         </template>
       </template>

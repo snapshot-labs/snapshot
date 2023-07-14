@@ -44,48 +44,49 @@ defineEmits(['close']);
             <NFTClaimerLogo class="shrink-0" />
             <div class="mx-3 grow">
               <div class="flex items-start gap-x-3">
-                <div>
-                  <router-link
-                    :to="{
-                      name: 'spaceProposal',
-                      params: {
-                        key: proposals[n.proposal.id].space.id,
-                        id: proposals[n.proposal.id].id
-                      }
-                    }"
+                <router-link
+                  :to="{
+                    name: 'spaceProposal',
+                    params: {
+                      key: proposals[n.proposal.id].space.id,
+                      id: proposals[n.proposal.id].id
+                    }
+                  }"
+                  class="grow"
+                >
+                  {{ proposals[n.proposal.id].title }}
+                </router-link>
+                <div class="flex gap-x-2">
+                  <a
+                    v-tippy="{ content: 'View this token on OpenSea' }"
+                    class="flex flex-row"
+                    :href="
+                      openseaLink(
+                        '5',
+                        n.proposal.spaceCollection.id,
+                        n.proposal.id
+                      )
+                    "
+                    target="_blank"
                   >
-                    {{ proposals[n.proposal.id].title }}
-                  </router-link>
-                </div>
-                <a
-                  v-tippy="{ content: 'View this token on OpenSea' }"
-                  class="flex flex-row"
-                  :href="
-                    openseaLink(
-                      '5',
-                      n.proposal.spaceCollection.id,
-                      n.proposal.id
-                    )
-                  "
-                  target="_blank"
-                >
-                  <IconOpensea />
-                </a>
+                    <IconOpensea />
+                  </a>
 
-                <a
-                  v-tippy="{ content: 'View this token on etherscan' }"
-                  class="flex flex-row"
-                  :href="
-                    explorerUrl(
-                      '5',
-                      `${n.proposal.spaceCollection.id}?a=${n.proposal.id}`,
-                      'token'
-                    )
-                  "
-                  target="_blank"
-                >
-                  <IconEtherscan />
-                </a>
+                  <a
+                    v-tippy="{ content: 'View this token on etherscan' }"
+                    class="flex flex-row"
+                    :href="
+                      explorerUrl(
+                        '5',
+                        `${n.proposal.spaceCollection.id}?a=${n.proposal.id}`,
+                        'token'
+                      )
+                    "
+                    target="_blank"
+                  >
+                    <IconEtherscan />
+                  </a>
+                </div>
               </div>
               <div class="flex">
                 <LinkSpace

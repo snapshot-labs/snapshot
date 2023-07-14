@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import pick from 'lodash/pick';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { validateForm } from '@/helpers/validation';
-import pick from 'lodash/pick';
 import { getSnapshotFee } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
@@ -12,26 +12,17 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 const { web3Account } = useWeb3();
+const { deploy, update, loading, mintCurrency, toggleMintStatus } =
+  useNFTClaimer(props.space);
+const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
-
-const {
-  deploy,
-  update,
-  spaceCollectionsInfo,
-  loading,
-  init,
-  inited,
-  mintCurrency,
-  toggleMintStatus
-} = useNFTClaimer(props.space);
+const dirtyFields = ref(false);
+const isSpaceController = ref(false);
 
 const maxProposerCut = computed(() => {
   return 100 - snapshotFee.value;
 });
-
-const dirtyFields = ref(false);
-const isSpaceController = ref(false);
 
 const schema = computed(() => {
   return {
@@ -56,8 +47,8 @@ const schema = computed(() => {
   };
 });
 
-const enabled = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id]?.enabled;
+const contractInfo = computed(() => {
+  return getContractInfo(props.space.id);
 });
 
 // TODO Enable in production
@@ -70,7 +61,7 @@ const validationErrors = computed(() => {
   dirtyFields.value =
     Object.values(input.value).toString() !==
     Object.values(
-      pick(spaceCollectionsInfo.value[props.space.id], [
+      pick(contractInfo.value, [
         'maxSupply',
         'formattedMintPrice',
         'proposerFee',
@@ -86,7 +77,7 @@ const isViewOnly = computed(() => {
 });
 
 function submit() {
-  if (spaceCollectionsInfo.value[props.space.id]?.address) {
+  if (contractInfo.value.address) {
     update(input.value);
   } else {
     deploy(input.value);
@@ -94,11 +85,11 @@ function submit() {
 }
 
 function toggleStatus() {
-  toggleMintStatus(!spaceCollectionsInfo.value[props.space.id].enabled);
+  toggleMintStatus(!contractInfo.value.enabled);
 }
 
 function resetForm() {
-  input.value = pick(spaceCollectionsInfo.value[props.space.id], [
+  input.value = pick(contractInfo.value, [
     'maxSupply',
     'formattedMintPrice',
     'proposerFee',
@@ -120,10 +111,10 @@ watch(
 );
 
 watch(
-  () => init(),
+  () => init(props.space),
   async () => {
-    input.value = spaceCollectionsInfo.value[props.space.id]
-      ? pick(spaceCollectionsInfo.value[props.space.id], [
+    input.value = contractInfo.value
+      ? pick(contractInfo.value, [
           'maxSupply',
           'formattedMintPrice',
           'proposerFee',
@@ -155,7 +146,7 @@ watch(
       controller wallet.
     </BaseMessageBlock>
     <BaseBlock
-      v-if="spaceCollectionsInfo[props.space.id]?.address"
+      v-if="contractInfo.address"
       class="mb-2 mt-3"
       title="Mint status"
     >
@@ -170,11 +161,11 @@ watch(
         <div>
           <BaseButton
             class="whitespace-nowrap"
-            :variant="enabled && 'danger'"
+            :variant="contractInfo.enabled ? 'danger' : undefined"
             :disabled="isViewOnly"
             @click="toggleStatus()"
           >
-            {{ enabled ? 'Disable' : 'Enable' }} minting
+            {{ contractInfo.enabled ? 'Disable' : 'Enable' }} minting
           </BaseButton>
         </div>
       </div>
@@ -238,10 +229,7 @@ watch(
         </div>
       </BaseBlock>
 
-      <div
-        v-if="!spaceCollectionsInfo[props.space.id]"
-        class="flex gap-5 px-4 pt-2 md:px-0"
-      >
+      <div v-if="!contractInfo" class="flex gap-5 px-4 pt-2 md:px-0">
         <BaseButton
           primary
           class="w-full"
@@ -270,6 +258,7 @@ watch(
             Object.keys(validationErrors).length > 0 ||
             !dirtyFields
           "
+          :loading="loading"
           @click="submit"
         >
           Save

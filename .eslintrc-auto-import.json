@@ -118,6 +118,7 @@
     "toValue": true,
     "useFlaggedMessageStatus": true,
     "useNFTClaimerProgress": true,
-    "useStatement": true
+    "useStatement": true,
+    "useNFTClaimerStorage": true
   }
 }

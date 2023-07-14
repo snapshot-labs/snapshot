@@ -11,29 +11,25 @@ const props = defineProps<{
 
 defineEmits(['close', 'mint']);
 
-const { mintCurrency, mintNetwork, spaceCollectionsInfo, init, profiles } =
-  useNFTClaimer(props.space, props.proposal);
+const { mintCurrency, mintNetwork } = useNFTClaimer(
+  props.space,
+  props.proposal
+);
+const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
 const { formatRelativeTime, formatNumber } = useIntl();
 
-const spaceCollectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id];
+const contractInfo = computed(() => {
+  return getContractInfo(props.space.id);
 });
 
 const collectionInfo = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id].proposals[
-    props.proposal.id
-  ];
-});
-
-const nfts = computed(() => {
-  return spaceCollectionsInfo.value[props.space.id].proposals[props.proposal.id]
-    .mints;
+  return getCollectionInfo(props.space.id, props.proposal.id);
 });
 
 watch(
   () => props.open,
   () => {
-    props.open && init();
+    props.open && refresh(props.proposal);
   }
 );
 </script>
@@ -67,7 +63,7 @@ watch(
 
             <a
               v-tippy="{ content: 'View this collection on OpenSea' }"
-              :href="openseaLink(mintNetwork, spaceCollectionInfo.address)"
+              :href="openseaLink(mintNetwork, contractInfo.address)"
               target="_blank"
             >
               <IconOpensea />
@@ -75,14 +71,14 @@ watch(
 
             <a
               v-tippy="{ content: 'View this contract on etherscan' }"
-              :href="explorerUrl(mintNetwork, spaceCollectionInfo.address)"
+              :href="explorerUrl(mintNetwork, contractInfo.address)"
               target="_blank"
             >
               <IconEtherscan />
             </a>
 
             <NFTClaimerMintButton
-              :space-collection-info="spaceCollectionInfo"
+              :contract-info="contractInfo"
               :collection-info="collectionInfo"
               :currency="mintCurrency"
               @click="$emit('mint')"
@@ -97,26 +93,26 @@ watch(
         </div>
 
         <div
-          v-for="nft in nfts"
-          :key="nft.id"
+          v-for="mint in collectionInfo.mints"
+          :key="mint.id"
           class="mt-3 flex flex-row items-start justify-between gap-x-4 px-4"
         >
           <NFTClaimerLogo />
           <div class="flex grow flex-col">
             <BaseUser
-              :address="nft.minterAddress"
-              :profile="profiles[nft.minterAddress]"
+              :address="mint.minterAddress"
+              :profile="mint.userProfile"
               :space="space"
               :proposal="proposal"
             />
-            <span>{{ formatRelativeTime(nft.timestamp) }}</span>
+            <span>{{ formatRelativeTime(mint.timestamp) }}</span>
           </div>
           <div class="flex gap-x-3">
             <BaseLink
               :link="
                 explorerUrl(
                   '5',
-                  `${spaceCollectionInfo.address}?a=${collectionInfo.id}`,
+                  `${contractInfo.address}?a=${collectionInfo.id}`,
                   'token'
                 )
               "
@@ -129,7 +125,7 @@ watch(
               :link="
                 openseaLink(
                   mintNetwork,
-                  spaceCollectionInfo.address,
+                  contractInfo.address,
                   collectionInfo.id
                 )
               "
@@ -142,7 +138,7 @@ watch(
         </div>
 
         <div
-          v-if="nfts.length === 0"
+          v-if="collectionInfo.mintCount === 0"
           class="flex flex-col items-center justify-center p-4"
         >
           <NFTClaimerLogo class="my-4" size="lg" />

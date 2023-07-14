@@ -5,15 +5,8 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-import {
-  generateSalt,
-  getCollection,
-  getSpaceCollection,
-  mintTxLinkTag
-} from '@/helpers/nftClaimer';
-
+import { generateSalt, mintTxLinkTag } from '@/helpers/nftClaimer';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-const spaceCollectionsInfo = ref({});
 
 export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const NETWORK_KEY = '5';
@@ -30,15 +23,16 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   const mintNetwork = ref(NETWORK_KEY);
   const mintCurrency = ref('WETH');
-  const mintPriceWei = ref(0);
+  const mintPriceWei = ref<BigNumber>(BigNumber.from(0));
 
-  const inited = ref(false);
   const loading = ref(false);
 
   const auth = getInstance();
   const { web3, web3Account } = useWeb3();
   const { updateProgress, resetProgress, Step, Status, errored } =
     useNFTClaimerProgress();
+  const { getContractInfo, getCollectionInfo, init, refresh } =
+    useNFTClaimerStorage();
   const { formatNumber } = useIntl();
 
   const networkKey = computed(() => web3.value.network.key);
@@ -51,7 +45,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   } = useTxStatus();
   const { notify } = useFlashNotification();
 
-  const { profiles, loadProfiles } = useProfiles();
+  init(proposal || space);
 
   async function _switchNetwork() {
     // check current network
@@ -160,11 +154,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           : 0;
         const balance = formatUnits(newAllowanceWei, 'ether');
 
-        if (
-          BigNumber.from(newAllowanceWei).gte(
-            BigNumber.from(mintPriceWei.value)
-          )
-        ) {
+        if (BigNumber.from(newAllowanceWei).gte(mintPriceWei.value)) {
           updateProgress(
             Step.APPROVE_WETH_BALANCE,
             Status.SUCCESS,
@@ -226,85 +216,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     }
   }
 
-  async function init(force = false) {
-    try {
-      if (!space) return;
-
-      let spaceCollectionInfo = spaceCollectionsInfo.value[space.id];
-
-      if (!spaceCollectionInfo || force) {
-        console.debug('_init FRESH:space', space.id);
-        const info = await getSpaceCollection(space.id);
-
-        if (info) {
-          spaceCollectionInfo = {
-            address: info.id,
-            mintCount: parseInt(info.mintCount),
-            maxSupply: parseInt(info.maxSupply),
-            mintPrice: BigNumber.from(info.mintPrice),
-            formattedMintPrice: parseFloat(formatUnits(info.mintPrice, 18)),
-            proposerFee: parseInt(info.proposerFee),
-            treasuryAddress: info.spaceTreasury,
-            enabled: info.enabled,
-            createdAt: Date.now()
-          };
-
-          spaceCollectionsInfo.value[space.id] = spaceCollectionInfo;
-          mintPriceWei.value = spaceCollectionInfo.mintPrice;
-        }
-      }
-
-      if (proposal && spaceCollectionInfo) {
-        console.debug('_init FRESH:proposal', proposal.id);
-
-        const info = await getCollection(BigInt(proposal?.id as string));
-
-        spaceCollectionsInfo.value[space.id].proposals ||= {};
-        const defaultInfo = {
-          id: null,
-          mintCount: 0,
-          mints: [],
-          proposerFee: spaceCollectionInfo.proposerFee,
-          mintPrice: spaceCollectionInfo.mintPrice,
-          formattedMintPrice: spaceCollectionInfo.formattedMintPrice,
-          maxSupply: spaceCollectionInfo.maxSupply
-        };
-
-        if (info) {
-          info.proposerFee = parseInt(info.proposerFee);
-          info.maxSupply = parseInt(info.maxSupply);
-          info.formattedMintPrice = parseFloat(formatUnits(info.mintPrice, 18));
-          info.mintPrice = BigNumber.from(info.mintPrice);
-        }
-
-        spaceCollectionsInfo.value[space.id].proposals[proposal.id] =
-          info ?? defaultInfo;
-        loadProfiles(
-          spaceCollectionsInfo.value[space.id].proposals[proposal.id].mints.map(
-            p => p.minterAddress
-          )
-        );
-
-        if (
-          spaceCollectionsInfo.value[space.id].proposals[proposal.id]
-            .mintCount >= spaceCollectionsInfo.value[space.id].maxSupply
-        ) {
-          spaceCollectionsInfo.value[space.id].enabled = false;
-        }
-
-        mintPriceWei.value =
-          spaceCollectionsInfo.value[space.id].proposals[proposal.id].mintPrice;
-      }
-
-      inited.value = true;
-
-      return true;
-    } catch (e) {
-      console.error(e);
-      console.error('NFTClaimer: unable to fetch data from Subgraph');
-    }
-  }
-
   async function toggleMintStatus(status: boolean) {
     loading.value = true;
     const txPendingId = createPendingTransaction();
@@ -312,7 +223,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       console.debug(':toggleMintStatus start');
       const tx = await sendTransaction(
         auth.web3,
-        spaceCollectionsInfo.value[space.id].address,
+        getContractInfo(space.id).address,
         MINT_CONTRACT_ABI,
         'setPowerSwitch',
         [status]
@@ -322,7 +233,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
       const receipt = await tx.wait();
 
-      init(true);
+      refresh(space);
       notify([
         'green',
         `Minting on the space has been ${status ? 'enabled' : 'disabled'}`
@@ -398,10 +309,15 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   async function mint() {
     loading.value = true;
     resetProgress();
+    const { address } = getContractInfo(space.id);
 
     try {
+      mintPriceWei.value = getCollectionInfo(
+        space.id,
+        proposal?.id as string
+      ).mintPrice;
       const receipt = await sendTx(
-        spaceCollectionsInfo.value[space.id].address,
+        address,
         false,
         async () => {
           try {
@@ -429,20 +345,14 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
               'Waiting for your wallet confirmation...'
             );
 
-            return sendTransaction(
-              auth.web3,
-              spaceCollectionsInfo.value[space.id].address,
-              [abi],
-              'mint',
-              [
-                proposer,
-                proposalId,
-                salt,
-                signature.v,
-                signature.r,
-                signature.s
-              ]
-            );
+            return sendTransaction(auth.web3, address, [abi], 'mint', [
+              proposer,
+              proposalId,
+              salt,
+              signature.v,
+              signature.r,
+              signature.s
+            ]);
           } catch (e: any) {
             // Trusted backend server is unavailable
             if (e.message === 'TRUSTED_BACKEND_ERROR') {
@@ -487,6 +397,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           Status.SUCCESS,
           `Completed with ${receipt.confirmations} confirmation(s)`
         );
+        refresh(proposal as Proposal);
       }
     } catch (e: any) {
       updateProgress(Step.SEND_TX, Status.ERROR, 'An unexpected error occured');
@@ -546,7 +457,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           return '';
         }
       );
-      init(true);
+      refresh(space);
     } finally {
       loading.value = false;
     }
@@ -560,10 +471,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const NO_UPDATE_U128 = '0xf2cda9b13ed04e585461605c0d6e8049';
     const NO_UPDATE_ADDRESS = '0xf2cda9b13ed04e585461605c0d6e804933ca8281';
     const NO_UPDATE_U8 = '0xf2';
-    console.log(params);
-    console.log(spaceCollectionsInfo.value[space.id]);
 
-    const contractAddress = spaceCollectionsInfo.value[space.id].address;
+    const spaceInfo = getContractInfo(space.id);
     let needUpdate = false;
     const updatedParams = {
       maxSupply: NO_UPDATE_U128,
@@ -573,7 +482,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     };
 
     Object.keys(updatedParams).forEach(field => {
-      if (spaceCollectionsInfo.value[space.id][field] !== params[field]) {
+      if (spaceInfo[field] !== params[field]) {
         needUpdate = true;
         updatedParams[field] = params[field];
         if (field === 'formattedMintPrice') {
@@ -593,7 +502,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     try {
       const tx = await sendTransaction(
         auth.web3,
-        contractAddress,
+        spaceInfo.address,
         UPDATE_ABI,
         'updateSettings',
         Object.values(updatedParams)
@@ -601,7 +510,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       updatePendingTransaction(txPendingId, { hash: tx.hash });
 
       const receipt = await tx.wait();
-      init(true);
+      refresh(space);
       notify(['green', 'Settings have been updated']);
       return receipt;
     } catch (e: any) {
@@ -618,17 +527,13 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   }
 
   return {
-    spaceCollectionsInfo,
     loading,
+    errored,
     mintNetwork,
     mintCurrency,
-    inited,
-    profiles,
-    toggleMintStatus,
     mint,
-    update,
     deploy,
-    init,
-    errored
+    update,
+    toggleMintStatus
   };
 }
