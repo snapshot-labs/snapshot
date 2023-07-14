@@ -44,7 +44,7 @@ function accept() {
         </BaseButton>
       </div>
       <div class="float-left w-2/4 pl-2">
-        <BaseButton type="submit" class="w-full" primary @click="accept">
+        <BaseButton class="w-full" primary @click="accept">
           {{ $t('agree') }}
         </BaseButton>
       </div>

@@ -101,7 +101,6 @@ watch(step, () => {
       </div>
       <div class="float-left w-2/4 pl-2">
         <BaseButton
-          type="submit"
           :disabled="!isTimeValid"
           class="w-full"
           primary
