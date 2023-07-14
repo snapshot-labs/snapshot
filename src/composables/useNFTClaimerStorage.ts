@@ -62,17 +62,17 @@ export function useNFTClaimerStorage() {
   }
 
   async function initContract(space: ExtendedSpace, force = false) {
-    const { id } = space;
+    const spaceId = space.id;
 
-    if (!getContractInfo(id) || force) {
+    if (!getContractInfo(spaceId) || force) {
       console.debug(
         'NFTClaimer/Storage/initContract: Fetching data from subgraph',
         force
       );
-      const info = await getSpaceCollection(id);
+      const info = await getSpaceCollection(spaceId);
 
       if (info) {
-        setContractInfo(id, {
+        setContractInfo(spaceId, {
           address: info.id,
           treasuryAddress: info.spaceTreasury as string,
           enabled: info.enabled as boolean,
@@ -86,7 +86,7 @@ export function useNFTClaimerStorage() {
       console.debug('NFTClaimer/Storage/initContract: Skipped');
     }
 
-    return getContractInfo(id);
+    return getContractInfo(spaceId);
   }
 
   async function initCollection(proposal: Proposal, force = false) {
