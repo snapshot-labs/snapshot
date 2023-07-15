@@ -25,8 +25,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   ];
   const MINT_CONTRACT_ABI = ['function setPowerSwitch(bool enable)'];
 
-  const mintNetwork = ref(MINT_NETWORK);
-  const mintCurrency = ref(MINT_CURRENCY);
   const mintPriceWei = ref<BigNumber>(BigNumber.from(0));
 
   const loading = ref(false);
@@ -91,7 +89,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     updateProgress(
       Step.CHECK_WETH_BALANCE,
       Status.SUCCESS,
-      `${(+balance).toFixed(4)} WETH safe to spend`
+      `${(+balance).toFixed(4)} ${MINT_CURRENCY} safe to spend`
     );
 
     if (BigNumber.from(balanceWei).lt(mintPriceWei.value)) {
@@ -100,7 +98,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         Status.ERROR,
         `You do not have sufficient fund, need at least ${formatNumber(
           parseFloat(formatUnits(mintPriceWei.value, 'ether'))
-        )} WETH`
+        )} ${MINT_CURRENCY}`
       );
 
       return false;
@@ -113,7 +111,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     updateProgress(
       Step.APPROVE_WETH_BALANCE,
       Status.WORKING,
-      'Checking if contract is allowed to spend your WETH...'
+      `Checking if contract is allowed to spend your ${MINT_CURRENCY}...`
     );
 
     const allowanceRaw = web3Account.value
@@ -129,7 +127,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         `Please allow the contract to spend at least ${(+formatUnits(
           mintPriceWei.value,
           18
-        )).toFixed(4)} WETH`
+        )).toFixed(4)} ${MINT_CURRENCY}`
       );
 
       const txPendingId = createPendingTransaction();
@@ -171,7 +169,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
             Status.ERROR,
             `The approved amount (${(+balance).toFixed(
               4
-            )} WETH) is not enough to cover the mint price`
+            )} ${MINT_CURRENCY}) is not enough to cover the mint price`
           );
         }
       } catch (e: any) {

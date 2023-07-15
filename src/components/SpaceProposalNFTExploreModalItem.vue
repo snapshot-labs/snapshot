@@ -7,7 +7,7 @@ defineProps<{
   mint: any;
   contractInfo: any;
   collectionInfo: any;
-  mintNetwork: string;
+  network: string;
 }>();
 
 const { formatRelativeTime } = useIntl();
@@ -26,12 +26,12 @@ const { formatRelativeTime } = useIntl();
   </div>
   <div class="flex gap-x-3">
     <NFTClaimerEtherscanLink
-      :network="mintNetwork"
+      :network="network"
       :contract-address="contractInfo.address"
       :token="collectionInfo.id"
     />
     <NFTClaimerOpenseaLink
-      :network="mintNetwork"
+      :network="network"
       :contract-address="contractInfo.address"
       :token="collectionInfo.id"
     />

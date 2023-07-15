@@ -96,7 +96,7 @@ const collectionInfo = computed(() => {
             :mint="mint"
             :space="space"
             :proposal="proposal"
-            :mint-network="MINT_NETWORK"
+            :network="MINT_NETWORK"
           />
         </div>
       </div>
