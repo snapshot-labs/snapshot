@@ -25,8 +25,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   ];
   const MINT_CONTRACT_ABI = ['function setPowerSwitch(bool enable)'];
 
-  const mintPriceWei = ref<BigNumber>(BigNumber.from(0));
-
   const loading = ref(false);
 
   const auth = getInstance();
@@ -73,7 +71,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     provider
   );
 
-  async function _checkWETHBalance() {
+  async function _checkWETHBalance(mintPriceWei: BigNumber) {
     updateProgress(
       Step.CHECK_WETH_BALANCE,
       Status.WORKING,
@@ -92,12 +90,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       `${(+balance).toFixed(4)} ${MINT_CURRENCY} safe to spend`
     );
 
-    if (BigNumber.from(balanceWei).lt(mintPriceWei.value)) {
+    if (BigNumber.from(balanceWei).lt(mintPriceWei)) {
       updateProgress(
         Step.CHECK_WETH_BALANCE,
         Status.ERROR,
         `You do not have sufficient fund, need at least ${formatNumber(
-          parseFloat(formatUnits(mintPriceWei.value, 'ether'))
+          parseFloat(formatUnits(mintPriceWei, 'ether'))
         )} ${MINT_CURRENCY}`
       );
 
@@ -107,7 +105,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     return true;
   }
 
-  async function _checkWETHApproval(address: string) {
+  async function _checkWETHApproval(mintPriceWei: BigNumber, address: string) {
     updateProgress(
       Step.APPROVE_WETH_BALANCE,
       Status.WORKING,
@@ -120,12 +118,12 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const allowance = formatUnits(allowanceRaw, 18);
     console.debug(':_checkWETHApproval allowance', allowance);
 
-    if (BigNumber.from(allowanceRaw).lt(mintPriceWei.value)) {
+    if (BigNumber.from(allowanceRaw).lt(mintPriceWei)) {
       updateProgress(
         Step.APPROVE_WETH_BALANCE,
         Status.WORKING,
         `Please allow the contract to spend at least ${(+formatUnits(
-          mintPriceWei.value,
+          mintPriceWei,
           18
         )).toFixed(4)} ${MINT_CURRENCY}`
       );
@@ -137,7 +135,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           WETH_CONTRACT_ADDRESS,
           WETH_CONTRACT_ABI,
           'approve',
-          [address, mintPriceWei.value]
+          [address, mintPriceWei]
         );
         updateProgress(
           Step.APPROVE_WETH_BALANCE,
@@ -156,7 +154,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           : 0;
         const balance = formatUnits(newAllowanceWei, 'ether');
 
-        if (BigNumber.from(newAllowanceWei).gte(mintPriceWei.value)) {
+        if (BigNumber.from(newAllowanceWei).gte(mintPriceWei)) {
           updateProgress(
             Step.APPROVE_WETH_BALANCE,
             Status.SUCCESS,
@@ -299,7 +297,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const { address } = getContractInfo(space.id);
 
     try {
-      mintPriceWei.value = getCollectionInfo(
+      const mintPriceWei = getCollectionInfo(
         space.id,
         proposal?.id as string
       ).mintPrice;
@@ -340,8 +338,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
           if (
             !(await _switchNetwork()) ||
-            !(await _checkWETHBalance()) ||
-            !(await _checkWETHApproval(address))
+            !(await _checkWETHBalance(mintPriceWei)) ||
+            !(await _checkWETHApproval(mintPriceWei, address))
           ) {
             return false;
           }
@@ -432,6 +430,18 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function deploy(params: Record<string, string | number>) {
     loading.value = true;
+    const payloadToVerify = {
+      id: space.id,
+      address: web3Account.value,
+      salt: generateSalt(),
+      maxSupply: params.maxSupply,
+      mintPrice: parseUnits(
+        params.formattedMintPrice.toString(),
+        18
+      ).toString(),
+      proposerFee: params.proposerFee,
+      spaceTreasury: params.treasuryAddress
+    };
 
     try {
       const {
@@ -441,18 +451,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         abi,
         verifyingContract,
         implementation
-      } = await _getBackendPayload('deploy', {
-        id: space.id,
-        address: web3Account.value,
-        salt: generateSalt(),
-        maxSupply: params.maxSupply,
-        mintPrice: parseUnits(
-          params.formattedMintPrice.toString(),
-          18
-        ).toString(),
-        proposerFee: params.proposerFee,
-        spaceTreasury: params.treasuryAddress
-      });
+      } = await _getBackendPayload('deploy', payloadToVerify);
 
       await sendTx(
         () => {

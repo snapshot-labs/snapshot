@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { MINT_NETWORK, MINT_CURRENCY } from '@/helpers/nftClaimer';
+import { MINT_NETWORK, MINT_CURRENCY, getEthPrice } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -20,8 +20,7 @@ const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { formatNumber } = useIntl();
 
-// TODO implement eth-fiat live conversion
-const ethPrice = ref(1900);
+const ethPrice = ref<number>(0);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
 
@@ -55,6 +54,10 @@ watch(
     }
   }
 );
+
+onMounted(async () => {
+  ethPrice.value = await getEthPrice();
+});
 </script>
 
 <template>
@@ -106,7 +109,7 @@ watch(
                     {{ formatNumber(collectionInfo.formattedMintPrice) }}
                     {{ MINT_CURRENCY }}
                   </span>
-                  <span>
+                  <span v-if="ethPrice">
                     ~{{
                       formatNumber(ethPrice * collectionInfo.formattedMintPrice)
                     }}

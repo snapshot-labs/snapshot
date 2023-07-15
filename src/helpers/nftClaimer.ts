@@ -8,6 +8,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { randomBytes } from '@ethersproject/random';
 import { shorten } from './utils';
 import { apolloClient as snapshotApolloClient } from './apollo';
+import { getJSON } from '@snapshot-labs/snapshot.js/src/utils';
 
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
@@ -166,14 +167,6 @@ export function mintTxLinkTag(hash: string) {
           >Tx: ${shorten(hash)}</a>`;
 }
 
-export function nftLinkTag(contract: string, id: string) {
-  return `<a
-            href="https://goerli.etherscan.io/token/${contract}/${id}"
-            target="_blank"
-            title="View transaction"
-          >Token [${shorten(id)}]</a>`;
-}
-
 export async function getProposals(ids: string[]) {
   try {
     console.time('getProposals');
@@ -209,17 +202,20 @@ export async function getProposals(ids: string[]) {
 
 export async function getSnapshotFee() {
   try {
-    const res = await fetch(
-      `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/`,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    return parseInt((await res.json()).snapshotFee);
+    const url = `${import.meta.env.VITE_SIDEKICK_URL}/api/nft-claimer/`;
+    return parseInt((await getJSON(url)).snapshotFee);
   } catch (e) {
     console.error('Unable to retrieve snapshotFee, default to fallback value');
     return 5;
+  }
+}
+
+export async function getEthPrice() {
+  try {
+    const url =
+      'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=usd';
+    return parseFloat((await getJSON(url)).USD);
+  } catch (e) {
+    return 0;
   }
 }
