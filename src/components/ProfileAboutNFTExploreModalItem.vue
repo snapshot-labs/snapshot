@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { explorerUrl } from '@/helpers/utils';
-import { openseaLink } from '@/helpers/nftClaimer';
-
 defineProps<{
   mint: any;
   proposal: any;
+  network: string;
 }>();
 
 const { formatRelativeTime } = useIntl();
@@ -29,31 +27,16 @@ const { formatRelativeTime } = useIntl();
             {{ proposal.title }}
           </router-link>
           <div class="flex gap-x-2">
-            <a
-              v-tippy="{ content: 'View this token on OpenSea' }"
-              class="flex flex-row"
-              :href="
-                openseaLink('5', mint.proposal.spaceCollection.id, proposal.id)
-              "
-              target="_blank"
-            >
-              <IconOpensea />
-            </a>
-
-            <a
-              v-tippy="{ content: 'View this token on etherscan' }"
-              class="flex flex-row"
-              :href="
-                explorerUrl(
-                  '5',
-                  `${mint.proposal.spaceCollection.id}?a=${proposal.id}`,
-                  'token'
-                )
-              "
-              target="_blank"
-            >
-              <IconEtherscan />
-            </a>
+            <NFTClaimerOpenseaLink
+              :network="network"
+              :contract-address="mint.proposal.spaceCollection.id"
+              :token="proposal.id"
+            />
+            <NFTClaimerEtherscanLink
+              :network="network"
+              :contract-address="mint.proposal.spaceCollection.id"
+              :token="proposal.id"
+            />
           </div>
         </div>
         <div class="flex">

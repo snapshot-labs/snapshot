@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { explorerUrl } from '@/helpers/utils';
-import { openseaLink } from '@/helpers/nftClaimer';
 
 defineProps<{
   space: ExtendedSpace;
@@ -27,25 +25,15 @@ const { formatRelativeTime } = useIntl();
     <span>{{ formatRelativeTime(mint.timestamp) }}</span>
   </div>
   <div class="flex gap-x-3">
-    <BaseLink
-      :link="
-        explorerUrl(
-          mintNetwork,
-          `${contractInfo.address}?a=${collectionInfo.id}`,
-          'token'
-        )
-      "
-      :hide-external-icon="true"
-      title="View this token on Etherscan"
-    >
-      <IconEtherscan />
-    </BaseLink>
-    <BaseLink
-      :link="openseaLink(mintNetwork, contractInfo.address, collectionInfo.id)"
-      :hide-external-icon="true"
-      title="View this token on Opensea"
-    >
-      <IconOpensea />
-    </BaseLink>
+    <NFTClaimerEtherscanLink
+      :network="mintNetwork"
+      :contract-address="contractInfo.address"
+      :token="collectionInfo.id"
+    />
+    <NFTClaimerOpenseaLink
+      :network="mintNetwork"
+      :contract-address="contractInfo.address"
+      :token="collectionInfo.id"
+    />
   </div>
 </template>

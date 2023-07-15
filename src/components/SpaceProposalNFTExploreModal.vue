@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { explorerUrl } from '@/helpers/utils';
-import { openseaLink } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -54,21 +52,15 @@ const collectionInfo = computed(() => {
               <span class="text-sm leading-tight">Mint price</span>
             </div>
 
-            <a
-              v-tippy="{ content: 'View this collection on OpenSea' }"
-              :href="openseaLink(mintNetwork, contractInfo.address)"
-              target="_blank"
-            >
-              <IconOpensea />
-            </a>
+            <NFTClaimerOpenseaLink
+              :network="mintNetwork"
+              :contract-address="contractInfo.address"
+            />
 
-            <a
-              v-tippy="{ content: 'View this contract on etherscan' }"
-              :href="explorerUrl(mintNetwork, contractInfo.address)"
-              target="_blank"
-            >
-              <IconEtherscan />
-            </a>
+            <NFTClaimerEtherscanLink
+              :network="mintNetwork"
+              :contract-address="contractInfo.address"
+            />
 
             <NFTClaimerMintButton
               :contract-info="contractInfo"

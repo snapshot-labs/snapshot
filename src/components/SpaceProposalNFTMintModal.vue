@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { openseaLink } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -81,13 +80,11 @@ watch(
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>OpenSea collection</span>
-                <a
-                  :href="openseaLink(mintNetwork, contractInfo.address)"
-                  target="_blank"
-                  title="View this collection on OpenSea"
-                >
-                  <IconOpensea />
-                </a>
+
+                <NFTClaimerOpenseaLink
+                  :network="mintNetwork"
+                  :contract-address="contractInfo.address"
+                />
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>Proposal author's share</span>

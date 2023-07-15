@@ -213,13 +213,3 @@ export async function getSnapshotFee() {
     return 5;
   }
 }
-
-export function openseaLink(
-  _mintNetwork: string,
-  address: string,
-  tokenId?: string
-) {
-  return `https://testnets.opensea.io/assets/goerli/${address}${
-    tokenId ? `/${tokenId}` : ''
-  }`;
-}
