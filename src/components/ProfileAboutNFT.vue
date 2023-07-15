@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import { getUserNfts } from '@/helpers/nftClaimer';
 import { useMediaQuery } from '@vueuse/core';
 
-const props = defineProps<{
-  address: string;
+defineProps<{
+  loading: boolean;
+  nfts: any[];
 }>();
 
-const loading = ref(false);
-const nfts = ref<any[]>([]);
 const modalNFTsOpen = ref(false);
 
 const isXSmallScreen = useMediaQuery('(max-width: 420px)');
@@ -26,10 +24,6 @@ const numberOfSpacesByScreenSize = computed(() => {
   }
   return 7;
 });
-
-onMounted(async () => {
-  nfts.value = await getUserNfts(props.address);
-});
 </script>
 
 <template>
@@ -40,8 +34,10 @@ onMounted(async () => {
     slim
   >
     <div v-if="loading || nfts.length" class="border-t px-4 py-4">
-      <div v-if="loading" />
-
+      <BlockSpacesListSkeleton
+        v-if="loading"
+        :number-of-spaces="numberOfSpacesByScreenSize"
+      />
       <div v-else class="flex justify-between">
         <div class="flex w-full overflow-x-hidden">
           <div

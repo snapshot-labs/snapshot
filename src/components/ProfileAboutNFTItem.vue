@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BigNumber } from '@ethersproject/bignumber';
 import { shorten } from '@/helpers/utils';
 
 defineProps<{
@@ -13,7 +12,7 @@ defineProps<{
       name: 'spaceProposal',
       params: {
         key: mint.proposal.spaceCollection.spaceId,
-        id: BigNumber.from(mint.proposal.id).toHexString()
+        id: mint.proposal.hexId
       }
     }"
   >

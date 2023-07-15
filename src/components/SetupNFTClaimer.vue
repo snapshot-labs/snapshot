@@ -2,7 +2,7 @@
 import pick from 'lodash/pick';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { validateForm } from '@/helpers/validation';
-import { getSnapshotFee } from '@/helpers/nftClaimer';
+import { getSnapshotFee, MINT_CURRENCY } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   context: string;
@@ -12,8 +12,9 @@ const emit = defineEmits(['back', 'next']);
 
 const { forceShowError } = useFormSpaceSettings('setup');
 const { web3Account } = useWeb3();
-const { deploy, update, loading, mintCurrency, toggleMintStatus } =
-  useNFTClaimer(props.space);
+const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
+  props.space
+);
 const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
@@ -193,7 +194,7 @@ watch(
             v-model="input.formattedMintPrice"
             label="Mint price"
             min="0"
-            :hint="`The mint price for each NFT, in ${mintCurrency}`"
+            :hint="`The mint price for each NFT, in ${MINT_CURRENCY}`"
             type="number"
             placeholder="0.5"
             :error="validationErrors?.formattedMintPrice"

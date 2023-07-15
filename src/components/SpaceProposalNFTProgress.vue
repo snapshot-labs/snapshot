@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-const props = defineProps({
-  supply: { type: Number, required: true },
-  maxSupply: { type: Number, required: true },
-  showInfo: { type: Boolean, default: true }
-});
+const props = defineProps<{
+  supply: number;
+  maxSupply: number;
+  showInfo?: boolean;
+}>();
 
 const mintPercent = computed(() =>
   Math.min((props.supply / props.maxSupply) * 100, 100)
@@ -15,9 +15,9 @@ const mintPercent = computed(() =>
     <div v-if="showInfo" class="flex flex-row justify-between pb-1">
       <div>
         <span class="mr-1 text-lg font-bold text-skin-link">
-          {{ props.supply }}
+          {{ supply }}
         </span>
-        <span>/ {{ props.maxSupply }} minted</span>
+        <span>/ {{ maxSupply }} minted</span>
       </div>
       <slot name="secondary" />
     </div>

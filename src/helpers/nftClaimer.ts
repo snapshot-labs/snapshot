@@ -12,6 +12,9 @@ import { apolloClient as snapshotApolloClient } from './apollo';
 const uri =
   'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
 
+export const MINT_NETWORK = '5';
+export const MINT_CURRENCY = 'WETH';
+
 const httpLink = createHttpLink({ uri });
 
 export const subgraphApolloClient = new ApolloClient({
@@ -42,6 +45,7 @@ type SpaceCollection = {
 
 type ProposalCollection = {
   id: number;
+  hexId: string;
   mints?: Mint[];
   spaceCollection?: SpaceCollection;
 } & Mintable;
@@ -51,7 +55,7 @@ export type Mint = {
   minterAddress: string;
   timestamp: number;
   txHash: string;
-  propoposal?: ProposalCollection;
+  proposal?: ProposalCollection;
 };
 
 export async function getSpaceCollection(spaceId: string) {
@@ -139,6 +143,12 @@ export async function getUserNfts(minterAddress: string) {
     `,
     variables: {
       minterAddress
+    }
+  });
+
+  mints.forEach(mint => {
+    if (mint.proposal) {
+      mint.proposal.hexId = BigNumber.from(mint.proposal?.id).toHexString();
     }
   });
 

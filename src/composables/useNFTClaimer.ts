@@ -5,11 +5,15 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits, parseUnits } from '@ethersproject/units';
-import { generateSalt, mintTxLinkTag } from '@/helpers/nftClaimer';
+import {
+  generateSalt,
+  mintTxLinkTag,
+  MINT_NETWORK,
+  MINT_CURRENCY
+} from '@/helpers/nftClaimer';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
-  const NETWORK_KEY = '5';
   const WETH_CONTRACT_ADDRESS = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6';
   const WETH_CONTRACT_ABI = [
     'function balanceOf(address) view returns (uint256)',
@@ -21,8 +25,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   ];
   const MINT_CONTRACT_ABI = ['function setPowerSwitch(bool enable)'];
 
-  const mintNetwork = ref(NETWORK_KEY);
-  const mintCurrency = ref('WETH');
+  const mintNetwork = ref(MINT_NETWORK);
+  const mintCurrency = ref(MINT_CURRENCY);
   const mintPriceWei = ref<BigNumber>(BigNumber.from(0));
 
   const loading = ref(false);
@@ -36,7 +40,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   const { formatNumber } = useIntl();
 
   const networkKey = computed(() => web3.value.network.key);
-  const provider = getProvider(NETWORK_KEY);
+  const provider = getProvider(MINT_NETWORK);
 
   const {
     createPendingTransaction,
@@ -49,14 +53,14 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function _switchNetwork() {
     // check current network
-    if (networkKey.value === NETWORK_KEY) return true;
+    if (networkKey.value === MINT_NETWORK) return true;
 
     // switch network
     await window.ethereum?.request({
       method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: `0x${NETWORK_KEY}`
+          chainId: `0x${MINT_NETWORK}`
         }
       ]
     });
@@ -545,8 +549,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
   return {
     loading,
     errored,
-    mintNetwork,
-    mintCurrency,
     mint,
     deploy,
     update,

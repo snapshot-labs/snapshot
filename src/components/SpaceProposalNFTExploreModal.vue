@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { MINT_CURRENCY, MINT_NETWORK } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -9,10 +10,6 @@ const props = defineProps<{
 
 defineEmits(['close', 'mint']);
 
-const { mintCurrency, mintNetwork } = useNFTClaimer(
-  props.space,
-  props.proposal
-);
 const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
 const { formatNumber } = useIntl();
 
@@ -47,25 +44,27 @@ const collectionInfo = computed(() => {
             <div class="flex flex-col">
               <span class="text-[20px] font-bold leading-none text-skin-link">
                 {{ formatNumber(collectionInfo.formattedMintPrice) }}
-                {{ mintCurrency }}
+                {{ MINT_CURRENCY }}
               </span>
               <span class="text-sm leading-tight">Mint price</span>
             </div>
 
-            <NFTClaimerOpenseaLink
-              :network="mintNetwork"
-              :contract-address="contractInfo.address"
-            />
+            <div class="flex gap-x-3">
+              <NFTClaimerOpenseaLink
+                :network="MINT_NETWORK"
+                :contract-address="contractInfo.address"
+              />
 
-            <NFTClaimerEtherscanLink
-              :network="mintNetwork"
-              :contract-address="contractInfo.address"
-            />
+              <NFTClaimerEtherscanLink
+                :network="MINT_NETWORK"
+                :contract-address="contractInfo.address"
+              />
+            </div>
 
             <NFTClaimerMintButton
               :contract-info="contractInfo"
               :collection-info="collectionInfo"
-              :currency="mintCurrency"
+              :currency="MINT_CURRENCY"
               @click="$emit('mint')"
             />
           </div>
@@ -78,7 +77,16 @@ const collectionInfo = computed(() => {
         </div>
 
         <div
+          v-if="collectionInfo.mintCount === 0"
+          class="flex flex-col items-center justify-center p-4"
+        >
+          <NFTClaimerLogo class="my-4" size="lg" />
+          <span>No NFTs minted yet</span>
+        </div>
+
+        <div
           v-for="mint in collectionInfo.mints"
+          v-else
           :key="mint.id"
           class="mt-3 flex flex-row items-start justify-between gap-x-4 px-4"
         >
@@ -88,16 +96,8 @@ const collectionInfo = computed(() => {
             :mint="mint"
             :space="space"
             :proposal="proposal"
-            :mint-network="mintNetwork"
+            :mint-network="MINT_NETWORK"
           />
-        </div>
-
-        <div
-          v-if="collectionInfo.mintCount === 0"
-          class="flex flex-col items-center justify-center p-4"
-        >
-          <NFTClaimerLogo class="my-4" size="lg" />
-          <span>No NFTs minted yet</span>
         </div>
       </div>
     </template>

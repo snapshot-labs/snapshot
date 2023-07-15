@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { FOLLOWS_QUERY } from '@/helpers/queries';
+import { getUserNfts } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   userAddress: string;
@@ -11,6 +12,7 @@ const { loadSpaces, spaces } = useSpaces();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
 
 const followingSpaceIds = ref<string[]>([]);
+const nfts = ref<any[]>([]);
 const isLoading = ref(false);
 
 async function loadSpacesFollowed() {
@@ -31,6 +33,10 @@ async function loadSpacesFollowed() {
   }
 }
 
+async function loadNFTClaimer() {
+  nfts.value = await getUserNfts(props.userAddress);
+}
+
 const domainsWithExistingSpace = computed(() => {
   const ownedEnsNames = ownedEnsDomains.value.map(d => d.name);
   return spaces.value.filter(d => ownedEnsNames.includes(d.id));
@@ -48,6 +54,7 @@ onMounted(async () => {
     ...ownedEnsDomains.value.map(d => d.name),
     ...followingSpaceIds.value
   ]);
+  await loadNFTClaimer();
   isLoading.value = false;
 });
 </script>
@@ -70,7 +77,7 @@ onMounted(async () => {
         :loading="isLoading"
       />
 
-      <ProfileAboutNFT :address="userAddress" />
+      <ProfileAboutNFT :loading="isLoading" :nfts="nfts" />
 
       <ProfileAboutDelegate
         :user-address="userAddress"

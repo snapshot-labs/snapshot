@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { shorten, explorerUrl } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { MINT_NETWORK, MINT_CURRENCY } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -15,14 +15,12 @@ enum MintStep {
   MINT
 }
 
-const { mintNetwork, mintCurrency, loading, mint, errored } = useNFTClaimer(
-  props.space,
-  props.proposal
-);
+const { loading, mint, errored } = useNFTClaimer(props.space, props.proposal);
 const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { formatNumber } = useIntl();
 
+// TODO implement eth-fiat live conversion
 const ethPrice = ref(1900);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
@@ -71,18 +69,17 @@ watch(
             <div class="p-4">
               <div class="flex flex-row justify-between py-1">
                 <span>Contract</span>
-                <BaseLink
-                  :link="explorerUrl(mintNetwork, contractInfo.address)"
-                  title="View this contract in Etherscan"
-                >
-                  {{ shorten(contractInfo.address) }}
-                </BaseLink>
+                <NFTClaimerEtherscanLink
+                  :network="MINT_NETWORK"
+                  :contract-address="contractInfo.address"
+                  as-link
+                />
               </div>
               <div class="flex flex-row justify-between py-1">
                 <span>OpenSea collection</span>
 
                 <NFTClaimerOpenseaLink
-                  :network="mintNetwork"
+                  :network="MINT_NETWORK"
                   :contract-address="contractInfo.address"
                 />
               </div>
@@ -107,7 +104,7 @@ watch(
                 <div class="flex flex-col text-end">
                   <span class="text-md font-bold text-skin-link">
                     {{ formatNumber(collectionInfo.formattedMintPrice) }}
-                    {{ mintCurrency }}
+                    {{ MINT_CURRENCY }}
                   </span>
                   <span>
                     ~{{
@@ -123,7 +120,7 @@ watch(
             :contract-info="contractInfo"
             :collection-info="collectionInfo"
             :loading="loading"
-            :currency="mintCurrency"
+            :currency="MINT_CURRENCY"
             :show-price="true"
             @click="_mint()"
           />
@@ -136,7 +133,7 @@ watch(
               :contract-info="contractInfo"
               :collection-info="collectionInfo"
               :loading="loading"
-              :currency="mintCurrency"
+              :currency="MINT_CURRENCY"
               :show-price="true"
               @click="_mint()"
             >

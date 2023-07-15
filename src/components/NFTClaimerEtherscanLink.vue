@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { explorerUrl } from '@/helpers/utils';
+import { shorten, explorerUrl } from '@/helpers/utils';
 
 const props = defineProps<{
   network: string;
   contractAddress: string;
   token?: string;
+  asLink?: boolean;
 }>();
 
 function link() {
@@ -22,8 +23,11 @@ function link() {
       content: `View this ${props.token ? 'token' : 'contract'} on Etherscan`
     }"
     :link="link()"
-    hide-external-icon
+    :hide-external-icon="!asLink"
   >
-    <IconEtherscan />
+    <span v-if="asLink">
+      {{ shorten(props.contractAddress) }}
+    </span>
+    <IconEtherscan v-else />
   </BaseLink>
 </template>

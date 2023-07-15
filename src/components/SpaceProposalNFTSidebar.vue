@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { MINT_CURRENCY } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
 }>();
 
-const { mintCurrency } = useNFTClaimer(props.space, props.proposal);
+useNFTClaimer(props.space, props.proposal);
 const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
@@ -55,6 +56,7 @@ const collectionInfo = computed(() => {
         <SpaceProposalNFTProgress
           :max-supply="collectionInfo.maxSupply"
           :supply="collectionInfo.mintCount"
+          show-info
           class="cursor-pointer"
           tabindex="0"
           title="View list of minted NFTs"
@@ -72,13 +74,13 @@ const collectionInfo = computed(() => {
           <span>Mint price</span>
           <span class="text-base font-bold text-skin-link">
             {{ formatNumber(collectionInfo.formattedMintPrice) }}
-            {{ mintCurrency }}
+            {{ MINT_CURRENCY }}
           </span>
         </div>
         <NFTClaimerMintButton
           :contract-info="contractInfo"
           :collection-info="collectionInfo"
-          :currency="mintCurrency"
+          :currency="MINT_CURRENCY"
           @click="isModalMintOpen = true"
         />
       </div>
