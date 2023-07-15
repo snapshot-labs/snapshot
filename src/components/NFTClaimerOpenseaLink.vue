@@ -26,6 +26,7 @@ function link() {
       content: `View this ${props.token ? 'token' : 'collection'} on OpenSea`
     }"
     :link="link()"
+    hide-external-icon
   >
     <IconOpensea />
   </BaseLink>

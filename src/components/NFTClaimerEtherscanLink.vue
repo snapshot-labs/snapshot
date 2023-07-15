@@ -22,7 +22,8 @@ function link() {
       content: `View this ${props.token ? 'token' : 'contract'} on Etherscan`
     }"
     :link="link()"
+    hide-external-icon
   >
-    <IconOpensea />
+    <IconEtherscan />
   </BaseLink>
 </template>
