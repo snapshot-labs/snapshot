@@ -53,7 +53,8 @@ type QuestionState =
   | 'completely-executed'
   | 'waiting-for-proposal'
   | 'waiting-for-liveness'
-  | 'proposal-approved';
+  | 'proposal-approved'
+  | 'proposal-denied';
 
 type Action1State = 'idle' | 'approve-bond' | 'submit-proposal';
 type Action2State = 'idle' | 'execute-proposal';
@@ -212,6 +213,30 @@ const networkName = computed(() => {
   return networks[props.network].name;
 });
 
+type Proposal = {
+  choices: string[];
+  scores: number[];
+  scores_total: number;
+  quorum: number;
+  created: number;
+  end: number;
+  state: string;
+};
+function didProposalPass(proposal: Proposal) {
+  // ensure the vote has ended
+  if (proposal.state !== 'closed') return false;
+  // ensure total votes are more than quorum
+  if (proposal.scores_total && proposal.scores_total < proposal.quorum)
+    return false;
+  const votes = Object.fromEntries(
+    proposal.choices.map((choice, i) => {
+      return [choice.toLowerCase(), proposal.scores[i] ?? 0];
+    })
+  );
+  // ensure the for votes pass quorum and that there are more for votes than against
+  return votes['for'] > proposal.scores_total / 2;
+}
+
 const questionState = computed<QuestionState>(() => {
   if (!web3.value.account) return 'no-wallet-connection';
 
@@ -224,25 +249,37 @@ const questionState = computed<QuestionState>(() => {
 
   if (noTransactions) return 'no-transactions';
 
+  // check if proposal passed snapshot rules, ie votes for, and quorum
+  const proposalPassed = didProposalPass(props.proposal);
+
+  // ordering of this is deliberate. it will prevent you from executing proposals that did not pass,
+  // but if for some reason the proposal did get executed elsewhere, it will still show that it was.
   // If proposal has already been executed, prevents user from proposing again.
   if (proposalExecuted) return 'completely-executed';
 
   // User can confirm vote results if not done already and there is no proposal yet.
-  if (!activeProposal && !voteResultsConfirmed.value)
+  if (!activeProposal && !voteResultsConfirmed.value && proposalPassed)
     return 'waiting-for-vote-confirmation';
 
   // Proposal can be made if it has not been made already and user confirmed vote results.
-  if (!activeProposal && voteResultsConfirmed) return 'waiting-for-proposal';
+  if (!activeProposal && voteResultsConfirmed && proposalPassed)
+    return 'waiting-for-proposal';
 
   // Proposal has been made and is waiting for liveness period to complete.
-  if (!assertionEvent.isExpired) return 'waiting-for-liveness';
+
+  if (assertionEvent && !assertionEvent.isExpired)
+    return 'waiting-for-liveness';
+
+  // this is  above proposal-approved stated because we dont want to ever execute on proposals that did not pass vote
+  if (!proposalPassed) return 'proposal-denied';
 
   // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (assertionEvent.isExpired && !assertionEvent.isSettled)
+  if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
     return 'proposal-approved';
 
   // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (assertionEvent.isSettled && !proposalExecuted) return 'proposal-approved';
+  if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
+    return 'proposal-approved';
 
   return 'error';
 });
@@ -463,6 +500,9 @@ onMounted(async () => {
 
     <div v-if="questionState === 'completely-executed'" class="my-4">
       {{ $t('safeSnap.labels.executed') }}
+    </div>
+    <div v-if="questionState === 'proposal-denied'" class="my-4">
+      {{ $t('safeSnap.labels.rejected') }}
     </div>
   </template>
 </template>

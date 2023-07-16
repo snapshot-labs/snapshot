@@ -94,13 +94,19 @@ export async function voteValidation(
   const options: any = {};
   if (import.meta.env.VITE_SCORES_URL)
     options.url = import.meta.env.VITE_SCORES_URL;
+
+  const params = proposal.validation?.params || {};
+  if (proposal.validation.name === 'basic') {
+    params.strategies = params.strategies ?? proposal.strategies;
+  }
+
   const validateRes = await validate(
     proposal.validation.name,
     address,
     space.id,
     proposal.network,
     parseInt(proposal.snapshot),
-    proposal.validation.params,
+    params,
     options
   );
   if (typeof validateRes !== 'boolean') {
