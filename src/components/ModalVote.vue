@@ -26,7 +26,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['reload', 'close', 'openPostVoteModal']);
 
-const { t } = useI18n();
 const { send, isSending } = useClient();
 const format = getChoiceString;
 const { formatNumber, formatCompactNumber } = useIntl();
@@ -215,8 +214,8 @@ watch(
               class="mr-1 flex-auto text-skin-text"
               v-text="$t('votingPower')"
             />
-            <span v-if="hasVotingPowerFailed">
-              <i-ho-exclamation-circle class="text-sm text-red" />
+            <span v-if="hasVotingPowerFailed" class="flex items-center gap-1">
+              <i-ho-exclamation-circle class="text-sm text-red" /> 0
             </span>
             <span
               v-else-if="
