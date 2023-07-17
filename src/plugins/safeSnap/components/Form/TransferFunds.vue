@@ -162,6 +162,7 @@ export default {
       :tokens="tokens"
       :token-address="tokenAddress"
       :open="modalTokensOpen"
+      :network="config.network"
       @token-address="tokenAddress = $event"
       @close="modalTokensOpen = false"
     />

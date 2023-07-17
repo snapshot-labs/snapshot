@@ -63,7 +63,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   function formatProposalVotes(votes: Vote[]) {
-    if (!votes.length) return [];
+    if (!votes?.length) return [];
     return votes.map(vote => {
       vote.balance = vote.vp;
       vote.scores = vote.vp_by_strategy;

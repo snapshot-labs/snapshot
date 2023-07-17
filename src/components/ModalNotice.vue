@@ -13,12 +13,7 @@ defineEmits(['close']);
     </div>
     <template #footer>
       <div>
-        <BaseButton
-          type="submit"
-          class="w-full"
-          primary
-          @click="$emit('close')"
-        >
+        <BaseButton class="w-full" primary @click="$emit('close')">
           {{ $t('continue') }}
         </BaseButton>
       </div>
