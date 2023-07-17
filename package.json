@@ -43,7 +43,7 @@
     "@pusher/push-notifications-web": "^1.1.0",
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/pineapple": "^0.1.0-beta.1",
-    "@snapshot-labs/snapshot.js": "^0.4.104",
+    "@snapshot-labs/snapshot.js": "^0.4.105",
     "@snapshot-labs/tune": "^0.1.30",
     "@vue/apollo-composable": "4.0.0-beta.4",
     "@vueuse/core": "^10.1.2",

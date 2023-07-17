@@ -1,6 +1,7 @@
 import pkg from '@/../package.json';
 
 export function useReportDownload() {
+  const { env } = useApp();
   const isDownloadingVotes = ref(false);
   const errorCode: globalThis.Ref<null | Error> = ref(null);
 
@@ -18,6 +19,11 @@ export function useReportDownload() {
   }
 
   async function downloadVotes(proposalId: string) {
+    if (env === 'demo') {
+      errorCode.value = new Error('UNSUPPORTED_ENV');
+      return false;
+    }
+
     isDownloadingVotes.value = true;
     errorCode.value = null;
 
