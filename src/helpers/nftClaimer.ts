@@ -36,18 +36,18 @@ type Mintable = {
   mintCount: number;
 };
 
-type SpaceCollection = {
+type Contract = {
   id: string;
   spaceId: string;
   spaceTreasury?: string;
   enabled?: boolean;
 } & Mintable;
 
-type ProposalCollection = {
+type Collection = {
   id: number;
   hexId: string;
   mints?: Mint[];
-  spaceCollection?: SpaceCollection;
+  spaceCollection?: Contract;
 } & Mintable;
 
 export type Mint = {
@@ -55,13 +55,13 @@ export type Mint = {
   minterAddress: string;
   timestamp: number;
   txHash: string;
-  proposal?: ProposalCollection;
+  proposal?: Collection;
 };
 
-export async function getSpaceCollection(spaceId: string) {
+export async function getContract(spaceId: string) {
   const {
     data: { spaceCollections }
-  }: { data: { spaceCollections: SpaceCollection[] } } =
+  }: { data: { spaceCollections: Contract[] } } =
     await subgraphApolloClient.query({
       query: gql`
         query SpaceCollections($spaceId: String) {
@@ -88,29 +88,28 @@ export async function getSpaceCollection(spaceId: string) {
 export async function getCollection(proposalIntId: bigint) {
   const {
     data: { proposals }
-  }: { data: { proposals: ProposalCollection[] } } =
-    await subgraphApolloClient.query({
-      query: gql`
-        query proposals($proposalId: BigInt) {
-          proposals(where: { proposalId: $proposalId }) {
+  }: { data: { proposals: Collection[] } } = await subgraphApolloClient.query({
+    query: gql`
+      query proposals($proposalId: BigInt) {
+        proposals(where: { proposalId: $proposalId }) {
+          id
+          mintCount
+          maxSupply
+          mintPrice
+          proposerFee
+          mints {
             id
-            mintCount
-            maxSupply
-            mintPrice
-            proposerFee
-            mints {
-              id
-              minterAddress
-              timestamp
-              txHash
-            }
+            minterAddress
+            timestamp
+            txHash
           }
         }
-      `,
-      variables: {
-        proposalId: proposalIntId.toString()
       }
-    });
+    `,
+    variables: {
+      proposalId: proposalIntId.toString()
+    }
+  });
 
   return proposals[0];
 }
@@ -168,11 +167,10 @@ export function mintTxLinkTag(hash: string) {
 
 export async function getProposals(ids: string[]) {
   try {
-    console.time('getProposals');
     const {
       data: { proposals }
-    }: { data: { proposals: ProposalCollection[] } } =
-      await snapshotApolloClient.query({
+    }: { data: { proposals: Collection[] } } = await snapshotApolloClient.query(
+      {
         query: gql`
           query Proposals($id_in: [String]) {
             proposals(where: { id_in: $id_in }) {
@@ -189,8 +187,8 @@ export async function getProposals(ids: string[]) {
         variables: {
           id_in: ids
         }
-      });
-    console.timeEnd('getProposals');
+      }
+    );
 
     return proposals;
   } catch (e) {

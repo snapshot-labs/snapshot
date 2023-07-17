@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { Mint, getCollection, getSpaceCollection } from '@/helpers/nftClaimer';
+import { Mint, getCollection, getContract } from '@/helpers/nftClaimer';
 import { ExtendedSpace, Profile, Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 
@@ -69,7 +69,7 @@ export function useNFTClaimerStorage() {
         'NFTClaimer/Storage/initContract: Fetching data from subgraph',
         force
       );
-      const info = await getSpaceCollection(spaceId);
+      const info = await getContract(spaceId);
 
       if (info) {
         setContractInfo(spaceId, {
