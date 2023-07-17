@@ -78,7 +78,7 @@ const isViewOnly = computed(() => {
 });
 
 function submit() {
-  if (contractInfo.value.address) {
+  if (contractInfo.value?.address) {
     update(input.value);
   } else {
     deploy(input.value);
@@ -146,11 +146,7 @@ watch(
       You are in view only mode, to modify space settings connect with a
       controller wallet.
     </BaseMessageBlock>
-    <BaseBlock
-      v-if="contractInfo.address"
-      class="mb-2 mt-3"
-      title="Mint status"
-    >
+    <BaseBlock v-if="contractInfo" class="mb-2 mt-3" title="Mint status">
       <div class="flex gap-x-4">
         <div class="grow">
           <p>
