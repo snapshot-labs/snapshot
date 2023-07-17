@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import camelCase from 'lodash/camelCase';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -31,11 +32,13 @@ async function downloadReport(proposalId: string) {
 }
 
 const errorMessagekeyPrefix = computed(() => {
-  return `proposal.downloadCsvVotes.postDownloadModal.message.${
-    errorCode?.value?.message === 'PENDING_GENERATION'
-      ? 'pendingGeneration'
-      : 'unknownError'
-  }`;
+  const knownErrors = ['PENDING_GENERATION', 'UNSUPPORTED_ENV'];
+
+  return `proposal.downloadCsvVotes.postDownloadModal.message.${camelCase(
+    knownErrors.includes(errorCode?.value?.message as string)
+      ? errorCode?.value?.message
+      : 'UNKNOWN_ERROR'
+  )}`;
 });
 
 onMounted(async () => {
