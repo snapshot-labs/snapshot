@@ -199,13 +199,18 @@ watch(
               v-text="$t('votingValidation.label')"
             />
             <div class="flex items-center gap-1">
-              <i-ho-exclamation-circle
+              <span
                 v-if="hasVotingValidationFailed"
-                class="text-sm text-red"
-              />
-              <i-ho-check v-else-if="isValidVoter" class="text-green" />
-              <i-ho-x v-else class="text-red" />
-              {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
+                class="flex items-center gap-1"
+              >
+                <i-ho-exclamation-circle class="text-sm text-red" />
+                {{ $t('failed') }}
+              </span>
+              <span v-else>
+                <i-ho-check v-if="isValidVoter" class="text-green" />
+                <i-ho-x v-else class="text-red" />
+                {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
+              </span>
             </div>
           </div>
 
@@ -215,7 +220,8 @@ watch(
               v-text="$t('votingPower')"
             />
             <span v-if="hasVotingPowerFailed" class="flex items-center gap-1">
-              <i-ho-exclamation-circle class="text-sm text-red" /> 0
+              <i-ho-exclamation-circle class="text-sm text-red" />
+              {{ $t('failed') }}
             </span>
             <span
               v-else-if="
