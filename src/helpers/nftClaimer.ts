@@ -10,13 +10,12 @@ import { shorten } from './utils';
 import { apolloClient as snapshotApolloClient } from './apollo';
 import { getJSON } from '@snapshot-labs/snapshot.js/src/utils';
 
-const uri =
-  'https://api.studio.thegraph.com/proxy/48277/nft-subgraph-goerli/version/latest';
-
 export const MINT_NETWORK = '5';
 export const MINT_CURRENCY = 'WETH';
 
-const httpLink = createHttpLink({ uri });
+const httpLink = createHttpLink({
+  uri: import.meta.env.VITE_NFT_CLAIMER_GRAPH_URL
+});
 
 export const subgraphApolloClient = new ApolloClient({
   link: httpLink,
