@@ -162,7 +162,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
         query: DELEGATE_VOTES_AND_PROPOSALS,
         variables: {
           delegates: filteredDelegates,
-          space: 'uniswap'
+          space
         }
       });
 
