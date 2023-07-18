@@ -95,7 +95,7 @@ watch(open, () => {
         primary
         @click="handleSubmit"
       >
-        {{ $t('save') }}
+        {{ treasury.name ? $t('applyChanges') : $t('add') }}
       </BaseButton>
     </template>
   </BaseModal>
