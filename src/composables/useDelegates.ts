@@ -153,11 +153,15 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     delegates: string[],
     space: string
   ) {
+    const filteredDelegates = delegates.filter(
+      delegate => !delegatesStats.value[delegate]
+    );
+
     const response: { votes: Vote[]; proposals: Proposal[] } =
       await apolloQuery({
         query: DELEGATE_VOTES_AND_PROPOSALS,
         variables: {
-          delegates,
+          delegates: filteredDelegates,
           space: 'uniswap'
         }
       });
@@ -166,7 +170,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
 
     const votesAndProposals: DelegatesStats = {};
 
-    delegates.forEach(delegate => {
+    filteredDelegates.forEach(delegate => {
       votesAndProposals[delegate] = {
         votes: [],
         proposals: []
@@ -183,7 +187,10 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       votesAndProposals[delegate].proposals.push(proposal);
     });
 
-    delegatesStats.value = votesAndProposals;
+    delegatesStats.value = {
+      ...delegatesStats.value,
+      ...votesAndProposals
+    };
   }
 
   return {

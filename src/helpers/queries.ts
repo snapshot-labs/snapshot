@@ -509,13 +509,13 @@ export const SPACE_QUERY = gql`
 
 export const DELEGATE_VOTES_AND_PROPOSALS = gql`
   query VotesAndProposals($delegates: [String]!, $space: String!) {
-    votes(where: { voter_in: $delegates, space: $space }) {
+    votes(first: 1000, where: { voter_in: $delegates, space: $space }) {
       created
       voter
       choice
       vp
     }
-    proposals(where: { author_in: $delegates, space: $space }) {
+    proposals(first: 1000, where: { author_in: $delegates, space: $space }) {
       created
       author
       title
