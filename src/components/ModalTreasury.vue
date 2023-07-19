@@ -41,7 +41,7 @@ function handleSubmit() {
 }
 
 watch(open, () => {
-  if (props.treasury?.name) {
+  if (props.treasury.name) {
     input.value = props.treasury;
   } else {
     input.value = {
