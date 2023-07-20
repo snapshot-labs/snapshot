@@ -46,7 +46,7 @@ function nextStepStatus(step: number) {
                 />
               </span>
               <span
-                v-if="i < length - 2"
+                v-if="i < length - 1"
                 :class="{
                   'absolute top-4 h-full w-[1px] bg-skin-border': true,
                   '!bg-primary': nextStepStatus(i) === Status.SUCCESS,
