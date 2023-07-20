@@ -49,7 +49,7 @@ const collectionInfo = computed(() => {
           <NFTClaimerLogo class="shrink-0" />
           <span class="text-sm leading-tight">
             Mint your NFT now to show your support for this proposal.
-            <a href="https://docs.snapshot.org/">Learn more</a>
+            <BaseLink link="https://docs.snapshot.org">Learn more</BaseLink>
           </span>
         </div>
 
@@ -115,7 +115,7 @@ const collectionInfo = computed(() => {
         <NFTClaimerLogo size="lg" />
         <span class="text-skin-link">
           Setup SnapIt! now, and let your community mint NFT for each proposals.
-          <a href="https://docs.snapshot.org">Learn more</a>
+          <BaseLink link="https://docs.snapshot.org">Learn more</BaseLink>
         </span>
 
         <router-link
