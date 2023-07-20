@@ -76,14 +76,14 @@ export const queryGql = async (url: string, query: string) => {
   }
 };
 
-const findAssertionsGql = async (
+const findAssertionGql = async (
   network: string,
-  params: { claim: string; callbackRecipient }
+  params: { assertionId: string }
 ) => {
   const oracleUrl = getOracleV3Subgraph(network);
   const request = `
   {
-    assertions(where:{claim:"${params.claim}",callbackRecipient:"${params.callbackRecipient}"}){
+    assertion(id:"${params.assertionId}"){
       assertionId
       expirationTime
       assertionHash
@@ -93,21 +93,25 @@ const findAssertionsGql = async (
   }
   `;
   const result = await queryGql(oracleUrl, request);
-  return result?.assertions ?? [];
+  return result?.assertion;
 };
 // Search optimistic governor for individual proposal
-const findProposalGql = async (network: string, params: { assertionId }) => {
+const findProposalGql = async (
+  network: string,
+  params: { proposalHash; explanation; ogAddress }
+) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposal(id:"${params.assertionId}"){
+    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${params.explanation}",ogAddress:"${params.ogAddress}"}){
       id
       executed
+      assertionId
     }
   }
   `;
   const result = await queryGql(subgraph, request);
-  return result?.proposal;
+  return result?.proposals;
 };
 
 const getBondDetailsUma = async (
@@ -383,35 +387,18 @@ export const getModuleDetailsUmaGql = async (
     needsApproval = true;
   }
 
-  // Create ancillary data for proposal hash
-  let ancillaryData = '';
   let proposalHash: string;
-  if (transactions !== undefined) {
+  let encodedExplanation: string;
+  if (transactions !== undefined && explanation !== undefined) {
     proposalHash = keccak256(
       defaultAbiCoder.encode(
         ['(address to, uint8 operation, uint256 value, bytes data)[]'],
         [transactions]
       )
     );
-
-    ancillaryData = pack(
-      ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
-      [
-        '',
-        pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace(/^0x/, '')),
-        pack(
-          ['string', 'string', 'string', 'string'],
-          [',', 'explanation', ':', '"']
-        ),
-        toUtf8Bytes(explanation.replace(/^0x/, '')),
-        pack(
-          ['string', 'string', 'string', 'string', 'string'],
-          ['"', ',', 'rules', ':', '"']
-        ),
-        toUtf8Bytes(rules.replace(/^0x/, '')),
-        pack(['string'], ['"'])
-      ]
+    encodedExplanation = pack(
+      ['bytes'],
+      [toUtf8Bytes(explanation.replace(/^0x/, ''))]
     );
   } else {
     return {
@@ -441,30 +428,28 @@ export const getModuleDetailsUmaGql = async (
     assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
-  const [assertion0] = await findAssertionsGql(network, {
-    claim: ancillaryData,
-    callbackRecipient: moduleAddress
+  const [proposal] = await findProposalGql(network, {
+    proposalHash,
+    explanation: encodedExplanation,
+    ogAddress: moduleAddress
   });
+  const proposalExecuted = proposal?.executed ? true : false;
+  const assertion = proposal?.assertionId
+    ? await findAssertionGql(network, { assertionId: proposal.assertionId })
+    : undefined;
 
-  const assertionEvent = assertion0
+  const assertionEvent = assertion
     ? {
-        assertionId: assertion0.assertionId,
-        expirationTimestamp: BigNumber.from(assertion0.expirationTime),
+        assertionId: assertion.assertionId,
+        expirationTimestamp: BigNumber.from(assertion.expirationTime),
         isExpired:
-          Math.floor(Date.now() / 1000) >= Number(assertion0.expirationTime),
-        isSettled: assertion0.settlementHash ? true : false,
+          Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime),
+        isSettled: assertion.settlementHash ? true : false,
         proposalHash,
-        proposalTxHash: assertion0.assertionHash,
-        logIndex: assertion0.assertionLogIndex
+        proposalTxHash: assertion.assertionHash,
+        logIndex: assertion.assertionLogIndex
       }
     : undefined;
-
-  const proposal = assertionEvent?.assertionId
-    ? await findProposalGql(network, {
-        assertionId: assertionEvent.assertionId
-      })
-    : undefined;
-  const proposalExecuted = proposal?.executed ? true : false;
 
   return {
     dao: moduleDetails[0][0],
