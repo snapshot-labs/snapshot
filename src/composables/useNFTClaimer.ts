@@ -512,6 +512,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     });
 
     if (!needUpdate) {
+      notify(['red', `The submitted form does not contains changes`]);
+      loading.value = false;
       return false;
     }
 

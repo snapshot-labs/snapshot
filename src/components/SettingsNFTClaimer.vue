@@ -16,7 +16,6 @@ const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
 const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
-const dirtyFields = ref(false);
 // TODO Enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = ref(true);
@@ -55,17 +54,6 @@ const contractInfo = computed(() => {
 const input = ref();
 
 const validationErrors = computed(() => {
-  dirtyFields.value =
-    Object.values(input.value).toString() !==
-    Object.values(
-      pick(contractInfo.value, [
-        'maxSupply',
-        'formattedMintPrice',
-        'proposerFee',
-        'treasuryAddress'
-      ])
-    ).toString();
-
   return validateForm(schema.value, input.value);
 });
 
@@ -188,9 +176,9 @@ watch(
           <TuneInput
             v-model="input.formattedMintPrice"
             label="Mint price"
-            min="0"
             :hint="`The mint price for each NFT, in ${MINT_CURRENCY}`"
             type="number"
+            step="any"
             placeholder="0.5"
             :error="validationErrors?.formattedMintPrice"
             :disabled="isViewOnly"
@@ -205,7 +193,6 @@ watch(
             type="number"
             hint="Percentage of the mint price shared with the proposal author"
             placeholder="5"
-            min="0"
             :max="maxProposerCut"
             :error="validationErrors?.proposerFee"
             :disabled="isViewOnly"
@@ -238,7 +225,7 @@ watch(
       <div v-else class="flex gap-5 px-4 pt-2 md:px-0">
         <BaseButton
           class="mb-2 block w-full"
-          :disabled="isViewOnly || !dirtyFields"
+          :disabled="isViewOnly"
           @click="resetForm"
         >
           {{ $t('reset') }}
@@ -247,11 +234,7 @@ watch(
           primary
           class="block w-full"
           type="submit"
-          :disabled="
-            isViewOnly ||
-            Object.keys(validationErrors).length > 0 ||
-            !dirtyFields
-          "
+          :disabled="isViewOnly || !isValid"
           :loading="loading"
           @click="submit"
         >
