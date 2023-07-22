@@ -17,7 +17,9 @@ const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
 const dirtyFields = ref(false);
-const isSpaceController = ref(false);
+// TODO Enable in production
+// const { isSpaceController } = useSpaceController();
+const isSpaceController = ref(true);
 
 const maxProposerCut = computed(() => {
   return 100 - snapshotFee.value;
@@ -50,10 +52,6 @@ const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
 });
 
-// TODO Enable in production
-// const { isSpaceController } = useSpaceController();
-
-const isValidJson = ref(false);
 const input = ref();
 
 const validationErrors = computed(() => {
@@ -139,7 +137,7 @@ watch(
   <LoadingRow v-if="!inited" block />
   <template v-else>
     <BaseMessageBlock
-      v-if="isViewOnly"
+      v-if="!isSpaceController"
       class="md:mx-0"
       level="info"
       is-responsive
