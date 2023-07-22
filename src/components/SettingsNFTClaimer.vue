@@ -8,9 +8,7 @@ const props = defineProps<{
   context: string;
   space: ExtendedSpace;
 }>();
-const emit = defineEmits(['back', 'next']);
 
-const { forceShowError } = useFormSpaceSettings('setup');
 const { web3Account } = useWeb3();
 const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
   props.space
@@ -104,11 +102,6 @@ function resetForm() {
     'proposerFee',
     'treasuryAddress'
   ]);
-}
-
-function nextStep() {
-  if (!isViewOnly || !isValidJson) return forceShowError();
-  emit('next');
 }
 
 watch(
@@ -229,11 +222,6 @@ watch(
             :error="validationErrors?.treasuryAddress"
             :disabled="isViewOnly"
           />
-
-          <div v-if="context !== 'settings'" class="px-4 md:px-0">
-            <SetupButtonBack @click="emit('back')" />
-            <SetupButtonNext @click="nextStep" />
-          </div>
         </div>
       </BaseBlock>
 
