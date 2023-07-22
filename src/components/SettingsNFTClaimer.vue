@@ -10,7 +10,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(['back', 'next']);
 
-const { forceShowError, isValid } = useFormSpaceSettings('setup');
+const { forceShowError } = useFormSpaceSettings('setup');
 const { web3Account } = useWeb3();
 const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
   props.space
@@ -71,6 +71,10 @@ const validationErrors = computed(() => {
     ).toString();
 
   return validateForm(schema.value, input.value);
+});
+
+const isValid = computed(() => {
+  return Object.values(validationErrors.value).length === 0;
 });
 
 const isViewOnly = computed(() => {
