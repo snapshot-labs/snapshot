@@ -94,13 +94,17 @@ export function useNFTClaimerStorage() {
     const spaceId = proposal.space.id;
     const proposalId = proposal.id;
 
-    const spaceInfo = await initContract(proposal.space);
     if (!getCollectionInfo(spaceId, proposalId) || force) {
       console.debug(
         'NFTClaimer/Storage/initCollection: Fetching data from subgraph',
         force
       );
+      const spaceInfo = await initContract(proposal.space);
       const info = await getCollection(BigInt(proposalId));
+
+      if (!spaceInfo && !info) {
+        return false;
+      }
 
       setCollectionInfo(spaceId, proposalId, {
         id: BigNumber.from(proposal.id).toString(),
