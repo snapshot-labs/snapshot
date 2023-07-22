@@ -13,7 +13,7 @@ import { formatUnits } from '@ethersproject/units';
 
 export const MINT_NETWORK = '5';
 export const MINT_CURRENCY = 'WETH';
-let ethPrice = 0;
+let ethPrice: number;
 
 const { formatCompactNumber } = useIntl();
 
@@ -213,7 +213,7 @@ export async function getSnapshotFee() {
 
 export async function getEthPrice() {
   try {
-    if (ethPrice > 0) {
+    if (ethPrice) {
       return ethPrice;
     }
 
