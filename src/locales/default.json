@@ -11,6 +11,7 @@
   "poweredBy": "Powered by",
   "results": "Results",
   "failed": "Failed",
+  "applyChanges": "Apply changes",
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a voting validation strategy. This combination reduces the risk of spam and sybil attacks. {article}",
   "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a voting validation strategy. To continue go one step back and select the \"One person, one vote\" option. {article}",

@@ -202,7 +202,7 @@ watch(showStrategies, () => {
     </div>
     <template v-if="input.name" #footer>
       <BaseButton class="w-full" primary @click="handleSubmit">
-        {{ $t('save') }}
+        {{ $t('applyChanges') }}
       </BaseButton>
     </template>
   </BaseModal>
