@@ -10,7 +10,7 @@ const props = defineProps<{
 }>();
 const emit = defineEmits(['back', 'next']);
 
-const { forceShowError } = useFormSpaceSettings('setup');
+const { forceShowError, isValid } = useFormSpaceSettings('setup');
 const { web3Account } = useWeb3();
 const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
   props.space
@@ -78,6 +78,10 @@ const isViewOnly = computed(() => {
 });
 
 function submit() {
+  if (!isValid.value) {
+    return;
+  }
+
   if (contractInfo.value?.address) {
     update(input.value);
   } else {
