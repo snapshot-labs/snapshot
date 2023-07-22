@@ -21,6 +21,7 @@ type ContractInfo = {
 
 type CollectionInfo = {
   id: string;
+  hexId: string;
   mints: (Mint & { userProfile?: Profile })[];
   createdAt: number;
   mintCount: number;
@@ -102,7 +103,8 @@ export function useNFTClaimerStorage() {
       const info = await getCollection(BigInt(proposalId));
 
       setCollectionInfo(spaceId, proposalId, {
-        id: proposalId,
+        id: BigNumber.from(proposal.id).toString(),
+        hexId: proposalId,
         mints: info?.mints?.sort((a, b) => b.timestamp - a.timestamp) || [],
         createdAt: Date.now(),
         mintCount: parseInt((info?.mintCount as any) || 0),

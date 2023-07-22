@@ -22,7 +22,11 @@ async function init() {
   const results = await getProposals(Object.keys(proposalIdsMap));
 
   results.map(result => {
-    proposals.value[proposalIdsMap[result.id]] = result;
+    proposals.value[proposalIdsMap[result.id]] = {
+      ...result,
+      hexId: result.id,
+      id: proposalIdsMap[result.id]
+    };
   });
 
   loading.value = false;
