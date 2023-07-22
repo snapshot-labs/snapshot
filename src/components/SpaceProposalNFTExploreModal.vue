@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { MINT_CURRENCY, MINT_NETWORK } from '@/helpers/nftClaimer';
+import { MINT_NETWORK, formatMintPrice } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -11,7 +11,6 @@ const props = defineProps<{
 defineEmits(['close', 'mint']);
 
 const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
-const { formatNumber } = useIntl();
 
 const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
@@ -43,8 +42,7 @@ const collectionInfo = computed(() => {
             </div>
             <div class="flex flex-col">
               <span class="text-[20px] font-bold leading-none text-skin-link">
-                {{ formatNumber(collectionInfo.formattedMintPrice) }}
-                {{ MINT_CURRENCY }}
+                {{ formatMintPrice(collectionInfo.mintPrice) }}
               </span>
               <span class="text-sm leading-tight">Mint price</span>
             </div>
@@ -64,7 +62,6 @@ const collectionInfo = computed(() => {
             <NFTClaimerMintButton
               :contract-info="contractInfo"
               :collection-info="collectionInfo"
-              :currency="MINT_CURRENCY"
               @click="$emit('mint')"
             />
           </div>

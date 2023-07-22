@@ -1,13 +1,12 @@
 <script setup lang="ts">
+import { formatMintPrice } from '@/helpers/nftClaimer';
+
 const props = defineProps<{
   contractInfo: any;
   collectionInfo: any;
-  currency: string;
   loading?: boolean;
   showPrice?: boolean;
 }>();
-
-const { formatNumber } = useIntl();
 
 const soldOut = computed(() => {
   return props.collectionInfo.maxSupply === props.collectionInfo.mintCount;
@@ -28,8 +27,7 @@ const soldOut = computed(() => {
       <template v-else>
         MINT
         <template v-if="showPrice">
-          for {{ formatNumber(collectionInfo.formattedMintPrice) }}
-          {{ currency }}
+          for {{ formatMintPrice(collectionInfo.mintPrice) }}
         </template>
       </template>
     </template>

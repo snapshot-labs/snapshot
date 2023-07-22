@@ -8,6 +8,7 @@ import { formatUnits, parseUnits } from '@ethersproject/units';
 import {
   generateSalt,
   mintTxLinkTag,
+  formatMintPrice,
   MINT_NETWORK,
   MINT_CURRENCY
 } from '@/helpers/nftClaimer';
@@ -33,7 +34,6 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     useNFTClaimerProgress();
   const { getContractInfo, getCollectionInfo, init, refresh } =
     useNFTClaimerStorage();
-  const { formatNumber } = useIntl();
 
   const networkKey = computed(() => web3.value.network.key);
   const provider = getProvider(MINT_NETWORK);
@@ -94,9 +94,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       updateProgress(
         Step.CHECK_WETH_BALANCE,
         Status.ERROR,
-        `You do not have sufficient fund, need at least ${formatNumber(
-          parseFloat(formatUnits(mintPriceWei, 'ether'))
-        )} ${MINT_CURRENCY}`
+        `You do not have sufficient fund, need at least ${formatMintPrice(
+          mintPriceWei
+        )}`
       );
 
       return false;

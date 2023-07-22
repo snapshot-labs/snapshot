@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { MINT_NETWORK, MINT_CURRENCY, getEthPrice } from '@/helpers/nftClaimer';
+import {
+  MINT_NETWORK,
+  formatMintPrice,
+  formatFiatMintPrice
+} from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -18,11 +22,10 @@ enum MintStep {
 const { loading, mint, errored } = useNFTClaimer(props.space, props.proposal);
 const { getContractInfo, getCollectionInfo, refresh } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
-const { formatNumber } = useIntl();
 
-const ethPrice = ref<number>(0);
 const currentStep = ref(MintStep.INFO);
 const refreshInfo = ref(false);
+const fiatMintPrice = ref('');
 
 const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
@@ -56,7 +59,9 @@ watch(
 );
 
 onMounted(async () => {
-  ethPrice.value = await getEthPrice();
+  fiatMintPrice.value = await formatFiatMintPrice(
+    collectionInfo.value.mintPrice
+  );
 });
 </script>
 
@@ -106,14 +111,10 @@ onMounted(async () => {
                 <span>Mint price</span>
                 <div class="flex flex-col text-end">
                   <span class="text-md font-bold text-skin-link">
-                    {{ formatNumber(collectionInfo.formattedMintPrice) }}
-                    {{ MINT_CURRENCY }}
+                    {{ formatMintPrice(collectionInfo.mintPrice) }}
                   </span>
-                  <span v-if="ethPrice">
-                    ~{{
-                      formatNumber(ethPrice * collectionInfo.formattedMintPrice)
-                    }}
-                    USD
+                  <span>
+                    {{ fiatMintPrice }}
                   </span>
                 </div>
               </div>
@@ -123,7 +124,6 @@ onMounted(async () => {
             :contract-info="contractInfo"
             :collection-info="collectionInfo"
             :loading="loading"
-            :currency="MINT_CURRENCY"
             :show-price="true"
             @click="_mint()"
           />
@@ -136,7 +136,6 @@ onMounted(async () => {
               :contract-info="contractInfo"
               :collection-info="collectionInfo"
               :loading="loading"
-              :currency="MINT_CURRENCY"
               :show-price="true"
               @click="_mint()"
             >

@@ -9,9 +9,13 @@ import { randomBytes } from '@ethersproject/random';
 import { shorten } from './utils';
 import { apolloClient as snapshotApolloClient } from './apollo';
 import { getJSON } from '@snapshot-labs/snapshot.js/src/utils';
+import { formatUnits } from '@ethersproject/units';
 
 export const MINT_NETWORK = '5';
 export const MINT_CURRENCY = 'WETH';
+let ethPrice = 0;
+
+const { formatCompactNumber } = useIntl();
 
 const httpLink = createHttpLink({
   uri: import.meta.env.VITE_NFT_CLAIMER_GRAPH_URL
@@ -209,10 +213,34 @@ export async function getSnapshotFee() {
 
 export async function getEthPrice() {
   try {
+    if (ethPrice > 0) {
+      return ethPrice;
+    }
+
     const url =
       'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=usd';
-    return parseFloat((await getJSON(url)).USD);
+    ethPrice = parseFloat((await getJSON(url)).USD);
+
+    return ethPrice;
   } catch (e) {
-    return 0;
+    return ethPrice;
   }
+}
+
+export function formatMintPrice(price: BigNumber) {
+  return `${formatCompactNumber(
+    parseFloat(formatUnits(price, 18))
+  )} ${MINT_CURRENCY}`;
+}
+
+export async function formatFiatMintPrice(price: BigNumber) {
+  const _ethPrice = await getEthPrice();
+
+  if (_ethPrice > 0) {
+    return `~${formatCompactNumber(
+      parseFloat(formatUnits(price, 18)) * _ethPrice
+    )} USD`;
+  }
+
+  return '';
 }

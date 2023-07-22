@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import { MINT_CURRENCY } from '@/helpers/nftClaimer';
+import { formatMintPrice } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -11,7 +11,6 @@ useNFTClaimer(props.space, props.proposal);
 const { getContractInfo, getCollectionInfo } = useNFTClaimerStorage();
 const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
-const { formatNumber } = useIntl();
 // TODO enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = true;
@@ -73,14 +72,12 @@ const collectionInfo = computed(() => {
         <div class="flex flex-col">
           <span>Mint price</span>
           <span class="text-base font-bold text-skin-link">
-            {{ formatNumber(collectionInfo.formattedMintPrice) }}
-            {{ MINT_CURRENCY }}
+            {{ formatMintPrice(collectionInfo.mintPrice) }}
           </span>
         </div>
         <NFTClaimerMintButton
           :contract-info="contractInfo"
           :collection-info="collectionInfo"
-          :currency="MINT_CURRENCY"
           @click="isModalMintOpen = true"
         />
       </div>
