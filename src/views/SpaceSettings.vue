@@ -64,10 +64,7 @@ enum Page {
 }
 const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
-const route = useRoute();
-const currentPage = ref(
-  route.hash.slice(1) in Page ? Page[route.hash.slice(1)] : Page.GENERAL
-);
+const currentPage = ref(Page.GENERAL);
 const modalDeleteSpaceConfirmation = ref('');
 const modalSettingsSavedOpen = ref(false);
 const modalSettingsSavedIgnore = useStorage(
