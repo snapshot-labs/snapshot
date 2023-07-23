@@ -155,12 +155,11 @@ watch(
       </div>
     </BaseBlock>
     <form v-if="contractInfo" class="flex flex-col gap-y-3">
-      <BaseBlock title="SnapIt!">
-        <div class="flex w-full flex-col gap-y-3">
-          <BaseMessage level="info" class="mb-3">
-            Updates will only be applied to future proposals
-          </BaseMessage>
-
+      <BaseBlock slim title="SnapIt!">
+        <BaseMessage level="info" class="mb-3 border-b bg-slate-500/5 p-3">
+          Updates will not apply to proposals with existing mints
+        </BaseMessage>
+        <div class="m-4 flex flex-col gap-y-3">
           <NFTClaimerSetupForm :space="space" />
         </div>
       </BaseBlock>
