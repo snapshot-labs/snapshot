@@ -1,93 +1,41 @@
 <script lang="ts" setup>
-import pick from 'lodash/pick';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { validateForm } from '@/helpers/validation';
-import { getSnapshotFee } from '@/helpers/nftClaimer';
 
 const props = defineProps<{
-  context: string;
   space: ExtendedSpace;
 }>();
 
 const { web3Account } = useWeb3();
-const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
-  props.space
-);
+const { loading, toggleMintStatus } = useNFTClaimer(props.space);
 const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
-const snapshotFee = ref(0);
+const nftClaimerFormRef = ref<any>(null);
 // TODO Enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = ref(true);
-
-const maxProposerCut = computed(() => {
-  return 100 - snapshotFee.value;
-});
-
-const schema = computed(() => {
-  return {
-    type: 'object',
-    properties: {
-      maxSupply: { type: 'integer', minimum: 1 },
-      formattedMintPrice: { type: 'number', format: 'ethValue', minimum: 0 },
-      proposerFee: {
-        type: 'integer',
-        minimum: 0,
-        maximum: maxProposerCut.value
-      },
-      treasuryAddress: { type: 'string', format: 'address' }
-    },
-    required: [
-      'maxSupply',
-      'formattedMintPrice',
-      'proposerFee',
-      'treasuryAddress'
-    ],
-    additionalProperties: false
-  };
-});
 
 const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
 });
 
-const input = ref();
-
-const validationErrors = computed(() => {
-  return validateForm(schema.value, input.value);
-});
-
 const isValid = computed(() => {
-  return Object.values(validationErrors.value).length === 0;
+  return nftClaimerFormRef.value?.isValid;
 });
 
 const isViewOnly = computed(() => {
   return !isSpaceController.value || loading.value;
 });
 
-function submit() {
-  if (!isValid.value) {
-    return;
-  }
-
-  if (contractInfo.value?.address) {
-    update(input.value);
-  } else {
-    deploy(input.value);
-  }
-}
-
 function toggleStatus() {
   toggleMintStatus(!contractInfo.value.enabled);
 }
 
 function resetForm() {
-  input.value = pick(contractInfo.value, [
-    'maxSupply',
-    'formattedMintPrice',
-    'proposerFee',
-    'treasuryAddress'
-  ]);
+  nftClaimerFormRef?.value?.resetForm();
+}
+
+function submit() {
+  nftClaimerFormRef.value?.submit();
 }
 
 watch(
@@ -98,27 +46,9 @@ watch(
   { immediate: true }
 );
 
-watch(
-  () => init(props.space),
-  async () => {
-    input.value = contractInfo.value
-      ? pick(contractInfo.value, [
-          'maxSupply',
-          'formattedMintPrice',
-          'proposerFee',
-          'treasuryAddress'
-        ])
-      : {
-          maxSupply: '',
-          formattedMintPrice: '',
-          proposerFee: '',
-          treasuryAddress: ''
-        };
-
-    snapshotFee.value = await getSnapshotFee();
-  },
-  { immediate: true }
-);
+onMounted(() => {
+  init(props.space);
+});
 </script>
 
 <template>
@@ -160,7 +90,7 @@ watch(
           Updates will not apply to proposals with existing mints
         </BaseMessage>
         <div class="m-4 flex flex-col gap-y-3">
-          <NFTClaimerSetupForm :space="space" />
+          <NFTClaimerSettingForm ref="nftClaimerFormRef" :space="space" />
         </div>
       </BaseBlock>
 

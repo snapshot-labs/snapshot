@@ -9,10 +9,8 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
-const { deploy, update, loading, toggleMintStatus } = useNFTClaimer(
-  props.space
-);
-const { getContractInfo, init, inited } = useNFTClaimerStorage();
+const { deploy, update, loading } = useNFTClaimer(props.space);
+const { getContractInfo, init } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
 // TODO Enable in production
@@ -76,10 +74,6 @@ function submit() {
   }
 }
 
-function toggleStatus() {
-  toggleMintStatus(!contractInfo.value.enabled);
-}
-
 function resetForm() {
   input.value = pick(contractInfo.value, [
     'maxSupply',
@@ -88,6 +82,8 @@ function resetForm() {
     'treasuryAddress'
   ]);
 }
+
+defineExpose({ submit, resetForm, isValid });
 
 watch(
   () => web3Account.value,

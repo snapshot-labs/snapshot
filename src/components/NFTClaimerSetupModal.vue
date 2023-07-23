@@ -7,17 +7,23 @@ defineProps<{
 }>();
 
 defineEmits(['close']);
+
+const formRef = ref<any>(null);
+
+function submit() {
+  formRef.value?.submit();
+}
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
+  <BaseModal max-height="550px" :open="open" @close="$emit('close')">
     <template #header>
       <h3>{{ $t('Setup SnapIt!') }}</h3>
     </template>
     <template #default>
-      <form class="flex flex-col gap-y-3 p-3">
-        <NFTClaimerSetupForm :space="space" />
-        <BaseButton primary class="w-full" type="submit">
+      <form class="flex flex-col justify-between gap-y-4 p-4">
+        <NFTClaimerSettingForm ref="formRef" :space="space" />
+        <BaseButton primary class="w-full" type="submit" @click="submit">
           Setup SnapIt!
         </BaseButton>
       </form>
