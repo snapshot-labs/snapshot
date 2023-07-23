@@ -13,7 +13,7 @@ const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
 // TODO enable in production
 // const { isSpaceController } = useSpaceController();
-const isSpaceController = true;
+const isSpaceController = ref(true);
 
 const isModalMintOpen = ref(false);
 const isModalExploreOpen = ref(false);
@@ -103,28 +103,9 @@ const collectionInfo = computed(() => {
         />
       </teleport>
     </BaseBlock>
-    <BaseBlock
-      v-else-if="!contractInfo && isSpaceController"
-      :title="$t('SnapIt!')"
-      class="text-center"
-    >
-      <div class="flex flex-col items-center gap-y-3">
-        <NFTClaimerLogo size="lg" />
-        <span class="text-skin-link">
-          Setup SnapIt! now, and let your community mint NFT for each proposals.
-          <BaseLink link="https://docs.snapshot.org">Learn more</BaseLink>
-        </span>
-
-        <router-link
-          :to="{
-            name: 'spaceSettings',
-            params: { key: space.id },
-            hash: '#NFTCLAIMER'
-          }"
-        >
-          <BaseButton>Setup SnapIt!</BaseButton>
-        </router-link>
-      </div>
-    </BaseBlock>
   </template>
+  <NFTClaimerSetupBaseBlock
+    v-else-if="!contractInfo && isSpaceController"
+    :space="space"
+  />
 </template>
