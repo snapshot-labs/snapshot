@@ -71,6 +71,10 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     provider
   );
 
+  function isRejectedTransaction(e: any) {
+    return e.code === 'ACTION_REJECTED' || e.code === 4001;
+  }
+
   async function _checkWETHBalance(mintPriceWei: BigNumber) {
     updateProgress(
       Step.CHECK_WETH_BALANCE,
@@ -171,7 +175,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
           );
         }
       } catch (e: any) {
-        if (e.code === 'ACTION_REJECTED') {
+        if (isRejectedTransaction(e)) {
           updateProgress(
             Step.APPROVE_WETH_BALANCE,
             Status.ERROR,
@@ -240,11 +244,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       ]);
       return receipt;
     } catch (e: any) {
-      if (e.code !== 'ACTION_REJECTED') {
+      if (isRejectedTransaction(e)) {
+        return notify(['red', 'Transaction rejected']);
+      } else {
         notify(['red', 'An unexpected error occured']);
         console.error(e);
-      } else {
-        return notify(['red', 'Transaction rejected']);
       }
     } finally {
       removePendingTransaction(txPendingId);
@@ -255,7 +259,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
   async function sendTx(
     callback: () => Promise<any>,
-    afterSend: (tx: any) => void
+    afterSend: (tx: any) => void,
+    useProgress = false
   ) {
     let txPendingId: string | null = null;
 
@@ -274,14 +279,22 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
         return receipt;
       }
     } catch (e: any) {
-      if (e.code === 'ACTION_REJECTED') {
-        updateProgress(Step.SEND_TX, Status.ERROR, 'Transaction rejected');
+      if (isRejectedTransaction(e)) {
+        if (useProgress) {
+          updateProgress(Step.SEND_TX, Status.ERROR, 'Transaction rejected');
+        } else {
+          notify(['red', 'Transaction rejected']);
+        }
       } else {
-        updateProgress(
-          Step.SEND_TX,
-          Status.ERROR,
-          'An unexpected error occured'
-        );
+        if (useProgress) {
+          updateProgress(
+            Step.SEND_TX,
+            Status.ERROR,
+            'An unexpected error occured'
+          );
+        } else {
+          notify(['red', 'An unexpected error occured']);
+        }
         console.error(e);
       }
     } finally {
@@ -409,7 +422,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
             Status.WORKING,
             'Waiting for confirmation...'
           );
-        }
+        },
+        true
       );
 
       if (receipt) {
@@ -454,7 +468,9 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       } = await _getBackendPayload('deploy', payloadToVerify);
 
       await sendTx(
-        () => {
+        async () => {
+          await _switchNetwork();
+
           return sendTransaction(
             auth.web3,
             verifyingContract,
@@ -519,6 +535,8 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
 
     const txPendingId = createPendingTransaction();
     try {
+      await _switchNetwork();
+
       const tx = await sendTransaction(
         auth.web3,
         spaceInfo.address,
@@ -533,11 +551,11 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
       notify(['green', 'Settings have been updated']);
       return receipt;
     } catch (e: any) {
-      if (e.code !== 'ACTION_REJECTED') {
+      if (isRejectedTransaction(e)) {
+        return notify(['red', 'Transaction rejected']);
+      } else {
         notify(['red', 'An unexpected error occured']);
         console.error(e);
-      } else {
-        return notify(['red', 'Transaction rejected']);
       }
     } finally {
       removePendingTransaction(txPendingId);
