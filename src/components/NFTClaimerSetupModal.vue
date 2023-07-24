@@ -24,7 +24,7 @@ function submit() {
       <form class="flex flex-col justify-between gap-y-4 p-4">
         <NFTClaimerSettingForm ref="formRef" :space="space" />
         <BaseButton primary class="w-full" type="submit" @click="submit">
-          Setup SnapIt!
+          Save
         </BaseButton>
       </form>
     </template>
