@@ -15,6 +15,7 @@ const { deploy, update, loading } = useNFTClaimer(props.space);
 const { getContractInfo, init } = useNFTClaimerStorage();
 
 const snapshotFee = ref(0);
+const inputRefs = ref<any[]>([]);
 // TODO Enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = ref(true);
@@ -66,6 +67,7 @@ const isViewOnly = computed(() => {
 
 function submit() {
   if (!isValid.value) {
+    forceShowError();
     return;
   }
 
@@ -83,6 +85,16 @@ function resetForm() {
     'proposerFee',
     'treasuryAddress'
   ]);
+}
+
+function forceShowError() {
+  inputRefs?.value?.forEach((ref: any) => {
+    if (ref?.forceShowError) ref?.forceShowError();
+  });
+}
+
+function addRef(ref: any) {
+  if (ref) inputRefs.value.push(ref);
 }
 
 defineExpose({ submit, resetForm, isValid });
@@ -125,6 +137,7 @@ watch(
 <template>
   <div class="flex w-full flex-col gap-y-3">
     <TuneInput
+      :ref="addRef"
       v-model="input.maxSupply"
       label="Max supply"
       hint="Maximum number of NFTs per proposal"
@@ -138,6 +151,7 @@ watch(
     />
 
     <TuneInput
+      :ref="addRef"
       v-model="input.formattedMintPrice"
       label="Mint price"
       :hint="`The mint price for each NFT, in ${MINT_CURRENCY}`"
@@ -150,6 +164,7 @@ watch(
     />
 
     <TuneInput
+      :ref="addRef"
       v-model="input.proposerFee"
       label="Proposer royalty fees"
       type="number"
@@ -162,6 +177,7 @@ watch(
     />
 
     <TuneInput
+      :ref="addRef"
       v-model.trim="input.treasuryAddress"
       label="Space treasury wallet"
       hint="Wallet address receiving the funds from the mint"
