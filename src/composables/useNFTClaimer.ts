@@ -225,6 +225,7 @@ export function useNFTClaimer(space: ExtendedSpace, proposal?: Proposal) {
     const txPendingId = createPendingTransaction();
     try {
       console.debug(':toggleMintStatus start');
+      await _switchNetwork();
       const tx = await sendTransaction(
         auth.web3,
         getContractInfo(space.id).address,
