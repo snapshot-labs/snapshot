@@ -151,7 +151,7 @@ watch(
 
     <TuneInput
       v-model="input.proposerFee"
-      label="Proposer fees"
+      label="Proposer royalty fees"
       type="number"
       hint="Percentage of the mint price shared with the proposal author"
       placeholder="5"
