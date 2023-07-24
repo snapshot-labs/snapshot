@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-defineProps<{
-  space: ExtendedSpace;
-}>();
+withDefaults(
+  defineProps<{
+    space: ExtendedSpace;
+    isViewOnly?: boolean;
+  }>(),
+  { isViewOnly: false }
+);
 
 const isModalSetupOpen = ref(false);
 </script>
@@ -17,7 +21,9 @@ const isModalSetupOpen = ref(false);
         <BaseLink link="https://docs.snapshot.org">Learn more</BaseLink>
       </span>
 
-      <BaseButton @click="isModalSetupOpen = true">Setup SnapIt!</BaseButton>
+      <BaseButton :disabled="isViewOnly" @click="isModalSetupOpen = true">
+        Setup SnapIt!
+      </BaseButton>
 
       <teleport to="#modal">
         <NFTClaimerSetupModal

@@ -42,6 +42,7 @@ function submit() {
 watch(
   () => web3Account.value,
   () => {
+    // TODO remove in prod
     isSpaceController.value = !!web3Account.value;
   },
   { immediate: true }
@@ -121,6 +122,10 @@ onMounted(() => {
       </div>
     </form>
 
-    <NFTClaimerSetupBaseBlock v-else :space="space" />
+    <NFTClaimerSetupBaseBlock
+      v-else
+      :space="space"
+      :is-view-only="!isSpaceController"
+    />
   </template>
 </template>
