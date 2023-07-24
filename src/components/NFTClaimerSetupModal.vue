@@ -22,7 +22,10 @@ function submit() {
       <h3>{{ $t('Setup SnapIt!') }}</h3>
     </template>
     <template #default>
-      <form class="flex flex-col justify-between gap-y-4 p-4">
+      <form
+        class="flex flex-col justify-between gap-y-4 p-4"
+        @submit.prevent="submit"
+      >
         <NFTClaimerSettingForm
           ref="formRef"
           :space="space"

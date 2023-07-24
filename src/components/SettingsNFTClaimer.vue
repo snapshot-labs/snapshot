@@ -82,7 +82,11 @@ onMounted(() => {
         </div>
       </div>
     </BaseBlock>
-    <form v-if="contractInfo" class="flex flex-col gap-y-3">
+    <form
+      v-if="contractInfo"
+      class="flex flex-col gap-y-3"
+      @submit.prevent="submit"
+    >
       <BaseBlock slim title="SnapIt!">
         <BaseMessage level="info" class="mb-3 border-b bg-slate-500/5 p-3">
           Updates will not apply to proposals with existing mints
