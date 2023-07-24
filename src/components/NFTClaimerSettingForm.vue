@@ -8,6 +8,8 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const emit = defineEmits(['startLoading', 'endLoading']);
+
 const { web3Account } = useWeb3();
 const { deploy, update, loading } = useNFTClaimer(props.space);
 const { getContractInfo, init } = useNFTClaimerStorage();
@@ -84,6 +86,10 @@ function resetForm() {
 }
 
 defineExpose({ submit, resetForm, isValid });
+
+watch(loading, newState => {
+  newState ? emit('startLoading') : emit('endLoading');
+});
 
 watch(
   () => web3Account.value,

@@ -6,10 +6,11 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
-const { loading, toggleMintStatus } = useNFTClaimer(props.space);
+const { toggleMintStatus } = useNFTClaimer(props.space);
 const { getContractInfo, init, inited } = useNFTClaimerStorage();
 
-const nftClaimerFormRef = ref<any>(null);
+const formRef = ref<any>(null);
+const isLoading = ref(false);
 // TODO Enable in production
 // const { isSpaceController } = useSpaceController();
 const isSpaceController = ref(true);
@@ -19,11 +20,11 @@ const contractInfo = computed(() => {
 });
 
 const isValid = computed(() => {
-  return nftClaimerFormRef.value?.isValid;
+  return formRef?.value?.isValid;
 });
 
 const isViewOnly = computed(() => {
-  return !isSpaceController.value || loading.value;
+  return !isSpaceController.value || formRef.value?.loading;
 });
 
 function toggleStatus() {
@@ -31,11 +32,11 @@ function toggleStatus() {
 }
 
 function resetForm() {
-  nftClaimerFormRef?.value?.resetForm();
+  formRef.value?.resetForm();
 }
 
 function submit() {
-  nftClaimerFormRef.value?.submit();
+  formRef.value?.submit();
 }
 
 watch(
@@ -90,7 +91,12 @@ onMounted(() => {
           Updates will not apply to proposals with existing mints
         </BaseMessage>
         <div class="m-4 flex flex-col gap-y-3">
-          <NFTClaimerSettingForm ref="nftClaimerFormRef" :space="space" />
+          <NFTClaimerSettingForm
+            ref="formRef"
+            :space="space"
+            @startLoading="isLoading = true"
+            @endLoading="isLoading = false"
+          />
         </div>
       </BaseBlock>
 
@@ -107,7 +113,7 @@ onMounted(() => {
           class="block w-full"
           type="submit"
           :disabled="isViewOnly || !isValid"
-          :loading="loading"
+          :loading="isLoading"
           @click="submit"
         >
           Save

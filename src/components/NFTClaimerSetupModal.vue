@@ -9,6 +9,7 @@ defineProps<{
 defineEmits(['close']);
 
 const formRef = ref<any>(null);
+const isLoading = ref(false);
 
 function submit() {
   formRef.value?.submit();
@@ -22,8 +23,19 @@ function submit() {
     </template>
     <template #default>
       <form class="flex flex-col justify-between gap-y-4 p-4">
-        <NFTClaimerSettingForm ref="formRef" :space="space" />
-        <BaseButton primary class="w-full" type="submit" @click="submit">
+        <NFTClaimerSettingForm
+          ref="formRef"
+          :space="space"
+          @startLoading="isLoading = true"
+          @endLoading="isLoading = false"
+        />
+        <BaseButton
+          primary
+          class="w-full"
+          type="submit"
+          :loading="isLoading"
+          @click="submit"
+        >
           Save
         </BaseButton>
       </form>
