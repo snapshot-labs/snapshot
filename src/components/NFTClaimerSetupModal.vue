@@ -22,26 +22,17 @@ function submit() {
       <h3>{{ $t('Setup SnapIt!') }}</h3>
     </template>
     <template #default>
-      <form
-        class="flex flex-col justify-between gap-y-4 p-4"
-        @submit.prevent="submit"
-      >
+      <div class="flex flex-col justify-between gap-y-4 p-4">
         <NFTClaimerSettingForm
           ref="formRef"
           :space="space"
           @startLoading="isLoading = true"
           @endLoading="isLoading = false"
         />
-        <BaseButton
-          primary
-          class="w-full"
-          type="submit"
-          :loading="isLoading"
-          @click.prevent="submit"
-        >
+        <BaseButton primary class="w-full" :loading="isLoading" @click="submit">
           Save
         </BaseButton>
-      </form>
+      </div>
     </template>
   </BaseModal>
 </template>
