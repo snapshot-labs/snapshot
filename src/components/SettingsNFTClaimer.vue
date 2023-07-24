@@ -19,10 +19,6 @@ const contractInfo = computed(() => {
   return getContractInfo(props.space.id);
 });
 
-const isValid = computed(() => {
-  return formRef?.value?.isValid;
-});
-
 const isViewOnly = computed(() => {
   return !isSpaceController.value || formRef.value?.loading;
 });
@@ -113,7 +109,7 @@ onMounted(() => {
           primary
           class="block w-full"
           type="submit"
-          :disabled="isViewOnly || !isValid"
+          :disabled="isViewOnly"
           :loading="isLoading"
           @click="submit"
         >
