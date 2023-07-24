@@ -51,7 +51,7 @@ onMounted(() => {
 
 <template>
   <LoadingRow v-if="!inited" block />
-  <template v-else>
+  <template v-else class="flex flex-col gap-y-3">
     <BaseMessageBlock
       v-if="!isSpaceController"
       class="md:mx-0"
@@ -61,7 +61,7 @@ onMounted(() => {
       You are in view only mode, to modify space settings connect with a
       controller wallet.
     </BaseMessageBlock>
-    <BaseBlock v-if="contractInfo" class="mb-2 mt-3" title="Mint status">
+    <BaseBlock v-if="contractInfo" title="Mint status">
       <div class="flex gap-x-4">
         <div class="grow">
           <p>
