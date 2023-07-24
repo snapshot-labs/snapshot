@@ -34,7 +34,7 @@ function submit() {
           class="w-full"
           type="submit"
           :loading="isLoading"
-          @click="submit"
+          @click.prevent="submit"
         >
           Save
         </BaseButton>

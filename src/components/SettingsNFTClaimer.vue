@@ -111,7 +111,7 @@ onMounted(() => {
           type="submit"
           :disabled="isViewOnly"
           :loading="isLoading"
-          @click="submit"
+          @click.prevent="submit"
         >
           Save
         </BaseButton>
