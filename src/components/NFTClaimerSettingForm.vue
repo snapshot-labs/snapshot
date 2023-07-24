@@ -161,7 +161,9 @@ watch(
       :error="validationErrors?.formattedMintPrice"
       :disabled="isViewOnly"
       @update:model-value="value => (input.formattedMintPrice = Number(value))"
-    />
+    >
+      <template #after> {{ MINT_CURRENCY }} </template>
+    </TuneInput>
 
     <TuneInput
       :ref="addRef"
@@ -174,7 +176,9 @@ watch(
       :error="validationErrors?.proposerFee"
       :disabled="isViewOnly"
       @update:model-value="value => (input.proposerFee = Number(value))"
-    />
+    >
+      <template #after> % </template>
+    </TuneInput>
 
     <TuneInput
       :ref="addRef"
