@@ -16,6 +16,7 @@ import VueTippy from 'vue-tippy';
 import { createHead } from '@vueuse/head';
 import 'viewerjs/dist/viewer.css';
 import VueViewer from 'v-viewer';
+import { initSentry } from '@/sentry';
 
 const head = createHead();
 
@@ -38,7 +39,11 @@ const app = createApp({
     provide(DefaultApolloClient, apolloClient);
   },
   render: () => h(App)
-})
+});
+
+initSentry(app, router);
+
+app
   .use(head)
   .use(i18n)
   .use(router)
