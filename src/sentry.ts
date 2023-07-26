@@ -12,7 +12,7 @@ export const initSentry = (app, router) => {
       }),
       new Sentry.Replay()
     ],
-    sampleRate: 1.0,
+    sampleRate: 0.01,
     maxBreadcrumbs: 50,
     tracingOptions: {
       trackComponents: true
