@@ -1,10 +1,16 @@
 import * as Sentry from '@sentry/vue';
 
 export const initSentry = (app, router) => {
+  const dsn = import.meta.env.VITE_SENTRY_DSN;
+
+  if (!dsn) {
+    return;
+  }
+
   Sentry.init({
     app,
     tunnel: `${import.meta.env.VITE_SIDEKICK_URL}/sentry`,
-    dsn: import.meta.env.VITE_SENTRY_DSN,
+    dsn,
     release: `snapshot@${process.env.npm_package_version}`,
     integrations: [
       new Sentry.BrowserTracing({
