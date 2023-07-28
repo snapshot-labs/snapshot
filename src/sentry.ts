@@ -24,7 +24,8 @@ export const initSentry = (app, router) => {
       trackComponents: true
     },
     replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0
+    replaysOnErrorSampleRate: 1.0,
+    denyUrls: [/extensions\//i, /^chrome:\/\//i, /^chrome-extension:\/\//i]
   });
 };
 
