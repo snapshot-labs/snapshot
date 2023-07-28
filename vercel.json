@@ -2,8 +2,7 @@
   "rewrites": [
     {
       "source": "/:path*",
-      "destination": "/#/:path*",
-      "permanent": true
+      "destination": "/#/:path*"
     }
   ]
 }
