@@ -206,7 +206,7 @@ watch(
                 <i-ho-exclamation-circle class="text-sm text-red" />
                 {{ $t('failed') }}
               </span>
-              <span v-else>
+              <span v-else class="flex items-center">
                 <i-ho-check v-if="isValidVoter" class="text-green" />
                 <i-ho-x v-else class="text-red" />
                 {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
