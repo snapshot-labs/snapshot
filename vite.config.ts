@@ -15,7 +15,7 @@ export default defineConfig({
     'process.env': process.env
   },
   build: {
-    sourcemap: true
+    sourcemap: process.env.VITE_ENV === 'production'
   },
   plugins: [
     vue({ reactivityTransform: true }),
@@ -60,7 +60,8 @@ export default defineConfig({
     sentryVitePlugin({
       org: process.env.SENTRY_ORG,
       project: 'snapshot',
-      authToken: process.env.SENTRY_AUTH_TOKEN
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      disable: process.env.VITE_ENV !== 'production'
     })
   ],
   resolve: {
