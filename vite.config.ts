@@ -7,11 +7,15 @@ import visualizer from 'rollup-plugin-visualizer';
 import Icons from 'unplugin-icons/vite';
 import IconsResolver from 'unplugin-icons/resolver';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
+import { sentryVitePlugin } from '@sentry/vite-plugin';
 import AutoImport from 'unplugin-auto-import/vite';
 
 export default defineConfig({
   define: {
     'process.env': process.env
+  },
+  build: {
+    sourcemap: true
   },
   plugins: [
     vue({ reactivityTransform: true }),
@@ -51,6 +55,12 @@ export default defineConfig({
           svg.replace(/^<svg /, '<svg fill="currentColor" ')
         )
       }
+    }),
+    // Put the Sentry vite plugin after all other plugins
+    sentryVitePlugin({
+      org: process.env.SENTRY_ORG,
+      project: 'snapshot',
+      authToken: process.env.SENTRY_AUTH_TOKEN
     })
   ],
   resolve: {
