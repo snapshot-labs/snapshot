@@ -11,7 +11,6 @@ export const initSentry = (app, router) => {
     app,
     tunnel: `${import.meta.env.VITE_SIDEKICK_URL}/sentry`,
     dsn,
-    release: `snapshot@${process.env.npm_package_version}`,
     integrations: [
       new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
