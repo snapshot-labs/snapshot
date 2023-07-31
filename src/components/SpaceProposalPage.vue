@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -186,6 +186,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :proposal="proposal"
           :strategies="strategies"
         />
+        <SpaceProposalOsnapCard />
         <SpaceProposalResults
           :loaded="loadedResults"
           :space="space"
