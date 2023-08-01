@@ -63,7 +63,8 @@ function updateFlagged(e: boolean) {
           <div class="space-y-2">
             <span class="text-skin-heading"> Proposal status </span>
             <TuneRadio
-              v-for="state in stateFilters"
+              v-for="(state, index) in stateFilters"
+              :id="index"
               :key="state.action"
               :value="state.action"
               :hint="state.text"
