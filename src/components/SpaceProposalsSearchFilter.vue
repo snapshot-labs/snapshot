@@ -61,7 +61,7 @@ function updateFlagged(e: boolean) {
         <h3 class="-mb-2 mt-3 text-center text-skin-heading">Filters</h3>
         <div class="m-4 space-y-3">
           <div class="space-y-2">
-            <span class="text-skin-heading"> Proposal state </span>
+            <span class="text-skin-heading"> Proposal status </span>
             <TuneRadio
               v-for="state in stateFilters"
               :key="state.action"
