@@ -41,7 +41,9 @@ const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
 
 const spaceMembers = computed(() =>
-  props.space.members.length < 1 ? ['none'] : props.space.members
+  props.space.members.length < 1
+    ? ['none']
+    : [...props.space.members, ...props.space.moderators, ...props.space.admins]
 );
 
 const subSpaces = computed(
@@ -57,7 +59,9 @@ const spaceProposals = computed(() => {
 });
 
 const stateFilter = computed(() => route.query.state || 'all');
-const titleFilter = computed(() => route.query.q || '');
+const titleSearch = computed(() => route.query.q || '');
+const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
+const showFlagged = computed(() => (route.query.showFlagged as string) || '0');
 
 async function getProposals(skip = 0) {
   return apolloQuery(
@@ -67,9 +71,10 @@ async function getProposals(skip = 0) {
         first: loadBy,
         skip,
         space_in: [props.space.id, ...subSpaces.value],
-        state: stateFilter.value === 'core' ? 'all' : stateFilter.value,
-        author_in: stateFilter.value === 'core' ? spaceMembers.value : [],
-        title_contains: titleFilter.value
+        state: stateFilter.value,
+        author_in: showOnlyCore.value === '1' ? spaceMembers.value : [],
+        title_contains: titleSearch.value,
+        flagged: showFlagged.value === '0' ? false : undefined
       }
     },
     'proposals'
@@ -103,13 +108,13 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch(stateFilter, () => {
+watch([stateFilter, showOnlyCore, showFlagged], () => {
   resetSpaceProposals();
   loadProposals();
 });
 
 watchDebounced(
-  titleFilter,
+  titleSearch,
   () => {
     resetSpaceProposals();
     loadProposals();
@@ -130,7 +135,7 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <BaseBlock v-if="space.about && stateFilter == 'all'" class="mb-3">
+      <BaseBlock v-if="space.about" class="mb-3">
         <TextAutolinker :text="space.about" />
       </BaseBlock>
       <div class="relative mb-3 flex px-3 md:px-0">
@@ -141,7 +146,7 @@ onMounted(() => loadProposals());
             </h2>
           </div>
         </div>
-        <SpaceProposalsMenuFilter />
+        <SpaceProposalsSearch />
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
