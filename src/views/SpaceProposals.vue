@@ -61,7 +61,7 @@ const spaceProposals = computed(() => {
 const stateFilter = computed(() => route.query.state || 'all');
 const titleSearch = computed(() => route.query.q || '');
 const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
-const hideFlagged = computed(() => (route.query.hideFlagged as string) || '1');
+const showFlagged = computed(() => (route.query.showFlagged as string) || '0');
 
 async function getProposals(skip = 0) {
   return apolloQuery(
@@ -74,7 +74,7 @@ async function getProposals(skip = 0) {
         state: stateFilter.value,
         author_in: showOnlyCore.value === '1' ? spaceMembers.value : [],
         title_contains: titleSearch.value,
-        flagged: hideFlagged.value === '1' ? false : undefined
+        flagged: showFlagged.value === '0' ? false : undefined
       }
     },
     'proposals'
@@ -108,7 +108,7 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch([stateFilter, showOnlyCore, hideFlagged], () => {
+watch([stateFilter, showOnlyCore, showFlagged], () => {
   resetSpaceProposals();
   loadProposals();
 });
@@ -147,6 +147,7 @@ onMounted(() => loadProposals());
           </div>
         </div>
         <SpaceProposalsSearch />
+        {{ showFlagged }}
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"

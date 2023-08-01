@@ -5,7 +5,7 @@ const { t } = useI18n();
 
 const stateFilter = computed(() => (route.query.state as string) || 'all');
 const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
-const hideFlagged = computed(() => (route.query.hideFlagged as string) || '1');
+const showFlagged = computed(() => (route.query.showFlagged as string) || '0');
 
 const stateFilters = computed(() => [
   {
@@ -44,7 +44,7 @@ function updateCore(e: boolean) {
 
 function updateFlagged(e: boolean) {
   router.push({
-    query: { ...route.query, hideFlagged: e ? '1' : undefined }
+    query: { ...route.query, showFlagged: e ? '1' : undefined }
   });
 }
 </script>
@@ -80,9 +80,9 @@ function updateFlagged(e: boolean) {
               @update:model-value="updateCore($event as boolean)"
             />
             <TuneCheckbox
-              :model-value="hideFlagged === '1'"
-              hint="Hide flagged proposals"
-              name="hideFlagged"
+              :model-value="showFlagged === '1'"
+              hint="Show flagged proposals"
+              name="showFlagged"
               @update:model-value="updateFlagged($event as boolean)"
             />
           </div>
