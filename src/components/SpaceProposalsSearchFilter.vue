@@ -52,8 +52,8 @@ function updateFlagged(e: boolean) {
 <template>
   <BasePopover :focus="false">
     <template #button>
-      <BaseButtonIcon>
-        <i-ho-funnel class="mr-[2px] text-skin-link" />
+      <BaseButtonIcon class="mr-[2px] outline-none">
+        <i-ho-funnel class="text-skin-link" />
       </BaseButtonIcon>
     </template>
     <template #content>
@@ -75,12 +75,14 @@ function updateFlagged(e: boolean) {
           <div class="space-y-2">
             <span class="text-skin-heading"> More </span>
             <TuneCheckbox
+              id="onlyCore"
               :model-value="showOnlyCore === '1'"
               hint="Only core member proposals"
               name="onlyCore"
               @update:model-value="updateCore($event as boolean)"
             />
             <TuneCheckbox
+              id="showFlagged"
               :model-value="showFlagged === '1'"
               hint="Show flagged proposals"
               name="showFlagged"
