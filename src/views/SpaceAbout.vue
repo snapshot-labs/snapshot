@@ -69,8 +69,7 @@ const spaceMembers = computed(() => {
 });
 
 onMounted(() => {
-  if (props.space?.admins)
-    loadProfiles(props.space.admins.concat(props.space.members));
+  loadProfiles(spaceMembers.value.map(member => member.id));
 });
 </script>
 

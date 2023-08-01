@@ -3,7 +3,7 @@ import { Profile, ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { domain } = useApp();
 
-defineProps<{
+const props = defineProps<{
   address: string;
   space?: ExtendedSpace;
   proposal?: Proposal;
@@ -14,6 +14,15 @@ defineProps<{
 }>();
 
 const { getUsername } = useUsername();
+
+const spaceMembers = computed(() => {
+  if (!props.space) return [];
+  return [
+    ...props.space.members,
+    ...props.space.moderators,
+    ...props.space.admins
+  ];
+});
 </script>
 
 <template>
@@ -41,7 +50,7 @@ const { getUsername } = useUsername();
         >
           {{ getUsername(address, profile) }}
         </span>
-        <BaseBadge :address="address" :members="space?.members" />
+        <BaseBadge :address="address" :members="spaceMembers" />
       </div>
     </BaseLink>
   </PopoverHoverProfile>
