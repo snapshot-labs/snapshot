@@ -135,7 +135,7 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <BaseBlock v-if="space.about && stateFilter == 'all'" class="mb-3">
+      <BaseBlock v-if="space.about" class="mb-3">
         <TextAutolinker :text="space.about" />
       </BaseBlock>
       <div class="relative mb-3 flex px-3 md:px-0">
