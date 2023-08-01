@@ -1,4 +1,4 @@
-import namehash from '@ensdomains/eth-ens-namehash';
+import { ens_normalize } from '@adraffy/ens-normalize';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
@@ -30,8 +30,9 @@ async function ensReverseRecordRequest(addresses) {
 function normalizeNames(names: string[]) {
   return names.map(name => {
     try {
-      return namehash.normalize(name) === name ? name : '';
+      return ens_normalize(name) === name ? name : '';
     } catch (e) {
+      console.log(e);
       return '';
     }
   });
