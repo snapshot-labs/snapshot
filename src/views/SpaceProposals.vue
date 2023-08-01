@@ -147,7 +147,6 @@ onMounted(() => loadProposals());
           </div>
         </div>
         <SpaceProposalsSearch />
-        {{ showFlagged }}
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
