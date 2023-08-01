@@ -50,10 +50,10 @@ function updateFlagged(e: boolean) {
 </script>
 
 <template>
-  <BasePopover :focus="false">
+  <BasePopover :focus="false" class="h-full">
     <template #button>
-      <BaseButtonIcon class="mr-[2px] outline-none">
-        <i-ho-funnel class="text-base text-skin-link" />
+      <BaseButtonIcon class="flex h-full w-[54px] justify-center outline-none">
+        <i-ho-funnel class="mr-1 text-base text-skin-link" />
       </BaseButtonIcon>
     </template>
     <template #content>
