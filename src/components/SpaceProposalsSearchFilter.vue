@@ -4,8 +4,8 @@ const router = useRouter();
 const { t } = useI18n();
 
 const stateFilter = computed(() => (route.query.state as string) || 'all');
-const flaggedFilter = computed(() => (route.query.flagged as string) || '1');
-const coreFilter = computed(() => (route.query.core as string) || '0');
+const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
+const hideFlagged = computed(() => (route.query.hideFlagged as string) || '1');
 
 const stateFilters = computed(() => [
   {
@@ -36,15 +36,15 @@ function updateFilters(e: string) {
   });
 }
 
-function updateFlagged(e: boolean) {
+function updateCore(e: boolean) {
   router.push({
-    query: { ...route.query, flagged: e ? '1' : undefined }
+    query: { ...route.query, onlyCore: e ? '1' : undefined }
   });
 }
 
-function updateCore(e: boolean) {
+function updateFlagged(e: boolean) {
   router.push({
-    query: { ...route.query, core: e ? '1' : undefined }
+    query: { ...route.query, hideFlagged: e ? '1' : undefined }
   });
 }
 </script>
@@ -74,13 +74,13 @@ function updateCore(e: boolean) {
           <div class="space-y-2">
             <span class="text-skin-heading"> More </span>
             <TuneCheckbox
-              :model-value="coreFilter === '1'"
+              :model-value="showOnlyCore === '1'"
               hint="Only core member proposals"
               name="onlyCore"
               @update:model-value="updateCore($event as boolean)"
             />
             <TuneCheckbox
-              :model-value="flaggedFilter === '1'"
+              :model-value="hideFlagged === '1'"
               hint="Hide flagged proposals"
               name="hideFlagged"
               @update:model-value="updateFlagged($event as boolean)"

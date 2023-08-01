@@ -60,8 +60,8 @@ const spaceProposals = computed(() => {
 
 const stateFilter = computed(() => route.query.state || 'all');
 const titleSearch = computed(() => route.query.q || '');
-const flaggedFilter = computed(() => (route.query.flagged as string) || '1');
-const coreFilter = computed(() => (route.query.core as string) || '0');
+const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
+const hideFlagged = computed(() => (route.query.hideFlagged as string) || '1');
 
 async function getProposals(skip = 0) {
   return apolloQuery(
@@ -72,8 +72,9 @@ async function getProposals(skip = 0) {
         skip,
         space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value,
-        author_in: coreFilter.value === '1' ? spaceMembers.value : [],
-        title_contains: titleSearch.value
+        author_in: showOnlyCore.value === '1' ? spaceMembers.value : [],
+        title_contains: titleSearch.value,
+        flagged: hideFlagged.value === '1' ? false : undefined
       }
     },
     'proposals'
@@ -107,7 +108,7 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch([stateFilter, coreFilter, flaggedFilter], () => {
+watch([stateFilter, showOnlyCore, hideFlagged], () => {
   resetSpaceProposals();
   loadProposals();
 });
