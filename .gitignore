@@ -27,3 +27,5 @@ pnpm-debug.log*
 # Vitest
 
 /coverage
+# Sentry Auth Token
+.env.sentry-build-plugin
