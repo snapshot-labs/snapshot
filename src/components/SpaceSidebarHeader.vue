@@ -66,7 +66,7 @@ watchEffect(() => {
     <div
       class="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center"
     >
-      <ButtonFollow :space="space" :primary="!isFollowing" />
+      <ButtonFollow :space="space" />
       <BaseButton
         v-if="isFollowing"
         class="inline"
