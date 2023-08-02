@@ -13,7 +13,7 @@ function handleUpdateSearch(e: string) {
 
 <template>
   <div
-    class="w-full rounded-full border border-skin-border pl-3 pr-0 focus-within:!border-skin-text md:max-w-[420px]"
+    class="w-full rounded-full border border-skin-border pl-3 pr-0 focus-within:!border-skin-text md:max-w-[340px]"
   >
     <div class="flex">
       <BaseSearch
