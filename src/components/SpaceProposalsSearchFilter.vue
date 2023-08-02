@@ -53,7 +53,7 @@ function updateFlagged(e: boolean) {
   <BasePopover :focus="false" class="h-full">
     <template #button>
       <BaseButtonIcon class="flex h-full w-[54px] justify-center outline-none">
-        <i-ho-funnel class="mr-1 text-base text-skin-link" />
+        <i-ho-adjustments class="mr-1 text-base text-skin-link" />
       </BaseButtonIcon>
     </template>
     <template #content>
