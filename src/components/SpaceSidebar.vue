@@ -33,7 +33,7 @@ function handleSelect(e) {
             <template #button>
               <div>
                 <BaseButtonIcon :loading="false">
-                  <i-ho-dots-horizontal />
+                  <i-ho-dots-horizontal class="text-[18px]" />
                 </BaseButtonIcon>
               </div>
             </template>
