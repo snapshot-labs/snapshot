@@ -41,17 +41,17 @@ const socials = computed<SocialItem[]>(() => {
 </script>
 
 <template>
-  <div v-if="socials.length" class="my-3 flex items-center space-x-3 px-4">
+  <div v-if="socials.length" class="my-4 flex items-center space-x-2 px-4">
     <BaseLink
       v-for="social in socials"
       :key="social.icon"
       :link="social.link"
-      class="text-md text-skin-text hover:text-skin-link"
+      class="text-sm text-skin-text hover:text-skin-link"
       hide-external-icon
     >
-      <i-s-twitter v-if="social.icon === 'twitter'" class="text-[23px]" />
+      <i-s-twitter v-if="social.icon === 'twitter'" class="text-[18px]" />
       <i-s-github v-if="social.icon === 'github'" />
-      <i-ho-globe-alt v-if="social.icon === 'earth'" class="text-[23px]" />
+      <i-ho-globe-alt v-if="social.icon === 'earth'" class="text-[19px]" />
       <i-s-coingecko v-if="social.icon === 'coingecko'" />
     </BaseLink>
   </div>

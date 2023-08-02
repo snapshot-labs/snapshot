@@ -30,19 +30,19 @@ watchEffect(() => {
 
 <template>
   <div
-    class="relative block px-4 pt-4 text-center md:flex lg:block lg:px-0 lg:pt-0"
+    class="relative block px-4 pt-4 text-center md:flex lg:block lg:px-3 lg:pt-0"
   >
     <div class="flex lg:block">
       <AvatarSpace
         :space="space"
         symbol-index="space"
-        size="80"
-        class="lg:my-3"
+        size="48"
+        class="mr-3 !justify-start lg:mb-0 lg:mr-0 lg:mt-3"
       />
       <div
-        class="mx-3 flex flex-col justify-center truncate text-left lg:block lg:text-center"
+        class="flex flex-col justify-center truncate text-left lg:block lg:text-left"
       >
-        <h3 class="mb-[2px] flex items-center lg:justify-center">
+        <h3 class="mb-[2px] flex items-center lg:justify-start">
           <div
             v-tippy="{
               content: space.name.length > 16 ? space.name : null
@@ -64,12 +64,16 @@ watchEffect(() => {
     </div>
 
     <div
-      class="flex flex-grow items-start justify-end gap-x-2 lg:mb-4 lg:justify-center"
+      class="flex flex-grow items-start justify-end gap-x-[12px] lg:mb-4 lg:justify-start"
     >
-      <ButtonFollow :space="space" />
-      <BaseButton
+      <ButtonFollow
+        :space="space"
+        block
+        class="w-[140px] max-w-[140px] lg:w-full lg:max-w-none"
+      />
+      <BaseButtonRound
         v-if="isFollowing"
-        class="inline"
+        class="inline !h-[46px] !w-[46px] shrink-0"
         @click="toggleSubscription()"
       >
         <LoadingSpinner v-if="loading" />
@@ -79,7 +83,7 @@ watchEffect(() => {
           class="text-skin-link"
           :name="notificationIcon"
         />
-      </BaseButton>
+      </BaseButtonRound>
     </div>
   </div>
 </template>
