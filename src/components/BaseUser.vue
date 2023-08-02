@@ -18,9 +18,9 @@ const { getUsername } = useUsername();
 const spaceMembers = computed(() => {
   if (!props.space) return [];
   return [
-    ...props.space.members,
-    ...props.space.moderators,
-    ...props.space.admins
+    ...(props.space.members || []),
+    ...(props.space.moderators || []),
+    ...(props.space.admins || [])
   ];
 });
 </script>
