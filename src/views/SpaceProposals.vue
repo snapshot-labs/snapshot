@@ -153,7 +153,7 @@ onMounted(() => loadProposals());
         />
       </div>
       <div
-        class="mb-4 flex flex-col-reverse justify-between gap-3 px-3 sm:flex-row md:px-0"
+        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-2 px-3 sm:flex-row md:px-0"
       >
         <SpaceProposalsSearch />
         <BaseLink
@@ -170,7 +170,6 @@ onMounted(() => loadProposals());
 
       <SpaceProposalsNoProposals
         v-else-if="spaceProposals.length < 1"
-        class="mt-2"
         :space="space"
       />
       <div v-else class="mb-4 space-y-4">

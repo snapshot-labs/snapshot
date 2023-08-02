@@ -6,17 +6,14 @@ defineProps<{
 }>();
 </script>
 <template>
-  <div class="mb-3 text-center">
-    <BaseBlock class="py-2 text-skin-link">
-      <div class="mb-3">
+  <div class="py-[20px] text-center md:py-5">
+    <div class="text-skin-link">
+      <div>
         <i-ho-emoji-sad class="mx-auto" />
         <div class="mt-2 text-base">
           {{ $t('noResultsFound') }}
         </div>
       </div>
-      <router-link :to="{ name: 'spaceCreate' }">
-        <BaseButton tabindex="-1"> New proposal </BaseButton>
-      </router-link>
-    </BaseBlock>
+    </div>
   </div>
 </template>
