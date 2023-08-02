@@ -51,7 +51,7 @@ watch(
       class="input w-full border-none"
       @input="handleInput"
     />
-    <i-ho-x
+    <i-ho-x-circle
       v-if="modelValue"
       class="mr-2 flex-shrink-0 cursor-pointer text-[16px]"
       @click="clearInput"

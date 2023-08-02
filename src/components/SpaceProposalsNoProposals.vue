@@ -7,9 +7,12 @@ defineProps<{
 </script>
 <template>
   <div class="mb-3 text-center">
-    <BaseBlock class="pt-1">
+    <BaseBlock class="py-2">
       <div class="mb-3">
-        {{ $t('noResultsFound') }}
+        <i-ho-emoji-sad class="mx-auto" />
+        <div class="mt-2 text-base">
+          {{ $t('noResultsFound') }}
+        </div>
       </div>
       <router-link :to="{ name: 'spaceCreate' }">
         <BaseButton tabindex="-1">
