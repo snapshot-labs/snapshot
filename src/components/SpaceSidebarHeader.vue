@@ -70,6 +70,7 @@ watchEffect(() => {
         :space="space"
         block
         class="w-[140px] max-w-[140px] lg:w-full lg:max-w-none"
+        :primary="!isFollowing"
       />
       <BaseButtonRound
         v-if="isFollowing"
