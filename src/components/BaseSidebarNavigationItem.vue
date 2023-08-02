@@ -31,7 +31,7 @@ withDefaults(defineProps<Props>(), {
   }
 
   .nav-bottom-border {
-    @apply border-b-[3px] border-l-[0px] border-skin-border !pl-[21px] lg:border-b-[0px] lg:border-l-[3px];
+    @apply border-b-[3px] border-skin-border;
   }
 }
 </style>
