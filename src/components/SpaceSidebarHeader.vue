@@ -35,7 +35,7 @@ watchEffect(() => {
     <div class="">
       <AvatarSpace :space="space" symbol-index="space" size="48" class="mr-3" />
       <div class="mt-2 truncate text-left">
-        <h3 class="mb-0 flex items-center">
+        <h3 class="my-0 flex items-center">
           <div
             v-tippy="{
               content: space.name.length > 16 ? space.name : null
