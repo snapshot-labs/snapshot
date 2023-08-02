@@ -34,7 +34,7 @@ withDefaults(defineProps<Props>(), {
   }
 
   .nav-bottom-border {
-    @apply absolute bottom-[0px] h-[4px] w-3/4 rounded-tl rounded-tr bg-skin-text;
+    @apply absolute bottom-[0px] h-[4px] w-4/6 rounded-tl rounded-tr bg-skin-text;
   }
 }
 </style>
