@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
   <div
     :class="[
       'group relative block cursor-pointer whitespace-nowrap px-4 py-2 text-skin-text hover:bg-skin-bg',
-      { '!text-skin-link': isActive }
+      { '!text-skin-heading': isActive }
     ]"
   >
     <slot />
