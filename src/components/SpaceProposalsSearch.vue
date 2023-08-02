@@ -22,7 +22,7 @@ function handleUpdateSearch(e: string) {
         class="flex-auto pr-2"
         @update:model-value="handleUpdateSearch"
       />
-      <div class="flex items-center border-l" style="height: 44px">
+      <div class="flex h-[44px] items-center border-l">
         <SpaceProposalsSearchFilter />
       </div>
     </div>

@@ -11,14 +11,16 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div
     :class="[
-      'group relative block cursor-pointer whitespace-nowrap px-4 py-2 text-skin-link hover:bg-skin-bg',
-      {
-        'max-lg:nav-bottom-border': isActive
-      }
+      'group relative block cursor-pointer whitespace-nowrap px-4 py-2 text-skin-link hover:bg-skin-bg'
     ]"
   >
     <slot />
-    <div v-if="isActive" class="lg:nav-left-border" />
+    <div class="absolute left-0 top-0 flex h-full w-full justify-center">
+      <div
+        v-if="isActive"
+        class="lg:nav-left-border max-lg:nav-bottom-border"
+      />
+    </div>
   </div>
 </template>
 
@@ -27,11 +29,11 @@ withDefaults(defineProps<Props>(), {
 
 @layer components {
   .nav-left-border {
-    @apply absolute left-0 top-[4px] h-[32px] w-[4px] rounded-br rounded-tr bg-skin-text transition-all duration-300;
+    @apply absolute left-0 top-[4px] h-[32px] w-[4px] rounded-br rounded-tr bg-skin-text;
   }
 
   .nav-bottom-border {
-    @apply border-b-[3px] border-skin-border;
+    @apply absolute bottom-[0px] h-[4px] w-3/4 rounded-tl rounded-tr bg-skin-text;
   }
 }
 </style>
