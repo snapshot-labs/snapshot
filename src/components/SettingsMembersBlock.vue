@@ -250,7 +250,7 @@ function changeInputAddRole(role: string, close: () => void) {
     </div>
 
     <div class="mt-3">
-      <div class="flex items-end gap-2">
+      <div class="flex gap-2">
         <TuneInput
           :model-value="inputAddMembers"
           :error="errorMessage"
@@ -266,7 +266,10 @@ function changeInputAddRole(role: string, close: () => void) {
           :disabled="!isAbleToChangeMembers && !isAbleToChangeAdmins"
         >
           <template #button>
-            <InputSelect :model-value="capitalize(inputAddRole)" />
+            <InputSelect
+              :model-value="capitalize(inputAddRole)"
+              class="mt-[9px] sm:mt-[11px]"
+            />
           </template>
           <template #content="{ close }">
             <SettingsMembersPopoverContent
