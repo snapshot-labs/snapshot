@@ -17,5 +17,9 @@
   "fr-FR": {
     "name": "French",
     "nativeName": "Français"
+  },
+  "uk-UA": {
+    "name": "Ukrainian",
+    "nativeName": "Українська"
   }
 }
