@@ -7,11 +7,11 @@ const props = defineProps<{
   context: 'setup' | 'settings';
   space?: ExtendedSpace;
   isSpaceController?: boolean;
+  isSpaceAdmin?: boolean;
 }>();
 
 const { form, validationErrors } = useFormSpaceSettings(props.context);
 const { notify } = useFlashNotification();
-const { web3Account } = useWeb3();
 const { t } = useI18n();
 
 const inputAddMembers = ref('');
@@ -62,9 +62,7 @@ const members = computed(() => {
 const isAbleToChangeMembers = computed(() => {
   if (props.context === 'setup') return true;
   if (props.context === 'settings') {
-    if (props.isSpaceController) return true;
-    if (props.space?.admins?.includes(web3Account.value.toLowerCase()))
-      return true;
+    if (props.isSpaceAdmin || props.isSpaceController) return true;
   }
   return false;
 });
@@ -190,6 +188,17 @@ const errorMessage = computed(() => {
 
   return message;
 });
+
+function changeInputAddRole(role: string, close: () => void) {
+  if (role === 'admin' && isAbleToChangeAdmins.value) {
+    inputAddRole.value = 'admin';
+    close();
+  }
+  if (role === 'moderator' || role === 'author') {
+    inputAddRole.value = role;
+    close();
+  }
+}
 </script>
 
 <template>
@@ -206,14 +215,15 @@ const errorMessage = computed(() => {
         <BaseUser :address="member.address" />
 
         <div class="flex items-center gap-1">
-          <BasePopover>
+          <BasePopover
+            :disabled="
+              member.role === 'admin'
+                ? !isAbleToChangeAdmins
+                : !isAbleToChangeMembers
+            "
+          >
             <template #button>
-              <SettingsMembersPopoverButton
-                :selected-role="capitalize(member.role)"
-                :is-able-to-change-admins="isAbleToChangeAdmins"
-                :is-able-to-change-members="isAbleToChangeMembers"
-                :is-admin="space?.admins?.includes(member.address)"
-              />
+              <InputSelect :model-value="capitalize(member.role)" />
             </template>
             <template #content="{ close }">
               <SettingsMembersPopoverContent
@@ -240,7 +250,7 @@ const errorMessage = computed(() => {
     </div>
 
     <div class="mt-3">
-      <div class="flex gap-1">
+      <div class="flex items-end gap-2">
         <TuneInput
           :model-value="inputAddMembers"
           :error="errorMessage"
@@ -252,24 +262,18 @@ const errorMessage = computed(() => {
           @update:model-value="addMembers"
         />
 
-        <BasePopover>
+        <BasePopover
+          :disabled="!isAbleToChangeMembers && !isAbleToChangeAdmins"
+        >
           <template #button>
-            <SettingsMembersPopoverButton
-              class="mt-[12px]"
-              :selected-role="capitalize(inputAddRole)"
-              :is-able-to-change-admins="isAbleToChangeAdmins"
-              :is-able-to-change-members="isAbleToChangeMembers"
-            />
+            <InputSelect :model-value="capitalize(inputAddRole)" />
           </template>
           <template #content="{ close }">
             <SettingsMembersPopoverContent
               :current-role="inputAddRole"
               :is-able-to-change-admins="isAbleToChangeAdmins"
               :is-able-to-change-members="isAbleToChangeMembers"
-              @change="
-                inputAddRole = $event;
-                close();
-              "
+              @change="changeInputAddRole($event, close)"
             />
           </template>
         </BasePopover>
