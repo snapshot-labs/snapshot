@@ -12,10 +12,12 @@ withDefaults(
   defineProps<{
     label?: string;
     placement?: Placement;
+    disabled?: boolean;
   }>(),
   {
     label: '',
-    placement: 'bottom-end'
+    placement: 'bottom-end',
+    disabled: false
   }
 );
 </script>
@@ -36,7 +38,11 @@ withDefaults(
       :z-index="50"
       portal
     >
-      <PopoverButton as="template">
+      <PopoverButton
+        as="template"
+        :disabled="disabled"
+        :class="[{ 'cursor-not-allowed': disabled }]"
+      >
         <slot v-if="$slots.button" name="button" />
         <BaseButton v-else class="flex items-center">
           <span>{{ label }}</span>
