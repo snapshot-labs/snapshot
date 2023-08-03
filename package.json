@@ -40,7 +40,7 @@
     "@ethersproject/units": "^5.7.0",
     "@ethersproject/wallet": "^5.7.0",
     "@headlessui-float/vue": "^0.11.2",
-    "@headlessui/vue": "^1.7.13",
+    "@headlessui/vue": "^1.7.15",
     "@pusher/push-notifications-web": "^1.1.0",
     "@sentry/vite-plugin": "^2.5.0",
     "@sentry/vue": "^7.55.2",
