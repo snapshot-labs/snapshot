@@ -76,9 +76,11 @@ const isAbleToChangeAdmins = computed(() => {
 });
 
 function changeMemberRole(address: string, role: string, close: () => void) {
-  if (!isAbleToChangeMembers.value) return;
-  if (role === 'admin' && !isAbleToChangeAdmins.value) return;
-  if (props.space?.admins?.includes(address) && !isAbleToChangeAdmins.value)
+  if (
+    role === 'admin'
+      ? !isAbleToChangeAdmins.value
+      : !isAbleToChangeMembers.value
+  )
     return;
 
   if (role === 'admin' && !form.value.admins?.includes(address)) {
@@ -109,10 +111,10 @@ function changeMemberRole(address: string, role: string, close: () => void) {
 }
 
 function deleteMember(member: Member) {
-  if (!isAbleToChangeMembers.value) return;
   if (
-    props.space?.admins?.includes(member.address) &&
-    !isAbleToChangeAdmins.value
+    member.role === 'admin'
+      ? !isAbleToChangeAdmins.value
+      : !isAbleToChangeMembers.value
   )
     return;
 
@@ -237,9 +239,9 @@ function changeInputAddRole(role: string, close: () => void) {
           <BaseButtonIcon
             :class="{
               'cursor-not-allowed':
-                !isAbleToChangeMembers ||
-                (space?.admins?.includes(member.address) &&
-                  !isAbleToChangeAdmins)
+                member.role === 'admin'
+                  ? !isAbleToChangeAdmins
+                  : !isAbleToChangeMembers
             }"
             @click="deleteMember(member)"
           >
