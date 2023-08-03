@@ -17,16 +17,14 @@ function handleSelect(e) {
 </script>
 
 <template>
-  <div class="mb-4 lg:fixed lg:mb-0 lg:w-[240px]">
-    <BaseBlock slim class="overflow-hidden">
+  <div class="-mt-[4px] mb-4 md:mt-0 lg:fixed lg:mb-0 lg:w-[240px]">
+    <BaseBlock slim class="overflow-hidden !border-t-0 md:!border-t">
       <div class="relative lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
         <SpaceSidebarHeader :space="space" />
         <SpaceSidebarNavigation :space="space" class="lg:mt-0" />
         <SpaceSidebarSubspaces :space="space" class="hidden lg:flex" />
         <SpaceSidebarFooter :space="space" class="hidden lg:flex" />
-        <div
-          class="absolute right-[20px] top-2 md:bottom-2 md:top-auto lg:bottom-auto lg:right-2 lg:top-2"
-        >
+        <div class="absolute right-[20px] top-0 md:top-[12px] lg:right-3">
           <BaseMenu
             class="md:ml-2"
             :items="threeDotItems"
@@ -35,7 +33,7 @@ function handleSelect(e) {
             <template #button>
               <div>
                 <BaseButtonIcon :loading="false">
-                  <i-ho-dots-horizontal />
+                  <i-ho-dots-horizontal class="text-[18px]" />
                 </BaseButtonIcon>
               </div>
             </template>

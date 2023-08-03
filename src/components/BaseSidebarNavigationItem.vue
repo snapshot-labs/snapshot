@@ -11,13 +11,44 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div
     :class="[
-      'block cursor-pointer whitespace-nowrap px-4  py-2 text-skin-link hover:bg-skin-bg',
-      {
-        'border-b-[3px] border-l-[0px] !pl-[21px] lg:border-b-[0px] lg:border-l-[3px]':
-          isActive
-      }
+      'group relative block cursor-pointer whitespace-nowrap px-[20px] py-2 text-skin-text  hover:bg-skin-bg lg:px-4',
+      { ' !text-skin-heading': isActive }
     ]"
   >
     <slot />
+    <div class="absolute left-0 top-0 flex h-full w-full justify-center">
+      <div
+        class="lg:nav-left-border max-lg:nav-bottom-border group-hover:nav-left-border-hovered"
+        :class="[
+          {
+            selected: isActive
+          }
+        ]"
+      />
+    </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+@tailwind components;
+
+@layer components {
+  .nav-left-border {
+    &.selected {
+      @apply absolute left-0 top-[4px] h-[32px] w-[4px] rounded-br rounded-tr bg-skin-text;
+    }
+  }
+
+  .nav-left-border-hovered {
+    &:not(.selected) {
+      @apply absolute left-0 top-[16px] h-[8px] w-[4px] rounded-br rounded-tr bg-skin-text;
+    }
+  }
+
+  .nav-bottom-border {
+    &.selected {
+      @apply absolute bottom-[0px] h-[4px] w-4/6 rounded-tl rounded-tr bg-skin-text;
+    }
+  }
+}
+</style>

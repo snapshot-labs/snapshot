@@ -29,7 +29,7 @@ watch(
 </script>
 
 <template>
-  <span class="flex shrink-0 items-center justify-center">
+  <div>
     <!-- Show local review image if previewFile is defined -->
     <img
       v-show="previewFile"
@@ -63,5 +63,5 @@ watch(
         minWidth: `${Number(size)}px`
       }"
     />
-  </span>
+  </div>
 </template>

@@ -135,33 +135,37 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <BaseBlock v-if="space.about" class="mb-3">
-        <TextAutolinker :text="space.about" />
-      </BaseBlock>
-      <div class="relative mb-3 flex px-3 md:px-0">
-        <div class="hidden flex-auto md:flex">
-          <div class="flex flex-auto items-center">
-            <h2>
-              {{ $t('proposals.header') }}
-            </h2>
-          </div>
-        </div>
-        <SpaceProposalsSearch />
+      <div class="relative flex px-3 md:px-0 lg:mb-3">
+        <h2 class="hidden text-2xl lg:block">
+          {{ $t('proposals.header') }}
+        </h2>
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
           :space-id="space.id"
         />
       </div>
+      <div
+        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-2 px-3 sm:flex-row md:px-0"
+      >
+        <SpaceProposalsSearch />
+        <BaseLink
+          :link="{ name: 'spaceCreate' }"
+          data-testid="create-proposal-button"
+        >
+          <BaseButton primary class="w-full sm:w-auto">
+            New proposal
+          </BaseButton>
+        </BaseLink>
+      </div>
 
       <LoadingRow v-if="loading" block />
 
       <SpaceProposalsNoProposals
         v-else-if="spaceProposals.length < 1"
-        class="mt-2"
         :space="space"
       />
-      <div v-else class="mb-4 space-y-4">
+      <div v-else class="mb-4 space-y-3">
         <template v-for="(proposal, i) in spaceProposals" :key="i">
           <BaseBlock slim class="transition-colors">
             <ProposalsItem

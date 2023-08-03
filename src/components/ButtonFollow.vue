@@ -21,6 +21,7 @@ const canFollow = computed(() =>
     v-tippy="{
       content: isGnosisSafe ? $t('walletNotSupported') : null
     }"
+    v-bind="$attrs"
   >
     <BaseButton
       v-bind="$attrs"
@@ -28,7 +29,7 @@ const canFollow = computed(() =>
       :disabled="isGnosisSafe"
       class="group min-w-[120px]"
       :class="{
-        'hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
+        'flex items-center justify-center hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
       }"
       @click.stop.prevent="

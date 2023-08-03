@@ -20,7 +20,7 @@ function updateFilters(
   <BasePopover :focus="false">
     <template #button>
       <BaseButtonIcon>
-        <i-ho-funnel class="text-skin-link" />
+        <i-ho-adjustments class="text-skin-link" />
       </BaseButtonIcon>
     </template>
     <template #content>
