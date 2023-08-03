@@ -13,8 +13,8 @@ const emit = defineEmits(['change']);
 <template>
   <div class="my-2">
     <div v-for="role in ['admin', 'moderator', 'author']" :key="role">
-      <div
-        class="flex items-center px-3 py-2"
+      <button
+        class="flex items-center px-3 py-2 text-left"
         :class="[
           (isAbleToChangeMembers &&
             (role === 'author' || role === 'moderator')) ||
@@ -35,7 +35,7 @@ const emit = defineEmits(['change']);
         <div class="px-3">
           <i-ho-check v-if="currentRole === role" />
         </div>
-      </div>
+      </button>
     </div>
   </div>
 </template>
