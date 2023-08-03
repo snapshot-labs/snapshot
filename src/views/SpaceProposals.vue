@@ -135,17 +135,10 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <BaseBlock v-if="space.about" class="mb-4">
-        <TextAutolinker :text="space.about" />
-      </BaseBlock>
       <div class="relative flex px-3 md:px-0 lg:mb-3">
-        <div class="hidden flex-auto lg:flex">
-          <div class="flex flex-auto items-center">
-            <h2>
-              {{ $t('proposals.header') }}
-            </h2>
-          </div>
-        </div>
+        <h2 class="hidden text-2xl lg:block">
+          {{ $t('proposals.header') }}
+        </h2>
 
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
