@@ -50,7 +50,7 @@
     "@snapshot-labs/snapshot.js": "^0.4.109",
     "@snapshot-labs/tune": "^0.1.31",
     "@vue/apollo-composable": "4.0.0-beta.4",
-    "@vueuse/core": "^10.1.2",
+    "@vueuse/core": "^10.3.0",
     "@vueuse/head": "^1.1.26",
     "ajv": "^8.12.0",
     "ajv-formats": "^2.1.1",
