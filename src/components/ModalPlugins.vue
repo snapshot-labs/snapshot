@@ -103,7 +103,7 @@ watch(open, () => {
         primary
         @click="handleSubmit"
       >
-        {{ Object.keys(plugin).length ? $t('save') : $t('add') }}
+        {{ Object.keys(plugin).length ? $t('applyChanges') : $t('add') }}
       </BaseButton>
     </template>
   </BaseModal>

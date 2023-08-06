@@ -5,7 +5,7 @@ node_modules
 components.d.ts
 auto-imports.d.ts
 
-# local env files
+# local env file
 .env.local
 .env.*.local
 
@@ -27,3 +27,5 @@ pnpm-debug.log*
 # Vitest
 
 /coverage
+# Sentry Auth Token
+.env.sentry-build-plugin

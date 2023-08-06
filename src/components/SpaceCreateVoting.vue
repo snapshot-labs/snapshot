@@ -6,6 +6,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   dateStart: number;
   dateEnd: number;
+  osnap: { enabled: boolean; selection: boolean };
 }>();
 
 const {
@@ -53,6 +54,20 @@ watch(
   { immediate: true }
 );
 
+// we need to watch for selection change to properly update the voting form stae
+watch(
+  () => props.osnap.selection,
+  () => {
+    // If using osnap, we can only allow basic voting, for, against, abstain
+    if (props.osnap.selection) {
+      form.value.type = 'basic';
+    } else {
+      // Initialize the proposal type if set in space
+      if (props.space?.voting?.type) form.value.type = props.space.voting.type;
+    }
+  }
+);
+
 const { getSnapshot } = useSnapshot();
 
 onMounted(async () => {
@@ -63,14 +78,53 @@ onMounted(async () => {
   if (props.space?.voting?.type) form.value.type = props.space.voting.type;
   form.value.snapshot = await getSnapshot(props.space.network);
 });
+
+defineEmits<{
+  (event: 'osnapToggle'): void;
+}>();
 </script>
 
 <template>
+  <div v-if="osnap.enabled" class="mb-4">
+    <div v-if="space?.voting?.type && space.voting.type !== 'basic'">
+      <h6>Where is oSnap?</h6>
+      <p class="mb-3">
+        oSnap is currently disabled because your space's voting settings
+        disallow the basic voting type which is a requirement for oSnap to work
+        properly.
+      </p>
+      <p>
+        Have your admin visit your
+        <a :href="`#/${space.id}/settings`">settings page</a> under Voting ->
+        Type, and make sure either "Any" or "Basic Voting" is selected. This
+        will allow you to create oSnap proposals.
+      </p>
+    </div>
+    <div v-else>
+      <h6>oSnap Proposal</h6>
+      <p>
+        Are you planning for this proposal to initiate a transaction that your
+        organizations Safe will execute if approved? (Remember, oSnap enables
+        trustless and permissionless execution)
+      </p>
+      <br />
+      <input
+        id="toggleOsnap"
+        type="checkbox"
+        :checked="osnap.selection"
+        @change="$emit('osnapToggle')"
+      />
+      <label for="toggleOsnap">
+        Yes, use oSnap for transactions (this will restrict voting type to
+        Basic).
+      </label>
+    </div>
+  </div>
   <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
       <InputSelectVoteType
         :type="space.voting?.type || form.type"
-        :disabled="!!space.voting?.type"
+        :disabled="!!space.voting?.type || osnap.selection"
         @update:type="value => (form.type = value)"
       />
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getInjected } from '@snapshot-labs/lock/src/utils';
-import connectors from '@/helpers/connectors.json';
+import connectors from '@/helpers/connectors';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{

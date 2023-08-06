@@ -15,6 +15,8 @@ function getErrorMessage(errorObject: ErrorObject): string {
         return 'Must be a number.';
       case 'customUrl':
         return 'Must be a valid URL.';
+      case 'uri':
+        return 'Must be a valid URL.';
       default:
         return 'Invalid format.';
     }

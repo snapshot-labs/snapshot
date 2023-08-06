@@ -6,6 +6,7 @@ import { ETH_CONTRACT } from '@/helpers/constants';
 const props = defineProps<{
   token: TokenAsset;
   isSelected: boolean;
+  network: string;
 }>();
 
 const emit = defineEmits(['select']);
@@ -14,9 +15,7 @@ const { formatNumber, getNumberFormatter } = useIntl();
 const { copyToClipboard } = useCopy();
 
 const exploreUrl = computed(() => {
-  const network = props.token.verified ? String(props.token.chainId) : null;
-  if (!network) return null;
-  return explorerUrl(network, props.token.address);
+  return explorerUrl(props.network, props.token.address);
 });
 </script>
 
@@ -70,12 +69,6 @@ const exploreUrl = computed(() => {
         >
           {{ shorten(token.address) }}</BaseLink
         >
-        <span
-          v-else-if="token.address !== 'main'"
-          @click.stop="copyToClipboard(token.address)"
-        >
-          {{ shorten(token.address) }}
-        </span>
       </div>
     </div>
   </button>

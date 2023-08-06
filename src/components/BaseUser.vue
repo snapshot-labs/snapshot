@@ -13,8 +13,16 @@ const props = defineProps<{
   widthClass?: string;
 }>();
 
-const { profile, address } = toRefs(props);
-const { username } = useUsername(address, profile);
+const { getUsername } = useUsername();
+
+const spaceMembers = computed(() => {
+  if (!props.space) return [];
+  return [
+    ...(props.space.members || []),
+    ...(props.space.moderators || []),
+    ...(props.space.admins || [])
+  ];
+});
 </script>
 
 <template>
@@ -40,9 +48,9 @@ const { username } = useUsername(address, profile);
           v-if="!hideUsername"
           class="w-full cursor-pointer truncate text-skin-link"
         >
-          {{ username }}
+          {{ getUsername(address, profile) }}
         </span>
-        <BaseBadge :address="address" :members="space?.members" />
+        <BaseBadge :address="address" :members="spaceMembers" />
       </div>
     </BaseLink>
   </PopoverHoverProfile>

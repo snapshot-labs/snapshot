@@ -30,14 +30,11 @@ function handleAction(e) {
           params: { address: props.address }
         });
   if (e === 'switchWallet') return emit('switchWallet');
-  if (e === 'delegate')
-    return router.push({
-      name: 'delegate'
-    });
   if (e === 'subscribeEmail') {
     showModalEmail.value = true;
     return true;
   }
+
   return logout();
 }
 </script>
@@ -50,11 +47,6 @@ function handleAction(e) {
           text: 'View profile',
           action: 'viewProfile',
           extras: { icon: 'profile' }
-        },
-        {
-          text: 'Delegate',
-          action: 'delegate',
-          extras: { icon: 'user-add' }
         },
         {
           text: 'Switch wallet',

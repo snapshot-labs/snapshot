@@ -25,7 +25,7 @@ const subSpaces = computed(() => {
       <LinkSpace :space-id="mainSpace.id">
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="mainSpace" size="22" />
-          <span class="mx-2 truncate">
+          <span class="mx-2 truncate text-skin-link">
             {{ mainSpace.name }}
           </span>
         </BaseSidebarNavigationItem>
@@ -40,7 +40,7 @@ const subSpaces = computed(() => {
       >
         <BaseSidebarNavigationItem class="flex items-center">
           <AvatarSpace :space="subSpace" size="22" />
-          <span class="mx-2 truncate">
+          <span class="mx-2 truncate text-skin-link">
             {{ subSpace.name }}
           </span>
         </BaseSidebarNavigationItem>

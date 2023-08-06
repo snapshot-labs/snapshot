@@ -4,6 +4,9 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
+import Plugin from '@/plugins/safeSnap';
+
+const safeSnapPlugin = new Plugin();
 
 enum Step {
   CONTENT,
@@ -11,7 +14,7 @@ enum Step {
   PLUGINS
 }
 
-const BODY_LIMIT_CHARACTERS = 14400;
+const BODY_LIMIT_CHARACTERS = 20000;
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -65,19 +68,50 @@ const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
 
+type DateRange = {
+  dateStart: number;
+  dateEnd?: number;
+};
+function sanitizeDateRange({ dateStart, dateEnd }: DateRange): DateRange {
+  const { delay = 0, period = 0 } = props.space?.voting ?? {};
+  console.log('sanitizeDateRange', { dateStart, dateEnd, delay, period });
+  const threeDays = 259200;
+  const currentTimestamp = Math.floor(Date.now() / 1000);
+
+  const sanitizedDateStart = delay
+    ? timeSeconds.value + delay
+    : Math.max(dateStart, currentTimestamp);
+
+  if (typeof dateEnd === 'undefined') {
+    return { dateStart: sanitizedDateStart };
+  }
+
+  if (period) {
+    const sanitizedDateEnd = sanitizedDateStart + period;
+    return { dateStart: sanitizedDateStart, dateEnd: sanitizedDateEnd };
+  }
+
+  if (userSelectedDateEnd.value || sourceProposalLoaded.value) {
+    return { dateStart: sanitizedDateStart, dateEnd };
+  }
+
+  return {
+    dateStart: sanitizedDateStart,
+    dateEnd: sanitizedDateStart + threeDays
+  };
+}
+
 const dateStart = computed(() => {
-  return props.space?.voting?.delay
-    ? timeSeconds.value + props.space.voting.delay
-    : form.value.start;
+  const { dateStart } = sanitizeDateRange({ dateStart: form.value.start });
+  return dateStart;
 });
 
 const dateEnd = computed(() => {
-  const threeDays = 259200;
-  return props.space?.voting?.period
-    ? dateStart.value + props.space.voting.period
-    : userSelectedDateEnd.value || sourceProposalLoaded.value
-    ? form.value.end
-    : dateStart.value + threeDays;
+  const { dateEnd } = sanitizeDateRange({
+    dateStart: form.value.start,
+    dateEnd: form.value.end
+  });
+  return dateEnd;
 });
 
 const isFormValid = computed(() => {
@@ -159,8 +193,13 @@ function getFormattedForm() {
     .map(choice => choice.text)
     .filter(choiceText => choiceText.length > 0);
   updateTime();
-  clonedForm.start = dateStart.value;
-  clonedForm.end = dateEnd.value;
+  const { dateStart: sanitizedDateStart, dateEnd: sanitizedDateEnd } =
+    sanitizeDateRange({
+      dateStart: dateStart.value,
+      dateEnd: dateEnd.value
+    });
+  clonedForm.start = sanitizedDateStart;
+  clonedForm.end = sanitizedDateEnd;
   return clonedForm;
 }
 
@@ -168,7 +207,6 @@ const { resetSpaceProposals } = useProposals();
 async function handleSubmit() {
   const formattedForm = getFormattedForm();
   const result = await send(props.space, 'proposal', formattedForm);
-  console.log('Result', result);
   if (result.id) {
     resetSpaceProposals();
     notify(['green', t('notify.proposalCreated')]);
@@ -221,6 +259,8 @@ async function loadSourceProposal() {
 
 function nextStep() {
   if (formContainsShortUrl.value) return;
+  // skip transaction page if user has osnap, but chosen not to use it for this vote
+  if (shouldSkipTransactions()) return;
   currentStep.value++;
 }
 
@@ -263,10 +303,9 @@ async function validateAuthor() {
       );
 
       isValidAuthor.value = validationRes;
-      console.log('Pass validation?', validationRes, validationName.value);
     } catch (e) {
       hasAuthorValidationFailed.value = true;
-      console.log(e);
+      console.warn(e);
     } finally {
       validationLoading.value = false;
     }
@@ -281,7 +320,37 @@ watch(
   { immediate: true }
 );
 
+// We need to know if the space is using osnap, this will change what types of voting we can do
+// We also need to know if the user plans to use osnap
+const osnap = ref<{
+  enabled: boolean;
+  selection: boolean;
+}>({
+  selection: false,
+  enabled: false
+});
+
+// Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
+function shouldSkipTransactions() {
+  return (
+    osnap.value.enabled &&
+    !osnap.value.selection &&
+    currentStep.value === Step.VOTING
+  );
+}
+
+function handleOsnapToggle() {
+  osnap.value.selection = !osnap.value.selection;
+}
+
 onMounted(async () => {
+  const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
+  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  if (network && umaAddress) {
+    // this is how we check if osnap is enabled and valid.
+    osnap.value.enabled =
+      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
+  }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
@@ -337,6 +406,8 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
+        :osnap="osnap"
+        @osnapToggle="handleOsnapToggle"
       />
 
       <!-- Step 3 (only when plugins) -->
@@ -362,7 +433,8 @@ onMounted(async () => {
         <BaseButton
           v-if="
             currentStep === Step.PLUGINS ||
-            (!needsPluginConfigs && currentStep === Step.VOTING)
+            (!needsPluginConfigs && currentStep === Step.VOTING) ||
+            shouldSkipTransactions()
           "
           :disabled="!isFormValid"
           :loading="isSending || queryLoading || isSnapshotLoading"

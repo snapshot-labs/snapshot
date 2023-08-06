@@ -42,7 +42,7 @@ export async function getContractABI(
   network: string,
   contractAddress: string
 ): Promise<string> {
-  const apiUrl = EXPLORER_API_URLS[network];
+  const apiUrl = EXPLORER_API_URLS[network as keyof typeof EXPLORER_API_URLS];
 
   if (!apiUrl) {
     return '';
@@ -92,7 +92,7 @@ export function getABIWriteFunctions(abi: Fragment[]) {
 }
 
 function extractMethodArgs(values: string[]) {
-  return (param: ParamType, index) => {
+  return (param: ParamType, index: number) => {
     const value = values[index];
     if (isArrayParameter(param.baseType)) {
       return JSON.parse(value);

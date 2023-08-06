@@ -91,6 +91,7 @@ export const PROPOSALS_QUERY = gql`
     $author_in: [String]
     $title_contains: String
     $space_verified: Boolean
+    $flagged: Boolean
   ) {
     proposals(
       first: $first
@@ -102,6 +103,7 @@ export const PROPOSALS_QUERY = gql`
         author_in: $author_in
         title_contains: $title_contains
         space_verified: $space_verified
+        flagged: $flagged
       }
     ) {
       id
@@ -409,6 +411,19 @@ export const SPACES_QUERY = gql`
   }
 `;
 
+export const STATEMENTS_QUERY = gql`
+  query Statements($space: String!, $delegate_in: [String]!) {
+    statements(where: { space: $space, delegate_in: $delegate_in }) {
+      delegate
+      space
+      statement
+      about
+      ipfs
+      id
+    }
+  }
+`;
+
 export const SPACE_QUERY = gql`
   query Space($id: String!) {
     space(id: $id) {
@@ -479,6 +494,11 @@ export const SPACE_QUERY = gql`
       filters {
         minScore
         onlyMembers
+      }
+      delegationPortal {
+        delegationType
+        delegationContract
+        delegationApi
       }
       treasuries {
         name

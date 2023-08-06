@@ -7,6 +7,11 @@ import { validateForm } from '@/helpers/validation';
 
 const DEFAULT_PROPOSAL_VALIDATION = { name: 'any', params: {} };
 const DEFAULT_VOTE_VALIDATION = { name: 'any', params: {} };
+const DEFAULT_DELEGATION = {
+  delegationType: 'compound-governor',
+  delegationContract: '',
+  delegationApi: ''
+};
 const EMPTY_SPACE_FORM = {
   strategies: [],
   categories: [],
@@ -15,6 +20,7 @@ const EMPTY_SPACE_FORM = {
   moderators: [],
   members: [],
   plugins: {},
+  delegationPortal: clone(DEFAULT_DELEGATION),
   filters: {
     minScore: 0,
     onlyMembers: false
@@ -74,6 +80,12 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     Object.entries(formData).forEach(([key, value]) => {
       if (value === null || value === '') delete formData[key];
     });
+    if (
+      !formData.delegationPortal.delegationContract &&
+      !formData.delegationPortal.delegationApi
+    ) {
+      delete formData.delegationPortal;
+    }
     return formData;
   });
 
@@ -81,6 +93,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     const formData = clone(extendedSpace);
     removeUnnecessaryFields(formData);
     ensureDefaultValues(formData);
+    ensureMembersLowerCase(formData);
 
     if (shouldUseAnyValidation(formData)) {
       formData.validation.name = 'any';
@@ -92,6 +105,17 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
     form.value = clone(formData);
     initialFormState.value = clone(formData);
+  }
+
+  function ensureMembersLowerCase(formData: any) {
+    formData.admins =
+      formData?.admins.map((admin: string) => admin.toLowerCase()) || [];
+    formData.moderators =
+      formData?.moderators.map((moderator: string) =>
+        moderator.toLowerCase()
+      ) || [];
+    formData.members =
+      formData?.members.map((member: string) => member.toLowerCase()) || [];
   }
 
   function removeUnnecessaryFields(formData: any) {
@@ -106,6 +130,8 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   function ensureDefaultValues(formData: any) {
     formData.strategies = formData.strategies || [];
     formData.plugins = formData.plugins || {};
+    formData.delegationPortal =
+      formData.delegationPortal || clone(DEFAULT_DELEGATION);
     formData.validation =
       formData.validation || clone(DEFAULT_PROPOSAL_VALIDATION);
     formData.voteValidation =
@@ -146,9 +172,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     const isTicket = form.value.strategies.some(
       (strategy: any) => strategy.name === 'ticket'
     );
-    const isAnyOrBasic =
-      form.value.voteValidation.name === 'any' ||
-      form.value.voteValidation.name === 'basic';
+    const isAnyOrBasic = form.value.voteValidation.name === 'any';
 
     if (isTicket && isAnyOrBasic) {
       errors.strategies = 'ticketWithAnyOrBasicError';

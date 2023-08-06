@@ -33,9 +33,10 @@ import {
   getModuleDetailsReality,
   getProposalDetails
 } from './utils/realityModule';
-import { getModuleDetailsUma } from './utils/umaModule';
+import { getModuleDetailsUma, getModuleDetailsUmaGql } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
+import { Network } from './types';
 
 export * from './constants';
 
@@ -155,12 +156,12 @@ export default class Plugin {
   }
 
   async getExecutionDetailsUma(
-    network: string,
+    network: Network,
     moduleAddress: string,
     proposalId: string,
     explanation: string,
     transactions: any
-  ): Promise<Omit<UmaOracleProposal, 'transactions'>> {
+  ) {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
       moduleAddress,
@@ -176,10 +177,10 @@ export default class Plugin {
   }
 
   async *approveBondUma(
-    network: string,
+    network: Network,
     web3: any,
     moduleAddress: string,
-    transactions: any
+    transactions?: any
   ) {
     const moduleDetails = await this.getModuleDetailsUma(
       network,
@@ -203,19 +204,32 @@ export default class Plugin {
   }
 
   async getModuleDetailsUma(
-    network: string,
+    network: Network,
     moduleAddress: string,
     explanation: string,
     transactions: any
   ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
-    return getModuleDetailsUma(
-      provider,
-      network,
-      moduleAddress,
-      explanation,
-      transactions
-    );
+    try {
+      // try optimized calls, which use the graph over web3 event queries
+      return await getModuleDetailsUmaGql(
+        provider,
+        network,
+        moduleAddress,
+        explanation,
+        transactions
+      );
+    } catch (err) {
+      console.warn('Error querying module details from the graph:', err);
+      // fall back to web3 event queries.
+      return getModuleDetailsUma(
+        provider,
+        network,
+        moduleAddress,
+        explanation,
+        transactions
+      );
+    }
   }
 
   async *submitProposalWithHashes(
@@ -258,7 +272,7 @@ export default class Plugin {
 
   async loadClaimBondData(
     web3: any,
-    network: string,
+    network: Network,
     questionId: string,
     oracleAddress: string,
     block: string

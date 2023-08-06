@@ -1,8 +1,9 @@
-import namehash from '@ensdomains/eth-ens-namehash';
+import { ens_normalize } from '@adraffy/ens-normalize';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
 import { getAddress } from '@ethersproject/address';
+import { resolveLensAddresses } from './lensResolver';
 
 async function ensReverseRecordRequest(addresses) {
   const network = '1';
@@ -17,15 +18,24 @@ async function ensReverseRecordRequest(addresses) {
     ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
     { blockTag: 'latest' }
   );
-  const validNames = reverseRecords.map(n =>
-    namehash.normalize(n) === n ? n : ''
-  );
+  const validNames = normalizeNames(reverseRecords);
 
   return Object.fromEntries(
     addresses.map((address, index) => {
       return [address, validNames[index]];
     })
   );
+}
+
+function normalizeNames(names: string[]) {
+  return names.map(name => {
+    try {
+      return ens_normalize(name) === name ? name : '';
+    } catch (e) {
+      console.log(e);
+      return '';
+    }
+  });
 }
 
 async function udReverseRecordRequest(addresses) {
@@ -60,14 +70,22 @@ async function udReverseRecordRequest(addresses) {
 async function lookupAddresses(
   addresses: string[]
 ): Promise<{ [k: string]: string }> {
-  const [ens, ud] = await Promise.all([
+  const [ens, ud, lens] = await Promise.all([
     ensReverseRecordRequest(addresses),
-    udReverseRecordRequest(addresses)
+    udReverseRecordRequest(addresses),
+    resolveLensAddresses(addresses)
   ]);
 
   return Object.fromEntries(
     addresses.map(address => {
-      return [address, ens[address] || ud[address] || ''];
+      const normalizedAddress = getAddress(address);
+      return [
+        address,
+        ens[normalizedAddress] ||
+          lens[normalizedAddress] ||
+          ud[normalizedAddress] ||
+          ''
+      ];
     })
   );
 }

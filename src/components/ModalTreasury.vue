@@ -41,7 +41,7 @@ function handleSubmit() {
 }
 
 watch(open, () => {
-  if (props.treasury?.name) {
+  if (props.treasury.name) {
     input.value = props.treasury;
   } else {
     input.value = {
@@ -95,7 +95,7 @@ watch(open, () => {
         primary
         @click="handleSubmit"
       >
-        {{ $t('save') }}
+        {{ treasury.name ? $t('applyChanges') : $t('add') }}
       </BaseButton>
     </template>
   </BaseModal>
