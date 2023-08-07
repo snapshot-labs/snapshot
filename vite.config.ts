@@ -14,9 +14,6 @@ export default defineConfig({
   define: {
     'process.env': process.env
   },
-  build: {
-    sourcemap: process.env.VITE_ENV === 'production'
-  },
   plugins: [
     vue({ reactivityTransform: true }),
     AutoImport({
@@ -76,6 +73,15 @@ export default defineConfig({
     },
     deps: {
       inline: ['@pusher/push-notifications-web']
+    }
+  },
+  build: {
+    sourcemap: process.env.VITE_ENV === 'production',
+    target: 'esnext' // you can also use 'es2020' here
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext'
     }
   }
 });

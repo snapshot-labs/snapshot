@@ -2,7 +2,6 @@
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-const { isGnosisSafe } = useClient();
 const { shareVote, shareProposalTwitter, shareProposalLenster } = useSharing();
 const { web3Account } = useWeb3();
 
@@ -11,12 +10,13 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   selectedChoices: any;
+  voteInRelayer: boolean;
 }>();
 
 const emit = defineEmits(['close']);
 
 const imgPath = computed(() => {
-  return isGnosisSafe.value
+  return props.voteInRelayer
     ? '/stickers/just_signed.png'
     : '/stickers/hooray.png';
 });
@@ -40,7 +40,7 @@ function share(shareTo: 'twitter' | 'lenster') {
           alt="hooray sticker"
         />
         <div class="mt-4 text-center">
-          <template v-if="isGnosisSafe">
+          <template v-if="props.voteInRelayer">
             <h3 v-text="$t('proposal.postVoteModal.gnosisSafeTitle')" />
             <p
               class="italic"
@@ -60,7 +60,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         <BaseButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
-            isGnosisSafe
+            props.voteInRelayer
               ? shareProposalTwitter(space, proposal)
               : share('twitter')
           "
@@ -71,7 +71,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         <BaseButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
-            isGnosisSafe
+            props.voteInRelayer
               ? shareProposalLenster(space, proposal)
               : share('lenster')
           "
@@ -80,7 +80,7 @@ function share(shareTo: 'twitter' | 'lenster') {
           {{ $t('shareOnLenster') }}
         </BaseButton>
 
-        <div v-if="isGnosisSafe">
+        <div v-if="props.voteInRelayer">
           <BaseLink
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon

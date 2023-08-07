@@ -74,7 +74,7 @@ async function vote(payload) {
 }
 
 async function handleSubmit() {
-  let result: { id: string } | null = null;
+  let result: { id: string; ipfs?: string } | null = null;
   if (props.proposal.privacy === 'shutter') result = await voteShutter();
   else
     result = await vote({
@@ -86,8 +86,9 @@ async function handleSubmit() {
   console.log('Result', result);
 
   if (result?.id) {
-    emit('openPostVoteModal');
-    emit('reload');
+    const voteInRelayer = !result.ipfs;
+    emit('openPostVoteModal', voteInRelayer);
+    if (!voteInRelayer) emit('reload');
     addVotedProposalId(props.proposal.id);
   }
   emit('close');
