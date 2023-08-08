@@ -3,6 +3,7 @@ import { Space, RankedSpace, ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
   space: Space | RankedSpace | ExtendedSpace;
+  primary?: boolean;
 }>();
 
 const { isGnosisSafe } = useClient();
@@ -32,7 +33,7 @@ const canFollow = computed(() =>
         'flex items-center justify-center hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
       }"
-      :primary="!isFollowing"
+      :primary="primary"
       @click.stop.prevent="
         loadingFollow !== ''
           ? null
