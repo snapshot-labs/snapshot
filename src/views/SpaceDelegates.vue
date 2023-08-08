@@ -21,7 +21,7 @@ const { modalAccountOpen } = useModal();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
-const { domain } = useApp();
+const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { loadingStatements, loadStatements, getStatementAbout } = useStatement();
 
@@ -169,7 +169,7 @@ onMounted(() => {
                 @click="handleClickProfile(web3Account)"
               />
               <BaseButton
-                primary
+                :primary="isFollowing"
                 class="w-full md:w-auto"
                 @click="handleClickDelegate()"
               >
