@@ -39,6 +39,7 @@ const { emitUpdateLastSeenProposal } = useUnseenProposals();
 const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
+const { isFollowing } = useFollowSpace(props.space.id);
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1
@@ -135,25 +136,26 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="relative flex px-3 md:px-0 lg:mb-3">
-        <h2 class="hidden text-2xl lg:block">
-          {{ $t('proposals.header') }}
-        </h2>
-
+      <div class="relative">
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
           :space-id="space.id"
         />
       </div>
+
+      <h1 class="hidden lg:mb-3 lg:block">
+        {{ $t('proposals.header') }}
+      </h1>
+
       <div
-        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-2 px-3 sm:flex-row md:px-0"
+        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0"
       >
         <SpaceProposalsSearch />
         <BaseLink
           :link="{ name: 'spaceCreate' }"
           data-testid="create-proposal-button"
         >
-          <BaseButton primary class="w-full sm:w-auto">
+          <BaseButton :primary="isFollowing" class="w-full sm:w-auto">
             New proposal
           </BaseButton>
         </BaseLink>

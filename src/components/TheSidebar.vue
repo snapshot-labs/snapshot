@@ -81,9 +81,8 @@ watch(
     <SidebarSpacesSkeleton
       v-if="spaces.length === 0 && (isLoadingSpaces || loadingFollows)"
     />
-
     <draggable
-      v-else
+      v-else-if="spaces.length > 0 && web3Account"
       v-model="orderedSpaces"
       :component-data="{ type: 'transition-group' }"
       v-bind="{ animation: 200 }"
@@ -131,7 +130,11 @@ watch(
       </template>
     </draggable>
 
-    <div class="mt-2 flex flex-col items-center space-y-2 px-2">
+    <div class="flex w-[60px] items-center justify-center py-[15px]">
+      <div class="h-[1px] w-[20px] bg-skin-border" />
+    </div>
+
+    <div class="flex flex-col items-center space-y-2 px-2">
       <BaseButtonRound
         v-tippy="{
           content: 'Create space',

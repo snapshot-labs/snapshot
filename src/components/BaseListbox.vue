@@ -42,7 +42,7 @@ const selectedItem = computed({
     </ListboxLabel>
     <div class="relative">
       <ListboxButton
-        class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
+        class="relative h-[46px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
         :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
       >
         <slot

@@ -61,6 +61,7 @@ watchEffect(() => {
     >
       <ButtonFollow
         :space="space"
+        :primary="!isFollowing"
         block
         class="w-full md:max-w-[180px] lg:max-w-none"
       />
