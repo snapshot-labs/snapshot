@@ -5,9 +5,6 @@ type SubscriptionType = (typeof subscriptionTypes)[number];
 type SubscriptionStatus = 'NOT_SUBSCRIBED' | 'VERIFIED' | 'UNVERIFIED';
 
 function useEmailSubscriptionComposable() {
-  const userState = ref<SubscriptionStatus>('NOT_SUBSCRIBED');
-  const error = ref('');
-  const loading = ref(false);
   const { web3Account } = useWeb3();
   const {
     fetchSubscriptionsDetails,
@@ -15,7 +12,11 @@ function useEmailSubscriptionComposable() {
     updateEmailSubscriptions
   } = useEmailFetchClient();
 
+  const userState = ref<SubscriptionStatus>('NOT_SUBSCRIBED');
+  const error = ref('');
+  const loading = ref(false);
   const apiSubscriptions = ref<SubscriptionType[]>([]);
+
   const clientSubscriptions = computed({
     get() {
       return subscriptionTypes.reduce((acc, type) => {

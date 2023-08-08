@@ -8,12 +8,12 @@ const emit = defineEmits(['close']);
 type ModalView = 'SUBSCRIBE' | 'SUCCESS';
 
 const { web3Account } = useWeb3();
-const email = ref('');
 const { subscribe, error, loading, loadEmailSubscriptions } =
   useEmailSubscription();
 const { t } = useI18n();
 const { notify } = useFlashNotification();
 
+const email = ref('');
 const modalView = ref<ModalView>('SUBSCRIBE');
 
 watchEffect(() => {
@@ -22,6 +22,7 @@ watchEffect(() => {
     error.value = null;
   }
 });
+
 function close() {
   email.value = '';
   emit('close');
