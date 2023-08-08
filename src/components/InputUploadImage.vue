@@ -15,6 +15,11 @@ async function handleFileChange(e) {
     loading.value = false;
     return;
   }
+  if (file.size > 1024 * 1024) {
+    console.log('File size exceeds 1MB');
+    loading.value = false;
+    return;
+  }
   formData.append('file', file);
   try {
     const receipt = await pin(formData);

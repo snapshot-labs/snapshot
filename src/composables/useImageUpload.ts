@@ -27,16 +27,23 @@ export function useImageUpload() {
     isUploadingImage.value = true;
     const formData = new FormData();
 
-    // TODO: Additional Validations - File Size, File Type, Empty File, Hidden File
     // TODO: Make this composable useFileUpload
 
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
       imageUploadError.value = t('errors.unsupportedImageType');
       isUploadingImage.value = false;
+      notify(['red', t('errors.unsupportedImageType')]);
+      return;
+    }
+    if (file.size > 1024 * 1024) {
+      imageUploadError.value = t('errors.fileTooBig');
+      isUploadingImage.value = false;
+      notify(['red', t('errors.fileTooBig')]);
       return;
     }
     formData.append('file', file);
     try {
+      console.log(file);
       const receipt = await pin(formData);
       imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
