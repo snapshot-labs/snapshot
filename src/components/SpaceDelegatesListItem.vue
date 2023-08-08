@@ -22,7 +22,7 @@ const { formatPercentageNumber } = useStatement();
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border-y border-skin-border p-4 md:rounded-xl md:border"
+    class="flex h-full flex-col justify-between border-y border-skin-border p-3 md:rounded-xl md:border"
   >
     <button @click="emit('clickUser')">
       <div class="flex text-left">
@@ -31,27 +31,39 @@ const { formatPercentageNumber } = useStatement();
           <div class="font-semibold text-skin-heading">
             {{ getUsername(delegate.id, profiles[delegate.id]) }}
           </div>
-          <div
-            v-tippy="{
-              content: formatPercentageNumber(delegate.votesPercentage)
-            }"
-            class="text-skin-text"
-          >
-            {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
-            {{ space.symbol }}
+          <div class="flex gap-1">
+            <div
+              v-tippy="{
+                content: formatPercentageNumber(delegate.votesPercentage)
+              }"
+              class="text-skin-text"
+            >
+              {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
+              {{ space.symbol }}
+            </div>
+            ·
+            <div
+              v-tippy="{
+                content: formatPercentageNumber(delegate.delegatorsPercentage)
+              }"
+            >
+              {{
+                formatCompactNumber(
+                  Number(delegate.tokenHoldersRepresentedAmount)
+                )
+              }}
+              delegators
+            </div>
           </div>
         </div>
       </div>
     </button>
 
-    <div class="mt-3 h-full">
-      <template v-if="loading">
-        <div class="lazy-loading h-3 w-11/12 rounded-md" />
-        <div class="lazy-loading mt-1 h-3 w-7/12 rounded-md" />
-      </template>
+    <div class="my-3 h-full">
+      <div v-if="loading" class="lazy-loading h-[24px] w-11/12 rounded-md" />
 
       <template v-else-if="about">
-        <span class="line-clamp-2">
+        <span class="line-clamp-2 h-3">
           {{ about }}
         </span>
         <span class="cursor-pointer text-skin-link" @click="emit('clickUser')">
@@ -61,18 +73,12 @@ const { formatPercentageNumber } = useStatement();
 
       <span v-else> No statement provided yet </span>
     </div>
-    <div
-      v-tippy="{
-        content: formatPercentageNumber(delegate.delegatorsPercentage)
-      }"
-      class="mt-3 flex items-center justify-between"
-    >
-      {{ formatCompactNumber(Number(delegate.tokenHoldersRepresentedAmount)) }}
-      delegators
 
-      <TuneButton class="text-skin-link" @click="emit('clickDelegate')">
-        Delegate
-      </TuneButton>
-    </div>
+    <TuneButton
+      class="mt-4 w-full text-skin-link"
+      @click="emit('clickDelegate')"
+    >
+      Delegate
+    </TuneButton>
   </div>
 </template>
