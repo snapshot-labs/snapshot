@@ -43,7 +43,6 @@ export function useImageUpload() {
     }
     formData.append('file', file);
     try {
-      console.log(file);
       const receipt = await pin(formData);
       imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
