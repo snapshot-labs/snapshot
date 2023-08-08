@@ -39,6 +39,7 @@ const { emitUpdateLastSeenProposal } = useUnseenProposals();
 const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
+const { isFollowing } = useFollowSpace(props.space.id);
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1
@@ -153,7 +154,7 @@ onMounted(() => loadProposals());
           :link="{ name: 'spaceCreate' }"
           data-testid="create-proposal-button"
         >
-          <BaseButton primary class="w-full sm:w-auto">
+          <BaseButton :primary="isFollowing" class="w-full sm:w-auto">
             New proposal
           </BaseButton>
         </BaseLink>
