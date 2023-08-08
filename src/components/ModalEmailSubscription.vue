@@ -3,9 +3,10 @@ defineProps<{
   open: boolean;
 }>();
 
+const emit = defineEmits(['close']);
+
 type ModalView = 'SUBSCRIBE' | 'SUCCESS';
 
-const emit = defineEmits(['close']);
 const { web3Account } = useWeb3();
 const email = ref('');
 const { subscribe, error, loading, loadEmailSubscriptions } =
