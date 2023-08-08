@@ -136,16 +136,17 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="relative flex lg:mb-3">
-        <h2 class="hidden text-2xl lg:block">
-          {{ $t('proposals.header') }}
-        </h2>
-
+      <div class="relative">
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
           :space-id="space.id"
         />
       </div>
+
+      <h1 class="hidden lg:mb-3 lg:block">
+        {{ $t('proposals.header') }}
+      </h1>
+
       <div
         class="mb-4 flex flex-col justify-between gap-x-3 gap-y-2 px-3 sm:flex-row md:px-0"
       >

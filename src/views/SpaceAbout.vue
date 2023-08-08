@@ -79,11 +79,9 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="lg:mb-3">
-        <h2 class="hidden text-2xl lg:block">
-          {{ $t('about') }}
-        </h2>
-      </div>
+      <h1 class="hidden lg:mb-3 lg:block">
+        {{ $t('about') }}
+      </h1>
 
       <div class="space-y-3">
         <BaseBlock v-if="space.about || space.terms">
