@@ -11,7 +11,6 @@ const router = useRouter();
 const { userState, loadEmailSubscriptions } = useEmailSubscription();
 
 const showModalEmail = ref(false);
-const isSubscribed = computed(() => userState.value === 'VERIFIED');
 
 onMounted(loadEmailSubscriptions);
 watch(showModalEmail, () => {
