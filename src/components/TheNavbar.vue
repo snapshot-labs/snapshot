@@ -36,7 +36,7 @@ watch(
             class="sm:hidden"
             @click="showSidebar = !showSidebar"
           >
-            <i-ho-dots-vertical class="text-skin-link" />
+            <i-ho-menu class="text-skin-link" />
           </BaseButtonRound>
           <router-link
             :to="{ path: '/' }"

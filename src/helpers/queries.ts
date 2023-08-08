@@ -91,6 +91,7 @@ export const PROPOSALS_QUERY = gql`
     $author_in: [String]
     $title_contains: String
     $space_verified: Boolean
+    $flagged: Boolean
   ) {
     proposals(
       first: $first
@@ -102,6 +103,7 @@ export const PROPOSALS_QUERY = gql`
         author_in: $author_in
         title_contains: $title_contains
         space_verified: $space_verified
+        flagged: $flagged
       }
     ) {
       id

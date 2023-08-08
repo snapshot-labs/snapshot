@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { TreasuryWallet } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  space: { id: string; treasuries: TreasuryWallet[]; admins: string[] };
+  space: ExtendedSpace;
 }>();
 
 const route = useRoute();

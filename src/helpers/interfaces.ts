@@ -164,7 +164,7 @@ export interface ExtendedSpace {
   plugins: Record<string, any>;
   validation: SpaceValidation;
   voteValidation: VoteValidation;
-  treasuries: TreasuryAsset[];
+  treasuries: TreasuryWallet[];
   template: string;
   guidelines: string;
   verified: boolean;

@@ -4,19 +4,25 @@ const { items } = useFlashNotification();
 
 <template>
   <div
-    class="pointer-events-none fixed bottom-0 left-0 right-0 z-[60] mb-4 flex flex-col items-center space-y-2"
+    class="pointer-events-none fixed bottom-0 left-0 right-0 z-[60] mb-4 flex w-full flex-col items-center space-y-2"
   >
     <TransitionGroup name="fade">
-      <div v-for="item in items" :key="item.id" class="pointer-events-auto">
+      <div
+        v-for="item in items"
+        :key="item.id"
+        class="pointer-events-auto w-full px-4 sm:max-w-[420px]"
+      >
         <BaseButton
-          class="flex items-center space-x-2 !border-none bg-red !text-white"
+          class="flex w-full items-center justify-between !border-none bg-red !text-white"
           :class="`!bg-${item.type}`"
-          @click="item.remove()"
         >
-          <i-ho-x v-if="item.type === 'red'" class="text-sm" />
+          <div class="flex items-center gap-2">
+            <i-ho-x v-if="item.type === 'red'" class="text-base" />
+            <i-ho-check v-if="item.type === 'green'" class="text-base" />
+            <span>{{ item.message }}</span>
+          </div>
 
-          <i-ho-check v-if="item.type === 'green'" class="text-sm" />
-          <span>{{ item.message }}</span>
+          <i-ho-x class="text-base" @click="item.remove()" />
         </BaseButton>
       </div>
     </TransitionGroup>

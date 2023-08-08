@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   modelValue: string;
-  title: string;
+  title?: string;
   information?: string;
   isDisabled?: boolean;
   tooltip?: string | null;

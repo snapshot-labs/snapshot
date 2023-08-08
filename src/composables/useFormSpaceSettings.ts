@@ -93,6 +93,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     const formData = clone(extendedSpace);
     removeUnnecessaryFields(formData);
     ensureDefaultValues(formData);
+    ensureMembersLowerCase(formData);
 
     if (shouldUseAnyValidation(formData)) {
       formData.validation.name = 'any';
@@ -104,6 +105,17 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
 
     form.value = clone(formData);
     initialFormState.value = clone(formData);
+  }
+
+  function ensureMembersLowerCase(formData: any) {
+    formData.admins =
+      formData?.admins.map((admin: string) => admin.toLowerCase()) || [];
+    formData.moderators =
+      formData?.moderators.map((moderator: string) =>
+        moderator.toLowerCase()
+      ) || [];
+    formData.members =
+      formData?.members.map((member: string) => member.toLowerCase()) || [];
   }
 
   function removeUnnecessaryFields(formData: any) {

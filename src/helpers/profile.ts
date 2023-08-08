@@ -1,4 +1,4 @@
-import namehash from '@ensdomains/eth-ens-namehash';
+import { ens_normalize } from '@adraffy/ens-normalize';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { call } from '@snapshot-labs/snapshot.js/src/utils';
 import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
@@ -18,15 +18,24 @@ async function ensReverseRecordRequest(addresses) {
     ['0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C', 'getNames', [addresses]],
     { blockTag: 'latest' }
   );
-  const validNames = reverseRecords.map(n =>
-    namehash.normalize(n) === n ? n : ''
-  );
+  const validNames = normalizeNames(reverseRecords);
 
   return Object.fromEntries(
     addresses.map((address, index) => {
       return [address, validNames[index]];
     })
   );
+}
+
+function normalizeNames(names: string[]) {
+  return names.map(name => {
+    try {
+      return ens_normalize(name) === name ? name : '';
+    } catch (e) {
+      console.log(e);
+      return '';
+    }
+  });
 }
 
 async function udReverseRecordRequest(addresses) {
