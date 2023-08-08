@@ -32,6 +32,7 @@ const canFollow = computed(() =>
         'flex items-center justify-center hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
       }"
+      :primary="!isFollowing"
       @click.stop.prevent="
         loadingFollow !== ''
           ? null

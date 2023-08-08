@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
     <slot />
     <div class="absolute left-0 top-0 flex h-full w-full justify-center">
       <div
-        class="lg:nav-left-border max-lg:nav-bottom-border group-hover:nav-left-border-hovered"
+        class="lg:nav-left-border max-lg:nav-bottom-border lg:group-hover:nav-left-border-hovered"
         :class="[
           {
             selected: isActive
