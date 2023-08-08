@@ -980,7 +980,7 @@
     "join": "Join Snapshot newsletter"
   },
   "emailSubscription": {
-    "title": "Email subscription",
+    "title": "Email subscriptions",
     "subscribe": "Subscribe",
     "manage": "Manage subscriptions",
     "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
