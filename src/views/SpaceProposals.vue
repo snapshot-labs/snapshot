@@ -136,7 +136,7 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="relative flex px-3 md:px-0 lg:mb-3">
+      <div class="relative flex lg:mb-3">
         <h2 class="hidden text-2xl lg:block">
           {{ $t('proposals.header') }}
         </h2>

@@ -79,88 +79,90 @@ onMounted(() => {
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="mb-3 flex px-4 md:px-0">
-        <h2>{{ $t('about') }}</h2>
+      <div class="lg:mb-3">
+        <h2 class="hidden text-2xl lg:block">
+          {{ $t('about') }}
+        </h2>
       </div>
 
-      <BaseBlock v-if="space.about || space.terms">
-        <div class="space-y-3">
-          <div v-if="space.about">
-            <TextAutolinker :text="space.about" />
-          </div>
-          <div v-if="space.terms">
-            <h4 class="mb-1 text-skin-link">
-              {{ $t('settings.terms.label') }}
-            </h4>
+      <div class="space-y-3">
+        <BaseBlock v-if="space.about || space.terms">
+          <div class="space-y-3">
+            <div v-if="space.about">
+              <TextAutolinker :text="space.about" />
+            </div>
+            <div v-if="space.terms">
+              <h4 class="mb-1 text-skin-link">
+                {{ $t('settings.terms.label') }}
+              </h4>
 
-            <BaseLink
-              :link="getUrl(space.terms)"
-              class="flex items-center text-skin-text hover:text-skin-link"
-            >
-              <div class="max-w-[300px] truncate">
-                {{ space.terms }}
-              </div>
-            </BaseLink>
+              <BaseLink
+                :link="getUrl(space.terms)"
+                class="flex items-center text-skin-text hover:text-skin-link"
+              >
+                <div class="max-w-[300px] truncate">
+                  {{ space.terms }}
+                </div>
+              </BaseLink>
+            </div>
           </div>
-        </div>
-      </BaseBlock>
+        </BaseBlock>
 
-      <BaseBlock
-        v-if="space.strategies"
-        :title="$t('settings.strategies.label')"
-        :counter="space.strategies.length"
-        :show-more-button="space.strategies.length > 2"
-        show-more-button-label="seeAll"
-        slim
-        class="mt-3"
-        @show-more="isModalStrategiesOpen = true"
-      >
-        <div class="grid grid-cols-1 gap-4 p-4 px-0 md:px-4">
-          <StrategiesListItem
-            v-for="(strategy, i) in space.strategies.slice(0, 2)"
-            :key="i"
-            :strategy="strategy"
-            class="!mb-0"
-          />
-        </div>
-      </BaseBlock>
-
-      <BaseBlock
-        v-if="spaceMembers.length"
-        :title="$t('spaceMembers')"
-        :counter="spaceMembers.length"
-        class="mt-3"
-        slim
-      >
-        <AboutMembersListItem v-for="(mod, i) in spaceMembers" :key="i">
-          <BaseUser :address="mod.id" :profile="profiles[mod.id]" />
-          <div class="space-x-2">
-            <BasePill
-              v-if="mod.roles.includes('admin')"
-              v-tippy="{ content: $t('settings.members.admin.description') }"
-              class="cursor-help py-1"
-            >
-              admin
-            </BasePill>
-            <BasePill
-              v-if="mod.roles.includes('moderator')"
-              v-tippy="{
-                content: $t('settings.members.moderator.description')
-              }"
-              class="cursor-help py-1"
-            >
-              moderator
-            </BasePill>
-            <BasePill
-              v-if="mod.roles.includes('author')"
-              v-tippy="{ content: $t('settings.members.author.description') }"
-              class="cursor-help py-1"
-            >
-              author
-            </BasePill>
+        <BaseBlock
+          v-if="space.strategies"
+          :title="$t('settings.strategies.label')"
+          :counter="space.strategies.length"
+          :show-more-button="space.strategies.length > 2"
+          show-more-button-label="seeAll"
+          slim
+          @show-more="isModalStrategiesOpen = true"
+        >
+          <div class="grid grid-cols-1 gap-0 px-0 md:gap-4 md:p-4 md:px-4">
+            <StrategiesListItem
+              v-for="(strategy, i) in space.strategies.slice(0, 2)"
+              :key="i"
+              :strategy="strategy"
+              class="!mb-0 !border-t-0 last:border-b-0 md:!border-b md:!border-t"
+            />
           </div>
-        </AboutMembersListItem>
-      </BaseBlock>
+        </BaseBlock>
+
+        <BaseBlock
+          v-if="spaceMembers.length"
+          :title="$t('spaceMembers')"
+          :counter="spaceMembers.length"
+          slim
+        >
+          <AboutMembersListItem v-for="(mod, i) in spaceMembers" :key="i">
+            <BaseUser :address="mod.id" :profile="profiles[mod.id]" />
+            <div class="space-x-2">
+              <BasePill
+                v-if="mod.roles.includes('admin')"
+                v-tippy="{ content: $t('settings.members.admin.description') }"
+                class="cursor-help py-1"
+              >
+                admin
+              </BasePill>
+              <BasePill
+                v-if="mod.roles.includes('moderator')"
+                v-tippy="{
+                  content: $t('settings.members.moderator.description')
+                }"
+                class="cursor-help py-1"
+              >
+                moderator
+              </BasePill>
+              <BasePill
+                v-if="mod.roles.includes('author')"
+                v-tippy="{ content: $t('settings.members.author.description') }"
+                class="cursor-help py-1"
+              >
+                author
+              </BasePill>
+            </div>
+          </AboutMembersListItem>
+        </BaseBlock>
+      </div>
     </template>
   </TheLayout>
   <teleport to="#modal">

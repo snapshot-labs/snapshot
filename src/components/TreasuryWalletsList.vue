@@ -17,9 +17,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="mb-3 flex px-4 md:px-0">
-    <h2>{{ $t('treasury.title') }}</h2>
+  <div class="lg:mb-3">
+    <h2 class="hidden text-2xl lg:block">
+      {{ $t('treasury.title') }}
+    </h2>
   </div>
+
   <BaseBlock
     v-if="wallets.length"
     :title="$t('treasury.wallets.title')"
