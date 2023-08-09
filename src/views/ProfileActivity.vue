@@ -54,6 +54,18 @@ async function loadVotes(skip = 0) {
   );
 
   stopLoadingMore.value = votes?.length < loadBy;
+  console.log(
+    '🚀 ~ file: ProfileActivity.vue:57 ~ loadVotes ~ votes?.length:',
+    votes?.length
+  );
+  console.log(
+    '🚀 ~ file: ProfileActivity.vue:57 ~ loadVotes ~ loadBy:',
+    loadBy
+  );
+  console.log(
+    '🚀 ~ file: ProfileActivity.vue:57 ~ loadVotes ~ votes?.length < loadBy:',
+    votes?.length < loadBy
+  );
 
   votes.forEach(vote => {
     const isVisibleChoice = ['basic', 'single-choice'].includes(
