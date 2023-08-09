@@ -15,7 +15,8 @@ function openFilePicker() {
 const uploadSuccess = ref(false);
 const previewFile = ref<File | undefined>(undefined);
 
-const { upload, isUploadingImage } = useImageUpload();
+const { upload, isUploadingImage, imageUploadError } = useImageUpload();
+const { notify } = useFlashNotification();
 
 function onFileChange(e) {
   uploadSuccess.value = false;
@@ -26,6 +27,15 @@ function onFileChange(e) {
     emit('image-uploaded', image.url);
   });
 }
+
+watch(
+  () => imageUploadError.value,
+  error => {
+    if (error !== '') {
+      notify(['red', error]);
+    }
+  }
+);
 </script>
 
 <template>

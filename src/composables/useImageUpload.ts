@@ -32,18 +32,23 @@ export function useImageUpload() {
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
       imageUploadError.value = t('errors.unsupportedImageType');
       isUploadingImage.value = false;
-      notify(['red', t('errors.unsupportedImageType')]);
       return;
     }
     if (file.size > 1024 * 1024) {
       imageUploadError.value = t('errors.fileTooBig');
       isUploadingImage.value = false;
-      notify(['red', t('errors.fileTooBig')]);
       return;
     }
     formData.append('file', file);
     try {
       const receipt = await pin(formData);
+
+      if (receipt.error) {
+        imageUploadError.value = receipt.error.message;
+        isUploadingImage.value = false;
+        return;
+      }
+
       imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
