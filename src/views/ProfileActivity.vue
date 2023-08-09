@@ -92,7 +92,7 @@ useInfiniteScroll(
     if (activities.value.length === 0) return;
     loadMore(() => loadVotes(activities.value.length));
   },
-  { distance: 400 }
+  { interval: 200, direction: 'bottom' }
 );
 
 onMounted(async () => {
