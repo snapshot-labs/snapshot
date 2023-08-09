@@ -83,7 +83,7 @@ async function loadVotes(skip = 0) {
 }
 
 useInfiniteScroll(
-  document,
+  window,
   () => {
     console.log(
       '🚀 ~ file: ProfileActivity.vue:89 ~ activities.value:',
