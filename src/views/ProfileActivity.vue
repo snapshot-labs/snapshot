@@ -85,6 +85,10 @@ async function loadVotes(skip = 0) {
 useInfiniteScroll(
   document,
   () => {
+    console.log(
+      '🚀 ~ file: ProfileActivity.vue:89 ~ activities.value:',
+      activities.value
+    );
     if (activities.value.length === 0) return;
     loadMore(() => loadVotes(activities.value.length));
   },
