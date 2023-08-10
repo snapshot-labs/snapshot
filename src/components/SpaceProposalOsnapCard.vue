@@ -15,7 +15,7 @@ const cardBackgroundUrl = computed(() => {
     >
       <img src="/osnap-logo.svg" alt="osnap-logo" class="mb-3" />
       <p class="max-w-[400px]">
-        Automatically and securely execute approved Snapshot proposals on-chain.
+        Automatically and securely execute approved Snapshot proposals onchain.
       </p>
     </div>
     <div
