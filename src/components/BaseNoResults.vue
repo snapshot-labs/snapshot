@@ -1,14 +1,8 @@
-<script setup lang="ts">
-const { t } = useI18n();
-defineProps({ useBlock: Boolean });
-const text = computed(() => t('noResultsFound'));
-</script>
-
 <template>
-  <div class="mb-3 text-center">
-    <BaseBlock v-if="useBlock" class="pt-1">
-      {{ text }}
-    </BaseBlock>
-    <div v-else>{{ text }}</div>
+  <div class="py-[20px] text-center text-skin-link md:py-5">
+    <i-ho-emoji-sad class="mx-auto" />
+    <div class="mt-2 text-base">
+      {{ $t('noResultsFound') }}
+    </div>
   </div>
 </template>

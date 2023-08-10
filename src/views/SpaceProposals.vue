@@ -165,10 +165,7 @@ watch(spaceProposals, () => {
 
       <LoadingRow v-if="loading" block />
 
-      <SpaceProposalsNoProposals
-        v-else-if="spaceProposals.length < 1"
-        :space="space"
-      />
+      <BaseNoResults v-else-if="spaceProposals.length < 1" />
       <div v-else class="mb-3 space-y-3">
         <template v-for="(proposal, i) in spaceProposals" :key="i">
           <BaseBlock slim class="transition-colors">

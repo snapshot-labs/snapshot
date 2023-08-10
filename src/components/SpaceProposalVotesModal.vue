@@ -115,44 +115,35 @@ watch(filters, value => {
       </div>
     </template>
     <template #default="{ maxHeight }">
-      <div
-        v-if="loadingVotes"
-        class="block px-4 pt-4"
-        :style="{ minHeight: maxHeight }"
-      >
-        <LoadingList />
-      </div>
-      <div
-        v-else-if="showNoResults"
-        class="flex flex-row content-start items-start justify-center pt-4"
-        :style="{ minHeight: maxHeight }"
-      >
-        <span>{{ $t('noResultsFound') }}</span>
-      </div>
-      <div v-else>
-        <Transition name="fade">
-          <div
-            class="flex h-full min-h-full flex-col overflow-auto"
-            :style="{ minHeight: maxHeight }"
-          >
-            <SpaceProposalVotesListItem
-              v-for="(vote, i) in votes"
-              :key="i"
-              :vote="vote"
-              :profiles="profiles"
-              :space="space"
-              :proposal="proposal"
-              :class="{ '!border-0': i === 0 }"
-              :data-testid="`proposal-votes-list-item-${i}`"
-            />
-            <div ref="votesEndEl" />
-            <div
-              class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-            >
-              <LoadingSpinner v-if="loadingMoreVotes" />
+      <div :style="{ minHeight: maxHeight }">
+        <div v-if="loadingVotes" class="block px-4 pt-4">
+          <LoadingList />
+        </div>
+
+        <BaseNoResults v-else-if="showNoResults" />
+
+        <div v-else-if="votes.length">
+          <Transition name="fade">
+            <div class="flex h-full min-h-full flex-col overflow-auto">
+              <SpaceProposalVotesListItem
+                v-for="(vote, i) in votes"
+                :key="i"
+                :vote="vote"
+                :profiles="profiles"
+                :space="space"
+                :proposal="proposal"
+                :class="{ '!border-0': i === 0 }"
+                :data-testid="`proposal-votes-list-item-${i}`"
+              />
+              <div ref="votesEndEl" />
+              <div
+                class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+              >
+                <LoadingSpinner v-if="loadingMoreVotes" />
+              </div>
             </div>
-          </div>
-        </Transition>
+          </Transition>
+        </div>
       </div>
     </template>
   </BaseModal>

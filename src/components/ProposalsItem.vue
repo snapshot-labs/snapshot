@@ -31,14 +31,14 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           @forceShow="setMessageVisibility(false)"
         />
         <template v-else>
-          <div class="mb-2 flex items-center justify-between">
+          <div class="flex h-[26px] items-start justify-between">
             <div class="flex items-center gap-1">
               <template v-if="!hideSpaceAvatar">
                 <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
                   <div class="flex items-center">
-                    <AvatarSpace :space="proposal.space" size="28" />
+                    <AvatarSpace :space="proposal.space" size="20" />
                     <span
-                      class="ml-2 text-skin-link"
+                      class="ml-1 text-skin-link"
                       v-text="proposal.space.name"
                     />
                     <IconVerifiedSpace
