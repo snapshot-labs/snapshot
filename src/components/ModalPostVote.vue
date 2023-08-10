@@ -5,6 +5,7 @@ import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 const { isGnosisSafe } = useClient();
 const { shareVote, shareProposalTwitter, shareProposalLenster } = useSharing();
 const { web3Account } = useWeb3();
+const { userState } = useEmailSubscription();
 
 const props = defineProps<{
   open: boolean;
@@ -13,7 +14,12 @@ const props = defineProps<{
   selectedChoices: any;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'subscribeEmail']);
+
+const subscribeEmail = () => {
+  emit('subscribeEmail');
+  emit('close');
+};
 
 const imgPath = computed(() => {
   return isGnosisSafe.value
@@ -78,6 +84,15 @@ function share(shareTo: 'twitter' | 'lenster') {
         >
           <i-s-lenster class="text-[#8B5CF6]" />
           {{ $t('shareOnLenster') }}
+        </BaseButton>
+
+        <BaseButton
+          v-if="userState !== 'VERIFIED'"
+          class="flex !h-[42px] w-full items-center justify-center gap-2"
+          @click="subscribeEmail"
+        >
+          <i-ho-mail class="text-skin-link" />
+          {{ $t('proposal.postVoteModal.subscribe') }}
         </BaseButton>
 
         <div v-if="isGnosisSafe">

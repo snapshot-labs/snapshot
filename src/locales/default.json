@@ -285,7 +285,8 @@
       "seeQueue": "See queued transactions",
       "tips": {
         "1": "Votes can be changed while the proposal is active"
-      }
+      },
+      "subscribe": "Subscribe with email"
     },
     "downloadCsvVotes": {
       "title": "Download as CSV",
@@ -645,7 +646,8 @@
     "proposalCreated": "Proposal created",
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
-    "transactionSent": "Transaction sent"
+    "transactionSent": "Transaction sent",
+    "emailPreferencesUpdated": "Email preferences updated"
   },
   "explore": {
     "createStrategy": "Create strategy",
@@ -976,6 +978,33 @@
     "yourEmail": "Your email",
     "title": "Get the latest Snapshot updates",
     "join": "Join Snapshot newsletter"
+  },
+  "emailSubscription": {
+    "title": "Email subscriptions",
+    "subscribe": "Subscribe",
+    "manage": "Manage subscriptions",
+    "description": "Subscribe to receive email notifications about your joined spaces and proposals activities.",
+    "inputCaption": "You may be asked to sign a message to verify wallet ownership",
+    "inputPlaceholder": "Your email",
+    "postSubscribeMessage": {
+      "successThanks": "Thanks for subscribing!",
+      "successConfirmation": "Please click the confirmation link that has been sent to your email."
+    }
+  },
+  "emailManagement": {
+    "title": "Subscription management",
+    "subtitle": "Choose the types of email updates that matter to you:",
+    "optionNewProposal": "Proposal creation",
+    "optionNewProposalDescription": "Get informed when a new proposal is submitted in your followed spaces.",
+    "optionClosedProposal": "Proposal closure",
+    "optionClosedProposalDescription": "Get informed when a proposal is closed in your followed spaces.",
+    "optionSummary": "Weekly summary",
+    "optionSummaryDescription": "Get a weekly report detailing the activity in your followed spaces.",
+    "updatePreferences": "Update preferences"
+  },
+  "emailResend": {
+    "title": "Verify email",
+    "description": "Email validation letter has been sent to your email address. Please click the confirmation link to complete the subscription."
   },
   "joinCommunity": "Join Snapshot community",
   "header": {
