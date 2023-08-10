@@ -3146,7 +3146,7 @@
     js-beautify "1.14.6"
     vue-component-type-helpers "1.6.5"
 
-"@vueuse/core@^10.1.2", "@vueuse/core@^10.3.0":
+"@vueuse/core@^10.1.2", "@vueuse/core@^10.2.0":
   version "10.3.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.3.0.tgz#b2dab7821ef206811b925fc935163c38056fd82b"
   integrity sha512-BEM5yxcFKb5btFjTSAFjTu5jmwoW66fyV9uJIP4wUXXU8aR5Hl44gndaaXp7dC5HSObmgbnR2RN+Un1p68Mf5Q==
