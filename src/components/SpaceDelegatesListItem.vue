@@ -26,10 +26,14 @@ const { formatPercentageNumber } = useStatement();
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border-y border-skin-border p-3 md:rounded-xl md:border"
+    class="flex h-full flex-col justify-between border-y border-skin-border p-3 pt-[12px] md:rounded-xl md:border"
   >
-    <button type="button" @click="emit('clickUser')">
-      <div class="flex items-center text-left">
+    <div class="flex justify-between">
+      <button
+        type="button"
+        class="flex items-center text-left"
+        @click="emit('clickUser')"
+      >
         <AvatarUser :address="delegate.id" size="40" />
         <div class="ml-3">
           <div class="font-semibold text-skin-heading">
@@ -60,8 +64,11 @@ const { formatPercentageNumber } = useStatement();
             </div>
           </div>
         </div>
-      </div>
-    </button>
+      </button>
+      <BaseButtonIcon class="-mr-1 -mt-1 h-[36px]">
+        <i-ho-dots-horizontal class="text-[17px]" />
+      </BaseButtonIcon>
+    </div>
 
     <div class="my-3 h-full">
       <div v-if="loading" class="lazy-loading h-[24px] w-11/12 rounded-md" />
