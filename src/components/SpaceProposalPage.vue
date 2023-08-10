@@ -35,7 +35,7 @@ const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const results = ref<Results | null>(null);
-const voteWaitingInRelayer = ref(false);
+const waitingForSigners = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -71,8 +71,8 @@ function reloadProposal() {
   emit('reload-proposal');
 }
 
-function openPostVoteModal(voteInRelayer: boolean) {
-  voteWaitingInRelayer.value = voteInRelayer;
+function openPostVoteModal(isWaitingForSigners: boolean) {
+  waitingForSigners.value = isWaitingForSigners;
   isModalPostVoteOpen.value = true;
 }
 
@@ -230,7 +230,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :space="space"
       :proposal="proposal"
       :selected-choices="selectedChoices"
-      :vote-in-relayer="voteWaitingInRelayer"
+      :waiting-for-signers="waitingForSigners"
       @close="isModalPostVoteOpen = false"
       @subscribeEmail="modalEmailSubscriptionOpen = true"
     />

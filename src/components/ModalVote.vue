@@ -86,9 +86,9 @@ async function handleSubmit() {
   console.log('Result', result);
 
   if (result?.id) {
-    const voteInRelayer = !result.ipfs;
-    emit('openPostVoteModal', voteInRelayer);
-    if (!voteInRelayer) emit('reload');
+    const waitingForSigners = !result.ipfs;
+    emit('openPostVoteModal', waitingForSigners);
+    if (!waitingForSigners) emit('reload');
     addVotedProposalId(props.proposal.id);
   }
   emit('close');

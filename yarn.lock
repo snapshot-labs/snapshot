@@ -1838,9 +1838,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@snapshot-labs/lock@https://github.com/snapshot-labs/lock#update-safe-apps-provider":
-  version "0.1.1019"
-  resolved "https://github.com/snapshot-labs/lock#56901a66c1fd3b3b8d7ff16f3ffb1b42b2637ac4"
+"@snapshot-labs/lock@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.0.tgz#caeade730264e2068127b6526e5d74e684e97ef6"
+  integrity sha512-aSePslBYF5QNiJ53eVReaykMGGEig72hjE6KCkkWAS4BNKYF3n25HghtP/WIJde2va7iMHHPnBTayXgcxSGH2g==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
     "@portis/web3" "^4.0.6"
@@ -1858,10 +1859,10 @@
   dependencies:
     cross-fetch "^3.1.5"
 
-"@snapshot-labs/snapshot.js@0.5.0-beta.1":
-  version "0.5.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.5.0-beta.1.tgz#9d670ccac4b2c4dbb3f0bbe2f5fddaf2bfd57dce"
-  integrity sha512-FWfaJqvkxYvNe881Vm+BP1WLX2bGQqw3pP7GjKmYUw/Et2U71bxgFbzhktJ1GDOyHke+C1TNNVSLOQ2JHpbbhA==
+"@snapshot-labs/snapshot.js@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.5.0.tgz#36f82e64df0d258bee33c1c5918034c4f9309c69"
+  integrity sha512-hDjNyEEoBeAH2P070Z36DdhElZKJt1F/Jg6gL9h3RXRaGysaGpe/7VwtTitBXU9HmTTV4dAgKSNOI4X8NR9evQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
