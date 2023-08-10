@@ -15,13 +15,13 @@ const cardBackgroundUrl = computed(() => {
     >
       <img src="/osnap-logo.svg" alt="osnap-logo" class="mb-3" />
       <p class="max-w-[400px]">
-        Securely execute approved transactions on chain.
+        Automatically and securely execute approved Snapshot proposals on-chain.
       </p>
     </div>
     <div
       class="h-[57px] rounded-t-none px-4 pb-[12px] pt-3 md:rounded-t-lg [&_a]:text-skin-heading [&_path]:stroke-skin-heading"
     >
-      <BaseLink link="https://uma.xyz/osnap">Read more about oSnap</BaseLink>
+      <BaseLink link="https://uma.xyz/osnap">Add oSnap to Space</BaseLink>
     </div>
   </div>
 </template>
