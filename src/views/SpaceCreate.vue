@@ -209,7 +209,8 @@ async function handleSubmit() {
   const result = await send(props.space, 'proposal', formattedForm);
   if (result.id) {
     resetSpaceProposals();
-    notify(['green', t('notify.proposalCreated')]);
+    if (!result.ipfs) notify(['green', t('notify.waitingForOtherSigners')]);
+    else notify(['green', t('notify.proposalCreated')]);
     resetForm();
     router.push({
       name: 'spaceProposal',

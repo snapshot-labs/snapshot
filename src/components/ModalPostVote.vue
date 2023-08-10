@@ -2,7 +2,6 @@
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-const { isGnosisSafe } = useClient();
 const { shareVote, shareProposalTwitter, shareProposalLenster } = useSharing();
 const { web3Account } = useWeb3();
 const { userState } = useEmailSubscription();
@@ -12,6 +11,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   selectedChoices: any;
+  waitingForSigners: boolean;
 }>();
 
 const emit = defineEmits(['close', 'subscribeEmail']);
@@ -22,7 +22,7 @@ const subscribeEmail = () => {
 };
 
 const imgPath = computed(() => {
-  return isGnosisSafe.value
+  return props.waitingForSigners
     ? '/stickers/just_signed.png'
     : '/stickers/hooray.png';
 });
@@ -46,7 +46,7 @@ function share(shareTo: 'twitter' | 'lenster') {
           alt="hooray sticker"
         />
         <div class="mt-4 text-center">
-          <template v-if="isGnosisSafe">
+          <template v-if="props.waitingForSigners">
             <h3 v-text="$t('proposal.postVoteModal.gnosisSafeTitle')" />
             <p
               class="italic"
@@ -66,7 +66,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         <BaseButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
-            isGnosisSafe
+            props.waitingForSigners
               ? shareProposalTwitter(space, proposal)
               : share('twitter')
           "
@@ -77,7 +77,7 @@ function share(shareTo: 'twitter' | 'lenster') {
         <BaseButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
-            isGnosisSafe
+            props.waitingForSigners
               ? shareProposalLenster(space, proposal)
               : share('lenster')
           "
@@ -95,7 +95,7 @@ function share(shareTo: 'twitter' | 'lenster') {
           {{ $t('proposal.postVoteModal.subscribe') }}
         </BaseButton>
 
-        <div v-if="isGnosisSafe">
+        <div v-if="props.waitingForSigners">
           <BaseLink
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon
