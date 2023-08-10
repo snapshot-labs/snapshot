@@ -32,7 +32,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
         />
         <template v-else>
           <div class="mb-2 flex items-center justify-between">
-            <div class="flex items-start gap-1 space-x-1">
+            <div class="flex items-center gap-1">
               <template v-if="!hideSpaceAvatar">
                 <LinkSpace class="text-skin-text" :space-id="proposal.space.id">
                   <div class="flex items-center">
@@ -43,7 +43,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
                     />
                     <IconVerifiedSpace
                       v-if="showVerifiedIcon && space.verified"
-                      class="pl-[2px]"
+                      class="mt-[2px] pl-[2px]"
                       size="18"
                     />
                   </div>

@@ -57,7 +57,8 @@ watch(
       v-if="
         $route.name === 'spaceProposals' ||
         $route.name === 'spaceAbout' ||
-        $route.name === 'spaceTreasury'
+        $route.name === 'spaceTreasury' ||
+        $route.name === 'spaceDelegates'
       "
     >
       <template #sidebar-left>

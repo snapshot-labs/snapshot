@@ -9,7 +9,7 @@ const showOnboarding = useStorage('snapshot.showOnboardingDelegates', true);
 
 const loggedAvatarTooltip = useTippy(loggedAvatar, {
   content: 'Delegation profile',
-  placement: 'top-end',
+  placement: 'top-start',
   trigger: 'manual',
   showOnCreate: showOnboarding.value,
   onHide: () => {
@@ -20,6 +20,8 @@ const loggedAvatarTooltip = useTippy(loggedAvatar, {
 
 <template>
   <div ref="loggedAvatar" @mouseenter="loggedAvatarTooltip.hide()">
-    <AvatarUser :address="web3Account" size="42" class="cursor-pointer" />
+    <BaseButtonRound class="!h-[46px] !w-[46px]">
+      <AvatarUser :address="web3Account" size="20" class="cursor-pointer" />
+    </BaseButtonRound>
   </div>
 </template>
