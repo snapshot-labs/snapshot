@@ -17,12 +17,15 @@ const { items } = useFlashNotification();
           :class="`!bg-${item.type}`"
         >
           <div class="flex items-center gap-2">
-            <i-ho-x v-if="item.type === 'red'" class="text-base" />
-            <i-ho-check v-if="item.type === 'green'" class="text-base" />
-            <span>{{ item.message }}</span>
+            <i-ho-x v-if="item.type === 'red'" class="shrink-0 text-base" />
+            <i-ho-check
+              v-if="item.type === 'green'"
+              class="shrink-0 text-base"
+            />
+            <span class="line-clamp-1 text-left">{{ item.message }}</span>
           </div>
 
-          <i-ho-x class="text-base" @click="item.remove()" />
+          <i-ho-x class="shrink-0 text-base" @click="item.remove()" />
         </BaseButton>
       </div>
     </TransitionGroup>

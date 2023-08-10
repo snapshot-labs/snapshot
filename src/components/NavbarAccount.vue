@@ -25,7 +25,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <template v-if="auth.isAuthenticated.value">
+  <template v-if="auth.isAuthenticated && web3Account">
     <MenuAccount :address="web3Account" @switchWallet="modalAccountOpen = true">
       <BaseButton
         :loading="web3.authLoading || loadingProfiles || reloadingProfile"
@@ -34,7 +34,7 @@ watchEffect(() => {
       >
         <AvatarUser
           :address="web3Account"
-          size="18"
+          size="20"
           class="-ml-1 -mr-1 sm:mr-2 md:mr-2 lg:mr-2 xl:mr-2"
         />
         <span

@@ -11,14 +11,14 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div
     :class="[
-      'group relative block cursor-pointer whitespace-nowrap px-[20px] py-2 text-skin-text  hover:bg-skin-bg lg:px-4',
+      'group relative block cursor-pointer whitespace-nowrap px-[20px] py-2 text-skin-text  hover:bg-skin-bg lg:px-3',
       { ' !text-skin-heading': isActive }
     ]"
   >
     <slot />
     <div class="absolute left-0 top-0 flex h-full w-full justify-center">
       <div
-        class="lg:nav-left-border max-lg:nav-bottom-border group-hover:nav-left-border-hovered"
+        class="lg:nav-left-border max-lg:nav-bottom-border lg:group-hover:nav-left-border-hovered"
         :class="[
           {
             selected: isActive

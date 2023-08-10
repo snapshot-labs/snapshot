@@ -31,9 +31,11 @@ const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
+const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const results = ref<Results | null>(null);
+const waitingForSigners = ref(false);
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
@@ -67,6 +69,11 @@ function clickVote() {
 
 function reloadProposal() {
   emit('reload-proposal');
+}
+
+function openPostVoteModal(isWaitingForSigners: boolean) {
+  waitingForSigners.value = isWaitingForSigners;
+  isModalPostVoteOpen.value = true;
 }
 
 async function loadResults() {
@@ -209,7 +216,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :strategies="strategies"
       @close="modalOpen = false"
       @reload="reloadProposal()"
-      @openPostVoteModal="isModalPostVoteOpen = true"
+      @openPostVoteModal="openPostVoteModal"
     />
     <ModalTerms
       :open="modalTermsOpen"
@@ -223,7 +230,14 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :space="space"
       :proposal="proposal"
       :selected-choices="selectedChoices"
+      :waiting-for-signers="waitingForSigners"
       @close="isModalPostVoteOpen = false"
+      @subscribeEmail="modalEmailSubscriptionOpen = true"
+    />
+    <ModalEmailSubscription
+      :open="modalEmailSubscriptionOpen"
+      :address="web3Account"
+      @close="modalEmailSubscriptionOpen = false"
     />
   </teleport>
 </template>

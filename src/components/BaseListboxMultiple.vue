@@ -90,7 +90,7 @@ function isItemDisabled(item: string) {
         <ListboxOptions
           class="absolute z-40 mt-1 w-full overflow-hidden rounded-md border border-skin-border bg-skin-bg text-base shadow-lg focus:outline-none sm:text-sm"
         >
-          <div class="max-h-[180px] overflow-y-scroll">
+          <div class="max-h-[180px] overflow-y-auto">
             <ListboxOption
               v-for="(item, i) in items"
               :key="i"
@@ -122,7 +122,7 @@ function isItemDisabled(item: string) {
                   v-if="selected"
                   :class="['absolute inset-y-0 right-0 flex items-center pr-3']"
                 >
-                  <i-ho-check class="text-skin-text" />
+                  <i-ho-check class="text-green" />
                 </span>
               </li>
             </ListboxOption>

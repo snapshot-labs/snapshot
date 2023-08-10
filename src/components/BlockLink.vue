@@ -44,7 +44,7 @@ onMounted(async () => {
 <template>
   <div v-if="preview?.meta?.title">
     <div v-if="title" class="mb-2" v-text="title" />
-    <button @click="showModal = true">
+    <button class="w-full" @click="showModal = true">
       <div
         class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
       >

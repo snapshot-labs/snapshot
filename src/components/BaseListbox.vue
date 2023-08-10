@@ -42,7 +42,7 @@ const selectedItem = computed({
     </ListboxLabel>
     <div class="relative">
       <ListboxButton
-        class="relative h-[42px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
+        class="relative h-[46px] w-full truncate rounded-full border border-skin-border pl-3 pr-[40px] text-left text-skin-link hover:border-skin-text"
         :class="{ 'cursor-not-allowed text-skin-border': disableInput }"
       >
         <slot
@@ -71,7 +71,7 @@ const selectedItem = computed({
         <ListboxOptions
           class="absolute z-40 mt-1 w-full overflow-hidden rounded-md border border-skin-border bg-skin-bg text-base shadow-lg focus:outline-none sm:text-sm"
         >
-          <div class="max-h-[180px] overflow-y-scroll">
+          <div class="max-h-[180px] overflow-y-auto">
             <ListboxOption
               v-for="item in items"
               :key="item.value"
@@ -102,7 +102,7 @@ const selectedItem = computed({
                   v-if="selected"
                   :class="['absolute inset-y-0 right-0 flex items-center pr-3']"
                 >
-                  <i-ho-check class="text-skin-text" />
+                  <i-ho-check class="text-green" />
                 </span>
               </li>
             </ListboxOption>

@@ -39,6 +39,7 @@ const { emitUpdateLastSeenProposal } = useUnseenProposals();
 const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
+const { isFollowing } = useFollowSpace(props.space.id);
 
 const spaceMembers = computed(() =>
   props.space.members.length < 1
@@ -108,10 +109,14 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch([stateFilter, showOnlyCore, showFlagged], () => {
-  resetSpaceProposals();
-  loadProposals();
-});
+watch(
+  [stateFilter, showOnlyCore, showFlagged],
+  () => {
+    resetSpaceProposals();
+    loadProposals();
+  },
+  { immediate: true }
+);
 
 watchDebounced(
   titleSearch,
@@ -125,8 +130,6 @@ watchDebounced(
 watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
-
-onMounted(() => loadProposals());
 </script>
 
 <template>
@@ -135,25 +138,26 @@ onMounted(() => loadProposals());
       <SpaceSidebar :space="space" />
     </template>
     <template #content-right>
-      <div class="relative flex px-3 md:px-0 lg:mb-3">
-        <h2 class="hidden text-2xl lg:block">
-          {{ $t('proposals.header') }}
-        </h2>
-
+      <div class="relative">
         <SpaceProposalsNotice
           v-if="spaceProposals.length < 1 && !loading"
           :space-id="space.id"
         />
       </div>
+
+      <h1 class="hidden lg:mb-3 lg:block">
+        {{ $t('proposals.header') }}
+      </h1>
+
       <div
-        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-2 px-3 sm:flex-row md:px-0"
+        class="mb-4 flex flex-col justify-between gap-x-3 gap-y-[10px] px-[20px] sm:flex-row md:px-0"
       >
         <SpaceProposalsSearch />
         <BaseLink
           :link="{ name: 'spaceCreate' }"
           data-testid="create-proposal-button"
         >
-          <BaseButton primary class="w-full sm:w-auto">
+          <BaseButton :primary="isFollowing" class="w-full sm:w-auto">
             New proposal
           </BaseButton>
         </BaseLink>
@@ -161,11 +165,8 @@ onMounted(() => loadProposals());
 
       <LoadingRow v-if="loading" block />
 
-      <SpaceProposalsNoProposals
-        v-else-if="spaceProposals.length < 1"
-        :space="space"
-      />
-      <div v-else class="mb-4 space-y-3">
+      <BaseNoResults v-else-if="spaceProposals.length < 1" />
+      <div v-else class="mb-3 space-y-3">
         <template v-for="(proposal, i) in spaceProposals" :key="i">
           <BaseBlock slim class="transition-colors">
             <ProposalsItem
