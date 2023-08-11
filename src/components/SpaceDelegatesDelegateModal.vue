@@ -32,7 +32,7 @@ const form = ref({
 });
 const resolvedAddress = ref('');
 const isResolvingName = ref(false);
-const formRef = ref();
+const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
 
@@ -42,10 +42,7 @@ const definition = computed(() => {
     properties: {
       scope: {
         type: 'string',
-        title: 'Delegation scope',
-        description:
-          'Choose whether you want to delegate globally or within the scope a specific space',
-        anyOf: [{ const: 'space', title: `This space (${props.space.id})` }]
+        title: 'Delegation scope'
       },
       to: {
         type: 'string',
@@ -76,7 +73,7 @@ const isValid = computed(() => {
 
 async function handleConfirm() {
   if (!isValid.value) {
-    formRef?.value?.forceShowError();
+    addressRef?.value?.forceShowError();
     return;
   }
 
@@ -143,20 +140,32 @@ watch(
 <template>
   <BaseModal :open="open" @close="emit('close')">
     <template #header>
-      <div class="items-center justify-center px-6 pb-3">
-        <h3>{{ $t('delegates.delegateModal.title') }}</h3>
+      <div class="px-4 pt-1 text-left text-skin-heading">
+        <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
         <span>{{ $t('delegates.delegateModal.sub') }}</span>
         {{ formatCompactNumber(Number(accountBalance)) }}
         {{ space.symbol }}
       </div>
     </template>
 
-    <div class="space-y-2 p-4">
-      <TuneForm
-        ref="formRef"
-        v-model="form"
-        :definition="definition"
-        :error="validationErrors"
+    <div class="space-y-3 p-4">
+      <div>
+        <LabelInput>
+          {{ definition.properties.scope.title }}
+        </LabelInput>
+        <div class="mt-1 flex items-center gap-1">
+          <AvatarSpace :space="space" />
+          <span class="text-skin-heading"> {{ space.name }} </span>
+        </div>
+      </div>
+
+      <TuneInput
+        ref="addressRef"
+        v-model="form.to"
+        :label="definition.properties.to.title"
+        :hint="definition.properties.to.description"
+        :placeholder="definition.properties.to.examples[0]"
+        :error="validationErrors?.to"
       />
     </div>
 
