@@ -25,7 +25,10 @@ const { items } = useFlashNotification();
             <span class="text-left">{{ item.message }}</span>
           </div>
 
-          <i-ho-x class="shrink-0 text-base" @click="item.remove()" />
+          <i-ho-x
+            class="shrink-0 cursor-pointer text-base"
+            @click="item.remove()"
+          />
         </div>
       </div>
     </TransitionGroup>
