@@ -10,10 +10,10 @@ const { items } = useFlashNotification();
       <div
         v-for="item in items"
         :key="item.id"
-        class="pointer-events-auto w-full px-4 sm:max-w-[420px]"
+        class="pointer-events-auto w-full px-4 sm:max-w-[480px]"
       >
-        <BaseButton
-          class="flex w-full items-center justify-between !border-none bg-red !text-white"
+        <div
+          class="flex w-full items-center justify-between rounded-full bg-red px-[18px] py-[12px] text-white"
           :class="`!bg-${item.type}`"
         >
           <div class="flex items-center gap-2">
@@ -22,11 +22,11 @@ const { items } = useFlashNotification();
               v-if="item.type === 'green'"
               class="shrink-0 text-base"
             />
-            <span class="line-clamp-1 text-left">{{ item.message }}</span>
+            <span class="text-left">{{ item.message }}</span>
           </div>
 
           <i-ho-x class="shrink-0 text-base" @click="item.remove()" />
-        </BaseButton>
+        </div>
       </div>
     </TransitionGroup>
   </div>
