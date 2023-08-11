@@ -194,6 +194,7 @@
     "format": "Invalid format",
     "type": "Invalid type",
     "unsupportedImageType": "File type not supported, Supported formats are jpeg, jpg and png",
+    "fileTooBig": "File size should be smaller than 1MB",
     "invalidAddress": "Invalid address"
   },
   "create": {
