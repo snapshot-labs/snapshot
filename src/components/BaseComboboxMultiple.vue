@@ -37,7 +37,7 @@ watch(
 
 <template>
   <Combobox v-model="selectedItems" multiple as="div" class="w-full">
-    <ComboboxLabel class="block">
+    <ComboboxLabel v-if="label" class="block">
       <LabelInput :information="information">{{ label }}</LabelInput>
     </ComboboxLabel>
     <div class="relative">

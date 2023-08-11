@@ -35,7 +35,7 @@ const selectedItem = computed({
 
 <template>
   <Listbox v-model="selectedItem" as="div" :disabled="disableInput">
-    <ListboxLabel>
+    <ListboxLabel v-if="label || definition?.title">
       <LabelInput :information="information || definition?.description">
         {{ label || definition?.title }}
       </LabelInput>

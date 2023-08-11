@@ -154,23 +154,23 @@ onMounted(() => {
           <div class="justify-between px-[20px] md:flex md:px-0">
             <div class="gap-[12px] sm:flex">
               <div
-                class="flex h-[46px] w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[280px]"
+                class="flex w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[280px]"
               >
                 <BaseSearch
                   :model-value="searchInput"
                   :placeholder="$t('searchPlaceholderVotes')"
-                  class="flex-auto pr-2"
+                  class="!h-[44px] flex-auto pr-2"
                   @update:model-value="handleSearchInput"
                 />
               </div>
               <BaseListbox
-                class="mt-2 flex sm:mt-0"
+                class="mt-2 sm:mt-0"
                 :model-value="selectedFilter"
                 :items="filterItems"
                 @update:model-value="handleSelectFilter"
               />
             </div>
-            <div class="mt-[10px] flex justify-center gap-[12px] md:mt-0">
+            <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
               <SpaceDelegatesAccount
                 v-if="web3Account"
                 class="hidden md:block"
