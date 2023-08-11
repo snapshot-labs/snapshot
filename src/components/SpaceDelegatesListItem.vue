@@ -5,7 +5,7 @@ import {
   ExtendedSpace
 } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   delegate: DelegateWithPercent;
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
@@ -22,6 +22,17 @@ const emit = defineEmits(['clickDelegate', 'clickUser']);
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
 const { formatPercentageNumber } = useStatement();
+
+const aboutLoadedOnce = ref(false);
+
+watch(
+  () => props.loading,
+  (newValue, oldValue) => {
+    if (oldValue && !newValue) {
+      aboutLoadedOnce.value = true;
+    }
+  }
+);
 </script>
 
 <template>
@@ -71,7 +82,10 @@ const { formatPercentageNumber } = useStatement();
     </div>
 
     <div class="mt-3 h-[48px]">
-      <div v-if="loading" class="lazy-loading h-[24px] w-11/12 rounded-md" />
+      <div
+        v-if="loading && !aboutLoadedOnce"
+        class="lazy-loading h-[24px] w-11/12 rounded-md"
+      />
 
       <template v-else-if="about">
         <span class="line-clamp-2">
