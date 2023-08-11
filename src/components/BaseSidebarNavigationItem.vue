@@ -11,7 +11,7 @@ withDefaults(defineProps<Props>(), {
 <template>
   <div
     :class="[
-      'group relative block cursor-pointer whitespace-nowrap px-[20px] py-2 text-skin-text  hover:bg-skin-bg lg:px-4',
+      'group relative block cursor-pointer whitespace-nowrap px-[20px] py-2 text-skin-text  hover:bg-skin-bg lg:px-3',
       { ' !text-skin-heading': isActive }
     ]"
   >

@@ -43,7 +43,7 @@ const spaceMembers = computed(() => {
       @click.stop=""
     >
       <div :class="[widthClass, 'flex flex-nowrap items-center space-x-1']">
-        <AvatarUser v-if="!hideAvatar" :address="address" size="18" />
+        <AvatarUser v-if="!hideAvatar" :address="address" size="20" />
         <span
           v-if="!hideUsername"
           class="w-full cursor-pointer truncate text-skin-link"

@@ -24,7 +24,9 @@ function handleSelect(e) {
         <SpaceSidebarNavigation :space="space" class="lg:mt-0" />
         <SpaceSidebarSubspaces :space="space" class="hidden lg:flex" />
         <SpaceSidebarFooter :space="space" class="hidden lg:flex" />
-        <div class="absolute right-[20px] top-0 md:top-[12px] lg:right-3">
+        <div
+          class="absolute -top-1 right-[16px] md:right-[12px] md:top-[10px] lg:right-[10px]"
+        >
           <BaseMenu
             class="md:ml-2"
             :items="threeDotItems"

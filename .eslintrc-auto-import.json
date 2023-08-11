@@ -116,6 +116,8 @@
     "watchTxStatus": true,
     "toValue": true,
     "useFlaggedMessageStatus": true,
+    "useEmailSubscription": true,
+    "useEmailFetchClient": true,
     "useStatement": true
   }
 }

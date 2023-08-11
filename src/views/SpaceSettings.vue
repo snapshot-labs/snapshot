@@ -138,7 +138,8 @@ async function handleSubmit() {
   const result = await send(props.space, 'settings', prunedForm.value);
   console.log('Result', result);
   if (result.id) {
-    notify(['green', t('notify.saved')]);
+    if (!result.ipfs) notify(['green', t('notify.waitingForOtherSigners')]);
+    else notify(['green', t('notify.saved')]);
     if (!modalSettingsSavedIgnore.value) modalSettingsSavedOpen.value = true;
     resetTreasuryAssets();
     await clearStampCache(props.space.id);

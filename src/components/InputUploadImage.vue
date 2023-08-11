@@ -22,7 +22,7 @@ async function handleFileChange(e) {
   }
   formData.append('file', file);
   try {
-    const receipt = await pin(formData);
+    const receipt = await pin(formData, import.meta.env.VITE_PINEAPPLE_URL);
     emit('input', `ipfs://${receipt.cid}`);
     loading.value = false;
     emit('loading', loading.value);

@@ -1,4 +1,3 @@
-import clientGnosisSafe from '@/helpers/clientGnosisSafe';
 import clientEIP712 from '@/helpers/clientEIP712';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
@@ -36,7 +35,7 @@ export function useClient() {
   }
 
   async function sendEIP712(space: { id: string }, type: string, payload: any) {
-    const client = isGnosisSafe.value ? clientGnosisSafe : clientEIP712;
+    const client = clientEIP712;
     if (type === 'proposal') {
       let plugins = {};
       if (Object.keys(payload.metadata?.plugins).length !== 0)

@@ -25,8 +25,8 @@ const { formatPercentageNumber } = useStatement();
     class="flex h-full flex-col justify-between border-y border-skin-border p-3 md:rounded-xl md:border"
   >
     <button @click="emit('clickUser')">
-      <div class="flex text-left">
-        <AvatarUser :address="delegate.id" size="48" />
+      <div class="flex items-center text-left">
+        <AvatarUser :address="delegate.id" size="40" />
         <div class="ml-3">
           <div class="font-semibold text-skin-heading">
             {{ getUsername(delegate.id, profiles[delegate.id]) }}

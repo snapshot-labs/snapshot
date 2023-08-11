@@ -34,7 +34,7 @@ defineProps<{
             </div>
           </div>
         </div>
-        <ButtonFollow class="!mb-0 !h-[44px] !w-[100px]" :space="space" />
+        <ButtonFollow :space="space" />
       </div>
     </BaseBlock>
   </router-link>

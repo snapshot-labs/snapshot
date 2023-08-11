@@ -10,7 +10,7 @@ const props = withDefaults(
 );
 
 const stateClass = computed(() => {
-  if (props.state === 'closed') return 'bg-violet-600';
+  if (props.state === 'closed') return 'bg-[#BB6BD9]';
   if (props.state === 'active') return 'bg-green';
   return 'bg-gray-500';
 });

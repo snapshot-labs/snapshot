@@ -109,10 +109,14 @@ async function loadProposals() {
   loading.value = false;
 }
 
-watch([stateFilter, showOnlyCore, showFlagged], () => {
-  resetSpaceProposals();
-  loadProposals();
-});
+watch(
+  [stateFilter, showOnlyCore, showFlagged],
+  () => {
+    resetSpaceProposals();
+    loadProposals();
+  },
+  { immediate: true }
+);
 
 watchDebounced(
   titleSearch,
@@ -126,8 +130,6 @@ watchDebounced(
 watch(spaceProposals, () => {
   loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
 });
-
-onMounted(() => loadProposals());
 </script>
 
 <template>
@@ -163,11 +165,8 @@ onMounted(() => loadProposals());
 
       <LoadingRow v-if="loading" block />
 
-      <SpaceProposalsNoProposals
-        v-else-if="spaceProposals.length < 1"
-        :space="space"
-      />
-      <div v-else class="mb-4 space-y-3">
+      <BaseNoResults v-else-if="spaceProposals.length < 1" />
+      <div v-else class="mb-3 space-y-3">
         <template v-for="(proposal, i) in spaceProposals" :key="i">
           <BaseBlock slim class="transition-colors">
             <ProposalsItem

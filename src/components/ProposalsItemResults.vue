@@ -14,7 +14,7 @@ const winningChoice = computed(() =>
 </script>
 
 <template>
-  <div>
+  <div :class="{ 'mt-3': !proposal?.body }">
     <div
       v-for="(choice, i) in proposal.choices"
       :key="i"
