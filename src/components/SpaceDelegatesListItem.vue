@@ -39,7 +39,7 @@ const { formatPercentageNumber } = useStatement();
           <div class="font-semibold text-skin-heading">
             {{ getUsername(delegate.id, profiles[delegate.id]) }}
           </div>
-          <div class="flex gap-1">
+          <div class="flex gap-[6px]">
             <div
               v-tippy="{
                 content: formatPercentageNumber(delegate.votesPercentage)
@@ -70,23 +70,32 @@ const { formatPercentageNumber } = useStatement();
       </BaseButtonIcon>
     </div>
 
-    <div class="my-3 h-full">
+    <div class="mt-3 h-[48px]">
       <div v-if="loading" class="lazy-loading h-[24px] w-11/12 rounded-md" />
 
       <template v-else-if="about">
-        <span class="line-clamp-2 h-3">
+        <span class="line-clamp-2">
           {{ about }}
-        </span>
-        <span class="cursor-pointer text-skin-link" @click="emit('clickUser')">
-          Learn more
         </span>
       </template>
 
-      <span v-else> No statement provided yet </span>
+      <span v-else> No statement provided yet. </span>
+    </div>
+
+    <div class="mt-3 flex gap-[6px]">
+      <div>
+        {{ formatCompactNumber(stats?.votes.length || 0) }}
+        votes
+      </div>
+      ·
+      <div>
+        {{ formatCompactNumber(stats?.proposals.length || 0) }}
+        proposals
+      </div>
     </div>
 
     <TuneButton
-      class="mt-4 w-full text-skin-link"
+      class="mt-3 w-full text-skin-link"
       @click="emit('clickDelegate')"
     >
       Delegate

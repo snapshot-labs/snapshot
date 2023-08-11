@@ -27,7 +27,6 @@ const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 
 const form = ref({
-  scope: 'space',
   to: ''
 });
 const resolvedAddress = ref('');
@@ -61,7 +60,6 @@ const validationErrors = computed(() => {
   return validateForm(
     definition.value || {},
     clone({
-      scope: form.value.scope,
       to: resolvedAddress.value
     })
   );
