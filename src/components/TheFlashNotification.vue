@@ -10,7 +10,7 @@ const { items } = useFlashNotification();
       <div
         v-for="item in items"
         :key="item.id"
-        class="pointer-events-auto w-full px-4 sm:max-w-[480px]"
+        class="pointer-events-auto w-full px-4 sm:max-w-[460px]"
       >
         <div
           class="flex w-full items-center justify-between rounded-full bg-red px-[18px] py-[12px] text-white"
