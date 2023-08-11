@@ -54,6 +54,7 @@ type QuestionState =
   | 'waiting-for-proposal'
   | 'waiting-for-liveness'
   | 'proposal-approved'
+  | 'waiting-for-vote-finalize'
   | 'proposal-denied';
 
 type Action1State = 'idle' | 'approve-bond' | 'submit-proposal';
@@ -237,6 +238,10 @@ function didProposalPass(proposal: Proposal) {
   return votes['for'] > proposal.scores_total / 2;
 }
 
+function wasProposalFinalized(proposal: Proposal) {
+  return proposal.scores_state === 'final';
+}
+
 const questionState = computed<QuestionState>(() => {
   if (!web3.value.account) return 'no-wallet-connection';
 
@@ -252,17 +257,24 @@ const questionState = computed<QuestionState>(() => {
   // check if proposal passed snapshot rules, ie votes for, and quorum
   const proposalPassed = didProposalPass(props.proposal);
 
+  // vote may not be finalized, its possible for vote to pass, but require a waiting period till votes completely tally
+  const proposalFinalized = wasProposalFinalized(props.proposal);
+
   // ordering of this is deliberate. it will prevent you from executing proposals that did not pass,
   // but if for some reason the proposal did get executed elsewhere, it will still show that it was.
   // If proposal has already been executed, prevents user from proposing again.
   if (proposalExecuted) return 'completely-executed';
+
+  if (!proposalFinalized) {
+    return 'waiting-for-vote-finalize';
+  }
 
   // User can confirm vote results if not done already and there is no proposal yet.
   if (!activeProposal && !voteResultsConfirmed.value && proposalPassed)
     return 'waiting-for-vote-confirmation';
 
   // Proposal can be made if it has not been made already and user confirmed vote results.
-  if (!activeProposal && voteResultsConfirmed && proposalPassed)
+  if (!activeProposal && voteResultsConfirmed.value && proposalPassed)
     return 'waiting-for-proposal';
 
   // Proposal has been made and is waiting for liveness period to complete.
@@ -300,6 +312,9 @@ onMounted(async () => {
 
     <div v-if="questionState === 'loading'" class="my-4">
       <LoadingSpinner />
+    </div>
+    <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
+      Waiting on vote to be finalized
     </div>
 
     <div v-if="connectedToRightChain || usingMetaMask">
