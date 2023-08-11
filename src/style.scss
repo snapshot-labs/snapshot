@@ -7,14 +7,14 @@
 [data-color-scheme='dark'] {
   color-scheme: dark;
   --primary-color: #384aff;
-  --bg-color: #211f24;
+  --bg-color: #1c1b20;
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
   --border-color: #2d2d2d;
   --header-bg: #1c1b20;
   --block-bg: transparent;
-  --shadow-color: #fff1;
+  --shadow-color: rgba(255, 255, 255, 0.036);
 }
 
 [data-color-scheme='light'] {
