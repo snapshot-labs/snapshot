@@ -27,7 +27,6 @@ export function useImageUpload() {
     isUploadingImage.value = true;
     const formData = new FormData();
 
-    // TODO: Additional Validations - File Size, File Type, Empty File, Hidden File
     // TODO: Make this composable useFileUpload
 
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
@@ -35,9 +34,21 @@ export function useImageUpload() {
       isUploadingImage.value = false;
       return;
     }
+    if (file.size > 1024 * 1024) {
+      imageUploadError.value = t('errors.fileTooBig');
+      isUploadingImage.value = false;
+      return;
+    }
     formData.append('file', file);
     try {
       const receipt = await pin(formData, import.meta.env.VITE_PINEAPPLE_URL);
+
+      if (receipt.error) {
+        imageUploadError.value = receipt.error.message;
+        isUploadingImage.value = false;
+        return;
+      }
+
       imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
