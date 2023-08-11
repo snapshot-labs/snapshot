@@ -39,10 +39,6 @@ const definition = computed(() => {
   return {
     type: 'object',
     properties: {
-      scope: {
-        type: 'string',
-        title: 'Delegation scope'
-      },
       to: {
         type: 'string',
         format: 'address',
@@ -51,7 +47,7 @@ const definition = computed(() => {
         examples: ['Enter: Address, ENS or Lens']
       }
     },
-    required: ['scope', 'to'],
+    required: ['to'],
     additionalProperties: false
   };
 });
@@ -86,7 +82,7 @@ async function handleConfirm() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.delegationRemoved'));
+    notify(t('notify.delegationAdded'));
     removePendingTransaction(txPendingId);
     emit('reload');
   } catch (e) {
@@ -148,9 +144,7 @@ watch(
 
     <div class="space-y-3 p-4">
       <div>
-        <LabelInput>
-          {{ definition.properties.scope.title }}
-        </LabelInput>
+        <LabelInput> Delegation scope </LabelInput>
         <div class="mt-1 flex items-center gap-1">
           <AvatarSpace :space="space" />
           <span class="text-skin-heading"> {{ space.name }} </span>

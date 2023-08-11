@@ -179,12 +179,12 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
 
     response.votes.forEach(vote => {
       const delegate = vote.voter.toLowerCase();
-      votesAndProposals[delegate].votes.push(vote);
+      votesAndProposals[delegate]?.votes.push(vote);
     });
 
     response.proposals.forEach(proposal => {
       const delegate = proposal.author.toLowerCase();
-      votesAndProposals[delegate].proposals.push(proposal);
+      votesAndProposals[delegate]?.proposals.push(proposal);
     });
 
     delegatesStats.value = {
