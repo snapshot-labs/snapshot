@@ -1,0 +1,12 @@
+# Ignore entire build directory
+build/
+dist/
+node_modules/
+snapshot-spaces/
+coverage/
+.yalc/
+
+
+# Ignore specific file
+auto-imports.d.ts
+components.d.ts
