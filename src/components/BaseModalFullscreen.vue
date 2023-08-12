@@ -35,6 +35,7 @@ watchEffect(() => {
           >
             <DialogPanel
               class="h-screen w-full transform overflow-y-auto bg-skin-bg p-0 align-middle transition-all"
+              style="scrollbar-gutter: stable"
             >
               <div
                 class="sticky top-0 z-10 h-[70px] w-full border-b border-skin-border bg-skin-bg"
