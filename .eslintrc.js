@@ -6,6 +6,9 @@ module.exports = {
   env: {
     node: true
   },
+
+
+  
   extends: [
     'plugin:cypress/recommended',
     'plugin:vue/vue3-recommended',
