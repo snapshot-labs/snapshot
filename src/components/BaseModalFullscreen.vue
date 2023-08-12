@@ -1,0 +1,66 @@
+<script setup lang="ts">
+import {
+  Dialog,
+  DialogPanel,
+  TransitionChild,
+  TransitionRoot
+} from '@headlessui/vue';
+
+defineEmits(['close']);
+
+const props = defineProps<{
+  open: boolean;
+  title?: string;
+}>();
+
+watchEffect(() => {
+  document.documentElement.style.setProperty(
+    'scrollbar-gutter',
+    props.open ? 'auto' : 'stable'
+  );
+});
+</script>
+
+<template>
+  <TransitionRoot appear :show="open" as="template">
+    <Dialog as="div" class="relative z-50" @close="$emit('close')">
+      <div class="fixed inset-0 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center">
+          <TransitionChild
+            as="template"
+            enter="duration-200 ease-out"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="duration-0 ease-in"
+          >
+            <DialogPanel
+              class="tune-modal-panel w-full transform overflow-y-auto align-middle transition-all"
+            >
+              <div
+                class="tune-modal-header sticky top-0 z-10 h-[70px] w-full border-b border-skin-border bg-skin-bg"
+              >
+                <div class="absolute right-[18px] top-[18px]">
+                  <span tabindex="0"></span>
+                  <BaseButtonIcon @click="$emit('close')">
+                    <span class="sr-only">Close</span>
+                    <i-ho-x class="text-base" aria-hidden="true" />
+                  </BaseButtonIcon>
+                </div>
+              </div>
+              <div
+                class="tune-modal-content"
+                :class="{ 'scrolling-enabled': open }"
+              >
+                <slot />
+              </div>
+
+              <div v-if="$slots.footer" class="tune-modal-footer">
+                <slot v-if="$slots.footer" name="footer" />
+              </div>
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+</template>
