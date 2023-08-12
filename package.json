@@ -13,7 +13,7 @@
     "build": "vite build",
     "lint": "eslint \"*.{ts,js,vue,json}\" src/ cypress/ --ext .ts,.js,.vue,.json",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier \"*.{ts,js,vue,json}\" src/ cypress/ --ext .ts,.js,.vue,.json",
+    "format": "prettier \"**/*.{ts,js,vue,json}\"",
     "format:check": "yarn format --check || exit 1",
     "format:fix": "yarn format --write",
     "postinstall": "patch-package && husky install",

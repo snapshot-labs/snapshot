@@ -160,7 +160,7 @@ function deleteItem(key) {
     <BaseBlock
       v-if="!togglePreview"
       slim="true"
-      class="h6 mt-2 mb-0 p-4 text-skin-text"
+      class="h6 mb-0 mt-2 p-4 text-skin-text"
     >
       <div>{{ comment }}</div>
     </BaseBlock>
