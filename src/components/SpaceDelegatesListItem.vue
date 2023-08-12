@@ -93,7 +93,7 @@ watch(
         </span>
       </template>
 
-      <span v-else> No statement provided yet. </span>
+      <span v-else> No about provided yet. </span>
     </div>
 
     <div class="mt-3 flex gap-[6px]">

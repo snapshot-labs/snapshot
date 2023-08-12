@@ -30,8 +30,12 @@ const isValid = computed(() => {
 
 async function handleClickSave() {
   if (!isValid.value) return;
-  await saveStatement(props.space.id, form.value.about, form.value.statement);
-  emit('reload');
+  try {
+    await saveStatement(props.space.id, form.value.about, form.value.statement);
+    emit('reload');
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 onMounted(() => {
@@ -45,30 +49,29 @@ onMounted(() => {
 <template>
   <TheLayout>
     <template #content-left>
-      <div class="space-y-3">
-        <TextareaAutosize
+      <div class="space-y-3 pt-3">
+        <TuneTextarea
           v-model="form.about"
-          title="About"
-          :autosize="false"
+          label="About"
+          :max-length="schemas.statement.properties.about.maxLength"
+          :error="validationErrors.about"
           class="text-skin-link"
         />
-        <TextareaAutosize
+        <TuneTextarea
           v-model="form.statement"
-          title="Statement"
-          :autosize="false"
-          :min-height="300"
-          class="text-skin-link"
+          label="Statement"
+          class="!h-[240px] text-skin-link"
         />
       </div>
     </template>
 
     <template #sidebar-right>
-      <BaseBlock>
-        <div>Save changes</div>
+      <BaseBlock class="p-3" slim>
+        <div class="font-semibold text-skin-heading">Save changes</div>
 
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+        You can always come back and edit your profile at any time.
         <BaseButton
-          class="w-full"
+          class="mt-3 w-full"
           :loading="savingStatement"
           primary
           @click="handleClickSave"

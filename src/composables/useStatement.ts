@@ -24,9 +24,10 @@ export function useStatement() {
       about,
       statement
     });
-    if (result) {
-      notify(['green', 'Statement saved successfully']);
-    }
+    if (!result.id) throw new Error('Error saving statement');
+
+    notify(['green', 'Statement saved successfully']);
+    return result;
   }
 
   async function loadStatements(spaceId: string, delegateIds: string[]) {

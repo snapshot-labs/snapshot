@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { ExtendedSpace, Profile } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
   open: boolean;
-  profiles: Record<string, Profile>;
   space: ExtendedSpace;
   address: string;
 }>();
@@ -12,6 +11,8 @@ const emit = defineEmits(['close', 'delegate']);
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
+const { loadProfiles, getProfile } = useProfiles();
+
 const {
   fetchDelegate,
   fetchDelegateVotesAndProposals,
@@ -27,7 +28,6 @@ const {
   formatPercentageNumber
 } = useStatement();
 
-const showModalStatement = ref(false);
 const showEdit = ref(false);
 
 const isLoggedUser = computed(() => {
@@ -76,9 +76,17 @@ watch(
     fetchDelegate(props.address);
     fetchDelegateVotesAndProposals([props.address], props.space.id);
     loadStatements(props.space.id, [props.address]);
+    loadProfiles([props.address]);
   },
   {
     immediate: true
+  }
+);
+
+watch(
+  () => props.open,
+  () => {
+    showEdit.value = false;
   }
 );
 </script>
@@ -93,29 +101,23 @@ watch(
 
     <TheLayout v-if="!showEdit" class="pt-3">
       <template #content-left>
-        <div class="space-y-[40px]">
-          <div v-if="getStatementAbout(address)">
+        <LoadingPage v-if="loadingStatements" slim />
+        <div v-else class="space-y-[40px]">
+          <div>
             <h3 class="mb-2 mt-0">About</h3>
-            <p class="text-[22px] leading-7">
+            <p v-if="getStatementAbout(address)" class="text-[22px] leading-7">
               {{ getStatementAbout(address) }}
             </p>
+            <div v-else>No about provided yet</div>
           </div>
 
-          <div v-if="getStatementStatement(address)">
+          <div>
             <h3 class="m-0 mb-2">Statement</h3>
-            <BaseMarkdown :body="getStatementStatement(address)!" />
-          </div>
-
-          <div
-            v-if="
-              !getStatementAbout(address) && !getStatementStatement(address)
-            "
-            @click="
-              emit('close');
-              showModalStatement = true;
-            "
-          >
-            No statement provided yet
+            <BaseMarkdown
+              v-if="getStatementStatement(address)"
+              :body="getStatementStatement(address)!"
+            />
+            <div v-else>No statement provided yet</div>
           </div>
         </div>
       </template>
@@ -127,7 +129,7 @@ watch(
               <AvatarUser :address="address" size="40" />
             </div>
             <div>
-              <ProfileName :profile="profiles[address]" :address="address" />
+              <ProfileName :profile="getProfile(address)" :address="address" />
             </div>
           </div>
           <div class="mt-3 space-y-2">

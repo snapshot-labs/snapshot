@@ -89,7 +89,7 @@ function handleClickDelegate(id = '') {
   showModalDelegate.value = true;
 }
 
-function handleClickProfile(id = '') {
+function handleClickProfile(id: string) {
   selectedDelegate.value = id.toLowerCase();
   showModalProfile.value = true;
 }
@@ -243,7 +243,6 @@ onMounted(() => {
       <SpaceDelegatesProfileModal
         :open="showModalProfile"
         :space="space"
-        :profiles="profiles"
         :address="selectedDelegate"
         @close="showModalProfile = false"
         @delegate="handleClickDelegate"
