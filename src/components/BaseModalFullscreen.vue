@@ -48,14 +48,10 @@ watchEffect(() => {
                 </div>
               </div>
               <div
-                class="mt-4 text-base"
+                class="mt-4 pb-[40px] text-base"
                 :class="{ 'scrolling-enabled': open }"
               >
                 <slot />
-              </div>
-
-              <div v-if="$slots.footer" class="mt-4 flex gap-3">
-                <slot v-if="$slots.footer" name="footer" />
               </div>
             </DialogPanel>
           </TransitionChild>

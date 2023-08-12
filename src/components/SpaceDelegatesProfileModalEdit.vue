@@ -44,21 +44,6 @@ onMounted(() => {
 
 <template>
   <TheLayout>
-    <template #sidebar-right>
-      <BaseBlock>
-        <div>Save changes</div>
-
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-        <BaseButton
-          class="w-full"
-          :loading="savingStatement"
-          primary
-          @click="handleClickSave"
-        >
-          Save changes
-        </BaseButton>
-      </BaseBlock>
-    </template>
     <template #content-left>
       <div class="space-y-3">
         <TextareaAutosize
@@ -75,6 +60,22 @@ onMounted(() => {
           class="text-skin-link"
         />
       </div>
+    </template>
+
+    <template #sidebar-right>
+      <BaseBlock>
+        <div>Save changes</div>
+
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+        <BaseButton
+          class="w-full"
+          :loading="savingStatement"
+          primary
+          @click="handleClickSave"
+        >
+          Save changes
+        </BaseButton>
+      </BaseBlock>
     </template>
   </TheLayout>
 </template>

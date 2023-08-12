@@ -90,7 +90,7 @@ function handleClickDelegate(id = '') {
 }
 
 function handleClickProfile(id = '') {
-  selectedDelegate.value = id;
+  selectedDelegate.value = id.toLowerCase();
   showModalProfile.value = true;
 }
 
@@ -246,6 +246,7 @@ onMounted(() => {
         :profiles="profiles"
         :address="selectedDelegate"
         @close="showModalProfile = false"
+        @delegate="handleClickDelegate"
       />
     </Teleport>
   </div>
