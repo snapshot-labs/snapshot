@@ -11,18 +11,16 @@
     "cypress:serve:build": "VITE_E2E=true vite build && npx http-server dist -p 8081",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
-    "lint": "eslint \"./src/*/**/*.{js,ts,vue,json}\" --fix",
+    "lint": "eslint \"*.{ts,js,vue,json}\" src/ cypress/ --ext .ts,.js,.vue,.json",
+    "lint:fix": "yarn lint --fix",
+    "format": "prettier \"*.{ts,js,vue,json}\" src/ cypress/ --ext .ts,.js,.vue,.json",
+    "format:check": "yarn format --check || exit 1",
+    "format:fix": "yarn format --write",
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
     "test:e2e": "start-server-and-test 'yarn cypress:serve:build' http-get://localhost:8081 'cypress run'",
     "test:unit:coverage": "vitest run --coverage"
-  },
-  "lint-staged": {
-    "*.{js,ts,vue,json}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@adraffy/ens-normalize": "^1.9.4",
@@ -74,6 +72,7 @@
   },
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.6",
+    "@rushstack/eslint-patch": "^1.3.3",
     "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.3",
     "@types/bluebird": "^3.5.38",
