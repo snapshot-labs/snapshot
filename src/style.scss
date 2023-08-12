@@ -50,6 +50,10 @@
     src: url('./assets/fonts/space-mono-v11-latin-700.woff2') format('woff2');
   }
 
+  html {
+    scrollbar-gutter: stable;
+  }
+
   body {
     overflow-x: hidden;
   }
