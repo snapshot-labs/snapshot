@@ -68,10 +68,10 @@ export function useStatement() {
     }
   }
 
-  function reloadStatement(spaceId: string, id: string) {
+  async function reloadStatement(spaceId: string, id: string) {
     id = id.toLowerCase();
     delete statements.value[id];
-    loadStatements(spaceId, [id]);
+    await loadStatements(spaceId, [id]);
   }
 
   function getStatementAbout(id: string): string | undefined {
