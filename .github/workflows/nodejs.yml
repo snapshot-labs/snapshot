@@ -27,7 +27,7 @@ jobs:
         run: yarn run build
 
       - name: Format
-        run: yarn run format
+        run: yarn run format:check
 
       - name: Lint
         run: yarn run lint
