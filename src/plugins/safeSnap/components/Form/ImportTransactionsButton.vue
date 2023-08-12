@@ -198,7 +198,7 @@ export default {
         <div class="mt-3 flex flex-col items-center justify-center">
           <BaseButton @click="importFromText">Parse JSON</BaseButton>
           <a
-            class="mt-2 mb-1"
+            class="mb-1 mt-2"
             style="text-decoration: underline; font-size: 14px"
             target="_blank"
             rel="noreferrer"

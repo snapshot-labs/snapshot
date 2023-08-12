@@ -18,9 +18,10 @@ In Snapshot space setting, you can search and find the Galxe Plugin in the plugi
 
 Add campaign and proposal info to your plugin.
 
-First, click the plugin, then you will see an editor section. See example below: 
+First, click the plugin, then you will see an editor section. See example below:
 
-*Specific JSON format like this, and you could use more than 1 OAT in your space:* 
+_Specific JSON format like this, and you could use more than 1 OAT in your space:_
+
 ```javascript
 {
 	"oats": {
@@ -30,10 +31,12 @@ First, click the plugin, then you will see an editor section. See example below:
 	}
 }
 ```
+
 notice: The domain should not included in <Space Name>.
 
 #### Usually you don't need to change api part unless you know which api you are using.
-```javascript
+
+````javascript
 {
 	"api": "https://graphigo.stg.galaxy.eco/query",
 	"oats": {
@@ -52,10 +55,11 @@ Second, fill it with the proposal ID and the information of the Campaign which y
 		"0x554ca2bd7d979e8b72c6ae6415946a7bb470da9f60a9cf931205f083c03632a3": "galaxy/campaign/GCcqvUtDaM"
 	}
 }
-```
+````
+
 ### More
 
 For Production Environment, we are using API Base Url https://graphigo.prd.galaxy.eco/query and only allows domain snapshot.org.
-For Local Environment or any other test purpose, you can switch the API Base Url(*file index.ts*) to https://graphigo.stg.galaxy.eco/query and change port to 3000(*file package.json*).
+For Local Environment or any other test purpose, you can switch the API Base Url(_file index.ts_) to https://graphigo.stg.galaxy.eco/query and change port to 3000(_file package.json_).
 
 When you see "Access-Control-Allow-Origin" error on console, please check if you have set the correct API Base Url and correct port, then restart the server.

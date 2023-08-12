@@ -324,7 +324,7 @@ onMounted(async () => {
           <textarea
             v-model="newStepDescription"
             :placeholder="[$t('progress.description')]"
-            class="input h-full w-full rounded-3xl border border-skin-border py-3 px-4 text-left focus-within:!border-skin-link hover:border-skin-text"
+            class="input h-full w-full rounded-3xl border border-skin-border px-4 py-3 text-left focus-within:!border-skin-link hover:border-skin-text"
           />
           <BaseButton
             v-if="isAdmin || isOwner"
