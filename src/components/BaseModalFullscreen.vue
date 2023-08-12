@@ -34,10 +34,10 @@ watchEffect(() => {
             leave="duration-0 ease-in"
           >
             <DialogPanel
-              class="tune-modal-panel w-full transform overflow-y-auto align-middle transition-all"
+              class="h-screen w-full transform overflow-y-auto bg-skin-bg p-0 align-middle transition-all"
             >
               <div
-                class="tune-modal-header sticky top-0 z-10 h-[70px] w-full border-b border-skin-border bg-skin-bg"
+                class="sticky top-0 z-10 h-[70px] w-full border-b border-skin-border bg-skin-bg"
               >
                 <div class="absolute right-[18px] top-[18px]">
                   <span tabindex="0"></span>
@@ -48,13 +48,13 @@ watchEffect(() => {
                 </div>
               </div>
               <div
-                class="tune-modal-content"
+                class="mt-4 text-base"
                 :class="{ 'scrolling-enabled': open }"
               >
                 <slot />
               </div>
 
-              <div v-if="$slots.footer" class="tune-modal-footer">
+              <div v-if="$slots.footer" class="mt-4 flex gap-3">
                 <slot v-if="$slots.footer" name="footer" />
               </div>
             </DialogPanel>
