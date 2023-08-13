@@ -170,7 +170,7 @@ watch(
               primary
               @click="emit('delegate', address)"
             >
-              Delegate
+              {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
             </BaseButton>
           </BaseBlock>
         </template>
