@@ -218,7 +218,7 @@ onMounted(() => {
           </div>
         </div>
         <template v-if="searchInputDebounced">
-          <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
             <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
             <SpaceDelegatesListItem
               v-else-if="delegate"
@@ -228,6 +228,7 @@ onMounted(() => {
               :about="getStatementAbout(delegate.id)"
               :stats="delegatesStats[delegate.id]"
               :loading="loadingStatements"
+              class="border-b"
               @click-delegate="handleClickDelegate(delegate.id)"
               @click-user="handleClickProfile(delegate.id)"
             />
@@ -235,10 +236,10 @@ onMounted(() => {
           <BaseNoResults v-if="!delegate" use-block />
         </template>
         <template v-else>
-          <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+          <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
             <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
             <template v-else>
-              <div v-for="(d, i) in delegates" :key="i">
+              <div v-for="(d, i) in delegates" :key="i" class="last:border-b">
                 <SpaceDelegatesListItem
                   :delegate="d"
                   :profiles="profiles"

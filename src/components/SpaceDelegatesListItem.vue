@@ -37,7 +37,7 @@ watch(
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border-y border-skin-border p-3 pt-[12px] md:rounded-xl md:border"
+    class="flex h-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3"
   >
     <div class="flex justify-between">
       <button
