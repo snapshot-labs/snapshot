@@ -66,7 +66,7 @@ onMounted(() => {
           v-model="form.statement"
           label="Statement"
           placeholder="Why should people vote for you?"
-          class="text-skin-link"
+          class="min-h-[300px] text-skin-link"
         />
       </div>
     </template>
