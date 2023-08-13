@@ -85,13 +85,44 @@ function handleClickDelegate(id = '') {
     modalAccountOpen.value = true;
     return;
   }
-  selectedDelegate.value = id;
+
+  router.push({
+    query: {
+      ...route.query,
+      delegate: id
+    }
+  });
   showModalDelegate.value = true;
 }
 
 function handleClickProfile(id: string) {
-  selectedDelegate.value = id.toLowerCase();
+  router.push({
+    query: {
+      ...route.query,
+      profile: id.toLowerCase()
+    }
+  });
   showModalProfile.value = true;
+}
+
+function handleCloseModalDelegate() {
+  router.push({
+    query: {
+      ...route.query,
+      delegate: undefined
+    }
+  });
+  showModalDelegate.value = false;
+}
+
+function handleCloseModalProfile() {
+  router.push({
+    query: {
+      ...route.query,
+      profile: undefined
+    }
+  });
+  showModalProfile.value = false;
 }
 
 useInfiniteScroll(
@@ -233,18 +264,19 @@ onMounted(() => {
     </TheLayout>
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
-        :open="showModalDelegate"
+        :open="route.query.delegate !== undefined"
         :space="space"
-        :selected-delegate="selectedDelegate"
-        @close="showModalDelegate = false"
+        :address="(route.query.delegate as string) || ''"
+        @close="handleCloseModalDelegate"
         @reload="fetchDelegates(matchFilter)"
       />
 
       <SpaceDelegatesProfileModal
-        :open="showModalProfile"
+        v-if="route.query.profile"
+        :open="route.query.profile !== undefined"
         :space="space"
-        :address="selectedDelegate"
-        @close="showModalProfile = false"
+        :address="(route.query.profile as string)"
+        @close="handleCloseModalProfile"
         @delegate="handleClickDelegate"
       />
     </Teleport>

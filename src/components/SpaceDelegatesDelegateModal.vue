@@ -7,7 +7,7 @@ import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   open: boolean;
   space: ExtendedSpace;
-  selectedDelegate: string;
+  address: string;
 }>();
 
 const emit = defineEmits(['close', 'reload']);
@@ -115,10 +115,10 @@ watchDebounced(
 );
 
 watch(
-  () => props.selectedDelegate,
+  () => props.address,
   () => {
-    form.value.to = props.selectedDelegate;
-    resolvedAddress.value = props.selectedDelegate;
+    form.value.to = props.address;
+    resolvedAddress.value = props.address;
   }
 );
 

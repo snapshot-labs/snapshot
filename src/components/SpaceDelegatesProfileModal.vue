@@ -93,7 +93,7 @@ watch(
 
 <template>
   <BaseModalFullscreen :open="open" @close="emit('close')">
-    <BaseContainer v-if="isLoggedUser" class="pt-3">
+    <BaseContainer v-if="isLoggedUser" class="pb-3 pt-4">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -107,7 +107,7 @@ watch(
       />
     </BaseContainer>
 
-    <div class="pt-6">
+    <div class="pt-4">
       <TheLayout v-if="!showEdit">
         <template #content-left>
           <LoadingPage v-if="loadingStatements" slim />
