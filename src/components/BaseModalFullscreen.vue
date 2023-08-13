@@ -8,7 +8,7 @@ import {
 
 defineEmits(['close']);
 
-const props = defineProps<{
+defineProps<{
   open: boolean;
   title?: string;
 }>();
