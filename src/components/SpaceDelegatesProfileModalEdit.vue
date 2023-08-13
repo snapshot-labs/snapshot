@@ -18,7 +18,7 @@ const form = ref<any>({
   about: props.about || '',
   statement: props.statement || ''
 });
-const formRef = ref<any>(null);
+const aboutRef = ref<any>(null);
 
 const validationErrors = computed(() => {
   return validateForm(schemas.statement, form.value);
@@ -29,7 +29,10 @@ const isValid = computed(() => {
 });
 
 async function handleClickSave() {
-  if (!isValid.value) return;
+  if (!isValid.value) {
+    aboutRef.value?.forceShowError();
+    return;
+  }
   try {
     await saveStatement(props.space.id, form.value.about, form.value.statement);
     emit('reload');
@@ -49,10 +52,12 @@ onMounted(() => {
 <template>
   <TheLayout>
     <template #content-left>
-      <div class="space-y-3 pt-3">
+      <div class="space-y-3">
         <TuneTextarea
+          ref="aboutRef"
           v-model="form.about"
           label="About"
+          placeholder="Tell us about yourself"
           :max-length="schemas.statement.properties.about.maxLength"
           :error="validationErrors.about"
           class="text-skin-link"
@@ -60,7 +65,8 @@ onMounted(() => {
         <TuneTextarea
           v-model="form.statement"
           label="Statement"
-          class="!h-[240px] text-skin-link"
+          placeholder="Why should people vote for you?"
+          class="text-skin-link"
         />
       </div>
     </template>
