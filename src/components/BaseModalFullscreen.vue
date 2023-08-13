@@ -13,11 +13,12 @@ const props = defineProps<{
   title?: string;
 }>();
 
-watchEffect(() => {
-  document.documentElement.style.setProperty(
-    'scrollbar-gutter',
-    props.open ? 'auto' : 'stable'
-  );
+onMounted(() => {
+  document.documentElement.style.setProperty('scrollbar-gutter', 'auto');
+});
+
+onBeforeUnmount(() => {
+  document.documentElement.style.setProperty('scrollbar-gutter', 'stable');
 });
 </script>
 
