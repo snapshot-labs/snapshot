@@ -62,7 +62,7 @@ const spaceRoutes = [
     component: SpaceTreasury
   },
   {
-    path: 'delegates',
+    path: 'delegates/:delegate?/:profile?',
     name: 'spaceDelegates',
     component: SpaceDelegates
   }
