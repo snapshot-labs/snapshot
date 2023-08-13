@@ -13,7 +13,7 @@ defineProps<{
   title?: string;
 }>();
 
-onMounted(() => {
+onBeforeMount(() => {
   document.documentElement.style.setProperty('scrollbar-gutter', 'auto');
 });
 
@@ -27,13 +27,8 @@ onBeforeUnmount(() => {
     <Dialog as="div" class="relative z-50" @close="$emit('close')">
       <div class="fixed inset-0 overflow-y-auto">
         <div class="flex min-h-full items-center justify-center">
-          <TransitionChild
-            as="template"
-            enter="duration-200 ease-out"
-            enter-from="opacity-0"
-            enter-to="opacity-100"
-            leave="duration-0 ease-in"
-          >
+          <!-- enter from below -->
+          <TransitionChild as="template">
             <DialogPanel
               class="h-screen w-full transform overflow-y-auto bg-skin-bg p-0 align-middle transition-all"
               style="scrollbar-gutter: stable"
