@@ -16,7 +16,8 @@ const {
   isLoadingDelegates,
   isLoadingDelegate,
   hasMoreDelegates,
-  delegatesStats
+  delegatesStats,
+  hasDelegatesLoadFailed
 } = useDelegates(props.space.delegationPortal);
 const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
@@ -216,7 +217,13 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <template v-if="searchInputDebounced">
+        <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
+          An error occurred while loading delegates. Please try again later. If
+          the problem persists, consider contacting the space admin or our
+          support team on
+          <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+        </BaseMessageBlock>
+        <template v-else-if="searchInputDebounced">
           <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
             <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
             <SpaceDelegatesListItem

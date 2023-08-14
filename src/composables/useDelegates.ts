@@ -47,6 +47,8 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   const delegatesStats = ref<DelegatesStats>({});
 
   async function _fetchDelegates(orderBy: string, skip = 0) {
+    hasDelegatesLoadFailed.value = false;
+
     const query: any = standardConfig.getDelegatesQuery({
       skip,
       first: DELEGATES_LIMIT,
@@ -98,6 +100,8 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   }
 
   async function fetchDelegate(id: string) {
+    hasDelegatesLoadFailed.value = false;
+
     if (isLoadingDelegate.value) return;
     delegate.value = null;
     isLoadingDelegate.value = true;
@@ -121,6 +125,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
         delegate.value = standardConfig.formatDelegateResponse(response);
     } catch (err) {
       console.error(err);
+      hasDelegatesLoadFailed.value = true;
     } finally {
       isLoadingDelegate.value = false;
     }
