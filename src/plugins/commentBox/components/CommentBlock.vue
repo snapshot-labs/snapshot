@@ -232,7 +232,7 @@ function deleteItemReply(key) {
     />
   </div>
   <div v-if="toggleEditComment">
-    <BaseBlock :slim="true" class="mt-2 mb-0 p-4 text-skin-text">
+    <BaseBlock :slim="true" class="mb-0 mt-2 p-4 text-skin-text">
       <div>
         <BaseUser
           :address="item.author"

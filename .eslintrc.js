@@ -1,3 +1,6 @@
+/* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution');
+
 module.exports = {
   root: true,
   env: {
@@ -8,7 +11,7 @@ module.exports = {
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript/recommended',
-    '@vue/eslint-config-prettier',
+    '@vue/eslint-config-prettier/skip-formatting',
     '.eslintrc-auto-import.json'
   ],
   ignorePatterns: ['/node_modules/**/*.*'],

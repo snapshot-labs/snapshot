@@ -22,11 +22,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        
+
       - name: Build
         run: yarn run build
 
+      - name: Format
+        run: yarn run format:check
+
       - name: Lint
         run: yarn run lint
-
- 
