@@ -74,7 +74,10 @@ onMounted(() => {
     </template>
 
     <template #sidebar-right>
-      <BaseBlock class="mt-4 p-4 md:p-3 lg:mt-0" slim>
+      <BaseBlock
+        class="mt-4 p-4 md:p-3 lg:sticky lg:top-[110px] lg:mt-0 lg:w-[320px]"
+        slim
+      >
         <div class="font-semibold text-skin-heading">Save changes</div>
 
         You can always come back and edit your profile at any time.

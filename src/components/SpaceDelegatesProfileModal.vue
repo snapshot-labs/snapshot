@@ -146,7 +146,10 @@ watch(
         </template>
 
         <template #sidebar-right>
-          <BaseBlock slim class="mt-4 p-4 md:p-3 lg:mt-0">
+          <BaseBlock
+            slim
+            class="mt-4 p-4 md:p-3 lg:sticky lg:top-[110px] lg:mt-0 lg:w-[320px]"
+          >
             <div class="flex">
               <div>
                 <AvatarUser :address="address" size="40" />
