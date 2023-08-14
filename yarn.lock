@@ -3179,7 +3179,7 @@
     js-beautify "1.14.6"
     vue-component-type-helpers "1.6.5"
 
-"@vueuse/core@^10.1.2", "@vueuse/core@^10.3.0":
+"@vueuse/core@^10.1.2":
   version "10.3.0"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.3.0.tgz#b2dab7821ef206811b925fc935163c38056fd82b"
   integrity sha512-BEM5yxcFKb5btFjTSAFjTu5jmwoW66fyV9uJIP4wUXXU8aR5Hl44gndaaXp7dC5HSObmgbnR2RN+Un1p68Mf5Q==
@@ -13234,6 +13234,16 @@ safe-stable-stringify@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
+
+samuveth-vueuse-core@^10.3.0-bugfix2:
+  version "10.3.0-bugfix2"
+  resolved "https://registry.yarnpkg.com/samuveth-vueuse-core/-/samuveth-vueuse-core-10.3.0-bugfix2.tgz#625f04aaf174a2cd1a1c52f05c3d72d0d1b2f0a3"
+  integrity sha512-fdodBWZqq1TtFiEr86f6J68J72jPkOyoHsIOWqjVH5c8TEh50Vikura1wO+JSOYfQFsUoA12pqYCgS+uE58QUQ==
+  dependencies:
+    "@types/web-bluetooth" "^0.0.17"
+    "@vueuse/metadata" "10.3.0"
+    "@vueuse/shared" "10.3.0"
+    vue-demi ">=0.14.5"
 
 sass-loader@^13.2.2:
   version "13.2.2"
