@@ -52,7 +52,7 @@ onMounted(() => {
 <template>
   <TheLayout>
     <template #content-left>
-      <div class="space-y-3">
+      <div class="space-y-3 px-4 md:px-0">
         <TuneTextarea
           ref="aboutRef"
           v-model="form.about"
@@ -60,19 +60,19 @@ onMounted(() => {
           placeholder="Tell us about yourself"
           :max-length="schemas.statement.properties.about.maxLength"
           :error="validationErrors.about"
-          class="text-skin-link"
+          class="min-h-[100px] text-skin-link"
         />
         <TuneTextarea
           v-model="form.statement"
           label="Statement"
           placeholder="Why should people vote for you?"
-          class="min-h-[300px] text-skin-link"
+          class="min-h-[220px] text-skin-link sm:min-h-[300px] lg:min-h-[400px]"
         />
       </div>
     </template>
 
     <template #sidebar-right>
-      <BaseBlock class="p-3" slim>
+      <BaseBlock class="mt-4 p-4 md:p-3 lg:mt-0" slim>
         <div class="font-semibold text-skin-heading">Save changes</div>
 
         You can always come back and edit your profile at any time.

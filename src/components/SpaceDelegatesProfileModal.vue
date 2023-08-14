@@ -93,7 +93,7 @@ watch(
 
 <template>
   <BaseModalFullscreen :open="open" @close="emit('close')">
-    <BaseContainer v-if="isLoggedUser" class="pb-3 pt-4">
+    <BaseContainer v-if="isLoggedUser" class="pt-3 lg:pb-3 lg:pt-4">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -108,34 +108,45 @@ watch(
     </BaseContainer>
 
     <div class="pt-4">
-      <TheLayout v-if="!showEdit">
-        <template #content-left>
-          <LoadingPage v-if="loadingStatements" slim />
-          <div v-else class="space-y-[40px]">
-            <div>
-              <h3 class="mb-2 mt-0">About</h3>
-              <p
-                v-if="getStatementAbout(address)"
-                class="text-[22px] leading-7"
-              >
-                {{ getStatementAbout(address) }}
-              </p>
-              <div v-else>No about provided yet</div>
-            </div>
+      <SpaceDelegatesProfileModalEdit
+        v-if="showEdit"
+        :space="space"
+        :address="address"
+        :about="getStatementAbout(address)"
+        :statement="getStatementStatement(address)"
+        @reload="handleReload"
+      />
 
-            <div>
-              <h3 class="m-0 mb-2">Statement</h3>
-              <BaseMarkdown
-                v-if="getStatementStatement(address)"
-                :body="getStatementStatement(address)!"
-              />
-              <div v-else>No statement provided yet</div>
+      <TheLayout v-else>
+        <template #content-left>
+          <div class="px-4 md:px-0">
+            <LoadingPage v-if="loadingStatements" slim />
+            <div v-else class="space-y-[40px]">
+              <div>
+                <h3 class="mb-2 mt-0">About</h3>
+                <p
+                  v-if="getStatementAbout(address)"
+                  class="text-[19px] sm:text-[22px] sm:leading-7"
+                >
+                  {{ getStatementAbout(address) }}
+                </p>
+                <div v-else>No about provided yet</div>
+              </div>
+
+              <div>
+                <h3 class="m-0 mb-2">Statement</h3>
+                <BaseMarkdown
+                  v-if="getStatementStatement(address)"
+                  :body="getStatementStatement(address)!"
+                />
+                <div v-else>No statement provided yet</div>
+              </div>
             </div>
           </div>
         </template>
 
         <template #sidebar-right>
-          <BaseBlock slim class="p-3">
+          <BaseBlock slim class="mt-4 p-4 md:p-3 lg:mt-0">
             <div class="flex">
               <div>
                 <AvatarUser :address="address" size="40" />
@@ -175,15 +186,6 @@ watch(
           </BaseBlock>
         </template>
       </TheLayout>
-
-      <SpaceDelegatesProfileModalEdit
-        v-else
-        :space="space"
-        :address="address"
-        :about="getStatementAbout(address)"
-        :statement="getStatementStatement(address)"
-        @reload="handleReload"
-      />
     </div>
   </BaseModalFullscreen>
 </template>
