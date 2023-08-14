@@ -1,8 +1,11 @@
 <script setup lang="ts">
+import { explorerUrl } from '@/helpers/utils';
 import {
   DelegateWithPercent,
   Profile,
-  ExtendedSpace
+  ExtendedSpace,
+  DelegatesVote,
+  DelegatesProposal
 } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -10,8 +13,8 @@ const props = defineProps<{
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
   stats?: {
-    votes: any;
-    proposals: any;
+    votes: DelegatesVote[];
+    proposals: DelegatesProposal[];
   };
   loading: boolean;
   about?: string;
@@ -25,6 +28,30 @@ const { formatPercentageNumber } = useStatement();
 
 const aboutLoadedOnce = ref(false);
 
+const dropdownItems = computed(() => [
+  {
+    text: 'View profile',
+    action: 'viewProfile'
+  },
+  {
+    text: 'See explorer',
+    action: 'seeExplorer'
+  }
+]);
+
+function handleDropdownAction(action: string) {
+  if (action === 'viewProfile') {
+    emit('clickUser');
+  }
+  if (action === 'seeExplorer') {
+    window.open(
+      explorerUrl(props.space.network, props.delegate.id),
+      '_blank',
+      'noopener,noreferrer'
+    );
+  }
+}
+
 watch(
   () => props.loading,
   (newValue, oldValue) => {
@@ -37,7 +64,7 @@ watch(
 
 <template>
   <div
-    class="flex h-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3"
+    class="flex h-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3 md:pt-[12px]"
   >
     <div class="flex justify-between">
       <button
@@ -76,9 +103,24 @@ watch(
           </div>
         </div>
       </button>
-      <BaseButtonIcon class="-mr-1 -mt-1 h-[36px]">
-        <i-ho-dots-horizontal class="text-[17px]" />
-      </BaseButtonIcon>
+      <BaseMenu :items="dropdownItems" @select="handleDropdownAction($event)">
+        <template #button>
+          <BaseButtonIcon class="-mr-1 !h-[28px]">
+            <i-ho-dots-horizontal class="text-[17px]" />
+          </BaseButtonIcon>
+        </template>
+        <template #item="{ item }">
+          <div class="w-[170px] text-skin-link">
+            <span>
+              {{ item.text }}
+              <i-ho-external-link
+                v-if="item.action === 'seeExplorer'"
+                class="inline-block text-sm"
+              />
+            </span>
+          </div>
+        </template>
+      </BaseMenu>
     </div>
 
     <div class="mt-3 h-[48px]">
@@ -93,7 +135,7 @@ watch(
         </span>
       </template>
 
-      <span v-else> No about provided yet. </span>
+      <span v-else> This delegate is a person of mystery. Stay tuned! </span>
     </div>
 
     <div class="mt-3 flex gap-[6px]">

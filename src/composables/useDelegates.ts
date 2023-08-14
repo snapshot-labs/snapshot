@@ -1,4 +1,8 @@
-import { DelegateWithPercent } from '@/helpers/interfaces';
+import {
+  DelegateWithPercent,
+  DelegatesVote,
+  DelegatesProposal
+} from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegation/index';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
@@ -13,9 +17,10 @@ type DelegatesConfig = {
   delegationApi: string;
 };
 
-type Vote = { created: number; voter: string; choice: any; vp: number };
-type Proposal = { created: number; author: string; title: string };
-type DelegatesStats = Record<string, { votes: Vote[]; proposals: Proposal[] }>;
+type DelegatesStats = Record<
+  string,
+  { votes: DelegatesVote[]; proposals: DelegatesProposal[] }
+>;
 
 const DELEGATES_LIMIT = 18;
 
@@ -162,7 +167,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       delegate => !delegatesStats.value[delegate]
     );
 
-    const response: { votes: Vote[]; proposals: Proposal[] } =
+    const response: { votes: DelegatesVote[]; proposals: DelegatesProposal[] } =
       await apolloQuery({
         query: DELEGATE_VOTES_AND_PROPOSALS,
         variables: {

@@ -398,3 +398,16 @@ export interface Statement {
   ipfs: string;
   id: string;
 }
+
+export type DelegatesVote = {
+  created: number;
+  voter: string;
+  choice: any;
+  vp: number;
+};
+
+export type DelegatesProposal = {
+  created: number;
+  author: string;
+  title: string;
+};
