@@ -65,6 +65,8 @@ onMounted(() => {
         <TuneTextarea
           v-model="form.statement"
           label="Statement"
+          :max-length="schemas.statement.properties.statement.maxLength"
+          :error="validationErrors.statement"
           placeholder="Why should people vote for you?"
           class="min-h-[220px] text-skin-link sm:min-h-[300px] lg:min-h-[400px]"
         />
