@@ -32,7 +32,6 @@ const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 const showModalDelegate = ref(false);
 const showModalProfile = ref(false);
-const selectedDelegate = ref('');
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
