@@ -274,7 +274,7 @@ onMounted(() => {
 
       <SpaceDelegatesProfileModal
         v-if="route.query.profile"
-        :open="route.query.profile !== undefined"
+        :open="!!route.query.profile"
         :space="space"
         :address="(route.query.profile as string)"
         @close="handleCloseModalProfile"
