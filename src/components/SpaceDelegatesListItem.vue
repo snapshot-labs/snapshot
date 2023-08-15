@@ -123,7 +123,7 @@ watch(
       </BaseMenu>
     </div>
 
-    <div class="mt-3 h-[48px]">
+    <div class="mt-3 h-[48px] cursor-pointer" @click="emit('clickUser')">
       <div
         v-if="loading && !aboutLoadedOnce"
         class="lazy-loading h-[24px] w-11/12 rounded-md"
@@ -135,7 +135,7 @@ watch(
         </span>
       </template>
 
-      <span v-else> This delegate is a person of mystery. Stay tuned! </span>
+      <span v-else> Information not provided. </span>
     </div>
 
     <div class="mt-3 flex gap-[6px]">
