@@ -29,9 +29,9 @@ watch(
     </BaseButtonIcon>
   </div>
   <div>
-    <BaseContainer class="pl-0 pr-3 sm:!px-4">
+    <div class="px-3 sm:!px-4">
       <div class="flex items-center py-[12px]">
-        <div class="ml-3 flex flex-auto items-center">
+        <div class="flex flex-auto items-center">
           <BaseButtonRound
             class="sm:hidden"
             @click="showSidebar = !showSidebar"
@@ -40,7 +40,7 @@ watch(
           </BaseButtonRound>
           <router-link
             :to="{ path: '/' }"
-            class="-ml-3 hidden items-center sm:block"
+            class="hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot
@@ -54,7 +54,7 @@ watch(
           <NavbarExtras />
         </div>
       </div>
-    </BaseContainer>
+    </div>
   </div>
   <div
     v-if="pendingTransactions.length > 0"
