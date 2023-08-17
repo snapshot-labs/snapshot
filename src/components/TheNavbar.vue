@@ -29,7 +29,7 @@ watch(
     </BaseButtonIcon>
   </div>
   <div>
-    <div class="px-3 sm:!px-4">
+    <div class="px-3 sm:px-4">
       <div class="flex items-center py-[12px]">
         <div class="flex flex-auto items-center">
           <BaseButtonRound
