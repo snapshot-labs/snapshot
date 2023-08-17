@@ -103,7 +103,9 @@ const findProposalGql = async (
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${params.explanation}",optimisticGovernor:"${params.ogAddress}"}){
+    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${
+    params.explanation
+  }",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
       id
       executed
       assertionId
