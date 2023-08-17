@@ -31,8 +31,6 @@ const { loadingStatements, loadStatements, getStatementAbout } = useStatement();
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
-const showModalDelegate = ref(false);
-const showModalProfile = ref(false);
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
@@ -92,17 +90,6 @@ function handleClickDelegate(id = '') {
       delegate: id
     }
   });
-  showModalDelegate.value = true;
-}
-
-function handleClickProfile(id: string) {
-  router.push({
-    query: {
-      ...route.query,
-      profile: id.toLowerCase()
-    }
-  });
-  showModalProfile.value = true;
 }
 
 function handleCloseModalDelegate() {
@@ -112,17 +99,14 @@ function handleCloseModalDelegate() {
       delegate: undefined
     }
   });
-  showModalDelegate.value = false;
 }
 
-function handleCloseModalProfile() {
+function handleClickProfile(id: string) {
   router.push({
-    query: {
-      ...route.query,
-      profile: undefined
+    params: {
+      address: id.toLowerCase()
     }
   });
-  showModalProfile.value = false;
 }
 
 useInfiniteScroll(
@@ -172,7 +156,13 @@ onMounted(() => {
 
 <template>
   <div>
-    <TheLayout>
+    <SpaceDelegatesProfile
+      v-if="route.params.address"
+      :space="space"
+      :address="(route.params.address as string)"
+      @delegate="handleClickDelegate"
+    />
+    <TheLayout v-else>
       <template #sidebar-left>
         <SpaceSidebar :space="space" />
       </template>
@@ -276,15 +266,6 @@ onMounted(() => {
         :address="(route.query.delegate as string) || ''"
         @close="handleCloseModalDelegate"
         @reload="fetchDelegates(matchFilter)"
-      />
-
-      <SpaceDelegatesProfileModal
-        v-if="route.query.profile"
-        :open="!!route.query.profile"
-        :space="space"
-        :address="(route.query.profile as string)"
-        @close="handleCloseModalProfile"
-        @delegate="handleClickDelegate"
       />
     </Teleport>
   </div>
