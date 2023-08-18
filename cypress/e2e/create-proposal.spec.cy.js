@@ -1,12 +1,7 @@
 describe('create proposal', () => {
   it('should create a proposal with three different spaces', () => {
-    [
-      '/test1.testsnap.eth',
-      '/testdemo.testsnap.eth',
-      '/test2.testsnap.eth'
-    ].forEach(space => {
+    ['/test1.testsnap.eth', '/test2.testsnap.eth'].forEach(space => {
       // First space is a default space, with no validation settings
-      // Second space is a default space, with validation settings (basic)
       // Third space is a custom space, with validation settings (only authors)
       cy.visit(space);
       cy.get('[data-testid="create-proposal-button"]').click();

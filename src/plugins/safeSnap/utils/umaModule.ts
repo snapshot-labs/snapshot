@@ -18,7 +18,7 @@ import filter from 'lodash/filter';
 
 function getDeployBlock(network: string, name: string): number {
   const data = filter(contractData, { network, name });
-  if (data.length === 1) return data[0].deployBlock;
+  if (data.length === 1) return data[0].deployBlock ?? 0;
   return 0;
 }
 function getContractSubgraph(search: {
@@ -103,7 +103,9 @@ const findProposalGql = async (
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${params.explanation}",ogAddress:"${params.ogAddress}"}){
+    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${
+    params.explanation
+  }",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
       id
       executed
       assertionId
@@ -249,7 +251,7 @@ export const getModuleDetailsUma = async (
   // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
   const oGstartBlock = getDeployBlock(network, 'OptimisticGovernor');
   const oOStartBlock = getDeployBlock(network, 'OptimisticOracleV3');
-  const maxRange = network === '1' || network === '5' ? 3000 : 10000;
+  const maxRange = 3000;
 
   const [assertionEvents, transactionsProposedEvents, executionEvents] =
     await Promise.all([

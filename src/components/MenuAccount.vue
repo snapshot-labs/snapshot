@@ -53,7 +53,7 @@ function handleAction(e) {
           extras: { icon: 'switch' }
         },
         {
-          text: t('emailSubscription.title'),
+          text: 'Email notifications',
           action: 'subscribeEmail',
           extras: { icon: 'mail' }
         },
