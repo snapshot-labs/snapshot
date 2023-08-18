@@ -52,10 +52,10 @@ export function useDelegates(space: ExtendedSpace) {
   const delegatesStats = ref<DelegatesStats>({});
 
   async function _initDelegates(spaceId: string, delegates: string[]) {
+    loadProfiles(delegates);
     await Promise.all([
       fetchDelegateVotesAndProposals(spaceId, delegates),
-      loadStatements(spaceId, delegates),
-      loadProfiles(delegates)
+      loadStatements(spaceId, delegates)
     ]);
   }
 
