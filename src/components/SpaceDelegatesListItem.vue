@@ -93,7 +93,7 @@ function handleDropdownAction(action: string) {
       </button>
       <BaseMenu :items="dropdownItems" @select="handleDropdownAction($event)">
         <template #button>
-          <BaseButtonIcon class="-mr-1 !h-[28px]">
+          <BaseButtonIcon class="-mr-[6px] !h-[24px]">
             <i-ho-dots-horizontal class="text-[17px]" />
           </BaseButtonIcon>
         </template>
