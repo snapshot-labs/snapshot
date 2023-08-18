@@ -1,7 +1,8 @@
 import {
   DelegateWithPercent,
   DelegatesVote,
-  DelegatesProposal
+  DelegatesProposal,
+  ExtendedSpace
 } from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegation/index';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
@@ -10,12 +11,6 @@ import {
   subgraphRequest,
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
-
-type DelegatesConfig = {
-  delegationType: string;
-  delegationContract: string;
-  delegationApi: string;
-};
 
 type DelegatesStats = Record<
   string,
@@ -34,12 +29,16 @@ function adjustUrl(apiUrl: string) {
     : apiUrl;
 }
 
-export function useDelegates(delegatesConfig: DelegatesConfig) {
+export function useDelegates(space: ExtendedSpace) {
   const { resolveName } = useResolveName();
   const { apolloQuery } = useApolloQuery();
   const auth = getInstance();
+  const { loadStatements } = useStatement();
+  const { loadProfiles } = useProfiles();
 
-  const standardConfig = createStandardConfig(delegatesConfig.delegationType);
+  const standardConfig = createStandardConfig(
+    space.delegationPortal.delegationType
+  );
 
   const delegates = ref<DelegateWithPercent[]>([]);
   const delegate = ref<DelegateWithPercent | null>(null);
@@ -51,6 +50,14 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
 
+  async function _initDelegates(spaceId: string, delegates: string[]) {
+    await Promise.all([
+      fetchDelegateVotesAndProposals(spaceId, delegates),
+      loadStatements(spaceId, delegates),
+      loadProfiles(delegates)
+    ]);
+  }
+
   async function _fetchDelegates(orderBy: string, skip = 0) {
     hasDelegatesLoadFailed.value = false;
 
@@ -61,11 +68,18 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     });
 
     const response = await subgraphRequest(
-      adjustUrl(delegatesConfig.delegationApi),
+      adjustUrl(space.delegationPortal.delegationApi),
       query
     );
 
-    return standardConfig.formatDelegatesResponse(response);
+    const formattedResponse = standardConfig.formatDelegatesResponse(response);
+
+    await _initDelegates(
+      space.id,
+      formattedResponse.map(d => d.id)
+    );
+
+    return formattedResponse;
   }
 
   async function fetchDelegates(orderBy: string) {
@@ -117,7 +131,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
       const query: any = standardConfig.getDelegateQuery(resolvedAddress.value);
 
       const response = await subgraphRequest(
-        adjustUrl(delegatesConfig.delegationApi),
+        adjustUrl(space.delegationPortal.delegationApi),
         query
       );
 
@@ -126,8 +140,10 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
           resolvedAddress.value
         );
 
-      if (response.delegate)
+      if (response.delegate) {
         delegate.value = standardConfig.formatDelegateResponse(response);
+        await _initDelegates(space.id, [delegate.value.id]);
+      }
     } catch (err) {
       console.error(err);
       hasDelegatesLoadFailed.value = true;
@@ -140,7 +156,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
 
     const response = await subgraphRequest(
-      adjustUrl(delegatesConfig.delegationApi),
+      adjustUrl(space.delegationPortal.delegationApi),
       query
     );
 
@@ -151,7 +167,7 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
     const contractMethod = standardConfig.getContractDelegateMethod();
     const tx = await sendTransaction(
       auth.web3,
-      delegatesConfig.delegationContract,
+      space.delegationPortal.delegationContract,
       contractMethod.abi,
       contractMethod.action,
       [address]
@@ -160,8 +176,8 @@ export function useDelegates(delegatesConfig: DelegatesConfig) {
   }
 
   async function fetchDelegateVotesAndProposals(
-    delegates: string[],
-    space: string
+    space: string,
+    delegates: string[]
   ) {
     const filteredDelegates = delegates.filter(
       delegate => !delegatesStats.value[delegate]

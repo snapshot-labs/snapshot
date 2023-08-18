@@ -10,7 +10,6 @@ const {
   fetchDelegate,
   fetchDelegates,
   fetchMoreDelegates,
-  fetchDelegateVotesAndProposals,
   delegate,
   delegates,
   isLoadingDelegates,
@@ -18,15 +17,15 @@ const {
   hasMoreDelegates,
   delegatesStats,
   hasDelegatesLoadFailed
-} = useDelegates(props.space.delegationPortal);
-const { profiles, loadProfiles } = useProfiles();
+} = useDelegates(props.space);
+const { profiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
-const { loadingStatements, loadStatements, getStatementAbout } = useStatement();
+const { getStatementAbout } = useStatement();
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -118,28 +117,6 @@ useInfiniteScroll(
   { distance: 250, interval: 500 }
 );
 
-watch([delegate, delegates], ([newDelegate, newDelegates], [prevDelegate]) => {
-  if (searchInput.value && !newDelegate) return;
-  const delegateChanged = newDelegate !== prevDelegate;
-  if (delegateChanged && newDelegate) {
-    loadStatements(props.space.id, [newDelegate.id]);
-    loadProfiles([newDelegate.id]);
-    fetchDelegateVotesAndProposals([newDelegate.id], props.space.id);
-    return;
-  }
-  if (newDelegates && newDelegates.length > 0) {
-    loadStatements(
-      props.space.id,
-      newDelegates.map(d => d.id)
-    );
-    loadProfiles(newDelegates.map(d => d.id));
-    fetchDelegateVotesAndProposals(
-      newDelegates.map(d => d.id),
-      props.space.id
-    );
-  }
-});
-
 watch(searchInputDebounced, () => {
   fetchDelegate(searchInput.value);
 });
@@ -223,7 +200,6 @@ onMounted(() => {
               :space="space"
               :about="getStatementAbout(delegate.id)"
               :stats="delegatesStats[delegate.id]"
-              :loading="loadingStatements"
               class="border-b"
               @click-delegate="handleClickDelegate(delegate.id)"
               @click-user="handleClickProfile(delegate.id)"
@@ -235,14 +211,17 @@ onMounted(() => {
           <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
             <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
             <template v-else>
-              <div v-for="(d, i) in delegates" :key="i" class="last:border-b">
+              <div
+                v-for="(d, i) in delegates"
+                :key="i"
+                class="last:border-b md:last:border-b-0"
+              >
                 <SpaceDelegatesListItem
                   :delegate="d"
                   :profiles="profiles"
                   :space="space"
                   :about="getStatementAbout(d.id)"
                   :stats="delegatesStats[d.id]"
-                  :loading="loadingStatements"
                   @click-delegate="handleClickDelegate(d.id)"
                   @click-user="handleClickProfile(d.id)"
                 />

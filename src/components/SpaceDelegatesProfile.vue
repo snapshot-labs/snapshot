@@ -10,17 +10,11 @@ const emit = defineEmits(['close', 'delegate']);
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
-const { loadProfiles, getProfile } = useProfiles();
+const { getProfile } = useProfiles();
 
+const { fetchDelegate, delegate, delegatesStats, isLoadingDelegate } =
+  useDelegates(props.space);
 const {
-  fetchDelegate,
-  fetchDelegateVotesAndProposals,
-  delegate,
-  delegatesStats
-} = useDelegates(props.space.delegationPortal);
-const {
-  loadingStatements,
-  loadStatements,
   reloadStatement,
   getStatementAbout,
   getStatementStatement,
@@ -73,9 +67,6 @@ watch(
   () => props.address,
   async () => {
     fetchDelegate(props.address);
-    fetchDelegateVotesAndProposals([props.address], props.space.id);
-    loadStatements(props.space.id, [props.address]);
-    loadProfiles([props.address]);
   },
   {
     immediate: true
@@ -120,7 +111,7 @@ watch(
     <TheLayout v-else>
       <template #content-left>
         <div class="px-4 md:px-0">
-          <LoadingPage v-if="loadingStatements" slim />
+          <LoadingPage v-if="isLoadingDelegate" slim />
           <div v-else class="space-y-[40px]">
             <div>
               <h3 class="mb-2 mt-0">About</h3>

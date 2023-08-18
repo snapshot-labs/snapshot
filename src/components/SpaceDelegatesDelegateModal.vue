@@ -20,9 +20,7 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate, fetchDelegateBalance } = useDelegates(
-  props.space.delegationPortal
-);
+const { setDelegate, fetchDelegateBalance } = useDelegates(props.space);
 const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 

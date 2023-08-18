@@ -16,7 +16,6 @@ const props = defineProps<{
     votes: DelegatesVote[];
     proposals: DelegatesProposal[];
   };
-  loading: boolean;
   about?: string;
 }>();
 
@@ -25,8 +24,6 @@ const emit = defineEmits(['clickDelegate', 'clickUser']);
 const { getUsername } = useUsername();
 const { formatCompactNumber } = useIntl();
 const { formatPercentageNumber } = useStatement();
-
-const aboutLoadedOnce = ref(false);
 
 const dropdownItems = computed(() => [
   {
@@ -51,15 +48,6 @@ function handleDropdownAction(action: string) {
     );
   }
 }
-
-watch(
-  () => props.loading,
-  (newValue, oldValue) => {
-    if (oldValue && !newValue) {
-      aboutLoadedOnce.value = true;
-    }
-  }
-);
 </script>
 
 <template>
@@ -124,12 +112,7 @@ watch(
     </div>
 
     <div class="mt-3 h-[48px] cursor-pointer" @click="emit('clickUser')">
-      <div
-        v-if="loading && !aboutLoadedOnce"
-        class="lazy-loading h-[24px] w-11/12 rounded-md"
-      />
-
-      <template v-else-if="about">
+      <template v-if="about">
         <span class="line-clamp-2">
           {{ about }}
         </span>
