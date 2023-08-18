@@ -99,11 +99,11 @@ function handleDropdownAction(action: string) {
         </template>
         <template #item="{ item }">
           <div class="w-[170px] text-skin-link">
-            <span>
+            <span class="flex items-center gap-1">
               {{ item.text }}
               <i-ho-external-link
                 v-if="item.action === 'seeExplorer'"
-                class="inline-block text-sm"
+                class="text-sm"
               />
             </span>
           </div>
