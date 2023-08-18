@@ -37,7 +37,7 @@ watch(
 
 <template>
   <div
-    class="flex h-[46px] items-center"
+    class="flex h-[44px] items-center"
     :class="{ 'border-b bg-skin-bg py-3 pl-4': modal }"
   >
     <i-ho-search class="mr-2 flex-shrink-0 text-[19px] text-skin-link" />

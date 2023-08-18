@@ -157,7 +157,7 @@ onMounted(() => {
                 <BaseSearch
                   :model-value="searchInput"
                   :placeholder="$t('searchPlaceholderVotes')"
-                  class="!h-[44px] flex-auto pr-2"
+                  class="flex-auto pr-2"
                   @update:model-value="handleSearchInput"
                 />
               </div>
