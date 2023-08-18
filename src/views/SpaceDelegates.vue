@@ -191,7 +191,10 @@ onMounted(() => {
           <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
         </BaseMessageBlock>
         <template v-else-if="searchInputDebounced">
-          <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
+          <div
+            class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+            :class="{ 'opacity-40': isLoadingDelegate }"
+          >
             <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
             <SpaceDelegatesListItem
               v-else-if="delegate"
@@ -208,7 +211,10 @@ onMounted(() => {
           <BaseNoResults v-if="!delegate" use-block />
         </template>
         <template v-else>
-          <div class="grid grid-cols-1 md:gap-3 lg:grid-cols-2">
+          <div
+            class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+            :class="{ 'opacity-40': isLoadingDelegates }"
+          >
             <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
             <template v-else>
               <div
