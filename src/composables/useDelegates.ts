@@ -46,6 +46,7 @@ export function useDelegates(space: ExtendedSpace) {
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
+  const isLoadingDelegateBalance = ref(false);
   const hasMoreDelegates = ref(false);
   const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
@@ -155,12 +156,18 @@ export function useDelegates(space: ExtendedSpace) {
   async function fetchDelegateBalance(id: string) {
     const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
 
-    const response = await subgraphRequest(
-      adjustUrl(space.delegationPortal.delegationApi),
-      query
-    );
-
-    return standardConfig.formatBalanceResponse(response);
+    try {
+      isLoadingDelegateBalance.value = true;
+      const response = await subgraphRequest(
+        adjustUrl(space.delegationPortal.delegationApi),
+        query
+      );
+      return standardConfig.formatBalanceResponse(response);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isLoadingDelegateBalance.value = false;
+    }
   }
 
   async function setDelegate(address: string) {
@@ -224,6 +231,7 @@ export function useDelegates(space: ExtendedSpace) {
     isLoadingDelegates,
     isLoadingMoreDelegates,
     hasDelegatesLoadFailed,
+    isLoadingDelegateBalance,
     hasMoreDelegates,
     delegate,
     delegates,

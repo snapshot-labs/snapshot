@@ -20,7 +20,8 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate, fetchDelegateBalance } = useDelegates(props.space);
+const { setDelegate, fetchDelegateBalance, isLoadingDelegateBalance } =
+  useDelegates(props.space);
 const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 
@@ -101,7 +102,7 @@ async function resolveToAddress(value: string) {
 
 async function loadAccountBalance() {
   const balance = await fetchDelegateBalance(web3Account.value);
-  accountBalance.value = balance;
+  accountBalance.value = balance || '0';
 }
 
 watchDebounced(
@@ -135,8 +136,15 @@ watch(
       <div class="px-4 pt-1 text-left text-skin-heading">
         <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
         <span>{{ $t('delegates.delegateModal.sub') }}</span>
-        {{ formatCompactNumber(Number(accountBalance)) }}
-        {{ space.symbol }}
+        <LoadingSpinner
+          v-if="isLoadingDelegateBalance"
+          class="inline-block pl-2"
+          small
+        />
+        <span v-else>
+          {{ formatCompactNumber(Number(accountBalance)) }}
+          {{ space.symbol }}
+        </span>
       </div>
     </template>
 
