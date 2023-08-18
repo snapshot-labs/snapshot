@@ -25,7 +25,12 @@ const pages = computed(() => {
     const delegate = route.params.address as string;
     pages = [
       ...basePages,
-      { name: 'Delegates', to: `${spaceRoute}/delegates`, current: false },
+      {
+        name: 'Delegates',
+        to: `${spaceRoute}/delegates`,
+        current: false,
+        useHistory: true
+      },
       {
         name: shorten(delegate),
         to: `${spaceRoute}/delegates/${delegate}`,
