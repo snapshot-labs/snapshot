@@ -134,8 +134,6 @@ watch(
           {{ about }}
         </span>
       </template>
-
-      <span v-else> Information not provided. </span>
     </div>
 
     <div class="mt-3 flex gap-[6px]">
