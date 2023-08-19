@@ -13,7 +13,7 @@ const { copyToClipboard } = useCopy();
 </script>
 
 <template>
-  <div class="flex space-x-2 px-3 leading-5">
+  <div class="flex space-x-2 leading-5">
     <button
       v-if="profile?.ens && profile?.name"
       class="flex min-w-0 cursor-pointer items-center rounded-full text-xs"

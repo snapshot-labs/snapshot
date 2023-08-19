@@ -17,8 +17,11 @@ const { web3Account } = useWeb3();
 
 <template>
   <div class="lg:fixed lg:w-[240px]">
-    <BaseBlock slim class="overflow-hidden">
-      <div class="mt-4 flex px-4 lg:mt-0 lg:block lg:px-0">
+    <BaseBlock
+      slim
+      class="-mt-1 overflow-hidden !border-t-0 md:mt-0 md:!border-t"
+    >
+      <div class="flex px-[20px] md:px-3 md:pt-3 lg:block">
         <ProfileSidebarHeader
           v-if="profiles[userAddress]"
           :user-address="userAddress"
@@ -32,11 +35,10 @@ const { web3Account } = useWeb3();
         >
           <BaseButton
             :disabled="!profiles[userAddress]"
-            class="whitespace-nowrap"
+            class="whitespace-nowrap lg:w-full"
             @click="emit('edit')"
           >
-            <i-ho-pencil class="sm:hidden" />
-            <span class="hidden sm:block">
+            <span>
               {{ $t('profile.buttonEdit') }}
             </span>
           </BaseButton>
