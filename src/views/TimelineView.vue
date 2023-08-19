@@ -108,7 +108,7 @@ useInfiniteScroll(
     if (!store.timeline.proposals.length) return;
     loadMore(() => loadMoreProposals(store.timeline.proposals.length));
   },
-  { distance: 250, interval: 500 }
+  { distance: 500 }
 );
 </script>
 

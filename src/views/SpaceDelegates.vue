@@ -98,7 +98,7 @@ useInfiniteScroll(
     if (hasMoreDelegates.value && !searchInput.value)
       fetchMoreDelegates(matchFilter.value);
   },
-  { distance: 250, interval: 500 }
+  { distance: 500 }
 );
 
 watch([delegate, delegates], ([newDelegate, newDelegates], [prevDelegate]) => {

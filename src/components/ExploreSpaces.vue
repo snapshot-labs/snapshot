@@ -53,7 +53,7 @@ useInfiniteScroll(
       loadMoreSpacesHome(queryInput.value);
     }
   },
-  { distance: 250, interval: 500 }
+  { distance: 500 }
 );
 
 watchDebounced(

@@ -21,7 +21,7 @@ useInfiniteScroll(
   () => {
     loadMoreSpacesRanking();
   },
-  { distance: 250, interval: 500 }
+  { distance: 500 }
 );
 </script>
 
