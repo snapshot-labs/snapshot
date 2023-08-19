@@ -66,11 +66,11 @@ const handleDrop = e => {
 <template>
   <div class="mb-5 px-4 md:px-0">
     <div class="flex flex-col space-y-3">
-      <BlockLink
-        v-if="space?.guidelines"
-        :title="$t('settings.proposal.guidelines.title')"
-        :link="space.guidelines"
-      />
+      <BlockLink v-if="space?.guidelines" :link="space.guidelines">
+        <template #title>
+          {{ $t('settings.proposal.guidelines.title') }}
+        </template>
+      </BlockLink>
 
       <h1
         v-if="preview"
@@ -166,6 +166,11 @@ const handleDrop = e => {
         :label="$t('create.discussion')"
         :error="validationErrors?.discussion"
         data-testid="input-proposal-discussion"
+      />
+      <BlockLink
+        v-if="form.discussion"
+        :link="form.discussion"
+        :safe-link-preview="false"
       />
     </div>
   </div>
