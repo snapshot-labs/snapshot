@@ -1,8 +1,16 @@
 <script setup lang="ts">
-const props = defineProps<{
-  link: string;
-  title?: string;
-}>();
+import { debouncedWatch } from '@vueuse/core';
+
+const props = withDefaults(
+  defineProps<{
+    link: string;
+    safeLinkPreview?: boolean;
+  }>(),
+  {
+    safeLinkPreview: true
+  }
+);
+
 const preview = ref<null | {
   meta: {
     title: string;
@@ -16,13 +24,25 @@ const preview = ref<null | {
 }>(null);
 
 const showModal = ref(false);
+const loaded = ref(false);
+const error = ref(false);
 
 function handleConfirm() {
   window.open(props.link, '_blank', 'noopener,noreferrer');
 }
 
+function handleClickLink() {
+  if (props.safeLinkPreview) {
+    showModal.value = true;
+  } else {
+    window.open(props.link, '_blank', 'noopener,noreferrer');
+  }
+}
+
 async function update(val: string) {
   try {
+    error.value = false;
+    loaded.value = false;
     preview.value = null;
     new URL(val);
     const IFRAMELY_API_KEY = 'd155718c86be7d5305ccb6';
@@ -30,32 +50,44 @@ async function update(val: string) {
       val
     )}&api_key=${IFRAMELY_API_KEY}`;
     const result = await fetch(url);
-    preview.value = await result.json();
+    const json = await result.json();
+    if (json.status === 404) throw new Error('Error fetching link preview');
+    preview.value = json;
   } catch (e) {
     console.log(e);
+    error.value = true;
+  } finally {
+    loaded.value = true;
   }
 }
 
-onMounted(async () => {
-  await update(props.link);
-});
+debouncedWatch(
+  () => props.link,
+  newLink => update(newLink),
+  { debounce: 500, immediate: true }
+);
 </script>
 
 <template>
-  <div v-if="preview?.meta?.title">
-    <div v-if="title" class="mb-2" v-text="title" />
-    <button class="w-full" @click="showModal = true">
-      <div
-        class="flex items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
-      >
-        <div v-if="preview?.links?.icon[0]?.href" class="px-4 pr-0">
+  <div v-if="!error">
+    <slot name="title" />
+    <button
+      type="button"
+      class="flex w-full items-center rounded-xl border hover:cursor-pointer hover:border-skin-text"
+      @click="handleClickLink"
+    >
+      <div class="shrink-0 px-4">
+        <div v-if="!loaded">
+          <div class="lazy-loading h-[32px] w-[32px] rounded-lg" />
+        </div>
+        <div v-else>
           <div class="w-[32px]">
             <IconDiscord
-              v-if="preview.links.icon[0].href.includes('discord.com')"
+              v-if="preview?.links.icon[0].href.includes('discord.com')"
             />
             <img
               v-else
-              :src="preview.links.icon[0].href"
+              :src="preview?.links.icon[0].href"
               alt="logo"
               width="32"
               height="32"
@@ -63,15 +95,21 @@ onMounted(async () => {
             />
           </div>
         </div>
-        <div class="overflow-hidden px-4 py-3">
+      </div>
+      <div class="overflow-hidden py-3 pr-4">
+        <div v-if="!loaded" class="flex h-[48px] flex-col justify-center">
+          <div class="lazy-loading h-[10px] w-[90px] rounded" />
+          <div class="lazy-loading mt-2 h-[10px] w-[160px] rounded" />
+        </div>
+        <div v-else>
           <div class="line-clamp-1 text-left text-skin-link">
-            {{ preview.meta.title }}
+            {{ preview?.meta.title }}
           </div>
           <div
-            v-if="preview.meta.description"
+            v-if="preview?.meta.description"
             class="line-clamp-1 text-left text-sm text-skin-text"
           >
-            {{ preview.meta.description }}
+            {{ preview?.meta.description }}
           </div>
         </div>
       </div>
