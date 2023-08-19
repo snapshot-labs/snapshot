@@ -47,7 +47,11 @@ watch(
           <AvatarUser :address="address" size="69" />
         </div>
         <div>
-          <ProfileName :profile="profiles[address]" :address="address" />
+          <ProfileName
+            :profile="profiles[address]"
+            :address="address"
+            class="px-3"
+          />
           <div class="flex gap-3 pl-3 text-skin-text">
             <template v-if="delegate">
               <div
