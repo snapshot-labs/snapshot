@@ -102,6 +102,7 @@ function handleCloseModalDelegate() {
 
 function handleClickProfile(id: string) {
   router.push({
+    name: 'spaceDelegate',
     params: {
       address: id.toLowerCase()
     }
@@ -132,118 +133,110 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <SpaceDelegatesProfile
-      v-if="route.params.address"
-      :space="space"
-      :address="(route.params.address as string)"
-      @delegate="handleClickDelegate"
-    />
-    <TheLayout v-else>
-      <template #sidebar-left>
-        <SpaceSidebar :space="space" />
-      </template>
-      <template #content-right>
-        <h1 class="hidden lg:mb-3 lg:block">
-          {{ $t('delegates.header') }}
-        </h1>
+  <TheLayout>
+    <template #sidebar-left>
+      <SpaceSidebar :space="space" />
+    </template>
+    <template #content-right>
+      <h1 class="hidden lg:mb-3 lg:block">
+        {{ $t('delegates.header') }}
+      </h1>
 
-        <div class="mb-4">
-          <div class="justify-between px-[20px] md:flex md:px-0">
-            <div class="gap-[12px] sm:flex">
-              <div
-                class="flex w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[280px]"
-              >
-                <BaseSearch
-                  :model-value="searchInput"
-                  :placeholder="$t('searchPlaceholderVotes')"
-                  class="flex-auto pr-2"
-                  @update:model-value="handleSearchInput"
-                />
-              </div>
-              <BaseListbox
-                class="mt-2 sm:mt-0"
-                :model-value="selectedFilter"
-                :items="filterItems"
-                @update:model-value="handleSelectFilter"
+      <div class="mb-4">
+        <div class="justify-between px-[20px] md:flex md:px-0">
+          <div class="gap-[12px] sm:flex">
+            <div
+              class="flex w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[280px]"
+            >
+              <BaseSearch
+                :model-value="searchInput"
+                :placeholder="$t('searchPlaceholderVotes')"
+                class="flex-auto pr-2"
+                @update:model-value="handleSearchInput"
               />
             </div>
-            <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
-              <SpaceDelegatesAccount
-                v-if="web3Account"
-                class="hidden md:block"
-                @click="handleClickProfile(web3Account)"
-              />
-              <BaseButton
-                :primary="isFollowing"
-                class="w-full md:w-auto"
-                @click="handleClickDelegate()"
-              >
-                Delegate
-              </BaseButton>
-            </div>
-          </div>
-        </div>
-        <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
-          An error occurred while loading delegates. Please try again later. If
-          the problem persists, consider contacting the space admin or our
-          support team on
-          <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
-        </BaseMessageBlock>
-        <template v-else-if="searchInputDebounced">
-          <div
-            class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
-            :class="{ 'opacity-40': isLoadingDelegate }"
-          >
-            <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
-            <SpaceDelegatesListItem
-              v-else-if="delegate"
-              :delegate="delegate"
-              :profiles="profiles"
-              :space="space"
-              :about="getStatementAbout(delegate.id)"
-              :stats="delegatesStats[delegate.id]"
-              class="border-b"
-              @click-delegate="handleClickDelegate(delegate.id)"
-              @click-user="handleClickProfile(delegate.id)"
+            <BaseListbox
+              class="mt-2 sm:mt-0"
+              :model-value="selectedFilter"
+              :items="filterItems"
+              @update:model-value="handleSelectFilter"
             />
           </div>
-          <BaseNoResults v-if="!delegate" use-block />
-        </template>
-        <template v-else>
-          <div
-            class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
-            :class="{ 'opacity-40': isLoadingDelegates }"
-          >
-            <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
-            <template v-else>
-              <div
-                v-for="(d, i) in delegates"
-                :key="i"
-                class="last:border-b md:last:border-b-0"
-              >
-                <SpaceDelegatesListItem
-                  :delegate="d"
-                  :profiles="profiles"
-                  :space="space"
-                  :about="getStatementAbout(d.id)"
-                  :stats="delegatesStats[d.id]"
-                  @click-delegate="handleClickDelegate(d.id)"
-                  @click-user="handleClickProfile(d.id)"
-                />
-              </div>
-            </template>
+          <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
+            <SpaceDelegatesAccount
+              v-if="web3Account"
+              class="hidden md:block"
+              @click="handleClickProfile(web3Account)"
+            />
+            <BaseButton
+              :primary="isFollowing"
+              class="w-full md:w-auto"
+              @click="handleClickDelegate()"
+            >
+              Delegate
+            </BaseButton>
           </div>
-          <div v-if="hasMoreDelegates" class="mt-4 flex">
-            <LoadingSpinner class="mx-auto" big />
-          </div>
-          <BaseNoResults
-            v-else-if="!delegates.length && !isLoadingDelegates"
-            use-block
+        </div>
+      </div>
+      <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
+        An error occurred while loading delegates. Please try again later. If
+        the problem persists, consider contacting the space admin or our support
+        team on
+        <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+      </BaseMessageBlock>
+      <template v-else-if="searchInputDebounced">
+        <div
+          class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+          :class="{ 'opacity-40': isLoadingDelegate }"
+        >
+          <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
+          <SpaceDelegatesListItem
+            v-else-if="delegate"
+            :delegate="delegate"
+            :profiles="profiles"
+            :space="space"
+            :about="getStatementAbout(delegate.id)"
+            :stats="delegatesStats[delegate.id]"
+            class="border-b"
+            @click-delegate="handleClickDelegate(delegate.id)"
+            @click-user="handleClickProfile(delegate.id)"
           />
-        </template>
+        </div>
+        <BaseNoResults v-if="!delegate" use-block />
       </template>
-    </TheLayout>
+      <template v-else>
+        <div
+          class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+          :class="{ 'opacity-40': isLoadingDelegates }"
+        >
+          <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
+          <template v-else>
+            <div
+              v-for="(d, i) in delegates"
+              :key="i"
+              class="last:border-b md:last:border-b-0"
+            >
+              <SpaceDelegatesListItem
+                :delegate="d"
+                :profiles="profiles"
+                :space="space"
+                :about="getStatementAbout(d.id)"
+                :stats="delegatesStats[d.id]"
+                @click-delegate="handleClickDelegate(d.id)"
+                @click-user="handleClickProfile(d.id)"
+              />
+            </div>
+          </template>
+        </div>
+        <div v-if="hasMoreDelegates" class="mt-4 flex">
+          <LoadingSpinner class="mx-auto" big />
+        </div>
+        <BaseNoResults
+          v-else-if="!delegates.length && !isLoadingDelegates"
+          use-block
+        />
+      </template>
+    </template>
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
         :open="route.query.delegate !== undefined"
@@ -253,5 +246,5 @@ onMounted(() => {
         @reload="fetchDelegates(matchFilter)"
       />
     </Teleport>
-  </div>
+  </TheLayout>
 </template>
