@@ -3,13 +3,24 @@ import { useStorage } from '@vueuse/core';
 
 const { web3Account } = useWeb3();
 
-const showOnboarding = useStorage('snapshot.showOnboardingDelegates', true);
+const showOnboarding = useStorage('snapshot.showOnboardingDelegates', {});
+
+const showOnboardingDelegates = computed({
+  get: () => showOnboarding.value[web3Account.value],
+  set: value => {
+    showOnboarding.value[web3Account.value] = value;
+  }
+});
 </script>
 
 <template>
-  <div ref="loggedAvatar" class="relative" @click="showOnboarding = false">
+  <div
+    ref="loggedAvatar"
+    class="relative"
+    @click="showOnboardingDelegates = false"
+  >
     <div
-      v-if="showOnboarding"
+      v-if="showOnboardingDelegates !== false"
       class="pointer-events-none absolute bottom-[52px] left-[22px] flex"
     >
       <i-s-line-arrow class="text-skin-text opacity-40" />
