@@ -84,7 +84,7 @@ watch(address, () => {
   <div>
     <SpaceBreadcrumbs :space="space" class="mx-4 -mt-1 mb-[20px]" />
 
-    <BaseContainer v-if="isLoggedUser" class="pt-3 lg:pb-3 lg:pt-4">
+    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[20px]">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -98,7 +98,7 @@ watch(address, () => {
       />
     </BaseContainer>
 
-    <div class="pt-4">
+    <div class="pt-[20px]">
       <SpaceDelegateEdit
         v-if="showEdit"
         :space="space"
