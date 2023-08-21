@@ -190,7 +190,7 @@ onMounted(() => {
           :class="{ 'opacity-40': isLoadingDelegate }"
         >
           <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
-          <SpaceDelegatesListItem
+          <SpaceDelegatesCard
             v-else-if="delegate"
             :delegate="delegate"
             :profiles="profiles"
@@ -216,7 +216,7 @@ onMounted(() => {
               :key="i"
               class="last:border-b md:last:border-b-0"
             >
-              <SpaceDelegatesListItem
+              <SpaceDelegatesCard
                 :delegate="d"
                 :profiles="profiles"
                 :space="space"

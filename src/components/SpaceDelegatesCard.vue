@@ -51,15 +51,13 @@ function handleDropdownAction(action: string) {
 </script>
 
 <template>
-  <div
-    class="flex h-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3 md:pt-[12px]"
+  <button
+    type="button"
+    class="flex h-full w-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3 md:pt-[12px]"
+    @click="emit('clickUser')"
   >
-    <div class="flex justify-between">
-      <button
-        type="button"
-        class="flex items-center text-left"
-        @click="emit('clickUser')"
-      >
+    <div class="flex w-full justify-between">
+      <div class="flex items-center text-left">
         <AvatarUser :address="delegate.id" size="40" />
         <div class="ml-3">
           <div class="font-semibold text-skin-heading">
@@ -90,8 +88,12 @@ function handleDropdownAction(action: string) {
             </div>
           </div>
         </div>
-      </button>
-      <BaseMenu :items="dropdownItems" @select="handleDropdownAction($event)">
+      </div>
+      <BaseMenu
+        :items="dropdownItems"
+        @select="handleDropdownAction($event)"
+        @click.stop
+      >
         <template #button>
           <BaseButtonIcon class="-mr-[6px] !h-[24px]">
             <i-ho-dots-horizontal class="text-[17px]" />
@@ -111,7 +113,7 @@ function handleDropdownAction(action: string) {
       </BaseMenu>
     </div>
 
-    <div class="mt-3 h-[48px] cursor-pointer" @click="emit('clickUser')">
+    <div class="mt-3 h-[48px] cursor-pointer">
       <template v-if="about">
         <span class="line-clamp-2">
           {{ about }}
@@ -133,9 +135,9 @@ function handleDropdownAction(action: string) {
 
     <TuneButton
       class="mt-3 w-full text-skin-link"
-      @click="emit('clickDelegate')"
+      @click.stop="emit('clickDelegate')"
     >
       Delegate
     </TuneButton>
-  </div>
+  </button>
 </template>
