@@ -8,7 +8,11 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const emit = defineEmits(['removeTreasury', 'editTreasury']);
+const emit = defineEmits<{
+  removeTreasury: [index: number]
+  editTreasury: [index: number]
+  configureOsnap: [index: number, isEnabled: boolean]
+}>();
 
 const isOsnapEnabled = ref(false);
 
@@ -27,7 +31,11 @@ onMounted(async () => {
         <h4 class="truncate">{{ treasury.name }}</h4>
       </div>
       <div class="ml-auto mr-3">
-        <SettingsTreasuryActivateOsnapButton :is-osnap-enabled="isOsnapEnabled" />
+        <SettingsTreasuryActivateOsnapButton 
+        v-show="!isViewOnly" 
+        :is-osnap-enabled="isOsnapEnabled" 
+        @click.stop="emit('configureOsnap', treasuryIndex, isOsnapEnabled)" 
+        />
       </div>
       <BaseButtonIcon
         v-show="!isViewOnly"

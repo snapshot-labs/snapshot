@@ -16,16 +16,18 @@ const treasuryObj = {
 };
 
 const modalTreasuryOpen = ref(false);
+const modalOsnapOpen = ref(false);
 const currentTreasuryIndex = ref<number | null>(null);
 const currentTreasury = ref<TreasuryWallet>(clone(treasuryObj));
+const isOsnapEnabledOnCurrentTreasury = ref(false);
 
-function handleRemoveTreasury(i) {
+function handleRemoveTreasury(i: number) {
   form.value.treasuries = form.value.treasuries.filter(
     (treasury, index) => index !== i
   );
 }
 
-function handleEditTreasury(i) {
+function handleEditTreasury(i: number) {
   if (props.isViewOnly) return;
   currentTreasuryIndex.value = i;
   currentTreasury.value = clone(form.value.treasuries[i]);
@@ -38,7 +40,7 @@ function handleAddTreasury() {
   modalTreasuryOpen.value = true;
 }
 
-function handleSubmitTreasury(treasury) {
+function handleSubmitTreasury(treasury: TreasuryWallet) {
   if (currentTreasuryIndex.value !== null) {
     const treasuriesClone = clone(form.value.treasuries);
     treasuriesClone[currentTreasuryIndex.value] = treasury;
@@ -46,6 +48,19 @@ function handleSubmitTreasury(treasury) {
   } else {
     form.value.treasuries = form.value.treasuries.concat(treasury);
   }
+}
+
+function handleOpenConfigureOsnapModal(treasuryIndex: number, isEnabled: boolean) {
+  if (props.isViewOnly) return;
+  currentTreasuryIndex.value = treasuryIndex;
+  currentTreasury.value = clone(form.value.treasuries[treasuryIndex]);
+  isOsnapEnabledOnCurrentTreasury.value = isEnabled;
+  modalOsnapOpen.value = true;
+}
+
+function handleCloseConfigureOsnapModal() {
+  modalOsnapOpen.value = false;
+  isOsnapEnabledOnCurrentTreasury.value = false;
 }
 </script>
 
@@ -57,6 +72,7 @@ function handleSubmitTreasury(treasury) {
         :is-view-only="isViewOnly"
         @edit-treasury="i => handleEditTreasury(i)"
         @remove-treasury="i => handleRemoveTreasury(i)"
+        @configure-osnap="handleOpenConfigureOsnapModal"
       />
     </div>
 
@@ -74,6 +90,12 @@ function handleSubmitTreasury(treasury) {
         @close="modalTreasuryOpen = false"
         @add="handleSubmitTreasury"
       />
+      <ModalOsnap 
+      :open="modalOsnapOpen" 
+      :treasury="currentTreasury" 
+      :is-osnap-enabled="isOsnapEnabledOnCurrentTreasury" 
+      @close="handleCloseConfigureOsnapModal"
+       />
     </teleport>
   </BaseBlock>
 </template>

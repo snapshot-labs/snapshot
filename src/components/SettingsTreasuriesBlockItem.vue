@@ -6,7 +6,11 @@ defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const emit = defineEmits(['removeTreasury', 'editTreasury']);
+const emit = defineEmits<{
+  removeTreasury: [index: number]
+  editTreasury: [index: number]
+  configureOsnap: [index: number, isEnabled: boolean]
+}>();
 </script>
 
 <template>
@@ -16,5 +20,6 @@ const emit = defineEmits(['removeTreasury', 'editTreasury']);
     :is-view-only="isViewOnly"
     @edit-treasury="i => emit('editTreasury', i)"
     @remove-treasury="i => emit('removeTreasury', i)"
+    @configure-osnap="(i, isEnabled) => emit('configureOsnap', i, isEnabled)"
    />
 </template>
