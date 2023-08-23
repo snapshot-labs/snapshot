@@ -6,17 +6,15 @@ defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const emit = defineEmits(['editTreasury']);
-
+const emit = defineEmits(['removeTreasury', 'editTreasury']);
 </script>
 
 <template>
-  <div
-    v-for="(treasury, i) in treasuries"
+   <SettingsTreasuriesBlockItemButton v-for="(treasury, i) in treasuries"
     :key="i"
-    class="flex h-full truncate"
-    @click="emit('editTreasury', i)"
-  >
-   <SettingsTreasuriesBlockItemButton :treasury="treasury" :treasury-index="i" :is-view-only="isViewOnly" />
-  </div>
+    :treasury="treasury" :treasury-index="i" 
+    :is-view-only="isViewOnly"
+    @edit-treasury="i => emit('editTreasury', i)"
+    @remove-treasury="i => emit('removeTreasury', i)"
+   />
 </template>

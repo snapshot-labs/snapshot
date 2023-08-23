@@ -8,7 +8,7 @@ const props = defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const emit = defineEmits(['removeTreasury']);
+const emit = defineEmits(['removeTreasury', 'editTreasury']);
 
 const isOsnapEnabled = ref(false);
 
@@ -18,9 +18,10 @@ onMounted(async () => {
 </script>
 
 <template>
-      <button
-      class="flex w-full items-center justify-between rounded-md border p-4"
+  <button
+      class="flex h-full truncate w-full items-center justify-between rounded-md border p-4"
       :class="{ 'cursor-default': isViewOnly }"
+      @click="emit('editTreasury', treasuryIndex)"
     >
       <div class="flex items-center gap-2 truncate pr-[20px] text-left">
         <h4 class="truncate">{{ treasury.name }}</h4>
