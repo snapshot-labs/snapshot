@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import { TreasuryWallet } from '@/helpers/interfaces';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -7,6 +7,9 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import { DocumentNode } from 'graphql';
+import gql from 'graphql-tag';
+import filter from 'lodash/filter';
 import {
   ERC20_ABI,
   UMA_MODULE_ABI,
@@ -14,7 +17,6 @@ import {
   contractData
 } from '../constants';
 import { pageEvents } from './events';
-import filter from 'lodash/filter';
 
 function getDeployBlock(network: string, name: string): number {
   const data = filter(contractData, { network, name });
@@ -47,7 +49,7 @@ function getOracleV3Subgraph(network: string): string {
   return getContractSubgraph({ network, name: 'OptimisticOracleV3' });
 }
 
-export const queryGql = async (url: string, query: string) => {
+export const queryGql = async <Result = any>(url: string, query: string) => {
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -70,11 +72,29 @@ export const queryGql = async (url: string, query: string) => {
         `GraphQL Error: ${data.errors.map(error => error.message).join(', ')}`
       );
     }
-    return data.data;
+    return data.data as Result;
   } catch (error) {
     throw new Error(`Network error: ${error.message}`);
   }
 };
+
+export const getIsOsnapEnabled = async (network: string, safeAddress: string) => { 
+  const subgraph = getOptimisticGovernorSubgraph(network);
+  const query = `
+      query isOSnapEnabled {
+        safe(id:"${safeAddress.toLowerCase()}"){
+          isOptimisticGovernorEnabled
+        }
+      }
+    `;
+  type Result = {
+    safe: { isOptimisticGovernorEnabled: boolean };
+  }
+  const result = await queryGql<Result>(subgraph, query);
+  return result?.safe?.isOptimisticGovernorEnabled ?? false;
+};
+
+
 
 const findAssertionGql = async (
   network: string,
