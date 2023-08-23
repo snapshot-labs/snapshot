@@ -4,18 +4,12 @@ const yearNow = new Date().getFullYear();
 const snapshotTextLinks = [
   {
     text: 'about',
-    link: {
-      name: 'about'
-    }
+    link: 'https://docs.snapshot.org/introduction'
   },
   {
     text: 'blog',
     link: 'https://snapshot.mirror.xyz/'
   }
-  // {
-  //   text: 'jobs',
-  //   link: 'https://angel.co/company/snapshot-labs_/jobs'
-  // }
 ];
 
 const resourcesTextLinks = [
