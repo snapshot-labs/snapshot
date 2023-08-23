@@ -4,7 +4,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['switchWallet']);
-const { t } = useI18n();
 const { domain } = useApp();
 const { logout } = useWeb3();
 const router = useRouter();

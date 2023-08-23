@@ -163,8 +163,8 @@ watch(
 watch(
   () => route.params.name,
   async () => {
-    getStrategies();
-    getExtendedStrategy(route.params.name as string);
+    await getStrategies();
+    await getExtendedStrategy(route.params.name as string);
 
     if (queryParams.query && strategyExample.value?.snapshot) {
       form.value.snapshot = strategyExample.value.snapshot;
