@@ -84,7 +84,7 @@ watch(address, () => {
   <div class="mb-[80px] md:mb-0">
     <SpaceBreadcrumbs :space="space" class="mx-4 -mt-1 mb-[20px]" />
 
-    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[12px]">
+    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[12px] lg:py-[20px]">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -119,7 +119,7 @@ watch(address, () => {
                 <h3 class="mb-2 mt-0">About</h3>
                 <p
                   v-if="getStatementAbout(address)"
-                  class="text-[19px] sm:text-[22px] sm:leading-7"
+                  class="text-[19px] text-skin-heading sm:text-[22px] sm:leading-7"
                 >
                   {{ getStatementAbout(address) }}
                 </p>
@@ -131,6 +131,7 @@ watch(address, () => {
                 <BaseMarkdown
                   v-if="getStatementStatement(address)"
                   :body="getStatementStatement(address)!"
+                  class="text-skin-heading"
                 />
                 <div v-else>No statement provided yet</div>
               </div>
