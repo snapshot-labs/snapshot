@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useInfiniteScroll, refDebounced } from '@vueuse/core';
+import { useInfiniteScroll, refDebounced, useBreakpoints } from '@vueuse/core';
+import { SNAPSHOT_BREAKPOINTS } from '@/helpers/constants';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -26,6 +27,7 @@ const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { getStatementAbout } = useStatement();
+const largerThanSm = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('sm');
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -163,18 +165,26 @@ onMounted(() => {
             />
           </div>
           <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
-            <SpaceDelegatesAccount
-              v-if="web3Account"
-              class="hidden md:block"
-              @click="handleClickProfile(web3Account)"
-            />
-            <BaseButton
-              :primary="isFollowing"
-              class="w-full md:w-auto"
-              @click="handleClickDelegate()"
-            >
-              Delegate
-            </BaseButton>
+            <TheActionbar>
+              <div
+                id="delegates-action-bar"
+                class="flex h-full items-center gap-[12px] px-[20px]"
+              />
+            </TheActionbar>
+
+            <Teleport to="#delegates-action-bar" :disabled="largerThanSm">
+              <SpaceDelegatesAccount
+                v-if="web3Account"
+                @click="handleClickProfile(web3Account)"
+              />
+              <BaseButton
+                :primary="isFollowing"
+                class="w-full md:w-auto"
+                @click="handleClickDelegate()"
+              >
+                Delegate
+              </BaseButton>
+            </Teleport>
           </div>
         </div>
       </div>
