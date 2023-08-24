@@ -95,7 +95,7 @@ export const getIsOsnapEnabled = async (network: string, safeAddress: string) =>
 export function makeConfigureOsnapUrl(spaceName: string, spaceUrl: string, safeAddress: string, network: string) {
   const base = "https://app.safe.global/apps/open";
   const safeAddressPrefix = EIP3770_PREFIXES[network];
-  const appUrl = "https://dev.adams.software/";
+  const appUrl = "https://osnap.uma.xyz/";
   const appUrlSearchParams = new URLSearchParams();
   appUrlSearchParams.set("spaceName", spaceName);
   appUrlSearchParams.set("spaceUrl", spaceUrl);
