@@ -29,7 +29,7 @@ const href = computed(() =>
     </template>
     <div class="m-4 grid grid-cols-[auto,auto] gap-2">
         <i-ho-information-circle class="text-sm mt-1" />
-        <p>
+        <p class="text-sm">
           oSnap seamlessly integrates with Snapshot and your treasury,
           automatically executing governance votes on-chain. Bypass the need for
           privileged signers to create a DAO that's more efficient and truly
