@@ -82,9 +82,12 @@ watch(address, () => {
 
 <template>
   <div class="mb-[80px] md:mb-0">
-    <SpaceBreadcrumbs :space="space" class="mx-4 -mt-1 mb-[20px]" />
+    <SpaceBreadcrumbs
+      :space="space"
+      class="mx-4 -mt-1 pb-[16px] lg:pb-[20px]"
+    />
 
-    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[12px] lg:py-[20px]">
+    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-3 lg:py-[20px]">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -110,7 +113,7 @@ watch(address, () => {
         @reload="handleReload"
       />
 
-      <TheLayout v-else reverse class="mt-[12px]">
+      <TheLayout v-else reverse class="pt-[12px]">
         <template #content-left>
           <div class="px-4 md:px-0">
             <LoadingPage v-if="isLoadingDelegate" slim />
