@@ -1,4 +1,3 @@
-import { TreasuryWallet } from '@/helpers/interfaces';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -7,10 +6,9 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { DocumentNode } from 'graphql';
-import gql from 'graphql-tag';
 import filter from 'lodash/filter';
 import {
+  EIP3770_PREFIXES,
   ERC20_ABI,
   UMA_MODULE_ABI,
   UMA_ORACLE_ABI,
@@ -94,7 +92,21 @@ export const getIsOsnapEnabled = async (network: string, safeAddress: string) =>
   return result?.safe?.isOptimisticGovernorEnabled ?? false;
 };
 
-
+export function makeConfigureOsnapUrl(spaceName: string, spaceUrl: string, safeAddress: string, network: string) {
+  const base = "https://app.safe.global/apps/open";
+  const safeAddressPrefix = EIP3770_PREFIXES[network];
+  const appUrl = "https://dev.adams.software/";
+  const appUrlSearchParams = new URLSearchParams();
+  appUrlSearchParams.set("spaceName", spaceName);
+  appUrlSearchParams.set("spaceUrl", spaceUrl);
+  const appUrlSearch = appUrlSearchParams.toString();
+  const safeAppSearchParams = new URLSearchParams();
+  safeAppSearchParams.set("safe", `${safeAddressPrefix}:${safeAddress}`);
+  safeAppSearchParams.set("appUrl", `${appUrl}?${appUrlSearch}`);
+  const safeAppSearch = safeAppSearchParams.toString();
+  const url = `${base}?${safeAppSearch}`;
+  return url;
+}
 
 const findAssertionGql = async (
   network: string,

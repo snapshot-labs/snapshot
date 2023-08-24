@@ -93,6 +93,7 @@ function handleCloseConfigureOsnapModal() {
       <ModalOsnap 
       :open="modalOsnapOpen" 
       :treasury="currentTreasury" 
+      :space-name="form.name"
       :is-osnap-enabled="isOsnapEnabledOnCurrentTreasury" 
       @close="handleCloseConfigureOsnapModal"
        />
