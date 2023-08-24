@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<i-ho-external-link class="mb-[2px] ml-1 inline-block text-xs" /><script setup lang="ts">
 import { watchDebounced } from '@vueuse/core';
 
 const props = defineProps<{

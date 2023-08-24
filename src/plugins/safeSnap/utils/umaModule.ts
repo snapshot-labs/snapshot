@@ -1,4 +1,3 @@
-import gql from 'graphql-tag';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -7,14 +6,15 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import filter from 'lodash/filter';
 import {
+  EIP3770_PREFIXES,
   ERC20_ABI,
   UMA_MODULE_ABI,
   UMA_ORACLE_ABI,
   contractData
 } from '../constants';
 import { pageEvents } from './events';
-import filter from 'lodash/filter';
 
 function getDeployBlock(network: string, name: string): number {
   const data = filter(contractData, { network, name });
@@ -47,7 +47,7 @@ function getOracleV3Subgraph(network: string): string {
   return getContractSubgraph({ network, name: 'OptimisticOracleV3' });
 }
 
-export const queryGql = async (url: string, query: string) => {
+export const queryGql = async <Result = any>(url: string, query: string) => {
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -70,11 +70,59 @@ export const queryGql = async (url: string, query: string) => {
         `GraphQL Error: ${data.errors.map(error => error.message).join(', ')}`
       );
     }
-    return data.data;
+    return data.data as Result;
   } catch (error) {
     throw new Error(`Network error: ${error.message}`);
   }
 };
+
+export const getIsOsnapEnabled = async (
+  network: string,
+  safeAddress: string
+) => {
+  const subgraph = getOptimisticGovernorSubgraph(network);
+  const query = `
+      query isOSnapEnabled {
+        safe(id:"${safeAddress.toLowerCase()}"){
+          isOptimisticGovernorEnabled
+        }
+      }
+    `;
+  type Result = {
+    safe: { isOptimisticGovernorEnabled: boolean };
+  };
+  const result = await queryGql<Result>(subgraph, query);
+  return result?.safe?.isOptimisticGovernorEnabled ?? false;
+};
+
+export function makeConfigureOsnapUrl(params: {
+  safeAddress: string;
+  network: string;
+  spaceName: string;
+  spaceUrl: string;
+  baseUrl?: string;
+  appUrl?: string;
+}) {
+  const {
+    safeAddress,
+    network,
+    spaceName,
+    spaceUrl,
+    baseUrl = 'https://app.safe.global/apps/open',
+    appUrl = 'https://osnap.uma.xyz/'
+  } = params;
+  const safeAddressPrefix = EIP3770_PREFIXES[network];
+  const appUrlSearchParams = new URLSearchParams();
+  appUrlSearchParams.set('spaceName', spaceName);
+  appUrlSearchParams.set('spaceUrl', spaceUrl);
+  const appUrlSearch = appUrlSearchParams.toString();
+  const safeAppSearchParams = new URLSearchParams();
+  safeAppSearchParams.set('safe', `${safeAddressPrefix}:${safeAddress}`);
+  safeAppSearchParams.set('appUrl', `${appUrl}?${appUrlSearch}`);
+  const safeAppSearch = safeAppSearchParams.toString();
+  const url = `${baseUrl}?${safeAppSearch}`;
+  return url;
+}
 
 const findAssertionGql = async (
   network: string,
