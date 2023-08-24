@@ -46,7 +46,7 @@ onMounted(async () => {
       <footer v-if="route.name === 'home'" class="mt-auto">
         <TheFooter />
       </footer>
-      <div id="action-bar" class="fixed bottom-0 z-40 w-full sm:pr-[60px]" />
+      <div id="action-bar" />
     </div>
   </div>
 

@@ -2,9 +2,11 @@
 withDefaults(
   defineProps<{
     slim?: boolean;
+    reverse?: boolean;
   }>(),
   {
-    slim: true
+    slim: true,
+    reverse: false
   }
 );
 </script>
@@ -26,7 +28,10 @@ withDefaults(
     >
       <slot name="content-right" />
     </div>
-    <div class="lg:flex">
+    <div
+      class="lg:flex"
+      :class="{ 'flex flex-col-reverse lg:flex-row': reverse }"
+    >
       <div
         v-if="$slots['content-left']"
         id="content-left"

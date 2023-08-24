@@ -75,20 +75,25 @@ onMounted(() => {
 
     <template #sidebar-right>
       <BaseBlock
-        class="mt-4 p-4 md:p-3 lg:sticky lg:top-[110px] lg:mt-0 lg:w-[320px]"
+        class="mt-4 hidden p-4 md:block md:p-3 lg:sticky lg:top-[110px] lg:mt-0 lg:w-[320px]"
         slim
       >
         <div class="font-semibold text-skin-heading">Save changes</div>
 
         You can always come back and edit your profile at any time.
-        <BaseButton
-          class="mt-3 w-full"
-          :loading="savingStatement"
-          primary
-          @click="handleClickSave"
-        >
-          Save changes
-        </BaseButton>
+
+        <TheActionbar break-point="md">
+          <div class="px-4 md:px-0">
+            <BaseButton
+              class="mt-3 w-full"
+              :loading="savingStatement"
+              primary
+              @click="handleClickSave"
+            >
+              Save changes
+            </BaseButton>
+          </div>
+        </TheActionbar>
       </BaseBlock>
     </template>
   </TheLayout>

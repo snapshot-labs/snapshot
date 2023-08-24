@@ -81,10 +81,10 @@ watch(address, () => {
 </script>
 
 <template>
-  <div>
+  <div class="mb-[80px] md:mb-0">
     <SpaceBreadcrumbs :space="space" class="mx-4 -mt-1 mb-[20px]" />
 
-    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[20px]">
+    <BaseContainer v-if="isLoggedUser" class="pb-2 pt-[12px]">
       <ButtonSwitch
         v-model="showEdit"
         :state1="{
@@ -95,20 +95,22 @@ watch(address, () => {
           name: 'Write',
           value: true
         }"
+        class="w-full md:w-[180px]"
       />
     </BaseContainer>
 
-    <div class="pt-[20px]">
+    <div>
       <SpaceDelegateEdit
         v-if="showEdit"
         :space="space"
         :address="address"
         :about="getStatementAbout(address)"
         :statement="getStatementStatement(address)"
+        class="mt-[16px]"
         @reload="handleReload"
       />
 
-      <TheLayout v-else>
+      <TheLayout v-else reverse class="mt-[12px]">
         <template #content-left>
           <div class="px-4 md:px-0">
             <LoadingPage v-if="isLoadingDelegate" slim />
@@ -137,7 +139,9 @@ watch(address, () => {
         </template>
 
         <template #sidebar-right>
-          <BaseBlock class="mt-4 lg:sticky lg:top-[110px] lg:mt-0 lg:w-[320px]">
+          <BaseBlock
+            class="mb-5 lg:sticky lg:top-[110px] lg:mb-0 lg:mt-0 lg:w-[320px]"
+          >
             <div class="flex">
               <div>
                 <AvatarUser :address="address" size="40" />
@@ -167,13 +171,17 @@ watch(address, () => {
                 </div>
               </div>
             </div>
-            <BaseButton
-              class="mt-3 w-full"
-              primary
-              @click="emit('delegate', address)"
-            >
-              {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
-            </BaseButton>
+            <TheActionbar break-point="md">
+              <div class="flex h-full items-center px-[20px] md:px-0">
+                <BaseButton
+                  class="w-full md:mt-3"
+                  primary
+                  @click="emit('delegate', address)"
+                >
+                  {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
+                </BaseButton>
+              </div>
+            </TheActionbar>
           </BaseBlock>
         </template>
       </TheLayout>

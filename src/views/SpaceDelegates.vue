@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { useInfiniteScroll, refDebounced, useBreakpoints } from '@vueuse/core';
-import { SNAPSHOT_BREAKPOINTS } from '@/helpers/constants';
+import { useInfiniteScroll, refDebounced } from '@vueuse/core';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -27,7 +26,6 @@ const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { getStatementAbout } = useStatement();
-const largerThanSm = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('md');
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -188,26 +186,23 @@ onMounted(() => {
             </BaseMenu>
           </div>
           <div class="flex justify-center gap-[12px]">
-            <TheActionbar>
+            <TheActionbar break-point="md">
               <div
-                id="delegates-action-bar"
-                class="flex h-full items-center gap-[12px] px-[20px]"
-              />
-            </TheActionbar>
-
-            <Teleport to="#delegates-action-bar" :disabled="largerThanSm">
-              <SpaceDelegatesAccount
-                v-if="web3Account"
-                @click="handleClickProfile(web3Account)"
-              />
-              <BaseButton
-                :primary="isFollowing"
-                class="w-full md:w-auto"
-                @click="handleClickDelegate()"
+                class="flex h-full items-center gap-[12px] px-[20px] md:px-0"
               >
-                Delegate
-              </BaseButton>
-            </Teleport>
+                <SpaceDelegatesAccount
+                  v-if="web3Account"
+                  @click="handleClickProfile(web3Account)"
+                />
+                <BaseButton
+                  :primary="isFollowing"
+                  class="w-full md:w-auto"
+                  @click="handleClickDelegate()"
+                >
+                  Delegate
+                </BaseButton>
+              </div>
+            </TheActionbar>
           </div>
         </div>
       </div>
