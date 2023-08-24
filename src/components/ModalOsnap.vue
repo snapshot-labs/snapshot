@@ -44,7 +44,7 @@ const href = computed(() =>
         target="_blank"
         class="block w-full rounded-full py-[12px] text-white"
         :class="
-          isOsnapEnabled ? 'bg-[hsl(349,65%,52%)]' : 'bg-[hsl(240,83%,58%]'
+          isOsnapEnabled ? 'bg-[hsl(349,65%,52%)]' : 'bg-[hsl(240,83%,58%)]'
         "
       >
         {{ isOsnapEnabled ? 'Deactivate' : 'Activate' }} oSnap
