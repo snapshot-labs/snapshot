@@ -35,7 +35,7 @@ watchEffect(() => {
     <div>
       <AvatarSpace :space="space" symbol-index="space" size="48" class="mr-3" />
       <div class="mt-2 truncate text-left">
-        <h3 class="my-0 flex items-center text-2xl leading-[44px]">
+        <h3 class="my-0 flex items-center text-2xl leading-[44px] lg:text-lg">
           <div
             v-tippy="{
               content: space.name.length > 16 ? space.name : null
@@ -46,7 +46,7 @@ watchEffect(() => {
           </div>
           <IconVerifiedSpace v-if="space.verified" />
         </h3>
-        <div class="text-md text-skin-text">
+        <div class="text-md text-skin-text lg:text-base">
           {{
             $tc('members', space.followersCount, {
               count: formatCompactNumber(space.followersCount)
