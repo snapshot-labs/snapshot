@@ -6,7 +6,7 @@ defineProps<{ space: ExtendedSpace }>();
 </script>
 
 <template>
-  <div class="-mt-[4px] mb-4 md:mt-0 lg:fixed lg:mb-0 lg:w-[240px]">
+  <div class="-mt-[4px] mb-[20px] md:mt-0 lg:fixed lg:mb-0 lg:w-[240px]">
     <BaseBlock slim class="overflow-hidden !border-t-0 md:!border-t">
       <div class="relative lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
         <SpaceSidebarHeader :space="space" />

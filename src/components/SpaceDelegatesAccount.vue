@@ -21,7 +21,7 @@ const showOnboardingDelegates = computed({
   >
     <div
       v-if="showOnboardingDelegates !== false"
-      class="pointer-events-none absolute bottom-[52px] left-[22px] hidden sm:flex"
+      class="pointer-events-none absolute bottom-[46px] left-[22px] hidden md:flex"
     >
       <i-s-line-arrow class="text-skin-text opacity-40" />
       <div

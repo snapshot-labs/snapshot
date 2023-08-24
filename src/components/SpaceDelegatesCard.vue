@@ -53,7 +53,7 @@ function handleDropdownAction(action: string) {
 <template>
   <button
     type="button"
-    class="flex h-full w-full flex-col justify-between border-t border-skin-border px-4 pb-4 pt-3 md:rounded-xl md:border md:px-3 md:pb-3 md:pt-[12px]"
+    class="flex h-full w-full flex-col justify-between rounded-xl border border-skin-border px-3 pb-3 pt-[12px] md:px-3 md:pb-3 md:pt-[12px]"
     @click="emit('clickUser')"
   >
     <div class="flex w-full justify-between">

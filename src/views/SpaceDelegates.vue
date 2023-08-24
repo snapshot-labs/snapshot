@@ -187,7 +187,7 @@ onMounted(() => {
               </template>
             </BaseMenu>
           </div>
-          <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
+          <div class="flex justify-center gap-[12px]">
             <TheActionbar>
               <div
                 id="delegates-action-bar"
@@ -219,7 +219,7 @@ onMounted(() => {
       </BaseMessageBlock>
       <template v-else-if="searchInputDebounced">
         <div
-          class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+          class="mx-[20px] grid grid-cols-1 gap-3 md:mx-0 lg:grid-cols-2"
           :class="{ 'opacity-40': isLoadingDelegate }"
         >
           <SpaceDelegatesSkeleton v-if="isLoadingDelegate" />
@@ -239,7 +239,7 @@ onMounted(() => {
       </template>
       <template v-else>
         <div
-          class="grid grid-cols-1 md:gap-3 lg:grid-cols-2"
+          class="mx-[20px] grid grid-cols-1 gap-3 md:mx-0 lg:grid-cols-2"
           :class="{ 'opacity-40': isLoadingDelegates }"
         >
           <SpaceDelegatesSkeleton v-if="isLoadingDelegates" />
