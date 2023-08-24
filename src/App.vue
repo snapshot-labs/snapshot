@@ -42,14 +42,12 @@ onMounted(async () => {
           </KeepAlive>
         </router-view>
       </div>
-
       <footer v-if="route.name === 'home'" class="mt-auto">
         <TheFooter />
       </footer>
       <div id="action-bar" />
     </div>
   </div>
-
   <TheFlashNotification />
   <TheModalNotification />
 </template>
