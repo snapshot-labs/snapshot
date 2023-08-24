@@ -49,12 +49,12 @@ const matchFilter = computed(() => {
 const filterItems = computed(() => {
   return [
     {
-      value: 'mostVotingPower',
-      title: t('delegates.filters.mostVotingPower')
+      action: 'mostVotingPower',
+      text: t('delegates.filters.mostVotingPower')
     },
     {
-      value: 'mostDelegators',
-      title: t('delegates.filters.mostDelegators')
+      action: 'mostDelegators',
+      text: t('delegates.filters.mostDelegators')
     }
   ];
 });
@@ -146,7 +146,7 @@ onMounted(() => {
 
       <div class="mb-4">
         <div class="justify-between px-[20px] md:flex md:px-0">
-          <div class="gap-[12px] sm:flex">
+          <div class="flex gap-2 sm:gap-[12px]">
             <div
               class="flex w-full rounded-full border pl-3 pr-0 focus-within:border-skin-text md:w-[250px] lg:w-[280px]"
             >
@@ -157,12 +157,35 @@ onMounted(() => {
                 @update:model-value="handleSearchInput"
               />
             </div>
-            <BaseListbox
-              class="mt-2 sm:mt-0"
-              :model-value="selectedFilter"
-              :items="filterItems"
-              @update:model-value="handleSelectFilter"
-            />
+            <BaseMenu :items="filterItems" @select="handleSelectFilter">
+              <template #button>
+                <div>
+                  <BaseButton class="hidden items-center sm:flex">
+                    <div class="whitespace-nowrap">
+                      {{
+                        filterItems.find(i => i.action === selectedFilter)?.text
+                      }}
+                    </div>
+                    <i-ho-chevron-down
+                      class="-mr-1 ml-1 text-xs text-skin-text"
+                    />
+                  </BaseButton>
+
+                  <BaseButtonRound class="sm:hidden">
+                    <i-ho-sort-descending class="text-skin-text" />
+                  </BaseButtonRound>
+                </div>
+              </template>
+              <template #item="{ item }">
+                <div class="flex items-center">
+                  {{ item.text }}
+                  <i-ho-check
+                    v-if="item.action === selectedFilter"
+                    class="ml-2 shrink-0 !text-green text-skin-text"
+                  />
+                </div>
+              </template>
+            </BaseMenu>
           </div>
           <div class="mt-[8px] flex justify-center gap-[12px] md:mt-0">
             <TheActionbar>
