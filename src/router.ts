@@ -2,7 +2,6 @@ import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
 
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
-import AboutView from '@/views/AboutView.vue';
 import PlaygroundView from '@/views/PlaygroundView.vue';
 import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
@@ -111,7 +110,6 @@ if (domain) {
   // prefix space routes with space domain (/:key).
   routes.push(
     { path: '/', name: 'home', component: ExploreView },
-    { path: '/about', name: 'about', component: AboutView },
     {
       path: '/setup/:ens?',
       name: 'setup',
