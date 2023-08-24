@@ -76,7 +76,10 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
   }
 };
 
-export const getIsOsnapEnabled = async (network: string, safeAddress: string) => { 
+export const getIsOsnapEnabled = async (
+  network: string,
+  safeAddress: string
+) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const query = `
       query isOSnapEnabled {
@@ -87,24 +90,37 @@ export const getIsOsnapEnabled = async (network: string, safeAddress: string) =>
     `;
   type Result = {
     safe: { isOptimisticGovernorEnabled: boolean };
-  }
+  };
   const result = await queryGql<Result>(subgraph, query);
   return result?.safe?.isOptimisticGovernorEnabled ?? false;
 };
 
-export function makeConfigureOsnapUrl(spaceName: string, spaceUrl: string, safeAddress: string, network: string) {
-  const base = "https://app.safe.global/apps/open";
+export function makeConfigureOsnapUrl(params: {
+  safeAddress: string;
+  network: string;
+  spaceName: string;
+  spaceUrl: string;
+  baseUrl?: string;
+  appUrl?: string;
+}) {
+  const {
+    safeAddress,
+    network,
+    spaceName,
+    spaceUrl,
+    baseUrl = 'https://app.safe.global/apps/open',
+    appUrl = 'https://osnap.uma.xyz/'
+  } = params;
   const safeAddressPrefix = EIP3770_PREFIXES[network];
-  const appUrl = "https://osnap.uma.xyz/";
   const appUrlSearchParams = new URLSearchParams();
-  appUrlSearchParams.set("spaceName", spaceName);
-  appUrlSearchParams.set("spaceUrl", spaceUrl);
+  appUrlSearchParams.set('spaceName', spaceName);
+  appUrlSearchParams.set('spaceUrl', spaceUrl);
   const appUrlSearch = appUrlSearchParams.toString();
   const safeAppSearchParams = new URLSearchParams();
-  safeAppSearchParams.set("safe", `${safeAddressPrefix}:${safeAddress}`);
-  safeAppSearchParams.set("appUrl", `${appUrl}?${appUrlSearch}`);
+  safeAppSearchParams.set('safe', `${safeAddressPrefix}:${safeAddress}`);
+  safeAppSearchParams.set('appUrl', `${appUrl}?${appUrlSearch}`);
   const safeAppSearch = safeAppSearchParams.toString();
-  const url = `${base}?${safeAppSearch}`;
+  const url = `${baseUrl}?${safeAppSearch}`;
   return url;
 }
 

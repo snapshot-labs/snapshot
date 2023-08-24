@@ -13,12 +13,12 @@ defineEmits<{
 }>();
 const spaceUrl = window.location.href.replace('/settings', '');
 const href = computed(() =>
-  makeConfigureOsnapUrl(
-    props.spaceName,
+  makeConfigureOsnapUrl({
     spaceUrl,
-    props.treasury.address,
-    props.treasury.network
-  )
+    spaceName: props.spaceName,
+    safeAddress: props.treasury.address,
+    network: props.treasury.network,
+  })
 );
 </script>
 
