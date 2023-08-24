@@ -17,7 +17,7 @@ defineEmits(['update:modelValue']);
   <div class="inline-flex items-center rounded-full border p-1">
     <div
       :class="[
-        'cursor-pointer px-3 py-1',
+        'w-full cursor-pointer px-3 py-1 text-center',
         {
           'rounded-full bg-skin-border text-skin-heading':
             state1.value === modelValue
@@ -29,7 +29,7 @@ defineEmits(['update:modelValue']);
     </div>
     <div
       :class="[
-        'cursor-pointer px-3 py-1',
+        'w-full cursor-pointer px-3 py-1 text-center',
         {
           'rounded-full bg-skin-border text-skin-heading':
             state2.value === modelValue
