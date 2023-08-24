@@ -50,6 +50,7 @@ const href = computed(() =>
         {{ isOsnapEnabled ? 'Deactivate' : 'Activate' }} oSnap
         <i-ho-external-link class="mb-[2px] ml-1 inline-block text-xs" />
       </a>
+      <p class="text-black/50 text-xs mt-2">Note that the deactivation process takes place in the Safe app</p>
     </template>
   </BaseModal>
 </template>
