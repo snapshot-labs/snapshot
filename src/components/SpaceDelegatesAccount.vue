@@ -30,7 +30,7 @@ const showOnboardingDelegates = computed({
         view and edit your delegator profile
       </div>
     </div>
-    <BaseButtonRound class="!h-[46px] !w-[46px]">
+    <BaseButtonRound>
       <AvatarUser :address="web3Account" size="20" class="cursor-pointer" />
     </BaseButtonRound>
   </div>

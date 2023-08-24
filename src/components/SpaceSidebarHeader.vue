@@ -67,7 +67,7 @@ watchEffect(() => {
       />
       <BaseButtonRound
         v-if="isFollowing"
-        class="inline !h-[46px] !w-[46px] shrink-0"
+        class="inline shrink-0"
         @click="toggleSubscription()"
       >
         <LoadingSpinner v-if="loading" />
@@ -79,7 +79,7 @@ watchEffect(() => {
         />
       </BaseButtonRound>
 
-      <BaseButtonRound class="inline !h-[46px] !w-[46px] shrink-0 lg:hidden">
+      <BaseButtonRound class="inline shrink-0 lg:hidden">
         <SpaceSidebarMenuThreeDot class="" />
       </BaseButtonRound>
     </div>

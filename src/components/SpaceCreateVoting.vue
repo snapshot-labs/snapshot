@@ -176,7 +176,7 @@ defineEmits<{
         <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
           <BaseButtonRound
             v-if="!disableChoiceEdit"
-            class="!h-[42px] !w-[42px]"
+            size="42px"
             @click="addChoices(1)"
           >
             <i-ho-plus-sm class="text-skin-link" />
