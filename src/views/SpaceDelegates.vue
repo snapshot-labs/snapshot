@@ -27,7 +27,7 @@ const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { getStatementAbout } = useStatement();
-const largerThanSm = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('sm');
+const largerThanSm = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('md');
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);

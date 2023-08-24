@@ -78,6 +78,10 @@ watchEffect(() => {
           :name="notificationIcon"
         />
       </BaseButtonRound>
+
+      <BaseButtonRound class="inline !h-[46px] !w-[46px] shrink-0 lg:hidden">
+        <SpaceSidebarMenuThreeDot class="" />
+      </BaseButtonRound>
     </div>
   </div>
 </template>
