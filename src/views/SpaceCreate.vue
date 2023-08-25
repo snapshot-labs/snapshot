@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
-import { ExtendedSpace } from '@/helpers/interfaces';
 import Plugin from '@/plugins/safeSnap';
+import { getSpaceHasOsnapEnabledTreasury } from '@/plugins/safeSnap/utils/umaModule';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const safeSnapPlugin = new Plugin();
 
@@ -345,12 +346,9 @@ function handleOsnapToggle() {
 }
 
 onMounted(async () => {
-  const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
-  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
-  if (network && umaAddress) {
-    // this is how we check if osnap is enabled and valid.
-    osnap.value.enabled =
-      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
+  const hasOsnapEnabledTreasury = await getSpaceHasOsnapEnabledTreasury(props.space.treasuries);
+  if (hasOsnapEnabledTreasury) {
+    osnap.value.enabled = true;
   }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();

@@ -15,6 +15,7 @@ import {
   contractData
 } from '../constants';
 import { pageEvents } from './events';
+import { TreasuryWallet } from '@/helpers/interfaces';
 
 function getDeployBlock(network: string, name: string): number {
   const data = filter(contractData, { network, name });
@@ -75,6 +76,11 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
     throw new Error(`Network error: ${error.message}`);
   }
 };
+
+export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
+  const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network, treasury.address)))
+  return isOsnapEnabledOnTreasuriesResult.some(isOsnapEnabled => isOsnapEnabled);
+}
 
 export const getIsOsnapEnabled = async (
   network: string,
