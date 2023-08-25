@@ -1,0 +1,27 @@
+{
+  "name": "oSnap by UMA",
+  "version": "1.0.0",
+  "author": "UMA",
+  "website": "https://safe.global",
+  "icon": "ipfs://QmQjZaheMTLRrk22mrGCkGk2LNoNqqYMR8Bxtwa8mBHyc9",
+  "defaults": {
+    "space": {
+      "safes": [
+        {
+          "network": "CHAIN_ID",
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS",
+          "umaAddress": "0xSWITCH_WITH_UMA_MODULE_ADDRESS"
+        }
+      ]
+    },
+    "proposal": {
+      "safes": [
+        {
+          "network": "CHAIN_ID",
+          "realityAddress": "0xSWITCH_WITH_REALITY_MODULE_ADDRESS",
+          "umaAddress": "0xSWITCH_WITH_UMA_MODULE_ADDRESS"
+        }
+      ]
+    }
+  }
+}
