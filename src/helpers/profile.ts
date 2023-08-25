@@ -5,9 +5,11 @@ import Multicaller from '@snapshot-labs/snapshot.js/src/utils/multicaller';
 import { getAddress } from '@ethersproject/address';
 import { resolveLensAddresses } from './lensResolver';
 
+const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+
 async function ensReverseRecordRequest(addresses) {
   const network = '1';
-  const provider = getProvider(network);
+  const provider = getProvider(network, { broviderUrl });
   const abi = [
     'function getNames(address[] addresses) view returns (string[] r)'
   ];
@@ -46,7 +48,11 @@ async function udReverseRecordRequest(addresses) {
   ];
 
   try {
-    const multi = new Multicaller(network, getProvider(network), abi);
+    const multi = new Multicaller(
+      network,
+      getProvider(network, { broviderUrl }),
+      abi
+    );
     addresses.forEach(address => {
       address = getAddress(address);
       multi.call(

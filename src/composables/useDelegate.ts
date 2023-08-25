@@ -36,8 +36,12 @@ export function useDelegate() {
     const txPendingId = createPendingTransaction();
     try {
       let ethAddress = address;
-      if (validEnsTlds.includes(address.split('.').pop()))
-        ethAddress = await getProvider('1').resolveName(address);
+      if (validEnsTlds.includes(address.split('.').pop())) {
+        const networkId = import.meta.env.VITE_DEFAULT_NETWORK;
+        const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+        const provider = getProvider(networkId, { broviderUrl });
+        ethAddress = await provider.resolveName(address);
+      }
       const tx = await sendTransaction(
         auth.web3,
         contractAddress,

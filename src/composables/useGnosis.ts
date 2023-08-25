@@ -8,7 +8,8 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const getSafeVersion = useMemoize(
   async (networkKey: string, account: string) => {
-    const provider = utils.getProvider(networkKey);
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = utils.getProvider(networkKey, { broviderUrl });
     const code = await provider.getCode(account);
 
     if (code === '0x') return undefined;

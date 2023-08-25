@@ -122,7 +122,8 @@ async function loadSnapshotBlockNumber() {
     loading.value = true;
     scores.value = null;
     networkError.value = false;
-    const provider = await getProvider(form.value.network);
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = await getProvider(form.value.network, { broviderUrl });
     const blockNumber = await getBlockNumber(provider);
     form.value.snapshot = blockNumber.toString();
     loading.value = false;

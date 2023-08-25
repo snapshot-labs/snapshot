@@ -131,7 +131,8 @@ export function urlify(text: string, target = '_blank') {
 
 export async function resolveEns(handle: string) {
   try {
-    const provider = getProvider('1');
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = getProvider('1', { broviderUrl });
     const addressResolved = await provider.resolveName(handle);
     if (!addressResolved) throw new Error('Invalid ENS name');
     return addressResolved;
