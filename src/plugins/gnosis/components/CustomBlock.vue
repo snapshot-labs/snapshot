@@ -26,7 +26,8 @@ export default {
   async created() {
     this.loading = true;
     const network = this.proposalConfig.network || '1';
-    const provider = getProvider(network);
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = getProvider(network, { broviderUrl });
     this.baseToken = await this.plugin.getTokenInfo(
       provider,
       this.proposalConfig.baseTokenAddress

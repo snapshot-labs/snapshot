@@ -60,7 +60,9 @@ export default {
         try {
           this.criteriaLink = await getEnsTextRecord(
             this.spaceId,
-            'daorequirements'
+            'daorequirements',
+            '1',
+            { broviderUrl: import.meta.env.VITE_BROVIDER_URL }
           );
         } catch (err) {
           console.warn(

@@ -53,7 +53,8 @@ export function useTxStatus() {
         if (Date.now() > tx.createdAt + 1000 * 60)
           return removePendingTransaction(tx.id);
         try {
-          const provider = getProvider(tx.network);
+          const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+          const provider = getProvider(tx.network, { broviderUrl });
           await provider.waitForTransaction(tx.hash, 1, 1000 * 60 * 4);
         } finally {
           removePendingTransaction(tx.id);

@@ -9,7 +9,10 @@ export function useSnapshot() {
     try {
       isLoading.value = true;
       error.value = false;
-      const currentBlock = await getBlockNumber(getProvider(network));
+      const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+      const currentBlock = await getBlockNumber(
+        getProvider(network, { broviderUrl })
+      );
       console.log('Snapshot block number', currentBlock);
       return currentBlock - 4;
     } catch (e) {
