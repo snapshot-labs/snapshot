@@ -16,7 +16,8 @@ export const mustBeEthereumAddress = memoize((address: string) => {
 
 export const mustBeEthereumContractAddress = memoize(
   async (network: string, address: string) => {
-    const provider = getProvider(network) as JsonRpcProvider;
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = getProvider(network, { broviderUrl }) as JsonRpcProvider;
     const contractCode = await provider.getCode(address);
 
     return (

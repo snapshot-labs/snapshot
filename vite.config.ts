@@ -63,8 +63,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
-      '@vueuse/core': 'samuveth-vueuse-core'
+      '@': path.resolve(__dirname, './src')
     }
   },
   test: {

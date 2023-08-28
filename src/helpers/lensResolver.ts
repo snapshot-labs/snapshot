@@ -20,7 +20,9 @@ class LensResolver {
 
   get multi() {
     if (!this._multicaller) {
-      this._multicaller = new Multicaller(network, getProvider(network), abi);
+      const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+      const provider = getProvider(network, { broviderUrl });
+      this._multicaller = new Multicaller(network, provider, abi);
     }
     return this._multicaller;
   }
