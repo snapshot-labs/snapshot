@@ -1,15 +1,17 @@
-<script lang="ts">
+<script setup lang="ts">
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin, {
-EIP3770_PREFIXES,
-createBatch,
-getGnosisSafeBalances,
-getGnosisSafeCollectibles
+  EIP3770_PREFIXES,
+  createBatch,
+  getGnosisSafeBalances,
+  getGnosisSafeCollectibles
 } from '../index';
+import { Network } from '../types';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
 import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
@@ -158,125 +160,117 @@ function formatBatches(network, module, batches, multiSend) {
   return batches;
 }
 
-export default {
-  components: {
-    SafeSnapTooltip,
-    SafeSnapFormImportTransactionsButton,
-    SafeSnapHandleOutcomeUma,
-    SafeSnapFormTransactionBatch
-  },
-  props: [
-    'modelValue',
-    'proposal',
-    'space',
-    'results',
-    'network',
-    'umaAddress',
-    'multiSendAddress',
-    'preview',
-    'hash'
-  ],
-  emits: ['update:modelValue'],
-  setup() {
-    return { shorten };
-  },
-  data() {
-    return {
-      input: formatBatches(
-        this.network,
-        this.realityAddress,
-        this.modelValue,
-        this.multiSendAddress
-      ),
-      gnosisSafeAddress: undefined,
-      moduleAddress: undefined,
-      showHash: false,
-      transactionConfig: {
-        preview: this.preview,
-        gnosisSafeAddress: undefined,
-        umaAddress: this.umaAddress,
-        network: this.network,
-        multiSendAddress: this.multiSendAddress,
-        tokens: [],
-        collectables: []
-      }
+const props = defineProps<{
+  modelValue: any;
+  proposal: Proposal;
+  space: ExtendedSpace;
+  results: any;
+  network: Network;
+  moduleAddress: string;
+  multiSendAddress: string;
+  preview: boolean;
+  hash: string;
+}>();
+
+const emit = defineEmits(['update:modelValue']);
+
+const input = ref(
+  formatBatches(
+    props.network,
+    undefined,
+    props.modelValue,
+    props.multiSendAddress
+  )
+);
+const gnosisSafeAddress = ref<string>();
+const moduleAddress = ref<string>();
+const showHash = ref(false);
+const transactionConfig = ref({
+  preview: props.preview,
+  gnosisSafeAddress: undefined,
+  moduleAddress: props.moduleAddress,
+  network: props.network,
+  multiSendAddress: props.multiSendAddress,
+  tokens: [],
+  collectables: []
+});
+
+const safeLink = computed(() => {
+  const prefix = EIP3770_PREFIXES[props.network];
+  return `https://gnosis-safe.io/app/${prefix}:${gnosisSafeAddress.value}`;
+});
+
+const networkName = computed(() => {
+  if (props.network === '1') return 'Mainnet';
+  const { shortName, name } = networks[props.network] || {};
+  return shortName || name || `#${props.network}`;
+});
+
+const networkIcon = computed(() => {
+  const { logo } = networks[props.network];
+  return getIpfsUrl(logo);
+});
+
+const proposalResolved = computed(() => {
+  const ts = Number((Date.now() / 1e3).toFixed());
+  return ts > props.proposal.end;
+});
+
+function addTransactionBatch() {
+  input.value.push(
+    createBatch(
+      props.moduleAddress,
+      parseInt(props.network),
+      input.length.value,
+      [],
+      props.multiSendAddress
+    )
+  );
+  emit('update:modelValue', input.value);
+}
+
+function removeBatch(index) {
+  input.value.splice(index, 1);
+  emit('update:modelValue', input);
+}
+
+function updateTransactionBatch(index, batch) {
+  input.value[index] = batch;
+  emit('update:modelValue', input.value);
+}
+
+function handleImport(txs) {
+  input.value.push(
+    createBatch(
+      props.moduleAddress,
+      parseInt(props.network),
+      input.value.length,
+      txs,
+      props.multiSendAddress
+    )
+  );
+  emit('update:modelValue', input.value);
+}
+onMounted(async () => {
+  try {
+    const { dao } = await plugin.getModuleDetailsUma(
+      props.network,
+      props.moduleAddress
+    );
+    gnosisSafeAddress.value = dao;
+    transactionConfig.value = {
+      ...transactionConfig,
+      gnosisSafeAddress: gnosisSafeAddress.value,
+      tokens: await fetchBalances(props.network, gnosisSafeAddress.value),
+      collectables: await fetchCollectibles(
+        props.network,
+        gnosisSafeAddress.value
+      )
     };
-  },
-  computed: {
-    safeLink() {
-      const prefix = EIP3770_PREFIXES[this.network];
-      return `https://gnosis-safe.io/app/${prefix}:${this.gnosisSafeAddress}`;
-    },
-    networkName() {
-      if (this.network === '1') return 'Mainnet';
-      const { shortName, name } = networks[this.network] || {};
-      return shortName || name || `#${this.network}`;
-    },
-    networkIcon() {
-      const { logo } = networks[this.network];
-      return getIpfsUrl(logo);
-    },
-    proposalResolved() {
-      const ts = (Date.now() / 1e3).toFixed();
-      return ts > this.proposal.end;
-    }
-  },
-  async mounted() {
-    try {
-      const { dao } = await plugin.getModuleDetailsUma(this.network, this.umaAddress);
-
-      const moduleAddress = this.umaAddress;
-
-      this.moduleAddress = moduleAddress;
-      this.gnosisSafeAddress = dao;
-      this.transactionConfig = {
-        ...this.transactionConfig,
-        gnosisSafeAddress: this.gnosisSafeAddress,
-        tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
-        collectables: await fetchCollectibles(
-          this.network,
-          this.gnosisSafeAddress
-        )
-      };
-    } catch (e) {
-      console.error(e);
-    }
-  },
-  methods: {
-    addTransactionBatch() {
-      this.input.push(
-        createBatch(
-          this.moduleAddress,
-          parseInt(this.network),
-          this.input.length,
-          [],
-          this.multiSendAddress
-        )
-      );
-      this.$emit('update:modelValue', this.input);
-    },
-    removeBatch(index) {
-      this.input.splice(index, 1);
-      this.$emit('update:modelValue', this.input);
-    },
-    updateTransactionBatch(index, batch) {
-      this.input[index] = batch;
-      this.$emit('update:modelValue', this.input);
-    },
-    handleImport(txs) {
-      this.input.push(
-        createBatch(
-          this.moduleAddress,
-          parseInt(this.network),
-          this.input.length,
-          txs,
-          this.multiSendAddress
-        )
-      );
-      this.$emit('update:modelValue', this.input);
-    }
+  } catch (e) {
+    console.error(e);
   }
-};
+});
 </script>
 
 <template>
@@ -342,8 +336,8 @@ export default {
           :proposal="proposal"
           :space="space"
           :results="results"
-          :uma-address="transactionConfig.umaAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
+          :uma-address="moduleAddress"
+          :multi-send-address="multiSendAddress"
           :network="transactionConfig.network"
         />
       </div>
