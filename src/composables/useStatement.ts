@@ -17,13 +17,12 @@ export function useStatement() {
 
   async function saveStatement(
     spaceId: string,
-    about: string,
-    statement: string
+    statement: {
+      about: string;
+      statement: string;
+    }
   ) {
-    const result = await send({ id: spaceId }, SET_STATEMENT_ACTION, {
-      about,
-      statement
-    });
+    const result = await send({ id: spaceId }, SET_STATEMENT_ACTION, statement);
     if (!result.id) throw new Error('Error saving statement');
 
     notify(['green', 'Statement saved successfully']);
@@ -75,12 +74,8 @@ export function useStatement() {
     await loadStatements(spaceId, [id]);
   }
 
-  function getStatementAbout(id: string): string | undefined {
-    return statements.value[id.toLowerCase()]?.about;
-  }
-
-  function getStatementStatement(id: string): string | undefined {
-    return statements.value[id.toLowerCase()]?.statement;
+  function getStatement(id: string): { about: string; statement: string } {
+    return statements.value?.[id.toLowerCase()] || { about: '', statement: '' };
   }
 
   function formatPercentageNumber(value: string | number) {
@@ -102,8 +97,7 @@ export function useStatement() {
     saveStatement,
     loadStatements,
     reloadStatement,
-    getStatementAbout,
-    getStatementStatement,
+    getStatement,
     formatPercentageNumber
   };
 }

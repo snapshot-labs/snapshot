@@ -6,22 +6,20 @@ import { validateForm } from '@/helpers/validation';
 const props = defineProps<{
   space: ExtendedSpace;
   address: string;
-  about?: string;
-  statement?: string;
+  statement: {
+    about: string;
+    statement: string;
+  };
 }>();
 
-const emit = defineEmits(['reload']);
+const emit = defineEmits(['reload', 'update:about', 'update:statement']);
 
 const { saveStatement, savingStatement } = useStatement();
 
-const form = ref<any>({
-  about: props.about || '',
-  statement: props.statement || ''
-});
 const aboutRef = ref<any>(null);
 
 const validationErrors = computed(() => {
-  return validateForm(schemas.statement, form.value);
+  return validateForm(schemas.statement, props.statement);
 });
 
 const isValid = computed(() => {
@@ -34,19 +32,12 @@ async function handleClickSave() {
     return;
   }
   try {
-    await saveStatement(props.space.id, form.value.about, form.value.statement);
+    await saveStatement(props.space.id, props.statement);
     emit('reload');
   } catch (e) {
     console.log(e);
   }
 }
-
-onMounted(() => {
-  form.value = {
-    about: props.about || '',
-    statement: props.statement || ''
-  };
-});
 </script>
 
 <template>
@@ -55,20 +46,22 @@ onMounted(() => {
       <div class="space-y-3 px-4 md:px-0">
         <TuneTextarea
           ref="aboutRef"
-          v-model="form.about"
+          :model-value="statement.about"
           label="About"
           placeholder="Tell us about yourself"
           :max-length="schemas.statement.properties.about.maxLength"
           :error="validationErrors.about"
           class="min-h-[100px] text-skin-link"
+          @update:model-value="emit('update:about', $event)"
         />
         <TuneTextarea
-          v-model="form.statement"
+          :model-value="statement.statement"
           label="Statement"
           :max-length="schemas.statement.properties.statement.maxLength"
           :error="validationErrors.statement"
           placeholder="Why should people vote for you?"
           class="min-h-[220px] text-skin-link sm:min-h-[300px] lg:min-h-[400px]"
+          @update:model-value="emit('update:statement', $event)"
         />
       </div>
     </template>

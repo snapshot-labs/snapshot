@@ -14,14 +14,14 @@ const route = useRoute();
 
 const { fetchDelegate, delegate, delegatesStats, isLoadingDelegate } =
   useDelegates(props.space);
-const {
-  reloadStatement,
-  getStatementAbout,
-  getStatementStatement,
-  formatPercentageNumber
-} = useStatement();
+const { reloadStatement, getStatement, formatPercentageNumber } =
+  useStatement();
 
 const showEdit = ref(false);
+const statementForm = ref({
+  about: '',
+  statement: ''
+});
 
 const address = computed(() => route.params.address as string);
 
@@ -68,7 +68,8 @@ async function handleReload() {
 watch(
   address,
   async () => {
-    fetchDelegate(address.value);
+    await fetchDelegate(address.value);
+    statementForm.value = getStatement(address.value);
   },
   {
     immediate: true
@@ -107,10 +108,11 @@ watch(address, () => {
         v-if="showEdit"
         :space="space"
         :address="address"
-        :about="getStatementAbout(address)"
-        :statement="getStatementStatement(address)"
+        :statement="statementForm"
         class="mt-[16px]"
         @reload="handleReload"
+        @update:about="statementForm.about = $event"
+        @update:statement="statementForm.statement = $event"
       />
 
       <TheLayout v-else reverse class="pt-[12px]">
@@ -121,10 +123,10 @@ watch(address, () => {
               <div>
                 <h3 class="mb-2 mt-0">About</h3>
                 <p
-                  v-if="getStatementAbout(address)"
+                  v-if="statementForm.about"
                   class="text-[19px] text-skin-heading sm:text-[22px] sm:leading-7"
                 >
-                  {{ getStatementAbout(address) }}
+                  {{ statementForm.about }}
                 </p>
                 <div v-else>No about provided yet</div>
               </div>
@@ -132,8 +134,8 @@ watch(address, () => {
               <div>
                 <h3 class="m-0 mb-2">Statement</h3>
                 <BaseMarkdown
-                  v-if="getStatementStatement(address)"
-                  :body="getStatementStatement(address)!"
+                  v-if="statementForm.statement"
+                  :body="statementForm.statement"
                   class="text-skin-heading"
                 />
                 <div v-else>No statement provided yet</div>
