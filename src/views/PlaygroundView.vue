@@ -31,7 +31,6 @@ const loading = ref(false);
 const strategyError = ref(null);
 const networkError = ref(false);
 const scores = ref(null);
-const isValidStrategyDefinition = ref(false);
 const searchInput = ref('');
 const form = ref<{
   params: Record<string, any>;
@@ -232,15 +231,15 @@ function handleNetworkSelect(value) {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('strategyParams')">
-            <FormObject
+            <FormObjectStrategyParams
               v-if="strategyDefinition"
               v-model="form.params"
-              :definition="strategyDefinition"
+              :strategy-name="(route.params.name as string)"
             />
             <TextareaJson
               v-else
               v-model="form.params"
-              v-model:is-valid="isValidStrategyDefinition"
+              is-valid
               :placeholder="$t('strategyParameters')"
               class="input text-left"
               @update:modelValue="handleURLUpdate"
