@@ -6,20 +6,30 @@ defineProps<{
   isViewOnly?: boolean;
 }>();
 
-const emit = defineEmits<{
-  removeTreasury: [index: number]
-  editTreasury: [index: number]
-  configureOsnap: [index: number, isEnabled: boolean]
-}>();
+const emit = defineEmits(['removeTreasury', 'editTreasury']);
 </script>
 
 <template>
-   <SettingsTreasuriesBlockItemButton v-for="(treasury, i) in treasuries"
+  <div
+    v-for="(treasury, i) in treasuries"
     :key="i"
-    :treasury="treasury" :treasury-index="i" 
-    :is-view-only="isViewOnly"
-    @edit-treasury="i => emit('editTreasury', i)"
-    @remove-treasury="i => emit('removeTreasury', i)"
-    @configure-osnap="(i, isEnabled) => emit('configureOsnap', i, isEnabled)"
-   />
+    class="flex h-full truncate"
+    @click="emit('editTreasury', i)"
+  >
+    <button
+      class="flex w-full items-center justify-between rounded-md border p-4"
+      :class="{ 'cursor-default': isViewOnly }"
+    >
+      <div class="flex items-center gap-2 truncate pr-[20px] text-left">
+        <h4 class="truncate">{{ treasury.name }}</h4>
+      </div>
+      <BaseButtonIcon
+        v-show="!isViewOnly"
+        class="-mr-2"
+        @click.stop="emit('removeTreasury', i)"
+      >
+        <BaseIcon name="close" size="14" />
+      </BaseButtonIcon>
+    </button>
+  </div>
 </template>

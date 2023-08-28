@@ -171,7 +171,6 @@ export default {
     'space',
     'results',
     'network',
-    'realityAddress',
     'umaAddress',
     'multiSendAddress',
     'preview',
