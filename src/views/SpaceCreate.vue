@@ -2,12 +2,8 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
-import Plugin from '@/plugins/safeSnap';
-import { getSpaceHasOsnapEnabledTreasury } from '@/plugins/safeSnap/utils/umaModule';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-
-const safeSnapPlugin = new Plugin();
 
 enum Step {
   CONTENT,
@@ -346,7 +342,7 @@ function handleOsnapToggle() {
 }
 
 onMounted(async () => {
-  const hasOsnapEnabledTreasury = await getSpaceHasOsnapEnabledTreasury(props.space.treasuries);
+  const hasOsnapEnabledTreasury = Boolean(props.space.plugins.oSnap);
   if (hasOsnapEnabledTreasury) {
     osnap.value.enabled = true;
   }
