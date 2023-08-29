@@ -75,7 +75,8 @@ export function useStatement() {
   }
 
   function getStatement(id: string): { about: string; statement: string } {
-    return statements.value?.[id.toLowerCase()] || { about: '', statement: '' };
+    const defaultStatement = { about: '', statement: '' };
+    return statements.value?.[id?.toLowerCase()] || defaultStatement;
   }
 
   function formatPercentageNumber(value: string | number) {
