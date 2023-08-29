@@ -134,4 +134,11 @@ export class CompoundGovernorConfig extends StandardConfig {
       action: 'delegate'
     };
   }
+
+  getContractDelegatingToMethod(): { abi: string[]; action: string } {
+    return {
+      abi: ['function delegates(address) view returns (address)'],
+      action: 'delegates'
+    };
+  }
 }

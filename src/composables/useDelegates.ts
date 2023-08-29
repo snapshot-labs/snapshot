@@ -11,6 +11,8 @@ import {
   subgraphRequest,
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
+import { call } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 type DelegatesStats = Record<
   string,
@@ -46,6 +48,7 @@ export function useDelegates(space: ExtendedSpace) {
   const isLoadingDelegates = ref(false);
   const isLoadingMoreDelegates = ref(false);
   const hasDelegatesLoadFailed = ref(false);
+  const isLoadingDelegatingTo = ref(false);
   const isLoadingDelegateBalance = ref(false);
   const hasMoreDelegates = ref(false);
   const resolvedAddress = ref<string | null>(null);
@@ -182,6 +185,24 @@ export function useDelegates(space: ExtendedSpace) {
     return tx;
   }
 
+  async function fetchDelegatingTo(address: string) {
+    isLoadingDelegatingTo.value = true;
+    try {
+      const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+      const contractMethod = standardConfig.getContractDelegatingToMethod();
+      const provider = getProvider(space.network, { broviderUrl });
+      return await call(provider, contractMethod.abi, [
+        space.delegationPortal.delegationContract,
+        contractMethod.action,
+        [address]
+      ]);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      isLoadingDelegatingTo.value = false;
+    }
+  }
+
   async function fetchDelegateVotesAndProposals(
     space: string,
     delegates: string[]
@@ -232,6 +253,7 @@ export function useDelegates(space: ExtendedSpace) {
     isLoadingMoreDelegates,
     hasDelegatesLoadFailed,
     isLoadingDelegateBalance,
+    isLoadingDelegatingTo,
     hasMoreDelegates,
     delegate,
     delegates,
@@ -241,6 +263,7 @@ export function useDelegates(space: ExtendedSpace) {
     fetchMoreDelegates,
     setDelegate,
     fetchDelegateBalance,
-    fetchDelegateVotesAndProposals
+    fetchDelegateVotesAndProposals,
+    fetchDelegatingTo
   };
 }

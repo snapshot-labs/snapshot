@@ -1,24 +1,30 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
+import { DEFAULT_ETH_ADDRESS } from '@/helpers/constants';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
-
-const emit = defineEmits(['close', 'delegate']);
 
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
 const { getProfile } = useProfiles();
 const route = useRoute();
 
-const { fetchDelegate, delegate, delegatesStats, isLoadingDelegate } =
-  useDelegates(props.space);
+const {
+  fetchDelegate,
+  fetchDelegatingTo,
+  delegate,
+  delegatesStats,
+  isLoadingDelegate,
+  isLoadingDelegatingTo
+} = useDelegates(props.space);
 const { reloadStatement, getStatement, formatPercentageNumber } =
   useStatement();
 
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
+const web3AccountDelegatingTo = ref('');
 const statementForm = ref({
   about: '',
   statement: ''
@@ -28,6 +34,12 @@ const address = computed(() => route.params.address as string);
 
 const isLoggedUser = computed(() => {
   return web3Account.value.toLowerCase() === address.value.toLowerCase();
+});
+
+const showUndelegate = computed(() => {
+  return (
+    web3AccountDelegatingTo.value.toLowerCase() === address.value.toLowerCase()
+  );
 });
 
 const delegateStats = computed(() => {
@@ -61,16 +73,27 @@ const delegatorItems = computed(() => {
   ];
 });
 
+async function loadDelegatingTo() {
+  web3AccountDelegatingTo.value = await fetchDelegatingTo(web3Account.value);
+}
+
 async function handleReload() {
-  await reloadStatement(props.space.id, address.value);
+  reloadStatement(props.space.id, address.value);
+  fetchDelegate(address.value);
+  loadDelegatingTo();
   showEdit.value = false;
+}
+
+function init() {
+  fetchDelegate(address.value);
+  loadDelegatingTo();
+  statementForm.value = getStatement(address.value);
 }
 
 watch(
   address,
   async () => {
-    await fetchDelegate(address.value);
-    statementForm.value = getStatement(address.value);
+    init();
   },
   {
     immediate: true
@@ -79,6 +102,10 @@ watch(
 
 watch(address, () => {
   showEdit.value = false;
+});
+
+watch(web3Account, async () => {
+  loadDelegatingTo();
 });
 </script>
 
@@ -181,11 +208,22 @@ watch(address, () => {
             <TheActionbar break-point="md">
               <div class="flex h-full items-center px-[20px] md:px-0">
                 <BaseButton
+                  v-if="!showUndelegate"
                   class="w-full md:mt-3"
                   primary
+                  :loading="isLoadingDelegatingTo"
                   @click="showDelegateModal = true"
                 >
                   {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
+                </BaseButton>
+
+                <BaseButton
+                  v-else
+                  variant="danger"
+                  class="w-full md:mt-3"
+                  @click="showDelegateModal = true"
+                >
+                  Un-delegate
                 </BaseButton>
               </div>
             </TheActionbar>
@@ -197,9 +235,9 @@ watch(address, () => {
       <SpaceDelegatesDelegateModal
         :open="showDelegateModal"
         :space="space"
-        :address="address"
+        :address="showUndelegate ? DEFAULT_ETH_ADDRESS : address"
         @close="showDelegateModal = false"
-        @reload="fetchDelegate(address)"
+        @reload="handleReload"
       />
     </Teleport>
   </div>
