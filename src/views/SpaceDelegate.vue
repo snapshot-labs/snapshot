@@ -12,7 +12,7 @@ const { getProfile } = useProfiles();
 const route = useRoute();
 
 const {
-  fetchDelegate,
+  loadDelegate,
   fetchDelegatingTo,
   delegate,
   delegatesStats,
@@ -79,26 +79,20 @@ async function loadDelegatingTo() {
 
 async function handleReload() {
   reloadStatement(props.space.id, address.value);
-  fetchDelegate(address.value);
+  loadDelegate(address.value);
   loadDelegatingTo();
   showEdit.value = false;
 }
 
-function init() {
-  fetchDelegate(address.value);
+async function init() {
   loadDelegatingTo();
+  await loadDelegate(address.value);
   statementForm.value = getStatement(address.value);
 }
 
-watch(
-  address,
-  async () => {
-    init();
-  },
-  {
-    immediate: true
-  }
-);
+watch(address, init, {
+  immediate: true
+});
 
 watch(address, () => {
   showEdit.value = false;

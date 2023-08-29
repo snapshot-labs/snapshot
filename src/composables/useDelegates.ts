@@ -54,7 +54,7 @@ export function useDelegates(space: ExtendedSpace) {
   const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
 
-  async function _initDelegates(spaceId: string, delegates: string[]) {
+  async function loadExtraDelegateData(spaceId: string, delegates: string[]) {
     loadProfiles(delegates);
     await Promise.all([
       fetchDelegateVotesAndProposals(spaceId, delegates),
@@ -62,7 +62,7 @@ export function useDelegates(space: ExtendedSpace) {
     ]);
   }
 
-  async function _fetchDelegates(orderBy: string, skip = 0) {
+  async function fetchDelegateBatch(orderBy: string, skip = 0) {
     hasDelegatesLoadFailed.value = false;
 
     const query: any = standardConfig.getDelegatesQuery({
@@ -78,7 +78,7 @@ export function useDelegates(space: ExtendedSpace) {
 
     const formattedResponse = standardConfig.formatDelegatesResponse(response);
 
-    await _initDelegates(
+    await loadExtraDelegateData(
       space.id,
       formattedResponse.map(d => d.id)
     );
@@ -86,12 +86,12 @@ export function useDelegates(space: ExtendedSpace) {
     return formattedResponse;
   }
 
-  async function fetchDelegates(orderBy: string) {
+  async function loadDelegates(orderBy: string) {
     if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
 
     try {
-      const response = await _fetchDelegates(orderBy);
+      const response = await fetchDelegateBatch(orderBy);
 
       delegates.value = response;
 
@@ -109,7 +109,10 @@ export function useDelegates(space: ExtendedSpace) {
     isLoadingMoreDelegates.value = true;
 
     try {
-      const response = await _fetchDelegates(orderBy, delegates.value.length);
+      const response = await fetchDelegateBatch(
+        orderBy,
+        delegates.value.length
+      );
 
       delegates.value = [...delegates.value, ...response];
 
@@ -122,7 +125,7 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function fetchDelegate(id: string) {
+  async function loadDelegate(id: string) {
     hasDelegatesLoadFailed.value = false;
 
     if (isLoadingDelegate.value) return;
@@ -146,7 +149,7 @@ export function useDelegates(space: ExtendedSpace) {
 
       if (response.delegate) {
         delegate.value = standardConfig.formatDelegateResponse(response);
-        await _initDelegates(space.id, [delegate.value.id]);
+        await loadExtraDelegateData(space.id, [delegate.value.id]);
       }
     } catch (err) {
       console.error(err);
@@ -156,7 +159,7 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function fetchDelegateBalance(id: string) {
+  async function loadDelegateBalance(id: string) {
     const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
 
     try {
@@ -258,11 +261,11 @@ export function useDelegates(space: ExtendedSpace) {
     delegate,
     delegates,
     delegatesStats,
-    fetchDelegate,
-    fetchDelegates,
+    loadDelegate,
+    loadDelegates,
     fetchMoreDelegates,
     setDelegate,
-    fetchDelegateBalance,
+    loadDelegateBalance,
     fetchDelegateVotesAndProposals,
     fetchDelegatingTo
   };

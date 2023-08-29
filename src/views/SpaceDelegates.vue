@@ -7,8 +7,8 @@ const props = defineProps<{
 }>();
 
 const {
-  fetchDelegate,
-  fetchDelegates,
+  loadDelegate,
+  loadDelegates,
   fetchMoreDelegates,
   delegate,
   delegates,
@@ -119,16 +119,16 @@ useInfiniteScroll(
 );
 
 watch(searchInputDebounced, () => {
-  fetchDelegate(searchInput.value);
+  loadDelegate(searchInput.value);
 });
 
 watch(matchFilter, () => {
-  fetchDelegates(matchFilter.value);
+  loadDelegates(matchFilter.value);
 });
 
 onMounted(() => {
-  if (searchInput.value) fetchDelegate(searchInput.value);
-  fetchDelegates(matchFilter.value);
+  if (searchInput.value) loadDelegate(searchInput.value);
+  loadDelegates(matchFilter.value);
 });
 </script>
 
@@ -274,7 +274,7 @@ onMounted(() => {
         :space="space"
         :address="(route.query.delegate as string) || ''"
         @close="handleCloseModalDelegate"
-        @reload="fetchDelegates(matchFilter)"
+        @reload="loadDelegates(matchFilter)"
       />
     </Teleport>
   </TheLayout>
