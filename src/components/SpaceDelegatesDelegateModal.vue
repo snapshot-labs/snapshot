@@ -118,7 +118,8 @@ watch(
   () => {
     form.value.to = props.address;
     resolvedAddress.value = props.address;
-  }
+  },
+  { immediate: true }
 );
 
 watch(

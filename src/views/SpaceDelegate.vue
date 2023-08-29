@@ -18,6 +18,7 @@ const { reloadStatement, getStatement, formatPercentageNumber } =
   useStatement();
 
 const showEdit = ref(false);
+const showDelegateModal = ref(false);
 const statementForm = ref({
   about: '',
   statement: ''
@@ -182,7 +183,7 @@ watch(address, () => {
                 <BaseButton
                   class="w-full md:mt-3"
                   primary
-                  @click="emit('delegate', address)"
+                  @click="showDelegateModal = true"
                 >
                   {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
                 </BaseButton>
@@ -192,5 +193,14 @@ watch(address, () => {
         </template>
       </TheLayout>
     </div>
+    <Teleport to="body">
+      <SpaceDelegatesDelegateModal
+        :open="showDelegateModal"
+        :space="space"
+        :address="address"
+        @close="showDelegateModal = false"
+        @reload="fetchDelegate(address)"
+      />
+    </Teleport>
   </div>
 </template>
