@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@adraffy/ens-normalize": "^1.9.4",
-    "@apollo/client": "^3.7.13",
+    "@apollo/client": "^3.8.1",
     "@braintree/sanitize-url": "^6.0.2",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.7.0",
