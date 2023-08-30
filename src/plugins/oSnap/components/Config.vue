@@ -1,51 +1,35 @@
-<script lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { coerceConfig, isValidInput, getSafeHash } from '../index';
+<script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
+import { getSafeHash, isValidInput } from '../index';
 
+import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import SafeTransactions from './SafeTransactions.vue';
 
-export default {
-  components: { SafeTransactions },
-  props: [
-    'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
-    'config', // the safeSnap plugin config of the current space
-    'network', // network of the space (needed when mapping legacy plugin configs)
-    'proposal',
-    'preview', // if true, renders a read-only view
-    'space',
-    'results'
-  ],
-  emits: ['update:modelValue'],
-  data() {
-    let input;
-    if (!Object.keys(this.modelValue).length) {
-      input = {
-        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-          ...safe,
-          hash: null,
-          txs: []
-        })),
-        valid: true
-      };
-    } else {
-      const value = clone(this.modelValue);
-      if (value.safes && this.config && Array.isArray(this.config.safes)) {
-        value.safes = value.safes.map((safe, index) => ({
-          ...this.config.safes[index],
-          ...safe
-        }));
-      }
-      input = coerceConfig(value, this.network);
-    }
+type Safe = {
 
-    return { input, ipfs: getIpfsUrl(this?.proposal?.ipfs) };
-  },
-  methods: {
-    updateSafeTransactions() {
-      if (this.preview) return;
-      this.input.valid = isValidInput(this.input);
-      this.input.safes = this.input.safes.map(safe => {
+}
+
+const props = defineProps<{
+  modelValue: any;
+  proposal: Proposal
+  space: ExtendedSpace
+  preview: boolean;
+  results: Results;
+}>()
+
+const emits = defineEmits(['update:modelValue'])
+
+const input = ref({
+  hash: null,
+  txs: [],
+  valid: true
+})
+
+const ipfs = getIpfsUrl(props.proposal.ipfs);
+function updateSafeTransactions() {
+      if (props.preview) return;
+      input.value.valid = isValidInput(input.value);
+      input.value.safes = input.value.safes.map(safe => {
         return {
           ...safe,
           hash: getSafeHash(safe)
@@ -53,8 +37,6 @@ export default {
       });
       this.$emit('update:modelValue', this.input);
     }
-  },
-};
 </script>
 
 <template>

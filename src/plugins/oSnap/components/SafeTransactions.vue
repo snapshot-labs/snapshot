@@ -2,75 +2,22 @@
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin, {
-  EIP3770_PREFIXES,
-  createBatch,
-  getGnosisSafeBalances,
-  getGnosisSafeCollectibles
+EIP3770_PREFIXES,
+createBatch,
+getGnosisSafeBalances,
+getGnosisSafeCollectibles
 } from '../index';
 import { Network } from '../types';
-import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
-import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
-import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
-import SafeSnapTooltip from './Tooltip.vue';
+import FormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
+import FormTransactionBatch from './Form/TransactionBatch.vue';
+import HandleOutcomeUma from './HandleOutcomeUma.vue';
+import Tooltip from './Tooltip.vue';
 
 const plugin = new Plugin();
 
-export const ensureRightNetwork = async chainId => {
-  const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
-  if (connectedToChainId === chainIdInt) return; // already on right chain
-
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-    // we cannot switch automatically
-    throw new Error(
-      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-    );
-  }
-
-  const network = networks[chainId];
-  const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-  try {
-    // check if the chain to connect to is installed
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-    });
-  } catch (error) {
-    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-    if (error.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdHex,
-              chainName: network.name,
-              rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer.url]
-            }
-          ]
-        });
-      } catch (addError) {
-        console.error(addError);
-      }
-    }
-    console.error(error);
-  }
-
-  await sleep(1e3); // somehow the switch does not take immediate effect :/
-  if (window.ethereum.chainId !== chainIdHex) {
-    throw new Error(
-      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-    );
-  }
-};
-
-async function fetchBalances(network, safeAddress) {
+async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
   }
@@ -253,7 +200,7 @@ function handleImport(txs) {
 }
 onMounted(async () => {
   try {
-    const { dao } = await plugin.getModuleDetailsUma(
+    const { dao } = await plugin.getModuleDetails(
       props.network,
       props.moduleAddress
     );
@@ -290,7 +237,7 @@ onMounted(async () => {
         <i-ho-external-link class="ml-1" />
       </a>
       <div class="flex-grow"></div>
-      <SafeSnapTooltip
+      <Tooltip
         :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
       />
@@ -311,7 +258,7 @@ onMounted(async () => {
         :key="index"
         class="border-b last:border-b-0"
       >
-        <SafeSnapFormTransactionBatch
+        <FormTransactionBatch
           :config="transactionConfig"
           :model-value="batch"
           :nonce="index"
@@ -325,18 +272,18 @@ onMounted(async () => {
           {{ $t('safeSnap.addBatch') }}
         </BaseButton>
 
-        <SafeSnapFormImportTransactionsButton
+        <FormImportTransactionsButton
           v-if="!preview"
           :network="network"
           @import="handleImport($event)"
         />
 
-        <SafeSnapHandleOutcomeUma
+        <HandleOutcomeUma
           :batches="input"
           :proposal="proposal"
           :space="space"
           :results="results"
-          :uma-address="moduleAddress"
+          :module-address="moduleAddress"
           :multi-send-address="multiSendAddress"
           :network="transactionConfig.network"
         />

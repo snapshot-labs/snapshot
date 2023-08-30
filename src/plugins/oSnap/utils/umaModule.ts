@@ -1,3 +1,4 @@
+import { TreasuryWallet } from '@/helpers/interfaces';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -6,7 +7,6 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import filter from 'lodash/filter';
 import {
   EIP3770_PREFIXES,
   ERC20_ABI,
@@ -14,37 +14,40 @@ import {
   UMA_ORACLE_ABI,
   contractData
 } from '../constants';
+import { Network, OptimisticGovernorTransaction } from '../types';
 import { pageEvents } from './events';
-import { TreasuryWallet } from '@/helpers/interfaces';
 
-function getDeployBlock(network: string, name: string): number {
-  const data = filter(contractData, { network, name });
-  if (data.length === 1) return data[0].deployBlock ?? 0;
+function getDeployBlock(params: {
+  network: Network,
+  name: string,
+}): number {
+  const results = contractData.filter(contract => contract.network === params.network && contract.name === params.name)
+  if (results.length === 1) return results[0].deployBlock ?? 0;
   return 0;
 }
-function getContractSubgraph(search: {
-  network: string;
+function getContractSubgraph(params: {
+  network: Network;
   name: string;
 }): string {
-  const results = filter(contractData, search);
+  const results = contractData.filter(contract => contract.network === params.network && contract.name === params.name)
   if (results.length > 1)
     throw new Error(
-      `Too many results finding ${search.name} subgraph on network ${search.network}`
+      `Too many results finding ${params.name} subgraph on network ${params.network}`
     );
   if (results.length < 1)
     throw new Error(
-      `No results finding ${search.name} subgraph on network ${search.network}`
+      `No results finding ${params.name} subgraph on network ${params.network}`
     );
   if (!results[0].subgraph)
     throw new Error(
-      `No subgraph url defined for ${search.name} on network ${search.network}`
+      `No subgraph url defined for ${params.name} on network ${params.network}`
     );
   return results[0].subgraph;
 }
-function getOptimisticGovernorSubgraph(network: string): string {
+function getOptimisticGovernorSubgraph(network: Network): string {
   return getContractSubgraph({ network, name: 'OptimisticGovernor' });
 }
-function getOracleV3Subgraph(network: string): string {
+function getOracleV3Subgraph(network: Network): string {
   return getContractSubgraph({ network, name: 'OptimisticOracleV3' });
 }
 
@@ -73,17 +76,17 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
     }
     return data.data as Result;
   } catch (error) {
-    throw new Error(`Network error: ${error.message}`);
+    throw new Error(`Network error: ${error instanceof Error ? error.message: error}`);
   }
 };
 
 export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
-  const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network, treasury.address)))
+  const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network as Network, treasury.address)))
   return isOsnapEnabledOnTreasuriesResult.some(isOsnapEnabled => isOsnapEnabled);
 }
 
 export const getIsOsnapEnabled = async (
-  network: string,
+  network: Network,
   safeAddress: string
 ) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
@@ -103,7 +106,7 @@ export const getIsOsnapEnabled = async (
 
 export function makeConfigureOsnapUrl(params: {
   safeAddress: string;
-  network: string;
+  network: Network;
   spaceName: string;
   spaceUrl: string;
   baseUrl?: string;
@@ -131,7 +134,7 @@ export function makeConfigureOsnapUrl(params: {
 }
 
 const findAssertionGql = async (
-  network: string,
+  network: Network,
   params: { assertionId: string }
 ) => {
   const oracleUrl = getOracleV3Subgraph(network);
@@ -151,8 +154,8 @@ const findAssertionGql = async (
 };
 // Search optimistic governor for individual proposal
 const findProposalGql = async (
-  network: string,
-  params: { proposalHash; explanation; ogAddress }
+  network: Network,
+  params: { proposalHash: string; explanation: string; ogAddress: string }
 ) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
@@ -170,7 +173,7 @@ const findProposalGql = async (
   return result?.proposals;
 };
 
-const getBondDetailsUma = async (
+const getBondDetails = async (
   provider: StaticJsonRpcProvider,
   moduleAddress: string
 ) => {
@@ -184,38 +187,50 @@ const getBondDetailsUma = async (
     provider
   );
 
-  const bondInfo = ref({
+  const bondInfo: {
+    collateral: string;
+    symbol: string;
+    decimals: BigNumber;
+    currentUserBondAllowance: BigNumber;
+    currentUserBalance: BigNumber;
+  } = {
     collateral: erc20Contract.address,
     symbol: await erc20Contract.symbol(),
     decimals: await erc20Contract.decimals(),
     currentUserBondAllowance: BigNumber.from(0),
     currentUserBalance: BigNumber.from(0)
-  });
+  };
 
   async function updateCurrentUserBondInfo() {
-    bondInfo.value.currentUserBondAllowance = BigNumber.from(
+    bondInfo.currentUserBondAllowance = BigNumber.from(
       web3Account.value
         ? await erc20Contract.allowance(web3Account.value, moduleAddress)
         : 0
     );
-    bondInfo.value.currentUserBalance = BigNumber.from(
+    bondInfo.currentUserBalance = BigNumber.from(
       web3Account.value ? await erc20Contract.balanceOf(web3Account.value) : 0
     );
   }
   await updateCurrentUserBondInfo();
 
-  return bondInfo.value;
+  return bondInfo;
 };
 
-export const getModuleDetailsUma = async (
+export const getModuleDetails = async (
   provider: StaticJsonRpcProvider,
-  network: string,
+  network: Network,
   moduleAddress: string,
   explanation: string,
-  transactions: any
+  transactions: OptimisticGovernorTransaction[] | undefined
 ) => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
-  const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
+  const moduleDetails: [
+    [daoAddress: string],
+    [optimisticOracleV3Address: string],
+    [rules: string],
+    [bondAmount: BigNumber],
+    [liveness: BigNumber]
+  ] = await multicall(network, provider, UMA_MODULE_ABI as any, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
@@ -227,7 +242,7 @@ export const getModuleDetailsUma = async (
   const rules = moduleDetails[2][0];
   const minimumBond = moduleDetails[3][0];
   const livenessPeriod = moduleDetails[4][0];
-  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
+  const bondDetails = await getBondDetails(provider, moduleAddress);
 
   if (
     Number(minimumBond) > 0 &&
@@ -271,8 +286,8 @@ export const getModuleDetailsUma = async (
       dao: moduleDetails[0][0],
       oracle: moduleDetails[1][0],
       rules: moduleDetails[2][0],
-      minimumBond: minimumBond,
       expiration: moduleDetails[4][0],
+      minimumBond,
       allowance: bondDetails.currentUserBondAllowance,
       collateral: bondDetails.collateral,
       decimals: bondDetails.decimals,
@@ -283,12 +298,12 @@ export const getModuleDetailsUma = async (
       activeProposal: false,
       assertionEvent: undefined,
       proposalExecuted: false,
-      livenessPeriod: livenessPeriod
+      livenessPeriod
     };
   }
   // Check for active proposals. proposal hash can be identical across assertions
   // but the explanation field should be unique. we will filter this out later.
-  const assertionId = await moduleContract.assertionIds(proposalHash);
+  const assertionId: string = await moduleContract.assertionIds(proposalHash);
 
   const activeProposal =
     assertionId !==
@@ -303,8 +318,8 @@ export const getModuleDetailsUma = async (
   const latestBlock = await provider.getBlock('latest');
   // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
   // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
-  const oGstartBlock = getDeployBlock(network, 'OptimisticGovernor');
-  const oOStartBlock = getDeployBlock(network, 'OptimisticOracleV3');
+  const oGstartBlock = getDeployBlock({network, name: 'OptimisticGovernor'});
+  const oOStartBlock = getDeployBlock({network, name: 'OptimisticOracleV3'});
   const maxRange = 3000;
 
   const [assertionEvents, transactionsProposedEvents, executionEvents] =
@@ -414,15 +429,21 @@ export const getModuleDetailsUma = async (
 // This is intended to function identically to getModuleDetailsUma but use subgraphs rather than web3 events.
 // This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
 // and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
-export const getModuleDetailsUmaGql = async (
+export const getModuleDetailsGql = async (
   provider: StaticJsonRpcProvider,
-  network: string,
+  network: Network,
   moduleAddress: string,
   explanation: string,
-  transactions: any
+  transactions: OptimisticGovernorTransaction[] | undefined
 ) => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
-  const moduleDetails = await multicall(network, provider, UMA_MODULE_ABI, [
+  const moduleDetails: [
+    [daoAddress: string],
+    [optimisticOracleV3Address: string],
+    [rules: string],
+    [bondAmount: BigNumber],
+    [liveness: BigNumber]
+  ] = await multicall(network, provider, UMA_MODULE_ABI as any, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
@@ -430,11 +451,9 @@ export const getModuleDetailsUmaGql = async (
     [moduleAddress, 'liveness']
   ]);
   let needsApproval = false;
-  const optimisticOracle = moduleDetails[1][0];
-  const rules = moduleDetails[2][0];
   const minimumBond = moduleDetails[3][0];
   const livenessPeriod = moduleDetails[4][0];
-  const bondDetails = await getBondDetailsUma(provider, moduleAddress);
+  const bondDetails = await getBondDetails(provider, moduleAddress);
 
   if (
     Number(minimumBond) > 0 &&

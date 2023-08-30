@@ -2,11 +2,14 @@
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import Config from './components/Config.vue';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  modelValue: any;
+  modelValue: { oSnap: any } | undefined;
 }>();
+
+console.log(props);
+
 
 const emit = defineEmits(['update']);
 const update = form => {
@@ -18,8 +21,6 @@ const update = form => {
   <Config
     v-if="space.plugins.oSnap"
     :proposal="proposal"
-    :config="space.plugins.oSnap"
-    :network="space.network"
     :preview="false"
     :model-value="modelValue?.oSnap || {}"
     @update:modelValue="update"

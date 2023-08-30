@@ -5,19 +5,57 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin from '../index';
-import type { Network } from '../types';
-import { ensureRightNetwork } from './SafeTransactions.vue';
+import type { Batch, Network, OptimisticGovernorTransaction } from '../types';
 
-type Transaction = {
-  to: string;
-  operation: string;
-  value: string;
-  data: string;
-};
+const ensureRightNetwork = async (chainId: Network) => {
+  const chainIdInt = parseInt(chainId);
+  const connectedToChainId = getInstance().provider.value?.chainId;
+  if (connectedToChainId === chainIdInt) return; // already on right chain
 
-type Batch = {
-  transactions: Transaction[];
-  mainTransaction: Transaction;
+  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
+    // we cannot switch automatically
+    throw new Error(
+      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
+    );
+  }
+
+  const network = networks[chainId];
+  const chainIdHex = `0x${chainIdInt.toString(16)}`;
+
+  try {
+    // check if the chain to connect to is installed
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
+    });
+  } catch (error) {
+    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
+    if (error.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: chainIdHex,
+              chainName: network.name,
+              rpcUrls: network.rpc,
+              blockExplorerUrls: [network.explorer.url]
+            }
+          ]
+        });
+      } catch (addError) {
+        console.error(addError);
+      }
+    }
+    console.error(error);
+  }
+
+  await sleep(1e3); // somehow the switch does not take immediate effect :/
+  if (window.ethereum.chainId !== chainIdHex) {
+    throw new Error(
+      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
+    );
+  }
 };
 
 const props = defineProps<{
@@ -26,7 +64,7 @@ const props = defineProps<{
   results: Results;
   batches: Batch[];
   network: Network;
-  umaAddress: string;
+  moduleAddress: string;
   multiSendAddress: string;
 }>();
 
@@ -66,7 +104,7 @@ const action1State = ref<Action1State>('idle');
 const action2State = ref<Action2State>('idle');
 const voteResultsConfirmed = ref(false);
 const questionDetails =
-  ref<Awaited<ReturnType<typeof plugin.getExecutionDetailsUma>>>();
+  ref<Awaited<ReturnType<typeof plugin.getExecutionDetails>>>();
 const closeModal = ref(false);
 
 function closeEvent() {
@@ -79,21 +117,21 @@ function showProposeModal() {
   voteResultsConfirmed.value = true;
 }
 
-const getTransactionsUma = () =>
+const getTransactions = () =>
   props.batches.map(batch => {
     const mainTx = batch.mainTransaction;
-    return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data];
+    return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data] as OptimisticGovernorTransaction;
   });
 
 const updateDetails = async () => {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetailsUma(
+    questionDetails.value = await plugin.getExecutionDetails(
       props.network,
-      props.umaAddress,
+      props.moduleAddress,
       props.proposal.id,
       props.proposal.ipfs,
-      getTransactionsUma()
+      getTransactions()
     );
   } catch (e) {
     console.error('Error loading uma execution details', e);
@@ -102,7 +140,7 @@ const updateDetails = async () => {
   }
 };
 
-const approveBondUma = async () => {
+const approveBond = async () => {
   if (!questionDetails.value?.oracle) return;
   const txPendingId = createPendingTransaction();
   try {
@@ -110,10 +148,10 @@ const approveBondUma = async () => {
 
     await ensureRightNetwork(props.network);
 
-    const approveBond = plugin.approveBondUma(
+    const approveBond = plugin.approveBond(
       props.network,
       getInstance().web3,
-      props.umaAddress
+      props.moduleAddress
     );
     const step = await approveBond.next();
     if (step.value)
@@ -144,11 +182,11 @@ const submitProposalUma = async () => {
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposalUma(
+    const proposalSubmission = plugin.submitProposal(
       getInstance().web3,
-      props.umaAddress,
+      props.moduleAddress,
       props.proposal.ipfs,
-      getTransactionsUma()
+      getTransactions()
     );
     const step = await proposalSubmission.next();
     if (step.value)
@@ -180,10 +218,10 @@ const executeProposalUma = async () => {
 
   try {
     clearBatchError();
-    const executingProposal = plugin.executeProposalUma(
+    const executingProposal = plugin.executeProposal(
       getInstance().web3,
-      props.umaAddress,
-      getTransactionsUma()
+      props.moduleAddress,
+      getTransactions()
     );
     const step = await executingProposal.next();
     if (step.value)
@@ -335,7 +373,7 @@ onMounted(async () => {
         <BaseContainer class="flex items-center">
           <BaseButton
             :loading="action1State === 'approve-bond'"
-            @click="approveBondUma"
+            @click="approveBond"
             class="mr-2"
           >
             {{ $t('safeSnap.labels.approveBond') }}

@@ -1,35 +1,34 @@
 import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
-import { toUtf8Bytes } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { _TypedDataEncoder } from '@ethersproject/hash';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
-import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { toUtf8Bytes } from '@ethersproject/strings';
 
+import {
+  SafeTransaction,
+} from '@/helpers/interfaces';
 import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
-  SafeTransaction,
-} from '@/helpers/interfaces';
-import {
   EIP712_TYPES,
-  UMA_MODULE_ABI,
-  ERC20_ABI
+  ERC20_ABI,
+  UMA_MODULE_ABI
 } from './constants';
-import { getModuleDetailsUma, getModuleDetailsUmaGql } from './utils/umaModule';
-import { Network } from './types';
+import { Network, OptimisticGovernorTransaction } from './types';
+import { getModuleDetails, getModuleDetailsGql } from './utils/umaModule';
 
 export * from './constants';
 
 export * from './utils/abi';
-export * from './utils/safe';
 export * from './utils/coins';
-export * from './utils/index';
 export * from './utils/decoder';
+export * from './utils/index';
 export * from './utils/multiSend';
+export * from './utils/safe';
 export * from './utils/transactions';
 
 export default class Plugin {
@@ -76,26 +75,25 @@ export default class Plugin {
     });
   }
 
-  async validateUmaModule(network: string, umaAddress: string) {
-    if (!isAddress(umaAddress)) return 'reality';
-
+  async validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
+    if (!isAddress(moduleAddress)) return false;
     const provider: StaticJsonRpcProvider = getProvider(network);
-    const moduleContract = new Contract(umaAddress, UMA_MODULE_ABI, provider);
+    const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
 
     return moduleContract
       .rules()
-      .then(() => 'uma')
-      .catch(() => 'reality');
+      .then(() => true)
+      .catch(() => false);
   }
 
-  async getExecutionDetailsUma(
+  async getExecutionDetails(
     network: Network,
     moduleAddress: string,
     proposalId: string,
     explanation: string,
-    transactions: any
+    transactions: OptimisticGovernorTransaction[]
   ) {
-    const moduleDetails = await this.getModuleDetailsUma(
+    const moduleDetails = await this.getModuleDetails(
       network,
       moduleAddress,
       explanation,
@@ -109,13 +107,13 @@ export default class Plugin {
     };
   }
 
-  async *approveBondUma(
+  async *approveBond(
     network: Network,
     web3: any,
     moduleAddress: string,
-    transactions?: any
+    transactions?: OptimisticGovernorTransaction[]
   ) {
-    const moduleDetails = await this.getModuleDetailsUma(
+    const moduleDetails = await this.getModuleDetails(
       network,
       moduleAddress,
       '',
@@ -136,16 +134,16 @@ export default class Plugin {
     yield;
   }
 
-  async getModuleDetailsUma(
+  async getModuleDetails(
     network: Network,
     moduleAddress: string,
-    explanation?: string,
-    transactions?: any
+    explanation = '',
+    transactions?: OptimisticGovernorTransaction[]
   ) {
     const provider: StaticJsonRpcProvider = getProvider(network);
     try {
       // try optimized calls, which use the graph over web3 event queries
-      return await getModuleDetailsUmaGql(
+      return await getModuleDetailsGql(
         provider,
         network,
         moduleAddress,
@@ -155,7 +153,7 @@ export default class Plugin {
     } catch (err) {
       console.warn('Error querying module details from the graph:', err);
       // fall back to web3 event queries.
-      return getModuleDetailsUma(
+      return getModuleDetails(
         provider,
         network,
         moduleAddress,
@@ -165,11 +163,11 @@ export default class Plugin {
     }
   }
 
-  async *submitProposalUma(
+  async *submitProposal(
     web3: any,
     moduleAddress: string,
     explanation: string,
-    transactions: any
+    transactions: OptimisticGovernorTransaction[]
   ) {
     const explanationBytes = toUtf8Bytes(explanation);
     const tx = await sendTransaction(
@@ -185,10 +183,10 @@ export default class Plugin {
     console.log('[DAO module] submitted proposal:', receipt);
   }
 
-  async *executeProposalUma(
+  async *executeProposal(
     web3: any,
     moduleAddress: string,
-    transactions: any
+    transactions: OptimisticGovernorTransaction[]
   ) {
     const tx = await sendTransaction(
       web3,
