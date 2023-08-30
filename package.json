@@ -86,7 +86,7 @@
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.4.1",
-    "autoprefixer": "^10.4.14",
+    "autoprefixer": "^10.4.15",
     "cypress": "^12.11.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.46.0",
