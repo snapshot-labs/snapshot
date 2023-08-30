@@ -95,7 +95,7 @@
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^10.11.0",
     "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
+    "lint-staged": "^14.0.1",
     "patch-package": "^7.0.0",
     "postcss": "^8.4.28",
     "postinstall-postinstall": "^2.1.0",
