@@ -14,174 +14,7 @@ export function useStrategies() {
   const extendedStrategy = ref<Strategy | null>(null);
   const loadingExtendedStrategy = ref(false);
 
-  const strategyDefinition = computed(() => {
-    console.log(extendedStrategy.value)
-    if(extendedStrategy.value && extendedStrategy.value.id === 'contract-call') {
-      extendedStrategy.value.schema = {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "$ref": "#/definitions/Strategy",
-        "definitions": {
-          "Strategy": {
-            "title": "Strategy",
-            "type": "object",
-            "properties": {
-              "symbol": {
-                "type": "string",
-                "title": "Symbol",
-                "examples": ["e.g. ETH"],
-                "maxLength": 16
-              },
-              "address": {
-                "type": "string",
-                "title": "Contract address",
-                "examples": ["e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"],
-                "pattern": "^0x[a-fA-F0-9]{40}$",
-                "minLength": 42,
-                "maxLength": 42
-              },
-              "decimals": {
-                "type": "integer",
-                "title": "Decimals",
-                "examples": ["e.g. 18"]
-              },
-              "methodABI": {
-                "type": "object",
-                "title": "Method ABI",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "title": "Name",
-                    "examples": ["e.g. balanceOf"]
-                  },
-                  "inputs": {
-                    "type": "array",
-                    "title": "Inputs",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "title": "Name",
-                          "examples": ["e.g. account"]
-                        },
-                        "type": {
-                          "type": "string",
-                          "title": "Type",
-                          "examples": ["e.g. address"]
-                        },
-                        "internalType": {
-                          "type": "string",
-                          "title": "Internal type",
-                          "examples": ["e.g. address"]
-                        }
-                      },
-                      "required": ["name", "type"],
-                      "additionalProperties": false
-                    }
-                  },
-                  "outputs": {
-                    "type": "array",
-                    "title": "Outputs",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "title": "Name",
-                          "examples": ["e.g. balance"]
-                        },
-                        "type": {
-                          "type": "string",
-                          "title": "Type",
-                          "examples": ["e.g. uint256"]
-                        },
-                        "internalType": {
-                          "type": "string",
-                          "title": "Internal type",
-                          "examples": ["e.g. uint256"]
-                        }
-                      },
-                      "required": ["name", "type"],
-                      "additionalProperties": false
-                    }
-                  }
-                }
-              },
-              "output": {
-                "type": "string",
-                "title": "Output (Optional)",
-                "examples": ["e.g. balance"]
-              }
-            },
-            "required": [],
-            "additionalProperties": false
-          }
-        }
-      }
-    }
-
-    if(extendedStrategy.value && extendedStrategy.value.id === 'delegation') {
-      extendedStrategy.value.schema = {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "$ref": "#/definitions/Strategy",
-        "definitions": {
-          "Strategy": {
-            "title": "Strategy",
-            "type": "object",
-            "properties": {
-              "symbol": {
-                "type": "string",
-                "title": "Symbol",
-                "examples": [
-                  "e.g. UNI"
-                ],
-                "maxLength": 16
-              },
-              "strategies": {
-                "type": "array",
-                "title": "Strategies",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string",
-                      "title": "Name"
-                    },
-                    "params": {
-                      "type": "object"
-                    },
-                    "network": {
-                      "type": "string",
-                      "title": "Network (optional)"
-                    }
-                  },
-                  "required": [
-                    "name",
-                    "params"
-                  ]
-                },
-                "minItems": 1,
-                "maxItems": 8,
-                "uniqueItems": true
-              },
-              "delegationSpace": {
-                "type": "string",
-                "title": "Delegation space (optional)",
-                "examples": [
-                  "e.g. poh.eth"
-                ]
-              }
-            },
-            "required": [
-              "strategies"
-            ],
-            "additionalProperties": false
-          }
-        }
-      }
-      
-    }
-    
+  const strategyDefinition = computed(() => {    
     if (extendedStrategy.value?.schema?.$ref) {
       return extendedStrategy.value.schema.definitions.Strategy;
     }
@@ -216,6 +49,7 @@ export function useStrategies() {
   // Get extended strategy by Id and save it in extendedStrategies
   // don't load strategy if it's already loaded
   async function getExtendedStrategy(id: string) {
+    console.log(id);
     if (extendedStrategies.value.some(st => st?.id === id)) {
       extendedStrategy.value =
         extendedStrategies.value.find(st => st?.id === id) ?? null;
@@ -231,6 +65,169 @@ export function useStrategies() {
     );
 
     if (strategyObj) {
+      if(strategyObj.id === 'delegation') {
+        strategyObj.schema = {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$ref": "#/definitions/Strategy",
+          "definitions": {
+            "Strategy": {
+              "title": "Strategy",
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "title": "Symbol",
+                  "examples": [
+                    "e.g. UNI"
+                  ],
+                  "maxLength": 16
+                },
+                "strategies": {
+                  "type": "array",
+                  "title": "Strategies",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "params": {
+                        "type": "object"
+                      },
+                      "network": {
+                        "type": "string",
+                        "title": "Network (optional)"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "params"
+                    ]
+                  },
+                  "minItems": 1,
+                  "maxItems": 8,
+                  "uniqueItems": true
+                },
+                "delegationSpace": {
+                  "type": "string",
+                  "title": "Delegation space (optional)",
+                  "examples": [
+                    "e.g. poh.eth"
+                  ]
+                }
+              },
+              "required": [
+                "strategies"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+      if(strategyObj.id === 'contract-call') {
+        strategyObj.schema = {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "$ref": "#/definitions/Strategy",
+          "definitions": {
+            "Strategy": {
+              "title": "Strategy",
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "title": "Symbol",
+                  "examples": ["e.g. ETH"],
+                  "maxLength": 16
+                },
+                "address": {
+                  "type": "string",
+                  "title": "Contract address",
+                  "examples": ["e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"],
+                  "pattern": "^0x[a-fA-F0-9]{40}$",
+                  "minLength": 42,
+                  "maxLength": 42
+                },
+                "decimals": {
+                  "type": "integer",
+                  "title": "Decimals",
+                  "examples": ["e.g. 18"]
+                },
+                "methodABI": {
+                  "type": "object",
+                  "title": "Method ABI",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "title": "Name",
+                      "examples": ["e.g. balanceOf"]
+                    },
+                    "inputs": {
+                      "type": "array",
+                      "title": "Inputs",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name",
+                            "examples": ["e.g. account"]
+                          },
+                          "type": {
+                            "type": "string",
+                            "title": "Type",
+                            "examples": ["e.g. address"]
+                          },
+                          "internalType": {
+                            "type": "string",
+                            "title": "Internal type",
+                            "examples": ["e.g. address"]
+                          }
+                        },
+                        "required": ["name", "type"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "outputs": {
+                      "type": "array",
+                      "title": "Outputs",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "title": "Name",
+                            "examples": ["e.g. balance"]
+                          },
+                          "type": {
+                            "type": "string",
+                            "title": "Type",
+                            "examples": ["e.g. uint256"]
+                          },
+                          "internalType": {
+                            "type": "string",
+                            "title": "Internal type",
+                            "examples": ["e.g. uint256"]
+                          }
+                        },
+                        "required": ["name", "type"],
+                        "additionalProperties": false
+                      }
+                    }
+                  }
+                },
+                "output": {
+                  "type": "string",
+                  "title": "Output (Optional)",
+                  "examples": ["e.g. balance"]
+                }
+              },
+              "required": [],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
       extendedStrategies.value.push(strategyObj);
       extendedStrategy.value = strategyObj;
     }
