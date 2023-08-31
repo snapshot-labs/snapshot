@@ -11,3 +11,5 @@ export type Batch = {
 };
 
 export type OptimisticGovernorTransaction = [to: string, operation: 0 | 1, value: string, data: string];
+
+export type TransactionType = 'transferFunds' | 'transferNFT' | 'contractInteraction' | 'raw';

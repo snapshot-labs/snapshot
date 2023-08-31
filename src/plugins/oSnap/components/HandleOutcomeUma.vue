@@ -7,6 +7,12 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin from '../index';
 import type { Batch, Network, OptimisticGovernorTransaction } from '../types';
 
+declare global {
+  interface Window {
+    ethereum: any;
+  }
+}
+
 const ensureRightNetwork = async (chainId: Network) => {
   const chainIdInt = parseInt(chainId);
   const connectedToChainId = getInstance().provider.value?.chainId;
@@ -30,6 +36,7 @@ const ensureRightNetwork = async (chainId: Network) => {
     });
   } catch (error) {
     // This error code indicates that the chain has not been added to MetaMask. Let's add it.
+    // @ts-expect-error non-standard error type
     if (error.code === 4902) {
       try {
         await window.ethereum.request({
@@ -120,7 +127,12 @@ function showProposeModal() {
 const getTransactions = () =>
   props.batches.map(batch => {
     const mainTx = batch.mainTransaction;
-    return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data] as OptimisticGovernorTransaction;
+    return [
+      mainTx.to,
+      Number(mainTx.operation),
+      mainTx.value,
+      mainTx.data
+    ] as OptimisticGovernorTransaction;
   });
 
 const updateDetails = async () => {
@@ -141,7 +153,7 @@ const updateDetails = async () => {
 };
 
 const approveBond = async () => {
-  if (!questionDetails.value?.oracle) return;
+  if (!questionDetails.value?.oracleAddress) return;
   const txPendingId = createPendingTransaction();
   try {
     action1State.value = 'approve-bond';
@@ -239,10 +251,7 @@ const executeProposalUma = async () => {
 };
 
 const usingMetaMask = computed(() => {
-  return (
-    // @ts-expect-error window.ethereum is not in the types
-    window.ethereum && getInstance().provider.value?.isMetaMask
-  );
+  return window.ethereum && getInstance().provider.value?.isMetaMask;
 });
 
 const connectedToRightChain = computed(() => {

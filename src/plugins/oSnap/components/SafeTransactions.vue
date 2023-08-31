@@ -1,19 +1,35 @@
 <script setup lang="ts">
-import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  SafeTransaction,
+  TreasuryWallet
+} from '@/helpers/interfaces';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import Plugin, {
-EIP3770_PREFIXES,
-createBatch,
-getGnosisSafeBalances,
-getGnosisSafeCollectibles
+  EIP3770_PREFIXES,
+  getGnosisSafeBalances,
+  getGnosisSafeCollectibles
 } from '../index';
 import { Network } from '../types';
-import FormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
+import { getModuleAddressForTreasury } from '../utils/umaModule';
 import FormTransactionBatch from './Form/TransactionBatch.vue';
 import HandleOutcomeUma from './HandleOutcomeUma.vue';
 import Tooltip from './Tooltip.vue';
+
+const props = defineProps<{
+  modelValue: any;
+  treasury: TreasuryWallet;
+  proposal: Proposal;
+  space: ExtendedSpace;
+  results: Results;
+  preview: boolean;
+}>();
+
+const emit = defineEmits(['update:modelValue']);
 
 const plugin = new Plugin();
 
@@ -94,67 +110,36 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
   return [];
 }
 
-function formatBatches(network, module, batches, multiSend) {
-  if (batches.length) {
-    const batchSample = batches[0];
-    if (Array.isArray(batchSample)) {
-      const chainId = parseInt(network);
-      return batches.map((txs, index) =>
-        createBatch(module, chainId, index, txs, multiSend)
-      );
-    }
-  }
-  return batches;
-}
-
-const props = defineProps<{
-  modelValue: any;
-  proposal: Proposal;
-  space: ExtendedSpace;
-  results: any;
-  network: Network;
-  moduleAddress: string;
-  multiSendAddress: string;
-  preview: boolean;
-  hash: string;
-}>();
-
-const emit = defineEmits(['update:modelValue']);
-
-const input = ref(
-  formatBatches(
-    props.network,
-    undefined,
-    props.modelValue,
-    props.multiSendAddress
-  )
-);
 const gnosisSafeAddress = ref<string>();
 const moduleAddress = ref<string>();
 const showHash = ref(false);
-const transactionConfig = ref({
-  preview: props.preview,
-  gnosisSafeAddress: undefined,
-  moduleAddress: props.moduleAddress,
-  network: props.network,
-  multiSendAddress: props.multiSendAddress,
-  tokens: [],
-  collectables: []
-});
+const tokens = ref([]);
+const collectables = ref([]);
+const transactions = ref<SafeTransaction[]>([]);
+
+function addTransaction() {
+  transactions.value.push({
+    to: '',
+    value: '0',
+    data: '0x',
+    operation: '0',
+    nonce: '0'
+  });
+}
 
 const safeLink = computed(() => {
-  const prefix = EIP3770_PREFIXES[props.network];
+  const prefix = EIP3770_PREFIXES[props.treasury.network];
   return `https://gnosis-safe.io/app/${prefix}:${gnosisSafeAddress.value}`;
 });
 
 const networkName = computed(() => {
-  if (props.network === '1') return 'Mainnet';
-  const { shortName, name } = networks[props.network] || {};
-  return shortName || name || `#${props.network}`;
+  if (props.treasury.network === '1') return 'Mainnet';
+  const { shortName, name } = networks[props.treasury.network] || {};
+  return shortName || name || `#${props.treasury.network}`;
 });
 
 const networkIcon = computed(() => {
-  const { logo } = networks[props.network];
+  const { logo } = networks[props.treasury.network];
   return getIpfsUrl(logo);
 });
 
@@ -163,57 +148,26 @@ const proposalResolved = computed(() => {
   return ts > props.proposal.end;
 });
 
-function addTransactionBatch() {
-  input.value.push(
-    createBatch(
-      props.moduleAddress,
-      parseInt(props.network),
-      input.length.value,
-      [],
-      props.multiSendAddress
-    )
-  );
-  emit('update:modelValue', input.value);
-}
-
-function removeBatch(index) {
-  input.value.splice(index, 1);
-  emit('update:modelValue', input);
-}
-
-function updateTransactionBatch(index, batch) {
-  input.value[index] = batch;
-  emit('update:modelValue', input.value);
-}
-
-function handleImport(txs) {
-  input.value.push(
-    createBatch(
-      props.moduleAddress,
-      parseInt(props.network),
-      input.value.length,
-      txs,
-      props.multiSendAddress
-    )
-  );
-  emit('update:modelValue', input.value);
-}
 onMounted(async () => {
   try {
-    const { dao } = await plugin.getModuleDetails(
-      props.network,
-      props.moduleAddress
+    moduleAddress.value = await getModuleAddressForTreasury(
+      props.treasury.network as Network,
+      props.treasury.address
     );
-    gnosisSafeAddress.value = dao;
-    transactionConfig.value = {
-      ...transactionConfig,
-      gnosisSafeAddress: gnosisSafeAddress.value,
-      tokens: await fetchBalances(props.network, gnosisSafeAddress.value),
-      collectables: await fetchCollectibles(
-        props.network,
-        gnosisSafeAddress.value
+    gnosisSafeAddress.value = (
+      await plugin.getModuleDetails(
+        props.treasury.network as Network,
+        moduleAddress.value
       )
-    };
+    ).gnosisSafeAddress;
+    tokens.value = await fetchBalances(
+      props.treasury.network as Network,
+      gnosisSafeAddress.value
+    );
+    collectables.value = await fetchCollectibles(
+      props.treasury.network,
+      gnosisSafeAddress.value
+    );
   } catch (e) {
     console.error(e);
   }
@@ -237,13 +191,9 @@ onMounted(async () => {
         <i-ho-external-link class="ml-1" />
       </a>
       <div class="flex-grow"></div>
-      <Tooltip
-        :module-address="moduleAddress"
-        :multi-send-address="multiSendAddress"
-      />
+      <Tooltip :module-address="moduleAddress" />
     </h4>
     <UiCollapsibleText
-      v-if="hash"
       :show-arrow="true"
       :open="showHash"
       :text="hash"
@@ -253,41 +203,29 @@ onMounted(async () => {
       @toggle="showHash = !showHash"
     />
     <div class="text-center">
-      <div
-        v-for="(batch, index) in input"
-        :key="index"
-        class="border-b last:border-b-0"
-      >
-        <FormTransactionBatch
-          :config="transactionConfig"
-          :model-value="batch"
-          :nonce="index"
-          @remove="removeBatch(index)"
-          @update:modelValue="updateTransactionBatch(index, $event)"
-        />
-      </div>
+      <FormTransactionBatch
+        :config="transactionConfig"
+        :model-value="batch"
+        :nonce="index"
+        @remove="removeBatch(index)"
+        @update:modelValue="updateTransactionBatch(index, $event)"
+      />
+    </div>
 
-      <div v-if="!preview || proposalResolved">
-        <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
-          {{ $t('safeSnap.addBatch') }}
-        </BaseButton>
+    <div v-if="!preview || proposalResolved">
+      <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
+        {{ $t('safeSnap.addBatch') }}
+      </BaseButton>
 
-        <FormImportTransactionsButton
-          v-if="!preview"
-          :network="network"
-          @import="handleImport($event)"
-        />
-
-        <HandleOutcomeUma
-          :batches="input"
-          :proposal="proposal"
-          :space="space"
-          :results="results"
-          :module-address="moduleAddress"
-          :multi-send-address="multiSendAddress"
-          :network="transactionConfig.network"
-        />
-      </div>
+      <HandleOutcomeUma
+        :batches="input"
+        :proposal="proposal"
+        :space="space"
+        :results="results"
+        :module-address="moduleAddress"
+        :multi-send-address="multiSendAddress"
+        :network="transactionConfig.network"
+      />
     </div>
   </div>
 </template>

@@ -80,6 +80,10 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
   }
 };
 
+export const getModuleAddressForTreasury = async (network: Network, treasuryAddress: string) => {
+  return Promise.resolve("0x8E8F8B2a874d82bB81a9A8fD2b719ab81fCB61d8")
+}
+
 export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
   const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network as Network, treasury.address)))
   return isOsnapEnabledOnTreasuriesResult.some(isOsnapEnabled => isOsnapEnabled);
@@ -225,7 +229,7 @@ export const getModuleDetails = async (
 ) => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails: [
-    [daoAddress: string],
+    [gnosisSafeAddress: string],
     [optimisticOracleV3Address: string],
     [rules: string],
     [bondAmount: BigNumber],
@@ -283,7 +287,7 @@ export const getModuleDetails = async (
     );
   } else {
     return {
-      dao: moduleDetails[0][0],
+      gnosisSafeAddress: moduleDetails[0][0],
       oracle: moduleDetails[1][0],
       rules: moduleDetails[2][0],
       expiration: moduleDetails[4][0],
@@ -407,7 +411,7 @@ export const getModuleDetails = async (
   );
 
   return {
-    dao: moduleDetails[0][0],
+    gnosisSafeAddress: moduleDetails[0][0],
     oracle: moduleDetails[1][0],
     rules: moduleDetails[2][0],
     minimumBond: minimumBond,
@@ -438,7 +442,7 @@ export const getModuleDetailsGql = async (
 ) => {
   const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
   const moduleDetails: [
-    [daoAddress: string],
+    [gnosisSafeAddress: string],
     [optimisticOracleV3Address: string],
     [rules: string],
     [bondAmount: BigNumber],
@@ -477,8 +481,8 @@ export const getModuleDetailsGql = async (
     );
   } else {
     return {
-      dao: moduleDetails[0][0],
-      oracle: moduleDetails[1][0],
+      gnosisSafeAddress: moduleDetails[0][0],
+      oracleAddress: moduleDetails[1][0],
       rules: moduleDetails[2][0],
       minimumBond: minimumBond,
       expiration: moduleDetails[4][0],
@@ -527,8 +531,8 @@ export const getModuleDetailsGql = async (
     : undefined;
 
   return {
-    dao: moduleDetails[0][0],
-    oracle: moduleDetails[1][0],
+    gnosisSafeAddress: moduleDetails[0][0],
+    oracleAddress: moduleDetails[1][0],
     rules: moduleDetails[2][0],
     minimumBond: minimumBond,
     expiration: moduleDetails[4][0],

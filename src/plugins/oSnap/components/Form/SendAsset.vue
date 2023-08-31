@@ -19,7 +19,6 @@ export default {
       plugin: new Plugin(),
       collectables: [],
       loading: false,
-
       to: '',
       collectableAddress: ''
     };
