@@ -28,7 +28,7 @@ const canFollow = computed(() =>
       v-bind="$attrs"
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
-      class="group min-w-[120px]"
+      class="group min-w-[125px]"
       :class="{
         'flex items-center justify-center hover:!border-red hover:!bg-red hover:!bg-opacity-5 hover:!text-red':
           isFollowing
