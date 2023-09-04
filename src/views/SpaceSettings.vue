@@ -373,16 +373,13 @@ const isViewOnly = computed(() => {
         </p>
       </div>
     </ModalConfirmAction>
-    <ModalConfirmAction
+    <ModalConfirmLeave
       :open="isConfirmLeaveOpen"
       show-cancel
       @close="cancelLeave"
-      @confirm="confirmLeave(true)"
-    >
-      <BaseMessageBlock level="warning" class="m-4">
-        {{ $t('settings.confirmLeaveMessage') }}
-      </BaseMessageBlock>
-    </ModalConfirmAction>
+      @save="handleSubmit"
+      @leave="confirmLeave(true)"
+    />
     <ModalConfirmAction
       :open="isConfirmDeleteOpen"
       :disabled="modalDeleteSpaceConfirmation !== space.id"

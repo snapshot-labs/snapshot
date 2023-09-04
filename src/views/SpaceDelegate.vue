@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { DEFAULT_ETH_ADDRESS } from '@/helpers/constants';
+import { useConfirmDialog } from '@vueuse/core';
+
+const INITIAL_STATEMENT = {
+  about: '',
+  statement: ''
+};
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -9,6 +15,7 @@ const props = defineProps<{
 const { web3Account } = useWeb3();
 const { formatCompactNumber } = useIntl();
 const { getProfile } = useProfiles();
+const { saveStatement, savingStatement } = useStatement();
 const route = useRoute();
 
 const {
@@ -25,12 +32,17 @@ const { reloadStatement, getStatement, formatPercentageNumber } =
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
 const web3AccountDelegatingTo = ref('');
-const statementForm = ref({
-  about: '',
-  statement: ''
-});
+const fetchedStatement = ref(INITIAL_STATEMENT);
+const statementForm = ref(INITIAL_STATEMENT);
 
 const address = computed(() => route.params.address as string);
+
+const edited = computed(() => {
+  return (
+    fetchedStatement.value?.about !== statementForm.value?.about ||
+    fetchedStatement.value?.statement !== statementForm.value?.statement
+  );
+});
 
 const isLoggedUser = computed(() => {
   return web3Account.value.toLowerCase() === address.value.toLowerCase();
@@ -73,21 +85,31 @@ const delegatorItems = computed(() => {
   ];
 });
 
+async function saveStatementForm() {
+  if (!showEdit.value) showEdit.value = true;
+  try {
+    await saveStatement(props.space.id, statementForm.value);
+    reloadStatement(props.space.id, address.value);
+    showEdit.value = false;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 async function loadDelegatingTo() {
   web3AccountDelegatingTo.value = await fetchDelegatingTo(web3Account.value);
 }
 
 async function handleReload() {
-  reloadStatement(props.space.id, address.value);
   loadDelegate(address.value);
   loadDelegatingTo();
-  showEdit.value = false;
 }
 
 async function init() {
   loadDelegatingTo();
   await loadDelegate(address.value);
   statementForm.value = getStatement(address.value);
+  fetchedStatement.value = getStatement(address.value);
 }
 
 watch(address, init, {
@@ -100,6 +122,20 @@ watch(address, () => {
 
 watch(web3Account, async () => {
   loadDelegatingTo();
+});
+
+const {
+  isRevealed: isConfirmLeaveOpen,
+  reveal: openConfirmLeave,
+  confirm: confirmLeave,
+  cancel: cancelLeave
+} = useConfirmDialog();
+
+onBeforeRouteLeave(async () => {
+  if (edited.value) {
+    const { data } = await openConfirmLeave();
+    if (!data) return false;
+  }
 });
 </script>
 
@@ -131,8 +167,10 @@ watch(web3Account, async () => {
         :space="space"
         :address="address"
         :statement="statementForm"
+        :edited="edited"
+        :saving="savingStatement"
         class="mt-[16px]"
-        @reload="handleReload"
+        @save="saveStatementForm"
         @update:about="statementForm.about = $event"
         @update:statement="statementForm.statement = $event"
       />
@@ -232,6 +270,13 @@ watch(web3Account, async () => {
         :address="showUndelegate ? DEFAULT_ETH_ADDRESS : address"
         @close="showDelegateModal = false"
         @reload="handleReload"
+      />
+      <ModalConfirmLeave
+        :open="isConfirmLeaveOpen"
+        show-cancel
+        @close="cancelLeave"
+        @save="saveStatementForm"
+        @leave="confirmLeave(true)"
       />
     </Teleport>
   </div>

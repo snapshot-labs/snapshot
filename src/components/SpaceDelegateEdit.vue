@@ -10,11 +10,11 @@ const props = defineProps<{
     about: string;
     statement: string;
   };
+  edited: boolean;
+  saving: boolean;
 }>();
 
-const emit = defineEmits(['reload', 'update:about', 'update:statement']);
-
-const { saveStatement, savingStatement } = useStatement();
+const emit = defineEmits(['save', 'update:about', 'update:statement']);
 
 const aboutRef = ref<any>(null);
 
@@ -31,12 +31,7 @@ async function handleClickSave() {
     aboutRef.value?.forceShowError();
     return;
   }
-  try {
-    await saveStatement(props.space.id, props.statement);
-    emit('reload');
-  } catch (e) {
-    console.log(e);
-  }
+  emit('save');
 }
 </script>
 
@@ -79,7 +74,8 @@ async function handleClickSave() {
           <div class="px-4 md:px-0">
             <BaseButton
               class="mt-3 w-full"
-              :loading="savingStatement"
+              :loading="saving"
+              :disabled="!edited"
               primary
               @click="handleClickSave"
             >
