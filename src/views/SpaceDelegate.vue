@@ -29,6 +29,7 @@ const {
 } = useDelegates(props.space);
 const { reloadStatement, getStatement, formatPercentageNumber } =
   useStatement();
+const { modalAccountOpen } = useModal();
 
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
@@ -113,6 +114,15 @@ async function init() {
   await loadDelegate(address.value);
   statementForm.value = getStatement(address.value);
   fetchedStatement.value = getStatement(address.value);
+}
+
+function handleClickDelegate() {
+  if (!web3Account.value) {
+    modalAccountOpen.value = true;
+    return;
+  }
+
+  showDelegateModal.value = true;
 }
 
 watch(address, init, {
@@ -247,7 +257,7 @@ onBeforeRouteLeave(async () => {
                   class="w-full md:mt-3"
                   primary
                   :loading="isLoadingDelegatingTo"
-                  @click="showDelegateModal = true"
+                  @click="handleClickDelegate"
                 >
                   {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
                 </BaseButton>
