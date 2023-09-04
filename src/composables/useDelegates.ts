@@ -189,6 +189,7 @@ export function useDelegates(space: ExtendedSpace) {
   }
 
   async function fetchDelegatingTo(address: string) {
+    if (!address) return;
     isLoadingDelegatingTo.value = true;
     try {
       const broviderUrl = import.meta.env.VITE_BROVIDER_URL;

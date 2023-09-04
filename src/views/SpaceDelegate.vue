@@ -46,12 +46,13 @@ const edited = computed(() => {
 });
 
 const isLoggedUser = computed(() => {
-  return web3Account.value.toLowerCase() === address.value.toLowerCase();
+  return web3Account.value?.toLowerCase() === address.value?.toLowerCase();
 });
 
 const showUndelegate = computed(() => {
   return (
-    web3AccountDelegatingTo.value.toLowerCase() === address.value.toLowerCase()
+    web3AccountDelegatingTo.value?.toLowerCase() ===
+    address.value?.toLowerCase()
   );
 });
 
