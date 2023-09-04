@@ -134,7 +134,7 @@ onMounted(() => {
                   })
                 }}
               </div>
-              <ButtonFollow class="!mb-0" :space="space" />
+              <ButtonFollow :space="space" class="mx-auto" />
             </BaseBlock>
           </router-link>
         </div>
