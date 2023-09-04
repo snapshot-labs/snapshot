@@ -7,6 +7,7 @@ import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
 import TimelineView from '@/views/TimelineView.vue';
 import RankingView from '@/views/RankingView.vue';
+import TermsView from '@/views/TermsView.vue';
 
 import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
@@ -104,6 +105,11 @@ if (domain) {
   // prefix space routes with space domain (/:key).
   routes.push(
     { path: '/', name: 'home', component: ExploreView },
+    {
+      path: '/terms-of-service',
+      name: 'terms-of-service',
+      component: TermsView
+    },
     {
       path: '/setup/:ens?',
       name: 'setup',
