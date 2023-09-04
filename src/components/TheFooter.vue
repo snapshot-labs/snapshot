@@ -9,6 +9,10 @@ const snapshotTextLinks = [
   {
     text: 'blog',
     link: 'https://snapshot.mirror.xyz/'
+  },
+  {
+    text: 'terms',
+    link: 'https://snapshot.org/#/terms-of-service'
   }
 ];
 
