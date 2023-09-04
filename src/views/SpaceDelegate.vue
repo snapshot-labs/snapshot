@@ -2,6 +2,7 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { DEFAULT_ETH_ADDRESS } from '@/helpers/constants';
 import { useConfirmDialog } from '@vueuse/core';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -90,6 +91,7 @@ async function saveStatementForm() {
   try {
     await saveStatement(props.space.id, statementForm.value);
     reloadStatement(props.space.id, address.value);
+    fetchedStatement.value = clone(statementForm.value);
     showEdit.value = false;
   } catch (e) {
     console.log(e);
