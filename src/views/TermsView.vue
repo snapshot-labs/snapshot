@@ -67,7 +67,7 @@ This disclaimer may be updated and modified from time to time. The disclaimer as
 
 <template>
   <div>
-    <BaseContainer class="mb-[100px] max-w-[760px]">
+    <BaseContainer class="mb-[40px] max-w-[760px]">
       <BaseMarkdown :body="terms" />
     </BaseContainer>
   </div>
