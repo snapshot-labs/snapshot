@@ -10,6 +10,7 @@ const props = defineProps<{
     about: string;
     statement: string;
   };
+  edited: boolean;
 }>();
 
 const emit = defineEmits(['reload', 'update:about', 'update:statement']);
@@ -80,6 +81,7 @@ async function handleClickSave() {
             <BaseButton
               class="mt-3 w-full"
               :loading="savingStatement"
+              :disabled="!edited"
               primary
               @click="handleClickSave"
             >

@@ -1,5 +1,6 @@
 import { STATEMENTS_QUERY } from '@/helpers/queries';
 import { Statement } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const SET_STATEMENT_ACTION = 'set-statement';
 
@@ -76,7 +77,7 @@ export function useStatement() {
 
   function getStatement(id: string): { about: string; statement: string } {
     const defaultStatement = { about: '', statement: '' };
-    return statements.value?.[id?.toLowerCase()] || defaultStatement;
+    return clone(statements.value?.[id?.toLowerCase()] || defaultStatement);
   }
 
   function formatPercentageNumber(value: string | number) {

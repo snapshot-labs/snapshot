@@ -2,6 +2,11 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { DEFAULT_ETH_ADDRESS } from '@/helpers/constants';
 
+const INITIAL_STATEMENT = {
+  about: '',
+  statement: ''
+};
+
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
@@ -25,12 +30,17 @@ const { reloadStatement, getStatement, formatPercentageNumber } =
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
 const web3AccountDelegatingTo = ref('');
-const statementForm = ref({
-  about: '',
-  statement: ''
-});
+const fetchedStatement = ref(INITIAL_STATEMENT);
+const statementForm = ref(INITIAL_STATEMENT);
 
 const address = computed(() => route.params.address as string);
+
+const edited = computed(() => {
+  return (
+    fetchedStatement.value?.about !== statementForm.value?.about ||
+    fetchedStatement.value?.statement !== statementForm.value?.statement
+  );
+});
 
 const isLoggedUser = computed(() => {
   return web3Account.value.toLowerCase() === address.value.toLowerCase();
@@ -88,6 +98,7 @@ async function init() {
   loadDelegatingTo();
   await loadDelegate(address.value);
   statementForm.value = getStatement(address.value);
+  fetchedStatement.value = getStatement(address.value);
 }
 
 watch(address, init, {
@@ -131,6 +142,7 @@ watch(web3Account, async () => {
         :space="space"
         :address="address"
         :statement="statementForm"
+        :edited="edited"
         class="mt-[16px]"
         @reload="handleReload"
         @update:about="statementForm.about = $event"
