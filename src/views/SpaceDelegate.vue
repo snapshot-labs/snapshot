@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { DEFAULT_ETH_ADDRESS } from '@/helpers/constants';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -262,14 +261,20 @@ onBeforeRouteLeave(async () => {
                   {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
                 </BaseButton>
 
-                <BaseButton
+                <div
                   v-else
-                  variant="danger"
+                  v-tippy="{ content: 'You can not un-delegate from yourself' }"
                   class="w-full md:mt-3"
-                  @click="showDelegateModal = true"
                 >
-                  Un-delegate
-                </BaseButton>
+                  <BaseButton
+                    variant="danger"
+                    class="w-full"
+                    :disabled="isLoggedUser"
+                    @click="showDelegateModal = true"
+                  >
+                    Un-delegate
+                  </BaseButton>
+                </div>
               </div>
             </TheActionbar>
           </BaseBlock>
@@ -280,7 +285,7 @@ onBeforeRouteLeave(async () => {
       <SpaceDelegatesDelegateModal
         :open="showDelegateModal"
         :space="space"
-        :address="showUndelegate ? DEFAULT_ETH_ADDRESS : address"
+        :address="showUndelegate ? web3Account : address"
         @close="showDelegateModal = false"
         @reload="handleReload"
       />
