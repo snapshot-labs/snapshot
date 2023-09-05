@@ -35,7 +35,7 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
+onBeforeMount(() => {
   if (aliasedSpace.value) {
     const updatedPath = route.path.replace(
       domain || route.params.key,
