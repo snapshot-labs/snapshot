@@ -22,7 +22,7 @@ const props = defineProps<{
 const emit = defineEmits(['clickDelegate', 'clickUser']);
 
 const { getUsername } = useUsername();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 const { formatPercentageNumber } = useStatement();
 
 const dropdownItems = computed(() => [
@@ -66,9 +66,11 @@ function handleDropdownAction(action: string) {
           <div class="flex gap-[6px]">
             <div
               v-tippy="{
-                content: formatPercentageNumber(delegate.votesPercentage)
+                content: `${formatNumber(
+                  Number(delegate.delegatedVotes)
+                )} (${formatPercentageNumber(delegate.votesPercentage)})`
               }"
-              class="text-skin-text"
+              class="cursor-help text-skin-text"
             >
               {{ formatCompactNumber(Number(delegate.delegatedVotes)) }}
               {{ space.symbol }}
@@ -78,6 +80,7 @@ function handleDropdownAction(action: string) {
               v-tippy="{
                 content: formatPercentageNumber(delegate.delegatorsPercentage)
               }"
+              class="cursor-help"
             >
               {{
                 formatCompactNumber(

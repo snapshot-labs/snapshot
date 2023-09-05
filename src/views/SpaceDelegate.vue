@@ -13,7 +13,7 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
-const { formatCompactNumber } = useIntl();
+const { formatCompactNumber, formatNumber } = useIntl();
 const { getProfile } = useProfiles();
 const { saveStatement, savingStatement } = useStatement();
 const route = useRoute();
@@ -65,7 +65,9 @@ const delegatorItems = computed(() => {
     {
       label: props.space.symbol,
       value: formatCompactNumber(Number(delegate.value?.delegatedVotes || 0)),
-      tooltip: formatPercentageNumber(delegate.value?.votesPercentage || 0)
+      tooltip: `${formatNumber(
+        Number(delegate.value?.delegatedVotes)
+      )} (${formatPercentageNumber(Number(delegate.value?.votesPercentage))})`
     },
     {
       label: 'Delegators',
