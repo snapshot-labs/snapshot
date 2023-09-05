@@ -25,7 +25,7 @@ const { isMessageVisible, setMessageVisibility } =
 watch(
   spaceKey,
   async () => {
-    if (!spaceKey.value) return;
+    if (!spaceKey.value || aliasedSpace.value) return;
     await loadExtendedSpace(spaceKey.value.toLowerCase());
     if (!space.value) {
       router.push('/');
@@ -35,7 +35,7 @@ watch(
   { immediate: true }
 );
 
-onBeforeMount(() => {
+onMounted(() => {
   if (aliasedSpace.value) {
     const updatedPath = route.path.replace(
       domain || route.params.key,
