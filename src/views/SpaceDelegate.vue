@@ -222,7 +222,7 @@ onBeforeRouteLeave(async () => {
           <BaseBlock
             class="mb-5 lg:sticky lg:top-[110px] lg:mb-0 lg:mt-0 lg:w-[320px]"
           >
-            <div class="flex">
+            <div class="flex items-center">
               <div>
                 <AvatarUser :address="address" size="40" />
               </div>
@@ -230,7 +230,9 @@ onBeforeRouteLeave(async () => {
                 <ProfileName
                   :profile="getProfile(address)"
                   :address="address"
+                  class="leading-6"
                 />
+                <ProfileAddressCopy :user-address="address" />
               </div>
             </div>
             <div class="mt-3 space-y-2">
