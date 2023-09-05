@@ -5,19 +5,16 @@ import { useFlaggedMessageStatus } from '@/composables/useFlaggedMessageStatus';
 const route = useRoute();
 const router = useRouter();
 const { domain } = useApp();
-const aliasedSpace = aliases[domain] || aliases[route.params.key as string];
 const { loadExtendedSpace, extendedSpaces } = useExtendedSpaces();
 
-// Redirect the user to the ENS address if the space is aliased.
-if (aliasedSpace) {
-  const updatedPath = route.path.replace(
-    domain || route.params.key,
-    aliasedSpace
-  );
-  router.replace({ path: updatedPath });
-}
+const aliasedSpace = computed(
+  () => aliases[domain] || aliases[route.params.key as string]
+);
 
-const spaceKey = computed(() => aliasedSpace || domain || route.params.key);
+const spaceKey = computed(
+  () => aliasedSpace.value || domain || route.params.key
+);
+
 const space = computed(() =>
   extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
@@ -37,6 +34,16 @@ watch(
   },
   { immediate: true }
 );
+
+onMounted(() => {
+  if (aliasedSpace.value) {
+    const updatedPath = route.path.replace(
+      domain || route.params.key,
+      aliasedSpace.value
+    );
+    router.replace({ path: updatedPath });
+  }
+});
 </script>
 
 <template>
@@ -45,7 +52,7 @@ watch(
       <MessageWarningFlagged
         type="space"
         responsive
-        @forceShow="setMessageVisibility(false)"
+        @force-show="setMessageVisibility(false)"
       />
     </BaseContainer>
 
