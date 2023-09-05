@@ -220,7 +220,7 @@ const getBondDetails = async (
   return bondInfo;
 };
 
-export const getModuleDetails = async (
+export const getModuleDetailsFromChain = async (
   provider: StaticJsonRpcProvider,
   network: Network,
   moduleAddress: string,

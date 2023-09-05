@@ -1,30 +1,66 @@
-<script>
-import Plugin, {
+<script setup lang="ts">
+import { ETH_CONTRACT } from '@/helpers/constants';
+import { TokenAsset } from '@/helpers/interfaces';
+import { shorten } from '@/helpers/utils';
+import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import {
   getERC20TokenTransferTransactionData,
   getNativeAsset,
   transferFundsToModuleTransaction
 } from '../../index';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import { isAddress } from '@ethersproject/address';
-import SafeSnapInputAddress from '../Input/Address.vue';
-import SafeSnapInputAmount from '../Input/Amount.vue';
-import SafeSnapTokensModal from './TokensModal.vue';
-import { ETH_CONTRACT } from '@/helpers/constants';
-import { shorten } from '@/helpers/utils';
+import { Network, Token } from '../../types';
+import InputAddress from '../Input/Address.vue';
+import InputAmount from '../Input/Amount.vue';
+import TokensModal from './TokensModal.vue';
+
+const props = defineProps<{
+  preview: boolean;
+  modelValue:
+    | {
+        amount: string;
+        recipient: string;
+        token: TokenAsset;
+      }
+    | undefined;
+  nonce: number;
+  tokens: TokenAsset[];
+  network: Network;
+}>();
+
+const emit = defineEmits(['update:modelValue']);
+
+const nativeAsset = getNativeAsset(props.network);
+const amount = ref('0');
+const recipient = ref('');
+const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
+const isAmountValid = ref(true);
+const isTokenModalOpen = ref(false);
+
+function updateTransaction() {
+  if (
+    props.preview ||
+    !isBigNumberish(amount.value) ||
+    !isAddress(recipient.value)
+  )
+    return; 
+}
+
+onMounted(() => {
+  if (props.modelValue) {
+    amount.value = props.modelValue.amount ?? '0';
+    recipient.value = props.modelValue.recipient ?? '';
+    if (props.modelValue.token) {
+      tokens.value = [props.modelValue.token];
+    }
+  }
+});
 
 export default {
-  components: {
-    SafeSnapInputAddress,
-    SafeSnapInputAmount,
-    SafeSnapTokensModal
-  },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
   data() {
     const { amount = '0' } = this.modelValue || {};
     const nativeAsset = getNativeAsset(this.config.network);
     return {
-      plugin: new Plugin(),
       tokens: [nativeAsset],
 
       to: '',
@@ -140,7 +176,7 @@ export default {
   </BaseButton>
 
   <div class="space-y-2">
-    <SafeSnapInputAddress
+    <InputAddress
       v-model="to"
       :disabled="config.preview"
       :input-props="{
@@ -148,7 +184,7 @@ export default {
       }"
       :label="$t('safeSnap.to')"
     />
-    <SafeSnapInputAmount
+    <InputAmount
       :key="selectedToken?.decimals"
       v-model="value"
       :label="$t('safeSnap.amount')"
@@ -158,7 +194,7 @@ export default {
   </div>
 
   <teleport to="#modal">
-    <SafeSnapTokensModal
+    <TokensModal
       :tokens="tokens"
       :token-address="tokenAddress"
       :open="modalTokensOpen"

@@ -6,9 +6,7 @@ import { _TypedDataEncoder } from '@ethersproject/hash';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { toUtf8Bytes } from '@ethersproject/strings';
 
-import {
-  SafeTransaction,
-} from '@/helpers/interfaces';
+import { SafeTransaction } from '@/helpers/interfaces';
 import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
@@ -18,8 +16,8 @@ import {
   ERC20_ABI,
   UMA_MODULE_ABI
 } from './constants';
-import { Network, OptimisticGovernorTransaction, Transaction } from './types';
-import { getModuleDetails, getModuleDetailsGql } from './utils/umaModule';
+import { OptimisticGovernorTransaction, Transaction, Network } from './types';
+import { getModuleDetailsFromChain, getModuleDetailsGql } from './utils/umaModule';
 
 export * from './constants';
 
@@ -31,8 +29,7 @@ export * from './utils/multiSend';
 export * from './utils/safe';
 export * from './utils/transactions';
 
-export default class Plugin {
-  calcTransactionHash(
+  export function calcTransactionHash(
     network: string,
     moduleAddress: string,
     transaction: SafeTransaction
@@ -45,7 +42,7 @@ export default class Plugin {
     return _TypedDataEncoder.hash(domain, EIP712_TYPES, transaction);
   }
 
-  calcTransactionHashes(
+  export function calcTransactionHashes(
     chainId: number,
     moduleAddress: string,
     transactions: SafeTransaction[]
@@ -63,7 +60,7 @@ export default class Plugin {
     });
   }
 
-  async validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
+  export async function validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
     if (!isAddress(moduleAddress)) return false;
     const provider: StaticJsonRpcProvider = getProvider(network);
     const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
@@ -74,14 +71,14 @@ export default class Plugin {
       .catch(() => false);
   }
 
-  async getExecutionDetails(
+  export async function getExecutionDetails(
     network: Network,
     moduleAddress: string,
     proposalId: string,
     explanation: string,
     transactions: OptimisticGovernorTransaction[]
   ) {
-    const moduleDetails = await this.getModuleDetails(
+    const moduleDetails = await getModuleDetails(
       network,
       moduleAddress,
       explanation,
@@ -95,13 +92,13 @@ export default class Plugin {
     };
   }
 
-  async *approveBond(
+  export async function *approveBond(
     network: Network,
     web3: any,
     moduleAddress: string,
     transactions?: OptimisticGovernorTransaction[]
   ) {
-    const moduleDetails = await this.getModuleDetails(
+    const moduleDetails = await getModuleDetails(
       network,
       moduleAddress,
       '',
@@ -122,7 +119,7 @@ export default class Plugin {
     yield;
   }
 
-  async getModuleDetails(
+  export async function getModuleDetails(
     network: Network,
     moduleAddress: string,
     explanation = '',
@@ -141,7 +138,7 @@ export default class Plugin {
     } catch (err) {
       console.warn('Error querying module details from the graph:', err);
       // fall back to web3 event queries.
-      return getModuleDetails(
+      return getModuleDetailsFromChain(
         provider,
         network,
         moduleAddress,
@@ -151,7 +148,7 @@ export default class Plugin {
     }
   }
 
-  async *submitProposal(
+  export async function *submitProposal(
     web3: any,
     moduleAddress: string,
     explanation: string,
@@ -171,7 +168,7 @@ export default class Plugin {
     console.log('[DAO module] submitted proposal:', receipt);
   }
 
-  async *executeProposal(
+  export async function *executeProposal(
     web3: any,
     moduleAddress: string,
     transactions: OptimisticGovernorTransaction[]
@@ -187,7 +184,6 @@ export default class Plugin {
     const receipt = await tx.wait();
     console.log('[DAO module] executed proposal:', receipt);
   }
-}
 
 export function validateTransaction(transaction: Transaction) {
   const addressEmptyOrValidate =

@@ -14,3 +14,9 @@ export type Transaction = {
   data: string;
   nonce: string;
 }
+
+export type Token = {
+  symbol: string;
+  decimals: number;
+  address: "main" | (string & {});
+}

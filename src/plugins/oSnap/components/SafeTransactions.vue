@@ -3,18 +3,18 @@ import {
   ExtendedSpace,
   Proposal,
   Results,
-  SafeTransaction,
   TreasuryWallet
 } from '@/helpers/interfaces';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import Plugin, {
+import {
   EIP3770_PREFIXES,
   getGnosisSafeBalances,
-  getGnosisSafeCollectibles
+  getGnosisSafeCollectibles,
+  getModuleDetails
 } from '../index';
-import { Network } from '../types';
+import { Network, Transaction } from '../types';
 import { getModuleAddressForTreasury } from '../utils/umaModule';
 import FormTransactionBatch from './Form/TransactionBatch.vue';
 import HandleOutcomeUma from './HandleOutcomeUma.vue';
@@ -30,8 +30,6 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits(['update:modelValue']);
-
-const plugin = new Plugin();
 
 async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
@@ -115,14 +113,13 @@ const moduleAddress = ref<string>();
 const showHash = ref(false);
 const tokens = ref([]);
 const collectables = ref([]);
-const transactions = ref<SafeTransaction[]>([]);
+const transactions = ref<Transaction[]>([]);
 
 function addTransaction() {
   transactions.value.push({
     to: '',
     value: '0',
     data: '0x',
-    operation: '0',
     nonce: '0'
   });
 }
@@ -155,7 +152,7 @@ onMounted(async () => {
       props.treasury.address
     );
     gnosisSafeAddress.value = (
-      await plugin.getModuleDetails(
+      await getModuleDetails(
         props.treasury.network as Network,
         moduleAddress.value
       )
@@ -223,7 +220,6 @@ onMounted(async () => {
         :space="space"
         :results="results"
         :module-address="moduleAddress"
-        :multi-send-address="multiSendAddress"
         :network="transactionConfig.network"
       />
     </div>
