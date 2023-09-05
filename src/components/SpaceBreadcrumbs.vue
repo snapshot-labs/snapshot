@@ -26,9 +26,8 @@ const pages = computed(() => {
     pages = [
       {
         name: props.space.name,
-        to: `${spaceRoute}/delegate`,
-        current: false,
-        useHistory: true
+        to: `${spaceRoute}/delegates`,
+        current: false
       },
       {
         name: shorten(delegate),

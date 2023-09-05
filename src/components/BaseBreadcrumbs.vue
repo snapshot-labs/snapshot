@@ -1,22 +1,13 @@
 <script setup lang="ts">
-const router = useRouter();
-
 defineProps<{
-  pages: { name: string; to: string; current: boolean; useHistory?: boolean }[];
+  pages: { name: string; to: string; current: boolean }[];
 }>();
 </script>
 
 <template>
   <div class="flex items-center">
     <div v-for="(page, i) in pages" :key="i" class="flex items-center">
-      <button v-if="page.useHistory" type="button" @click="router.go(-1)">
-        <span class="text-skin-link">{{ page.name }}</span>
-      </button>
-      <router-link
-        v-else-if="!page.current"
-        :to="page.to"
-        class="flex items-center"
-      >
+      <router-link v-if="!page.current" :to="page.to" class="flex items-center">
         <span class="text-skin-link">{{ page.name }}</span>
       </router-link>
       <div v-else class="flex cursor-default items-center">
