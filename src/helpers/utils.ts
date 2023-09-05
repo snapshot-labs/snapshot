@@ -1,10 +1,10 @@
 import pkg from '@/../package.json';
-import { formatEther } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
+import { formatEther } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -73,13 +73,13 @@ export function formatAmount(amount, maxDecimals) {
   return `${out} ETH`;
 }
 
-export function parseAmount(input) {
+export function parseValue(input) {
   return BigNumber.from(input).toString();
 }
 
 export function parseValueInput(input) {
   try {
-    return parseAmount(input);
+    return parseValue(input);
   } catch (e) {
     return input;
   }

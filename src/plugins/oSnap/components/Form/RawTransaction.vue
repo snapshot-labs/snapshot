@@ -1,10 +1,10 @@
 <script>
+import { parseValue } from '@/helpers/utils';
+import { isHexString } from '@ethersproject/bytes';
 import Plugin, {
   decodeTransactionData,
   rawToModuleTransaction
 } from '../../index';
-import { isHexString } from '@ethersproject/bytes';
-import { parseAmount } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
@@ -24,7 +24,7 @@ export default {
     isValidValue() {
       if (!this.value.length) return true;
       try {
-        parseAmount(this.value);
+        parseValue(this.value);
         return true;
       } catch (error) {
         return false;

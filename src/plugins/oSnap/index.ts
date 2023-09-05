@@ -18,7 +18,7 @@ import {
   ERC20_ABI,
   UMA_MODULE_ABI
 } from './constants';
-import { Network, OptimisticGovernorTransaction } from './types';
+import { Network, OptimisticGovernorTransaction, Transaction } from './types';
 import { getModuleDetails, getModuleDetailsGql } from './utils/umaModule';
 
 export * from './constants';
@@ -32,18 +32,6 @@ export * from './utils/safe';
 export * from './utils/transactions';
 
 export default class Plugin {
-  validateTransaction(transaction: SafeTransaction) {
-    const addressEmptyOrValidate =
-      transaction.to === '' || isAddress(transaction.to);
-    return (
-      isBigNumberish(transaction.value) &&
-      addressEmptyOrValidate &&
-      (!transaction.data || isHexString(transaction.data)) &&
-      ['0', '1'].includes(transaction.operation) &&
-      isBigNumberish(transaction.nonce)
-    );
-  }
-
   calcTransactionHash(
     network: string,
     moduleAddress: string,
@@ -199,4 +187,15 @@ export default class Plugin {
     const receipt = await tx.wait();
     console.log('[DAO module] executed proposal:', receipt);
   }
+}
+
+export function validateTransaction(transaction: Transaction) {
+  const addressEmptyOrValidate =
+    transaction.to === '' || isAddress(transaction.to);
+  return (
+    isBigNumberish(transaction.value) &&
+    addressEmptyOrValidate &&
+    (!transaction.data || isHexString(transaction.data)) &&
+    isBigNumberish(transaction.nonce)
+  );
 }

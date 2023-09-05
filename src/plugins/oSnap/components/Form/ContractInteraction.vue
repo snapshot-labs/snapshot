@@ -1,189 +1,156 @@
-<script>
-import Plugin, {
+<script setup lang="ts">
+import { parseValue } from '@/helpers/utils';
+import { FunctionFragment } from '@ethersproject/abi';
+import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import {
+  InterfaceDecoder,
   contractInteractionToModuleTransaction,
   getABIWriteFunctions,
   getContractABI,
   getContractTransactionData,
-  InterfaceDecoder
+  validateTransaction
 } from '../../index';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import { isAddress } from '@ethersproject/address';
-import { parseAmount } from '@/helpers/utils';
-import SafeSnapInputAddress from '../Input/Address.vue';
-import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
+import InputAddress from '../Input/Address.vue';
+import InputMethodParameter from '../Input/MethodParameter.vue';
 
-export default {
-  components: { SafeSnapInputAddress, SafeSnapInputMethodParameter },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
-  data() {
-    let to = '';
-    let abi = '';
-    let value = '0';
-    let selectedMethod = undefined;
-    let methods = [];
-    let parameters = [];
+const props = defineProps<{
+  modelValue: {
+    to: string;
+    abi: string;
+    value: string;
+    data: string;
+  };
+  nonce: number;
+  preview: boolean;
+  network: string;
+}>();
 
-    if (this.modelValue) {
-      try {
-        const {
-          to: _to = '',
-          abi: _abi = '',
-          value: _value = '0',
-          data
-        } = this.modelValue;
+const emit = defineEmits(['update:modelValue']);
 
-        to = _to;
-        abi = typeof _abi === 'object' ? JSON.stringify(_abi) : _abi;
-        value = _value;
+const to = ref('');
+const abi = ref('');
+const validAbi = ref(true);
+const value = ref('0');
+const validValue = ref(true);
+const nonce = ref('0');
+const methods = ref<FunctionFragment[]>([]);
+const selectedMethodIndex = ref(0);
+const selectedMethod = computed(() => methods.value[selectedMethodIndex.value]);
+const parameters = ref<string[]>([]);
+const selectedParameters = ref<string[]>([]);
 
-        const transactionDecoder = new InterfaceDecoder(abi);
-        selectedMethod = transactionDecoder.getMethodFragment(data);
-        parameters = transactionDecoder.decodeFunction(data, selectedMethod);
-        methods = [selectedMethod];
-      } catch (err) {
-        console.error('error decoding contract interaction tx', err);
+function updateTransaction() {
+  if (
+    props.preview ||
+    !isBigNumberish(value.value) ||
+    !isAddress(to.value) ||
+    !abi.value ||
+    !selectedMethod.value
+  )
+    return;
+  try {
+    if (isBigNumberish(value.value) && isAddress(to.value)) {
+      const data = getContractTransactionData(
+        abi.value,
+        selectedMethod.value,
+        parameters.value
+      );
+
+      const transaction = contractInteractionToModuleTransaction({
+        data,
+        to: to.value,
+        value: value.value,
+        nonce: nonce.value,
+        method: selectedMethod.value
+      });
+
+      if (validateTransaction(transaction)) {
+        emit('update:modelValue', transaction);
+        return;
       }
     }
-
-    return {
-      plugin: new Plugin(),
-
-      to,
-      abi,
-      value,
-
-      validAbi: true,
-      validValue: true,
-      methodIndex: 0,
-      selectedMethod,
-      methods,
-      parameters
-    };
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    abi() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    selectedMethod() {
-      this.updateTransaction();
-    },
-    parameters() {
-      this.updateTransaction();
-    },
-    nonce() {
-      this.updateTransaction();
-    }
-  },
-  mounted() {
-    if (this.modelValue) {
-      const { to = '', abi = '', value = '0', data } = this.modelValue;
-      this.to = to;
-
-      if (this.config.preview) {
-        const transactionDecoder = new InterfaceDecoder(abi);
-        this.selectedMethod = transactionDecoder.getMethodFragment(data);
-        this.parameters = transactionDecoder.decodeFunction(
-          data,
-          this.selectedMethod
-        );
-
-        this.methods = [this.selectedMethod];
-        this.handleValueChange(value);
-        this.handleABIChanged(
-          typeof abi === 'object' ? JSON.stringify(abi) : abi
-        );
-      } else {
-        setTimeout(() => this.updateTransaction(), 1000);
-      }
-    }
-  },
-  methods: {
-    updateTransaction() {
-      if (this.config.preview) return;
-      try {
-        if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const data = getContractTransactionData(
-            this.abi,
-            this.selectedMethod,
-            this.parameters
-          );
-
-          const transaction = contractInteractionToModuleTransaction(
-            {
-              data,
-              to: this.to,
-              value: this.value,
-              nonce: this.nonce,
-              method: this.selectedMethod
-            },
-            this.config.multiSendAddress
-          );
-
-          if (this.plugin.validateTransaction(transaction)) {
-            this.$emit('update:modelValue', transaction);
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn('invalid transaction');
-      }
-      this.$emit('update:modelValue', undefined);
-    },
-    async handleAddressChanged() {
-      const result = await getContractABI(this.config.network, this.to);
-      if (result && result !== this.abi) {
-        this.abi = result;
-        this.handleABIChanged(result);
-      }
-    },
-    handleValueChange(value) {
-      this.value = value;
-      try {
-        parseAmount(value);
-        this.validValue = true;
-      } catch (error) {
-        this.validValue = false;
-      }
-    },
-    handleABIChanged(value) {
-      this.abi = value;
-      this.methodIndex = 0;
-      this.methods = [];
-
-      try {
-        this.methods = getABIWriteFunctions(this.abi);
-        this.validAbi = true;
-        this.handleMethodChanged();
-      } catch (error) {
-        this.validAbi = false;
-        console.warn('error extracting useful methods', error);
-      }
-    },
-    handleMethodChanged() {
-      this.parameters = [];
-      this.selectedMethod = this.methods[this.methodIndex];
-      this.updateTransaction();
-    },
-    handleParameterChanged(index, value) {
-      this.parameters[index] = value;
-      this.updateTransaction();
-    }
+  } catch (error) {
+    console.warn('invalid transaction');
   }
-};
+}
+
+function updateParameter(index: number, value: string) {
+  parameters.value[index] = value;
+  updateTransaction();
+}
+
+function updateMethod(index: number) {
+  selectedParameters.value = [];
+  selectedMethodIndex.value = index;
+  updateTransaction();
+}
+
+function updateAbi(newAbi: string) {
+  abi.value = newAbi;
+  methods.value = [];
+
+  try {
+    methods.value = getABIWriteFunctions(abi.value);
+    validAbi.value = true;
+    updateMethod(0);
+  } catch (error) {
+    validAbi.value = false;
+    console.warn('error extracting useful methods', error);
+  }
+  updateTransaction();
+}
+
+async function updateAddress() {
+  const result = await getContractABI(props.network, to.value);
+  if (result && result !== abi.value) {
+    updateAbi(result);
+  }
+  updateTransaction();
+}
+
+function updateValue(newValue: string) {
+  value.value = newValue;
+  try {
+    parseValue(newValue);
+    validValue.value = true;
+  } catch (error) {
+    validValue.value = false;
+  }
+  updateTransaction();
+}
+
+onMounted(async () => {
+  if (props.modelValue === undefined) return;
+
+  to.value = props.modelValue.to ?? '';
+
+  if (props.preview) {
+    setTimeout(() => updateTransaction(), 1000);
+    return;
+  }
+
+  const transactionDecoder = new InterfaceDecoder(abi.value);
+  selectedMethod.value = transactionDecoder.getMethodFragment(
+    props.modelValue.data
+  );
+  parameters.value = transactionDecoder.decodeFunction(
+    props.modelValue.data,
+    selectedMethod.value
+  );
+
+  methods.value = [selectedMethod.value];
+  updateValue(props.modelValue.value);
+  updateAbi(typeof abi === 'object' ? JSON.stringify(abi) : abi);
+  updateTransaction();
+});
 </script>
 
 <template>
   <div class="space-y-2">
-    <SafeSnapInputAddress
+    <InputAddress
       v-model="to"
-      :disabled="config.preview"
+      :disabled="preview"
       :input-props="{
         required: true
       }"
@@ -224,7 +191,7 @@ export default {
       <div v-if="selectedMethod && selectedMethod.inputs.length">
         <div class="divider"></div>
 
-        <SafeSnapInputMethodParameter
+        <InputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
           :disabled="config.preview"

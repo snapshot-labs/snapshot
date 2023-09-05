@@ -1,41 +1,19 @@
 import {
   CollectableAsset,
   CollectableAssetTransaction,
-  CustomContractTransaction,
-  SafeTransaction,
   TokenAsset,
   TokenAssetTransaction
 } from '@/helpers/interfaces';
-import { Fragment, FunctionFragment, JsonFragment } from '@ethersproject/abi';
+import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
+import { Network } from '../types';
 import { getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
 import { fetchTextSignatures } from './index';
 import { getGnosisSafeToken } from './safe';
-import { Network } from '../types';
-
-export function rawToModuleTransaction({
-  to,
-  value,
-  data,
-  nonce
-}: {
-  to: string;
-  value: string;
-  data: string;
-  nonce: string;
-}): SafeTransaction {
-  return {
-    to,
-    value,
-    data,
-    nonce,
-    operation: '0'
-  };
-}
 
 export function sendAssetToModuleTransaction({
   recipient,
@@ -100,38 +78,25 @@ export function transferFundsToModuleTransaction({
 }
 
 export function contractInteractionToModuleTransaction(
-  {
-    to,
-    value,
-    data,
-    nonce,
-    method
-  }: {
+  params: {
     to: string;
     value: string;
     data: string;
     nonce: string;
     method: FunctionFragment;
-  },
-  multiSendAddress: string
-): CustomContractTransaction {
-  const operation = to === multiSendAddress ? '1' : '0';
+  }
+) {
   return {
-    to,
-    data,
-    nonce,
-    operation,
-    type: 'contractInteraction',
-    value: parseValueInput(value),
-    abi: parseMethodToABI(method)
+    ...params,
+    value: parseValueInput(params.value),
+    abi: parseMethodToABI(params.method)
   };
 }
 
 export async function decodeContractTransaction(
   network: string,
   transaction: SafeTransaction,
-  multiSendAddress: string
-): Promise<CustomContractTransaction> {
+) {
   const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
     const method = contractInterface.getMethodFragment(transaction.data);
@@ -144,7 +109,6 @@ export async function decodeContractTransaction(
         value: transaction.value,
         method: method as FunctionFragment
       },
-      multiSendAddress
     );
   };
 
@@ -191,7 +155,6 @@ function decodeERC721TransferTransaction(transaction: SafeTransaction) {
 export async function decodeTransactionData(
   network: Network,
   transaction: SafeTransaction,
-  multiSendAddress: string
 ) {
   if (!transaction.data || transaction.data === '0x') {
     return transferFundsToModuleTransaction({
@@ -235,7 +198,7 @@ export async function decodeTransactionData(
     });
   }
 
-  return decodeContractTransaction(network, transaction, multiSendAddress);
+  return decodeContractTransaction(network, transaction);
 }
 
 export function parseAmount(input: string) {

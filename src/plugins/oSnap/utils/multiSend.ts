@@ -37,22 +37,3 @@ export function encodeTransactions(transactions: SafeTransaction[]) {
 
   return pack(types.flat(1), values.flat(1));
 }
-
-export function createMultiSendTx(
-  txs: SafeTransaction[],
-  nonce: number,
-  multiSendAddress: string
-) {
-  const multiSendContract = new Interface(MULTI_SEND_ABI);
-  const transactionsEncoded = encodeTransactions(txs);
-  const data = multiSendContract.encodeFunctionData('multiSend', [
-    transactionsEncoded
-  ]);
-  return {
-    to: multiSendAddress,
-    operation: '1',
-    value: '0',
-    nonce: nonce.toString(),
-    data
-  };
-}
