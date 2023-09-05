@@ -24,7 +24,7 @@ onMounted(() => loadNotifications());
 <template>
   <BasePopover>
     <template #button>
-      <BaseButtonRound class="relative !h-[46px] !w-[46px]">
+      <BaseButtonRound class="relative">
         <i-ho-bell class="text-skin-link" />
         <BaseIndicator
           v-if="notificationsSortedByTime.some(n => n.seen === false)"

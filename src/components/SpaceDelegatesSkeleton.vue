@@ -4,6 +4,6 @@
   <div
     v-for="n in 18"
     :key="n"
-    class="h-[290px] animate-pulse rounded-xl bg-skin-border opacity-40"
+    class="mb-[1px] h-[240px] animate-pulse rounded-xl bg-skin-border md:mb-0"
   />
 </template>

@@ -138,11 +138,7 @@ export interface ExtendedSpace {
   symbol: string;
   network: string;
   strategies: SpaceStrategy[];
-  delegationPortal: {
-    delegationType: string;
-    delegationContract: string;
-    delegationApi: string;
-  };
+  delegationPortal: DelegatesConfig;
   about: string;
   avatar: string;
   skin: string;
@@ -179,6 +175,11 @@ export interface ExtendedSpace {
   };
 }
 
+export interface DelegatesConfig {
+  delegationType: string;
+  delegationContract: string;
+  delegationApi: string;
+}
 export interface SpaceValidation {
   name: string;
   params: Record<string, any>;
@@ -398,3 +399,16 @@ export interface Statement {
   ipfs: string;
   id: string;
 }
+
+export type DelegatesVote = {
+  created: number;
+  voter: string;
+  choice: any;
+  vp: number;
+};
+
+export type DelegatesProposal = {
+  created: number;
+  author: string;
+  title: string;
+};

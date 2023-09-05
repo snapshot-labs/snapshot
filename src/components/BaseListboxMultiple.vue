@@ -45,7 +45,7 @@ function isItemDisabled(item: string) {
 
 <template>
   <Listbox v-model="selectedItems" as="div" :disabled="isDisabled" multiple>
-    <ListboxLabel>
+    <ListboxLabel v-if="label || definition?.title">
       <LabelInput :information="information || definition?.description">
         {{ label || definition?.title }}
       </LabelInput>
