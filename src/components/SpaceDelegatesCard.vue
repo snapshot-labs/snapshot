@@ -24,6 +24,7 @@ const emit = defineEmits(['clickDelegate', 'clickUser']);
 const { getUsername } = useUsername();
 const { formatCompactNumber, formatNumber } = useIntl();
 const { formatPercentageNumber } = useStatement();
+const router = useRouter();
 
 const dropdownItems = computed(() => [
   {
@@ -38,7 +39,12 @@ const dropdownItems = computed(() => [
 
 function handleDropdownAction(action: string) {
   if (action === 'viewProfile') {
-    emit('clickUser');
+    router.push({
+      name: 'profileActivity',
+      params: {
+        address: props.delegate.id
+      }
+    });
   }
   if (action === 'seeExplorer') {
     window.open(
