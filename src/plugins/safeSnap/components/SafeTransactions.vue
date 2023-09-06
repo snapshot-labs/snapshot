@@ -175,6 +175,7 @@ export default {
     'network',
     'realityAddress',
     'umaAddress',
+    'connextAddress',
     'multiSendAddress',
     'preview',
     'hash'
@@ -201,6 +202,7 @@ export default {
         gnosisSafeAddress: undefined,
         realityAddress: this.realityAddress,
         umaAddress: this.umaAddress,
+        connextAddress: this.connextAddress,
         network: this.network,
         multiSendAddress: this.multiSendAddress,
         tokens: [],
@@ -229,6 +231,8 @@ export default {
   },
   async mounted() {
     try {
+      const test = await plugin.validateConnextModule(this.network, this.connextAddress)
+      console.log('Safe transaction.vue <validateConnextMod> => ', test)
       const moduleType = await plugin.validateUmaModule(
         this.network,
         this.umaAddress

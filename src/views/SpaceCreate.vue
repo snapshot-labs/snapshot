@@ -331,6 +331,16 @@ const osnap = ref<{
   enabled: false
 });
 
+// We need to know if the space is using connext, this will change what types of voting we can do
+// We also need to know if the user plans to use connext
+const connext = ref<{
+  enabled: boolean;
+  selection: boolean;
+}>({
+  selection: false,
+  enabled: false
+});
+
 // Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
 function shouldSkipTransactions() {
   return (
@@ -344,9 +354,21 @@ function handleOsnapToggle() {
   osnap.value.selection = !osnap.value.selection;
 }
 
+function handleConnextToggle() {
+  connext.value.selection = !connext.value.selection;
+}
+
 onMounted(async () => {
   const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  const connextAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.connextAddress;
+
+  if (network && connextAddress) {
+    // this is how we check if connext is enabled and valid.
+    connext.value.enabled =
+      (await safeSnapPlugin.validateConnextModule(network, connextAddress)) === 'connext';
+    
+  }
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
     osnap.value.enabled =
@@ -417,6 +439,8 @@ onMounted(async () => {
         v-model="form.metadata.plugins"
         :proposal="proposal"
         :space="space"
+        :connext="connext"
+        @connextToggle="handleConnextToggle"
       />
     </template>
     <template #sidebar-right>

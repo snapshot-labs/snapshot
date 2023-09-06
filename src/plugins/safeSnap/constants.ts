@@ -309,6 +309,36 @@ export const UMA_FINDER_ABI = [
   'function transferOwnership(address newOwner)'
 ];
 
+export const CONNEXT_MODULE_ABI = [
+  'event AvatarSet(address indexed previousAvatar, address indexed newAvatar)',
+  'event ChangedGuard(address guard)',
+  'event ConnextSet(address connext)',
+  'event Initialized(uint8 version)',
+  'event ModuleSetUp(address owner, address avatar, address target, address originSender, uint32 origin, address connext)',
+  'event OriginSenderSet(address originSender)',
+  'event OriginSet(uint32 origin)',
+  'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
+  'event TargetSet(address indexed previousTarget, address indexed newTarget)',
+  'function avatar() view returns (address)',
+  'function connext() view returns (address)',
+  'function getGuard() view returns (address)',
+  'function guard() view returns (address)',
+  'function origin() view returns (uint32)',
+  'function originSender() view returns (address)',
+  'function owner() view returns (address)',
+  'function renounceOwnership()',
+  'function setAvatar(address _avatar)',
+  'function setConnext(address _connext)',
+  'function setGuard(address _guard)',
+  'function setOrigin(uint32 _origin)',
+  'function setOriginSender(address _originSender)',
+  'function setTarget(address _target)',
+  'function setUp(bytes initializeParams)',
+  'function target() view returns (address)',
+  'function transferOwnership(address newOwner)',
+  'function xReceive(bytes32, uint256 _amount, address _asset, address _originSender, uint32 _origin, bytes _callData) returns (bytes)'
+];
+
 export const ERC20_ABI = [
   //Read functions
   'function balanceOf(address account) view returns (uint256)',

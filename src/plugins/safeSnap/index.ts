@@ -25,7 +25,8 @@ import {
   REALITY_MODULE_ABI,
   UMA_MODULE_ABI,
   ORACLE_ABI,
-  ERC20_ABI
+  ERC20_ABI,
+  CONNEXT_MODULE_ABI
 } from './constants';
 import {
   buildQuestion,
@@ -142,6 +143,19 @@ export default class Plugin {
   async getModuleDetailsReality(network: string, moduleAddress: string) {
     const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
     return getModuleDetailsReality(provider, network, moduleAddress);
+  }
+
+  async validateConnextModule(network: string, connextAddress: string) {
+    if (!isAddress(connextAddress)) return 'reality';
+
+    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const moduleContract = new Contract(connextAddress, CONNEXT_MODULE_ABI, provider);
+    console.log('moduleContract <validateConnextMod>', await moduleContract)
+    
+    return moduleContract
+      .connext()
+      .then(() => 'connext')
+      .catch(() => 'reality');
   }
 
   async validateUmaModule(network: string, umaAddress: string) {
