@@ -2,7 +2,9 @@
 import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { weightedVotingProposalAttest } from '@/helpers/attest';
 import shutterEncryptChoice from '@/helpers/shutter';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { web3Account } = useWeb3();
 
@@ -70,7 +72,15 @@ async function voteShutter() {
 }
 
 async function vote(payload) {
-  return send(props.space, 'vote', payload);
+  if (payload.proposal.type === 'weighted') {
+    const data = Object.entries(payload.choice).map(([index, value]) => ({
+      name: payload.proposal.choices[+index - 1],
+      value: value as number
+    }));
+    const auth = getInstance();
+
+    return weightedVotingProposalAttest(payload.proposal.id, auth.web3, data);
+  } else return send(props.space, 'vote', payload);
 }
 
 async function handleSubmit() {
