@@ -3,6 +3,7 @@ interface Props {
   src: string;
   size?: string;
   previewFile?: File | undefined;
+  square?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -11,6 +12,14 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const avatarImage = ref<HTMLImageElement | null>(null);
+
+const radius = computed(() =>
+  props.square
+    ? Number(props.size) < 60
+      ? 'rounded-[6px]'
+      : 'rounded-[10px]'
+    : 'rounded-full'
+);
 
 watch(
   () => props.previewFile,
@@ -34,7 +43,8 @@ watch(
     <img
       v-show="previewFile"
       ref="avatarImage"
-      class="rounded-full bg-skin-border object-cover"
+      class="bg-skin-border object-cover"
+      :class="radius"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
@@ -46,7 +56,8 @@ watch(
     <img
       v-show="!previewFile && src"
       :src="src"
-      class="rounded-full bg-skin-border object-cover"
+      class="bg-skin-border object-cover"
+      :class="radius"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,
@@ -56,7 +67,8 @@ watch(
     />
     <div
       v-if="!src && !previewFile"
-      class="rounded-full bg-skin-border"
+      class="bg-skin-border"
+      :class="radius"
       :style="{
         width: `${Number(size)}px`,
         height: `${Number(size)}px`,

@@ -27,5 +27,6 @@ const avatarHash = computed(() => {
     :src="`https://cdn.stamp.fyi/space/${space.id}?s=${
       Number(size) * 2
     }${avatarHash}`"
+    square
   />
 </template>
