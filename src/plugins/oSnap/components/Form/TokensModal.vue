@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { useConfirmDialog } from '@vueuse/core';
 import { TokenAsset } from '@/helpers/interfaces';
+import { useConfirmDialog } from '@vueuse/core';
 import TokensModalItem from './TokensModalItem.vue';
+import { Network, Token } from '../../types';
 
 const props = defineProps<{
   open: boolean;
   tokenAddress: string;
-  tokens: TokenAsset[];
-  network: string;
+  tokens: Token[];
+  network: Network;
 }>();
 
 const emit = defineEmits(['close', 'tokenAddress']);
@@ -24,7 +25,7 @@ confirmDialog.onConfirm(token => {
 });
 
 const tokensFiltered = computed(() => {
-  const filterTokens = (token: TokenAsset) => {
+  const filterTokens = (token: Token) => {
     const tokenProperties = [token.symbol, token.name, token.address].map(
       property => property.toLowerCase()
     );

@@ -1,3 +1,4 @@
+import { CollectableAsset } from '@/helpers/interfaces';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 type Networks = typeof networks;
@@ -15,8 +16,29 @@ export type Transaction = {
   nonce: string;
 }
 
-export type Token = {
+export type TransferNftTransaction = Transaction & {
+  type: 'transferNFT';
+  recipient: string;
+  collectable: CollectableAsset;
+}
+
+export type TransferFundsTransaction = Transaction & {
+  type: 'transferFunds';
+  amount: string;
+  recipient: string;
+  token: Token;
+}
+
+export type Asset = {
+  name: string;
+  address: "main" | (string & {});
+  logoUri?: string;
+}
+
+export type Token = Asset & {
   symbol: string;
   decimals: number;
-  address: "main" | (string & {});
+  balance?: string;
+  verified?: boolean;
+  chainId?: Network;
 }

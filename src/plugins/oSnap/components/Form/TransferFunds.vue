@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ETH_CONTRACT } from '@/helpers/constants';
-import { TokenAsset } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import {
   getERC20TokenTransferTransactionData,
   getNativeAsset,
-  transferFundsToModuleTransaction
+  transferFundsToModuleTransaction,
+  validateTransaction
 } from '../../index';
 import { Network, Token } from '../../types';
 import InputAddress from '../Input/Address.vue';
@@ -20,11 +20,11 @@ const props = defineProps<{
     | {
         amount: string;
         recipient: string;
-        token: TokenAsset;
+        token: Token;
       }
     | undefined;
-  nonce: number;
-  tokens: TokenAsset[];
+  nonce: string;
+  tokens: Token[];
   network: Network;
 }>();
 
@@ -34,6 +34,15 @@ const nativeAsset = getNativeAsset(props.network);
 const amount = ref('0');
 const recipient = ref('');
 const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
+const selectedTokenAddress = ref<Token['address']>('main');
+const selectedToken = computed(
+  () =>
+    tokens.value.find(token => token.address === selectedTokenAddress.value) ??
+    nativeAsset
+);
+const selectedTokenIsNative = computed(
+  () => selectedToken.value?.address === 'main'
+);
 const isAmountValid = ref(true);
 const isTokenModalOpen = ref(false);
 
@@ -43,8 +52,37 @@ function updateTransaction() {
     !isBigNumberish(amount.value) ||
     !isAddress(recipient.value)
   )
-    return; 
+    return;
+
+  try {
+    const data = selectedTokenIsNative.value
+      ? '0x'
+      : getERC20TokenTransferTransactionData(recipient.value, amount.value);
+
+    const transaction = transferFundsToModuleTransaction({
+      data,
+      nonce: props.nonce,
+      amount: amount.value,
+      recipient: recipient.value,
+      token: selectedToken.value
+    });
+    const isTransactionValid = validateTransaction(transaction);
+    if (isTransactionValid) {
+      emit('update:modelValue', transaction);
+      return;
+    }
+  } catch (error) {
+    console.warn('invalid transaction', error);
+  }
 }
+
+function openModal() {
+  isTokenModalOpen.value = true;
+}
+
+watch(recipient, updateTransaction);
+watch(amount, updateTransaction);
+watch(selectedTokenAddress, updateTransaction);
 
 onMounted(() => {
   if (props.modelValue) {
@@ -55,97 +93,6 @@ onMounted(() => {
     }
   }
 });
-
-export default {
-  data() {
-    const { amount = '0' } = this.modelValue || {};
-    const nativeAsset = getNativeAsset(this.config.network);
-    return {
-      tokens: [nativeAsset],
-
-      to: '',
-      value: amount,
-      tokenAddress: 'main',
-
-      validValue: true,
-      modalTokensOpen: false,
-      ETH_CONTRACT: ETH_CONTRACT
-    };
-  },
-  computed: {
-    selectedToken() {
-      return this.tokens.find(token => token.address === this.tokenAddress);
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    tokenAddress() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    config() {
-      this.setTokens();
-    }
-  },
-  mounted() {
-    this.setTokens();
-    if (this.modelValue) {
-      const { recipient = '', token, amount = '0' } = this.modelValue;
-      this.to = recipient;
-      this.value = amount;
-      if (token) {
-        this.tokenAddress = token.address;
-        this.tokens = [token];
-      }
-    }
-  },
-  methods: {
-    updateTransaction() {
-      if (this.config.preview) return;
-      try {
-        if (isBigNumberish(this.value) && isAddress(this.to)) {
-          const data =
-            this.selectedToken.address === 'main'
-              ? '0x'
-              : getERC20TokenTransferTransactionData(this.to, this.value);
-
-          const transaction = transferFundsToModuleTransaction({
-            data,
-            nonce: this.nonce,
-            amount: this.value,
-            recipient: this.to,
-            token: this.selectedToken
-          });
-
-          if (this.plugin.validateTransaction(transaction)) {
-            this.$emit('update:modelValue', transaction);
-            return;
-          }
-        }
-      } catch (error) {
-        console.warn('invalid transaction', error);
-      }
-      this.$emit('update:modelValue', undefined);
-    },
-    setTokens() {
-      if (!this.config.preview && this.config.tokens) {
-        this.tokens = [
-          getNativeAsset(this.config.network),
-          ...this.config.tokens
-        ];
-      }
-    },
-    openModal() {
-      if (!this.config.tokens.length) return;
-      this.modalTokensOpen = true;
-    },
-    shorten: shorten
-  }
-};
 </script>
 
 <template>
@@ -177,8 +124,8 @@ export default {
 
   <div class="space-y-2">
     <InputAddress
-      v-model="to"
-      :disabled="config.preview"
+      v-model="recipient"
+      :disabled="preview"
       :input-props="{
         required: true
       }"
@@ -186,21 +133,21 @@ export default {
     />
     <InputAmount
       :key="selectedToken?.decimals"
-      v-model="value"
+      v-model="amount"
       :label="$t('safeSnap.amount')"
       :decimals="selectedToken?.decimals"
-      :disabled="config.preview"
+      :disabled="preview"
     />
   </div>
 
   <teleport to="#modal">
     <TokensModal
       :tokens="tokens"
-      :token-address="tokenAddress"
-      :open="modalTokensOpen"
-      :network="config.network"
-      @token-address="tokenAddress = $event"
-      @close="modalTokensOpen = false"
+      :token-address="selectedTokenAddress"
+      :open="isTokenModalOpen"
+      :network="network"
+      @token-address="selectedTokenAddress = $event"
+      @close="isTokenModalOpen = false"
     />
   </teleport>
 </template>

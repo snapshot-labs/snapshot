@@ -1,6 +1,7 @@
 import {
   CollectableAsset,
   CollectableAssetTransaction,
+  SafeTransaction,
   TokenAsset,
   TokenAssetTransaction
 } from '@/helpers/interfaces';
@@ -8,7 +9,7 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { Network } from '../types';
+import { Network, Token, TransferFundsTransaction } from '../types';
 import { getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
@@ -47,12 +48,11 @@ export function transferFundsToModuleTransaction({
 }: {
   recipient: string;
   amount: string;
-  token: TokenAsset;
+  token: Token;
   data: string;
   nonce: string;
-}): TokenAssetTransaction {
+}): TransferFundsTransaction {
   const base = {
-    operation: '0',
     nonce,
     token,
     recipient

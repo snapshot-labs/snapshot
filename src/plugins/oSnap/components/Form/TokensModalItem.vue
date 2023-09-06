@@ -2,9 +2,10 @@
 import { shorten, explorerUrl } from '@/helpers/utils';
 import { TokenAsset } from '@/helpers/interfaces';
 import { ETH_CONTRACT } from '@/helpers/constants';
+import { Token } from '../../types';
 
 const props = defineProps<{
-  token: TokenAsset;
+  token: Token;
   isSelected: boolean;
   network: string;
 }>();

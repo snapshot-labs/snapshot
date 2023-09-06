@@ -1,4 +1,3 @@
-import { TokenAsset } from '@/helpers/interfaces';
 import { Network } from '../types';
 
 export const ETHEREUM_COIN = {
