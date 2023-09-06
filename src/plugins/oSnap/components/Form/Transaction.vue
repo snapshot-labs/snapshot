@@ -2,7 +2,7 @@
 import type { TransactionType } from '../../types';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
-import SendAsset from './SendAsset.vue';
+import TransferNFT from './TransferNFT.vue';
 import TransferFunds from './TransferFunds.vue';
 
 const labels = {
@@ -14,7 +14,7 @@ const labels = {
 
 defineProps<{
   modelValue: any;
-  nonce: number;
+  nonce: string;
   config: any;
 }>();
 
@@ -54,7 +54,7 @@ const type = ref<TransactionType>('transferFunds');
     @update:modelValue="$emit('update:modelValue', $event)"
   />
 
-  <SendAsset
+  <TransferNFT
     v-if="type === 'transferNFT'"
     :config="config"
     :model-value="modelValue"

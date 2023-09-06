@@ -21,7 +21,7 @@ const props = defineProps<{
     value: string;
     data: string;
   };
-  nonce: number;
+  nonce: string;
   preview: boolean;
   network: string;
 }>();
