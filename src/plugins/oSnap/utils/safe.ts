@@ -1,7 +1,7 @@
 import { TokenAsset } from '@/helpers/interfaces';
 import memoize from 'lodash/memoize';
 import { GNOSIS_SAFE_TRANSACTION_API_URLS } from '../constants';
-import { Network } from '../types';
+import { Network, Token } from '../types';
 
 async function callGnosisSafeTransactionApi(
   network: Network,
@@ -29,7 +29,7 @@ export const getGnosisSafeCollectibles = memoize(
 );
 
 export const getGnosisSafeToken = memoize(
-  async (network, tokenAddress): Promise<TokenAsset> => {
+  async (network, tokenAddress): Promise<Token> => {
     const endpointPath = `/v1/tokens/${tokenAddress}`;
     return callGnosisSafeTransactionApi(network, endpointPath);
   },

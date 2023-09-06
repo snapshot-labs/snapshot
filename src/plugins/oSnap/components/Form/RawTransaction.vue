@@ -1,115 +1,118 @@
-<script>
+<script setup lang="ts">
 import { parseValue } from '@/helpers/utils';
 import { isHexString } from '@ethersproject/bytes';
-import Plugin, {
-  decodeTransactionData,
-  rawToModuleTransaction
-} from '../../index';
-import SafeSnapInputAddress from '../Input/Address.vue';
+import { decodeTransactionData, validateTransaction } from '../../index';
+import { Network } from '../../types';
+import AddressInput from '../Input/Address.vue';
 
-export default {
-  components: { SafeSnapInputAddress },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue'],
-  data() {
-    return {
-      plugin: new Plugin(),
-
-      to: '',
-      value: '0',
-      data: ''
-    };
-  },
-  computed: {
-    isValidValue() {
-      if (!this.value.length) return true;
-      try {
-        parseValue(this.value);
-        return true;
-      } catch (error) {
-        return false;
+const props = defineProps<{
+  modelValue:
+    | {
+        to?: string;
+        value?: string;
+        data?: string;
       }
-    },
-    isValidData() {
-      return !this.data.length || isHexString(this.data);
-    }
-  },
-  watch: {
-    to() {
-      this.updateTransaction();
-    },
-    value() {
-      this.updateTransaction();
-    },
-    data() {
-      this.updateTransaction();
-    }
-  },
-  async mounted() {
-    if (this.modelValue) {
-      const { to = '', value = '0', data = '' } = this.modelValue;
-      this.to = to;
-      this.value = value;
-      this.data = data;
+    | undefined;
+  nonce: string;
+  preview: boolean;
+  network: Network;
+}>();
 
-      if (this.config.preview) {
-        try {
-          const transaction = await decodeTransactionData(
-            this.config.network,
-            this.modelValue,
-            this.config.multiSendAddress
-          );
-          if (this.plugin.validateTransaction(transaction)) {
-            this.$emit('update:modelValue', transaction);
-          }
-        } catch (e) {
-          console.warn('raw-transaction: failed to decode transaction');
-        }
-      }
-    }
-  },
-  methods: {
-    updateTransaction() {
-      if (this.config.preview) return;
+const emit = defineEmits(['update:modelValue']);
 
-      const transaction = rawToModuleTransaction({
-        value: this.value,
-        to: this.to,
-        data: this.data,
-        nonce: this.nonce
-      });
+const to = ref('');
+const value = ref('0');
+const data = ref('');
 
-      if (this.plugin.validateTransaction(transaction)) {
-        this.$emit('update:modelValue', transaction);
-        return;
-      }
-      this.$emit('update:modelValue', undefined);
-    }
+const isValueValid = computed(() => {
+  if (!value.value.length) return true;
+  try {
+    parseValue(value.value);
+    return true;
+  } catch (error) {
+    return false;
   }
-};
+});
+
+const isDataValid = computed(() => {
+  return !data.value.length || isHexString(data.value);
+});
+
+watch(to, updateTransaction);
+watch(value, updateTransaction);
+watch(data, updateTransaction);
+
+function updateTransaction() {
+  if (props.preview || !isValueValid.value || !isDataValid.value) return;
+
+  try {
+    const transaction = {
+      value: value.value,
+      to: to.value,
+      data: data.value,
+      nonce: props.nonce
+    };
+
+    if (validateTransaction(transaction)) {
+      emit('update:modelValue', transaction);
+      return;
+    }
+  } catch (error) {
+    console.warn('invalid transaction', error);
+  }
+
+  onMounted(async () => {
+    if (props.modelValue) {
+      to.value = props.modelValue.to ?? '';
+      value.value = props.modelValue.value ?? '0';
+      data.value = props.modelValue.data ?? '';
+    }
+
+    if (
+      props.preview &&
+      props.modelValue?.to &&
+      props.modelValue?.data &&
+      props.modelValue?.value
+    ) {
+      try {
+        const transaction = await decodeTransactionData(props.network, {
+          to: props.modelValue.to,
+          data: props.modelValue.data,
+          value: props.modelValue.value,
+          nonce: props.nonce
+        });
+        if (validateTransaction(transaction)) {
+          emit('update:modelValue', transaction);
+        }
+      } catch (e) {
+        console.warn('raw-transaction: failed to decode transaction');
+      }
+    }
+  });
+}
 </script>
 
 <template>
   <div class="space-y-2">
-    <SafeSnapInputAddress
+    <AddressInput
       v-model="to"
-      :disabled="config.preview"
+      :disabled="preview"
       :input-props="{ required: false }"
       :label="$t('safeSnap.to')"
     />
 
     <UiInput
       v-model="value"
-      :disabled="config.preview"
-      :error="!isValidValue && $t('safeSnap.invalidValue')"
+      :disabled="preview"
+      :error="!isValueValid && $t('safeSnap.invalidValue')"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
 
     <UiInput
       v-model="data"
-      :disabled="config.preview"
-      :error="!isValidData && $t('safeSnap.invalidData')"
+      :disabled="preview"
+      :error="!isDataValid && $t('safeSnap.invalidData')"
     >
       <template #label>{{ $t('safeSnap.data') }}</template>
     </UiInput>

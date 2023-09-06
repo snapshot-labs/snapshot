@@ -9,7 +9,7 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { Network, Token, TransferFundsTransaction } from '../types';
+import { Network, Token, TransferFundsTransaction, Transaction } from '../types';
 import { getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
@@ -95,7 +95,7 @@ export function contractInteractionToModuleTransaction(
 
 export async function decodeContractTransaction(
   network: string,
-  transaction: SafeTransaction,
+  transaction: Transaction,
 ) {
   const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
@@ -138,12 +138,12 @@ function getMethodSignature(data: string) {
   return null;
 }
 
-export function isERC20TransferTransaction(transaction: SafeTransaction) {
+export function isERC20TransferTransaction(transaction: Transaction) {
   // 0xa9059cbb == transfer(address to, uint256 amount)
   return getMethodSignature(transaction.data) === '0xa9059cbb';
 }
 
-function decodeERC721TransferTransaction(transaction: SafeTransaction) {
+function decodeERC721TransferTransaction(transaction: Transaction) {
   const erc721ContractInterface = new InterfaceDecoder(ERC721_ABI);
   try {
     return erc721ContractInterface.decodeFunction(transaction.data);
@@ -154,14 +154,14 @@ function decodeERC721TransferTransaction(transaction: SafeTransaction) {
 
 export async function decodeTransactionData(
   network: Network,
-  transaction: SafeTransaction,
+  transaction: Transaction,
 ) {
   if (!transaction.data || transaction.data === '0x') {
     return transferFundsToModuleTransaction({
       recipient: transaction.to,
       amount: transaction.value,
       data: '0x',
-      token: getNativeAsset(network) as TokenAsset,
+      token: getNativeAsset(network),
       nonce: '0'
     });
   }
