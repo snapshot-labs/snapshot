@@ -47,3 +47,24 @@ export type NFT = Asset & {
   id: string;
   tokenName?: string;
 }
+
+export type TransactionBuilderModelValue = {
+  to?: string;
+  value?: string;
+  data?: string;
+  abi?: string;
+  amount?: string;
+  recipient?: string;
+  token?: Token;
+  collectable?: NFT;
+}
+
+export type TransactionBuilderConfig = {
+  nonce: string;
+  preview: boolean;
+  network: Network;
+  gnosisSafeAddress: string;
+  transactionType: TransactionType;
+  tokens: Token[];
+  collectables: NFT[];
+}

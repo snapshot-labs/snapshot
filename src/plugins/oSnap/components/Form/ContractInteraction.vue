@@ -16,11 +16,11 @@ import InputMethodParameter from '../Input/MethodParameter.vue';
 
 const props = defineProps<{
   modelValue: {
-    to: string;
-    abi: string;
-    value: string;
-    data: string;
-  };
+    to?: string;
+    abi?: string;
+    value?: string;
+    data?: string;
+  } | undefined;
   nonce: string;
   preview: boolean;
   network: string;

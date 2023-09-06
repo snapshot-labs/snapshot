@@ -18,9 +18,9 @@ const props = defineProps<{
   preview: boolean;
   modelValue:
     | {
-        amount: string;
-        recipient: string;
-        token: Token;
+        amount?: string;
+        recipient?: string;
+        token?: Token;
       }
     | undefined;
   nonce: string;

@@ -10,17 +10,18 @@ import { NFT, Network } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  modelValue: any;
+  modelValue: {
+    recipient?: string;
+    collectable?: NFT;
+  } | undefined;
   gnosisSafeAddress: string;
   nonce: string;
   preview: boolean;
   network: Network;
-
 }>();
 
 const emit = defineEmits(['update:modelValue']);
 
-const loading = ref(false);
 const collectables = ref<NFT[]>([]);
 const recipient = ref('');
 const selectedCollectableAddress = ref('');
@@ -63,11 +64,10 @@ watch(selectedCollectableAddress, updateTransaction);
 
 onMounted(() => {
   if (!props.modelValue) return;
-  const { recipient = '', collectable } = props.modelValue;
-  recipient.value = recipient;
-  if (collectable) {
-    selectedCollectableAddress.value = collectable.address;
-    collectables.value = [collectable];
+  recipient.value = props.modelValue?.recipient ?? '';
+  if (props.modelValue.collectable) {
+    selectedCollectableAddress.value = props.modelValue.collectable.address;
+    collectables.value = [props.modelValue.collectable];
   }
 })
 </script>
