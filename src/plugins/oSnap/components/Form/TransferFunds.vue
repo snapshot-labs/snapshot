@@ -9,24 +9,19 @@ import {
   transferFundsToModuleTransaction,
   validateTransaction
 } from '../../index';
-import { Network, Token } from '../../types';
+import {
+  Token,
+  TransactionBuilderConfig,
+  TransactionModelValue
+} from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
 
-const props = defineProps<{
-  preview: boolean;
-  modelValue:
-    | {
-        amount?: string;
-        recipient?: string;
-        token?: Token;
-      }
-    | undefined;
-  nonce: string;
-  tokens: Token[];
-  network: Network;
-}>();
+type Props = TransactionBuilderConfig & {
+  modelValue: TransactionModelValue;
+};
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 

@@ -11,20 +11,17 @@ import {
   getContractTransactionData,
   validateTransaction
 } from '../../index';
+import {
+  TransactionBuilderConfig,
+  TransactionModelValue
+} from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 
-const props = defineProps<{
-  modelValue: {
-    to?: string;
-    abi?: string;
-    value?: string;
-    data?: string;
-  } | undefined;
-  nonce: string;
-  preview: boolean;
-  network: string;
-}>();
+type Props = TransactionBuilderConfig & {
+  modelValue: TransactionModelValue;
+};
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -155,32 +152,32 @@ onMounted(async () => {
         required: true
       }"
       :label="$t('safeSnap.to')"
-      @validAddress="handleAddressChanged()"
+      @validAddress="updateAddress()"
     />
 
     <UiInput
-      :disabled="config.preview"
+      :disabled="preview"
       :error="!validValue && $t('safeSnap.invalidValue')"
       :model-value="value"
-      @update:modelValue="handleValueChange($event)"
+      @update:modelValue="updateValue($event)"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
 
     <UiInput
-      :disabled="config.preview"
+      :disabled="preview"
       :error="!validAbi && $t('safeSnap.invalidAbi')"
       :model-value="abi"
-      @update:modelValue="handleABIChanged($event)"
+      @update:modelValue="updateAbi($event)"
     >
       <template #label>ABI</template>
     </UiInput>
 
     <div v-if="methods.length">
       <UiSelect
-        v-model="methodIndex"
-        :disabled="config.preview"
-        @change="handleMethodChanged()"
+        v-model="selectedMethodIndex"
+        :disabled="preview"
+        @change="updateMethod($event)"
       >
         <template #label>function</template>
         <option v-for="(method, i) in methods" :key="i" :value="i">
@@ -194,10 +191,10 @@ onMounted(async () => {
         <InputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
-          :disabled="config.preview"
+          :disabled="preview"
           :model-value="parameters[index]"
           :parameter="input"
-          @update:modelValue="handleParameterChanged(index, $event)"
+          @update:modelValue="updateParameter(index, $event)"
         />
       </div>
     </div>

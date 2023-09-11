@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import type { TransactionType } from '../../types';
+import type {
+  TransactionBuilderConfig,
+  TransactionModelValue,
+  TransactionType
+} from '../../types';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
-import TransferNFT from './TransferNFT.vue';
 import TransferFunds from './TransferFunds.vue';
+import TransferNFT from './TransferNFT.vue';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -12,20 +16,20 @@ const labels = {
   raw: 'Raw Transaction'
 };
 
-defineProps<{
-  modelValue: any;
-  nonce: string;
-  config: any;
-}>();
+type Props = TransactionBuilderConfig & {
+  modelValue: TransactionModelValue;
+};
+
+const props = defineProps<Props>();
 
 defineEmits(['update:modelValue', 'remove']);
 
-const type = ref<TransactionType>('transferFunds');
+const type = ref<TransactionType>(props.transactionType);
 </script>
 
 <template>
   <UiSelect
-    :disabled="config.preview"
+    :disabled="preview"
     :model-value="type"
     @update:modelValue="type = $event"
   >
@@ -40,33 +44,25 @@ const type = ref<TransactionType>('transferFunds');
 
   <ContractInteraction
     v-if="type === 'contractInteraction'"
-    :config="config"
-    :model-value="modelValue"
-    :nonce="nonce"
+    v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
   />
 
   <TransferFunds
     v-if="type === 'transferFunds'"
-    :config="config"
-    :model-value="modelValue"
-    :nonce="nonce"
+    v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
   />
 
   <TransferNFT
     v-if="type === 'transferNFT'"
-    :config="config"
-    :model-value="modelValue"
-    :nonce="nonce"
+    v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
   />
 
   <RawTransaction
     v-if="type === 'raw'"
-    :model-value="modelValue"
-    :nonce="nonce"
-    :config="config"
+    v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
   />
 </template>

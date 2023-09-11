@@ -2,21 +2,16 @@
 import { parseValue } from '@/helpers/utils';
 import { isHexString } from '@ethersproject/bytes';
 import { decodeTransactionData, validateTransaction } from '../../index';
-import { Network } from '../../types';
+import {
+  TransactionBuilderConfig,
+  TransactionModelValue
+} from '../../types';
 import AddressInput from '../Input/Address.vue';
 
-const props = defineProps<{
-  modelValue:
-    | {
-        to?: string;
-        value?: string;
-        data?: string;
-      }
-    | undefined;
-  nonce: string;
-  preview: boolean;
-  network: Network;
-}>();
+type Props = TransactionBuilderConfig & {
+  modelValue: TransactionModelValue;
+};
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 

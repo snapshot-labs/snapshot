@@ -2,23 +2,21 @@
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import {
-getERC721TokenTransferTransactionData,
-sendAssetToModuleTransaction,
-validateTransaction
+  getERC721TokenTransferTransactionData,
+  sendAssetToModuleTransaction,
+  validateTransaction
 } from '../../index';
-import { NFT, Network } from '../../types';
+import {
+  NFT,
+  TransactionBuilderConfig,
+  TransactionModelValue
+} from '../../types';
 import AddressInput from '../Input/Address.vue';
 
-const props = defineProps<{
-  modelValue: {
-    recipient?: string;
-    collectable?: NFT;
-  } | undefined;
-  gnosisSafeAddress: string;
-  nonce: string;
-  preview: boolean;
-  network: Network;
-}>();
+type Props = TransactionBuilderConfig & {
+  modelValue: TransactionModelValue;
+};
+const props = defineProps<Props>();
 
 const emit = defineEmits(['update:modelValue']);
 
@@ -34,7 +32,12 @@ const selectedCollectable = computed(() => {
 });
 
 function updateTransaction() {
-  if (props.preview || !isAddress(recipient.value) || !selectedCollectable.value) return;
+  if (
+    props.preview ||
+    !isAddress(recipient.value) ||
+    !selectedCollectable.value
+  )
+    return;
 
   try {
     const data = getERC721TokenTransferTransactionData(
@@ -55,8 +58,8 @@ function updateTransaction() {
       return;
     }
   } catch (error) {
-        console.warn('invalid transaction');
-      }
+    console.warn('invalid transaction');
+  }
 }
 
 watch(recipient, updateTransaction);
@@ -69,7 +72,7 @@ onMounted(() => {
     selectedCollectableAddress.value = props.modelValue.collectable.address;
     collectables.value = [props.modelValue.collectable];
   }
-})
+});
 </script>
 
 <template>

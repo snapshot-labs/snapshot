@@ -4,34 +4,27 @@ import { getSafeHash, isValidInput } from '../index';
 
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import SafeTransactions from './SafeTransactions.vue';
+import { OptimisticGovernorTransaction, TransactionBuilderModelValue } from '../types';
 
 const props = defineProps<{
-  modelValue: any;
+  modelValue: TransactionBuilderModelValue;
   proposal: Proposal;
   space: ExtendedSpace;
   preview: boolean;
   results?: Results;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  update: [modelValue: TransactionBuilderModelValue];
+}>();
 
-const input = ref({
-  hash: null,
-  txs: [],
-  valid: true
-});
+const transactions = ref<OptimisticGovernorTransaction[]>(props.modelValue.transactions ?? []);
 
 const ipfs = getIpfsUrl(props.proposal.ipfs);
-function updateSafeTransactions() {
+
+function updateTransactions() {
   if (props.preview) return;
-  input.value.valid = isValidInput(input.value);
-  input.value.safes = input.value.safes.map(safe => {
-    return {
-      ...safe,
-      hash: getSafeHash(safe)
-    };
-  });
-  emit('update:modelValue', this.input);
+  emit('update:modelValue', transactions);
 }
 </script>
 
@@ -65,9 +58,9 @@ function updateSafeTransactions() {
         :proposal="proposal"
         :space="space"
         :results="results"
-        :model-value="input.txs"
+        :model-value="transactions[index]"
         :treasury="treasury"
-        @update:modelValue="updateSafeTransactions()"
+        @update:modelValue="updateTransactions()"
       />
     </div>
   </div>

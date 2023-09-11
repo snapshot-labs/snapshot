@@ -48,7 +48,7 @@ export type NFT = Asset & {
   tokenName?: string;
 }
 
-export type TransactionBuilderModelValue = {
+export type TransactionModelValue = {
   to?: string;
   value?: string;
   data?: string;
@@ -57,6 +57,10 @@ export type TransactionBuilderModelValue = {
   recipient?: string;
   token?: Token;
   collectable?: NFT;
+}
+
+export type TransactionBuilderModelValue = {
+  transactions: OptimisticGovernorTransaction[];
 }
 
 export type TransactionBuilderConfig = {

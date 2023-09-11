@@ -1,4 +1,4 @@
-<script>
+ <script>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { coerceConfig, isValidInput, getSafeHash } from '../index';
 import { getIpfsUrl } from '@/helpers/utils';

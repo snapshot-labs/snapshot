@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import Config from './components/Config.vue';
+import { OptimisticGovernorTransaction, TransactionBuilderModelValue } from './types';
 
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  modelValue: { oSnap: any } | undefined;
+  modelValue: { oSnap: TransactionBuilderModelValue } | undefined;
   results?: Results;
 }>();
 
-const emit = defineEmits(['update']);
-const update = form => {
-  emit('update', { key: 'oSnap', form });
+const emit = defineEmits<{
+  update: [modelValue: { key: 'oSnap'; form: OptimisticGovernorTransaction[] }];
+}>();
+const update = (transactions: OptimisticGovernorTransaction[]) => {
+  emit('update', { key: 'oSnap', form: transactions });
 };
 </script>
 

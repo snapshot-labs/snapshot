@@ -190,15 +190,6 @@ onMounted(async () => {
       <div class="flex-grow"></div>
       <Tooltip :module-address="moduleAddress" />
     </h4>
-    <UiCollapsibleText
-      :show-arrow="true"
-      :open="showHash"
-      :text="hash"
-      class="border-b"
-      style="border-width: 0 0 1px 0 !important"
-      title="Complete Transaction Hash"
-      @toggle="showHash = !showHash"
-    />
     <div class="text-center">
       <FormTransactionBatch
         :config="transactionConfig"
