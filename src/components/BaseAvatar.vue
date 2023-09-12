@@ -16,7 +16,7 @@ const avatarImage = ref<HTMLImageElement | null>(null);
 
 const roundedClass = computed(() => {
   if (props.roundedSquare) {
-    return Number(props.size) < 48 ? 'rounded' : 'rounded-lg';
+    return Number(props.size) < 40 ? 'rounded' : 'rounded-lg';
   }
   return 'rounded-full';
 });
