@@ -649,7 +649,8 @@
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
     "transactionSent": "Transaction sent",
-    "emailPreferencesUpdated": "Email preferences updated"
+    "emailPreferencesUpdated": "Email preferences updated",
+    "delegationAdded": "Well done. Delegate was successfully added"
   },
   "explore": {
     "createStrategy": "Create strategy",

@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@adraffy/ens-normalize": "^1.9.4",
-    "@apollo/client": "^3.7.13",
     "@braintree/sanitize-url": "^6.0.4",
+    "@apollo/client": "^3.8.3",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/address": "^5.7.0",
@@ -76,7 +76,7 @@
     "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.3",
     "@types/bluebird": "^3.5.38",
-    "@types/lodash": "^4.14.195",
+    "@types/lodash": "^4.14.198",
     "@types/node": "^20.5.0",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",

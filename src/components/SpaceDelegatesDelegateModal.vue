@@ -7,7 +7,7 @@ import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   open: boolean;
   space: ExtendedSpace;
-  selectedDelegate: string;
+  address: string;
 }>();
 
 const emit = defineEmits(['close', 'reload']);
@@ -20,19 +20,17 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate, fetchDelegateBalance } = useDelegates(
-  props.space.delegationPortal
-);
+const { setDelegate, loadDelegateBalance, isLoadingDelegateBalance } =
+  useDelegates(props.space);
 const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 
 const form = ref({
-  scope: 'space',
   to: ''
 });
 const resolvedAddress = ref('');
 const isResolvingName = ref(false);
-const formRef = ref();
+const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
 
@@ -40,13 +38,6 @@ const definition = computed(() => {
   return {
     type: 'object',
     properties: {
-      scope: {
-        type: 'string',
-        title: 'Delegation scope',
-        description:
-          'Choose whether you want to delegate globally or within the scope a specific space',
-        anyOf: [{ const: 'space', title: `This space (${props.space.id})` }]
-      },
       to: {
         type: 'string',
         format: 'address',
@@ -55,7 +46,7 @@ const definition = computed(() => {
         examples: ['Enter: Address, ENS or Lens']
       }
     },
-    required: ['scope', 'to'],
+    required: ['to'],
     additionalProperties: false
   };
 });
@@ -64,7 +55,6 @@ const validationErrors = computed(() => {
   return validateForm(
     definition.value || {},
     clone({
-      scope: form.value.scope,
       to: resolvedAddress.value
     })
   );
@@ -76,7 +66,7 @@ const isValid = computed(() => {
 
 async function handleConfirm() {
   if (!isValid.value) {
-    formRef?.value?.forceShowError();
+    addressRef?.value?.forceShowError();
     return;
   }
 
@@ -91,7 +81,7 @@ async function handleConfirm() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.delegationRemoved'));
+    notify(t('notify.delegationAdded'));
     removePendingTransaction(txPendingId);
     emit('reload');
   } catch (e) {
@@ -111,8 +101,8 @@ async function resolveToAddress(value: string) {
 }
 
 async function loadAccountBalance() {
-  const balance = await fetchDelegateBalance(web3Account.value);
-  accountBalance.value = balance;
+  const balance = await loadDelegateBalance(web3Account.value);
+  accountBalance.value = balance || '0';
 }
 
 watchDebounced(
@@ -124,11 +114,12 @@ watchDebounced(
 );
 
 watch(
-  () => props.selectedDelegate,
+  () => props.address,
   () => {
-    form.value.to = props.selectedDelegate;
-    resolvedAddress.value = props.selectedDelegate;
-  }
+    form.value.to = props.address;
+    resolvedAddress.value = props.address;
+  },
+  { immediate: true }
 );
 
 watch(
@@ -143,32 +134,49 @@ watch(
 <template>
   <BaseModal :open="open" @close="emit('close')">
     <template #header>
-      <div class="items-center justify-center px-6 pb-3">
-        <h3>{{ $t('delegates.delegateModal.title') }}</h3>
+      <div class="px-4 pt-1 text-left text-skin-heading">
+        <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
         <span>{{ $t('delegates.delegateModal.sub') }}</span>
-        {{ formatCompactNumber(Number(accountBalance)) }}
-        {{ space.symbol }}
+        <LoadingSpinner
+          v-if="isLoadingDelegateBalance"
+          class="inline-block pl-2"
+          small
+        />
+        <span v-else>
+          {{ formatCompactNumber(Number(accountBalance)) }}
+          {{ space.symbol }}
+        </span>
       </div>
     </template>
 
-    <div class="space-y-2 p-4">
-      <TuneForm
-        ref="formRef"
-        v-model="form"
-        :definition="definition"
-        :error="validationErrors"
+    <div class="space-y-3 p-4">
+      <div>
+        <LabelInput> Delegation scope </LabelInput>
+        <div class="mt-1 flex items-center gap-1">
+          <AvatarSpace :space="space" />
+          <span class="text-skin-heading"> {{ space.name }} </span>
+        </div>
+      </div>
+
+      <TuneInput
+        ref="addressRef"
+        v-model="form.to"
+        :label="definition.properties.to.title"
+        :hint="definition.properties.to.description"
+        :placeholder="definition.properties.to.examples[0]"
+        :error="validationErrors?.to"
       />
     </div>
 
     <template #footer>
-      <TuneButton
+      <BaseButton
         :loading="isResolvingName || isAwaitingSignature"
         class="w-full"
         primary
         @click="handleConfirm"
       >
         {{ $t('confirm') }}
-      </TuneButton>
+      </BaseButton>
     </template>
   </BaseModal>
 </template>

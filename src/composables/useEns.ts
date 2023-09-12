@@ -72,7 +72,7 @@ export function useEns() {
 
   // Check if a domain is valid based on the TLD
   function isValidEnsDomain(domain: string): boolean {
-    if (!domain.includes('.')) return false;
+    if (!domain?.includes('.')) return false;
     return VALID_ENS_TLDS.includes(domain.split('.').pop() ?? '');
   }
 

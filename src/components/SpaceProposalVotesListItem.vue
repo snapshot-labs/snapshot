@@ -107,7 +107,7 @@ const balanceFormatted = computed(() => {
         v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
         v-tippy="{
           content: urlify(vote.reason.replace(/^[\s\n]+|[\s\n]+$/g, '')),
-          allowHTML: true,
+          allowHTML: false,
           interactive: true,
           theme: 'urlified'
         }"

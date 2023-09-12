@@ -8,7 +8,7 @@ const props = withDefaults(
     previewFile?: File;
   }>(),
   {
-    size: '22',
+    size: '20',
     previewFile: undefined
   }
 );
