@@ -120,11 +120,12 @@ watch(
               symbol-index="space"
               size="40"
               class="pointer-events-none"
+              rounded-square
             />
             <BaseCounter
               v-if="spacesMap[element].activeProposals"
               :counter="spacesMap[element].activeProposals"
-              class="absolute -top-[1px] right-[9px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
+              class="absolute -top-[4px] right-[6px] !h-[16px] !min-w-[16px] !bg-green !leading-[16px]"
             />
           </router-link>
         </div>

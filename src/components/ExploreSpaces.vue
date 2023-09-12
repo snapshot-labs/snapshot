@@ -116,8 +116,9 @@ onMounted(() => {
                 <AvatarSpace
                   :space="space"
                   symbol-index="space"
-                  size="82"
+                  size="80"
                   class="mb-1"
+                  rounded-square
                 />
               </div>
               <div class="flex items-center justify-center gap-1 truncate">

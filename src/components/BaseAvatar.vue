@@ -3,14 +3,31 @@ interface Props {
   src: string;
   size?: string;
   previewFile?: File | undefined;
+  roundedSquare?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: '22',
-  previewFile: undefined
+  previewFile: undefined,
+  roundedSquare: false
 });
 
 const avatarImage = ref<HTMLImageElement | null>(null);
+
+const roundedClass = computed(() => {
+  if (props.roundedSquare) {
+    return Number(props.size) < 80 ? 'rounded' : 'rounded-lg';
+  }
+  return 'rounded-full';
+});
+
+const sizeStyle = computed(() => {
+  return {
+    width: `${Number(props.size)}px`,
+    height: `${Number(props.size)}px`,
+    minWidth: `${Number(props.size)}px`
+  };
+});
 
 watch(
   () => props.previewFile,
@@ -34,34 +51,20 @@ watch(
     <img
       v-show="previewFile"
       ref="avatarImage"
-      class="rounded-full bg-skin-border object-cover"
-      :style="{
-        width: `${Number(size)}px`,
-        height: `${Number(size)}px`,
-        minWidth: `${Number(size)}px`
-      }"
+      class="object-cover"
+      :class="roundedClass"
+      :style="sizeStyle"
       alt="avatar"
     />
     <!-- else show image from ipfs or stamp -->
     <img
       v-show="!previewFile && src"
       :src="src"
-      class="rounded-full bg-skin-border object-cover"
-      :style="{
-        width: `${Number(size)}px`,
-        height: `${Number(size)}px`,
-        minWidth: `${Number(size)}px`
-      }"
+      class="object-cover"
+      :class="roundedClass"
+      :style="sizeStyle"
       alt="avatar"
     />
-    <div
-      v-if="!src && !previewFile"
-      class="rounded-full bg-skin-border"
-      :style="{
-        width: `${Number(size)}px`,
-        height: `${Number(size)}px`,
-        minWidth: `${Number(size)}px`
-      }"
-    />
+    <div v-if="!src && !previewFile" :class="roundedClass" :style="sizeStyle" />
   </div>
 </template>

@@ -33,7 +33,13 @@ watchEffect(() => {
     class="relative block px-[20px] text-center md:flex md:px-3 md:pt-3 lg:block lg:pb-[24px]"
   >
     <div>
-      <AvatarSpace :space="space" symbol-index="space" size="48" class="mr-3" />
+      <AvatarSpace
+        :space="space"
+        symbol-index="space"
+        size="48"
+        class="mr-3"
+        rounded-square
+      />
       <div class="mt-2 truncate text-left">
         <h3 class="my-0 flex items-center text-2xl leading-[44px] lg:text-lg">
           <div

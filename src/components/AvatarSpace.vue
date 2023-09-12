@@ -6,10 +6,12 @@ const props = withDefaults(
     space: { id: string; avatar?: string };
     size?: string;
     previewFile?: File;
+    roundedSquare?: boolean;
   }>(),
   {
     size: '20',
-    previewFile: undefined
+    previewFile: undefined,
+    roundedSquare: false
   }
 );
 
@@ -27,5 +29,6 @@ const avatarHash = computed(() => {
     :src="`https://cdn.stamp.fyi/space/${space.id}?s=${
       Number(size) * 2
     }${avatarHash}`"
+    :rounded-square="roundedSquare"
   />
 </template>
