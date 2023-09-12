@@ -25,7 +25,7 @@ const update = (transactions: OptimisticGovernorTransaction[]) => {
     :results="results"
     :proposal="proposal"
     :preview="false"
-    :model-value="modelValue?.oSnap || {}"
+    :model-value="modelValue?.oSnap?.transactions || {}"
     @update:modelValue="update"
   />
 </template>

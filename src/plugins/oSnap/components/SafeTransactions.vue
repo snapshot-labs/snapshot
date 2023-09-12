@@ -110,7 +110,6 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
 
 const gnosisSafeAddress = ref<string>();
 const moduleAddress = ref<string>();
-const showHash = ref(false);
 const tokens = ref([]);
 const collectables = ref([]);
 const transactions = ref<Transaction[]>([]);

@@ -1,3 +1,4 @@
+import { TreasuryWallet } from '@/helpers/interfaces';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 type Networks = typeof networks;
@@ -60,7 +61,7 @@ export type TransactionModelValue = {
 }
 
 export type TransactionBuilderModelValue = {
-  transactions: OptimisticGovernorTransaction[];
+  transactions: TransactionsByTreasuryAddress;
 }
 
 export type TransactionBuilderConfig = {
@@ -72,3 +73,8 @@ export type TransactionBuilderConfig = {
   tokens: Token[];
   collectables: NFT[];
 }
+
+export type TransactionsByTreasuryAddress = Record<string, {
+  treasury: TreasuryWallet;
+  transactions: OptimisticGovernorTransaction[];
+}>

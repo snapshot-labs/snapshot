@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
-import { getSafeHash, isValidInput } from '../index';
 
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  TreasuryWallet
+} from '@/helpers/interfaces';
+import {
+  OptimisticGovernorTransaction,
+  TransactionsByTreasuryAddress
+} from '../types';
 import SafeTransactions from './SafeTransactions.vue';
-import { OptimisticGovernorTransaction, TransactionBuilderModelValue } from '../types';
 
 const props = defineProps<{
-  modelValue: TransactionBuilderModelValue;
+  modelValue: TransactionsByTreasuryAddress;
   proposal: Proposal;
   space: ExtendedSpace;
   preview: boolean;
@@ -15,16 +22,39 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  update: [modelValue: TransactionBuilderModelValue];
+  'update:modelValue': [transactions: TransactionsByTreasuryAddress];
 }>();
 
-const transactions = ref<OptimisticGovernorTransaction[]>(props.modelValue.transactions ?? []);
+function makeTransactionsByTreasuryAddress(treasuries: TreasuryWallet[]) {
+  const transactionsByTreasuryAddress: TransactionsByTreasuryAddress = {};
+  treasuries.forEach(treasury => {
+    transactionsByTreasuryAddress[treasury.address] = {
+      treasury,
+      transactions: []
+    };
+  });
+  return transactionsByTreasuryAddress;
+}
+
+function makeFlatArrayOfTransactions(
+  transactionsByTreasuryAddress: TransactionsByTreasuryAddress
+) {
+  const flatArrayOfTransactions: OptimisticGovernorTransaction[] = [];
+  Object.values(transactionsByTreasuryAddress).forEach(treasury => {
+    flatArrayOfTransactions.push(...treasury.transactions);
+  });
+  return flatArrayOfTransactions;
+}
+
+const transactionsByTreasuryAddress = ref(
+  makeTransactionsByTreasuryAddress(props.space.treasuries)
+);
 
 const ipfs = getIpfsUrl(props.proposal.ipfs);
 
 function updateTransactions() {
   if (props.preview) return;
-  emit('update:modelValue', transactions);
+  emit('update:modelValue', transactionsByTreasuryAddress.value);
 }
 </script>
 
@@ -48,8 +78,10 @@ function updateTransactions() {
     </div>
 
     <div
-      v-for="(treasury, index) in space.treasuries"
-      :key="index"
+      v-for="{ treasury, transactions } in Object.values(
+        transactionsByTreasuryAddress
+      )"
+      :key="treasury.address"
       class="border-b last:border-b-0"
     >
       <SafeTransactions
@@ -58,7 +90,7 @@ function updateTransactions() {
         :proposal="proposal"
         :space="space"
         :results="results"
-        :model-value="transactions[index]"
+        :model-value="transactionsByTreasuryAddress[treasury.address]"
         :treasury="treasury"
         @update:modelValue="updateTransactions()"
       />
