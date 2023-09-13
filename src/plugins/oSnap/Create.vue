@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import Config from './components/Config.vue';
-import { OptimisticGovernorTransaction, TransactionBuilderModelValue } from './types';
+import { initialPluginData } from './constants';
+import { OsnapModelValue, OsnapPluginData } from './types';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
-  modelValue: { oSnap: TransactionBuilderModelValue } | undefined;
+  modelValue: OsnapModelValue;
   results?: Results;
 }>();
 
 const emit = defineEmits<{
-  update: [modelValue: { key: 'oSnap'; form: OptimisticGovernorTransaction[] }];
+  'update:modelValue': [value: { key: 'oSnap'; form: OsnapPluginData }];
 }>();
-const update = (transactions: OptimisticGovernorTransaction[]) => {
-  emit('update', { key: 'oSnap', form: transactions });
+
+const update = (newPluginData: OsnapPluginData) => {
+  emit('update:modelValue', { key: 'oSnap', form: newPluginData });
 };
 </script>
 
@@ -25,7 +27,7 @@ const update = (transactions: OptimisticGovernorTransaction[]) => {
     :results="results"
     :proposal="proposal"
     :preview="false"
-    :model-value="modelValue?.oSnap?.transactions || {}"
-    @update:modelValue="update"
+    :plugin-data="modelValue?.oSnap ?? initialPluginData"
+    @update="update"
   />
 </template>

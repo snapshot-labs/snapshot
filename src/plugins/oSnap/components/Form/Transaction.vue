@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { cloneDeep } from 'lodash';
 import type {
-  TransactionBuilderConfig,
-  TransactionModelValue,
-  TransactionType
+  Network,
+  NFT,
+  Token,
+  Transaction as TTransaction
 } from '../../types';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
@@ -16,15 +18,27 @@ const labels = {
   raw: 'Raw Transaction'
 };
 
-type Props = TransactionBuilderConfig & {
-  modelValue: TransactionModelValue;
-};
+const props = defineProps<{
+  preview: boolean;
+  transaction: TTransaction;
+  transactionIndex: number;
+  safeAddress: string;
+  moduleAddress: string;
+  tokens: Token[];
+  collectables: NFT[];
+  network: Network;
+}>();
 
-const props = defineProps<Props>();
+const emit = defineEmits<{
+  updateTransaction: [
+    safeAddress: string,
+    transaction: TTransaction,
+    transactionIndex: number
+  ];
+  removeTransaction: [safeAddress: string, transactionIndex: number];
+}>();
 
-defineEmits(['update:modelValue', 'remove']);
-
-const type = ref<TransactionType>(props.transactionType);
+const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
 </script>
 
 <template>

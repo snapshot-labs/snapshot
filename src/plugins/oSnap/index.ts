@@ -8,15 +8,15 @@ import { toUtf8Bytes } from '@ethersproject/strings';
 
 import { SafeTransaction } from '@/helpers/interfaces';
 import {
-  sendTransaction
+    sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
-  EIP712_TYPES,
-  ERC20_ABI,
-  UMA_MODULE_ABI
+    EIP712_TYPES,
+    ERC20_ABI,
+    UMA_MODULE_ABI
 } from './constants';
-import { OptimisticGovernorTransaction, Transaction, Network } from './types';
+import { BaseTransaction, Network, OptimisticGovernorTransaction } from './types';
 import { getModuleDetailsFromChain, getModuleDetailsGql } from './utils/umaModule';
 
 export * from './constants';
@@ -185,7 +185,7 @@ export * from './utils/transactions';
     console.log('[DAO module] executed proposal:', receipt);
   }
 
-export function validateTransaction(transaction: Transaction) {
+export function validateTransaction(transaction: BaseTransaction) {
   const addressEmptyOrValidate =
     transaction.to === '' || isAddress(transaction.to);
   return (

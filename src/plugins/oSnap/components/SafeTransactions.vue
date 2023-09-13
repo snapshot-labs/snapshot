@@ -14,22 +14,38 @@ import {
   getGnosisSafeCollectibles,
   getModuleDetails
 } from '../index';
-import { Network, Transaction } from '../types';
+import { NFT, Network, Token, Transaction as TTransaction } from '../types';
 import { getModuleAddressForTreasury } from '../utils/umaModule';
-import FormTransactionBatch from './Form/TransactionBatch.vue';
+import Transaction from './Form/Transaction.vue';
 import HandleOutcomeUma from './HandleOutcomeUma.vue';
 import Tooltip from './Tooltip.vue';
 
 const props = defineProps<{
-  modelValue: any;
+  transactions: TTransaction[];
   treasury: TreasuryWallet;
   proposal: Proposal;
   space: ExtendedSpace;
-  results: Results;
+  results?: Results;
   preview: boolean;
 }>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  addTransaction: [
+    {
+      treasury: TreasuryWallet;
+      moduleAddress: string;
+      tokens: Token[];
+      collectables: NFT[];
+      transaction: TTransaction;
+    }
+  ];
+  removeTransaction: [safeAddress: string, transactionIndex: number];
+  updateTransaction: [
+    safeAddress: string,
+    transaction: TTransaction,
+    transactionIndex: number
+  ];
+}>();
 
 async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
@@ -110,18 +126,8 @@ async function fetchCollectibles(network, gnosisSafeAddress) {
 
 const gnosisSafeAddress = ref<string>();
 const moduleAddress = ref<string>();
-const tokens = ref([]);
-const collectables = ref([]);
-const transactions = ref<Transaction[]>([]);
-
-function addTransaction() {
-  transactions.value.push({
-    to: '',
-    value: '0',
-    data: '0x',
-    nonce: '0'
-  });
-}
+const tokens = ref<Token[]>([]);
+const collectables = ref<NFT[]>([]);
 
 const safeLink = computed(() => {
   const prefix = EIP3770_PREFIXES[props.treasury.network];
@@ -189,19 +195,39 @@ onMounted(async () => {
       <div class="flex-grow"></div>
       <Tooltip :module-address="moduleAddress" />
     </h4>
-    <div class="text-center">
-      <FormTransactionBatch
-        :config="transactionConfig"
-        :model-value="batch"
-        :nonce="index"
-        @remove="removeBatch(index)"
-        @update:modelValue="updateTransactionBatch(index, $event)"
+    <div class="text-center" v-if="!!moduleAddress && !!gnosisSafeAddress">
+      <Transaction
+        v-for="(transaction, index) in transactions"
+        :key="index"
+        :transaction="transaction"
+        :transaction-index="index"
+        :preview="preview"
+        :safe-address="gnosisSafeAddress"
+        :module-address="moduleAddress"
+        :tokens="tokens"
+        :collectables="collectables"
+        :network="(props.treasury.network as Network)"
+        @update-transaction="(...args) => emit('updateTransaction', ...args)"
+        @remove-transaction="(...args) => emit('removeTransaction', ...args)"
       />
     </div>
 
-    <div v-if="!preview || proposalResolved">
-      <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
-        {{ $t('safeSnap.addBatch') }}
+    <div v-if="(!preview || proposalResolved) && !!moduleAddress">
+      <BaseButton v-if="!preview" class="my-3" @click="emit('addTransaction', {
+        treasury,
+        moduleAddress,
+        tokens,
+        collectables,
+        transaction: {
+          type: 'raw',
+          to: '',
+          value: '0',
+          data: '0x',
+          nonce,
+          formatted: ['', 0, '0', '0x']
+        }
+      })">
+        Add Transaction
       </BaseButton>
 
       <HandleOutcomeUma
@@ -210,7 +236,7 @@ onMounted(async () => {
         :space="space"
         :results="results"
         :module-address="moduleAddress"
-        :network="transactionConfig.network"
+        :network="treasury.network"
       />
     </div>
   </div>

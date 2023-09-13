@@ -7,14 +7,13 @@ import {
   Results,
   TreasuryWallet
 } from '@/helpers/interfaces';
-import {
-  OptimisticGovernorTransaction,
-  TransactionsByTreasuryAddress
-} from '../types';
+import { cloneDeep } from 'lodash';
+import { NFT, Network, OsnapPluginData, Token, Transaction } from '../types';
+import { getIsOsnapEnabled } from '../utils/umaModule';
 import SafeTransactions from './SafeTransactions.vue';
 
 const props = defineProps<{
-  modelValue: TransactionsByTreasuryAddress;
+  pluginData: OsnapPluginData;
   proposal: Proposal;
   space: ExtendedSpace;
   preview: boolean;
@@ -22,40 +21,66 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'update:modelValue': [transactions: TransactionsByTreasuryAddress];
+  update: [pluginData: OsnapPluginData];
 }>();
 
-function makeTransactionsByTreasuryAddress(treasuries: TreasuryWallet[]) {
-  const transactionsByTreasuryAddress: TransactionsByTreasuryAddress = {};
-  treasuries.forEach(treasury => {
-    transactionsByTreasuryAddress[treasury.address] = {
-      treasury,
-      transactions: []
-    };
-  });
-  return transactionsByTreasuryAddress;
-}
+const newPluginData = ref(cloneDeep(props.pluginData));
 
-function makeFlatArrayOfTransactions(
-  transactionsByTreasuryAddress: TransactionsByTreasuryAddress
-) {
-  const flatArrayOfTransactions: OptimisticGovernorTransaction[] = [];
-  Object.values(transactionsByTreasuryAddress).forEach(treasury => {
-    flatArrayOfTransactions.push(...treasury.transactions);
-  });
-  return flatArrayOfTransactions;
-}
-
-const transactionsByTreasuryAddress = ref(
-  makeTransactionsByTreasuryAddress(props.space.treasuries)
-);
+const treasuriesWithOsnapEnabled = ref<TreasuryWallet[]>([]);
 
 const ipfs = getIpfsUrl(props.proposal.ipfs);
 
-function updateTransactions() {
+function addTransaction(params: {
+  treasury: TreasuryWallet;
+  moduleAddress: string;
+  tokens: Token[];
+  collectables: NFT[];
+  transaction: Transaction;
+}) {
   if (props.preview) return;
-  emit('update:modelValue', transactionsByTreasuryAddress.value);
+
+  const { treasury, moduleAddress, tokens, collectables, transaction } = params;
+  if (!newPluginData.value.safes[treasury.address]) {
+    newPluginData.value.safes[treasury.address] = {
+      safeName: treasury.name,
+      safeAddress: treasury.address,
+      network: treasury.network as Network,
+      moduleAddress,
+      tokens,
+      collectables,
+      transactions: []
+    };
+  }
+  newPluginData.value.safes[treasury.address].transactions.push(transaction);
+  emit('update', newPluginData.value);
 }
+
+function removeTransaction(safeAddress: string, transactionIndex: number) {
+  if (props.preview) return;
+
+  newPluginData.value.safes[safeAddress].transactions.splice(
+    transactionIndex,
+    1
+  );
+  emit('update', newPluginData.value);
+}
+
+function updateTransaction(safeAddress: string, transaction: Transaction, transactionIndex: number) {
+  if (props.preview) return;
+
+  newPluginData.value.safes[safeAddress].transactions[transactionIndex] = transaction;
+  emit('update', newPluginData.value);
+}
+
+onMounted(async () => {
+  props.space.treasuries.forEach(async treasury => {
+    if (
+      await getIsOsnapEnabled(treasury.network as Network, treasury.address)
+    ) {
+      treasuriesWithOsnapEnabled.value.push(treasury);
+    }
+  });
+});
 </script>
 
 <template>
@@ -78,21 +103,20 @@ function updateTransactions() {
     </div>
 
     <div
-      v-for="{ treasury, transactions } in Object.values(
-        transactionsByTreasuryAddress
-      )"
+      v-for="treasury in treasuriesWithOsnapEnabled"
       :key="treasury.address"
       class="border-b last:border-b-0"
     >
       <SafeTransactions
-        v-if="!preview"
         :preview="preview"
         :proposal="proposal"
         :space="space"
         :results="results"
-        :model-value="transactionsByTreasuryAddress[treasury.address]"
         :treasury="treasury"
-        @update:modelValue="updateTransactions()"
+        :transactions="newPluginData.safes[treasury.address]?.transactions ?? []"
+        @add-transaction="addTransaction"
+        @remove-transaction="removeTransaction"
+        @update-transaction="updateTransaction"
       />
     </div>
   </div>

@@ -1,15 +1,12 @@
 import {
   CollectableAsset,
-  CollectableAssetTransaction,
-  SafeTransaction,
-  TokenAsset,
-  TokenAssetTransaction
+  CollectableAssetTransaction
 } from '@/helpers/interfaces';
 import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { Network, Token, TransferFundsTransaction, Transaction } from '../types';
+import { BaseTransaction, Network, Token, TransferFundsTransaction } from '../types';
 import { getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
@@ -95,7 +92,7 @@ export function contractInteractionToModuleTransaction(
 
 export async function decodeContractTransaction(
   network: string,
-  transaction: Transaction,
+  transaction: BaseTransaction,
 ) {
   const decode = (abi: string | FunctionFragment[]) => {
     const contractInterface = new InterfaceDecoder(abi);
@@ -138,12 +135,12 @@ function getMethodSignature(data: string) {
   return null;
 }
 
-export function isERC20TransferTransaction(transaction: Transaction) {
+export function isERC20TransferTransaction(transaction: BaseTransaction) {
   // 0xa9059cbb == transfer(address to, uint256 amount)
   return getMethodSignature(transaction.data) === '0xa9059cbb';
 }
 
-function decodeERC721TransferTransaction(transaction: Transaction) {
+function decodeERC721TransferTransaction(transaction: BaseTransaction) {
   const erc721ContractInterface = new InterfaceDecoder(ERC721_ABI);
   try {
     return erc721ContractInterface.decodeFunction(transaction.data);
@@ -154,7 +151,7 @@ function decodeERC721TransferTransaction(transaction: Transaction) {
 
 export async function decodeTransactionData(
   network: Network,
-  transaction: Transaction,
+  transaction: BaseTransaction,
 ) {
   if (!transaction.data || transaction.data === '0x') {
     return transferFundsToModuleTransaction({
