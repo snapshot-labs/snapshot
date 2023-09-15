@@ -3,7 +3,7 @@
     <BaseBlock :slim="true" class="overflow-hidden !border-t-0 md:!border-t">
       <div class="mx-3 mb-4 items-end text-center md:mt-3 md:flex lg:block">
         <div>
-          <div class="lazy-loading h-[48px] w-[48px] rounded-full" />
+          <div class="lazy-loading h-[48px] w-[48px] rounded-lg" />
 
           <div class="mt-2 flex flex-col items-start justify-center">
             <div
