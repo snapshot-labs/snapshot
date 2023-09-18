@@ -81,7 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "@vitejs/plugin-vue": "^2.3.4",
-    "@vitest/coverage-v8": "^0.33.0",
+    "@vitest/coverage-v8": "^0.34.4",
     "@vitest/ui": "^0.33.0",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^9.0.0",
