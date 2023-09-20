@@ -81,7 +81,23 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
 };
 
 export const getModuleAddressForTreasury = async (network: Network, treasuryAddress: string) => {
-  return Promise.resolve("0x8E8F8B2a874d82bB81a9A8fD2b719ab81fCB61d8")
+  const subgraph = getOptimisticGovernorSubgraph(network);
+  const query = `
+  query getModuleAddressForTreasury {
+      safe(id: "${treasuryAddress.toLowerCase()}") {
+        optimisticGovernor {
+          id
+        }
+      }
+  }
+  `
+
+  type Result = {
+    safe: { optimisticGovernor: { id: string } };
+  }
+
+  const result = await queryGql<Result>(subgraph, query);
+  return result?.safe?.optimisticGovernor?.id ?? '';
 }
 
 export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
