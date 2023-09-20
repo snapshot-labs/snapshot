@@ -4,12 +4,14 @@ import type {
   Network,
   NFT,
   Token,
+  TransactionType,
   Transaction as TTransaction
 } from '../../types';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
+import { transactionTypes } from '../..';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -39,13 +41,27 @@ const emit = defineEmits<{
 }>();
 
 const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
+
+function updateTransactionType(transactionType: string) {
+  if (!transactionTypes.includes(transactionType as TransactionType)) {
+    console.warn("Invalid transaction type");
+    return;
+  }
+  newTransaction.value.type = transactionType as TransactionType;
+  emit('updateTransaction', props.safeAddress, newTransaction.value, props.transactionIndex);
+}
+
+function updateTransaction(transaction: TTransaction) {
+  newTransaction.value = transaction;
+  emit('updateTransaction', props.safeAddress, newTransaction.value, props.transactionIndex);
+}
 </script>
 
 <template>
   <UiSelect
     :disabled="preview"
-    :model-value="type"
-    @update:modelValue="type = $event"
+    :model-value="transaction.type"
+    @update:modelValue="updateTransactionType"
   >
     <template #label>{{ $t('safeSnap.type') }}</template>
     <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
@@ -56,27 +72,30 @@ const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
     <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
   </UiSelect>
 
-  <ContractInteraction
-    v-if="type === 'contractInteraction'"
+  <!-- <ContractInteraction
+    v-if="transaction.type === 'contractInteraction'"
     v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
-  />
+  /> -->
 
   <TransferFunds
-    v-if="type === 'transferFunds'"
-    v-bind="props"
-    @update:modelValue="$emit('update:modelValue', $event)"
+    v-if="transaction.type === 'transferFunds'"
+    :preview="preview"
+    :network="network"
+    :tokens="tokens"
+    :transaction="newTransaction"
+    @update-transaction="updateTransaction"
   />
 
-  <TransferNFT
-    v-if="type === 'transferNFT'"
+  <!-- <TransferNFT
+    v-if="transaction.type === 'transferNFT'"
     v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
-  />
+  /> -->
 
-  <RawTransaction
-    v-if="type === 'raw'"
+  <!-- <RawTransaction
+    v-if="transaction.type === 'raw'"
     v-bind="props"
     @update:modelValue="$emit('update:modelValue', $event)"
-  />
+  /> -->
 </template>

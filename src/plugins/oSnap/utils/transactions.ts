@@ -12,6 +12,7 @@ import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
 import { fetchTextSignatures } from './index';
 import { getGnosisSafeToken } from './safe';
+import { createFormattedOptimisticGovernorTransaction } from './umaModule';
 
 export function sendAssetToModuleTransaction({
   recipient,
@@ -36,42 +37,32 @@ export function sendAssetToModuleTransaction({
   };
 }
 
-export function transferFundsToModuleTransaction({
-  recipient,
-  amount,
-  token,
-  data,
-  nonce
-}: {
+export function createTransferFundsTransaction(params: {
   recipient: string;
   amount: string;
   token: Token;
   data: string;
-  nonce: string;
 }): TransferFundsTransaction {
-  const base = {
-    nonce,
-    token,
-    recipient
-  };
-  if (token.address === 'main') {
-    return {
-      ...base,
-      type: 'transferFunds',
-      data: '0x',
-      to: recipient,
-      amount: parseAmount(amount),
-      value: parseAmount(amount)
-    };
-  }
-  return {
-    ...base,
+  const type = 'transferFunds';
+  const isNativeToken = params.token.address === 'main';
+  const data = isNativeToken ? '0x' : params.data;
+  const to = isNativeToken ? params.recipient : params.token.address;
+  const amount = parseAmount(params.amount);
+  const value = isNativeToken ? amount : '0';
+  const formatted = createFormattedOptimisticGovernorTransaction({
+    to,
+    value,
     data,
-    type: 'transferFunds',
-    to: token.address,
-    amount: parseAmount(amount),
-    value: '0'
-  };
+  })
+  return {
+    ...params,
+    type,
+    data,
+    to,
+    value,
+    amount,
+    formatted,
+  }
 }
 
 export function contractInteractionToModuleTransaction(
@@ -154,7 +145,7 @@ export async function decodeTransactionData(
   transaction: BaseTransaction,
 ) {
   if (!transaction.data || transaction.data === '0x') {
-    return transferFundsToModuleTransaction({
+    return createTransferFundsTransaction({
       recipient: transaction.to,
       amount: transaction.value,
       data: '0x',
@@ -168,7 +159,7 @@ export async function decodeTransactionData(
       const erc20ContractInterface = new InterfaceDecoder(ERC20_ABI);
       const params = erc20ContractInterface.decodeFunction(transaction.data);
       const token = await getGnosisSafeToken(network, transaction.to);
-      return transferFundsToModuleTransaction({
+      return createTransferFundsTransaction({
         recipient: params[0],
         amount: params[1],
         data: transaction.data,

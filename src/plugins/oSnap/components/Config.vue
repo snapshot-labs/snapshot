@@ -28,7 +28,7 @@ const newPluginData = ref(cloneDeep(props.pluginData));
 
 const treasuriesWithOsnapEnabled = ref<TreasuryWallet[]>([]);
 
-const ipfs = getIpfsUrl(props.proposal.ipfs);
+const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 function addTransaction(params: {
   treasury: TreasuryWallet;

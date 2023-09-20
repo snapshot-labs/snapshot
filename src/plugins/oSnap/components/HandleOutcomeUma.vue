@@ -4,8 +4,13 @@ import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import Plugin from '../index';
-import type { Batch, Network, OptimisticGovernorTransaction } from '../types';
+import {
+  approveBond,
+  executeProposal,
+  getExecutionDetails,
+  submitProposal
+} from '..';
+import type { Network, Transaction } from '../types';
 
 declare global {
   interface Window {
@@ -13,7 +18,16 @@ declare global {
   }
 }
 
-const ensureRightNetwork = async (chainId: Network) => {
+const props = defineProps<{
+  space: ExtendedSpace;
+  proposal: Proposal;
+  results: Results | undefined;
+  transactions: Transaction[];
+  network: Network;
+  moduleAddress: string;
+}>();
+
+async function ensureRightNetwork(chainId: Network) {
   const chainIdInt = parseInt(chainId);
   const connectedToChainId = getInstance().provider.value?.chainId;
   if (connectedToChainId === chainIdInt) return; // already on right chain
@@ -63,17 +77,7 @@ const ensureRightNetwork = async (chainId: Network) => {
       `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
     );
   }
-};
-
-const props = defineProps<{
-  space: ExtendedSpace;
-  proposal: Proposal;
-  results: Results;
-  batches: Batch[];
-  network: Network;
-  moduleAddress: string;
-  multiSendAddress: string;
-}>();
+}
 
 const { formatDuration } = useIntl();
 const { t } = useI18n();
@@ -87,8 +91,6 @@ const {
 } = useTxStatus();
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
-
-const plugin = new Plugin();
 
 type QuestionState =
   | 'error'
@@ -110,8 +112,7 @@ const loading = ref(true);
 const action1State = ref<Action1State>('idle');
 const action2State = ref<Action2State>('idle');
 const voteResultsConfirmed = ref(false);
-const questionDetails =
-  ref<Awaited<ReturnType<typeof plugin.getExecutionDetails>>>();
+const questionDetails = ref<Awaited<ReturnType<typeof getExecutionDetails>>>();
 const closeModal = ref(false);
 
 function closeEvent() {
@@ -124,52 +125,46 @@ function showProposeModal() {
   voteResultsConfirmed.value = true;
 }
 
-const getTransactions = () =>
-  props.batches.map(batch => {
-    const mainTx = batch.mainTransaction;
-    return [
-      mainTx.to,
-      Number(mainTx.operation),
-      mainTx.value,
-      mainTx.data
-    ] as OptimisticGovernorTransaction;
+function getFormattedTransactions() {
+  return props.transactions.map(transaction => {
+    return transaction.formatted;
   });
+}
 
-const updateDetails = async () => {
+async function updateDetails() {
   loading.value = true;
   try {
-    questionDetails.value = await plugin.getExecutionDetails(
+    questionDetails.value = await getExecutionDetails(
       props.network,
       props.moduleAddress,
       props.proposal.id,
       props.proposal.ipfs,
-      getTransactions()
+      getFormattedTransactions()
     );
   } catch (e) {
     console.error('Error loading uma execution details', e);
   } finally {
     loading.value = false;
   }
-};
+}
 
-const approveBond = async () => {
-  if (!questionDetails.value?.oracleAddress) return;
+async function onApproveBond() {
   const txPendingId = createPendingTransaction();
   try {
     action1State.value = 'approve-bond';
 
     await ensureRightNetwork(props.network);
 
-    const approveBond = plugin.approveBond(
+    const approvingBond = approveBond(
       props.network,
       getInstance().web3,
       props.moduleAddress
     );
-    const step = await approveBond.next();
+    const step = await approvingBond.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
     action1State.value = 'idle';
-    await approveBond.next();
+    await approvingBond.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
     await updateDetails();
@@ -179,26 +174,26 @@ const approveBond = async () => {
   } finally {
     removePendingTransaction(txPendingId);
   }
-};
+}
 
-const getProposalUrl = (chain: string, txHash: string, logIndex: number) => {
+function getProposalUrl(chain: string, txHash: string, logIndex: number) {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
     return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
   return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
-};
+}
 
-const submitProposalUma = async () => {
+async function onSubmitProposal() {
   if (!getInstance().isAuthenticated.value) return;
   action1State.value = 'submit-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
-    const proposalSubmission = plugin.submitProposal(
+    const proposalSubmission = submitProposal(
       getInstance().web3,
       props.moduleAddress,
       props.proposal.ipfs,
-      getTransactions()
+      getFormattedTransactions()
     );
     const step = await proposalSubmission.next();
     if (step.value)
@@ -214,9 +209,9 @@ const submitProposalUma = async () => {
     action1State.value = 'idle';
     removePendingTransaction(txPendingId);
   }
-};
+}
 
-const executeProposalUma = async () => {
+async function onExecuteProposal() {
   if (!getInstance().isAuthenticated.value) return;
   action2State.value = 'execute-proposal';
   const txPendingId = createPendingTransaction();
@@ -230,10 +225,10 @@ const executeProposalUma = async () => {
 
   try {
     clearBatchError();
-    const executingProposal = plugin.executeProposal(
+    const executingProposal = executeProposal(
       getInstance().web3,
       props.moduleAddress,
-      getTransactions()
+      getFormattedTransactions()
     );
     const step = await executingProposal.next();
     if (step.value)
@@ -248,7 +243,7 @@ const executeProposalUma = async () => {
   } finally {
     removePendingTransaction(txPendingId);
   }
-};
+}
 
 const usingMetaMask = computed(() => {
   return window.ethereum && getInstance().provider.value?.isMetaMask;
@@ -382,7 +377,7 @@ onMounted(async () => {
         <BaseContainer class="flex items-center">
           <BaseButton
             :loading="action1State === 'approve-bond'"
-            @click="approveBond"
+            @click="onApproveBond"
             class="mr-2"
           >
             {{ $t('safeSnap.labels.approveBond') }}
@@ -462,7 +457,7 @@ onMounted(async () => {
 
               <BaseButton
                 :loading="action1State === 'submit-proposal'"
-                @click="submitProposalUma"
+                @click="onSubmitProposal"
                 class="my-1 w-full"
                 :disabled="
                   Number(questionDetails.minimumBond.toString()) >
@@ -523,10 +518,10 @@ onMounted(async () => {
         <BaseContainer class="flex items-center">
           <BaseButton
             :loading="action2State === 'execute-proposal'"
-            @click="executeProposalUma"
+            @click="onExecuteProposal"
             class="mr-2"
           >
-            {{ $t('safeSnap.labels.executeTxsUma', [batches.length]) }}
+            {{ $t('safeSnap.labels.executeTxsUma', [transactions.length]) }}
           </BaseButton>
           <BasePopoverHover placement="top">
             <template #button>

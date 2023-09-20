@@ -101,7 +101,7 @@ export * from './utils/transactions';
     const moduleDetails = await getModuleDetails(
       network,
       moduleAddress,
-      '',
+      network,
       transactions
     );
 
@@ -111,7 +111,7 @@ export * from './utils/transactions';
       ERC20_ABI as any,
       'approve',
       [moduleAddress, moduleDetails.minimumBond],
-      {}
+      {} 
     );
     yield approveTx;
     const approvalReceipt = await approveTx.wait();
@@ -191,7 +191,6 @@ export function validateTransaction(transaction: BaseTransaction) {
   return (
     isBigNumberish(transaction.value) &&
     addressEmptyOrValidate &&
-    (!transaction.data || isHexString(transaction.data)) &&
-    isBigNumberish(transaction.nonce)
+    (!transaction.data || isHexString(transaction.data))
   );
 }

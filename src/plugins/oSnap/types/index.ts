@@ -1,4 +1,5 @@
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { transactionTypes } from '../constants';
 
 type Networks = typeof networks;
 
@@ -26,9 +27,11 @@ export type OsnapModelValue = {
   oSnap: OsnapPluginData;
 }
 
-export type TransactionType = 'transferFunds' | 'transferNFT' | 'contractInteraction' | 'raw';
+export type TransactionTypes = typeof transactionTypes;
 
-export type Transaction = RawTransaction | TransferNftTransaction | TransferFundsTransaction;
+export type TransactionType = TransactionTypes[number];
+
+export type Transaction = RawTransaction | ContractInteractionTransaction | TransferNftTransaction | TransferFundsTransaction;
 
 export type BaseTransaction = {
   to: string;
@@ -39,6 +42,10 @@ export type BaseTransaction = {
 
 export type RawTransaction = BaseTransaction & {
   type: 'raw';
+}
+
+export type ContractInteractionTransaction = BaseTransaction & {
+  type: 'contractInteraction';
 }
 
 export type TransferNftTransaction = BaseTransaction & {

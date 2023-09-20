@@ -549,3 +549,20 @@ export const getModuleDetailsGql = async (
     livenessPeriod: livenessPeriod.toString()
   };
 };
+
+export function createFormattedOptimisticGovernorTransaction({
+  to,
+  value,
+  data,
+}: {
+  to: string;
+  value: string;
+  data: string;
+}): OptimisticGovernorTransaction {
+  return [
+    to,
+    0,
+    value,
+    data,
+  ]
+}

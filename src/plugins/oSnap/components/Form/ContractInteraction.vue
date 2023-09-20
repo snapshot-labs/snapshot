@@ -11,17 +11,10 @@ import {
   getContractTransactionData,
   validateTransaction
 } from '../../index';
-import {
-  TransactionBuilderConfig,
-  TransactionModelValue
-} from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 
-type Props = TransactionBuilderConfig & {
-  modelValue: TransactionModelValue;
-};
-const props = defineProps<Props>();
+const props = defineProps<>();
 
 const emit = defineEmits(['update:modelValue']);
 

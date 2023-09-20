@@ -4,26 +4,22 @@ import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import {
+  createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
   getNativeAsset,
-  transferFundsToModuleTransaction,
   validateTransaction
 } from '../../index';
-import {
-  Token,
-  TransactionBuilderConfig,
-  TransactionModelValue
-} from '../../types';
+import { Network, Token, Transaction } from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
 
-type Props = TransactionBuilderConfig & {
-  modelValue: TransactionModelValue;
-};
-const props = defineProps<Props>();
-
-const emit = defineEmits(['update:modelValue']);
+const props = defineProps<{
+  preview: boolean;
+  network: Network;
+  tokens: Token[];
+  transaction: Transaction;
+}>();
 
 const nativeAsset = getNativeAsset(props.network);
 const amount = ref('0');
@@ -38,7 +34,6 @@ const selectedToken = computed(
 const selectedTokenIsNative = computed(
   () => selectedToken.value?.address === 'main'
 );
-const isAmountValid = ref(true);
 const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
@@ -54,9 +49,8 @@ function updateTransaction() {
       ? '0x'
       : getERC20TokenTransferTransactionData(recipient.value, amount.value);
 
-    const transaction = transferFundsToModuleTransaction({
+    const transaction = createTransferFundsTransaction({
       data,
-      nonce: props.nonce,
       amount: amount.value,
       recipient: recipient.value,
       token: selectedToken.value
@@ -78,16 +72,6 @@ function openModal() {
 watch(recipient, updateTransaction);
 watch(amount, updateTransaction);
 watch(selectedTokenAddress, updateTransaction);
-
-onMounted(() => {
-  if (props.modelValue) {
-    amount.value = props.modelValue.amount ?? '0';
-    recipient.value = props.modelValue.recipient ?? '';
-    if (props.modelValue.token) {
-      tokens.value = [props.modelValue.token];
-    }
-  }
-});
 </script>
 
 <template>

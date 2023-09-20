@@ -470,3 +470,5 @@ export const contractData = [
       'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-governor'
   }
 ] as const;
+
+export const transactionTypes = ['transferFunds', 'transferNFT', 'contractInteraction', 'raw'] as const

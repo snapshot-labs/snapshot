@@ -14,7 +14,7 @@ import {
   getGnosisSafeCollectibles,
   getModuleDetails
 } from '../index';
-import { NFT, Network, Token, Transaction as TTransaction } from '../types';
+import { NFT, Network, Transaction as TTransaction, Token } from '../types';
 import { getModuleAddressForTreasury } from '../utils/umaModule';
 import Transaction from './Form/Transaction.vue';
 import HandleOutcomeUma from './HandleOutcomeUma.vue';
@@ -213,30 +213,35 @@ onMounted(async () => {
     </div>
 
     <div v-if="(!preview || proposalResolved) && !!moduleAddress">
-      <BaseButton v-if="!preview" class="my-3" @click="emit('addTransaction', {
-        treasury,
-        moduleAddress,
-        tokens,
-        collectables,
-        transaction: {
-          type: 'raw',
-          to: '',
-          value: '0',
-          data: '0x',
-          nonce,
-          formatted: ['', 0, '0', '0x']
-        }
-      })">
+      <BaseButton
+        v-if="!preview"
+        class="my-3"
+        @click="
+          emit('addTransaction', {
+            treasury,
+            moduleAddress,
+            tokens,
+            collectables,
+            transaction: {
+              type: 'raw',
+              to: '',
+              value: '0',
+              data: '0x',
+              formatted: ['', 0, '0', '0x']
+            }
+          })
+        "
+      >
         Add Transaction
       </BaseButton>
 
       <HandleOutcomeUma
-        :batches="input"
-        :proposal="proposal"
         :space="space"
+        :proposal="proposal"
+        :transactions="transactions"
         :results="results"
         :module-address="moduleAddress"
-        :network="treasury.network"
+        :network="(treasury.network as Network)"
       />
     </div>
   </div>
