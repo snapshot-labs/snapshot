@@ -43,18 +43,12 @@ export function useImageUpload() {
     try {
       const receipt = await pin(formData, import.meta.env.VITE_PINEAPPLE_URL);
 
-      if (receipt.error) {
-        imageUploadError.value = receipt.error.message;
-        isUploadingImage.value = false;
-        return;
-      }
-
       imageUrl.value = `ipfs://${receipt.cid}`;
       imageName.value = file.name;
       onSuccess({ name: file.name, url: imageUrl.value });
-    } catch (err) {
+    } catch (err: any) {
       notify(['red', t('notify.somethingWentWrong')]);
-      imageUploadError.value = (err as Error).message;
+      imageUploadError.value = err.error?.message || err;
     } finally {
       isUploadingImage.value = false;
     }
