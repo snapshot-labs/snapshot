@@ -11,18 +11,25 @@ import {
   getContractTransactionData,
   validateTransaction
 } from '../../index';
+import { ContractInteractionTransaction, Network, Transaction } from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 
-const props = defineProps<>();
+const props = defineProps<{
+  preview: boolean;
+  network: Network;
+  transaction: Transaction;
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  updateTransaction: [transaction: ContractInteractionTransaction];
+}>();
 
 const to = ref('');
 const abi = ref('');
-const validAbi = ref(true);
+const isAbiValid = ref(true);
 const value = ref('0');
-const validValue = ref(true);
+const isValueValid = ref(true);
 const nonce = ref('0');
 const methods = ref<FunctionFragment[]>([]);
 const selectedMethodIndex = ref(0);
@@ -82,10 +89,10 @@ function updateAbi(newAbi: string) {
 
   try {
     methods.value = getABIWriteFunctions(abi.value);
-    validAbi.value = true;
+    isAbiValid.value = true;
     updateMethod(0);
   } catch (error) {
-    validAbi.value = false;
+    isAbiValid.value = false;
     console.warn('error extracting useful methods', error);
   }
   updateTransaction();
@@ -103,37 +110,12 @@ function updateValue(newValue: string) {
   value.value = newValue;
   try {
     parseValue(newValue);
-    validValue.value = true;
+    isValueValid.value = true;
   } catch (error) {
-    validValue.value = false;
+    isValueValid.value = false;
   }
   updateTransaction();
 }
-
-onMounted(async () => {
-  if (props.modelValue === undefined) return;
-
-  to.value = props.modelValue.to ?? '';
-
-  if (props.preview) {
-    setTimeout(() => updateTransaction(), 1000);
-    return;
-  }
-
-  const transactionDecoder = new InterfaceDecoder(abi.value);
-  selectedMethod.value = transactionDecoder.getMethodFragment(
-    props.modelValue.data
-  );
-  parameters.value = transactionDecoder.decodeFunction(
-    props.modelValue.data,
-    selectedMethod.value
-  );
-
-  methods.value = [selectedMethod.value];
-  updateValue(props.modelValue.value);
-  updateAbi(typeof abi === 'object' ? JSON.stringify(abi) : abi);
-  updateTransaction();
-});
 </script>
 
 <template>
@@ -150,7 +132,7 @@ onMounted(async () => {
 
     <UiInput
       :disabled="preview"
-      :error="!validValue && $t('safeSnap.invalidValue')"
+      :error="!isValueValid && $t('safeSnap.invalidValue')"
       :model-value="value"
       @update:modelValue="updateValue($event)"
     >
@@ -159,7 +141,7 @@ onMounted(async () => {
 
     <UiInput
       :disabled="preview"
-      :error="!validAbi && $t('safeSnap.invalidAbi')"
+      :error="!isAbiValid && $t('safeSnap.invalidAbi')"
       :model-value="abi"
       @update:modelValue="updateAbi($event)"
     >

@@ -97,5 +97,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <RawTransaction
     v-if="transaction.type === 'raw'"
+    :preview="preview"
+    :transaction="newTransaction"
   />
 </template>
