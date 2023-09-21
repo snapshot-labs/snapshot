@@ -74,8 +74,6 @@ function updateTransaction(transaction: TTransaction) {
 
   <!-- <ContractInteraction
     v-if="transaction.type === 'contractInteraction'"
-    v-bind="props"
-    @update:modelValue="$emit('update:modelValue', $event)"
   /> -->
 
   <TransferFunds
@@ -87,15 +85,17 @@ function updateTransaction(transaction: TTransaction) {
     @update-transaction="updateTransaction"
   />
 
-  <!-- <TransferNFT
+  <TransferNFT
     v-if="transaction.type === 'transferNFT'"
-    v-bind="props"
-    @update:modelValue="$emit('update:modelValue', $event)"
-  /> -->
+    :preview="preview"
+    :network="network"
+    :safe-address="safeAddress"
+    :collectables="collectables"
+    :transaction="newTransaction"
+    @update-transaction="updateTransaction"
+  />
 
-  <!-- <RawTransaction
+  <RawTransaction
     v-if="transaction.type === 'raw'"
-    v-bind="props"
-    @update:modelValue="$emit('update:modelValue', $event)"
-  /> -->
+  />
 </template>

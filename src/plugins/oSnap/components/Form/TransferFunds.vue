@@ -9,7 +9,7 @@ import {
   getNativeAsset,
   validateTransaction
 } from '../../index';
-import { Network, Token, Transaction } from '../../types';
+import { Network, Token, Transaction, TransferFundsTransaction } from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
@@ -19,6 +19,12 @@ const props = defineProps<{
   network: Network;
   tokens: Token[];
   transaction: Transaction;
+}>();
+
+const emit = defineEmits<{
+  updateTransaction: [
+    transaction: TransferFundsTransaction,
+  ];
 }>();
 
 const nativeAsset = getNativeAsset(props.network);
@@ -57,7 +63,7 @@ function updateTransaction() {
     });
     const isTransactionValid = validateTransaction(transaction);
     if (isTransactionValid) {
-      emit('update:modelValue', transaction);
+      emit('updateTransaction', transaction);
       return;
     }
   } catch (error) {

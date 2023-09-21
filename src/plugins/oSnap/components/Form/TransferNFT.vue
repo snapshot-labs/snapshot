@@ -2,31 +2,34 @@
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import {
+createTransferNftTransaction,
   getERC721TokenTransferTransactionData,
   sendAssetToModuleTransaction,
   validateTransaction
 } from '../../index';
-import {
-  NFT,
-  TransactionBuilderConfig,
-  TransactionModelValue
-} from '../../types';
+import { NFT, Network, Transaction, TransferNftTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
-type Props = TransactionBuilderConfig & {
-  modelValue: TransactionModelValue;
-};
-const props = defineProps<Props>();
+const props = defineProps<{
+  preview: boolean;
+  network: Network;
+  collectables: NFT[];
+  transaction: Transaction;
+  safeAddress: string;
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  updateTransaction: [
+    transaction: TransferNftTransaction,
+  ];
+}>();
 
-const collectables = ref<NFT[]>([]);
 const recipient = ref('');
 const selectedCollectableAddress = ref('');
 
 const selectedCollectable = computed(() => {
   if (!selectedCollectableAddress.value) return;
-  return collectables.value.find(
+  return props.collectables.find(
     collectable => collectable.address === selectedCollectableAddress.value
   );
 });
@@ -41,20 +44,19 @@ function updateTransaction() {
 
   try {
     const data = getERC721TokenTransferTransactionData(
-      props.gnosisSafeAddress,
+      props.safeAddress,
       recipient.value,
       selectedCollectable.value.id
     );
 
-    const transaction = sendAssetToModuleTransaction({
+    const transaction = createTransferNftTransaction({
       data,
-      nonce: props.nonce,
       recipient: recipient.value,
       collectable: selectedCollectable.value
     });
 
     if (validateTransaction(transaction)) {
-      emit('update:modelValue', transaction);
+      emit('updateTransaction', transaction);
       return;
     }
   } catch (error) {
@@ -64,15 +66,6 @@ function updateTransaction() {
 
 watch(recipient, updateTransaction);
 watch(selectedCollectableAddress, updateTransaction);
-
-onMounted(() => {
-  if (!props.modelValue) return;
-  recipient.value = props.modelValue?.recipient ?? '';
-  if (props.modelValue.collectable) {
-    selectedCollectableAddress.value = props.modelValue.collectable.address;
-    collectables.value = [props.modelValue.collectable];
-  }
-});
 </script>
 
 <template>

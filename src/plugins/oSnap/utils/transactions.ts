@@ -6,7 +6,7 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { BaseTransaction, Network, Token, TransferFundsTransaction } from '../types';
+import { BaseTransaction, NFT, Network, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
 import { getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
@@ -35,6 +35,45 @@ export function sendAssetToModuleTransaction({
     to: collectable.address,
     collectable
   };
+}
+
+export function createRawTransaction(params: {
+  to: string;
+  value: string;
+  data: string;
+}): RawTransaction {
+  const type = 'raw';
+  const formatted = createFormattedOptimisticGovernorTransaction(params);
+  return {
+    ...params,
+    type,
+    formatted,
+  }
+}
+
+export function createTransferNftTransaction(params: {
+  recipient: string,
+  collectable: NFT,
+  data: string,
+}): TransferNftTransaction {
+  const type = 'transferNFT';
+  const to = params.collectable.address;
+  const value = '0';
+  const data = params.data;
+  const formatted = createFormattedOptimisticGovernorTransaction({
+    to,
+    value,
+    data
+  });
+
+  return {
+    ...params,
+    type,
+    to,
+    value,
+    data,
+    formatted,
+  }
 }
 
 export function createTransferFundsTransaction(params: {

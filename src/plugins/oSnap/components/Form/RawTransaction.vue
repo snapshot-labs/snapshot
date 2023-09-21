@@ -1,26 +1,32 @@
 <script setup lang="ts">
 import { parseValue } from '@/helpers/utils';
+import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
-import { decodeTransactionData, validateTransaction } from '../../index';
-import {
-  TransactionBuilderConfig,
-  TransactionModelValue
-} from '../../types';
+import { createRawTransaction } from '../../index';
+import { RawTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
-type Props = TransactionBuilderConfig & {
-  modelValue: TransactionModelValue;
-};
-const props = defineProps<Props>();
+const props = defineProps<{
+  preview: boolean;
+  transaction: RawTransaction;
+}>();
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  updateTransaction: [transaction: RawTransaction];
+}>();
 
 const to = ref('');
 const value = ref('0');
 const data = ref('');
 
+const isToValid = computed(() => {
+  return to.value === '' || isAddress(to.value);
+});
+
 const isValueValid = computed(() => {
-  if (!value.value.length) return true;
+  if (value.value === '') return true;
+  if (!isBigNumberish(value.value)) return false;
   try {
     parseValue(value.value);
     return true;
@@ -30,7 +36,7 @@ const isValueValid = computed(() => {
 });
 
 const isDataValid = computed(() => {
-  return !data.value.length || isHexString(data.value);
+  return data.value === '' || isHexString(data.value);
 });
 
 watch(to, updateTransaction);
@@ -38,52 +44,15 @@ watch(value, updateTransaction);
 watch(data, updateTransaction);
 
 function updateTransaction() {
-  if (props.preview || !isValueValid.value || !isDataValid.value) return;
+  if (props.preview || !isToValid || !isValueValid.value || !isDataValid.value)
+    return;
 
-  try {
-    const transaction = {
-      value: value.value,
-      to: to.value,
-      data: data.value,
-      nonce: props.nonce
-    };
-
-    if (validateTransaction(transaction)) {
-      emit('update:modelValue', transaction);
-      return;
-    }
-  } catch (error) {
-    console.warn('invalid transaction', error);
-  }
-
-  onMounted(async () => {
-    if (props.modelValue) {
-      to.value = props.modelValue.to ?? '';
-      value.value = props.modelValue.value ?? '0';
-      data.value = props.modelValue.data ?? '';
-    }
-
-    if (
-      props.preview &&
-      props.modelValue?.to &&
-      props.modelValue?.data &&
-      props.modelValue?.value
-    ) {
-      try {
-        const transaction = await decodeTransactionData(props.network, {
-          to: props.modelValue.to,
-          data: props.modelValue.data,
-          value: props.modelValue.value,
-          nonce: props.nonce
-        });
-        if (validateTransaction(transaction)) {
-          emit('update:modelValue', transaction);
-        }
-      } catch (e) {
-        console.warn('raw-transaction: failed to decode transaction');
-      }
-    }
+  const transaction = createRawTransaction({
+    to: to.value,
+    value: value.value,
+    data: data.value
   });
+  emit('updateTransaction', transaction);
 }
 </script>
 
@@ -93,6 +62,7 @@ function updateTransaction() {
       v-model="to"
       :disabled="preview"
       :input-props="{ required: false }"
+      :error="!isToValid && $t('safeSnap.invalidAddress')"
       :label="$t('safeSnap.to')"
     />
 
