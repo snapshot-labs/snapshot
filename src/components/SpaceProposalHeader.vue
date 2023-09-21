@@ -23,6 +23,8 @@ const threeDotItems = computed(() => {
     { text: t('duplicate'), action: 'duplicate' },
     { text: t('report'), action: 'report' }
   ];
+  if ((props.isAdmin || props.isModerator) && !props.proposal.flagged)
+    items.push({ text: t('flag'), action: 'flag' });
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -51,10 +53,15 @@ const {
 
 const { resetForm } = useFormSpaceProposal();
 
-function handleSelect(e) {
+async function handleSelect(e) {
   if (!props.proposal) return;
   if (e === 'delete') deleteProposal();
   if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
+  if (e === 'flag') {
+    await send(props.space, 'flag-proposal', {
+      proposal: props.proposal
+    });
+  }
   if (e === 'duplicate') {
     resetForm();
     router.push({
@@ -151,6 +158,7 @@ watch(
           <div class="flex items-center gap-2">
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
             <i-ho-flag v-if="item.action === 'report'" />
+            <i-ho-exclamation v-if="item.action === 'flag'" />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>

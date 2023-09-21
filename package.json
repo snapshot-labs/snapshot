@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@adraffy/ens-normalize": "^1.9.4",
-    "@braintree/sanitize-url": "^6.0.4",
     "@apollo/client": "^3.8.3",
+    "@braintree/sanitize-url": "^6.0.4",
     "@ensdomains/eth-ens-namehash": "^2.0.15",
     "@ethersproject/abi": "^5.7.0",
     "@ethersproject/address": "^5.7.0",
@@ -45,7 +45,7 @@
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/lock": "^0.2.0",
     "@snapshot-labs/pineapple": "^0.2.0",
-    "@snapshot-labs/snapshot.js": "^0.5.8",
+    "@snapshot-labs/snapshot.js": "^0.6.0",
     "@snapshot-labs/tune": "^0.1.33",
     "@vue/apollo-composable": "4.0.0-beta.4",
     "@vueuse/core": "^10.4.0",
