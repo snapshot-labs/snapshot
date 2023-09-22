@@ -1862,10 +1862,10 @@
     "@walletconnect/modal" "^2.5.4"
     fortmatic "^2.2.1"
 
-"@snapshot-labs/pineapple@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/pineapple/-/pineapple-1.0.1.tgz#fbf4696bdf8be06cc45f722e1109c9dac899f02e"
-  integrity sha512-bBazy4gsRYjhZqvK3ZDmmS4YOsttPFBEa5Loz2lT/rqICjm1gON72t4IoTKnBCqx6zwxBhQs8UsWy9ugD8AYrA==
+"@snapshot-labs/pineapple@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/pineapple/-/pineapple-1.1.0.tgz#cccd1b8c81889b2109a46fddc362908493a8c07c"
+  integrity sha512-LIWmpdO3UF8WhKSlMkGsnCk2eY8KktVUS+qhMWIpXI+ffv0KTSBEnUj7J0v8baoOgSfv1u9HIgG+V2zJFrdk1w==
   dependencies:
     ofetch "^1.3.3"
 
