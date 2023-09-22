@@ -137,7 +137,8 @@ async function fetchCollectibles(
   gnosisSafeAddress: string
 ): Promise<NFT[]> {
   try {
-    return await getGnosisSafeCollectibles(network, gnosisSafeAddress);
+    const response = await getGnosisSafeCollectibles(network, gnosisSafeAddress);
+    return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
   }
