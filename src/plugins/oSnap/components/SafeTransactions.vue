@@ -106,6 +106,7 @@ const proposalResolved = computed(() => {
       </BaseButton>
 
       <HandleOutcomeUma
+        v-if="isProposal"
         :space="space"
         :proposal="proposal"
         :transactions="transactions"

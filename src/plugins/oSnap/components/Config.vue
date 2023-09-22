@@ -50,8 +50,8 @@ const selectedSafe = computed(() => safes.value[selectedSafeIndex.value]);
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 function addTransaction(transaction: Transaction) {
-  if (props.isProposal || !newPluginData.value.safe) return;
-
+  console.log(transaction, newPluginData.value);
+  if (props.isProposal || newPluginData.value.safe === null) return;
   newPluginData.value.safe.transactions.push(transaction);
   emit('update', newPluginData.value);
 }
@@ -198,9 +198,13 @@ onMounted(async () => {
       safe => safe.safeAddress === props.pluginData.safe?.safeAddress
     );
     if (safeIndex !== -1) {
+      newPluginData.value.safe = safes.value[safeIndex];
       selectedSafeIndex.value = safeIndex;
     }
+  } else {
+    newPluginData.value.safe = safes.value[0];
   }
+  emit('update', newPluginData.value);
 });
 </script>
 
@@ -221,13 +225,12 @@ onMounted(async () => {
       </h4>
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
-    <UiSelect :model-value="selectedSafeIndex" @update:model-value="selectedSafeIndex = $event">
+    <UiSelect
+      :model-value="selectedSafeIndex"
+      @update:model-value="selectedSafeIndex = $event"
+    >
       <template #label>Select safe</template>
-      <option
-        v-for="(safe, index) in safes"
-        :key="index"
-        :value="index"
-      >
+      <option v-for="(safe, index) in safes" :key="index" :value="index">
         {{ safe.safeName }}
       </option>
     </UiSelect>
@@ -251,4 +254,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-../types/types
