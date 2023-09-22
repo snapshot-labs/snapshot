@@ -1,5 +1,5 @@
 import { SUBSCRIPTIONS_QUERY } from '@/helpers/queries';
-import { beams } from '../helpers/beams';
+// import { beams } from '@/helpers/beams';
 import { useFlashNotification } from './useFlashNotification';
 import client from '@/helpers/clientEIP712';
 
@@ -52,13 +52,13 @@ export function useSpaceSubscription(spaceId: any) {
 
   const configurePush = async () => {
     try {
-      if (!beams) {
-        notify(['red', t('notificationsNotSupported')]);
-        return;
-      }
+      // if (!beams) {
+      //   notify(['red', t('notificationsNotSupported')]);
+      //   return;
+      // }
 
-      await beams.start();
-      await beams.addDeviceInterest(web3Account.value);
+      // await beams.start();
+      // await beams.addDeviceInterest(web3Account.value);
       await client.subscribe(aliasWallet.value, aliasWallet.value.address, {
         from: web3Account.value,
         space: spaceId
