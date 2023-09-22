@@ -7,9 +7,24 @@ import {
   Results,
   TreasuryWallet
 } from '@/helpers/interfaces';
+import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
-import { NFT, Network, OsnapPluginData, Token, Transaction } from '../types';
-import { getIsOsnapEnabled } from '../utils/umaModule';
+import {
+  GnosisSafe,
+  NFT,
+  Network,
+  OsnapPluginData,
+  Token,
+  Transaction
+} from '../types';
+import {
+  getGnosisSafeBalances,
+  getGnosisSafeCollectibles
+} from '../utils/safe';
+import {
+  getIsOsnapEnabled,
+  getModuleAddressForTreasury
+} from '../utils/umaModule';
 import SafeTransactions from './SafeTransactions.vue';
 
 const props = defineProps<{
@@ -26,66 +41,171 @@ const emit = defineEmits<{
 
 const newPluginData = ref(cloneDeep(props.pluginData));
 
-const treasuriesWithOsnapEnabled = ref<TreasuryWallet[]>([]);
+const safes = ref<GnosisSafe[]>([]);
+
+const selectedSafeIndex = ref(0);
+
+const selectedSafe = computed(() => safes.value[selectedSafeIndex.value]);
 
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
-function addTransaction(params: {
-  treasury: TreasuryWallet;
-  moduleAddress: string;
-  tokens: Token[];
-  collectables: NFT[];
-  transaction: Transaction;
-}) {
-  if (props.preview) return;
+function addTransaction(transaction: Transaction) {
+  if (props.preview || !newPluginData.value.safe) return;
 
-  const { treasury, moduleAddress, tokens, collectables, transaction } = params;
-  if (!newPluginData.value.safes[treasury.address]) {
-    newPluginData.value.safes[treasury.address] = {
-      safeName: treasury.name,
-      safeAddress: treasury.address,
-      network: treasury.network as Network,
-      moduleAddress,
-      tokens,
-      collectables,
-      transactions: []
-    };
+  newPluginData.value.safe.transactions.push(transaction);
+  emit('update', newPluginData.value);
+}
+
+function removeTransaction(transactionIndex: number) {
+  if (props.preview || !newPluginData.value.safe) return;
+
+  newPluginData.value.safe.transactions.splice(transactionIndex, 1);
+  emit('update', newPluginData.value);
+}
+
+function updateTransaction(transaction: Transaction, transactionIndex: number) {
+  if (props.preview || !newPluginData.value.safe) return;
+
+  newPluginData.value.safe.transactions[transactionIndex] = transaction;
+  emit('update', newPluginData.value);
+}
+
+async function fetchBalances(network: Network, safeAddress: string) {
+  if (!safeAddress) {
+    return [];
   }
-  newPluginData.value.safes[treasury.address].transactions.push(transaction);
-  emit('update', newPluginData.value);
+
+  try {
+    const balances = await getGnosisSafeBalances(network, safeAddress);
+
+    const uniswapTokensPromise = fetchTokens(
+      'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
+    );
+    const snapshotTokensPromise = fetchTokens(
+      `${import.meta.env.VITE_SIDEKICK_URL}/api/moderation?list=verifiedTokens`
+    );
+
+    const tokensLists = await Promise.all([
+      uniswapTokensPromise,
+      snapshotTokensPromise
+    ]);
+    const tokens = tokensLists.flat();
+
+    return sortBalances(enhanceBalances(balances, tokens));
+  } catch (e) {
+    console.warn('Error fetching balances');
+    return [];
+  }
 }
 
-function removeTransaction(safeAddress: string, transactionIndex: number) {
-  if (props.preview) return;
+function enhanceBalances(balances, tokens) {
+  return balances
+    .filter(balance => balance.token)
+    .map(balance => enhanceBalance(balance, tokens));
+}
 
-  newPluginData.value.safes[safeAddress].transactions.splice(
-    transactionIndex,
-    1
+function enhanceBalance(balance, tokens) {
+  const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
+  return {
+    ...balance.token,
+    address: balance.tokenAddress,
+    balance: balance.balance
+      ? formatUnits(balance.balance, balance.token.decimals)
+      : 0,
+    verified: !!verifiedToken,
+    chainId: verifiedToken ? verifiedToken.chainId : undefined
+  };
+}
+
+function getVerifiedToken(tokenAddress, tokens) {
+  return tokens.find(
+    token => token.address.toLowerCase() === tokenAddress.toLowerCase()
   );
-  emit('update', newPluginData.value);
 }
 
-function updateTransaction(safeAddress: string, transaction: Transaction, transactionIndex: number) {
-  if (props.preview) return;
+function sortBalances(balances) {
+  return balances.sort((a, b) => b.verified - a.verified);
+}
 
-  newPluginData.value.safes[safeAddress].transactions[transactionIndex] = transaction;
-  emit('update', newPluginData.value);
+async function fetchTokens(url: string): Promise<Token[]> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.verifiedTokens?.tokens || data.tokens || [];
+  } catch {
+    return [];
+  }
+}
+
+async function fetchCollectibles(
+  network: Network,
+  gnosisSafeAddress: string
+): Promise<NFT[]> {
+  try {
+    return await getGnosisSafeCollectibles(network, gnosisSafeAddress);
+  } catch (error) {
+    console.warn('Error fetching collectables');
+  }
+  return [];
+}
+
+async function createSafes() {
+  const treasuriesWithOsnapEnabled = (
+    await Promise.all(
+      props.space.treasuries.map(async treasury => {
+        const isOsnapEnabled = await getIsOsnapEnabled(
+          treasury.network as Network,
+          treasury.address
+        );
+        return isOsnapEnabled ? treasury : null;
+      })
+    )
+  ).filter(treasury => treasury !== null) as TreasuryWallet[];
+  const safes: GnosisSafe[] = await Promise.all(
+    treasuriesWithOsnapEnabled.map(async treasury => {
+      const moduleAddress = await getModuleAddressForTreasury(
+        treasury.network as Network,
+        treasury.address
+      );
+      const tokens: Token[] = await fetchBalances(
+        treasury.network as Network,
+        treasury.address
+      );
+      const collectables = await fetchCollectibles(
+        treasury.network as Network,
+        treasury.address
+      );
+      return {
+        safeName: treasury.name,
+        safeAddress: treasury.address,
+        network: treasury.network as Network,
+        transactions: [] as Transaction[],
+        moduleAddress,
+        tokens,
+        collectables
+      };
+    })
+  );
+
+  return safes;
 }
 
 onMounted(async () => {
-  props.space.treasuries.forEach(async treasury => {
-    if (
-      await getIsOsnapEnabled(treasury.network as Network, treasury.address)
-    ) {
-      treasuriesWithOsnapEnabled.value.push(treasury);
+  safes.value = await createSafes();
+
+  if (props.pluginData.safe !== null) {
+    const safeIndex = safes.value.findIndex(
+      safe => safe.safeAddress === props.pluginData.safe?.safeAddress
+    );
+    if (safeIndex !== -1) {
+      selectedSafeIndex.value = safeIndex;
     }
-  });
+  }
 });
 </script>
 
 <template>
   <div
-    v-if="!preview"
     class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
   >
     <div
@@ -101,19 +221,29 @@ onMounted(async () => {
       </h4>
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
-
-    <div
-      v-for="treasury in treasuriesWithOsnapEnabled"
-      :key="treasury.address"
-      class="border-b last:border-b-0"
-    >
+    <UiSelect :model-value="selectedSafeIndex" @update:model-value="selectedSafeIndex = $event">
+      <template #label>Select safe</template>
+      <option
+        v-for="(safe, index) in safes"
+        :key="index"
+        :value="index"
+      >
+        {{ safe.safeName }}
+      </option>
+    </UiSelect>
+    <div class="border-b last:border-b-0">
       <SafeTransactions
+        v-if="!!selectedSafe"
         :preview="preview"
         :proposal="proposal"
         :space="space"
         :results="results"
-        :treasury="treasury"
-        :transactions="newPluginData.safes[treasury.address]?.transactions ?? []"
+        :safe-address="selectedSafe.safeAddress"
+        :module-address="selectedSafe.moduleAddress"
+        :tokens="selectedSafe.tokens"
+        :collectables="selectedSafe.collectables"
+        :network="selectedSafe.network"
+        :transactions="selectedSafe.transactions"
         @add-transaction="addTransaction"
         @remove-transaction="removeTransaction"
         @update-transaction="updateTransaction"
@@ -121,3 +251,4 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+../types/types

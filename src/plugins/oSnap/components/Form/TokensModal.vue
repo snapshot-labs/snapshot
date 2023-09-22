@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { TokenAsset } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
-import TokensModalItem from './TokensModalItem.vue';
 import { Network, Token } from '../../types';
+import TokensModalItem from './TokensModalItem.vue';
 
 const props = defineProps<{
   open: boolean;
@@ -145,3 +144,4 @@ function handleTokenClick(token) {
     </ModalConfirmAction>
   </teleport>
 </template>
+../../types/types

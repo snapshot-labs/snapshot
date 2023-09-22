@@ -2,9 +2,8 @@
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import {
-createTransferNftTransaction,
+  createTransferNftTransaction,
   getERC721TokenTransferTransactionData,
-  sendAssetToModuleTransaction,
   validateTransaction
 } from '../../index';
 import { NFT, Network, Transaction, TransferNftTransaction } from '../../types';
@@ -19,9 +18,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  updateTransaction: [
-    transaction: TransferNftTransaction,
-  ];
+  updateTransaction: [transaction: TransferNftTransaction];
 }>();
 
 const recipient = ref('');
@@ -113,3 +110,4 @@ watch(selectedCollectableAddress, updateTransaction);
   vertical-align: middle;
 }
 </style>
+../../types/types

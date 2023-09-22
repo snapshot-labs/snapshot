@@ -1,4 +1,3 @@
-import { TokenAsset } from '@/helpers/interfaces';
 import memoize from 'lodash/memoize';
 import { GNOSIS_SAFE_TRANSACTION_API_URLS } from '../constants';
 import { Network, Token } from '../types';

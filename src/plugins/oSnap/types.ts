@@ -1,5 +1,5 @@
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { transactionTypes } from '../constants';
+import { transactionTypes } from './constants';
 
 type Networks = typeof networks;
 
@@ -20,7 +20,7 @@ export type GnosisSafe = {
 export type SafesBySafeAddress = Record<string, GnosisSafe>;
 
 export type OsnapPluginData = {
-    safes: SafesBySafeAddress;
+    safe: GnosisSafe | null;
 }
 
 export type OsnapModelValue = {

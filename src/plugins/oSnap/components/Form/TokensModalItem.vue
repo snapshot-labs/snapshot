@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { shorten, explorerUrl } from '@/helpers/utils';
-import { TokenAsset } from '@/helpers/interfaces';
 import { ETH_CONTRACT } from '@/helpers/constants';
+import { explorerUrl, shorten } from '@/helpers/utils';
 import { Token } from '../../types';
 
 const props = defineProps<{
@@ -74,3 +73,4 @@ const exploreUrl = computed(() => {
     </div>
   </button>
 </template>
+../../types/types

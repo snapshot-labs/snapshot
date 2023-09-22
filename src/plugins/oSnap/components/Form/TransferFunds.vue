@@ -9,7 +9,12 @@ import {
   getNativeAsset,
   validateTransaction
 } from '../../index';
-import { Network, Token, Transaction, TransferFundsTransaction } from '../../types';
+import {
+  Network,
+  Token,
+  Transaction,
+  TransferFundsTransaction
+} from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
@@ -22,9 +27,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  updateTransaction: [
-    transaction: TransferFundsTransaction,
-  ];
+  updateTransaction: [transaction: TransferFundsTransaction];
 }>();
 
 const nativeAsset = getNativeAsset(props.network);
@@ -136,3 +139,4 @@ watch(selectedTokenAddress, updateTransaction);
     />
   </teleport>
 </template>
+../../types/types

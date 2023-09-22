@@ -8,13 +8,13 @@ import { toUtf8Bytes } from '@ethersproject/strings';
 
 import { SafeTransaction } from '@/helpers/interfaces';
 import {
-    sendTransaction
+  sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
-    EIP712_TYPES,
-    ERC20_ABI,
-    UMA_MODULE_ABI
+  EIP712_TYPES,
+  ERC20_ABI,
+  UMA_MODULE_ABI
 } from './constants';
 import { BaseTransaction, Network, OptimisticGovernorTransaction } from './types';
 import { getModuleDetailsFromChain, getModuleDetailsGql } from './utils/umaModule';

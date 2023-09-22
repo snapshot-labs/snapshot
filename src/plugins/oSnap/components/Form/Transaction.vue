@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { cloneDeep } from 'lodash';
+import { transactionTypes } from '../..';
 import type {
   Network,
   NFT,
@@ -7,11 +8,9 @@ import type {
   TransactionType,
   Transaction as TTransaction
 } from '../../types';
-import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
-import { transactionTypes } from '../..';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -33,27 +32,34 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   updateTransaction: [
-    safeAddress: string,
     transaction: TTransaction,
     transactionIndex: number
   ];
-  removeTransaction: [safeAddress: string, transactionIndex: number];
+  removeTransaction: [transactionIndex: number];
 }>();
 
 const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
 
 function updateTransactionType(transactionType: string) {
   if (!transactionTypes.includes(transactionType as TransactionType)) {
-    console.warn("Invalid transaction type");
+    console.warn('Invalid transaction type');
     return;
   }
   newTransaction.value.type = transactionType as TransactionType;
-  emit('updateTransaction', props.safeAddress, newTransaction.value, props.transactionIndex);
+  emit(
+    'updateTransaction',
+    newTransaction.value,
+    props.transactionIndex
+  );
 }
 
 function updateTransaction(transaction: TTransaction) {
   newTransaction.value = transaction;
-  emit('updateTransaction', props.safeAddress, newTransaction.value, props.transactionIndex);
+  emit(
+    'updateTransaction',
+    newTransaction.value,
+    props.transactionIndex
+  );
 }
 </script>
 
@@ -101,3 +107,4 @@ function updateTransaction(transaction: TTransaction) {
     :transaction="newTransaction"
   />
 </template>
+../../types/types

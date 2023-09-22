@@ -31,3 +31,4 @@ const update = (newPluginData: OsnapPluginData) => {
     @update="update"
   />
 </template>
+./types/types

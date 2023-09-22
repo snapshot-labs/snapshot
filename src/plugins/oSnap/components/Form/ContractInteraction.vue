@@ -4,14 +4,17 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import {
-  InterfaceDecoder,
   contractInteractionToModuleTransaction,
   getABIWriteFunctions,
   getContractABI,
   getContractTransactionData,
   validateTransaction
 } from '../../index';
-import { ContractInteractionTransaction, Network, Transaction } from '../../types';
+import {
+  ContractInteractionTransaction,
+  Network,
+  Transaction
+} from '../../types';
 import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 
@@ -198,3 +201,4 @@ function updateValue(newValue: string) {
   margin-bottom: 24px;
 }
 </style>
+../../types/types

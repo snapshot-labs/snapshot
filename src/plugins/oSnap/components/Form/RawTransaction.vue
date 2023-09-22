@@ -106,3 +106,4 @@ function updateTransaction() {
   margin-bottom: 24px;
 }
 </style>
+../../types/types

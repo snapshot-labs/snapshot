@@ -530,7 +530,7 @@ export const getModuleDetailsGql = async (
   });
   const proposalExecuted = proposal?.executed ? true : false;
   const assertion = proposal?.assertionId
-    ? await findAssertionGql(network, { assertionId: proposal.assertionId })
+  ? await findAssertionGql(network, { assertionId: proposal.assertionId })
     : undefined;
 
   const assertionEvent = assertion
