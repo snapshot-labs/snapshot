@@ -43,14 +43,9 @@ const newPluginData = ref(cloneDeep(props.pluginData));
 
 const safes = ref<GnosisSafe[]>([]);
 
-const selectedSafeIndex = ref(0);
-
-const selectedSafe = computed(() => safes.value[selectedSafeIndex.value]);
-
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 function addTransaction(transaction: Transaction) {
-  console.log(transaction, newPluginData.value);
   if (props.isProposal || newPluginData.value.safe === null) return;
   newPluginData.value.safe.transactions.push(transaction);
   emit('update', newPluginData.value);
@@ -161,6 +156,7 @@ async function createSafes() {
       })
     )
   ).filter(treasury => treasury !== null) as TreasuryWallet[];
+
   const safes: GnosisSafe[] = await Promise.all(
     treasuriesWithOsnapEnabled.map(async treasury => {
       const moduleAddress = await getModuleAddressForTreasury(
@@ -190,16 +186,20 @@ async function createSafes() {
   return safes;
 }
 
+function updateSafe(safeIndex: string) {
+  newPluginData.value.safe = cloneDeep(safes.value[safeIndex]);
+  emit('update', newPluginData.value);
+}
+
 onMounted(async () => {
   safes.value = await createSafes();
 
   if (props.pluginData.safe !== null) {
-    const safeIndex = safes.value.findIndex(
+    const safe = safes.value.find(
       safe => safe.safeAddress === props.pluginData.safe?.safeAddress
     );
-    if (safeIndex !== -1) {
-      newPluginData.value.safe = safes.value[safeIndex];
-      selectedSafeIndex.value = safeIndex;
+    if (safe) {
+      newPluginData.value.safe = safe;
     }
   } else {
     newPluginData.value.safe = safes.value[0];
@@ -226,27 +226,27 @@ onMounted(async () => {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <UiSelect
-      :model-value="selectedSafeIndex"
-      @update:model-value="selectedSafeIndex = $event"
+      :model-value="safes.findIndex(safe => safe.safeAddress === newPluginData.safe?.safeAddress)"
+      @update:modelValue="updateSafe"
     >
-      <template #label>Select safe</template>
+      <template #label>Safe</template>
       <option v-for="(safe, index) in safes" :key="index" :value="index">
         {{ safe.safeName }}
       </option>
     </UiSelect>
     <div class="border-b last:border-b-0">
       <SafeTransactions
-        v-if="!!selectedSafe"
+        v-if="!!newPluginData.safe"
         :is-proposal="isProposal"
         :proposal="proposal"
         :space="space"
         :results="results"
-        :safe-address="selectedSafe.safeAddress"
-        :module-address="selectedSafe.moduleAddress"
-        :tokens="selectedSafe.tokens"
-        :collectables="selectedSafe.collectables"
-        :network="selectedSafe.network"
-        :transactions="selectedSafe.transactions"
+        :safe-address="newPluginData.safe.safeAddress"
+        :module-address="newPluginData.safe.moduleAddress"
+        :tokens="newPluginData.safe.tokens"
+        :collectables="newPluginData.safe.collectables"
+        :network="newPluginData.safe.network"
+        :transactions="newPluginData.safe.transactions"
         @add-transaction="addTransaction"
         @remove-transaction="removeTransaction"
         @update-transaction="updateTransaction"
