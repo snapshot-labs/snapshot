@@ -11,13 +11,7 @@ import type {
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
-
-const labels = {
-  contractInteraction: 'Contract Interaction',
-  transferFunds: 'Transfer Funds',
-  transferNFT: 'Transfer NFT',
-  raw: 'Raw Transaction'
-};
+import ContractInteraction from './ContractInteraction.vue';
 
 const props = defineProps<{
   isProposal: boolean;
@@ -78,9 +72,9 @@ function updateTransaction(transaction: TTransaction) {
     <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
   </UiSelect>
 
-  <!-- <ContractInteraction
+  <ContractInteraction
     v-if="transaction.type === 'contractInteraction'"
-  /> -->
+  />
 
   <TransferFunds
     v-if="transaction.type === 'transferFunds'"
