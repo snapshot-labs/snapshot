@@ -20,7 +20,7 @@ const labels = {
 };
 
 const props = defineProps<{
-  preview: boolean;
+  isProposal: boolean;
   transaction: TTransaction;
   transactionIndex: number;
   safeAddress: string;
@@ -65,7 +65,7 @@ function updateTransaction(transaction: TTransaction) {
 
 <template>
   <UiSelect
-    :disabled="preview"
+    :disabled="isProposal"
     :model-value="transaction.type"
     @update:modelValue="updateTransactionType"
   >
@@ -84,7 +84,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <TransferFunds
     v-if="transaction.type === 'transferFunds'"
-    :preview="preview"
+    :is-proposal="isProposal"
     :network="network"
     :tokens="tokens"
     :transaction="newTransaction"
@@ -93,7 +93,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <TransferNFT
     v-if="transaction.type === 'transferNFT'"
-    :preview="preview"
+    :is-proposal="isProposal"
     :network="network"
     :safe-address="safeAddress"
     :collectables="collectables"
@@ -103,8 +103,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <RawTransaction
     v-if="transaction.type === 'raw'"
-    :preview="preview"
+    :is-proposal="isProposal"
     :transaction="newTransaction"
   />
 </template>
-../../types/types

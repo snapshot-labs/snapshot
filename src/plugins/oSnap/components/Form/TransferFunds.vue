@@ -20,7 +20,7 @@ import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
 
 const props = defineProps<{
-  preview: boolean;
+  isProposal: boolean;
   network: Network;
   tokens: Token[];
   transaction: Transaction;
@@ -47,7 +47,7 @@ const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
   if (
-    props.preview ||
+    props.isProposal ||
     !isBigNumberish(amount.value) ||
     !isAddress(recipient.value)
   )
@@ -113,7 +113,7 @@ watch(selectedTokenAddress, updateTransaction);
   <div class="space-y-2">
     <InputAddress
       v-model="recipient"
-      :disabled="preview"
+      :disabled="isProposal"
       :input-props="{
         required: true
       }"
@@ -124,7 +124,7 @@ watch(selectedTokenAddress, updateTransaction);
       v-model="amount"
       :label="$t('safeSnap.amount')"
       :decimals="selectedToken?.decimals"
-      :disabled="preview"
+      :disabled="isProposal"
     />
   </div>
 

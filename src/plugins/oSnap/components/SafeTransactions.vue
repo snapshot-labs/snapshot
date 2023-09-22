@@ -18,7 +18,7 @@ const props = defineProps<{
   proposal: Proposal;
   space: ExtendedSpace;
   results?: Results;
-  preview: boolean;
+  isProposal: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -77,7 +77,7 @@ const proposalResolved = computed(() => {
         :key="index"
         :transaction="transaction"
         :transaction-index="index"
-        :preview="preview"
+        :is-proposal="isProposal"
         :safe-address="safeAddress"
         :module-address="moduleAddress"
         :tokens="tokens"
@@ -88,9 +88,9 @@ const proposalResolved = computed(() => {
       />
     </div>
 
-    <div v-if="(!preview || proposalResolved) && !!moduleAddress">
+    <div v-if="(!isProposal || proposalResolved) && !!moduleAddress">
       <BaseButton
-        v-if="!preview"
+        v-if="!isProposal"
         class="my-3"
         @click="
           emit('addTransaction', {

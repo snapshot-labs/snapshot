@@ -8,7 +8,7 @@ import { RawTransaction, Transaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  preview: boolean;
+  isProposal: boolean;
   transaction: Transaction;
 }>();
 
@@ -44,7 +44,7 @@ watch(value, updateTransaction);
 watch(data, updateTransaction);
 
 function updateTransaction() {
-  if (props.preview || !isToValid || !isValueValid.value || !isDataValid.value)
+  if (props.isProposal || !isToValid || !isValueValid.value || !isDataValid.value)
     return;
 
   const transaction = createRawTransaction({
@@ -60,7 +60,7 @@ function updateTransaction() {
   <div class="space-y-2">
     <AddressInput
       v-model="to"
-      :disabled="preview"
+      :disabled="isProposal"
       :input-props="{ required: false }"
       :error="!isToValid && $t('safeSnap.invalidAddress')"
       :label="$t('safeSnap.to')"
@@ -68,7 +68,7 @@ function updateTransaction() {
 
     <UiInput
       v-model="value"
-      :disabled="preview"
+      :disabled="isProposal"
       :error="!isValueValid && $t('safeSnap.invalidValue')"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
@@ -76,7 +76,7 @@ function updateTransaction() {
 
     <UiInput
       v-model="data"
-      :disabled="preview"
+      :disabled="isProposal"
       :error="!isDataValid && $t('safeSnap.invalidData')"
     >
       <template #label>{{ $t('safeSnap.data') }}</template>

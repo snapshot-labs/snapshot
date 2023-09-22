@@ -10,7 +10,7 @@ import { NFT, Network, Transaction, TransferNftTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  preview: boolean;
+  isProposal: boolean;
   network: Network;
   collectables: NFT[];
   transaction: Transaction;
@@ -33,7 +33,7 @@ const selectedCollectable = computed(() => {
 
 function updateTransaction() {
   if (
-    props.preview ||
+    props.isProposal ||
     !isAddress(recipient.value) ||
     !selectedCollectable.value
   )
@@ -66,7 +66,7 @@ watch(selectedCollectableAddress, updateTransaction);
 </script>
 
 <template>
-  <UiSelect v-model="selectedCollectableAddress" :disabled="preview">
+  <UiSelect v-model="selectedCollectableAddress" :disabled="isProposal">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template
       v-if="
@@ -95,7 +95,7 @@ watch(selectedCollectableAddress, updateTransaction);
 
   <AddressInput
     v-model="recipient"
-    :disabled="preview"
+    :disabled="isProposal"
     :input-props="{
       required: true
     }"
