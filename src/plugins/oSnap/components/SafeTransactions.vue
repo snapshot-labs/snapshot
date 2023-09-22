@@ -37,8 +37,9 @@ const safeLink = computed(() => {
 
 const networkName = computed(() => {
   if (props.network === '1') return 'Mainnet';
-  const { shortName, name } = networks[props.network] || {};
-  return shortName || name || `#${props.network}`;
+  const networkDetails = networks[props.network];
+  if ('shortName' in networkDetails) return networkDetails.shortName;
+  return networkDetails.name;
 });
 
 const networkIcon = computed(() => {
@@ -88,7 +89,7 @@ const proposalResolved = computed(() => {
       />
     </div>
 
-    <div v-if="(!isProposal || proposalResolved) && !!moduleAddress">
+    <div v-if="(!isProposal || proposalResolved)">
       <BaseButton
         v-if="!isProposal"
         class="my-3"
