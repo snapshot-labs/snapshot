@@ -3,6 +3,7 @@
     <h1>Snapshot</h1>
     <strong>Snapshot is an off-chain gasless multi-governance client with easy to verify and hard to contest results.</strong>
 </div>
+
 <br>
 <div align="center">
     <a href="https://github.com/snapshot-labs/snapshot/actions/workflows/nodejs.yml">
