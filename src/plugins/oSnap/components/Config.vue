@@ -31,7 +31,7 @@ const props = defineProps<{
   pluginData: OsnapPluginData;
   proposal: Proposal;
   space: ExtendedSpace;
-  preview: boolean;
+  isProposal: boolean;
   results?: Results;
 }>();
 
@@ -50,21 +50,21 @@ const selectedSafe = computed(() => safes.value[selectedSafeIndex.value]);
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 function addTransaction(transaction: Transaction) {
-  if (props.preview || !newPluginData.value.safe) return;
+  if (props.isProposal || !newPluginData.value.safe) return;
 
   newPluginData.value.safe.transactions.push(transaction);
   emit('update', newPluginData.value);
 }
 
 function removeTransaction(transactionIndex: number) {
-  if (props.preview || !newPluginData.value.safe) return;
+  if (props.isProposal || !newPluginData.value.safe) return;
 
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
   emit('update', newPluginData.value);
 }
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
-  if (props.preview || !newPluginData.value.safe) return;
+  if (props.isProposal || !newPluginData.value.safe) return;
 
   newPluginData.value.safe.transactions[transactionIndex] = transaction;
   emit('update', newPluginData.value);
@@ -234,7 +234,7 @@ onMounted(async () => {
     <div class="border-b last:border-b-0">
       <SafeTransactions
         v-if="!!selectedSafe"
-        :preview="preview"
+        :is-proposal="isProposal"
         :proposal="proposal"
         :space="space"
         :results="results"

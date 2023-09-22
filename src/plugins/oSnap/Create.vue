@@ -26,9 +26,8 @@ const update = (newPluginData: OsnapPluginData) => {
     :space="space"
     :results="results"
     :proposal="proposal"
-    :preview="false"
+    :is-proposal="false"
     :plugin-data="modelValue?.oSnap ?? initialPluginData"
     @update="update"
   />
 </template>
-./types/types

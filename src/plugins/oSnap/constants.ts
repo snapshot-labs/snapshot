@@ -2,7 +2,7 @@ import { OsnapPluginData } from './types';
 import { MULTI_SEND_VERSION } from './utils/multiSend';
 
 export const initialPluginData: OsnapPluginData = {
-  safes: {}
+  safe: null
 }
 
 export const EIP712_TYPES = {
