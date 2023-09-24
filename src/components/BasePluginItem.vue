@@ -36,7 +36,7 @@ defineProps<{
       </div>
 
       <BaseLink
-        :link="`https://github.com/snapshot-labs/snapshot/tree/develop/src/plugins/${plugin.key}`"
+        :link="`https://github.com/snapshot-labs/snapshot/tree/master/src/plugins/${plugin.key}`"
         @click.stop
       >
         {{ $t('learnMore') }}
