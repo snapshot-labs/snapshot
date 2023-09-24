@@ -4,7 +4,7 @@ import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 const props = defineProps<{
   proposal: Proposal;
-  modelValue: Choice;
+  modelValue: Choice | null;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'clickVote']);
@@ -19,7 +19,7 @@ const selectedChoices = computed(() => {
   if (typeof props.modelValue === 'object' && props.modelValue !== null)
     return Object.keys(props.modelValue).length;
   return props.modelValue;
-});
+}) as ComputedRef<number>;
 
 const validatedUserChoice = computed(() => {
   if (!userVote.value?.choice) return null;
