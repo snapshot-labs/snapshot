@@ -597,9 +597,6 @@
       "label": "Gitcoin Passport门槛",
       "description": "通过要求用户拥有 Gitcoin Passport 来保护您的提案免受垃圾邮件和投票操纵。",
       "invalidMessage": "你需要一本带有 amount个如下邮票的Gitcoin Passport才能对这个提案投票: stamps "
-    },
-    "passport-weighted": {
-      "label": "Gitcoin Passport加权"
     }
   },
   "safeSnap": {
