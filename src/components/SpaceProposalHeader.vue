@@ -21,10 +21,12 @@ const isCreator = computed(() => props.proposal?.author === web3Account.value);
 const threeDotItems = computed(() => {
   const items = [
     { text: t('duplicate'), action: 'duplicate' },
-    { text: t('report'), action: 'report' }
   ];
-  if ((props.isAdmin || props.isModerator) && !props.proposal.flagged)
+  if ((props.isAdmin || props.isModerator) && !props.proposal.flagged) {
     items.push({ text: t('flag'), action: 'flag' });
+  } else {
+    items.push({ text: t('report'), action: 'report' });
+  }
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -157,8 +159,7 @@ watch(
         <template #item="{ item }">
           <div class="flex items-center gap-2">
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
-            <i-ho-flag v-if="item.action === 'report'" />
-            <i-ho-exclamation v-if="item.action === 'flag'" />
+            <i-ho-flag v-if="item.action === 'report' || item.action === 'flag'" />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>
