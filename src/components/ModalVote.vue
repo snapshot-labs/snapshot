@@ -3,6 +3,7 @@ import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
+import { timelockEncryptionForOshhhnap } from '@/helpers/oshhhnap';
 
 const { web3Account } = useWeb3();
 
@@ -33,6 +34,7 @@ const { addVotedProposalId } = useProposals();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 
 const isLoadingShutter = ref(false);
+const isLoadingOshhnap = ref(false);
 
 const symbols = computed(() =>
   props.strategies.map(strategy => strategy.params.symbol || '')
@@ -69,19 +71,47 @@ async function voteShutter() {
   });
 }
 
+async function voteOshhhnap() {
+  // TODO: Implement Oshhhnap
+  isLoadingOshhnap.value = true;
+  const timelockEncryptedChoice = await timelockEncryptionForOshhhnap(
+    JSON.stringify(props.selectedChoices),
+    props.proposal.id,
+    props.proposal.end
+  );
+
+  if (!timelockEncryptedChoice) return null;
+  const resultantVote = vote({
+    proposal: props.proposal,
+    choice: timelockEncryptedChoice,
+    privacy: 'oshhhnap',
+    reason: reason.value
+  });
+  isLoadingOshhnap.value = false;
+  return resultantVote;
+}
+
 async function vote(payload) {
   return send(props.space, 'vote', payload);
 }
 
 async function handleSubmit() {
   let result: { id: string; ipfs?: string } | null = null;
-  if (props.proposal.privacy === 'shutter') result = await voteShutter();
-  else
-    result = await vote({
-      proposal: props.proposal,
-      choice: props.selectedChoices,
-      reason: reason.value
-    });
+  switch (props.proposal.privacy) {
+    case 'shutter':
+      result = await voteShutter();
+      break;
+    case 'oshhhnap':
+      result = await voteOshhhnap();
+      break;
+    default:
+      result = await vote({
+        proposal: props.proposal,
+        choice: props.selectedChoices,
+        reason: reason.value
+      });
+      break;
+  }
 
   console.log('Result', result);
 
