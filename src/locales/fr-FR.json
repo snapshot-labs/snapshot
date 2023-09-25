@@ -597,10 +597,7 @@
     "passport-gated": {
       "label": "Accès réservé au Gitcoin Passport",
       "description": "Protégez vos propositions contre le spam et la manipulation des votes en exigeant que les utilisateurs aient un Gitcoin Passport.",
-      "invalidMessage": "You need a Gitcoin Passport with {amount} of the following stamps to vote on this proposal: {stamps}. "
-    },
-    "passport-weighted": {
-      "label": "Pondéré par Gitcoin Passport"
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
     }
   },
   "safeSnap": {
