@@ -1101,10 +1101,10 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui-float/vue@^0.11.0", "@headlessui-float/vue@^0.11.2":
-  version "0.11.2"
-  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.2.tgz#6ecf6bedd6bbce3aebcc74f5c2c2dcf7c108289b"
-  integrity sha512-9yWN6LHeaXZKyU9y/rj6SmujCzkRxxf4bhg7nRs2RSwfSRI9E+JPvM/Tl7AA2lFQAJegWTRcElt3dSJ0Nkth0Q==
+"@headlessui-float/vue@^0.11.0", "@headlessui-float/vue@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.3.tgz#681a919943d7342e3560ef75d61311be958d3c1b"
+  integrity sha512-pGljsWtpDbwVK3JtWC78nG8rNnGQMXbB0obIEKM+XfrMSxv94ZoAJm6Too/baJTxqtxSXbR4I2YPgLY3sEkTDg==
   dependencies:
     "@floating-ui/core" "^1.0.0"
     "@floating-ui/dom" "^1.0.0"
