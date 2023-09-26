@@ -415,7 +415,7 @@ export const getModuleDetailsUmaGql = async (
       symbol: bondDetails.symbol,
       userBalance: bondDetails.currentUserBalance,
       needsBondApproval: needsApproval,
-      noTransactions: true,
+      noTransactions: false,
       activeProposal: false,
       assertionEvent: undefined,
       proposalExecuted: false,
