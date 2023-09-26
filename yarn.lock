@@ -1698,12 +1698,12 @@
     "@sentry/utils" "7.55.2"
     tslib "^1.9.3"
 
-"@sentry/bundler-plugin-core@2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.5.0.tgz#9ac413a9109f7f74b559544dc6744b941447b74d"
-  integrity sha512-UNjeTSf0Irt/RsC1Xsfxa+RC92mBvjzuWQnvHJ5c+mXwUt+jLcFgGMCSVK/FCDZO+gAeKzmU1+G2UexbsNAP8w==
+"@sentry/bundler-plugin-core@2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@sentry/bundler-plugin-core/-/bundler-plugin-core-2.7.1.tgz#60ca41f79393263911ae6bc5530f387cb1e48e47"
+  integrity sha512-ZC/B/7FzzgGpux2t54B2ioXudlq60MHMVPaUeuFzWwxmxiArrV4uBXcp18RMW5ns4biik5WBAD72vbsoloBfIQ==
   dependencies:
-    "@sentry/cli" "^2.17.0"
+    "@sentry/cli" "^2.20.1"
     "@sentry/node" "^7.60.0"
     "@sentry/utils" "^7.60.0"
     dotenv "^16.3.1"
@@ -1712,10 +1712,10 @@
     magic-string "0.27.0"
     unplugin "1.0.1"
 
-"@sentry/cli@^2.17.0":
-  version "2.20.1"
-  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.20.1.tgz#e0a04d9c0153fc8606f90ee3f6b17abed81a85bc"
-  integrity sha512-HxzwFQf5gPKfksyj2ZhUicg/avHLCOd/EjZTERSXv5V7GohaTlsNxf9Sbvv/nsu8479vogTllSU6xg5BgXAVUw==
+"@sentry/cli@^2.20.1":
+  version "2.21.1"
+  resolved "https://registry.yarnpkg.com/@sentry/cli/-/cli-2.21.1.tgz#f01965d350d38a9f68f3b4de901002cdcf6838d2"
+  integrity sha512-iJGL818zHzVb129CNWLoZriymq2nrnhk1XqN4Fh0AMxYJcOICmXYKR8RSkLhhE1U1J1D77UzA+FyBhWHOFA82A==
   dependencies:
     https-proxy-agent "^5.0.0"
     node-fetch "^2.6.7"
@@ -1790,12 +1790,12 @@
     "@sentry/types" "7.60.1"
     tslib "^2.4.1 || ^1.9.3"
 
-"@sentry/vite-plugin@^2.5.0":
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.5.0.tgz#58b16c888dcad641a3223356d58a164b3a6e8a14"
-  integrity sha512-u5lfIysy6UVzUGn/adyDcRXfzFyip4mLGThTnKeOeA9rCgmJUVnErH8TD8xhTKdpq/MBiQ+KqrC6xG9pKCa96g==
+"@sentry/vite-plugin@^2.7.1":
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/@sentry/vite-plugin/-/vite-plugin-2.7.1.tgz#23fa4c95079c3f2ba10b851dce7452c16adc82c8"
+  integrity sha512-bZrM06Z+QP/TvPyTYFxpQVugT5rzaFW1jzTnHzUHICz5tgyarY8bhhmYXnI37f6mngkVwDZNAftczbVF2IuFWQ==
   dependencies:
-    "@sentry/bundler-plugin-core" "2.5.0"
+    "@sentry/bundler-plugin-core" "2.7.1"
     unplugin "1.0.1"
 
 "@sentry/vue@^7.55.2":
