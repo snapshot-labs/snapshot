@@ -62,7 +62,7 @@
     "readable-stream": "3.6.0",
     "remarkable": "^2.0.1",
     "remove-markdown": "^0.5.0",
-    "typescript": "^5.0.4",
+    "typescript": "^5.2.2",
     "v-viewer": "^3.0.11",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
