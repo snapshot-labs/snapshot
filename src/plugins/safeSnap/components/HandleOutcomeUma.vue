@@ -156,7 +156,6 @@ const submitProposalUma = async () => {
     await ensureRightNetwork(props.network);
     await loadVotes({});
     const voteResolution = formatVotesResolutions(votes.value);
-    debugger;
     const proposalSubmission = plugin.submitProposalUma(
       getInstance().web3,
       props.umaAddress,
