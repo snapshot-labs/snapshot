@@ -16,6 +16,11 @@ jobs:
       - name: Update lock.js
         run: |
           yarn upgrade @snapshot-labs/lock --latest
+      - name: Update snapshot-spaces submodule
+        run: |
+          git submodule update --remote snapshot-spaces
+          git add snapshot-spaces
+          git commit -m "Update snapshot-spaces submodule"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
