@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
       - uses: actions/setup-node@v1
         with:
           node-version: '16.x'
@@ -18,11 +16,6 @@ jobs:
       - name: Update lock.js
         run: |
           yarn upgrade @snapshot-labs/lock --latest
-      - name: Update snapshot-spaces submodule
-        run: |
-          git submodule update --remote snapshot-spaces
-          git add snapshot-spaces
-          git commit --allow-empty-user -m "Update snapshot-spaces submodule"
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
