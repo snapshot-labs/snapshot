@@ -110,7 +110,7 @@
     "unplugin-icons": "^0.16.5",
     "unplugin-vue-components": "^0.24.1",
     "vite": "^2.9.14",
-    "vitest": "^0.33.0"
+    "vitest": "^0.34.5"
   },
   "resolutions": {
     "ansi-regex": "^5.0.1",
