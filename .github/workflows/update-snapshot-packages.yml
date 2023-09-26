@@ -18,10 +18,7 @@ jobs:
           yarn upgrade @snapshot-labs/lock --latest
       - name: Update snapshot-spaces submodule
         run: |
-          git submodule update --init --recursive
-          cd snapshot-spaces
-          git pull origin master
-          cd ..
+          git submodule update --remote snapshot-spaces
           git add snapshot-spaces
           git commit -m "Update snapshot-spaces submodule"
       - name: Create Pull Request
