@@ -4,7 +4,3 @@ updates:
     directory: '/'
     schedule:
       interval: 'monthly'
-  - package-ecosystem: 'gitsubmodule'
-    directory: '/'
-    schedule:
-      interval: 'daily'
