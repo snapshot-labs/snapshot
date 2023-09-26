@@ -59,7 +59,9 @@ export function useSharing() {
     const isSingleChoice =
       payload.proposal.type === 'single-choice' ||
       payload.proposal.type === 'basic';
-    const isPrivate = payload.proposal.privacy === 'shutter';
+    const isPrivate = ['shutter', 'oshhhnap'].includes(
+      payload.proposal.privacy
+    );
     const votedText =
       payload.choices && isSingleChoice && !isPrivate
         ? `I just voted "${payload.choices}" on`

@@ -8,7 +8,7 @@ defineProps<{
 
 const emit = defineEmits(['close', 'update:selected']);
 
-const types = ['shutter'];
+const types = ['shutter', 'oshhhnap'];
 
 function select(id) {
   emit('update:selected', id);
