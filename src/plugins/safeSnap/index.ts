@@ -263,7 +263,8 @@ export default class Plugin {
     web3: any,
     moduleAddress: string,
     explanation: string,
-    transactions: any
+    transactions: any,
+    encodedVoteResolutions: string
   ) {
     const explanationBytes = toUtf8Bytes(explanation);
     const tx = await sendTransaction(
@@ -271,7 +272,7 @@ export default class Plugin {
       moduleAddress,
       UMA_MODULE_ABI,
       'proposeTransactions',
-      [transactions, explanationBytes]
+      [transactions || [], explanationBytes, encodedVoteResolutions]
       // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
     );
     yield tx;

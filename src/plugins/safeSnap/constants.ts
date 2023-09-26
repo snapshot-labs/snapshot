@@ -142,7 +142,7 @@ export const UMA_MODULE_ABI = [
   'function optimisticOracleV3() view returns (address)',
   'function owner() view returns (address)',
   'function proposalHashes(bytes32) view returns (bytes32)',
-  'function proposeTransactions(tuple(address to, uint8 operation, uint256 value, bytes data)[] transactions, bytes explanation)',
+  'function proposeTransactions(tuple(address to, uint8 operation, uint256 value, bytes data)[] transactions, bytes explanation, bytes encodedResolution)',
   'function renounceOwnership()',
   'function rules() view returns (string)',
   'function setAvatar(address _avatar)',

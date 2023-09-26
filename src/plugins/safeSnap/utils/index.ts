@@ -2,12 +2,14 @@ import { isAddress } from '@ethersproject/address';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
 import memoize from 'lodash/memoize';
+import { Vote } from '@/helpers/interfaces';
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree';
+import { ethers } from 'ethers';
 
 import { SafeExecutionData, SafeTransaction } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
-
 export const mustBeEthereumAddress = memoize((address: string) => {
   const startsWith0x = address?.startsWith('0x');
   const isValidAddress = isAddress(address);
@@ -171,3 +173,83 @@ export async function fetchTextSignatures(
   const { results } = await response.json();
   return results.map(signature => signature.text_signature);
 }
+
+export const formatVotesResolutions = (votes: Vote[]) => {
+  let forVotes = new ethers.utils.BigNumber(0);
+  let againstVotes = new ethers.utils.BigNumber(0);
+  let abstainVotes = new ethers.utils.BigNumber(0);
+
+  const formattedVotes = votes.map(vote => {
+    const { vp, vp_by_strategy, choice } = vote;
+    if (choice === 1) {
+      forVotes = forVotes.add(ethers.utils.parseEther(String(vote.vp)));
+    }
+    if (choice === 2) {
+      againstVotes = againstVotes.add(ethers.utils.parseEther(String(vote.vp)));
+    }
+    if (choice === 3) {
+      abstainVotes = abstainVotes.add(ethers.utils.parseEther(String(vote.vp)));
+    }
+    return [
+      vote.voter,
+      vote.choice == 1
+        ? ethers.utils.parseEther(String(vote.vp)).toString()
+        : 0,
+      vote.choice == 2
+        ? ethers.utils.parseEther(String(vote.vp)).toString()
+        : 0,
+      vote.choice == 3 ? ethers.utils.parseEther(String(vote.vp)).toString() : 0
+    ];
+  });
+
+  // (2)
+  const tree = StandardMerkleTree.of(formattedVotes, [
+    'address',
+    'uint256',
+    'uint256',
+    'uint256'
+  ]);
+
+  // (3)
+  console.log('Merkle Root:', tree.root);
+
+  const proofData = {};
+  for (const [i, v] of tree.entries()) {
+    // (3)
+    const proof = tree.getProof(i);
+
+    proofData[v[0]] = {
+      voteFor: v[1],
+      voteAgainst: v[2],
+      voteAbstain: v[3],
+      proof
+    };
+  }
+  const votesAndProofs = JSON.stringify(proofData);
+
+  const calldata: string = ethers.utils.defaultAbiCoder.encode(
+    [
+      {
+        type: 'tuple',
+        components: [
+          { name: 'forVotes', type: 'uint256' },
+          { name: 'againstVotes', type: 'uint256' },
+          { name: 'abstainVotes', type: 'uint256' },
+          { name: 'voteMerkleRoot', type: 'bytes32' },
+          { name: 'votesAndProofs', type: 'string' }
+        ]
+      }
+    ],
+    [
+      {
+        forVotes,
+        againstVotes,
+        abstainVotes,
+        voteMerkleRoot: tree.root,
+        votesAndProofs
+      }
+    ]
+  );
+
+  return calldata;
+};

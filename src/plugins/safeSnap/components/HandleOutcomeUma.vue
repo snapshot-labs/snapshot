@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal, Results, Vote } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -7,6 +7,7 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin from '../index';
 import type { Network } from '../types';
 import { ensureRightNetwork } from './SafeTransactions.vue';
+import { formatVotesResolutions } from '@/plugins/safeSnap/utils';
 
 type Transaction = {
   to: string;
@@ -41,6 +42,15 @@ const {
 } = useTxStatus();
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
+const {
+  votes,
+  loadingVotes,
+  loadingMoreVotes,
+  profiles,
+  loadVotes,
+  loadMoreVotes,
+  loadSingleVote
+} = useProposalVotes(props.proposal, 20);
 
 const plugin = new Plugin();
 
@@ -78,11 +88,12 @@ function showProposeModal() {
   voteResultsConfirmed.value = true;
 }
 
-const getTransactionsUma = () =>
+const getTransactionsUma = () => {
   props.batches.map(batch => {
     const mainTx = batch.mainTransaction;
     return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data];
   });
+};
 
 const updateDetails = async () => {
   loading.value = true;
@@ -143,11 +154,15 @@ const submitProposalUma = async () => {
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
+    await loadVotes({});
+    const voteResolution = formatVotesResolutions(votes.value);
+    debugger;
     const proposalSubmission = plugin.submitProposalUma(
       getInstance().web3,
       props.umaAddress,
       props.proposal.ipfs,
-      getTransactionsUma()
+      getTransactionsUma(),
+      voteResolution
     );
     const step = await proposalSubmission.next();
     if (step.value)
