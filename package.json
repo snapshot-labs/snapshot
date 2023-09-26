@@ -104,7 +104,7 @@
     "rollup-plugin-visualizer": "^5.9.0",
     "sass": "~1.62.1",
     "sass-loader": "^13.2.2",
-    "start-server-and-test": "^2.0.0",
+    "start-server-and-test": "^2.0.1",
     "tailwindcss": "^3.3.3",
     "unplugin-auto-import": "^0.16.1",
     "unplugin-icons": "^0.16.5",
