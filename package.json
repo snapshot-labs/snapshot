@@ -41,7 +41,7 @@
     "@headlessui/vue": "^1.7.13",
     "@pusher/push-notifications-web": "^1.1.0",
     "@sentry/vite-plugin": "^2.5.0",
-    "@sentry/vue": "^7.55.2",
+    "@sentry/vue": "^7.72.0",
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/lock": "^0.2.0",
     "@snapshot-labs/pineapple": "^1.1.0",
