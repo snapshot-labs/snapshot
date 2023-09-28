@@ -15,10 +15,6 @@ jobs:
       - name: Update submodules
         run: |
           git submodule update --remote
-      - name: Debug
-        run: |
-          git status
-          git diff
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
