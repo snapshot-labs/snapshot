@@ -81,3 +81,13 @@ export type NFT = Asset & {
   tokenName?: string;
 }
 
+export type BalanceResponse = {
+  tokenAddress: string;
+  token: {
+    decimals: number;
+    logoUri: string;
+    name: string;
+    symbol: string;
+  };
+  balance: string;
+}

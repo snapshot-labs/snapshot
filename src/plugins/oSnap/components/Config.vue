@@ -10,6 +10,7 @@ import {
 import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
 import {
+  BalanceResponse,
   GnosisSafe,
   NFT,
   Network,
@@ -65,6 +66,16 @@ function updateTransaction(transaction: Transaction, transactionIndex: number) {
   emit('update', newPluginData.value);
 }
 
+async function fetchTokens(url: string): Promise<Token[]> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.verifiedTokens?.tokens || data.tokens || [];
+  } catch {
+    return [];
+  }
+}
+
 async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
@@ -86,50 +97,47 @@ async function fetchBalances(network: Network, safeAddress: string) {
     ]);
     const tokens = tokensLists.flat();
 
-    return sortBalances(enhanceBalances(balances, tokens));
+    return enhanceTokensWithBalances(balances, tokens);
   } catch (e) {
     console.warn('Error fetching balances');
     return [];
   }
 }
 
-function enhanceBalances(balances, tokens) {
+function enhanceTokensWithBalances(
+  balances: Partial<BalanceResponse>[],
+  tokens: Token[]
+) {
   return balances
-    .filter(balance => balance.token)
-    .map(balance => enhanceBalance(balance, tokens));
+    .filter(
+      (balance): balance is BalanceResponse =>
+        !!balance.token && !!balance.tokenAddress && !!balance.balance
+    )
+    .map(balance => enhanceTokenWithBalance(balance, tokens))
+    .sort((a, b) => {
+      if (a.verified && b.verified) return 0;
+      if (a.verified) return -1;
+      return 1;
+    });
 }
 
-function enhanceBalance(balance, tokens) {
+function enhanceTokenWithBalance(balance: BalanceResponse, tokens: Token[]): Token {
   const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
   return {
     ...balance.token,
     address: balance.tokenAddress,
     balance: balance.balance
       ? formatUnits(balance.balance, balance.token.decimals)
-      : 0,
+      : "0",
     verified: !!verifiedToken,
     chainId: verifiedToken ? verifiedToken.chainId : undefined
   };
-}
 
-function getVerifiedToken(tokenAddress, tokens) {
+
+function getVerifiedToken(tokenAddress: string, tokens: Token[]) {
   return tokens.find(
     token => token.address.toLowerCase() === tokenAddress.toLowerCase()
   );
-}
-
-function sortBalances(balances) {
-  return balances.sort((a, b) => b.verified - a.verified);
-}
-
-async function fetchTokens(url: string): Promise<Token[]> {
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.verifiedTokens?.tokens || data.tokens || [];
-  } catch {
-    return [];
-  }
 }
 
 async function fetchCollectibles(
@@ -137,7 +145,10 @@ async function fetchCollectibles(
   gnosisSafeAddress: string
 ): Promise<NFT[]> {
   try {
-    const response = await getGnosisSafeCollectibles(network, gnosisSafeAddress);
+    const response = await getGnosisSafeCollectibles(
+      network,
+      gnosisSafeAddress
+    );
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
@@ -227,7 +238,11 @@ onMounted(async () => {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <UiSelect
-      :model-value="safes.findIndex(safe => safe.safeAddress === newPluginData.safe?.safeAddress)"
+      :model-value="
+        safes.findIndex(
+          safe => safe.safeAddress === newPluginData.safe?.safeAddress
+        )
+      "
       @update:modelValue="updateSafe"
     >
       <template #label>Safe</template>

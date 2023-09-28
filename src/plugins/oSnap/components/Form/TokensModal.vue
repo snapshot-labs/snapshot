@@ -144,4 +144,3 @@ function handleTokenClick(token) {
     </ModalConfirmAction>
   </teleport>
 </template>
-../../types/types
