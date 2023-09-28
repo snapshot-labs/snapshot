@@ -745,6 +745,10 @@
     "arbitrum": {
       "label": "Arbitrum DAO votable supply",
       "description": "Use with erc20-votes to validate by percentage of votable supply."
+    },
+    "karma-eas-attestation": {
+      "label": "Karma EAS Attestation",
+      "description": "Use EAS attest.sh to determine if user can create a proposal."
     }
   },
   "votingValidation": {
