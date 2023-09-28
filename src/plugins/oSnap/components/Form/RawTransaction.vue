@@ -9,7 +9,7 @@ import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
   isProposal: boolean;
-  transaction: Transaction;
+  transaction: RawTransaction;
 }>();
 
 const emit = defineEmits<{

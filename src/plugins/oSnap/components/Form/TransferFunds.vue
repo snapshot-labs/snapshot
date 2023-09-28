@@ -23,7 +23,7 @@ const props = defineProps<{
   isProposal: boolean;
   network: Network;
   tokens: Token[];
-  transaction: Transaction;
+  transaction: TransferFundsTransaction;
 }>();
 
 const emit = defineEmits<{
@@ -84,7 +84,13 @@ watch(selectedTokenAddress, updateTransaction);
 </script>
 
 <template>
-  <BaseButton
+  <div v-if="isProposal">
+    <p>recipient: {{ transaction.recipient }}</p>
+    <p>amount: {{ transaction.amount }}</p>
+    <p>token: {{ transaction.token.symbol }}</p>
+  </div>
+  <template v-else>
+    <BaseButton
     class="mb-2 flex w-full flex-row items-center justify-between !px-3"
     @click="openModal()"
   >
@@ -138,5 +144,5 @@ watch(selectedTokenAddress, updateTransaction);
       @close="isTokenModalOpen = false"
     />
   </teleport>
+  </template>
 </template>
-../../types/types

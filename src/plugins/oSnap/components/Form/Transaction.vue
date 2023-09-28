@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { cloneDeep } from 'lodash';
 import { transactionTypes } from '../..';
-import type {
-  Network,
-  NFT,
-  Token,
-  TransactionType,
-  Transaction as TTransaction
+import {
+  type Network,
+  type NFT,
+  type RawTransaction as TRawTransaction,
+  type Token,
+  type TransactionType,
+  type TransferFundsTransaction,
+  type Transaction as TTransaction,
+TransferNftTransaction
 } from '../../types';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
@@ -58,7 +61,11 @@ function updateTransaction(transaction: TTransaction) {
 </script>
 
 <template>
+  <div v-if="isProposal">
+    <p>{{ transaction.type }} transaction</p>
+  </div>
   <UiSelect
+    v-else
     :disabled="isProposal"
     :model-value="transaction.type"
     @update:modelValue="updateTransactionType"
@@ -81,7 +88,7 @@ function updateTransaction(transaction: TTransaction) {
     :is-proposal="isProposal"
     :network="network"
     :tokens="tokens"
-    :transaction="newTransaction"
+    :transaction="(newTransaction as TransferFundsTransaction)"
     @update-transaction="updateTransaction"
   />
 
@@ -91,14 +98,14 @@ function updateTransaction(transaction: TTransaction) {
     :network="network"
     :safe-address="safeAddress"
     :collectables="collectables"
-    :transaction="newTransaction"
+    :transaction="(newTransaction as TransferNftTransaction)"
     @update-transaction="updateTransaction"
   />
 
   <RawTransaction
     v-if="transaction.type === 'raw'"
     :is-proposal="isProposal"
-    :transaction="newTransaction"
+    :transaction="(newTransaction as TRawTransaction)"
     @update-transaction="updateTransaction"
   />
 </template>

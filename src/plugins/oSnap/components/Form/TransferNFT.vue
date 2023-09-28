@@ -6,14 +6,14 @@ import {
   getERC721TokenTransferTransactionData,
   validateTransaction
 } from '../../index';
-import { NFT, Network, Transaction, TransferNftTransaction } from '../../types';
+import { NFT, Network, TransferNftTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
   isProposal: boolean;
   network: Network;
   collectables: NFT[];
-  transaction: Transaction;
+  transaction: TransferNftTransaction;
   safeAddress: string;
 }>();
 
@@ -66,41 +66,47 @@ watch(selectedCollectableAddress, updateTransaction);
 </script>
 
 <template>
-  <UiSelect v-model="selectedCollectableAddress" :disabled="isProposal">
-    <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template
-      v-if="
-        selectedCollectable &&
-        (selectedCollectable.imageUri || selectedCollectable.logoUri)
-      "
-      #image
-    >
-      <img
-        :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
-        alt=""
-        class="tokenImage"
-      />
-    </template>
-    <option v-if="!collectables.length" disabled selected>
-      - {{ $t('safeSnap.noCollectibles') }} -
-    </option>
-    <option
-      v-for="(collectable, index) in collectables"
-      :key="index"
-      :value="collectable.address"
-    >
-      {{ collectable.name }} #{{ shorten(collectable.id, 10) }}
-    </option>
-  </UiSelect>
+  <div v-if="isProposal">
+    <p>recipient: {{ transaction.recipient }}</p>
+    <p>collectable: {{  transaction.collectable.address }}</p>
+  </div>
+  <template v-else>
+    <UiSelect v-model="selectedCollectableAddress" :disabled="isProposal">
+      <template #label>{{ $t('safeSnap.asset') }}</template>
+      <template
+        v-if="
+          selectedCollectable &&
+          (selectedCollectable.imageUri || selectedCollectable.logoUri)
+        "
+        #image
+      >
+        <img
+          :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
+          alt=""
+          class="tokenImage"
+        />
+      </template>
+      <option v-if="!collectables.length" disabled selected>
+        - {{ $t('safeSnap.noCollectibles') }} -
+      </option>
+      <option
+        v-for="(collectable, index) in collectables"
+        :key="index"
+        :value="collectable.address"
+      >
+        {{ collectable.name }} #{{ shorten(collectable.id, 10) }}
+      </option>
+    </UiSelect>
 
-  <AddressInput
-    v-model="recipient"
-    :disabled="isProposal"
-    :input-props="{
-      required: true
-    }"
-    :label="$t('safeSnap.to')"
-  />
+    <AddressInput
+      v-model="recipient"
+      :disabled="isProposal"
+      :input-props="{
+        required: true
+      }"
+      :label="$t('safeSnap.to')"
+    />
+  </template>
 </template>
 
 <style scoped>

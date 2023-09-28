@@ -241,6 +241,7 @@ onMounted(async () => {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <UiSelect
+      v-if="!isProposal"
       :model-value="
         safes.findIndex(
           safe => safe.safeAddress === newPluginData.safe?.safeAddress
