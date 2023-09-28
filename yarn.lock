@@ -1793,10 +1793,10 @@
     "@sentry/utils" "7.55.2"
     tslib "^1.9.3"
 
-"@shutter-network/shutter-crypto@0.1.0-beta.3":
-  version "0.1.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@shutter-network/shutter-crypto/-/shutter-crypto-0.1.0-beta.3.tgz#0ec7a3beab87aed15363349d240dfdff8d462012"
-  integrity sha512-kX9gOODp/4HqRubM7Hx4bb36yuVxIB/FOb4CfhB3gGWO5H2u7i0EnvrdJzsYXtDSrELXv7ay5Ly9k6X2fAk1jA==
+"@shutter-network/shutter-crypto@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@shutter-network/shutter-crypto/-/shutter-crypto-1.0.1.tgz#b26ac82ecfe3aadaa261581d58f625c9b75e3699"
+  integrity sha512-bA8uFUkjBaec0ui8za7cEEvspcUTi5DdsO/U8mq2MkgdVu+JRoNuQOhS0hVbh77FXOhXVIZXNf6iHxRIk/IjJQ==
   dependencies:
     browser-or-node "^2.0.0"
 
