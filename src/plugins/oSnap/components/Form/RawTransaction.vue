@@ -44,7 +44,7 @@ watch(value, updateTransaction);
 watch(data, updateTransaction);
 
 function updateTransaction() {
-  if (props.isProposal || !isToValid || !isValueValid.value || !isDataValid.value)
+  if (props.isProposal || !isToValid.value || !isValueValid.value || !isDataValid.value)
     return;
 
   const transaction = createRawTransaction({
@@ -57,7 +57,12 @@ function updateTransaction() {
 </script>
 
 <template>
-  <div class="space-y-2">
+  <div v-if="isProposal">
+    <p>to: {{ transaction.to }}</p>
+    <p>value: {{  transaction.value }}</p>
+    <p>data: {{ transaction.data }}</p>
+  </div>
+  <div v-else class="space-y-2">
     <AddressInput
       v-model="to"
       :disabled="isProposal"

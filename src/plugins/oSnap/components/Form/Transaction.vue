@@ -99,5 +99,6 @@ function updateTransaction(transaction: TTransaction) {
     v-if="transaction.type === 'raw'"
     :is-proposal="isProposal"
     :transaction="newTransaction"
+    @update-transaction="updateTransaction"
   />
 </template>
