@@ -121,18 +121,21 @@ function enhanceTokensWithBalances(
     });
 }
 
-function enhanceTokenWithBalance(balance: BalanceResponse, tokens: Token[]): Token {
+function enhanceTokenWithBalance(
+  balance: BalanceResponse,
+  tokens: Token[]
+): Token {
   const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
   return {
     ...balance.token,
     address: balance.tokenAddress,
     balance: balance.balance
       ? formatUnits(balance.balance, balance.token.decimals)
-      : "0",
+      : '0',
     verified: !!verifiedToken,
     chainId: verifiedToken ? verifiedToken.chainId : undefined
   };
-
+}
 
 function getVerifiedToken(tokenAddress: string, tokens: Token[]) {
   return tokens.find(
