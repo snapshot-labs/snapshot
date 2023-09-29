@@ -68,7 +68,8 @@ watch(selectedCollectableAddress, updateTransaction);
 <template>
   <div v-if="isProposal">
     <p>recipient: {{ transaction.recipient }}</p>
-    <p>collectable: {{  transaction.collectable.address }}</p>
+    <p>collectable: {{  transaction.collectable.name ?? transaction.collectable.tokenName }} #{{ transaction.collectable.id }}</p>
+    <p>address: {{ transaction.collectable.address }}</p>
   </div>
   <template v-else>
     <UiSelect v-model="selectedCollectableAddress" :disabled="isProposal">
@@ -94,7 +95,7 @@ watch(selectedCollectableAddress, updateTransaction);
         :key="index"
         :value="collectable.address"
       >
-        {{ collectable.name }} #{{ shorten(collectable.id, 10) }}
+        {{ collectable.name ?? collectable.tokenName }} #{{ shorten(collectable.id, 10) }}
       </option>
     </UiSelect>
 

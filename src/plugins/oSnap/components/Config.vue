@@ -146,12 +146,13 @@ function getVerifiedToken(tokenAddress: string, tokens: Token[]) {
 async function fetchCollectibles(
   network: Network,
   gnosisSafeAddress: string
-): Promise<NFT[]> {
+) {
   try {
     const response = await getGnosisSafeCollectibles(
       network,
       gnosisSafeAddress
     );
+    console.log('nfts', response)
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
