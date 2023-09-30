@@ -19,10 +19,10 @@ const { web3Account } = useWeb3();
 const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
-  const items = [
-    { text: t('duplicate'), action: 'duplicate' },
-    { text: t('report'), action: 'report' }
-  ];
+  const items: { text: string; action: string }[] = [];
+  if (isCreator.value) items.push({ text: t('edit'), action: 'edit' });
+  items.push({ text: t('duplicate'), action: 'duplicate' });
+  items.push({ text: t('report'), action: 'report' });
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -55,14 +55,15 @@ function handleSelect(e) {
   if (!props.proposal) return;
   if (e === 'delete') deleteProposal();
   if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
-  if (e === 'duplicate') {
+  if (e === 'duplicate' || e === 'edit') {
     resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
         key: props.proposal.space.id,
         sourceProposal: props.proposal.id
-      }
+      },
+      query: { editing: e === 'edit' ? 'true' : undefined }
     });
   }
 }
@@ -149,6 +150,7 @@ watch(
         </template>
         <template #item="{ item }">
           <div class="flex items-center gap-2">
+            <i-ho-pencil v-if="item.action === 'edit'" />
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
             <i-ho-flag v-if="item.action === 'report'" />
             <i-ho-trash v-if="item.action === 'delete'" />
