@@ -35,29 +35,36 @@ Welcome to Snapshot!
 
 Snapshot is your ticket to simple and affordable on-chain voting for DAOs. This framework empowers DAOs to conduct on-chain governance efficiently and affordably. Built on StarkNet, it facilitates governing your community. 
 In this documentation, we'll guide you through Snapshot step by step. Whether you're new to DAOs or a seasoned pro, you'll find everything you need to know to get started and make the most user-friendly tool for your governance needs. 
+For more in-depth information, please refer to [this link](https://snapshot.mirror.xyz/cUOrwdtEs5PvNh0sqYWWxPjt8GdJWn_Qp3cl7E3_8IU) 
+
 ## Project setup
 
+Open your terminal or command prompt.
+Run the following command:
 ```
 yarn
 ```
+This command tells your computer to install all the necessary pieces that the project needs to run. It's like getting all the right tools and materials before starting a project.
 
 ### Compiles and hot-reloads for development
-
 ```
 yarn dev
 ```
+This command starts a development server. It helps you see and test your project while you're working on it.
 
 ### Compiles and minifies for production
 
 ```
 yarn build
 ```
+This command optimizes your project for production use. It bundles and compresses your code, making it faster and more efficient.
 
 ### Lints and fixes files
 
 ```
 yarn run lint
 ```
+Linting is a process that checks your code for common mistakes and coding standards. This command ensures your code is clean, consistent, and free of errors,
 
 ### Development Guide
 
