@@ -64,7 +64,7 @@ This command optimizes your project for production use. It bundles and compresse
 ```
 yarn run lint
 ```
-Linting is a process that checks your code for common mistakes and coding standards. This command ensures your code is clean, consistent, and free of errors,
+Linting is a process that checks your code for common mistakes and coding standards. This command ensures your code is clean, consistent, and free of errors.
 
 ### Development Guide
 
@@ -73,9 +73,9 @@ Use `http://localhost:8080/#/fabien.eth` for testing your code.
 By default your instance will connect to the hub at `https://testnet.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
 
 ## Running service locally with Docker
-1. Run `docker build -t snapshot .` to build the image
+1. Run `docker build -t snapshot .` to package the Snapshot application into a container image
 2. Run `docker run --name snapshot -p 8080:8080 snapshot` to run the container
-3. Go to `http://localhost:8080/#/fabien.eth` to test your code
+3. Go to `http://localhost:8080/#/fabien.eth` on your web browser to test your code
 
 ## License
 
