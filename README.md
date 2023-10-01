@@ -30,6 +30,11 @@
     <a href="https://docs.snapshot.org/guides/contribute"><b>Contribute</b></a>
 </div>
 
+## Introduction
+Welcome to Snapshot!
+
+Snapshot is your ticket to simple and affordable on-chain voting for DAOs. This framework empowers DAOs to conduct on-chain governance efficiently and affordably. Built on StarkNet, it facilitates governing your community. 
+In this documentation, we'll guide you through Snapshot step by step. Whether you're new to DAOs or a seasoned pro, you'll find everything you need to know to get started and make the most user-friendly tool for your governance needs. 
 ## Project setup
 
 ```
