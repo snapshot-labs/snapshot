@@ -68,14 +68,21 @@ Linting is a process that checks your code for common mistakes and coding standa
 
 ### Development Guide
 
-Use `http://localhost:8080/#/fabien.eth` for testing your code.
+Visit the following URL on your browser to test your code: `http://localhost:8080/#/fabien.eth` 
+This URL allows you to interact with your Snapshot application running on your local development server. You can use it to test your code changes and see how they affect the application's behavior.
 
-By default your instance will connect to the hub at `https://testnet.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
+By default your instance will connect to the hub at `https://testnet.snapshot.org`. 
+To customize these settings:
+1)  If it doesn't already exist, create a .env.local file in your project directory. The .env.local file allows you to override default configuration values without modifying the main .env file
+2)  Open the .env.local file in a text editor.
+3)  Inside the .env.local file, specify the configuration values you want to change.
+4)  Save the .env.local file.
+5)  Restart your local Snapshot development server to apply the changes.
 
 ## Running service locally with Docker
-1. Run `docker build -t snapshot .` to package the Snapshot application into a container image
-2. Run `docker run --name snapshot -p 8080:8080 snapshot` to run the container
-3. Go to `http://localhost:8080/#/fabien.eth` on your web browser to test your code
+1. Run `docker build -t snapshot .` to instruct Docker to build an image named "snapshot" from the current directory's contents.
+2. Run `docker run --name snapshot -p 8080:8080 snapshot` to run the container. This port mapping allows you to access the Snapshot application within the container from your web browser.
+3. With the container running, go to `http://localhost:8080/#/fabien.eth` on your web browser to test your code. This allows you to interact with and test your code in a local development environment.
 
 ## License
 
