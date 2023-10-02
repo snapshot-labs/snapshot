@@ -1853,10 +1853,10 @@
   dependencies:
     ofetch "^1.3.3"
 
-"@snapshot-labs/snapshot.js@^0.6.4":
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.6.4.tgz#09f08ab8db0e16c172861438ffe8da3ffe5ac5ef"
-  integrity sha512-De8HWZrXhiV0D97Tp6CclZTXsQg4ePIu0grOym1sfvpHM/ILs4uoox634nDS4zE+/2/6SLp43fMo9dF5j6DXlw==
+"@snapshot-labs/snapshot.js@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.7.0.tgz#50c16ada2bc7011a77edb02c38ddbc08e6331050"
+  integrity sha512-rmV4vlhEugnegHOUm7pq+p8OlzqiHv9JUMP5ZYc2vxAbLkibopk3x5o4ggaKxxNzDDzfOZMMCOZf3nzGMTMVCw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"

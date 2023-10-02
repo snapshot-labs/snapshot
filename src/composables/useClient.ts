@@ -97,6 +97,11 @@ export function useClient() {
         about: payload.about,
         statement: payload.statement
       });
+    } else if (type === 'flag-proposal') {
+      return client.flagProposal(auth.web3, web3.value.account, {
+        space: space.id,
+        proposal: payload.proposal.id
+      });
     }
   }
 
