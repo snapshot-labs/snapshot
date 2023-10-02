@@ -22,7 +22,6 @@ const threeDotItems = computed(() => {
   const items: { text: string; action: string }[] = [];
   if (isCreator.value) items.push({ text: t('edit'), action: 'edit' });
   items.push({ text: t('duplicate'), action: 'duplicate' });
-  items.push({ text: t('report'), action: 'report' });
 
   if ((props.isAdmin || props.isModerator) && !props.proposal.flagged) {
     items.push({ text: t('flag'), action: 'flag' });
