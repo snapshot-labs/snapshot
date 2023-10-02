@@ -20,7 +20,8 @@ const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
   const items: { text: string; action: string }[] = [];
-  if (isCreator.value) items.push({ text: t('edit'), action: 'edit' });
+  if (isCreator.value && props.proposal.state === 'pending')
+    items.push({ text: t('edit'), action: 'edit' });
   items.push({ text: t('duplicate'), action: 'duplicate' });
 
   if ((props.isAdmin || props.isModerator) && !props.proposal.flagged) {
