@@ -482,7 +482,7 @@ onBeforeRouteLeave(async () => {
           data-testid="create-proposal-publish-button"
           @click="handleSubmit"
         >
-          {{ $t('create.publish') }}
+          {{ isEditing ? 'Save changes' : $t('create.publish') }}
         </BaseButton>
         <BaseButton
           v-else
