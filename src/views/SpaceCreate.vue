@@ -69,7 +69,9 @@ const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
 );
 
-const isEditing = computed(() => !!sourceProposal.value && route.query.editing);
+const isEditing = computed(
+  () => !!(sourceProposal.value && route.query.editing)
+);
 
 type DateRange = {
   dateStart: number;
@@ -381,7 +383,7 @@ onMounted(async () => {
     osnap.value.enabled =
       (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
   }
-  if (!!sourceProposal.value && !sourceProposalLoaded.value)
+  if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();
 
   if (!sourceProposal.value) {
@@ -395,6 +397,12 @@ onMounted(async () => {
     !formDraft.value.isBodySet
   ) {
     form.value.body = props.space.template;
+  }
+});
+
+onBeforeRouteLeave(async () => {
+  if (isEditing.value) {
+    resetForm();
   }
 });
 </script>
@@ -437,6 +445,7 @@ onMounted(async () => {
         :date-start="dateStart"
         :date-end="dateEnd"
         :osnap="osnap"
+        :is-editing="isEditing"
         @osnapToggle="handleOsnapToggle"
       />
 
