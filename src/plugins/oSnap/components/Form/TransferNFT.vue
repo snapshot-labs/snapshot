@@ -10,7 +10,7 @@ import { NFT, Network, TransferNftTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  isProposal: boolean;
+  isReadOnly: boolean;
   network: Network;
   collectables: NFT[];
   transaction: TransferNftTransaction;
@@ -33,7 +33,7 @@ const selectedCollectable = computed(() => {
 
 function updateTransaction() {
   if (
-    props.isProposal ||
+    props.isReadOnly ||
     !isAddress(recipient.value) ||
     !selectedCollectable.value
   )
@@ -66,13 +66,19 @@ watch(selectedCollectableAddress, updateTransaction);
 </script>
 
 <template>
-  <div v-if="isProposal">
+  <div v-if="isReadOnly">
     <p>recipient: {{ transaction.recipient }}</p>
-    <p>collectable: {{  transaction.collectable.name ?? transaction.collectable.tokenName }} #{{ transaction.collectable.id }}</p>
+    <p>
+      collectable:
+      {{
+        transaction.collectable.name ?? transaction.collectable.tokenName
+      }}
+      #{{ transaction.collectable.id }}
+    </p>
     <p>address: {{ transaction.collectable.address }}</p>
   </div>
   <template v-else>
-    <UiSelect v-model="selectedCollectableAddress" :disabled="isProposal">
+    <UiSelect v-model="selectedCollectableAddress" :disabled="isReadOnly">
       <template #label>{{ $t('safeSnap.asset') }}</template>
       <template
         v-if="
@@ -95,13 +101,15 @@ watch(selectedCollectableAddress, updateTransaction);
         :key="index"
         :value="collectable.address"
       >
-        {{ collectable.name ?? collectable.tokenName }} #{{ shorten(collectable.id, 10) }}
+        {{ collectable.name ?? collectable.tokenName }} #{{
+          shorten(collectable.id, 10)
+        }}
       </option>
     </UiSelect>
 
     <AddressInput
       v-model="recipient"
-      :disabled="isProposal"
+      :disabled="isReadOnly"
       :input-props="{
         required: true
       }"

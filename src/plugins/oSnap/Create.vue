@@ -12,7 +12,7 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  'update': [value: { key: 'oSnap'; form: OsnapPluginData }];
+  update: [value: { key: 'oSnap'; form: OsnapPluginData }];
 }>();
 
 const update = (newPluginData: OsnapPluginData) => {
@@ -26,7 +26,7 @@ const update = (newPluginData: OsnapPluginData) => {
     :space="space"
     :results="results"
     :proposal="proposal"
-    :is-proposal="false"
+    :is-read-only="false"
     :plugin-data="modelValue?.oSnap ?? initialPluginData"
     @update="update"
   />

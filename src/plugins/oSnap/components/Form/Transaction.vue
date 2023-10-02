@@ -2,22 +2,22 @@
 import { cloneDeep } from 'lodash';
 import { transactionTypes } from '../..';
 import {
-  type Network,
+  TransferNftTransaction,
   type NFT,
+  type Network,
   type RawTransaction as TRawTransaction,
+  type Transaction as TTransaction,
   type Token,
   type TransactionType,
-  type TransferFundsTransaction,
-  type Transaction as TTransaction,
-TransferNftTransaction
+  type TransferFundsTransaction
 } from '../../types';
+import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
-import ContractInteraction from './ContractInteraction.vue';
 
 const props = defineProps<{
-  isProposal: boolean;
+  isReadOnly: boolean;
   transaction: TTransaction;
   transactionIndex: number;
   safeAddress: string;
@@ -28,10 +28,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  updateTransaction: [
-    transaction: TTransaction,
-    transactionIndex: number
-  ];
+  updateTransaction: [transaction: TTransaction, transactionIndex: number];
   removeTransaction: [transactionIndex: number];
 }>();
 
@@ -43,30 +40,22 @@ function updateTransactionType(transactionType: string) {
     return;
   }
   newTransaction.value.type = transactionType as TransactionType;
-  emit(
-    'updateTransaction',
-    newTransaction.value,
-    props.transactionIndex
-  );
+  emit('updateTransaction', newTransaction.value, props.transactionIndex);
 }
 
 function updateTransaction(transaction: TTransaction) {
   newTransaction.value = transaction;
-  emit(
-    'updateTransaction',
-    newTransaction.value,
-    props.transactionIndex
-  );
+  emit('updateTransaction', newTransaction.value, props.transactionIndex);
 }
 </script>
 
 <template>
-  <div v-if="isProposal">
+  <div v-if="isReadOnly">
     <p>{{ transaction.type }} transaction</p>
   </div>
   <UiSelect
     v-else
-    :disabled="isProposal"
+    :disabled="isReadOnly"
     :model-value="transaction.type"
     @update:modelValue="updateTransactionType"
   >
@@ -79,13 +68,11 @@ function updateTransaction(transaction: TTransaction) {
     <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
   </UiSelect>
 
-  <ContractInteraction
-    v-if="transaction.type === 'contractInteraction'"
-  />
+  <ContractInteraction v-if="transaction.type === 'contractInteraction'" />
 
   <TransferFunds
     v-if="transaction.type === 'transferFunds'"
-    :is-proposal="isProposal"
+    :is-read-only="isReadOnly"
     :network="network"
     :tokens="tokens"
     :transaction="(newTransaction as TransferFundsTransaction)"
@@ -94,7 +81,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <TransferNFT
     v-if="transaction.type === 'transferNFT'"
-    :is-proposal="isProposal"
+    :is-read-only="isReadOnly"
     :network="network"
     :safe-address="safeAddress"
     :collectables="collectables"
@@ -104,7 +91,7 @@ function updateTransaction(transaction: TTransaction) {
 
   <RawTransaction
     v-if="transaction.type === 'raw'"
-    :is-proposal="isProposal"
+    :is-read-only="isReadOnly"
     :transaction="(newTransaction as TRawTransaction)"
     @update-transaction="updateTransaction"
   />

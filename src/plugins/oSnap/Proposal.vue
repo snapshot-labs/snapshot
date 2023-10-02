@@ -14,7 +14,7 @@ defineProps<{
     v-if="!!proposal.plugins.oSnap?.safe?.transactions?.length"
     :plugin-data="proposal.plugins.oSnap"
     :proposal="proposal"
-    :is-proposal="true"
+    :is-read-only="true"
     :network="space.network"
     :space="space"
     :results="results"

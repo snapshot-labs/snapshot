@@ -12,7 +12,6 @@ import { cloneDeep } from 'lodash';
 import {
   BalanceResponse,
   GnosisSafe,
-  NFT,
   Network,
   OsnapPluginData,
   Token,
@@ -32,7 +31,7 @@ const props = defineProps<{
   pluginData: OsnapPluginData;
   proposal: Proposal;
   space: ExtendedSpace;
-  isProposal: boolean;
+  isReadOnly: boolean;
   results?: Results;
 }>();
 
@@ -47,20 +46,20 @@ const safes = ref<GnosisSafe[]>([]);
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 function addTransaction(transaction: Transaction) {
-  if (props.isProposal || newPluginData.value.safe === null) return;
+  if (props.isReadOnly || newPluginData.value.safe === null) return;
   newPluginData.value.safe.transactions.push(transaction);
   emit('update', newPluginData.value);
 }
 
 function removeTransaction(transactionIndex: number) {
-  if (props.isProposal || !newPluginData.value.safe) return;
+  if (props.isReadOnly || !newPluginData.value.safe) return;
 
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
   emit('update', newPluginData.value);
 }
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
-  if (props.isProposal || !newPluginData.value.safe) return;
+  if (props.isReadOnly || !newPluginData.value.safe) return;
 
   newPluginData.value.safe.transactions[transactionIndex] = transaction;
   emit('update', newPluginData.value);
@@ -143,16 +142,13 @@ function getVerifiedToken(tokenAddress: string, tokens: Token[]) {
   );
 }
 
-async function fetchCollectibles(
-  network: Network,
-  gnosisSafeAddress: string
-) {
+async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
   try {
     const response = await getGnosisSafeCollectibles(
       network,
       gnosisSafeAddress
     );
-    console.log('nfts', response)
+    console.log('nfts', response);
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
@@ -242,7 +238,7 @@ onMounted(async () => {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <UiSelect
-      v-if="!isProposal"
+      v-if="!isReadOnly"
       :model-value="
         safes.findIndex(
           safe => safe.safeAddress === newPluginData.safe?.safeAddress
@@ -258,7 +254,7 @@ onMounted(async () => {
     <div class="border-b last:border-b-0">
       <SafeTransactions
         v-if="!!newPluginData.safe"
-        :is-proposal="isProposal"
+        :is-read-only="isReadOnly"
         :proposal="proposal"
         :space="space"
         :results="results"
@@ -267,7 +263,11 @@ onMounted(async () => {
         :tokens="newPluginData.safe.tokens"
         :collectables="newPluginData.safe.collectables"
         :network="newPluginData.safe.network"
-        :transactions="isProposal ? pluginData.safe?.transactions ?? [] : newPluginData.safe.transactions"
+        :transactions="
+          isReadOnly
+            ? pluginData.safe?.transactions ?? []
+            : newPluginData.safe.transactions
+        "
         @add-transaction="addTransaction"
         @remove-transaction="removeTransaction"
         @update-transaction="updateTransaction"

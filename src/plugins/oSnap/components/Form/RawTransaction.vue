@@ -4,11 +4,11 @@ import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { createRawTransaction } from '../../index';
-import { RawTransaction, Transaction } from '../../types';
+import { RawTransaction } from '../../types';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  isProposal: boolean;
+  isReadOnly: boolean;
   transaction: RawTransaction;
 }>();
 
@@ -44,7 +44,12 @@ watch(value, updateTransaction);
 watch(data, updateTransaction);
 
 function updateTransaction() {
-  if (props.isProposal || !isToValid.value || !isValueValid.value || !isDataValid.value)
+  if (
+    props.isReadOnly ||
+    !isToValid.value ||
+    !isValueValid.value ||
+    !isDataValid.value
+  )
     return;
 
   const transaction = createRawTransaction({
@@ -57,15 +62,15 @@ function updateTransaction() {
 </script>
 
 <template>
-  <div v-if="isProposal">
+  <div v-if="isReadOnly">
     <p>to: {{ transaction.to }}</p>
-    <p>value: {{  transaction.value }}</p>
+    <p>value: {{ transaction.value }}</p>
     <p>data: {{ transaction.data }}</p>
   </div>
   <div v-else class="space-y-2">
     <AddressInput
       v-model="to"
-      :disabled="isProposal"
+      :disabled="isReadOnly"
       :input-props="{ required: false }"
       :error="!isToValid && $t('safeSnap.invalidAddress')"
       :label="$t('safeSnap.to')"
@@ -73,7 +78,7 @@ function updateTransaction() {
 
     <UiInput
       v-model="value"
-      :disabled="isProposal"
+      :disabled="isReadOnly"
       :error="!isValueValid && $t('safeSnap.invalidValue')"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
@@ -81,7 +86,7 @@ function updateTransaction() {
 
     <UiInput
       v-model="data"
-      :disabled="isProposal"
+      :disabled="isReadOnly"
       :error="!isDataValid && $t('safeSnap.invalidData')"
     >
       <template #label>{{ $t('safeSnap.data') }}</template>

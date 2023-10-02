@@ -18,16 +18,13 @@ const props = defineProps<{
   proposal: Proposal;
   space: ExtendedSpace;
   results?: Results;
-  isProposal: boolean;
+  isReadOnly: boolean;
 }>();
 
 const emit = defineEmits<{
   addTransaction: [transaction: TTransaction];
   removeTransaction: [transactionIndex: number];
-  updateTransaction: [
-    transaction: TTransaction,
-    transactionIndex: number
-  ];
+  updateTransaction: [transaction: TTransaction, transactionIndex: number];
 }>();
 
 const safeLink = computed(() => {
@@ -78,20 +75,20 @@ const proposalResolved = computed(() => {
         :key="index"
         :transaction="transaction"
         :transaction-index="index"
-        :is-proposal="isProposal"
+        :is-read-only="isReadOnly"
         :safe-address="safeAddress"
         :module-address="moduleAddress"
         :tokens="tokens"
         :collectables="collectables"
-        :network="(props.network)"
+        :network="props.network"
         @update-transaction="(...args) => emit('updateTransaction', ...args)"
         @remove-transaction="(...args) => emit('removeTransaction', ...args)"
       />
     </div>
 
-    <div v-if="(!isProposal || proposalResolved)">
+    <div v-if="!isReadOnly || proposalResolved">
       <BaseButton
-        v-if="!isProposal"
+        v-if="!isReadOnly"
         class="my-3"
         @click="
           emit('addTransaction', {
@@ -107,7 +104,7 @@ const proposalResolved = computed(() => {
       </BaseButton>
 
       <HandleOutcomeUma
-        v-if="isProposal"
+        v-if="isReadOnly"
         :space="space"
         :proposal="proposal"
         :transactions="transactions"
