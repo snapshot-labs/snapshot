@@ -1,5 +1,4 @@
 import { OsnapPluginData } from './types';
-import { MULTI_SEND_VERSION } from './utils/multiSend';
 
 export const initialPluginData: OsnapPluginData = {
   safe: null
@@ -49,7 +48,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
 } as const;
 
 // ABIs
-export const UMA_MODULE_ABI = [
+export const OPTIMISTIC_GOVERNOR_ABI = [
   'constructor(address _finder, address _owner, address _collateral, uint256 _bondAmount, string _rules, bytes32 _identifier, uint64 _liveness)',
   'error NotIERC165Compliant(address guard_)',
   'event AvatarSet(address indexed previousAvatar, address indexed newAvatar)',
@@ -107,7 +106,7 @@ export const UMA_MODULE_ABI = [
   'function transferOwnership(address newOwner)'
 ] as const;
 
-export const UMA_ORACLE_ABI = [
+export const OPTIMISTIC_ORACLE_V3_ABI = [
   'constructor(address _finder, address _defaultCurrency, uint64 _defaultLiveness)',
   'event AdminPropertiesSet(address defaultCurrency, uint64 defaultLiveness, uint256 burnedBondPercentage)',
   'event AssertionDisputed(bytes32 indexed assertionId, address indexed caller, address indexed disputer)',
@@ -142,7 +141,7 @@ export const UMA_ORACLE_ABI = [
   'function transferOwnership(address newOwner)'
 ] as const;
 
-export const UMA_VOTING_ABI = [
+export const VOTING_ABI = [
   'constructor(uint128 _emissionRate, uint64 _unstakeCoolDown, uint64 _phaseLength, uint32 _maxRolls, uint32 _maxRequestsPerRound, uint128 _gat, uint64 _spat, address _votingToken, address _finder, address _slashingLibrary, address _previousVotingContract)',
   'event DelegateSet(address indexed delegator, address indexed delegate)',
   'event DelegatorSet(address indexed delegate, address indexed delegator)',
@@ -272,65 +271,6 @@ export const ERC20_ABI = [
 export const ERC721_ABI = [
   'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ] as const;
-
-export const MULTI_SEND_ABI = [
-  'function multiSend(bytes transactions) payable'
-] as const;
-
-// MULTI SEND CONSTANTS
-
-export const MULTI_SEND_V1_3_0 = {
-  '1': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '3': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '10': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '28': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '42': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '5': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '56': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '69': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '100': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '122': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '123': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '137': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '246': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '288': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '588': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '1088': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '1285': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1287': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '4002': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '42161': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '42220': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '43114': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
-  '73799': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '80001': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '333999': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1313161554': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
-  '1313161555': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
-} as const;
-export const MULTI_SEND_V1_2_0 = {
-  '1': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '42': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '5': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '88': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '100': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '246': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185',
-  '73799': '0x6851D6fDFAfD08c0295C392436245E5bc78B0185'
-} as const;
-export const MULTI_SEND_V1_1_1 = {
-  '1': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '5': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '42': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '88': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '100': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '246': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD',
-  '73799': '0x8D29bE29923b68abfDD21e541b9374737B49cdAD'
-} as const;
-export const MULTI_SEND_VERSIONS = {
-  [MULTI_SEND_VERSION.V1_1_1]: MULTI_SEND_V1_1_1,
-  [MULTI_SEND_VERSION.V1_2_0]: MULTI_SEND_V1_2_0,
-  [MULTI_SEND_VERSION.V1_3_0]: MULTI_SEND_V1_3_0
-} as const;
 
 // to potentially cut down on event ranges we query, hard code some deploy blocks for contracts
 export type ContractData = {

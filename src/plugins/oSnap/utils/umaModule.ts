@@ -10,8 +10,8 @@ import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   EIP3770_PREFIXES,
   ERC20_ABI,
-  UMA_MODULE_ABI,
-  UMA_ORACLE_ABI,
+  OPTIMISTIC_GOVERNOR_ABI,
+  OPTIMISTIC_ORACLE_V3_ABI,
   contractData
 } from '../constants';
 import { Network, OptimisticGovernorTransaction } from '../types';
@@ -199,7 +199,7 @@ const getBondDetails = async (
 ) => {
   const { web3Account } = useWeb3();
 
-  const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
+  const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
 
   const erc20Contract = new Contract(
     await moduleContract.collateral(),
@@ -243,14 +243,14 @@ export const getModuleDetailsFromChain = async (
   explanation: string,
   transactions: OptimisticGovernorTransaction[] | undefined
 ) => {
-  const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
+  const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
   const moduleDetails: [
     [gnosisSafeAddress: string],
     [optimisticOracleV3Address: string],
     [rules: string],
     [bondAmount: BigNumber],
     [liveness: BigNumber]
-  ] = await multicall(network, provider, UMA_MODULE_ABI as any, [
+  ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
@@ -332,7 +332,7 @@ export const getModuleDetailsFromChain = async (
   // Search for requests with matching ancillary data
   const oracleContract = new Contract(
     optimisticOracle,
-    UMA_ORACLE_ABI,
+    OPTIMISTIC_ORACLE_V3_ABI,
     provider
   );
   const latestBlock = await provider.getBlock('latest');
@@ -456,14 +456,14 @@ export const getModuleDetailsGql = async (
   explanation: string,
   transactions: OptimisticGovernorTransaction[] | undefined
 ) => {
-  const moduleContract = new Contract(moduleAddress, UMA_MODULE_ABI, provider);
+  const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
   const moduleDetails: [
     [gnosisSafeAddress: string],
     [optimisticOracleV3Address: string],
     [rules: string],
     [bondAmount: BigNumber],
     [liveness: BigNumber]
-  ] = await multicall(network, provider, UMA_MODULE_ABI as any, [
+  ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
