@@ -75,7 +75,7 @@ export default {
 <template>
   <UiInput
     :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${type}`"
+    :error="error && `Invalid ${type}`"
     :model-value="value"
     :placeholder="placeholder"
     @update:modelValue="handleInput($event)"

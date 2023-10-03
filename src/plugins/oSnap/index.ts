@@ -153,7 +153,7 @@ export * from './utils/transactions';
     moduleAddress: string,
     explanation: string,
     transactions: OptimisticGovernorTransaction[]
-  ) {
+  ) { 
     const explanationBytes = toUtf8Bytes(explanation);
     const tx = await sendTransaction(
       web3,

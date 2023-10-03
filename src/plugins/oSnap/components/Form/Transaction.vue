@@ -68,7 +68,7 @@ function updateTransaction(transaction: TTransaction) {
     <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
   </UiSelect>
 
-  <ContractInteraction v-if="transaction.type === 'contractInteraction'" />
+  <ContractInteraction v-if="transaction.type === 'contractInteraction'" :is-read-only="isReadOnly" :transaction="transaction" />
 
   <TransferFunds
     v-if="transaction.type === 'transferFunds'"

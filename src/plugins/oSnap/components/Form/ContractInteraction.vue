@@ -4,10 +4,9 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import {
-  contractInteractionToModuleTransaction,
+  createContractInteractionTransaction,
   getABIWriteFunctions,
   getContractABI,
-  getContractTransactionData,
   validateTransaction
 } from '../../index';
 import {
@@ -19,8 +18,8 @@ import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 
 const props = defineProps<{
-  preview: boolean;
   network: Network;
+  isReadOnly: boolean;
   transaction: Transaction;
 }>();
 
@@ -29,11 +28,13 @@ const emit = defineEmits<{
 }>();
 
 const to = ref('');
+const isToValid = computed(() => {
+  return to.value === '' || isAddress(to.value);
+});
 const abi = ref('');
 const isAbiValid = ref(true);
 const value = ref('0');
 const isValueValid = ref(true);
-const nonce = ref('0');
 const methods = ref<FunctionFragment[]>([]);
 const selectedMethodIndex = ref(0);
 const selectedMethod = computed(() => methods.value[selectedMethodIndex.value]);
@@ -42,7 +43,7 @@ const selectedParameters = ref<string[]>([]);
 
 function updateTransaction() {
   if (
-    props.preview ||
+    props.isReadOnly ||
     !isBigNumberish(value.value) ||
     !isAddress(to.value) ||
     !abi.value ||
@@ -51,22 +52,16 @@ function updateTransaction() {
     return;
   try {
     if (isBigNumberish(value.value) && isAddress(to.value)) {
-      const data = getContractTransactionData(
-        abi.value,
-        selectedMethod.value,
-        parameters.value
-      );
-
-      const transaction = contractInteractionToModuleTransaction({
-        data,
+      const transaction = createContractInteractionTransaction({
         to: to.value,
         value: value.value,
-        nonce: nonce.value,
-        method: selectedMethod.value
+        abi: abi.value,
+        method: selectedMethod.value,
+        parameters: selectedParameters.value
       });
 
       if (validateTransaction(transaction)) {
-        emit('update:modelValue', transaction);
+        emit('updateTransaction', transaction);
         return;
       }
     }
@@ -125,7 +120,7 @@ function updateValue(newValue: string) {
   <div class="space-y-2">
     <InputAddress
       v-model="to"
-      :disabled="preview"
+      :disabled="isReadOnly"
       :input-props="{
         required: true
       }"
@@ -134,7 +129,7 @@ function updateValue(newValue: string) {
     />
 
     <UiInput
-      :disabled="preview"
+      :disabled="isReadOnly"
       :error="!isValueValid && $t('safeSnap.invalidValue')"
       :model-value="value"
       @update:modelValue="updateValue($event)"
@@ -143,7 +138,7 @@ function updateValue(newValue: string) {
     </UiInput>
 
     <UiInput
-      :disabled="preview"
+      :disabled="isReadOnly"
       :error="!isAbiValid && $t('safeSnap.invalidAbi')"
       :model-value="abi"
       @update:modelValue="updateAbi($event)"
@@ -154,7 +149,7 @@ function updateValue(newValue: string) {
     <div v-if="methods.length">
       <UiSelect
         v-model="selectedMethodIndex"
-        :disabled="preview"
+        :disabled="isReadOnly"
         @change="updateMethod($event)"
       >
         <template #label>function</template>
@@ -169,10 +164,9 @@ function updateValue(newValue: string) {
         <InputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
-          :disabled="preview"
-          :model-value="parameters[index]"
           :parameter="input"
-          @update:modelValue="updateParameter(index, $event)"
+          :value="parameters[index]"
+          @update-parameter-value="updateParameter(index, $event)"
         />
       </div>
     </div>

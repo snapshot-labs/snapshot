@@ -6,8 +6,8 @@ import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { ERC20_ABI, ERC721_ABI } from '../constants';
-import { BaseTransaction, NFT, Network, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
-import { getContractABI, parseMethodToABI } from './abi';
+import { BaseTransaction, ContractInteractionTransaction, NFT, Network, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
+import { encodeMethodAndParams, getContractABI, parseMethodToABI } from './abi';
 import { getNativeAsset } from './coins';
 import { InterfaceDecoder } from './decoder';
 import { fetchTextSignatures } from './index';
@@ -100,6 +100,28 @@ export function createTransferFundsTransaction(params: {
     to,
     value,
     amount,
+    formatted,
+  }
+}
+
+export function createContractInteractionTransaction(params: {
+  to: string;
+  value: string;
+  abi: string;
+  method: FunctionFragment;
+  parameters: string[];
+}): ContractInteractionTransaction {
+  const type = 'contractInteraction';
+  const data = encodeMethodAndParams(
+    params.abi,
+    params.method,
+    params.parameters
+  );
+  const formatted = createFormattedOptimisticGovernorTransaction({...params, data });
+  return {
+    ...params,
+    data,
+    type,
     formatted,
   }
 }

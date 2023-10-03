@@ -1,6 +1,6 @@
+import { ABI } from '@/helpers/interfaces';
 import {
   FormatTypes,
-  Fragment,
   FunctionFragment,
   Interface,
   ParamType
@@ -8,7 +8,6 @@ import {
 import { BigNumberish } from '@ethersproject/bignumber';
 import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
-import { ABI } from '@/helpers/interfaces';
 import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './index';
 
 export function isArrayParameter(parameter: string): boolean {
@@ -101,7 +100,7 @@ function extractMethodArgs(values: string[]) {
   };
 }
 
-export function getContractTransactionData(
+export function encodeMethodAndParams(
   abi: string,
   method: FunctionFragment,
   values: string[]

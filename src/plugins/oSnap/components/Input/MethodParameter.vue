@@ -1,93 +1,126 @@
-<script>
-import { isParameterValue } from '../../utils/validator';
-import { isArrayParameter } from '../../index';
+<script setup lang="ts">
+import { ParamType } from '@ethersproject/abi';
+import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import SafeSnapInputAddress from './Address.vue';
-import SafeSnapInputArrayType from './ArrayType.vue';
 
-export default {
-  components: { SafeSnapInputAddress, SafeSnapInputArrayType },
-  props: ['modelValue', 'disabled', 'parameter'],
-  emits: ['update:modelValue', 'isValid'],
-  data() {
-    const placeholder = this.parameter.name
-      ? `${this.parameter.name} (${this.parameter.type})`
-      : this.parameter.type;
+const props = defineProps<{
+  parameter: ParamType;
+  value: string;
+}>();
 
-    let value;
-    if (this.parameter.type === 'bool') value = false;
+const emit = defineEmits<{
+  updateParameterValue: [value: string];
+}>();
 
-    return {
-      placeholder,
-      value,
-      dirty: false
-    };
-  },
-  computed: {
-    isValid() {
-      return isParameterValue(this.parameter.baseType, this.value);
-    }
-  },
-  watch: {
-    modelValue(value) {
-      this.input = value;
-    }
-  },
-  mounted() {
-    if (this.modelValue) this.value = this.modelValue;
-  },
-  created() {
-    if (this.modelValue) this.input = this.modelValue;
-  },
-  methods: {
-    handleInput(value) {
-      this.value = value;
-      this.dirty = true;
-      this.$emit('update:modelValue', value);
-      this.$emit('isValid', this.isValid);
-    },
-    isArrayType() {
-      return isArrayParameter(this.parameter.baseType);
-    }
+const placeholder = `${props.parameter.name} (${props.parameter.type})`;
+const isDirty = ref(false);
+const isBooleanInput = computed(() => props.parameter.baseType === 'bool');
+const isAddressInput = computed(() => props.parameter.baseType === 'address');
+const isNumberInput = computed(() => props.parameter.baseType.includes('int'));
+const isBytesInput = computed(() => props.parameter.baseType.includes('bytes'));
+const isArrayInput = computed(
+  () =>
+    props.parameter.baseType === 'array' || props.parameter.baseType === 'tuple'
+);
+
+const inputType = computed(() => {
+  if (isBooleanInput.value) return 'boolean';
+  if (isAddressInput.value) return 'address';
+  if (isNumberInput.value) return 'number';
+  if (isBytesInput.value) return 'bytes';
+  if (isArrayInput.value) return 'array';
+  return 'text';
+});
+
+const isInputValid = computed(() => {
+  if (!isDirty.value) return true;
+  if (isAddressInput.value) return isAddress(newValue.value);
+  if (isArrayInput.value) return validateArrayInput(newValue.value);
+  if (isNumberInput.value) return validateNumberInput(newValue.value);
+  if (isBytesInput.value) return validateBytesInput(newValue.value);
+  return true;
+});
+
+const newValue = ref(props.value);
+
+watch(newValue, () => {
+  if (isInputValid.value) {
+    emit('updateParameterValue', newValue.value);
   }
-};
+});
+
+function validateNumberInput(value: string) {
+  return isBigNumberish(value);
+}
+
+function validateBytesInput(value: string) {
+  return value.startsWith('0x');
+}
+
+function validateArrayInput(value: string) {
+  try {
+    const parsedValue = JSON.parse(value) as Array<string> | unknown;
+    if (!Array.isArray(parsedValue)) return false;
+    if (parsedValue.length !== props.parameter.arrayLength) return false;
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function onChange(value: string) {
+  newValue.value = value;
+  isDirty.value = true;
+}
 </script>
 
 <template>
   <UiSelect
-    v-if="parameter.type === 'bool'"
-    :disabled="disabled"
+    v-if="inputType === 'boolean'"
     :model-value="value"
-    @update:modelValue="handleInput($event)"
+    @update:modelValue="onChange($event)"
   >
     <template #label>{{ placeholder }}</template>
     <option :value="true">true</option>
     <option :value="false">false</option>
   </UiSelect>
 
-  <!-- ADDRESS -->
   <SafeSnapInputAddress
-    v-else-if="parameter.type === 'address'"
-    :disabled="disabled"
+    v-if="inputType === 'address'"
     :input-props="{ required: true }"
     :label="placeholder"
     :model-value="value"
-    @update:modelValue="handleInput($event)"
+    @update:modelValue="onChange($event)"
   />
-  <!-- Array of X type -->
-  <SafeSnapInputArrayType
-    v-else-if="isArrayType()"
-    :disabled="disabled"
-    :model-value="value"
-    :parameter="parameter"
-    @update:modelValue="handleInput($event)"
-  />
-  <!-- Text input -->
   <UiInput
-    v-else
-    :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${parameter.type}`"
+    v-if="inputType === 'array'"
+    :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
-    @update:modelValue="handleInput($event)"
+    @update:modelValue="onChange($event)"
+  >
+    <template #label>{{ placeholder }}</template>
+  </UiInput>
+  <UiInput
+    v-if="inputType === 'number'"
+    :error="!isInputValid && `Invalid ${parameter.baseType}`"
+    :model-value="value"
+    @update:modelValue="onChange($event)"
+  >
+    <template #label>{{ placeholder }}</template>
+  </UiInput>
+  <UiInput
+    v-if="inputType === 'bytes'"
+    :error="!isInputValid && `Invalid ${parameter.baseType}`"
+    :model-value="value"
+    @update:modelValue="onChange($event)"
+  >
+    <template #label>{{ placeholder }}</template>
+  </UiInput>
+  <UiInput
+    v-if="inputType === 'text'"
+    :model-value="value"
+    @update:modelValue="onChange($event)"
   >
     <template #label>{{ placeholder }}</template>
   </UiInput>

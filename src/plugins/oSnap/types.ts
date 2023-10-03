@@ -1,3 +1,4 @@
+import { FunctionFragment } from '@ethersproject/abi';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { transactionTypes } from './constants';
 
@@ -46,6 +47,8 @@ export type RawTransaction = BaseTransaction & {
 
 export type ContractInteractionTransaction = BaseTransaction & {
   type: 'contractInteraction';
+  method: FunctionFragment;
+  parameters: string[];
 }
 
 export type TransferNftTransaction = BaseTransaction & {
