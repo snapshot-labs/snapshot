@@ -22,7 +22,7 @@ import {
   getIsOsnapEnabled,
   getModuleAddressForTreasury
 } from '../utils';
-import SafeTransactions from './SafeTransactions.vue';
+import TransactionBuilder from './TransactionBuilder/TransactionBuilder.vue';
 
 const props = defineProps<{
   pluginData: OsnapPluginData;
@@ -249,7 +249,7 @@ onMounted(async () => {
       </option>
     </UiSelect>
     <div class="border-b last:border-b-0">
-      <SafeTransactions
+      <TransactionBuilder
         v-if="!!newPluginData.safe"
         :is-read-only="isReadOnly"
         :proposal="proposal"

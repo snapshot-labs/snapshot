@@ -2,11 +2,9 @@
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { getIpfsUrl, shorten } from '@/helpers/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { EIP3770_PREFIXES } from '../constants';
-import { NFT, Network, Transaction as TTransaction, Token } from '../types';
-import Transaction from './Form/Transaction.vue';
-import HandleOutcomeUma from './HandleOutcomeUma.vue';
-import Tooltip from './Tooltip.vue';
+import { EIP3770_PREFIXES } from '../../constants';
+import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
+import Transaction from './Transaction.vue';
 
 const props = defineProps<{
   safeAddress: string;
