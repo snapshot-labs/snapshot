@@ -44,6 +44,11 @@ const isInputValid = computed(() => {
 
 const newValue = ref(props.value);
 
+watch(props.parameter, () => {
+  newValue.value = '';
+  isDirty.value = false;
+})
+
 watch(newValue, () => {
   if (isInputValid.value) {
     emit('updateParameterValue', newValue.value);
@@ -62,7 +67,11 @@ function validateArrayInput(value: string) {
   try {
     const parsedValue = JSON.parse(value) as Array<string> | unknown;
     if (!Array.isArray(parsedValue)) return false;
-    if (parsedValue.length !== props.parameter.arrayLength) return false;
+    if (
+      props.parameter.arrayLength !== -1 &&
+      parsedValue.length !== props.parameter.arrayLength
+    )
+      return false;
     return true;
   } catch (e) {
     return false;
