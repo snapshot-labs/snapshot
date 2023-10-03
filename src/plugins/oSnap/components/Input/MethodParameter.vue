@@ -13,7 +13,6 @@ const emit = defineEmits<{
   updateParameterValue: [value: string];
 }>();
 
-const placeholder = `${props.parameter.name} (${props.parameter.type})`;
 const isDirty = ref(false);
 const isBooleanInput = computed(() => props.parameter.baseType === 'bool');
 const isAddressInput = computed(() => props.parameter.baseType === 'address');
@@ -32,6 +31,9 @@ const inputType = computed(() => {
   if (isArrayInput.value) return 'array';
   return 'text';
 });
+
+const label = `${props.parameter.name} (${props.parameter.type})`;
+const arrayPlaceholder = `E.g. ["text", 123, 0x123]`
 
 const isInputValid = computed(() => {
   if (!isDirty.value) return true;
@@ -90,7 +92,7 @@ function onChange(value: string) {
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{ placeholder }}</template>
+    <template #label>{{ label }}</template>
     <option :value="true">true</option>
     <option :value="false">false</option>
   </UiSelect>
@@ -98,39 +100,43 @@ function onChange(value: string) {
   <SafeSnapInputAddress
     v-if="inputType === 'address'"
     :input-props="{ required: true }"
-    :label="placeholder"
+    :label="label"
     :model-value="value"
     @update:modelValue="onChange($event)"
   />
   <UiInput
     v-if="inputType === 'array'"
+    :placeholder="arrayPlaceholder"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{ placeholder }}</template>
+    <template #label>{{  label }}</template>
   </UiInput>
   <UiInput
     v-if="inputType === 'number'"
+    placeholder="123456"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{ placeholder }}</template>
+    <template #label>{{ label }}</template>
   </UiInput>
   <UiInput
     v-if="inputType === 'bytes'"
+    placeholder="0x123abc"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{ placeholder }}</template>
+    <template #label>{{ label }}</template>
   </UiInput>
   <UiInput
     v-if="inputType === 'text'"
+    placeholder="a string of text"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{ placeholder }}</template>
+    <template #label>{{ label }}</template>
   </UiInput>
 </template>
