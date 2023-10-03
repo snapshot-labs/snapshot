@@ -26,10 +26,10 @@ const emit = defineEmits<{
 }>();
 
 const nativeAsset = getNativeAsset(props.network);
-const amount = ref('0');
-const recipient = ref('');
+const amount = ref(props.transaction.amount ?? '0');
+const recipient = ref(props.transaction.recipient ?? '');
 const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
-const selectedTokenAddress = ref<Token['address']>('main');
+const selectedTokenAddress = ref<Token['address']>(props.transaction.token.address ?? 'main');
 const selectedToken = computed(
   () =>
     tokens.value.find(token => token.address === selectedTokenAddress.value) ??

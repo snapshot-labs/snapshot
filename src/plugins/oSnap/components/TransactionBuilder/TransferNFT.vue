@@ -21,8 +21,10 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TransferNftTransaction];
 }>();
 
-const recipient = ref('');
-const selectedCollectableAddress = ref('');
+const recipient = ref(props.transaction.recipient ?? '');
+const selectedCollectableAddress = ref(
+  props.transaction.collectable.address ?? ''
+);
 
 const selectedCollectable = computed(() => {
   if (!selectedCollectableAddress.value) return;

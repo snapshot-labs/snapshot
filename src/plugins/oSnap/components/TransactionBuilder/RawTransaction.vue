@@ -16,9 +16,9 @@ const emit = defineEmits<{
   updateTransaction: [transaction: RawTransaction];
 }>();
 
-const to = ref('');
-const value = ref('0');
-const data = ref('');
+const to = ref(props.transaction.to ?? '');
+const value = ref(props.transaction.value ?? '0');
+const data = ref(props.transaction.data ?? '0x');
 
 const isToValid = computed(() => {
   return to.value === '' || isAddress(to.value);

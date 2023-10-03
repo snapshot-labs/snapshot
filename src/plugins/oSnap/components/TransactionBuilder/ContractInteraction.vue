@@ -3,11 +3,7 @@ import { parseValue } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 
-import {
-  ContractInteractionTransaction,
-  Network,
-  Transaction
-} from '../../types';
+import { ContractInteractionTransaction, Network } from '../../types';
 import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
@@ -37,13 +33,17 @@ const value = ref(props.transaction.value ?? '');
 const isValueValid = ref(true);
 const methods = ref<FunctionFragment[]>([]);
 const selectedMethodName = ref(props.transaction.methodName ?? '');
-const selectedMethod = computed(() => methods.value.find(method => method.name === selectedMethodName.value) ?? methods.value[0]);
+const selectedMethod = computed(
+  () =>
+    methods.value.find(method => method.name === selectedMethodName.value) ??
+    methods.value[0]
+);
 const parameters = ref<string[]>([]);
 const selectedParameters = ref<string[]>([]);
- 
+
 function updateTransaction() {
   if (props.isReadOnly || !isValueValid || !isToValid || !isAbiValid) return;
-  try { 
+  try {
     const transaction = createContractInteractionTransaction({
       to: to.value,
       value: value.value,
