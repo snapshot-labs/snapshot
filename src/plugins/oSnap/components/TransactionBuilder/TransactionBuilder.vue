@@ -5,6 +5,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { EIP3770_PREFIXES } from '../../constants';
 import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
 import Transaction from './Transaction.vue';
+import HandleOutcomeUma from './HandleOutcomeUma.vue';
 
 const props = defineProps<{
   safeAddress: string;
@@ -102,7 +103,7 @@ const proposalResolved = computed(() => {
       </BaseButton>
 
       <HandleOutcomeUma
-        v-if="isReadOnly"
+        v-if="isReadOnly && !!results"
         :space="space"
         :proposal="proposal"
         :transactions="transactions"

@@ -2,7 +2,6 @@
 import { parseValue } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 
 import {
   ContractInteractionTransaction,
@@ -21,50 +20,41 @@ import InputMethodParameter from '../Input/MethodParameter.vue';
 const props = defineProps<{
   network: Network;
   isReadOnly: boolean;
-  transaction: Transaction;
+  transaction: ContractInteractionTransaction;
 }>();
 
 const emit = defineEmits<{
   updateTransaction: [transaction: ContractInteractionTransaction];
 }>();
 
-const to = ref('');
+const to = ref(props.transaction.to ?? '');
 const isToValid = computed(() => {
   return to.value === '' || isAddress(to.value);
 });
-const abi = ref('');
+const abi = ref(props.transaction.abi ?? '');
 const isAbiValid = ref(true);
-const value = ref('0');
+const value = ref(props.transaction.value ?? '');
 const isValueValid = ref(true);
 const methods = ref<FunctionFragment[]>([]);
-const selectedMethodIndex = ref(0);
-const selectedMethod = computed(() => methods.value[selectedMethodIndex.value]);
+const selectedMethodName = ref(props.transaction.methodName ?? '');
+const selectedMethod = computed(() => methods.value.find(method => method.name === selectedMethodName.value) ?? methods.value[0]);
 const parameters = ref<string[]>([]);
 const selectedParameters = ref<string[]>([]);
-
+ 
 function updateTransaction() {
-  if (
-    props.isReadOnly ||
-    !isBigNumberish(value.value) ||
-    !isAddress(to.value) ||
-    !abi.value ||
-    !selectedMethod.value
-  )
-    return;
-  try {
-    if (isBigNumberish(value.value) && isAddress(to.value)) {
-      const transaction = createContractInteractionTransaction({
-        to: to.value,
-        value: value.value,
-        abi: abi.value,
-        method: selectedMethod.value,
-        parameters: selectedParameters.value
-      });
+  if (props.isReadOnly || !isValueValid || !isToValid || !isAbiValid) return;
+  try { 
+    const transaction = createContractInteractionTransaction({
+      to: to.value,
+      value: value.value,
+      abi: abi.value,
+      method: selectedMethod.value,
+      parameters: selectedParameters.value
+    });
 
-      if (validateTransaction(transaction)) {
-        emit('updateTransaction', transaction);
-        return;
-      }
+    if (validateTransaction(transaction)) {
+      emit('updateTransaction', transaction);
+      return;
     }
   } catch (error) {
     console.warn('invalid transaction');
@@ -76,9 +66,9 @@ function updateParameter(index: number, value: string) {
   updateTransaction();
 }
 
-function updateMethod(index: number) {
+function updateMethod(methodName: string) {
   selectedParameters.value = [];
-  selectedMethodIndex.value = index;
+  selectedMethodName.value = methodName;
   updateTransaction();
 }
 
@@ -89,7 +79,7 @@ function updateAbi(newAbi: string) {
   try {
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
-    updateMethod(0);
+    updateMethod(methods.value[0].name);
   } catch (error) {
     isAbiValid.value = false;
     console.warn('error extracting useful methods', error);
@@ -149,12 +139,12 @@ function updateValue(newValue: string) {
 
     <div v-if="methods.length">
       <UiSelect
-        v-model="selectedMethodIndex"
+        v-model="selectedMethodName"
         :disabled="isReadOnly"
         @change="updateMethod($event)"
       >
         <template #label>function</template>
-        <option v-for="(method, i) in methods" :key="i" :value="i">
+        <option v-for="(method, i) in methods" :key="i" :value="method.name">
           {{ method.name }}()
         </option>
       </UiSelect>

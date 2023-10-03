@@ -272,4 +272,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-../utils/getters

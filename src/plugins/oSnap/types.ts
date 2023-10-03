@@ -47,7 +47,8 @@ export type RawTransaction = BaseTransaction & {
 
 export type ContractInteractionTransaction = BaseTransaction & {
   type: 'contractInteraction';
-  method: FunctionFragment;
+  abi: string;
+  methodName: string;
   parameters: string[];
 }
 
