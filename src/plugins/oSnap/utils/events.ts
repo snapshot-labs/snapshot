@@ -134,7 +134,7 @@ export async function pageEvents<E>(
   concurrency: number = 5
 ): Promise<E[]> {
   let state = rangeStart({ startBlock, endBlock, maxRange });
-  const ranges: { start: number; end: number }[] = [];
+  const ranges: { start: number; end: number; index: number }[] = [];
   let index = 0;
   do {
     ranges.push({

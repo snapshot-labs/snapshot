@@ -2,19 +2,16 @@ import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { Contract } from '@ethersproject/contracts';
-import { _TypedDataEncoder } from '@ethersproject/hash';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { toUtf8Bytes } from '@ethersproject/strings';
 
-import { SafeTransaction } from '@/helpers/interfaces';
 import {
   sendTransaction
 } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
-  EIP712_TYPES,
   ERC20_ABI,
-  OO_V3_ABI
+  OPTIMISTIC_GOVERNOR_ABI
 } from './constants';
 import { BaseTransaction, Network, OptimisticGovernorTransaction } from './types';
 import { getModuleDetailsFromChain, getModuleDetailsGql } from './utils/umaModule';
@@ -23,46 +20,14 @@ export * from './constants';
 
 export * from './utils/abi';
 export * from './utils/coins';
-export * from './utils/decoder';
 export * from './utils/index';
 export * from './utils/safe';
 export * from './utils/transactions';
 
-  export function calcTransactionHash(
-    network: string,
-    moduleAddress: string,
-    transaction: SafeTransaction
-  ) {
-    const chainId = parseInt(network);
-    const domain = {
-      chainId,
-      verifyingContract: moduleAddress
-    };
-    return _TypedDataEncoder.hash(domain, EIP712_TYPES, transaction);
-  }
-
-  export function calcTransactionHashes(
-    chainId: number,
-    moduleAddress: string,
-    transactions: SafeTransaction[]
-  ) {
-    const domain = {
-      chainId: chainId,
-      verifyingContract: moduleAddress
-    };
-    return transactions.map(tx => {
-      return _TypedDataEncoder.hash(domain, EIP712_TYPES, {
-        ...tx,
-        nonce: tx.nonce || '0',
-        data: tx.data || '0x'
-      });
-    });
-  }
-
   export async function validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
     if (!isAddress(moduleAddress)) return false;
     const provider: StaticJsonRpcProvider = getProvider(network);
-    const moduleContract = new Contract(moduleAddress, OO_V3_ABI, provider);
+    const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
 
     return moduleContract
       .rules()
@@ -157,7 +122,7 @@ export * from './utils/transactions';
     const tx = await sendTransaction(
       web3,
       moduleAddress,
-      OO_V3_ABI as any,
+      OPTIMISTIC_GOVERNOR_ABI as any,
       'proposeTransactions',
       [transactions, explanationBytes]
       // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
@@ -175,7 +140,7 @@ export * from './utils/transactions';
     const tx = await sendTransaction(
       web3,
       moduleAddress,
-      OO_V3_ABI as any,
+      OPTIMISTIC_GOVERNOR_ABI as any,
       'executeProposal',
       [transactions]
     );
