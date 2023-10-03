@@ -79,65 +79,58 @@ watch(selectedTokenAddress, updateTransaction);
 </script>
 
 <template>
-  <div v-if="isReadOnly">
-    <p>recipient: {{ transaction.recipient }}</p>
-    <p>amount: {{ transaction.amount }}</p>
-    <p>token: {{ transaction.token.symbol }}</p>
-  </div>
-  <template v-else>
-    <BaseButton
-      class="mb-2 flex w-full flex-row items-center justify-between !px-3"
-      @click="openModal()"
-    >
-      <div class="flex flex-row space-x-2">
-        <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
-        <AvatarToken
-          :address="
-            selectedToken.address === 'main'
-              ? ETH_CONTRACT
-              : selectedToken.address
-          "
-          class="ml-2"
-        />
-        <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
-        <span>
-          {{
-            selectedToken.address === 'main'
-              ? ''
-              : `(${shorten(selectedToken.address)})`
-          }}
-        </span>
-      </div>
-      <i-ho-chevron-down class="text-xs text-skin-link" />
-    </BaseButton>
-
-    <div class="space-y-2">
-      <InputAddress
-        v-model="recipient"
-        :disabled="isReadOnly"
-        :input-props="{
-          required: true
-        }"
-        :label="$t('safeSnap.to')"
+  <BaseButton
+    class="mb-2 flex w-full flex-row items-center justify-between !px-3"
+    @click="openModal()"
+  >
+    <div class="flex flex-row space-x-2">
+      <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
+      <AvatarToken
+        :address="
+          selectedToken.address === 'main'
+            ? ETH_CONTRACT
+            : selectedToken.address
+        "
+        class="ml-2"
       />
-      <InputAmount
-        :key="selectedToken?.decimals"
-        v-model="amount"
-        :label="$t('safeSnap.amount')"
-        :decimals="selectedToken?.decimals"
-        :disabled="isReadOnly"
-      />
+      <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
+      <span>
+        {{
+          selectedToken.address === 'main'
+            ? ''
+            : `(${shorten(selectedToken.address)})`
+        }}
+      </span>
     </div>
+    <i-ho-chevron-down class="text-xs text-skin-link" />
+  </BaseButton>
 
-    <teleport to="#modal">
-      <TokensModal
-        :tokens="tokens"
-        :token-address="selectedTokenAddress"
-        :open="isTokenModalOpen"
-        :network="network"
-        @token-address="selectedTokenAddress = $event"
-        @close="isTokenModalOpen = false"
-      />
-    </teleport>
-  </template>
+  <div class="space-y-2">
+    <InputAddress
+      v-model="recipient"
+      :disabled="isReadOnly"
+      :input-props="{
+        required: true
+      }"
+      :label="$t('safeSnap.to')"
+    />
+    <InputAmount
+      :key="selectedToken?.decimals"
+      v-model="amount"
+      :label="$t('safeSnap.amount')"
+      :decimals="selectedToken?.decimals"
+      :disabled="isReadOnly"
+    />
+  </div>
+
+  <teleport to="#modal">
+    <TokensModal
+      :tokens="tokens"
+      :token-address="selectedTokenAddress"
+      :open="isTokenModalOpen"
+      :network="network"
+      @token-address="selectedTokenAddress = $event"
+      @close="isTokenModalOpen = false"
+    />
+  </teleport>
 </template>

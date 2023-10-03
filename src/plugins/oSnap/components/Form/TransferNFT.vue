@@ -66,18 +66,6 @@ watch(selectedCollectableAddress, updateTransaction);
 </script>
 
 <template>
-  <div v-if="isReadOnly">
-    <p>recipient: {{ transaction.recipient }}</p>
-    <p>
-      collectable:
-      {{
-        transaction.collectable.name ?? transaction.collectable.tokenName
-      }}
-      #{{ transaction.collectable.id }}
-    </p>
-    <p>address: {{ transaction.collectable.address }}</p>
-  </div>
-  <template v-else>
     <UiSelect v-model="selectedCollectableAddress" :disabled="isReadOnly">
       <template #label>{{ $t('safeSnap.asset') }}</template>
       <template
@@ -115,7 +103,6 @@ watch(selectedCollectableAddress, updateTransaction);
       }"
       :label="$t('safeSnap.to')"
     />
-  </template>
 </template>
 
 <style scoped>

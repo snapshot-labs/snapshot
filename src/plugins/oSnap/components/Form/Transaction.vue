@@ -2,6 +2,7 @@
 import { cloneDeep } from 'lodash';
 import { transactionTypes } from '../..';
 import {
+  ContractInteractionTransaction,
   TransferNftTransaction,
   type NFT,
   type Network,
@@ -68,7 +69,12 @@ function updateTransaction(transaction: TTransaction) {
     <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
   </UiSelect>
 
-  <ContractInteraction v-if="transaction.type === 'contractInteraction'" :is-read-only="isReadOnly" :transaction="transaction" />
+  <ContractInteraction
+    v-if="transaction.type === 'contractInteraction'"
+    :is-read-only="isReadOnly"
+    :transaction="(newTransaction as ContractInteractionTransaction)"
+    :network="network"
+  />
 
   <TransferFunds
     v-if="transaction.type === 'transferFunds'"

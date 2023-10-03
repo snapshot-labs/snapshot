@@ -166,6 +166,7 @@ function updateValue(newValue: string) {
           :key="input.name"
           :parameter="input"
           :value="parameters[index]"
+          :is-read-only="isReadOnly"
           @update-parameter-value="updateParameter(index, $event)"
         />
       </div>

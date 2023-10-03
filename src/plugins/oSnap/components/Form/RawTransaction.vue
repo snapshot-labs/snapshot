@@ -62,12 +62,7 @@ function updateTransaction() {
 </script>
 
 <template>
-  <div v-if="isReadOnly">
-    <p>to: {{ transaction.to }}</p>
-    <p>value: {{ transaction.value }}</p>
-    <p>data: {{ transaction.data }}</p>
-  </div>
-  <div v-else class="space-y-2">
+  <div class="space-y-2">
     <AddressInput
       v-model="to"
       :disabled="isReadOnly"
