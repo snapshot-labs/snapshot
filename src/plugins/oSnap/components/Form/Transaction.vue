@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cloneDeep } from 'lodash';
-import { transactionTypes } from '../..';
+import { transactionTypes } from '../../constants';
 import {
   ContractInteractionTransaction,
   TransferNftTransaction,

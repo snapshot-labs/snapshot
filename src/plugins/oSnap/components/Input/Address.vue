@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { mustBeEthereumAddress } from '../../index';
+import { mustBeEthereumAddress } from '../../utils';
 
 const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
 const emit = defineEmits(['update:modelValue', 'validAddress']);

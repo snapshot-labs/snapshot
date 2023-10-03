@@ -1,8 +1,24 @@
 import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { ContractInteractionTransaction, NFT, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
+import { ContractInteractionTransaction, NFT, OptimisticGovernorTransaction, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
 import { encodeMethodAndParams } from './abi';
-import { createFormattedOptimisticGovernorTransaction } from './umaModule';
+
+export function createFormattedOptimisticGovernorTransaction({
+  to,
+  value,
+  data,
+}: {
+  to: string;
+  value: string;
+  data: string;
+}): OptimisticGovernorTransaction {
+  return [
+    to,
+    0,
+    value,
+    data,
+  ]
+}
 
 export function createRawTransaction(params: {
   to: string;

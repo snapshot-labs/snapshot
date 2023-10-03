@@ -3,13 +3,13 @@ import { ETH_CONTRACT } from '@/helpers/constants';
 import { shorten } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { Network, Token, TransferFundsTransaction } from '../../types';
 import {
   createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
   getNativeAsset,
   validateTransaction
-} from '../../index';
-import { Network, Token, TransferFundsTransaction } from '../../types';
+} from '../../utils';
 import InputAddress from '../Input/Address.vue';
 import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';

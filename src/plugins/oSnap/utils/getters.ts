@@ -7,15 +7,57 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import memoize from 'lodash/memoize';
 import {
   EIP3770_PREFIXES,
   ERC20_ABI,
+  GNOSIS_SAFE_TRANSACTION_API_URLS,
   OPTIMISTIC_GOVERNOR_ABI,
   OPTIMISTIC_ORACLE_V3_ABI,
   contractData
 } from '../constants';
-import { Network, OptimisticGovernorTransaction } from '../types';
+import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, Token } from '../types';
 import { pageEvents } from './events';
+
+async function callGnosisSafeTransactionApi<TResult = any>(
+  network: Network,
+  url: string
+) {
+  const apiUrl = GNOSIS_SAFE_TRANSACTION_API_URLS[network];
+  const response = await fetch(apiUrl + url);
+  return response.json() as TResult;
+}
+
+export const getGnosisSafeBalances = memoize(
+  (network: Network, safeAddress: string) => {
+    const endpointPath = `/v1/safes/${safeAddress}/balances/`;
+    return callGnosisSafeTransactionApi<Partial<BalanceResponse>[]>(network, endpointPath);
+  },
+  (safeAddress, network) => `${safeAddress}_${network}`
+);
+
+export const getGnosisSafeCollectibles = memoize(
+  (network: Network, safeAddress: string) => {
+    const endpointPath = `/v2/safes/${safeAddress}/collectibles/`;
+    type Result = {
+      count: number;
+      next: unknown;
+      previous: unknown;
+      results: NFT[];
+    }
+    return callGnosisSafeTransactionApi<Result>(network, endpointPath);
+  },
+  (safeAddress, network) => `${safeAddress}_${network}`
+);
+
+export const getGnosisSafeToken = memoize(
+  async (network, tokenAddress): Promise<Token> => {
+    const endpointPath = `/v1/tokens/${tokenAddress}`;
+    return callGnosisSafeTransactionApi(network, endpointPath);
+  },
+  (tokenAddress, network) => `${tokenAddress}_${network}`
+);
 
 function getDeployBlock(params: {
   network: Network,
@@ -566,19 +608,52 @@ export const getModuleDetailsGql = async (
   };
 };
 
-export function createFormattedOptimisticGovernorTransaction({
-  to,
-  value,
-  data,
-}: {
-  to: string;
-  value: string;
-  data: string;
-}): OptimisticGovernorTransaction {
-  return [
-    to,
-    0,
-    value,
-    data,
-  ]
+export async function getModuleDetails(
+  network: Network,
+  moduleAddress: string,
+  explanation = '',
+  transactions?: OptimisticGovernorTransaction[]
+) {
+  const provider: StaticJsonRpcProvider = getProvider(network);
+  try {
+    // try optimized calls, which use the graph over web3 event queries
+    return await getModuleDetailsGql(
+      provider,
+      network,
+      moduleAddress,
+      explanation,
+      transactions
+    );
+  } catch (err) {
+    console.warn('Error querying module details from the graph:', err);
+    // fall back to web3 event queries.
+    return getModuleDetailsFromChain(
+      provider,
+      network,
+      moduleAddress,
+      explanation,
+      transactions
+    );
+  }
+}
+
+export async function getExecutionDetails(
+  network: Network,
+  moduleAddress: string,
+  proposalId: string,
+  explanation: string,
+  transactions: OptimisticGovernorTransaction[]
+) {
+  const moduleDetails = await getModuleDetails(
+    network,
+    moduleAddress,
+    explanation,
+    transactions
+  );
+
+  return {
+    ...moduleDetails,
+    proposalId,
+    explanation
+  };
 }

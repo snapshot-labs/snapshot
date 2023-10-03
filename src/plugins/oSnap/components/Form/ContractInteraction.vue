@@ -3,17 +3,18 @@ import { parseValue } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import {
-  createContractInteractionTransaction,
-  getABIWriteFunctions,
-  getContractABI,
-  validateTransaction
-} from '../../index';
+
 import {
   ContractInteractionTransaction,
   Network,
   Transaction
 } from '../../types';
+import {
+  createContractInteractionTransaction,
+  getABIWriteFunctions,
+  getContractABI,
+  validateTransaction
+} from '../../utils';
 import InputAddress from '../Input/Address.vue';
 import InputMethodParameter from '../Input/MethodParameter.vue';
 

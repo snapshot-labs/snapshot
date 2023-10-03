@@ -3,8 +3,8 @@ import { parseValue } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
-import { createRawTransaction } from '../../index';
 import { RawTransaction } from '../../types';
+import { createRawTransaction } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{

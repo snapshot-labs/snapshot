@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { getIpfsUrl } from '@/helpers/utils';
-
 import {
   ExtendedSpace,
   Proposal,
   Results,
   TreasuryWallet
 } from '@/helpers/interfaces';
+import { getIpfsUrl } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
 import {
@@ -19,12 +18,10 @@ import {
 } from '../types';
 import {
   getGnosisSafeBalances,
-  getGnosisSafeCollectibles
-} from '../utils/safe';
-import {
+  getGnosisSafeCollectibles,
   getIsOsnapEnabled,
   getModuleAddressForTreasury
-} from '../utils/umaModule';
+} from '../utils';
 import SafeTransactions from './SafeTransactions.vue';
 
 const props = defineProps<{
@@ -275,3 +272,4 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+../utils/getters

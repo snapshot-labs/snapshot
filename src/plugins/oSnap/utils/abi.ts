@@ -8,7 +8,7 @@ import {
 import { BigNumberish } from '@ethersproject/bignumber';
 import memoize from 'lodash/memoize';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
-import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './index';
+import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './validators';
 
 export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
