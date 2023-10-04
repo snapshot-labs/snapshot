@@ -46,22 +46,22 @@ export type RawTransaction = BaseTransaction & {
 
 export type ContractInteractionTransaction = BaseTransaction & {
   type: 'contractInteraction';
-  abi: string;
-  methodName: string;
-  parameters: string[];
+  abi?: string;
+  methodName?: string;
+  parameters?: string[];
 }
 
 export type TransferNftTransaction = BaseTransaction & {
   type: 'transferNFT';
-  recipient: string | undefined;
-  collectable: NFT | undefined;
+  recipient?: string;
+  collectable?: NFT;
 }
 
 export type TransferFundsTransaction = BaseTransaction & {
   type: 'transferFunds';
-  amount: string | undefined;
-  recipient: string | undefined;
-  token: Token | undefined;
+  amount?: string;
+  recipient?: string;
+  token?: Token;
 }
 
 export type Asset = {
