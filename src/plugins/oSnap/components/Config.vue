@@ -36,6 +36,8 @@ const emit = defineEmits<{
   update: [pluginData: OsnapPluginData];
 }>();
 
+const isLoading = ref(false);
+
 const newPluginData = ref(cloneDeep(props.pluginData));
 
 const safes = ref<GnosisSafe[]>([]);
@@ -201,6 +203,7 @@ function updateSafe(safeIndex: string) {
 }
 
 onMounted(async () => {
+  isLoading.value = true;
   safes.value = await createSafes();
 
   if (props.pluginData.safe !== null) {
@@ -214,11 +217,16 @@ onMounted(async () => {
     newPluginData.value.safe = safes.value[0];
   }
   emit('update', newPluginData.value);
+  isLoading.value = false;
 });
 </script>
 
 <template>
+  <div v-if="isLoading" class="min-h-[180px] grid place-items-center">
+    <h1 class="text-center">Loading oSnap Safes <LoadingSpinner class="inline ml-2" big /></h1>
+  </div>
   <div
+    v-else
     class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
   >
     <div
