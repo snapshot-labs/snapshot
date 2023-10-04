@@ -27,12 +27,12 @@ const collectables = props.isReadOnly
 
 const recipient = ref(props.transaction.recipient ?? '');
 const selectedCollectableAddress = ref(
-  props.transaction.collectable.address ?? ''
+  props.transaction.collectable?.address ?? ''
 );
 
 const selectedCollectable = computed(() => {
   return collectables.find(
-    collectable => collectable.address === selectedCollectableAddress.value
+    collectable => collectable?.address === selectedCollectableAddress.value
   );
 });
 

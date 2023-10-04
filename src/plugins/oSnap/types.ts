@@ -1,4 +1,3 @@
-import { FunctionFragment } from '@ethersproject/abi';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { transactionTypes } from './constants';
 
@@ -54,15 +53,15 @@ export type ContractInteractionTransaction = BaseTransaction & {
 
 export type TransferNftTransaction = BaseTransaction & {
   type: 'transferNFT';
-  recipient: string;
-  collectable: NFT;
+  recipient: string | undefined;
+  collectable: NFT | undefined;
 }
 
 export type TransferFundsTransaction = BaseTransaction & {
   type: 'transferFunds';
-  amount: string;
-  recipient: string;
-  token: Token;
+  amount: string | undefined;
+  recipient: string | undefined;
+  token: Token | undefined;
 }
 
 export type Asset = {
