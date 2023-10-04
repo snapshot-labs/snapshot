@@ -102,7 +102,7 @@ watch(selectedTokenAddress, updateTransaction);
         }}
       </span>
     </div>
-    <i-ho-chevron-down class="text-xs text-skin-link" />
+    <i-ho-chevron-down class="text-xs text-skin-link" v-if="!isReadOnly" />
   </BaseButton>
 
   <div class="space-y-2">
@@ -123,7 +123,7 @@ watch(selectedTokenAddress, updateTransaction);
     />
   </div>
 
-  <teleport to="#modal">
+  <teleport to="#modal" v-if="!isReadOnly">
     <TokensModal
       :tokens="tokens"
       :token-address="selectedTokenAddress"
