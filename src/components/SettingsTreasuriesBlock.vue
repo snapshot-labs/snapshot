@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { TreasuryWallet } from '@/helpers/interfaces';
+import { ExtendedSpace, TreasuryWallet } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  space: ExtendedSpace;
   isViewOnly?: boolean;
 }>();
 
@@ -18,6 +19,9 @@ const treasuryObj = {
 const modalTreasuryOpen = ref(false);
 const currentTreasuryIndex = ref<number | null>(null);
 const currentTreasury = ref<TreasuryWallet>(clone(treasuryObj));
+const hasOsnapPlugin = computed(() => {
+  return Object.keys(props.space.plugins).includes('oSnap');
+});
 
 function handleRemoveTreasury(i: number) {
   form.value.treasuries = form.value.treasuries.filter(
@@ -55,6 +59,7 @@ function handleSubmitTreasury(treasury: TreasuryWallet) {
       <SettingsTreasuriesBlockItem
         :treasuries="form.treasuries"
         :is-view-only="isViewOnly"
+        :has-osnap-plugin="hasOsnapPlugin"
         @edit-treasury="i => handleEditTreasury(i)"
         @remove-treasury="i => handleRemoveTreasury(i)"
       />

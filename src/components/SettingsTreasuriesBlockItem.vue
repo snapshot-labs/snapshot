@@ -4,6 +4,7 @@ import { TreasuryWallet } from '@/helpers/interfaces';
 defineProps<{
   treasuries: TreasuryWallet[];
   isViewOnly?: boolean;
+  hasOsnapPlugin: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -17,7 +18,8 @@ const emit = defineEmits<{
    <SettingsTreasuriesBlockItemButton v-for="(treasury, i) in treasuries"
     :key="i"
     :treasury="treasury" :treasury-index="i" 
-    :is-view-only="isViewOnly"
+    :is-view-only="!!isViewOnly"
+    :has-osnap-plugin="hasOsnapPlugin"
     @edit-treasury="i => emit('editTreasury', i)"
     @remove-treasury="i => emit('removeTreasury', i)"
     @configure-osnap="(i, isEnabled) => emit('configureOsnap', i, isEnabled)"

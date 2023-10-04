@@ -276,6 +276,7 @@ const isViewOnly = computed(() => {
             />
             <SettingsTreasuriesBlock
               context="settings"
+              :space="space"
               :is-view-only="isViewOnly"
             />
             <SettingsSubSpacesBlock

@@ -6,6 +6,7 @@ const props = defineProps<{
   treasury: TreasuryWallet;
   treasuryIndex: number;
   isViewOnly?: boolean;
+  hasOsnapPlugin: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -17,6 +18,7 @@ const emit = defineEmits<{
 const isOsnapEnabled = ref(false);
 
 onMounted(async () => {
+  if (!props.hasOsnapPlugin) return;
   isOsnapEnabled.value = await getIsOsnapEnabled(props.treasury.network, props.treasury.address);
 })
 </script>
@@ -31,10 +33,10 @@ onMounted(async () => {
         <h4 class="truncate">{{ treasury.name }}</h4>
       </div>
       <div class="ml-auto mr-3">
-        <SettingsTreasuryActivateOsnapButton 
-        v-show="!isViewOnly" 
+        <SettingsTreasuryActivateOsnapButton
+        v-show="hasOsnapPlugin" 
         :is-osnap-enabled="isOsnapEnabled" 
-        @click.stop="emit('configureOsnap', treasuryIndex, isOsnapEnabled)" 
+        @click.stop="!isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)" 
         />
       </div>
       <BaseButtonIcon
