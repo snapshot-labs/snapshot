@@ -21,14 +21,17 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TransferNftTransaction];
 }>();
 
+const collectables = props.isReadOnly
+    ? [props.transaction.collectable]
+    : props.collectables;
+
 const recipient = ref(props.transaction.recipient ?? '');
 const selectedCollectableAddress = ref(
   props.transaction.collectable.address ?? ''
 );
 
 const selectedCollectable = computed(() => {
-  if (!selectedCollectableAddress.value) return;
-  return props.collectables.find(
+  return collectables.find(
     collectable => collectable.address === selectedCollectableAddress.value
   );
 });
