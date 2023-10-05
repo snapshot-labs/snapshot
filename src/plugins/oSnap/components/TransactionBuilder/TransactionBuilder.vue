@@ -37,62 +37,63 @@ const safeLink = computed(() => {
 </script>
 
 <template>
-  <div>
-    <p>
-      <strong>Safe app link</strong
-      ><a
-        :href="safeLink"
-        class="ml-2 inline-flex font-normal text-skin-text"
-        target="_blank"
-      >
-        {{ shorten(safeAddress) }}
-        <i-ho-external-link class="ml-1" />
-      </a>
-    </p>
-    <p><strong>Number of transactions</strong><span class="inline-block ml-2">{{  transactions.length }}</span></p>
-    <div class="text-center">
-      <Transaction
-        v-for="(transaction, index) in transactions"
-        :key="index"
-        :transaction="transaction"
-        :transaction-index="index"
-        :is-read-only="isReadOnly"
-        :safe-address="safeAddress"
-        :module-address="moduleAddress"
-        :tokens="tokens"
-        :collectables="collectables"
-        :network="props.network"
-        @update-transaction="(...args) => emit('updateTransaction', ...args)"
-        @remove-transaction="(...args) => emit('removeTransaction', ...args)"
-      />
-    </div>
-
-    <div v-if="!isReadOnly || proposalResolved">
-      <BaseButton
-        v-if="!isReadOnly"
-        class="my-3"
-        @click="
-          emit('addTransaction', {
-            type: 'raw',
-            to: '',
-            value: '0',
-            data: '0x',
-            formatted: ['', 0, '0', '0x']
-          })
-        "
-      >
-        Add Transaction +
-      </BaseButton>
-
-      <HandleOutcomeUma
-        v-if="isReadOnly && !!results"
-        :space="space"
-        :proposal="proposal"
-        :transactions="transactions"
-        :results="results"
-        :module-address="moduleAddress"
-        :network="network"
-      />
-    </div>
+  <p class="my-2">
+    <strong>Safe app link</strong
+    ><a
+      :href="safeLink"
+      class="ml-2 inline-flex font-normal text-skin-text"
+      target="_blank"
+    >
+      {{ shorten(safeAddress) }}
+      <i-ho-external-link class="ml-1" />
+    </a>
+  </p>
+  <p class="my-2">
+    <strong>Number of transactions</strong
+    ><span class="ml-2 inline-block">{{ transactions.length }}</span>
+  </p>
+  <div class="text-center">
+    <Transaction
+      v-for="(transaction, index) in transactions"
+      :key="index"
+      :transaction="transaction"
+      :transaction-index="index"
+      :is-read-only="isReadOnly"
+      :safe-address="safeAddress"
+      :module-address="moduleAddress"
+      :tokens="tokens"
+      :collectables="collectables"
+      :network="props.network"
+      @update-transaction="(...args) => emit('updateTransaction', ...args)"
+      @remove-transaction="(...args) => emit('removeTransaction', ...args)"
+    />
   </div>
+
+  <template v-if="!isReadOnly || proposalResolved">
+    <BaseButton
+      v-if="!isReadOnly"
+      class="mt-4 w-full"
+      @click="
+        emit('addTransaction', {
+          type: 'raw',
+          to: '',
+          value: '0',
+          data: '0x',
+          formatted: ['', 0, '0', '0x']
+        })
+      "
+    >
+      Add Transaction +
+    </BaseButton>
+
+    <HandleOutcomeUma
+      v-if="isReadOnly && !!results"
+      :space="space"
+      :proposal="proposal"
+      :transactions="transactions"
+      :results="results"
+      :module-address="moduleAddress"
+      :network="network"
+    />
+  </template>
 </template>

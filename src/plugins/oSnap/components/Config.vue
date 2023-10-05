@@ -236,11 +236,12 @@ onMounted(async () => {
       Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
     </h1>
   </div>
-  <div v-else>
+  <div v-else class="border p-4 rounded-2xl">
     <div>
-      <h4>Add oSnap transactions</h4>
+      <h2 class="text-md">Add oSnap transactions</h2>
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
+    <h3 class="text-base">Pick a safe</h3>
     <UiSelect
       v-if="!isReadOnly"
       :model-value="
@@ -255,7 +256,7 @@ onMounted(async () => {
         {{ safe.safeName }}
       </option>
     </UiSelect>
-    <div class="border-b last:border-b-0">
+    <div class="border-b last:border-b-0 mt-4">
       <TransactionBuilder
         v-if="!!newPluginData.safe"
         :is-read-only="isReadOnly"

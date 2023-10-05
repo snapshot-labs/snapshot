@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { cloneDeep } from 'lodash';
-import { transactionTypes } from '../../constants';
 import {
   ContractInteractionTransaction,
   TransferNftTransaction,
@@ -8,15 +7,15 @@ import {
   type Network,
   type RawTransaction as TRawTransaction,
   type Transaction as TTransaction,
-  type Token,
   type TransactionType as TTransactionType,
-  type TransferFundsTransaction,
+  type Token,
+  type TransferFundsTransaction
 } from '../../types';
+import TransactionType from '../Input/TransactionType.vue';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
-import TransactionType from '../Input/TransactionType.vue';
 
 const props = defineProps<{
   isReadOnly: boolean;
@@ -48,45 +47,54 @@ function updateTransaction(transaction: TTransaction) {
 </script>
 
 <template>
-  <div class="flex items-center justify-between text-[#FF5353]">
-    <h3 class="text-left text-base">Transaction {{ transactionIndex + 1 }}</h3>
-    <button v-if="transactionIndex !== 0" @click="emit('removeTransaction', transactionIndex)">Remove</button>
+  <div class="border-b pb-4 mt-4 first:mt-0">
+    <div class="flex items-center justify-between text-[#FF5353]">
+      <h3 class="text-left text-base">
+        Transaction {{ transactionIndex + 1 }}
+      </h3>
+      <button
+        v-if="transactionIndex !== 0"
+        @click="emit('removeTransaction', transactionIndex)"
+      >
+        Remove
+      </button>
+    </div>
+    <TransactionType
+      :selected-transaction-type="transaction.type"
+      :is-read-only="isReadOnly"
+      @update-transaction-type="updateTransactionType"
+    />
+    <ContractInteraction
+      v-if="transaction.type === 'contractInteraction'"
+      :is-read-only="isReadOnly"
+      :transaction="(newTransaction as ContractInteractionTransaction)"
+      :network="network"
+    />
+
+    <TransferFunds
+      v-if="transaction.type === 'transferFunds'"
+      :is-read-only="isReadOnly"
+      :network="network"
+      :tokens="tokens"
+      :transaction="(newTransaction as TransferFundsTransaction)"
+      @update-transaction="updateTransaction"
+    />
+
+    <TransferNFT
+      v-if="transaction.type === 'transferNFT'"
+      :is-read-only="isReadOnly"
+      :network="network"
+      :safe-address="safeAddress"
+      :collectables="collectables"
+      :transaction="(newTransaction as TransferNftTransaction)"
+      @update-transaction="updateTransaction"
+    />
+
+    <RawTransaction
+      v-if="transaction.type === 'raw'"
+      :is-read-only="isReadOnly"
+      :transaction="(newTransaction as TRawTransaction)"
+      @update-transaction="updateTransaction"
+    />
   </div>
-  <TransactionType
-    :selected-transaction-type="transaction.type"
-    :is-read-only="isReadOnly"
-    @update-transaction-type="updateTransactionType"
-  />
-  <ContractInteraction
-    v-if="transaction.type === 'contractInteraction'"
-    :is-read-only="isReadOnly"
-    :transaction="(newTransaction as ContractInteractionTransaction)"
-    :network="network"
-  />
-
-  <TransferFunds
-    v-if="transaction.type === 'transferFunds'"
-    :is-read-only="isReadOnly"
-    :network="network"
-    :tokens="tokens"
-    :transaction="(newTransaction as TransferFundsTransaction)"
-    @update-transaction="updateTransaction"
-  />
-
-  <TransferNFT
-    v-if="transaction.type === 'transferNFT'"
-    :is-read-only="isReadOnly"
-    :network="network"
-    :safe-address="safeAddress"
-    :collectables="collectables"
-    :transaction="(newTransaction as TransferNftTransaction)"
-    @update-transaction="updateTransaction"
-  />
-
-  <RawTransaction
-    v-if="transaction.type === 'raw'"
-    :is-read-only="isReadOnly"
-    :transaction="(newTransaction as TRawTransaction)"
-    @update-transaction="updateTransaction"
-  />
 </template>

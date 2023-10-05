@@ -45,25 +45,25 @@ const transactionTypesWithDetails: {
 </script>
 
 <template>
-  <TuneButtonSelect
-    label="Transaction type"
-    hint=""
-    :model-value="
-      transactionTypesWithDetails.find(
-        typeAndDetails => typeAndDetails.type === selectedTransactionType
-      )?.title || 'Select transaction type'
-    "
-    :disabled="isReadOnly"
-    :tooltip="!isReadOnly ? 'Select the transaction type' : null"
-    @select="isModalOpen = true"
-  />
-  <teleport to="#modal">
-    <ModalTransactionType
-      :selected="selectedTransactionType"
-      :open="isModalOpen"
-      :transaction-types-with-details="transactionTypesWithDetails"
-      @update-transaction-type="emit('updateTransactionType', $event)"
-      @close="isModalOpen = false"
+  <div class="mb-2">
+    <TuneButtonSelect
+      :model-value="
+        transactionTypesWithDetails.find(
+          typeAndDetails => typeAndDetails.type === selectedTransactionType
+        )?.title || 'Select transaction type'
+      "
+      :disabled="isReadOnly"
+      :tooltip="!isReadOnly ? 'Select the transaction type' : null"
+      @select="isModalOpen = true"
     />
-  </teleport>
+    <teleport to="#modal">
+      <ModalTransactionType
+        :selected="selectedTransactionType"
+        :open="isModalOpen"
+        :transaction-types-with-details="transactionTypesWithDetails"
+        @update-transaction-type="emit('updateTransactionType', $event)"
+        @close="isModalOpen = false"
+      />
+    </teleport>
+  </div>
 </template>
