@@ -344,7 +344,7 @@ onMounted(async () => {
       {{ $t('safeSnap.labels.connectWallet') }}
     </div>
 
-    <div v-if="questionState === 'loading'" class="my-4">
+    <div v-if="questionState === 'loading'" class="my-4 grid place-items-center">
       <LoadingSpinner />
     </div>
     <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
@@ -354,13 +354,13 @@ onMounted(async () => {
     <div v-if="connectedToRightChain || usingMetaMask">
       <div
         v-if="questionState === 'waiting-for-vote-confirmation'"
-        class="my-4 inline-block"
+        class="my-4"
       >
-        <BaseContainer class="flex items-center">
-          <BaseButton @click="showProposeModal" class="mr-2">
+        <div class="flex items-center">
+          <BaseButton @click="showProposeModal" class="mr-2 w-full">
             {{ $t('safeSnap.labels.confirmVoteResults') }}
           </BaseButton>
-        </BaseContainer>
+        </div>
       </div>
 
       <div v-if="questionState === 'no-transactions'" class="my-4">
@@ -372,13 +372,13 @@ onMounted(async () => {
           questionState === 'waiting-for-proposal' &&
           questionDetails?.needsBondApproval === true
         "
-        class="my-4 inline-block"
+        class="my-4"
       >
-        <BaseContainer class="flex items-center">
+        <div class="flex items-center my-4">
           <BaseButton
             :loading="action1State === 'approve-bond'"
             @click="onApproveBond"
-            class="mr-2"
+            class="mr-2 w-full"
           >
             {{ $t('safeSnap.labels.approveBond') }}
           </BaseButton>
@@ -394,16 +394,16 @@ onMounted(async () => {
               </div>
             </template>
           </BasePopoverHover>
-        </BaseContainer>
+        </div>
       </div>
       <div
         v-if="
           questionState === 'waiting-for-proposal' &&
           questionDetails?.needsBondApproval === false
         "
-        class="my-4 inline-block"
+        class="my-4"
       >
-        <BaseContainer class="flex items-center">
+        <div class="flex items-center">
           <BaseModal :open="closeModal" @close="closeEvent">
             <template #header>
               <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
@@ -469,7 +469,7 @@ onMounted(async () => {
               </BaseButton>
             </div>
           </BaseModal>
-        </BaseContainer>
+        </div>
       </div>
 
       <div
@@ -479,7 +479,7 @@ onMounted(async () => {
         "
         class="flex items-center justify-center self-stretch p-3 text-skin-link"
       >
-        <BaseContainer class="my-1 inline-block">
+        <BaseContainer class="my-1">
           <div>
             <strong>{{
               'Proposal can be executed at ' +
@@ -513,13 +513,13 @@ onMounted(async () => {
 
       <div
         v-if="questionState === 'proposal-approved'"
-        class="my-4 inline-block"
+        class="my-4"
       >
-        <BaseContainer class="flex items-center">
+        <div class="flex items-center">
           <BaseButton
             :loading="action2State === 'execute-proposal'"
             @click="onExecuteProposal"
-            class="mr-2"
+            class="mr-2 w-full"
           >
             {{ $t('safeSnap.labels.executeTxsUma', [transactions.length]) }}
           </BaseButton>
@@ -535,7 +535,7 @@ onMounted(async () => {
               </div>
             </template>
           </BasePopoverHover>
-        </BaseContainer>
+        </div>
       </div>
     </div>
     <div
@@ -555,4 +555,3 @@ onMounted(async () => {
     </div>
   </template>
 </template>
-../types/types
