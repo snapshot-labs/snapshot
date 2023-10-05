@@ -17,11 +17,13 @@ const treasuryObj = {
 };
 
 const modalTreasuryOpen = ref(false);
+const modalOsnapOpen = ref(false);
 const currentTreasuryIndex = ref<number | null>(null);
 const currentTreasury = ref<TreasuryWallet>(clone(treasuryObj));
 const hasOsnapPlugin = computed(() => {
   return Object.keys(props.space.plugins).includes('oSnap');
 });
+const isOsnapEnabledOnCurrentTreasury = ref(false);
 
 function handleRemoveTreasury(i: number) {
   form.value.treasuries = form.value.treasuries.filter(
@@ -51,6 +53,22 @@ function handleSubmitTreasury(treasury: TreasuryWallet) {
     form.value.treasuries = form.value.treasuries.concat(treasury);
   }
 }
+
+function handleOpenConfigureOsnapModal(
+  treasuryIndex: number,
+  isEnabled: boolean
+) {
+  if (props.isViewOnly || !hasOsnapPlugin.value) return;
+  currentTreasuryIndex.value = treasuryIndex;
+  currentTreasury.value = clone(form.value.treasuries[treasuryIndex]);
+  isOsnapEnabledOnCurrentTreasury.value = isEnabled;
+  modalOsnapOpen.value = true;
+}
+
+function handleCloseConfigureOsnapModal() {
+  modalOsnapOpen.value = false;
+  isOsnapEnabledOnCurrentTreasury.value = false;
+}
 </script>
 
 <template>
@@ -62,6 +80,7 @@ function handleSubmitTreasury(treasury: TreasuryWallet) {
         :has-osnap-plugin="hasOsnapPlugin"
         @edit-treasury="i => handleEditTreasury(i)"
         @remove-treasury="i => handleRemoveTreasury(i)"
+        @configure-osnap="handleOpenConfigureOsnapModal"
       />
     </div>
 
@@ -78,6 +97,14 @@ function handleSubmitTreasury(treasury: TreasuryWallet) {
         :treasury="currentTreasury"
         @close="modalTreasuryOpen = false"
         @add="handleSubmitTreasury"
+      />
+      <ModalOsnap
+        v-if="hasOsnapPlugin"
+        :open="modalOsnapOpen"
+        :treasury="currentTreasury"
+        :space-name="form.name"
+        :is-osnap-enabled="isOsnapEnabledOnCurrentTreasury"
+        @close="handleCloseConfigureOsnapModal"
       />
     </teleport>
   </BaseBlock>
