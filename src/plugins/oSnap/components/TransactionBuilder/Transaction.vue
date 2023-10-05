@@ -9,13 +9,14 @@ import {
   type RawTransaction as TRawTransaction,
   type Transaction as TTransaction,
   type Token,
-  type TransactionType,
-  type TransferFundsTransaction
+  type TransactionType as TTransactionType,
+  type TransferFundsTransaction,
 } from '../../types';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
+import TransactionType from '../Input/TransactionType.vue';
 
 const props = defineProps<{
   isReadOnly: boolean;
@@ -35,12 +36,8 @@ const emit = defineEmits<{
 
 const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
 
-function updateTransactionType(transactionType: string) {
-  if (!transactionTypes.includes(transactionType as TransactionType)) {
-    console.warn('Invalid transaction type');
-    return;
-  }
-  newTransaction.value.type = transactionType as TransactionType;
+function updateTransactionType(transactionType: TTransactionType) {
+  newTransaction.value.type = transactionType;
   emit('updateTransaction', newTransaction.value, props.transactionIndex);
 }
 
@@ -51,24 +48,15 @@ function updateTransaction(transaction: TTransaction) {
 </script>
 
 <template>
-  <div v-if="isReadOnly">
-    <p>{{ transaction.type }} transaction</p>
+  <div class="flex items-center justify-between text-[#FF5353]">
+    <h3 class="text-left text-base">Transaction {{ transactionIndex + 1 }}</h3>
+    <button v-if="transactionIndex !== 0" @click="emit('removeTransaction', transactionIndex)">Remove</button>
   </div>
-  <UiSelect
-    v-else
-    :disabled="isReadOnly"
-    :model-value="transaction.type"
-    @update:modelValue="updateTransactionType"
-  >
-    <template #label>{{ $t('safeSnap.type') }}</template>
-    <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
-    <option value="transferNFT">{{ $t('safeSnap.transferNFT') }}</option>
-    <option value="contractInteraction">
-      {{ $t('safeSnap.contractInteraction') }}
-    </option>
-    <option value="raw">{{ $t('safeSnap.rawTransaction') }}</option>
-  </UiSelect>
-
+  <TransactionType
+    :selected-transaction-type="transaction.type"
+    :is-read-only="isReadOnly"
+    @update-transaction-type="updateTransactionType"
+  />
   <ContractInteraction
     v-if="transaction.type === 'contractInteraction'"
     :is-read-only="isReadOnly"

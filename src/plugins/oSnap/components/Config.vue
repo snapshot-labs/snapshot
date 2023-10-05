@@ -216,30 +216,29 @@ onMounted(async () => {
   } else {
     newPluginData.value.safe = safes.value[0];
   }
+  if (newPluginData.value.safe?.transactions?.length === 0) {
+    newPluginData.value.safe.transactions.push({
+      type: 'raw',
+      to: '',
+      value: '0',
+      data: '0x',
+      formatted: ['', 0, '0', '0x']
+    });
+  }
   emit('update', newPluginData.value);
   isLoading.value = false;
 });
 </script>
 
 <template>
-  <div v-if="isLoading" class="min-h-[180px] grid place-items-center">
-    <h1 class="text-center">Loading oSnap Safes <LoadingSpinner class="inline ml-2" big /></h1>
+  <div v-if="isLoading" class="grid min-h-[180px] place-items-center">
+    <h1 class="text-center">
+      Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
+    </h1>
   </div>
-  <div
-    v-else
-    class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
-  >
-    <div
-      class="block border-b px-4 pt-3"
-      style="
-        padding-bottom: 12px;
-        display: flex;
-        justify-content: space-between;
-      "
-    >
-      <h4>
-        {{ $t('safeSnap.transactions') }}
-      </h4>
+  <div v-else>
+    <div>
+      <h4>Add oSnap transactions</h4>
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <UiSelect

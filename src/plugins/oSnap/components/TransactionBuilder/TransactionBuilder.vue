@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { getIpfsUrl, shorten } from '@/helpers/utils';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { shorten } from '@/helpers/utils';
 import { EIP3770_PREFIXES } from '../../constants';
 import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
-import Transaction from './Transaction.vue';
 import HandleOutcomeUma from './HandleOutcomeUma.vue';
+import Transaction from './Transaction.vue';
 
 const props = defineProps<{
   safeAddress: string;
@@ -26,48 +25,31 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TTransaction, transactionIndex: number];
 }>();
 
-const safeLink = computed(() => {
-  const prefix = EIP3770_PREFIXES[props.network];
-  return `https://gnosis-safe.io/app/${prefix}:${props.safeAddress}`;
-});
-
-const networkName = computed(() => {
-  if (props.network === '1') return 'Mainnet';
-  const networkDetails = networks[props.network];
-  if ('shortName' in networkDetails) return networkDetails.shortName;
-  return networkDetails.name;
-});
-
-const networkIcon = computed(() => {
-  const { logo } = networks[props.network];
-  return getIpfsUrl(logo);
-});
-
 const proposalResolved = computed(() => {
   const ts = Number((Date.now() / 1e3).toFixed());
   return ts > props.proposal.end;
+});
+
+const safeLink = computed(() => {
+  const prefix = EIP3770_PREFIXES[props.network];
+  return `https://gnosis-safe.io/app/${prefix}:${props.safeAddress}`;
 });
 </script>
 
 <template>
   <div>
-    <h4
-      class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
-    >
-      <BaseAvatar class="float-left mr-2" :src="networkIcon" size="28" />
-      {{ networkName }} Safe
-      <a
-        v-if="safeAddress"
+    <p>
+      <strong>Safe app link</strong
+      ><a
         :href="safeLink"
-        class="ml-2 flex font-normal text-skin-text"
+        class="ml-2 inline-flex font-normal text-skin-text"
         target="_blank"
       >
         {{ shorten(safeAddress) }}
         <i-ho-external-link class="ml-1" />
       </a>
-      <div class="flex-grow"></div>
-      <Tooltip :module-address="moduleAddress" />
-    </h4>
+    </p>
+    <p><strong>Number of transactions</strong><span class="inline-block ml-2">{{  transactions.length }}</span></p>
     <div class="text-center">
       <Transaction
         v-for="(transaction, index) in transactions"
@@ -99,7 +81,7 @@ const proposalResolved = computed(() => {
           })
         "
       >
-        Add Transaction
+        Add Transaction +
       </BaseButton>
 
       <HandleOutcomeUma
