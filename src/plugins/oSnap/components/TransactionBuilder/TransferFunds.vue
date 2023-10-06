@@ -106,9 +106,6 @@ watch(selectedTokenAddress, updateTransaction);
   <div class="space-y-2">
     <InputAddress
       v-model="recipient"
-      :input-props="{
-        required: true
-      }"
       :label="$t('safeSnap.to')"
     />
     <InputAmount

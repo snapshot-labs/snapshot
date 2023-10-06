@@ -2,11 +2,16 @@
 import { mustBeEthereumAddress } from '../../utils';
 
 const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
-const emit = defineEmits(['update:modelValue', 'validAddress']);
+const emit = defineEmits(['update:modelValue']);
 
 const input = ref('');
-const isValid = ref(false);
 const dirty = ref(false);
+const error = computed(() => {
+  if (!dirty.value) return '';
+  if (input.value === '') return 'Address is required';
+  if (!mustBeEthereumAddress(input.value)) return 'Invalid address';
+  return '';
+})
 
 watch(
   () => props.modelValue,
@@ -22,12 +27,7 @@ onMounted(() => {
 });
 
 const handleInput = () => {
-  dirty.value = input.value !== '';
   emit('update:modelValue', input.value);
-  isValid.value = mustBeEthereumAddress(input.value);
-  if (isValid.value) {
-    emit('validAddress', input.value);
-  }
 };
 </script>
 
@@ -36,8 +36,9 @@ const handleInput = () => {
     v-model="input"
     v-bind="inputProps"
     :disabled="disabled"
-    :error="dirty && !isValid && $t('safeSnap.invalidAddress')"
+    :error="error !== '' && error"
     @input="handleInput()"
+    @blur="dirty = true"
   >
     <template v-if="label" #label>{{ label }}</template>
   </UiInput>

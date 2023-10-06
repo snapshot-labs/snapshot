@@ -28,7 +28,7 @@ const isToValid = computed(() => {
 });
 const abi = ref(props.transaction.abi ?? '');
 const isAbiValid = ref(true);
-const value = ref(props.transaction.value ?? '');
+const value = ref(props.transaction.value ?? '0');
 const isValueValid = ref(true);
 const methods = ref<FunctionFragment[]>([]);
 const selectedMethodName = ref(props.transaction.methodName ?? '');
