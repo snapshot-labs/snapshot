@@ -65,7 +65,7 @@ const safeLink = computed(() => {
     class="mt-4 w-full"
     @click="
       emit('addTransaction', {
-        type: 'raw',
+        type: 'transferFunds',
         to: '',
         value: '0',
         data: '0x',
