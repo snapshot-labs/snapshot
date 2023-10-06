@@ -90,7 +90,6 @@ function onChange(value: string) {
   <UiSelect
     v-if="inputType === 'boolean'"
     :model-value="value"
-    :disabled="isReadOnly"
     @update:modelValue="onChange($event)"
   >
     <template #label>{{ label }}</template>
@@ -100,7 +99,6 @@ function onChange(value: string) {
 
   <SafeSnapInputAddress
     v-if="inputType === 'address'"
-    :disabled="isReadOnly"
     :input-props="{ required: true }"
     :label="label"
     :model-value="value"
@@ -109,7 +107,6 @@ function onChange(value: string) {
   <UiInput
     v-if="inputType === 'array'"
     :placeholder="arrayPlaceholder"
-    :disabled="isReadOnly"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
     @update:modelValue="onChange($event)"
@@ -119,7 +116,6 @@ function onChange(value: string) {
   <UiInput
     v-if="inputType === 'number'"
     placeholder="123456"
-    :disabled="isReadOnly"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
     @update:modelValue="onChange($event)"
@@ -130,7 +126,6 @@ function onChange(value: string) {
     v-if="inputType === 'bytes'"
     placeholder="0x123abc"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
-    :disabled="isReadOnly"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
@@ -139,7 +134,6 @@ function onChange(value: string) {
   <UiInput
     v-if="inputType === 'text'"
     placeholder="a string of text"
-    :disabled="isReadOnly"
     :model-value="value"
     @update:modelValue="onChange($event)"
   >

@@ -4,13 +4,13 @@ import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import type { Network, Transaction } from '../../types';
+import type { Network, Transaction } from '../types';
 import {
   approveBond,
   executeProposal,
   getExecutionDetails,
   submitProposal
-} from '../../utils';
+} from '../utils';
 
 declare global {
   interface Window {
