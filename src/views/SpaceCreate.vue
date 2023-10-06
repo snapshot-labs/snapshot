@@ -34,6 +34,7 @@ useMeta({
 
 const { notify } = useFlashNotification();
 const router = useRouter();
+const route = useRoute();
 const { t } = useI18n();
 const auth = getInstance();
 const { domain } = useApp();
@@ -66,6 +67,10 @@ const currentStep = ref(Step.CONTENT);
 
 const proposal = computed(() =>
   Object.assign(form.value, { choices: form.value.choices })
+);
+
+const isEditing = computed(
+  () => !!(sourceProposal.value && route.query.editing)
 );
 
 type DateRange = {
@@ -204,9 +209,16 @@ function getFormattedForm() {
 }
 
 const { resetSpaceProposals } = useProposals();
-async function handleSubmit() {
+
+function handleSubmit() {
+  if (!termsAccepted && props.space.terms) return (modalTermsOpen.value = true);
+  if (isEditing.value) return handleUpdate();
+  handleCreate();
+}
+
+async function handleCreate() {
   const formattedForm = getFormattedForm();
-  const result = await send(props.space, 'proposal', formattedForm);
+  const result = await send(props.space, 'create-proposal', formattedForm);
   if (result.id) {
     resetSpaceProposals();
     if (!result.ipfs) notify(['green', t('notify.waitingForOtherSigners')]);
@@ -217,6 +229,25 @@ async function handleSubmit() {
       params: {
         key: props.space.id,
         id: result.id
+      }
+    });
+  }
+}
+
+async function handleUpdate() {
+  const formattedForm = getFormattedForm();
+  formattedForm.id = sourceProposal.value;
+  const result = await send(props.space, 'update-proposal', formattedForm);
+  if (result.id) {
+    resetSpaceProposals();
+    if (!result.ipfs) notify(['green', t('notify.waitingForOtherSigners')]);
+    else notify(['green', t('notify.proposalUpdated')]);
+    resetForm();
+    router.push({
+      name: 'spaceProposal',
+      params: {
+        key: props.space.id,
+        id: sourceProposal.value
       }
     });
   }
@@ -368,6 +399,12 @@ onMounted(async () => {
     form.value.body = props.space.template;
   }
 });
+
+onBeforeRouteLeave(async () => {
+  if (isEditing.value) {
+    resetForm();
+  }
+});
 </script>
 
 <template>
@@ -408,6 +445,7 @@ onMounted(async () => {
         :date-start="dateStart"
         :date-end="dateEnd"
         :osnap="osnap"
+        :is-editing="isEditing"
         @osnapToggle="handleOsnapToggle"
       />
 
@@ -442,13 +480,9 @@ onMounted(async () => {
           class="block w-full"
           primary
           data-testid="create-proposal-publish-button"
-          @click="
-            !termsAccepted && space.terms
-              ? (modalTermsOpen = true)
-              : handleSubmit()
-          "
+          @click="handleSubmit"
         >
-          {{ $t('create.publish') }}
+          {{ isEditing ? 'Save changes' : $t('create.publish') }}
         </BaseButton>
         <BaseButton
           v-else

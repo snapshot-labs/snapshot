@@ -19,9 +19,11 @@ const { web3Account } = useWeb3();
 const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
-  const items = [
-    { text: t('duplicate'), action: 'duplicate' },
-  ];
+  const items: { text: string; action: string }[] = [];
+  if (isCreator.value && props.proposal.state === 'pending')
+    items.push({ text: t('edit'), action: 'edit' });
+  items.push({ text: t('duplicate'), action: 'duplicate' });
+
   if ((props.isAdmin || props.isModerator) && !props.proposal.flagged) {
     items.push({ text: t('flag'), action: 'flag' });
   } else {
@@ -64,14 +66,15 @@ async function handleSelect(e) {
       proposal: props.proposal
     });
   }
-  if (e === 'duplicate') {
+  if (e === 'duplicate' || e === 'edit') {
     resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
         key: props.proposal.space.id,
         sourceProposal: props.proposal.id
-      }
+      },
+      query: { editing: e === 'edit' ? 'true' : undefined }
     });
   }
 }
@@ -158,8 +161,11 @@ watch(
         </template>
         <template #item="{ item }">
           <div class="flex items-center gap-2">
+            <i-ho-pencil v-if="item.action === 'edit'" />
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
-            <i-ho-flag v-if="item.action === 'report' || item.action === 'flag'" />
+            <i-ho-flag
+              v-if="item.action === 'report' || item.action === 'flag'"
+            />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>

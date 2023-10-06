@@ -61,7 +61,7 @@ export function useFormSpaceProposal() {
     isBodySet: boolean;
   }>(`snapshot.proposal.${route.params.key}`, clone(EMPTY_PROPOSAL_DRAFT));
 
-  const sourceProposal = computed(() => route.params.sourceProposal);
+  const sourceProposal = computed(() => route.params.sourceProposal as string);
 
   function resetForm() {
     formDraft.value = clone(EMPTY_PROPOSAL_DRAFT);

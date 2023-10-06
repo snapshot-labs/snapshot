@@ -646,6 +646,7 @@
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
+    "proposalUpdated": "Proposal updated",
     "waitingForOtherSigners": "Waiting for other signers",
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
