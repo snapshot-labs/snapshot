@@ -18,7 +18,6 @@ import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
 
 const props = defineProps<{
-  isReadOnly: boolean;
   transaction: TTransaction;
   transactionIndex: number;
   safeAddress: string;
@@ -61,19 +60,16 @@ function updateTransaction(transaction: TTransaction) {
     </div>
     <TransactionType
       :selected-transaction-type="transaction.type"
-      :is-read-only="isReadOnly"
       @update-transaction-type="updateTransactionType"
     />
     <ContractInteraction
       v-if="transaction.type === 'contractInteraction'"
-      :is-read-only="isReadOnly"
       :transaction="(newTransaction as ContractInteractionTransaction)"
       :network="network"
     />
 
     <TransferFunds
       v-if="transaction.type === 'transferFunds'"
-      :is-read-only="isReadOnly"
       :network="network"
       :tokens="tokens"
       :transaction="(newTransaction as TransferFundsTransaction)"
@@ -82,7 +78,6 @@ function updateTransaction(transaction: TTransaction) {
 
     <TransferNFT
       v-if="transaction.type === 'transferNFT'"
-      :is-read-only="isReadOnly"
       :network="network"
       :safe-address="safeAddress"
       :collectables="collectables"
@@ -92,7 +87,6 @@ function updateTransaction(transaction: TTransaction) {
 
     <RawTransaction
       v-if="transaction.type === 'raw'"
-      :is-read-only="isReadOnly"
       :transaction="(newTransaction as TRawTransaction)"
       @update-transaction="updateTransaction"
     />

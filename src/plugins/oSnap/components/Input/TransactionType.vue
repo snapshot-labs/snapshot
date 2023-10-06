@@ -7,7 +7,6 @@ import ModalTransactionType from '../TransactionBuilder/ModalTransactionType.vue
 
 defineProps<{
   selectedTransactionType: TTransactionType;
-  isReadOnly: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -52,8 +51,6 @@ const transactionTypesWithDetails: {
           typeAndDetails => typeAndDetails.type === selectedTransactionType
         )?.title || 'Select transaction type'
       "
-      :disabled="isReadOnly"
-      :tooltip="!isReadOnly ? 'Select the transaction type' : null"
       @select="isModalOpen = true"
     />
     <teleport to="#modal">

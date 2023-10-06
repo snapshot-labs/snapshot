@@ -10,7 +10,6 @@ import {
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  isReadOnly: boolean;
   network: Network;
   collectables: NFT[];
   transaction: TransferNftTransaction;
@@ -21,24 +20,19 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TransferNftTransaction];
 }>();
 
-const collectables = props.isReadOnly
-    ? [props.transaction.collectable]
-    : props.collectables;
-
 const recipient = ref(props.transaction.recipient ?? '');
 const selectedCollectableAddress = ref(
   props.transaction.collectable?.address ?? ''
 );
 
 const selectedCollectable = computed(() => {
-  return collectables.find(
+  return props.collectables.find(
     collectable => collectable?.address === selectedCollectableAddress.value
   );
 });
 
 function updateTransaction() {
   if (
-    props.isReadOnly ||
     !isAddress(recipient.value) ||
     !selectedCollectable.value
   )
@@ -71,7 +65,7 @@ watch(selectedCollectableAddress, updateTransaction);
 </script>
 
 <template>
-  <UiSelect v-model="selectedCollectableAddress" :disabled="isReadOnly">
+  <UiSelect v-model="selectedCollectableAddress">
     <template #label>{{ $t('safeSnap.asset') }}</template>
     <template
       v-if="
@@ -102,7 +96,6 @@ watch(selectedCollectableAddress, updateTransaction);
 
   <AddressInput
     v-model="recipient"
-    :disabled="isReadOnly"
     :input-props="{
       required: true
     }"
@@ -117,4 +110,3 @@ watch(selectedCollectableAddress, updateTransaction);
   vertical-align: middle;
 }
 </style>
-../../types/types

@@ -5,7 +5,6 @@ import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import SafeSnapInputAddress from './Address.vue';
 
 const props = defineProps<{
-  isReadOnly: boolean;
   parameter: ParamType;
   value: string;
 }>();

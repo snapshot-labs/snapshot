@@ -15,7 +15,6 @@ import InputMethodParameter from '../Input/MethodParameter.vue';
 
 const props = defineProps<{
   network: Network;
-  isReadOnly: boolean;
   transaction: ContractInteractionTransaction;
 }>();
 
@@ -42,7 +41,7 @@ const parameters = ref<string[]>([]);
 const selectedParameters = ref<string[]>([]);
 
 function updateTransaction() {
-  if (props.isReadOnly || !isValueValid || !isToValid || !isAbiValid) return;
+  if (!isValueValid || !isToValid || !isAbiValid) return;
   try {
     const transaction = createContractInteractionTransaction({
       to: to.value,
@@ -111,7 +110,6 @@ function updateValue(newValue: string) {
   <div class="space-y-2">
     <InputAddress
       v-model="to"
-      :disabled="isReadOnly"
       :input-props="{
         required: true
       }"
@@ -120,7 +118,6 @@ function updateValue(newValue: string) {
     />
 
     <UiInput
-      :disabled="isReadOnly"
       :error="!isValueValid && $t('safeSnap.invalidValue')"
       :model-value="value"
       @update:modelValue="updateValue($event)"
@@ -129,7 +126,6 @@ function updateValue(newValue: string) {
     </UiInput>
 
     <UiInput
-      :disabled="isReadOnly"
       :error="!isAbiValid && $t('safeSnap.invalidAbi')"
       :model-value="abi"
       @update:modelValue="updateAbi($event)"
@@ -140,7 +136,6 @@ function updateValue(newValue: string) {
     <div v-if="methods.length">
       <UiSelect
         v-model="selectedMethodName"
-        :disabled="isReadOnly"
         @change="updateMethod($event)"
       >
         <template #label>function</template>
@@ -157,7 +152,6 @@ function updateValue(newValue: string) {
           :key="input.name"
           :parameter="input"
           :value="parameters[index]"
-          :is-read-only="isReadOnly"
           @update-parameter-value="updateParameter(index, $event)"
         />
       </div>

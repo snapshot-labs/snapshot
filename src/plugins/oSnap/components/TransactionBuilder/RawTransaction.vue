@@ -8,7 +8,6 @@ import { createRawTransaction } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
-  isReadOnly: boolean;
   transaction: RawTransaction;
 }>();
 
@@ -44,13 +43,7 @@ watch(value, updateTransaction);
 watch(data, updateTransaction);
 
 function updateTransaction() {
-  if (
-    props.isReadOnly ||
-    !isToValid.value ||
-    !isValueValid.value ||
-    !isDataValid.value
-  )
-    return;
+  if (!isToValid.value || !isValueValid.value || !isDataValid.value) return;
 
   const transaction = createRawTransaction({
     to: to.value,
@@ -65,7 +58,6 @@ function updateTransaction() {
   <div class="space-y-2">
     <AddressInput
       v-model="to"
-      :disabled="isReadOnly"
       :input-props="{ required: false }"
       :error="!isToValid && $t('safeSnap.invalidAddress')"
       :label="$t('safeSnap.to')"
@@ -73,17 +65,12 @@ function updateTransaction() {
 
     <UiInput
       v-model="value"
-      :disabled="isReadOnly"
       :error="!isValueValid && $t('safeSnap.invalidValue')"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
 
-    <UiInput
-      v-model="data"
-      :disabled="isReadOnly"
-      :error="!isDataValid && $t('safeSnap.invalidData')"
-    >
+    <UiInput v-model="data" :error="!isDataValid && $t('safeSnap.invalidData')">
       <template #label>{{ $t('safeSnap.data') }}</template>
     </UiInput>
   </div>
@@ -111,4 +98,3 @@ function updateTransaction() {
   margin-bottom: 24px;
 }
 </style>
-../../types/types

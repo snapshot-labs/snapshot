@@ -12,12 +12,8 @@ export type GnosisSafe = {
   safeAddress: string;
   network: Network;
   moduleAddress: string;
-  tokens: Token[];
-  collectables: NFT[];
   transactions: Transaction[];
 }
-
-export type SafesBySafeAddress = Record<string, GnosisSafe>;
 
 export type OsnapPluginData = {
     safe: GnosisSafe | null;

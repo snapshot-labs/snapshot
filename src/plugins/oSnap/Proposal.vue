@@ -1,22 +1,111 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import Config from './components/Config.vue';
+import { getIpfsUrl, shorten } from '@/helpers/utils';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { formatEther, formatUnits } from '@ethersproject/units';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { EIP3770_PREFIXES } from '../safeSnap';
+import HandleOutcomeUma from './components/HandleOutcomeUma.vue';
+import ReadOnly from './components/Input/ReadOnly.vue';
+import { GnosisSafe, Transaction } from './types';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
   results: Results;
 }>();
+const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
+const safe = props.proposal.plugins.oSnap?.safe as GnosisSafe;
+const { logo } = networks[safe.network];
+const networkIcon = getIpfsUrl(logo);
+const prefix = EIP3770_PREFIXES[safe.network];
+const safeLink = `https://gnosis-safe.io/app/${prefix}:${safe.safeAddress}`;
+const transactionsForDisplay = enrichTransactionsForDisplay(safe.transactions);
+
+function enrichTransactionsForDisplay(transactions: Transaction[]) {
+  return transactions.map(enrichTransactionForDisplay);
+}
+
+function enrichTransactionForDisplay(transaction: Transaction) {
+  const { to, value, data } = transaction;
+  const commonProperties = { to, value: formatEther(value), data };
+  if (transaction.type === 'raw') {
+    return { ...commonProperties, type: 'Raw' };
+  }
+  if (transaction.type === 'contractInteraction') {
+    const { methodName, parameters } = transaction;
+    return {
+      ...commonProperties,
+      type: 'Contract interaction',
+      'method name': methodName,
+      parameters: parameters?.join(', ')
+    };
+  }
+  if (transaction.type === 'transferFunds') {
+    const { token, amount: unformattedAmount } = transaction;
+    const amount =
+      isBigNumberish(unformattedAmount) && !!token?.decimals
+        ? formatUnits(unformattedAmount, token.decimals)
+        : unformattedAmount;
+    return {
+      ...commonProperties,
+      type: 'Transfer funds',
+      'token address':
+        token?.address === 'main' ? 'native token' : token?.address,
+      'token symbol': token?.symbol,
+      recipient: transaction.recipient,
+      amount
+    };
+  }
+  if (transaction.type === 'transferNFT') {
+    const { recipient, collectable } = transaction;
+    return {
+      ...commonProperties,
+      type: 'Transfer NFT',
+      recipient,
+      collectable: `${collectable?.tokenName} #${collectable?.id}`,
+      'collectable address': collectable?.address
+    };
+  }
+  return { ...commonProperties, type: 'Raw' };
+}
 </script>
 
 <template>
-  <Config
-    v-if="!!proposal.plugins.oSnap?.safe?.transactions?.length"
-    :plugin-data="proposal.plugins.oSnap"
-    :proposal="proposal"
-    :is-read-only="true"
-    :network="space.network"
+  <div>
+    <h2 class="mb-4 text-lg">oSnap Transactions</h2>
+    <h3 class="flex text-md">
+      <BaseAvatar class="" :src="networkIcon" size="24" />
+      {{ safe.safeName }}
+      <a
+        v-if="safe.safeAddress"
+        :href="safeLink"
+        class="ml-2 flex font-normal text-skin-text"
+        target="_blank"
+      >
+        {{ shorten(safe.safeAddress) }}
+        <i-ho-external-link class="ml-1" />
+      </a>
+    </h3>
+    <BaseLink v-if="ipfs" :link="ipfs">View transactions on IPFS</BaseLink>
+    <div
+      v-for="({ type, ...details }, index) in transactionsForDisplay"
+      class="my-4"
+    >
+      <h4 class="mb-2">{{ type }} transaction #{{ index + 1 }}</h4>
+      <ReadOnly v-for="[key, value] in Object.entries(details)" class="mb-2">
+        <strong class="mr-4 inline-block whitespace-nowrap">{{ key }}</strong>
+        <span class="break-all">{{ value }}</span>
+      </ReadOnly>
+    </div>
+  </div>
+  <HandleOutcomeUma
+    v-if="!!results"
     :space="space"
+    :proposal="proposal"
+    :transactions="safe.transactions"
     :results="results"
+    :module-address="safe.moduleAddress"
+    :network="safe.network"
   />
 </template>

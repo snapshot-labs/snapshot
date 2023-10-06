@@ -15,7 +15,6 @@ import InputAmount from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
 
 const props = defineProps<{
-  isReadOnly: boolean;
   network: Network;
   tokens: Token[];
   transaction: TransferFundsTransaction;
@@ -42,7 +41,6 @@ const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
   if (
-    props.isReadOnly ||
     !isBigNumberish(amount.value) ||
     !isAddress(recipient.value)
   )
@@ -102,13 +100,12 @@ watch(selectedTokenAddress, updateTransaction);
         }}
       </span>
     </div>
-    <i-ho-chevron-down class="text-xs text-skin-link" v-if="!isReadOnly" />
+    <i-ho-chevron-down class="text-xs text-skin-link" />
   </BaseButton>
 
   <div class="space-y-2">
     <InputAddress
       v-model="recipient"
-      :disabled="isReadOnly"
       :input-props="{
         required: true
       }"
@@ -119,11 +116,10 @@ watch(selectedTokenAddress, updateTransaction);
       v-model="amount"
       :label="$t('safeSnap.amount')"
       :decimals="selectedToken?.decimals"
-      :disabled="isReadOnly"
     />
   </div>
 
-  <teleport to="#modal" v-if="!isReadOnly">
+  <teleport to="#modal">
     <TokensModal
       :tokens="tokens"
       :token-address="selectedTokenAddress"
