@@ -2,6 +2,7 @@
 import { ExtendedSpace, TreasuryWallet } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
+import Safe from './components/Input/Safe.vue';
 import TransactionBuilder from './components/TransactionBuilder/TransactionBuilder.vue';
 import {
   BalanceResponse,
@@ -182,8 +183,8 @@ async function createSafes() {
   return safes;
 }
 
-function updateSafe(safeIndex: string) {
-  newPluginData.value.safe = cloneDeep(safes.value[safeIndex]);
+function updateSafe(safe: GnosisSafe) {
+  newPluginData.value.safe = cloneDeep(safe);
   update(newPluginData.value);
 }
 
@@ -220,7 +221,9 @@ onMounted(async () => {
         Using the oSnap plugin while the SafeSnap plugin is still installed on
         your place will cause unexpected behavior.
       </p>
-      <p class="font-bold">Please remove the SafeSnap plugin before using the oSnap plugin.</p>
+      <p class="font-bold">
+        Please remove the SafeSnap plugin before using the oSnap plugin.
+      </p>
     </div>
   </template>
   <template v-else>
@@ -234,19 +237,11 @@ onMounted(async () => {
         <h2 class="text-md">Add oSnap transactions</h2>
       </div>
       <h3 class="text-base">Pick a safe</h3>
-      <UiSelect
-        :model-value="
-          safes.findIndex(
-            safe => safe.safeAddress === newPluginData.safe?.safeAddress
-          )
-        "
-        @update:modelValue="updateSafe"
-      >
-        <template #label>Safe</template>
-        <option v-for="(safe, index) in safes" :key="index" :value="index">
-          {{ safe.safeName }}
-        </option>
-      </UiSelect>
+      <Safe
+        :safes="safes"
+        :selectedSafe="newPluginData.safe"
+        @updateSafe="updateSafe($event)"
+      />
       <div class="mt-4 border-b last:border-b-0">
         <TransactionBuilder
           v-if="!!newPluginData.safe"
