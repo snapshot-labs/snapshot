@@ -23,6 +23,8 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+const hasLegacyPluginInstalled = 'safeSnap' in props.space.plugins;
+
 const isLoading = ref(false);
 
 const emit = defineEmits<{
@@ -172,7 +174,7 @@ async function createSafes() {
         safeAddress: treasury.address,
         network: treasury.network as Network,
         transactions: [] as Transaction[],
-        moduleAddress,
+        moduleAddress
       };
     })
   );
@@ -211,43 +213,55 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="isLoading" class="grid min-h-[180px] place-items-center">
-    <h1 class="text-center">
-      Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
-    </h1>
-  </div>
-  <div v-else class="rounded-2xl border p-4">
-    <div>
-      <h2 class="text-md">Add oSnap transactions</h2>
+  <template v-if="hasLegacyPluginInstalled">
+    <div class="rounded-2xl border p-4 text-md">
+      <h2 class="mb-2">Warning: Legacy plugin detected</h2>
+      <p class="mb-2">
+        Using the oSnap plugin while the SafeSnap plugin is still installed on
+        your place will cause unexpected behavior.
+      </p>
+      <p class="font-bold">Please remove the SafeSnap plugin before using the oSnap plugin.</p>
     </div>
-    <h3 class="text-base">Pick a safe</h3>
-    <UiSelect
-      :model-value="
-        safes.findIndex(
-          safe => safe.safeAddress === newPluginData.safe?.safeAddress
-        )
-      "
-      @update:modelValue="updateSafe"
-    >
-      <template #label>Safe</template>
-      <option v-for="(safe, index) in safes" :key="index" :value="index">
-        {{ safe.safeName }}
-      </option>
-    </UiSelect>
-    <div class="mt-4 border-b last:border-b-0">
-      <TransactionBuilder
-        v-if="!!newPluginData.safe"
-        :space="space"
-        :safe-address="newPluginData.safe.safeAddress"
-        :module-address="newPluginData.safe.moduleAddress"
-        :tokens="tokens"
-        :collectables="collectables"
-        :network="newPluginData.safe.network"
-        :transactions="newPluginData.safe.transactions"
-        @add-transaction="addTransaction"
-        @remove-transaction="removeTransaction"
-        @update-transaction="updateTransaction"
-      />
+  </template>
+  <template v-else>
+    <div v-if="isLoading" class="grid min-h-[180px] place-items-center">
+      <h2 class="text-center">
+        Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
+      </h2>
     </div>
-  </div>
+    <div v-else class="rounded-2xl border p-4">
+      <div>
+        <h2 class="text-md">Add oSnap transactions</h2>
+      </div>
+      <h3 class="text-base">Pick a safe</h3>
+      <UiSelect
+        :model-value="
+          safes.findIndex(
+            safe => safe.safeAddress === newPluginData.safe?.safeAddress
+          )
+        "
+        @update:modelValue="updateSafe"
+      >
+        <template #label>Safe</template>
+        <option v-for="(safe, index) in safes" :key="index" :value="index">
+          {{ safe.safeName }}
+        </option>
+      </UiSelect>
+      <div class="mt-4 border-b last:border-b-0">
+        <TransactionBuilder
+          v-if="!!newPluginData.safe"
+          :space="space"
+          :safe-address="newPluginData.safe.safeAddress"
+          :module-address="newPluginData.safe.moduleAddress"
+          :tokens="tokens"
+          :collectables="collectables"
+          :network="newPluginData.safe.network"
+          :transactions="newPluginData.safe.transactions"
+          @add-transaction="addTransaction"
+          @remove-transaction="removeTransaction"
+          @update-transaction="updateTransaction"
+        />
+      </div>
+    </div>
+  </template>
 </template>
