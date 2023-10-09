@@ -17,7 +17,7 @@ const href = computed(() =>
     spaceUrl,
     spaceName: props.spaceName,
     safeAddress: props.treasury.address,
-    network: props.treasury.network,
+    network: props.treasury.network
   })
 );
 </script>
@@ -28,14 +28,18 @@ const href = computed(() =>
       <h3 v-text="'Configure oSnap'" />
     </template>
     <div class="m-4 grid grid-cols-[auto,auto] gap-2">
-        <i-ho-information-circle class="text-sm mt-1" />
-        <p class="text-sm">
-          oSnap seamlessly integrates with Snapshot and your treasury,
-          automatically executing governance votes on-chain. Bypass the need for
-          privileged signers to create a DAO that's more efficient and truly
-          decentralized.
-      <BaseLink class="text-[hsl(240,83%,58%)] block mt-1" link="https://uma.xyz/osnap">Learn more</BaseLink>
-        </p>
+      <i-ho-information-circle class="mt-1 text-sm" />
+      <p class="text-sm">
+        oSnap seamlessly integrates with Snapshot and your treasury,
+        automatically executing governance votes on-chain. Bypass the need for
+        privileged signers to create a DAO that's more efficient and truly
+        decentralized.
+        <BaseLink
+          class="mt-1 block text-[hsl(240,83%,58%)]"
+          link="https://uma.xyz/osnap"
+          >Learn more</BaseLink
+        >
+      </p>
     </div>
 
     <template #footer>
@@ -46,11 +50,14 @@ const href = computed(() =>
         :class="
           isOsnapEnabled ? 'bg-[hsl(349,65%,52%)]' : 'bg-[hsl(240,83%,58%)]'
         "
+        @click.stop="$emit('close')"
       >
         {{ isOsnapEnabled ? 'Deactivate' : 'Activate' }} oSnap
         <i-ho-external-link class="mb-[2px] ml-1 inline-block text-xs" />
       </a>
-      <p class="text-black/50 text-xs mt-2">Note that the deactivation process takes place in the Safe app</p>
+      <p class="mt-2 text-xs text-black/50">
+        Note that the deactivation process takes place in the Safe app
+      </p>
     </template>
   </BaseModal>
 </template>

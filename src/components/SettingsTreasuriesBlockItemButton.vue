@@ -10,41 +10,56 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  removeTreasury: [index: number]
-  editTreasury: [index: number]
-  configureOsnap: [index: number, isEnabled: boolean]
+  removeTreasury: [index: number];
+  editTreasury: [index: number];
+  configureOsnap: [index: number, isEnabled: boolean];
 }>();
 
 const isOsnapEnabled = ref(false);
 
-onMounted(async () => {
+async function updateIsOsnapEnabled() {
+  console.log('updateIsOsnapEnabled')
   if (!props.hasOsnapPlugin) return;
-  isOsnapEnabled.value = await getIsOsnapEnabled(props.treasury.network, props.treasury.address);
-})
+  isOsnapEnabled.value = await getIsOsnapEnabled(
+    props.treasury.network,
+    props.treasury.address
+  );
+}
+
+onMounted(async () => {
+  await updateIsOsnapEnabled();
+  window.addEventListener('focus', updateIsOsnapEnabled);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('focus', updateIsOsnapEnabled);
+});
 </script>
 
 <template>
   <button
-      class="flex h-full truncate w-full items-center justify-between rounded-md border p-4"
-      :class="{ 'cursor-default': isViewOnly }"
-      @click="emit('editTreasury', treasuryIndex)"
+    class="flex h-full w-full items-center justify-between truncate rounded-md border p-4"
+    :class="{ 'cursor-default': isViewOnly }"
+    @click="emit('editTreasury', treasuryIndex)"
+  >
+    <div class="flex items-center gap-2 truncate pr-[20px] text-left">
+      <h4 class="truncate">{{ treasury.name }}</h4>
+    </div>
+    <div class="ml-auto mr-3">
+      <SettingsTreasuryActivateOsnapButton
+        v-show="hasOsnapPlugin"
+        :is-osnap-enabled="isOsnapEnabled"
+        @click.stop="
+          !isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)
+        "
+      />
+    </div>
+    <BaseButtonIcon
+      v-show="!isViewOnly"
+      class="-mr-2"
+      @click.stop="emit('removeTreasury', treasuryIndex)"
     >
-      <div class="flex items-center gap-2 truncate pr-[20px] text-left">
-        <h4 class="truncate">{{ treasury.name }}</h4>
-      </div>
-      <div class="ml-auto mr-3">
-        <SettingsTreasuryActivateOsnapButton
-        v-show="hasOsnapPlugin" 
-        :is-osnap-enabled="isOsnapEnabled" 
-        @click.stop="!isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)" 
-        />
-      </div>
-      <BaseButtonIcon
-        v-show="!isViewOnly"
-        class="-mr-2"
-        @click.stop="emit('removeTreasury', treasuryIndex)"
-      >
-        <BaseIcon name="close" size="14" />
-      </BaseButtonIcon>
-    </button>
+      <BaseIcon name="close" size="14" />
+    </BaseButtonIcon>
+  </button>
 </template>
