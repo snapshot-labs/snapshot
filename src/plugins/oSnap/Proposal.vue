@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { getIpfsUrl, shorten } from '@/helpers/utils';
+import { getIpfsUrl } from '@/helpers/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { formatEther, formatUnits } from '@ethersproject/units';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { EIP3770_PREFIXES } from '../safeSnap';
 import HandleOutcomeUma from './components/HandleOutcomeUma.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
+import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
 
 const props = defineProps<{
@@ -16,10 +15,6 @@ const props = defineProps<{
 }>();
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 const safe = props.proposal.plugins.oSnap?.safe as GnosisSafe;
-const { logo } = networks[safe.network];
-const networkIcon = getIpfsUrl(logo);
-const prefix = EIP3770_PREFIXES[safe.network];
-const safeLink = `https://gnosis-safe.io/app/${prefix}:${safe.safeAddress}`;
 const transactionsForDisplay = enrichTransactionsForDisplay(safe.transactions);
 
 function enrichTransactionsForDisplay(transactions: Transaction[]) {
@@ -75,17 +70,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
   <div>
     <h2 class="mb-4 text-lg">oSnap Transactions</h2>
     <h3 class="flex text-md">
-      <BaseAvatar class="" :src="networkIcon" size="24" />
-      {{ safe.safeName }}
-      <a
-        v-if="safe.safeAddress"
-        :href="safeLink"
-        class="ml-2 flex font-normal text-skin-text"
-        target="_blank"
-      >
-        {{ shorten(safe.safeAddress) }}
-        <i-ho-external-link class="ml-1" />
-      </a>
+      <SafeLinkWithAvatar :safe="safe" />
     </h3>
     <BaseLink v-if="ipfs" :link="ipfs">View transactions on IPFS</BaseLink>
     <div

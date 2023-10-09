@@ -1,9 +1,13 @@
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { transactionTypes } from './constants';
+import { safePrefixes, transactionTypes } from './constants';
 
 type Networks = typeof networks;
 
 export type Network = keyof Networks;
+
+export type SafeNetworkPrefixes = typeof safePrefixes;
+
+export type SafeNetworkPrefix = SafeNetworkPrefixes[Network];
 
 export type OptimisticGovernorTransaction = [to: string, operation: 0, value: string, data: string];
 

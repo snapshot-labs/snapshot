@@ -1,4 +1,5 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
+import { EIP3770_PREFIXES } from '@/plugins/safeSnap';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -10,14 +11,14 @@ import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import memoize from 'lodash/memoize';
 import {
-  EIP3770_PREFIXES,
   ERC20_ABI,
   GNOSIS_SAFE_TRANSACTION_API_URLS,
   OPTIMISTIC_GOVERNOR_ABI,
   OPTIMISTIC_ORACLE_V3_ABI,
-  contractData
+  contractData,
+  safePrefixes
 } from '../constants';
-import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, Token } from '../types';
+import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, SafeNetworkPrefix, Token } from '../types';
 import { pageEvents } from './events';
 
 async function callGnosisSafeTransactionApi<TResult = any>(
@@ -656,4 +657,13 @@ export async function getExecutionDetails(
     proposalId,
     explanation
   };
+}
+
+export function getSafeNetworkPrefix(network: Network): SafeNetworkPrefix {
+  return safePrefixes[network];
+}
+
+export function getSafeAppLink(network: Network, safeAddress: string, appUrl = "https://gnosis-safe.io/app/") {
+  const prefix = getSafeNetworkPrefix(network);
+  return `${appUrl}${prefix}:${safeAddress}`;
 }

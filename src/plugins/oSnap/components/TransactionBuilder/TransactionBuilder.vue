@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
-import { EIP3770_PREFIXES } from '../../constants';
 import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
+import { getSafeAppLink } from '../../utils';
 import Transaction from './Transaction.vue';
 
 const props = defineProps<{
@@ -23,10 +23,9 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TTransaction, transactionIndex: number];
 }>();
 
-const safeLink = computed(() => {
-  const prefix = EIP3770_PREFIXES[props.network];
-  return `https://gnosis-safe.io/app/${prefix}:${props.safeAddress}`;
-});
+const safeLink = computed(() =>
+  getSafeAppLink(props.network, props.safeAddress)
+);
 </script>
 
 <template>
