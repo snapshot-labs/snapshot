@@ -176,7 +176,7 @@ async function onApproveBond() {
   }
 }
 
-function getProposalUrl(chain: string, txHash: string, logIndex: number) {
+function getOracleUiLink(chain: string, txHash: string, logIndex: number) {
   if (Number(chain) !== 5 && Number(chain) !== 80001) {
     return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
@@ -493,7 +493,7 @@ onMounted(async () => {
           <div style="text-align: center" class="mt-3">
             <a
               :href="
-                getProposalUrl(
+                getOracleUiLink(
                   props.network,
                   questionDetails.assertionEvent.proposalTxHash,
                   questionDetails.assertionEvent.logIndex
