@@ -18,7 +18,6 @@ const emit = defineEmits<{
 const isOsnapEnabled = ref(false);
 
 async function updateIsOsnapEnabled() {
-  console.log('updateIsOsnapEnabled')
   if (!props.hasOsnapPlugin) return;
   isOsnapEnabled.value = await getIsOsnapEnabled(
     props.treasury.network,

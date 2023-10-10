@@ -5,6 +5,20 @@ defineProps<{
 </script>
 
 <template>
-  <button v-if="isOsnapEnabled" class="text-[hsl(122,100%,21%)] bg-[hsla(122,100%,45%,0.13)] rounded-full px-3 py-2 flex items-center gap-2"><span class="block w-[6px] h-[6px] bg-[hsl(122,100%,45%)] rounded-full"></span>oSnap activated</button>
-  <button v-else class="text-white bg-black rounded-full px-3 py-2 flex items-center gap-2"><span class="block w-[6px] h-[6px] bg-white/30 rounded-full"></span> Activate oSnap</button>
+  <button
+    v-if="isOsnapEnabled"
+    class="flex items-center gap-2 rounded-full bg-[hsla(122,100%,45%,0.13)] px-3 py-2 text-[hsl(122,100%,21%)]"
+  >
+    <span
+      class="block h-[6px] w-[6px] rounded-full bg-[hsl(122,100%,45%)]"
+    ></span
+    >oSnap activated
+  </button>
+  <button
+    v-else
+    class="flex items-center gap-2 rounded-full bg-black px-3 py-2 text-white"
+  >
+    <span class="block h-[6px] w-[6px] rounded-full bg-white/30"></span>
+    Activate oSnap
+  </button>
 </template>
