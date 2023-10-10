@@ -1,19 +1,3 @@
-import { OsnapPluginData } from './types';
-
-export const initialPluginData: OsnapPluginData = {
-  safe: null
-}
-
-export const EIP712_TYPES = {
-  Transaction: [
-    { name: 'to', type: 'address' },
-    { name: 'value', type: 'uint256' },
-    { name: 'data', type: 'bytes' },
-    { name: 'operation', type: 'uint8' },
-    { name: 'nonce', type: 'uint256' }
-  ]
-};
-
 export const safePrefixes = {
   1: "eth",
   2: "exp",

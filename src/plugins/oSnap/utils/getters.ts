@@ -1,5 +1,4 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { EIP3770_PREFIXES } from '@/plugins/safeSnap';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
 import { Contract } from '@ethersproject/contracts';
@@ -183,7 +182,7 @@ export function makeConfigureOsnapUrl(params: {
     baseUrl = 'https://app.safe.global/apps/open',
     appUrl = 'https://osnap.uma.xyz/'
   } = params;
-  const safeAddressPrefix = EIP3770_PREFIXES[network];
+  const safeAddressPrefix = getSafeNetworkPrefix(network);
   const appUrlSearchParams = new URLSearchParams();
   appUrlSearchParams.set('spaceName', spaceName);
   appUrlSearchParams.set('spaceUrl', spaceUrl);

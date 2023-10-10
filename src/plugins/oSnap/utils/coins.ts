@@ -8,6 +8,7 @@ export const ETHEREUM_COIN = {
     'https://safe-transaction-assets.safe.global/chains/1/currency_logo.png',
   address: 'main'
 } as const;
+
 export const MATIC_COIN = {
   name: 'MATIC',
   decimals: 18,
@@ -16,6 +17,7 @@ export const MATIC_COIN = {
   logoUri:
     'https://safe-transaction-assets.safe.global/chains/137/currency_logo.png'
 } as const;
+
 const EWC_COIN = {
   name: 'Energy Web Token',
   symbol: 'EWT',
@@ -24,6 +26,7 @@ const EWC_COIN = {
   logoUri:
     'https://safe-transaction-assets.safe.global/chains/246/currency_logo.png'
 } as const;
+
 const XDAI_COIN = {
   name: 'XDAI',
   symbol: 'XDAI',

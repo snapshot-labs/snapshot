@@ -110,11 +110,6 @@ export function encodeMethodAndParams(
   return contractInterface.encodeFunctionData(method, parameterValues);
 }
 
-export function getAbiFirstFunctionName(abi: ABI): string {
-  const abiInterface = new Interface(abi);
-  return abiInterface.fragments[0].name;
-}
-
 export function getERC20TokenTransferTransactionData(
   recipientAddress: string,
   amount: BigNumberish

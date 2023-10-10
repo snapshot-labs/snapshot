@@ -143,7 +143,6 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
       network,
       gnosisSafeAddress
     );
-    console.log('nfts', response);
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
