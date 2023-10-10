@@ -53,7 +53,7 @@ export default {
       });
       this.$emit('update:modelValue', this.input);
     }
-  },
+  }
 };
 </script>
 

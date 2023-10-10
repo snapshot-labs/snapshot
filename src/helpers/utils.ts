@@ -73,13 +73,13 @@ export function formatAmount(amount, maxDecimals) {
   return `${out} ETH`;
 }
 
-export function parseValue(input) {
+export function parseAmount(input) {
   return BigNumber.from(input).toString();
 }
 
 export function parseValueInput(input) {
   try {
-    return parseValue(input);
+    return parseAmount(input);
   } catch (e) {
     return input;
   }

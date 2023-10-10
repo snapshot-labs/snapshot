@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseValue } from '@/helpers/utils';
+import { parseAmount } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 
@@ -97,7 +97,7 @@ async function updateAddress() {
 function updateValue(newValue: string) {
   value.value = newValue;
   try {
-    parseValue(newValue);
+    parseAmount(newValue);
     isValueValid.value = true;
   } catch (error) {
     isValueValid.value = false;
@@ -134,10 +134,7 @@ function updateValue(newValue: string) {
     </UiInput>
 
     <div v-if="methods.length">
-      <UiSelect
-        v-model="selectedMethodName"
-        @change="updateMethod($event)"
-      >
+      <UiSelect v-model="selectedMethodName" @change="updateMethod($event)">
         <template #label>function</template>
         <option v-for="(method, i) in methods" :key="i" :value="method.name">
           {{ method.name }}()

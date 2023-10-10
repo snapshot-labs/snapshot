@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { ExtendedSpace } from '@/helpers/interfaces';
+import Plugin from '@/plugins/safeSnap';
+
+const safeSnapPlugin = new Plugin();
 
 enum Step {
   CONTENT,
@@ -342,9 +345,12 @@ function handleOsnapToggle() {
 }
 
 onMounted(async () => {
-  const hasOsnapEnabledTreasury = Boolean(props.space.plugins.oSnap);
-  if (hasOsnapEnabledTreasury) {
-    osnap.value.enabled = true;
+  const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
+  const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
+  if (network && umaAddress) {
+    // this is how we check if osnap is enabled and valid.
+    osnap.value.enabled =
+      (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
   }
   if (sourceProposal.value && !sourceProposalLoaded.value)
     await loadSourceProposal();

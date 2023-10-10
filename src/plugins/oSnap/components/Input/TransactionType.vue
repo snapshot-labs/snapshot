@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import {
-  TransactionType as TTransactionType,
   TransactionType
 } from '../../types';
 import ModalTransactionType from '../TransactionBuilder/ModalTransactionType.vue';
 
 defineProps<{
-  selectedTransactionType: TTransactionType;
+  selectedTransactionType: TransactionType;
 }>();
 
 const emit = defineEmits<{
-  updateTransactionType: [type: TTransactionType];
+  updateTransactionType: [type: TransactionType];
 }>();
 
 const isModalOpen = ref(false);

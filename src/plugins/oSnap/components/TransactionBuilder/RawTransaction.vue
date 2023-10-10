@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { parseValue } from '@/helpers/utils';
+import { parseAmount } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
@@ -27,7 +27,7 @@ const isValueValid = computed(() => {
   if (value.value === '') return true;
   if (!isBigNumberish(value.value)) return false;
   try {
-    parseValue(value.value);
+    parseAmount(value.value);
     return true;
   } catch (error) {
     return false;

@@ -1,7 +1,4 @@
 <script>
-import { parseValue } from '@/helpers/utils';
-import { isAddress } from '@ethersproject/address';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import Plugin, {
   contractInteractionToModuleTransaction,
   getABIWriteFunctions,
@@ -9,6 +6,9 @@ import Plugin, {
   getContractTransactionData,
   InterfaceDecoder
 } from '../../index';
+import { parseAmount } from '@/helpers/utils';
+import { isAddress } from '@ethersproject/address';
+import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
 
@@ -146,7 +146,7 @@ export default {
     handleValueChange(value) {
       this.value = value;
       try {
-        parseValue(value);
+        parseAmount(value);
         this.validValue = true;
       } catch (error) {
         this.validValue = false;
