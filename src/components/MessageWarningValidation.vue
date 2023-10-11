@@ -37,8 +37,8 @@ const tPath = computed(() => {
       <template v-if="validationName === 'passport-gated'">
         {{
           $t(`${tPath}.passport-gated.invalidMessage`, {
-            operator: validationParams?.operator === 'AND' ? 'all' : 'one',
-            stamps: validationParams?.stamps.join(', '),
+            operator: validationParams?.operator === 'AND' ? 'all' : 'any',
+            stamps: validationParams?.stamps.length === 0 ? 'any valid Stamp' : validationParams?.stamps.join(', '),
             scoreThreshold: validationParams?.scoreThreshold || 0
           })
         }}
