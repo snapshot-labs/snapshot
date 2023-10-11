@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { getIsOsnapEnabled } from '@/plugins/safeSnap/utils/umaModule';
+import { Network } from '@/plugins/oSnap/types';
+import { getIsOsnapEnabled } from '@/plugins/oSnap/utils/getters';
 
 const props = defineProps<{
   treasury: TreasuryWallet;
@@ -20,7 +21,7 @@ const isOsnapEnabled = ref(false);
 async function updateIsOsnapEnabled() {
   if (!props.hasOsnapPlugin) return;
   isOsnapEnabled.value = await getIsOsnapEnabled(
-    props.treasury.network,
+    props.treasury.network as Network,
     props.treasury.address
   );
 }
