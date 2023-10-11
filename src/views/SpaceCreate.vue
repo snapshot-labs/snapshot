@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
-import { ExtendedSpace } from '@/helpers/interfaces';
 import Plugin from '@/plugins/safeSnap';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const safeSnapPlugin = new Plugin();
 
@@ -321,9 +321,18 @@ watch(
   { immediate: true }
 );
 
+const hasOsnapPlugin = computed(() => {
+  return !!props.space?.plugins?.oSnap;
+});
+const shouldUseOsnap = ref(false);
+
+function toggleShouldUseOsnap() {
+  shouldUseOsnap.value = !shouldUseOsnap.value;
+}
+
 // We need to know if the space is using osnap, this will change what types of voting we can do
 // We also need to know if the user plans to use osnap
-const osnap = ref<{
+const legacyOsnap = ref<{
   enabled: boolean;
   selection: boolean;
 }>({
@@ -333,15 +342,14 @@ const osnap = ref<{
 
 // Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
 function shouldSkipTransactions() {
-  return (
-    osnap.value.enabled &&
-    !osnap.value.selection &&
-    currentStep.value === Step.VOTING
-  );
+  if (currentStep.value !== Step.VOTING) return false;
+  if (legacyOsnap.value.enabled && !legacyOsnap.value.selection) return true;
+  if (hasOsnapPlugin.value && !shouldUseOsnap.value) return true;
+  return false;
 }
 
-function handleOsnapToggle() {
-  osnap.value.selection = !osnap.value.selection;
+function handleLegacyOsnapToggle() {
+  legacyOsnap.value.selection = !legacyOsnap.value.selection;
 }
 
 onMounted(async () => {
@@ -349,7 +357,7 @@ onMounted(async () => {
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
-    osnap.value.enabled =
+    legacyOsnap.value.enabled =
       (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
   }
   if (sourceProposal.value && !sourceProposalLoaded.value)
@@ -407,8 +415,11 @@ onMounted(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
-        :osnap="osnap"
-        @osnapToggle="handleOsnapToggle"
+        :has-osnap-plugin="hasOsnapPlugin"
+        :should-use-osnap="shouldUseOsnap"
+        :legacy-osnap="legacyOsnap"
+        @toggle-should-use-osnap="toggleShouldUseOsnap"
+        @legacy-osnap-toggle="handleLegacyOsnapToggle"
       />
 
       <!-- Step 3 (only when plugins) -->
