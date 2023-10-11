@@ -3,8 +3,8 @@ import Plugin, {
   decodeTransactionData,
   rawToModuleTransaction
 } from '../../index';
-import { parseAmount } from '@/helpers/utils';
 import { isHexString } from '@ethersproject/bytes';
+import { parseAmount } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {

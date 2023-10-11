@@ -1,10 +1,10 @@
 import pkg from '@/../package.json';
-import { BigNumber } from '@ethersproject/bignumber';
 import { formatEther } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import voting from '@snapshot-labs/snapshot.js/src/voting';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -131,7 +131,8 @@ export function urlify(text: string, target = '_blank') {
 
 export async function resolveEns(handle: string) {
   try {
-    const provider = getProvider('1');
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = getProvider('1', { broviderUrl });
     const addressResolved = await provider.resolveName(handle);
     if (!addressResolved) throw new Error('Invalid ENS name');
     return addressResolved;

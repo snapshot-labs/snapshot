@@ -6,9 +6,9 @@ import Plugin, {
   getContractTransactionData,
   InterfaceDecoder
 } from '../../index';
-import { parseAmount } from '@/helpers/utils';
-import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { isAddress } from '@ethersproject/address';
+import { parseAmount } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
 
