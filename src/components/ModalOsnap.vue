@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { makeConfigureOsnapUrl } from '@/plugins/safeSnap/utils/umaModule';
+import { Network } from '@/plugins/oSnap/types';
+import { makeConfigureOsnapUrl } from '@/plugins/oSnap/utils/getters';
 
 const props = defineProps<{
   open: boolean;
@@ -17,7 +18,7 @@ const href = computed(() =>
     spaceUrl,
     spaceName: props.spaceName,
     safeAddress: props.treasury.address,
-    network: props.treasury.network
+    network: props.treasury.network as Network,
   })
 );
 </script>
