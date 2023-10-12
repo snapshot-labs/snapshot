@@ -8,12 +8,18 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
 import { BaseTransaction } from '../types';
 
+/**
+ * Validates that the given `address` is a valid Ethereum address
+ */
 export const mustBeEthereumAddress = memoize((address: string) => {
   const startsWith0x = address?.startsWith('0x');
   const isValidAddress = isAddress(address);
   return startsWith0x && isValidAddress;
 });
 
+/**
+ * Validates that the given `address` is a valid Ethereum contract address
+ */
 export const mustBeEthereumContractAddress = memoize(
   async (network: string, address: string) => {
     const provider = getProvider(network) as JsonRpcProvider;
@@ -26,6 +32,9 @@ export const mustBeEthereumContractAddress = memoize(
   (url, contractAddress) => `${url}_${contractAddress}`
 );
 
+/**
+ * Validates a transaction.
+ */
 export function validateTransaction(transaction: BaseTransaction) {
   const addressEmptyOrValidate =
     transaction.to === '' || isAddress(transaction.to);
@@ -36,6 +45,9 @@ export function validateTransaction(transaction: BaseTransaction) {
   );
 }
 
+/**
+ * Validates a module address.
+ */
 export async function validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
   if (!isAddress(moduleAddress)) return false;
   const provider: StaticJsonRpcProvider = getProvider(network);

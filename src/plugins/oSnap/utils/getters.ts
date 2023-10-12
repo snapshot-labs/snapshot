@@ -17,9 +17,14 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, SafeNetworkPrefix, Token } from '../types';
+import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, SafeNetworkPrefix } from '../types';
 import { pageEvents } from './events';
 
+/**
+ * Calls the Gnosis Safe Transaction API
+ * 
+ * Ideal usage is to specify the shape of the response with the generic type parameter, assuming that the shape of the response is known.
+ */
 async function callGnosisSafeTransactionApi<TResult = any>(
   network: Network,
   url: string
@@ -29,6 +34,9 @@ async function callGnosisSafeTransactionApi<TResult = any>(
   return response.json() as TResult;
 }
 
+/**
+ * Fetches the balances of the tokens owned by a given Safe.
+ */
 export const getGnosisSafeBalances = memoize(
   (network: Network, safeAddress: string) => {
     const endpointPath = `/v1/safes/${safeAddress}/balances/`;
@@ -37,6 +45,9 @@ export const getGnosisSafeBalances = memoize(
   (safeAddress, network) => `${safeAddress}_${network}`
 );
 
+/**
+ * Fetches the collectibles owned by a given Safe.
+ */
 export const getGnosisSafeCollectibles = memoize(
   (network: Network, safeAddress: string) => {
     const endpointPath = `/v2/safes/${safeAddress}/collectibles/`;
@@ -51,14 +62,9 @@ export const getGnosisSafeCollectibles = memoize(
   (safeAddress, network) => `${safeAddress}_${network}`
 );
 
-export const getGnosisSafeToken = memoize(
-  async (network, tokenAddress): Promise<Token> => {
-    const endpointPath = `/v1/tokens/${tokenAddress}`;
-    return callGnosisSafeTransactionApi(network, endpointPath);
-  },
-  (tokenAddress, network) => `${tokenAddress}_${network}`
-);
-
+/**
+ * Fetches the block number of a given contract's deployment.
+ */
 function getDeployBlock(params: {
   network: Network,
   name: string,
@@ -67,10 +73,14 @@ function getDeployBlock(params: {
   if (results.length === 1) return results[0].deployBlock ?? 0;
   return 0;
 }
+
+/**
+ * Fetches the subgraph url for a given contract on a given network.
+ */
 function getContractSubgraph(params: {
   network: Network;
   name: string;
-}): string {
+}) {
   const results = contractData.filter(contract => contract.network === params.network && contract.name === params.name)
   if (results.length > 1)
     throw new Error(
@@ -86,13 +96,26 @@ function getContractSubgraph(params: {
     );
   return results[0].subgraph;
 }
+
+/**
+ * A helper that wraps the getContractSubgraph function to return the subgraph url for the OptimisticGovernor contract on a given network.
+ */
 function getOptimisticGovernorSubgraph(network: Network): string {
   return getContractSubgraph({ network, name: 'OptimisticGovernor' });
 }
+
+/**
+ * A helper that wraps the getContractSubgraph function to return the subgraph url for the OptimisticOracleV3 contract on a given network.
+ */
 function getOracleV3Subgraph(network: Network): string {
   return getContractSubgraph({ network, name: 'OptimisticOracleV3' });
 }
 
+/**
+ * Executes a graphql query.
+ * 
+ * Ideal usage is to specify the shape of the response with the generic type parameter, assuming that the shape of the response is known.
+ */
 export const queryGql = async <Result = any>(url: string, query: string) => {
   try {
     const response = await fetch(url, {
@@ -122,6 +145,9 @@ export const queryGql = async <Result = any>(url: string, query: string) => {
   }
 };
 
+/**
+ * Returns the address of the Optimistic Governor contract deployment associated with a given treasury (Safe) from the graph.
+ */
 export const getModuleAddressForTreasury = async (network: Network, treasuryAddress: string) => {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const query = `
@@ -142,11 +168,9 @@ export const getModuleAddressForTreasury = async (network: Network, treasuryAddr
   return result?.safe?.optimisticGovernor?.id ?? '';
 }
 
-export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
-  const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network as Network, treasury.address)))
-  return isOsnapEnabledOnTreasuriesResult.some(isOsnapEnabled => isOsnapEnabled);
-}
-
+/**
+ * Checks if a given treasury (Safe) has enabled oSnap.
+ */
 export const getIsOsnapEnabled = async (
   network: Network,
   safeAddress: string
@@ -166,6 +190,19 @@ export const getIsOsnapEnabled = async (
   return result?.safe?.isOptimisticGovernorEnabled ?? false;
 };
 
+/**
+ * Takes an array of treasuries and checks if any of them have oSnap enabled.
+ */
+export const getSpaceHasOsnapEnabledTreasury = async (treasuries: TreasuryWallet[]) => {
+  const isOsnapEnabledOnTreasuriesResult = await Promise.all(treasuries.map(treasury => getIsOsnapEnabled(treasury.network as Network, treasury.address)))
+  return isOsnapEnabledOnTreasuriesResult.some(isOsnapEnabled => isOsnapEnabled);
+}
+
+/**
+ * Creates the url for the Safe app to configure oSnap.
+ * 
+ * The data that the Safe app needs is encoded as URL search params.
+ */
 export function makeConfigureOsnapUrl(params: {
   safeAddress: string;
   network: Network;
@@ -195,10 +232,11 @@ export function makeConfigureOsnapUrl(params: {
   return url;
 }
 
-const findAssertionGql = async (
-  network: Network,
-  params: { assertionId: string }
-) => {
+/**
+ * Fetches the details of a given assertion from the Optimistic Oracle V3 subgraph.
+ */
+async function findAssertionGql(network: Network,
+  params: { assertionId: string; }) {
   const oracleUrl = getOracleV3Subgraph(network);
   const request = `
   {
@@ -213,18 +251,16 @@ const findAssertionGql = async (
   `;
   const result = await queryGql(oracleUrl, request);
   return result?.assertion;
-};
-// Search optimistic governor for individual proposal
-const findProposalGql = async (
-  network: Network,
-  params: { proposalHash: string; explanation: string; ogAddress: string }
-) => {
+}
+/**
+ * Fetches the details of a given proposal from the Optimistic Governor subgraph.
+ */
+async function findProposalGql(network: Network,
+  params: { proposalHash: string; explanation: string; ogAddress: string; }) {
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${
-    params.explanation
-  }",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
+    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${params.explanation}",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
       id
       executed
       assertionId
@@ -233,12 +269,13 @@ const findProposalGql = async (
   `;
   const result = await queryGql(subgraph, request);
   return result?.proposals;
-};
+}
 
-const getBondDetails = async (
-  provider: StaticJsonRpcProvider,
-  moduleAddress: string
-) => {
+/**
+ * Fetches details about a given Optimistic Governor contract deployment's bond, including the collateral token address, symbol, decimals, and the user's balance and allowance.
+ */
+async function getBondDetails(provider: StaticJsonRpcProvider,
+  moduleAddress: string) {
   const { web3Account } = useWeb3();
 
   const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
@@ -276,15 +313,16 @@ const getBondDetails = async (
   await updateCurrentUserBondInfo();
 
   return bondInfo;
-};
+}
 
-export const getModuleDetailsFromChain = async (
-  provider: StaticJsonRpcProvider,
+/**
+ * Legacy / fallback function to fetch the details of a given assertion from the Optimistic Oracle V3 contract.
+ */
+export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
   network: Network,
   moduleAddress: string,
   explanation: string,
-  transactions: OptimisticGovernorTransaction[] | undefined
-) => {
+  transactions: OptimisticGovernorTransaction[] | undefined) {
   const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
   const moduleDetails: [
     [gnosisSafeAddress: string],
@@ -306,10 +344,8 @@ export const getModuleDetailsFromChain = async (
   const livenessPeriod = moduleDetails[4][0];
   const bondDetails = await getBondDetails(provider, moduleAddress);
 
-  if (
-    Number(minimumBond) > 0 &&
-    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)
-  ) {
+  if (Number(minimumBond) > 0 &&
+    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)) {
     needsApproval = true;
   }
 
@@ -367,8 +403,7 @@ export const getModuleDetailsFromChain = async (
   // but the explanation field should be unique. we will filter this out later.
   const assertionId: string = await moduleContract.assertionIds(proposalHash);
 
-  const activeProposal =
-    assertionId !==
+  const activeProposal = assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   // Search for requests with matching ancillary data
@@ -380,49 +415,48 @@ export const getModuleDetailsFromChain = async (
   const latestBlock = await provider.getBlock('latest');
   // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
   // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
-  const oGstartBlock = getDeployBlock({network, name: 'OptimisticGovernor'});
-  const oOStartBlock = getDeployBlock({network, name: 'OptimisticOracleV3'});
+  const oGstartBlock = getDeployBlock({ network, name: 'OptimisticGovernor' });
+  const oOStartBlock = getDeployBlock({ network, name: 'OptimisticOracleV3' });
   const maxRange = 3000;
 
-  const [assertionEvents, transactionsProposedEvents, executionEvents] =
-    await Promise.all([
-      pageEvents(
-        oOStartBlock,
-        latestBlock.number,
-        maxRange,
-        ({ start, end }: { start: number; end: number }) => {
-          return oracleContract.queryFilter(
-            oracleContract.filters.AssertionMade(),
-            start,
-            end
-          );
-        }
-      ),
-      pageEvents(
-        oGstartBlock,
-        latestBlock.number,
-        maxRange,
-        ({ start, end }: { start: number; end: number }) => {
-          return moduleContract.queryFilter(
-            moduleContract.filters.TransactionsProposed(),
-            start,
-            end
-          );
-        }
-      ),
-      pageEvents(
-        oGstartBlock,
-        latestBlock.number,
-        maxRange,
-        ({ start, end }: { start: number; end: number }) => {
-          return moduleContract.queryFilter(
-            moduleContract.filters.ProposalExecuted(proposalHash),
-            start,
-            end
-          );
-        }
-      )
-    ]);
+  const [assertionEvents, transactionsProposedEvents, executionEvents] = await Promise.all([
+    pageEvents(
+      oOStartBlock,
+      latestBlock.number,
+      maxRange,
+      ({ start, end }: { start: number; end: number; }) => {
+        return oracleContract.queryFilter(
+          oracleContract.filters.AssertionMade(),
+          start,
+          end
+        );
+      }
+    ),
+    pageEvents(
+      oGstartBlock,
+      latestBlock.number,
+      maxRange,
+      ({ start, end }: { start: number; end: number; }) => {
+        return moduleContract.queryFilter(
+          moduleContract.filters.TransactionsProposed(),
+          start,
+          end
+        );
+      }
+    ),
+    pageEvents(
+      oGstartBlock,
+      latestBlock.number,
+      maxRange,
+      ({ start, end }: { start: number; end: number; }) => {
+        return moduleContract.queryFilter(
+          moduleContract.filters.ProposalExecuted(proposalHash),
+          start,
+          end
+        );
+      }
+    )
+  ]);
 
   const thisModuleAssertionEvent = assertionEvents.filter(event => {
     return (
@@ -433,13 +467,12 @@ export const getModuleDetailsFromChain = async (
 
   // Get the full proposal events (with state).
   const fullAssertionEvent = await Promise.all(
-    thisModuleAssertionEvent.map(async event => {
+    thisModuleAssertionEvent.map(async (event) => {
       const assertion = await oracleContract.getAssertion(
         event.args?.assertionId
       );
 
-      const isExpired =
-        Math.floor(Date.now() / 1000) >= assertion.expirationTime.toNumber();
+      const isExpired = Math.floor(Date.now() / 1000) >= assertion.expirationTime.toNumber();
 
       return {
         assertionId: event?.args?.assertionId,
@@ -453,10 +486,9 @@ export const getModuleDetailsFromChain = async (
     })
   );
 
-  const thisProposalTransactionsProposedEvents =
-    transactionsProposedEvents.filter(
-      event => toUtf8String(event.args?.explanation) === explanation
-    );
+  const thisProposalTransactionsProposedEvents = transactionsProposedEvents.filter(
+    event => toUtf8String(event.args?.explanation) === explanation
+  );
 
   const assertion = thisProposalTransactionsProposedEvents.map(
     tx => tx.args?.assertionId
@@ -464,8 +496,7 @@ export const getModuleDetailsFromChain = async (
 
   const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
 
-  const proposalExecuted = assertion.some(assertionId =>
-    assertionIds.includes(assertionId)
+  const proposalExecuted = assertion.some(assertionId => assertionIds.includes(assertionId)
   );
 
   return {
@@ -486,18 +517,18 @@ export const getModuleDetailsFromChain = async (
     proposalExecuted: proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };
-};
+}
 
-// This is intended to function identically to getModuleDetailsUma but use subgraphs rather than web3 events.
-// This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
-// and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
-export const getModuleDetailsGql = async (
-  provider: StaticJsonRpcProvider,
+/**
+ *  This is intended to function identically to getModuleDetailsUma but use subgraphs rather than web3 events.
+ * This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
+ * and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
+ */
+export async function getModuleDetailsGql(provider: StaticJsonRpcProvider,
   network: Network,
   moduleAddress: string,
   explanation: string,
-  transactions: OptimisticGovernorTransaction[] | undefined
-) => {
+  transactions: OptimisticGovernorTransaction[] | undefined) {
   const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
   const moduleDetails: [
     [gnosisSafeAddress: string],
@@ -517,10 +548,8 @@ export const getModuleDetailsGql = async (
   const livenessPeriod = moduleDetails[4][0];
   const bondDetails = await getBondDetails(provider, moduleAddress);
 
-  if (
-    Number(minimumBond) > 0 &&
-    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)
-  ) {
+  if (Number(minimumBond) > 0 &&
+    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)) {
     needsApproval = true;
   }
 
@@ -561,8 +590,7 @@ export const getModuleDetailsGql = async (
   // but the explanation field should be unique. we will filter this out later.
   const assertionId = await moduleContract.assertionIds(proposalHash);
 
-  const activeProposal =
-    assertionId !==
+  const activeProposal = assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
 
   const [proposal] = await findProposalGql(network, {
@@ -572,20 +600,19 @@ export const getModuleDetailsGql = async (
   });
   const proposalExecuted = proposal?.executed ? true : false;
   const assertion = proposal?.assertionId
-  ? await findAssertionGql(network, { assertionId: proposal.assertionId })
+    ? await findAssertionGql(network, { assertionId: proposal.assertionId })
     : undefined;
 
   const assertionEvent = assertion
     ? {
-        assertionId: assertion.assertionId,
-        expirationTimestamp: BigNumber.from(assertion.expirationTime),
-        isExpired:
-          Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime),
-        isSettled: assertion.settlementHash ? true : false,
-        proposalHash,
-        proposalTxHash: assertion.assertionHash,
-        logIndex: assertion.assertionLogIndex
-      }
+      assertionId: assertion.assertionId,
+      expirationTimestamp: BigNumber.from(assertion.expirationTime),
+      isExpired: Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime),
+      isSettled: assertion.settlementHash ? true : false,
+      proposalHash,
+      proposalTxHash: assertion.assertionHash,
+      logIndex: assertion.assertionLogIndex
+    }
     : undefined;
 
   return {
@@ -606,8 +633,11 @@ export const getModuleDetailsGql = async (
     proposalExecuted,
     livenessPeriod: livenessPeriod.toString()
   };
-};
+}
 
+/**
+ * Fetches the details of a given Optimistic Governor contract deployment from the graph.
+ */
 export async function getModuleDetails(
   network: Network,
   moduleAddress: string,
@@ -637,6 +667,9 @@ export async function getModuleDetails(
   }
 }
 
+/**
+ * Merges the result of getModuleDetails with the proposalId and explanation.
+ */
 export async function getExecutionDetails(
   network: Network,
   moduleAddress: string,
@@ -658,10 +691,18 @@ export async function getExecutionDetails(
   };
 }
 
+/**
+ * Returns the EIP-3770 prefix for a given network.
+ * 
+ * @see SafeNetworkPrefix
+ */
 export function getSafeNetworkPrefix(network: Network): SafeNetworkPrefix {
   return safePrefixes[network];
 }
 
+/**
+ * Returns the url for a given Safe app on a given network.
+ */
 export function getSafeAppLink(network: Network, safeAddress: string, appUrl = "https://gnosis-safe.io/app/") {
   const prefix = getSafeNetworkPrefix(network);
   return `${appUrl}${prefix}:${safeAddress}`;

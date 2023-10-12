@@ -4,6 +4,11 @@ import { ERC20_ABI, OPTIMISTIC_GOVERNOR_ABI } from "../constants";
 import { OptimisticGovernorTransaction, Network } from "../types";
 import { getModuleDetails } from "./getters";
 
+/**
+ * The user must approve the spend of the collateral token before they can submit a proposal.
+ * 
+ * If the proposal is disputed and fails a vote, the user will lose their bond.
+ */
 export async function *approveBond(
   network: Network,
   web3: any,
@@ -31,6 +36,9 @@ export async function *approveBond(
   yield;
 }
 
+/**
+ * Submits a proposal to the Optimistic Governor.
+ */
 export async function *submitProposal(
   web3: any,
   moduleAddress: string,
@@ -51,6 +59,11 @@ export async function *submitProposal(
   console.log('[DAO module] submitted proposal:', receipt);
 }
 
+/**
+ * Executes a proposal on the Optimistic Governor.
+ * 
+ * This can only be done after the dispute window has ended.
+ */
 export async function *executeProposal(
   web3: any,
   moduleAddress: string,

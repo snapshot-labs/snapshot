@@ -1,15 +1,18 @@
-import { ABI } from '@/helpers/interfaces';
 import {
-  FormatTypes,
   FunctionFragment,
   Interface,
   ParamType
 } from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
-import memoize from 'lodash/memoize';
+import { memoize } from 'lodash';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
 import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './validators';
 
+/**
+ * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.
+ * 
+ * If this is the case, we must parse the value as JSON and verify that it is valid.
+ */
 export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
 }
@@ -33,10 +36,9 @@ const fetchContractABI = memoize(
   (url, contractAddress) => `${url}_${contractAddress}`
 );
 
-export function parseMethodToABI(method: FunctionFragment) {
-  return [method.format(FormatTypes.full)];
-}
-
+/**
+ * Returns the ABI of a contract at the given address
+ */
 export async function getContractABI(
   network: string,
   contractAddress: string
@@ -71,11 +73,19 @@ export async function getContractABI(
   }
 }
 
+/**
+ * Checks if a method is a write function.
+ * 
+ * Only write functions can be executed by the Optimistic Governor.
+ */
 export function isWriteFunction(method: FunctionFragment) {
   if (!method.stateMutability) return true;
   return !['view', 'pure'].includes(method.stateMutability);
 }
 
+/**
+ * Returns the write functions of a contract ABI.
+ */
 export function getABIWriteFunctions(abi: string) {
   const abiInterface = new Interface(abi);
   return (
@@ -90,6 +100,11 @@ export function getABIWriteFunctions(abi: string) {
   );
 }
 
+/**
+ * Handles the extraction of the method's arguments from the `values` array.
+ * 
+ * If the parameter is an array or tuple, we parse the value as JSON.
+ */
 function extractMethodArgs(values: string[]) {
   return (param: ParamType, index: number) => {
     const value = values[index];
@@ -100,6 +115,9 @@ function extractMethodArgs(values: string[]) {
   };
 }
 
+/**
+ * Encodes the method and parameters of a contract interaction.
+ */
 export function encodeMethodAndParams(
   abi: string,
   method: FunctionFragment,
@@ -110,6 +128,9 @@ export function encodeMethodAndParams(
   return contractInterface.encodeFunctionData(method, parameterValues);
 }
 
+/**
+ * Returns the transaction data for an ERC20 transfer.
+ */
 export function getERC20TokenTransferTransactionData(
   recipientAddress: string,
   amount: BigNumberish
@@ -121,6 +142,9 @@ export function getERC20TokenTransferTransactionData(
   ]);
 }
 
+/**
+ * Returns the transaction data for an ERC721 transfer.
+ */
 export function getERC721TokenTransferTransactionData(
   fromAddress: string,
   recipientAddress: string,

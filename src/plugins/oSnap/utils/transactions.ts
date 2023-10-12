@@ -3,6 +3,13 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { ContractInteractionTransaction, NFT, OptimisticGovernorTransaction, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
 import { encodeMethodAndParams } from './abi';
 
+/**
+ * Creates a formatted transaction for the Optimistic Governor to execute
+ * 
+ * note: the value for `operation` is always zero because we do not support delegatecall.
+ * 
+ * @see OptimisticGovernorTransaction
+ */
 export function createFormattedOptimisticGovernorTransaction({
   to,
   value,
@@ -20,6 +27,11 @@ export function createFormattedOptimisticGovernorTransaction({
   ]
 }
 
+/**
+ * Creates a raw transaction for the Optimistic Governor to execute
+ * 
+ * @see RawTransaction
+ */
 export function createRawTransaction(params: {
   to: string;
   value: string;
@@ -34,6 +46,11 @@ export function createRawTransaction(params: {
   }
 }
 
+/**
+ * Creates a transaction to transfer an NFT
+ * 
+ * @see TransferNftTransaction
+ */
 export function createTransferNftTransaction(params: {
   recipient: string,
   collectable: NFT,
@@ -59,6 +76,11 @@ export function createTransferNftTransaction(params: {
   }
 }
 
+/**
+ * Creates a transaction to transfer funds
+ * 
+ * @see TransferFundsTransaction
+ */
 export function createTransferFundsTransaction(params: {
   recipient: string;
   amount: string;
@@ -87,6 +109,13 @@ export function createTransferFundsTransaction(params: {
   }
 }
 
+/**
+ * Creates a transaction to interact with a contract.
+ * 
+ * the `method` is executed with the given `parameters`.
+ * 
+ * @see ContractInteractionTransaction
+ */
 export function createContractInteractionTransaction(params: {
   to: string;
   value: string;
