@@ -103,10 +103,3 @@ watch(selectedCollectableAddress, updateTransaction);
   />
 </template>
 
-<style scoped>
-.tokenImage {
-  width: 24px;
-  margin-left: 8px;
-  vertical-align: middle;
-}
-</style>
