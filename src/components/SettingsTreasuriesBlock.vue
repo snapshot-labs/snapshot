@@ -73,6 +73,16 @@ function handleCloseConfigureOsnapModal() {
 
 <template>
   <BaseBlock :title="$t('settings.treasuries.label')">
+    <div v-if="hasOsnapPlugin && form.treasuries.length === 0" class="mb-3">
+      <h2>Warning: no treasuries</h2>
+      <p>
+        You have installed the oSnap plugin, but you don't have any treasuries.
+      </p>
+      <p>
+        Please add a Safe as a treasury and enable oSnap on it to use the oSnap
+        plugin.
+      </p>
+    </div>
     <div v-if="form.treasuries.length" class="mb-3 grid gap-3">
       <SettingsTreasuriesBlockItem
         :treasuries="form.treasuries"

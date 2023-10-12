@@ -232,30 +232,52 @@ onMounted(async () => {
       </h2>
     </div>
     <div v-else class="rounded-2xl border p-4">
-      <div>
+      <template v-if="space.treasuries.length === 0">
+        <h2>Warning: no treasuries</h2>
+        <p>
+          You have installed the oSnap plugin, but you don't have any
+          treasuries.
+        </p>
+        <p>
+          Please add a Safe as a treasury and enable oSnap on it to use the
+          oSnap plugin.
+        </p>
+      </template>
+      <template v-else-if="safes.length === 0">
+        <h2>Warning: no oSnap safes found</h2>
+        <p>
+          You have installed the oSnap plugin, but you don't have any oSnap
+          safes.
+        </p>
+        <p>
+          Please add a Safe as a treasury and enable oSnap on it to use the
+          oSnap plugin.
+        </p>
+      </template>
+      <template v-else>
         <h2 class="text-md">Add oSnap transactions</h2>
-      </div>
-      <h3 class="text-base">Pick a safe</h3>
-      <Safe
-        :safes="safes"
-        :selectedSafe="newPluginData.safe"
-        @updateSafe="updateSafe($event)"
-      />
-      <div class="mt-4 border-b last:border-b-0">
-        <TransactionBuilder
-          v-if="!!newPluginData.safe"
-          :space="space"
-          :safe-address="newPluginData.safe.safeAddress"
-          :module-address="newPluginData.safe.moduleAddress"
-          :tokens="tokens"
-          :collectables="collectables"
-          :network="newPluginData.safe.network"
-          :transactions="newPluginData.safe.transactions"
-          @add-transaction="addTransaction"
-          @remove-transaction="removeTransaction"
-          @update-transaction="updateTransaction"
+        <h3 class="text-base">Pick a safe</h3>
+        <Safe
+          :safes="safes"
+          :selectedSafe="newPluginData.safe"
+          @updateSafe="updateSafe($event)"
         />
-      </div>
+        <div class="mt-4 border-b last:border-b-0">
+          <TransactionBuilder
+            v-if="!!newPluginData.safe"
+            :space="space"
+            :safe-address="newPluginData.safe.safeAddress"
+            :module-address="newPluginData.safe.moduleAddress"
+            :tokens="tokens"
+            :collectables="collectables"
+            :network="newPluginData.safe.network"
+            :transactions="newPluginData.safe.transactions"
+            @add-transaction="addTransaction"
+            @remove-transaction="removeTransaction"
+            @update-transaction="updateTransaction"
+          />
+        </div>
+      </template>
     </div>
   </template>
 </template>
