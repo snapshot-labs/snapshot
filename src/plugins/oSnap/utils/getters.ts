@@ -17,7 +17,7 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { BalanceResponse, NFT, Network, OptimisticGovernorTransaction, SafeNetworkPrefix } from '../types';
+import { AssertionEvent, BalanceResponse, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
 import { pageEvents } from './events';
 
 /**
@@ -316,9 +316,9 @@ async function getBondDetails(provider: StaticJsonRpcProvider,
 }
 
 /**
- * Legacy / fallback function to fetch the details of a given assertion from the Optimistic Oracle V3 contract.
+ * Legacy / fallback function to fetch the details of a proposal associated with given assertion from the Optimistic Oracle V3 contract.
  */
-export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
+export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvider,
   network: Network,
   moduleAddress: string,
   explanation: string,
@@ -382,7 +382,7 @@ export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
   } else {
     return {
       gnosisSafeAddress: moduleDetails[0][0],
-      oracle: moduleDetails[1][0],
+      oracleAddress: moduleDetails[1][0],
       rules: moduleDetails[2][0],
       expiration: moduleDetails[4][0],
       minimumBond,
@@ -468,7 +468,10 @@ export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
   // Get the full proposal events (with state).
   const fullAssertionEvent = await Promise.all(
     thisModuleAssertionEvent.map(async (event) => {
-      const assertion = await oracleContract.getAssertion(
+      const assertion: {
+        expirationTime: BigNumber;
+        settled: boolean;
+      } = await oracleContract.getAssertion(
         event.args?.assertionId
       );
 
@@ -482,7 +485,7 @@ export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
         proposalHash: proposalHash,
         proposalTxHash: event.transactionHash,
         logIndex: event.logIndex
-      };
+      } as AssertionEvent;
     })
   );
 
@@ -501,7 +504,7 @@ export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
 
   return {
     gnosisSafeAddress: moduleDetails[0][0],
-    oracle: moduleDetails[1][0],
+    oracleAddress: moduleDetails[1][0],
     rules: moduleDetails[2][0],
     minimumBond: minimumBond,
     expiration: moduleDetails[4][0],
@@ -520,11 +523,11 @@ export async function getModuleDetailsFromChain(provider: StaticJsonRpcProvider,
 }
 
 /**
- *  This is intended to function identically to getModuleDetailsUma but use subgraphs rather than web3 events.
+ *  This is intended to function identically to getProposalDetailsFromChain but use subgraphs rather than web3 events.
  * This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
  * and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
  */
-export async function getModuleDetailsGql(provider: StaticJsonRpcProvider,
+export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
   network: Network,
   moduleAddress: string,
   explanation: string,
@@ -636,18 +639,18 @@ export async function getModuleDetailsGql(provider: StaticJsonRpcProvider,
 }
 
 /**
- * Fetches the details of a given Optimistic Governor contract deployment from the graph.
+ * Fetches the details of a given proposal and its associated assertion from the Optimistic Oracle.
  */
-export async function getModuleDetails(
+export async function getProposalDetails(
   network: Network,
   moduleAddress: string,
   explanation = '',
   transactions?: OptimisticGovernorTransaction[]
-) {
+): Promise<ProposalDetails> {
   const provider: StaticJsonRpcProvider = getProvider(network);
   try {
     // try optimized calls, which use the graph over web3 event queries
-    return await getModuleDetailsGql(
+    return await getProposalDetailsGql(
       provider,
       network,
       moduleAddress,
@@ -657,7 +660,7 @@ export async function getModuleDetails(
   } catch (err) {
     console.warn('Error querying module details from the graph:', err);
     // fall back to web3 event queries.
-    return getModuleDetailsFromChain(
+    return getProposalDetailsFromChain(
       provider,
       network,
       moduleAddress,
@@ -670,14 +673,14 @@ export async function getModuleDetails(
 /**
  * Merges the result of getModuleDetails with the proposalId and explanation.
  */
-export async function getExecutionDetails(
+export async function getProposalExecutionDetails(
   network: Network,
   moduleAddress: string,
   proposalId: string,
   explanation: string,
   transactions: OptimisticGovernorTransaction[]
-) {
-  const moduleDetails = await getModuleDetails(
+): Promise<ProposalExecutionDetails> {
+  const moduleDetails = await getProposalDetails(
     network,
     moduleAddress,
     explanation,

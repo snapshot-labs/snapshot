@@ -4,11 +4,15 @@ import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import type { Network, Transaction } from '../types';
+import {
+  ProposalExecutionDetails,
+  type Network,
+  type Transaction
+} from '../types';
 import {
   approveBond,
   executeProposal,
-  getExecutionDetails,
+  getProposalExecutionDetails,
   submitProposal
 } from '../utils';
 
@@ -82,7 +86,6 @@ async function ensureRightNetwork(chainId: Network) {
 const { formatDuration } = useIntl();
 const { t } = useI18n();
 
-const { clearBatchError } = useSafe();
 const { web3 } = useWeb3();
 const {
   createPendingTransaction,
@@ -108,20 +111,20 @@ type QuestionState =
 type Action1State = 'idle' | 'approve-bond' | 'submit-proposal';
 type Action2State = 'idle' | 'execute-proposal';
 
-const loading = ref(true);
+const isLoading = ref(true);
 const action1State = ref<Action1State>('idle');
 const action2State = ref<Action2State>('idle');
 const voteResultsConfirmed = ref(false);
-const questionDetails = ref<Awaited<ReturnType<typeof getExecutionDetails>>>();
-const closeModal = ref(false);
+const proposalExecutionDetails = ref<ProposalExecutionDetails>();
+const isModalOpen = ref(false);
 
-function closeEvent() {
-  closeModal.value = false;
+function closeModal() {
+  isModalOpen.value = false;
   voteResultsConfirmed.value = false;
 }
 
-function showProposeModal() {
-  closeModal.value = true;
+function openModal() {
+  isModalOpen.value = true;
   voteResultsConfirmed.value = true;
 }
 
@@ -132,9 +135,9 @@ function getFormattedTransactions() {
 }
 
 async function updateDetails() {
-  loading.value = true;
+  isLoading.value = true;
   try {
-    questionDetails.value = await getExecutionDetails(
+    proposalExecutionDetails.value = await getProposalExecutionDetails(
       props.network,
       props.moduleAddress,
       props.proposal.id,
@@ -144,7 +147,7 @@ async function updateDetails() {
   } catch (e) {
     console.error('Error loading uma execution details', e);
   } finally {
-    loading.value = false;
+    isLoading.value = false;
   }
 }
 
@@ -224,7 +227,6 @@ async function onExecuteProposal() {
   }
 
   try {
-    clearBatchError();
     const executingProposal = executeProposal(
       getInstance().web3,
       props.moduleAddress,
@@ -279,12 +281,12 @@ function wasProposalFinalized(proposal: Proposal) {
 const questionState = computed<QuestionState>(() => {
   if (!web3.value.account) return 'no-wallet-connection';
 
-  if (loading.value) return 'loading';
+  if (isLoading.value) return 'loading';
 
-  if (!questionDetails.value) return 'error';
+  if (!proposalExecutionDetails.value) return 'error';
 
   const { assertionEvent, proposalExecuted, activeProposal, noTransactions } =
-    questionDetails.value;
+    proposalExecutionDetails.value;
 
   if (noTransactions) return 'no-transactions';
 
@@ -344,7 +346,10 @@ onMounted(async () => {
       {{ $t('safeSnap.labels.connectWallet') }}
     </div>
 
-    <div v-if="questionState === 'loading'" class="my-4 grid place-items-center">
+    <div
+      v-if="questionState === 'loading'"
+      class="my-4 grid place-items-center"
+    >
       <LoadingSpinner />
     </div>
     <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
@@ -357,7 +362,7 @@ onMounted(async () => {
         class="my-4"
       >
         <div class="flex items-center">
-          <BaseButton @click="showProposeModal" class="mr-2 w-full">
+          <BaseButton @click="openModal" class="mr-2 w-full">
             {{ $t('safeSnap.labels.confirmVoteResults') }}
           </BaseButton>
         </div>
@@ -370,11 +375,11 @@ onMounted(async () => {
       <div
         v-if="
           questionState === 'waiting-for-proposal' &&
-          questionDetails?.needsBondApproval === true
+          proposalExecutionDetails?.needsBondApproval === true
         "
         class="my-4"
       >
-        <div class="flex items-center my-4">
+        <div class="my-4 flex items-center">
           <BaseButton
             :loading="action1State === 'approve-bond'"
             @click="onApproveBond"
@@ -399,12 +404,12 @@ onMounted(async () => {
       <div
         v-if="
           questionState === 'waiting-for-proposal' &&
-          questionDetails?.needsBondApproval === false
+          proposalExecutionDetails?.needsBondApproval === false
         "
         class="my-4"
       >
         <div class="flex items-center">
-          <BaseModal :open="closeModal" @close="closeEvent">
+          <BaseModal :open="isModalOpen" @close="closeModal">
             <template #header>
               <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
             </template>
@@ -420,11 +425,11 @@ onMounted(async () => {
                   <span class="float-right text-skin-link">
                     {{
                       formatUnits(
-                        questionDetails.minimumBond ?? 0,
-                        questionDetails.decimals
+                        proposalExecutionDetails.minimumBond ?? 0,
+                        proposalExecutionDetails.decimals
                       ) +
                       ' ' +
-                      questionDetails.symbol
+                      proposalExecutionDetails.symbol
                     }}
                   </span>
                 </div>
@@ -433,7 +438,11 @@ onMounted(async () => {
                     $t('safeSnap.labels.challengePeriod')
                   }}</strong>
                   <span class="float-right text-skin-link">
-                    {{ formatDuration(Number(questionDetails.livenessPeriod)) }}
+                    {{
+                      formatDuration(
+                        Number(proposalExecutionDetails.livenessPeriod)
+                      )
+                    }}
                   </span>
                 </div>
               </div>
@@ -446,8 +455,8 @@ onMounted(async () => {
                 </BaseMessage>
                 <BaseMessage
                   v-if="
-                    Number(questionDetails.minimumBond.toString()) >
-                    Number(questionDetails.userBalance.toString())
+                    Number(proposalExecutionDetails.minimumBond.toString()) >
+                    Number(proposalExecutionDetails.userBalance.toString())
                   "
                   level="warning-red"
                 >
@@ -460,8 +469,8 @@ onMounted(async () => {
                 @click="onSubmitProposal"
                 class="my-1 w-full"
                 :disabled="
-                  Number(questionDetails.minimumBond.toString()) >
-                    Number(questionDetails.userBalance.toString()) ||
+                  Number(proposalExecutionDetails.minimumBond.toString()) >
+                    Number(proposalExecutionDetails.userBalance.toString()) ||
                   Number(props.proposal.scores_total) < Number(quorum)
                 "
               >
@@ -475,7 +484,7 @@ onMounted(async () => {
       <div
         v-if="
           questionState === 'waiting-for-liveness' &&
-          questionDetails?.assertionEvent !== undefined
+          proposalExecutionDetails?.assertionEvent !== undefined
         "
         class="flex items-center justify-center self-stretch p-3 text-skin-link"
       >
@@ -484,7 +493,7 @@ onMounted(async () => {
             <strong>{{
               'Proposal can be executed at ' +
               new Date(
-                questionDetails.assertionEvent.expirationTimestamp.toNumber() *
+                proposalExecutionDetails.assertionEvent.expirationTimestamp.toNumber() *
                   1000
               ).toLocaleString()
             }}</strong>
@@ -495,8 +504,8 @@ onMounted(async () => {
               :href="
                 getOracleUiLink(
                   props.network,
-                  questionDetails.assertionEvent.proposalTxHash,
-                  questionDetails.assertionEvent.logIndex
+                  proposalExecutionDetails.assertionEvent.proposalTxHash,
+                  proposalExecutionDetails.assertionEvent.logIndex
                 )
               "
               class="rounded-lg border p-2 text-skin-text"
@@ -511,10 +520,7 @@ onMounted(async () => {
         </BaseContainer>
       </div>
 
-      <div
-        v-if="questionState === 'proposal-approved'"
-        class="my-4"
-      >
+      <div v-if="questionState === 'proposal-approved'" class="my-4">
         <div class="flex items-center">
           <BaseButton
             :loading="action2State === 'execute-proposal'"

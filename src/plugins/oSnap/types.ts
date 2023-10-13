@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { safePrefixes, transactionTypes } from './constants';
 
@@ -239,4 +240,48 @@ export type OsnapPluginData = {
  */
 export type OsnapModelValue = {
   oSnap: OsnapPluginData;
+}
+
+export type AssertionEvent = {
+  assertionId: string;
+  proposalHash: string;
+  proposalTxHash: string;
+  logIndex: number;
+  expirationTimestamp: BigNumber;
+  isExpired: boolean;
+  isSettled: boolean;
+}
+
+/**
+ * Represents the data associated with a proposal.
+ * 
+ * Holds one object with this shape per proposal created. This is the shape of the data that is persisted by the plugin, along with information from the chain / graph about the Optimistic Oracle assertion associated with the proposal.
+ * 
+ * We also include user data such as collateral balance and allowance so that we can determine if they can afford the bond associated with submitting a proposal.
+ */
+export type ProposalDetails = {
+  gnosisSafeAddress: string;
+  livenessPeriod: BigNumber | string;
+  oracleAddress: string;
+  rules: string;
+  collateral: string;
+  symbol: string;
+  minimumBond: BigNumber;
+  expiration: BigNumber;
+  allowance: BigNumber;
+  decimals: BigNumber;
+  userBalance: BigNumber;
+  needsBondApproval: boolean;
+  noTransactions: boolean;
+  activeProposal: boolean;
+  proposalExecuted: boolean;
+  assertionEvent: AssertionEvent | undefined;
+}
+
+/**
+ * Combines the proposal details with the proposal id and explanation.
+ */
+export type ProposalExecutionDetails = ProposalDetails & {
+  proposalId: string;
+  explanation: string;
 }
