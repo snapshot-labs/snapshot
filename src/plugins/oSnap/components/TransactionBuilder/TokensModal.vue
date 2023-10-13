@@ -10,7 +10,10 @@ const props = defineProps<{
   network: Network;
 }>();
 
-const emit = defineEmits(['close', 'tokenAddress']);
+const emit = defineEmits<{
+  close: [];
+  tokenAddress: [tokenAddress: string];
+}>();
 
 const searchInput = ref('');
 const showUnverifiedTokens = ref(false);
@@ -87,6 +90,7 @@ function handleTokenClick(token) {
                   <div class="space-y-2">
                     <div class="space-y-2">
                       <TuneCheckbox
+                        id="show-unverified-tokens"
                         v-model="showUnverifiedTokens"
                         hint="Show unverified tokens"
                         name="searchOnlyWithReason"
