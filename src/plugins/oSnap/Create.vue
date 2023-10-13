@@ -2,7 +2,7 @@
 import { ExtendedSpace, TreasuryWallet } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
-import Safe from './components/Input/Safe.vue';
+import SelectSafe from './components/Input/SelectSafe.vue';
 import TransactionBuilder from './components/TransactionBuilder/TransactionBuilder.vue';
 import {
   BalanceResponse,
@@ -264,7 +264,7 @@ onMounted(async () => {
       <template v-else>
         <h2 class="text-md">Add oSnap transactions</h2>
         <h3 class="text-base">Pick a safe</h3>
-        <Safe
+        <SelectSafe
           :safes="safes"
           :selectedSafe="newPluginData.safe"
           @updateSafe="updateSafe($event)"
