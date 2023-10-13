@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { mustBeEthereumAddress } from '../../utils';
 
-const props = defineProps(['modelValue', 'inputProps', 'label', 'disabled']);
-const emit = defineEmits(['update:modelValue']);
+const props = defineProps<{
+  modelValue: string;
+  label: string;
+  disabled?: boolean;
+}>();
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+}>();
 
 const input = ref('');
 const dirty = ref(false);
@@ -11,7 +17,7 @@ const error = computed(() => {
   if (input.value === '') return 'Address is required';
   if (!mustBeEthereumAddress(input.value)) return 'Invalid address';
   return '';
-})
+});
 
 watch(
   () => props.modelValue,
@@ -34,7 +40,6 @@ const handleInput = () => {
 <template>
   <UiInput
     v-model="input"
-    v-bind="inputProps"
     :disabled="disabled"
     :error="error !== '' && error"
     @input="handleInput()"

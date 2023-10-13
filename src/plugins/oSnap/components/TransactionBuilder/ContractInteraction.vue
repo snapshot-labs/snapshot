@@ -10,8 +10,8 @@ import {
   getContractABI,
   validateTransaction
 } from '../../utils';
-import InputAddress from '../Input/Address.vue';
-import InputMethodParameter from '../Input/MethodParameter.vue';
+import AddressInput from '../Input/Address.vue';
+import MethodParameterInput from '../Input/MethodParameter.vue';
 
 const props = defineProps<{
   network: Network;
@@ -108,13 +108,10 @@ function updateValue(newValue: string) {
 
 <template>
   <div class="space-y-2">
-    <InputAddress
+    <AddressInput
       v-model="to"
-      :input-props="{
-        required: true
-      }"
       :label="$t('safeSnap.to')"
-      @validAddress="updateAddress()"
+      @update:modelValue="updateAddress()"
     />
 
     <UiInput
@@ -144,7 +141,7 @@ function updateValue(newValue: string) {
       <div v-if="selectedMethod && selectedMethod.inputs.length">
         <div class="divider"></div>
 
-        <InputMethodParameter
+        <MethodParameterInput
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
           :parameter="input"

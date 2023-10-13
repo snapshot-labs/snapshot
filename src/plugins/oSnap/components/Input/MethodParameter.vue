@@ -2,7 +2,7 @@
 import { ParamType } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import SafeSnapInputAddress from './Address.vue';
+import AddressInput from './Address.vue';
 
 const props = defineProps<{
   parameter: ParamType;
@@ -97,9 +97,8 @@ function onChange(value: string) {
     <option :value="false">false</option>
   </UiSelect>
 
-  <SafeSnapInputAddress
+  <AddressInput
     v-if="inputType === 'address'"
-    :input-props="{ required: true }"
     :label="label"
     :model-value="value"
     @update:modelValue="onChange($event)"
