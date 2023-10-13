@@ -10,8 +10,8 @@ import {
   getNativeAsset,
   validateTransaction
 } from '../../utils';
-import InputAddress from '../Input/Address.vue';
-import InputAmount from '../Input/Amount.vue';
+import AddressInput from '../Input/Address.vue';
+import AmountInput from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
 
 const props = defineProps<{
@@ -104,11 +104,11 @@ watch(selectedTokenAddress, updateTransaction);
   </BaseButton>
 
   <div class="space-y-2">
-    <InputAddress
+    <AddressInput
       v-model="recipient"
       :label="$t('safeSnap.to')"
     />
-    <InputAmount
+    <AmountInput
       :key="selectedToken?.decimals"
       v-model="amount"
       :label="$t('safeSnap.amount')"

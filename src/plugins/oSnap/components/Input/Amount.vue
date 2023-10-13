@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { parseUnits, formatUnits } from '@ethersproject/units';
+import { formatUnits, parseUnits } from '@ethersproject/units';
 
-const props = defineProps([
-  'modelValue',
-  'inputProps',
-  'label',
-  'disabled',
-  'decimals'
-]);
-const emit = defineEmits(['update:modelValue', 'valid']);
+const props = defineProps<{
+  modelValue: string;
+  label: string;
+  decimals: number | undefined;
+}>();
+const emit = defineEmits<{
+  'update:modelValue': [value: string];
+}>();
 
 const input = ref('0');
 const isValid = ref(true);
@@ -26,7 +26,7 @@ const handleInput = () => {
   dirty.value = true;
   const value = format(input.value);
   isValid.value = !!value;
-  emit('update:modelValue', value);
+  emit('update:modelValue', value ?? '');
 };
 
 onMounted(() => {
@@ -38,7 +38,7 @@ onMounted(() => {
 watch(
   () => props.modelValue,
   value => {
-    if (value && props.disabled) {
+    if (value) {
       input.value = formatUnits(value, props.decimals);
     }
   }
@@ -55,8 +55,6 @@ watch(
 <template>
   <UiInput
     v-model="input"
-    v-bind="inputProps"
-    :disabled="disabled"
     :error="dirty && !isValid && $t('safeSnap.invalidAmount')"
     @input="handleInput()"
   >
