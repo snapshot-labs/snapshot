@@ -24,10 +24,12 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+// we need to disable using the new plugin if the old one is still installed
 const hasLegacyPluginInstalled = 'safeSnap' in props.space.plugins;
 
 const isLoading = ref(false);
 
+// emits an event with the shape expected by the parent of the plugin component
 const emit = defineEmits<{
   update: [value: { key: 'oSnap'; form: OsnapPluginData }];
 }>();
@@ -70,6 +72,7 @@ async function fetchTokens(url: string): Promise<Token[]> {
   }
 }
 
+// todo: wire up and use these balances to enrich details in the ui, e.g. 'your safe does not have enough funds for this transaction'
 async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
@@ -115,6 +118,7 @@ function enhanceTokensWithBalances(
     });
 }
 
+// gets token balances and also determines if the token is verified
 function enhanceTokenWithBalance(
   balance: BalanceResponse,
   tokens: Token[]
@@ -150,7 +154,9 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
   return [];
 }
 
-async function createSafes() {
+// maps over the treasuries and creates a safe for each one
+// only returns safes that have oSnap enabled
+async function createOsnapEnabledSafes() {
   const treasuriesWithOsnapEnabled = (
     await Promise.all(
       props.space.treasuries.map(async treasury => {
@@ -182,6 +188,7 @@ async function createSafes() {
   return safes;
 }
 
+// when changing safes, we create a whole new object and replace it
 function updateSafe(safe: GnosisSafe) {
   newPluginData.value.safe = cloneDeep(safe);
   update(newPluginData.value);
@@ -205,7 +212,7 @@ watch(newPluginData, async () => {
 
 onMounted(async () => {
   isLoading.value = true;
-  safes.value = await createSafes();
+  safes.value = await createOsnapEnabledSafes();
   newPluginData.value.safe = safes.value[0];
   update(newPluginData.value);
   isLoading.value = false;
