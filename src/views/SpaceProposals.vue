@@ -23,6 +23,16 @@ useMeta({
   }
 });
 
+const loading = ref(false);
+
+const route = useRoute();
+const router = useRouter();
+const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
+const { emitUpdateLastSeenProposal } = useUnseenProposals();
+const { profiles, loadProfiles } = useProfiles();
+const { apolloQuery } = useApolloQuery();
+const { web3Account } = useWeb3();
+const { isFollowing } = useFollowSpace(props.space.id);
 const {
   store,
   userVotedProposalIds,
@@ -31,16 +41,6 @@ const {
   setSpaceProposals
 } = useProposals();
 
-const loading = ref(false);
-
-const route = useRoute();
-const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
-const { emitUpdateLastSeenProposal } = useUnseenProposals();
-const { profiles, loadProfiles } = useProfiles();
-const { apolloQuery } = useApolloQuery();
-const { web3Account } = useWeb3();
-const { isFollowing } = useFollowSpace(props.space.id);
-
 const spaceMembers = computed(() =>
   props.space.members.length < 1
     ? ['none']
@@ -48,7 +48,7 @@ const spaceMembers = computed(() =>
 );
 
 const subSpaces = computed(
-  () => props.space.children?.map(space => space.id) ?? []
+  () => props.space.children?.map(space => space.id.toLowerCase()) ?? []
 );
 
 const spaceProposals = computed(() => {
@@ -92,7 +92,7 @@ async function loadMoreProposals(skip: number) {
 useInfiniteScroll(
   document,
   () => {
-    if (loadingMore.value) return;
+    if (loadingMore.value || spaceProposals.value.length < 6) return;
     loadMore(() => loadMoreProposals(spaceProposals.value.length));
   },
   { distance: 400 }
@@ -101,6 +101,9 @@ useInfiniteScroll(
 watch(web3Account, () => emitUpdateLastSeenProposal(props.space.id));
 
 async function loadProposals() {
+  if (!needToRefreshProposals()) return;
+  resetSpaceProposals();
+
   loading.value = true;
   const proposals = await getProposals();
   stopLoadingMore.value = proposals?.length < loadBy;
@@ -109,10 +112,27 @@ async function loadProposals() {
   loading.value = false;
 }
 
+function needToRefreshProposals() {
+  const preventRefreshWhenLeaving = route.fullPath.includes('proposal');
+  if (preventRefreshWhenLeaving) return false;
+
+  if (spaceProposals.value.length < 1) return true;
+
+  const lastVisitedPath = router.options.history.state.forward;
+  if (typeof lastVisitedPath !== 'string') return true;
+  const lastPathContainedSubSpace = subSpaces.value.some(space => {
+    return lastVisitedPath.toLowerCase().includes(space);
+  });
+
+  return !(
+    lastVisitedPath.toLowerCase().includes(props.space.id.toLowerCase()) ||
+    lastPathContainedSubSpace
+  );
+}
+
 watch(
   [stateFilter, showOnlyCore, showFlagged],
   () => {
-    resetSpaceProposals();
     loadProposals();
   },
   { immediate: true }
@@ -121,7 +141,6 @@ watch(
 watchDebounced(
   titleSearch,
   () => {
-    resetSpaceProposals();
     loadProposals();
   },
   { debounce: 300 }
