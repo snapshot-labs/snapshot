@@ -9,10 +9,11 @@ const props = defineProps<{
   network: string;
 }>();
 
-const emit = defineEmits(['select']);
+const emit = defineEmits<{
+  select: [token: Token];
+}>();
 
 const { formatNumber, getNumberFormatter } = useIntl();
-const { copyToClipboard } = useCopy();
 
 const exploreUrl = computed(() => {
   return explorerUrl(props.network, props.token.address);
@@ -73,4 +74,3 @@ const exploreUrl = computed(() => {
     </div>
   </button>
 </template>
-../../types/types
