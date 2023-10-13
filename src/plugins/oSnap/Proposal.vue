@@ -3,7 +3,7 @@ import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { getIpfsUrl } from '@/helpers/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { formatEther, formatUnits } from '@ethersproject/units';
-import HandleOutcomeUma from './components/HandleOutcomeUma.vue';
+import HandleOutcome from './components/HandleOutcome.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
@@ -84,7 +84,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       </ReadOnly>
     </div>
   </div>
-  <HandleOutcomeUma
+  <HandleOutcome
     v-if="!!results"
     :space="space"
     :proposal="proposal"
