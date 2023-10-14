@@ -112,11 +112,11 @@ useTippy(refReasonTooltip, {
           </div>
         </template>
       </BasePopover>
-      <div ref="refReasonTooltip">
-        <BaseButtonIcon
-          v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
-          class="cursor-default p-0"
-        >
+      <div
+        v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
+        ref="refReasonTooltip"
+      >
+        <BaseButtonIcon class="cursor-default p-0">
           <i-ho-annotation class="text-[16px]" />
         </BaseButtonIcon>
       </div>
