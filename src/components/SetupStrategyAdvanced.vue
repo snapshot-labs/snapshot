@@ -4,7 +4,8 @@ const { validationErrors } = useFormSpaceSettings('setup');
 const emit = defineEmits(['next']);
 
 function nextStep() {
-  if (validationErrors.value.strategies) return;
+  if (validationErrors.value.strategies || validationErrors.value.symbol)
+    return;
   emit('next');
 }
 </script>
