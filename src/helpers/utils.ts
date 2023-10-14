@@ -165,3 +165,19 @@ export async function resolveLens(handle: string) {
     return null;
   }
 }
+
+export function isSnapshotUrl(url: string) {
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(url);
+  } catch (err) {
+    console.error('Invalid URL', err);
+    return;
+  }
+
+  if (parsedUrl.hostname === 'snapshot.org') {
+    return true;
+  }
+
+  return false;
+}

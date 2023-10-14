@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Autolinker from 'autolinker';
+import { isSnapshotUrl } from '@/helpers/utils';
 
 interface Props {
   text: string;
@@ -24,15 +25,7 @@ function handleLinkClick(e, url) {
   e.preventDefault();
   clickedUrl.value = url;
 
-  let parsedUrl;
-  try {
-    parsedUrl = new URL(url);
-  } catch (err) {
-    console.error('Invalid URL', err);
-    return;
-  }
-
-  if (parsedUrl.hostname === 'snapshot.org') {
+  if (isSnapshotUrl(url)) {
     return handleConfirm();
   }
 
