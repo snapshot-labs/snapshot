@@ -23,7 +23,19 @@ const textWithLinks = computed(() =>
 function handleLinkClick(e, url) {
   e.preventDefault();
   clickedUrl.value = url;
-  if (url.includes('snapshot.org/#/')) return handleConfirm();
+
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(url);
+  } catch (err) {
+    console.error('Invalid URL', err);
+    return;
+  }
+
+  if (parsedUrl.hostname === 'snapshot.org') {
+    return handleConfirm();
+  }
+
   showModal.value = true;
 }
 
