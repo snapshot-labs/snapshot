@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { formatUnits } from '@ethersproject/units';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
@@ -8,13 +7,14 @@ import {
   ProposalExecutionDetails,
   type Network,
   type Transaction
-} from '../types';
+} from '../../types';
 import {
   approveBond,
   executeProposal,
   getProposalExecutionDetails,
   submitProposal
-} from '../utils';
+} from '../../utils';
+import SubmitProposalModal from './SubmitProposalModal.vue';
 
 declare global {
   interface Window {
@@ -83,7 +83,6 @@ async function ensureRightNetwork(chainId: Network) {
   }
 }
 
-const { formatDuration } = useIntl();
 const { t } = useI18n();
 
 const { web3 } = useWeb3();
@@ -95,7 +94,7 @@ const {
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
-type QuestionState =
+type ProposalState =
   | 'error'
   | 'no-wallet-connection'
   | 'loading'
@@ -108,23 +107,25 @@ type QuestionState =
   | 'waiting-for-vote-finalize'
   | 'proposal-denied';
 
-type Action1State = 'idle' | 'approve-bond' | 'submit-proposal';
-type Action2State = 'idle' | 'execute-proposal';
+type Action1State =
+  | 'idle'
+  | 'approve-bond'
+  | 'submit-proposal'
+  | 'execute-proposal';
 
 const isLoading = ref(true);
-const action1State = ref<Action1State>('idle');
-const action2State = ref<Action2State>('idle');
+const actionButtonState = ref<Action1State>('idle');
 const voteResultsConfirmed = ref(false);
 const proposalExecutionDetails = ref<ProposalExecutionDetails>();
-const isModalOpen = ref(false);
+const isSubmitProposalModalOpen = ref(false);
 
 function closeModal() {
-  isModalOpen.value = false;
+  isSubmitProposalModalOpen.value = false;
   voteResultsConfirmed.value = false;
 }
 
 function openModal() {
-  isModalOpen.value = true;
+  isSubmitProposalModalOpen.value = true;
   voteResultsConfirmed.value = true;
 }
 
@@ -154,7 +155,7 @@ async function updateDetails() {
 async function onApproveBond() {
   const txPendingId = createPendingTransaction();
   try {
-    action1State.value = 'approve-bond';
+    actionButtonState.value = 'approve-bond';
 
     await ensureRightNetwork(props.network);
 
@@ -166,14 +167,14 @@ async function onApproveBond() {
     const step = await approvingBond.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    action1State.value = 'idle';
+    actionButtonState.value = 'idle';
     await approvingBond.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
     console.error(e);
-    action1State.value = 'idle';
+    actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
   }
@@ -188,7 +189,7 @@ function getOracleUiLink(chain: string, txHash: string, logIndex: number) {
 
 async function onSubmitProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  action1State.value = 'submit-proposal';
+  actionButtonState.value = 'submit-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
@@ -201,7 +202,7 @@ async function onSubmitProposal() {
     const step = await proposalSubmission.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    action1State.value = 'idle';
+    actionButtonState.value = 'idle';
     await proposalSubmission.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
@@ -209,20 +210,20 @@ async function onSubmitProposal() {
   } catch (e) {
     console.error(e);
   } finally {
-    action1State.value = 'idle';
+    actionButtonState.value = 'idle';
     removePendingTransaction(txPendingId);
   }
 }
 
 async function onExecuteProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  action2State.value = 'execute-proposal';
+  actionButtonState.value = 'execute-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
   } catch (e) {
     console.error(e);
-    action2State.value = 'idle';
+    actionButtonState.value = 'idle';
     return;
   }
 
@@ -235,13 +236,13 @@ async function onExecuteProposal() {
     const step = await executingProposal.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    action2State.value = 'idle';
+    actionButtonState.value = 'idle';
     await executingProposal.next();
     notify(t('notify.youDidIt'));
     await sleep(3e3);
     await updateDetails();
   } catch (err) {
-    action2State.value = 'idle';
+    actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
   }
@@ -278,7 +279,7 @@ function wasProposalFinalized(proposal: Proposal) {
   return proposal.scores_state === 'final';
 }
 
-const questionState = computed<QuestionState>(() => {
+const questionState = computed<ProposalState>(() => {
   if (!web3.value.account) return 'no-wallet-connection';
 
   if (isLoading.value) return 'loading';
@@ -381,7 +382,7 @@ onMounted(async () => {
       >
         <div class="my-4 flex items-center">
           <BaseButton
-            :loading="action1State === 'approve-bond'"
+            :loading="actionButtonState === 'approve-bond'"
             @click="onApproveBond"
             class="mr-2 w-full"
           >
@@ -409,75 +410,20 @@ onMounted(async () => {
         class="my-4"
       >
         <div class="flex items-center">
-          <BaseModal :open="isModalOpen" @close="closeModal">
-            <template #header>
-              <h3 class="title">{{ $t('safeSnap.labels.request') }}</h3>
-            </template>
-            <div class="my-3 p-3">
-              <div class="pl-3 pr-3">
-                <p>{{ $t('safeSnap.labels.confirmVoteResultsToolTip') }}</p>
-              </div>
-              <div class="my-3 rounded-lg border p-3">
-                <div>
-                  <strong class="pr-3">{{
-                    $t('safeSnap.labels.requiredBond')
-                  }}</strong>
-                  <span class="float-right text-skin-link">
-                    {{
-                      formatUnits(
-                        proposalExecutionDetails.minimumBond ?? 0,
-                        proposalExecutionDetails.decimals
-                      ) +
-                      ' ' +
-                      proposalExecutionDetails.symbol
-                    }}
-                  </span>
-                </div>
-                <div>
-                  <strong class="pr-3">{{
-                    $t('safeSnap.labels.challengePeriod')
-                  }}</strong>
-                  <span class="float-right text-skin-link">
-                    {{
-                      formatDuration(
-                        Number(proposalExecutionDetails.livenessPeriod)
-                      )
-                    }}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <BaseMessage
-                  v-if="Number(props.proposal.scores_total) < Number(quorum)"
-                  level="warning-red"
-                >
-                  {{ $t('safeSnap.labels.quorumWarning') }}
-                </BaseMessage>
-                <BaseMessage
-                  v-if="
-                    Number(proposalExecutionDetails.minimumBond.toString()) >
-                    Number(proposalExecutionDetails.userBalance.toString())
-                  "
-                  level="warning-red"
-                >
-                  {{ $t('safeSnap.labels.bondWarning') }}
-                </BaseMessage>
-              </div>
-
-              <BaseButton
-                :loading="action1State === 'submit-proposal'"
-                @click="onSubmitProposal"
-                class="my-1 w-full"
-                :disabled="
-                  Number(proposalExecutionDetails.minimumBond.toString()) >
-                    Number(proposalExecutionDetails.userBalance.toString()) ||
-                  Number(props.proposal.scores_total) < Number(quorum)
-                "
-              >
-                {{ $t('safeSnap.labels.request') }}
-              </BaseButton>
-            </div>
-          </BaseModal>
+          <SubmitProposalModal
+            :is-modal-open="isSubmitProposalModalOpen"
+            :minimum-bond="proposalExecutionDetails.minimumBond"
+            :user-balance="proposalExecutionDetails.userBalance"
+            :decimals="proposalExecutionDetails.decimals"
+            :symbol="proposalExecutionDetails.symbol"
+            :liveness-period="
+              Number(proposalExecutionDetails.livenessPeriod.toString())
+            "
+            :quorum="quorum"
+            :scores-total="proposal.scores_total"
+            @close="closeModal"
+            @submitProposal="onSubmitProposal"
+          />
         </div>
       </div>
 
@@ -523,7 +469,7 @@ onMounted(async () => {
       <div v-if="questionState === 'proposal-approved'" class="my-4">
         <div class="flex items-center">
           <BaseButton
-            :loading="action2State === 'execute-proposal'"
+            :loading="actionButtonState === 'execute-proposal'"
             @click="onExecuteProposal"
             class="mr-2 w-full"
           >
