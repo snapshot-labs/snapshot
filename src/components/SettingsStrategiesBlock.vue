@@ -71,6 +71,7 @@ function handleSubmitStrategy(strategy) {
           :error="validationErrors?.symbol"
           :max-length="schemas.space.properties.symbol.maxLength"
           :disabled="isViewOnly"
+          autofocus
         />
       </ContainerParallelInput>
 
