@@ -67,30 +67,35 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 </script>
 
 <template>
-  <div>
+  <template v-if="safe.transactions.length > 0">
     <h2 class="mb-4 text-lg">oSnap Transactions</h2>
     <h3 class="flex text-md">
       <SafeLinkWithAvatar :safe="safe" />
     </h3>
-    <BaseLink v-if="ipfs" :link="ipfs">View transactions on IPFS</BaseLink>
-    <div
-      v-for="({ type, ...details }, index) in transactionsForDisplay"
-      class="my-4"
-    >
-      <h4 class="mb-2">{{ type }} transaction #{{ index + 1 }}</h4>
-      <ReadOnly v-for="[key, value] in Object.entries(details)" class="mb-2">
-        <strong class="mr-4 inline-block whitespace-nowrap">{{ key }}</strong>
-        <span class="break-all">{{ value }}</span>
-      </ReadOnly>
+    <div>
+      <BaseLink v-if="ipfs" :link="ipfs">View transactions on IPFS</BaseLink>
+      <div
+        v-for="({ type, ...details }, index) in transactionsForDisplay"
+        class="my-4"
+      >
+        <h4 class="mb-2">{{ type }} transaction #{{ index + 1 }}</h4>
+        <ReadOnly v-for="[key, value] in Object.entries(details)" class="mb-2">
+          <strong class="mr-4 inline-block whitespace-nowrap">{{ key }}</strong>
+          <span class="break-all">{{ value }}</span>
+        </ReadOnly>
+      </div>
     </div>
-  </div>
-  <HandleOutcome
-    v-if="!!results"
-    :space="space"
-    :proposal="proposal"
-    :transactions="safe.transactions"
-    :results="results"
-    :module-address="safe.moduleAddress"
-    :network="safe.network"
-  />
+    <HandleOutcome
+      v-if="!!results"
+      :space="space"
+      :proposal="proposal"
+      :transactions="safe.transactions"
+      :results="results"
+      :module-address="safe.moduleAddress"
+      :network="safe.network"
+    />
+  </template>
+  <template v-else>
+    <p>There are no transactions associated with this proposal.</p>
+  </template>
 </template>

@@ -31,58 +31,6 @@ const props = defineProps<{
   moduleAddress: string;
 }>();
 
-async function ensureRightNetwork(chainId: Network) {
-  const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
-  if (connectedToChainId === chainIdInt) return; // already on right chain
-
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
-    // we cannot switch automatically
-    throw new Error(
-      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
-    );
-  }
-
-  const network = networks[chainId];
-  const chainIdHex = `0x${chainIdInt.toString(16)}`;
-
-  try {
-    // check if the chain to connect to is installed
-    await window.ethereum.request({
-      method: 'wallet_switchEthereumChain',
-      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
-    });
-  } catch (error) {
-    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
-    // @ts-expect-error non-standard error type
-    if (error.code === 4902) {
-      try {
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: chainIdHex,
-              chainName: network.name,
-              rpcUrls: network.rpc,
-              blockExplorerUrls: [network.explorer.url]
-            }
-          ]
-        });
-      } catch (addError) {
-        console.error(addError);
-      }
-    }
-    console.error(error);
-  }
-
-  await sleep(1e3); // somehow the switch does not take immediate effect :/
-  if (window.ethereum.chainId !== chainIdHex) {
-    throw new Error(
-      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
-    );
-  }
-}
-
 const { web3 } = useWeb3();
 const {
   createPendingTransaction,
@@ -93,11 +41,7 @@ const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
 type ProposalState =
-  | 'error'
-  | 'no-wallet-connection'
-  | 'loading'
   | 'waiting-for-vote-confirmation'
-  | 'no-transactions'
   | 'completely-executed'
   | 'waiting-for-proposal'
   | 'waiting-for-liveness'
@@ -116,6 +60,54 @@ const actionButtonState = ref<Action1State>('idle');
 const voteResultsConfirmed = ref(false);
 const proposalExecutionDetails = ref<ProposalExecutionDetails>();
 const isSubmitProposalModalOpen = ref(false);
+
+const hasConnectedWallet = computed(() => !!web3.value.account);
+
+const proposalState = computed<ProposalState | undefined>(() => {
+  if (!proposalExecutionDetails.value) return;
+
+  const { assertionEvent, proposalExecuted, activeProposal } =
+    proposalExecutionDetails.value;
+
+  // check if proposal passed snapshot rules, ie votes for, and quorum
+  const proposalPassed = didProposalPass(props.proposal);
+
+  // vote may not be finalized, its possible for vote to pass, but require a waiting period till votes completely tally
+  const proposalFinalized = wasProposalFinalized(props.proposal);
+
+  // ordering of this is deliberate. it will prevent you from executing proposals that did not pass,
+  // but if for some reason the proposal did get executed elsewhere, it will still show that it was.
+  // If proposal has already been executed, prevents user from proposing again.
+  if (proposalExecuted) return 'completely-executed';
+
+  if (!proposalFinalized) {
+    return 'waiting-for-vote-finalize';
+  }
+
+  // User can confirm vote results if not done already and there is no proposal yet.
+  if (!activeProposal && !voteResultsConfirmed.value && proposalPassed)
+    return 'waiting-for-vote-confirmation';
+
+  // Proposal can be made if it has not been made already and user confirmed vote results.
+  if (!activeProposal && voteResultsConfirmed.value && proposalPassed)
+    return 'waiting-for-proposal';
+
+  // Proposal has been made and is waiting for liveness period to complete.
+
+  if (assertionEvent && !assertionEvent.isExpired)
+    return 'waiting-for-liveness';
+
+  // this is  above proposal-approved stated because we dont want to ever execute on proposals that did not pass vote
+  if (!proposalPassed) return 'proposal-denied';
+
+  // Proposal is approved if it expires without a dispute and hasn't been settled.
+  if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
+    return 'proposal-approved';
+
+  // Proposal is approved if it has been settled without a disputer and hasn't been executed.
+  if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
+    return 'proposal-approved';
+});
 
 function closeModal() {
   isSubmitProposalModalOpen.value = false;
@@ -249,10 +241,6 @@ async function onExecuteProposal() {
   }
 }
 
-const usingMetaMask = computed(() => {
-  return window.ethereum && getInstance().provider.value?.isMetaMask;
-});
-
 const connectedToRightChain = computed(() => {
   return getInstance().provider.value?.chainId === parseInt(props.network);
 });
@@ -280,59 +268,57 @@ function wasProposalFinalized(proposal: Proposal) {
   return proposal.scores_state === 'final';
 }
 
-const questionState = computed<ProposalState>(() => {
-  if (!web3.value.account) return 'no-wallet-connection';
+async function ensureRightNetwork(chainId: Network) {
+  const chainIdInt = parseInt(chainId);
+  const connectedToChainId = getInstance().provider.value?.chainId;
+  if (connectedToChainId === chainIdInt) return; // already on right chain
 
-  if (isLoading.value) return 'loading';
-
-  if (!proposalExecutionDetails.value) return 'error';
-
-  const { assertionEvent, proposalExecuted, activeProposal, noTransactions } =
-    proposalExecutionDetails.value;
-
-  if (noTransactions) return 'no-transactions';
-
-  // check if proposal passed snapshot rules, ie votes for, and quorum
-  const proposalPassed = didProposalPass(props.proposal);
-
-  // vote may not be finalized, its possible for vote to pass, but require a waiting period till votes completely tally
-  const proposalFinalized = wasProposalFinalized(props.proposal);
-
-  // ordering of this is deliberate. it will prevent you from executing proposals that did not pass,
-  // but if for some reason the proposal did get executed elsewhere, it will still show that it was.
-  // If proposal has already been executed, prevents user from proposing again.
-  if (proposalExecuted) return 'completely-executed';
-
-  if (!proposalFinalized) {
-    return 'waiting-for-vote-finalize';
+  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
+    // we cannot switch automatically
+    throw new Error(
+      `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
+    );
   }
 
-  // User can confirm vote results if not done already and there is no proposal yet.
-  if (!activeProposal && !voteResultsConfirmed.value && proposalPassed)
-    return 'waiting-for-vote-confirmation';
+  const network = networks[chainId];
+  const chainIdHex = `0x${chainIdInt.toString(16)}`;
 
-  // Proposal can be made if it has not been made already and user confirmed vote results.
-  if (!activeProposal && voteResultsConfirmed.value && proposalPassed)
-    return 'waiting-for-proposal';
+  try {
+    // check if the chain to connect to is installed
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: chainIdHex }] // chainId must be in hexadecimal numbers
+    });
+  } catch (error) {
+    // This error code indicates that the chain has not been added to MetaMask. Let's add it.
+    // @ts-expect-error non-standard error type
+    if (error.code === 4902) {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: chainIdHex,
+              chainName: network.name,
+              rpcUrls: network.rpc,
+              blockExplorerUrls: [network.explorer.url]
+            }
+          ]
+        });
+      } catch (addError) {
+        console.error(addError);
+      }
+    }
+    console.error(error);
+  }
 
-  // Proposal has been made and is waiting for liveness period to complete.
-
-  if (assertionEvent && !assertionEvent.isExpired)
-    return 'waiting-for-liveness';
-
-  // this is  above proposal-approved stated because we dont want to ever execute on proposals that did not pass vote
-  if (!proposalPassed) return 'proposal-denied';
-
-  // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
-    return 'proposal-approved';
-
-  // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
-    return 'proposal-approved';
-
-  return 'error';
-});
+  await sleep(1e3); // somehow the switch does not take immediate effect :/
+  if (window.ethereum.chainId !== chainIdHex) {
+    throw new Error(
+      `Could not switch to the right chain on MetaMask (required: ${chainIdHex}, active: ${window.ethereum.chainId})`
+    );
+  }
+}
 
 onMounted(async () => {
   await updateDetails();
@@ -340,25 +326,29 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="questionState === 'error'" class="my-4">Something went wrong</div>
-  <template v-else>
-    <div v-if="questionState === 'no-wallet-connection'" class="my-4">
-      Connect your wallet to see execution details
-    </div>
-
-    <div
-      v-if="questionState === 'loading'"
-      class="my-4 grid place-items-center"
-    >
+  <div v-if="!hasConnectedWallet" class="my-4">
+    Connect your wallet to see execution details
+  </div>
+  <div v-if="!connectedToRightChain" class="my-4">
+    Switch your wallet to {{ networkName }} to request execution
+  </div>
+  <template v-if="hasConnectedWallet && connectedToRightChain">
+    <div v-if="isLoading" class="grid place-items-center">
       <LoadingSpinner />
     </div>
-    <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
-      Waiting for vote to be finalized
-    </div>
+    <template
+      v-if="
+        !isLoading &&
+        proposalState !== undefined &&
+        proposalExecutionDetails !== undefined
+      "
+    >
+      <div v-if="proposalState === 'waiting-for-vote-finalize'" class="my-4">
+        Waiting for vote to be finalized
+      </div>
 
-    <div v-if="connectedToRightChain || usingMetaMask">
       <div
-        v-if="questionState === 'waiting-for-vote-confirmation'"
+        v-if="proposalState === 'waiting-for-vote-confirmation'"
         class="my-4"
       >
         <div class="flex items-center">
@@ -367,15 +357,10 @@ onMounted(async () => {
           </BaseButton>
         </div>
       </div>
-
-      <div v-if="questionState === 'no-transactions'" class="my-4">
-        This proposal has no transactions to execute
-      </div>
-
       <div
         v-if="
-          questionState === 'waiting-for-proposal' &&
-          proposalExecutionDetails?.needsBondApproval === true
+          proposalState === 'waiting-for-proposal' &&
+          proposalExecutionDetails.needsBondApproval === true
         "
         class="my-4"
       >
@@ -407,7 +392,7 @@ onMounted(async () => {
       </div>
       <div
         v-if="
-          questionState === 'waiting-for-proposal' &&
+          proposalState === 'waiting-for-proposal' &&
           proposalExecutionDetails?.needsBondApproval === false
         "
         class="my-4"
@@ -432,7 +417,7 @@ onMounted(async () => {
 
       <div
         v-if="
-          questionState === 'waiting-for-liveness' &&
+          proposalState === 'waiting-for-liveness' &&
           proposalExecutionDetails?.assertionEvent !== undefined
         "
         class="flex items-center justify-center self-stretch p-3 text-skin-link"
@@ -469,7 +454,7 @@ onMounted(async () => {
         </BaseContainer>
       </div>
 
-      <div v-if="questionState === 'proposal-approved'" class="my-4">
+      <div v-if="proposalState === 'proposal-approved'" class="my-4">
         <div class="flex items-center">
           <BaseButton
             :loading="actionButtonState === 'execute-proposal'"
@@ -495,21 +480,12 @@ onMounted(async () => {
           </BasePopoverHover>
         </div>
       </div>
-    </div>
-    <div
-      v-else-if="
-        questionState !== 'loading' && questionState !== 'no-wallet-connection'
-      "
-      class="my-4"
-    >
-      Switch your wallet to {{ networkName }} to request execution
-    </div>
-
-    <div v-if="questionState === 'completely-executed'" class="my-4">
-      All transactions have been executed
-    </div>
-    <div v-if="questionState === 'proposal-denied'" class="my-4">
-      Proposal rejected
-    </div>
+      <div v-if="proposalState === 'completely-executed'" class="my-4">
+        All transactions have been executed
+      </div>
+      <div v-if="proposalState === 'proposal-denied'" class="my-4">
+        Proposal rejected
+      </div>
+    </template>
   </template>
 </template>
