@@ -83,8 +83,6 @@ async function ensureRightNetwork(chainId: Network) {
   }
 }
 
-const { t } = useI18n();
-
 const { web3 } = useWeb3();
 const {
   createPendingTransaction,
@@ -169,11 +167,12 @@ async function onApproveBond() {
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionButtonState.value = 'idle';
     await approvingBond.next();
-    notify(t('notify.youDidIt'));
+    notify('Successfully approved bond');
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
     console.error(e);
+    notify(['red', 'Failed to approve bond']);
     actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
@@ -204,10 +203,11 @@ async function onSubmitProposal() {
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionButtonState.value = 'idle';
     await proposalSubmission.next();
-    notify(t('notify.youDidIt'));
+    notify('Proposal submitted successfully');
     await sleep(3e3);
     await updateDetails();
   } catch (e) {
+    notify(['red', 'Failed to submit proposal']);
     console.error(e);
   } finally {
     actionButtonState.value = 'idle';
@@ -238,10 +238,11 @@ async function onExecuteProposal() {
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
     actionButtonState.value = 'idle';
     await executingProposal.next();
-    notify(t('notify.youDidIt'));
+    notify('Proposal executed successfully');
     await sleep(3e3);
     await updateDetails();
   } catch (err) {
+    notify(['red', 'Failed to execute proposal']);
     actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
@@ -339,12 +340,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="questionState === 'error'" class="my-4">
-    {{ $t('safeSnap.labels.error') }}
-  </div>
+  <div v-if="questionState === 'error'" class="my-4">Something went wrong</div>
   <template v-else>
     <div v-if="questionState === 'no-wallet-connection'" class="my-4">
-      {{ $t('safeSnap.labels.connectWallet') }}
+      Connect your wallet to see execution details
     </div>
 
     <div
@@ -354,7 +353,7 @@ onMounted(async () => {
       <LoadingSpinner />
     </div>
     <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
-      Waiting on vote to be finalized
+      Waiting for vote to be finalized
     </div>
 
     <div v-if="connectedToRightChain || usingMetaMask">
@@ -364,13 +363,13 @@ onMounted(async () => {
       >
         <div class="flex items-center">
           <BaseButton @click="openModal" class="mr-2 w-full">
-            {{ $t('safeSnap.labels.confirmVoteResults') }}
+            Click to request proposal execution
           </BaseButton>
         </div>
       </div>
 
       <div v-if="questionState === 'no-transactions'" class="my-4">
-        {{ $t('safeSnap.labels.noTransactions') }}
+        This proposal has no transactions to execute
       </div>
 
       <div
@@ -386,7 +385,7 @@ onMounted(async () => {
             @click="onApproveBond"
             class="mr-2 w-full"
           >
-            {{ $t('safeSnap.labels.approveBond') }}
+            Approve bond
           </BaseButton>
           <BasePopoverHover placement="top">
             <template #button>
@@ -396,7 +395,11 @@ onMounted(async () => {
               <div
                 class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
               >
-                {{ $t('safeSnap.labels.approveBondToolTip') }}
+                On-chain proposals require a bond from the proposer. This will
+                approve tokens from your wallet to be posted as a bond. If you
+                make an invalid proposal, it will be disputed and you will lose
+                your bond. If the proposal is valid, your bond will be returned
+                when the transactions are executed.
               </div>
             </template>
           </BasePopoverHover>
@@ -459,7 +462,7 @@ onMounted(async () => {
               target="_blank"
               style="font-size: 16px"
             >
-              {{ $t('safeSnap.labels.disputeProposal') }}
+              UMA Oracle URL to dispute
               <em style="font-size: 14px" class="iconfont iconexternal-link" />
             </a>
           </div>
@@ -473,7 +476,9 @@ onMounted(async () => {
             @click="onExecuteProposal"
             class="mr-2 w-full"
           >
-            {{ $t('safeSnap.labels.executeTxsUma', [transactions.length]) }}
+            Execute {{ transactions.length }} transaction{{
+              transactions.length > 1 ? 's' : ''
+            }}
           </BaseButton>
           <BasePopoverHover placement="top">
             <template #button>
@@ -483,7 +488,8 @@ onMounted(async () => {
               <div
                 class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
               >
-                {{ $t('safeSnap.labels.executeToolTip') }}
+                This will execute the transactions from this proposal and return
+                the proposer's bond.
               </div>
             </template>
           </BasePopoverHover>
@@ -496,14 +502,14 @@ onMounted(async () => {
       "
       class="my-4"
     >
-      {{ $t('safeSnap.labels.switchChain', [networkName]) }}
+      Switch your wallet to {{ networkName }} to request execution
     </div>
 
     <div v-if="questionState === 'completely-executed'" class="my-4">
-      {{ $t('safeSnap.labels.executed') }}
+      All transactions have been executed
     </div>
     <div v-if="questionState === 'proposal-denied'" class="my-4">
-      {{ $t('safeSnap.labels.rejected') }}
+      Proposal rejected
     </div>
   </template>
 </template>
