@@ -11,9 +11,9 @@ export function useSharing() {
       extras: { icon: 'twitter' }
     },
     {
-      text: 'Lenster',
-      action: 'shareProposalLenster',
-      extras: { icon: 'lenster' }
+      text: 'Hey',
+      action: 'shareProposalHey',
+      extras: { icon: 'hey' }
     },
     {
       text: t('copyLink'),
@@ -40,12 +40,12 @@ export function useSharing() {
   }
 
   function shareVote(
-    shareTo: 'twitter' | 'lenster',
+    shareTo: 'twitter' | 'hey',
     payload: { space: ExtendedSpace; proposal: Proposal; choices: string }
   ) {
     const postText = getSharingText(shareTo, payload);
 
-    if (window && shareTo === 'lenster') return shareLenster(postText);
+    if (window && shareTo === 'hey') return shareHey(postText);
     if (isSupported.value)
       return share({
         title: '',
@@ -55,7 +55,7 @@ export function useSharing() {
     if (window && shareTo === 'twitter') return shareTwitter(postText);
   }
 
-  function getSharingText(shareTo: 'twitter' | 'lenster', payload): string {
+  function getSharingText(shareTo: 'twitter' | 'hey', payload): string {
     const isSingleChoice =
       payload.proposal.type === 'single-choice' ||
       payload.proposal.type === 'basic';
@@ -69,7 +69,7 @@ export function useSharing() {
       ? `@${payload.space.twitter}`
       : payload.space.name;
 
-    if (shareTo === 'lenster')
+    if (shareTo === 'hey')
       return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
         payload.proposal.title
       )}"%20${encodedProposalUrl(
@@ -94,8 +94,8 @@ export function useSharing() {
     window.open(url, '_blank')?.focus();
   }
 
-  function shareLenster(text) {
-    const url = `https://lenster.xyz/?text=${text}`;
+  function shareHey(text) {
+    const url = `https://hey.xyz/?text=${text}`;
     window.open(url, '_blank')?.focus();
   }
 
@@ -109,8 +109,8 @@ export function useSharing() {
     );
   }
 
-  function shareProposalLenster(space, proposal) {
-    shareLenster(
+  function shareProposalHey(space, proposal) {
+    shareHey(
       `${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
         space.id,
         proposal
@@ -126,7 +126,7 @@ export function useSharing() {
 
   return {
     shareProposalTwitter,
-    shareProposalLenster,
+    shareProposalHey,
     shareToClipboard,
     proposalUrl,
     shareProposal,
