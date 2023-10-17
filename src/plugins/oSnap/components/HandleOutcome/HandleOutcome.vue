@@ -14,7 +14,12 @@ import {
   getProposalExecutionDetails,
   submitProposal
 } from '../../utils';
-import SubmitProposalModal from './SubmitProposalModal.vue';
+import AssertionPassedInOO from './steps/AssertionPassedInOO.vue';
+import InOOChallengePeriod from './steps/InOOChallengePeriod.vue';
+import ReadyForOOAssertion from './steps/ReadyForOOAssertion.vue';
+import RejectedBySnapshotVote from './steps/RejectedBySnapshotVote.vue';
+import TallyingSnapshotVotes from './steps/TallyingSnapshotVotes.vue';
+import TransactionsExecuted from './steps/TransactionsExecuted.vue';
 
 declare global {
   interface Window {
@@ -40,14 +45,13 @@ const {
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
-type ProposalState =
-  | 'waiting-for-vote-confirmation'
-  | 'completely-executed'
-  | 'waiting-for-proposal'
-  | 'waiting-for-liveness'
-  | 'proposal-approved'
-  | 'waiting-for-vote-finalize'
-  | 'proposal-denied';
+type ProposalExecutionStep =
+  | 'tallying-snapshot-votes'
+  | 'rejected-by-snapshot-vote'
+  | 'ready-for-oo-assertion'
+  | 'in-oo-challenge-period'
+  | 'assertion-passed-in-oo'
+  | 'transactions-executed';
 
 type Action1State =
   | 'idle'
@@ -57,67 +61,38 @@ type Action1State =
 
 const isLoading = ref(true);
 const actionButtonState = ref<Action1State>('idle');
-const voteResultsConfirmed = ref(false);
 const proposalExecutionDetails = ref<ProposalExecutionDetails>();
-const isSubmitProposalModalOpen = ref(false);
-
 const hasConnectedWallet = computed(() => !!web3.value.account);
 
-const proposalState = computed<ProposalState | undefined>(() => {
-  if (!proposalExecutionDetails.value) return;
+const proposalExecutionStep = computed<ProposalExecutionStep | undefined>(
+  () => {
+    if (!proposalExecutionDetails.value) return;
 
-  const { assertionEvent, proposalExecuted, activeProposal } =
-    proposalExecutionDetails.value;
+    const { assertionEvent, proposalExecuted, activeProposal } =
+      proposalExecutionDetails.value;
 
-  // check if proposal passed snapshot rules, ie votes for, and quorum
-  const proposalPassed = didProposalPass(props.proposal);
+    if (proposalExecuted) return 'transactions-executed';
 
-  // vote may not be finalized, its possible for vote to pass, but require a waiting period till votes completely tally
-  const proposalFinalized = wasProposalFinalized(props.proposal);
+    const proposalFinalized = wasProposalFinalized(props.proposal);
 
-  // ordering of this is deliberate. it will prevent you from executing proposals that did not pass,
-  // but if for some reason the proposal did get executed elsewhere, it will still show that it was.
-  // If proposal has already been executed, prevents user from proposing again.
-  if (proposalExecuted) return 'completely-executed';
+    if (!proposalFinalized) return 'tallying-snapshot-votes';
 
-  if (!proposalFinalized) {
-    return 'waiting-for-vote-finalize';
+    const proposalPassed = didProposalPass(props.proposal);
+
+    if (!proposalPassed) return 'rejected-by-snapshot-vote';
+
+    if (!activeProposal) return 'ready-for-oo-assertion';
+
+    if (assertionEvent && !assertionEvent.isExpired)
+      return 'in-oo-challenge-period';
+
+    if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
+      return 'assertion-passed-in-oo';
+
+    if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
+      return 'assertion-passed-in-oo';
   }
-
-  // User can confirm vote results if not done already and there is no proposal yet.
-  if (!activeProposal && !voteResultsConfirmed.value && proposalPassed)
-    return 'waiting-for-vote-confirmation';
-
-  // Proposal can be made if it has not been made already and user confirmed vote results.
-  if (!activeProposal && voteResultsConfirmed.value && proposalPassed)
-    return 'waiting-for-proposal';
-
-  // Proposal has been made and is waiting for liveness period to complete.
-
-  if (assertionEvent && !assertionEvent.isExpired)
-    return 'waiting-for-liveness';
-
-  // this is  above proposal-approved stated because we dont want to ever execute on proposals that did not pass vote
-  if (!proposalPassed) return 'proposal-denied';
-
-  // Proposal is approved if it expires without a dispute and hasn't been settled.
-  if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
-    return 'proposal-approved';
-
-  // Proposal is approved if it has been settled without a disputer and hasn't been executed.
-  if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
-    return 'proposal-approved';
-});
-
-function closeModal() {
-  isSubmitProposalModalOpen.value = false;
-  voteResultsConfirmed.value = false;
-}
-
-function openModal() {
-  isSubmitProposalModalOpen.value = true;
-  voteResultsConfirmed.value = true;
-}
+);
 
 function getFormattedTransactions() {
   return props.transactions.map(transaction => {
@@ -169,13 +144,6 @@ async function onApproveBond() {
   } finally {
     removePendingTransaction(txPendingId);
   }
-}
-
-function getOracleUiLink(chain: string, txHash: string, logIndex: number) {
-  if (Number(chain) !== 5 && Number(chain) !== 80001) {
-    return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
-  }
-  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
 }
 
 async function onSubmitProposal() {
@@ -242,7 +210,7 @@ async function onExecuteProposal() {
 }
 
 const connectedToRightChain = computed(() => {
-  return getInstance().provider.value?.chainId === parseInt(props.network);
+  return getInstance().provider.value?.chainId === `0x${props.network}`;
 });
 
 const networkName = computed(() => {
@@ -339,153 +307,53 @@ onMounted(async () => {
     <template
       v-if="
         !isLoading &&
-        proposalState !== undefined &&
+        proposalExecutionStep !== undefined &&
         proposalExecutionDetails !== undefined
       "
     >
-      <div v-if="proposalState === 'waiting-for-vote-finalize'" class="my-4">
-        Waiting for vote to be finalized
-      </div>
-
-      <div
-        v-if="proposalState === 'waiting-for-vote-confirmation'"
-        class="my-4"
-      >
-        <div class="flex items-center">
-          <BaseButton @click="openModal" class="mr-2 w-full">
-            Click to request proposal execution
-          </BaseButton>
-        </div>
-      </div>
-      <div
-        v-if="
-          proposalState === 'waiting-for-proposal' &&
-          proposalExecutionDetails.needsBondApproval === true
+      <TallyingSnapshotVotes
+        v-if="proposalExecutionStep === 'tallying-snapshot-votes'"
+      />
+      <RejectedBySnapshotVote
+        v-if="proposalExecutionStep === 'rejected-by-snapshot-vote'"
+      />
+      <ReadyForOOAssertion
+        v-if="proposalExecutionStep === 'ready-for-oo-assertion'"
+        :needs-bond-approval="proposalExecutionDetails.needsBondApproval"
+        :minimum-bond="proposalExecutionDetails.minimumBond"
+        :user-balance="proposalExecutionDetails.userBalance"
+        :decimals="proposalExecutionDetails.decimals"
+        :symbol="proposalExecutionDetails.symbol"
+        :liveness-period="
+          Number(proposalExecutionDetails.livenessPeriod.toString())
         "
-        class="my-4"
-      >
-        <div class="my-4 flex items-center">
-          <BaseButton
-            :loading="actionButtonState === 'approve-bond'"
-            @click="onApproveBond"
-            class="mr-2 w-full"
-          >
-            Approve bond
-          </BaseButton>
-          <BasePopoverHover placement="top">
-            <template #button>
-              <i-ho-information-circle />
-            </template>
-            <template #content>
-              <div
-                class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
-              >
-                On-chain proposals require a bond from the proposer. This will
-                approve tokens from your wallet to be posted as a bond. If you
-                make an invalid proposal, it will be disputed and you will lose
-                your bond. If the proposal is valid, your bond will be returned
-                when the transactions are executed.
-              </div>
-            </template>
-          </BasePopoverHover>
-        </div>
-      </div>
-      <div
+        :quorum="quorum"
+        :scores-total="proposal.scores_total"
+        @submit-proposal="onSubmitProposal"
+        @approve-bond="onApproveBond"
+      />
+      <InOOChallengePeriod
         v-if="
-          proposalState === 'waiting-for-proposal' &&
-          proposalExecutionDetails?.needsBondApproval === false
+          proposalExecutionStep === 'in-oo-challenge-period' &&
+          !!proposalExecutionDetails.assertionEvent
         "
-        class="my-4"
-      >
-        <div class="flex items-center">
-          <SubmitProposalModal
-            :is-modal-open="isSubmitProposalModalOpen"
-            :minimum-bond="proposalExecutionDetails.minimumBond"
-            :user-balance="proposalExecutionDetails.userBalance"
-            :decimals="proposalExecutionDetails.decimals"
-            :symbol="proposalExecutionDetails.symbol"
-            :liveness-period="
-              Number(proposalExecutionDetails.livenessPeriod.toString())
-            "
-            :quorum="quorum"
-            :scores-total="proposal.scores_total"
-            @close="closeModal"
-            @submitProposal="onSubmitProposal"
-          />
-        </div>
-      </div>
-
-      <div
-        v-if="
-          proposalState === 'waiting-for-liveness' &&
-          proposalExecutionDetails?.assertionEvent !== undefined
+        :network="network"
+        :expiration-timestamp="
+          proposalExecutionDetails.assertionEvent.expirationTimestamp
         "
-        class="flex items-center justify-center self-stretch p-3 text-skin-link"
-      >
-        <BaseContainer class="my-1">
-          <div>
-            <strong>{{
-              'Proposal can be executed at ' +
-              new Date(
-                proposalExecutionDetails.assertionEvent.expirationTimestamp.toNumber() *
-                  1000
-              ).toLocaleString()
-            }}</strong>
-          </div>
-
-          <div style="text-align: center" class="mt-3">
-            <a
-              :href="
-                getOracleUiLink(
-                  props.network,
-                  proposalExecutionDetails.assertionEvent.proposalTxHash,
-                  proposalExecutionDetails.assertionEvent.logIndex
-                )
-              "
-              class="rounded-lg border p-2 text-skin-text"
-              rel="noreferrer noopener"
-              target="_blank"
-              style="font-size: 16px"
-            >
-              UMA Oracle URL to dispute
-              <em style="font-size: 14px" class="iconfont iconexternal-link" />
-            </a>
-          </div>
-        </BaseContainer>
-      </div>
-
-      <div v-if="proposalState === 'proposal-approved'" class="my-4">
-        <div class="flex items-center">
-          <BaseButton
-            :loading="actionButtonState === 'execute-proposal'"
-            @click="onExecuteProposal"
-            class="mr-2 w-full"
-          >
-            Execute {{ transactions.length }} transaction{{
-              transactions.length > 1 ? 's' : ''
-            }}
-          </BaseButton>
-          <BasePopoverHover placement="top">
-            <template #button>
-              <i-ho-information-circle />
-            </template>
-            <template #content>
-              <div
-                class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg"
-              >
-                This will execute the transactions from this proposal and return
-                the proposer's bond.
-              </div>
-            </template>
-          </BasePopoverHover>
-        </div>
-      </div>
-      <div v-if="proposalState === 'completely-executed'" class="my-4">
-        All transactions have been executed
-      </div>
-      <div v-if="proposalState === 'proposal-denied'" class="my-4">
-        Proposal rejected
-      </div>
+        :proposal-tx-hash="
+          proposalExecutionDetails.assertionEvent.proposalTxHash
+        "
+        :log-index="proposalExecutionDetails.assertionEvent.logIndex"
+      />
+      <AssertionPassedInOO
+        v-if="proposalExecutionStep === 'assertion-passed-in-oo'"
+        :transaction-count="transactions.length"
+        @execute-proposal="onExecuteProposal"
+      />
+      <TransactionsExecuted
+        v-if="proposalExecutionStep === 'transactions-executed'"
+      />
     </template>
   </template>
 </template>
