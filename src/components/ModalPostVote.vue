@@ -82,7 +82,7 @@ function share(shareTo: 'twitter' | 'hey') {
               : share('hey')
           "
         >
-          <i-s-hey class="text-[#8B5CF6]" />
+          <i-s-hey class="text-[#FB3A5D]" />
           {{ $t('shareOnHey') }}
         </BaseButton>
 
