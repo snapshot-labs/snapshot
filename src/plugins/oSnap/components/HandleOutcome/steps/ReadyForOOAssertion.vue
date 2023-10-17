@@ -26,12 +26,10 @@ const hasSufficientBalance = computed(() =>
 </script>
 
 <template>
-  <h3 class="title">Request execution</h3>
-  <div class="my-3 p-3">
     <div class="pl-3 pr-3">
       <p>
         Make sure this proposal was approved by this Snapshot vote before
-        proposing on-chain. If the Snapshot vote rejected the proposal, the
+        asserting on-chain. If the Snapshot vote rejected the proposal, the
         on-chain proposal will be rejected as well and you will lose your bond.
       </p>
     </div>
@@ -82,5 +80,4 @@ const hasSufficientBalance = computed(() =>
     >
       Make assertion on Oracle
     </BaseButton>
-  </div>
 </template>

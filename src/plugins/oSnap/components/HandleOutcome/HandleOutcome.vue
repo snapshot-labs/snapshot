@@ -292,6 +292,7 @@ onMounted(async () => {
         proposalExecutionDetails !== undefined
       "
     >
+      <h3>Request transaction execution</h3>
       <TallyingSnapshotVotes
         v-if="proposalExecutionStep === 'tallying-snapshot-votes'"
       />
