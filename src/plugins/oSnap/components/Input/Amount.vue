@@ -34,22 +34,6 @@ onMounted(() => {
     input.value = formatUnits(props.modelValue, props.decimals);
   }
 });
-
-watch(
-  () => props.modelValue,
-  value => {
-    if (value) {
-      input.value = formatUnits(value, props.decimals);
-    }
-  }
-);
-
-watch(
-  () => props.decimals,
-  () => {
-    handleInput();
-  }
-);
 </script>
 
 <template>

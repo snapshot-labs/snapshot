@@ -78,7 +78,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
         v-for="({ type, ...details }, index) in transactionsForDisplay"
         class="my-4"
       >
-        <h4 class="mb-2">{{ type }} transaction #{{ index + 1 }}</h4>
+        <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
         <ReadOnly v-for="[key, value] in Object.entries(details)" class="mb-2">
           <strong class="mr-4 inline-block whitespace-nowrap">{{ key }}</strong>
           <span class="break-all">{{ value }}</span>
