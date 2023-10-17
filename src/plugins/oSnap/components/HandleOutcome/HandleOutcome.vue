@@ -53,14 +53,7 @@ type ProposalExecutionStep =
   | 'assertion-passed-in-oo'
   | 'transactions-executed';
 
-type Action1State =
-  | 'idle'
-  | 'approve-bond'
-  | 'submit-proposal'
-  | 'execute-proposal';
-
 const isLoading = ref(true);
-const actionButtonState = ref<Action1State>('idle');
 const proposalExecutionDetails = ref<ProposalExecutionDetails>();
 const hasConnectedWallet = computed(() => !!web3.value.account);
 
@@ -120,8 +113,6 @@ async function updateDetails() {
 async function onApproveBond() {
   const txPendingId = createPendingTransaction();
   try {
-    actionButtonState.value = 'approve-bond';
-
     await ensureRightNetwork(props.network);
 
     const approvingBond = approveBond(
@@ -132,7 +123,6 @@ async function onApproveBond() {
     const step = await approvingBond.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    actionButtonState.value = 'idle';
     await approvingBond.next();
     notify('Successfully approved bond');
     await sleep(3e3);
@@ -140,7 +130,6 @@ async function onApproveBond() {
   } catch (e) {
     console.error(e);
     notify(['red', 'Failed to approve bond']);
-    actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
   }
@@ -148,7 +137,6 @@ async function onApproveBond() {
 
 async function onSubmitProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  actionButtonState.value = 'submit-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
@@ -161,7 +149,6 @@ async function onSubmitProposal() {
     const step = await proposalSubmission.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    actionButtonState.value = 'idle';
     await proposalSubmission.next();
     notify('Proposal submitted successfully');
     await sleep(3e3);
@@ -170,21 +157,17 @@ async function onSubmitProposal() {
     notify(['red', 'Failed to submit proposal']);
     console.error(e);
   } finally {
-    actionButtonState.value = 'idle';
     removePendingTransaction(txPendingId);
   }
 }
 
 async function onExecuteProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  actionButtonState.value = 'execute-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
   } catch (e) {
     console.error(e);
-    actionButtonState.value = 'idle';
-    return;
   }
 
   try {
@@ -196,14 +179,12 @@ async function onExecuteProposal() {
     const step = await executingProposal.next();
     if (step.value)
       updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    actionButtonState.value = 'idle';
     await executingProposal.next();
     notify('Proposal executed successfully');
     await sleep(3e3);
     await updateDetails();
   } catch (err) {
     notify(['red', 'Failed to execute proposal']);
-    actionButtonState.value = 'idle';
   } finally {
     removePendingTransaction(txPendingId);
   }
