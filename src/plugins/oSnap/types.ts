@@ -242,14 +242,60 @@ export type OsnapModelValue = {
   oSnap: OsnapPluginData;
 }
 
+/**
+ * Represents the data associated with an assertion as defined in the OO V3 contract.
+ * 
+ * In the contract definition, this is the `Assertion` struct.
+ * 
+ * We don't represent the escalation manager settings because we don't need that in this app.
+ * 
+ * struct Assertion {
+        EscalationManagerSettings escalationManagerSettings; // Settings related to the escalation manager.
+        address asserter; // Address of the asserter.
+        uint64 assertionTime; // Time of the assertion.
+        bool settled; // True if the request is settled.
+        IERC20 currency; // ERC20 token used to pay rewards and fees.
+        uint64 expirationTime; // Unix timestamp marking threshold when the assertion can no longer be disputed.
+        bool settlementResolution; // Resolution of the assertion (false till resolved).
+        bytes32 domainId; // Optional domain that can be used to relate the assertion to others in the escalationManager.
+        bytes32 identifier; // UMA DVM identifier to use for price requests in the event of a dispute.
+        uint256 bond; // Amount of currency that the asserter has bonded.
+        address callbackRecipient; // Address that receives the callback.
+        address disputer; // Address of the disputer.
+    }
+ */
+export type Assertion = {
+  asserter: string
+  assertionTime: BigNumber;
+  settled: boolean;
+  currency: string;
+  expirationTime: BigNumber;
+  settlementResolution: boolean;
+  domainId: string;
+  identifier: string;
+  bond: BigNumber;
+  callbackRecipient: string;
+  disputer: string;
+}
+
+export type AssertionGql = {
+  assertionId: string;
+  expirationTime: string;
+  assertionHash: string;
+  assertionLogIndex: string;
+  settlementHash: string | null;
+  settlementResolution: boolean | null;
+}
+
 export type AssertionEvent = {
   assertionId: string;
   proposalHash: string;
   proposalTxHash: string;
-  logIndex: number;
+  logIndex: number | string;
   expirationTimestamp: BigNumber;
   isExpired: boolean;
   isSettled: boolean;
+  rejectedByOracle: boolean;
 }
 
 /**
@@ -285,3 +331,4 @@ export type ProposalExecutionDetails = ProposalDetails & {
   proposalId: string;
   explanation: string;
 }
+

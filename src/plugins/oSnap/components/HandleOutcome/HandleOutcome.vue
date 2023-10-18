@@ -14,6 +14,7 @@ import {
   getProposalExecutionDetails,
   submitProposal
 } from '../../utils';
+import AssertionFailedInOO from './steps/AssertionFailedInOO.vue';
 import AssertionPassedInOO from './steps/AssertionPassedInOO.vue';
 import InOOChallengePeriod from './steps/InOOChallengePeriod.vue';
 import ReadyForOOAssertion from './steps/ReadyForOOAssertion.vue';
@@ -51,6 +52,7 @@ type ProposalExecutionStep =
   | 'ready-for-oo-assertion'
   | 'in-oo-challenge-period'
   | 'assertion-passed-in-oo'
+  | 'assertion-failed-in-oo'
   | 'transactions-executed';
 
 const isLoading = ref(true);
@@ -78,6 +80,14 @@ const proposalExecutionStep = computed<ProposalExecutionStep | undefined>(
 
     if (assertionEvent && !assertionEvent.isExpired)
       return 'in-oo-challenge-period';
+
+    if (
+      assertionEvent &&
+      assertionEvent.isExpired &&
+      assertionEvent.isSettled &&
+      assertionEvent.rejectedByOracle
+    )
+      return 'assertion-failed-in-oo';
 
     if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
       return 'assertion-passed-in-oo';
@@ -323,6 +333,17 @@ onMounted(async () => {
         :expiration-timestamp="
           proposalExecutionDetails.assertionEvent.expirationTimestamp
         "
+        :proposal-tx-hash="
+          proposalExecutionDetails.assertionEvent.proposalTxHash
+        "
+        :log-index="proposalExecutionDetails.assertionEvent.logIndex"
+      />
+      <AssertionFailedInOO
+        v-if="
+          proposalExecutionStep === 'assertion-failed-in-oo' &&
+          !!proposalExecutionDetails.assertionEvent
+        "
+        :network="network"
         :proposal-tx-hash="
           proposalExecutionDetails.assertionEvent.proposalTxHash
         "

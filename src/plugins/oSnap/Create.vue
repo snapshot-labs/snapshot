@@ -105,6 +105,7 @@ function enhanceTokensWithBalances(
   balances: Partial<BalanceResponse>[],
   tokens: Token[]
 ) {
+  console.log({ balances, tokens });
   return balances
     .filter(
       (balance): balance is BalanceResponse =>
@@ -147,6 +148,7 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
       network,
       gnosisSafeAddress
     );
+    console.log({ response });
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectables');
@@ -214,6 +216,14 @@ onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();
   newPluginData.value.safe = safes.value[0];
+  tokens.value = await fetchBalances(
+    newPluginData.value.safe.network,
+    newPluginData.value.safe.safeAddress
+  );
+  collectables.value = await fetchCollectibles(
+    newPluginData.value.safe.network,
+    newPluginData.value.safe.safeAddress
+  );
   update(newPluginData.value);
   isLoading.value = false;
 });

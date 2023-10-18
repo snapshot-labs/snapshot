@@ -17,7 +17,7 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { AssertionEvent, BalanceResponse, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
+import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
 import { pageEvents } from './events';
 
 /**
@@ -246,10 +246,14 @@ async function findAssertionGql(network: Network,
       assertionHash
       assertionLogIndex
       settlementHash
+      settlementResolution
     }
   }
   `;
-  const result = await queryGql(oracleUrl, request);
+  type Result = {
+    assertion: AssertionGql | undefined;
+  }
+  const result = await queryGql<Result>(oracleUrl, request);
   return result?.assertion;
 }
 /**
@@ -468,14 +472,12 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
   // Get the full proposal events (with state).
   const fullAssertionEvent = await Promise.all(
     thisModuleAssertionEvent.map(async (event) => {
-      const assertion: {
-        expirationTime: BigNumber;
-        settled: boolean;
-      } = await oracleContract.getAssertion(
+      const assertion: Assertion = await oracleContract.getAssertion(
         event.args?.assertionId
       );
 
       const isExpired = Math.floor(Date.now() / 1000) >= assertion.expirationTime.toNumber();
+      const rejectedByOracle = assertion.settled && !assertion.settlementResolution;
 
       return {
         assertionId: event?.args?.assertionId,
@@ -484,7 +486,8 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
         isSettled: assertion.settled,
         proposalHash: proposalHash,
         proposalTxHash: event.transactionHash,
-        logIndex: event.logIndex
+        logIndex: event.logIndex,
+        rejectedByOracle,
       } as AssertionEvent;
     })
   );
@@ -586,6 +589,7 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
       activeProposal: false,
       assertionEvent: undefined,
       proposalExecuted: false,
+      rejectedByOracle: false,
       livenessPeriod: livenessPeriod
     };
   }
@@ -612,6 +616,7 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
       expirationTimestamp: BigNumber.from(assertion.expirationTime),
       isExpired: Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime),
       isSettled: assertion.settlementHash ? true : false,
+      rejectedByOracle: !!assertion.settlementHash && !assertion.settlementResolution,
       proposalHash,
       proposalTxHash: assertion.assertionHash,
       logIndex: assertion.assertionLogIndex
@@ -709,4 +714,11 @@ export function getSafeNetworkPrefix(network: Network): SafeNetworkPrefix {
 export function getSafeAppLink(network: Network, safeAddress: string, appUrl = "https://gnosis-safe.io/app/") {
   const prefix = getSafeNetworkPrefix(network);
   return `${appUrl}${prefix}:${safeAddress}`;
+}
+
+export function getOracleUiLink(chain: string, txHash: string, logIndex: number) {
+  if (Number(chain) !== 5 && Number(chain) !== 80001) {
+    return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
+  }
+  return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
 }
