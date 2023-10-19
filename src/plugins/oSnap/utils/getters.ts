@@ -17,7 +17,7 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, CollateralDetails, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
+import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, CollateralDetails, NFT, Network, OptimisticGovernorProposalDetails, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
 import { pageEvents } from './events';
 
 /**
@@ -301,6 +301,43 @@ export async function getUserCollateralAllowance(erc20Contract: Contract, userAd
 
 export async function getUserCollateralBalance(erc20Contract: Contract, userAddress: string) {
   return erc20Contract.balanceOf(userAddress);
+}
+
+export async function getOptimisticGovernorProposalDetailsFromChain(params: {
+  provider: StaticJsonRpcProvider;
+  network: Network;
+  moduleAddress: string;
+  explanation: string;
+  transactions: OptimisticGovernorTransaction[] | undefined;
+}): Promise<OptimisticGovernorProposalDetails> {
+  const { provider, network, moduleAddress } = params;
+  const optimisticGovernorProposalDetails: [
+    [safeAddress: string],
+    [oracleAddress: string],
+    [rules: string],
+    [minimumBond: BigNumber],
+    [liveness: BigNumber]
+  ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
+    [moduleAddress, 'avatar'],
+    [moduleAddress, 'optimisticOracleV3'],
+    [moduleAddress, 'rules'],
+    [moduleAddress, 'bondAmount'],
+    [moduleAddress, 'liveness']
+  ]);
+
+  const safeAddress = optimisticGovernorProposalDetails[0][0];
+  const oracleAddress = optimisticGovernorProposalDetails[1][0];
+  const rules = optimisticGovernorProposalDetails[2][0];
+  const minimumBond = optimisticGovernorProposalDetails[3][0];
+  const challengePeriod = optimisticGovernorProposalDetails[4][0];
+
+  return {
+    safeAddress,
+    oracleAddress,
+    rules,
+    minimumBond,
+    challengePeriod,
+  };
 }
 
 /**

@@ -318,6 +318,14 @@ export type ProposalDetails = {
   assertionEvent: AssertionEvent | undefined;
 }
 
+export type OptimisticGovernorProposalDetails = {
+  safeAddress: string;
+  oracleAddress: string;
+  rules: string;
+  minimumBond: BigNumber;
+  challengePeriod: BigNumber;
+}
+
 /**
  * Combines the proposal details with the proposal id and explanation.
  */
