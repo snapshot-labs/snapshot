@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { BigNumber } from '@ethersproject/bignumber';
+import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
+  CollateralDetails,
   ProposalExecutionDetails,
   type Network,
   type Transaction
@@ -11,7 +15,10 @@ import {
 import {
   approveBond,
   executeProposal,
+  getCollateralDetailsForProposal,
   getProposalExecutionDetails,
+  getUserCollateralAllowance,
+  getUserCollateralBalance,
   submitProposal
 } from '../../utils';
 import AssertionFailedInOO from './steps/AssertionFailedInOO.vue';
@@ -38,6 +45,40 @@ const props = defineProps<{
 }>();
 
 const { web3 } = useWeb3();
+const isLoading = ref(true);
+const hasConnectedWallet = computed(() => !!web3.value.account);
+const provider: StaticJsonRpcProvider = getProvider(props.network);
+const collateralDetails = ref<CollateralDetails>();
+const userCollateralBalance = ref<BigNumber>();
+const userCollateralAllowance = ref<BigNumber>();
+const proposalExecutionDetails = ref<ProposalExecutionDetails>();
+
+const hasSufficientAllowance = computed(() => {
+  if (
+    isLoading.value ||
+    !hasConnectedWallet.value ||
+    !proposalExecutionDetails.value ||
+    collateralDetails.value === undefined ||
+    userCollateralAllowance.value === undefined
+  )
+    return undefined;
+  return userCollateralAllowance.value.gte(
+    proposalExecutionDetails.value.minimumBond
+  );
+});
+const hasSufficientBalance = computed(() => {
+  if (
+    isLoading.value ||
+    !hasConnectedWallet.value ||
+    !proposalExecutionDetails.value ||
+    collateralDetails.value === undefined ||
+    userCollateralBalance.value === undefined
+  )
+    return undefined;
+  return userCollateralBalance.value.gte(
+    proposalExecutionDetails.value.minimumBond
+  );
+});
 const {
   createPendingTransaction,
   updatePendingTransaction,
@@ -55,16 +96,24 @@ type ProposalExecutionStep =
   | 'assertion-failed-in-oo'
   | 'transactions-executed';
 
-const isLoading = ref(true);
-const proposalExecutionDetails = ref<ProposalExecutionDetails>();
-const hasConnectedWallet = computed(() => !!web3.value.account);
-
 const proposalExecutionStep = computed<ProposalExecutionStep | undefined>(
   () => {
     if (!proposalExecutionDetails.value) return;
 
     const { assertionEvent, proposalExecuted, activeProposal } =
       proposalExecutionDetails.value;
+
+    const hasAssertionEvent = !!assertionEvent;
+
+    const isChallengePeriodPassed =
+      hasAssertionEvent && assertionEvent.isExpired;
+
+    const isAcceptedByOracle = hasAssertionEvent && assertionEvent.isSettled;
+
+    const isRejectedByOracle =
+      isAcceptedByOracle &&
+      assertionEvent.isSettled &&
+      assertionEvent.rejectedByOracle;
 
     if (proposalExecuted) return 'transactions-executed';
 
@@ -280,6 +329,19 @@ async function ensureRightNetwork(chainId: Network) {
 }
 
 onMounted(async () => {
+  collateralDetails.value = await getCollateralDetailsForProposal(
+    provider,
+    props.moduleAddress
+  );
+  userCollateralBalance.value = await getUserCollateralBalance(
+    collateralDetails.value.erc20Contract,
+    web3.value.account
+  );
+  userCollateralAllowance.value = await getUserCollateralAllowance(
+    collateralDetails.value.erc20Contract,
+    web3.value.account,
+    props.moduleAddress
+  );
   await updateDetails();
 });
 </script>
@@ -310,12 +372,19 @@ onMounted(async () => {
         v-if="proposalExecutionStep === 'rejected-by-snapshot-vote'"
       />
       <ReadyForOOAssertion
-        v-if="proposalExecutionStep === 'ready-for-oo-assertion'"
-        :needs-bond-approval="proposalExecutionDetails.needsBondApproval"
+        v-if="
+          proposalExecutionStep === 'ready-for-oo-assertion' &&
+          !!collateralDetails &&
+          !!userCollateralBalance &&
+          hasSufficientBalance !== undefined &&
+          hasSufficientAllowance !== undefined
+        "
+        :has-sufficient-balance="hasSufficientBalance"
+        :has-sufficient-allowance="hasSufficientAllowance"
         :minimum-bond="proposalExecutionDetails.minimumBond"
-        :user-balance="proposalExecutionDetails.userBalance"
-        :decimals="proposalExecutionDetails.decimals"
-        :symbol="proposalExecutionDetails.symbol"
+        :user-balance="userCollateralBalance"
+        :decimals="collateralDetails.decimals"
+        :symbol="collateralDetails.symbol"
         :liveness-period="
           Number(proposalExecutionDetails.livenessPeriod.toString())
         "

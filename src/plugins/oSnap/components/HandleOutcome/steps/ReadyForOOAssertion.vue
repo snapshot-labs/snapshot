@@ -4,7 +4,8 @@ import { formatUnits } from '@ethersproject/units';
 const { formatDuration } = useIntl();
 
 const props = defineProps<{
-  needsBondApproval: boolean;
+  hasSufficientAllowance: boolean;
+  hasSufficientBalance: boolean;
   minimumBond: BigNumber;
   userBalance: BigNumber;
   decimals: BigNumber;
@@ -20,9 +21,6 @@ const emit = defineEmits<{
 }>();
 
 const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
-const hasSufficientBalance = computed(() =>
-  props.userBalance.gte(props.minimumBond)
-);
 </script>
 
 <template>
@@ -55,7 +53,7 @@ const hasSufficientBalance = computed(() =>
         Your balance is less than the required bond
       </BaseMessage>
     </div>
-    <div v-if="needsBondApproval">
+    <div v-if="!hasSufficientAllowance">
       <p>
         On-chain proposals require a bond from the proposer. This will approve
         tokens from your wallet to be posted as a bond. If you make an invalid

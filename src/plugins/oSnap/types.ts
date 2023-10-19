@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { safePrefixes, transactionTypes } from './constants';
+import { Contract } from '@ethersproject/contracts';
 
 /**
  * Represents details about the chains that snapshot supports as described in the `networks` json file. 
@@ -310,15 +311,8 @@ export type ProposalDetails = {
   livenessPeriod: BigNumber | string;
   oracleAddress: string;
   rules: string;
-  collateral: string;
-  symbol: string;
   minimumBond: BigNumber;
   expiration: BigNumber;
-  allowance: BigNumber;
-  decimals: BigNumber;
-  userBalance: BigNumber;
-  needsBondApproval: boolean;
-  noTransactions: boolean;
   activeProposal: boolean;
   proposalExecuted: boolean;
   assertionEvent: AssertionEvent | undefined;
@@ -332,3 +326,9 @@ export type ProposalExecutionDetails = ProposalDetails & {
   explanation: string;
 }
 
+export type CollateralDetails = {
+  erc20Contract: Contract;
+  address: string;
+  symbol: string;
+  decimals: BigNumber;
+}

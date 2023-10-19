@@ -17,7 +17,7 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
+import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, CollateralDetails, NFT, Network, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
 import { pageEvents } from './events';
 
 /**
@@ -51,6 +51,7 @@ export const getGnosisSafeBalances = memoize(
 export const getGnosisSafeCollectibles = memoize(
   (network: Network, safeAddress: string) => {
     const endpointPath = `/v2/safes/${safeAddress}/collectibles/`;
+    // the endpoint returns the data in this form, most likely to allow you to page the data.
     type Result = {
       count: number;
       next: unknown;
@@ -271,17 +272,14 @@ async function findProposalGql(network: Network,
     }
   }
   `;
-  const result = await queryGql(subgraph, request);
+  type Result = {
+    proposals: { id: string; executed: boolean; assertionId: string }[];
+  }
+  const result = await queryGql<Result>(subgraph, request);
   return result?.proposals;
 }
 
-/**
- * Fetches details about a given Optimistic Governor contract deployment's bond, including the collateral token address, symbol, decimals, and the user's balance and allowance.
- */
-async function getBondDetails(provider: StaticJsonRpcProvider,
-  moduleAddress: string) {
-  const { web3Account } = useWeb3();
-
+export async function getCollateralDetailsForProposal(provider: StaticJsonRpcProvider, moduleAddress: string): Promise<CollateralDetails> {
   const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
 
   const erc20Contract = new Contract(
@@ -290,33 +288,19 @@ async function getBondDetails(provider: StaticJsonRpcProvider,
     provider
   );
 
-  const bondInfo: {
-    collateral: string;
-    symbol: string;
-    decimals: BigNumber;
-    currentUserBondAllowance: BigNumber;
-    currentUserBalance: BigNumber;
-  } = {
-    collateral: erc20Contract.address,
-    symbol: await erc20Contract.symbol(),
-    decimals: await erc20Contract.decimals(),
-    currentUserBondAllowance: BigNumber.from(0),
-    currentUserBalance: BigNumber.from(0)
-  };
+  const address = erc20Contract.address;
+  const symbol: string = await erc20Contract.symbol();
+  const decimals: BigNumber = await erc20Contract.decimals();
 
-  async function updateCurrentUserBondInfo() {
-    bondInfo.currentUserBondAllowance = BigNumber.from(
-      web3Account.value
-        ? await erc20Contract.allowance(web3Account.value, moduleAddress)
-        : 0
-    );
-    bondInfo.currentUserBalance = BigNumber.from(
-      web3Account.value ? await erc20Contract.balanceOf(web3Account.value) : 0
-    );
-  }
-  await updateCurrentUserBondInfo();
+  return { erc20Contract, address, symbol, decimals };
+}
 
-  return bondInfo;
+export async function getUserCollateralAllowance(erc20Contract: Contract, userAddress: string, moduleAddress: string) {
+  return erc20Contract.allowance(userAddress, moduleAddress);
+}
+
+export async function getUserCollateralBalance(erc20Contract: Contract, userAddress: string) {
+  return erc20Contract.balanceOf(userAddress);
 }
 
 /**
@@ -341,17 +325,10 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
     [moduleAddress, 'bondAmount'],
     [moduleAddress, 'liveness']
   ]);
-  let needsApproval = false;
   const optimisticOracle = moduleDetails[1][0];
   const rules = moduleDetails[2][0];
   const minimumBond = moduleDetails[3][0];
   const livenessPeriod = moduleDetails[4][0];
-  const bondDetails = await getBondDetails(provider, moduleAddress);
-
-  if (Number(minimumBond) > 0 &&
-    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)) {
-    needsApproval = true;
-  }
 
   // Create ancillary data for proposal hash
   let ancillaryData = '';
@@ -390,13 +367,6 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
       rules: moduleDetails[2][0],
       expiration: moduleDetails[4][0],
       minimumBond,
-      allowance: bondDetails.currentUserBondAllowance,
-      collateral: bondDetails.collateral,
-      decimals: bondDetails.decimals,
-      symbol: bondDetails.symbol,
-      userBalance: bondDetails.currentUserBalance,
-      needsBondApproval: needsApproval,
-      noTransactions: true,
       activeProposal: false,
       assertionEvent: undefined,
       proposalExecuted: false,
@@ -511,13 +481,6 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
     rules: moduleDetails[2][0],
     minimumBond: minimumBond,
     expiration: moduleDetails[4][0],
-    allowance: bondDetails.currentUserBondAllowance,
-    collateral: bondDetails.collateral,
-    decimals: bondDetails.decimals,
-    symbol: bondDetails.symbol,
-    userBalance: bondDetails.currentUserBalance,
-    needsBondApproval: needsApproval,
-    noTransactions: false,
     activeProposal: activeProposal,
     assertionEvent: fullAssertionEvent[0],
     proposalExecuted: proposalExecuted,
@@ -535,7 +498,6 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
   moduleAddress: string,
   explanation: string,
   transactions: OptimisticGovernorTransaction[] | undefined) {
-  const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
   const moduleDetails: [
     [gnosisSafeAddress: string],
     [optimisticOracleV3Address: string],
@@ -549,16 +511,8 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
     [moduleAddress, 'bondAmount'],
     [moduleAddress, 'liveness']
   ]);
-  let needsApproval = false;
   const minimumBond = moduleDetails[3][0];
   const livenessPeriod = moduleDetails[4][0];
-  const bondDetails = await getBondDetails(provider, moduleAddress);
-
-  if (Number(minimumBond) > 0 &&
-    Number(minimumBond) > Number(bondDetails.currentUserBondAllowance)) {
-    needsApproval = true;
-  }
-
   let proposalHash: string;
   let encodedExplanation: string;
   if (transactions !== undefined && explanation !== undefined) {
@@ -579,13 +533,6 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
       rules: moduleDetails[2][0],
       minimumBond: minimumBond,
       expiration: moduleDetails[4][0],
-      allowance: bondDetails.currentUserBondAllowance,
-      collateral: bondDetails.collateral,
-      decimals: bondDetails.decimals,
-      symbol: bondDetails.symbol,
-      userBalance: bondDetails.currentUserBalance,
-      needsBondApproval: needsApproval,
-      noTransactions: true,
       activeProposal: false,
       assertionEvent: undefined,
       proposalExecuted: false,
@@ -593,18 +540,14 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
       livenessPeriod: livenessPeriod
     };
   }
-  // Check for active proposals. proposal hash can be identical across assertions
-  // but the explanation field should be unique. we will filter this out later.
-  const assertionId = await moduleContract.assertionIds(proposalHash);
-
-  const activeProposal = assertionId !==
-    '0x0000000000000000000000000000000000000000000000000000000000000000';
-
   const [proposal] = await findProposalGql(network, {
     proposalHash,
     explanation: encodedExplanation,
     ogAddress: moduleAddress
   });
+  const assertionId = proposal?.assertionId;
+  const activeProposal = assertionId !==
+    '0x0000000000000000000000000000000000000000000000000000000000000000';
   const proposalExecuted = proposal?.executed ? true : false;
   const assertion = proposal?.assertionId
     ? await findAssertionGql(network, { assertionId: proposal.assertionId })
@@ -629,13 +572,6 @@ export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
     rules: moduleDetails[2][0],
     minimumBond: minimumBond,
     expiration: moduleDetails[4][0],
-    allowance: bondDetails.currentUserBondAllowance,
-    collateral: bondDetails.collateral,
-    decimals: bondDetails.decimals,
-    symbol: bondDetails.symbol,
-    userBalance: bondDetails.currentUserBalance,
-    needsBondApproval: needsApproval,
-    noTransactions: false,
     activeProposal,
     assertionEvent,
     proposalExecuted,
