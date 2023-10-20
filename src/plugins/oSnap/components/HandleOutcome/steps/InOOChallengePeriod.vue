@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import { getOracleUiLink } from '@/plugins/oSnap/utils';
-import { BigNumber } from '@ethersproject/bignumber';
 import { type Network } from '../../../types';
 const props = defineProps<{
   network: Network;
-  expirationTimestamp: BigNumber;
-  proposalTxHash: string;
-  logIndex: number | string;
+  expirationTime: number;
+  assertionHash: string;
+  assertionLogIndex: string;
 }>();
 
 const oracleUiLink = getOracleUiLink(
   props.network,
-  props.proposalTxHash,
-  Number(props.logIndex)
+  props.assertionHash,
+  Number(props.assertionLogIndex)
 );
 
 const expirationDateLocaleString = new Date(
-  props.expirationTimestamp.toNumber() * 1000
+  props.expirationTime * 1000
 ).toLocaleString();
 </script>
 

@@ -1,13 +1,12 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { Contract } from '@ethersproject/contracts';
+import { Contract, Event, EventFilter } from '@ethersproject/contracts';
 import { keccak256 } from '@ethersproject/keccak256';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
 import { toUtf8Bytes, toUtf8String } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import memoize from 'lodash/memoize';
 import {
   ERC20_ABI,
@@ -17,7 +16,7 @@ import {
   contractData,
   safePrefixes
 } from '../constants';
-import { Assertion, AssertionEvent, AssertionGql, BalanceResponse, CollateralDetails, NFT, Network, OptimisticGovernorProposalDetails, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutionDetails, SafeNetworkPrefix } from '../types';
+import { Assertion, AssertionEvent, AssertionGql, AssertionMadeEvent, BalanceResponse, CollateralDetails, NFT, Network, OGModuleDetails, OGProposalState, OptimisticGovernorTransaction, ProposalDetails, ProposalExecutedEvent, SafeNetworkPrefix, TransactionsProposedEvent } from '../types';
 import { pageEvents } from './events';
 
 /**
@@ -236,17 +235,18 @@ export function makeConfigureOsnapUrl(params: {
 /**
  * Fetches the details of a given assertion from the Optimistic Oracle V3 subgraph.
  */
-async function findAssertionGql(network: Network,
-  params: { assertionId: string; }) {
+async function findAssertionGql(params: { network: Network, assertionId: string; }) {
+  const { assertionId, network } = params;
   const oracleUrl = getOracleV3Subgraph(network);
   const request = `
   {
-    assertion(id:"${params.assertionId}"){
+    assertion(id:"${assertionId}"){
       assertionId
       expirationTime
       assertionHash
-      assertionLogIndex
+      disputeHash
       settlementHash
+      assertionLogIndex
       settlementResolution
     }
   }
@@ -260,12 +260,17 @@ async function findAssertionGql(network: Network,
 /**
  * Fetches the details of a given proposal from the Optimistic Governor subgraph.
  */
-async function findProposalGql(network: Network,
-  params: { proposalHash: string; explanation: string; ogAddress: string; }) {
+async function findProposalGql(params: {network: Network, transactions: OptimisticGovernorTransaction[]; explanation: string; moduleAddress: string; }) {
+  const { network, transactions, explanation, moduleAddress } = params;
+    const proposalHash = getProposalHashFromTransactions(transactions);
+    const encodedExplanation = pack(
+      ['bytes'],
+      [toUtf8Bytes(explanation.replace(/^0x/, ''))]
+    );
   const subgraph = getOptimisticGovernorSubgraph(network);
   const request = `
   {
-    proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${params.explanation}",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
+    proposals(where:{proposalHash:"${proposalHash}",explanation:"${encodedExplanation}",optimisticGovernor:"${moduleAddress.toLowerCase()}"}){
       id
       executed
       assertionId
@@ -276,7 +281,8 @@ async function findProposalGql(network: Network,
     proposals: { id: string; executed: boolean; assertionId: string }[];
   }
   const result = await queryGql<Result>(subgraph, request);
-  return result?.proposals;
+  // we can only use the gql `where` clause when querying a list, but we know that there will only be one result.
+  return result?.proposals[0];
 }
 
 export async function getCollateralDetailsForProposal(provider: StaticJsonRpcProvider, moduleAddress: string): Promise<CollateralDetails> {
@@ -303,20 +309,19 @@ export async function getUserCollateralBalance(erc20Contract: Contract, userAddr
   return erc20Contract.balanceOf(userAddress);
 }
 
-export async function getOptimisticGovernorProposalDetailsFromChain(params: {
+export async function getOGModuleDetails(params: {
   provider: StaticJsonRpcProvider;
   network: Network;
   moduleAddress: string;
-  explanation: string;
-  transactions: OptimisticGovernorTransaction[] | undefined;
-}): Promise<OptimisticGovernorProposalDetails> {
+  transactions: OptimisticGovernorTransaction[];
+}): Promise<OGModuleDetails> {
   const { provider, network, moduleAddress } = params;
-  const optimisticGovernorProposalDetails: [
+  const moduleDetails: [
     [safeAddress: string],
     [oracleAddress: string],
     [rules: string],
     [minimumBond: BigNumber],
-    [liveness: BigNumber]
+    [challengePeriod: BigNumber]
   ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
     [moduleAddress, 'avatar'],
     [moduleAddress, 'optimisticOracleV3'],
@@ -325,13 +330,14 @@ export async function getOptimisticGovernorProposalDetailsFromChain(params: {
     [moduleAddress, 'liveness']
   ]);
 
-  const safeAddress = optimisticGovernorProposalDetails[0][0];
-  const oracleAddress = optimisticGovernorProposalDetails[1][0];
-  const rules = optimisticGovernorProposalDetails[2][0];
-  const minimumBond = optimisticGovernorProposalDetails[3][0];
-  const challengePeriod = optimisticGovernorProposalDetails[4][0];
+  const safeAddress = moduleDetails[0][0];
+  const oracleAddress = moduleDetails[1][0];
+  const rules = moduleDetails[2][0];
+  const minimumBond = moduleDetails[3][0];
+  const challengePeriod = moduleDetails[4][0];
 
   return {
+    moduleAddress,
     safeAddress,
     oracleAddress,
     rules,
@@ -340,76 +346,50 @@ export async function getOptimisticGovernorProposalDetailsFromChain(params: {
   };
 }
 
+async function getPagedEvents<EventType = Event>(params: {
+  contract: Contract;
+  eventFilter: EventFilter;
+  startBlock: number;
+  latestBlock: number;
+  maxRange: number;
+}) {
+  const { contract, eventFilter, startBlock, latestBlock, maxRange } = params;
+  const eventPager = ({ start, end }: { start: number; end: number; }) => {
+    return contract.queryFilter(
+      eventFilter,
+      start,
+      end
+    );
+  }
+  const pagedEvents = await pageEvents(
+    startBlock,
+    latestBlock,
+    maxRange,
+    eventPager,
+  );
+  return pagedEvents as (Event & EventType)[];
+}
+
 /**
  * Legacy / fallback function to fetch the details of a proposal associated with given assertion from the Optimistic Oracle V3 contract.
  */
-export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvider,
+export async function getProposalDetailsFromChain(params: {
+  moduleDetails: OGModuleDetails,
+  provider: StaticJsonRpcProvider,
   network: Network,
-  moduleAddress: string,
-  explanation: string,
-  transactions: OptimisticGovernorTransaction[] | undefined) {
+  explanation: string;
+  transactions: OptimisticGovernorTransaction[]
+}): Promise<ProposalDetails> {
+  const { provider, network, moduleDetails, explanation, transactions } = params;
+  const { moduleAddress, oracleAddress, rules } = moduleDetails;
   const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
-  const moduleDetails: [
-    [gnosisSafeAddress: string],
-    [optimisticOracleV3Address: string],
-    [rules: string],
-    [bondAmount: BigNumber],
-    [liveness: BigNumber]
-  ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
-    [moduleAddress, 'avatar'],
-    [moduleAddress, 'optimisticOracleV3'],
-    [moduleAddress, 'rules'],
-    [moduleAddress, 'bondAmount'],
-    [moduleAddress, 'liveness']
-  ]);
-  const optimisticOracle = moduleDetails[1][0];
-  const rules = moduleDetails[2][0];
-  const minimumBond = moduleDetails[3][0];
-  const livenessPeriod = moduleDetails[4][0];
-
-  // Create ancillary data for proposal hash
-  let ancillaryData = '';
-  let proposalHash: string;
-  if (transactions !== undefined) {
-    proposalHash = keccak256(
-      defaultAbiCoder.encode(
-        ['(address to, uint8 operation, uint256 value, bytes data)[]'],
-        [transactions]
-      )
-    );
-
-    ancillaryData = pack(
-      ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
-      [
-        '',
-        pack(['string', 'string'], ['proposalHash', ':']),
-        toUtf8Bytes(proposalHash.replace(/^0x/, '')),
-        pack(
-          ['string', 'string', 'string', 'string'],
-          [',', 'explanation', ':', '"']
-        ),
-        toUtf8Bytes(explanation.replace(/^0x/, '')),
-        pack(
-          ['string', 'string', 'string', 'string', 'string'],
-          ['"', ',', 'rules', ':', '"']
-        ),
-        toUtf8Bytes(rules.replace(/^0x/, '')),
-        pack(['string'], ['"'])
-      ]
-    );
-  } else {
-    return {
-      gnosisSafeAddress: moduleDetails[0][0],
-      oracleAddress: moduleDetails[1][0],
-      rules: moduleDetails[2][0],
-      expiration: moduleDetails[4][0],
-      minimumBond,
-      activeProposal: false,
-      assertionEvent: undefined,
-      proposalExecuted: false,
-      livenessPeriod
-    };
-  }
+  const proposalHash = getProposalHashFromTransactions(transactions);
+  const claimHash = getClaimForProposalHash({
+    proposalHash,
+    explanation,
+    rules
+  });
+  
   // Check for active proposals. proposal hash can be identical across assertions
   // but the explanation field should be unique. we will filter this out later.
   const assertionId: string = await moduleContract.assertionIds(proposalHash);
@@ -419,60 +399,48 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
 
   // Search for requests with matching ancillary data
   const oracleContract = new Contract(
-    optimisticOracle,
+    oracleAddress,
     OPTIMISTIC_ORACLE_V3_ABI,
     provider
   );
-  const latestBlock = await provider.getBlock('latest');
+  const latestBlock = (await provider.getBlock('latest')).number;
   // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
   // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
   const oGstartBlock = getDeployBlock({ network, name: 'OptimisticGovernor' });
   const oOStartBlock = getDeployBlock({ network, name: 'OptimisticOracleV3' });
   const maxRange = 3000;
+  const assertionMadeEventFilter = oracleContract.filters.AssertionMade();
+  const transactionsProposedEventFilter = moduleContract.filters.TransactionsProposed();
+  const proposalExecutedEventFilter = moduleContract.filters.ProposalExecuted(proposalHash);
 
-  const [assertionEvents, transactionsProposedEvents, executionEvents] = await Promise.all([
-    pageEvents(
-      oOStartBlock,
-      latestBlock.number,
-      maxRange,
-      ({ start, end }: { start: number; end: number; }) => {
-        return oracleContract.queryFilter(
-          oracleContract.filters.AssertionMade(),
-          start,
-          end
-        );
-      }
-    ),
-    pageEvents(
-      oGstartBlock,
-      latestBlock.number,
-      maxRange,
-      ({ start, end }: { start: number; end: number; }) => {
-        return moduleContract.queryFilter(
-          moduleContract.filters.TransactionsProposed(),
-          start,
-          end
-        );
-      }
-    ),
-    pageEvents(
-      oGstartBlock,
-      latestBlock.number,
-      maxRange,
-      ({ start, end }: { start: number; end: number; }) => {
-        return moduleContract.queryFilter(
-          moduleContract.filters.ProposalExecuted(proposalHash),
-          start,
-          end
-        );
-      }
-    )
-  ]);
+  const assertionMadeEvents = await getPagedEvents<AssertionMadeEvent>({
+    contract: oracleContract,
+    eventFilter: assertionMadeEventFilter,
+    startBlock: oOStartBlock,
+    latestBlock,
+    maxRange
+  });
 
-  const thisModuleAssertionEvent = assertionEvents.filter(event => {
+  const transactionsProposedEvents = await getPagedEvents<TransactionsProposedEvent>({
+    contract: moduleContract,
+    eventFilter: transactionsProposedEventFilter,
+    startBlock: oGstartBlock,
+    latestBlock,
+    maxRange
+  });
+
+  const proposalExecutedEvents = await getPagedEvents<ProposalExecutedEvent>({
+    contract: moduleContract,
+    eventFilter: proposalExecutedEventFilter,
+    startBlock: oGstartBlock,
+    latestBlock,
+    maxRange
+  });
+
+  const thisModuleAssertionEvent = assertionMadeEvents.filter(event => {
     return (
-      event.args?.claim === ancillaryData &&
-      event.args?.callbackRecipient === moduleAddress
+      event.args.claim === claimHash &&
+      event.args.callbackRecipient === moduleAddress
     );
   });
 
@@ -507,21 +475,16 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
     tx => tx.args?.assertionId
   );
 
-  const assertionIds = executionEvents.map(tx => tx.args?.assertionId);
+  const assertionIds = proposalExecutedEvents.map(tx => tx.args?.assertionId);
 
   const proposalExecuted = assertion.some(assertionId => assertionIds.includes(assertionId)
   );
 
   return {
-    gnosisSafeAddress: moduleDetails[0][0],
-    oracleAddress: moduleDetails[1][0],
-    rules: moduleDetails[2][0],
-    minimumBond: minimumBond,
-    expiration: moduleDetails[4][0],
-    activeProposal: activeProposal,
-    assertionEvent: fullAssertionEvent[0],
-    proposalExecuted: proposalExecuted,
-    livenessPeriod: livenessPeriod.toString()
+    isInChallengePeriod: false,
+    isSettled: false,
+    isDisputed: false,
+    isExecuted: false,
   };
 }
 
@@ -530,146 +493,178 @@ export async function getProposalDetailsFromChain(provider: StaticJsonRpcProvide
  * This has a lot of duplicate code on purpose. Reducing code duplication will require a risky refactor,
  * and we also want a fallback function in case the graph is down, so we will leave the original untouched for now.
  */
-export async function getProposalDetailsGql(provider: StaticJsonRpcProvider,
+
+export async function getOGProposalStateGql(params: {
+  moduleDetails: OGModuleDetails,
   network: Network,
-  moduleAddress: string,
-  explanation: string,
-  transactions: OptimisticGovernorTransaction[] | undefined) {
-  const moduleDetails: [
-    [gnosisSafeAddress: string],
-    [optimisticOracleV3Address: string],
-    [rules: string],
-    [bondAmount: BigNumber],
-    [liveness: BigNumber]
-  ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
-    [moduleAddress, 'avatar'],
-    [moduleAddress, 'optimisticOracleV3'],
-    [moduleAddress, 'rules'],
-    [moduleAddress, 'bondAmount'],
-    [moduleAddress, 'liveness']
-  ]);
-  const minimumBond = moduleDetails[3][0];
-  const livenessPeriod = moduleDetails[4][0];
-  let proposalHash: string;
-  let encodedExplanation: string;
-  if (transactions !== undefined && explanation !== undefined) {
-    proposalHash = keccak256(
-      defaultAbiCoder.encode(
-        ['(address to, uint8 operation, uint256 value, bytes data)[]'],
-        [transactions]
-      )
-    );
-    encodedExplanation = pack(
-      ['bytes'],
-      [toUtf8Bytes(explanation.replace(/^0x/, ''))]
-    );
-  } else {
-    return {
-      gnosisSafeAddress: moduleDetails[0][0],
-      oracleAddress: moduleDetails[1][0],
-      rules: moduleDetails[2][0],
-      minimumBond: minimumBond,
-      expiration: moduleDetails[4][0],
-      activeProposal: false,
-      assertionEvent: undefined,
-      proposalExecuted: false,
-      rejectedByOracle: false,
-      livenessPeriod: livenessPeriod
-    };
-  }
-  const [proposal] = await findProposalGql(network, {
-    proposalHash,
-    explanation: encodedExplanation,
-    ogAddress: moduleAddress
+  explanation: string;
+  transactions: OptimisticGovernorTransaction[]
+}): Promise<OGProposalState> {
+  const { network, moduleDetails, explanation, transactions } = params;
+  const { moduleAddress } = moduleDetails;
+
+  const proposal = await findProposalGql({
+    network,
+    transactions,
+    explanation,
+    moduleAddress
   });
-  const assertionId = proposal?.assertionId;
-  const activeProposal = assertionId !==
+  
+  if (!proposal) {
+    return { status: 'ready-for-oo-assertion' };
+  }
+
+  const { assertionId, executed } = proposal;
+  
+  const hasAssertion = assertionId !==
     '0x0000000000000000000000000000000000000000000000000000000000000000';
-  const proposalExecuted = proposal?.executed ? true : false;
-  const assertion = proposal?.assertionId
-    ? await findAssertionGql(network, { assertionId: proposal.assertionId })
-    : undefined;
 
-  const assertionEvent = assertion
-    ? {
-      assertionId: assertion.assertionId,
-      expirationTimestamp: BigNumber.from(assertion.expirationTime),
-      isExpired: Math.floor(Date.now() / 1000) >= Number(assertion.expirationTime),
-      isSettled: assertion.settlementHash ? true : false,
-      rejectedByOracle: !!assertion.settlementHash && !assertion.settlementResolution,
-      proposalHash,
-      proposalTxHash: assertion.assertionHash,
-      logIndex: assertion.assertionLogIndex
+  const assertion = await findAssertionGql({ network, assertionId })
+
+  // if the graph says the assertion is that zero number or if the assertion cannot be found, we will return a no-assertion state.
+  if (!assertion || !hasAssertion) {
+    return { status: 'ready-for-oo-assertion' };
+  }
+
+  const { assertionHash, disputeHash, settlementHash, assertionLogIndex, settlementResolution } = assertion;
+
+  // if the assertion is settled and the graph says the transactions have been executed, then we know the assertion passed and we can return early
+  if (executed && settlementHash) {
+    return {
+      status: 'transactions-executed',
+      assertionHash,
+      settlementHash,
+      assertionLogIndex,
     }
-    : undefined;
+  }
 
-  return {
-    gnosisSafeAddress: moduleDetails[0][0],
-    oracleAddress: moduleDetails[1][0],
-    rules: moduleDetails[2][0],
-    minimumBond: minimumBond,
-    expiration: moduleDetails[4][0],
-    activeProposal,
-    assertionEvent,
-    proposalExecuted,
-    livenessPeriod: livenessPeriod.toString()
-  };
+  // if the dispute hash is not null then the assertion was disputed
+  // the assertion may still have passed a vote in the oracle though,
+  // so we also check if the transactions ended up being executed.
+  if (disputeHash && !executed && !settlementHash) {
+    return {
+      status: 'assertion-disputed-in-oo',
+      assertionHash,
+      disputeHash,
+      assertionLogIndex,
+    }
+  }
+
+  // if the settlement hash exists and the settlement resolution is true, then we know that the assertion passed.
+  // we already checked if the transactions were executed, so we know that the assertion passed but the transactions were not executed yet.
+  if (settlementHash && settlementResolution) {
+    return {
+      status: 'assertion-passed-in-oo',
+      assertionHash,
+      settlementHash,
+      assertionLogIndex,
+    }
+  }
+
+  // similar to above, if the settlement hash exists but the resolution is false, then we know that the assertion failed.
+  if (settlementHash && !settlementResolution) {
+    return {
+      status: 'assertion-failed-in-oo',
+      assertionHash,
+      settlementHash,
+      assertionLogIndex,
+    }
+  }
+
+  const expirationTime = Number(assertion.expirationTime);
+  const isExpired = Math.floor(Date.now() / 1000) >= expirationTime
+
+  // from the above checks, we know that the transactions have not been executed, the assertion has not been disputed, and the assertion has not been settled.
+  // if the assertion challenge period has not yet expired, then we know we are still in the challenge period.
+  if (!isExpired) {
+    return {
+      status: 'in-oo-challenge-period',
+      assertionHash,
+      assertionLogIndex,
+      expirationTime,
+    }
+  }
+
+  // if all the above fails, fall back to the no assertion state
+  // this should not be possible though
+  return { status: 'ready-for-oo-assertion' };
 }
 
 /**
  * Fetches the details of a given proposal and its associated assertion from the Optimistic Oracle.
  */
-export async function getProposalDetails(
+export async function getOGProposalState(params: {
+  moduleDetails: OGModuleDetails,
   network: Network,
-  moduleAddress: string,
-  explanation = '',
-  transactions?: OptimisticGovernorTransaction[]
-): Promise<ProposalDetails> {
-  const provider: StaticJsonRpcProvider = getProvider(network);
-  try {
-    // try optimized calls, which use the graph over web3 event queries
-    return await getProposalDetailsGql(
-      provider,
-      network,
-      moduleAddress,
-      explanation,
-      transactions
-    );
-  } catch (err) {
-    console.warn('Error querying module details from the graph:', err);
-    // fall back to web3 event queries.
-    return getProposalDetailsFromChain(
-      provider,
-      network,
-      moduleAddress,
-      explanation,
-      transactions
-    );
-  }
+  explanation: string;
+  transactions: OptimisticGovernorTransaction[]
+}): Promise<OGProposalState> {
+  const { network, moduleDetails, explanation, transactions } = params;
+  return await getOGProposalStateGql({
+        moduleDetails,
+        network,
+        explanation,
+        transactions
+      });
+  // try {
+  //   // try optimized calls, which use the graph over web3 event queries
+  //   return await getProposalStateGql({
+  //     moduleDetails,
+  //     provider,
+  //     network,
+  //     explanation,
+  //     transactions
+  //   });
+  // } catch (err) {
+  //   console.warn('Error querying proposal details from the graph:', err);
+  //   // fall back to web3 event queries.
+  //   return getProposalDetailsFromChain(
+  //     {
+  //       moduleDetails,
+  //       provider,
+  //       network,
+  //       explanation,
+  //       transactions
+  //     }
+  //   );
+  // }
 }
 
-/**
- * Merges the result of getModuleDetails with the proposalId and explanation.
- */
-export async function getProposalExecutionDetails(
-  network: Network,
-  moduleAddress: string,
-  proposalId: string,
-  explanation: string,
-  transactions: OptimisticGovernorTransaction[]
-): Promise<ProposalExecutionDetails> {
-  const moduleDetails = await getProposalDetails(
-    network,
-    moduleAddress,
-    explanation,
-    transactions
+export function getProposalHashFromTransactions(transactions: OptimisticGovernorTransaction[]) {
+  return keccak256(
+    defaultAbiCoder.encode(
+      ['(address to, uint8 operation, uint256 value, bytes data)[]'],
+      [transactions]
+    )
   );
+}
 
-  return {
-    ...moduleDetails,
-    proposalId,
-    explanation
-  };
+export function getClaimForProposalHash(params: {
+  proposalHash: string;
+  explanation: string;
+  rules: string;
+}) {
+  const { proposalHash, explanation, rules } = params;
+
+  return pack(
+    ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
+    [
+      '',
+      pack(['string', 'string'], ['proposalHash', ':']),
+      toUtf8Bytes(proposalHash.replace(/^0x/, '')),
+      pack(
+        ['string', 'string', 'string', 'string'],
+        [',', 'explanation', ':', '"']
+      ),
+      toUtf8Bytes(explanation.replace(/^0x/, '')),
+      pack(
+        ['string', 'string', 'string', 'string', 'string'],
+        ['"', ',', 'rules', ':', '"']
+      ),
+      toUtf8Bytes(rules.replace(/^0x/, '')),
+      pack(['string'], ['"'])
+    ]
+  );
 }
 
 /**

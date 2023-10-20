@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber';
+import { Contract } from '@ethersproject/contracts';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { safePrefixes, transactionTypes } from './constants';
-import { Contract } from '@ethersproject/contracts';
 
 /**
  * Represents details about the chains that snapshot supports as described in the `networks` json file. 
@@ -283,8 +283,9 @@ export type AssertionGql = {
   assertionId: string;
   expirationTime: string;
   assertionHash: string;
-  assertionLogIndex: string;
   settlementHash: string | null;
+  disputeHash: string | null;
+  assertionLogIndex: string;
   settlementResolution: boolean | null;
 }
 
@@ -307,18 +308,16 @@ export type AssertionEvent = {
  * We also include user data such as collateral balance and allowance so that we can determine if they can afford the bond associated with submitting a proposal.
  */
 export type ProposalDetails = {
-  gnosisSafeAddress: string;
-  livenessPeriod: BigNumber | string;
-  oracleAddress: string;
-  rules: string;
-  minimumBond: BigNumber;
-  expiration: BigNumber;
-  activeProposal: boolean;
-  proposalExecuted: boolean;
-  assertionEvent: AssertionEvent | undefined;
+  isInChallengePeriod: boolean;
+  isSettled: boolean;
+  isDisputed: boolean;
+  isExecuted: boolean;
 }
 
-export type OptimisticGovernorProposalDetails = {
+export type ProposalStatus = 'live' | 'settled' | 'disputed' | 'executed';
+
+export type OGModuleDetails = {
+  moduleAddress: string;
   safeAddress: string;
   oracleAddress: string;
   rules: string;
@@ -339,4 +338,84 @@ export type CollateralDetails = {
   address: string;
   symbol: string;
   decimals: BigNumber;
+}
+
+export type AssertionMadeEvent = {
+  args: {
+    assertionId: string; // indexed
+  domainId: string;
+  claim: string;
+  asserter: string; // indexed
+  callbackRecipient: string;
+  escalationManager: string;
+  caller: string;
+  expirationTime: string;
+  currency: string;
+  bond: BigNumber;
+  identifier: string; // indexed
+  }
+}
+
+export type AssertionDisputedEvent = {
+  args: {
+    assertionId: string; // indexed
+  caller: string; // indexed
+  disputer: string; // indexed
+  }
+}
+
+export type AssertionSettledEvent = {
+  args: {
+    assertionId: string; // indexed
+  bondRecipient: string; // indexed
+  disputed: boolean;
+  settlementResolution: boolean;
+  settlementCaller: string;
+  }
+}
+
+export type TransactionsProposedEvent = {
+  args: {
+    proposer: string; // indexed
+  proposalTime: BigNumber; // indexed
+  assertionId: string; // indexed
+  proposal: {
+    transactions: OptimisticGovernorTransaction[];
+    requestTime: BigNumber;
+  }
+  proposalHash: string;
+  explanation: string;
+  rules: string;
+  challengeWindowEvents: BigNumber;
+  }
+}
+
+export type ProposalExecutedEvent = {
+  args: {
+    proposalHash: string; // indexed
+  assertionId: string; // indexed
+  }
+}
+
+export type AssertionDetails = {
+  assertionHash: string;
+  assertionLogIndex: string;
+}
+export type OGProposalState = {
+  status: 'ready-for-oo-assertion'
+} | AssertionDetails & {
+  status: 'in-oo-challenge-period';
+  expirationTime: number;
+} | AssertionDetails & {
+  status: 'assertion-disputed-in-oo';
+  disputeHash: string;
+} | AssertionDetails & {
+  status: 'assertion-passed-in-oo' 
+  settlementHash: string;
+} | AssertionDetails & {
+  status: 'assertion-failed-in-oo';
+  settlementHash: string;
+} | AssertionDetails & {
+  status: 'transactions-executed';
+  settlementHash: string;
 }

@@ -8,20 +8,23 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import {
   CollateralDetails,
-  ProposalExecutionDetails,
-  type Network,
-  type Transaction
+  Network,
+  OGModuleDetails,
+  OGProposalState,
+  Transaction
 } from '../../types';
 import {
   approveBond,
   executeProposal,
   getCollateralDetailsForProposal,
-  getProposalExecutionDetails,
+  getOGModuleDetails,
+  getOGProposalState,
   getUserCollateralAllowance,
   getUserCollateralBalance,
   submitProposal
 } from '../../utils';
 import AssertionFailedInOO from './steps/AssertionFailedInOO.vue';
+import AssertionDisputedInOO from './steps/AssertionDisputedInOO.vue';
 import AssertionPassedInOO from './steps/AssertionPassedInOO.vue';
 import InOOChallengePeriod from './steps/InOOChallengePeriod.vue';
 import ReadyForOOAssertion from './steps/ReadyForOOAssertion.vue';
@@ -48,36 +51,33 @@ const { web3 } = useWeb3();
 const isLoading = ref(true);
 const hasConnectedWallet = computed(() => !!web3.value.account);
 const provider: StaticJsonRpcProvider = getProvider(props.network);
+const ogModuleDetails = ref<OGModuleDetails>();
+const oGProposalState = ref<OGProposalState>();
 const collateralDetails = ref<CollateralDetails>();
 const userCollateralBalance = ref<BigNumber>();
 const userCollateralAllowance = ref<BigNumber>();
-const proposalExecutionDetails = ref<ProposalExecutionDetails>();
 
 const hasSufficientAllowance = computed(() => {
   if (
     isLoading.value ||
     !hasConnectedWallet.value ||
-    !proposalExecutionDetails.value ||
     collateralDetails.value === undefined ||
+    ogModuleDetails.value === undefined ||
     userCollateralAllowance.value === undefined
   )
     return undefined;
-  return userCollateralAllowance.value.gte(
-    proposalExecutionDetails.value.minimumBond
-  );
+  return userCollateralAllowance.value.gte(ogModuleDetails.value.minimumBond);
 });
 const hasSufficientBalance = computed(() => {
   if (
     isLoading.value ||
     !hasConnectedWallet.value ||
-    !proposalExecutionDetails.value ||
     collateralDetails.value === undefined ||
+    ogModuleDetails.value === undefined ||
     userCollateralBalance.value === undefined
   )
     return undefined;
-  return userCollateralBalance.value.gte(
-    proposalExecutionDetails.value.minimumBond
-  );
+  return userCollateralBalance.value.gte(ogModuleDetails.value.minimumBond);
 });
 const {
   createPendingTransaction,
@@ -87,64 +87,24 @@ const {
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
 
-type ProposalExecutionStep =
-  | 'tallying-snapshot-votes'
-  | 'rejected-by-snapshot-vote'
-  | 'ready-for-oo-assertion'
-  | 'in-oo-challenge-period'
-  | 'assertion-passed-in-oo'
-  | 'assertion-failed-in-oo'
-  | 'transactions-executed';
+type TransactionExecutionState =
+  | { status: 'tallying-snapshot-votes' }
+  | { status: 'rejected-by-snapshot-vote' }
+  | OGProposalState;
 
-const proposalExecutionStep = computed<ProposalExecutionStep | undefined>(
-  () => {
-    if (!proposalExecutionDetails.value) return;
+const transactionExecutionState = computed<
+  TransactionExecutionState | undefined
+>(() => {
+  const proposalFinalized = wasProposalFinalized(props.proposal);
 
-    const { assertionEvent, proposalExecuted, activeProposal } =
-      proposalExecutionDetails.value;
+  if (!proposalFinalized) return { status: 'tallying-snapshot-votes' };
 
-    const hasAssertionEvent = !!assertionEvent;
+  const proposalPassed = didProposalPass(props.proposal);
 
-    const isChallengePeriodPassed =
-      hasAssertionEvent && assertionEvent.isExpired;
+  if (!proposalPassed) return { status: 'rejected-by-snapshot-vote' };
 
-    const isAcceptedByOracle = hasAssertionEvent && assertionEvent.isSettled;
-
-    const isRejectedByOracle =
-      isAcceptedByOracle &&
-      assertionEvent.isSettled &&
-      assertionEvent.rejectedByOracle;
-
-    if (proposalExecuted) return 'transactions-executed';
-
-    const proposalFinalized = wasProposalFinalized(props.proposal);
-
-    if (!proposalFinalized) return 'tallying-snapshot-votes';
-
-    const proposalPassed = didProposalPass(props.proposal);
-
-    if (!proposalPassed) return 'rejected-by-snapshot-vote';
-
-    if (!activeProposal) return 'ready-for-oo-assertion';
-
-    if (assertionEvent && !assertionEvent.isExpired)
-      return 'in-oo-challenge-period';
-
-    if (
-      assertionEvent &&
-      assertionEvent.isExpired &&
-      assertionEvent.isSettled &&
-      assertionEvent.rejectedByOracle
-    )
-      return 'assertion-failed-in-oo';
-
-    if (assertionEvent && assertionEvent.isExpired && !assertionEvent.isSettled)
-      return 'assertion-passed-in-oo';
-
-    if (assertionEvent && assertionEvent.isSettled && !proposalExecuted)
-      return 'assertion-passed-in-oo';
-  }
-);
+  return oGProposalState.value;
+});
 
 function getFormattedTransactions() {
   return props.transactions.map(transaction => {
@@ -152,16 +112,17 @@ function getFormattedTransactions() {
   });
 }
 
-async function updateDetails() {
+async function updateOgProposalState() {
   isLoading.value = true;
   try {
-    proposalExecutionDetails.value = await getProposalExecutionDetails(
-      props.network,
-      props.moduleAddress,
-      props.proposal.id,
-      props.proposal.ipfs,
-      getFormattedTransactions()
-    );
+    if (ogModuleDetails.value) {
+      oGProposalState.value = await getOGProposalState({
+        moduleDetails: ogModuleDetails.value,
+        network: props.network,
+        explanation: props.proposal.ipfs,
+        transactions: getFormattedTransactions()
+      });
+    }
   } catch (e) {
     console.error('Error loading uma execution details', e);
   } finally {
@@ -185,7 +146,7 @@ async function onApproveBond() {
     await approvingBond.next();
     notify('Successfully approved bond');
     await sleep(3e3);
-    await updateDetails();
+    await updateOgProposalState();
   } catch (e) {
     console.error(e);
     notify(['red', 'Failed to approve bond']);
@@ -211,7 +172,7 @@ async function onSubmitProposal() {
     await proposalSubmission.next();
     notify('Proposal submitted successfully');
     await sleep(3e3);
-    await updateDetails();
+    await updateOgProposalState();
   } catch (e) {
     notify(['red', 'Failed to submit proposal']);
     console.error(e);
@@ -241,7 +202,7 @@ async function onExecuteProposal() {
     await executingProposal.next();
     notify('Proposal executed successfully');
     await sleep(3e3);
-    await updateDetails();
+    await updateOgProposalState();
   } catch (err) {
     notify(['red', 'Failed to execute proposal']);
   } finally {
@@ -333,6 +294,12 @@ onMounted(async () => {
     provider,
     props.moduleAddress
   );
+  ogModuleDetails.value = await getOGModuleDetails({
+    provider,
+    network: props.network,
+    moduleAddress: props.moduleAddress,
+    transactions: getFormattedTransactions()
+  });
   userCollateralBalance.value = await getUserCollateralBalance(
     collateralDetails.value.erc20Contract,
     web3.value.account
@@ -342,7 +309,7 @@ onMounted(async () => {
     web3.value.account,
     props.moduleAddress
   );
-  await updateDetails();
+  await updateOgProposalState();
 });
 </script>
 
@@ -360,71 +327,64 @@ onMounted(async () => {
     <template
       v-if="
         !isLoading &&
-        proposalExecutionStep !== undefined &&
-        proposalExecutionDetails !== undefined
+        transactionExecutionState !== undefined &&
+        ogModuleDetails !== undefined
       "
     >
       <h3>Request transaction execution</h3>
       <TallyingSnapshotVotes
-        v-if="proposalExecutionStep === 'tallying-snapshot-votes'"
+        v-if="transactionExecutionState.status === 'tallying-snapshot-votes'"
       />
       <RejectedBySnapshotVote
-        v-if="proposalExecutionStep === 'rejected-by-snapshot-vote'"
+        v-if="transactionExecutionState.status === 'rejected-by-snapshot-vote'"
       />
       <ReadyForOOAssertion
         v-if="
-          proposalExecutionStep === 'ready-for-oo-assertion' &&
+          transactionExecutionState.status === 'ready-for-oo-assertion' &&
           !!collateralDetails &&
+          !!ogModuleDetails &&
           !!userCollateralBalance &&
           hasSufficientBalance !== undefined &&
           hasSufficientAllowance !== undefined
         "
         :has-sufficient-balance="hasSufficientBalance"
         :has-sufficient-allowance="hasSufficientAllowance"
-        :minimum-bond="proposalExecutionDetails.minimumBond"
+        :minimum-bond="ogModuleDetails.minimumBond"
         :user-balance="userCollateralBalance"
         :decimals="collateralDetails.decimals"
         :symbol="collateralDetails.symbol"
-        :liveness-period="
-          Number(proposalExecutionDetails.livenessPeriod.toString())
-        "
+        :challenge-period="Number(ogModuleDetails.challengePeriod.toString())"
         :quorum="quorum"
         :scores-total="proposal.scores_total"
         @submit-proposal="onSubmitProposal"
         @approve-bond="onApproveBond"
       />
       <InOOChallengePeriod
-        v-if="
-          proposalExecutionStep === 'in-oo-challenge-period' &&
-          !!proposalExecutionDetails.assertionEvent
-        "
+        v-if="transactionExecutionState.status === 'in-oo-challenge-period'"
         :network="network"
-        :expiration-timestamp="
-          proposalExecutionDetails.assertionEvent.expirationTimestamp
-        "
-        :proposal-tx-hash="
-          proposalExecutionDetails.assertionEvent.proposalTxHash
-        "
-        :log-index="proposalExecutionDetails.assertionEvent.logIndex"
+        :expiration-time="transactionExecutionState.expirationTime"
+        :assertion-hash="transactionExecutionState.assertionHash"
+        :assertion-log-index="transactionExecutionState.assertionLogIndex"
+      />
+      <AssertionDisputedInOO
+        v-if="transactionExecutionState.status === 'assertion-disputed-in-oo'"
+        :network="network"
+        :assertion-hash="transactionExecutionState.assertionHash"
+        :assertion-log-index="transactionExecutionState.assertionLogIndex"
       />
       <AssertionFailedInOO
-        v-if="
-          proposalExecutionStep === 'assertion-failed-in-oo' &&
-          !!proposalExecutionDetails.assertionEvent
-        "
+        v-if="transactionExecutionState.status === 'assertion-failed-in-oo'"
         :network="network"
-        :proposal-tx-hash="
-          proposalExecutionDetails.assertionEvent.proposalTxHash
-        "
-        :log-index="proposalExecutionDetails.assertionEvent.logIndex"
+        :assertion-hash="transactionExecutionState.assertionHash"
+        :assertion-log-index="transactionExecutionState.assertionLogIndex"
       />
       <AssertionPassedInOO
-        v-if="proposalExecutionStep === 'assertion-passed-in-oo'"
+        v-if="transactionExecutionState.status === 'assertion-passed-in-oo'"
         :transaction-count="transactions.length"
         @execute-proposal="onExecuteProposal"
       />
       <TransactionsExecuted
-        v-if="proposalExecutionStep === 'transactions-executed'"
+        v-if="transactionExecutionState.status === 'transactions-executed'"
       />
     </template>
   </template>

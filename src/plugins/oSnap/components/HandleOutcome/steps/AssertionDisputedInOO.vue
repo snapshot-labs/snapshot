@@ -16,13 +16,18 @@ const oracleUiLink = getOracleUiLink(
 
 <template>
   <span>
-    Proposal cannot be executed because it was disputed in the Oracle and failed
-    to pass the vote.
+    This proposal was disputed in the Optimistic Oracle. It can only be executed if it passes a vote in the Oracle.
   </span>
 
   <div>
     <a :href="oracleUiLink" rel="noreferrer noopener" target="_blank">
       UMA Oracle URL
+      <span class="iconfont iconexternal-link" />
+    </a>
+  </div>
+  <div>
+    <a href="https://vote.uma.xyz" rel="noreferrer noopener" target="_blank">
+      UMA Voting Dapp URL
       <span class="iconfont iconexternal-link" />
     </a>
   </div>

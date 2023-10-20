@@ -2,7 +2,7 @@ import { toUtf8Bytes } from "@ethersproject/strings";
 import { sendTransaction } from "@snapshot-labs/snapshot.js/src/utils";
 import { ERC20_ABI, OPTIMISTIC_GOVERNOR_ABI } from "../constants";
 import { Network, OptimisticGovernorTransaction } from "../types";
-import { getProposalDetails } from "./getters";
+import { getOGProposalState } from "./getters";
 
 /**
  * The user must approve the spend of the collateral token before they can submit a proposal.
@@ -15,7 +15,7 @@ export async function *approveBond(
   moduleAddress: string,
   transactions?: OptimisticGovernorTransaction[]
 ) {
-  const moduleDetails = await getProposalDetails(
+  const moduleDetails = await getOGProposalState(
     network,
     moduleAddress,
     network,
