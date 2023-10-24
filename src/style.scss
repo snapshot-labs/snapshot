@@ -307,6 +307,21 @@ input[type='number'] {
   }
 }
 
+// Safesnap custom inputs styling - could be moved somewhere else?
+.safesnap-custom-select {
+  border: 1px solid var(--text-color) !important;
+  &:hover {
+    border: 1px solid var(--link-color) !important;
+  }
+}
+
+.safesnap-custom-input {
+  border: 1px solid var(--text-color);
+  &:hover {
+    border: 1px solid var(--link-color);
+  }
+}
+
 .lazy-loading {
   @apply animate-pulse-fast bg-skin-border;
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps<{ modelValue?: string | number; disabled?: boolean }>();
+defineProps<{ modelValue?: string | number; disabled?: boolean; customStyles?: string }>();
 
 const emit = defineEmits(['update:modelValue', 'change']);
 
@@ -10,7 +10,7 @@ function handleChange(event) {
 </script>
 
 <template>
-  <BaseButton class="mb-2 flex w-full items-center overflow-hidden !px-3">
+  <BaseButton :class="[customStyles, 'mb-2 flex w-full items-center overflow-hidden !px-3']">
     <div class="no-shrink mr-2 text-skin-text">
       <slot name="label" />
     </div>
