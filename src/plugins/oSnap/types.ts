@@ -300,38 +300,14 @@ export type AssertionEvent = {
   rejectedByOracle: boolean;
 }
 
-/**
- * Represents the data associated with a proposal.
- * 
- * Holds one object with this shape per proposal created. This is the shape of the data that is persisted by the plugin, along with information from the chain / graph about the Optimistic Oracle assertion associated with the proposal.
- * 
- * We also include user data such as collateral balance and allowance so that we can determine if they can afford the bond associated with submitting a proposal.
- */
-export type ProposalDetails = {
-  isInChallengePeriod: boolean;
-  isSettled: boolean;
-  isDisputed: boolean;
-  isExecuted: boolean;
-}
-
-export type ProposalStatus = 'live' | 'settled' | 'disputed' | 'executed';
-
 export type OGModuleDetails = {
   moduleAddress: string;
-  safeAddress: string;
   oracleAddress: string;
   rules: string;
   minimumBond: BigNumber;
   challengePeriod: BigNumber;
 }
 
-/**
- * Combines the proposal details with the proposal id and explanation.
- */
-export type ProposalExecutionDetails = ProposalDetails & {
-  proposalId: string;
-  explanation: string;
-}
 
 export type CollateralDetails = {
   erc20Contract: Contract;
@@ -349,7 +325,7 @@ export type AssertionMadeEvent = {
   callbackRecipient: string;
   escalationManager: string;
   caller: string;
-  expirationTime: string;
+  expirationTime: BigNumber;
   currency: string;
   bond: BigNumber;
   identifier: string; // indexed
@@ -402,20 +378,13 @@ export type AssertionDetails = {
   assertionLogIndex: string;
 }
 export type OGProposalState = {
-  status: 'ready-for-oo-assertion'
+  status: 'can-propose-to-og';
+  isDisputed: boolean;
 } | AssertionDetails & {
   status: 'in-oo-challenge-period';
   expirationTime: number;
 } | AssertionDetails & {
-  status: 'assertion-disputed-in-oo';
-  disputeHash: string;
-} | AssertionDetails & {
-  status: 'assertion-passed-in-oo' 
-  settlementHash: string;
-} | AssertionDetails & {
-  status: 'assertion-failed-in-oo';
-  settlementHash: string;
-} | AssertionDetails & {
+  status: 'can-request-tx-execution' 
+}| AssertionDetails & {
   status: 'transactions-executed';
-  settlementHash: string;
 }

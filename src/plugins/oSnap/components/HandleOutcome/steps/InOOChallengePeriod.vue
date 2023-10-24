@@ -21,7 +21,7 @@ const expirationDateLocaleString = new Date(
 
 <template>
   <span>
-    Proposal can be executed at
+    Transactions can be executed at
     <strong>{{ expirationDateLocaleString }}</strong>
   </span>
 

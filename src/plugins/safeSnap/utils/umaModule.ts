@@ -306,7 +306,7 @@ export const getModuleDetailsUma = async (
       const assertion = await oracleContract.getAssertion(
         event.args?.assertionId
       );
-
+ 
       const isExpired =
         Math.floor(Date.now() / 1000) >= assertion.expirationTime.toNumber();
 

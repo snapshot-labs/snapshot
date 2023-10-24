@@ -23,8 +23,6 @@ import {
   getUserCollateralBalance,
   submitProposal
 } from '../../utils';
-import AssertionFailedInOO from './steps/AssertionFailedInOO.vue';
-import AssertionDisputedInOO from './steps/AssertionDisputedInOO.vue';
 import AssertionPassedInOO from './steps/AssertionPassedInOO.vue';
 import InOOChallengePeriod from './steps/InOOChallengePeriod.vue';
 import ReadyForOOAssertion from './steps/ReadyForOOAssertion.vue';
@@ -340,7 +338,7 @@ onMounted(async () => {
       />
       <ReadyForOOAssertion
         v-if="
-          transactionExecutionState.status === 'ready-for-oo-assertion' &&
+          transactionExecutionState.status === 'can-propose-to-og' &&
           !!collateralDetails &&
           !!ogModuleDetails &&
           !!userCollateralBalance &&
@@ -356,6 +354,7 @@ onMounted(async () => {
         :challenge-period="Number(ogModuleDetails.challengePeriod.toString())"
         :quorum="quorum"
         :scores-total="proposal.scores_total"
+        :is-disputed="transactionExecutionState.isDisputed"
         @submit-proposal="onSubmitProposal"
         @approve-bond="onApproveBond"
       />
@@ -366,20 +365,8 @@ onMounted(async () => {
         :assertion-hash="transactionExecutionState.assertionHash"
         :assertion-log-index="transactionExecutionState.assertionLogIndex"
       />
-      <AssertionDisputedInOO
-        v-if="transactionExecutionState.status === 'assertion-disputed-in-oo'"
-        :network="network"
-        :assertion-hash="transactionExecutionState.assertionHash"
-        :assertion-log-index="transactionExecutionState.assertionLogIndex"
-      />
-      <AssertionFailedInOO
-        v-if="transactionExecutionState.status === 'assertion-failed-in-oo'"
-        :network="network"
-        :assertion-hash="transactionExecutionState.assertionHash"
-        :assertion-log-index="transactionExecutionState.assertionLogIndex"
-      />
       <AssertionPassedInOO
-        v-if="transactionExecutionState.status === 'assertion-passed-in-oo'"
+        v-if="transactionExecutionState.status === 'can-request-tx-execution'"
         :transaction-count="transactions.length"
         @execute-proposal="onExecuteProposal"
       />

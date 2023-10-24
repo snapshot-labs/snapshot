@@ -6,6 +6,7 @@ const { formatDuration } = useIntl();
 const props = defineProps<{
   hasSufficientAllowance: boolean;
   hasSufficientBalance: boolean;
+  isDisputed: boolean;
   minimumBond: BigNumber;
   userBalance: BigNumber;
   decimals: BigNumber;
@@ -69,12 +70,17 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
     </BaseButton>
   </div>
 
-  <BaseButton
-    v-else
-    @click="emit('submitProposal')"
-    class="my-1 w-full"
-    :disabled="!hasReachedQuorum || !hasSufficientBalance"
-  >
-    Make assertion on Oracle
-  </BaseButton>
+  <div v-else>
+    <p v-if="isDisputed" class="mb-2">
+      Warning: This proposal was disputed on-chain. Exercise caution when
+      proposing, because your proposal may be disputed too.
+    </p>
+    <BaseButton
+      @click="emit('submitProposal')"
+      class="my-1 w-full"
+      :disabled="!hasReachedQuorum || !hasSufficientBalance"
+    >
+      Make assertion on Oracle
+    </BaseButton>
+  </div>
 </template>

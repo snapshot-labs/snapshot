@@ -1484,3 +1484,5 @@ export const contractData = [
 ] as const;
 
 export const transactionTypes = ['transferFunds', 'transferNFT', 'contractInteraction', 'raw'] as const
+
+export const solidityZeroHexString = '0x0000000000000000000000000000000000000000000000000000000000000000';
