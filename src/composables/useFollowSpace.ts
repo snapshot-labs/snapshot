@@ -11,7 +11,6 @@ export function useFollowSpace(spaceId: any = {}) {
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
-  const { notifyModal } = useModalNotification();
   const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
   const { notify } = useFlashNotification();
   const { t } = useI18n();
