@@ -12,6 +12,8 @@ export function useFollowSpace(spaceId: any = {}) {
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const { toggleSubscription, isSubscribed } = useSpaceSubscription(spaceId);
+  const { notify } = useFlashNotification();
+  const { t } = useI18n();
 
   const loadingFollow = ref('');
 
@@ -82,9 +84,10 @@ export function useFollowSpace(spaceId: any = {}) {
         await loadFollows();
         loadingFollow.value = '';
       }
-    } catch (e) {
+    } catch (e: any) {
       loadingFollow.value = '';
       console.error(e);
+      notify(['red', e?.error_description ? `Oops, ${e.error_description}` : t('notify.somethingWentWrong')]);
     }
   }
 
