@@ -293,15 +293,20 @@ async function getAssertionGql(params: {
 }
 /**
  * Fetches the details of a given proposal from the Optimistic Governor subgraph.
+ * 
+ * The subgraph uses the `assertionId` that comes from assertion events as the primary key for proposals.
+ * However, this `assertionId` will be deleted if the proposal is disputed, so we can't use it to query the subgraph.
+ * Instead, we use the `proposalHash` and `explanation` to query the subgraph.
+ * The `explanation` contains the ipfs url of the proposal, which is the only way to distinguish between proposals with the same `proposalHash`.
+ * This means we must use a `where` clause to filter the results, which is not ideal.
  */
 async function getOgProposalGql(params: {
   network: Network;
   explanation: string;
   moduleAddress: string;
-  transactions: OptimisticGovernorTransaction[];
+  proposalHash: string;
 }) {
-  const { network, transactions, explanation, moduleAddress } = params;
-  const proposalHash = getProposalHashFromTransactions(transactions);
+  const { network, explanation, moduleAddress, proposalHash } = params;
   const encodedExplanation = pack(
     ['bytes'],
     [toUtf8Bytes(explanation.replace(/^0x/, ''))]
@@ -330,6 +335,11 @@ async function getOgProposalGql(params: {
   return result?.proposals[0];
 }
 
+/**
+ * Fetches the details of a Optimistic Governor module's collateral token.
+ * 
+ * Returns the address, symbol, and decimals of the collateral token, along with the token contract for further querying.
+ */
 export async function getCollateralDetailsForProposal(
   provider: StaticJsonRpcProvider,
   moduleAddress: string
@@ -353,6 +363,9 @@ export async function getCollateralDetailsForProposal(
   return { erc20Contract, address, symbol, decimals };
 }
 
+/**
+ * Fetches the allowance of a given collateral token for a given user.
+ */
 export async function getUserCollateralAllowance(
   erc20Contract: Contract,
   userAddress: string,
@@ -361,6 +374,9 @@ export async function getUserCollateralAllowance(
   return erc20Contract.allowance(userAddress, moduleAddress);
 }
 
+/**
+ * Fetches the balance of a given collateral token for a given user.
+ */
 export async function getUserCollateralBalance(
   erc20Contract: Contract,
   userAddress: string
@@ -368,6 +384,11 @@ export async function getUserCollateralBalance(
   return erc20Contract.balanceOf(userAddress);
 }
 
+/**
+ * Fetches the details of a given Optimistic Governor module from the chain.
+ * 
+ * Performs a multicall to fetch the oracle address, rules, minimum bond, and challenge period.
+ */
 export async function getOGModuleDetails(params: {
   provider: StaticJsonRpcProvider;
   network: Network;
@@ -401,21 +422,30 @@ export async function getOGModuleDetails(params: {
   };
 }
 
+/**
+ * Fetches the state of an Optimistic Governor proposal from the chain.
+ * 
+ * This is a fallback function that should only be used if the subgraph is not available, because it is very slow.
+ * 
+ * The contract is designed in such a way that it deletes the `assertionId` from the proposal if the proposal is disputed, _or_ if the transactions are executed successfully. This means we can't tell the difference between a proposal that has not yet been proposed, has been disputed, or that has been executed by querying the chain.
+ * 
+ * Instead, we must query the chain for the proposal events, and then query the chain for the execution events, and then compare the two to determine the state of the proposal. This is very slow.
+ */
 export async function getOgProposalStateFromChain(params: {
   moduleDetails: OGModuleDetails;
   network: Network;
+  proposalHash: string;
   explanation: string;
-  transactions: OptimisticGovernorTransaction[];
 }): Promise<OGProposalState> {
-  const { network, moduleDetails, explanation, transactions } = params;
+  const { network, moduleDetails, explanation, proposalHash } = params;
+  const { moduleAddress, oracleAddress } = moduleDetails;
+
   const provider = getProvider(network);
   const latestBlock = (await provider.getBlock('latest')).number;
-  // modify this per chain. this should be updated with constants for all chains. start block is og deploy block.
-  // this needs to be optimized to reduce loading time, currently takes a long time to parse 3k blocks at a time.
   const oGstartBlock = getDeployBlock({ network, name: 'OptimisticGovernor' });
   const oOStartBlock = getDeployBlock({ network, name: 'OptimisticOracleV3' });
   const maxRange = 3000;
-  const { moduleAddress, oracleAddress, rules } = moduleDetails;
+
   const moduleContract = new Contract(
     moduleAddress,
     OPTIMISTIC_GOVERNOR_ABI,
@@ -426,15 +456,8 @@ export async function getOgProposalStateFromChain(params: {
     OPTIMISTIC_ORACLE_V3_ABI,
     provider
   );
-  const proposalHash = getProposalHashFromTransactions(transactions);
-  const claimHash = getClaimHash({
-    proposalHash,
-    explanation,
-    rules
-  });
 
   const assertionId: string = await moduleContract.assertionIds(proposalHash);
-
   const hasAssertionId = assertionIdIsNotZero(assertionId);
 
   if (hasAssertionId) {
@@ -450,6 +473,7 @@ export async function getOgProposalStateFromChain(params: {
     });
 
     // assertion ids are unique, so this will have only one result
+    // we need to get an event instead of getting the `Assertion` struct from the chain because the oracle dapp needs the assertion transaction hash and the log index to link to the oracle dapp.
     const assertionMadeEvent = assertionMadeEvents[0];
 
     const expirationTime = assertionMadeEvent.args?.expirationTime.toNumber();
@@ -557,12 +581,16 @@ export async function getOgProposalStateFromChain(params: {
   };
 }
 
+/**
+ * Fetches the state of an Optimistic Governor proposal from the subgraph.
+ * 
+ * This is the preferred method of fetching the state of a proposal, because it is much faster than querying the chain.
+ */
 export async function getOGProposalStateGql(params: {
   network: Network;
   moduleAddress: string;
   proposalHash: string;
   explanation: string;
-  transactions: OptimisticGovernorTransaction[];
 }): Promise<OGProposalState> {
   const { network } = params;
   const oGproposal = await getOgProposalGql(params);
@@ -573,11 +601,12 @@ export async function getOGProposalStateGql(params: {
 
   const { executed, assertionId, deleted } = oGproposal;
 
-  if (deleted) {
+  const hasAssertionId = assertionIdIsNotZero(assertionId);
+
+  // the subgraph records `ProposalDeleted` events, which are fired when a proposal is disputed.
+  if (!hasAssertionId && deleted) {
     return { status: 'can-propose-to-og', isDisputed: true };
   }
-
-  const hasAssertionId = assertionIdIsNotZero(assertionId);
 
   if (!hasAssertionId) {
     return { status: 'can-propose-to-og', isDisputed: false };
@@ -634,10 +663,18 @@ export async function getOGProposalStateGql(params: {
   return { status: 'can-propose-to-og', isDisputed: false };
 }
 
+/**
+ * Querying for an assertion ID that does not map to a proposal hash will return '0x0000000000000000000000000000000000000000000000000000000000000000'
+ */
 function assertionIdIsNotZero(assertionId: string) {
   return assertionId !== solidityZeroHexString;
 }
 
+/**
+ * Fetches the state of an Optimistic Governor proposal.
+ * 
+ * This function will attempt to fetch the state of a proposal from the subgraph, and if that fails, it will fall back to querying the chain.
+ */
 export async function getOGProposalState(params: {
   moduleDetails: OGModuleDetails;
   network: Network;
@@ -651,9 +688,8 @@ export async function getOGProposalState(params: {
     return await getOGProposalStateGql({
       network,
       moduleAddress,
-      proposalHash,
       explanation,
-      transactions
+      proposalHash,
     });
   } catch (error) {
     console.warn(
@@ -664,11 +700,14 @@ export async function getOGProposalState(params: {
       network,
       moduleDetails,
       explanation,
-      transactions
+      proposalHash
     });
   }
 }
 
+/**
+ * The `proposalHash` as represented in the Optimistic Governor contract is the keccak256 hash of the transactions that make up the proposal.
+ */
 export function getProposalHashFromTransactions(
   transactions: OptimisticGovernorTransaction[]
 ) {
@@ -677,34 +716,6 @@ export function getProposalHashFromTransactions(
       ['(address to, uint8 operation, uint256 value, bytes data)[]'],
       [transactions]
     )
-  );
-}
-
-export function getClaimHash(params: {
-  proposalHash: string;
-  explanation: string;
-  rules: string;
-}) {
-  const { proposalHash, explanation, rules } = params;
-
-  return pack(
-    ['string', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes', 'bytes'],
-    [
-      '',
-      pack(['string', 'string'], ['proposalHash', ':']),
-      toUtf8Bytes(proposalHash.replace(/^0x/, '')),
-      pack(
-        ['string', 'string', 'string', 'string'],
-        [',', 'explanation', ':', '"']
-      ),
-      toUtf8Bytes(explanation.replace(/^0x/, '')),
-      pack(
-        ['string', 'string', 'string', 'string', 'string'],
-        ['"', ',', 'rules', ':', '"']
-      ),
-      toUtf8Bytes(rules.replace(/^0x/, '')),
-      pack(['string'], ['"'])
-    ]
   );
 }
 
@@ -729,6 +740,9 @@ export function getSafeAppLink(
   return `${appUrl}${prefix}:${safeAddress}`;
 }
 
+/**
+ * Returns the url for an Optimistic Governor proposal's assertion on the Optimistic Oracle dapp.
+ */
 export function getOracleUiLink(
   chain: string,
   txHash: string,
