@@ -23,9 +23,9 @@ import {
   getUserCollateralBalance,
   submitProposal
 } from '../../utils';
-import AssertionPassedInOO from './steps/AssertionPassedInOO.vue';
+import CanRequestTxExecution from './steps/CanRequestTxExecution.vue';
 import InOOChallengePeriod from './steps/InOOChallengePeriod.vue';
-import ReadyForOOAssertion from './steps/ReadyForOOAssertion.vue';
+import CanProposeToOG from './steps/CanProposeToOG.vue';
 import RejectedBySnapshotVote from './steps/RejectedBySnapshotVote.vue';
 import TallyingSnapshotVotes from './steps/TallyingSnapshotVotes.vue';
 import TransactionsExecuted from './steps/TransactionsExecuted.vue';
@@ -336,7 +336,7 @@ onMounted(async () => {
       <RejectedBySnapshotVote
         v-if="transactionExecutionState.status === 'rejected-by-snapshot-vote'"
       />
-      <ReadyForOOAssertion
+      <CanProposeToOG
         v-if="
           transactionExecutionState.status === 'can-propose-to-og' &&
           !!collateralDetails &&
@@ -365,7 +365,7 @@ onMounted(async () => {
         :assertion-hash="transactionExecutionState.assertionHash"
         :assertion-log-index="transactionExecutionState.assertionLogIndex"
       />
-      <AssertionPassedInOO
+      <CanRequestTxExecution
         v-if="transactionExecutionState.status === 'can-request-tx-execution'"
         :transaction-count="transactions.length"
         @execute-proposal="onExecuteProposal"
