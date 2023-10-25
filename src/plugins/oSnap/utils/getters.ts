@@ -1,7 +1,7 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { Contract, Event, EventFilter } from '@ethersproject/contracts';
+import { Contract } from '@ethersproject/contracts';
 import { keccak256 } from '@ethersproject/keccak256';
 import { StaticJsonRpcProvider } from '@ethersproject/providers';
 import { pack } from '@ethersproject/solidity';
@@ -32,7 +32,7 @@ import {
   SafeNetworkPrefix,
   TransactionsProposedEvent
 } from '../types';
-import { pageEvents } from './events';
+import { getPagedEvents } from './events';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -399,26 +399,6 @@ export async function getOGModuleDetails(params: {
     minimumBond,
     challengePeriod
   };
-}
-
-async function getPagedEvents<EventType = Event>(params: {
-  contract: Contract;
-  eventFilter: EventFilter;
-  startBlock: number;
-  latestBlock: number;
-  maxRange: number;
-}) {
-  const { contract, eventFilter, startBlock, latestBlock, maxRange } = params;
-  const eventPager = ({ start, end }: { start: number; end: number }) => {
-    return contract.queryFilter(eventFilter, start, end);
-  };
-  const pagedEvents = await pageEvents(
-    startBlock,
-    latestBlock,
-    maxRange,
-    eventPager
-  );
-  return pagedEvents as (Event & EventType)[];
 }
 
 export async function getOgProposalStateFromChain(params: {

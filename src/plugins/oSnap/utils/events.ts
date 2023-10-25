@@ -1,4 +1,6 @@
+import { Contract, Event, EventFilter } from '@ethersproject/contracts';
 import bb from 'bluebird';
+
 // This state is meant for adjusting a start/end block when querying events. Some apis will fail if the range
 // is too big, so the following functions will adjust range dynamically.
 export type RangeState = {
@@ -146,4 +148,24 @@ export async function pageEvents<E>(
   } while (!state.done);
 
   return (await bb.map(ranges, fetchEvents, { concurrency })).flat();
+}
+
+export async function getPagedEvents<EventType = Event>(params: {
+  contract: Contract;
+  eventFilter: EventFilter;
+  startBlock: number;
+  latestBlock: number;
+  maxRange: number;
+}) {
+  const { contract, eventFilter, startBlock, latestBlock, maxRange } = params;
+  const eventPager = ({ start, end }: { start: number; end: number }) => {
+    return contract.queryFilter(eventFilter, start, end);
+  };
+  const pagedEvents = await pageEvents(
+    startBlock,
+    latestBlock,
+    maxRange,
+    eventPager
+  );
+  return pagedEvents as EventType[];
 }
