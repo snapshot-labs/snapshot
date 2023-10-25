@@ -75,4 +75,3 @@ function updateTransaction() {
     </UiInput>
   </div>
 </template>
-

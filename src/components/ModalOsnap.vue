@@ -18,7 +18,7 @@ const href = computed(() =>
     spaceUrl,
     spaceName: props.spaceName,
     safeAddress: props.treasury.address,
-    network: props.treasury.network as Network,
+    network: props.treasury.network as Network
   })
 );
 </script>

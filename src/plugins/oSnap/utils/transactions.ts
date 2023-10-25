@@ -1,35 +1,38 @@
 import { FunctionFragment } from '@ethersproject/abi';
 import { BigNumber } from '@ethersproject/bignumber';
-import { ContractInteractionTransaction, NFT, OptimisticGovernorTransaction, RawTransaction, Token, TransferFundsTransaction, TransferNftTransaction } from '../types';
+import {
+  ContractInteractionTransaction,
+  NFT,
+  OptimisticGovernorTransaction,
+  RawTransaction,
+  Token,
+  TransferFundsTransaction,
+  TransferNftTransaction
+} from '../types';
 import { encodeMethodAndParams } from './abi';
 
 /**
  * Creates a formatted transaction for the Optimistic Governor to execute
- * 
+ *
  * note: the value for `operation` is always zero because we do not support delegatecall.
- * 
+ *
  * @see OptimisticGovernorTransaction
  */
 export function createFormattedOptimisticGovernorTransaction({
   to,
   value,
-  data,
+  data
 }: {
   to: string;
   value: string;
   data: string;
 }): OptimisticGovernorTransaction {
-  return [
-    to,
-    0,
-    value,
-    data,
-  ]
+  return [to, 0, value, data];
 }
 
 /**
  * Creates a raw transaction for the Optimistic Governor to execute
- * 
+ *
  * @see RawTransaction
  */
 export function createRawTransaction(params: {
@@ -42,19 +45,19 @@ export function createRawTransaction(params: {
   return {
     ...params,
     type,
-    formatted,
-  }
+    formatted
+  };
 }
 
 /**
  * Creates a transaction to transfer an NFT
- * 
+ *
  * @see TransferNftTransaction
  */
 export function createTransferNftTransaction(params: {
-  recipient: string,
-  collectable: NFT,
-  data: string,
+  recipient: string;
+  collectable: NFT;
+  data: string;
 }): TransferNftTransaction {
   const type = 'transferNFT';
   const to = params.collectable.address;
@@ -72,13 +75,13 @@ export function createTransferNftTransaction(params: {
     to,
     value,
     data,
-    formatted,
-  }
+    formatted
+  };
 }
 
 /**
  * Creates a transaction to transfer funds
- * 
+ *
  * @see TransferFundsTransaction
  */
 export function createTransferFundsTransaction(params: {
@@ -96,8 +99,8 @@ export function createTransferFundsTransaction(params: {
   const formatted = createFormattedOptimisticGovernorTransaction({
     to,
     value,
-    data,
-  })
+    data
+  });
   return {
     ...params,
     type,
@@ -105,15 +108,15 @@ export function createTransferFundsTransaction(params: {
     to,
     value,
     amount,
-    formatted,
-  }
+    formatted
+  };
 }
 
 /**
  * Creates a transaction to interact with a contract.
- * 
+ *
  * the `method` is executed with the given `parameters`.
- * 
+ *
  * @see ContractInteractionTransaction
  */
 export function createContractInteractionTransaction(params: {
@@ -129,15 +132,17 @@ export function createContractInteractionTransaction(params: {
     params.method,
     params.parameters
   );
-  const formatted = createFormattedOptimisticGovernorTransaction({...params, data });
+  const formatted = createFormattedOptimisticGovernorTransaction({
+    ...params,
+    data
+  });
   return {
     ...params,
     data,
     type,
-    formatted,
-  }
+    formatted
+  };
 }
-
 
 export function parseAmount(input: string) {
   return BigNumber.from(input).toString();

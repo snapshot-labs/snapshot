@@ -46,7 +46,7 @@ function updateTransaction(transaction: TTransaction) {
 </script>
 
 <template>
-  <div class="border-b pb-4 mt-4 first:mt-0">
+  <div class="mt-4 border-b pb-4 first:mt-0">
     <div class="flex items-center justify-between text-[#FF5353]">
       <h3 class="text-left text-base">
         Transaction {{ transactionIndex + 1 }}

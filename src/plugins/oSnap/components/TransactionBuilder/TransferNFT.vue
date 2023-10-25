@@ -32,11 +32,7 @@ const selectedCollectable = computed(() => {
 });
 
 function updateTransaction() {
-  if (
-    !isAddress(recipient.value) ||
-    !selectedCollectable.value
-  )
-    return;
+  if (!isAddress(recipient.value) || !selectedCollectable.value) return;
 
   try {
     const data = getERC721TokenTransferTransactionData(
@@ -102,4 +98,3 @@ watch(selectedCollectableAddress, updateTransaction);
     :label="$t('safeSnap.to')"
   />
 </template>
-

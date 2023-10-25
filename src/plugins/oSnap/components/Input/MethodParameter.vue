@@ -33,7 +33,7 @@ const inputType = computed(() => {
 });
 
 const label = `${props.parameter.name} (${props.parameter.type})`;
-const arrayPlaceholder = `E.g. ["text", 123, 0x123]`
+const arrayPlaceholder = `E.g. ["text", 123, 0x123]`;
 
 const isInputValid = computed(() => {
   if (!isDirty.value) return true;
@@ -49,7 +49,7 @@ const newValue = ref(props.value);
 watch(props.parameter, () => {
   newValue.value = '';
   isDirty.value = false;
-})
+});
 
 watch(newValue, () => {
   if (isInputValid.value) {
@@ -110,7 +110,7 @@ function onChange(value: string) {
     :model-value="value"
     @update:modelValue="onChange($event)"
   >
-    <template #label>{{  label }}</template>
+    <template #label>{{ label }}</template>
   </UiInput>
   <UiInput
     v-if="inputType === 'number'"

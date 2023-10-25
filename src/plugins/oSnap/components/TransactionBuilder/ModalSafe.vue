@@ -4,7 +4,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 defineProps<{
   open: boolean;
-  safes: GnosisSafe[]
+  safes: GnosisSafe[];
   selected: GnosisSafe | null;
 }>();
 
@@ -31,11 +31,7 @@ function makeSafeDescription(safe: GnosisSafe) {
       <h3>Select Safe</h3>
     </template>
     <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
-      <button
-        v-for="(safe, key) in safes"
-        :key="key"
-        @click="select(safe)"
-      >
+      <button v-for="(safe, key) in safes" :key="key" @click="select(safe)">
         <BaseModalSelectItem
           :selected="safe.safeAddress === selected?.safeAddress"
           :title="safe.safeName"

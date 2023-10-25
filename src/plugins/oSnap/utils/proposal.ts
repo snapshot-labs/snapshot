@@ -1,15 +1,15 @@
-import { toUtf8Bytes } from "@ethersproject/strings";
-import { sendTransaction } from "@snapshot-labs/snapshot.js/src/utils";
-import { ERC20_ABI, OPTIMISTIC_GOVERNOR_ABI } from "../constants";
-import { Network, OptimisticGovernorTransaction } from "../types";
-import { getOGProposalState } from "./getters";
+import { toUtf8Bytes } from '@ethersproject/strings';
+import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { ERC20_ABI, OPTIMISTIC_GOVERNOR_ABI } from '../constants';
+import { Network, OptimisticGovernorTransaction } from '../types';
+import { getOGProposalState } from './getters';
 
 /**
  * The user must approve the spend of the collateral token before they can submit a proposal.
- * 
+ *
  * If the proposal is disputed and fails a vote, the user will lose their bond.
  */
-export async function *approveBond(
+export async function* approveBond(
   network: Network,
   web3: any,
   moduleAddress: string,
@@ -28,7 +28,7 @@ export async function *approveBond(
     ERC20_ABI as any,
     'approve',
     [moduleAddress, moduleDetails.minimumBond],
-    {} 
+    {}
   );
   yield approveTx;
   const approvalReceipt = await approveTx.wait();
@@ -39,12 +39,12 @@ export async function *approveBond(
 /**
  * Submits a proposal to the Optimistic Governor.
  */
-export async function *submitProposal(
+export async function* submitProposal(
   web3: any,
   moduleAddress: string,
   explanation: string,
   transactions: OptimisticGovernorTransaction[]
-) { 
+) {
   const explanationBytes = toUtf8Bytes(explanation);
   const tx = await sendTransaction(
     web3,
@@ -61,10 +61,10 @@ export async function *submitProposal(
 
 /**
  * Executes a proposal on the Optimistic Governor.
- * 
+ *
  * This can only be done after the dispute window has ended.
  */
-export async function *executeProposal(
+export async function* executeProposal(
   web3: any,
   moduleAddress: string,
   transactions: OptimisticGovernorTransaction[]

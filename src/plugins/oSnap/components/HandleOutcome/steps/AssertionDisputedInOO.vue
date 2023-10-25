@@ -16,7 +16,8 @@ const oracleUiLink = getOracleUiLink(
 
 <template>
   <span>
-    This proposal was disputed in the Optimistic Oracle. It can only be executed if it passes a vote in the Oracle.
+    This proposal was disputed in the Optimistic Oracle. It can only be executed
+    if it passes a vote in the Oracle.
   </span>
 
   <div>

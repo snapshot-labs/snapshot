@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {
-  TransactionType
-} from '../../types';
+import { TransactionType } from '../../types';
 import ModalTransactionType from '../TransactionBuilder/ModalTransactionType.vue';
 
 defineProps<{

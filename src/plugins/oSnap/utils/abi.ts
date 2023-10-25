@@ -1,16 +1,15 @@
-import {
-  FunctionFragment,
-  Interface,
-  ParamType
-} from '@ethersproject/abi';
+import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { memoize } from 'lodash';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
-import { mustBeEthereumAddress, mustBeEthereumContractAddress } from './validators';
+import {
+  mustBeEthereumAddress,
+  mustBeEthereumContractAddress
+} from './validators';
 
 /**
  * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.
- * 
+ *
  * If this is the case, we must parse the value as JSON and verify that it is valid.
  */
 export function isArrayParameter(parameter: string): boolean {
@@ -75,7 +74,7 @@ export async function getContractABI(
 
 /**
  * Checks if a method is a write function.
- * 
+ *
  * Only write functions can be executed by the Optimistic Governor.
  */
 export function isWriteFunction(method: FunctionFragment) {
@@ -102,7 +101,7 @@ export function getABIWriteFunctions(abi: string) {
 
 /**
  * Handles the extraction of the method's arguments from the `values` array.
- * 
+ *
  * If the parameter is an array or tuple, we parse the value as JSON.
  */
 function extractMethodArgs(values: string[]) {

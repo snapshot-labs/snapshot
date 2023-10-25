@@ -1,5 +1,8 @@
 import { isAddress } from '@ethersproject/address';
-import { JsonRpcProvider, StaticJsonRpcProvider } from '@ethersproject/providers';
+import {
+  JsonRpcProvider,
+  StaticJsonRpcProvider
+} from '@ethersproject/providers';
 import memoize from 'lodash/memoize';
 import { Contract } from '@ethersproject/contracts';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
@@ -48,10 +51,17 @@ export function validateTransaction(transaction: BaseTransaction) {
 /**
  * Validates a module address.
  */
-export async function validateModuleAddress(network: string, moduleAddress: string): Promise<boolean> {
+export async function validateModuleAddress(
+  network: string,
+  moduleAddress: string
+): Promise<boolean> {
   if (!isAddress(moduleAddress)) return false;
   const provider: StaticJsonRpcProvider = getProvider(network);
-  const moduleContract = new Contract(moduleAddress, OPTIMISTIC_GOVERNOR_ABI, provider);
+  const moduleContract = new Contract(
+    moduleAddress,
+    OPTIMISTIC_GOVERNOR_ABI,
+    provider
+  );
 
   return moduleContract
     .rules()
