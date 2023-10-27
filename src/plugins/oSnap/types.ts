@@ -244,7 +244,7 @@ export type OsnapPluginData = {
 
 /**
  * Represents the data associated with an assertion on the Optimistic Oracle V3 subgraph.
- * 
+ *
  * @field `assertionId` field is the id of the assertion.
  * @field `expirationTime` field is the time that the assertion's challenge period ends.
  * @field `assertionHash` field is the transaction hash from when the assertion was made.
@@ -265,7 +265,7 @@ export type AssertionGql = {
 
 /**
  * Represents the configuration of the Optimistic Governor module contract that was deployed for a given Safe.
- * 
+ *
  * @field `moduleAddress` field is the address of the specific Optimistic Governor module contract that was deployed for a given Safe.
  * @field `oracleAddress` field is the address of the Optimistic Oracle V3 contract.
  * @field `rules` rules for this Optimistic Governor contract.
@@ -282,7 +282,7 @@ export type OGModuleDetails = {
 
 /**
  * Represents the collateral configuration for a given Optimistic Governor contract.
- * 
+ *
  * @field `erc20Contract` field is the ERC20 contract that is used for collateral.
  * @field `address` field is the address of the ERC20 contract that is used for collateral.
  * @field `symbol` field is the symbol of the ERC20 contract that is used for collateral.
@@ -297,7 +297,7 @@ export type CollateralDetails = {
 
 /**
  * Event fired when an assertion is made on the Optimistic Oracle V3 contract.
- * 
+ *
  * @field `assertionId` field is the id of the assertion.
  * @field `domainId` field is the domain id of the assertion.
  * @field `claim` field is the claim of the assertion.
@@ -328,7 +328,7 @@ export type AssertionMadeEvent = Event & {
 
 /**
  * Event fired when transactions are proposed on the Optimistic Governor contract.
- * 
+ *
  * @field `proposer` field is the address of the proposer.
  * @field `proposalTime` field is the time that the proposal was made.
  * @field `assertionId` field is the id of the assertion.
@@ -356,7 +356,7 @@ export type TransactionsProposedEvent = Event & {
 
 /**
  * Event fired when an Optimistic Governor proposal's transactions are executed successfully.
- * 
+ *
  * @field `proposalHash` field is the hash of the proposal.
  * @field `assertionId` field is the id of the assertion.
  */
@@ -367,10 +367,9 @@ export type ProposalExecutedEvent = Event & {
   };
 };
 
-
 /**
  * Represents the transaction hash and log index of an `AssertionMade` event.
- * 
+ *
  * We need these for generating a link to the assertion on the Optimistic Oracle dapp.
  */
 export type AssertionTransactionDetails = {
@@ -380,15 +379,15 @@ export type AssertionTransactionDetails = {
 
 /**
  * Represents the state of a proposal on the Optimistic Governor contract. When an assertion is associated with the proposal, we also include the assertion transaction hash and log index so that we can create a link to the assertion on the Optimistic Oracle dapp.
- * 
+ *
  * There are four states that a proposal can be in:
- * 
+ *
  * - `can-propose-to-og`: The user can propose transactions to the Optimistic Governor contract. This is the initial state of a proposal. We also indicate if this proposal has been disputed in the Oracle, so that we can warn the user to exercise caution and avoid losing their bond.
- * 
+ *
  * - `in-oo-challenge-period`: The user has proposed transactions to the Optimistic Governor contract, and the proposal is currently in the challenge period on the Optimistic Oracle contract. We also indicate when the challenge period ends, so that we can warn the user to wait until the challenge period ends before proposing new transactions.
- * 
+ *
  * - `can-request-tx-execution`: The user has proposed transactions to the Optimistic Governor contract, and the challenge period has ended. The user can now request that the Optimistic Governor contract execute the transactions.
- * 
+ *
  * - `transactions-executed`: The user has proposed transactions to the Optimistic Governor contract, the challenge period has ended, and the transactions have been executed by the Optimistic Governor contract.
  */
 export type OGProposalState =

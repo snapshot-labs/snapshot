@@ -120,94 +120,94 @@ defineEmits<{
         @update:type="value => (form.type = value)"
       />
 
-        <h4 class="mb-1 mt-3" v-text="$t('create.choices')" />
-        <div class="flex">
-          <div class="w-full overflow-hidden">
-            <draggable
-              v-model="form.choices"
-              v-bind="{ animation: 200 }"
-              :disabled="disableChoiceEdit"
-              item-key="id"
-              handle=".drag-handle"
-              class="space-y-2"
+      <h4 class="mb-1 mt-3" v-text="$t('create.choices')" />
+      <div class="flex">
+        <div class="w-full overflow-hidden">
+          <draggable
+            v-model="form.choices"
+            v-bind="{ animation: 200 }"
+            :disabled="disableChoiceEdit"
+            item-key="id"
+            handle=".drag-handle"
+            class="space-y-2"
+          >
             >
+            <template #item="{ element, index }">
+              <UiInput
+                v-model="element.text"
+                maxlength="32"
+                :disabled="disableChoiceEdit"
+                :placeholder="index > 0 ? $t('optional') : ''"
+                class="group"
+                :focus-on-mount="index === 0"
+                :data-testid="`input-proposal-choice-${index}`"
               >
-              <template #item="{ element, index }">
-                <UiInput
-                  v-model="element.text"
-                  maxlength="32"
-                  :disabled="disableChoiceEdit"
-                  :placeholder="index > 0 ? $t('optional') : ''"
-                  class="group"
-                  :focus-on-mount="index === 0"
-                  :data-testid="`input-proposal-choice-${index}`"
-                >
-                  <template #label>
-                    <div
-                      class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
-                      :class="{
-                        'cursor-not-allowed active:cursor-not-allowed':
-                          disableChoiceEdit
-                      }"
-                    >
-                      <BaseIcon name="draggable" size="16" class="mr-[12px]" />
-                      {{ $tc('create.choice', [index + 1]) }}
-                    </div>
-                  </template>
-                  <template #info>
-                    <span
-                      class="hidden text-xs text-skin-text group-focus-within:block"
-                    >
-                      {{ `${element.text.length}/32` }}
-                    </span>
-                  </template>
-                </UiInput>
-              </template>
-            </draggable>
-          </div>
-          <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
-            <BaseButtonRound
-              v-if="!disableChoiceEdit"
-              size="42px"
-              @click="addChoices(1)"
-            >
-              <i-ho-plus-sm class="text-skin-link" />
-            </BaseButtonRound>
-          </div>
+                <template #label>
+                  <div
+                    class="drag-handle flex cursor-grab items-center active:cursor-grabbing"
+                    :class="{
+                      'cursor-not-allowed active:cursor-not-allowed':
+                        disableChoiceEdit
+                    }"
+                  >
+                    <BaseIcon name="draggable" size="16" class="mr-[12px]" />
+                    {{ $tc('create.choice', [index + 1]) }}
+                  </div>
+                </template>
+                <template #info>
+                  <span
+                    class="hidden text-xs text-skin-text group-focus-within:block"
+                  >
+                    {{ `${element.text.length}/32` }}
+                  </span>
+                </template>
+              </UiInput>
+            </template>
+          </draggable>
         </div>
-      </BaseBlock>
+        <div v-if="!disableChoiceEdit" class="ml-2 flex w-[48px] items-end">
+          <BaseButtonRound
+            v-if="!disableChoiceEdit"
+            size="42px"
+            @click="addChoices(1)"
+          >
+            <i-ho-plus-sm class="text-skin-link" />
+          </BaseButtonRound>
+        </div>
+      </div>
+    </BaseBlock>
 
-      <BaseBlock
-        :title="$t('create.period')"
-        :information="$t('create.votingPeriodExplainer')"
+    <BaseBlock
+      :title="$t('create.period')"
+      :information="$t('create.votingPeriodExplainer')"
+    >
+      <div class="space-y-2 md:flex md:space-x-3 md:space-y-0">
+        <SpaceCreateVotingDateStart
+          :delay="space.voting?.delay"
+          :date="dateStart"
+          :disabled="isEditing"
+          @select="value => setDateStart(value)"
+        />
+
+        <SpaceCreateVotingDateEnd
+          :period="space.voting?.period"
+          :date="dateEnd"
+          :disabled="isEditing"
+          @select="value => setDateEnd(value)"
+        />
+      </div>
+    </BaseBlock>
+
+    <BaseBlock v-if="$route.query.snapshot" :title="$t('snapshot')">
+      <UiInput
+        v-model="form.snapshot"
+        :number="true"
+        :placeholder="$t('create.snapshotBlock')"
       >
-        <div class="space-y-2 md:flex md:space-x-3 md:space-y-0">
-          <SpaceCreateVotingDateStart
-            :delay="space.voting?.delay"
-            :date="dateStart"
-            :disabled="isEditing"
-            @select="value => setDateStart(value)"
-          />
-
-          <SpaceCreateVotingDateEnd
-            :period="space.voting?.period"
-            :date="dateEnd"
-            :disabled="isEditing"
-            @select="value => setDateEnd(value)"
-          />
-        </div>
-      </BaseBlock>
-
-      <BaseBlock v-if="$route.query.snapshot" :title="$t('snapshot')">
-        <UiInput
-          v-model="form.snapshot"
-          :number="true"
-          :placeholder="$t('create.snapshotBlock')"
-        >
-          <template #label>
-            {{ $t('snapshot') }}
-          </template>
-        </UiInput>
-      </BaseBlock>
-    </div>
+        <template #label>
+          {{ $t('snapshot') }}
+        </template>
+      </UiInput>
+    </BaseBlock>
+  </div>
 </template>

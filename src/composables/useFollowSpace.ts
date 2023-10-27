@@ -87,7 +87,12 @@ export function useFollowSpace(spaceId: any = {}) {
     } catch (e: any) {
       loadingFollow.value = '';
       console.error(e);
-      notify(['red', e?.error_description ? `Oops, ${e.error_description}` : t('notify.somethingWentWrong')]);
+      notify([
+        'red',
+        e?.error_description
+          ? `Oops, ${e.error_description}`
+          : t('notify.somethingWentWrong')
+      ]);
     }
   }
 

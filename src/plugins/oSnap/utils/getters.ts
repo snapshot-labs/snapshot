@@ -293,7 +293,7 @@ async function getAssertionGql(params: {
 }
 /**
  * Fetches the details of a given proposal from the Optimistic Governor subgraph.
- * 
+ *
  * The subgraph uses the `assertionId` that comes from assertion events as the primary key for proposals.
  * However, this `assertionId` will be deleted if the proposal is disputed, so we can't use it to query the subgraph.
  * Instead, we use the `proposalHash` and `explanation` to query the subgraph.
@@ -337,7 +337,7 @@ async function getOgProposalGql(params: {
 
 /**
  * Fetches the details of a Optimistic Governor module's collateral token.
- * 
+ *
  * Returns the address, symbol, and decimals of the collateral token, along with the token contract for further querying.
  */
 export async function getCollateralDetailsForProposal(
@@ -386,7 +386,7 @@ export async function getUserCollateralBalance(
 
 /**
  * Fetches the details of a given Optimistic Governor module from the chain.
- * 
+ *
  * Performs a multicall to fetch the oracle address, rules, minimum bond, and challenge period.
  */
 export async function getOGModuleDetails(params: {
@@ -424,11 +424,11 @@ export async function getOGModuleDetails(params: {
 
 /**
  * Fetches the state of an Optimistic Governor proposal from the chain.
- * 
+ *
  * This is a fallback function that should only be used if the subgraph is not available, because it is very slow.
- * 
+ *
  * The contract is designed in such a way that it deletes the `assertionId` from the proposal if the proposal is disputed, _or_ if the transactions are executed successfully. This means we can't tell the difference between a proposal that has not yet been proposed, has been disputed, or that has been executed by querying the chain.
- * 
+ *
  * Instead, we must query the chain for the proposal events, and then query the chain for the execution events, and then compare the two to determine the state of the proposal. This is very slow.
  */
 export async function getOgProposalStateFromChain(params: {
@@ -583,7 +583,7 @@ export async function getOgProposalStateFromChain(params: {
 
 /**
  * Fetches the state of an Optimistic Governor proposal from the subgraph.
- * 
+ *
  * This is the preferred method of fetching the state of a proposal, because it is much faster than querying the chain.
  */
 export async function getOGProposalStateGql(params: {
@@ -672,7 +672,7 @@ function assertionIdIsNotZero(assertionId: string) {
 
 /**
  * Fetches the state of an Optimistic Governor proposal.
- * 
+ *
  * This function will attempt to fetch the state of a proposal from the subgraph, and if that fails, it will fall back to querying the chain.
  */
 export async function getOGProposalState(params: {
@@ -689,7 +689,7 @@ export async function getOGProposalState(params: {
       network,
       moduleAddress,
       explanation,
-      proposalHash,
+      proposalHash
     });
   } catch (error) {
     console.warn(
