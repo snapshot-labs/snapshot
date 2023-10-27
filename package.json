@@ -3,15 +3,9 @@
   "version": "0.1.4",
   "scripts": {
     "dev": "vite --port=8080",
-    "cypress:test:e2e": "start-server-and-test 'yarn cypress:serve:build' http-get://localhost:8081 'yarn cypress:run'",
-    "cypress:dev:e2e": "start-server-and-test 'yarn cypress:serve:dev' http-get://localhost:8081 'yarn cypress:open'",
-    "cypress:run": "env-cmd -f .env.test cypress run --browser chrome --headed",
-    "cypress:open": "env-cmd -f .env.test cypress run --browser chrome --headed --no-exit",
-    "cypress:serve:dev": "VITE_E2E=true vite --port=8081",
-    "cypress:serve:build": "VITE_E2E=true vite build && npx http-server dist -p 8081",
     "preinstall": "yarn run init-submodules",
     "build": "vite build",
-    "lint": "eslint \"*.{ts,js,vue,json}\" src/ cypress/ --ext .ts,.js,.vue,.json",
+    "lint": "eslint \"*.{ts,js,vue,json}\" src/ --ext .ts,.js,.vue,.json",
     "lint:fix": "yarn lint --fix",
     "format": "prettier \"**/*.{ts,js,vue,json}\"",
     "format:check": "yarn format --check || exit 1",
@@ -19,7 +13,6 @@
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
-    "test:e2e": "start-server-and-test 'yarn cypress:serve:build' http-get://localhost:8081 'cypress run'",
     "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
@@ -73,7 +66,6 @@
   "devDependencies": {
     "@iconify-json/heroicons-outline": "^1.1.7",
     "@rushstack/eslint-patch": "^1.3.3",
-    "@synthetixio/synpress": "^3.5.1",
     "@tailwindcss/forms": "^0.5.6",
     "@types/bluebird": "^3.5.38",
     "@types/lodash": "^4.14.198",
@@ -87,10 +79,8 @@
     "@vue/eslint-config-typescript": "^9.0.0",
     "@vue/test-utils": "^2.4.1",
     "autoprefixer": "^10.4.15",
-    "cypress": "^12.11.0",
     "env-cmd": "^10.1.0",
     "eslint": "^8.46.0",
-    "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^7.15.1",
     "happy-dom": "^10.11.0",
