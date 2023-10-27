@@ -3,6 +3,7 @@ import { Remarkable } from 'remarkable';
 import { linkify } from 'remarkable/linkify';
 // import sanitizeHtml from 'sanitize-html';
 import { getIpfsUrl } from '@/helpers/utils';
+import { isSnapshotUrl } from '@/helpers/utils';
 
 const props = defineProps<{
   body: string;
@@ -34,7 +35,11 @@ const markdown = computed(() => {
 function handleLinkClick(e, url) {
   e.preventDefault();
   clickedUrl.value = url;
-  if (url.includes('snapshot.org/#/')) return handleConfirm();
+
+  if (isSnapshotUrl(url)) {
+    return handleConfirm();
+  }
+
   showModal.value = true;
 }
 

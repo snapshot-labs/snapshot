@@ -35,11 +35,14 @@ export function useClient() {
   }
 
   async function sendEIP712(space: { id: string }, type: string, payload: any) {
+    let plugins = {};
+    if (
+      payload.metadata?.plugins &&
+      Object.keys(payload.metadata?.plugins).length !== 0
+    )
+      plugins = payload.metadata.plugins;
     const client = clientEIP712;
-    if (type === 'proposal') {
-      let plugins = {};
-      if (Object.keys(payload.metadata?.plugins).length !== 0)
-        plugins = payload.metadata.plugins;
+    if (type === 'create-proposal') {
       return client.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
@@ -52,6 +55,17 @@ export function useClient() {
         snapshot: payload.snapshot,
         plugins: JSON.stringify(plugins),
         app: DEFINED_APP
+      });
+    } else if (type === 'update-proposal') {
+      return client.updateProposal(auth.web3, web3.value.account, {
+        proposal: payload.id,
+        space: space.id,
+        type: payload.type,
+        title: payload.name,
+        body: payload.body,
+        discussion: payload.discussion,
+        choices: payload.choices,
+        plugins: JSON.stringify(plugins)
       });
     } else if (type === 'vote') {
       return client.vote(auth.web3, web3.value.account, {
@@ -82,6 +96,11 @@ export function useClient() {
         space: space.id,
         about: payload.about,
         statement: payload.statement
+      });
+    } else if (type === 'flag-proposal') {
+      return client.flagProposal(auth.web3, web3.value.account, {
+        space: space.id,
+        proposal: payload.proposal.id
       });
     }
   }

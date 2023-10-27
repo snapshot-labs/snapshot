@@ -16,6 +16,7 @@ const pendingENSRecord = ref(false);
 const ensOwner = ref<string | null>(null);
 const spaceController = ref<string | null>(null);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
 
 export function useSpaceController() {
   const { web3, web3Account } = useWeb3();
@@ -78,13 +79,16 @@ export function useSpaceController() {
   }
 
   async function loadEnsOwner() {
-    ensOwner.value = await getEnsOwner(ensAddress.value, defaultNetwork);
+    ensOwner.value = await getEnsOwner(ensAddress.value, defaultNetwork, {
+      broviderUrl
+    });
   }
 
   async function loadSpaceController() {
     spaceController.value = await getSpaceController(
       ensAddress.value,
-      defaultNetwork
+      defaultNetwork,
+      { broviderUrl }
     );
   }
 

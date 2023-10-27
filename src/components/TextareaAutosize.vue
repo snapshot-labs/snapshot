@@ -38,6 +38,7 @@ const height = ref('auto');
 const textarea = ref<HTMLTextAreaElement | null>(null);
 
 const computedStyles = computed(() => {
+  if (minHeight.value) return `min-height: ${minHeight.value}px;`;
   if (!props.autosize) return '';
   return `resize: none; height: ${height.value}; overflow: ${
     maxHeightScroll.value ? 'auto' : 'hidden'

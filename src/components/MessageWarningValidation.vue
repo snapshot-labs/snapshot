@@ -33,17 +33,13 @@ const tPath = computed(() => {
       </BaseLink>
     </template>
 
-    <template
-      v-else-if="
-        validationName === 'passport-gated' ||
-        validationName === 'passport-weighted'
-      "
-    >
+    <template v-else-if="validationName === 'passport-gated'">
       <template v-if="validationName === 'passport-gated'">
         {{
           $t(`${tPath}.passport-gated.invalidMessage`, {
             operator: validationParams?.operator === 'AND' ? 'all' : 'one',
-            stamps: validationParams?.stamps.join(', ')
+            stamps: validationParams?.stamps.join(', '),
+            scoreThreshold: validationParams?.scoreThreshold || 0
           })
         }}
       </template>
@@ -60,27 +56,4 @@ const tPath = computed(() => {
       </BaseLink>
     </template>
   </BaseMessageBlock>
-
-  <!-- <template v-if="validationName === 'passport-weighted' && proposal?.validation.params?.stamps.some(p => p.weight > 1)">
-    <table class="mt-3 w-full">
-      <caption>
-        A list of stamps that can be used to increase your weight:
-      </caption>
-      <thead>
-        <tr>
-          <th class="w-2/3 py-1 text-left text-skin-link">Stamp</th>
-          <th class="w-1/3 py-1 text-left text-skin-link">Weight</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="stamp in proposal.validation.params.stamps"
-          :key="stamp.name"
-        >
-          <td class="py-1">{{ stamp.id }}</td>
-          <td class="py-1">{{ stamp.weight }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </template> -->
 </template>

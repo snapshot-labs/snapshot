@@ -31,7 +31,6 @@ const loading = ref(false);
 const strategyError = ref(null);
 const networkError = ref(false);
 const scores = ref(null);
-const isValidStrategyDefinition = ref(false);
 const searchInput = ref('');
 const form = ref<{
   params: Record<string, any>;
@@ -122,7 +121,8 @@ async function loadSnapshotBlockNumber() {
     loading.value = true;
     scores.value = null;
     networkError.value = false;
-    const provider = await getProvider(form.value.network);
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = await getProvider(form.value.network, { broviderUrl });
     const blockNumber = await getBlockNumber(provider);
     form.value.snapshot = blockNumber.toString();
     loading.value = false;
@@ -232,25 +232,25 @@ function handleNetworkSelect(value) {
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('strategyParams')">
-            <FormObject
+            <FormObjectStrategyParams
               v-if="strategyDefinition"
               v-model="form.params"
-              :definition="strategyDefinition"
+              :strategy-name="(route.params.name as string)"
             />
             <TextareaJson
               v-else
               v-model="form.params"
-              v-model:is-valid="isValidStrategyDefinition"
+              is-valid
               :placeholder="$t('strategyParameters')"
               class="input text-left"
               @update:modelValue="handleURLUpdate"
             />
             <BaseBlock
               v-if="strategyError"
+              class="mt-3 overflow-x-auto"
               style="border-color: red !important"
             >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ strategyError }}</span>
+              <pre class="!text-red whitespace-pre-wrap"> {{ strategyError }}</pre>
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('addresses')">

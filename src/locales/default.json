@@ -156,6 +156,7 @@
   "copyLink": "Copy link",
   "duplicate": "Duplicate",
   "report": "Report",
+  "flag": "Flag",
   "joinedSpaces": "Joined spaces",
   "joinSpaces": "Join spaces",
   "setDelegationToSpace": "Limit delegation to a specific space",
@@ -166,7 +167,7 @@
   "or": "or",
   "share": "Share",
   "shareOnTwitter": "Share on Twitter",
-  "shareOnLenster": "Share on Lenster",
+  "shareOnHey": "Share on Hey",
   "createButton": "Create",
   "discussion": "Discussion",
   "changeWallet": "Change wallet",
@@ -645,11 +646,13 @@
     "delegationSuccess": "Delegation successful",
     "delegationRemoved": "Delegation removed",
     "proposalCreated": "Proposal created",
+    "proposalUpdated": "Proposal updated",
     "waitingForOtherSigners": "Waiting for other signers",
     "voteSuccessful": "Your vote is in!",
     "ensSet": "ENS text record was successfully set",
     "transactionSent": "Transaction sent",
-    "emailPreferencesUpdated": "Email preferences updated"
+    "emailPreferencesUpdated": "Email preferences updated",
+    "delegationAdded": "Well done. Delegate was successfully added"
   },
   "explore": {
     "createStrategy": "Create strategy",
@@ -738,14 +741,15 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
-      "invalidMessage": "You need a Gitcoin Passport with {operator} of the following stamps to create a proposal: {stamps}"
-    },
-    "passport-weighted": {
-      "label": "Gitcoin Passport weighted"
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
     },
     "arbitrum": {
       "label": "Arbitrum DAO votable supply",
       "description": "Use with erc20-votes to validate by percentage of votable supply."
+    },
+    "karma-eas-attestation": {
+      "label": "Karma EAS Attestation",
+      "description": "Use EAS attest.sh to determine if user can create a proposal."
     }
   },
   "votingValidation": {
@@ -770,10 +774,7 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidMessage": "You need a Gitcoin Passport with {operator} of the following stamps to vote on this proposal: {stamps}. "
-    },
-    "passport-weighted": {
-      "label": "Gitcoin Passport weighted"
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
     }
   },
   "safeSnap": {

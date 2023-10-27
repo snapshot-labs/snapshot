@@ -19,10 +19,16 @@ const { web3Account } = useWeb3();
 const isCreator = computed(() => props.proposal?.author === web3Account.value);
 
 const threeDotItems = computed(() => {
-  const items = [
-    { text: t('duplicate'), action: 'duplicate' },
-    { text: t('report'), action: 'report' }
-  ];
+  const items: { text: string; action: string }[] = [];
+  if (isCreator.value && props.proposal.state === 'pending')
+    items.push({ text: t('edit'), action: 'edit' });
+  items.push({ text: t('duplicate'), action: 'duplicate' });
+
+  if ((props.isAdmin || props.isModerator) && !props.proposal.flagged) {
+    items.push({ text: t('flag'), action: 'flag' });
+  } else {
+    items.push({ text: t('report'), action: 'report' });
+  }
   if (props.isAdmin || props.isModerator || isCreator.value)
     items.push({ text: t('delete'), action: 'delete' });
   return items;
@@ -42,7 +48,7 @@ async function deleteProposal() {
 
 const {
   shareProposalTwitter,
-  shareProposalLenster,
+  shareProposalHey,
   shareToClipboard,
   shareProposal,
   sharingIsSupported,
@@ -51,25 +57,31 @@ const {
 
 const { resetForm } = useFormSpaceProposal();
 
-function handleSelect(e) {
+async function handleSelect(e) {
   if (!props.proposal) return;
   if (e === 'delete') deleteProposal();
   if (e === 'report') window.open('https://tally.so/r/mDBEGb', '_blank');
-  if (e === 'duplicate') {
+  if (e === 'flag') {
+    await send(props.space, 'flag-proposal', {
+      proposal: props.proposal
+    });
+  }
+  if (e === 'duplicate' || e === 'edit') {
     resetForm();
     router.push({
       name: 'spaceCreate',
       params: {
         key: props.proposal.space.id,
         sourceProposal: props.proposal.id
-      }
+      },
+      query: { editing: e === 'edit' ? 'true' : undefined }
     });
   }
 }
 
 function handleSelectShare(e: string) {
-  if (e === 'shareProposalLenster')
-    return shareProposalLenster(props.space, props.proposal);
+  if (e === 'shareProposalHey')
+    return shareProposalHey(props.space, props.proposal);
 
   if (sharingIsSupported.value)
     return shareProposal(props.space, props.proposal);
@@ -130,10 +142,7 @@ watch(
         <template #item="{ item }">
           <div class="flex items-center gap-2">
             <i-s-twitter v-if="item.extras.icon === 'twitter'" />
-            <i-s-lenster
-              v-if="item.extras.icon === 'lenster'"
-              class="mr-1 text-sm text-skin-text"
-            />
+            <i-s-hey v-if="item.extras.icon === 'hey'" class="mr-1 text-sm" />
             <i-ho-link v-if="item.extras.icon === 'link'" />
             {{ item.text }}
           </div>
@@ -149,8 +158,11 @@ watch(
         </template>
         <template #item="{ item }">
           <div class="flex items-center gap-2">
+            <i-ho-pencil v-if="item.action === 'edit'" />
             <i-ho-document-duplicate v-if="item.action === 'duplicate'" />
-            <i-ho-flag v-if="item.action === 'report'" />
+            <i-ho-flag
+              v-if="item.action === 'report' || item.action === 'flag'"
+            />
             <i-ho-trash v-if="item.action === 'delete'" />
             {{ item.text }}
           </div>

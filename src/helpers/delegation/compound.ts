@@ -49,6 +49,8 @@ export class CompoundGovernorConfig extends StandardConfig {
       const votesPercentage =
         Number(delegate.delegatedVotes) / Number(governanceData.delegatedVotes);
 
+      delegate.id = delegate.id.toLowerCase();
+
       return {
         ...delegate,
         delegatorsPercentage,
@@ -106,7 +108,7 @@ export class CompoundGovernorConfig extends StandardConfig {
 
     return {
       ...{
-        id: delegate.id,
+        id: delegate.id.toLowerCase(),
         delegatedVotes: delegate?.delegatedVotes || '0',
         tokenHoldersRepresentedAmount:
           delegate?.tokenHoldersRepresentedAmount || 0
@@ -130,6 +132,13 @@ export class CompoundGovernorConfig extends StandardConfig {
     return {
       abi: ['function delegate(address delegatee)'],
       action: 'delegate'
+    };
+  }
+
+  getContractDelegatingToMethod(): { abi: string[]; action: string } {
+    return {
+      abi: ['function delegates(address) view returns (address)'],
+      action: 'delegates'
     };
   }
 }

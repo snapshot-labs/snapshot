@@ -50,7 +50,8 @@ async function getProposals(skip = 0) {
           skip,
           space_in: spaces,
           state: stateFilter.value,
-          space_verified: verified
+          space_verified: verified,
+          flagged: false
         }
       },
       'proposals'

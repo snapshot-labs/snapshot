@@ -596,9 +596,6 @@
       "label": "Gitcoin Passport ゲート付き",
       "description": "Gitcoin Passportを必要とすることで、スパムや投票操作からあなたの提案を保護します。",
       "invalidMessage": "この提案に投票するためには、{amount} 以下の切手を持つGitcoin Passportが必要です：{stamps}。"
-    },
-    "passport-weighted": {
-      "label": "Gitcoin Passport 重み付き"
     }
   },
   "safeSnap": {

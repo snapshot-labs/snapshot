@@ -10,6 +10,8 @@ interface QuorumProps {
   results: Results;
 }
 
+const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+
 export function useQuorum(props: QuorumProps) {
   const loading = ref(false);
   const quorum = ref(0);
@@ -74,7 +76,7 @@ export function useQuorum(props: QuorumProps) {
         );
         const requests: Promise<any>[] = strategies.map(s =>
           call(
-            getProvider(s.network),
+            getProvider(s.network, { broviderUrl }),
             [s.methodABI],
             [s.address, s.methodABI.name],
             { blockTag: blocks[s.network] }
@@ -100,7 +102,7 @@ export function useQuorum(props: QuorumProps) {
   async function loadQuorum() {
     loading.value = true;
     quorum.value = await getQuorum(
-      getProvider(props.space.network),
+      getProvider(props.space.network, { broviderUrl }),
       props.space.plugins.quorum,
       props.proposal.snapshot
     );

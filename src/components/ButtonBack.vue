@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <button>
+  <button type="button">
     <div
       class="inline-flex items-center gap-1 text-skin-text hover:text-skin-link"
     >

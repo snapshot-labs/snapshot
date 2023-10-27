@@ -351,7 +351,7 @@ export const PROFILES_QUERY = gql`
 
 export const USER_VOTED_PROPOSAL_IDS_QUERY = gql`
   query Votes($voter: String!, $proposals: [String]!) {
-    votes(where: { voter: $voter, proposal_in: $proposals }) {
+    votes(first: 1000, where: { voter: $voter, proposal_in: $proposals }) {
       proposal {
         id
       }
@@ -505,6 +505,22 @@ export const SPACE_QUERY = gql`
         address
         network
       }
+    }
+  }
+`;
+
+export const DELEGATE_VOTES_AND_PROPOSALS = gql`
+  query VotesAndProposals($delegates: [String]!, $space: String!) {
+    votes(first: 1000, where: { voter_in: $delegates, space: $space }) {
+      created
+      voter
+      choice
+      vp
+    }
+    proposals(first: 1000, where: { author_in: $delegates, space: $space }) {
+      created
+      author
+      title
     }
   }
 `;
