@@ -250,7 +250,9 @@ function handleNetworkSelect(value) {
               class="mt-3 overflow-x-auto"
               style="border-color: red !important"
             >
-              <pre class="!text-red whitespace-pre-wrap"> {{ strategyError }}</pre>
+              <pre class="whitespace-pre-wrap !text-red">
+ {{ strategyError }}</pre
+              >
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('addresses')">
