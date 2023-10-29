@@ -5594,6 +5594,11 @@ minisearch@^6.0.1:
   resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.1.0.tgz#6e74e743dbd0e88fa5ca52fef2391e0aa7055252"
   integrity sha512-PNxA/X8pWk+TiqPbsoIYH0GQ5Di7m6326/lwU/S4mlo4wGQddIcf/V//1f9TB0V4j59b57b+HZxt8h3iMROGvg==
 
+mixpanel-browser@^2.47.0:
+  version "2.47.0"
+  resolved "https://registry.yarnpkg.com/mixpanel-browser/-/mixpanel-browser-2.47.0.tgz#4e7fd3bb660c6f63443efbd169d1cd327db71ed4"
+  integrity sha512-Ldrva0fRBEIFWmEibBQO1PulfpJVF3pf28Guk09lDirDaSQqqU/xs9zQLwN2rL5VwVtsP1aD3JaCgaa98EjojQ==
+
 mlly@^1.1.1, mlly@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/mlly/-/mlly-1.2.0.tgz#f0f6c2fc8d2d12ea6907cd869066689b5031b613"
