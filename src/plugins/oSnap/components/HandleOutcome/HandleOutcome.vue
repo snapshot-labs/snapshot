@@ -129,14 +129,16 @@ async function updateOgProposalState() {
 }
 
 async function onApproveBond() {
+  if (!collateralDetails.value || !ogModuleDetails.value) return;
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
 
     const approvingBond = approveBond(
-      props.network,
       getInstance().web3,
-      props.moduleAddress
+      props.moduleAddress,
+      collateralDetails.value?.address,
+      ogModuleDetails.value?.minimumBond
     );
     const step = await approvingBond.next();
     if (step.value)

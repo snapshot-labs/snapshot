@@ -1,8 +1,8 @@
+import { BigNumber } from '@ethersproject/bignumber';
 import { toUtf8Bytes } from '@ethersproject/strings';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { ERC20_ABI, OPTIMISTIC_GOVERNOR_ABI } from '../constants';
-import { Network, OptimisticGovernorTransaction } from '../types';
-import { getOGProposalState } from './getters';
+import { OptimisticGovernorTransaction } from '../types';
 
 /**
  * The user must approve the spend of the collateral token before they can submit a proposal.
@@ -10,24 +10,18 @@ import { getOGProposalState } from './getters';
  * If the proposal is disputed and fails a vote, the user will lose their bond.
  */
 export async function* approveBond(
-  network: Network,
   web3: any,
   moduleAddress: string,
-  transactions?: OptimisticGovernorTransaction[]
+  collateralAddress: string,
+  minimumBond: BigNumber,
 ) {
-  const moduleDetails = await getOGProposalState(
-    network,
-    moduleAddress,
-    network,
-    transactions
-  );
 
   const approveTx = await sendTransaction(
     web3,
-    moduleDetails.collateral,
+    collateralAddress,
     ERC20_ABI as any,
     'approve',
-    [moduleAddress, moduleDetails.minimumBond],
+    [moduleAddress, minimumBond],
     {}
   );
   yield approveTx;
