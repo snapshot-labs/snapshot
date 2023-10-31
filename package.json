@@ -100,7 +100,7 @@
     "unplugin-auto-import": "^0.16.1",
     "unplugin-icons": "^0.16.5",
     "unplugin-vue-components": "^0.25.2",
-    "vite": "^2.9.14",
+    "vite": "^4.5.0",
     "vitest": "^0.33.0"
   },
   "resolutions": {
