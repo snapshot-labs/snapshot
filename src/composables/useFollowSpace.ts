@@ -27,7 +27,7 @@ export function useFollowSpace(spaceId: any = {}) {
     )
   );
 
-  async function loadFollows() {
+  async function loadFollows(spaceId: string | undefined = undefined) {
     const { isAuthenticated } = getInstance();
 
     if (!isAuthenticated.value) return;
@@ -38,7 +38,8 @@ export function useFollowSpace(spaceId: any = {}) {
         {
           query: FOLLOWS_QUERY,
           variables: {
-            follower_in: web3Account.value
+            follower_in: web3Account.value,
+            space_in: spaceId ? [spaceId] : undefined
           }
         },
         'follows'
