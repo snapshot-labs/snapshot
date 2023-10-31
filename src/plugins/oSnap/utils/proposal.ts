@@ -13,9 +13,8 @@ export async function* approveBond(
   web3: any,
   moduleAddress: string,
   collateralAddress: string,
-  minimumBond: BigNumber,
+  minimumBond: BigNumber
 ) {
-
   const approveTx = await sendTransaction(
     web3,
     collateralAddress,
