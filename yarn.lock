@@ -1309,10 +1309,10 @@
   dependencies:
     ofetch "^1.3.3"
 
-"@snapshot-labs/snapshot.js@^0.7.9":
-  version "0.7.9"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.7.9.tgz#6e0117b8601c794af7aefd1ad1daf4d354c8c078"
-  integrity sha512-YcQXQ7CeEemPHwR1HfDPNN3qdGL3xPsmP/iKiVcD93pJzl7vXOoTmKjiBW8qRPNS2JI65OY72V+5Zt4geaBWaw==
+"@snapshot-labs/snapshot.js@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.8.0.tgz#f440c60a34cdc886d9bfc9f578278bb14ee0aa21"
+  integrity sha512-FnTwofZuI57l2n7+krYGIYh7LkF955ItM6T+vsAH7gaVSUlMWYcA3tGOcgsj0STwjge3Y8JwgUsfPf3SadOYow==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
