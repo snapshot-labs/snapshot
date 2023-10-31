@@ -27,7 +27,7 @@ export function useFollowSpace(spaceId: any = {}) {
     )
   );
 
-  async function loadFollows(spaceId: string | undefined = undefined) {
+  async function loadFollows(spaceId?: string) {
     const { isAuthenticated } = getInstance();
 
     if (!isAuthenticated.value) return;
