@@ -82,6 +82,12 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       target: 'esnext'
+    },
+    exclude: ['@snapshot-labs/tune']
+  },
+  server: {
+    watch: {
+      ignored: ['!**/node_modules/@snapshot-labs/tune/**']
     }
   }
 });
