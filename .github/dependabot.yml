@@ -6,3 +6,22 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "@snapshot-labs/*"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 0
+ - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        exclude-patterns:
+        - "@snapshot-labs*"
+      development-dependencies:
+        dependency-type: "development"
+      
+
+ 
