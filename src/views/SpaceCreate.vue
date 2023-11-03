@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
 import { ExtendedSpace } from '@/helpers/interfaces';
@@ -36,9 +35,8 @@ const { notify } = useFlashNotification();
 const router = useRouter();
 const route = useRoute();
 const { t } = useI18n();
-const auth = getInstance();
 const { domain } = useApp();
-const { web3, web3Account } = useWeb3();
+const { web3Account, isConnecting, isConnected } = useWeb3();
 const { send, isSending } = useClient();
 const { pluginIndex } = usePlugins();
 const { modalAccountOpen } = useModal();
@@ -134,7 +132,7 @@ const isFormValid = computed(() => {
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     isValidAuthor.value &&
     isSafeSnapPluginValid &&
-    !web3.value.authLoading
+    !isConnecting.value
   );
 });
 
@@ -306,7 +304,7 @@ function updateTime() {
 
 async function validateAuthor() {
   isValidAuthor.value = false;
-  if (web3Account.value && auth.isAuthenticated.value) {
+  if (web3Account.value && isConnected.value) {
     if (isMember.value) {
       isValidAuthor.value = true;
       return;
@@ -490,7 +488,7 @@ onBeforeRouteLeave(async () => {
           :loading="validationLoading || isSnapshotLoading"
           :disabled="
             (!stepIsValid && !!web3Account) ||
-            web3.authLoading ||
+            isConnecting ||
             hasAuthorValidationFailed ||
             validationLoading ||
             isGnosisAndNotSpaceNetwork

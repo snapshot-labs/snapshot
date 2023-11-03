@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
@@ -22,7 +21,7 @@ const { notify } = useFlashNotification();
 const { t } = useI18n();
 
 const usingMetaMask = computed(() => {
-  return window.ethereum && getInstance().provider.value?.isMetaMask;
+  return window.ethereum && window.ethereum.isMetamask;
 });
 
 const switchingChain = ref(false);

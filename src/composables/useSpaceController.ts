@@ -1,4 +1,3 @@
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import namehash from '@ensdomains/eth-ens-namehash';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getAddress } from '@ethersproject/address';
@@ -19,8 +18,7 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
 
 export function useSpaceController() {
-  const { web3, web3Account } = useWeb3();
-  const auth = getInstance();
+  const { web3Account, chain, web3ProviderRef } = useWeb3();
   const { t } = useI18n();
   const route = useRoute();
   const { domain } = useApp();
@@ -28,7 +26,7 @@ export function useSpaceController() {
 
   const ensAbi = ['function setText(bytes32 node, string key, string value)'];
 
-  const networkKey = computed(() => web3.value.network.key);
+  const networkKey = computed(() => chain.value.id.toString());
 
   const ensAddress = computed(
     () => domain || route.params.ens || route.params.key
@@ -54,7 +52,7 @@ export function useSpaceController() {
       const ensname = ensAddress.value;
       const node = namehash.hash(ensname);
       const tx = await sendTransaction(
-        auth.web3,
+        web3ProviderRef.value,
         ensPublicResolverAddress,
         ensAbi,
         'setText',

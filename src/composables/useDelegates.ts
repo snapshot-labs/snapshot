@@ -5,7 +5,6 @@ import {
   ExtendedSpace
 } from '@/helpers/interfaces';
 import { createStandardConfig } from '@/helpers/delegation/index';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
 import {
   subgraphRequest,
@@ -34,9 +33,9 @@ function adjustUrl(apiUrl: string) {
 export function useDelegates(space: ExtendedSpace) {
   const { resolveName } = useResolveName();
   const { apolloQuery } = useApolloQuery();
-  const auth = getInstance();
   const { loadStatements } = useStatement();
   const { loadProfiles } = useProfiles();
+  const { web3ProviderRef } = useWeb3();
 
   const standardConfig = createStandardConfig(
     space.delegationPortal.delegationType
@@ -179,7 +178,7 @@ export function useDelegates(space: ExtendedSpace) {
   async function setDelegate(address: string) {
     const contractMethod = standardConfig.getContractDelegateMethod();
     const tx = await sendTransaction(
-      auth.web3,
+      web3ProviderRef.value,
       space.delegationPortal.delegationContract,
       contractMethod.abi,
       contractMethod.action,

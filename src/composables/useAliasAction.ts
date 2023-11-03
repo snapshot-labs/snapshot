@@ -8,7 +8,6 @@
 
 import { lsGet, lsSet } from '@/helpers/utils';
 import { Wallet } from '@ethersproject/wallet';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getDefaultProvider, Provider } from '@ethersproject/providers';
 import { ALIASES_QUERY } from '@/helpers/queries';
 import client from '@/helpers/clientEIP712';
@@ -19,12 +18,11 @@ const isValidAlias = ref(false);
 export function useAliasAction() {
   const { notify } = useFlashNotification();
   const { t } = useI18n();
-  const { web3 } = useWeb3();
-  const auth = getInstance();
+  const { web3Account, web3ProviderRef } = useWeb3();
   const { apolloQuery } = useApolloQuery();
 
   const userAlias = computed(() => {
-    return aliases.value?.[web3.value.account];
+    return aliases.value?.[web3Account.value];
   });
 
   const aliasWallet: any = computed(() => {
@@ -33,12 +31,12 @@ export function useAliasAction() {
   });
 
   async function checkAlias() {
-    if (aliasWallet.value?.address && web3.value?.account) {
+    if (aliasWallet.value?.address && web3Account.value) {
       const alias = await apolloQuery(
         {
           query: ALIASES_QUERY,
           variables: {
-            address: web3.value.account,
+            address: web3Account.value,
             alias: aliasWallet.value.address
           }
         },
@@ -46,7 +44,7 @@ export function useAliasAction() {
       );
 
       isValidAlias.value =
-        alias[0]?.address === web3.value.account &&
+        alias[0]?.address === web3Account.value &&
         alias[0]?.alias === aliasWallet.value.address;
     }
   }
@@ -55,14 +53,14 @@ export function useAliasAction() {
     const rndWallet = Wallet.createRandom();
     aliases.value = Object.assign(
       {
-        [web3.value.account]: rndWallet.privateKey
+        [web3Account.value]: rndWallet.privateKey
       },
       aliases.value
     );
     lsSet('aliases', aliases.value);
 
     if (aliasWallet.value?.address) {
-      await client.alias(auth.web3, web3.value.account, {
+      await client.alias(web3ProviderRef.value, web3Account.value, {
         alias: aliasWallet.value.address
       });
     }

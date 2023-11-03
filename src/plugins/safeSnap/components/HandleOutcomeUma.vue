@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin from '../index';
@@ -33,7 +32,7 @@ const { formatDuration } = useIntl();
 const { t } = useI18n();
 
 const { clearBatchError } = useSafe();
-const { web3 } = useWeb3();
+const { web3Account, web3ProviderRef, chain, isConnected } = useWeb3();
 const {
   createPendingTransaction,
   updatePendingTransaction,
@@ -111,7 +110,7 @@ const approveBondUma = async () => {
 
     const approveBond = plugin.approveBondUma(
       props.network,
-      getInstance().web3,
+      web3ProviderRef.value,
       props.umaAddress
     );
     const step = await approveBond.next();
@@ -138,13 +137,13 @@ const getProposalUrl = (chain: string, txHash: string, logIndex: number) => {
 };
 
 const submitProposalUma = async () => {
-  if (!getInstance().isAuthenticated.value) return;
+  if (!isConnected.value) return;
   action1State.value = 'submit-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
     const proposalSubmission = plugin.submitProposalUma(
-      getInstance().web3,
+      web3ProviderRef.value,
       props.umaAddress,
       props.proposal.ipfs,
       getTransactionsUma()
@@ -166,7 +165,7 @@ const submitProposalUma = async () => {
 };
 
 const executeProposalUma = async () => {
-  if (!getInstance().isAuthenticated.value) return;
+  if (!isConnected.value) return;
   action2State.value = 'execute-proposal';
   const txPendingId = createPendingTransaction();
   try {
@@ -180,7 +179,7 @@ const executeProposalUma = async () => {
   try {
     clearBatchError();
     const executingProposal = plugin.executeProposalUma(
-      getInstance().web3,
+      web3ProviderRef.value,
       props.umaAddress,
       getTransactionsUma()
     );
@@ -200,14 +199,11 @@ const executeProposalUma = async () => {
 };
 
 const usingMetaMask = computed(() => {
-  return (
-    // @ts-expect-error window.ethereum is not in the types
-    window.ethereum && getInstance().provider.value?.isMetaMask
-  );
+  return window.ethereum && window.ethereum.isMetaMask;
 });
 
 const connectedToRightChain = computed(() => {
-  return getInstance().provider.value?.chainId === parseInt(props.network);
+  return chain.value.id === parseInt(props.network);
 });
 
 const networkName = computed(() => {
@@ -243,7 +239,7 @@ function wasProposalFinalized(proposal: Proposal) {
 }
 
 const questionState = computed<QuestionState>(() => {
-  if (!web3.value.account) return 'no-wallet-connection';
+  if (!web3Account.value) return 'no-wallet-connection';
 
   if (loading.value) return 'loading';
 

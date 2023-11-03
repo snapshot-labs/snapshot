@@ -2,7 +2,6 @@
 import Plugin from '../index';
 
 const { notify } = useFlashNotification();
-const { web3Account } = useWeb3();
 
 const STATES = {
   NOT_VOTED: {
@@ -136,6 +135,13 @@ export default {
       this.currentState = currentState;
       this.loading = false;
     }
+  },
+  setup() {
+    const { web3Account } = useWeb3();
+
+    return {
+      web3Account
+    };
   }
 };
 </script>

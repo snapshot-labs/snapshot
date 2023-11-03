@@ -6,7 +6,7 @@ import client from '@/helpers/clientEIP712';
 const subscriptions = ref<any[] | undefined>(undefined);
 
 export function useSpaceSubscription(spaceId: any) {
-  const { web3, web3Account } = useWeb3();
+  const { web3Account, isConnecting } = useWeb3();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
   const { notify } = useFlashNotification();
@@ -72,7 +72,7 @@ export function useSpaceSubscription(spaceId: any) {
   };
 
   async function toggleSubscription() {
-    if (web3.value.authLoading) {
+    if (isConnecting.value) {
       return null;
     }
 

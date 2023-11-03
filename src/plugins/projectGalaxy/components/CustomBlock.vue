@@ -1,8 +1,6 @@
 <script>
 import Plugin from '../index';
 
-const { web3Account } = useWeb3();
-
 const APP_URL = 'https://galxe.com';
 const NO_OAT_IMAGE =
   'https://snapshotsplugin.s3.us-west-2.amazonaws.com/placeholder.png';
@@ -188,6 +186,14 @@ export default {
         await this.updateState();
       }
     }
+  },
+
+  setup() {
+    const { web3Account } = useWeb3();
+
+    return {
+      web3Account
+    };
   }
 };
 </script>

@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
-const { login, web3, web3Account } = useWeb3();
+const { connect, web3Account, isConnecting, isConnected } = useWeb3();
 const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
   useProfiles();
 const { modalAccountOpen } = useModal();
-const auth = getInstance();
 
 const loading = ref(false);
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
-  await login(connector);
+  await connect(connector);
   loading.value = false;
 }
 
@@ -25,10 +23,10 @@ watchEffect(() => {
 </script>
 
 <template>
-  <template v-if="auth.isAuthenticated && web3Account">
+  <template v-if="isConnected && web3Account">
     <MenuAccount :address="web3Account" @switchWallet="modalAccountOpen = true">
       <BaseButton
-        :loading="web3.authLoading || loadingProfiles || reloadingProfile"
+        :loading="isConnecting || loadingProfiles || reloadingProfile"
         class="flex items-center"
         data-testid="button-account-menu"
       >
@@ -48,11 +46,11 @@ watchEffect(() => {
   </template>
 
   <BaseButton
-    v-if="!auth.isAuthenticated.value"
-    :loading="loading || web3.authLoading"
+    v-if="!isConnected"
+    :loading="loading || isConnecting"
     :aria-label="$t('connectWallet')"
     data-testid="button-connect-wallet"
-    @click="modalAccountOpen = true"
+    @click="connect"
   >
     <span class="hidden sm:block" v-text="$t('connectWallet')" />
     <i-ho-login class="-ml-2 -mr-[11px] block align-text-bottom sm:hidden" />

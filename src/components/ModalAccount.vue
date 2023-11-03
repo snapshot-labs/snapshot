@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { getInjected } from '@snapshot-labs/lock/src/utils';
-import connectors from '@/helpers/connectors';
 import { getIpfsUrl } from '@/helpers/utils';
 
 const props = defineProps<{
@@ -13,13 +11,11 @@ const { open } = toRefs(props);
 
 const isShowingAllConnectors = ref(false);
 
-const injected = computed(() => getInjected());
-
-const filteredConnectors = computed(() => {
-  const baseConnectors = ['injected', 'walletconnect', 'walletlink'];
-  if (isShowingAllConnectors.value) return Object.keys(connectors);
-  return Object.keys(connectors).filter(cId => baseConnectors.includes(cId));
-});
+// const filteredConnectors = computed(() => {
+//   const baseConnectors = ['injected', 'walletconnect', 'walletlink'];
+//   if (isShowingAllConnectors.value) return Object.keys(connectors);
+//   return Object.keys(connectors).filter(cId => baseConnectors.includes(cId));
+// });
 
 watch(open, () => {
   isShowingAllConnectors.value = false;
@@ -33,7 +29,7 @@ watch(open, () => {
         {{ $t('connectWallet') }}
       </h3>
     </template>
-    <div>
+    <!-- <div>
       <div class="m-4 space-y-2">
         <div
           v-for="cId in filteredConnectors"
@@ -77,6 +73,6 @@ watch(open, () => {
           <i-ho-chevron-down class="text-sm text-skin-text" />
         </BaseButton>
       </div>
-    </div>
+    </div> -->
   </BaseModal>
 </template>

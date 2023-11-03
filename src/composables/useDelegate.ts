@@ -7,12 +7,10 @@ import {
   sleep,
   SNAPSHOT_SUBGRAPH_URL
 } from '@snapshot-labs/snapshot.js/src/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useDelegate() {
   const abi = ['function setDelegate(bytes32 id, address delegate)'];
 
-  const auth = getInstance();
   const { notify } = useFlashNotification();
   const {
     createPendingTransaction,
@@ -21,11 +19,11 @@ export function useDelegate() {
   } = useTxStatus();
   const { validEnsTlds } = useEns();
   const { t } = useI18n();
-  const { web3 } = useWeb3();
+  const { web3ProviderRef, chain } = useWeb3();
 
   const loading = ref(false);
 
-  const networkKey = computed(() => web3.value.network.key);
+  const networkKey = computed(() => chain?.value?.id);
 
   const networkSupportsDelegate = computed(
     () => SNAPSHOT_SUBGRAPH_URL[networkKey.value] !== undefined
@@ -43,7 +41,7 @@ export function useDelegate() {
         ethAddress = await provider.resolveName(address);
       }
       const tx = await sendTransaction(
-        auth.web3,
+        web3ProviderRef.value,
         contractAddress,
         abi,
         'setDelegate',

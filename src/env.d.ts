@@ -8,3 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_PUSHER_BEAMS_INSTANCE_ID: string;
   readonly VITE_BROVIDER_URL: string;
 }
+
+interface Window {
+  ethereum: any;
+}

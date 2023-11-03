@@ -9,7 +9,7 @@ const props = defineProps<{
   containsShortUrl: boolean;
 }>();
 
-const { web3, web3Account } = useWeb3();
+const { web3Account, isConnecting } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { errorFetchingSnapshot } = useSnapshot();
 
@@ -62,7 +62,7 @@ const strategySymbolsString = computed(() => {
     <BaseMessageBlock
       v-else-if="
         !web3Account &&
-        !web3.authLoading &&
+        !isConnecting &&
         (props.space.validation.name || space.filters.onlyMembers)
       "
       level="warning"

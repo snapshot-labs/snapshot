@@ -1,13 +1,11 @@
 import clientEIP712 from '@/helpers/clientEIP712';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useClient() {
   const { t } = useI18n();
   const { notify } = useFlashNotification();
   const { notifyModal } = useModalNotification();
   const { isGnosisSafe } = useGnosis();
-  const { web3 } = useWeb3();
-  const auth = getInstance();
+  const { web3Account, web3ProviderRef } = useWeb3();
   const route = useRoute();
 
   const DEFINED_APP = (route?.query.app as string) || 'snapshot';
@@ -43,7 +41,7 @@ export function useClient() {
       plugins = payload.metadata.plugins;
     const client = clientEIP712;
     if (type === 'create-proposal') {
-      return client.proposal(auth.web3, web3.value.account, {
+      return client.proposal(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -57,7 +55,7 @@ export function useClient() {
         app: DEFINED_APP
       });
     } else if (type === 'update-proposal') {
-      return client.updateProposal(auth.web3, web3.value.account, {
+      return client.updateProposal(web3ProviderRef.value, web3Account.value, {
         proposal: payload.id,
         space: space.id,
         type: payload.type,
@@ -68,7 +66,7 @@ export function useClient() {
         plugins: JSON.stringify(plugins)
       });
     } else if (type === 'vote') {
-      return client.vote(auth.web3, web3.value.account, {
+      return client.vote(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -78,27 +76,27 @@ export function useClient() {
         reason: payload.reason
       });
     } else if (type === 'delete-proposal') {
-      return client.cancelProposal(auth.web3, web3.value.account, {
+      return client.cancelProposal(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         proposal: payload.proposal.id
       });
     } else if (type === 'settings') {
-      return client.space(auth.web3, web3.value.account, {
+      return client.space(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
     } else if (type === 'delete-space') {
-      return client.deleteSpace(auth.web3, web3.value.account, {
+      return client.deleteSpace(web3ProviderRef.value, web3Account.value, {
         space: space.id
       });
     } else if (type === 'set-statement') {
-      return client.statement(auth.web3, web3.value.account, {
+      return client.statement(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         about: payload.about,
         statement: payload.statement
       });
     } else if (type === 'flag-proposal') {
-      return client.flagProposal(auth.web3, web3.value.account, {
+      return client.flagProposal(web3ProviderRef.value, web3Account.value, {
         space: space.id,
         proposal: payload.proposal.id
       });

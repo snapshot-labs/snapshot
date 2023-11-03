@@ -5,7 +5,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['switchWallet']);
 const { domain } = useApp();
-const { logout } = useWeb3();
+const { disconnect } = useWeb3();
 const router = useRouter();
 const { userState, loadEmailSubscriptions } = useEmailSubscription();
 
@@ -33,7 +33,7 @@ function handleAction(e) {
     return true;
   }
 
-  return logout();
+  return disconnect();
 }
 </script>
 
