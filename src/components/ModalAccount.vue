@@ -1,25 +1,30 @@
 <script setup lang="ts">
 import { getIpfsUrl } from '@/helpers/utils';
+import { useConnect } from 'use-wagmi';
 
-const props = defineProps<{
+defineProps<{
   open: boolean;
 }>();
 
-defineEmits(['login', 'close']);
+const emit = defineEmits(['connect', 'close']);
 
-const { open } = toRefs(props);
+const { connectors } = useConnect();
 
-const isShowingAllConnectors = ref(false);
+function getWalletIcons(id) {
+  switch (id) {
+    case 'injected':
+      return 'ipfs://QmTE7VPXMhriKAobMWEiC5S3oG22p4G6AXGyGdNWQTQ3Fv';
+    case 'coinbaseWallet':
+      return 'ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q';
+    case 'walletConnect':
+      return 'ipfs://QmZRVqHpgRemw13aoovP2EaQdVtjzXRaQGQZsCLXWaNn9x';
+    case 'safe':
+      return 'ipfs://QmfJUHZLtRvadM7fvEJUWWxhS869KXXCMxPCr7TUqkwvUc';
 
-// const filteredConnectors = computed(() => {
-//   const baseConnectors = ['injected', 'walletconnect', 'walletlink'];
-//   if (isShowingAllConnectors.value) return Object.keys(connectors);
-//   return Object.keys(connectors).filter(cId => baseConnectors.includes(cId));
-// });
-
-watch(open, () => {
-  isShowingAllConnectors.value = false;
-});
+    default:
+      return 'ipfs://QmXUov1JMszHkizCf3HvmcKWKm9PrG2KHpd5bDnE5YbZN8';
+  }
+}
 </script>
 
 <template>
@@ -29,50 +34,24 @@ watch(open, () => {
         {{ $t('connectWallet') }}
       </h3>
     </template>
-    <!-- <div>
-      <div class="m-4 space-y-2">
-        <div
-          v-for="cId in filteredConnectors"
-          :key="cId"
-          class="block"
-          @click="$emit('login', connectors[cId].id)"
-        >
-          <BaseButton
-            v-if="cId === 'injected' && injected"
-            class="flex w-full items-center justify-center"
-            data-testid="button-connnect-wallet-injected"
-          >
-            <img
-              :src="getIpfsUrl(injected.icon)"
-              height="28"
-              width="28"
-              class="-mt-1 mr-2"
-              :alt="injected.name"
-            />
-            {{ injected.name }}
-          </BaseButton>
-          <BaseButton
-            v-else-if="cId !== 'injected' && !connectors[cId].hidden"
-            class="flex w-full items-center justify-center gap-2"
-          >
-            <img
-              :src="getIpfsUrl(connectors[cId].icon)"
-              height="25"
-              width="25"
-              :alt="connectors[cId].name"
-            />
-            <span>{{ connectors[cId].name }}</span>
-          </BaseButton>
-        </div>
+    <div class="m-4 space-y-2">
+      <template v-for="connector in connectors" :key="connector.id">
         <BaseButton
-          v-if="!isShowingAllConnectors"
-          class="flex w-full items-center justify-center gap-1"
-          @click="isShowingAllConnectors = true"
+          v-if="connector.ready"
+          class="flex w-full items-center justify-center"
+          data-testid="button-connnect-wallet-injected"
+          @click="emit('connect', connector)"
         >
-          {{ $t('showMore') }}
-          <i-ho-chevron-down class="text-sm text-skin-text" />
+          <img
+            :src="getIpfsUrl(getWalletIcons(connector.id))"
+            height="28"
+            width="28"
+            class="-mt-1 mr-2"
+            :alt="connector.name"
+          />
+          {{ connector.name }}
         </BaseButton>
-      </div>
-    </div> -->
+      </template>
+    </div>
   </BaseModal>
 </template>

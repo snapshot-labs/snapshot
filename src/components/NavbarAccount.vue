@@ -8,11 +8,9 @@ const { modalAccountOpen } = useModal();
 
 const loading = ref(false);
 
-async function handleLogin(connector) {
+async function handleConnect(connector) {
   modalAccountOpen.value = false;
-  loading.value = true;
-  await connect(connector);
-  loading.value = false;
+  connect({ connector });
 }
 
 const profile = computed(() => profiles.value[web3Account.value]);
@@ -50,7 +48,7 @@ watchEffect(() => {
     :loading="loading || isConnecting"
     :aria-label="$t('connectWallet')"
     data-testid="button-connect-wallet"
-    @click="connect"
+    @click="modalAccountOpen = true"
   >
     <span class="hidden sm:block" v-text="$t('connectWallet')" />
     <i-ho-login class="-ml-2 -mr-[11px] block align-text-bottom sm:hidden" />
@@ -61,7 +59,7 @@ watchEffect(() => {
       :open="modalAccountOpen"
       :profile="profile"
       @close="modalAccountOpen = false"
-      @login="handleLogin"
+      @connect="handleConnect"
     />
   </teleport>
 </template>
