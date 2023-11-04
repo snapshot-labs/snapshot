@@ -26,7 +26,6 @@ watch(
   },
   { immediate: true }
 );
-
 </script>
 
 <template>
