@@ -92,6 +92,11 @@ class LensResolver {
 }
 
 export const resolveLensAddresses = async (addresses: Address[]) => {
-  const resolver = new LensResolver();
-  return await resolver.resolveAddresses(addresses);
+  try {
+    const resolver = new LensResolver();
+    return await resolver.resolveAddresses(addresses);
+  } catch (e) {
+    console.log(e);
+    return {};
+  }
 };
