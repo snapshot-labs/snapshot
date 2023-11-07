@@ -211,7 +211,9 @@ async function onExecuteProposal() {
 }
 
 const connectedToRightChain = computed(() => {
-  return getInstance().provider.value?.chainId === `0x${props.network}`;
+  return (
+    Number(getInstance().provider.value?.chainId) === Number(props.network)
+  );
 });
 
 const networkName = computed(() => {
