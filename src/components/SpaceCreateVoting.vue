@@ -192,14 +192,14 @@ defineEmits<{
           <SpaceCreateVotingDateStart
             :delay="space.voting?.delay"
             :date="dateStart"
-            :disabled="isEditing || !!space.voting?.delay"
+            :is-editing="isEditing"
             @select="value => setDateStart(value)"
           />
 
           <SpaceCreateVotingDateEnd
             :period="space.voting?.period"
             :date="dateEnd"
-            :disabled="isEditing || !!space.voting?.period"
+            :is-editing="isEditing"
             @select="value => setDateEnd(value)"
           />
         </div>

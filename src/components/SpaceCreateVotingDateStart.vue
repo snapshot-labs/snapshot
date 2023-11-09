@@ -4,6 +4,7 @@ const { t, d } = useI18n();
 const props = withDefaults(
   defineProps<{
     delay?: number | null;
+    isEditing?: boolean;
     date: number;
   }>(),
   {
@@ -17,6 +18,7 @@ const dateString = computed(() =>
     ? t('create.now')
     : d(props.date * 1e3, 'short', 'en-US')
 );
+const isDisabled = computed(() => !!props.delay || props.isEditing);
 
 const emit = defineEmits(['select']);
 </script>
@@ -25,9 +27,10 @@ const emit = defineEmits(['select']);
   <InputDate
     type="start"
     :title="$t(`create.start`)"
+    :disabled="isDisabled"
     :date="date"
     :date-string="dateString"
-    :tooltip="!!delay ? $t('create.delayEnforced') : null"
+    :tooltip="(!!delay && !isEditing) ? $t('create.delayEnforced') : null"
     @update:date="emit('select', $event)"
   />
 </template>

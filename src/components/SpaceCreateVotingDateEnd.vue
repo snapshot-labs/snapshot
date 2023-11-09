@@ -4,6 +4,7 @@ const { d } = useI18n();
 const props = withDefaults(
   defineProps<{
     period?: number | null;
+    isEditing?: boolean;
     date: number;
   }>(),
   {
@@ -12,6 +13,7 @@ const props = withDefaults(
 );
 
 const dateString = computed(() => d(props.date * 1e3, 'short', 'en-US'));
+const isDisabled = computed(() => !!props.period || props.isEditing);
 
 const emit = defineEmits(['select']);
 </script>
@@ -20,9 +22,10 @@ const emit = defineEmits(['select']);
   <InputDate
     type="end"
     :title="$t(`create.end`)"
+    :disabled="isDisabled"
     :date="date"
     :date-string="dateString"
-    :tooltip="!!period ? $t('create.periodEnforced') : null"
+    :tooltip="(!!period && !isEditing) ? $t('create.periodEnforced') : null"
     @update:date="emit('select', $event)"
   />
 </template>
