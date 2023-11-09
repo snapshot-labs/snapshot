@@ -25,7 +25,7 @@ const emit = defineEmits(['select']);
     :disabled="isDisabled"
     :date="date"
     :date-string="dateString"
-    :tooltip="(!!period && !isEditing) ? $t('create.periodEnforced') : null"
+    :tooltip="!!period && !isEditing ? $t('create.periodEnforced') : null"
     @update:date="emit('select', $event)"
   />
 </template>

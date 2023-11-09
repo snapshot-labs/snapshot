@@ -30,7 +30,7 @@ const emit = defineEmits(['select']);
     :disabled="isDisabled"
     :date="date"
     :date-string="dateString"
-    :tooltip="(!!delay && !isEditing) ? $t('create.delayEnforced') : null"
+    :tooltip="!!delay && !isEditing ? $t('create.delayEnforced') : null"
     @update:date="emit('select', $event)"
   />
 </template>
