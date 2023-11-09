@@ -20,7 +20,6 @@ const emit = defineEmits(['select']);
   <InputDate
     type="end"
     :title="$t(`create.end`)"
-    :disabled="!!period"
     :date="date"
     :date-string="dateString"
     :tooltip="!!period ? $t('create.periodEnforced') : null"

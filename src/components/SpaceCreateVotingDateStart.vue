@@ -25,7 +25,6 @@ const emit = defineEmits(['select']);
   <InputDate
     type="start"
     :title="$t(`create.start`)"
-    :disabled="!!delay"
     :date="date"
     :date-string="dateString"
     :tooltip="!!delay ? $t('create.delayEnforced') : null"
