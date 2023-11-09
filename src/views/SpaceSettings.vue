@@ -168,7 +168,6 @@ const {
   cancel: cancelDelete
 } = useConfirmDialog();
 
-
 const isViewOnly = computed(() => {
   return !(isSpaceController.value || isSpaceAdmin.value);
 });
