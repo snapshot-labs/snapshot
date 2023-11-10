@@ -173,7 +173,7 @@ const isViewOnly = computed(() => {
 });
 
 onBeforeRouteLeave(async () => {
-  if (hasFormChanged.value && (isSpaceController.value || isSpaceAdmin.value)) {
+  if (hasFormChanged.value && !isViewOnly.value) {
     const { data } = await openConfirmLeave();
     if (!data) return false;
   }
