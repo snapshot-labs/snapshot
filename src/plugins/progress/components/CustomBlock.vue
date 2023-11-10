@@ -1,10 +1,9 @@
 <script setup>
 import Plugin from '../index';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { signMessage } from '@snapshot-labs/snapshot.js/src/utils/web3';
 
 const { notify } = useFlashNotification();
-const { web3Account } = useWeb3();
+const { web3Account, web3ProviderRef } = useWeb3();
 const { t } = useI18n();
 
 const props = defineProps([
@@ -43,9 +42,8 @@ async function requireSignature() {
     return storedAuth;
   }
 
-  const auth = getInstance();
   let signature = await signMessage(
-    auth.web3,
+    web3ProviderRef,
     t('progress.confirmSignature'),
     web3Account.value
   );

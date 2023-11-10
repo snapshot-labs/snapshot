@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
-const { login, web3, web3Account } = useWeb3();
+const { connect, web3Account, isConnecting, isConnected } = useWeb3();
 const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
   useProfiles();
 const { modalAccountOpen } = useModal();
-const auth = getInstance();
 
 const loading = ref(false);
 
-async function handleLogin(connector) {
+async function handleConnect(connector) {
   modalAccountOpen.value = false;
-  loading.value = true;
-  await login(connector);
-  loading.value = false;
+  connect({ connector });
 }
 
 const profile = computed(() => profiles.value[web3Account.value]);
@@ -25,10 +21,10 @@ watch(web3Account, () => {
 </script>
 
 <template>
-  <template v-if="auth.isAuthenticated && web3Account">
+  <template v-if="isConnected && web3Account">
     <MenuAccount :address="web3Account" @switchWallet="modalAccountOpen = true">
       <BaseButton
-        :loading="web3.authLoading || loadingProfiles || reloadingProfile"
+        :loading="isConnecting || loadingProfiles || reloadingProfile"
         class="flex items-center"
         data-testid="button-account-menu"
       >
@@ -48,8 +44,8 @@ watch(web3Account, () => {
   </template>
 
   <BaseButton
-    v-if="!auth.isAuthenticated.value"
-    :loading="loading || web3.authLoading"
+    v-if="!isConnected"
+    :loading="loading || isConnecting"
     :aria-label="$t('connectWallet')"
     data-testid="button-connect-wallet"
     @click="modalAccountOpen = true"
@@ -63,7 +59,7 @@ watch(web3Account, () => {
       :open="modalAccountOpen"
       :profile="profile"
       @close="modalAccountOpen = false"
-      @login="handleLogin"
+      @connect="handleConnect"
     />
   </teleport>
 </template>

@@ -1,7 +1,6 @@
 <script setup>
 import Plugin from '../index';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 import { formatUnits } from '@ethersproject/units';
@@ -13,7 +12,7 @@ const { formatRelativeTime } = useIntl();
 const { t } = useI18n();
 
 const { clearBatchError, setBatchError } = useSafe();
-const { web3 } = useWeb3();
+const { web3Account, web3ProviderRef, isConnected, chain } = useWeb3();
 const {
   createPendingTransaction,
   updatePendingTransaction,
@@ -71,9 +70,9 @@ const updateDetails = async () => {
       props.proposal.id,
       getTxHashes()
     );
-    if (questionDetails.value.questionId && getInstance().web3) {
+    if (questionDetails.value.questionId && web3ProviderRef.value) {
       bondData.value = await plugin.loadClaimBondData(
-        getInstance().web3,
+        web3ProviderRef.value,
         props.network,
         questionDetails.value.questionId,
         questionDetails.value.oracle,
@@ -99,7 +98,7 @@ const claimBond = async () => {
 
     await ensureRightNetwork(props.network);
     const clamingBond = plugin.claimBond(
-      getInstance().web3,
+      web3ProviderRef.value,
       questionDetails.value.oracle,
       questionDetails.value.questionId,
       params
@@ -121,13 +120,13 @@ const claimBond = async () => {
 };
 
 const submitProposal = async () => {
-  if (!getInstance().isAuthenticated.value) return;
+  if (!isConnected.value) return;
   actionInProgress.value = 'submit-proposal';
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
     const proposalSubmission = plugin.submitProposalWithHashes(
-      getInstance().web3,
+      web3ProviderRef.value,
       props.realityAddress,
       questionDetails.value.proposalId,
       getTxHashes()
@@ -149,13 +148,13 @@ const submitProposal = async () => {
 };
 
 const voteOnQuestion = async option => {
-  if (!getInstance().isAuthenticated.value) return;
+  if (!isConnected.value) return;
   const txPendingId = createPendingTransaction();
   try {
     await ensureRightNetwork(props.network);
     const voting = plugin.voteForQuestion(
       props.network,
-      getInstance().web3,
+      web3ProviderRef.value,
       questionDetails.value.oracle,
       questionDetails.value.questionId,
       questionDetails.value.minimumBond,
@@ -181,7 +180,7 @@ const voteOnQuestion = async option => {
 };
 
 const executeProposal = async () => {
-  if (!getInstance().isAuthenticated.value) return;
+  if (!isConnected.value) return;
   action2InProgress.value = 'execute-proposal';
   try {
     await ensureRightNetwork(props.network);
@@ -196,7 +195,7 @@ const executeProposal = async () => {
     const transaction =
       props.batches[questionDetails.value.nextTxIndex].mainTransaction;
     const executingProposal = plugin.executeProposalWithHashes(
-      getInstance().web3,
+      web3ProviderRef.value,
       props.realityAddress,
       questionDetails.value.proposalId,
       getTxHashes(),
@@ -220,11 +219,11 @@ const executeProposal = async () => {
 };
 
 const usingMetaMask = computed(() => {
-  return window.ethereum && getInstance().provider.value?.isMetaMask;
+  return window.ethereum && window.ethereum.isMetaMask;
 });
 
 const connectedToRightChain = computed(() => {
-  return getInstance().provider.value?.chainId === parseInt(props.network);
+  return chain.value.id === parseInt(props.network);
 });
 
 const networkName = computed(() => {
@@ -232,7 +231,7 @@ const networkName = computed(() => {
 });
 
 const questionState = computed(() => {
-  if (!web3.value.account) return QuestionStates.noWalletConnection;
+  if (!web3Account.value) return QuestionStates.noWalletConnection;
 
   if (loading.value) return QuestionStates.loading;
 

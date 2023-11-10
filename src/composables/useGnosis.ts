@@ -1,4 +1,3 @@
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import utils from '@snapshot-labs/snapshot.js/src/utils';
 import { computedAsync, useMemoize } from '@vueuse/core';
@@ -21,21 +20,20 @@ const getSafeVersion = useMemoize(
 );
 
 export function useGnosis(space?: ExtendedSpace) {
-  const { web3 } = useWeb3();
+  const { web3Account, chain, providerRef, web3ProviderRef } = useWeb3();
 
-  const auth = getInstance();
-  const connectorName = computed(() => auth.provider.value?.connectorName);
+  const connectorName = computed(() => providerRef.value?.connectorName);
 
-  const networkKey = computed(() => web3.value.network.key);
+  const networkKey = computed(() => chain.value.id.toString());
 
   const spaceNetworkKey = computed(() => space?.network);
 
   const isSafeContract = computedAsync(async () => {
-    if (!web3.value.account) return false;
+    if (!web3Account.value) return false;
 
     const safeVersion = await getSafeVersion(
       networkKey.value,
-      web3.value.account
+      web3Account.value
     );
 
     return typeof safeVersion === 'string';
@@ -43,9 +41,9 @@ export function useGnosis(space?: ExtendedSpace) {
 
   const isGnosisSafe = computed(
     () =>
-      web3.value?.walletConnectType === 'Gnosis Safe Multisig' ||
-      web3.value?.walletConnectType === 'WalletConnect Safe App' ||
-      web3.value?.walletConnectType === 'Den' ||
+      web3ProviderRef.value?.walletConnectType === 'Gnosis Safe Multisig' ||
+      web3ProviderRef.value?.walletConnectType === 'WalletConnect Safe App' ||
+      web3ProviderRef.value?.walletConnectType === 'Den' ||
       connectorName.value === 'gnosis' ||
       isSafeContract.value
   );

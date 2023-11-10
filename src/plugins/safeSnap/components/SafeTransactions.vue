@@ -6,7 +6,6 @@ import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatUnits } from '@ethersproject/units';
 import Plugin, {
@@ -20,10 +19,11 @@ const plugin = new Plugin();
 
 export const ensureRightNetwork = async chainId => {
   const chainIdInt = parseInt(chainId);
-  const connectedToChainId = getInstance().provider.value?.chainId;
+  // TODO: Check if chain id is working here
+  const connectedToChainId = chain.value.id;
   if (connectedToChainId === chainIdInt) return; // already on right chain
 
-  if (!window.ethereum || !getInstance().provider.value?.isMetaMask) {
+  if (!window.ethereum || window.ethereum?.isMetaMask) {
     // we cannot switch automatically
     throw new Error(
       `Connected to wrong chain #${connectedToChainId}, required: #${chainId}`
@@ -181,7 +181,9 @@ export default {
   ],
   emits: ['update:modelValue'],
   setup() {
-    return { shorten };
+    const { chain } = useWeb3();
+
+    return { shorten, chain };
   },
   data() {
     return {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sendTransaction, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatBytes32String } from '@ethersproject/strings';
 import { contractAddress } from '@/helpers/delegation';
@@ -16,7 +15,7 @@ const abi = ['function clearDelegate(bytes32 id)'];
 
 const emit = defineEmits(['close', 'reload']);
 
-const auth = getInstance();
+const { web3ProviderRef } = useWeb3();
 const { t } = useI18n();
 const { notify } = useFlashNotification();
 
@@ -34,7 +33,7 @@ async function handleSubmit() {
   const txPendingId = createPendingTransaction();
   try {
     const tx = await sendTransaction(
-      auth.web3,
+      web3ProviderRef.value,
       contractAddress,
       abi,
       'clearDelegate',

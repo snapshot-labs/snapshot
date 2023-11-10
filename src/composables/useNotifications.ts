@@ -27,12 +27,12 @@ const filters = ['all', 'unread'];
 
 export function useNotifications() {
   const router = useRouter();
-  const { web3, web3Account } = useWeb3();
+  const { web3Account, isConnecting } = useWeb3();
   const { followingSpaces, loadingFollows } = useFollowSpace();
   const { apolloQuery } = useApolloQuery();
 
   const notificationsLoading = computed(
-    () => loading.value || web3.value.authLoading || loadingFollows.value
+    () => loading.value || isConnecting.value || loadingFollows.value
   );
 
   async function loadProposals(state, date) {

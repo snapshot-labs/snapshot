@@ -1,6 +1,5 @@
 import sign, { DataType } from '@/helpers/sign';
 import { createFetch } from '@vueuse/core';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const SubscribeSchema: DataType = {
   Subscribe: [
@@ -27,12 +26,10 @@ const useEmailFetch = createFetch({
 });
 
 export function useEmailFetchClient() {
-  const { web3Account } = useWeb3();
+  const { web3Account, web3ProviderRef } = useWeb3();
 
   function plainSign(message, typesSchema) {
-    const { web3 } = getInstance();
-
-    return sign(web3, web3Account.value, message, typesSchema);
+    return sign(web3ProviderRef.value, web3Account.value, message, typesSchema);
   }
 
   const fetchSubscriptionsDetails = body => {

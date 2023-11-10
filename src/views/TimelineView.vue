@@ -14,7 +14,7 @@ useMeta({
 const route = useRoute();
 const router = useRouter();
 const { followingSpaces, loadingFollows } = useFollowSpace();
-const { web3, web3Account } = useWeb3();
+const { web3Account, isConnecting } = useWeb3();
 const { apolloQuery } = useApolloQuery();
 const { profiles, loadProfiles } = useProfiles();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } =
@@ -177,11 +177,11 @@ useInfiniteScroll(
         />
       </div>
       <div class="border-skin-border bg-skin-block-bg md:rounded-lg md:border">
-        <LoadingRow v-if="loading || web3.authLoading || loadingFollows" />
+        <LoadingRow v-if="loading || isConnecting || loadingFollows" />
         <div
           v-else-if="
             (isFeedJoinedSpaces && followingSpaces.length < 1) ||
-            (isFeedJoinedSpaces && !web3.account)
+            (isFeedJoinedSpaces && !web3Account)
           "
           class="p-4 text-center"
         >

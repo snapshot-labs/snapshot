@@ -1,4 +1,3 @@
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { FOLLOWS_QUERY } from '@/helpers/queries';
 import client from '@/helpers/clientEIP712';
 import { useSpaceSubscription } from './useSpaceSubscription';
@@ -7,7 +6,7 @@ const following = ref([]);
 const loadingFollows = ref(false);
 
 export function useFollowSpace(spaceId: any = {}) {
-  const { web3, web3Account } = useWeb3();
+  const { web3Account, isConnecting, isConnected } = useWeb3();
   const { modalAccountOpen } = useModal();
   const { apolloQuery } = useApolloQuery();
   const { setAlias, aliasWallet, isValidAlias, checkAlias } = useAliasAction();
@@ -28,9 +27,7 @@ export function useFollowSpace(spaceId: any = {}) {
   );
 
   async function loadFollows(spaceId?: string) {
-    const { isAuthenticated } = getInstance();
-
-    if (!isAuthenticated.value) return;
+    if (!isConnected.value) return;
 
     loadingFollows.value = true;
     try {
@@ -52,7 +49,7 @@ export function useFollowSpace(spaceId: any = {}) {
   }
 
   function clickFollow(space) {
-    !web3.value.authLoading
+    !isConnecting.value
       ? web3Account.value
         ? follow(space)
         : (modalAccountOpen.value = true)

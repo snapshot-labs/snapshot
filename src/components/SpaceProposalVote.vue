@@ -9,7 +9,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue', 'clickVote']);
 
-const { web3, web3Account } = useWeb3();
+const { isConnecting, web3Account } = useWeb3();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 
 const key = ref(0);
@@ -79,7 +79,7 @@ watch(validatedUserChoice, () => {
     </div>
     <BaseButton
       :disabled="
-        web3.authLoading ||
+        isConnecting ||
         (selectedChoices < 1 && proposal.type !== 'approval') ||
         (selectedChoices < proposal.choices.length &&
           proposal.type === 'ranked-choice')

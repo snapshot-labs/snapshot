@@ -9,7 +9,7 @@ const pendingTransactions = useStorage(
 );
 
 export function useTxStatus() {
-  const { web3 } = useWeb3();
+  const { chain } = useWeb3();
 
   const pendingTransactionsWithHash = computed(() => {
     return pendingTransactions.value.filter(tx => tx.hash);
@@ -20,7 +20,7 @@ export function useTxStatus() {
     const id = createdAt.toString();
     const tx = {
       id,
-      network: web3.value.network.key,
+      network: chain.value.id.toString(),
       createdAt,
       hash: null
     };

@@ -23,7 +23,7 @@ useMeta({
 
 const route = useRoute();
 const router = useRouter();
-const { web3, web3Account } = useWeb3();
+const { web3Account } = useWeb3();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -60,7 +60,7 @@ const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
 function clickVote() {
-  !web3.value.account
+  !web3Account.value
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && props.space.terms
     ? (modalTermsOpen.value = true)
