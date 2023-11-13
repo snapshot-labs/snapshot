@@ -13,6 +13,10 @@ const { web3, web3Account } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { errorFetchingSnapshot } = useSnapshot();
 
+function handleReactivateSpace() {
+  window.open('https://tally.so', '_blank')
+}
+
 const minScore = computed(
   () =>
     props.space?.validation?.params?.minScore ||
@@ -52,9 +56,11 @@ const isAdmin = computed(() => {
       is-responsive
     >
       This space has been hibernated, and proposals creation has been disabled until the space is reactivated by an admin.
-      <BaseLink v-if="isAdmin"  link="https://discord.snapshot.org/">
-        Learn more about how to reactivate this space
-      </BaseLink>
+      <p v-if="isAdmin" class="mt-3">
+      <BaseButton @click="handleReactivateSpace">
+        Reactivate this space
+      </BaseButton>
+    </p>
     </BaseMessageBlock>
 
     <MessageWarningGnosisNetwork
