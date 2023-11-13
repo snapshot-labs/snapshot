@@ -37,12 +37,28 @@ const strategySymbolsString = computed(() => {
 
   return `(${symbols.join(', ')})`;
 });
+
+const isAdmin = computed(() => {
+  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
+  return admins.includes(web3Account.value?.toLowerCase());
+});
 </script>
 
 <template>
   <div class="mb-4 space-y-2">
+    <BaseMessageBlock
+      v-if="space.hibernated"
+      level="warning"
+      is-responsive
+    >
+      This space has been hibernated, and proposals creation has been disabled until the space is reactivated by an admin.
+      <BaseLink v-if="isAdmin"  link="https://discord.snapshot.org/">
+        Learn more about how to reactivate this space
+      </BaseLink>
+    </BaseMessageBlock>
+
     <MessageWarningGnosisNetwork
-      v-if="isGnosisAndNotSpaceNetwork"
+      v-else-if="isGnosisAndNotSpaceNetwork"
       :space="space"
       action="create"
       is-responsive
