@@ -38,7 +38,7 @@
     "@shutter-network/shutter-crypto": "0.1.0-beta.3",
     "@snapshot-labs/lock": "^0.2.0",
     "@snapshot-labs/pineapple": "^1.1.0",
-    "@snapshot-labs/snapshot.js": "^0.8.1",
+    "@snapshot-labs/snapshot.js": "^0.8.3",
     "@snapshot-labs/tune": "^0.1.34",
     "@vue/apollo-composable": "4.0.0-beta.4",
     "@vueuse/core": "^10.4.0",
