@@ -4,8 +4,12 @@ import { isHexString } from '@ethersproject/bytes';
 import { toUtf8Bytes } from '@ethersproject/strings';
 import { Contract } from '@ethersproject/contracts';
 import { BigNumber } from '@ethersproject/bignumber';
+import { Interface } from '@ethersproject/abi';
 import { _TypedDataEncoder } from '@ethersproject/hash';
-import { StaticJsonRpcProvider } from '@ethersproject/providers';
+import {
+  JsonRpcProvider,
+  StaticJsonRpcProvider
+} from '@ethersproject/providers';
 import { keccak256 as solidityKeccak256 } from '@ethersproject/solidity';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 
@@ -26,7 +30,8 @@ import {
   UMA_MODULE_ABI,
   ORACLE_ABI,
   ERC20_ABI,
-  CONNEXT_MODULE_ABI
+  CONNEXT_MODULE_ABI,
+  CONNEXT_BRIDGE_FACET
 } from './constants';
 import {
   buildQuestion,
@@ -102,7 +107,9 @@ export default class Plugin {
     proposalId: string,
     txHashes: string[]
   ): Promise<Omit<RealityOracleProposal, 'transactions'>> {
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
     const question = await buildQuestion(proposalId, txHashes);
     const questionHash = solidityKeccak256(['string'], [question]);
 
@@ -141,27 +148,90 @@ export default class Plugin {
   }
 
   async getModuleDetailsReality(network: string, moduleAddress: string) {
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
     return getModuleDetailsReality(provider, network, moduleAddress);
   }
 
   async validateConnextModule(network: string, connextAddress: string) {
     if (!isAddress(connextAddress)) return 'reality';
 
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
-    const moduleContract = new Contract(connextAddress, CONNEXT_MODULE_ABI, provider);
-    console.log('moduleContract <validateConnextMod>', await moduleContract)
-    
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
+    const moduleContract = new Contract(
+      connextAddress,
+      CONNEXT_MODULE_ABI,
+      provider
+    );
+    console.log('moduleContract <validateConnextMod>', await moduleContract);
+
     return moduleContract
       .connext()
       .then(() => 'connext')
       .catch(() => 'reality');
   }
+  async getConnextModule(network: string, connextAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
+    const moduleContract = new Contract(
+      connextAddress,
+      CONNEXT_MODULE_ABI,
+      provider
+    );
+
+    return moduleContract;
+  }
+
+  async generateConnextXcallData({
+    network,
+    connext,
+    tokenAddress,
+    destinationAddress,
+    amount,
+    domainId
+  }) {
+    const destination = parseInt(domainId);
+    const to = destinationAddress;
+    const asset = tokenAddress;
+    const delegate = destinationAddress;
+    const slippage = 0;
+    const callData = '0x';
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
+    const bridgeContract = new Contract(
+      connext,
+      CONNEXT_BRIDGE_FACET,
+      provider
+    );
+
+    const txData = bridgeContract.interface.encodeFunctionData('xcall', [
+      destination,
+      to,
+      asset,
+      delegate,
+      amount,
+      slippage,
+      callData
+    ]);
+    return txData;
+  }
+
+  async decodeConnextXcallData(txData: string) {
+    const connextInterface = new Interface(CONNEXT_BRIDGE_FACET);
+    const decodedData = connextInterface.decodeFunctionData('xcall', txData);
+    return decodedData;
+  }
 
   async validateUmaModule(network: string, umaAddress: string) {
     if (!isAddress(umaAddress)) return 'reality';
 
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
     const moduleContract = new Contract(umaAddress, UMA_MODULE_ABI, provider);
 
     return moduleContract
@@ -224,7 +294,9 @@ export default class Plugin {
     explanation: string,
     transactions: any
   ) {
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
     try {
       // try optimized calls, which use the graph over web3 event queries
       return await getModuleDetailsUmaGql(
@@ -293,7 +365,9 @@ export default class Plugin {
     block: string
   ) {
     const contract = new Contract(oracleAddress, ORACLE_ABI, web3);
-    const provider: StaticJsonRpcProvider = getProvider(network, { broviderUrl });
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
     const account = (await web3.listAccounts())[0];
 
     const [[userBalance], [bestAnswer], [historyHash], [isFinalized]] =
@@ -465,6 +539,11 @@ export default class Plugin {
     moduleAddress: string,
     transactions: any
   ) {
+    console.log('web3 signer', web3.getSigner());
+    console.log('moduleAddress', moduleAddress);
+    console.log('UMA_MODULE_ABI', UMA_MODULE_ABI);
+    console.log('transactions', transactions);
+    console.log('[transactions]', [transactions]);
     const tx = await sendTransaction(
       web3,
       moduleAddress,

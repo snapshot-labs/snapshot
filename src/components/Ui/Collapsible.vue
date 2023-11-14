@@ -5,30 +5,45 @@ defineProps<{
   number: number;
   hideRemove: boolean;
   borderless?: boolean;
+  showArrow?: boolean;
+  showEdit?: boolean;
 }>();
 
-defineEmits(['remove', 'toggle']);
+defineEmits(['remove', 'toggle', 'edit']);
 </script>
 
 <template>
   <div class="collapsible-container w-full" :class="{ borderless }">
-    <div class="collapsible-header flex items-center px-2">
-      <div v-if="number !== undefined" class="header-number mr-4">
+    <div class="collapsible-header flex items-center px-3">
+      <div
+        v-if="number !== undefined"
+        class="header-number mr-4 flex justify-center"
+      >
         {{ number }}
       </div>
       <span
-        class="flex flex-auto flex-nowrap justify-center overflow-hidden text-center"
+        class="flex flex-auto flex-nowrap overflow-hidden text-center"
         style="min-height: 24px"
         @click="$emit('toggle')"
       >
         {{ title }}
       </span>
+      <span v-if="showEdit" class="edit-icon" @click="$emit('edit')">
+        <div>
+          <i-ho-pencil :class="'edit-icon'" />
+        </div>
+      </span>
       <span
         v-if="!hideRemove"
-        class="-mr-2 ml-1 cursor-pointer px-3"
+        class="mx-2 cursor-pointer"
         @click="$emit('remove')"
       >
         <BaseIcon name="close" size="12" />
+      </span>
+      <span v-if="showArrow" class="arrow-icon" @click="$emit('toggle')">
+        <div :class="{ rotate: open }" class="arrow">
+          <i-ho-chevron-down />
+        </div>
       </span>
     </div>
 
@@ -58,10 +73,24 @@ defineEmits(['remove', 'toggle']);
   display: none;
 }
 .header-number {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--text-color);
   padding: 2px;
   width: 32px;
   height: 32px;
   border-radius: 16px;
+}
+.arrow-icon {
+  cursor: pointer;
+}
+.edit-icon {
+  cursor: pointer;
+  width: 16px;
+  width: 16px;
+}
+.arrow {
+  transition: transform 0.25s ease-in-out;
+}
+.rotate {
+  transform: rotate(180deg);
 }
 </style>

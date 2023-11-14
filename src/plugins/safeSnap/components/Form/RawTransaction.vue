@@ -4,12 +4,12 @@ import Plugin, {
   rawToModuleTransaction
 } from '../../index';
 import { isHexString } from '@ethersproject/bytes';
-import { parseAmount } from '@/helpers/utils';
+import { parseAmount, shorten } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
   components: { SafeSnapInputAddress },
-  props: ['modelValue', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config', 'isDetails'],
   emits: ['update:modelValue'],
   data() {
     return {
@@ -35,6 +35,13 @@ export default {
     }
   },
   watch: {
+    modelValue(newModelValue) {
+      if (this.isDetails && newModelValue) {
+        this.to = newModelValue.to || '';
+        this.value = newModelValue.value || '0';
+        this.data = newModelValue.data || '';
+      }
+    },
     to() {
       this.updateTransaction();
     },
@@ -59,6 +66,7 @@ export default {
             this.modelValue,
             this.config.multiSendAddress
           );
+          transaction.type = 'raw';
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);
           }
@@ -78,19 +86,36 @@ export default {
         data: this.data,
         nonce: this.nonce
       });
-
+      transaction.type = 'raw';
       if (this.plugin.validateTransaction(transaction)) {
         this.$emit('update:modelValue', transaction);
         return;
       }
       this.$emit('update:modelValue', undefined);
+    },
+    format(value) {
+      return shorten(value);
     }
   }
 };
 </script>
-
 <template>
-  <div class="space-y-2">
+  <div v-if="isDetails" class="my-2 flex flex-col space-y-2 px-3">
+    {{ console.log('[RawTransaction] - modelValue', modelValue) }}
+    <div class="flex space-x-2">
+      <p class="text-skin-text">{{ $t('safeSnap.to') }}</p>
+      <p>{{ format(to) }}</p>
+    </div>
+    <div class="flex space-x-2">
+      <p class="text-skin-text">{{ $t('safeSnap.value') }}</p>
+      <p>{{ value }}</p>
+    </div>
+    <div class="flex space-x-2">
+      <p class="text-skin-text">{{ $t('safeSnap.data') }}</p>
+      <p>{{ format(data) }}</p>
+    </div>
+  </div>
+  <div class="space-y-2" v-if="!isDetails">
     <SafeSnapInputAddress
       v-model="to"
       :disabled="config.preview"
@@ -99,6 +124,7 @@ export default {
     />
 
     <UiInput
+      :custom-styles="'safesnap-custom-input'"
       v-model="value"
       :disabled="config.preview"
       :error="!isValidValue && $t('safeSnap.invalidValue')"
@@ -107,6 +133,7 @@ export default {
     </UiInput>
 
     <UiInput
+      :custom-styles="'safesnap-custom-input'"
       v-model="data"
       :disabled="config.preview"
       :error="!isValidData && $t('safeSnap.invalidData')"

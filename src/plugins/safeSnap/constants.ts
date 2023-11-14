@@ -1,5 +1,42 @@
 import { MULTI_SEND_VERSION } from './utils/multiSend';
 
+export enum Network {
+  //Mainnet
+  Mainnet = '1',
+  BSC = '56',
+  GnosisChain = '100',
+  Polygon = '137',
+  EWC = '246',
+  Arbitrum = '42161',
+  Volta = '73799',
+  //Testnet
+  Goerli = '5',
+  OptimismGoerli = '420',
+  Mumbai = '80001',
+  ArbitrumGoerli = '421613',
+  zkSyncEraTestnet = '280',
+  LineaTestnet = '59140',
+  PolygonZkEVMTestnet = '1442'
+}
+
+export const MAINNET_DOMAIN_IDS: Partial<Record<Network, number>> = {
+  [Network.Mainnet]: 6648936,
+  [Network.Polygon]: 1886350457,
+  [Network.Arbitrum]: 1634886255,
+  [Network.GnosisChain]: 6778479,
+  [Network.BSC]: 6450786
+};
+
+export const TEST_DOMAIN_IDS: Partial<Record<Network, number>> = {
+  [Network.Goerli]: 1735353714,
+  [Network.OptimismGoerli]: 1735356532,
+  [Network.Mumbai]: 9991,
+  [Network.ArbitrumGoerli]: 1734439522,
+  [Network.zkSyncEraTestnet]: 2053862260,
+  [Network.LineaTestnet]: 1668247156,
+  [Network.PolygonZkEVMTestnet]: 1887071092
+};
+
 export const EIP712_TYPES = {
   Transaction: [
     { name: 'to', type: 'address' },
@@ -10,37 +47,40 @@ export const EIP712_TYPES = {
   ]
 };
 
-export const EIP3770_PREFIXES = {
-  1: 'eth',
-  5: 'gor',
-  56: 'bnb',
-  100: 'gno',
-  246: 'ewt',
-  73799: 'vt',
-  42161: 'arb1',
-  137: 'matic'
+export const EIP3770_PREFIXES: Partial<Record<Network, string>> = {
+  [Network.Mainnet]: 'eth',
+  [Network.Goerli]: 'gor',
+  [Network.BSC]: 'bnb',
+  [Network.GnosisChain]: 'gno',
+  [Network.EWC]: 'ewt',
+  [Network.Volta]: 'vt',
+  [Network.Arbitrum]: 'arb1',
+  [Network.Polygon]: 'matic'
 };
 
-export const EXPLORER_API_URLS = {
-  '1': 'https://api.etherscan.io/api',
-  '5': 'https://api-goerli.etherscan.io/api',
-  '100': 'https://gnosis.blockscout.com/api',
-  '73799': 'https://volta-explorer.energyweb.org/api',
-  '246': 'https://explorer.energyweb.org/api',
-  '137': 'https://api.polygonscan.com/api',
-  '56': 'https://api.bscscan.com/api',
-  '42161': 'https://api.arbiscan.io/api'
+export const EXPLORER_API_URLS: Partial<Record<Network, string>> = {
+  [Network.Mainnet]: 'https://api.etherscan.io/api',
+  [Network.Goerli]: 'https://api-goerli.etherscan.io/api',
+  [Network.GnosisChain]: 'https://gnosis.blockscout.com/api',
+  [Network.Volta]: 'https://volta-explorer.energyweb.org/api',
+  [Network.EWC]: 'https://explorer.energyweb.org/api',
+  [Network.Polygon]: 'https://api.polygonscan.com/api',
+  [Network.BSC]: 'https://api.bscscan.com/api',
+  [Network.Arbitrum]: 'https://api.arbiscan.io/api'
 };
 
-export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
-  '1': 'https://safe-transaction-mainnet.safe.global/api',
-  '5': 'https://safe-transaction-goerli.safe.global/api',
-  '100': 'https://safe-transaction-gnosis-chain.safe.global/api',
-  '73799': 'https://safe-transaction-volta.safe.global/api',
-  '246': 'https://safe-transaction-ewc.safe.global/api',
-  '137': 'https://safe-transaction-polygon.safe.global/api',
-  '56': 'https://safe-transaction-bsc.safe.global/api',
-  '42161': 'https://safe-transaction-arbitrum.safe.global/api'
+export const GNOSIS_SAFE_TRANSACTION_API_URLS: Partial<
+  Record<Network, string>
+> = {
+  [Network.Mainnet]: 'https://safe-transaction-mainnet.safe.global/api',
+  [Network.Goerli]: 'https://safe-transaction-goerli.safe.global/api',
+  [Network.GnosisChain]:
+    'https://safe-transaction-gnosis-chain.safe.global/api',
+  [Network.Volta]: 'https://safe-transaction-volta.safe.global/api',
+  [Network.EWC]: 'https://safe-transaction-ewc.safe.global/api',
+  [Network.Polygon]: 'https://safe-transaction-polygon.safe.global/api',
+  [Network.BSC]: 'https://safe-transaction-bsc.safe.global/api',
+  [Network.Arbitrum]: 'https://safe-transaction-arbitrum.safe.global/api'
 };
 
 // ABIs
@@ -337,6 +377,11 @@ export const CONNEXT_MODULE_ABI = [
   'function target() view returns (address)',
   'function transferOwnership(address newOwner)',
   'function xReceive(bytes32, uint256 _amount, address _asset, address _originSender, uint32 _origin, bytes _callData) returns (bytes)'
+];
+
+export const CONNEXT_BRIDGE_FACET = [
+  // xcall functions
+  'function xcall(uint32 _destination, address _to, address _asset, address _delegate, uint256 _amount, uint256 _slippage, bytes _callData) payable returns (bytes32)'
 ];
 
 export const ERC20_ABI = [

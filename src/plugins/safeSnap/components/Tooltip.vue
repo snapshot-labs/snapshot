@@ -5,6 +5,7 @@ defineProps<{
   moduleAddress: string;
   multiSendAddress: string;
   moduleType: string;
+  connextModAddress: string | undefined;
 }>();
 
 const { copyToClipboard } = useCopy();
@@ -35,6 +36,16 @@ const { copyToClipboard } = useCopy();
           {{ shorten(moduleAddress) }}
           <i-ho-duplicate class="ml-1" />
         </BaseButton>
+        <div v-if="connextModAddress">
+          <div class="mt-3">Connext Module address</div>
+          <BaseButton
+            class="flex w-full items-center justify-between"
+            @click="copyToClipboard(connextModAddress)"
+          >
+            {{ shorten(connextModAddress) }}
+            <i-ho-duplicate class="ml-1" />
+          </BaseButton>
+        </div>
       </div>
     </template>
   </BasePopoverHover>

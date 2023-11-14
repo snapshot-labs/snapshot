@@ -13,7 +13,6 @@ const emit = defineEmits(['update:modelValue', 'valid']);
 const input = ref('0');
 const isValid = ref(true);
 const dirty = ref(false);
-
 const format = (amount: string) => {
   try {
     return parseUnits(amount, props.decimals).toString();
@@ -37,11 +36,12 @@ onMounted(() => {
 
 watch(
   () => props.modelValue,
-  value => {
-    if (value && props.disabled) {
+  (value) => {
+    if (value !== undefined) {
       input.value = formatUnits(value, props.decimals);
     }
-  }
+  },
+  { immediate: true }
 );
 
 watch(

@@ -4,17 +4,29 @@ import { createBatch, ERC20_ABI, ERC721_ABI } from '../../index';
 import { formatEther } from '@ethersproject/units';
 import { FunctionFragment, Interface } from '@ethersproject/abi';
 import SafeSnapFormTransaction from './Transaction.vue';
+import SafeSnapFormImportTransactions from './ImportTransactions.vue';
+import SafeSnapFormTransactionBatchItem from './TransactionBatchItem.vue';
 
 export default {
-  components: { SafeSnapFormTransaction },
-  props: ['modelValue', 'nonce', 'config'],
-  emits: ['update:modelValue', 'remove'],
+  components: {
+    SafeSnapFormTransaction,
+    SafeSnapFormImportTransactions,
+    SafeSnapFormTransactionBatchItem
+  },
+  props: ['modelValue', 'nonce', 'config', 'network'],
+  emits: ['update:modelValue', 'remove', 'import'],
   setup() {
     const { safesnap } = useSafe();
     return { safesnap };
   },
   data() {
     return {
+      batchTypeList: [
+        { key: 'Standard', value: 'standard' },
+        { key: 'JSON', value: 'json' }
+      ],
+      batchTypeSelected: 'standard',
+      showSingleTransactionModal: false,
       open: true,
       hashHidden: true,
       jsonHidden: true,
@@ -30,9 +42,11 @@ export default {
   },
   methods: {
     addTransaction() {
-      this.transactions.push(undefined);
+      // this.transactions.push(undefined);
+      this.showSingleTransactionModal = true;
     },
-    updateTransaction(index, transaction) {
+    updateTransaction(payload) {
+      const { index, transaction } = payload;
       if (this.config.preview) return;
       this.transactions[index] = transaction;
       this.updateBatch(this.transactions);
@@ -101,6 +115,15 @@ export default {
         }
         return base;
       });
+    },
+    handleBatchTypeSelection(selection) {
+      this.batchTypeSelected = selection;
+    },
+    handleTxs(txs) {
+      this.$emit('import', txs);
+    },
+    handleCloseModal() {
+      this.showSingleTransactionModal = false;
     }
   }
 };
@@ -112,55 +135,24 @@ export default {
     :hide-remove="config.preview"
     :number="nonce + 1"
     :open="open"
+    :showArrow="true"
     :title="`${$t('safeSnap.batch')} (${transactions.length})`"
     @remove="$emit('remove')"
     @toggle="open = !open"
   >
-    <div v-for="(transaction, index) in transactions" :key="index" class="mb-2">
-      <SafeSnapFormTransaction
-        :model-value="transaction"
+    <div>
+      <SafeSnapFormTransactionBatchItem
+        :transactions="transactions"
         :config="config"
-        :nonce="index"
-        @remove="removeTransaction(index)"
-        @update:modelValue="updateTransaction(index, $event)"
+        :show-single-transaction-modal="showSingleTransactionModal"
+        @remove="removeTransaction($event)"
+        @update:modelValue="updateTransaction($event)"
+        @on-close-modal="handleCloseModal()"
       />
     </div>
-    <UiCollapsibleText
-      v-if="modelValue.hash"
-      :show-arrow="true"
-      :open="!hashHidden"
-      :text="modelValue.hash"
-      class="collapsible-text mt-2"
-      title="Batch Transaction Hash"
-      @toggle="hashHidden = !hashHidden"
-    />
-    <UiCollapsibleText
-      v-if="modelValue.hash"
-      :show-arrow="true"
-      :open="!jsonHidden"
-      :text="
-        JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t')
-      "
-      class="collapsible-text mt-2"
-      title="Batch Transaction JSON"
-      pre
-      @toggle="jsonHidden = !jsonHidden"
-    />
-    <BaseBlock
-      v-if="
-        safesnap.batchError &&
-        safesnap.batchError.message &&
-        nonce === safesnap.batchError.num
-      "
-      class="mt-4"
-      style="border-color: red !important"
-    >
-      <BaseIcon name="warning" class="mr-2 !text-red" />
-      <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
-    </BaseBlock>
 
     <BaseButton v-if="!config.preview" class="mt-2" @click="addTransaction">
-      {{ $t('safeSnap.addTransaction') }}
+      Add Single Transaction
     </BaseButton>
   </UiCollapsible>
 </template>
@@ -170,3 +162,69 @@ export default {
   border-radius: 23px;
 }
 </style>
+
+<!-- <UiSelect
+      :model-value="batchTypeSelected"
+      @update:modelValue="handleBatchTypeSelection($event)"
+    >
+      <template #label>Batch Type</template>
+      <option v-for="{ key, value } in batchTypeList" :key="key" :value="value">
+        {{ key }}
+      </option>
+    </UiSelect> -->
+
+<!-- <SafeSnapFormImportTransactions
+      v-if="batchTypeSelected.includes('json')"
+      :network="network"
+      @import="handleTxs"
+    /> -->
+
+<!-- <div class="p-3 mt-3 rounded-xl bg-skin-block-bg"> -->
+
+<!-- <div
+          v-for="(transaction, index) in transactions"
+          :key="index"
+          class="mb-2"
+        >
+          <SafeSnapFormTransaction
+            :model-value="transaction"
+            :config="config"
+            :nonce="index"
+            @remove="removeTransaction(index)"
+            @update:modelValue="updateTransaction(index, $event)"
+          />
+        </div> -->
+<!-- </div> -->
+<!-- <UiCollapsibleText
+        v-if="modelValue.hash"
+        :show-arrow="true"
+        :open="!hashHidden"
+        :text="modelValue.hash"
+        class="collapsible-text mt-2"
+        title="Batch Transaction Hash"
+        @toggle="hashHidden = !hashHidden"
+      />
+      <UiCollapsibleText
+        v-if="modelValue.hash"
+        :show-arrow="true"
+        :open="!jsonHidden"
+        :text="
+          JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t')
+        "
+        class="collapsible-text mt-2"
+        title="Batch Transaction JSON"
+        pre
+        @toggle="jsonHidden = !jsonHidden"
+      />
+      <BaseBlock
+        v-if="
+          safesnap.batchError &&
+          safesnap.batchError.message &&
+          nonce === safesnap.batchError.num
+        "
+        class="mt-4"
+        style="border-color: red !important"
+      >
+        <BaseIcon name="warning" class="mr-2 !text-red" />
+        <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
+      </BaseBlock> -->

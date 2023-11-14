@@ -3,10 +3,11 @@ import { isParameterValue } from '../../utils/validator';
 import { isArrayParameter } from '../../index';
 import SafeSnapInputAddress from './Address.vue';
 import SafeSnapInputArrayType from './ArrayType.vue';
+import { shorten } from '@/helpers/utils';
 
 export default {
   components: { SafeSnapInputAddress, SafeSnapInputArrayType },
-  props: ['modelValue', 'disabled', 'parameter'],
+  props: ['modelValue', 'disabled', 'parameter', 'isDetails'],
   emits: ['update:modelValue', 'isValid'],
   data() {
     const placeholder = this.parameter.name
@@ -29,8 +30,11 @@ export default {
   },
   watch: {
     modelValue(value) {
+      this.value = value;
       this.input = value;
     }
+
+    
   },
   mounted() {
     if (this.modelValue) this.value = this.modelValue;
@@ -47,48 +51,64 @@ export default {
     },
     isArrayType() {
       return isArrayParameter(this.parameter.baseType);
+    },
+    format(value) {
+      return shorten(value);
     }
   }
 };
 </script>
 
 <template>
-  <UiSelect
-    v-if="parameter.type === 'bool'"
-    :disabled="disabled"
-    :model-value="value"
-    @update:modelValue="handleInput($event)"
-  >
-    <template #label>{{ placeholder }}</template>
-    <option :value="true">true</option>
-    <option :value="false">false</option>
-  </UiSelect>
+  <div class="">
+    <div v-if="isDetails" class="mb-2 flex flex-col px-3">
+      <div class="flex space-x-2">
+        <span class="text-skin-text">{{ parameter.type }}</span>
+        <p>
+          {{ parameter.type === 'address' ? format(value) : value }}
+        </p>
+      </div>
+    </div>
+    <div v-if="!isDetails" class="mb-2">
+      <UiSelect
+        v-if="parameter.type === 'bool'"
+        :disabled="disabled"
+        :model-value="value"
+        @update:modelValue="handleInput($event)"
+      >
+        <template #label>{{ placeholder }}</template>
+        <option :value="true">true</option>
+        <option :value="false">false</option>
+      </UiSelect>
 
-  <!-- ADDRESS -->
-  <SafeSnapInputAddress
-    v-else-if="parameter.type === 'address'"
-    :disabled="disabled"
-    :input-props="{ required: true }"
-    :label="placeholder"
-    :model-value="value"
-    @update:modelValue="handleInput($event)"
-  />
-  <!-- Array of X type -->
-  <SafeSnapInputArrayType
-    v-else-if="isArrayType()"
-    :disabled="disabled"
-    :model-value="value"
-    :parameter="parameter"
-    @update:modelValue="handleInput($event)"
-  />
-  <!-- Text input -->
-  <UiInput
-    v-else
-    :disabled="disabled"
-    :error="dirty && !isValid && `Invalid ${parameter.type}`"
-    :model-value="value"
-    @update:modelValue="handleInput($event)"
-  >
-    <template #label>{{ placeholder }}</template>
-  </UiInput>
+      <!-- ADDRESS -->
+      <SafeSnapInputAddress
+        v-else-if="parameter.type === 'address'"
+        :disabled="disabled"
+        :input-props="{ required: true }"
+        :label="placeholder"
+        :model-value="value"
+        @update:modelValue="handleInput($event)"
+      />
+      <!-- Array of X type -->
+      <SafeSnapInputArrayType
+        v-else-if="isArrayType()"
+        :disabled="disabled"
+        :model-value="value"
+        :parameter="parameter"
+        @update:modelValue="handleInput($event)"
+      />
+      <!-- Text input -->
+      <UiInput
+        v-else
+        :custom-styles="'safesnap-custom-input'"
+        :disabled="disabled"
+        :error="dirty && !isValid && `Invalid ${parameter.type}`"
+        :model-value="value"
+        @update:modelValue="handleInput($event)"
+      >
+        <template #label>{{ placeholder }}</template>
+      </UiInput>
+    </div>
+  </div>
 </template>

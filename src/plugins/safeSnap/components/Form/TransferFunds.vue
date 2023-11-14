@@ -11,6 +11,7 @@ import SafeSnapInputAmount from '../Input/Amount.vue';
 import SafeSnapTokensModal from './TokensModal.vue';
 import { ETH_CONTRACT } from '@/helpers/constants';
 import { shorten } from '@/helpers/utils';
+import { formatUnits } from '@ethersproject/units';
 
 export default {
   components: {
@@ -18,7 +19,7 @@ export default {
     SafeSnapInputAmount,
     SafeSnapTokensModal
   },
-  props: ['modelValue', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config', 'isDetails'],
   emits: ['update:modelValue'],
   data() {
     const { amount = '0' } = this.modelValue || {};
@@ -42,6 +43,17 @@ export default {
     }
   },
   watch: {
+    modelValue(newModelValue) {
+      if (this.isDetails && newModelValue) {
+        this.to = newModelValue.recipient || '';
+        console.log('newModelValue.amount', newModelValue.amount);
+        this.value = newModelValue.amount || '0';
+        if (newModelValue.token) {
+          this.tokenAddress = newModelValue.token.address;
+        }
+      }
+      this.setTokens();
+    },
     to() {
       this.updateTransaction();
     },
@@ -63,7 +75,6 @@ export default {
       this.value = amount;
       if (token) {
         this.tokenAddress = token.address;
-        this.tokens = [token];
       }
     }
   },
@@ -103,21 +114,26 @@ export default {
         ];
       }
     },
+
     openModal() {
       if (!this.config.tokens.length) return;
       this.modalTokensOpen = true;
     },
-    shorten: shorten
+    shorten: shorten,
+    format(amount, decimals) {
+      try {
+        return formatUnits(amount, decimals).toString();
+      } catch (error) {
+        return undefined;
+      }
+    }
   }
 };
 </script>
 
 <template>
-  <BaseButton
-    class="mb-2 flex w-full flex-row items-center justify-between !px-3"
-    @click="openModal()"
-  >
-    <div class="flex flex-row space-x-2">
+  <div v-if="isDetails" class="flex flex-col space-y-2 px-3">
+    <div class="flex space-x-2">
       <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
       <AvatarToken
         :address="
@@ -136,35 +152,69 @@ export default {
         }}
       </span>
     </div>
-    <i-ho-chevron-down class="text-xs text-skin-link" />
-  </BaseButton>
-
-  <div class="space-y-2">
-    <SafeSnapInputAddress
-      v-model="to"
-      :disabled="config.preview"
-      :input-props="{
-        required: true
-      }"
-      :label="$t('safeSnap.to')"
-    />
-    <SafeSnapInputAmount
-      :key="selectedToken?.decimals"
-      v-model="value"
-      :label="$t('safeSnap.amount')"
-      :decimals="selectedToken?.decimals"
-      :disabled="config.preview"
-    />
+    <div class="flex space-x-2">
+      <span class="text-skin-text">{{ $t('safeSnap.to') }}</span>
+      <p>{{ shorten(to) }}</p>
+    </div>
+    <div class="flex space-x-2">
+      <p class="text-skin-text">{{ $t('safeSnap.amount') }}</p>
+      <p>{{ format(value, selectedToken.decimals.toString()) }}</p>
+    </div>
   </div>
 
-  <teleport to="#modal">
-    <SafeSnapTokensModal
-      :tokens="tokens"
-      :token-address="tokenAddress"
-      :open="modalTokensOpen"
-      :network="config.network"
-      @token-address="tokenAddress = $event"
-      @close="modalTokensOpen = false"
-    />
-  </teleport>
+  <div v-else>
+    <BaseButton
+      class="safesnap-custom-select mb-2 flex w-full flex-row items-center justify-between !px-3"
+      @click="openModal()"
+    >
+      <div class="flex flex-row space-x-2">
+        <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
+        <AvatarToken
+          :address="
+            selectedToken.address === 'main'
+              ? ETH_CONTRACT
+              : selectedToken.address
+          "
+          class="ml-2"
+        />
+        <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
+        <span>
+          {{
+            selectedToken.address === 'main'
+              ? ''
+              : `(${shorten(selectedToken.address)})`
+          }}
+        </span>
+      </div>
+      <i-ho-chevron-down class="text-xs text-skin-link" />
+    </BaseButton>
+
+    <div class="space-y-2">
+      <SafeSnapInputAddress
+        v-model="to"
+        :disabled="config.preview"
+        :input-props="{
+          required: true
+        }"
+        :label="$t('safeSnap.to')"
+      />
+      <SafeSnapInputAmount
+        :key="selectedToken?.decimals"
+        v-model="value"
+        :label="$t('safeSnap.amount')"
+        :decimals="selectedToken?.decimals"
+        :disabled="config.preview"
+      />
+    </div>
+    <teleport to="#modal">
+      <SafeSnapTokensModal
+        :tokens="tokens"
+        :token-address="tokenAddress"
+        :open="modalTokensOpen"
+        :network="config.network"
+        @token-address="tokenAddress = $event"
+        @close="modalTokensOpen = false"
+      />
+    </teleport>
+  </div>
 </template>

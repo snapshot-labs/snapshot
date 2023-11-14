@@ -6,6 +6,7 @@ import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
+import SafeSnapModalImportTransaction from './Modal/ImportTransaction.vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatUnits } from '@ethersproject/units';
@@ -165,7 +166,8 @@ export default {
     SafeSnapFormImportTransactionsButton,
     SafeSnapHandleOutcome,
     SafeSnapHandleOutcomeUma,
-    SafeSnapFormTransactionBatch
+    SafeSnapFormTransactionBatch,
+    SafeSnapModalImportTransaction
   },
   props: [
     'modelValue',
@@ -176,11 +178,12 @@ export default {
     'realityAddress',
     'umaAddress',
     'connextAddress',
+    'gnosisSafeAddress',
     'multiSendAddress',
     'preview',
     'hash'
   ],
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'delete:safe'],
   setup() {
     return { shorten };
   },
@@ -192,14 +195,15 @@ export default {
         this.modelValue,
         this.multiSendAddress
       ),
-      gnosisSafeAddress: undefined,
+      gnosisSafeAddress: this.gnosisSafeAddress,
       moduleType: undefined,
+      connextModAddress: undefined,
       moduleAddress: undefined,
       moduleTypeReady: false,
       showHash: false,
       transactionConfig: {
         preview: this.preview,
-        gnosisSafeAddress: undefined,
+        gnosisSafeAddress: this.gnosisSafeAddress,
         realityAddress: this.realityAddress,
         umaAddress: this.umaAddress,
         connextAddress: this.connextAddress,
@@ -207,7 +211,8 @@ export default {
         multiSendAddress: this.multiSendAddress,
         tokens: [],
         collectables: []
-      }
+      },
+      showBatchWithJsonModal: false
     };
   },
   computed: {
@@ -231,8 +236,15 @@ export default {
   },
   async mounted() {
     try {
-      const test = await plugin.validateConnextModule(this.network, this.connextAddress)
-      console.log('Safe transaction.vue <validateConnextMod> => ', test)
+      const connextModule = await plugin.validateConnextModule(
+        this.network,
+        this.connextAddress
+      );
+
+      if (connextModule === 'connext') {
+        this.connextModAddress = this.connextAddress;
+      }
+
       const moduleType = await plugin.validateUmaModule(
         this.network,
         this.umaAddress
@@ -298,13 +310,27 @@ export default {
         )
       );
       this.$emit('update:modelValue', this.input);
+    },
+    handleRemoveSafe() {
+      this.$emit('delete:safe');
+    },
+    openJsonModal() {
+      this.showBatchWithJsonModal = true;
+    },
+    handleJsonModal(txs) {
+      this.showBatchWithJsonModal = false;
+      if (txs) {
+        this.handleImport(txs);
+      }
     }
   }
 };
 </script>
 
 <template>
-  <div>
+  <div
+    class="mx-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
+  >
     <h4
       class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
     >
@@ -325,8 +351,12 @@ export default {
         :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
         :module-type="moduleType"
+        :connext-mod-address="connextModAddress"
       />
       <LoadingSpinner v-else />
+      <div class="cursor" @click="handleRemoveSafe">
+        <i-ho-x class="ml-1" />
+      </div>
     </h4>
     <UiCollapsibleText
       v-if="hash"
@@ -338,31 +368,41 @@ export default {
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
     />
-    <div class="text-center">
+
+    <div class="flex flex-col items-start gap-3 self-stretch px-4 py-3">
+      <h6>{{ $t('safeSnap.batch') }} ({{ input.length }})</h6>
       <div
         v-for="(batch, index) in input"
         :key="index"
-        class="border-b last:border-b-0"
+        class="w-full rounded-xl border"
       >
         <SafeSnapFormTransactionBatch
+          :network="network"
           :config="transactionConfig"
           :model-value="batch"
           :nonce="index"
+          @import="handleImport($event)"
           @remove="removeBatch(index)"
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
       </div>
-
-      <div v-if="!preview || proposalResolved">
-        <BaseButton v-if="!preview" class="my-3" @click="addTransactionBatch">
+      <div
+        v-if="!preview || proposalResolved"
+        class="flex w-full items-center justify-between"
+      >
+        <BaseButton v-if="!preview" @click="addTransactionBatch">
           {{ $t('safeSnap.addBatch') }}
         </BaseButton>
-
-        <SafeSnapFormImportTransactionsButton
-          v-if="!preview"
-          :network="network"
-          @import="handleImport($event)"
-        />
+        <BaseButton v-if="!preview" @click="openJsonModal">
+          Transaction Batch with JSON
+        </BaseButton>
+        <teleport to="#modal">
+          <SafeSnapModalImportTransaction
+            :open="showBatchWithJsonModal"
+            :network="network"
+            @close="handleJsonModal"
+          />
+        </teleport>
 
         <SafeSnapHandleOutcome
           v-if="

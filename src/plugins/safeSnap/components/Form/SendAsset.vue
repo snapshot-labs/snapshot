@@ -9,7 +9,7 @@ import SafeSnapInputAddress from '../Input/Address.vue';
 
 export default {
   components: { SafeSnapInputAddress },
-  props: ['modelValue', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config', 'isDetails'],
   emits: ['update:modelValue'],
   setup() {
     return { shorten };
@@ -95,41 +95,79 @@ export default {
 </script>
 
 <template>
-  <UiSelect v-model="collectableAddress" :disabled="config.preview">
-    <template #label>{{ $t('safeSnap.asset') }}</template>
-    <template
-      v-if="
-        selectedCollectable &&
-        (selectedCollectable.imageUri || selectedCollectable.logoUri)
-      "
-      #image
-    >
-      <img
-        :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
-        alt=""
-        class="tokenImage"
-      />
-    </template>
-    <option v-if="!collectables.length" disabled selected>
-      - {{ $t('safeSnap.noCollectibles') }} -
-    </option>
-    <option
-      v-for="(collectable, index) in collectables"
-      :key="index"
-      :value="collectable.address"
-    >
-      {{ collectable.name }} #{{ shorten(collectable.id, 10) }}
-    </option>
-  </UiSelect>
+  <div>
+    <div v-if="isDetails" class="my-2 flex flex-col space-y-2 px-3">
+      <div class="flex space-x-2">
+        <p class="text-skin-text">{{ $t('safeSnap.asset') }}</p>
+        <div v-if="selectedCollectable" class="flex space-x-2">
+          <div
+            v-if="selectedCollectable.imageUri || selectedCollectable.logoUri"
+          >
+            <img
+              :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
+              alt=""
+              class="tokenImage"
+            />
+          </div>
 
-  <SafeSnapInputAddress
-    v-model="to"
-    :disabled="config.preview"
-    :input-props="{
-      required: true
-    }"
-    :label="$t('safeSnap.to')"
-  />
+          <div v-if="selectedCollectable.name || selectedCollectable.tokenName">
+            {{ selectedCollectable.name ?? selectedCollectable.tokenName }} #{{
+              shorten(selectedCollectable.id, 10)
+            }}
+          </div>
+        </div>
+      </div>
+      <div class="flex space-x-2">
+        <p class="text-skin-text">{{ $t('safeSnap.to') }}</p>
+        <p>
+          {{ shorten(to) }}
+        </p>
+      </div>
+    </div>
+    <div v-if="!isDetails">
+      <UiSelect
+        :custom-styles="'safesnap-custom-select'"
+        v-model="collectableAddress"
+        :disabled="config.preview"
+      >
+        <template #label>{{ $t('safeSnap.asset') }}</template>
+        <template
+          v-if="
+            selectedCollectable &&
+            (selectedCollectable.imageUri || selectedCollectable.logoUri)
+          "
+          #image
+        >
+          <img
+            :src="selectedCollectable.imageUri || selectedCollectable.logoUri"
+            alt=""
+            class="tokenImage"
+          />
+        </template>
+        <option v-if="!collectables.length" disabled selected>
+          - {{ $t('safeSnap.noCollectibles') }} -
+        </option>
+        <option
+          v-for="(collectable, index) in collectables"
+          :key="index"
+          :value="collectable.address"
+        >
+          {{ collectable.name ?? collectable.tokenName }} #{{
+            shorten(collectable.id, 10)
+          }}
+        </option>
+      </UiSelect>
+
+      <SafeSnapInputAddress
+        v-model="to"
+        :disabled="config.preview"
+        :input-props="{
+          required: true
+        }"
+        :label="$t('safeSnap.to')"
+      />
+    </div>
+  </div>
 </template>
 
 <style scoped>

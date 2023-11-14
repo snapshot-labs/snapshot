@@ -5,8 +5,10 @@ import { getIpfsUrl } from '@/helpers/utils';
 
 import SafeTransactions from './SafeTransactions.vue';
 
+import SafeSnapsSafeSelect from './Select/SafeSelect.vue';
+
 export default {
-  components: { SafeTransactions },
+  components: { SafeTransactions, SafeSnapsSafeSelect },
   props: [
     'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
     'config', // the safeSnap plugin config of the current space
@@ -39,7 +41,12 @@ export default {
       input = coerceConfig(value, this.network);
     }
 
-    return { input, ipfs: getIpfsUrl(this?.proposal?.ipfs) };
+    return {
+      input,
+      ipfs: getIpfsUrl(this?.proposal?.ipfs),
+      isButtonClicked: false,
+      safes: []
+    };
   },
   methods: {
     updateSafeTransactions() {
@@ -52,18 +59,36 @@ export default {
         };
       });
       this.$emit('update:modelValue', this.input);
+    },
+    handleButtonClick() {
+      this.isButtonClicked = !this.isButtonClicked;
+    },
+    handleSafeSelected(safe) {
+      this.isButtonClicked = false;
+      if (!this.safes.length) {
+        return (this.safes = [safe]);
+      }
+      const exists = this.safes.some(
+        existingSafe => existingSafe.gnosisAddress === safe.gnosisAddress
+      );
+      if (!exists) {
+        this.safes.push(safe);
+      }
+    },
+    handleDeleteSafe(safe) {
+      const { gnosisAddress } = safe;
+      this.safes = this.safes.filter(
+        safe => safe.gnosisAddress !== gnosisAddress
+      );
     }
   }
 };
 </script>
 
 <template>
-  <div
-    v-if="!preview || input.safes.length > 0"
-    class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
-  >
+  <div v-if="!preview || input.safes.length > 0">
     <div
-      class="block border-b px-4 pt-3"
+      class="block px-4 pt-3"
       style="
         padding-bottom: 12px;
         display: flex;
@@ -76,11 +101,8 @@ export default {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
 
-    <div
-      v-for="(safe, index) in input.safes"
-      :key="index"
-      class="border-b last:border-b-0"
-    >
+    <!--TODO: FILTER SAFES OR INPUTS.SAFES-->
+    <div v-for="(safe, index) in safes" :key="index" class="last:border-b-0">
       <SafeTransactions
         v-if="!preview || safe.txs.length > 0"
         :preview="preview"
@@ -91,9 +113,20 @@ export default {
         :network="safe.network"
         :reality-address="safe.realityAddress"
         :uma-address="safe.umaAddress"
+        :connext-address="safe.connextAddress"
         :multi-send-address="safe.multiSendAddress"
+        :gnosis-safe-address="safe.gnosisSafeAddress"
         :model-value="safe.txs"
         @update:modelValue="updateSafeTransactions(index, $event)"
+        @delete:safe="handleDeleteSafe(safe)"
+      />
+    </div>
+    <div class="my-3 ml-4" v-if="!preview">
+      <BaseButton @click="handleButtonClick">Add a Safe</BaseButton>
+      <SafeSnapsSafeSelect
+        v-if="isButtonClicked"
+        :safes="input.safes"
+        @safeSelected="handleSafeSelected"
       />
     </div>
   </div>

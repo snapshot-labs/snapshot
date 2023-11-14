@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
+import { Network } from '@/plugins/safeSnap/types';
 
 export interface Strategy {
   id: string;
@@ -276,6 +277,20 @@ export interface SafeTransaction {
   data: string;
   operation: string;
   nonce: string;
+  type?: string;
+  transactionBatchType?: "connext" | "standard"
+}
+
+export interface SafeTransactionConfig {
+  preview: boolean;
+  gnosisSafeAddress: string;
+  realityAddress: string;
+  umaAddress: string;
+  connextAddress: string;
+  network: Network;
+  multiSendAddress: string;
+  tokens: TokenAsset[];
+  collectables: CollectableAsset[];
 }
 
 export interface RealityOracleProposal {
