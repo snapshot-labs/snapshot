@@ -1,5 +1,4 @@
 name: Tests
-on: [push]
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -11,7 +10,6 @@ jobs:
           cache: 'yarn'
       - run: yarn
       - run: yarn test:unit:coverage
-      - run: yarn test:e2e
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

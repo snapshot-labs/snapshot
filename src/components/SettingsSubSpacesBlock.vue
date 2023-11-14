@@ -120,11 +120,12 @@ const removeChild = (child: string) => {
         <div>
           <BaseButtonRound
             :is-disabled="isViewOnly"
-            class="!h-[42px] !w-[42px] whitespace-nowrap text-skin-link"
+            class="whitespace-nowrap text-skin-link"
             :class="{
               'cursor-not-allowed !text-skin-text hover:border-skin-border':
                 !foundChild || lookingUpChild
             }"
+            size="42px"
             @click="addChild()"
           >
             <i-ho-plus class="text-sm" />

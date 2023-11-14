@@ -1,10 +1,19 @@
 version: 2
 updates:
-  - package-ecosystem: 'npm'
-    directory: '/'
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'weekly'
-  - package-ecosystem: 'gitsubmodule'
-    directory: '/'
+      interval: "daily"
+    allow:
+      - dependency-name: "@snapshot-labs/*"
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
-      interval: 'daily'
+      interval: "weekly"
+    ignore:
+      - dependency-name: "@snapshot-labs/*"
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"

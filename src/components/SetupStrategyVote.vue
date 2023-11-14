@@ -45,28 +45,30 @@ const votingItems = computed(() => {
   }));
 });
 
-const isNotValidTicket = computed(
-  () =>
-    strategyName.value === 'ticket' &&
-    (validation.value.name === 'any' || validation.value.name === 'basic')
+const isValidTicket = computed(
+  () => !(strategyName.value === 'ticket' && validation.value.name === 'any')
 );
 
-const isNotValidWhitelist = computed(
-  () => strategyName.value === 'whitelist' && whitelist.value.length === 0
+const isValidWhitelist = computed(
+  () => !(strategyName.value === 'whitelist' && whitelist.value.length === 0)
 );
+
+const isValidSymbol = computed(() => symbol.value.length > 0);
 
 const whitelistRef = ref();
+const symbolRef = ref();
 
 function forceShowError() {
   whitelistRef?.value?.forceShowError();
+  symbolRef?.value?.forceShowError();
 }
 
 function nextStep() {
-  if (isNotValidWhitelist.value) {
+  if (!isValidWhitelist.value || !isValidSymbol.value) {
     forceShowError();
     return;
   }
-  if (isNotValidTicket.value) {
+  if (!isValidTicket.value) {
     showError.value = true;
     return;
   }
@@ -120,7 +122,12 @@ function nextStep() {
               </span>
             </template>
           </TuneListbox>
-          <TuneInput v-model="symbol" label="Symbol" />
+          <TuneInput
+            ref="symbolRef"
+            v-model="symbol"
+            label="Symbol"
+            :error="!isValidSymbol ? 'Symbol is required' : ''"
+          />
         </div>
         <template v-if="strategyName === 'ticket'" class="md:w-2/3">
           <InputSelectVoteValidation
@@ -130,7 +137,7 @@ function nextStep() {
           />
 
           <BaseMessageBlock
-            v-if="isNotValidTicket && showError"
+            v-if="!isValidTicket && showError"
             level="warning-red"
             class="mt-3"
           >
@@ -155,9 +162,7 @@ function nextStep() {
             v-model="whitelist"
             label="Whitelisted addresses"
             :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-            :error="
-              isNotValidWhitelist ? 'Please add at least one address' : ''
-            "
+            :error="!isValidWhitelist ? 'Please add at least one address' : ''"
           />
         </template>
       </div>

@@ -7,6 +7,7 @@ defineProps<{
 
 <template>
   <button
+    type="button"
     :disabled="isDisabled"
     :class="{ '!cursor-not-allowed': isDisabled }"
     class="flex items-center rounded-full p-[6px] text-md text-skin-text transition-colors duration-200 hover:text-skin-link"

@@ -32,8 +32,8 @@ export function useQuorum(props: QuorumProps) {
   });
 
   async function getQuorum(web3: any, quorumOptions: any, snapshot: string) {
-    if (props.proposal?.quorum || props.space.voting?.quorum) {
-      return props.proposal?.quorum || props.space.voting?.quorum;
+    if (props.proposal?.quorum) {
+      return props.proposal?.quorum;
     }
 
     if (!quorumOptions) return 0;

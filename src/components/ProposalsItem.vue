@@ -61,7 +61,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             <LabelProposalState :state="proposal.state" />
           </div>
 
-          <router-link :to="to">
+          <router-link :to="to" class="cursor-pointer">
             <ProposalsItemTitle :proposal="proposal" :voted="voted" />
 
             <ProposalsItemBody v-if="body">

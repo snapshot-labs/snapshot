@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
+import { useMixpanel } from '@/composables/useMixpanel';
 
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
@@ -20,10 +21,13 @@ import SpaceSettings from '@/views/SpaceSettings.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceTreasury from './views/SpaceTreasury.vue';
 import SpaceDelegates from './views/SpaceDelegates.vue';
+import SpaceDelegate from './views/SpaceDelegate.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
 const { domain, domainAlias } = useApp();
+const { mixpanel } = useMixpanel();
+
 const routes: any[] = [];
 
 // These routes get prefixed with the respective space's ENS domain (/:key)
@@ -64,6 +68,11 @@ const spaceRoutes = [
     path: 'delegates',
     name: 'spaceDelegates',
     component: SpaceDelegates
+  },
+  {
+    path: 'delegate/:address?',
+    name: 'spaceDelegate',
+    component: SpaceDelegate
   }
 ];
 
@@ -165,6 +174,13 @@ const router = createRouter({
 
     return { top: 0 };
   }
+});
+
+router.afterEach(to => {
+  mixpanel.track_pageview({
+    page_name: to.name,
+    page_path: to.path
+  });
 });
 
 export { routes };

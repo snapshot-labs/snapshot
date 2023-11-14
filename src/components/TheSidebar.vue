@@ -6,7 +6,7 @@ const router = useRouter();
 const { web3Account } = useWeb3();
 const { loadFollows, followingSpaces, loadingFollows } = useFollowSpace();
 const { spaceHasUnseenProposals } = useUnseenProposals();
-const { domain, showSidebar } = useApp();
+const { showSidebar } = useApp();
 const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
 
 const orderedSpaces = ref<string[]>([]);
@@ -57,15 +57,15 @@ watch(
 
 <template>
   <div
-    class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain py-2"
+    class="no-scrollbar flex h-full flex-col items-end overflow-auto overscroll-contain pb-[12px]"
     @click="showSidebar = false"
   >
-    <div v-if="!domain" class="relative flex items-center px-2">
-      <BaseButtonRound class="!border-0" @click="router.push({ name: 'home' })">
-        <BaseIcon size="36" name="snapshot" class="text-snapshot" />
-      </BaseButtonRound>
+    <div class="w-full" @click="router.push({ name: 'home' })">
+      <div class="flex h-[70px] items-center justify-center">
+        <BaseIcon size="35" name="snapshot" class="text-snapshot" />
+      </div>
     </div>
-    <div class="mt-2 px-2">
+    <div class="mt-[6px] px-[10px]">
       <BaseButtonRound
         v-tippy="{
           content: 'Timeline',
@@ -73,6 +73,7 @@ watch(
           delay: [750, 0],
           touch: ['hold', 500]
         }"
+        size="40px"
         @click="router.push({ name: 'timeline' })"
       >
         <BaseIcon size="20" name="feed" />
@@ -87,7 +88,7 @@ watch(
       :component-data="{ type: 'transition-group' }"
       v-bind="{ animation: 200 }"
       item-key="id"
-      class="mt-2 space-y-2"
+      class="mt-[12px] space-y-[12px]"
       :delay="200"
       :delay-on-touch-only="true"
       @update="updateSpaceOrder"
@@ -95,7 +96,7 @@ watch(
       <template #item="{ element }">
         <div
           v-if="spacesMap[element]"
-          class="group relative flex items-center px-2"
+          class="group relative flex items-center px-[10px]"
         >
           <SidebarUnreadIndicator
             :space="element"
@@ -117,7 +118,7 @@ watch(
               :key="element"
               :space="spacesMap[element]"
               symbol-index="space"
-              size="44"
+              size="40"
               class="pointer-events-none"
             />
             <BaseCounter
@@ -134,7 +135,7 @@ watch(
       <div class="h-[1px] w-[20px] bg-skin-border" />
     </div>
 
-    <div class="flex flex-col items-center space-y-2 px-2">
+    <div class="flex flex-col items-center space-y-2 px-[10px]">
       <BaseButtonRound
         v-tippy="{
           content: 'Create space',
@@ -142,6 +143,7 @@ watch(
           delay: [750, 0],
           touch: ['hold', 500]
         }"
+        size="40px"
         @click="
           router.push({
             name: 'setup',

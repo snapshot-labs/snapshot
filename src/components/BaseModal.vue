@@ -54,10 +54,10 @@ onBeforeUnmount(() => {
         </div>
         <BaseButtonIcon
           v-if="!hideClose"
-          class="absolute right-3 top-[20px]"
+          class="absolute right-[20px] top-[20px]"
           @click="emit('close')"
         >
-          <i-ho-x />
+          <i-ho-x class="text-[17px]" />
         </BaseButtonIcon>
       </div>
     </div>

@@ -22,4 +22,8 @@ export abstract class StandardConfig {
 
   abstract initEmptyDelegate(address: string): DelegateWithPercent;
   abstract getContractDelegateMethod(): { abi: string[]; action: string };
+  abstract getContractDelegatingToMethod(): {
+    abi: string[];
+    action: string;
+  };
 }

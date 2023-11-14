@@ -7,7 +7,6 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:cypress/recommended',
     'plugin:vue/vue3-recommended',
     'eslint:recommended',
     '@vue/eslint-config-typescript/recommended',

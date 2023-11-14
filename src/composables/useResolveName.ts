@@ -13,7 +13,7 @@ export function useResolveName() {
 
     if (isValidEnsDomain(value)) {
       address = await resolveEns(value);
-    } else if (value.endsWith('.lens')) {
+    } else if (value?.endsWith('.lens')) {
       address = await resolveLens(value);
     }
 

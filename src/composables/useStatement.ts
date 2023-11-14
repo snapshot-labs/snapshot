@@ -1,5 +1,6 @@
 import { STATEMENTS_QUERY } from '@/helpers/queries';
 import { Statement } from '@/helpers/interfaces';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const SET_STATEMENT_ACTION = 'set-statement';
 
@@ -17,16 +18,16 @@ export function useStatement() {
 
   async function saveStatement(
     spaceId: string,
-    about: string,
-    statement: string
-  ) {
-    const result = await send({ id: spaceId }, SET_STATEMENT_ACTION, {
-      about,
-      statement
-    });
-    if (result) {
-      notify(['green', 'Statement saved successfully']);
+    statement: {
+      about: string;
+      statement: string;
     }
+  ) {
+    const result = await send({ id: spaceId }, SET_STATEMENT_ACTION, statement);
+    if (!result.id) throw new Error('Error saving statement');
+
+    notify(['green', 'Statement saved successfully']);
+    return result;
   }
 
   async function loadStatements(spaceId: string, delegateIds: string[]) {
@@ -68,18 +69,15 @@ export function useStatement() {
     }
   }
 
-  function reloadStatement(spaceId: string, id: string) {
+  async function reloadStatement(spaceId: string, id: string) {
     id = id.toLowerCase();
     delete statements.value[id];
-    loadStatements(spaceId, [id]);
+    await loadStatements(spaceId, [id]);
   }
 
-  function getStatementAbout(id: string): string | undefined {
-    return statements.value[id.toLowerCase()]?.about;
-  }
-
-  function getStatementStatement(id: string): string | undefined {
-    return statements.value[id.toLowerCase()]?.statement;
+  function getStatement(id: string): { about: string; statement: string } {
+    const defaultStatement = { about: '', statement: '' };
+    return clone(statements.value?.[id?.toLowerCase()] || defaultStatement);
   }
 
   function formatPercentageNumber(value: string | number) {
@@ -101,8 +99,7 @@ export function useStatement() {
     saveStatement,
     loadStatements,
     reloadStatement,
-    getStatementAbout,
-    getStatementStatement,
+    getStatement,
     formatPercentageNumber
   };
 }
