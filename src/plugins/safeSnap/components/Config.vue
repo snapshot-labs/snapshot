@@ -21,65 +21,72 @@ export default {
   emits: ['update:modelValue'],
   data() {
     let input;
+    let availableSafes = [];
     if (!Object.keys(this.modelValue).length) {
       input = {
-        safes: coerceConfig(this.config, this.network).safes.map(safe => ({
-          ...safe,
-          hash: null,
-          txs: []
-        })),
+        safes: [],
         valid: true
       };
     } else {
       const value = clone(this.modelValue);
       if (value.safes && this.config && Array.isArray(this.config.safes)) {
-        value.safes = value.safes.map((safe, index) => ({
-          ...this.config.safes[index],
-          ...safe
-        }));
+        value.safes = value.safes
+          .map((safe, index) => ({
+            ...this.config.safes[index],
+            ...safe
+          }))
+          .filter(safe => safe.gnosisSafeAddress);
       }
       input = coerceConfig(value, this.network);
+    }
+
+    if (this.config && Array.isArray(this.config.safes)) {
+      availableSafes = this.config.safes;
     }
 
     return {
       input,
       ipfs: getIpfsUrl(this?.proposal?.ipfs),
       isButtonClicked: false,
-      safes: []
+      availableSafes
     };
   },
+
   methods: {
     updateSafeTransactions() {
       if (this.preview) return;
+
       this.input.valid = isValidInput(this.input);
-      this.input.safes = this.input.safes.map(safe => {
-        return {
-          ...safe,
-          hash: getSafeHash(safe)
-        };
-      });
+      this.input.safes = this.input.safes.map(safe => ({
+        ...safe,
+        hash: getSafeHash(safe)
+      }));
+
       this.$emit('update:modelValue', this.input);
     },
     handleButtonClick() {
       this.isButtonClicked = !this.isButtonClicked;
     },
-    handleSafeSelected(safe) {
+    handleSafeSelected(selectedSafe) {
       this.isButtonClicked = false;
-      if (!this.safes.length) {
-        return (this.safes = [safe]);
-      }
-      const exists = this.safes.some(
-        existingSafe => existingSafe.gnosisAddress === safe.gnosisAddress
+      const exists = this.input.safes.some(
+        safe => safe.gnosisSafeAddress === selectedSafe.gnosisSafeAddress
       );
       if (!exists) {
-        this.safes.push(safe);
+        this.input.safes.push({
+          ...selectedSafe,
+          txs: [],
+          hash: null
+        });
+        this.updateSafeTransactions();
       }
     },
-    handleDeleteSafe(safe) {
-      const { gnosisAddress } = safe;
-      this.safes = this.safes.filter(
-        safe => safe.gnosisAddress !== gnosisAddress
+
+    handleDeleteSafe(safeToDelete) {
+      this.input.safes = this.input.safes.filter(
+        safe => safe.gnosisSafeAddress !== safeToDelete.gnosisSafeAddress
       );
+      this.updateSafeTransactions();
     }
   }
 };
@@ -100,9 +107,11 @@ export default {
       </h4>
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
-
-    <!--TODO: FILTER SAFES OR INPUTS.SAFES-->
-    <div v-for="(safe, index) in safes" :key="index" class="last:border-b-0">
+    <div
+      v-for="(safe, index) in input.safes"
+      :key="index"
+      class="mb-5 last:border-b-0"
+    >
       <SafeTransactions
         v-if="!preview || safe.txs.length > 0"
         :preview="preview"
@@ -125,7 +134,7 @@ export default {
       <BaseButton @click="handleButtonClick">Add a Safe</BaseButton>
       <SafeSnapsSafeSelect
         v-if="isButtonClicked"
-        :safes="input.safes"
+        :safes="availableSafes"
         @safeSelected="handleSafeSelected"
       />
     </div>
