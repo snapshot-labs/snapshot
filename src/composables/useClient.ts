@@ -66,16 +66,20 @@ export function useClient() {
 
       return receipt;
     } else if (type === 'update-proposal') {
-      const receipt = await client.updateProposal(auth.web3, web3.value.account, {
-        proposal: payload.id,
-        space: space.id,
-        type: payload.type,
-        title: payload.name,
-        body: payload.body,
-        discussion: payload.discussion,
-        choices: payload.choices,
-        plugins: JSON.stringify(plugins)
-      });
+      const receipt = await client.updateProposal(
+        auth.web3,
+        web3.value.account,
+        {
+          proposal: payload.id,
+          space: space.id,
+          type: payload.type,
+          title: payload.name,
+          body: payload.body,
+          discussion: payload.discussion,
+          choices: payload.choices,
+          plugins: JSON.stringify(plugins)
+        }
+      );
 
       mixpanel.track('Update proposal', {
         space: space.id,
@@ -101,10 +105,14 @@ export function useClient() {
 
       return receipt;
     } else if (type === 'delete-proposal') {
-      const receipt = await client.cancelProposal(auth.web3, web3.value.account, {
-        space: space.id,
-        proposal: payload.proposal.id
-      });
+      const receipt = await client.cancelProposal(
+        auth.web3,
+        web3.value.account,
+        {
+          space: space.id,
+          proposal: payload.proposal.id
+        }
+      );
 
       mixpanel.track('Delete proposal', {
         space: space.id,
