@@ -59,7 +59,6 @@ const isAdmin = computed(() => {
       <BaseLink link="https://docs.snapshot.org/">
         {{ $t('learnMore') }}
       </BaseLink>
-
       <BaseButton v-if="isAdmin" class="mt-3" @click="handleReactivateSpace">
         {{$t('reactivateSpace')}}
       </BaseButton>
