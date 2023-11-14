@@ -174,6 +174,7 @@
   "createASpace": "Create a space",
   "getStarted": "Get started",
   "skip": "Skip",
+  "reactivateSpace": "Reactivate the space",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -235,7 +236,8 @@
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
-    "errorTimeInPast": "Entered time is in the past. Please select a future time."
+    "errorTimeInPast": "Entered time is in the past. Please select a future time.",
+    "errorSpaceHibernated": "This space has been hibernated, and proposals creation has been disabled until the space is reactivated by an admin."
   },
   "delegates": {
     "header": "Delegates",
