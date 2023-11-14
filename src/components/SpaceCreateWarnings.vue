@@ -56,6 +56,10 @@ const isAdmin = computed(() => {
       is-responsive
     >
       This space has been hibernated, and proposals creation has been disabled until the space is reactivated by an admin.
+      <BaseLink link="https://discord.snapshot.org/">
+        {{ $t('learnMore') }}
+      </BaseLink>
+
       <p v-if="isAdmin" class="mt-3">
       <BaseButton @click="handleReactivateSpace">
         Reactivate this space
