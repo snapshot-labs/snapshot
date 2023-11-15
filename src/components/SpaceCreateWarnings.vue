@@ -13,10 +13,6 @@ const { web3, web3Account } = useWeb3();
 const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { errorFetchingSnapshot } = useSnapshot();
 
-function handleReactivateSpace() {
-  window.open('https://tally.so', '_blank')
-}
-
 const minScore = computed(
   () =>
     props.space?.validation?.params?.minScore ||
@@ -41,28 +37,11 @@ const strategySymbolsString = computed(() => {
 
   return `(${symbols.join(', ')})`;
 });
-
-const isAdmin = computed(() => {
-  const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
-  return admins.includes(web3Account.value?.toLowerCase());
-});
 </script>
 
 <template>
   <div class="mb-4 space-y-2">
-    <BaseMessageBlock
-      v-if="space.hibernated"
-      level="warning"
-      is-responsive
-    >
-      {{$t('create.errorSpaceHibernated')}}
-      <BaseLink link="https://docs.snapshot.org/">
-        {{ $t('learnMore') }}
-      </BaseLink>
-      <BaseButton v-if="isAdmin" class="mt-3" @click="handleReactivateSpace">
-        {{$t('reactivateSpace')}}
-      </BaseButton>
-    </BaseMessageBlock>
+    <MessageWarningHibernated v-if="space.hibernated" :space="space" />
 
     <MessageWarningGnosisNetwork
       v-else-if="isGnosisAndNotSpaceNetwork"
