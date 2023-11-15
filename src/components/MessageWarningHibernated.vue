@@ -7,12 +7,20 @@ const props = defineProps<{
 
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
+const { reloadSpace } = useExtendedSpaces();
 const { loadSpaceController, isSpaceController } = useSpaceController();
+const { notify } = useFlashNotification();
+const { t } = useI18n();
 
 async function handleReactivateSpace() {
-  await send(props.space, 'reactivate-space', {
+  const receipt = await send(props.space, 'reactivate-space', {
     space: props.space
   });
+
+  if (receipt.id) {
+    await reloadSpace(props.space.id);
+    notify(['green', t('notify.spaceReactivated')])
+  }
 }
 
 const isAdmin = computed(() => {

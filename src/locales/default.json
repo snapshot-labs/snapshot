@@ -654,7 +654,8 @@
     "ensSet": "ENS text record was successfully set",
     "transactionSent": "Transaction sent",
     "emailPreferencesUpdated": "Email preferences updated",
-    "delegationAdded": "Well done. Delegate was successfully added"
+    "delegationAdded": "Well done. Delegate was successfully added",
+    "spaceReactivated": "The space has been reactivated"
   },
   "explore": {
     "createStrategy": "Create strategy",
