@@ -19,7 +19,7 @@ async function handleReactivateSpace() {
 
   if (receipt.id) {
     await reloadSpace(props.space.id);
-    notify(['green', t('notify.spaceReactivated')])
+    notify(['green', t('notify.spaceReactivated')]);
   }
 }
 
@@ -36,7 +36,9 @@ onMounted(async () => {
 <template>
   <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
     {{ $t('create.errorSpaceHibernated') }}
-    <BaseLink link="https://docs.snapshot.org/user-guides/spaces/space-hibernation">
+    <BaseLink
+      link="https://docs.snapshot.org/user-guides/spaces/space-hibernation"
+    >
       {{ $t('learnMore') }}
     </BaseLink>
 
