@@ -6,14 +6,25 @@ const props = defineProps<{
 }>();
 
 const { web3Account } = useWeb3();
+const { send, isSending } = useClient();
+const {
+  loadSpaceController,
+  isSpaceController,
+} = useSpaceController();
 
-function handleReactivateSpace() {
-  window.open('https://tally.so', '_blank');
+async function handleReactivateSpace() {
+  await send(props.space, 'reactivate-space', {
+    space: props.space
+  });
 }
 
 const isAdmin = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
+});
+
+onMounted(async () => {
+  await loadSpaceController();
 });
 </script>
 
@@ -24,8 +35,8 @@ const isAdmin = computed(() => {
       {{ $t('learnMore') }}
     </BaseLink>
 
-    <p v-if="isAdmin" class="mt-3">
-      <BaseButton  @click="handleReactivateSpace">
+    <p v-if="isAdmin || isSpaceController" class="mt-3">
+      <BaseButton :loading="isSending" @click="handleReactivateSpace">
         {{ $t('reactivateSpace') }}
       </BaseButton>
     </p>

@@ -102,6 +102,10 @@ export function useClient() {
         space: space.id,
         proposal: payload.proposal.id
       });
+    } else if (type === 'reactivate-space') {
+      return client.reactivateSpace(auth.web3, web3.value.account, {
+        space: space.id
+      });
     }
   }
 
