@@ -11,39 +11,44 @@ const { reloadSpace } = useExtendedSpaces();
 const { loadSpaceController, isSpaceController } = useSpaceController();
 const { notify } = useFlashNotification();
 const { t } = useI18n();
+const {
+  isValid,
+  prunedForm,
+  populateForm
+} = useFormSpaceSettings('settings');
 
 async function handleReactivateSpace() {
-  const receipt = await send(props.space, 'reactivate-space', {
-    space: props.space
-  });
+  const result = await send(props.space, 'settings', prunedForm.value);
 
-  if (receipt.id) {
+  if (result.id) {
     await reloadSpace(props.space.id);
     notify(['green', t('notify.spaceReactivated')]);
   }
 }
 
-const isAdmin = computed(() => {
+const isAuthorized = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
-  return admins.includes(web3Account.value?.toLowerCase());
+  return admins.includes(web3Account.value?.toLowerCase()) || isSpaceController;
 });
 
 onMounted(async () => {
   await loadSpaceController();
+
+  if (isAuthorized.value) {
+    populateForm(props.space);
+  }
 });
 </script>
 
 <template>
   <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
     {{ $t('create.errorSpaceHibernated') }}
-    <BaseLink
-      link="https://docs.snapshot.org/user-guides/spaces/space-hibernation"
-    >
+    <BaseLink link="https://docs.snapshot.org/user-guides/spaces/space-hibernation">
       {{ $t('learnMore') }}
     </BaseLink>
 
-    <p v-if="isAdmin || isSpaceController" class="mt-3">
-      <BaseButton :loading="isSending" @click="handleReactivateSpace">
+    <p v-if="isAuthorized" class="mt-3">
+      <BaseButton :disabled="!isValid" :loading="isSending" @click="handleReactivateSpace">
         {{ $t('reactivateSpace') }}
       </BaseButton>
     </p>
