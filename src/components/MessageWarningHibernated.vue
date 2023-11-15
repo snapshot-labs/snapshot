@@ -7,10 +7,7 @@ const props = defineProps<{
 
 const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
-const {
-  loadSpaceController,
-  isSpaceController,
-} = useSpaceController();
+const { loadSpaceController, isSpaceController } = useSpaceController();
 
 async function handleReactivateSpace() {
   await send(props.space, 'reactivate-space', {
