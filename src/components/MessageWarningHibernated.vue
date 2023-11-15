@@ -36,7 +36,7 @@ onMounted(async () => {
 <template>
   <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
     {{ $t('create.errorSpaceHibernated') }}
-    <BaseLink link="https://docs.snapshot.org/">
+    <BaseLink link="https://docs.snapshot.org/user-guides/spaces/space-hibernation">
       {{ $t('learnMore') }}
     </BaseLink>
 
