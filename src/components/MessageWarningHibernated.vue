@@ -24,6 +24,7 @@ onMounted(async () => {
   <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
     {{ $t('create.errorSpaceHibernated') }}
     <BaseLink
+      v-if="isAuthorized"
       link="https://docs.snapshot.org/user-guides/spaces/space-hibernation"
     >
       {{ $t('learnMore') }}
