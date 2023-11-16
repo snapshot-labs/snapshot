@@ -196,7 +196,7 @@ onBeforeRouteLeave(async () => {
         <div class="mt-3 space-y-3 sm:mt-0">
           <BaseMessageBlock
             v-if="space.hibernated && !isViewOnly"
-            level="warning"
+            level="warning-red"
             is-responsive
           >
             <div class="mb-1 font-semibold text-skin-heading">
