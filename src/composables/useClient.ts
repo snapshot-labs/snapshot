@@ -6,6 +6,7 @@ export function useClient() {
   const { notify } = useFlashNotification();
   const { notifyModal } = useModalNotification();
   const { isGnosisSafe } = useGnosis();
+  const { mixpanel } = useMixpanel();
   const { web3 } = useWeb3();
   const auth = getInstance();
   const route = useRoute();
@@ -36,14 +37,16 @@ export function useClient() {
 
   async function sendEIP712(space: { id: string }, type: string, payload: any) {
     let plugins = {};
+    const client = clientEIP712;
+
     if (
       payload.metadata?.plugins &&
       Object.keys(payload.metadata?.plugins).length !== 0
     )
       plugins = payload.metadata.plugins;
-    const client = clientEIP712;
+
     if (type === 'create-proposal') {
-      return client.proposal(auth.web3, web3.value.account, {
+      const receipt = await client.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -56,19 +59,36 @@ export function useClient() {
         plugins: JSON.stringify(plugins),
         app: DEFINED_APP
       });
-    } else if (type === 'update-proposal') {
-      return client.updateProposal(auth.web3, web3.value.account, {
-        proposal: payload.id,
-        space: space.id,
-        type: payload.type,
-        title: payload.name,
-        body: payload.body,
-        discussion: payload.discussion,
-        choices: payload.choices,
-        plugins: JSON.stringify(plugins)
+
+      mixpanel.track('Propose', {
+        space: space.id
       });
+
+      return receipt;
+    } else if (type === 'update-proposal') {
+      const receipt = await client.updateProposal(
+        auth.web3,
+        web3.value.account,
+        {
+          proposal: payload.id,
+          space: space.id,
+          type: payload.type,
+          title: payload.name,
+          body: payload.body,
+          discussion: payload.discussion,
+          choices: payload.choices,
+          plugins: JSON.stringify(plugins)
+        }
+      );
+
+      mixpanel.track('Update proposal', {
+        space: space.id,
+        proposalId: payload.proposal.id
+      });
+
+      return receipt;
     } else if (type === 'vote') {
-      return client.vote(auth.web3, web3.value.account, {
+      const receipt = await client.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -77,31 +97,74 @@ export function useClient() {
         app: DEFINED_APP,
         reason: payload.reason
       });
-    } else if (type === 'delete-proposal') {
-      return client.cancelProposal(auth.web3, web3.value.account, {
+
+      mixpanel.track('Vote', {
         space: space.id,
-        proposal: payload.proposal.id
+        proposalId: payload.proposal.id
       });
+
+      return receipt;
+    } else if (type === 'delete-proposal') {
+      const receipt = await client.cancelProposal(
+        auth.web3,
+        web3.value.account,
+        {
+          space: space.id,
+          proposal: payload.proposal.id
+        }
+      );
+
+      mixpanel.track('Delete proposal', {
+        space: space.id,
+        proposalId: payload.proposal.id
+      });
+
+      return receipt;
     } else if (type === 'settings') {
-      return client.space(auth.web3, web3.value.account, {
+      const receipt = await client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
-    } else if (type === 'delete-space') {
-      return client.deleteSpace(auth.web3, web3.value.account, {
+
+      mixpanel.track('Update space settings', {
         space: space.id
       });
+
+      return receipt;
+    } else if (type === 'delete-space') {
+      const receipt = await client.deleteSpace(auth.web3, web3.value.account, {
+        space: space.id
+      });
+
+      mixpanel.track('Delete space', {
+        space: space.id
+      });
+
+      return receipt;
     } else if (type === 'set-statement') {
-      return client.statement(auth.web3, web3.value.account, {
+      const receipt = await client.statement(auth.web3, web3.value.account, {
         space: space.id,
         about: payload.about,
         statement: payload.statement
       });
+
+      mixpanel.track('Set statement', {
+        space: space.id
+      });
+
+      return receipt;
     } else if (type === 'flag-proposal') {
-      return client.flagProposal(auth.web3, web3.value.account, {
+      const receipt = await client.flagProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
+
+      mixpanel.track('Flag proposal', {
+        space: space.id,
+        proposalId: payload.proposal.id
+      });
+
+      return receipt;
     }
   }
 

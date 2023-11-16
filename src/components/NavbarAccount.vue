@@ -19,7 +19,7 @@ async function handleLogin(connector) {
 
 const profile = computed(() => profiles.value[web3Account.value]);
 
-watchEffect(() => {
+watch(web3Account, () => {
   loadProfiles([web3Account.value]);
 });
 </script>
