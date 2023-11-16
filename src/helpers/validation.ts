@@ -7,10 +7,10 @@ import { parseUnits } from '@ethersproject/units';
 
 const networksIds = Object.keys(networks);
 const mainnetNetworkIds = Object.keys(networks).filter(
-  (id) => !networks[id].testnet
+  id => !networks[id].testnet
 );
 const testnetNetworkIds = Object.keys(networks).filter(
-  (id) => networks[id].testnet
+  id => networks[id].testnet
 );
 
 function getErrorMessage(errorObject: ErrorObject): string {
@@ -99,7 +99,7 @@ export function validateForm(
       message: 'must be a valid network used by snapshot'
     }
   });
-  
+
   ajv.validate(schema, form);
 
   return transformAjvErrors(ajv);
