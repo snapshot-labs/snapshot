@@ -11,11 +11,7 @@ const { reloadSpace } = useExtendedSpaces();
 const { loadSpaceController, isSpaceController } = useSpaceController();
 const { notify } = useFlashNotification();
 const { t } = useI18n();
-const {
-  isValid,
-  prunedForm,
-  populateForm
-} = useFormSpaceSettings('settings');
+const { isValid, prunedForm, populateForm } = useFormSpaceSettings('settings');
 
 async function handleReactivateSpace() {
   const result = await send(props.space, 'settings', prunedForm.value);
@@ -43,12 +39,18 @@ onMounted(async () => {
 <template>
   <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
     {{ $t('create.errorSpaceHibernated') }}
-    <BaseLink link="https://docs.snapshot.org/user-guides/spaces/space-hibernation">
+    <BaseLink
+      link="https://docs.snapshot.org/user-guides/spaces/space-hibernation"
+    >
       {{ $t('learnMore') }}
     </BaseLink>
 
     <p v-if="isAuthorized" class="mt-3">
-      <BaseButton :disabled="!isValid" :loading="isSending" @click="handleReactivateSpace">
+      <BaseButton
+        :disabled="!isValid"
+        :loading="isSending"
+        @click="handleReactivateSpace"
+      >
         {{ $t('reactivateSpace') }}
       </BaseButton>
     </p>
