@@ -199,34 +199,24 @@ onBeforeRouteLeave(async () => {
             level="warning-red"
             is-responsive
           >
-            <div class="mb-1 font-semibold text-skin-heading">
-              {{ t('settings.reactivatingHibernatedSpace.title') }}
+            <div v-if="isValid">
+              {{ t('settings.reactivatingHibernatedSpace.information') }}
             </div>
-            <div class="flex items-center justify-between">
-              <div class="grow">
-                <div v-if="isValid">
-                  {{ t('settings.reactivatingHibernatedSpace.information') }}
-                </div>
 
-                <div v-else>
-                  {{
-                    t(
-                      'settings.reactivatingHibernatedSpace.disabledInformation'
-                    )
-                  }}
-                </div>
-              </div>
-              <div>
-                <BaseButton
-                  :loading="isSending"
-                  :disabled="!isValid"
-                  class="ml-4 whitespace-nowrap"
-                  @click="handleSubmit"
-                >
-                  {{ $t('reactivateSpace') }}
-                </BaseButton>
-              </div>
+            <div v-else>
+              {{
+                t('settings.reactivatingHibernatedSpace.disabledInformation')
+              }}
             </div>
+
+            <BaseButton
+              :loading="isSending"
+              :disabled="!isValid"
+              class="mt-3 whitespace-nowrap"
+              @click="handleSubmit"
+            >
+              {{ $t('reactivateSpace') }}
+            </BaseButton>
           </BaseMessageBlock>
 
           <BaseMessageBlock

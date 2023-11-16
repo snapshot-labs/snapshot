@@ -10,7 +10,9 @@ const { loadSpaceController, isSpaceController } = useSpaceController();
 
 const isAuthorized = computed(() => {
   const admins = (props.space.admins || []).map(admin => admin.toLowerCase());
-  return admins.includes(web3Account.value?.toLowerCase()) || isSpaceController.value;
+  return (
+    admins.includes(web3Account.value?.toLowerCase()) || isSpaceController.value
+  );
 });
 
 onMounted(async () => {
