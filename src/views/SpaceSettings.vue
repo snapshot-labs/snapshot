@@ -148,13 +148,6 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
-  populateForm(props.space);
-  await loadEnsOwner();
-  await loadSpaceController();
-  loaded.value = true;
-});
-
 const {
   isRevealed: isConfirmLeaveOpen,
   reveal: openConfirmLeave,
@@ -170,6 +163,17 @@ const {
 
 const isViewOnly = computed(() => {
   return !(isSpaceController.value || isSpaceAdmin.value);
+});
+
+onMounted(async () => {
+  populateForm(props.space);
+  await loadEnsOwner();
+  await loadSpaceController();
+  loaded.value = true;
+
+  if (props.space.hibernated && !isViewOnly.value) {
+    showFormErrors.value = true;
+  }
 });
 
 onBeforeRouteLeave(async () => {
@@ -190,6 +194,41 @@ onBeforeRouteLeave(async () => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
+          <BaseMessageBlock
+            v-if="space.hibernated && !isViewOnly"
+            level="warning"
+            is-responsive
+          >
+            <div class="mb-1 font-semibold text-skin-heading">
+              {{ t('settings.reactivatingHibernatedSpace.title') }}
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="grow">
+                <div v-if="isValid">
+                  {{ t('settings.reactivatingHibernatedSpace.information') }}
+                </div>
+
+                <div v-else>
+                  {{
+                    t(
+                      'settings.reactivatingHibernatedSpace.disabledInformation'
+                    )
+                  }}
+                </div>
+              </div>
+              <div>
+                <BaseButton
+                  :loading="isSending"
+                  :disabled="!isValid"
+                  class="ml-4 whitespace-nowrap"
+                  @click="handleSubmit"
+                >
+                  {{ $t('reactivateSpace') }}
+                </BaseButton>
+              </div>
+            </div>
+          </BaseMessageBlock>
+
           <BaseMessageBlock
             v-if="showFormErrors && Object.keys(validationErrors).length"
             level="warning-red"

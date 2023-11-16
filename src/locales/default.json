@@ -174,7 +174,7 @@
   "createASpace": "Create a space",
   "getStarted": "Get started",
   "skip": "Skip",
-  "reactivateSpace": "Reactivate the space",
+  "reactivateSpace": "Reactivate space",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -536,6 +536,11 @@
     "delegationPortal": {
       "title": "Delegation portal",
       "information": "Please ensure your token adheres to a compatible delegation standard to enable delegate discovery and activity within your Snapshot space."
+    },
+    "reactivatingHibernatedSpace": {
+      "title": "Reactivating hibernated space",
+      "information": "Reactivate your space now to enable proposals creation again. Note that your space may be hibernated again if left inactive.",
+      "disabledInformation": "Your space contains invalid settings since your last update. Fix the errors below and your space will be reactivated automatically upon save."
     }
   },
   "setup": {
