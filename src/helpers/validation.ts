@@ -1,8 +1,17 @@
 import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import addFormats from 'ajv-formats';
 import { isAddress } from '@ethersproject/address';
 import { parseUnits } from '@ethersproject/units';
+
+const networksIds = Object.keys(networks);
+const mainnetNetworkIds = Object.keys(networks).filter(
+  (id) => !networks[id].testnet
+);
+const testnetNetworkIds = Object.keys(networks).filter(
+  (id) => networks[id].testnet
+);
 
 function getErrorMessage(errorObject: ErrorObject): string {
   if (!errorObject.message) return 'Invalid field.';
@@ -76,6 +85,21 @@ export function validateForm(
     }
   });
 
+  ajv.addKeyword({
+    keyword: 'snapshotNetwork',
+    validate: function (schema, data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const snapshotEnv = this.snapshotEnv || 'default';
+      if (snapshotEnv === 'mainnet') return mainnetNetworkIds.includes(data);
+      if (snapshotEnv === 'testnet') return testnetNetworkIds.includes(data);
+      return networksIds.includes(data);
+    },
+    error: {
+      message: 'must be a valid network used by snapshot'
+    }
+  });
+  
   ajv.validate(schema, form);
 
   return transformAjvErrors(ajv);
