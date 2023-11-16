@@ -170,10 +170,6 @@ onMounted(async () => {
   await loadEnsOwner();
   await loadSpaceController();
   loaded.value = true;
-
-  if (props.space.hibernated && !isViewOnly.value) {
-    showFormErrors.value = true;
-  }
 });
 
 onBeforeRouteLeave(async () => {
@@ -194,30 +190,14 @@ onBeforeRouteLeave(async () => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
-          <BaseMessageBlock
+          <SpaceSettingsMessageHibernated
             v-if="space.hibernated && !isViewOnly"
-            level="warning-red"
-            is-responsive
-          >
-            <div v-if="isValid">
-              {{ t('settings.reactivatingHibernatedSpace.information') }}
-            </div>
-
-            <div v-else>
-              {{
-                t('settings.reactivatingHibernatedSpace.disabledInformation')
-              }}
-            </div>
-
-            <BaseButton
-              :loading="isSending"
-              :disabled="!isValid"
-              class="mt-3 whitespace-nowrap"
-              @click="handleSubmit"
-            >
-              {{ $t('reactivateSpace') }}
-            </BaseButton>
-          </BaseMessageBlock>
+            :space="space"
+            :is-sending="isSending"
+            :is-valid="isValid"
+            @show-errors="showFormErrors = true"
+            @reactivate-space="handleSubmit"
+          />
 
           <BaseMessageBlock
             v-if="showFormErrors && Object.keys(validationErrors).length"
