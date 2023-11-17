@@ -3,12 +3,6 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
-    allow:
-      - dependency-name: "@snapshot-labs/*"
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
       interval: "weekly"
     ignore:
       - dependency-name: "@snapshot-labs/*"
