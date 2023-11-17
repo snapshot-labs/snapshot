@@ -5,6 +5,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { MAINNET_DOMAIN_IDS, Network, TEST_DOMAIN_IDS } from '@/plugins/safeSnap';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -21,6 +22,17 @@ export function shorten(str: string, key?: any): string {
     return str.length > limit ? `${str.slice(0, limit).trim()}...` : str;
   return shortenAddress(str);
 }
+
+export const getNetworkKeyByDomainId = (domainId: number): string | undefined => {
+  const combinedDomainIds = { ...MAINNET_DOMAIN_IDS, ...TEST_DOMAIN_IDS };
+  const networkEntry = Object.entries(Network).find(([_key, value]) => {
+    return (
+      combinedDomainIds[value as keyof typeof combinedDomainIds] === domainId
+    );
+  });
+
+  return networkEntry ? networkEntry[0] : undefined;
+};
 
 export function getChoiceString(proposal, selected) {
   const votingClass = new voting[proposal.type](proposal, '', '', selected);

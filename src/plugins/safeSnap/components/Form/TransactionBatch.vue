@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     addTransaction() {
-      // this.transactions.push(undefined);
       this.showSingleTransactionModal = true;
     },
     updateTransaction(payload) {
@@ -162,69 +161,3 @@ export default {
   border-radius: 23px;
 }
 </style>
-
-<!-- <UiSelect
-      :model-value="batchTypeSelected"
-      @update:modelValue="handleBatchTypeSelection($event)"
-    >
-      <template #label>Batch Type</template>
-      <option v-for="{ key, value } in batchTypeList" :key="key" :value="value">
-        {{ key }}
-      </option>
-    </UiSelect> -->
-
-<!-- <SafeSnapFormImportTransactions
-      v-if="batchTypeSelected.includes('json')"
-      :network="network"
-      @import="handleTxs"
-    /> -->
-
-<!-- <div class="p-3 mt-3 rounded-xl bg-skin-block-bg"> -->
-
-<!-- <div
-          v-for="(transaction, index) in transactions"
-          :key="index"
-          class="mb-2"
-        >
-          <SafeSnapFormTransaction
-            :model-value="transaction"
-            :config="config"
-            :nonce="index"
-            @remove="removeTransaction(index)"
-            @update:modelValue="updateTransaction(index, $event)"
-          />
-        </div> -->
-<!-- </div> -->
-<!-- <UiCollapsibleText
-        v-if="modelValue.hash"
-        :show-arrow="true"
-        :open="!hashHidden"
-        :text="modelValue.hash"
-        class="collapsible-text mt-2"
-        title="Batch Transaction Hash"
-        @toggle="hashHidden = !hashHidden"
-      />
-      <UiCollapsibleText
-        v-if="modelValue.hash"
-        :show-arrow="true"
-        :open="!jsonHidden"
-        :text="
-          JSON.stringify(formatBatchJson(modelValue.transactions), null, '\t')
-        "
-        class="collapsible-text mt-2"
-        title="Batch Transaction JSON"
-        pre
-        @toggle="jsonHidden = !jsonHidden"
-      />
-      <BaseBlock
-        v-if="
-          safesnap.batchError &&
-          safesnap.batchError.message &&
-          nonce === safesnap.batchError.num
-        "
-        class="mt-4"
-        style="border-color: red !important"
-      >
-        <BaseIcon name="warning" class="mr-2 !text-red" />
-        <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
-      </BaseBlock> -->

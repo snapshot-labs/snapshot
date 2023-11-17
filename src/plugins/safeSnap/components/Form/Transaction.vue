@@ -1,12 +1,15 @@
 <script>
 import { formatUnits } from '@ethersproject/units';
 import { getAbiFirstFunctionName } from '../../index';
-import { shorten } from '@/helpers/utils';
 import SafeSnapFormContractInteraction from './ContractInteraction.vue';
 import SafeSnapFormTransferFunds from './TransferFunds.vue';
 import SafeSnapFormSendAsset from './SendAsset.vue';
 import SafeSnapFormRawTransaction from './RawTransaction.vue';
 import SafeSnapFormConnextTransaction from './ConnextTransaction.vue';
+import Plugin from '../../index';
+import { shorten, getNetworkKeyByDomainId } from '@/helpers/utils';
+
+const plugin = new Plugin();
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -39,16 +42,68 @@ export default {
       type = this.modelValue.type ? this.modelValue.type : 'raw';
     }
 
+    if (this.connextModelValue && this.connextModelValue.length) {
+      type = 'connext';
+    }
+
     return {
+      resolvedTitle: 'Transaction',
       transactionType: this.transactionType,
       open: !this.config.preview,
       type
     };
   },
-  computed: {
-    title() {
-      if (this.open) {
-        return '';
+  watch: {
+    modelValue: {
+      immediate: true,
+      async handler(newVal, oldVal) {
+        if (newVal !== oldVal || (newVal && !oldVal)) {
+          this.resolvedTitle = await this.computeTitle();
+        }
+        if (newVal.type) {
+          this.type = this.modelValue.type;
+        }
+        if (newVal.type) {
+          this.type = this.modelValue.type;
+        }
+      }
+    },
+    connextModelValue: {
+      immediate: true,
+      async handler(newVal, oldVal) {
+        if (newVal !== oldVal || (newVal && !oldVal)) {
+          this.resolvedTitle = await this.computeTitle();
+        }
+      }
+    },
+    transactionType(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.transactionType = newVal;
+      }
+    }
+  },
+
+  mounted() {
+    if (!this.config || !this.modelValue) {
+      return;
+    }
+    if (!this.config.preview) this.$emit('update:modelValue', undefined);
+    if (!this.modelValue.type) {
+      this.type = 'raw';
+    }
+  },
+  methods: {
+    async computeTitle() {
+      console.log('type', this.type);
+      if (this.type === 'connext' && this.connextModelValue.length) {
+        const txData = this.connextModelValue[1].data;
+        const decoded = await plugin.decodeConnextXcallData(txData);
+        const destinationChain = getNetworkKeyByDomainId(decoded[0]);
+        const destinationAddress = shorten(decoded[1]);
+        return `Connext transaction to ${destinationAddress} (${destinationChain})`;
+      }
+      if (!this.modelValue) {
+        return this.getLabel(this.type);
       }
 
       if (this.modelValue) {
@@ -88,31 +143,10 @@ export default {
           console.log('could not determine title', error);
         }
       }
+
       return this.getLabel(this.type);
-    }
-  },
-  watch: {
-    modelValue() {
-      if (this.modelValue?.type) {
-        this.type = this.modelValue.type;
-      }
-      if (this.modelValue?.type) {
-        this.type = this.modelValue.type;
-      }
     },
-    transactionType(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.transactionType = newVal;
-      }
-    }
-  },
-  mounted() {
-    if (!this.config.preview) this.$emit('update:modelValue', undefined);
-    if (this.config.preview && !this.modelValue.type) {
-      this.type = 'raw';
-    }
-  },
-  methods: {
+
     getLabel(type) {
       return labels[type];
     },
@@ -139,14 +173,14 @@ export default {
 };
 </script>
 
-<template>
+<template> 
   <UiCollapsible
     :hide-remove="config.preview"
     :number="showNonce()"
     :open="open"
-    :title="!!title ? title : 'Transaction'"
+    :title="resolvedTitle"
     :show-arrow="true"
-    :show-edit="true"
+    :show-edit="!config.preview"
     @remove="$emit('remove')"
     @toggle="open = !open"
     @edit="handleEditTransaction"

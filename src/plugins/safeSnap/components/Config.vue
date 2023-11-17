@@ -95,7 +95,7 @@ export default {
 <template>
   <div v-if="!preview || input.safes.length > 0">
     <div
-      class="block px-4 pt-3"
+      :class="[preview ? '' : 'px-4', 'block', 'pt-3']"
       style="
         padding-bottom: 12px;
         display: flex;

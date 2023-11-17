@@ -329,7 +329,15 @@ export default {
 
 <template>
   <div
-    class="mx-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
+    :class="[
+      preview ? '' : 'mx-4',
+      'rounded-none',
+      'border-b',
+      'border-t',
+      'bg-skin-block-bg',
+      'md:rounded-xl',
+      'md:border'
+    ]"
   >
     <h4
       class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
@@ -372,6 +380,7 @@ export default {
     <div class="flex flex-col items-start gap-3 self-stretch px-4 py-3">
       <h6>{{ $t('safeSnap.batch') }} ({{ input.length }})</h6>
       <div
+        v-if="moduleTypeReady"
         v-for="(batch, index) in input"
         :key="index"
         class="w-full rounded-xl border"
@@ -386,53 +395,54 @@ export default {
           @update:modelValue="updateTransactionBatch(index, $event)"
         />
       </div>
-      <div
-        v-if="!preview || proposalResolved"
-        class="flex w-full items-center justify-between"
-      >
-        <BaseButton v-if="!preview" @click="addTransactionBatch">
-          {{ $t('safeSnap.addBatch') }}
-        </BaseButton>
-        <BaseButton v-if="!preview" @click="openJsonModal">
-          Transaction Batch with JSON
-        </BaseButton>
-        <teleport to="#modal">
-          <SafeSnapModalImportTransaction
-            :open="showBatchWithJsonModal"
-            :network="network"
-            @close="handleJsonModal"
+      <div v-if="!preview || proposalResolved" class="flex w-full flex-col">
+        <div class="flex w-full items-center justify-between" v-if="!preview">
+          <BaseButton @click="addTransactionBatch" :disabled="!moduleTypeReady">
+            {{ $t('safeSnap.addBatch') }}
+          </BaseButton>
+          <BaseButton @click="openJsonModal" :disabled="!moduleTypeReady">
+            Transaction Batch with JSON
+          </BaseButton>
+          <teleport to="#modal">
+            <SafeSnapModalImportTransaction
+              :open="showBatchWithJsonModal"
+              :network="network"
+              @close="handleJsonModal"
+            />
+          </teleport>
+        </div>
+
+        <div class="w-full">
+          <SafeSnapHandleOutcome
+            v-if="
+              preview &&
+              proposalResolved &&
+              moduleType === 'reality' &&
+              moduleTypeReady
+            "
+            :batches="input"
+            :proposal="proposal"
+            :reality-address="transactionConfig.realityAddress"
+            :multi-send-address="transactionConfig.multiSendAddress"
+            :network="transactionConfig.network"
           />
-        </teleport>
 
-        <SafeSnapHandleOutcome
-          v-if="
-            preview &&
-            proposalResolved &&
-            moduleType === 'reality' &&
-            moduleTypeReady
-          "
-          :batches="input"
-          :proposal="proposal"
-          :reality-address="transactionConfig.realityAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
-          :network="transactionConfig.network"
-        />
-
-        <SafeSnapHandleOutcomeUma
-          v-if="
-            preview &&
-            proposalResolved &&
-            moduleType === 'uma' &&
-            moduleTypeReady
-          "
-          :batches="input"
-          :proposal="proposal"
-          :space="space"
-          :results="results"
-          :uma-address="transactionConfig.umaAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
-          :network="transactionConfig.network"
-        />
+          <SafeSnapHandleOutcomeUma
+            v-if="
+              preview &&
+              proposalResolved &&
+              moduleType === 'uma' &&
+              moduleTypeReady
+            "
+            :batches="input"
+            :proposal="proposal"
+            :space="space"
+            :results="results"
+            :uma-address="transactionConfig.umaAddress"
+            :multi-send-address="transactionConfig.multiSendAddress"
+            :network="transactionConfig.network"
+          />
+        </div>
       </div>
     </div>
   </div>

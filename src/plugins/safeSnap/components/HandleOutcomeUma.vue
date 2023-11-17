@@ -7,16 +7,27 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import Plugin from '../index';
 import type { Network } from '../types';
 import { ensureRightNetwork } from './SafeTransactions.vue';
+import { ref, watch } from 'vue';
+
+import { shorten } from '@/helpers/utils';
 
 type Transaction = {
   to: string;
   operation: string;
   value: string;
   data: string;
+  nonce: string | number;
+  transactionBatchType?: 'connext' | 'standard';
 };
 
 type Batch = {
+  mainTransaction?: Transaction;
   transactions: Transaction[];
+};
+
+type ConnextBatch = {
+  batchNonce: number | string;
+  gnosisSafeAddress: string;
 };
 
 const props = defineProps<{
@@ -41,7 +52,7 @@ const {
 } = useTxStatus();
 const { notify } = useFlashNotification();
 const { quorum } = useQuorum(props);
-
+const connextBatches = ref<ConnextBatch[]>([]);
 const plugin = new Plugin();
 
 type QuestionState =
@@ -78,11 +89,35 @@ function showProposeModal() {
   voteResultsConfirmed.value = true;
 }
 
-const getTransactionsUma = () =>
-  props.batches.map(batch => {
-    const mainTx = batch.mainTransaction;
-    return [mainTx.to, Number(mainTx.operation), mainTx.value, mainTx.data];
+const getTransactionsUma = () => {
+  return props.batches.flatMap(batch => {
+    const { transactions, mainTransaction } = batch;
+    // Check if mainTransaction has all the necessary data
+    if (mainTransaction && mainTransaction.to && mainTransaction.data) {
+      // If mainTransaction is valid, return an array with its details
+      return [
+        [
+          mainTransaction.to,
+          Number(mainTransaction.operation),
+          mainTransaction.value,
+          mainTransaction.data
+        ]
+      ];
+    } else {
+      // If mainTransaction is not valid, process the transactions array
+      return transactions.map(transaction => {
+        // Map each transaction to an array of its details,
+        // using empty string or zero as default values where data is missing
+        return [
+          transaction.to || '',
+          Number(transaction.operation),
+          transaction.value || '',
+          transaction.data || ''
+        ];
+      });
+    }
   });
+};
 
 const updateDetails = async () => {
   loading.value = true;
@@ -135,6 +170,13 @@ const getProposalUrl = (chain: string, txHash: string, logIndex: number) => {
     return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
   return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
+};
+
+const getConnextUrl = (chain: string, gnosisSafeAddress: string) => {
+  if (Number(chain) !== 5 && Number(chain) !== 80001) {
+    return `https://connextscan.io/address/${gnosisSafeAddress}`;
+  }
+  return `https://testnet.connextscan.io/address/${gnosisSafeAddress}`;
 };
 
 const submitProposalUma = async () => {
@@ -214,15 +256,6 @@ const networkName = computed(() => {
   return networks[props.network].name;
 });
 
-type Proposal = {
-  choices: string[];
-  scores: number[];
-  scores_total: number;
-  quorum: number;
-  created: number;
-  end: number;
-  state: string;
-};
 function didProposalPass(proposal: Proposal) {
   // ensure the vote has ended
   if (proposal.state !== 'closed') return false;
@@ -296,51 +329,116 @@ const questionState = computed<QuestionState>(() => {
   return 'error';
 });
 
+function extractConnextBatches(batches: Batch[], proposal: Proposal) {
+  const connextBatchesInfo: ConnextBatch[] = [];
+
+  batches.forEach(batch => {
+    const connextTransactions = batch.transactions.filter(
+      transaction => transaction.transactionBatchType === 'connext'
+    );
+
+    connextTransactions.forEach(connextTransaction => {
+      proposal.plugins.safeSnap.safes.forEach(safe => {
+        let transactions;
+        if (Array.isArray(safe.txs)) {
+          // Handle when 'safe.txs' is an array of transactions or an array of objects with 'transactions'
+          safe.txs.forEach(txOrGroup => {
+            if (
+              txOrGroup.transactions &&
+              Array.isArray(txOrGroup.transactions)
+            ) {
+              transactions = txOrGroup.transactions;
+            } else {
+              transactions = [txOrGroup];
+            }
+            
+            transactions.forEach(tx => {
+              if (
+                tx.nonce !== undefined &&
+                tx.nonce.toString() === connextTransaction.nonce.toString()
+              ) {
+                const newEntry = {
+                  batchNonce: connextTransaction.nonce,
+                  gnosisSafeAddress: safe.gnosisSafeAddress
+                };
+
+                // avoid duplicated
+                if (
+                  !connextBatchesInfo.some(
+                    entry =>
+                      entry.gnosisSafeAddress === newEntry.gnosisSafeAddress
+                  )
+                ) {
+                  connextBatchesInfo.push(newEntry);
+                }
+              }
+            });
+          });
+        } else if (safe.txs && safe.txs.transactions) {
+          // handle when 'safe.txs' is an object with 'transactions'
+          transactions = safe.txs.transactions;
+        }
+      });
+    });
+  });
+
+  return connextBatchesInfo;
+}
+
 onMounted(async () => {
   await updateDetails();
 });
+
+watch(
+  () => props.batches,
+  async newBatches => {
+    const connextTxs = extractConnextBatches(newBatches, props.proposal);
+    connextBatches.value = connextTxs;
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
-  <div v-if="questionState === 'error'" class="my-4">
+  <div v-if="questionState === 'error'" class="my-2">
     {{ $t('safeSnap.labels.error') }}
   </div>
   <template v-else>
-    <div v-if="questionState === 'no-wallet-connection'" class="my-4">
+    <div v-if="questionState === 'no-wallet-connection'" class="my-2">
       {{ $t('safeSnap.labels.connectWallet') }}
     </div>
 
-    <div v-if="questionState === 'loading'" class="my-4">
+    <div v-if="questionState === 'loading'" class="my-2">
       <LoadingSpinner />
     </div>
-    <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-4">
+    <div v-if="questionState === 'waiting-for-vote-finalize'" class="my-2">
       Waiting on vote to be finalized
     </div>
 
     <div v-if="connectedToRightChain || usingMetaMask">
       <div
+        class="my-2 inline-block"
         v-if="questionState === 'waiting-for-vote-confirmation'"
-        class="my-4 inline-block"
       >
-        <BaseContainer class="flex items-center">
+        <BaseContainer class="padding flex items-center">
           <BaseButton @click="showProposeModal" class="mr-2">
             {{ $t('safeSnap.labels.confirmVoteResults') }}
           </BaseButton>
         </BaseContainer>
       </div>
 
-      <div v-if="questionState === 'no-transactions'" class="my-4">
+      <div v-if="questionState === 'no-transactions'">
         {{ $t('safeSnap.labels.noTransactions') }}
       </div>
 
       <div
         v-if="
           questionState === 'waiting-for-proposal' &&
-          questionDetails.needsBondApproval === true
+          questionDetails?.needsBondApproval === true
         "
-        class="my-4 inline-block"
+        class="my-2 inline-block"
       >
-        <BaseContainer class="flex items-center">
+        <BaseContainer class="padding flex items-center">
           <BaseButton
             :loading="action1State === 'approve-bond'"
             @click="approveBondUma"
@@ -362,12 +460,13 @@ onMounted(async () => {
           </BasePopoverHover>
         </BaseContainer>
       </div>
+
       <div
         v-if="
           questionState === 'waiting-for-proposal' &&
-          questionDetails.needsBondApproval === false
+          questionDetails?.needsBondApproval === false
         "
-        class="my-4 inline-block"
+        class="my-2 inline-block"
       >
         <BaseContainer class="flex items-center">
           <BaseModal :open="closeModal" @close="closeEvent">
@@ -441,7 +540,7 @@ onMounted(async () => {
       <div
         v-if="
           questionState === 'waiting-for-liveness' &&
-          questionDetails.assertionEvent !== undefined
+          questionDetails?.assertionEvent !== undefined
         "
         class="flex items-center justify-center self-stretch p-3 text-skin-link"
       >
@@ -479,9 +578,9 @@ onMounted(async () => {
 
       <div
         v-if="questionState === 'proposal-approved'"
-        class="my-4 inline-block"
+        class="my-2 inline-block"
       >
-        <BaseContainer class="flex items-center">
+        <BaseContainer class="padding flex items-center">
           <BaseButton
             :loading="action2State === 'execute-proposal'"
             @click="executeProposalUma"
@@ -508,16 +607,53 @@ onMounted(async () => {
       v-else-if="
         questionState !== 'loading' && questionState !== 'no-wallet-connection'
       "
-      class="my-4"
+      class="my-2"
     >
       {{ $t('safeSnap.labels.switchChain', [networkName]) }}
     </div>
 
-    <div v-if="questionState === 'completely-executed'" class="my-4">
-      {{ $t('safeSnap.labels.executed') }}
+    <div v-if="questionState === 'completely-executed'" class="my-2">
+      <div class="flex flex-col items-center justify-center">
+        <p>{{ $t('safeSnap.labels.executed') }}</p>
+        <div v-if="connextBatches.length">
+          <div v-for="(connextBatch, index) in connextBatches" :key="index">
+            <div style="text-align: center" class="mt-3">
+              <a
+                :href="
+                  getConnextUrl(props.network, connextBatch.gnosisSafeAddress)
+                "
+                class="rounded-lg border p-2 text-skin-text"
+                rel="noreferrer noopener"
+                target="_blank"
+                style="font-size: 16px"
+              >
+                Connext transaction ({{
+                  shorten(connextBatch.gnosisSafeAddress)
+                }})
+                <em
+                  style="font-size: 14px"
+                  class="iconfont iconexternal-link"
+                />
+              </a>
+            </div>
+          </div>
+          <p class="mt-3 text-center text-xs">
+            <span class="font-bold text-skin-link">Note:</span> It&apos;s
+            important to check the status of the Connext transaction to ensure
+            the appropriate amount of gas has been set.
+          </p>
+        </div>
+      </div>
     </div>
-    <div v-if="questionState === 'proposal-denied'" class="my-4">
+    <div v-if="questionState === 'proposal-denied'" class="my-2">
       {{ $t('safeSnap.labels.rejected') }}
     </div>
   </template>
 </template>
+
+<style scss>
+.padding {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+</style>
