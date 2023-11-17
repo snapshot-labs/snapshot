@@ -237,7 +237,8 @@
     "markdown": "Styling with Markdown is supported",
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
     "errorTimeInPast": "Entered time is in the past. Please select a future time.",
-    "errorSpaceHibernated": "This space has been hibernated due to a lack of activity, and proposals creation has been disabled until the space is reactivated by an admin."
+    "errorSpaceHibernatedAdmin": "Admins your attention is required. This space has been hibernated due to a lack of activity, and as a result, proposal creation is currently disabled. To re-enable your space, please go to the settings page and click \"Reactivate\".",
+    "errorSpaceHibernatedUsers": "This space has been hibernated due to a lack of activity. As a result, the creation of proposals has been temporarily disabled. To resume your ability to create proposals, the space needs to be reactivated by an admin. Please check back later or contact your space admin for further information."
   },
   "delegates": {
     "header": "Delegates",
@@ -539,7 +540,7 @@
     },
     "reactivatingHibernatedSpace": {
       "title": "Reactivating hibernated space",
-      "information": "Space Admins: Your space is currently in hibernation due to six months of inactivity. To re-enable proposal creation, please click the button below to reactivate your space. There are no penalties for hibernation, but the space will remain inactive for proposal creation until reactivation by an admin.",
+      "information": "Your space is currently in hibernation due to six months of inactivity. To re-enable proposal creation, please click the button below to reactivate your space. There are no penalties for hibernation, but the space will remain inactive for proposal creation until reactivation by an admin.",
       "disabledInformation": "Your space contains invalid settings since your last update. Fix the errors below and your space will be reactivated automatically upon save."
     }
   },

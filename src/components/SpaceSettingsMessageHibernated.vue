@@ -3,7 +3,6 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   space: ExtendedSpace;
-  isViewOnly: boolean;
   isSending: boolean;
   isValid: boolean;
 }>();
@@ -25,7 +24,13 @@ onMounted(() => {
       {{ $t('settings.reactivatingHibernatedSpace.disabledInformation') }}
     </div>
 
-    <BaseButton :loading="isSending" :disabled="!isValid" class="mt-3 whitespace-nowrap" @click="emit('reactivateSpace')">
+    <BaseButton
+      primary
+      :loading="isSending"
+      :disabled="!isValid"
+      class="mt-3 whitespace-nowrap"
+      @click="emit('reactivateSpace')"
+    >
       {{ $t('reactivateSpace') }}
     </BaseButton>
   </BaseMessageBlock>

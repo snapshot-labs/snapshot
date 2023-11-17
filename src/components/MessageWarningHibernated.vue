@@ -21,8 +21,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseMessageBlock v-if="space.hibernated" level="warning" is-responsive>
-    {{ $t('create.errorSpaceHibernated') }}
+  <BaseMessageBlock v-if="space.hibernated" level="warning-red" is-responsive>
+    {{
+      isAuthorized
+        ? $t('create.errorSpaceHibernatedAdmin')
+        : $t('create.errorSpaceHibernatedUsers')
+    }}
     <BaseLink
       v-if="isAuthorized"
       link="https://docs.snapshot.org/user-guides/spaces/space-hibernation"
@@ -32,9 +36,7 @@ onMounted(async () => {
 
     <p v-if="isAuthorized" class="mt-3">
       <router-link :to="{ name: 'spaceSettings' }">
-        <BaseButton>
-          {{ $t('reactivateSpace') }}
-        </BaseButton>
+        <BaseButton> Go to Settings </BaseButton>
       </router-link>
     </p>
   </BaseMessageBlock>

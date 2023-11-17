@@ -186,7 +186,6 @@ watch(spaceProposals, () => {
 
       <BaseNoResults v-else-if="spaceProposals.length < 1" />
       <div v-else class="mb-3 space-y-3">
-        <MessageWarningHibernated v-if="space.hibernated" :space="space" />
         <template v-for="(proposal, i) in spaceProposals" :key="i">
           <BaseBlock slim class="transition-colors">
             <ProposalsItem
