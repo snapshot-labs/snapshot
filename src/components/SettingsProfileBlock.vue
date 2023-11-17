@@ -34,7 +34,12 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarSpace
                       :preview-file="previewFile"
                       size="80"
-                      :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar: avatarNotReactive }"
+                      :space="{
+                        id:
+                          ($route.params.ens as string) ??
+                          ($route.params.key as string),
+                        avatar: avatarNotReactive
+                      }"
                     />
                     <AvatarOverlayEdit
                       :loading="uploading"

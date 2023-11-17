@@ -28,10 +28,14 @@ export function useTreasury() {
 
       if (treasuryAssets.value[address]) return;
       const balances = await getTokenBalances(address, chainId)
-        .then(balances =>
-          balances?.filter(balance =>
-            tokenListContractAddresses.value?.includes(balance.contract_address)
-          )
+        .then(
+          balances =>
+            balances?.filter(
+              balance =>
+                tokenListContractAddresses.value?.includes(
+                  balance.contract_address
+                )
+            )
         )
         .catch(() => []);
       if (balances) treasuryAssets.value[address] = balances;
