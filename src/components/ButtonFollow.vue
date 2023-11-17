@@ -49,8 +49,8 @@ watch(
         loadingFollow !== ''
           ? null
           : canFollow
-          ? clickFollow(space.id)
-          : (modalTermsOpen = true)
+            ? clickFollow(space.id)
+            : (modalTermsOpen = true)
       "
     >
       <span v-if="!isFollowing"> {{ $t('join') }} </span>

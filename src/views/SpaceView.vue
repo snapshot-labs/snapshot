@@ -15,8 +15,8 @@ const spaceKey = computed(
   () => aliasedSpace.value || domain || route.params.key
 );
 
-const space = computed(() =>
-  extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
+const space = computed(
+  () => extendedSpaces.value?.find(s => s.id === spaceKey.value.toLowerCase())
 );
 
 const { isMessageVisible, setMessageVisibility } =

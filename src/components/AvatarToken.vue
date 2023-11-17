@@ -21,9 +21,8 @@ withDefaults(
     }"
     alt="Token logo"
     @error="
-      (
-        $event.target as HTMLImageElement
-      ).src = `https://cdn.stamp.fyi/token/eth:${address}?s=100`
+      ($event.target as HTMLImageElement).src =
+        `https://cdn.stamp.fyi/token/eth:${address}?s=100`
     "
   />
 </template>

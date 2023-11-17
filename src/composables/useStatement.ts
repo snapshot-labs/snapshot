@@ -57,10 +57,13 @@ export function useStatement() {
 
       if (!response) throw new Error('No statements found');
 
-      const newStatements = response.reduce((acc, statement) => {
-        acc[statement.delegate.toLowerCase()] = statement;
-        return acc;
-      }, {} as Record<string, Statement>);
+      const newStatements = response.reduce(
+        (acc, statement) => {
+          acc[statement.delegate.toLowerCase()] = statement;
+          return acc;
+        },
+        {} as Record<string, Statement>
+      );
       statements.value = { ...statements.value, ...newStatements };
     } catch (e) {
       console.error(e);
