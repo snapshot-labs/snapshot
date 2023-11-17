@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    ignore:
+      - dependency-name: "@snapshot-labs/*"
     groups:
       production-dependencies:
         dependency-type: "production"
