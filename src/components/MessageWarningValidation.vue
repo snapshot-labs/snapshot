@@ -16,6 +16,17 @@ const tPath = computed(() => {
   }
   return 'proposalValidation';
 });
+
+const operatorGitcoin = computed(() => {
+  switch (props.validationParams?.operator) {
+    case 'AND':
+      return 'all';
+    case 'OR':
+      return 'one';
+    default:
+      return 'any';
+  }
+});
 </script>
 
 <template>
@@ -37,8 +48,11 @@ const tPath = computed(() => {
       <template v-if="validationName === 'passport-gated'">
         {{
           $t(`${tPath}.passport-gated.invalidMessage`, {
-            operator: validationParams?.operator === 'AND' ? 'all' : 'any',
-            stamps: validationParams?.stamps.length === 0 ? 'any valid Stamp' : validationParams?.stamps.join(', '),
+            operator: operatorGitcoin,
+            stamps:
+              validationParams?.stamps.length === 0
+                ? 'any valid Stamp'
+                : validationParams?.stamps.join(', '),
             scoreThreshold: validationParams?.scoreThreshold || 0
           })
         }}
