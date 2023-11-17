@@ -168,15 +168,15 @@ const {
   cancel: cancelDelete
 } = useConfirmDialog();
 
+const isViewOnly = computed(() => {
+  return !(isSpaceController.value || isSpaceAdmin.value);
+});
+
 onBeforeRouteLeave(async () => {
-  if (hasFormChanged.value) {
+  if (hasFormChanged.value && !isViewOnly.value) {
     const { data } = await openConfirmLeave();
     if (!data) return false;
   }
-});
-
-const isViewOnly = computed(() => {
-  return !(isSpaceController.value || isSpaceAdmin.value);
 });
 </script>
 

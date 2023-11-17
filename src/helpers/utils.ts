@@ -121,14 +121,6 @@ export async function clearStampCache(id: string, type = 'space') {
     return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
 }
 
-export function urlify(text: string, target = '_blank') {
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return text.replace(
-    urlRegex,
-    `<a href="$1" target="${target}" rel="noopener">$1</a>`
-  );
-}
-
 export async function resolveEns(handle: string) {
   try {
     const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
@@ -172,4 +164,20 @@ export async function resolveLens(handle: string) {
     console.error('Error in resolveLens:', error);
     return null;
   }
+}
+
+export function isSnapshotUrl(url: string) {
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(url);
+  } catch (err) {
+    console.error('Invalid URL', err);
+    return;
+  }
+
+  if (parsedUrl.hostname === 'snapshot.org') {
+    return true;
+  }
+
+  return false;
 }

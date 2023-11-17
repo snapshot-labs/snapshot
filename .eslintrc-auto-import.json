@@ -118,6 +118,7 @@
     "useFlaggedMessageStatus": true,
     "useEmailSubscription": true,
     "useEmailFetchClient": true,
-    "useStatement": true
+    "useStatement": true,
+    "useMixpanel": true
   }
 }

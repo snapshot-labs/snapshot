@@ -247,10 +247,12 @@ function handleNetworkSelect(value) {
             />
             <BaseBlock
               v-if="strategyError"
+              class="mt-3 overflow-x-auto"
               style="border-color: red !important"
             >
-              <BaseIcon name="warning" class="mr-2 !text-red" />
-              <span class="!text-red"> {{ strategyError }}</span>
+              <pre class="whitespace-pre-wrap !text-red">
+ {{ strategyError }}</pre
+              >
             </BaseBlock>
           </BaseBlock>
           <BaseBlock :title="$t('addresses')">
