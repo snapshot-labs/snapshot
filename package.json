@@ -53,7 +53,7 @@
     "jsonexport": "^3.2.0",
     "lodash": "^4.17.21",
     "mixpanel-browser": "^2.47.0",
-    "readable-stream": "3.6.0",
+    "readable-stream": "^4.4.2",
     "remarkable": "^2.0.1",
     "remove-markdown": "^0.5.0",
     "typescript": "^5.0.4",
