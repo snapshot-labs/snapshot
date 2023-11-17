@@ -407,6 +407,7 @@ export const SPACES_QUERY = gql`
       followersCount
       terms
       flagged
+      hibernated
     }
   }
 `;
@@ -452,6 +453,7 @@ export const SPACE_QUERY = gql`
       guidelines
       verified
       flagged
+      hibernated
       parent {
         id
         name

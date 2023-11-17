@@ -148,13 +148,6 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
-  populateForm(props.space);
-  await loadEnsOwner();
-  await loadSpaceController();
-  loaded.value = true;
-});
-
 const {
   isRevealed: isConfirmLeaveOpen,
   reveal: openConfirmLeave,
@@ -170,6 +163,13 @@ const {
 
 const isViewOnly = computed(() => {
   return !(isSpaceController.value || isSpaceAdmin.value);
+});
+
+onMounted(async () => {
+  populateForm(props.space);
+  await loadEnsOwner();
+  await loadSpaceController();
+  loaded.value = true;
 });
 
 onBeforeRouteLeave(async () => {
@@ -190,6 +190,15 @@ onBeforeRouteLeave(async () => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
+          <SpaceSettingsMessageHibernated
+            v-if="space.hibernated && !isViewOnly"
+            :space="space"
+            :is-sending="isSending"
+            :is-valid="isValid"
+            @show-errors="showFormErrors = true"
+            @reactivate-space="handleSubmit"
+          />
+
           <BaseMessageBlock
             v-if="showFormErrors && Object.keys(validationErrors).length"
             level="warning-red"

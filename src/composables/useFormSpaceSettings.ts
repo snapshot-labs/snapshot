@@ -123,6 +123,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     delete formData.followersCount;
     delete formData.verified;
     delete formData.flagged;
+    delete formData.hibernated;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
   }

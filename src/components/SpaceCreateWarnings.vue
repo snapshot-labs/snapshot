@@ -41,8 +41,10 @@ const strategySymbolsString = computed(() => {
 
 <template>
   <div class="mb-4 space-y-2">
+    <MessageWarningHibernated v-if="space.hibernated" :space="space" />
+
     <MessageWarningGnosisNetwork
-      v-if="isGnosisAndNotSpaceNetwork"
+      v-else-if="isGnosisAndNotSpaceNetwork"
       :space="space"
       action="create"
       is-responsive
