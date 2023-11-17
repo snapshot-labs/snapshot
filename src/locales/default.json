@@ -539,7 +539,7 @@
     },
     "reactivatingHibernatedSpace": {
       "title": "Reactivating hibernated space",
-      "information": "Reactivate your space now to enable proposals creation again. Note that your space may be hibernated again if left inactive.",
+      "information": "Space Admins: Your space is currently in hibernation due to six months of inactivity. To re-enable proposal creation, please click the button below to reactivate your space. There are no penalties for hibernation, but the space will remain inactive for proposal creation until reactivation by an admin.",
       "disabledInformation": "Your space contains invalid settings since your last update. Fix the errors below and your space will be reactivated automatically upon save."
     }
   },
