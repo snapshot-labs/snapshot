@@ -539,7 +539,6 @@
       "information": "Please ensure your token adheres to a compatible delegation standard to enable delegate discovery and activity within your Snapshot space."
     },
     "reactivatingHibernatedSpace": {
-      "title": "Reactivating hibernated space",
       "information": "Your space is currently in hibernation due to six months of inactivity. To re-enable proposal creation, please click the button below to reactivate your space. There are no penalties for hibernation, but the space will remain inactive for proposal creation until reactivation by an admin.",
       "disabledInformation": "Your space contains invalid settings since your last update. Fix the errors below and your space will be reactivated automatically upon save."
     }
