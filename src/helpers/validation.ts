@@ -1,8 +1,14 @@
 import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
 import addFormats from 'ajv-formats';
-import { isAddress } from '@ethersproject/address';
 import { parseUnits } from '@ethersproject/units';
+import { isAddress } from '@ethersproject/address';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+const networksIds = Object.keys(networks);
+// const mainnetNetworkIds = Object.keys(networks).filter(
+//   id => !networks[id].testnet
+// );
 
 function getErrorMessage(errorObject: ErrorObject): string {
   if (!errorObject.message) return 'Invalid field.';
@@ -73,6 +79,18 @@ export function validateForm(
         str.startsWith('ipns://') ||
         str.startsWith('snapshot://')
       );
+    }
+  });
+
+  ajv.addKeyword({
+    keyword: 'snapshotNetwork',
+    validate: function (schema, data) {
+      // const snapshotEnv =  'default';
+      // if (snapshotEnv === 'production') return mainnetNetworkIds.includes(data);
+      return networksIds.includes(data);
+    },
+    error: {
+      message: 'not valid network'
     }
   });
 
