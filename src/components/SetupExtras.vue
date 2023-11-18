@@ -1,11 +1,19 @@
 <script setup lang="ts">
 const { isGnosisSafe } = useClient();
+const { validationErrors } = useFormSpaceSettings('setup');
 
 defineProps<{
   creatingSpace: boolean;
 }>();
 
-const emit = defineEmits(['next', 'back']);
+const emit = defineEmits(['submit', 'back']);
+
+const showErrors = ref(false);
+
+function handleSubmit() {
+  if (validationErrors.value.validation) return (showErrors.value = true);
+  emit('submit');
+}
 </script>
 
 <template>
@@ -31,13 +39,14 @@ const emit = defineEmits(['next', 'back']);
       {{ $t('setup.validationTitle') }}
     </h4>
     <SettingsMembersBlock context="setup" />
+    <SettingsValidationBlock context="setup" :show-errors="showErrors" />
   </div>
 
   <div class="px-4 md:px-0">
     <SetupButtonCreate
       :creating-space="creatingSpace"
       class="mt-4"
-      @create="emit('next')"
+      @create="handleSubmit"
     />
     <SetupButtonBack @click="emit('back')" />
   </div>
