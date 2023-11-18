@@ -103,7 +103,10 @@ function handleSubmit() {
 }
 
 function handlePassportGatedNoneOperator() {
-  if (!input.value.params.stamps?.[0]) input.value.params.stamps = undefined;
+  if (!input.value.params.stamps?.[0]) {
+    input.value.params.stamps = undefined;
+    input.value.params.operator = 'NONE';
+  }
   if (input.value.params.operator === 'NONE') {
     input.value.params.stamps = undefined;
   }
