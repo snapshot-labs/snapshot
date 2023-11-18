@@ -48,6 +48,7 @@ function handleClickSelectValidation() {
         :filter-min-score="form.filters.minScore"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
+        @reset-min-score="form.filters.minScore = 0"
       />
     </teleport>
   </BaseBlock>
