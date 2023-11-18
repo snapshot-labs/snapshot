@@ -52,28 +52,28 @@ watch(validatedUserChoice, () => {
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number)"
+        :user-choice="validatedUserChoice as number"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number[])"
+        :user-choice="validatedUserChoice as number[]"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as Record<string, number>)"
+        :user-choice="validatedUserChoice as Record<string, number>"
         @selectChoice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number[])"
+        :user-choice="validatedUserChoice as number[]"
         @selectChoice="emitChoice"
       />
     </div>

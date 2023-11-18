@@ -63,8 +63,8 @@ function clickVote() {
   !web3.value.account
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && props.space.terms
-    ? (modalTermsOpen.value = true)
-    : (modalOpen.value = true);
+      ? (modalTermsOpen.value = true)
+      : (modalOpen.value = true);
 }
 
 function reloadProposal() {

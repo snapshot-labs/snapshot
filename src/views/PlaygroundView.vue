@@ -203,7 +203,7 @@ function handleNetworkSelect(value) {
             :items="
               filterStrategies(searchInput).map(s => ({ id: s.id, name: s.id }))
             "
-            :selected-id="(route.params.name as string)"
+            :selected-id="route.params.name as string"
             @select="selectStrategy"
             @search="value => (searchInput = value)"
           />
@@ -235,7 +235,7 @@ function handleNetworkSelect(value) {
             <FormObjectStrategyParams
               v-if="strategyDefinition"
               v-model="form.params"
-              :strategy-name="(route.params.name as string)"
+              :strategy-name="route.params.name as string"
             />
             <TextareaJson
               v-else
@@ -292,7 +292,7 @@ function handleNetworkSelect(value) {
             :key="address"
             class="flex justify-between"
           >
-            <BaseUser :address="(address as string)" />
+            <BaseUser :address="address as string" />
             <span>
               {{ formatCompactNumber(score) }}
               {{ form.params.symbol }}

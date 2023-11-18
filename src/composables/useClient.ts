@@ -165,6 +165,20 @@ export function useClient() {
       });
 
       return receipt;
+    } else if (type === 'reactivate-space') {
+      const receipt = await client.reactivateSpace(
+        auth.web3,
+        web3.value.account,
+        {
+          space: space.id
+        }
+      );
+
+      mixpanel.track('Reactivate space', {
+        space: space.id
+      });
+
+      return receipt;
     }
   }
 

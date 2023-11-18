@@ -83,9 +83,8 @@ class LensResolver {
   async resolveAddresses(
     addresses: Address[]
   ): Promise<Record<Address, Handle>> {
-    const addressesWithHandles = await this.getAvailableHandleMapping(
-      addresses
-    );
+    const addressesWithHandles =
+      await this.getAvailableHandleMapping(addresses);
     const tokenMapping = await this.getTokensMapping(addressesWithHandles);
     return this.getHandleMapping(tokenMapping);
   }
