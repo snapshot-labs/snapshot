@@ -38,9 +38,9 @@ const tPath = computed(() => {
         $t(`${tPath}.passport-gated.invalidMessage`, {
           scoreThreshold: validationParams?.scoreThreshold || 0
         })
-      }}
+      }}<span v-if="props.validationParams?.operator === 'NONE'">. </span>
 
-      <template v-if="props.validationParams?.operator !== 'NONE'">
+      <template v-else>
         {{
           $t(`${tPath}.passport-gated.invalidMessageStamps`, {
             operator:
