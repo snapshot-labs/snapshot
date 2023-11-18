@@ -750,7 +750,7 @@
       "label": "Gitcoin Passport gated",
       "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
       "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
-      "invalidMessageStamps": "and {operator} of the following stamps to create a proposal: {stamps} "
+      "invalidMessageStamps": " and {operator} of the following stamps to create a proposal: {stamps} "
     },
     "arbitrum": {
       "label": "Arbitrum DAO votable supply",
@@ -784,7 +784,7 @@
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
       "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
-      "invalidMessageStamps": "and {operator} of the following stamps to vote on this proposal: {stamps} "
+      "invalidMessageStamps": " and {operator} of the following stamps to vote on this proposal: {stamps} "
     }
   },
   "safeSnap": {
