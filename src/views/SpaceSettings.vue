@@ -286,6 +286,7 @@ onBeforeRouteLeave(async () => {
             <SettingsTreasuriesBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :error="validationErrors.treasuries"
             />
             <SettingsSubSpacesBlock
               context="settings"

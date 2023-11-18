@@ -61,6 +61,7 @@ function handleSubmitStrategy(strategy) {
           :network="form.network"
           :hint="$t('settings.network.information')"
           :disabled="isViewOnly"
+          :error="validationErrors?.network"
           @select="value => (form.network = value)"
         />
         <TuneInput

@@ -9,17 +9,12 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 const networksSpacesCount: any = ref(null);
 
 export function useNetworksFilter() {
-  const { env } = useApp();
-
   const loading = ref(false);
 
   const filterNetworks = (q = '') => {
     const networksArray = Object.keys(networks)
       .map(s => ({ ...networks[s] }))
-      .filter(n => {
-        if (env === 'demo') return !n.disabled && n.testnet;
-        return !n.disabled && !n.testnet;
-      });
+      .filter(n => !n.disabled);
 
     const networksArrayBySearchString = networksArray.filter(n =>
       JSON.stringify(n).toLowerCase().includes(q.toLowerCase())

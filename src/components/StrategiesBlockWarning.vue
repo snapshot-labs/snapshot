@@ -1,8 +1,15 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   context?: 'setup' | 'settings';
-  error?: string;
+  error?: string | Record<string, any>;
 }>();
+
+const strategyNetworkErrors = computed(() => {
+  if (typeof props.error === 'object') {
+    const entries = Object.entries(props.error).filter(e => e[1].network);
+    return entries;
+  }
+});
 </script>
 
 <template>
@@ -25,6 +32,13 @@ defineProps<{
           </BaseLink>
         </template>
       </i18n-t>
+    </span>
+
+    <span v-else-if="strategyNetworkErrors">
+      Strategy {{ strategyNetworkErrors.map(e => Number(e[0]) + 1).join(', ') }}
+      is using a test network which are no longer supported. If you are looking
+      to test your strategies, please checkout
+      <BaseLink link="https://demo.snapshot.org"> demo.snapshot.org</BaseLink>
     </span>
 
     <span v-else>

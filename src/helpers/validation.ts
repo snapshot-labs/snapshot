@@ -6,9 +6,11 @@ import { isAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const networksIds = Object.keys(networks);
-// const mainnetNetworkIds = Object.keys(networks).filter(
-//   id => !networks[id].testnet
-// );
+const mainnetNetworkIds = Object.keys(networks).filter(
+  id => !networks[id].testnet
+);
+
+const { env } = useApp();
 
 function getErrorMessage(errorObject: ErrorObject): string {
   if (!errorObject.message) return 'Invalid field.';
@@ -85,12 +87,12 @@ export function validateForm(
   ajv.addKeyword({
     keyword: 'snapshotNetwork',
     validate: function (schema, data) {
-      // const snapshotEnv =  'default';
-      // if (snapshotEnv === 'production') return mainnetNetworkIds.includes(data);
+      const snapshotEnv = env || 'default';
+      if (snapshotEnv === 'production') return mainnetNetworkIds.includes(data);
       return networksIds.includes(data);
     },
     error: {
-      message: 'not valid network'
+      message: 'testnet not allowed'
     }
   });
 
@@ -131,6 +133,7 @@ function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
         output,
         path
       );
+
       targetObject[path[path.length - 1]] = getErrorMessage(error);
       return output;
     },
