@@ -41,11 +41,22 @@ type Validations = Record<
 >;
 
 const validationDefinition = computed(() => {
-  return (
+  const definition =
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
-    null
-  );
+    null;
+
+  if (input.value.name === 'passport-gated')
+    return definePassportGated(clone(definition));
+
+  return definition;
 });
+
+function definePassportGated(definition: any) {
+  if (input.value.params.operator === 'NONE')
+    delete definition.properties.stamps;
+
+  return definition;
+}
 
 const validationErrors = computed(() => {
   return validateForm(validationDefinition.value || {}, input.value.params);
@@ -75,12 +86,14 @@ function handleSelect(n: string) {
     }
   }
 
-  if (n === 'passport-gated' && !input.value.params.operator) {
-    input.value.params.operator = 'OR';
+  if (n === 'passport-gated') {
+    if (!input.value.params.operator) input.value.params.operator = 'NONE';
   }
 }
 
 function handleSubmit() {
+  if (input.value.name === 'passport-gated') handlePassportGated();
+
   if (!isValid.value || !isValidParams.value) {
     strategiesFormRef.value?.forceShowError();
     formRef?.value?.forceShowError();
@@ -89,6 +102,16 @@ function handleSubmit() {
 
   emit('add', clone(input.value));
   emit('close');
+}
+
+function handlePassportGated() {
+  if (!input.value.params.stamps?.[0]) {
+    input.value.params.stamps = undefined;
+    input.value.params.operator = 'NONE';
+  }
+  if (input.value.params.operator === 'NONE') {
+    input.value.params.stamps = undefined;
+  }
 }
 
 function removeVoteValidationOnly(validations: Validations) {

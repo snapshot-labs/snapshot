@@ -33,13 +33,20 @@ const tPath = computed(() => {
       </BaseLink>
     </template>
 
-    <template v-else-if="validationName === 'passport-gated'">
-      <template v-if="validationName === 'passport-gated'">
+    <template v-if="validationName === 'passport-gated'">
+      {{
+        $t(`${tPath}.passport-gated.invalidMessage`, {
+          scoreThreshold: validationParams?.scoreThreshold || 0
+        })
+      }}<span v-if="props.validationParams?.operator === 'NONE'">. </span>
+
+      <template v-else>
         {{
-          $t(`${tPath}.passport-gated.invalidMessage`, {
-            operator: validationParams?.operator === 'AND' ? 'all' : 'one',
-            stamps: validationParams?.stamps.join(', '),
-            scoreThreshold: validationParams?.scoreThreshold || 0
+          $t(`${tPath}.passport-gated.invalidMessageStamps`, {
+            operator:
+              props.validationParams?.operator === 'AND' ? 'all' : 'one',
+            stamps:
+              validationParams.stamps && validationParams.stamps.join(', ')
           })
         }}
       </template>
