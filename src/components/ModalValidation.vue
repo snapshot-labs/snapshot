@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const DEFAULT_PARAMS: Record<string, any> = {};
 
-const emit = defineEmits(['add', 'close']);
+const emit = defineEmits(['add', 'close', 'resetMinScore']);
 
 const { open } = toRefs(props);
 const { t } = useI18n();
@@ -75,6 +75,7 @@ function handleSelect(n: string) {
 
   if (n === 'any') {
     handleSubmit();
+    emit('resetMinScore');
   }
 
   if (n === 'basic') {
