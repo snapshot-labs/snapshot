@@ -241,6 +241,7 @@ onBeforeRouteLeave(async () => {
             <SettingsStrategiesBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
           </template>
 
@@ -248,6 +249,7 @@ onBeforeRouteLeave(async () => {
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
             <SettingsProposalBlock
               context="settings"
