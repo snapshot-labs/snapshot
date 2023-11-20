@@ -95,6 +95,8 @@ export default {
   },
   methods: {
     decodeTransaction(modelValue) {
+      if (!modelValue) return;
+
       const to = modelValue.to || '';
       const value = modelValue.value || '0';
       const abi = modelValue.abi || [];

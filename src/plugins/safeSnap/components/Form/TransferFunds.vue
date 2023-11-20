@@ -39,7 +39,9 @@ export default {
   },
   computed: {
     selectedToken() {
-      return this.tokens.find(token => token.address === this.tokenAddress);
+      return (
+        this.tokens.find(token => token.address === this.tokenAddress) || {}
+      );
     }
   },
   watch: {
@@ -107,7 +109,7 @@ export default {
       this.$emit('update:modelValue', undefined);
     },
     setTokens() {
-      if (!this.config.preview && this.config.tokens) {
+      if (this.config.tokens) {
         this.tokens = [
           getNativeAsset(this.config.network),
           ...this.config.tokens
@@ -133,7 +135,7 @@ export default {
 
 <template>
   <div v-if="isDetails" class="flex flex-col space-y-2 px-3">
-    <div class="flex space-x-2">
+    <div v-if="selectedToken && selectedToken.address" class="flex space-x-2">
       <span class="text-skin-text">{{ $t('safeSnap.asset') }}</span>
       <AvatarToken
         :address="
