@@ -15,6 +15,7 @@
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a voting validation strategy. This combination reduces the risk of spam and sybil attacks. {article}",
   "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a voting validation strategy. To continue go one step back and select the \"One person, one vote\" option. {article}",
+  "missingProposalValidationError": "Proposal validation is required to prevent unauthorized proposals and spam. If you don't want proposal validation you can toggle only the \"Allow only authors to submit a proposal\" option.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy. If the problem persists, consider contacting the space admin or our support team on {discord}",
   "votingValidationFailedMessage": "We were not able to validate your eligibility to vote. This is often due to a misconfigured vote validation setting or an unresponsive RPC node. If the problem persists, consider contacting the space admin or our support team on {discord}",
@@ -749,7 +750,8 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
-      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
+      "invalidMessageStamps": " and {operator} of the following stamps to create a proposal: {stamps} "
     },
     "arbitrum": {
       "label": "Arbitrum DAO votable supply",
@@ -782,7 +784,8 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
+      "invalidMessageStamps": " and {operator} of the following stamps to vote on this proposal: {stamps} "
     }
   },
   "safeSnap": {
