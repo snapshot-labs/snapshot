@@ -58,7 +58,7 @@ yarn run lint
 
 Use `http://localhost:8080/#/fabien.eth` for testing your code.
 
-By default your instance will connect to the hub at `https://testnet.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
+By default your instance will connect to the hub at `https://testnet.hub.snapshot.org`. To change that (or other values) you can create a `.env.local` and overwrite the values from `.env`.
 
 ## Running service locally with Docker
 1. Run `docker build -t snapshot .` to build the image
