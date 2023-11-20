@@ -3,10 +3,11 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  showErrors?: boolean;
   isViewOnly?: boolean;
 }>();
 
-const { form } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context);
 
 const modalValidationOpen = ref(false);
 
@@ -23,16 +24,14 @@ function handleClickSelectValidation() {
 <template>
   <BaseBlock :title="$t('settings.proposalValidation')">
     <div class="space-y-2">
-      <ContainerParallelInput>
-        <TuneButtonSelect
-          class="w-full"
-          :label="$t(`proposalValidation.label`)"
-          :hint="$t(`proposalValidation.information`)"
-          :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
-          :disabled="form.filters.onlyMembers || isViewOnly"
-          @select="handleClickSelectValidation"
-        />
-      </ContainerParallelInput>
+      <TuneButtonSelect
+        class="w-full"
+        :label="$t(`proposalValidation.label`)"
+        :hint="$t(`proposalValidation.information`)"
+        :model-value="$t(`proposalValidation.${form.validation.name}.label`)"
+        :disabled="form.filters.onlyMembers || isViewOnly"
+        @select="handleClickSelectValidation"
+      />
 
       <TuneSwitch
         v-model="form.filters.onlyMembers"
@@ -40,6 +39,13 @@ function handleClickSelectValidation() {
         :label="$t('settings.allowOnlyAuthors')"
       />
     </div>
+    <BaseMessageBlock
+      v-if="validationErrors.validation && showErrors"
+      level="warning-red"
+      class="mt-4"
+    >
+      {{ $t('missingProposalValidationError') }}
+    </BaseMessageBlock>
     <teleport to="#modal">
       <ModalValidation
         :open="modalValidationOpen"
@@ -48,6 +54,7 @@ function handleClickSelectValidation() {
         :filter-min-score="form.filters.minScore"
         @close="modalValidationOpen = false"
         @add="handleSubmitAddValidation"
+        @reset-min-score="form.filters.minScore = 0"
       />
     </teleport>
   </BaseBlock>
