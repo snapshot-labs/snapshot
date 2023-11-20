@@ -33,6 +33,9 @@ export default {
     }
   },
   watch: {
+    modelValue(newValue) {
+      this.updateInternalState(newValue);
+    },
     to() {
       this.updateTransaction();
     },
@@ -55,6 +58,19 @@ export default {
     }
   },
   methods: {
+    updateInternalState(newValue) {
+      if (newValue) {
+        const { recipient = '', collectable } = newValue;
+        this.to = recipient;
+        if (collectable) {
+          this.collectableAddress = collectable.address;
+          this.collectables = [collectable];
+        }
+      } else {
+        this.to = '';
+        this.collectableAddress = '';
+      }
+    },
     updateTransaction() {
       if (this.config.preview) return;
       try {
