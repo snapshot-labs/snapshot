@@ -4,7 +4,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -133,7 +132,7 @@ export async function resolveHandle(handle: string) {
 
     return (await results.json()).result?.handle;
   } catch (e) {
-    console.error('Error resolving Ens address:', e);
+    console.error('Error resolving handle:', handle, e);
     return null;
   }
 }
