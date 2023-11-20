@@ -1299,10 +1299,10 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
-"@snapshot-labs/lock@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.0.tgz#caeade730264e2068127b6526e5d74e684e97ef6"
-  integrity sha512-aSePslBYF5QNiJ53eVReaykMGGEig72hjE6KCkkWAS4BNKYF3n25HghtP/WIJde2va7iMHHPnBTayXgcxSGH2g==
+"@snapshot-labs/lock@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.1.tgz#8ae5d64ce62cfd60b26ec50a81b5df11c76af60f"
+  integrity sha512-IkCc9sR0clxKjnYOIgkEGENOScOYVTqUHwE++6CzZMmX79SawGJNtd/1wB0ePrrj6L7mH2g4N0M6EBNmRIF2YQ==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
     "@portis/web3" "^4.0.6"
