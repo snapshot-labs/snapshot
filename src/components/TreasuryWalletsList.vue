@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { getEnsAddress } from '@/helpers/profile';
+import { lookupAddress } from '@/helpers/profile';
 
 const props = defineProps<{
   wallets: TreasuryWallet[];
@@ -12,7 +12,7 @@ const { web3Account } = useWeb3();
 const ensAddresses = ref<{ [k: string]: string } | null>(null);
 
 onMounted(async () => {
-  ensAddresses.value = await getEnsAddress(props.wallets.map(w => w.address));
+  ensAddresses.value = await lookupAddress(props.wallets.map(w => w.address));
 });
 </script>
 
