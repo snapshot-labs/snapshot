@@ -25,7 +25,7 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
 </script>
 
 <template>
-  <div class="pl-3 pr-3">
+  <div class="!mt-2">
     <p>
       Make sure this proposal was approved by this Snapshot vote before
       asserting on-chain. If the Snapshot vote rejected the proposal, the
@@ -64,7 +64,7 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
     <BaseButton
       :disabled="!hasReachedQuorum || !hasSufficientBalance"
       @click="emit('approveBond')"
-      class="mr-2 w-full"
+      class="mr-2 mt-4 w-full"
     >
       Approve bond
     </BaseButton>
