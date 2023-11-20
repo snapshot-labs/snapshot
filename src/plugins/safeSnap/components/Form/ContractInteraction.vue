@@ -68,15 +68,7 @@ export default {
   watch: {
     modelValue(newModelValue) {
       if (this.isDetails && newModelValue) {
-        this.to = newModelValue.to || '';
-        this.value = newModelValue.value || '0';
-        this.abi = newModelValue.abi || [];
-        const transactionDecoder = new InterfaceDecoder(newModelValue.abi);
-        const params = transactionDecoder.decodeFunction(
-          newModelValue.data,
-          this.selectedMethod
-        );
-        this.parameters = params;
+        this.decodeTransaction(newModelValue);
       }
     },
     to() {
@@ -100,13 +92,19 @@ export default {
   },
   mounted() {
     if (this.modelValue) {
-      const { to = '', abi = '', value = '0', data } = this.modelValue;
-      this.to = to;
-
+      this.decodeTransaction(this.modelValue);
+    }
+  },
+  methods: {
+    decodeTransaction(modelValue) {
+      const to = modelValue.to || '';
+      const value = modelValue.value || '0';
+      const abi = modelValue.abi || [];
+      const data = modelValue.data || '';
       if (this.config.preview) {
         const transactionDecoder = new InterfaceDecoder(abi);
         this.selectedMethod = transactionDecoder.getMethodFragment(data);
-        this.parameters = transactionDecoder.decodeFunction(
+        const params = transactionDecoder.decodeFunction(
           data,
           this.selectedMethod
         );
@@ -116,12 +114,14 @@ export default {
         this.handleABIChanged(
           typeof abi === 'object' ? JSON.stringify(abi) : abi
         );
+        this.parameters = params;
+        this.abi = abi;
+        this.value = value;
+        this.to = to;
       } else {
         setTimeout(() => this.updateTransaction(), 1000);
       }
-    }
-  },
-  methods: {
+    },
     isValidJSON(str) {
       try {
         JSON.parse(str);
@@ -272,7 +272,6 @@ export default {
           {{ method.name }}()
         </option>
       </UiSelect>
-
       <div
         v-if="selectedMethod && selectedMethod.inputs.length"
         class="space-y-2"
