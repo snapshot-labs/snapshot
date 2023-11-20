@@ -1,4 +1,4 @@
-import { lookupAddress } from '@/helpers/profile';
+import { lookupAddress } from '@/helpers/utils';
 import { PROFILES_QUERY } from '@/helpers/queries';
 import { Profile } from '@/helpers/interfaces';
 import { getAddress } from '@ethersproject/address';

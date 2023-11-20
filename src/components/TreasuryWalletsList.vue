@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { lookupAddress } from '@/helpers/profile';
+import { lookupAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   wallets: TreasuryWallet[];
