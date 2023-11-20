@@ -67,9 +67,7 @@ export default {
 
   watch: {
     modelValue(newModelValue) {
-      if (this.isDetails && newModelValue) {
-        this.decodeTransaction(newModelValue);
-      }
+      this.decodeTransaction(newModelValue);
     },
     to() {
       this.updateTransaction();
@@ -101,14 +99,14 @@ export default {
       const value = modelValue.value || '0';
       const abi = modelValue.abi || [];
       const data = modelValue.data || '';
-      if (this.config.preview) {
+
+      if (this.config.preview || this.isDetails) {
         const transactionDecoder = new InterfaceDecoder(abi);
         this.selectedMethod = transactionDecoder.getMethodFragment(data);
         const params = transactionDecoder.decodeFunction(
           data,
           this.selectedMethod
         );
-
         this.methods = [this.selectedMethod];
         this.handleValueChange(value);
         this.handleABIChanged(
@@ -151,7 +149,6 @@ export default {
             },
             this.config.multiSendAddress
           );
-
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);
             return;
