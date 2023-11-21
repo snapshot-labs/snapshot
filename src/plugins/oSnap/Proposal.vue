@@ -7,6 +7,7 @@ import HandleOutcome from './components/HandleOutcome/HandleOutcome.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
+import ExternalLink from './components/ExternalLink.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -68,33 +69,43 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 
 <template>
   <template v-if="safe.transactions.length > 0">
-    <h2 class="mb-4 text-lg">oSnap Transactions</h2>
-    <h3 class="flex text-md">
-      <SafeLinkWithAvatar :safe="safe" />
-    </h3>
-    <div>
-      <BaseLink v-if="ipfs" :link="ipfs">View transactions on IPFS</BaseLink>
+    <div
+      class="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-3 md:p-4"
+    >
+      <h2 class="text-lg">oSnap Transactions</h2>
+      <div class="flex flex-col items-center gap-3 md:flex-row">
+        <SafeLinkWithAvatar class="flex-2" :safe="safe" />
+        <ExternalLink class="flex-1" v-if="ipfs" :link="ipfs">
+          View on IPFS
+        </ExternalLink>
+      </div>
+      <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
       <div
         v-for="({ type, ...details }, index) in transactionsForDisplay"
-        class="my-4"
+        class="flex flex-col gap-2"
       >
         <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
-        <ReadOnly v-for="[key, value] in Object.entries(details)" class="mb-2">
-          <strong class="mr-4 inline-block whitespace-nowrap">{{ key }}</strong>
+
+        <ReadOnly v-for="[key, value] in Object.entries(details)">
+          <strong class="mr-2 inline-block whitespace-nowrap capitalize">{{
+            key
+          }}</strong>
           <span class="break-all">{{ value }}</span>
         </ReadOnly>
       </div>
+
+      <HandleOutcome
+        v-if="!!results"
+        :space="space"
+        :proposal="proposal"
+        :transactions="safe.transactions"
+        :results="results"
+        :module-address="safe.moduleAddress"
+        :network="safe.network"
+      />
     </div>
-    <HandleOutcome
-      v-if="!!results"
-      :space="space"
-      :proposal="proposal"
-      :transactions="safe.transactions"
-      :results="results"
-      :module-address="safe.moduleAddress"
-      :network="safe.network"
-    />
   </template>
+
   <template v-else>
     <p>There are no transactions associated with this proposal.</p>
   </template>

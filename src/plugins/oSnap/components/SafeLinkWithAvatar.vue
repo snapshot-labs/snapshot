@@ -3,6 +3,7 @@ import { getIpfsUrl, shorten } from '@/helpers/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { GnosisSafe } from '../types';
 import { getSafeAppLink } from '../utils';
+import ExternalLink from './ExternalLink.vue';
 
 const props = defineProps<{
   safe: GnosisSafe;
@@ -16,17 +17,12 @@ const networkLogoUrl = getIpfsUrl(networkLogo) as string;
 </script>
 
 <template>
-  <span class="inline-flex items-center">
-    <BaseAvatar class="" :src="networkLogoUrl" size="24" />
+  <ExternalLink v-if="safe.safeAddress" :link="safeLink">
+    <BaseAvatar :src="networkLogoUrl" size="24" />
     {{ safe.safeName }}
-    <a
-      v-if="safe.safeAddress"
-      :href="safeLink"
-      class="ml-2 flex font-normal text-skin-text"
-      target="_blank"
-    >
+
+    <span class="font-normal">
       {{ shorten(safe.safeAddress) }}
-      <i-ho-external-link class="ml-1" />
-    </a>
-  </span>
+    </span>
+  </ExternalLink>
 </template>
