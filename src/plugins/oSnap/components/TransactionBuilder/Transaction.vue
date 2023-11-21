@@ -64,7 +64,7 @@ function updateTransaction(transaction: TTransaction) {
     />
     <ContractInteraction
       v-if="transaction.type === 'contractInteraction'"
-      :transaction="(newTransaction as ContractInteractionTransaction)"
+      :transaction="newTransaction as ContractInteractionTransaction"
       :network="network"
     />
 
@@ -72,7 +72,7 @@ function updateTransaction(transaction: TTransaction) {
       v-if="transaction.type === 'transferFunds'"
       :network="network"
       :tokens="tokens"
-      :transaction="(newTransaction as TransferFundsTransaction)"
+      :transaction="newTransaction as TransferFundsTransaction"
       @update-transaction="updateTransaction"
     />
 
@@ -81,13 +81,13 @@ function updateTransaction(transaction: TTransaction) {
       :network="network"
       :safe-address="safeAddress"
       :collectables="collectables"
-      :transaction="(newTransaction as TransferNftTransaction)"
+      :transaction="newTransaction as TransferNftTransaction"
       @update-transaction="updateTransaction"
     />
 
     <RawTransaction
       v-if="transaction.type === 'raw'"
-      :transaction="(newTransaction as TRawTransaction)"
+      :transaction="newTransaction as TRawTransaction"
       @update-transaction="updateTransaction"
     />
   </div>
