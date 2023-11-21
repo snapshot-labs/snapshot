@@ -15,7 +15,7 @@ const props = withDefaults(
 
 const avatarHash = computed(() => {
   if (!props.space?.avatar) return '';
-  const hash = sha256(props.space.avatar).slice(-32);
+  const hash = sha256(props.space.avatar).slice(0, 16);
   return `&cb=${hash}`;
 });
 </script>
