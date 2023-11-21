@@ -1,4 +1,4 @@
-import { getEnsAddress } from '@/helpers/profile';
+import { lookupAddress } from '@/helpers/utils';
 import { PROFILES_QUERY } from '@/helpers/queries';
 import { Profile } from '@/helpers/interfaces';
 import { getAddress } from '@ethersproject/address';
@@ -41,7 +41,7 @@ export function useProfiles() {
     if (addressesToAdd.length > 0) {
       loadingProfiles.value = true;
       profilesRes = await Promise.all([
-        await getEnsAddress(addressesToAdd),
+        await lookupAddress(addressesToAdd),
         await apolloQuery(
           {
             query: PROFILES_QUERY,

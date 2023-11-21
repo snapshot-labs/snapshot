@@ -1,3 +1,5 @@
+import formsPlugin from '@tailwindcss/forms';
+
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,vue}'],
   theme: {
@@ -64,8 +66,8 @@ module.exports = {
     }
   },
   plugins: [
-    require('prettier-plugin-tailwindcss'),
-    require('@tailwindcss/forms')({
+    'prettier-plugin-tailwindcss',
+    formsPlugin({
       strategy: 'class'
     })
   ]

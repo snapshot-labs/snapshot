@@ -35,8 +35,8 @@ export function useNetworksFilter() {
         a.name.toLowerCase().includes('testnet')
           ? 1
           : b.name.toLowerCase().includes('testnet')
-          ? -1
-          : 0
+            ? -1
+            : 0
     );
 
     return networksArrayTestnetworksLast;

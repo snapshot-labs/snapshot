@@ -63,7 +63,8 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
+      '@': path.resolve(__dirname, './src'),
+      'readable-stream': 'vite-compatible-readable-stream'
     }
   },
   test: {

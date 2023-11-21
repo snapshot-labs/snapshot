@@ -15,6 +15,7 @@
   "resultsError": "Results could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy.",
   "ticketWithAnyOrBasicError": "In order to use the \"ticket\" strategy you are required to set a voting validation strategy. This combination reduces the risk of spam and sybil attacks. {article}",
   "ticketWithAnyOrBasicErrorSetup": "Use of the ticket strategy requires setting a voting validation strategy. To continue go one step back and select the \"One person, one vote\" option. {article}",
+  "missingProposalValidationError": "Proposal validation is required to prevent unauthorized proposals and spam. If you don't want proposal validation you can toggle only the \"Allow only authors to submit a proposal\" option.",
   "resultsCalculating": "Final results are being calculated. If you still see this message after a few minutes contact the space admin.",
   "votingPowerFailedMessage": "Your voting power could not be calculated. This is often due to a misconfigured strategy or an unresponsive RPC node involved in the strategy. If the problem persists, consider contacting the space admin or our support team on {discord}",
   "votingValidationFailedMessage": "We were not able to validate your eligibility to vote. This is often due to a misconfigured vote validation setting or an unresponsive RPC node. If the problem persists, consider contacting the space admin or our support team on {discord}",
@@ -174,6 +175,7 @@
   "createASpace": "Create a space",
   "getStarted": "Get started",
   "skip": "Skip",
+  "reactivateSpace": "Reactivate space",
   "newSpaceNotice": {
     "header": "Your space is live!",
     "mainText": "You can change how voting power is calculated via strategies in your {settings}. Changes to your settings will only affect new proposals, existing proposals can not be changed.",
@@ -235,7 +237,9 @@
     "uploading": "Uploading image",
     "markdown": "Styling with Markdown is supported",
     "errorGettingSnapshot": "We encountered an error while fetching the snapshot block number which is needed to calculate your voting power. Please try again later.",
-    "errorTimeInPast": "Entered time is in the past. Please select a future time."
+    "errorTimeInPast": "Entered time is in the past. Please select a future time.",
+    "errorSpaceHibernatedAdmin": "Admins your attention is required. This space has been hibernated due to a lack of activity, and as a result, proposal creation is currently disabled. To re-enable your space, please go to the settings page and click \"Reactivate\".",
+    "errorSpaceHibernatedUsers": "This space has been hibernated due to a lack of activity. As a result, the creation of proposals has been temporarily disabled. To resume your ability to create proposals, the space needs to be reactivated by an admin. Please check back later or contact your space admin for further information."
   },
   "delegates": {
     "header": "Delegates",
@@ -534,6 +538,10 @@
     "delegationPortal": {
       "title": "Delegation portal",
       "information": "Please ensure your token adheres to a compatible delegation standard to enable delegate discovery and activity within your Snapshot space."
+    },
+    "reactivatingHibernatedSpace": {
+      "information": "Your space is currently in hibernation due to six months of inactivity. To re-enable proposal creation, please click the button below to reactivate your space. There are no penalties for hibernation, but the space will remain inactive for proposal creation until reactivation by an admin.",
+      "disabledInformation": "Your space contains invalid settings since your last update. Fix the errors below and your space will be reactivated automatically upon save."
     }
   },
   "setup": {
@@ -652,7 +660,8 @@
     "ensSet": "ENS text record was successfully set",
     "transactionSent": "Transaction sent",
     "emailPreferencesUpdated": "Email preferences updated",
-    "delegationAdded": "Well done. Delegate was successfully added"
+    "delegationAdded": "Well done. Delegate was successfully added",
+    "spaceReactivated": "The space has been reactivated"
   },
   "explore": {
     "createStrategy": "Create strategy",
@@ -741,7 +750,8 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your space from spam by requiring users to have a Gitcoin Passport to create a proposal.",
-      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
+      "invalidMessageStamps": " and {operator} of the following stamps to create a proposal: {stamps} "
     },
     "arbitrum": {
       "label": "Arbitrum DAO votable supply",
@@ -774,7 +784,8 @@
     "passport-gated": {
       "label": "Gitcoin Passport gated",
       "description": "Protect your proposals from spam and vote manipulation by requiring users to have a Gitcoin Passport.",
-      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold} and {operator} of the following stamps to vote on this proposal: {stamps}. "
+      "invalidMessage": "You need a Gitcoin Passport with score above {scoreThreshold}",
+      "invalidMessageStamps": " and {operator} of the following stamps to vote on this proposal: {stamps} "
     }
   },
   "safeSnap": {

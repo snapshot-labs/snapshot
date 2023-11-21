@@ -504,7 +504,8 @@ onBeforeRouteLeave(async () => {
             web3.authLoading ||
             hasAuthorValidationFailed ||
             validationLoading ||
-            isGnosisAndNotSpaceNetwork
+            isGnosisAndNotSpaceNetwork ||
+            space.hibernated
           "
           primary
           :data-testid="

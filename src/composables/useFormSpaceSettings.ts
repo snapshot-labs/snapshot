@@ -123,6 +123,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     delete formData.followersCount;
     delete formData.verified;
     delete formData.flagged;
+    delete formData.hibernated;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
   }
@@ -179,10 +180,22 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
     }
   }
 
+  function validateProposalValidation(errors: any) {
+    const hasProposalValidation =
+      (form.value.validation?.name && form.value.validation.name !== 'any') ||
+      !!form.value.filters?.minScore ||
+      !!form.value.filters?.onlyMembers;
+
+    if (!hasProposalValidation) {
+      errors.validation = 'missingProposalValidationError';
+    }
+  }
+
   const validationErrors = computed(() => {
     const errors = validateForm(schemas.space, prunedForm.value);
 
     validateStrategies(errors);
+    validateProposalValidation(errors);
 
     return errors;
   });

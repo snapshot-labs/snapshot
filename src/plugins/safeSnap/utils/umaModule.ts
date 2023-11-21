@@ -104,8 +104,8 @@ const findProposalGql = async (
   const request = `
   {
     proposals(where:{proposalHash:"${params.proposalHash}",explanation:"${
-    params.explanation
-  }",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
+      params.explanation
+    }",optimisticGovernor:"${params.ogAddress.toLowerCase()}"}){
       id
       executed
       assertionId
