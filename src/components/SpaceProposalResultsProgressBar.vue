@@ -13,7 +13,7 @@ const bars = computed(() =>
       v-for="(bar, i) in bars.filter(b => b !== 0)"
       :key="i"
       :style="`width: ${((100 / max) * bar).toFixed(3)}%;`"
-      class="z-10 h-full bg-skin-primary"
+      class="z-10 h-full bg-primary"
       :class="{
         'opacity-80': i === 1,
         'opacity-60': i === 2,

@@ -21,7 +21,7 @@ defineProps<{
               </div>
               <IconVerifiedSpace
                 v-if="space.verified"
-                class="ml-1 flex text-skin-primary"
+                class="ml-1 flex text-primary"
                 size="18"
               />
             </div>

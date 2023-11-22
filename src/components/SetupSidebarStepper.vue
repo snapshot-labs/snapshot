@@ -24,12 +24,12 @@ const steps = [
           <div v-if="currentStep > i">
             <span class="flex items-center">
               <span
-                class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-skin-primary"
+                class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary"
               >
                 <i-ho-check class="text-[14px] text-white" aria-hidden="true" />
                 <span
                   v-if="i > 0"
-                  class="absolute -top-4 h-4 w-[1px] bg-skin-primary"
+                  class="absolute -top-4 h-4 w-[1px] bg-primary"
                 />
               </span>
 
@@ -47,16 +47,14 @@ const steps = [
             aria-current="step"
           >
             <span
-              class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border !border-skin-primary"
+              class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border !border-primary"
               aria-hidden="true"
             >
               <span class="absolute h-4 w-4 rounded-full" />
-              <span
-                class="relative block h-2 w-2 rounded-full bg-skin-primary"
-              />
+              <span class="relative block h-2 w-2 rounded-full bg-primary" />
               <span
                 v-if="i > 0"
-                class="absolute -top-[25px] h-4 w-[1px] bg-skin-primary"
+                class="absolute -top-[25px] h-4 w-[1px] bg-primary"
               />
             </span>
             <span class="ml-3 text-base font-medium text-skin-link">
