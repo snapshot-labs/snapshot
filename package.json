@@ -16,7 +16,6 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@adraffy/ens-normalize": "^1.10.0",
     "@apollo/client": "^3.8.7",
     "@braintree/sanitize-url": "^6.0.4",
     "@ensdomains/eth-ens-namehash": "^2.0.15",

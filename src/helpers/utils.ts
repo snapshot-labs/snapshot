@@ -169,6 +169,10 @@ export async function resolveLens(handle: string) {
 export async function lookupAddress(
   addresses: string[]
 ): Promise<Record<string, string>> {
+  if (addresses.length === 0) {
+    return {};
+  }
+
   try {
     const results = await fetch(import.meta.env.VITE_STAMP_URL, {
       method: 'POST',
