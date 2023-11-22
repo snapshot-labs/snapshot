@@ -8,14 +8,14 @@ import { Network } from '../../types';
 import { useStorage } from '@vueuse/core';
 
 interface SafeDetails {
-  connextAddress: string;
+  connextAddress?: string;
   multiSendAddress: string;
-  realityAddress: string;
-  umaAddress: string;
+  realityAddress?: string;
+  umaAddress?: string;
   network: Network;
   hash: string | null;
   txs: SafeModuleTransactionBatch[];
-  gnosisSafeAddress: string;
+  gnosisSafeAddress?: string;
 }
 
 type SafeSelectProps = {
@@ -49,7 +49,6 @@ onMounted(async () => {
         }
       })
     );
-
     safeList.value = currentSafeList;
     loading.value = false;
   }

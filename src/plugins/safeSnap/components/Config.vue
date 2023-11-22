@@ -1,99 +1,139 @@
-<script>
+<script lang="ts" setup>
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { coerceConfig, isValidInput, getSafeHash } from '../index';
 import { getIpfsUrl } from '@/helpers/utils';
-
 import SafeTransactions from './SafeTransactions.vue';
-
 import SafeSnapsSafeSelect from './Select/SafeSelect.vue';
+import { Network } from '../types';
+import {
+  ExtendedSpace,
+  Proposal,
+  Results,
+  SafeDetails,
+  SafeExecutionData
+} from '@/helpers/interfaces';
 
-export default {
-  components: { SafeTransactions, SafeSnapsSafeSelect },
-  props: [
-    'modelValue', // proposal's plugins.safeSnap field or undefined when creating a new proposal
-    'config', // the safeSnap plugin config of the current space
-    'network', // network of the space (needed when mapping legacy plugin configs)
-    'proposal',
-    'preview', // if true, renders a read-only view
-    'space',
-    'results'
-  ],
-  emits: ['update:modelValue'],
-  data() {
-    let input;
-    let availableSafes = [];
-    if (!Object.keys(this.modelValue).length) {
-      input = {
-        safes: [],
-        valid: true
-      };
-    } else {
-      const value = clone(this.modelValue);
-      if (value.safes && this.config && Array.isArray(this.config.safes)) {
-        value.safes = value.safes
-          .map((safe, index) => ({
-            ...this.config.safes[index],
-            ...safe
-          }))
-          .filter(safe => safe.gnosisSafeAddress);
-      }
-      input = coerceConfig(value, this.network);
-    }
+type Config = {
+  safes: {
+    connextAddress?: string;
+    network: Network;
+    umaAddress?: string;
+    realityAddress?: string;
+  }[];
+};
 
-    if (this.config && Array.isArray(this.config.safes)) {
-      availableSafes = this.config.safes;
-    }
+type Input = {
+  safes: SafeDetails[];
+  valid: boolean;
+};
 
-    return {
-      input,
-      ipfs: getIpfsUrl(this?.proposal?.ipfs),
-      isButtonClicked: false,
-      availableSafes
-    };
-  },
+type ConfigProps = {
+  modelValue?: any; // proposal's plugins.safeSnap field or undefined when creating a new proposal
+  config: Config; // the safeSnap plugin config of the current space
+  network: Network; // network of the space (needed when mapping legacy plugin configs)
+  proposal: Proposal;
+  preview: boolean; // if true, renders a read-only view
+  space?: ExtendedSpace;
+  results?: Results;
+};
 
-  methods: {
-    updateSafeTransactions() {
-      if (this.preview) return;
+const props = defineProps<ConfigProps>();
+const emits = defineEmits(['update:modelValue']);
 
-      this.input.valid = isValidInput(this.input);
-      this.input.safes = this.input.safes.map(safe => ({
+const input = ref<Input>({
+  safes: [],
+  valid: true
+});
+const selectedSafes = ref<SafeDetails[]>([]);
+const isButtonClicked = ref<boolean>(false);
+const ipfs = computed(() => getIpfsUrl(props.proposal?.ipfs));
+
+watchEffect(() => {
+  if (!Object.keys(props.modelValue).length) {
+    input.value = {
+      safes: coerceConfig(props.config, props.network).safes.map(safe => ({
         ...safe,
-        hash: getSafeHash(safe)
+        hash: null,
+        txs: []
+      })),
+      valid: true
+    };
+  } else {
+    const value = clone(props.modelValue);
+    if (value.safes && props.config && Array.isArray(props.config.safes)) {
+      value.safes = value.safes.map((safe, index) => ({
+        ...props.config.safes[index],
+        ...safe
       }));
-
-      this.$emit('update:modelValue', this.input);
-    },
-    handleButtonClick() {
-      this.isButtonClicked = !this.isButtonClicked;
-    },
-    handleSafeSelected(selectedSafe) {
-      this.isButtonClicked = false;
-      const exists = this.input.safes.some(
-        safe => safe.gnosisSafeAddress === selectedSafe.gnosisSafeAddress
-      );
-      if (!exists) {
-        this.input.safes.push({
-          ...selectedSafe,
-          txs: [],
-          hash: null
-        });
-        this.updateSafeTransactions();
-      }
-    },
-
-    handleDeleteSafe(safeToDelete) {
-      this.input.safes = this.input.safes.filter(
-        safe => safe.gnosisSafeAddress !== safeToDelete.gnosisSafeAddress
-      );
-      this.updateSafeTransactions();
     }
+    input.value = coerceConfig(value, props.network);
   }
+});
+
+function convertToSafeExecutionData(
+  safeDetail: SafeDetails
+): SafeExecutionData {
+  return {
+    hash: safeDetail.hash,
+    txs: safeDetail.txs,
+    network: safeDetail.network,
+    realityModule: safeDetail.realityModule || ''
+    // add any filed needed for SafeExecutionData
+  };
+}
+
+const updateSafeTransactions = () => {
+  if (props.preview) return;
+
+  // Converts each 'SafeDetails' to 'SafeExecutionData'
+  const safeExecutionDataArray: SafeExecutionData[] = selectedSafes.value.map(
+    safe => convertToSafeExecutionData(safe)
+  );
+
+  // Updates the hash for each 'SafeExecutionData'
+  safeExecutionDataArray.forEach(safe => {
+    safe.hash = getSafeHash(safe);
+  });
+
+  // Validates the converted safes
+  const isValid = isValidInput({ safes: safeExecutionDataArray });
+
+  // Emits the updated model
+  emits('update:modelValue', {
+    safes: safeExecutionDataArray,
+    valid: isValid
+  });
+};
+
+const handleButtonClick = () => {
+  isButtonClicked.value = !isButtonClicked.value;
+};
+
+const handleSafeSelected = (selectedSafe: SafeDetails) => {
+  const index = selectedSafes.value.findIndex(
+    (safe: SafeDetails) =>
+      safe.gnosisSafeAddress === selectedSafe.gnosisSafeAddress
+  );
+
+  if (index === -1) {
+    selectedSafes.value.push(selectedSafe);
+  } else {
+    selectedSafes.value[index] = selectedSafe;
+  }
+  isButtonClicked.value = false;
+  updateSafeTransactions();
+};
+
+const handleDeleteSafe = (safeToDelete: SafeDetails) => {
+  selectedSafes.value = selectedSafes.value.filter(
+    safe => safe.gnosisSafeAddress !== safeToDelete.gnosisSafeAddress
+  );
+  updateSafeTransactions();
 };
 </script>
 
 <template>
-  <div v-if="!preview || input.safes.length > 0">
+  <div v-if="!preview || selectedSafes.length > 0">
     <div
       :class="[preview ? '' : 'px-4', 'block', 'pt-3']"
       style="
@@ -108,7 +148,7 @@ export default {
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <div
-      v-for="(safe, index) in input.safes"
+      v-for="(safe, index) in selectedSafes"
       :key="index"
       class="mb-5 last:border-b-0"
     >
@@ -126,7 +166,7 @@ export default {
         :multi-send-address="safe.multiSendAddress"
         :gnosis-safe-address="safe.gnosisSafeAddress"
         :model-value="safe.txs"
-        @update:modelValue="updateSafeTransactions(index, $event)"
+        @update:modelValue="updateSafeTransactions()"
         @delete:safe="handleDeleteSafe(safe)"
       />
     </div>
@@ -134,7 +174,7 @@ export default {
       <BaseButton @click="handleButtonClick">Add a Safe</BaseButton>
       <SafeSnapsSafeSelect
         v-if="isButtonClicked"
-        :safes="availableSafes"
+        :safes="input.safes"
         @safeSelected="handleSafeSelected"
       />
     </div>

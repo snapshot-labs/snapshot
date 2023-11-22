@@ -19,13 +19,33 @@ export function getMultiSend(
 }
 
 export function encodeTransactions(transactions: SafeTransaction[]) {
-  const values = transactions.map(tx => [
-    tx.operation,
-    tx.to,
-    tx.value,
-    hexDataLength(tx.data || '0x'),
-    tx.data || '0x'
-  ]);
+  // const values = transactions.map(tx => [
+  //   tx.operation,
+  //   tx.to,
+  //   tx.value,
+  //   hexDataLength(tx.data || '0x'),
+  //   tx.data || '0x'
+  // ]);
+console.log('encodeTransactions - transactions', transactions)
+  const values = transactions.reduce((acc: (string | number)[][], tx) => {
+    // Verificar cada campo requerido en la transacción
+    console.log('encodeTransactions - tx', tx)
+    if (!tx.to || !tx.operation || !tx.value || !tx.data) {
+      // Manejar el caso de error, como lanzar una excepción o registrar un error
+      console.error('Invalid Transaction: ', tx);
+      throw new Error('[Encoding transaction] - Invalid Transaction');
+    }
+
+    // Asumir que todos los campos están presentes y son válidos
+    const operation = tx.operation;
+    const to = tx.to;
+    const value = tx.value;
+    const dataLength = hexDataLength(tx.data);
+    const data = tx.data;
+
+    acc.push([operation, to, value, dataLength, data]);
+    return acc;
+  }, []);
 
   const types = transactions.map(() => [
     'uint8',
@@ -45,6 +65,7 @@ export function createMultiSendTx(
 ) {
   const multiSendContract = new Interface(MULTI_SEND_ABI);
   const transactionsEncoded = encodeTransactions(txs);
+  console.log('transactionsEncoded', transactionsEncoded)
   const data = multiSendContract.encodeFunctionData('multiSend', [
     transactionsEncoded
   ]);

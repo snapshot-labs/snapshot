@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import Config from './components/Config.vue';
+import { Network } from './types';
 
 defineProps<{
   space: ExtendedSpace;
@@ -19,7 +20,7 @@ const update = form => {
     v-if="space.plugins.safeSnap"
     :proposal="proposal"
     :config="space.plugins.safeSnap"
-    :network="space.network"
+    :network="(space.network as Network)"
     :preview="false"
     :model-value="modelValue?.safeSnap || {}"
     @update:modelValue="update"

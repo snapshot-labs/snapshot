@@ -369,11 +369,20 @@ export interface SafeModuleTransactionBatch {
   transactions: SafeTransaction[];
 }
 
+export interface SafeDetails extends SafeExecutionData {
+  connextAddress?: string;
+  multiSendAddress: string;
+  realityAddress?: string;
+  umaAddress?: string;
+  network: Network;
+  gnosisSafeAddress?: string;
+}
 export interface SafeExecutionData {
   hash: string | null;
   txs: SafeModuleTransactionBatch[];
   network: string;
   realityModule: string;
+  
 }
 
 export interface Plugin {
