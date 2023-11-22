@@ -14,7 +14,7 @@ const emit = defineEmits(['update:modelValue']);
       :checked="modelValue"
       :name="name"
       type="checkbox"
-      class="form-checkbox h-[19px] w-[19px] rounded-lg border-skin-text bg-skin-bg text-skin-primary !outline-none !ring-0"
+      class="form-checkbox h-[19px] w-[19px] rounded-lg border-skin-text bg-skin-bg text-primary !outline-none !ring-0"
       @input="
         emit('update:modelValue', ($event.target as HTMLInputElement).checked)
       "

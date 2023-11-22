@@ -17,7 +17,7 @@ watch(
 <template>
   <div
     v-if="env === 'demo' && showDemoBanner"
-    class="relative bg-skin-primary p-3 text-center"
+    class="relative bg-primary p-3 text-center"
     style="color: white; font-size: 20px"
   >
     {{ $t('demoSite') }}
@@ -58,7 +58,7 @@ watch(
   </div>
   <div
     v-if="pendingTransactions.length > 0"
-    class="flex flex-row items-center justify-center gap-x-3 bg-skin-primary py-2 text-center text-white"
+    class="flex flex-row items-center justify-center gap-x-3 bg-primary py-2 text-center text-white"
     :class="{
       'cursor-pointer': pendingTransactions.length > 0
     }"

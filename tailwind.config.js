@@ -6,7 +6,7 @@ module.exports = {
     extend: {
       colors: {
         snapshot: '#f3b04e',
-        'skin-primary': 'var(--primary-color)',
+        primary: 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
         'skin-link': 'var(--link-color)',

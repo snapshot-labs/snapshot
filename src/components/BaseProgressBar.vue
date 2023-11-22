@@ -7,7 +7,7 @@ defineProps<{ value: number }>();
     <div class="z-5 absolute h-full w-full bg-[color:var(--border-color)]" />
     <div
       :style="`width: ${value.toFixed(3)}%;`"
-      class="z-10 h-full bg-skin-primary opacity-80"
+      class="z-10 h-full bg-primary opacity-80"
     />
   </div>
 </template>

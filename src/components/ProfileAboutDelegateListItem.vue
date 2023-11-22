@@ -31,7 +31,7 @@ defineEmits(['delegate']);
             <IconVerifiedSpace
               v-if="space.verified"
               size="19"
-              class="ml-1 flex text-skin-primary"
+              class="ml-1 flex text-primary"
             />
           </div>
         </router-link>
