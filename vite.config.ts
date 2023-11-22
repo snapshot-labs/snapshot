@@ -26,17 +26,15 @@ export default defineConfig({
     }),
     ViteComponents({
       directoryAsNamespace: true,
+      globalNamespaces: ['Tune'],
+      globs: ['src/components/**/*.vue', '!src/components/Tune/_Form/*.vue'],
       resolvers: [
         IconsResolver({
           customCollections: ['s'],
           alias: {
             ho: 'heroicons-outline'
           }
-        }),
-        componentName => {
-          if (componentName.startsWith('Tune'))
-            return { name: componentName, from: '@snapshot-labs/tune' };
-        }
+        })
       ]
     }),
     visualizer({
@@ -83,12 +81,6 @@ export default defineConfig({
   optimizeDeps: {
     esbuildOptions: {
       target: 'esnext'
-    },
-    exclude: ['@snapshot-labs/tune']
-  },
-  server: {
-    watch: {
-      ignored: ['!**/node_modules/@snapshot-labs/tune/**']
     }
   }
 });
