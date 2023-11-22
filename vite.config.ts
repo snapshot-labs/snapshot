@@ -25,8 +25,6 @@ export default defineConfig({
       }
     }),
     ViteComponents({
-      directoryAsNamespace: true,
-      globalNamespaces: ['Tune'],
       globs: ['src/components/**/*.vue', '!src/components/Tune/_Form/*.vue'],
       resolvers: [
         IconsResolver({
