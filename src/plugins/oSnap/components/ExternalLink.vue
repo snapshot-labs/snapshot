@@ -16,7 +16,7 @@ defineProps<{
     :href="sanitizeUrl(link)"
     target="_blank"
     :class="[
-      'inline-flex w-full items-center gap-2 whitespace-nowrap rounded-3xl border border-skin-border bg-skin-bg px-4 font-semibold capitalize leading-[48px] hover:border-skin-text',
+      'inline-flex w-full items-center gap-2 whitespace-nowrap rounded-3xl border border-skin-border bg-skin-bg px-4 font-semibold capitalize leading-[42px] hover:border-skin-text',
       { 'pointer-events-none': disabled }
     ]"
     rel="noopener noreferrer"
