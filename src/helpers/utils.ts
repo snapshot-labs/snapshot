@@ -145,7 +145,7 @@ export async function lookupAddress(
   }
 
   try {
-    const results = await fetch(import.meta.env.VITE_STAMP_URL, {
+    const response = await fetch(import.meta.env.VITE_STAMP_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -156,7 +156,11 @@ export async function lookupAddress(
       })
     });
 
-    return (await results.json()).result;
+    const results = (await response.json()).result;
+
+    return Object.fromEntries(
+      addresses.map(address => [address, results[address] || ''])
+    );
   } catch (e) {
     console.error('Error resolving addresses:', e);
     return {};
