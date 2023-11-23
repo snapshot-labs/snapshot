@@ -87,8 +87,7 @@ export function validateForm(
   ajv.addKeyword({
     keyword: 'snapshotNetwork',
     validate: function (schema, data) {
-      const snapshotEnv = env || 'default';
-      if (snapshotEnv === 'production') return mainnetNetworkIds.includes(data);
+      if (env === 'production') return mainnetNetworkIds.includes(data);
       return networksIds.includes(data);
     },
     error: {
