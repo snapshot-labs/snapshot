@@ -150,7 +150,10 @@ export async function lookupAddress(
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ method: 'lookup_addresses', params: addresses })
+      body: JSON.stringify({
+        method: 'lookup_addresses',
+        params: addresses.slice(0, 250)
+      })
     });
 
     return (await results.json()).result;
