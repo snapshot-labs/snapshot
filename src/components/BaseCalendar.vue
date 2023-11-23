@@ -102,7 +102,7 @@ function isSelectable(year, month, day) {
           v-if="isSelectable(year, month, day)"
           class="day border-b border-r bg-transparent text-skin-link hover:bg-skin-link hover:text-skin-bg"
           :class="{
-            'ring-1 ring-inset ring-primary':
+            'ring-1 ring-inset ring-skin-primary':
               formatDate(year, month, day) === today,
             '!bg-skin-link !text-skin-bg': input.includes(
               formatDate(year, month, day)
