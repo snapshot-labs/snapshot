@@ -47,6 +47,9 @@ const input = ref<Input>({
 const selectedSafes = ref<SafeDetails[]>([]);
 const isButtonClicked = ref<boolean>(false);
 const ipfs = computed(() => getIpfsUrl(props.proposal?.ipfs));
+const safesToDisplay = computed(() => {
+  return props.preview ? input.value.safes : selectedSafes.value;
+});
 
 watchEffect(() => {
   if (!Object.keys(props.modelValue).length) {
@@ -130,13 +133,10 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
   );
   updateSafeTransactions();
 };
-
-console.log('input', input.value)
-console.log('props', props)
 </script>
 
 <template>
-  <div v-if="!preview || selectedSafes.length > 0">
+  <div v-if="!preview || safesToDisplay.length > 0">
     <div
       :class="[preview ? '' : 'px-4', 'block', 'pt-3']"
       style="
@@ -151,7 +151,7 @@ console.log('props', props)
       <BaseLink v-if="ipfs" :link="ipfs"> View Details </BaseLink>
     </div>
     <div
-      v-for="(safe, index) in selectedSafes"
+      v-for="(safe, index) in safesToDisplay"
       :key="index"
       class="mb-5 last:border-b-0"
     >
