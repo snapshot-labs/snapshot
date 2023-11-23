@@ -53,7 +53,7 @@ export function useProfiles() {
         )
       ]);
       // add ens from profilesRes to corresponding address in profilesObj
-      addresses.forEach(address => {
+      Object.keys(profilesRes[0] ?? {}).forEach(address => {
         profilesRes[0][address] = {
           ...{ ens: profilesRes[0][address] },
           ...profilesRes[1]?.find(p => p.id === address)
