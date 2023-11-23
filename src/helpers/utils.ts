@@ -127,10 +127,10 @@ export async function resolveHandle(handle: string) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ method: 'resolve_name', params: handle })
+      body: JSON.stringify({ method: 'resolve_names', params: [handle] })
     });
 
-    return (await results.json()).result?.handle;
+    return (await results.json()).result?.[handle];
   } catch (e) {
     console.error('Error resolving handle:', handle, e);
     return null;
