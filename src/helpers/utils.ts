@@ -166,6 +166,29 @@ export async function resolveLens(handle: string) {
   }
 }
 
+export async function lookupAddress(
+  addresses: string[]
+): Promise<Record<string, string>> {
+  if (addresses.length === 0) {
+    return {};
+  }
+
+  try {
+    const results = await fetch(import.meta.env.VITE_STAMP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ method: 'lookup_addresses', params: addresses })
+    });
+
+    return (await results.json()).result;
+  } catch (e) {
+    console.error('Error resolving addresses:', e);
+    return {};
+  }
+}
+
 export function isSnapshotUrl(url: string) {
   let parsedUrl;
   try {

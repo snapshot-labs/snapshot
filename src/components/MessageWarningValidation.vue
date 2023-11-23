@@ -33,7 +33,7 @@ const tPath = computed(() => {
       </BaseLink>
     </template>
 
-    <template v-if="validationName === 'passport-gated'">
+    <template v-else-if="validationName === 'passport-gated'">
       {{
         $t(`${tPath}.passport-gated.invalidMessage`, {
           scoreThreshold: validationParams?.scoreThreshold || 0

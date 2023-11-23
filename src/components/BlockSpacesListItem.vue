@@ -27,7 +27,7 @@ defineProps<{
       <IconVerifiedSpace
         v-if="space.verified"
         size="14"
-        class="pl-1 text-primary"
+        class="pl-1 text-skin-primary"
       />
     </div>
   </router-link>

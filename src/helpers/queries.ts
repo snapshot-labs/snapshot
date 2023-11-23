@@ -379,6 +379,7 @@ export const SPACES_RANKING_QUERY = gql`
       items {
         id
         name
+        avatar
         private
         verified
         categories
