@@ -76,6 +76,6 @@ const safeLink = computed(() =>
       })
     "
   >
-    Add Transaction +
+    Add transaction +
   </BaseButton>
 </template>

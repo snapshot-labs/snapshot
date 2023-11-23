@@ -151,7 +151,7 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
     console.log({ response });
     return response.results;
   } catch (error) {
-    console.warn('Error fetching collectables');
+    console.warn('Error fetching collectibles');
   }
   return [];
 }

@@ -19,13 +19,13 @@ const transactionTypesWithDetails: {
 }[] = [
   {
     type: 'transferFunds',
-    title: 'Transfer funds',
+    title: 'Send tokens',
     description: 'Transfer funds to another address'
   },
   {
     type: 'transferNFT',
-    title: 'Transfer collectable',
-    description: 'Transfer a collectable to another address'
+    title: 'Send NFT',
+    description: 'Transfer a collectible to another address'
   },
   {
     type: 'contractInteraction',

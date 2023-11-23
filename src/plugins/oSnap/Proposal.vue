@@ -60,7 +60,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       type: 'Transfer NFT',
       recipient,
       collectable: `${collectable?.tokenName} #${collectable?.id}`,
-      'collectable address': collectable?.address
+      'collectible address': collectable?.address
     };
   }
   return { ...commonProperties, type: 'Raw' };
@@ -87,9 +87,10 @@ function enrichTransactionForDisplay(transaction: Transaction) {
         <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
 
         <ReadOnly v-for="[key, value] in Object.entries(details)">
-          <strong class="mr-2 inline-block whitespace-nowrap capitalize">{{
-            key
-          }}</strong>
+          <strong
+            class="mr-2 inline-block whitespace-nowrap first-letter:capitalize"
+            >{{ key }}</strong
+          >
           <span class="break-all">{{ value }}</span>
         </ReadOnly>
       </div>
