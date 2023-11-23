@@ -130,6 +130,9 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
   );
   updateSafeTransactions();
 };
+
+console.log('input', input.value)
+console.log('props', props)
 </script>
 
 <template>
