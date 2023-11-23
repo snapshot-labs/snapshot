@@ -674,14 +674,14 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@floating-ui/core@^1.0.0", "@floating-ui/core@^1.3.0", "@floating-ui/core@^1.4.2":
+"@floating-ui/core@^1.3.0", "@floating-ui/core@^1.4.2":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.5.0.tgz#5c05c60d5ae2d05101c3021c1a2a350ddc027f8c"
   integrity sha512-kK1h4m36DQ0UHGj5Ah4db7R0rHemTqqO0QLvUqi1/mUUp3LuAWbWxdxSIf/XsnH9VS6rRVPLJCncjRzUvyCLXg==
   dependencies:
     "@floating-ui/utils" "^0.1.3"
 
-"@floating-ui/dom@^1.0.0", "@floating-ui/dom@^1.2.1", "@floating-ui/dom@^1.3.0", "@floating-ui/dom@^1.4.5":
+"@floating-ui/dom@^1.3.0", "@floating-ui/dom@^1.4.5":
   version "1.5.3"
   resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.5.3.tgz#54e50efcb432c06c23cd33de2b575102005436fa"
   integrity sha512-ClAbQnEqJAKCJOEbbLo5IUlZHkNszqhuxS4fHAVxRPXPya6Ysf2G8KypnYcOTpx6I8xcgF9bbHb6g/2KpbV8qA==
@@ -693,14 +693,6 @@
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.1.6.tgz#22958c042e10b67463997bd6ea7115fe28cbcaf9"
   integrity sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==
-
-"@floating-ui/vue@^0.2.0":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@floating-ui/vue/-/vue-0.2.1.tgz#a52b66e020897ad0535d0d0d3b09932446fc6231"
-  integrity sha512-HE+EIeakID7wI6vUwF0yMpaW48bNaPj8QtnQaRMkaQFhQReVBA4bY6fmJ3J7X+dqVgDbMhyfCG0fBJfdQMdWxQ==
-  dependencies:
-    "@floating-ui/dom" "^1.2.1"
-    vue-demi "^0.13.11"
 
 "@floating-ui/vue@^1.0.0":
   version "1.0.2"
@@ -727,15 +719,6 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
-"@headlessui-float/vue@^0.11.0":
-  version "0.11.4"
-  resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.11.4.tgz#3689dab096f01d97d74e79c0a22445aa9f03ab78"
-  integrity sha512-hNGQTT3trknSB78ZI3usvnJACLyEUmacvk5Q8JQizJ8k+8GYLvhKklGIhJVO1E3litEzW6yyjPgfg6aEJ+1p6g==
-  dependencies:
-    "@floating-ui/core" "^1.0.0"
-    "@floating-ui/dom" "^1.0.0"
-    "@floating-ui/vue" "^0.2.0"
-
 "@headlessui-float/vue@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@headlessui-float/vue/-/vue-0.12.0.tgz#315abf12d87545fb0328db413f4462bee33651a3"
@@ -745,7 +728,7 @@
     "@floating-ui/dom" "^1.3.0"
     "@floating-ui/vue" "^1.0.0"
 
-"@headlessui/vue@^1.7.12", "@headlessui/vue@^1.7.16":
+"@headlessui/vue@^1.7.16":
   version "1.7.16"
   resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.7.16.tgz#bdc9d32d329248910325539b99e6abfce0c69f89"
   integrity sha512-nKT+nf/q6x198SsyK54mSszaQl/z+QxtASmgMEJtpxSX2Q0OPJX0upS/9daDyiECpeAsvjkoOrm2O/6PyBQ+Qg==
@@ -1334,20 +1317,6 @@
     cross-fetch "^3.1.6"
     json-to-graphql-query "^2.2.4"
     lodash.set "^4.3.2"
-
-"@snapshot-labs/tune@^0.1.35":
-  version "0.1.35"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/tune/-/tune-0.1.35.tgz#8382c3178a15e3aede6c8cb46640aa9a41dd2b63"
-  integrity sha512-7GaQmIxX66d4DogcAMmbbuXRtfoiNDplcgicndiMRv9QI4IEmBCkOHgJarcjNkCj07X7TC9DVbLuYvJzt4qRBA==
-  dependencies:
-    "@headlessui-float/vue" "^0.11.0"
-    "@headlessui/vue" "^1.7.12"
-    "@vueuse/core" "^10.1.2"
-    lodash "^4.17.21"
-    minisearch "^6.0.1"
-    sass "^1.60.0"
-    vue "^3.2.47"
-    vue-tippy "^6.0.0"
 
 "@solana/buffer-layout@^4.0.0":
   version "4.0.1"
@@ -2019,7 +1988,7 @@
     js-beautify "1.14.9"
     vue-component-type-helpers "1.8.4"
 
-"@vueuse/core@^10.1.2", "@vueuse/core@^10.6.1":
+"@vueuse/core@^10.6.1":
   version "10.6.1"
   resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-10.6.1.tgz#5b16d8238054c6983b6cb7cd77a78035f098dd89"
   integrity sha512-Pc26IJbqgC9VG1u6VY/xrXXfxD33hnvxBnKrLlA2LJlyHII+BSrRoTPJgGYq7qZOu61itITFUnm6QbacwZ4H8Q==
@@ -5529,11 +5498,6 @@ minipass@^4.2.4:
   resolved "https://registry.yarnpkg.com/minipass/-/minipass-7.0.2.tgz#58a82b7d81c7010da5bd4b2c0c85ac4b4ec5131e"
   integrity sha512-eL79dXrE1q9dBbDCLg7xfn/vl7MS4F1gvJAgjJrQli/jbQWdUttuVawphqpffoIYfRdq78LHx6GP4bU/EQ2ATA==
 
-minisearch@^6.0.1:
-  version "6.3.0"
-  resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.3.0.tgz#985a2f1ca3c73c2d65af94f0616bfe57164b0b6b"
-  integrity sha512-ihFnidEeU8iXzcVHy74dhkxh/dn8Dc08ERl0xwoMMGqp4+LvRSCgicb+zGqWthVokQKvCSxITlh3P08OzdTYCQ==
-
 minisearch@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.2.0.tgz#310b50508551f22e10815f5baedeeeded03a6b5d"
@@ -6636,15 +6600,6 @@ sass-loader@^13.2.2:
     klona "^2.0.6"
     neo-async "^2.6.2"
 
-sass@^1.60.0:
-  version "1.69.5"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.69.5.tgz#23e18d1c757a35f2e52cc81871060b9ad653dfde"
-  integrity sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==
-  dependencies:
-    chokidar ">=3.0.0 <4.0.0"
-    immutable "^4.0.0"
-    source-map-js ">=0.6.2 <2.0.0"
-
 sass@~1.62.1:
   version "1.62.1"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.62.1.tgz#caa8d6bf098935bc92fc73fa169fb3790cacd029"
@@ -7582,11 +7537,6 @@ vue-demi@>=0.13.0, vue-demi@>=0.14.6, vue-demi@^0.14.6:
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.14.6.tgz#dc706582851dc1cdc17a0054f4fec2eb6df74c92"
   integrity sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==
 
-vue-demi@^0.13.11:
-  version "0.13.11"
-  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
-  integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
-
 vue-eslint-parser@^7.10.0:
   version "7.11.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.11.0.tgz#214b5dea961007fcffb2ee65b8912307628d0daf"
@@ -7629,14 +7579,14 @@ vue-router@^4.2.5:
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
-vue-tippy@^6.0.0, vue-tippy@^6.3.1:
+vue-tippy@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/vue-tippy/-/vue-tippy-6.3.1.tgz#8d0e03294dad862d71f3a90e486721720cff832c"
   integrity sha512-U2jpGwmwg+u/a36/XDnGlOF+W944xHGlVELsrTNWmZ0nUi2E/VW0c/buBkzntFUwRh6BHwFWcKL8BHcyG2mogQ==
   dependencies:
     tippy.js "^6.3.7"
 
-vue@^3.2.47, vue@^3.3.8:
+vue@^3.3.8:
   version "3.3.8"
   resolved "https://registry.yarnpkg.com/vue/-/vue-3.3.8.tgz#532ff071af24f6a69e5ecc53a66858a9ee874ffc"
   integrity sha512-5VSX/3DabBikOXMsxzlW8JyfeLKlG9mzqnWgLQLty88vdZL7ZJgrdgBOmrArwxiLtmS+lNNpPcBYqrhE6TQW5w==
