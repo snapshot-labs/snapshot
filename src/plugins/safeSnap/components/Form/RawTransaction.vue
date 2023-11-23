@@ -101,7 +101,6 @@ export default {
 </script>
 <template>
   <div v-if="isDetails" class="my-2 flex flex-col space-y-2 px-3">
-    {{ console.log('[RawTransaction] - modelValue', modelValue) }}
     <div class="flex space-x-2">
       <p class="text-skin-text">{{ $t('safeSnap.to') }}</p>
       <p>{{ format(to) }}</p>
