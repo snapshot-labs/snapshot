@@ -34,7 +34,13 @@ const strategyNetworkErrors = computed(() => {
       </i18n-t>
     </span>
 
-    <span v-else-if="strategyNetworkErrors">
+    <span
+      v-else-if="
+        strategyNetworkErrors?.some(
+          e => e[1].network === 'Testnet not allowed.'
+        )
+      "
+    >
       Strategy {{ strategyNetworkErrors.map(e => Number(e[0]) + 1).join(', ') }}
       is using a test network which are no longer supported. If you are looking
       to test your strategies, please checkout

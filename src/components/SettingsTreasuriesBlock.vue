@@ -77,7 +77,11 @@ const strategyNetworkErrors = computed(() => {
     </BaseButton>
 
     <BaseMessageBlock
-      v-if="strategyNetworkErrors"
+      v-if="
+        strategyNetworkErrors?.some(
+          e => e[1].network === 'Testnet not allowed.'
+        )
+      "
       level="warning-red"
       class="mt-3"
     >
