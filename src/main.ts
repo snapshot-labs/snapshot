@@ -7,7 +7,6 @@ import '../snapshot-spaces/skins';
 import App from '@/App.vue';
 import router from '@/router';
 import i18n from '@/helpers/i18n';
-import '@/helpers/auth';
 import '@/assets/css/main.scss';
 import { apolloClient } from '@/helpers/apollo';
 import { DefaultApolloClient } from '@vue/apollo-composable';
