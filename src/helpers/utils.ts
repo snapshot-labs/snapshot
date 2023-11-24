@@ -4,7 +4,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -121,47 +120,19 @@ export async function clearStampCache(id: string, type = 'space') {
     return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
 }
 
-export async function resolveEns(handle: string) {
+export async function resolveHandle(handle: string) {
   try {
-    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
-    const provider = getProvider('1', { broviderUrl });
-    const addressResolved = await provider.resolveName(handle);
-    if (!addressResolved) throw new Error('Invalid ENS name');
-    return addressResolved;
-  } catch (error) {
-    console.error('Error in resolveEns:', error);
-    return null;
-  }
-}
-
-export async function resolveLens(handle: string) {
-  try {
-    const response = await fetch('https://api.lens.dev/', {
+    const results = await fetch(import.meta.env.VITE_STAMP_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        query: `
-          query Profiles {
-            profiles(request: { handles: ["${handle}"], limit: 1 }) {
-              items {
-                ownedBy
-              }
-            }
-          }
-        `
-      })
+      body: JSON.stringify({ method: 'resolve_names', params: [handle] })
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result.data?.profiles?.items?.[0]?.ownedBy;
-  } catch (error) {
-    console.error('Error in resolveLens:', error);
+    return (await results.json()).result?.[handle];
+  } catch (e) {
+    console.error('Error resolving handle:', handle, e);
     return null;
   }
 }
@@ -174,15 +145,22 @@ export async function lookupAddress(
   }
 
   try {
-    const results = await fetch(import.meta.env.VITE_STAMP_URL, {
+    const response = await fetch(import.meta.env.VITE_STAMP_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ method: 'lookup_addresses', params: addresses })
+      body: JSON.stringify({
+        method: 'lookup_addresses',
+        params: addresses.slice(0, 250)
+      })
     });
 
-    return (await results.json()).result;
+    const results = (await response.json()).result;
+
+    return Object.fromEntries(
+      addresses.map(address => [address, results[address] || ''])
+    );
   } catch (e) {
     console.error('Error resolving addresses:', e);
     return {};
