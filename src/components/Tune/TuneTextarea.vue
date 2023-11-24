@@ -24,7 +24,8 @@ const props = withDefaults(
     error: '',
     autosize: true,
     disabled: false,
-    maxLength: undefined
+    maxLength: undefined,
+    definition: undefined
   }
 );
 

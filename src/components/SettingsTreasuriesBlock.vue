@@ -4,6 +4,7 @@ import { TreasuryWallet } from '@/helpers/interfaces';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
+  error: string | Record<string, any>;
   isViewOnly?: boolean;
 }>();
 
@@ -67,6 +68,9 @@ function handleSubmitTreasury(treasury) {
     >
       {{ $t('settings.treasuries.add') }}
     </BaseButton>
+
+    <MessageWarningTestnet context="Treasury" :error="error" />
+
     <teleport to="#modal">
       <ModalTreasury
         :open="modalTreasuryOpen"
