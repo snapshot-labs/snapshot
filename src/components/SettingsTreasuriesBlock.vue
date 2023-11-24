@@ -48,13 +48,6 @@ function handleSubmitTreasury(treasury) {
     form.value.treasuries = form.value.treasuries.concat(treasury);
   }
 }
-
-const strategyNetworkErrors = computed(() => {
-  if (typeof props.error === 'object') {
-    const entries = Object.entries(props.error).filter(e => e[1].network);
-    return entries;
-  }
-});
 </script>
 
 <template>
@@ -76,20 +69,7 @@ const strategyNetworkErrors = computed(() => {
       {{ $t('settings.treasuries.add') }}
     </BaseButton>
 
-    <BaseMessageBlock
-      v-if="
-        strategyNetworkErrors?.some(
-          e => e[1].network === 'Testnet not allowed.'
-        )
-      "
-      level="warning-red"
-      class="mt-3"
-    >
-      Treasury {{ strategyNetworkErrors.map(e => Number(e[0]) + 1).join(', ') }}
-      is using a test network which are no longer supported. If you are looking
-      to do testing, please checkout
-      <BaseLink link="https://demo.snapshot.org"> demo.snapshot.org</BaseLink>
-    </BaseMessageBlock>
+    <MessageWarningTestnet context="Treasury" :error="error" />
 
     <teleport to="#modal">
       <ModalTreasury
