@@ -10,3 +10,5 @@ export const SNAPSHOT_BREAKPOINTS = {
   xl: '1280px',
   '2xl': '1536px'
 };
+
+export const KNOWN_HOSTS = ['app.safe.global', 'pilot.gnosisguild.org'];

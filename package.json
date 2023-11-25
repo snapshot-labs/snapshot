@@ -1,15 +1,14 @@
 {
   "name": "snapshot",
   "version": "0.1.4",
+  "license": "MIT",
+  "repository": "snapshot-labs/snapshot",
   "scripts": {
     "dev": "vite --port=8080",
-    "preinstall": "yarn run init-submodules",
     "build": "vite build",
     "lint": "eslint \"*.{ts,js,vue,json}\" src/ --ext .ts,.js,.vue,.json",
     "lint:fix": "yarn lint --fix",
-    "format": "prettier \"**/*.{ts,js,vue,json}\"",
-    "format:check": "yarn format --check || exit 1",
-    "format:fix": "yarn format --write",
+    "preinstall": "yarn run init-submodules",
     "postinstall": "patch-package && husky install",
     "init-submodules": "git submodule update --init",
     "test:unit": "vitest run",
@@ -44,7 +43,7 @@
     "@shutter-network/shutter-crypto": "1.0.1",
     "@snapshot-labs/lock": "^0.2.1",
     "@snapshot-labs/pineapple": "^1.1.0",
-    "@snapshot-labs/snapshot.js": "^0.9.3",
+    "@snapshot-labs/snapshot.js": "^0.9.4",
     "@vue/apollo-composable": "4.0.0-beta.11",
     "@vueuse/core": "^10.6.1",
     "@vueuse/head": "^2.0.0",
@@ -106,7 +105,5 @@
   "resolutions": {
     "ansi-regex": "^5.0.1",
     "axios": "^0.21.1"
-  },
-  "license": "MIT",
-  "repository": "snapshot-labs/snapshot"
+  }
 }
