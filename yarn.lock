@@ -1284,24 +1284,24 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
-"@snapshot-labs/eslint-config-base@^0.1.0-beta.13":
-  version "0.1.0-beta.13"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/eslint-config-base/-/eslint-config-base-0.1.0-beta.13.tgz#f2c5d3084ac9bd4db138b70aad2f68e47ed02c46"
-  integrity sha512-tIzJXbt/Oe7JVkI0SJHzBlz34TTPMUuHE5M9/qg4yWCD4sh+TQwqo8HtntrnQFJ93ex8gqKbkbdajLxuYfTj2g==
+"@snapshot-labs/eslint-config-base@^0.1.0-beta.15":
+  version "0.1.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/eslint-config-base/-/eslint-config-base-0.1.0-beta.15.tgz#2f64a21a0590d0ffea8a82852ab4bd5742495daa"
+  integrity sha512-uqOqCDTsl92e1k3edaGweQCSlDo9mU8I1ejqXCJHHDr/ZZyBldd8R73qOjhEVdYBtbdHd97QRdKh3JhMjzhrtg==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^6.7.3"
     "@typescript-eslint/parser" "^6.7.3"
     eslint-config-prettier "^9.0.0"
-    eslint-plugin-import "^2.28.1"
-    eslint-plugin-prettier "^5.0.0"
+    eslint-plugin-import "^2.29.0"
+    eslint-plugin-prettier "^5.0.1"
 
-"@snapshot-labs/eslint-config-vue@0.1.0-beta.13":
-  version "0.1.0-beta.13"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/eslint-config-vue/-/eslint-config-vue-0.1.0-beta.13.tgz#ce4d47beea6e100b27b77de19ebe0eb3d304a675"
-  integrity sha512-XqZMpp7svzlTMEZk/l9FT8Z9I+FYdQhYL3vYBeEfAnputralXjLU0BayqwI6m5QSK/JF6aH2ZONyz69Sx8XD6w==
+"@snapshot-labs/eslint-config-vue@^0.1.0-beta.15":
+  version "0.1.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/eslint-config-vue/-/eslint-config-vue-0.1.0-beta.15.tgz#0c447bfde0547921b3df6c6f08a0a02fb72da1dd"
+  integrity sha512-Nb27F3nOzCMuCwDFUsyRx2oQLyJFBOoi5ndi+Hux94mj66Mpgco49+WEv0xbT4nmnWspSsiIYg/rq1YTBHhFZg==
   dependencies:
-    "@snapshot-labs/eslint-config-base" "^0.1.0-beta.13"
-    eslint-plugin-vue "^9.17.0"
+    "@snapshot-labs/eslint-config-base" "^0.1.0-beta.15"
+    eslint-plugin-vue "^9.18.1"
 
 "@snapshot-labs/lock@^0.2.1":
   version "0.2.1"
@@ -1324,10 +1324,10 @@
   dependencies:
     ofetch "^1.3.3"
 
-"@snapshot-labs/prettier-config@^0.1.0-beta.11":
-  version "0.1.0-beta.11"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.11.tgz#d8caa8fc32252ac265fa4de5b8478ce3cac867b2"
-  integrity sha512-/OiQgEkNpMJqDfTDYXggDDxLX6YYQ7n3GZfWRqnUJTlf6YNfkurBC2pVTkN1iHJOI/Vx1Aq/v3D8Ss907k+MMg==
+"@snapshot-labs/prettier-config@0.1.0-beta.15":
+  version "0.1.0-beta.15"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.15.tgz#07e5ae35ed36304250462218e115bab1c1609812"
+  integrity sha512-va6zYSl8oIraBJeIZWEatOI292rfJQouyyvEeHv8qi9ns+LgxMsKayQtXSqn9GcmAfdWQVs/P9bDaCQ77FyJYw==
 
 "@snapshot-labs/snapshot.js@^0.9.4":
   version "0.9.4"
@@ -3749,7 +3749,7 @@ eslint-module-utils@^2.8.0:
   dependencies:
     debug "^3.2.7"
 
-eslint-plugin-import@^2.28.1:
+eslint-plugin-import@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.29.0.tgz#8133232e4329ee344f2f612885ac3073b0b7e155"
   integrity sha512-QPOO5NO6Odv5lpoTkddtutccQjysJuFxoPS7fAHO+9m9udNHvTCPSAMW9zGAYj8lAIdr40I8yPCdUYrncXtrwg==
@@ -3772,7 +3772,7 @@ eslint-plugin-import@^2.28.1:
     semver "^6.3.1"
     tsconfig-paths "^3.14.2"
 
-eslint-plugin-prettier@^5.0.0:
+eslint-plugin-prettier@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-5.0.1.tgz#a3b399f04378f79f066379f544e42d6b73f11515"
   integrity sha512-m3u5RnR56asrwV/lDC4GHorlW75DsFfmUcjfCYylTUs85dBRnB7VM6xG8eCMJdeDRnppzmxZVf1GEPJvl1JmNg==
@@ -3780,7 +3780,7 @@ eslint-plugin-prettier@^5.0.0:
     prettier-linter-helpers "^1.0.0"
     synckit "^0.8.5"
 
-eslint-plugin-vue@^9.17.0:
+eslint-plugin-vue@^9.18.1:
   version "9.18.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-9.18.1.tgz#73cf29df7450ce5913296465f8d1dc545344920c"
   integrity sha512-7hZFlrEgg9NIzuVik2I9xSnJA5RsmOfueYgsUGUokEDLJ1LHtxO0Pl4duje1BriZ/jDWb+44tcIlC3yi0tdlZg==
