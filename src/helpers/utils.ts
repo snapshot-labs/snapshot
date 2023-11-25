@@ -152,7 +152,7 @@ export async function lookupAddress(
       },
       body: JSON.stringify({
         method: 'lookup_addresses',
-        params: addresses.slice(0, 250)
+        params: addresses.slice(0, 50)
       })
     });
 
