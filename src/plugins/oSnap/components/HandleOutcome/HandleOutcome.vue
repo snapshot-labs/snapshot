@@ -333,50 +333,62 @@ onMounted(async () => {
         ogModuleDetails !== undefined
       "
     >
-      <h3>Request transaction execution</h3>
-      <TallyingSnapshotVotes
-        v-if="transactionExecutionState.status === 'tallying-snapshot-votes'"
-      />
-      <RejectedBySnapshotVote
-        v-if="transactionExecutionState.status === 'rejected-by-snapshot-vote'"
-      />
-      <CanProposeToOG
-        v-if="
-          transactionExecutionState.status === 'can-propose-to-og' &&
-          !!collateralDetails &&
-          !!ogModuleDetails &&
-          !!userCollateralBalance &&
-          hasSufficientBalance !== undefined &&
-          hasSufficientAllowance !== undefined
-        "
-        :has-sufficient-balance="hasSufficientBalance"
-        :has-sufficient-allowance="hasSufficientAllowance"
-        :minimum-bond="ogModuleDetails.minimumBond"
-        :user-balance="userCollateralBalance"
-        :decimals="collateralDetails.decimals"
-        :symbol="collateralDetails.symbol"
-        :challenge-period="Number(ogModuleDetails.challengePeriod.toString())"
-        :quorum="quorum"
-        :scores-total="proposal.scores_total"
-        :is-disputed="transactionExecutionState.isDisputed"
-        @submit-proposal="onSubmitProposal"
-        @approve-bond="onApproveBond"
-      />
-      <InOOChallengePeriod
-        v-if="transactionExecutionState.status === 'in-oo-challenge-period'"
-        :network="network"
-        :expiration-time="transactionExecutionState.expirationTime"
-        :assertion-hash="transactionExecutionState.assertionHash"
-        :assertion-log-index="transactionExecutionState.assertionLogIndex"
-      />
-      <CanRequestTxExecution
-        v-if="transactionExecutionState.status === 'can-request-tx-execution'"
-        :transaction-count="transactions.length"
-        @execute-proposal="onExecuteProposal"
-      />
-      <TransactionsExecuted
-        v-if="transactionExecutionState.status === 'transactions-executed'"
-      />
+      <div>
+        <h3>Request transaction execution</h3>
+        <div class="flex flex-col gap-2">
+          <TallyingSnapshotVotes
+            v-if="
+              transactionExecutionState.status === 'tallying-snapshot-votes'
+            "
+          />
+          <RejectedBySnapshotVote
+            v-if="
+              transactionExecutionState.status === 'rejected-by-snapshot-vote'
+            "
+          />
+          <CanProposeToOG
+            v-if="
+              transactionExecutionState.status === 'can-propose-to-og' &&
+              !!collateralDetails &&
+              !!ogModuleDetails &&
+              !!userCollateralBalance &&
+              hasSufficientBalance !== undefined &&
+              hasSufficientAllowance !== undefined
+            "
+            :has-sufficient-balance="hasSufficientBalance"
+            :has-sufficient-allowance="hasSufficientAllowance"
+            :minimum-bond="ogModuleDetails.minimumBond"
+            :user-balance="userCollateralBalance"
+            :decimals="collateralDetails.decimals"
+            :symbol="collateralDetails.symbol"
+            :challenge-period="
+              Number(ogModuleDetails.challengePeriod.toString())
+            "
+            :quorum="quorum"
+            :scores-total="proposal.scores_total"
+            :is-disputed="transactionExecutionState.isDisputed"
+            @submit-proposal="onSubmitProposal"
+            @approve-bond="onApproveBond"
+          />
+          <InOOChallengePeriod
+            v-if="transactionExecutionState.status === 'in-oo-challenge-period'"
+            :network="network"
+            :expiration-time="transactionExecutionState.expirationTime"
+            :assertion-hash="transactionExecutionState.assertionHash"
+            :assertion-log-index="transactionExecutionState.assertionLogIndex"
+          />
+          <CanRequestTxExecution
+            v-if="
+              transactionExecutionState.status === 'can-request-tx-execution'
+            "
+            :transaction-count="transactions.length"
+            @execute-proposal="onExecuteProposal"
+          />
+          <TransactionsExecuted
+            v-if="transactionExecutionState.status === 'transactions-executed'"
+          />
+        </div>
+      </div>
     </template>
   </template>
 </template>
