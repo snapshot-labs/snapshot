@@ -42,7 +42,9 @@ const safeLink = computed(() =>
   </p>
   <p class="my-2">
     <strong>Module address</strong
-    ><span class="ml-2 inline-block break-all">{{ moduleAddress }}</span>
+    ><span class="ml-2 inline-block break-all">{{
+      shorten(moduleAddress)
+    }}</span>
   </p>
   <p class="my-2">
     <strong>Number of transactions</strong
