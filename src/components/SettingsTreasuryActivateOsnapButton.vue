@@ -6,17 +6,6 @@ defineProps<{
 }>();
 
 // handling some theming here locally so as not to interfere with the global style.scss file
-const activeStyles = computed(() => {
-  return theme.value === 'light'
-    ? {
-        div: 'bg-[hsla(122,100%,45%,0.13)] text-[hsla(122,100%,21%,1)]',
-        span: 'bg-[hsla(122,100%,45%,1)]'
-      }
-    : {
-        div: 'bg-[hsla(122,100%,45%,0.13)] text-[hsla(122,100%,45%,1)]',
-        span: 'bg-[hsla(122,100%,45%,1)]'
-      };
-});
 
 const inactiveStyles = computed(() => {
   return theme.value === 'light'
@@ -34,14 +23,9 @@ const inactiveStyles = computed(() => {
 <template>
   <button
     v-if="isOsnapEnabled"
-    :class="[
-      'flex items-center gap-2 rounded-full px-3 py-2',
-      activeStyles.div
-    ]"
+    class="flex items-center gap-2 rounded-full px-3 py-2 bg-primary text-white"
   >
-    <span
-      :class="['block h-[6px] w-[6px] rounded-full', activeStyles.span]"
-    />oSnap activated
+    <span class="block h-[6px] w-[6px] rounded-full bg-green" />oSnap activated
   </button>
   <button
     v-else
