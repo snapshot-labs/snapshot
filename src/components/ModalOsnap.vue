@@ -35,9 +35,7 @@ const href = computed(() =>
         automatically executing governance votes on-chain. Bypass the need for
         privileged signers to create a DAO that's more efficient and truly
         decentralized.
-        <BaseLink
-          class="mt-1 block text-[hsl(240,83%,58%)]"
-          link="https://uma.xyz/osnap"
+        <BaseLink class="mt-1 block text-skin-link" link="https://uma.xyz/osnap"
           >Learn more</BaseLink
         >
       </p>
