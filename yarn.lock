@@ -752,10 +752,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@iconify-json/heroicons-outline@^1.1.7":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@iconify-json/heroicons-outline/-/heroicons-outline-1.1.7.tgz#61c06c9b324d175fea2588a12e275531d1e196dc"
-  integrity sha512-sU65X5hLOn6/gU+Al0G7Jc0Pje/23atx9rE+ejECYb+j2ANgECSeRrdHoPE4WUqdx/F5hqReLcT4ffZBqLUfIg==
+"@iconify-json/heroicons-outline@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@iconify-json/heroicons-outline/-/heroicons-outline-1.1.8.tgz#300dccc5effe42be20d4410b395f121cac45c5e8"
+  integrity sha512-JTbcsSND6ZsAuKSb5PpZ0LEb5fxwwlHuunJuQV++VXNlg+lsywt9SWPsckrcIGB5oSSsulJhYCX4vqsHnhkn4Q==
   dependencies:
     "@iconify/types" "*"
 
