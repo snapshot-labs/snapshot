@@ -9,6 +9,30 @@ import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
 import ExternalLink from './components/ExternalLink.vue';
 
+const keyOrder = [
+  'to',
+  'recipient',
+  'amount',
+  'value',
+  'token symbol',
+  'token address'
+];
+
+const objectFromEntriesSorted = (obj: Object) => {
+  // set as array first to the correct preserve order
+  let entries = Object.entries(obj);
+  let sorted: Array<[string, any]> = [];
+
+  keyOrder.forEach(key => {
+    if (obj.hasOwnProperty(key)) {
+      sorted.push([key, obj[key]]);
+      entries = entries.filter(item => item[0] !== key);
+    }
+  });
+  // ensure we don't filter out any items we didn't explicitly sort
+  return [...sorted, ...entries];
+};
+
 const props = defineProps<{
   space: ExtendedSpace;
   proposal: Proposal;
@@ -19,12 +43,13 @@ const safe = props.proposal.plugins.oSnap?.safe as GnosisSafe;
 const transactionsForDisplay = enrichTransactionsForDisplay(safe.transactions);
 
 function enrichTransactionsForDisplay(transactions: Transaction[]) {
+  // handle here
   return transactions.map(enrichTransactionForDisplay);
 }
 
 function enrichTransactionForDisplay(transaction: Transaction) {
-  const { to, value, data } = transaction;
-  const commonProperties = { to, value: formatEther(value), data };
+  const { to, value } = transaction;
+  const commonProperties = { to, value: formatEther(value) };
   if (transaction.type === 'raw') {
     return { ...commonProperties, type: 'Raw' };
   }
@@ -86,7 +111,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       >
         <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
 
-        <ReadOnly v-for="[key, value] in Object.entries(details)">
+        <ReadOnly v-for="[key, value] in objectFromEntriesSorted(details)">
           <strong
             class="mr-2 inline-block whitespace-nowrap first-letter:capitalize"
             >{{ key }}</strong
