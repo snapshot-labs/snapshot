@@ -11,7 +11,6 @@ type ModalSingleTransactionEmits = {
   (e: 'close', value: void): void;
   (e: 'update:modelValue', value: SafeTransaction): void;
   (e: 'update:connextModelValue', value: SafeTransaction[]): void;
-  (e: 'update:simulationState', value: SimulationState): void;
 };
 
 type TransactionType = {
@@ -24,10 +23,8 @@ import SafeSnapFormTransferFunds from '../Form/TransferFunds.vue';
 import SafeSnapFormSendAsset from '../Form/SendAsset.vue';
 import SafeSnapFormRawTransaction from '../Form/RawTransaction.vue';
 import SafeSnapFormConnextTransaction from '../Form/ConnextTransaction.vue';
-import SafeSnapSimulationTenderly, {
-  SimulationState
-} from '../Simulation/Tenderly.vue';
-import { SafeTransaction, SafeTransactionConfig } from '@/helpers/interfaces';
+import SafeSnapSimulationTenderly from '../Simulation/Tenderly.vue';
+import { SafeTransaction, SafeTransactionConfig, SimulationState } from '@/helpers/interfaces';
 
 const props = defineProps<ModalSingleTransactionProps>();
 const emit = defineEmits<ModalSingleTransactionEmits>();
@@ -35,8 +32,6 @@ const transactionTypeList: TransactionType[] = [
   { key: 'Standard', value: 'standard' },
   { key: 'Cross-chain Transaction (via Connext)', value: 'connext' }
 ];
-
-
 
 const transactionBatchTypeSelected = ref<'standard' | 'connext'>('standard');
 const modelValueToSimulate = ref<SafeTransaction[]>([]);
@@ -53,7 +48,6 @@ const transactionTypeSelected = ref<string>(
 );
 const runSimulation = ref<boolean>(false);
 const showSimulation = ref<boolean>(false);
-const simulationState = ref<SimulationState>();
 
 watch(
   () => props.standardModelValue,
@@ -86,7 +80,6 @@ const updateTransaction = (modelValue: SafeTransaction) => {
 };
 
 const updateConnextTransaction = (modelValue: SafeTransaction[]) => {
-  console.log('[SingleTransaction] - updateConnextTransaction', modelValue);
   modelValueToSimulate.value = modelValue;
   currentConnextModelValue.value = modelValue;
 };
@@ -110,12 +103,31 @@ const handleSimulation = () => {
 };
 
 const handleSimulationResult = (state: SimulationState) => {
-  emit('update:simulationState', state);
-  simulationState.value = state;
+  const connext = [...currentConnextModelValue.value].map(tx => {
+    return { ...tx, simulation: state };
+  });
+  currentConnextModelValue.value = connext;
   runSimulation.value = false;
 };
-console.log('connextModelValue', props.connextModelValue)
-console.log('simulationState.value', simulationState.value);
+
+const buttonStates = computed(() => {
+  if (runSimulation.value) {
+    return true;
+  }
+
+  switch (transactionBatchTypeSelected.value) {
+    case 'connext':
+      return !(
+        currentConnextModelValue.value && currentConnextModelValue.value.length
+      );
+    case 'standard':
+      return !(
+        currentStandardModelValue.value && currentStandardModelValue.value.type
+      );
+    default:
+      return false;
+  }
+});
 </script>
 
 <template>
@@ -202,19 +214,19 @@ console.log('simulationState.value', simulationState.value);
       <div v-if="transactionBatchTypeSelected.includes('connext')" class="pb-3">
         <SafeSnapFormConnextTransaction
           :is-details="false"
-          :simulation-state="simulationState"
           :model-value="currentConnextModelValue"
           :config="config"
           :nonce="nonce"
           @update:modelValue="updateConnextTransaction"
         />
       </div>
+
       <hr class="my-4 border-skin-border" />
       <div class="flex justify-between">
         <BaseButton
           v-if="!config.preview"
           @click="submitTransaction"
-          :disabled="runSimulation"
+          :disabled="buttonStates"
         >
           Add Transaction
         </BaseButton>
@@ -222,7 +234,8 @@ console.log('simulationState.value', simulationState.value);
           v-if="
             !config.preview &&
             transactionBatchTypeSelected.includes('connext') &&
-            modelValueToSimulate
+            modelValueToSimulate &&
+            modelValueToSimulate.length
           "
           :disabled="runSimulation"
           @click="handleSimulation"
@@ -237,7 +250,6 @@ console.log('simulationState.value', simulationState.value);
           :config="config"
           :run-simulation="runSimulation"
           :model-value-to-simulate="modelValueToSimulate"
-          :default-simulation-result="simulationState"
           @close="() => (showSimulation = false)"
           @update:simulation="handleSimulationResult"
         />

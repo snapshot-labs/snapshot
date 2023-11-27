@@ -2,6 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
 import { Network } from '@/plugins/safeSnap/types';
 
+
 export interface Strategy {
   id: string;
   spacesCount: number;
@@ -272,6 +273,17 @@ export interface PendingTransaction {
   hash: string | null;
 }
 
+export type SimulationLog = {
+  type: string;
+  message: string;
+  url?: string;
+};
+
+export type SimulationState = {
+  status: 'success' | 'error' | 'idle';
+  logs: SimulationLog[];
+};
+
 export interface SafeTransaction {
   to: string;
   value: string;
@@ -279,7 +291,8 @@ export interface SafeTransaction {
   operation: string;
   nonce: string;
   type?: string;
-  transactionBatchType?: "connext" | "standard"
+  transactionBatchType?: 'connext' | 'standard';
+  simulation?: SimulationState;
 }
 
 export interface SafeTransactionConfig {
@@ -382,7 +395,6 @@ export interface SafeExecutionData {
   txs: SafeModuleTransactionBatch[];
   network: string;
   realityModule: string;
-  
 }
 
 export interface Plugin {

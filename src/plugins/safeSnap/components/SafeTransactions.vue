@@ -261,16 +261,22 @@ export default {
       const moduleAddress =
         moduleType === 'reality' ? this.realityAddress : this.umaAddress;
 
+      if (!this.gnosisSafeAddress && dao) {
+        this.transactionConfig.gnosisSafeAddress = dao;
+      }
+
       this.moduleType = moduleType;
       this.moduleAddress = moduleAddress;
       this.gnosisSafeAddress = dao;
       this.transactionConfig = {
         ...this.transactionConfig,
-        gnosisSafeAddress: this.gnosisSafeAddress,
-        tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
+        tokens: await fetchBalances(
+          this.network,
+          this.gnosisSafeAddress ?? dao
+        ),
         collectables: await fetchCollectibles(
           this.network,
-          this.gnosisSafeAddress
+          this.gnosisSafeAddress ?? dao
         )
       };
       this.moduleTypeReady = true;

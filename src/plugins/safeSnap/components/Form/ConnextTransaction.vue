@@ -3,7 +3,6 @@ type ConnextTransactionProps = {
   modelValue: SafeTransaction[];
   config: SafeTransactionConfig;
   isDetails: boolean;
-  simulationState?: SimulationState;
   nonce: number;
 };
 
@@ -27,12 +26,12 @@ import { FunctionFragment } from '@ethersproject/abi';
 import {
   SafeTransaction,
   SafeTransactionConfig,
+  SimulationState,
   TokenAsset
 } from '@/helpers/interfaces';
 import { ETH_CONTRACT } from '@/helpers/constants';
 import { shorten } from '@/helpers/utils';
 import { formatUnits } from '@ethersproject/units';
-import { SimulationState } from '../Simulation/Tenderly.vue';
 import SafeSnapSimulationTenderly from '../Simulation/Tenderly.vue';
 
 const props = defineProps<ConnextTransactionProps>();
@@ -60,9 +59,9 @@ const getNetworkKeyByDomainId = (domainId: number): string | undefined => {
 };
 
 const setTokens = () => {
-  if (!props.config.preview && props.config.tokens) {
+  if (props.config.tokens) {
     tokens.value = [
-      getNativeAsset(props.config.network),
+      // getNativeAsset(props.config.network),
       ...props.config.tokens
     ];
   }
@@ -74,6 +73,7 @@ const setInitialModelValue = async (modelValue: SafeTransaction[]) => {
 
     transactions.forEach(async tx => {
       if (tx.type === 'raw') {
+        simulation.value = tx.simulation;
         const transaction = await plugin.decodeConnextXcallData(tx.data);
         selectedNetwork.value = transaction[0];
         destinationAddress.value = transaction[1];
@@ -155,7 +155,6 @@ const generateApproveTransaction = async (connext: string, amount: string) => {
     );
     if (plugin.validateTransaction(transaction)) {
       transaction.transactionBatchType = 'connext';
-      // emit('update:modelValue', transaction);
       return transaction;
     }
   }
@@ -230,6 +229,7 @@ const format = (amount: string, decimals: number) => {
   }
 };
 
+const simulation = ref<SimulationState | undefined>(undefined);
 const isEditing = ref<boolean>(false);
 const tokens = ref<TokenAsset[]>();
 const modalTokensOpen = ref<boolean>(false);
@@ -252,25 +252,14 @@ watch(
   () => props.modelValue,
   async newVal => {
     if (newVal && newVal.length) {
-      // Estableciendo modo de edición
       isEditing.value = true;
       await setInitialModelValue(newVal);
     } else {
-      // No es modo de edición
       isEditing.value = false;
     }
   },
   { immediate: true }
 );
-// watch(
-//   () => props.modelValue,
-//   async newVal => {
-//     if (newVal && newVal.length) {
-//       await setInitialModelValue(newVal);
-//     }
-//   },
-//   { immediate: true }
-// );
 
 watchEffect(async () => {
   if (
@@ -282,8 +271,6 @@ watchEffect(async () => {
     await updateTransaction();
   }
 });
-
-console.log('props.nonce', props.nonce);
 </script>
 
 <template>
@@ -329,13 +316,13 @@ console.log('props.nonce', props.nonce);
         {{ shorten(destinationAddress) }}
       </p>
     </div>
-    {{ console.log('simulationState', simulationState) }}
     <SafeSnapSimulationTenderly
-      v-if="simulationState"
+      v-if="simulation"
+      :is-details="props.isDetails"
       :model-value-to-simulate="modelValue"
       :config="props.config"
       :run-simulation="false"
-      :default-simulation-result="simulationState"
+      :default-simulation-result="simulation"
     />
   </div>
   <div v-if="!isDetails">
@@ -422,6 +409,7 @@ console.log('props.nonce', props.nonce);
         :model-value="destinationAddress"
         @validAddress="handleInput($event, 'destinationAddress')"
       />
+
 
       <teleport to="#modal">
         <SafeSnapTokensModal

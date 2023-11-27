@@ -9,7 +9,8 @@ const props = defineProps({
   message: {
     type: String,
     required: true
-  }
+  },
+  isDetails: Boolean
 });
 
 // Computed properties
@@ -32,7 +33,11 @@ const emit = defineEmits(['close']);
       <i-ho :class="iconClass" class="text-md" />
       <p :class="textClass">{{ message }}</p>
     </div>
-    <div class="cursor-pointer text-white" @click="emit('close')">
+    <div
+      v-if="!props.isDetails"
+      class="cursor-pointer text-white"
+      @click="emit('close')"
+    >
       <i-ho-x />
     </div>
   </div>

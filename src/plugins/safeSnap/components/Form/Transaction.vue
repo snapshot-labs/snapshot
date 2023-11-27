@@ -32,8 +32,7 @@ export default {
     'nonce',
     'config',
     'isDetails',
-    'transactionType',
-    'simulationState'
+    'transactionType'
   ],
   emits: ['update:modelValue', 'remove', 'edit'],
   data() {
@@ -57,11 +56,10 @@ export default {
     modelValue: {
       immediate: true,
       async handler(newVal, oldVal) {
+        if (!newVal) return;
+
         if (newVal !== oldVal || (newVal && !oldVal)) {
           this.resolvedTitle = await this.computeTitle();
-        }
-        if (newVal.type) {
-          this.type = this.modelValue.type;
         }
         if (newVal.type) {
           this.type = this.modelValue.type;
@@ -71,8 +69,12 @@ export default {
     connextModelValue: {
       immediate: true,
       async handler(newVal, oldVal) {
+        if (!newVal) return;
         if (newVal !== oldVal || (newVal && !oldVal)) {
           this.resolvedTitle = await this.computeTitle();
+        }
+        if (newVal.type) {
+          this.type = this.modelValue.type;
         }
       }
     },
@@ -94,16 +96,15 @@ export default {
   },
   methods: {
     async computeTitle() {
-      console.log('type', this.type);
+      if (!this.modelValue && !this.connextModelValue) {
+        return this.getLabel(this.type);
+      }
       if (this.type === 'connext' && this.connextModelValue.length) {
         const txData = this.connextModelValue[1].data;
         const decoded = await plugin.decodeConnextXcallData(txData);
         const destinationChain = getNetworkKeyByDomainId(decoded[0]);
         const destinationAddress = shorten(decoded[1]);
-        return `Connext transaction to ${destinationAddress} (${destinationChain})`;
-      }
-      if (!this.modelValue) {
-        return this.getLabel(this.type);
+        return `Cross-chain to ${destinationAddress} (${destinationChain})`;
       }
 
       if (this.modelValue) {
@@ -140,7 +141,7 @@ export default {
               });
           }
         } catch (error) {
-          console.log('could not determine title', error);
+          console.warning('could not determine title', error);
         }
       }
 
@@ -173,7 +174,7 @@ export default {
 };
 </script>
 
-<template> 
+<template>
   <UiCollapsible
     :hide-remove="config.preview"
     :number="showNonce()"
@@ -272,7 +273,6 @@ export default {
       :model-value="connextModelValue"
       :config="config"
       :is-details="isDetails"
-      :simulation-state="simulationState"
       @update:modelValue="handleFormUpdate"
     />
   </UiCollapsible>

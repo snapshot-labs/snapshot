@@ -1,9 +1,23 @@
 <script setup lang="ts">
+import { Network } from '../../types';
+import { shorten } from '../../../../helpers/utils';
+import { sanitizeUrl } from '@braintree/sanitize-url';
+import { formatUnits } from '@ethersproject/units';
+import {
+  SafeTransaction,
+  SafeTransactionConfig,
+  SimulationLog,
+  SimulationState
+} from '../../../../helpers/interfaces';
+import SimulationMessage from './Message.vue';
+import { ref } from 'vue';
+
 type SimulationTenderlyProps = {
   modelValueToSimulate: SafeTransaction[];
   config: SafeTransactionConfig;
   runSimulation: boolean;
   defaultSimulationResult?: SimulationState;
+  isDetails?: boolean;
 };
 
 type TenderlySimulation = {
@@ -53,28 +67,6 @@ type TenderlySimulationResult = {
     simulation: TenderlySimulation;
   }[];
 };
-
-type SimulationLog = {
-  type: string;
-  message: string;
-  url?: string;
-};
-
-export type SimulationState = {
-  status: 'success' | 'error' | 'idle';
-  logs: SimulationLog[];
-};
-
-import { Network } from '../../types';
-import { shorten } from '../../../../helpers/utils';
-import { sanitizeUrl } from '@braintree/sanitize-url';
-import { formatUnits } from '@ethersproject/units';
-import {
-  SafeTransaction,
-  SafeTransactionConfig
-} from '../../../../helpers/interfaces';
-import SimulationMessage from './Message.vue';
-import { ref } from 'vue';
 
 const props = defineProps<SimulationTenderlyProps>();
 const emit = defineEmits(['close', 'update:simulation']);
@@ -200,17 +192,13 @@ const extractTransactionResult = (
   simulationState.value.logs = events;
 };
 
-console.log('defaultSimulationResult', props.defaultSimulationResult)
-
 const simulateTransaction = async (
   transactions: SafeTransaction[]
 ): Promise<TenderlySimulationResult> => {
-  console.log('transactions', transactions);
   const apiURL = `https://api.tenderly.co/api/v1/account/juliopavilaa/project/safesnap-plugin/simulate-bundle`;
   const body = {
     simulations: generateTransactionBody(transactions, props.config.network)
   };
-  console.log('body', body);
   const response = await fetch(apiURL, {
     method: 'POST',
     headers: {
@@ -233,7 +221,6 @@ const simulateTransaction = async (
 };
 
 const simulate = async () => {
-  console.log('props.modelValueToSimulate', props.modelValueToSimulate);
   loading.value = true;
 
   try {
@@ -263,25 +250,31 @@ watch(
   },
   { immediate: true }
 );
+
+const className = computed(() => {
+  return props.isDetails && 'simulation-details-container';
+});
 </script>
 
 <template>
-  <div>
-    {{ console.log('simulationState', simulationState) }}
+  <div :class="className">
     <div v-if="loading" class="flex space-x-2">
       <LoadingSpinner class="pb-[3px]" />
       <p class="text-[12px] text-white">Running simulation</p>
     </div>
+
     <SimulationMessage
       v-if="!loading && simulationState.status === 'error'"
       type="error"
       message="Transaction simulation failed"
+      :is-details="isDetails"
       @close="emit('close')"
     />
     <SimulationMessage
       v-if="!loading && simulationState.status === 'success'"
       type="success"
       message="Transaction simulation successful"
+      :is-details="isDetails"
       @close="emit('close')"
     />
     <div v-if="!loading">
@@ -306,3 +299,11 @@ watch(
     </div>
   </div>
 </template>
+
+<style lang="scss">
+.simulation-details-container {
+  border-radius: 8px;
+  border: 1px solid #5f5f5f;
+  padding: 16px;
+}
+</style>
