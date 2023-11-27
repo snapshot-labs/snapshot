@@ -5,6 +5,7 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   context: 'setup' | 'settings';
   space: ExtendedSpace;
+  error: string | Record<string, any>;
   isViewOnly?: boolean;
 }>();
 
@@ -101,6 +102,9 @@ function handleCloseConfigureOsnapModal() {
     >
       {{ $t('settings.treasuries.add') }}
     </BaseButton>
+
+    <MessageWarningTestnet context="Treasury" :error="error" />
+
     <teleport to="#modal">
       <ModalTreasury
         :open="modalTreasuryOpen"

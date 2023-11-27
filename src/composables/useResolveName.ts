@@ -1,9 +1,7 @@
 import { isAddress } from '@ethersproject/address';
-import { resolveEns, resolveLens } from '@/helpers/utils';
+import { resolveHandle } from '@/helpers/utils';
 
 export function useResolveName() {
-  const { isValidEnsDomain } = useEns();
-
   async function resolveName(value: string): Promise<string | null> {
     let address = value;
 
@@ -11,11 +9,7 @@ export function useResolveName() {
       return address.toLowerCase();
     }
 
-    if (isValidEnsDomain(value)) {
-      address = await resolveEns(value);
-    } else if (value?.endsWith('.lens')) {
-      address = await resolveLens(value);
-    }
+    address = await resolveHandle(value);
 
     return isAddress(address) ? address.toLowerCase() : null;
   }

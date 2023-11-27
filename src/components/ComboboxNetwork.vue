@@ -3,16 +3,22 @@ defineProps<{
   network: string;
   hint?: string;
   disabled?: boolean;
+  error?: string;
+  showErrors?: boolean;
 }>();
 
 const emit = defineEmits(['select']);
 
 const { filterNetworks } = useNetworksFilter();
+const { env } = useApp();
 
 const networks = computed((): { id: string; name: string }[] => {
   const filteredNetworks = filterNetworks().map(_n => ({
     id: _n.key,
-    name: _n.name
+    name: _n.name,
+    extras: {
+      hidden: env === 'production' ? _n.testnet : false
+    }
   }));
 
   return filteredNetworks;
@@ -26,6 +32,8 @@ const networks = computed((): { id: string; name: string }[] => {
     :model-value="network"
     :hint="hint"
     :disabled="disabled"
+    :error="error"
+    :show-errors="showErrors"
     @update:model-value="value => emit('select', value)"
   >
     <template #item="{ item }">

@@ -1,4 +1,7 @@
-@import './assets/fonts/iconfont.css';
+@import '../fonts/iconfont.css';
+@import 'viewerjs/dist/viewer.css';
+@import './tippy.scss';
+@import './tune.scss';
 
 @tailwind base;
 @tailwind components;
@@ -33,21 +36,21 @@
 @layer base {
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Medium-Custom.woff2') format('woff2');
+    src: url('../fonts/Calibre-Medium-Custom.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Semibold-Custom.woff2') format('woff2');
+    src: url('../fonts/Calibre-Semibold-Custom.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'SpaceMono';
-    src: url('./assets/fonts/space-mono-v11-latin-700.woff2') format('woff2');
+    src: url('../fonts/space-mono-v11-latin-700.woff2') format('woff2');
   }
 
   html {
@@ -115,44 +118,6 @@
   }
 }
 
-// Tune component styles
-
-.tune-label {
-  @apply font-sans;
-}
-
-.tune-sublabel {
-  @apply font-sans;
-}
-
-.tune-button {
-  @apply rounded-full;
-}
-
-.tune-input {
-  @apply rounded-full;
-}
-
-.tune-textarea {
-  @apply rounded-3xl px-3;
-}
-
-.tune-listbox-button {
-  @apply rounded-full;
-}
-
-.tune-button-select {
-  @apply rounded-full;
-}
-
-.tune-input-duration {
-  @apply rounded-full;
-}
-
-.tune-error-text {
-  @apply font-sans;
-}
-
 // Fade transition for Vue's transition and transition-group
 .fade-enter-active,
 .fade-leave-active {
@@ -217,94 +182,6 @@ input[type=file]::-webkit-file-upload-button {
 
 input[type='number'] {
   -moz-appearance: textfield;
-}
-
-// V-Tippy tooltip package styling - could be moved somewhere else?
-.tippy-box[data-animation='fade'][data-state='hidden'] {
-  opacity: 0;
-}
-[data-tippy-root] {
-  max-width: calc(100vw - 10px);
-}
-.tippy-box {
-  position: relative;
-  background-color: var(--text-color);
-  color: var(--header-bg);
-  border-radius: 7px;
-  font-size: 16px;
-  line-height: 1.4;
-  outline: 0;
-  transition-property: transform, visibility, opacity;
-  padding: 2px 4px;
-  text-align: center;
-  font-weight: 500;
-}
-.tippy-box[data-placement^='top'] > .tippy-arrow {
-  bottom: 0;
-}
-.tippy-box[data-placement^='top'] > .tippy-arrow:before {
-  bottom: -7px;
-  left: 0;
-  border-width: 8px 8px 0;
-  border-top-color: var(--text-color);
-  transform-origin: center top;
-}
-.tippy-box[data-placement^='bottom'] > .tippy-arrow {
-  top: 0;
-}
-.tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
-  top: -7px;
-  left: 0;
-  border-width: 0 8px 8px;
-  border-bottom-color: var(--text-color);
-  transform-origin: center bottom;
-}
-.tippy-box[data-placement^='left'] > .tippy-arrow {
-  right: 0;
-}
-.tippy-box[data-placement^='left'] > .tippy-arrow:before {
-  border-width: 8px 0 8px 8px;
-  border-left-color: var(--text-color);
-  right: -7px;
-  transform-origin: center left;
-}
-.tippy-box[data-placement^='right'] > .tippy-arrow {
-  left: 0;
-}
-.tippy-box[data-placement^='right'] > .tippy-arrow:before {
-  left: -7px;
-  border-width: 8px 8px 8px 0;
-  border-right-color: var(--text-color);
-  transform-origin: center right;
-}
-.tippy-box[data-inertia][data-state='visible'] {
-  transition-timing-function: cubic-bezier(0.54, 1.5, 0.38, 1.11);
-}
-.tippy-arrow {
-  width: 16px;
-  height: 16px;
-  color: #333;
-}
-.tippy-arrow:before {
-  content: '';
-  position: absolute;
-  border-color: transparent;
-  border-style: solid;
-}
-.tippy-content {
-  position: relative;
-  padding: 5px 9px;
-  z-index: 1;
-  overflow-wrap: break-word;
-}
-.tippy-box[data-theme~='urlified'] {
-  max-width: 200px;
-  white-space: pre-wrap;
-  color: var(--header-bg);
-
-  a {
-    color: var(--header-bg);
-  }
 }
 
 .lazy-loading {
