@@ -50,11 +50,14 @@ const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpacesCount } =
 
 const { filterStrategies, getStrategies, isLoadingStrategies } =
   useStrategies();
+const { env } = useApp();
+
+const onlyMainnetNetworks = n => (env === 'production' ? !n.testnet : true);
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (isStrategies.value) return filterStrategies(q);
-  if (isNetworks.value) return filterNetworks(q);
+  if (isNetworks.value) return filterNetworks(q).filter(onlyMainnetNetworks);
   if (isPlugins.value) return filterPlugins(q);
   return [];
 });
@@ -138,6 +141,7 @@ useInfiniteScroll(
         </template>
         <template v-else-if="isNetworks">
           <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {{ items.map(item => item.key) }}
             <div v-for="item in items.slice(0, limit)" :key="item.key">
               <BaseNetworkItem :network="item" />
             </div>
