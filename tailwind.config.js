@@ -1,10 +1,12 @@
+import formsPlugin from '@tailwindcss/forms';
+
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,vue}'],
   theme: {
     extend: {
       colors: {
         snapshot: '#f3b04e',
-        primary: 'var(--primary-color)',
+        'skin-primary': 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
         'skin-link': 'var(--link-color)',
@@ -64,8 +66,8 @@ module.exports = {
     }
   },
   plugins: [
-    require('prettier-plugin-tailwindcss'),
-    require('@tailwindcss/forms')({
+    'prettier-plugin-tailwindcss',
+    formsPlugin({
       strategy: 'class'
     })
   ]

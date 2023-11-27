@@ -114,7 +114,7 @@ const settingsPages = computed(() => [
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
 
-  const result = await send(props.space, 'delete-space', null);
+  const result = await send(props.space, 'delete-space', {});
   console.log(':handleDelete result', result);
 
   if (result && result.id) {
@@ -149,13 +149,6 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
-  populateForm(props.space);
-  await loadEnsOwner();
-  await loadSpaceController();
-  loaded.value = true;
-});
-
 const {
   isRevealed: isConfirmLeaveOpen,
   reveal: openConfirmLeave,
@@ -169,15 +162,22 @@ const {
   cancel: cancelDelete
 } = useConfirmDialog();
 
+const isViewOnly = computed(() => {
+  return !(isSpaceController.value || isSpaceAdmin.value);
+});
+
+onMounted(async () => {
+  populateForm(props.space);
+  await loadEnsOwner();
+  await loadSpaceController();
+  loaded.value = true;
+});
+
 onBeforeRouteLeave(async () => {
-  if (hasFormChanged.value) {
+  if (hasFormChanged.value && !isViewOnly.value) {
     const { data } = await openConfirmLeave();
     if (!data) return false;
   }
-});
-
-const isViewOnly = computed(() => {
-  return !(isSpaceController.value || isSpaceAdmin.value);
 });
 </script>
 
@@ -191,6 +191,15 @@ const isViewOnly = computed(() => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
+          <SpaceSettingsMessageHibernated
+            v-if="space.hibernated && !isViewOnly"
+            :space="space"
+            :is-sending="isSending"
+            :is-valid="isValid"
+            @show-errors="showFormErrors = true"
+            @reactivate-space="handleSubmit"
+          />
+
           <BaseMessageBlock
             v-if="showFormErrors && Object.keys(validationErrors).length"
             level="warning-red"
@@ -233,6 +242,7 @@ const isViewOnly = computed(() => {
             <SettingsStrategiesBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
           </template>
 
@@ -240,6 +250,7 @@ const isViewOnly = computed(() => {
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
             <SettingsProposalBlock
               context="settings"
@@ -278,6 +289,7 @@ const isViewOnly = computed(() => {
             <SettingsTreasuriesBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :error="validationErrors.treasuries"
             />
             <SettingsSubSpacesBlock
               context="settings"

@@ -114,6 +114,7 @@ export interface Space {
   activeProposals: number;
   followersCount: number;
   flagged: boolean;
+  hibernated: boolean;
   terms: string;
 }
 
@@ -167,6 +168,7 @@ export interface ExtendedSpace {
   guidelines: string;
   verified: boolean;
   flagged: boolean;
+  hibernated: boolean;
   voting: {
     delay: number | null;
     hideAbstain: boolean;

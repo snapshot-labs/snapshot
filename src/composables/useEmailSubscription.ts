@@ -19,10 +19,13 @@ function useEmailSubscriptionComposable() {
 
   const clientSubscriptions = computed({
     get() {
-      return subscriptionTypes.reduce((acc, type) => {
-        acc[type] = apiSubscriptions.value.includes(type);
-        return acc;
-      }, {} as Record<SubscriptionType, boolean>);
+      return subscriptionTypes.reduce(
+        (acc, type) => {
+          acc[type] = apiSubscriptions.value.includes(type);
+          return acc;
+        },
+        {} as Record<SubscriptionType, boolean>
+      );
     },
     set(value) {
       apiSubscriptions.value = Object.entries(value)

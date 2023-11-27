@@ -1,4 +1,7 @@
-@import './assets/fonts/iconfont.css';
+@import '../fonts/iconfont.css';
+@import 'viewerjs/dist/viewer.css';
+@import './tippy.scss';
+@import './tune.scss';
 
 @tailwind base;
 @tailwind components;
@@ -33,21 +36,21 @@
 @layer base {
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Medium-Custom.woff2') format('woff2');
+    src: url('../fonts/Calibre-Medium-Custom.woff2') format('woff2');
     font-weight: 500;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'Calibre';
-    src: url('./assets/fonts/Calibre-Semibold-Custom.woff2') format('woff2');
+    src: url('../fonts/Calibre-Semibold-Custom.woff2') format('woff2');
     font-weight: 600;
     font-style: normal;
   }
 
   @font-face {
     font-family: 'SpaceMono';
-    src: url('./assets/fonts/space-mono-v11-latin-700.woff2') format('woff2');
+    src: url('../fonts/space-mono-v11-latin-700.woff2') format('woff2');
   }
 
   html {
@@ -113,44 +116,6 @@
   body {
     overscroll-behavior-y: none;
   }
-}
-
-// Tune component styles
-
-.tune-label {
-  @apply font-sans;
-}
-
-.tune-sublabel {
-  @apply font-sans;
-}
-
-.tune-button {
-  @apply rounded-full;
-}
-
-.tune-input {
-  @apply rounded-full;
-}
-
-.tune-textarea {
-  @apply rounded-3xl px-3;
-}
-
-.tune-listbox-button {
-  @apply rounded-full;
-}
-
-.tune-button-select {
-  @apply rounded-full;
-}
-
-.tune-input-duration {
-  @apply rounded-full;
-}
-
-.tune-error-text {
-  @apply font-sans;
 }
 
 // Fade transition for Vue's transition and transition-group

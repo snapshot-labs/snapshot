@@ -50,11 +50,14 @@ const { filterPlugins, getPluginsSpacesCount, loadingPluginsSpacesCount } =
 
 const { filterStrategies, getStrategies, isLoadingStrategies } =
   useStrategies();
+const { env } = useApp();
+
+const onlyMainnetNetworks = n => (env === 'production' ? !n.testnet : true);
 
 const items = computed(() => {
   const q = route.query.q || '';
   if (isStrategies.value) return filterStrategies(q);
-  if (isNetworks.value) return filterNetworks(q);
+  if (isNetworks.value) return filterNetworks(q).filter(onlyMainnetNetworks);
   if (isPlugins.value) return filterPlugins(q);
   return [];
 });

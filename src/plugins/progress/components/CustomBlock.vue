@@ -518,7 +518,10 @@ a.button {
   width: 10px;
   height: 12px;
   border: 2px solid transparent;
-  box-shadow: 0 0 0 2px, inset -2px 0 0, inset 2px 0 0;
+  box-shadow:
+    0 0 0 2px,
+    inset -2px 0 0,
+    inset 2px 0 0;
   border-bottom-left-radius: 1px;
   border-bottom-right-radius: 1px;
   margin-top: 4px;

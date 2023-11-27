@@ -4,8 +4,11 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import { MAINNET_DOMAIN_IDS, Network, TEST_DOMAIN_IDS } from '@/plugins/safeSnap';
+import {
+  MAINNET_DOMAIN_IDS,
+  Network,
+  TEST_DOMAIN_IDS
+} from '@/plugins/safeSnap';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -23,7 +26,9 @@ export function shorten(str: string, key?: any): string {
   return shortenAddress(str);
 }
 
-export const getNetworkKeyByDomainId = (domainId: number): string | undefined => {
+export const getNetworkKeyByDomainId = (
+  domainId: number
+): string | undefined => {
   const combinedDomainIds = { ...MAINNET_DOMAIN_IDS, ...TEST_DOMAIN_IDS };
   const networkEntry = Object.entries(Network).find(([_key, value]) => {
     return (
@@ -133,48 +138,50 @@ export async function clearStampCache(id: string, type = 'space') {
     return await fetch(`https://cdn.stamp.fyi/clear/avatar/eth:${id}`);
 }
 
-export async function resolveEns(handle: string) {
+export async function resolveHandle(handle: string) {
   try {
-    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
-    const provider = getProvider('1', { broviderUrl });
-    const addressResolved = await provider.resolveName(handle);
-    if (!addressResolved) throw new Error('Invalid ENS name');
-    return addressResolved;
-  } catch (error) {
-    console.error('Error in resolveEns:', error);
+    const results = await fetch(import.meta.env.VITE_STAMP_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ method: 'resolve_names', params: [handle] })
+    });
+
+    return (await results.json()).result?.[handle];
+  } catch (e) {
+    console.error('Error resolving handle:', handle, e);
     return null;
   }
 }
 
-export async function resolveLens(handle: string) {
+export async function lookupAddress(
+  addresses: string[]
+): Promise<Record<string, string>> {
+  if (addresses.length === 0) {
+    return {};
+  }
+
   try {
-    const response = await fetch('https://api.lens.dev/', {
+    const response = await fetch(import.meta.env.VITE_STAMP_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        query: `
-          query Profiles {
-            profiles(request: { handles: ["${handle}"], limit: 1 }) {
-              items {
-                ownedBy
-              }
-            }
-          }
-        `
+        method: 'lookup_addresses',
+        params: addresses.slice(0, 50)
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error ${response.status}`);
-    }
+    const results = (await response.json()).result;
 
-    const result = await response.json();
-    return result.data?.profiles?.items?.[0]?.ownedBy;
-  } catch (error) {
-    console.error('Error in resolveLens:', error);
-    return null;
+    return Object.fromEntries(
+      addresses.map(address => [address, results[address] || ''])
+    );
+  } catch (e) {
+    console.error('Error resolving addresses:', e);
+    return {};
   }
 }
 

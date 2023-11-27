@@ -72,7 +72,9 @@ function openStrategy() {
           v-if="
             key === 'address' || (typeof param === 'string' && isAddress(param))
           "
-          :link="explorerUrl(strategy.network || proposal?.network, param as string)"
+          :link="
+            explorerUrl(strategy.network || proposal?.network, param as string)
+          "
           class="block"
         >
           <span v-text="shorten(param as string)" />

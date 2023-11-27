@@ -379,6 +379,7 @@ export const SPACES_RANKING_QUERY = gql`
       items {
         id
         name
+        avatar
         private
         verified
         categories
@@ -407,6 +408,7 @@ export const SPACES_QUERY = gql`
       followersCount
       terms
       flagged
+      hibernated
     }
   }
 `;
@@ -452,6 +454,7 @@ export const SPACE_QUERY = gql`
       guidelines
       verified
       flagged
+      hibernated
       parent {
         id
         name
