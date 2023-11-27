@@ -10,7 +10,9 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="mb-4">
+  <div
+    class="mb-4 border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-4"
+  >
     <div v-if="legacyOsnap.enabled">
       <h6>Warning</h6>
       <p class="mb-3">
@@ -26,17 +28,12 @@ defineEmits<{
         organizations Safe will execute if approved? (Remember, oSnap enables
         trustless and permissionless execution)
       </p>
-      <input
-        id="toggleOsnap"
-        type="checkbox"
-        :checked="shouldUseOsnap"
+      <TuneSwitch
+        :model-value="shouldUseOsnap"
+        label="Yes, use oSnap for transactions (this will restrict voting type to Basic)."
         :disabled="legacyOsnap.enabled"
-        @change="$emit('toggleShouldUseOsnap')"
+        @update:modelValue="$emit('toggleShouldUseOsnap')"
       />
-      <label for="toggleOsnap">
-        Yes, use oSnap for transactions (this will restrict voting type to
-        Basic).
-      </label>
     </div>
   </div>
 </template>
