@@ -1,42 +1,21 @@
 <script setup lang="ts">
-const { theme } = useSkin();
-
 defineProps<{
   isOsnapEnabled: boolean;
 }>();
-
-// handling some theming here locally so as not to interfere with the global style.scss file
-
-const inactiveStyles = computed(() => {
-  return theme.value === 'light'
-    ? {
-        div: 'bg-[hsla(0,0%,0%,1)] text-skin-bg',
-        span: 'bg-skin-bg opacity-30'
-      }
-    : {
-        div: 'bg-[hsla(0,0%,100%,1)] text-skin-bg',
-        span: 'bg-skin-bg opacity-30'
-      };
-});
 </script>
 
 <template>
   <button
     v-if="isOsnapEnabled"
-    class="flex items-center gap-2 rounded-full px-3 py-2 bg-primary text-white"
+    class="flex items-center gap-2 rounded-full px-3 py-2 bg-skin-primary text-white"
   >
     <span class="block h-[6px] w-[6px] rounded-full bg-green" />oSnap activated
   </button>
   <button
     v-else
-    :class="[
-      'flex items-center gap-2 rounded-full px-3 py-2',
-      inactiveStyles.div
-    ]"
+    class="bg-skin-link text-skin-bg flex items-center gap-2 rounded-full px-3 py-2"
   >
-    <span
-      :class="['block h-[6px] w-[6px] rounded-full', inactiveStyles.span]"
-    />
+    <span class="block h-[6px] w-[6px] rounded-full bg-skin-bg opacity-30" />
     Activate oSnap
   </button>
 </template>
