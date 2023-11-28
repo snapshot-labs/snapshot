@@ -25,13 +25,6 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
 </script>
 
 <template>
-  <div>
-    <p>
-      Make sure this proposal was approved by this Snapshot vote before
-      asserting on-chain. If the Snapshot vote rejected the proposal, the
-      on-chain proposal will be rejected as well and you will lose your bond.
-    </p>
-  </div>
   <div class="rounded-lg border p-3">
     <div>
       <strong class="pr-3">Required bond:</strong>
