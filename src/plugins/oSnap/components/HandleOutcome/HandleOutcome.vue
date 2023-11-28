@@ -130,10 +130,9 @@ async function updateOgProposalState() {
 
 async function onApproveBond() {
   if (!collateralDetails.value || !ogModuleDetails.value) return;
-  const txPendingId = createPendingTransaction();
+  let txPendingId: string | undefined;
   try {
     await ensureRightNetwork(props.network);
-
     const approvingBond = approveBond(
       getInstance().web3,
       props.moduleAddress,
@@ -141,23 +140,26 @@ async function onApproveBond() {
       ogModuleDetails.value?.minimumBond
     );
     const step = await approvingBond.next();
-    if (step.value)
-      updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    await approvingBond.next();
-    notify('Successfully approved bond');
-    await sleep(3e3);
-    await updateOgProposalState();
+    if (step.value) {
+      txPendingId = createPendingTransaction(step.value.hash);
+      await approvingBond.next();
+      notify('Successfully approved bond');
+      await sleep(3e3);
+      await updateOgProposalState();
+    }
   } catch (e) {
     console.error(e);
     notify(['red', 'Failed to approve bond']);
   } finally {
-    removePendingTransaction(txPendingId);
+    if (txPendingId) {
+      removePendingTransaction(txPendingId);
+    }
   }
 }
 
 async function onSubmitProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  const txPendingId = createPendingTransaction();
+  let txPendingId: string | undefined;
   try {
     await ensureRightNetwork(props.network);
     const proposalSubmission = submitProposal(
@@ -167,23 +169,26 @@ async function onSubmitProposal() {
       getFormattedTransactions()
     );
     const step = await proposalSubmission.next();
-    if (step.value)
-      updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    await proposalSubmission.next();
-    notify('Proposal submitted successfully');
-    await sleep(3e3);
-    await updateOgProposalState();
+    if (step.value) {
+      txPendingId = createPendingTransaction(step.value.hash);
+      await proposalSubmission.next();
+      notify('Proposal submitted successfully');
+      await sleep(3e3);
+      await updateOgProposalState();
+    }
   } catch (e) {
     notify(['red', 'Failed to submit proposal']);
     console.error(e);
   } finally {
-    removePendingTransaction(txPendingId);
+    if (txPendingId) {
+      removePendingTransaction(txPendingId);
+    }
   }
 }
 
 async function onExecuteProposal() {
   if (!getInstance().isAuthenticated.value) return;
-  const txPendingId = createPendingTransaction();
+  let txPendingId: string | undefined;
   try {
     await ensureRightNetwork(props.network);
   } catch (e) {
@@ -197,16 +202,19 @@ async function onExecuteProposal() {
       getFormattedTransactions()
     );
     const step = await executingProposal.next();
-    if (step.value)
-      updatePendingTransaction(txPendingId, { hash: step.value.hash });
-    await executingProposal.next();
-    notify('Proposal executed successfully');
-    await sleep(3e3);
-    await updateOgProposalState();
+    if (step.value) {
+      txPendingId = createPendingTransaction(step.value.hash);
+      await executingProposal.next();
+      notify('Proposal executed successfully');
+      await sleep(3e3);
+      await updateOgProposalState();
+    }
   } catch (err) {
     notify(['red', 'Failed to execute proposal']);
   } finally {
-    removePendingTransaction(txPendingId);
+    if (txPendingId) {
+      removePendingTransaction(txPendingId);
+    }
   }
 }
 
