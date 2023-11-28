@@ -47,6 +47,8 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
 const { containsShortUrl } = useShortUrls();
+const { isValid: isValidSpaceSettings, populateForm } =
+  useFormSpaceSettings('settings');
 
 const {
   form,
@@ -413,6 +415,8 @@ onBeforeRouteLeave(async () => {
     resetForm();
   }
 });
+
+onMounted(() => populateForm(props.space));
 </script>
 
 <template>
@@ -433,6 +437,7 @@ onBeforeRouteLeave(async () => {
         :space="space"
         :validation-failed="hasAuthorValidationFailed"
         :is-valid-author="isValidAuthor"
+        :is-valid-space="isValidSpaceSettings"
         :validation-name="validationName"
         :contains-short-url="formContainsShortUrl"
         data-testid="create-proposal-connect-wallet-warning"
@@ -505,7 +510,8 @@ onBeforeRouteLeave(async () => {
             hasAuthorValidationFailed ||
             validationLoading ||
             isGnosisAndNotSpaceNetwork ||
-            space.hibernated
+            space.hibernated ||
+            !isValidSpaceSettings
           "
           primary
           :data-testid="
