@@ -7,7 +7,6 @@ import HandleOutcome from './components/HandleOutcome/HandleOutcome.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
-import ExternalLink from './components/ExternalLink.vue';
 
 const keyOrder = [
   'to',
@@ -99,10 +98,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
     >
       <h2 class="text-lg">oSnap Transactions</h2>
       <div class="flex flex-col items-center gap-3 md:flex-row">
-        <SafeLinkWithAvatar class="flex-2" :safe="safe" />
-        <ExternalLink class="flex-1" v-if="ipfs" :link="ipfs">
-          View on IPFS
-        </ExternalLink>
+        <SafeLinkWithAvatar :safe="safe" />
       </div>
       <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
       <div
