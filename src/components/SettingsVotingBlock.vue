@@ -32,7 +32,7 @@ const { form } = useFormSpaceSettings(props.context);
           :label="$t('settings.quorum.label')"
           :hint="$t('settings.quorum.information')"
           :disabled="isViewOnly"
-          placeholder="1000"
+          placeholder="0"
           type="number"
           @update:model-value="value => (form.voting.quorum = Number(value))"
         />
