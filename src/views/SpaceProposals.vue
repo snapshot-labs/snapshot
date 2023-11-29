@@ -65,7 +65,6 @@ const showOnlyCore = computed(() => (route.query.onlyCore as string) || '0');
 const showFlagged = computed(() => (route.query.showFlagged as string) || '0');
 
 async function getProposals(skip = 0) {
-  if (!spaceMembers.value.length) return [];
   return apolloQuery(
     {
       query: PROPOSALS_QUERY,
