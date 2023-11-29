@@ -32,7 +32,7 @@ defineEmits<{
         :model-value="shouldUseOsnap"
         label="Yes, use oSnap for transactions (this will restrict voting type to Basic)."
         :disabled="legacyOsnap.enabled"
-        @update:modelValue="$emit('toggleShouldUseOsnap')"
+        @update:model-value="$emit('toggleShouldUseOsnap')"
       />
     </div>
   </div>

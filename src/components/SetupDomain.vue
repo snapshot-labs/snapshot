@@ -154,7 +154,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </div>
           <SetupDomainRegister
             v-model.trim="inputDomain"
-            @waitForRegistration="waitForRegistration"
+            @wait-for-registration="waitForRegistration"
           />
         </div>
       </BaseBlock>
