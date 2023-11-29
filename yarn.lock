@@ -432,7 +432,7 @@
   dependencies:
     "@ethersproject/bignumber" "^5.7.0"
 
-"@ethersproject/contracts@^5.6.2":
+"@ethersproject/contracts@^5.6.2", "@ethersproject/contracts@^5.7.0":
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/@ethersproject/contracts/-/contracts-5.7.0.tgz#c305e775abd07e48aa590e1a877ed5c316f8bd1e"
   integrity sha512-5GJbzEU3X+d33CdfPhcyS+z8MzsTrBGk/sc+G+59+tPa9yFkl6HQ9D6L0QMgNTA9q8dT0XKxxkyp883XsQvbbg==
