@@ -38,6 +38,7 @@ const props = defineProps<{
   network: Network;
   umaAddress: string;
   multiSendAddress: string;
+  gnosisSafeAddress: string;
 }>();
 
 const { formatDuration } = useIntl();
@@ -351,7 +352,7 @@ function extractConnextBatches(batches: Batch[], proposal: Proposal) {
             } else {
               transactions = [txOrGroup];
             }
-            
+
             transactions.forEach(tx => {
               if (
                 tx.nonce !== undefined &&
@@ -359,7 +360,8 @@ function extractConnextBatches(batches: Batch[], proposal: Proposal) {
               ) {
                 const newEntry = {
                   batchNonce: connextTransaction.nonce,
-                  gnosisSafeAddress: safe.gnosisSafeAddress
+                  gnosisSafeAddress:
+                    safe.gnosisSafeAddress ?? props.gnosisSafeAddress
                 };
 
                 // avoid duplicated

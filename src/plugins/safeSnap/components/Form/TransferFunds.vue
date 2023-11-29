@@ -48,7 +48,6 @@ export default {
     modelValue(newModelValue) {
       if (this.isDetails && newModelValue) {
         this.to = newModelValue.recipient || '';
-        console.log('newModelValue.amount', newModelValue.amount);
         this.value = newModelValue.amount || '0';
         if (newModelValue.token) {
           this.tokenAddress = newModelValue.token.address;

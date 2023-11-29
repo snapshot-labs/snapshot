@@ -263,6 +263,7 @@ export default {
 
       if (!this.gnosisSafeAddress && dao) {
         this.transactionConfig.gnosisSafeAddress = dao;
+        this.gnosisSafeAddress = dao;
       }
 
       this.moduleType = moduleType;
@@ -444,6 +445,7 @@ export default {
             :proposal="proposal"
             :space="space"
             :results="results"
+            :gnosis-safe-address="transactionConfig.gnosisSafeAddress"
             :uma-address="transactionConfig.umaAddress"
             :multi-send-address="transactionConfig.multiSendAddress"
             :network="transactionConfig.network"

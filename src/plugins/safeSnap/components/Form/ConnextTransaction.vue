@@ -15,7 +15,6 @@ import {
   getContractABI,
   contractInteractionToModuleTransaction,
   createBatch,
-  getNativeAsset
 } from '../../index';
 import { Network } from '../../constants';
 import SafeSnapTokensModal from './TokensModal.vue';
