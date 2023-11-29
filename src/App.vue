@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const { domain } = useApp();
 const { init, isReady, showSidebar } = useApp();
 const route = useRoute();
