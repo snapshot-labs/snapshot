@@ -368,7 +368,7 @@ onBeforeRouteLeave(async () => {
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
       @close="modalUnsupportedNetworkOpen = false"
-      @networkChanged="modalConfirmSetTextRecordOpen = true"
+      @network-changed="modalConfirmSetTextRecordOpen = true"
     />
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"

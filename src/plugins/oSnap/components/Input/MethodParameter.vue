@@ -90,7 +90,7 @@ function onChange(value: string) {
   <UiSelect
     v-if="inputType === 'boolean'"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>
     <option :value="true">true</option>
@@ -101,14 +101,14 @@ function onChange(value: string) {
     v-if="inputType === 'address'"
     :label="label"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   />
   <UiInput
     v-if="inputType === 'array'"
     :placeholder="arrayPlaceholder"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>
   </UiInput>
@@ -117,7 +117,7 @@ function onChange(value: string) {
     placeholder="123456"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>
   </UiInput>
@@ -126,7 +126,7 @@ function onChange(value: string) {
     placeholder="0x123abc"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>
   </UiInput>
@@ -134,7 +134,7 @@ function onChange(value: string) {
     v-if="inputType === 'text'"
     placeholder="a string of text"
     :model-value="value"
-    @update:modelValue="onChange($event)"
+    @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>
   </UiInput>

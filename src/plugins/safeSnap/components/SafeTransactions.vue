@@ -399,7 +399,7 @@ export default {
           :nonce="index"
           @import="handleImport($event)"
           @remove="removeBatch(index)"
-          @update:modelValue="updateTransactionBatch(index, $event)"
+          @update:model-value="updateTransactionBatch(index, $event)"
         />
       </div>
       <div v-if="!preview || proposalResolved" class="flex w-full flex-col">

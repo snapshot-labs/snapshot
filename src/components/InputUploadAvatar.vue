@@ -43,7 +43,7 @@ watch(
     <slot
       name="avatar"
       :uploading="isUploadingImage"
-      :previewFile="uploadSuccess ? previewFile : undefined"
+      :preview-file="uploadSuccess ? previewFile : undefined"
     />
   </div>
   <input
