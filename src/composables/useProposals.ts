@@ -54,7 +54,7 @@ export function useProposals() {
 
   const { apolloQuery } = useApolloQuery();
   async function getUserVotedProposalIds(voter: string, proposals: string[]) {
-    if (!voter || !proposals) return;
+    if (!voter || !proposals?.length) return;
     const votes = await apolloQuery(
       {
         query: USER_VOTED_PROPOSAL_IDS_QUERY,

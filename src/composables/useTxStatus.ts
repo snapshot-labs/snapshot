@@ -15,14 +15,14 @@ export function useTxStatus() {
     return pendingTransactions.value.filter(tx => tx.hash);
   });
 
-  const createPendingTransaction = () => {
+  const createPendingTransaction = (hash?: string) => {
     const createdAt = Date.now();
     const id = createdAt.toString();
     const tx = {
       id,
       network: web3.value.network.key,
       createdAt,
-      hash: null
+      hash: hash ?? null
     };
     pendingTransactions.value.push(tx);
     return id;
