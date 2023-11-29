@@ -2,7 +2,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
 import { Network } from '@/plugins/safeSnap/types';
 
-
 export interface Strategy {
   id: string;
   spacesCount: number;

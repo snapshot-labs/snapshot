@@ -30,7 +30,7 @@ export const getNetworkKeyByDomainId = (
   domainId: number
 ): string | undefined => {
   const combinedDomainIds = { ...MAINNET_DOMAIN_IDS, ...TEST_DOMAIN_IDS };
-  const networkEntry = Object.entries(Network).find(([_key, value]) => {
+  const networkEntry = Object.entries(Network).find(([, value]) => {
     return (
       combinedDomainIds[value as keyof typeof combinedDomainIds] === domainId
     );
