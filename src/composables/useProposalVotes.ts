@@ -32,7 +32,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   });
 
   async function _fetchVotes(queryParams: QueryParams, skip = 0) {
-    return apolloQuery(
+    const response = await apolloQuery(
       {
         query: VOTES_QUERY,
         variables: {
@@ -47,10 +47,13 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
       },
       'votes'
     );
+
+    loadProfiles(response.map(vote => vote.voter));
+    return response;
   }
 
   async function _fetchVote(queryParams: QueryParams) {
-    return apolloQuery(
+    const response = await apolloQuery(
       {
         query: VOTES_QUERY,
         variables: {
@@ -60,6 +63,9 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
       },
       'votes'
     );
+
+    loadProfiles(response.map(vote => vote.voter));
+    return response;
   }
 
   function formatProposalVotes(votes: Vote[]) {
@@ -77,7 +83,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     loadingVotes.value = true;
     try {
       const response = await _fetchVotes(filter);
-
       votes.value = formatProposalVotes(response);
     } catch (e) {
       console.log(e);
@@ -107,7 +112,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     loadingMoreVotes.value = true;
     try {
       const response = await _fetchVotes(filter, votes.value.length);
-
       votes.value = votes.value.concat(formatProposalVotes(response));
     } catch (e) {
       console.log(e);
@@ -124,10 +128,6 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
       console.log(e);
     }
   }
-
-  watch(userPrioritizedVotes, () => {
-    loadProfiles(userPrioritizedVotes.value.map(vote => vote.voter));
-  });
 
   return {
     votes,

@@ -113,7 +113,7 @@ const settingsPages = computed(() => [
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
 
-  const result = await send(props.space, 'delete-space', null);
+  const result = await send(props.space, 'delete-space', {});
   console.log(':handleDelete result', result);
 
   if (result && result.id) {
@@ -287,6 +287,7 @@ onBeforeRouteLeave(async () => {
             />
             <SettingsTreasuriesBlock
               context="settings"
+              :space="space"
               :is-view-only="isViewOnly"
               :error="validationErrors.treasuries"
             />

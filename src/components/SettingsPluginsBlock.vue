@@ -14,6 +14,9 @@ const modalPluginsOpen = ref(false);
 
 function handleEditPlugins(name: string) {
   if (props.isViewOnly) return;
+  // the oSnap plugin does not require any configuration
+  // so we don't need to open the modal
+  if (name === 'oSnap') return;
   currentPlugin.value = {};
   currentPlugin.value[name] = clone(form.value.plugins[name]);
   modalPluginsOpen.value = true;

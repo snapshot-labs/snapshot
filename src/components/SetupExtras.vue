@@ -24,8 +24,6 @@ function handleSubmit() {
 
     <SettingsVotingBlock context="setup" />
 
-    <SettingsValidationBlock context="setup" />
-
     <SettingsDomainBlock context="setup" />
 
     <SettingsSubSpacesBlock context="setup" />
@@ -33,6 +31,8 @@ function handleSubmit() {
     <SettingsTreasuriesBlock context="setup" />
 
     <SettingsPluginsBlock context="setup" />
+
+    <SettingsValidationBlock context="setup" :show-errors="showErrors" />
   </div>
   <div v-else class="space-y-4">
     <h4 class="-mb-2 px-4 md:px-0">
