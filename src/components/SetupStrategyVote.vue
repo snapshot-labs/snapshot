@@ -129,7 +129,7 @@ function nextStep() {
             :error="!isValidSymbol ? 'Symbol is required' : ''"
           />
         </div>
-        <template v-if="strategyName === 'ticket'" class="md:w-2/3">
+        <div v-if="strategyName === 'ticket'" class="md:w-2/3">
           <InputSelectVoteValidation
             :validation="validation"
             :voting-strategies="form.strategies"
@@ -155,8 +155,8 @@ function nextStep() {
               </template>
             </i18n-t>
           </BaseMessageBlock>
-        </template>
-        <template v-if="strategyName === 'whitelist'" class="md:w-2/3">
+        </div>
+        <div v-if="strategyName === 'whitelist'" class="md:w-2/3">
           <TuneTextareaArray
             ref="whitelistRef"
             v-model="whitelist"
@@ -164,7 +164,7 @@ function nextStep() {
             :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
             :error="!isValidWhitelist ? 'Please add at least one address' : ''"
           />
-        </template>
+        </div>
       </div>
     </BaseBlock>
     <div class="float-right mx-4 md:mx-0">

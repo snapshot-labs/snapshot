@@ -195,7 +195,7 @@ export default {
       :disabled="config.preview"
       :error="!validValue && $t('safeSnap.invalidValue')"
       :model-value="value"
-      @update:modelValue="handleValueChange($event)"
+      @update:model-value="handleValueChange($event)"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
@@ -204,7 +204,7 @@ export default {
       :disabled="config.preview"
       :error="!validAbi && $t('safeSnap.invalidAbi')"
       :model-value="abi"
-      @update:modelValue="handleABIChanged($event)"
+      @update:model-value="handleABIChanged($event)"
     >
       <template #label>ABI</template>
     </UiInput>
@@ -230,7 +230,7 @@ export default {
           :disabled="config.preview"
           :model-value="parameters[index]"
           :parameter="input"
-          @update:modelValue="handleParameterChanged(index, $event)"
+          @update:model-value="handleParameterChanged(index, $event)"
         />
       </div>
     </div>

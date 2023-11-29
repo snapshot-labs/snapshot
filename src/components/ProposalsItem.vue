@@ -28,7 +28,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
         <MessageWarningFlagged
           v-if="isMessageVisible"
           type="proposal"
-          @forceShow="setMessageVisibility(false)"
+          @force-show="setMessageVisibility(false)"
         />
         <template v-else>
           <div class="flex h-[26px] items-start justify-between">

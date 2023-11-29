@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { useIntersectionObserver } from '@vueuse/core';
-import { watchDebounced } from '@vueuse/core';
+import { useIntersectionObserver, watchDebounced } from '@vueuse/core';
 import { ExtendedSpace, Proposal, VoteFilters } from '@/helpers/interfaces';
 
 const VOTES_FILTERS_DEFAULT: VoteFilters = {
@@ -123,26 +122,24 @@ watch(filters, value => {
         <BaseNoResults v-else-if="showNoResults" />
 
         <div v-else-if="votes.length">
-          <Transition name="fade">
-            <div class="flex h-full min-h-full flex-col overflow-auto">
-              <SpaceProposalVotesListItem
-                v-for="(vote, i) in votes"
-                :key="i"
-                :vote="vote"
-                :profiles="profiles"
-                :space="space"
-                :proposal="proposal"
-                :class="{ '!border-0': i === 0 }"
-                :data-testid="`proposal-votes-list-item-${i}`"
-              />
-              <div ref="votesEndEl" />
-              <div
-                class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-              >
-                <LoadingSpinner v-if="loadingMoreVotes" />
-              </div>
+          <div class="flex h-full min-h-full flex-col overflow-auto">
+            <SpaceProposalVotesListItem
+              v-for="(vote, i) in votes"
+              :key="i"
+              :vote="vote"
+              :profiles="profiles"
+              :space="space"
+              :proposal="proposal"
+              :class="{ '!border-0': i === 0 }"
+              :data-testid="`proposal-votes-list-item-${i}`"
+            />
+            <div ref="votesEndEl" />
+            <div
+              class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
+            >
+              <LoadingSpinner v-if="loadingMoreVotes" />
             </div>
-          </Transition>
+          </div>
         </div>
       </div>
     </template>

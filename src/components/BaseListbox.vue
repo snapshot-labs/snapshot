@@ -48,7 +48,7 @@ const selectedItem = computed({
         <slot
           v-if="$slots.selected"
           name="selected"
-          :selectedItem="selectedItem"
+          :selected-item="selectedItem"
         />
 
         <span v-else-if="selectedItem">

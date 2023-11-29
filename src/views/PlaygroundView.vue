@@ -219,7 +219,7 @@ function handleNetworkSelect(value) {
               <BaseInput
                 v-model="form.snapshot"
                 :title="$t('snapshot')"
-                @update:modelValue="handleURLUpdate"
+                @update:model-value="handleURLUpdate"
               />
             </div>
             <BaseBlock
@@ -243,7 +243,7 @@ function handleNetworkSelect(value) {
               is-valid
               :placeholder="$t('strategyParameters')"
               class="input text-left"
-              @update:modelValue="handleURLUpdate"
+              @update:model-value="handleURLUpdate"
             />
             <BaseBlock
               v-if="strategyError"
@@ -259,7 +259,7 @@ function handleNetworkSelect(value) {
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              @change:modelValue="handleURLUpdate"
+              @update:model-value="handleURLUpdate"
             />
           </BaseBlock>
         </div>

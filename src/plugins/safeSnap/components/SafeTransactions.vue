@@ -345,7 +345,7 @@ export default {
           :model-value="batch"
           :nonce="index"
           @remove="removeBatch(index)"
-          @update:modelValue="updateTransactionBatch(index, $event)"
+          @update:model-value="updateTransactionBatch(index, $event)"
         />
       </div>
 

@@ -26,7 +26,10 @@ watch(web3Account, () => {
 
 <template>
   <template v-if="auth.isAuthenticated && web3Account">
-    <MenuAccount :address="web3Account" @switchWallet="modalAccountOpen = true">
+    <MenuAccount
+      :address="web3Account"
+      @switch-wallet="modalAccountOpen = true"
+    >
       <BaseButton
         :loading="web3.authLoading || loadingProfiles || reloadingProfile"
         class="flex items-center"
