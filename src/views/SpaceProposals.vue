@@ -73,7 +73,7 @@ async function getProposals(skip = 0) {
         skip,
         space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value,
-        author_in: showOnlyCore.value === '1' ? spaceMembers.value : [],
+        author_in: showOnlyCore.value === '1' ? spaceMembers.value : undefined,
         title_contains: titleSearch.value,
         flagged: showFlagged.value === '0' ? false : undefined
       }
