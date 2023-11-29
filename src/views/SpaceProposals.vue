@@ -42,7 +42,7 @@ const {
 } = useProposals();
 
 const spaceMembers = computed(() =>
-  props.space.members.length < 1
+  props.space.members?.length < 1
     ? ['none']
     : [...props.space.members, ...props.space.moderators, ...props.space.admins]
 );

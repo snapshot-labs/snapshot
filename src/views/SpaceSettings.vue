@@ -287,6 +287,7 @@ onBeforeRouteLeave(async () => {
             />
             <SettingsTreasuriesBlock
               context="settings"
+              :space="space"
               :is-view-only="isViewOnly"
               :error="validationErrors.treasuries"
             />
@@ -367,7 +368,7 @@ onBeforeRouteLeave(async () => {
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
       @close="modalUnsupportedNetworkOpen = false"
-      @networkChanged="modalConfirmSetTextRecordOpen = true"
+      @network-changed="modalConfirmSetTextRecordOpen = true"
     />
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"

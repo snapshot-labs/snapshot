@@ -29,6 +29,6 @@ function handleInput(input) {
     :model-value="modelValue?.join('\n')"
     :placeholder="placeholder || ''"
     class="input w-full text-left"
-    @update:modelValue="handleInput($event)"
+    @update:model-value="handleInput($event)"
   />
 </template>

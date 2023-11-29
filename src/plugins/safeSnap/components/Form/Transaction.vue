@@ -117,7 +117,7 @@ export default {
     <UiSelect
       :disabled="config.preview"
       :model-value="type"
-      @update:modelValue="handleTypeChange($event)"
+      @update:model-value="handleTypeChange($event)"
     >
       <template #label>{{ $t('safeSnap.type') }}</template>
       <option value="transferFunds">{{ $t('safeSnap.transferFunds') }}</option>
@@ -133,7 +133,7 @@ export default {
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <SafeSnapFormTransferFunds
@@ -141,7 +141,7 @@ export default {
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <SafeSnapFormSendAsset
@@ -149,7 +149,7 @@ export default {
       :config="config"
       :model-value="modelValue"
       :nonce="nonce"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <SafeSnapFormRawTransaction
@@ -157,7 +157,7 @@ export default {
       :model-value="modelValue"
       :nonce="nonce"
       :config="config"
-      @update:modelValue="$emit('update:modelValue', $event)"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
   </UiCollapsible>
 </template>

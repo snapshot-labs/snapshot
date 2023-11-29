@@ -13,7 +13,6 @@ import { initSentry } from '@/sentry';
 import { KNOWN_HOSTS } from '@/helpers/constants';
 import i18n from '@/helpers/i18n';
 import router from '@/router';
-import '../snapshot-spaces/skins';
 import '@/assets/css/main.scss';
 import App from '@/App.vue';
 
