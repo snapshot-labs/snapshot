@@ -26,6 +26,10 @@ const resourcesTextLinks = [
     link: 'https://docs.snapshot.org/'
   },
   {
+    text: 'featureRequests',
+    link: 'https://snapshot.canny.io/feature-requests'
+  },
+  {
     text: 'support',
     link: 'https://discord.snapshot.org/'
   }

@@ -23,7 +23,7 @@ defineProps<{
           />
           <BasePill>{{ tag }}</BasePill>
         </div>
-        <span class="text-skin-text" v-text="description" />
+        <span class="break-all text-skin-text" v-text="description" />
       </div>
       <i-ho-check v-if="selected" class="absolute right-0 text-md" />
     </div>
