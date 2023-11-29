@@ -15,7 +15,10 @@ function handleChange(event) {
 
 <template>
   <BaseButton
-    :class="[customStyles, 'mb-2 flex w-full items-center overflow-hidden !px-3']"
+    :class="[
+      customStyles,
+      'mb-2 flex w-full items-center overflow-hidden !px-3'
+    ]"
   >
     <div class="no-shrink mr-2 text-skin-text">
       <slot name="label" />
