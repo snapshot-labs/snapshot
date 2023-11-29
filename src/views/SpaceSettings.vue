@@ -74,7 +74,6 @@ const modalSettingsSavedIgnore = useStorage(
 const showFormErrors = ref(false);
 
 const isSpaceAdmin = computed(() => {
-  console.log('props.space', props.space.members)
   if (!props.space) return false;
   const admins = (props.space?.admins || []).map(admin => admin.toLowerCase());
   return admins.includes(web3Account.value?.toLowerCase());
