@@ -19,6 +19,7 @@ import {
   getIsOsnapEnabled,
   getModuleAddressForTreasury
 } from './utils';
+import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue'
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -248,7 +249,8 @@ onMounted(async () => {
         Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
       </h2>
     </div>
-    <div v-else class="rounded-2xl border p-4">
+    <div v-else class="rounded-2xl border p-4 relative">
+      <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
       <template v-if="space.treasuries.length === 0">
         <h2>Warning: no treasuries</h2>
         <p>
