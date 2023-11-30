@@ -46,9 +46,9 @@ function select(key) {
           @click="select(undefined)"
         >
           <BaseBlock>
-            <BaseButton class="mb-2" primary>{{
+            <TuneButton class="mb-2" primary>{{
               $t('defaultSkin')
-            }}</BaseButton>
+            }}</TuneButton>
           </BaseBlock>
         </div>
 

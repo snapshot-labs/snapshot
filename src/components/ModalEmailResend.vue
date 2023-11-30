@@ -15,9 +15,9 @@ const emit = defineEmits(['close']);
     <div class="m-4 mb-6 text-center">
       {{ $t('emailResend.description') }}
 
-      <BaseButton class="mt-4 w-full" primary @click="emit('close')">
+      <TuneButton class="mt-4 w-full" primary @click="emit('close')">
         {{ $t('close') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseModal>
 </template>

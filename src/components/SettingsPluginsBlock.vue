@@ -70,13 +70,13 @@ function handleSubmitPlugins(payload) {
       </div>
     </div>
 
-    <BaseButton
+    <TuneButton
       :disabled="isViewOnly"
       class="block w-full"
       @click="handleAddPlugins"
     >
       {{ $t('settings.addPlugin') }}
-    </BaseButton>
+    </TuneButton>
     <teleport to="#modal">
       <ModalPlugins
         :open="modalPluginsOpen"

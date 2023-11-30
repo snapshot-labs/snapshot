@@ -54,7 +54,7 @@ function selectCategory(c: string) {
     @select="selectCategory"
   >
     <template #button>
-      <BaseButton class="w-full whitespace-nowrap pr-3">
+      <TuneButton class="w-full whitespace-nowrap pr-3">
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
           <span v-if="selected">
@@ -65,7 +65,7 @@ function selectCategory(c: string) {
           </span>
           <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
         </div>
-      </BaseButton>
+      </TuneButton>
     </template>
     <template #item="{ item }">
       <div class="flex">

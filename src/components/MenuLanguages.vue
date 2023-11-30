@@ -21,14 +21,14 @@ const localeItems = computed<{ text: string; action: string }[]>(() => {
 <template>
   <BaseMenu :items="localeItems" @select="selectLang($event)">
     <template #button>
-      <BaseButton
+      <TuneButton
         class="flex !h-[44px] w-full items-center !text-skin-text hover:!text-skin-link"
       >
         <i-ho-globe class="mr-2" />
         {{
           languages[$i18n.locale]?.nativeName ?? languages[$i18n.locale]?.name
         }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseMenu>
 </template>

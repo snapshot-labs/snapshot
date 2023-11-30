@@ -36,7 +36,7 @@ onMounted(async () => {
 
     <p v-if="isAuthorized" class="mt-3">
       <router-link :to="{ name: 'spaceSettings' }">
-        <BaseButton> Go to Settings </BaseButton>
+        <TuneButton> Go to Settings </TuneButton>
       </router-link>
     </p>
   </BaseMessageBlock>

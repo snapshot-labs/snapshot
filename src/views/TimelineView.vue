@@ -186,7 +186,7 @@ useInfiniteScroll(
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <BaseButton tabindex="-1">{{ $t('joinSpaces') }}</BaseButton>
+            <TuneButton tabindex="-1">{{ $t('joinSpaces') }}</TuneButton>
           </router-link>
         </div>
         <BaseNoResults
