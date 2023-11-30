@@ -102,7 +102,7 @@ defineEmits<{
     v-if="legacyOsnap.enabled"
     :space="space"
     :legacy-osnap="legacyOsnap"
-    @legacyOsnapToggle="$emit('legacyOsnapToggle')"
+    @legacy-osnap-toggle="$emit('legacyOsnapToggle')"
   />
   <SpaceCreateOsnap
     v-if="hasOsnapPlugin"

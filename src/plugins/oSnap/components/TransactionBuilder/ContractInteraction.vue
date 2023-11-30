@@ -111,13 +111,13 @@ function updateValue(newValue: string) {
     <AddressInput
       v-model="to"
       :label="$t('safeSnap.to')"
-      @update:modelValue="updateAddress()"
+      @update:model-value="updateAddress()"
     />
 
     <UiInput
       :error="!isValueValid && $t('safeSnap.invalidValue')"
       :model-value="value"
-      @update:modelValue="updateValue($event)"
+      @update:model-value="updateValue($event)"
     >
       <template #label>{{ $t('safeSnap.value') }}</template>
     </UiInput>
@@ -125,7 +125,7 @@ function updateValue(newValue: string) {
     <UiInput
       :error="!isAbiValid && $t('safeSnap.invalidAbi')"
       :model-value="abi"
-      @update:modelValue="updateAbi($event)"
+      @update:model-value="updateAbi($event)"
     >
       <template #label>ABI</template>
     </UiInput>

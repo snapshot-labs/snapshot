@@ -169,7 +169,7 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
         :multi-send-address="safe.multiSendAddress"
         :gnosis-safe-address="safe.gnosisSafeAddress"
         :model-value="safe.txs"
-        @update:modelValue="updateSafeTransactions()"
+        @update:model-value="updateSafeTransactions()"
         @delete:safe="handleDeleteSafe(safe)"
       />
     </div>
@@ -178,7 +178,7 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
       <SafeSnapsSafeSelect
         v-if="isButtonClicked"
         :safes="input.safes"
-        @safeSelected="handleSafeSelected"
+        @safe-selected="handleSafeSelected"
       />
     </div>
   </div>

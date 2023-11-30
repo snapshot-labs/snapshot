@@ -78,7 +78,7 @@ export default {
     :error="dirty && !isValid && `Invalid ${type}`"
     :model-value="value"
     :placeholder="placeholder"
-    @update:modelValue="handleInput($event)"
+    @update:model-value="handleInput($event)"
   >
     <template #label>{{ label }}</template>
   </UiInput>

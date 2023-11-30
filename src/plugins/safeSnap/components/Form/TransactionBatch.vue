@@ -145,7 +145,7 @@ export default {
         :config="config"
         :show-single-transaction-modal="showSingleTransactionModal"
         @remove="removeTransaction($event)"
-        @update:modelValue="updateTransaction($event)"
+        @update:model-value="updateTransaction($event)"
         @on-close-modal="handleCloseModal()"
       />
     </div>

@@ -201,7 +201,7 @@ export default {
         :custom-styles="'safesnap-custom-select'"
         :disabled="config.preview"
         :model-value="type"
-        @update:modelValue="handleTypeChange($event)"
+        @update:model-value="handleTypeChange($event)"
       >
         <template #label>{{ $t('safeSnap.type') }}</template>
         <option value="transferFunds">
@@ -237,7 +237,7 @@ export default {
         :model-value="modelValue"
         :nonce="nonce"
         :is-details="isDetails"
-        @update:modelValue="handleFormUpdate"
+        @update:model-value="handleFormUpdate"
       />
 
       <SafeSnapFormTransferFunds
@@ -246,7 +246,7 @@ export default {
         :model-value="modelValue"
         :nonce="nonce"
         :is-details="isDetails"
-        @update:modelValue="handleFormUpdate"
+        @update:model-value="handleFormUpdate"
       />
 
       <SafeSnapFormSendAsset
@@ -255,7 +255,7 @@ export default {
         :model-value="modelValue"
         :nonce="nonce"
         :is-details="isDetails"
-        @update:modelValue="handleFormUpdate"
+        @update:model-value="handleFormUpdate"
       />
 
       <SafeSnapFormRawTransaction
@@ -264,7 +264,7 @@ export default {
         :nonce="nonce"
         :config="config"
         :is-details="isDetails"
-        @update:modelValue="handleFormUpdate"
+        @update:model-value="handleFormUpdate"
       />
     </div>
 
@@ -273,7 +273,7 @@ export default {
       :model-value="connextModelValue"
       :config="config"
       :is-details="isDetails"
-      @update:modelValue="handleFormUpdate"
+      @update:model-value="handleFormUpdate"
     />
   </UiCollapsible>
 </template>
