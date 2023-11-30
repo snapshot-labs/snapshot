@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import categories from '@/helpers/categories.json';
+import { SPACE_CATEGORIES } from '@/helpers/constants';
 
 const props = defineProps<{
   metrics: Record<string, number>;
@@ -25,16 +25,14 @@ const categoryItems = computed(() => {
         selected: !selected.value
       }
     },
-    ...categories
-      .map(c => ({
-        text: tc(`explore.categories.${c}`),
-        action: c,
-        extras: {
-          count: props.metrics?.[c] || 0,
-          selected: selected.value === c
-        }
-      }))
-      .sort((a, b) => b.extras.count - a.extras.count)
+    ...SPACE_CATEGORIES.map(c => ({
+      text: tc(`explore.categories.${c}`),
+      action: c,
+      extras: {
+        count: props.metrics?.[c] || 0,
+        selected: selected.value === c
+      }
+    })).sort((a, b) => b.extras.count - a.extras.count)
   ];
 });
 

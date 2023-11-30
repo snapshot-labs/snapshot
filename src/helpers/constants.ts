@@ -12,3 +12,14 @@ export const SNAPSHOT_BREAKPOINTS = {
 };
 
 export const KNOWN_HOSTS = ['app.safe.global', 'pilot.gnosisguild.org'];
+
+export const SPACE_CATEGORIES = [
+  'protocol',
+  'social',
+  'investment',
+  'grant',
+  'service',
+  'media',
+  'creator',
+  'collector'
+];
