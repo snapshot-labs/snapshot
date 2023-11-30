@@ -29,7 +29,7 @@ const update = form => {
           quoteCurrencyAddress: ''
         }
       "
-      @update:modelValue="update"
+      @update:model-value="update"
     />
   </BaseBlock>
 </template>
