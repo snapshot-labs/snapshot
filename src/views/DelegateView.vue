@@ -290,6 +290,7 @@ onMounted(async () => {
           >
             <BaseUser
               :address="delegate.delegate"
+              :space="{ network: networkKey }"
               :profile="profiles[delegate.delegate]"
             />
             <div
@@ -317,6 +318,7 @@ onMounted(async () => {
           >
             <BaseUser
               :address="delegator.delegator"
+              :space="{ network: networkKey }"
               :profile="profiles[delegator.delegator]"
             />
             <div
@@ -339,6 +341,7 @@ onMounted(async () => {
           >
             <BaseUser
               :profile="profiles[delegate.delegate]"
+              :space="{ network: networkKey }"
               :address="delegate.delegate"
               class="w-[160px]"
             />
