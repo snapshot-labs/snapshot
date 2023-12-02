@@ -202,9 +202,11 @@ export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
     account(id: $id) {
       domains {
         name
+        expiryDate
       }
       wrappedDomains {
         name
+        expiryDate
       }
     }
   }

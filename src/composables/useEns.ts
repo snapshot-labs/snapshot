@@ -25,8 +25,12 @@ export function useEns() {
 
     const domains = response.account?.domains || [];
     const wrappedDomains = response.account?.wrappedDomains || [];
-    const allDomains = [...domains, ...wrappedDomains];
-
+    let allDomains = [...domains, ...wrappedDomains];
+    // Filter out expired domains
+    const now = (Date.now() / 1000).toFixed(0);
+    allDomains = allDomains.filter(
+      domain => !domain.expiryDate || domain.expiryDate > now
+    );
     ownedEnsDomains.value = await fetchAllDomainData(allDomains);
   };
 
