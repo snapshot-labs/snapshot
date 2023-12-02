@@ -37,7 +37,6 @@ const isFeedJoinedSpaces = computed(
 async function getProposals(skip = 0) {
   if (!web3Account.value && isFeedJoinedSpaces.value) return [];
   const spaces = isFeedJoinedSpaces.value ? followingSpaces.value : undefined;
-  if (!spaces?.length) return [];
   const verified = route.query.feed === 'all' ? true : undefined;
 
   return (
@@ -82,6 +81,7 @@ function setStateFilter(name: string) {
 }
 
 function setFeed(name: string) {
+  console.log('setFeed', name);
   router.push({
     query: {
       ...route.query,
@@ -93,6 +93,7 @@ function setFeed(name: string) {
 watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
+    console.log('all');
     loadProposals();
   },
   { immediate: true }
