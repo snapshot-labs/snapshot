@@ -81,7 +81,6 @@ function setStateFilter(name: string) {
 }
 
 function setFeed(name: string) {
-  console.log('setFeed', name);
   router.push({
     query: {
       ...route.query,
@@ -93,7 +92,6 @@ function setFeed(name: string) {
 watch(
   () => [route.query.state, route.query.feed, followingSpaces.value],
   () => {
-    console.log('all');
     loadProposals();
   },
   { immediate: true }
