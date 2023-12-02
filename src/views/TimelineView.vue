@@ -36,6 +36,7 @@ const isFeedJoinedSpaces = computed(
 
 async function getProposals(skip = 0) {
   if (!web3Account.value && isFeedJoinedSpaces.value) return [];
+  if (isFeedJoinedSpaces.value && followingSpaces.value.length < 1) return [];
   const spaces = isFeedJoinedSpaces.value ? followingSpaces.value : undefined;
   const verified = route.query.feed === 'all' ? true : undefined;
 
