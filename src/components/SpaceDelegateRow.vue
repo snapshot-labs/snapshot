@@ -5,7 +5,6 @@ import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
-  open: boolean;
   space: ExtendedSpace;
   address: string;
 }>();
@@ -132,57 +131,37 @@ watch(
 </script>
 
 <template>
-  <BaseModal :open="open" @close="emit('close')">
-    <template #header>
-      <div class="px-4 pt-1 text-left text-skin-heading">
-        <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
-        <span class="text-gray-500">{{
-          $t('delegates.delegateModal.sub')
-        }}</span>
-      </div>
-    </template>
-
-    <div class="space-y-3 p-4">
-      <div>
-        <LabelInput> Delegation scope </LabelInput>
-        <div class="mt-1 flex items-center gap-1">
-          <AvatarSpace :space="space" />
-          <span class="text-skin-heading"> {{ space.name }} </span>
-        </div>
-      </div>
-      <div class="space-y-1">
-        <div class="flex justify-between">
-          <TuneLabelInput :hint="definition.properties.to.description">
-            {{ definition.properties.to.title }}
-          </TuneLabelInput>
-          <button
-            class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
-          >
-            Divide equally
-          </button>
-        </div>
-        <SpaceDelegateRow :address="props.address" :space="space" />
-        <div class="flex justify-between">
-          <TuneButton class="text-skin-link items-center">
-            <i-ho-plus class="text-xs mr-2" />
-            Add Delegate
-          </TuneButton>
-          <button class="text-red underline hover:opacity-50 text-xs bg-none">
-            Clear all delegations
-          </button>
-        </div>
+  <div class="items-end flex space-x-1">
+    <div class="min-w-[66.7%] relative">
+      <TuneInput
+        :placeholder="definition.properties.to.examples[0]"
+        :class="{ 'tune-error-border': validationErrors }"
+      />
+      <!-- <TuneInput
+        ref="addressRef"
+        v-model="form.to"
+        :label="definition.properties.to.title"
+        :hint="definition.properties.to.description"
+        :placeholder="definition.properties.to.examples[0]"
+        :error="validationErrors?.to"
+      /> -->
+    </div>
+    <div class="relative">
+      <TuneInput
+        :value="0"
+        :class="['text-right pr-5', { 'tune-error-border': validationErrors }]"
+      />
+      <div
+        class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
+      >
+        %
       </div>
     </div>
-
-    <template #footer>
-      <TuneButton
-        :loading="isResolvingName || isAwaitingSignature"
-        class="w-full"
-        primary
-        @click="handleConfirm"
-      >
-        {{ $t('confirm') }}
-      </TuneButton>
-    </template>
-  </BaseModal>
+    <BaseButtonIcon
+      class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center hover:bg-gray-800"
+    >
+      <i-ho-x class="text-[17px]" />
+    </BaseButtonIcon>
+  </div>
+  <TuneErrorInput v-if="validationErrors" :error="validationErrors?.to" />
 </template>
