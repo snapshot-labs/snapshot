@@ -25,14 +25,13 @@ watch(
             <i-ho-menu class="text-skin-link" />
           </BaseButtonRound>
           <router-link
-            v-if="env === 'demo'"
             :to="{ path: '/' }"
             class="hidden items-center sm:block"
             style="font-size: 24px"
           >
             snapshot
           </router-link>
-          <span class="ml-1">testnet</span>
+          <span v-if="env === 'demo'" class="ml-1">testnet</span>
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <NavbarAccount />
