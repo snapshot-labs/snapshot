@@ -18,10 +18,11 @@ async function handleLogin(connector) {
 }
 
 const profile = computed(() => profiles.value[web3Account.value]);
-
-watch(web3Account, () => {
-  loadProfiles([web3Account.value]);
-});
+watch(
+  () => web3Account,
+  () => loadProfiles([web3Account.value]),
+  { immediate: true }
+);
 </script>
 
 <template>
