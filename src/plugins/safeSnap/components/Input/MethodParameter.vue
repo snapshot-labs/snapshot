@@ -33,8 +33,6 @@ export default {
       this.value = value;
       this.input = value;
     }
-
-    
   },
   mounted() {
     if (this.modelValue) this.value = this.modelValue;
@@ -74,7 +72,7 @@ export default {
         v-if="parameter.type === 'bool'"
         :disabled="disabled"
         :model-value="value"
-        @update:modelValue="handleInput($event)"
+        @update:model-value="handleInput($event)"
       >
         <template #label>{{ placeholder }}</template>
         <option :value="true">true</option>
@@ -88,7 +86,7 @@ export default {
         :input-props="{ required: true }"
         :label="placeholder"
         :model-value="value"
-        @update:modelValue="handleInput($event)"
+        @update:model-value="handleInput($event)"
       />
       <!-- Array of X type -->
       <SafeSnapInputArrayType
@@ -96,7 +94,7 @@ export default {
         :disabled="disabled"
         :model-value="value"
         :parameter="parameter"
-        @update:modelValue="handleInput($event)"
+        @update:model-value="handleInput($event)"
       />
       <!-- Text input -->
       <UiInput

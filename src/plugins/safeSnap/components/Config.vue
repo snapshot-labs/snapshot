@@ -178,7 +178,7 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
       <SafeSnapsSafeSelect
         v-if="isButtonClicked"
         :safes="input.safes"
-        @safeSelected="handleSafeSelected"
+        @safe-selected="handleSafeSelected"
       />
     </div>
   </div>
