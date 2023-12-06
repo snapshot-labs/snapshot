@@ -3,7 +3,7 @@ import {
   ENS_DOMAIN_BY_HASH_QUERY
 } from '@/helpers/queries';
 
-const VALID_ENS_TLDS = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art'];
+const VALID_ENS_TLDS = ['eth', 'xyz', 'com', 'org', 'io', 'app', 'art', 'id'];
 
 export function useEns() {
   const { ensApolloQuery } = useApolloQuery();
