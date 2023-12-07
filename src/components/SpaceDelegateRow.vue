@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PropType } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
@@ -7,9 +8,11 @@ import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   space: ExtendedSpace;
   address: string;
+  weight: number;
+  deleteDelegate: (index: number) => void;
 }>();
 
-const emit = defineEmits(['close', 'reload']);
+const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
 
 const {
   createPendingTransaction,
@@ -32,6 +35,7 @@ const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
+const localWeight = ref(props.weight);
 
 const definition = computed(() => {
   return {
@@ -62,6 +66,18 @@ const validationErrors = computed(() => {
 const isValid = computed(() => {
   return Object.values(validationErrors.value).length === 0;
 });
+
+function handleWeightKeydown(e: KeyboardEvent) {
+  if (e.key === 'ArrowUp' && e.shiftKey) {
+    localWeight.value += 10;
+  } else if (e.key === 'ArrowDown' && e.shiftKey) {
+    localWeight.value -= 10;
+  } else if (e.key === 'ArrowUp') {
+    localWeight.value++;
+  } else if (e.key === 'ArrowDown') {
+    localWeight.value--;
+  }
+}
 
 async function handleConfirm() {
   if (!isValid.value) {
@@ -148,8 +164,9 @@ watch(
     </div>
     <div class="relative">
       <TuneInput
-        :value="0"
+        v-model="localWeight"
         :class="['text-right pr-5', { 'tune-error-border': validationErrors }]"
+        @keydown="e => handleWeightKeydown(e, weight)"
       />
       <div
         class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
@@ -159,6 +176,7 @@ watch(
     </div>
     <BaseButtonIcon
       class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center hover:bg-gray-800"
+      @click="() => deleteDelegate(index)"
     >
       <i-ho-x class="text-[17px]" />
     </BaseButtonIcon>
