@@ -30,7 +30,7 @@ watch(
 
 <template>
   <div class="mb-3">
-    <BaseButton
+    <TuneButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       class="relative mb-2 block w-full"
@@ -40,6 +40,6 @@ watch(
     >
       <i-ho-check v-if="selectedChoice === i + 1" class="absolute" />
       {{ shorten(choice, 32) }}
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>

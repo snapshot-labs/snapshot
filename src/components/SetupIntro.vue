@@ -14,13 +14,13 @@ const emit = defineEmits(['next']);
     <SetupMessageHelp />
 
     <div class="px-4 md:px-0">
-      <BaseButton
+      <TuneButton
         primary
         class="float-right mt-4 w-full"
         @click="!web3Account ? (modalAccountOpen = true) : emit('next')"
       >
         {{ $t('getStarted') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </div>
 </template>

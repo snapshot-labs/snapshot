@@ -39,14 +39,14 @@ async function handleDelegate() {
       </BaseInput>
     </div>
     <div class="p-4">
-      <BaseButton
+      <TuneButton
         primary
         :loading="delegationLoading"
         class="w-full"
         @click="handleDelegate"
       >
         {{ $t('confirm') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseModal>
 </template>

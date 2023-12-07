@@ -268,7 +268,7 @@ function handleNetworkSelect(value) {
     <template #sidebar-right>
       <div class="space-y-3">
         <BaseBlock :title="$t('actions')">
-          <BaseButton
+          <TuneButton
             :loading="loading"
             :disabled="loading || !extendedStrategy"
             class="flex w-full items-center justify-center"
@@ -276,15 +276,15 @@ function handleNetworkSelect(value) {
             @click="loadScores"
           >
             <i-ho-play class="text-lg" />
-          </BaseButton>
-          <BaseButton class="mt-2 w-full" @click="copyURL">
+          </TuneButton>
+          <TuneButton class="mt-2 w-full" @click="copyURL">
             <BaseIcon
               name="insertlink"
               size="18"
               class="mr-1 align-text-bottom"
             />
             {{ t('copyLink') }}
-          </BaseButton>
+          </TuneButton>
         </BaseBlock>
         <BaseBlock v-if="scores" :title="$t('results')">
           <div

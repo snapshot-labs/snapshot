@@ -38,7 +38,7 @@ const truncateMarkdownBody = computed(() => {
         '-bottom-[14px]': !showFullMarkdownBody
       }"
     >
-      <BaseButton
+      <TuneButton
         class="z-10 !bg-skin-bg"
         @click="showFullMarkdownBody = !showFullMarkdownBody"
       >
@@ -47,7 +47,7 @@ const truncateMarkdownBody = computed(() => {
             ? $t('proposals.showLess')
             : $t('proposals.showMore')
         }}
-      </BaseButton>
+      </TuneButton>
     </div>
     <div
       class="overflow-hidden"

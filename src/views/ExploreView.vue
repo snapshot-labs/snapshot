@@ -113,9 +113,9 @@ useInfiniteScroll(
           class="ml-3 hidden md:block"
           hide-external-icon
         >
-          <BaseButton tabindex="-1">
+          <TuneButton tabindex="-1">
             {{ buttonStr }}
-          </BaseButton>
+          </TuneButton>
         </BaseLink>
       </div>
     </BaseContainer>

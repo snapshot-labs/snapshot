@@ -39,18 +39,18 @@ const retry = async () => {
   <BaseMessage v-else-if="isInvalid" level="warning">
     <div>{{ t('resultsError') }}</div>
   </BaseMessage>
-  <BaseButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
+  <TuneButton class="mt-3 w-full" :loading="retrying" primary @click="retry">
     <BaseIcon name="refresh" />
     {{ t('retry') }}
-  </BaseButton>
+  </TuneButton>
   <BaseLink
     v-if="isAdmin"
     link="https://discord.snapshot.org/"
     class="mt-3 block"
     hide-external-icon
   >
-    <BaseButton tabindex="-1" class="w-full">
+    <TuneButton tabindex="-1" class="w-full">
       {{ t('getHelp') }}
-    </BaseButton>
+    </TuneButton>
   </BaseLink>
 </template>

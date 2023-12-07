@@ -113,7 +113,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </div>
           <div class="space-y-2">
             <template v-for="(ens, i) in domainsWithoutExistingSpace" :key="i">
-              <BaseButton
+              <TuneButton
                 v-if="!ens.isInvalid"
                 class="flex w-full items-center justify-between"
                 :primary="domainsWithoutExistingSpace.length === 1"
@@ -121,13 +121,13 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               >
                 {{ ens.name }}
                 <i-ho-arrow-sm-right class="-mr-2" />
-              </BaseButton>
+              </TuneButton>
               <BaseLink
                 v-else
                 :link="`https://app.ens.domains/address/${web3Account}/controller`"
                 hide-external-icon
               >
-                <BaseButton
+                <TuneButton
                   tabindex="-1"
                   class="flex w-full items-center justify-between"
                 >
@@ -140,7 +140,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                     }"
                     class="-mr-2"
                   />
-                </BaseButton>
+                </TuneButton>
               </BaseLink>
             </template>
           </div>
