@@ -24,7 +24,11 @@ import SafeSnapFormSendAsset from '../Form/SendAsset.vue';
 import SafeSnapFormRawTransaction from '../Form/RawTransaction.vue';
 import SafeSnapFormConnextTransaction from '../Form/ConnextTransaction.vue';
 import SafeSnapSimulationTenderly from '../Simulation/Tenderly.vue';
-import { SafeTransaction, SafeTransactionConfig, SimulationState } from '@/helpers/interfaces';
+import {
+  SafeTransaction,
+  SafeTransactionConfig,
+  SimulationState
+} from '@/helpers/interfaces';
 
 const props = defineProps<ModalSingleTransactionProps>();
 const emit = defineEmits<ModalSingleTransactionEmits>();
@@ -144,6 +148,7 @@ const buttonStates = computed(() => {
       <UiSelect
         :custom-styles="'safesnap-custom-select'"
         :model-value="transactionBatchTypeSelected"
+        :disabled="!props.config.connextAddress ? true : false"
         @update:modelValue="handleBatchTypeSelection($event)"
       >
         <template #label>Batch Type</template>
