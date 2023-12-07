@@ -62,14 +62,21 @@ watchEffect(() => {
       valid: true
     };
   } else {
-    const value = clone(props.modelValue);
-    if (value.safes && props.config && Array.isArray(props.config.safes)) {
-      value.safes = value.safes.map((safe, index) => ({
-        ...props.config.safes[index],
-        ...safe
-      }));
+    if (props.preview) {
+      const value = clone(props.modelValue);
+      if (value.safes && props.config && Array.isArray(props.config.safes)) {
+        value.safes = value.safes.map(safe => {
+          const configForNetwork = props.config.safes.find(
+            config => config.network === safe.network
+          );
+          return {
+            ...configForNetwork,
+            ...safe
+          };
+        });
+      }
+      input.value = coerceConfig(value, props.network);
     }
-    input.value = coerceConfig(value, props.network);
   }
 });
 
