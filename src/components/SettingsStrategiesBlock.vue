@@ -92,14 +92,14 @@ function handleSubmitStrategy(strategy) {
           </div>
         </div>
         <div>
-          <BaseButton
+          <TuneButton
             class="flex w-full items-center gap-1"
             :disabled="isViewOnly"
             @click="handleAddStrategy"
           >
             <i-ho-plus class="text-sm" />
             {{ $t('add') }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
       <div class="mt-3">

@@ -75,7 +75,7 @@ watch(selectedTokenAddress, updateTransaction);
 </script>
 
 <template>
-  <BaseButton
+  <TuneButton
     class="mb-2 flex w-full flex-row items-center justify-between !px-3"
     @click="openModal()"
   >
@@ -99,7 +99,7 @@ watch(selectedTokenAddress, updateTransaction);
       </span>
     </div>
     <i-ho-chevron-down class="text-xs text-skin-link" />
-  </BaseButton>
+  </TuneButton>
 
   <div class="space-y-2">
     <AddressInput v-model="recipient" :label="$t('safeSnap.to')" />

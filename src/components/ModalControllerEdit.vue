@@ -57,7 +57,7 @@ defineEmits(['close']);
       </BaseInput>
     </div>
     <template #footer>
-      <BaseButton
+      <TuneButton
         class="my-2 w-full"
         primary
         :disabled="!controllerInputIsValid"
@@ -65,7 +65,7 @@ defineEmits(['close']);
         @click="confirmSetRecord(), $emit('close')"
       >
         {{ $t('settings.set') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

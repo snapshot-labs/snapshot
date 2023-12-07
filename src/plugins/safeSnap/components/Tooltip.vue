@@ -18,23 +18,23 @@ const { copyToClipboard } = useCopy();
     <template #content>
       <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
         <div>Multisend address</div>
-        <BaseButton
+        <TuneButton
           class="flex w-full items-center justify-between"
           @click="copyToClipboard(multiSendAddress)"
         >
           {{ shorten(multiSendAddress) }}
           <i-ho-duplicate class="ml-1" />
-        </BaseButton>
+        </TuneButton>
         <div class="mt-3">
           {{ moduleType === 'reality' ? 'Reality' : 'UMA' }} Module address
         </div>
-        <BaseButton
+        <TuneButton
           class="flex w-full items-center justify-between"
           @click="copyToClipboard(moduleAddress)"
         >
           {{ shorten(moduleAddress) }}
           <i-ho-duplicate class="ml-1" />
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BasePopoverHover>

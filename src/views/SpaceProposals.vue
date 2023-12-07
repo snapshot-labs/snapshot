@@ -176,9 +176,9 @@ watch(spaceProposals, () => {
           :link="{ name: 'spaceCreate' }"
           data-testid="create-proposal-button"
         >
-          <BaseButton :primary="isFollowing" class="w-full sm:w-auto">
+          <TuneButton :primary="isFollowing" class="w-full sm:w-auto">
             New proposal
-          </BaseButton>
+          </TuneButton>
         </BaseLink>
       </div>
 

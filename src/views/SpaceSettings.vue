@@ -313,10 +313,10 @@ onBeforeRouteLeave(async () => {
             v-if="isSpaceAdmin || isSpaceController"
             class="flex gap-5 px-4 pt-2 md:px-0"
           >
-            <BaseButton class="mb-2 block w-full" @click="resetForm">
+            <TuneButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
-            </BaseButton>
-            <BaseButton
+            </TuneButton>
+            <TuneButton
               :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
               :loading="isSending"
               class="block w-full"
@@ -324,7 +324,7 @@ onBeforeRouteLeave(async () => {
               @click="handleSubmit"
             >
               {{ $t('save') }}
-            </BaseButton>
+            </TuneButton>
           </div>
         </div>
       </template>

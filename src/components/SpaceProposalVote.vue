@@ -77,7 +77,7 @@ watch(validatedUserChoice, () => {
         @select-choice="emitChoice"
       />
     </div>
-    <BaseButton
+    <TuneButton
       :disabled="
         web3.authLoading ||
         (selectedChoices < 1 && proposal.type !== 'approval') ||
@@ -90,6 +90,6 @@ watch(validatedUserChoice, () => {
       @click="$emit('clickVote')"
     >
       {{ $t('proposal.vote') }}
-    </BaseButton>
+    </TuneButton>
   </BaseBlock>
 </template>

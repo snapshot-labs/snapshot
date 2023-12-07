@@ -48,7 +48,7 @@ watch(
         @change="updateChoices"
       >
         <template #item="{ element, index }">
-          <BaseButton
+          <TuneButton
             class="!mb-2 flex w-full items-center justify-between !border-skin-link !px-3"
           >
             <div class="min-w-[60px] text-left">
@@ -64,7 +64,7 @@ watch(
             >
               <BaseIcon name="close" size="12" />
             </div>
-          </BaseButton>
+          </TuneButton>
         </template>
       </draggable>
     </div>
@@ -73,14 +73,14 @@ watch(
       :key="i"
       data-testid="ranked-choice-select-list"
     >
-      <BaseButton
+      <TuneButton
         v-if="!selectedChoices.includes(i + 1)"
         class="mb-2 block w-full"
         :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
         @click="selectChoice(i + 1)"
       >
         <span class="truncate">{{ choice }}</span>
-      </BaseButton>
+      </TuneButton>
     </div>
   </div>
 </template>

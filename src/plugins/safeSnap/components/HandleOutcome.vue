@@ -339,12 +339,12 @@ onMounted(async () => {
       v-if="questionState === questionStates.waitingForQuestion"
       class="my-4"
     >
-      <BaseButton
+      <TuneButton
         :loading="actionInProgress === 'submit-proposal'"
         @click="submitProposal"
       >
         {{ $t('safeSnap.labels.request') }}
-      </BaseButton>
+      </TuneButton>
     </div>
 
     <div
@@ -396,7 +396,7 @@ onMounted(async () => {
         </div>
 
         <div v-if="questionState === questionStates.questionNotSet">
-          <BaseButton
+          <TuneButton
             class="mb-1 mt-3 w-full"
             :loading="actionInProgress === 'set-outcome'"
             @click="
@@ -405,10 +405,10 @@ onMounted(async () => {
             "
           >
             {{ $t('safeSnap.labels.setOutcome') }}
-          </BaseButton>
+          </TuneButton>
         </div>
         <div v-if="questionState === questionStates.questionNotResolved">
-          <BaseButton
+          <TuneButton
             class="my-1 w-full"
             :loading="actionInProgress === 'set-outcome'"
             @click="
@@ -417,22 +417,22 @@ onMounted(async () => {
             "
           >
             {{ $t('safeSnap.labels.changeOutcome') }}
-          </BaseButton>
+          </TuneButton>
         </div>
         <div v-if="bondData.canClaim">
-          <BaseButton
+          <TuneButton
             class="my-1 w-full"
             :loading="actionInProgress === 'claim-bond'"
             @click="claimBond"
           >
             {{ $t('safeSnap.claimBond') }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
     </div>
 
     <div v-if="questionState === questionStates.proposalApproved" class="my-4">
-      <BaseButton
+      <TuneButton
         :loading="action2InProgress === 'execute-proposal'"
         @click="executeProposal"
       >
@@ -442,7 +442,7 @@ onMounted(async () => {
             batches.length
           ])
         }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </div>
   <div

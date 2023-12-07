@@ -33,7 +33,7 @@ watch(
 
 <template>
   <div class="mb-3" data-testid="approval-choice-list">
-    <BaseButton
+    <TuneButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       class="relative mb-2 block w-full"
@@ -48,6 +48,6 @@ watch(
     >
       <i-ho-check v-if="selectedChoices.includes(i + 1)" class="absolute" />
       {{ shorten(choice, 32) }}
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>

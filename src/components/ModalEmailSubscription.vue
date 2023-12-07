@@ -69,14 +69,14 @@ async function submit() {
 
         <small>{{ $t('emailSubscription.inputCaption') }}</small>
 
-        <BaseButton
+        <TuneButton
           class="mt-3 w-full"
           primary
           :type="'submit'"
           :loading="loading"
         >
           {{ $t('emailSubscription.subscribe') }}
-        </BaseButton>
+        </TuneButton>
       </form>
     </template>
 
@@ -93,9 +93,9 @@ async function submit() {
     </div>
 
     <template v-if="modalView === 'SUCCESS'" #footer>
-      <BaseButton class="w-full" primary @click="close">
+      <TuneButton class="w-full" primary @click="close">
         {{ $t('close') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

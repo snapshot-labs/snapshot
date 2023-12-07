@@ -67,9 +67,9 @@ const submit = async () => {
         @update:model-value="updateSubscriptionKeys('closedProposal', $event)"
       />
 
-      <BaseButton class="mt-6 w-full" primary type="submit" :loading="loading">
+      <TuneButton class="mt-6 w-full" primary type="submit" :loading="loading">
         {{ t('emailManagement.updatePreferences') }}
-      </BaseButton>
+      </TuneButton>
     </form>
   </BaseModal>
 </template>

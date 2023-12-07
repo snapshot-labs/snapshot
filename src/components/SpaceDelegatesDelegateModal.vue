@@ -169,14 +169,14 @@ watch(
     </div>
 
     <template #footer>
-      <BaseButton
+      <TuneButton
         :loading="isResolvingName || isAwaitingSignature"
         class="w-full"
         primary
         @click="handleConfirm"
       >
         {{ $t('confirm') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>
