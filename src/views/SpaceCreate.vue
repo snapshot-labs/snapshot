@@ -14,7 +14,7 @@ enum Step {
   PLUGINS
 }
 
-const BODY_LIMIT_CHARACTERS = 20000;
+const BODY_LIMIT_CHARACTERS = 10000;
 
 const props = defineProps<{
   space: ExtendedSpace;
