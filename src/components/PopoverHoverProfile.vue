@@ -9,7 +9,7 @@ defineProps<{
   address: string;
   profile?: Profile;
   proposal?: Proposal;
-  space?: ExtendedSpace;
+  space?: Partial<ExtendedSpace>;
 }>();
 
 const { domain } = useApp();

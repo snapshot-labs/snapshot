@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useInfiniteScroll } from '@vueuse/core';
 
 useMeta({
@@ -55,7 +55,7 @@ const { env } = useApp();
 const onlyMainnetNetworks = n => (env === 'production' ? !n.testnet : true);
 
 const items = computed(() => {
-  const q = route.query.q || '';
+  const q = (route.query.q as string) || '';
   if (isStrategies.value) return filterStrategies(q);
   if (isNetworks.value) return filterNetworks(q).filter(onlyMainnetNetworks);
   if (isPlugins.value) return filterPlugins(q);
