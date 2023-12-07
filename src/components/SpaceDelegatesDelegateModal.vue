@@ -10,7 +10,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close', 'reload']);
+const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
 
 const {
   createPendingTransaction,
@@ -50,6 +50,32 @@ const definition = computed(() => {
     additionalProperties: false
   };
 });
+
+const defaultSpaceDelegates = {
+  address: props.address,
+  space: props.space,
+  weight: 100
+};
+
+let spaceDelegates = ref([defaultSpaceDelegates]);
+
+function deleteDelegate(index) {
+  spaceDelegates.value.splice(index, 1);
+}
+
+function deleteAllDelegates() {
+  spaceDelegates.value = [defaultSpaceDelegates];
+}
+
+function addDelegate() {
+  const newDelegate = {
+    address: props.address,
+    space: props.space,
+    weight: 0
+  };
+
+  spaceDelegates.value.push(newDelegate);
+}
 
 const validationErrors = computed(() => {
   return validateForm(
@@ -161,13 +187,23 @@ watch(
             Divide equally
           </button>
         </div>
-        <SpaceDelegateRow :address="props.address" :space="space" />
+        <div v-for="(delegate, index) in spaceDelegates" :key="index">
+          <SpaceDelegateRow
+            :address="delegate.address"
+            :space="delegate.space"
+            :weight="delegate.weight"
+            :deleteDelegate="deleteDelegate"
+          />
+        </div>
         <div class="flex justify-between">
-          <TuneButton class="text-skin-link items-center">
+          <TuneButton class="text-skin-link items-center" @click="addDelegate">
             <i-ho-plus class="text-xs mr-2" />
             Add Delegate
           </TuneButton>
-          <button class="text-red underline hover:opacity-50 text-xs bg-none">
+          <button
+            class="text-red underline hover:opacity-50 text-xs bg-none"
+            @click="deleteAllDelegates"
+          >
             Clear all delegations
           </button>
         </div>
