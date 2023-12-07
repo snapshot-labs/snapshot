@@ -354,9 +354,14 @@ watch(
   { immediate: true }
 );
 
+//Check if exist oSnap plugin or UMA Zodiac Mod
 const hasOsnapPlugin = computed(() => {
-  return !!props.space?.plugins?.oSnap;
+  return (
+    !!props.space?.plugins?.oSnap ||
+    !!props.space?.plugins?.safeSnap?.safes?.filter(safe => safe.umaAddress)
+  );
 });
+
 const shouldUseOsnap = ref(false);
 
 function toggleShouldUseOsnap() {
