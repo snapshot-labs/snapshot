@@ -367,7 +367,7 @@ onMounted(async () => {
     </template>
     <template v-if="networkSupportsDelegate" #sidebar-right>
       <BaseBlock>
-        <BaseButton
+        <TuneButton
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading"
           class="block w-full"
@@ -375,7 +375,7 @@ onMounted(async () => {
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
         >
           {{ $t('confirm') }}
-        </BaseButton>
+        </TuneButton>
       </BaseBlock>
     </template>
   </TheLayout>

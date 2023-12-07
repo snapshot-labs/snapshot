@@ -15,9 +15,9 @@
           </div>
         </div>
         <div class="mt-[12px] flex w-full justify-end">
-          <BaseButton class="w-full cursor-wait md:max-w-[180px] lg:max-w-none">
+          <TuneButton class="w-full cursor-wait md:max-w-[180px] lg:max-w-none">
             {{ $t('join') }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
     </BaseBlock>

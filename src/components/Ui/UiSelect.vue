@@ -10,7 +10,7 @@ function handleChange(event) {
 </script>
 
 <template>
-  <BaseButton class="mb-2 flex w-full items-center overflow-hidden !px-3">
+  <TuneButton class="mb-2 flex w-full items-center overflow-hidden !px-3">
     <div class="no-shrink mr-2 text-skin-text">
       <slot name="label" />
     </div>
@@ -26,7 +26,7 @@ function handleChange(event) {
     >
       <slot />
     </select>
-  </BaseButton>
+  </TuneButton>
 </template>
 
 <style scoped lang="scss">

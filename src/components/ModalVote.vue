@@ -321,12 +321,12 @@ watch(
 
     <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton type="button" class="w-full" @click="$emit('close')">
+        <TuneButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
-        </BaseButton>
+        </TuneButton>
       </div>
       <div class="float-left w-2/4 pl-2">
-        <BaseButton
+        <TuneButton
           :disabled="
             votingPower === 0 ||
             !isValidVoter ||
@@ -341,7 +341,7 @@ watch(
           @click="handleSubmit"
         >
           {{ $t('confirm') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

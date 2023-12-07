@@ -66,7 +66,7 @@ const safeLink = computed(() =>
     />
   </div>
 
-  <BaseButton
+  <TuneButton
     class="mt-4 w-full"
     @click="
       emit('addTransaction', {
@@ -79,5 +79,5 @@ const safeLink = computed(() =>
     "
   >
     Add transaction +
-  </BaseButton>
+  </TuneButton>
 </template>

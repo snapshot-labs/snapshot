@@ -63,7 +63,7 @@ watch(
 
 <template>
   <div class="mb-3" data-testid="quadratic-choice-list">
-    <BaseButton
+    <TuneButton
       v-for="(choice, i) in proposal.choices"
       :key="i"
       class="mb-2 flex w-full items-center justify-between overflow-hidden"
@@ -115,7 +115,7 @@ watch(
           {{ percentage(i) }}%
         </div>
       </div>
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>
 

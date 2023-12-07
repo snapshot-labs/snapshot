@@ -147,9 +147,9 @@ onMounted(() => {
         "
         class="px-3 text-center md:px-0"
       >
-        <BaseButton class="mt-4 w-full" @click="handleClickMore">
+        <TuneButton class="mt-4 w-full" @click="handleClickMore">
           {{ $t('homeLoadmore') }}
-        </BaseButton>
+        </TuneButton>
       </div>
       <div v-else-if="loadingMoreSpacesHome" class="mt-4 flex h-[46px]">
         <LoadingSpinner class="mx-auto" big />

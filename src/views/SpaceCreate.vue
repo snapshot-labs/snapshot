@@ -475,17 +475,17 @@ onMounted(() => populateForm(props.space));
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
-        <BaseButton
+        <TuneButton
           v-if="currentStep === Step.CONTENT"
           class="mb-2 block w-full"
           @click="preview = !preview"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
-        </BaseButton>
-        <BaseButton v-else class="mb-2 block w-full" @click="previousStep">
+        </TuneButton>
+        <TuneButton v-else class="mb-2 block w-full" @click="previousStep">
           {{ $t('back') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           v-if="
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING) ||
@@ -499,8 +499,8 @@ onMounted(() => populateForm(props.space));
           @click="handleSubmit"
         >
           {{ isEditing ? 'Save changes' : $t('create.publish') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           v-else
           class="block w-full"
           :loading="validationLoading || isSnapshotLoading"
@@ -522,7 +522,7 @@ onMounted(() => populateForm(props.space));
           @click="web3Account ? nextStep() : (modalAccountOpen = true)"
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
-        </BaseButton>
+        </TuneButton>
       </BaseBlock>
     </template>
   </TheLayout>

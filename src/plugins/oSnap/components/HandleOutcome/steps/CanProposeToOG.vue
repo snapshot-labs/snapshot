@@ -54,13 +54,13 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
       proposal, it will be disputed and you will lose your bond. If the proposal
       is valid, your bond will be returned when the transactions are executed.
     </p>
-    <BaseButton
+    <TuneButton
       :disabled="!hasReachedQuorum || !hasSufficientBalance"
       @click="emit('approveBond')"
       class="mr-2 mt-4 w-full"
     >
       Approve bond
-    </BaseButton>
+    </TuneButton>
   </div>
 
   <div v-else>
@@ -68,12 +68,12 @@ const hasReachedQuorum = computed(() => props.scoresTotal >= props.quorum);
       Warning: This proposal was disputed on-chain. Exercise caution when
       proposing, because your proposal may be disputed too.
     </p>
-    <BaseButton
+    <TuneButton
       @click="emit('submitProposal')"
       class="my-1 w-full"
       :disabled="!hasReachedQuorum || !hasSufficientBalance"
     >
       Make assertion on Oracle
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>
