@@ -3,6 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { update } from 'lodash';
 
 const props = defineProps<{
   open: boolean;
@@ -54,7 +55,8 @@ const definition = computed(() => {
 const defaultSpaceDelegates = {
   address: props.address,
   space: props.space,
-  weight: 100
+  weight: 100,
+  isError: false
 };
 
 let spaceDelegates = ref([defaultSpaceDelegates]);
@@ -75,6 +77,24 @@ function addDelegate() {
   };
 
   spaceDelegates.value.push(newDelegate);
+}
+
+function divideEqually() {
+  const numDelegates = spaceDelegates.value.length;
+  if (numDelegates === 0) return;
+
+  const equalWeight = 100 / numDelegates;
+
+  const updatedDelegates = spaceDelegates.value.map(delegate => ({
+    ...delegate,
+    weight: equalWeight
+  }));
+
+  const remainingWeight = 100 - equalWeight * numDelegates;
+  updatedDelegates[0].weight += remainingWeight;
+
+  spaceDelegates.value = updatedDelegates;
+  console.log(spaceDelegates.value);
 }
 
 const validationErrors = computed(() => {
@@ -182,6 +202,7 @@ watch(
             {{ definition.properties.to.title }}
           </TuneLabelInput>
           <button
+            @click="divideEqually"
             class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
           >
             Divide equally
@@ -193,6 +214,10 @@ watch(
             :space="delegate.space"
             :weight="delegate.weight"
             :deleteDelegate="deleteDelegate"
+            :spaceDelegates="spaceDelegates"
+            :isError="delegate.isError"
+            :index="index"
+            @update:modelValue="e => console.log('spaceDelegate', e)"
           />
         </div>
         <div class="flex justify-between">
