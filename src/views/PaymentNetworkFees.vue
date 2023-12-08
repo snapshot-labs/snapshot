@@ -46,7 +46,7 @@ function computePrice(currencyFactor: number, planFactor: number) {
 
     <form class="flex flex-col mt-4 gap-3" @submit="pay">
       <fieldset>
-        <legend><h2>Select your plan</h2></legend>
+        <legend><h2>Select your package</h2></legend>
         <ol class="grid grid-flow-col gap-3 justify-stretch">
           <li
             v-for="plan in PLANS"
@@ -58,8 +58,14 @@ function computePrice(currencyFactor: number, planFactor: number) {
             @click="setData('plan', plan)"
           >
             <b>{{ plan.label }}</b>
+            <span
+              v-if="plan.discount"
+              class="bg-yellow-100/[.7] text-skin p-1 rounded text-sm ml-2"
+            >
+              Save {{ plan.discount }}%
+            </span>
             <div>
-              <h4 class="inline">
+              <h4>
                 {{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
                 }}{{
                   (
@@ -70,12 +76,6 @@ function computePrice(currencyFactor: number, planFactor: number) {
                   ).toLocaleString()
                 }}
               </h4>
-              <span
-                v-if="plan.discount"
-                class="bg-yellow-100 p-1 rounded text-sm ml-1"
-              >
-                -{{ plan.discount }}%
-              </span>
             </div>
 
             <small
