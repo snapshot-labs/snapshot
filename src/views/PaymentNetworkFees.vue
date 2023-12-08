@@ -58,15 +58,36 @@ function computePrice(currencyFactor: number, planFactor: number) {
             @click="setData('plan', plan)"
           >
             <b>{{ plan.label }}</b>
-
-            <h4>
-              {{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
-              }}{{ (BASE_PRICE * plan.factor).toLocaleString() }}
-            </h4>
+            <div>
+              <h4 class="inline">
+                {{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
+                }}{{
+                  (
+                    BASE_PRICE * plan.factor -
+                    (plan.discount
+                      ? (BASE_PRICE * plan.factor * plan.discount) / 100
+                      : 0)
+                  ).toLocaleString()
+                }}
+              </h4>
+              <span
+                v-if="plan.discount"
+                class="bg-yellow-100 p-1 rounded text-sm ml-1"
+              >
+                -{{ plan.discount }}%
+              </span>
+            </div>
 
             <small
               >{{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
-              }}{{ BASE_PRICE.toLocaleString() }}/month</small
+              }}{{
+                (
+                  BASE_PRICE -
+                  (plan.discount
+                    ? (BASE_PRICE * plan.factor * plan.discount) / 100
+                    : 0)
+                ).toLocaleString()
+              }}/month</small
             >
           </li>
         </ol>
