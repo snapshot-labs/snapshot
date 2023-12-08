@@ -1,10 +1,9 @@
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { Contract } from '@ethersproject/contracts';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
-const BASE_PRICE = 100;
+const BASE_PRICE = 2000;
 const BASE_CURRENCY = {
   name: 'USD',
   symbol: '$'
@@ -24,7 +23,7 @@ const CURRENCIES = {
   USDC: {
     name: 'USD Coin',
     code: 'USDC',
-    decimal: 18,
+    decimal: 6,
     address: {
       1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       5: '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
@@ -36,7 +35,7 @@ const CURRENCIES = {
     decimal: 18,
     address: {
       1: '0x6b175474e89094c44da98b954eedeac495271d0f',
-      5: '0x73967c6a0904aa032c103b4104747e88c566b1a2'
+      5: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60'
     }
   }
 };
@@ -70,7 +69,6 @@ const fxRates = reactive({
 
 export function usePayment(network: number) {
   const auth = getInstance();
-  const provider = getProvider(network);
   const loading = ref(false);
   const { notify } = useFlashNotification();
   const {
@@ -118,8 +116,10 @@ export function usePayment(network: number) {
   }
 
   async function transferErc20(amount: BigNumber, address: string) {
-    const contract = new Contract(address, TRANSFER_ABI, provider);
-    return contract.transfer(SNAPSHOT_WALLET, amount);
+    return sendTransaction(auth.web3, address, TRANSFER_ABI, 'transfer', [
+      SNAPSHOT_WALLET,
+      amount
+    ]);
   }
 
   return {
