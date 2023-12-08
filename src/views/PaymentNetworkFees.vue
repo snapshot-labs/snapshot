@@ -8,7 +8,8 @@ const {
   BASE_CURRENCY,
   fxRates,
   transfer,
-  loading
+  loading,
+  txSent
 } = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
 const { web3Account } = useWeb3();
 
@@ -139,5 +140,6 @@ function computePrice(currencyFactor: number, planFactor: number) {
         {{ data.currency }} for {{ data.plan.label }}
       </TuneButton>
     </form>
+    <ModalPostPayment :open="txSent" />
   </TheLayout>
 </template>

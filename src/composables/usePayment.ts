@@ -66,6 +66,7 @@ const fxRates = reactive({
   USDC: 1,
   DAI: 1
 });
+const txSent = ref(false);
 
 export function usePayment(network: number) {
   const auth = getInstance();
@@ -94,6 +95,8 @@ export function usePayment(network: number) {
       } else {
         tx = await transferErc20(parsedAmount, currency.address[network]);
       }
+      console.log(tx);
+      txSent.value = true;
       updatePendingTransaction(txPendingId, { hash: tx.hash });
 
       const receipt = await tx.wait();
@@ -135,6 +138,7 @@ export function usePayment(network: number) {
     PLANS,
     transfer,
     fxRates,
-    loading
+    loading,
+    txSent
   };
 }
