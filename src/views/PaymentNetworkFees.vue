@@ -83,9 +83,7 @@ function computePrice(currencyFactor: number, planFactor: number) {
               }}{{
                 (
                   BASE_PRICE -
-                  (plan.discount
-                    ? (BASE_PRICE * plan.factor * plan.discount) / 100
-                    : 0)
+                  (plan.discount ? (BASE_PRICE * plan.discount) / 100 : 0)
                 ).toLocaleString()
               }}/month</small
             >

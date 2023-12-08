@@ -3,7 +3,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
-const BASE_PRICE = 2000;
+const BASE_PRICE = 1;
 const BASE_CURRENCY = {
   name: 'USD',
   symbol: '$'
@@ -80,11 +80,12 @@ export function usePayment(network: number) {
   async function transfer(amount: number, currencyCode: string) {
     loading.value = true;
     const currency = CURRENCIES[currencyCode];
-    const parsedAmount = parseUnits(amount.toString(), currency.decimal);
     const txPendingId = createPendingTransaction();
 
     try {
+      const parsedAmount = parseUnits(amount.toString(), currency.decimal);
       let tx;
+
       if (currencyCode === 'ETH') {
         tx = await transferEth(parsedAmount);
       } else {
