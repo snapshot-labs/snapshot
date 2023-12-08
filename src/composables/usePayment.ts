@@ -73,18 +73,30 @@ export function usePayment(network: number) {
   const provider = getProvider(network);
   const loading = ref(false);
   const { notify } = useFlashNotification();
+  const {
+    createPendingTransaction,
+    updatePendingTransaction,
+    removePendingTransaction
+  } = useTxStatus();
 
   async function transfer(amount: number, currencyCode: string) {
     loading.value = true;
     const currency = CURRENCIES[currencyCode];
     const parsedAmount = parseUnits(amount.toString(), currency.decimal);
+    const txPendingId = createPendingTransaction();
 
     try {
+      let tx;
       if (currencyCode === 'ETH') {
-        await transferEth(parsedAmount);
+        tx = await transferEth(parsedAmount);
       } else {
-        await transferErc20(parsedAmount, currency.address[network]);
+        tx = await transferErc20(parsedAmount, currency.address[network]);
       }
+      updatePendingTransaction(txPendingId, { hash: tx.hash });
+
+      const receipt = await tx.wait();
+
+      return receipt;
     } catch (e: any) {
       if (e.code === 'INSUFFICIENT_FUNDS') {
         return notify(['red', 'Insufficient funds']);
@@ -93,6 +105,7 @@ export function usePayment(network: number) {
       }
     } finally {
       loading.value = false;
+      removePendingTransaction(txPendingId);
     }
   }
 
