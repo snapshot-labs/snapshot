@@ -18,7 +18,7 @@ const CURRENCIES = {
   ETH: {
     name: 'Ethereum',
     code: 'ETH',
-    decimal: 'ether'
+    decimal: 18
   },
   USDC: {
     name: 'USD Coin',
@@ -83,7 +83,10 @@ export function usePayment(network: number) {
     const txPendingId = createPendingTransaction();
 
     try {
-      const parsedAmount = parseUnits(amount.toString(), currency.decimal);
+      const parsedAmount = parseUnits(
+        amount.toFixed(currency.decimal),
+        currency.decimal
+      );
       let tx;
 
       if (currencyCode === 'ETH') {
