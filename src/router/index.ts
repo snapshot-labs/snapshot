@@ -22,6 +22,7 @@ import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceTreasury from '@/views/SpaceTreasury.vue';
 import SpaceDelegates from '@/views/SpaceDelegates.vue';
 import SpaceDelegate from '@/views/SpaceDelegate.vue';
+import SpaceBoost from '@/views/SpaceBoost.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -73,6 +74,11 @@ const spaceRoutes = [
     path: 'delegate/:address?',
     name: 'spaceDelegate',
     component: SpaceDelegate
+  },
+  {
+    path: 'boost/:proposalId',
+    name: 'spaceBoost',
+    component: SpaceBoost
   }
 ];
 

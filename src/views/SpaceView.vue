@@ -78,9 +78,7 @@ onMounted(() => {
 
     <!-- Default page loading for none sidebar left layout space pages -->
     <TheLayout v-else class="!px-4">
-      <template #content-left>
-        <LoadingPage />
-      </template>
+      <LoadingSpinner class="overlay big animate-fade-in" />
     </TheLayout>
   </div>
 </template>
