@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
+import { PropType, ref } from 'vue';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
@@ -10,9 +10,19 @@ const props = defineProps<{
   address: string;
   weight: number;
   deleteDelegate: (index: number) => void;
+  index: number;
+  isError?: boolean;
+  spaceDelegates: PropType<
+    Array<{ space: ExtendedSpace; address: string; weight: number }>
+  >;
 }>();
 
-const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
+const emit = defineEmits([
+  'close',
+  'reload',
+  'deleteDelegate',
+  'update:modelValue'
+]);
 
 const {
   createPendingTransaction,
@@ -28,14 +38,18 @@ const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
 
 const form = ref({
-  to: ''
+  to: '',
+  error: props.isError,
+  weight: props.weight ?? 0
 });
 const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
-const localWeight = ref(props.weight);
+// const localWeight = ref(props.weight);
+// const displayWeight = ref(localWeight.value);
+// const error = ref(props.isError);
 
 const definition = computed(() => {
   return {
@@ -47,9 +61,12 @@ const definition = computed(() => {
         title: 'Delegate to',
         description: 'The address, ENS or Lens of who you want to delegate to',
         examples: ['Address, ENS or Lens']
+      },
+      weight: {
+        type: 'number'
       }
     },
-    required: ['to'],
+    required: ['to', 'weight'],
     additionalProperties: false
   };
 });
@@ -58,25 +75,44 @@ const validationErrors = computed(() => {
   return validateForm(
     definition.value || {},
     clone({
-      to: resolvedAddress.value
+      to: form.value.to,
+      weight: form.value.weight
     })
   );
 });
 
+console.log('validationErrors', validationErrors);
 const isValid = computed(() => {
   return Object.values(validationErrors.value).length === 0;
 });
 
 function handleWeightKeydown(e: KeyboardEvent) {
   if (e.key === 'ArrowUp' && e.shiftKey) {
-    localWeight.value += 10;
+    form.value.weight += 10;
   } else if (e.key === 'ArrowDown' && e.shiftKey) {
-    localWeight.value -= 10;
+    form.value.weight -= 10;
   } else if (e.key === 'ArrowUp') {
-    localWeight.value++;
+    form.value.weight++;
   } else if (e.key === 'ArrowDown') {
-    localWeight.value--;
+    form.value.weight--;
   }
+  if (e?.target) {
+    updateModelValue('', 'weight');
+  }
+}
+
+function updateModelValue(e: string | number, field: 'to' | 'weight') {
+  if (field.includes('to')) {
+    form.value.to = e as string;
+  }
+  if (field.includes('weight')) {
+    form.value.weight = e as number;
+  }
+  // emit('update:modelValue', {
+  //   to: form.value.to,
+  //   weight: form.value.weight,
+  //   isError: false
+  // });
 }
 
 async function handleConfirm() {
@@ -138,35 +174,38 @@ watch(
 );
 
 watch(
+  () => props.weight,
+  newWeight => {
+    form.value.weight = newWeight;
+  },
+  { immediate: true }
+);
+
+watch(
   web3Account,
   () => {
     loadAccountBalance();
   },
   { immediate: true }
 );
+console.log('form', form.value.to);
 </script>
 
 <template>
   <div class="items-end flex space-x-1">
     <div class="min-w-[66.7%] relative">
       <TuneInput
+        :v-model="form.to"
         :placeholder="definition.properties.to.examples[0]"
-        :class="{ 'tune-error-border': validationErrors }"
+        :class="{ 'tune-error-border': error }"
       />
-      <!-- <TuneInput
-        ref="addressRef"
-        v-model="form.to"
-        :label="definition.properties.to.title"
-        :hint="definition.properties.to.description"
-        :placeholder="definition.properties.to.examples[0]"
-        :error="validationErrors?.to"
-      /> -->
     </div>
     <div class="relative">
       <TuneInput
-        v-model="localWeight"
-        :class="['text-right pr-5', { 'tune-error-border': validationErrors }]"
-        @keydown="e => handleWeightKeydown(e, weight)"
+        :v-model="Math.round(form.weight)"
+        type="number"
+        :class="['text-right pr-5', { 'tune-error-border': error }]"
+        @keydown="e => handleWeightKeydown(e, form.weight.value)"
       />
       <div
         class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
@@ -181,5 +220,5 @@ watch(
       <i-ho-x class="text-[17px]" />
     </BaseButtonIcon>
   </div>
-  <TuneErrorInput v-if="validationErrors" :error="validationErrors?.to" />
+  <TuneErrorInput v-if="error" :error="validationErrors?.to" />
 </template>
