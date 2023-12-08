@@ -58,29 +58,5 @@ onMounted(() => {
 
     <router-view v-else :space="space" :space-key="spaceKey" />
   </template>
-  <div v-else>
-    <!-- Lazy loading skeleton for space page with left sidebar layout -->
-    <TheLayout
-      v-if="
-        $route.name === 'spaceProposals' ||
-        $route.name === 'spaceAbout' ||
-        $route.name === 'spaceTreasury' ||
-        $route.name === 'spaceDelegates'
-      "
-    >
-      <template #sidebar-left>
-        <SpaceSidebarSkeleton />
-      </template>
-      <template #content-right>
-        <LoadingRow block />
-      </template>
-    </TheLayout>
-
-    <!-- Default page loading for none sidebar left layout space pages -->
-    <TheLayout v-else class="!px-4">
-      <template #content-left>
-        <LoadingPage />
-      </template>
-    </TheLayout>
-  </div>
+  <LoadingSpinner v-else class="overlay big" />
 </template>
