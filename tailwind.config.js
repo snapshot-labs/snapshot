@@ -62,7 +62,8 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
-      lg: '2px 4px 9px var(--shadow-color)'
+      lg: '2px 4px 9px var(--shadow-color)',
+      xl: '7px 10.5px 28px 0px var(--shadow-color)'
     }
   },
   plugins: [

@@ -91,5 +91,7 @@ watch(validatedUserChoice, () => {
     >
       {{ $t('proposal.vote') }}
     </TuneButton>
+
+    <SpaceProposalVoteBoost :proposal="proposal" />
   </BaseBlock>
 </template>
