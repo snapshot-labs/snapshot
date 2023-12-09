@@ -39,9 +39,7 @@ function computePrice(currencyFactor: number, planFactor: number) {
 }
 
 watch(paymentTx, () => {
-  if (paymentTx.value) {
-    modalPostPaymentOpen.value = true;
-  }
+  modalPostPaymentOpen.value = !!paymentTx.value;
 });
 </script>
 
@@ -58,45 +56,46 @@ watch(paymentTx, () => {
       <fieldset>
         <legend><h2>Select your package</h2></legend>
         <ol class="grid grid-flow-col gap-3 justify-stretch">
-          <li
-            v-for="plan in PLANS"
-            :key="plan"
-            class="cursor-pointer border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-3"
-            :class="{
-              '!border-skin-primary': plan.label === data.plan.label
-            }"
-            @click="setData('plan', plan)"
-          >
-            <b>{{ plan.label }}</b>
-            <span
-              v-if="plan.discount"
-              class="bg-yellow-100/[.7] text-skin p-1 rounded text-sm ml-2"
+          <li v-for="plan in PLANS" :key="plan">
+            <a
+              href="#"
+              class="block border-skin-border md:rounded-xl md:border p-3"
+              :class="{
+                '!border-skin-primary': plan.label === data.plan.label
+              }"
+              @click.stop.prevent="setData('plan', plan)"
             >
-              Save {{ plan.discount }}%
-            </span>
-            <div>
-              <h4>
-                {{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
+              <b>{{ plan.label }}</b>
+              <span
+                v-if="plan.discount"
+                class="bg-yellow-100/[.7] p-1 rounded text-sm ml-2"
+              >
+                Save {{ plan.discount }}%
+              </span>
+              <div>
+                <h4>
+                  {{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
+                  }}{{
+                    (
+                      BASE_PRICE * plan.factor -
+                      (plan.discount
+                        ? (BASE_PRICE * plan.factor * plan.discount) / 100
+                        : 0)
+                    ).toLocaleString()
+                  }}
+                </h4>
+              </div>
+
+              <small
+                >{{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
                 }}{{
                   (
-                    BASE_PRICE * plan.factor -
-                    (plan.discount
-                      ? (BASE_PRICE * plan.factor * plan.discount) / 100
-                      : 0)
+                    BASE_PRICE -
+                    (plan.discount ? (BASE_PRICE * plan.discount) / 100 : 0)
                   ).toLocaleString()
-                }}
-              </h4>
-            </div>
-
-            <small
-              >{{ BASE_CURRENCY.name }} {{ BASE_CURRENCY.symbol
-              }}{{
-                (
-                  BASE_PRICE -
-                  (plan.discount ? (BASE_PRICE * plan.discount) / 100 : 0)
-                ).toLocaleString()
-              }}/month</small
-            >
+                }}/month</small
+              >
+            </a>
           </li>
         </ol>
       </fieldset>
@@ -105,27 +104,28 @@ watch(paymentTx, () => {
         <legend><h2>Select you currency</h2></legend>
 
         <ol class="grid grid-flow-col gap-3 justify-stretch">
-          <li
-            v-for="currency in CURRENCIES"
-            :key="currency"
-            class="cursor-pointer border border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-3"
-            :class="{
-              '!border-skin-primary': currency.code === data.currency
-            }"
-            @click="setData('currency', currency.code)"
-          >
-            <div>
-              <b>{{ currency.name }}</b>
-            </div>
-            <small>
-              ~{{
-                computePrice(
-                  fxRates[currency.code],
-                  data.plan.factor
-                ).toLocaleString()
-              }}
-              {{ currency.code }}
-            </small>
+          <li v-for="currency in CURRENCIES" :key="currency">
+            <a
+              href="#"
+              class="block border border-skin-border md:rounded-xl md:border p-3"
+              :class="{
+                '!border-skin-primary': currency.code === data.currency
+              }"
+              @click.stop.prevent="setData('currency', currency.code)"
+            >
+              <div>
+                <b>{{ currency.name }}</b>
+              </div>
+              <small>
+                ~{{
+                  computePrice(
+                    fxRates[currency.code],
+                    data.plan.factor
+                  ).toLocaleString()
+                }}
+                {{ currency.code }}
+              </small>
+            </a>
           </li>
         </ol>
       </fieldset>
