@@ -66,22 +66,16 @@ const fxRates = reactive({
   USDC: 1,
   DAI: 1
 });
-const txSent = ref(false);
+const paymentTx = ref(null);
 
 export function usePayment(network: number) {
   const auth = getInstance();
   const loading = ref(false);
   const { notify } = useFlashNotification();
-  const {
-    createPendingTransaction,
-    updatePendingTransaction,
-    removePendingTransaction
-  } = useTxStatus();
 
   async function transfer(amount: number, currencyCode: string) {
     loading.value = true;
     const currency = CURRENCIES[currencyCode];
-    const txPendingId = createPendingTransaction();
 
     try {
       const parsedAmount = parseUnits(
@@ -95,22 +89,18 @@ export function usePayment(network: number) {
       } else {
         tx = await transferErc20(parsedAmount, currency.address[network]);
       }
-      console.log(tx);
-      txSent.value = true;
-      updatePendingTransaction(txPendingId, { hash: tx.hash });
+      paymentTx.value = { network, ...tx };
+      loading.value = false;
 
-      const receipt = await tx.wait();
-
-      return receipt;
+      return await tx.wait();
     } catch (e: any) {
+      loading.value = false;
+
       if (e.code === 'INSUFFICIENT_FUNDS') {
         return notify(['red', 'Insufficient funds']);
       } else {
         console.error('Transfer error', e);
       }
-    } finally {
-      loading.value = false;
-      removePendingTransaction(txPendingId);
     }
   }
 
@@ -139,6 +129,6 @@ export function usePayment(network: number) {
     transfer,
     fxRates,
     loading,
-    txSent
+    paymentTx
   };
 }

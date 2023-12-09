@@ -9,15 +9,17 @@ const {
   fxRates,
   transfer,
   loading,
-  txSent
+  paymentTx
 } = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
 const { web3Account } = useWeb3();
+const modalPostPaymentOpen = ref(false);
 
 const data = reactive({
   tos: true,
   currency: DEFAULT_CURRENCY,
   plan: DEFAULT_PLAN
 });
+const paymentReceipt = ref(null);
 
 const amount = computed(() => {
   return computePrice(fxRates[data.currency], data.plan.factor);
@@ -27,13 +29,19 @@ function setData(key: string, value: any) {
   data[key] = value;
 }
 
-function pay() {
-  transfer(amount.value, data.currency);
+async function pay() {
+  paymentReceipt.value = await transfer(amount.value, data.currency);
 }
 
 function computePrice(currencyFactor: number, planFactor: number) {
   return currencyFactor * BASE_PRICE * planFactor;
 }
+
+watch(paymentTx, () => {
+  if (paymentTx.value) {
+    modalPostPaymentOpen.value = true;
+  }
+});
 </script>
 
 <template>
@@ -140,6 +148,11 @@ function computePrice(currencyFactor: number, planFactor: number) {
         {{ data.currency }} for {{ data.plan.label }}
       </TuneButton>
     </form>
-    <ModalPostPayment :open="txSent" />
+    <ModalPostPayment
+      :open="modalPostPaymentOpen"
+      :tx="paymentTx"
+      :receipt="paymentReceipt"
+      @close="modalPostPaymentOpen = false"
+    />
   </TheLayout>
 </template>
