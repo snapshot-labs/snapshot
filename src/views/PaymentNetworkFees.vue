@@ -15,7 +15,8 @@ const { web3Account } = useWeb3();
 const modalPostPaymentOpen = ref(false);
 
 const data = reactive({
-  tos: true,
+  tos: false,
+  contract_signed: false,
   currency: DEFAULT_CURRENCY,
   plan: DEFAULT_PLAN
 });
@@ -130,6 +131,13 @@ watch(paymentTx, () => {
       </fieldset>
 
       <TuneCheckbox
+        :id="'contract_signed'"
+        :model-value="data.contract_signed"
+        hint="I have signed the network contract"
+        @update:model-value="setData('contract_signed', $event as boolean)"
+      />
+
+      <TuneCheckbox
         :id="'tos'"
         :model-value="data.tos"
         hint="I agree to the terms and conditions"
@@ -138,7 +146,9 @@ watch(paymentTx, () => {
 
       <TuneButton
         primary
-        :disabled="!web3Account || !data.tos || loading"
+        :disabled="
+          !web3Account || !data.tos || !data.contract_signed || loading
+        "
         :type="'submit'"
         :loading="loading"
         @click="pay"
@@ -148,6 +158,7 @@ watch(paymentTx, () => {
         {{ data.currency }} for {{ data.plan.label }}
       </TuneButton>
     </form>
+
     <ModalPostPayment
       :open="modalPostPaymentOpen"
       :tx="paymentTx"
