@@ -55,14 +55,25 @@ const definition = computed(() => {
 const defaultSpaceDelegates = {
   address: props.address,
   space: props.space,
-  weight: 100,
-  isError: false
+  weight: 100
 };
 
-let spaceDelegates = ref([defaultSpaceDelegates]);
+const spaceDelegates = ref([defaultSpaceDelegates]);
 
-function deleteDelegate(index) {
-  spaceDelegates.value.splice(index, 1);
+function deleteDelegate(index: number) {
+  const delegates = clone(spaceDelegates.value);
+  delegates.splice(index, 1);
+  spaceDelegates.value = delegates;
+}
+
+function updateDelegate(index: number, form: { to: string; weight: number }) {
+  const delegates = clone(spaceDelegates.value);
+  delegates[index] = {
+    ...delegates[index],
+    address: form.to,
+    weight: form.weight
+  };
+  spaceDelegates.value = delegates;
 }
 
 function deleteAllDelegates() {
@@ -202,22 +213,21 @@ watch(
             {{ definition.properties.to.title }}
           </TuneLabelInput>
           <button
-            @click="divideEqually"
             class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
+            @click="divideEqually"
           >
             Divide equally
           </button>
         </div>
-        <div v-for="(delegate, index) in spaceDelegates" :key="index">
+        <div
+          v-for="(delegate, index) in spaceDelegates"
+          :key="`${delegate.address}-${delegate.weight}- ${index}`"
+        >
           <SpaceDelegateRow
             :address="delegate.address"
-            :space="delegate.space"
             :weight="delegate.weight"
-            :deleteDelegate="deleteDelegate"
-            :spaceDelegates="spaceDelegates"
-            :isError="delegate.isError"
-            :index="index"
-            @update:modelValue="e => console.log('spaceDelegate', e)"
+            @deleteDelegate="deleteDelegate(index)"
+            @update:modelValue="form => updateDelegate(index, form)"
           />
         </div>
         <div class="flex justify-between">
