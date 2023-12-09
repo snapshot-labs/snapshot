@@ -2,7 +2,7 @@
 import { TokenlistToken } from '@/helpers/interfaces';
 
 const props = defineProps<{
-  selectedToken: string;
+  selectedToken?: TokenlistToken;
   open: boolean;
   tokens: TokenlistToken[];
   network: string;
@@ -63,7 +63,7 @@ function handleTokenClick(token) {
           v-for="token in tokensFiltered"
           :key="token.address"
           :token="token"
-          :is-selected="token.address === selectedToken"
+          :is-selected="token.address === selectedToken?.address"
           :network="network"
           @select="handleTokenClick"
         />

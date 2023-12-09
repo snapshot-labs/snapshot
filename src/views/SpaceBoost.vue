@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, TokenlistToken } from '@/helpers/interfaces';
 import { getProposal } from '@/helpers/snapshot';
 
 const props = defineProps<{
@@ -9,12 +9,13 @@ const props = defineProps<{
 const route = useRoute();
 
 const proposal = ref();
-const tokens = ref();
+const tokens = ref<TokenlistToken[]>([]);
 const boostForm = ref({
   numberOfUsers: 'unlimited',
   eligibleUsers: 'anyone',
   network: '1',
-  tokenAddress: ''
+  tokenAddress: '',
+  totalAmount: ''
   //   type: ''
 });
 
@@ -57,6 +58,13 @@ async function fetchTokens(): Promise<any[]> {
   }
 }
 
+const selectedToken = computed(() => {
+  if (!tokens.value) return undefined;
+  return tokens.value.find(
+    (token: TokenlistToken) => token.address === boostForm.value.tokenAddress
+  );
+});
+
 onMounted(async () => {
   tokens.value = await fetchTokens();
 });
@@ -66,6 +74,7 @@ onMounted(async () => {
   <div>
     <SpaceBreadcrumbs :space="space" />
     <TheLayout reverse class="pt-[12px]">
+      {{ boostForm }}
       <template #content-left>
         <LoadingPage v-if="!proposal || !tokens" />
         <template v-else>
@@ -96,11 +105,26 @@ onMounted(async () => {
           </BaseBlock>
 
           <BaseBlock title="Deposit amount" class="mt-5">
-            <ButtonSelectToken
-              v-model:selected-token="boostForm.tokenAddress"
-              :network="boostForm.network"
-              :tokens="tokens"
-            />
+            <div class="flex gap-[12px]">
+              <ButtonSelectToken
+                :selected-token="selectedToken"
+                :network="boostForm.network"
+                :tokens="tokens"
+                @update:selected-token="boostForm.tokenAddress = $event"
+              />
+              <TuneInput
+                v-model="boostForm.totalAmount"
+                label="Total amount"
+                type="number"
+                placeholder="0.00"
+              >
+                <template #after>
+                  <div class="-mr-[8px]">
+                    {{ selectedToken?.symbol ?? '' }}
+                  </div>
+                </template>
+              </TuneInput>
+            </div>
           </BaseBlock>
           <BaseBlock title="Distribution" class="mt-5"> </BaseBlock>
           <BaseBlock title="Dates" class="mt-5"> </BaseBlock>

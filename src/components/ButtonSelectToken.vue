@@ -4,23 +4,19 @@ import { TokenlistToken } from '@/helpers/interfaces';
 const props = defineProps<{
   network: string;
   tokens: TokenlistToken[];
-  selectedToken: string;
+  selectedToken?: TokenlistToken;
 }>();
 
 defineEmits(['update:selectedToken']);
 
 const isTokenModalOpen = ref(false);
-
-const token = computed(() =>
-  props.tokens.find(token => token.address === props.selectedToken)
-);
 </script>
 
 <template>
   <TuneButtonSelect label="Token" @select="isTokenModalOpen = true">
-    <div v-if="token?.address" class="flex flex-row space-x-2">
-      <AvatarToken :address="token.address" />
-      <span v-if="token">{{ token.name }}</span>
+    <div v-if="selectedToken?.address" class="flex flex-row space-x-2">
+      <AvatarToken :address="selectedToken.address" />
+      <span v-if="selectedToken">{{ selectedToken.name }}</span>
     </div>
     <span v-else>Select token</span>
   </TuneButtonSelect>
