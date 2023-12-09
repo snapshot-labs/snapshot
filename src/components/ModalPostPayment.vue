@@ -76,5 +76,10 @@ defineEmits(['close']);
         View transaction in explorer
       </BaseLink>
     </div>
+    <template #footer>
+      <TuneButton type="button" class="w-full" primary @click="$emit('close')">
+        {{ $t('close') }}
+      </TuneButton>
+    </template>
   </BaseModal>
 </template>
