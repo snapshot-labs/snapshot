@@ -74,14 +74,15 @@ onMounted(async () => {
   <div>
     <SpaceBreadcrumbs :space="space" />
     <TheLayout reverse class="pt-[12px]">
-      {{ boostForm }}
       <template #content-left>
         <LoadingPage v-if="!proposal || !tokens" />
         <template v-else>
-          <h1>New boost</h1>
-          Incentivize people to vote on this proposal
+          <h1 class="leading-[44px]">New boost</h1>
+          <p class="text-md leading-5">
+            Incentivize people to vote on this proposal
+          </p>
 
-          <BaseBlock title="Eligibility" class="mt-5">
+          <BaseBlock title="Eligibility" class="mt-4">
             Number of eligible users
             <div class="flex gap-4 pt-1">
               <TuneRadio
@@ -104,7 +105,7 @@ onMounted(async () => {
             />
           </BaseBlock>
 
-          <BaseBlock title="Deposit amount" class="mt-5">
+          <BaseBlock title="Deposit amount" class="mt-3">
             <div class="flex gap-[12px]">
               <ButtonSelectToken
                 :selected-token="selectedToken"
@@ -126,12 +127,20 @@ onMounted(async () => {
               </TuneInput>
             </div>
           </BaseBlock>
-          <BaseBlock title="Distribution" class="mt-5"> </BaseBlock>
-          <BaseBlock title="Dates" class="mt-5"> </BaseBlock>
+          <BaseBlock title="Distribution" class="mt-3"> </BaseBlock>
+          <BaseBlock title="Dates" class="mt-3"> </BaseBlock>
         </template>
       </template>
 
-      <template #sidebar-right> Test </template>
+      <template #sidebar-right>
+        <div class="border rounded-xl p-4">
+          <h4>Create boost</h4>
+          <p class="text-md leading-5">
+            Boost can’t be changed after publishing, so please be sure.
+          </p>
+          <TuneButton primary class="w-full mt-4"> Confirm </TuneButton>
+        </div>
+      </template>
     </TheLayout>
   </div>
 </template>
