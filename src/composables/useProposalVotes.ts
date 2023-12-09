@@ -13,6 +13,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
 
   const loadingVotes = ref(false);
   const loadingMoreVotes = ref(false);
+  const loadingUserVote = ref(false);
   const votes = ref<Vote[]>([]);
   const userVote = ref<Vote | null>(null);
 
@@ -122,10 +123,13 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
 
   async function loadUserVote(voter: string) {
     try {
+      loadingUserVote.value = true;
       const response = await _fetchVote({ voter });
       userVote.value = formatProposalVotes(response)[0];
     } catch (e) {
       console.log(e);
+    } finally {
+      loadingUserVote.value = false;
     }
   }
 
@@ -135,6 +139,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
     profiles,
     loadingVotes,
     loadingMoreVotes,
+    loadingUserVote: computed(() => loadingUserVote.value),
     userVote,
     formatProposalVotes,
     loadVotes,

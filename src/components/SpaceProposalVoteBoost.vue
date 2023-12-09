@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="border rounded-xl py-[32px] mt-[32px]">
+  <div class="border rounded-xl py-[32px]">
     <div
       class="h-[56px] w-[56px] flex items-center justify-center rounded-[14px] shadow-xl mx-auto"
     >

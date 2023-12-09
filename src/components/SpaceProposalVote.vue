@@ -10,9 +10,11 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue', 'clickVote']);
 
 const { web3, web3Account } = useWeb3();
-const { userVote, loadUserVote } = useProposalVotes(props.proposal);
+const { userVote, loadUserVote, loadingUserVote } = useProposalVotes(
+  props.proposal
+);
 
-const key = ref(0);
+const isEditing = ref(false);
 
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
@@ -29,7 +31,7 @@ const validatedUserChoice = computed(() => {
       props.proposal.choices
     )
   ) {
-    return userVote.value.choice;
+    return userVote.value.choice as any;
   }
   return null;
 });
@@ -39,59 +41,85 @@ function emitChoice(c) {
 }
 
 watch(web3Account, loadUserVote, { immediate: true });
-
-watch(validatedUserChoice, () => {
-  key.value++;
-});
 </script>
 
 <template>
-  <BaseBlock class="mb-4" :title="$t('proposal.castVote')">
-    <div class="mb-3">
-      <SpaceProposalVoteSingleChoice
-        v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
-        :key="key"
-        :proposal="proposal"
-        :user-choice="validatedUserChoice as number"
-        @select-choice="emitChoice"
-      />
-      <SpaceProposalVoteApproval
-        v-if="proposal.type === 'approval'"
-        :key="key"
-        :proposal="proposal"
-        :user-choice="validatedUserChoice as number[]"
-        @select-choice="emitChoice"
-      />
-      <SpaceProposalVoteQuadratic
-        v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
-        :key="key"
-        :proposal="proposal"
-        :user-choice="validatedUserChoice as Record<string, number>"
-        @select-choice="emitChoice"
-      />
-      <SpaceProposalVoteRankedChoice
-        v-if="proposal.type === 'ranked-choice'"
-        :key="key"
-        :proposal="proposal"
-        :user-choice="validatedUserChoice as number[]"
-        @select-choice="emitChoice"
-      />
+  <BaseBlock
+    class="mb-4"
+    :title="
+      isEditing
+        ? 'Change your vote'
+        : validatedUserChoice
+          ? 'Your vote'
+          : 'Cast your vote'
+    "
+  >
+    <template #button>
+      <button
+        v-if="!isEditing && validatedUserChoice"
+        type="button"
+        class="flex items-center gap-1"
+        @click="isEditing = true"
+      >
+        <i-ho-pencil class="text-sm" />
+        Change vote
+      </button>
+    </template>
+    <div class="pb-2">
+      <LoadingList v-if="loadingUserVote" />
+      <template v-else>
+        <SpaceProposalVoteSingleChoice
+          v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
+          :proposal="proposal"
+          :user-choice="validatedUserChoice"
+          :is-editing="isEditing"
+          @select-choice="emitChoice"
+        />
+        <SpaceProposalVoteApproval
+          v-if="proposal.type === 'approval'"
+          :proposal="proposal"
+          :user-choice="validatedUserChoice"
+          :is-editing="isEditing"
+          @select-choice="emitChoice"
+        />
+        <SpaceProposalVoteQuadratic
+          v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
+          :proposal="proposal"
+          :user-choice="validatedUserChoice"
+          :is-editing="isEditing"
+          @select-choice="emitChoice"
+        />
+        <SpaceProposalVoteRankedChoice
+          v-if="proposal.type === 'ranked-choice'"
+          :proposal="proposal"
+          :user-choice="validatedUserChoice"
+          :is-editing="isEditing"
+          @select-choice="emitChoice"
+        />
+      </template>
     </div>
-    <TuneButton
-      :disabled="
-        web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval') ||
-        (selectedChoices < proposal.choices.length &&
-          proposal.type === 'ranked-choice')
-      "
-      class="block w-full"
-      primary
-      data-testid="proposal-vote-button"
-      @click="$emit('clickVote')"
+    <div
+      v-if="!loadingUserVote && (!validatedUserChoice || isEditing)"
+      class="pb-3 pt-2"
     >
-      {{ $t('proposal.vote') }}
-    </TuneButton>
+      <TuneButton
+        :disabled="
+          web3.authLoading ||
+          (selectedChoices < 1 && proposal.type !== 'approval') ||
+          (selectedChoices < proposal.choices.length &&
+            proposal.type === 'ranked-choice')
+        "
+        class="block w-full"
+        primary
+        data-testid="proposal-vote-button"
+        @click="$emit('clickVote')"
+      >
+        {{ $t('proposal.vote') }}
+      </TuneButton>
+    </div>
 
-    <SpaceProposalVoteBoost :proposal="proposal" />
+    <div class="pt-3">
+      <SpaceProposalVoteBoost :proposal="proposal" />
+    </div>
   </BaseBlock>
 </template>
