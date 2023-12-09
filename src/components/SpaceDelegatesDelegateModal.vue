@@ -77,7 +77,7 @@ function updateDelegate(index: number, form: { to: string; weight: number }) {
 }
 
 function deleteAllDelegates() {
-  spaceDelegates.value = [defaultSpaceDelegates];
+  spaceDelegates.value = [];
 }
 
 function addDelegate() {
@@ -208,7 +208,7 @@ watch(
         </div>
       </div>
       <div class="space-y-1">
-        <div class="flex justify-between">
+        <div class="flex justify-between" v-if="spaceDelegates.length > 0">
           <TuneLabelInput :hint="definition.properties.to.description">
             {{ definition.properties.to.title }}
           </TuneLabelInput>
@@ -236,6 +236,7 @@ watch(
             Add Delegate
           </TuneButton>
           <button
+            v-if="spaceDelegates.length > 0"
             class="text-red underline hover:opacity-50 text-xs bg-none"
             @click="deleteAllDelegates"
           >
