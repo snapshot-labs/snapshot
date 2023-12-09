@@ -1,55 +1,24 @@
 <script setup lang="ts">
-import { PropType, ref } from 'vue';
-import { ExtendedSpace } from '@/helpers/interfaces';
-import { watchDebounced } from '@vueuse/core';
+import { ref } from 'vue';
 import { validateForm } from '@/helpers/validation';
-import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+
+type DelegateRowForm = {
+  to: string;
+  weight: number;
+};
 
 const props = defineProps<{
-  space: ExtendedSpace;
   address: string;
   weight: number;
-  deleteDelegate: (index: number) => void;
-  index: number;
-  isError?: boolean;
-  spaceDelegates: PropType<
-    Array<{ space: ExtendedSpace; address: string; weight: number }>
-  >;
 }>();
 
-const emit = defineEmits([
-  'close',
-  'reload',
-  'deleteDelegate',
-  'update:modelValue'
-]);
+const emit = defineEmits(['deleteDelegate', 'update:modelValue']);
 
-const {
-  createPendingTransaction,
-  updatePendingTransaction,
-  removePendingTransaction
-} = useTxStatus();
-const { notify } = useFlashNotification();
-const { t } = useI18n();
-const { resolveName } = useResolveName();
-const { setDelegate, loadDelegateBalance, isLoadingDelegateBalance } =
-  useDelegates(props.space);
-const { formatCompactNumber } = useIntl();
-const { web3Account } = useWeb3();
-
-const form = ref({
-  to: '',
-  error: props.isError,
+const form = ref<DelegateRowForm>({
+  to: props.address,
   weight: props.weight ?? 0
 });
-const resolvedAddress = ref('');
-const isResolvingName = ref(false);
-const addressRef = ref();
-const isAwaitingSignature = ref(false);
-const accountBalance = ref('');
-// const localWeight = ref(props.weight);
-// const displayWeight = ref(localWeight.value);
-// const error = ref(props.isError);
 
 const definition = computed(() => {
   return {
@@ -63,7 +32,8 @@ const definition = computed(() => {
         examples: ['Address, ENS or Lens']
       },
       weight: {
-        type: 'number'
+        type: 'number',
+        format: 'percentage'
       }
     },
     required: ['to', 'weight'],
@@ -72,103 +42,41 @@ const definition = computed(() => {
 });
 
 const validationErrors = computed(() => {
-  return validateForm(
-    definition.value || {},
-    clone({
-      to: form.value.to,
-      weight: form.value.weight
-    })
-  );
+  return validateForm(definition.value || {}, clone(form.value));
 });
 
-console.log('validationErrors', validationErrors);
-const isValid = computed(() => {
-  return Object.values(validationErrors.value).length === 0;
-});
+const updateFormValue = <T extends keyof DelegateRowForm>(
+  value: DelegateRowForm[T],
+  field: T
+) => {
+  form.value[field] = value;
+  emit('update:modelValue', clone(form.value));
+};
 
-function handleWeightKeydown(e: KeyboardEvent) {
-  if (e.key === 'ArrowUp' && e.shiftKey) {
-    form.value.weight += 10;
-  } else if (e.key === 'ArrowDown' && e.shiftKey) {
-    form.value.weight -= 10;
-  } else if (e.key === 'ArrowUp') {
-    form.value.weight++;
-  } else if (e.key === 'ArrowDown') {
-    form.value.weight--;
-  }
-  if (e?.target) {
-    updateModelValue('', 'weight');
-  }
-}
+// function handleWeightKeydown(e: KeyboardEvent) {
+//   let increment = 0;
 
-function updateModelValue(e: string | number, field: 'to' | 'weight') {
-  if (field.includes('to')) {
-    form.value.to = e as string;
-  }
-  if (field.includes('weight')) {
-    form.value.weight = e as number;
-  }
-  // emit('update:modelValue', {
-  //   to: form.value.to,
-  //   weight: form.value.weight,
-  //   isError: false
-  // });
-}
+//   if (e.key === 'ArrowUp' && e.shiftKey) {
+//     increment = 10;
+//   } else if (e.key === 'ArrowDown' && e.shiftKey) {
+//     increment = -10;
+//   } else if (e.key === 'ArrowUp') {
+//     increment = 1;
+//   } else if (e.key === 'ArrowDown') {
+//     increment = -1;
+//   }
 
-async function handleConfirm() {
-  if (!isValid.value) {
-    addressRef?.value?.forceShowError();
-    return;
-  }
-
-  const txPendingId = createPendingTransaction();
-  try {
-    isAwaitingSignature.value = true;
-    const tx = await setDelegate(resolvedAddress.value);
-    isAwaitingSignature.value = false;
-    updatePendingTransaction(txPendingId, { hash: tx.hash });
-    emit('close');
-    notify(t('notify.transactionSent'));
-    const receipt = await tx.wait();
-    console.log('Receipt', receipt);
-    await sleep(3e3);
-    notify(t('notify.delegationAdded'));
-    removePendingTransaction(txPendingId);
-    emit('reload');
-  } catch (e) {
-    console.log(e);
-    isAwaitingSignature.value = false;
-    removePendingTransaction(txPendingId);
-  }
-}
-
-async function resolveToAddress(value: string) {
-  if (value) {
-    isResolvingName.value = true;
-    resolvedAddress.value = '';
-    resolvedAddress.value = (await resolveName(value)) || '';
-    isResolvingName.value = false;
-  }
-}
-
-async function loadAccountBalance() {
-  const balance = await loadDelegateBalance(web3Account.value);
-  accountBalance.value = balance || '0';
-}
-
-watchDebounced(
-  () => form.value.to,
-  async value => {
-    resolveToAddress(value);
-  },
-  { debounce: 300 }
-);
+//   const newWeight = form.value.weight + increment;
+//   if (newWeight < 0 || newWeight > 100) {
+//     return;
+//   }
+//   handleWeightUpdate(newWeight);
+// }
 
 watch(
   () => props.address,
-  () => {
-    form.value.to = props.address;
-    resolvedAddress.value = props.address;
+  newAddress => {
+    form.value.to = newAddress;
   },
   { immediate: true }
 );
@@ -180,33 +88,32 @@ watch(
   },
   { immediate: true }
 );
-
-watch(
-  web3Account,
-  () => {
-    loadAccountBalance();
-  },
-  { immediate: true }
-);
-console.log('form', form.value.to);
 </script>
 
 <template>
   <div class="items-end flex space-x-1">
     <div class="min-w-[66.7%] relative">
       <TuneInput
-        :v-model="form.to"
+        :model-value="form.to"
         :placeholder="definition.properties.to.examples[0]"
-        :class="{ 'tune-error-border': error }"
+        :class="{ 'tune-error-border': validationErrors?.to && form.to }"
+        @update:model-value="event => updateFormValue(event, 'to')"
       />
     </div>
     <div class="relative">
+      {{ console.log('validationErrors', validationErrors) }}
       <TuneInput
-        :v-model="Math.round(form.weight)"
+        :model-value="form.weight"
         type="number"
-        :class="['text-right pr-5', { 'tune-error-border': error }]"
-        @keydown="e => handleWeightKeydown(e, form.weight.value)"
+        :class="[
+          'text-right pr-5',
+          { 'tune-error-border': validationErrors?.weight }
+        ]"
+        @update:model-value="
+          event => updateFormValue(parseFloat(event), 'weight')
+        "
       />
+      <!-- @keydown="e => handleWeightKeydown(e)" -->
       <div
         class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
       >
@@ -215,10 +122,14 @@ console.log('form', form.value.to);
     </div>
     <BaseButtonIcon
       class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center hover:bg-gray-800"
-      @click="() => deleteDelegate(index)"
+      @click="() => $emit('deleteDelegate')"
     >
       <i-ho-x class="text-[17px]" />
     </BaseButtonIcon>
   </div>
-  <TuneErrorInput v-if="error" :error="validationErrors?.to" />
+  <TuneErrorInput
+    v-if="validationErrors && form.to"
+    :error="validationErrors?.to"
+  />
+  <TuneErrorInput v-if="validationErrors" :error="validationErrors?.weight" />
 </template>

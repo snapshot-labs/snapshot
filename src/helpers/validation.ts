@@ -25,6 +25,8 @@ function getErrorMessage(errorObject: ErrorObject): string {
         return 'Must be a valid URL.';
       case 'uri':
         return 'Must be a valid URL.';
+      case 'percentage':
+        return 'Percentage must be between 0 and 100.';
       default:
         return 'Invalid format.';
     }
@@ -55,6 +57,13 @@ export function validateForm(
 
   ajv.addFormat('long', {
     validate: () => true
+  });
+
+  ajv.addFormat('percentage', {
+    type: 'number',
+    validate: (value: number) => {
+      return value >= 0 && value <= 100;
+    }
   });
 
   ajv.addFormat('ethValue', {
@@ -132,7 +141,6 @@ function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
         output,
         path
       );
-
       targetObject[path[path.length - 1]] = getErrorMessage(error);
       return output;
     },
