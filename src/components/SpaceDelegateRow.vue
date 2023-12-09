@@ -121,7 +121,7 @@ watch(
       </div>
     </div>
     <BaseButtonIcon
-      class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center hover:bg-gray-800"
+      class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center tune-button"
       @click="() => $emit('deleteDelegate')"
     >
       <i-ho-x class="text-[17px]" />
