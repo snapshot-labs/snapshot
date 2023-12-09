@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  modelValue: string;
+  modelValue?: string;
   label?: string;
   hint?: string;
   disabled?: boolean;
@@ -26,10 +26,13 @@ const emit = defineEmits(['select']);
       :disabled="disabled"
       @click="disabled ? null : emit('select')"
     >
-      <span>
+      <template v-if="$slots.default">
+        <slot />
+      </template>
+      <span v-else>
         {{ modelValue }}
       </span>
-      <i-ho-chevron-down class="absolute inset-y-[12px] right-[14px] text-xs" />
+      <i-ho-chevron-down class="absolute inset-y-[12px] right-[14px] text-sm" />
     </TuneButton>
   </div>
 </template>
