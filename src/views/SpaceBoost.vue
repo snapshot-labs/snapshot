@@ -134,7 +134,7 @@ onMounted(async () => {
 
       <template #sidebar-right>
         <div class="border rounded-xl p-4">
-          <h4>Create boost</h4>
+          <h4 class="leading-5 mb-1">Create boost</h4>
           <p class="text-md leading-5">
             Boost can’t be changed after publishing, so please be sure.
           </p>
