@@ -30,7 +30,7 @@ const loading = ref<boolean>(false);
 const plugin = new Plugin();
 
 onMounted(async () => {
-  if (props.safes.length !== safeList.value.length) {
+  if (props.safes.length && props.safes.length !== safeList.value.length) {
     loading.value = true;
     const currentSafeList: SafeDetails[] = [];
 
