@@ -107,7 +107,6 @@ const updateSafeTransactions = () => {
 
   // Validates the converted safes
   const isValid = isValidInput({ safes: safeExecutionDataArray });
-
   // Emits the updated model
   emits('update:modelValue', {
     safes: safeExecutionDataArray,
@@ -135,9 +134,11 @@ const handleSafeSelected = (selectedSafe: SafeDetails) => {
 };
 
 const handleDeleteSafe = (safeToDelete: SafeDetails) => {
-  selectedSafes.value = selectedSafes.value.filter(
+  const safes = clone(selectedSafes.value);
+  const newSafeList = safes.filter(
     safe => safe.gnosisSafeAddress !== safeToDelete.gnosisSafeAddress
   );
+  selectedSafes.value = newSafeList;
   updateSafeTransactions();
 };
 </script>
@@ -163,6 +164,7 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
       class="mb-5 last:border-b-0"
     >
       <SafeTransactions
+        :key="`${safe.gnosisSafeAddress}-${safe.network}`"
         v-if="!preview || safe.txs.length > 0"
         :preview="preview"
         :proposal="proposal"
