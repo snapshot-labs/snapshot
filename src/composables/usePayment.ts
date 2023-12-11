@@ -76,9 +76,9 @@ export function usePayment(network: number) {
 
   refreshFx();
 
-  async function transfer(amount: number, currencyCode: string) {
+  async function transfer(amount: number, currencyId: string) {
     loading.value = true;
-    const currency = CURRENCIES[currencyCode];
+    const currency = CURRENCIES[currencyId];
 
     try {
       const parsedAmount = parseUnits(
@@ -87,7 +87,7 @@ export function usePayment(network: number) {
       );
       let tx;
 
-      if (currencyCode === 'ETH') {
+      if (currencyId === 'ethereum') {
         tx = await transferEth(parsedAmount);
       } else {
         tx = await transferErc20(parsedAmount, currency.address[network]);
