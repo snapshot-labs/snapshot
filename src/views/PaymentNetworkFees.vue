@@ -137,7 +137,7 @@ watch(paymentTx, () => {
                 size="24"
               />
               <div>
-                <b class="block">{{ currency.name }}</b>
+                <b class="block">{{ currency.code }}</b>
                 <small>
                   {{
                     formatCryptoCurrency(
