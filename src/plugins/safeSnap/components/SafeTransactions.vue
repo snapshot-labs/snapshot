@@ -369,7 +369,7 @@ export default {
         :connext-mod-address="connextModAddress"
       />
       <LoadingSpinner v-else />
-      <div class="cursor" @click="handleRemoveSafe">
+      <div v-if="!preview" class="cursor" @click="handleRemoveSafe">
         <i-ho-x class="ml-1" />
       </div>
     </h4>
