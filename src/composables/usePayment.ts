@@ -9,18 +9,18 @@ const BASE_CURRENCY = {
   symbol: '$'
 };
 
-const PLANS = [
-  { label: '1 year', factor: 12, discount: 20 },
-  { label: '6 months', factor: 6 },
-  { label: '3 months', factor: 3 }
-];
+const PLANS = {
+  '12': { label: '1 year', factor: 12, discount: 20 },
+  '6': { label: '6 months', factor: 6 },
+  '3': { label: '3 months', factor: 3 }
+};
 const CURRENCIES = {
-  ETH: {
+  ethereum: {
     name: 'Ethereum',
     code: 'ETH',
     decimal: 18
   },
-  USDC: {
+  'usd-coin': {
     name: 'USD Coin',
     code: 'USDC',
     decimal: 6,
@@ -29,7 +29,7 @@ const CURRENCIES = {
       5: '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
     }
   },
-  DAI: {
+  dai: {
     name: 'DAI',
     code: 'DAI',
     decimal: 18,
@@ -39,8 +39,8 @@ const CURRENCIES = {
     }
   }
 };
-const DEFAULT_CURRENCY = 'ETH';
-const DEFAULT_PLAN = PLANS[0];
+const DEFAULT_CURRENCY = 'ethereum';
+const DEFAULT_PLAN = '12';
 const TRANSFER_ABI = [
   {
     name: 'transfer',
@@ -61,17 +61,20 @@ const TRANSFER_ABI = [
   }
 ];
 const SNAPSHOT_WALLET = '0x91FD2c8d24767db4Ece7069AA27832ffaf8590f3';
-const fxRates = reactive({
-  ETH: 0.000424,
-  USDC: 1,
-  DAI: 1
-});
+const fxRates = reactive(
+  Object.fromEntries(Object.keys(CURRENCIES).map(id => [id, 0]))
+);
+const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple';
+const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
 const paymentTx = ref(null);
+const fxLoaded = ref(false);
 
 export function usePayment(network: number) {
   const auth = getInstance();
   const loading = ref(false);
   const { notify } = useFlashNotification();
+
+  refreshFx();
 
   async function transfer(amount: number, currencyCode: string) {
     loading.value = true;
@@ -119,6 +122,25 @@ export function usePayment(network: number) {
     ]);
   }
 
+  async function callCoinGecko(apiUrl: string) {
+    const res = await fetch(apiUrl);
+    return res.json();
+  }
+
+  async function refreshFx(): Promise<void> {
+    const data = await callCoinGecko(
+      `${COINGECKO_API_URL}/price?ids=${Object.keys(CURRENCIES)
+        .map(id => id)
+        .join(',')}${COINGECKO_PARAMS}`
+    );
+
+    fxLoaded.value = true;
+
+    Object.keys(data).map(id => {
+      fxRates[id] = data[id].usd;
+    });
+  }
+
   return {
     BASE_PRICE,
     BASE_CURRENCY,
@@ -129,6 +151,8 @@ export function usePayment(network: number) {
     transfer,
     fxRates,
     loading,
-    paymentTx
+    paymentTx,
+    refreshFx,
+    fxLoaded
   };
 }
