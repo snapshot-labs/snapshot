@@ -165,7 +165,6 @@ export default class Plugin {
       CONNEXT_MODULE_ABI,
       provider
     );
-    console.log('moduleContract <validateConnextMod>', await moduleContract);
 
     return moduleContract
       .connext()
@@ -539,11 +538,6 @@ export default class Plugin {
     moduleAddress: string,
     transactions: any
   ) {
-    console.log('web3 signer', web3.getSigner());
-    console.log('moduleAddress', moduleAddress);
-    console.log('UMA_MODULE_ABI', UMA_MODULE_ABI);
-    console.log('transactions', transactions);
-    console.log('[transactions]', [transactions]);
     const tx = await sendTransaction(
       web3,
       moduleAddress,
