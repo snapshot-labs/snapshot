@@ -249,7 +249,7 @@ const buttonStates = computed(() => {
         </BaseButton>
       </div>
 
-      <div v-if="showSimulation">
+      <div v-if="showSimulation && transactionBatchTypeSelected === 'connext'">
         <hr class="my-4 border-skin-border" />
         <SafeSnapSimulationTenderly
           :config="config"
