@@ -3,6 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { update } from 'lodash';
 
 const props = defineProps<{
   open: boolean;
@@ -10,7 +11,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close', 'reload']);
+const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
 
 const {
   createPendingTransaction,
@@ -43,13 +44,69 @@ const definition = computed(() => {
         format: 'address',
         title: 'Delegate to',
         description: 'The address, ENS or Lens of who you want to delegate to',
-        examples: ['Enter: Address, ENS or Lens']
+        examples: ['Address, ENS or Lens']
       }
     },
     required: ['to'],
     additionalProperties: false
   };
 });
+
+const defaultSpaceDelegates = {
+  address: props.address,
+  space: props.space,
+  weight: 100
+};
+
+const spaceDelegates = ref([defaultSpaceDelegates]);
+
+function deleteDelegate(index: number) {
+  const delegates = clone(spaceDelegates.value);
+  delegates.splice(index, 1);
+  spaceDelegates.value = delegates;
+}
+
+function updateDelegate(index: number, form: { to: string; weight: number }) {
+  const delegates = clone(spaceDelegates.value);
+  delegates[index] = {
+    ...delegates[index],
+    address: form.to,
+    weight: form.weight
+  };
+  spaceDelegates.value = delegates;
+}
+
+function deleteAllDelegates() {
+  spaceDelegates.value = [];
+}
+
+function addDelegate() {
+  const newDelegate = {
+    address: props.address,
+    space: props.space,
+    weight: 0
+  };
+
+  spaceDelegates.value.push(newDelegate);
+}
+
+function divideEqually() {
+  const numDelegates = spaceDelegates.value.length;
+  if (numDelegates === 0) return;
+
+  const equalWeight = 100 / numDelegates;
+
+  const updatedDelegates = spaceDelegates.value.map(delegate => ({
+    ...delegate,
+    weight: equalWeight
+  }));
+
+  const remainingWeight = 100 - equalWeight * numDelegates;
+  updatedDelegates[0].weight += remainingWeight;
+
+  spaceDelegates.value = updatedDelegates;
+  console.log(spaceDelegates.value);
+}
 
 const validationErrors = computed(() => {
   return validateForm(
@@ -136,16 +193,9 @@ watch(
     <template #header>
       <div class="px-4 pt-1 text-left text-skin-heading">
         <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
-        <span>{{ $t('delegates.delegateModal.sub') }}</span>
-        <LoadingSpinner
-          v-if="isLoadingDelegateBalance"
-          class="inline-block pl-2"
-          small
-        />
-        <span v-else>
-          {{ formatCompactNumber(Number(accountBalance)) }}
-          {{ space.symbol }}
-        </span>
+        <span class="text-gray-500">{{
+          $t('delegates.delegateModal.sub')
+        }}</span>
       </div>
     </template>
 
@@ -157,15 +207,43 @@ watch(
           <span class="text-skin-heading"> {{ space.name }} </span>
         </div>
       </div>
-
-      <TuneInput
-        ref="addressRef"
-        v-model="form.to"
-        :label="definition.properties.to.title"
-        :hint="definition.properties.to.description"
-        :placeholder="definition.properties.to.examples[0]"
-        :error="validationErrors?.to"
-      />
+      <div class="space-y-1">
+        <div class="flex justify-between" v-if="spaceDelegates.length > 0">
+          <TuneLabelInput :hint="definition.properties.to.description">
+            {{ definition.properties.to.title }}
+          </TuneLabelInput>
+          <button
+            class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
+            @click="divideEqually"
+          >
+            Divide equally
+          </button>
+        </div>
+        <div
+          v-for="(delegate, index) in spaceDelegates"
+          :key="`${delegate.address}-${delegate.weight}- ${index}`"
+        >
+          <SpaceDelegateRow
+            :address="delegate.address"
+            :weight="delegate.weight"
+            @deleteDelegate="deleteDelegate(index)"
+            @update:modelValue="form => updateDelegate(index, form)"
+          />
+        </div>
+        <div class="flex justify-between">
+          <TuneButton class="text-skin-link items-center" @click="addDelegate">
+            <i-ho-plus class="text-xs mr-2" />
+            Add Delegate
+          </TuneButton>
+          <button
+            v-if="spaceDelegates.length > 0"
+            class="text-red underline hover:opacity-50 text-xs bg-none"
+            @click="deleteAllDelegates"
+          >
+            Clear all delegations
+          </button>
+        </div>
+      </div>
     </div>
 
     <template #footer>
