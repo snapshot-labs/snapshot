@@ -36,6 +36,10 @@ const validatedUserChoice = computed(() => {
   return null;
 });
 
+const votedAndShutter = computed(
+  () => props.proposal.privacy === 'shutter' && userVote.value
+);
+
 function emitChoice(c) {
   emit('update:modelValue', c);
 }
@@ -47,16 +51,12 @@ watch(web3Account, loadUserVote, { immediate: true });
   <BaseBlock
     class="mb-4"
     :title="
-      isEditing
-        ? 'Change your vote'
-        : validatedUserChoice
-          ? 'Your vote'
-          : 'Cast your vote'
+      isEditing ? 'Change your vote' : userVote ? 'Your vote' : 'Cast your vote'
     "
   >
     <template #button>
       <button
-        v-if="!isEditing && validatedUserChoice"
+        v-if="!isEditing && userVote"
         type="button"
         class="flex items-center gap-1"
         @click="isEditing = true"
@@ -65,43 +65,55 @@ watch(web3Account, loadUserVote, { immediate: true });
         Change vote
       </button>
     </template>
-    <div class="pb-2">
-      <LoadingList v-if="loadingUserVote" />
-      <template v-else>
-        <SpaceProposalVoteSingleChoice
-          v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
-          :proposal="proposal"
-          :user-choice="validatedUserChoice"
-          :is-editing="isEditing"
-          @select-choice="emitChoice"
-        />
-        <SpaceProposalVoteApproval
-          v-if="proposal.type === 'approval'"
-          :proposal="proposal"
-          :user-choice="validatedUserChoice"
-          :is-editing="isEditing"
-          @select-choice="emitChoice"
-        />
-        <SpaceProposalVoteQuadratic
-          v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
-          :proposal="proposal"
-          :user-choice="validatedUserChoice"
-          :is-editing="isEditing"
-          @select-choice="emitChoice"
-        />
-        <SpaceProposalVoteRankedChoice
-          v-if="proposal.type === 'ranked-choice'"
-          :proposal="proposal"
-          :user-choice="validatedUserChoice"
-          :is-editing="isEditing"
-          @select-choice="emitChoice"
-        />
-      </template>
-    </div>
-    <div
-      v-if="!loadingUserVote && (!validatedUserChoice || isEditing)"
-      class="pb-3 pt-2"
+    <LoadingList v-if="loadingUserVote" />
+    <BaseBlock
+      v-else-if="votedAndShutter && !isEditing"
+      level="info"
+      class="!pb-0"
     >
+      <i-ho-lock-closed class="inline-block text-sm" />
+      Your vote is encrypted with Shutter privacy until the proposal ends. You
+      can still change it until then.
+    </BaseBlock>
+    <BaseMessageBlock
+      v-else-if="userVote && !validatedUserChoice && !isEditing"
+      level="info"
+    >
+      Oops, we were unable to validate your vote. Please try voting again or
+      consider opening a ticket with our support team on
+      <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+    </BaseMessageBlock>
+    <div v-else class="pb-2">
+      <SpaceProposalVoteSingleChoice
+        v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
+        :proposal="proposal"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing"
+        @select-choice="emitChoice"
+      />
+      <SpaceProposalVoteApproval
+        v-if="proposal.type === 'approval'"
+        :proposal="proposal"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing"
+        @select-choice="emitChoice"
+      />
+      <SpaceProposalVoteQuadratic
+        v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
+        :proposal="proposal"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing"
+        @select-choice="emitChoice"
+      />
+      <SpaceProposalVoteRankedChoice
+        v-if="proposal.type === 'ranked-choice'"
+        :proposal="proposal"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing"
+        @select-choice="emitChoice"
+      />
+    </div>
+    <div v-if="!loadingUserVote && (!userVote || isEditing)" class="pt-2">
       <TuneButton
         :disabled="
           web3.authLoading ||
@@ -116,10 +128,6 @@ watch(web3Account, loadUserVote, { immediate: true });
       >
         {{ $t('proposal.vote') }}
       </TuneButton>
-    </div>
-
-    <div class="pt-3">
-      <SpaceProposalVoteBoost :proposal="proposal" />
     </div>
   </BaseBlock>
 </template>
