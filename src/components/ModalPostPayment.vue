@@ -30,7 +30,9 @@ defineEmits(['close']);
         Copy transaction hash
       </TuneButton>
 
-      <BaseLink :link="explorerUrl(tx.network, tx.hash as string, 'tx')">
+      <BaseLink
+        :link="explorerUrl(tx.network.toString(), tx.hash as string, 'tx')"
+      >
         View transaction in explorer
       </BaseLink>
     </div>
