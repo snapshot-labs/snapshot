@@ -1,5 +1,6 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
 import { DelegationReader } from '../delegation';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const DELEGATE_REGISTRY_BACKEND_URL = 'http://localhost:3000'; // 'https://delegate-registry-backend.vercel.app';
 
@@ -68,8 +69,12 @@ const getDelegate =
 
 const getBalance =
   (space: ExtendedSpace): DelegationReader['getBalance'] =>
-  async (id: string) => {
-    return '0';
+  async (address: string) => {
+    const response = (await fetch(
+      `${DELEGATE_REGISTRY_BACKEND_URL}/api/${space.id}/latest/delegates/${address}`
+    ).then(res => res.json())) as DelegateDetailsFromDRV2;
+
+    return response.totalVoteWeight;
   };
 
 type DelegateToFromDRV2 = {
