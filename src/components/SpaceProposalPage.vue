@@ -178,13 +178,18 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
               </template>
             </BlockLink>
           </div>
+
           <SpaceProposalVote
             v-model="selectedChoices"
             :proposal="proposal"
             @open="modalOpen = true"
             @click-vote="clickVote"
           />
+
+          <SpaceProposalBoost :proposal="proposal" />
+
           <SpaceProposalVotesList :space="space" :proposal="proposal" />
+
           <SpaceProposalPlugins
             v-if="proposal?.plugins && loadedResults && results"
             :id="proposalId"
