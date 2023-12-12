@@ -4,15 +4,8 @@ import {
   DelegatesProposal,
   ExtendedSpace
 } from '@/helpers/interfaces';
-import { createStandardConfig } from '@/helpers/delegation/index';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { setupDelegation as getDelegationAdapter } from '@/helpers/delegation/index';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
-import {
-  subgraphRequest,
-  sendTransaction
-} from '@snapshot-labs/snapshot.js/src/utils';
-import { call } from '@snapshot-labs/snapshot.js/src/utils';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 type DelegatesStats = Record<
   string,
@@ -21,26 +14,15 @@ type DelegatesStats = Record<
 
 const DELEGATES_LIMIT = 18;
 
-function adjustUrl(apiUrl: string) {
-  const hostedPattern =
-    /https:\/\/thegraph\.com\/hosted-service\/subgraph\/([\w-]+)\/([\w-]+)/;
-  const hostedMatch = apiUrl.match(hostedPattern);
-
-  return hostedMatch
-    ? `https://api.thegraph.com/subgraphs/name/${hostedMatch[1]}/${hostedMatch[2]}`
-    : apiUrl;
-}
-
 export function useDelegates(space: ExtendedSpace) {
   const { resolveName } = useResolveName();
   const { apolloQuery } = useApolloQuery();
-  const auth = getInstance();
   const { loadStatements } = useStatement();
   const { loadProfiles } = useProfiles();
 
-  const standardConfig = createStandardConfig(
-    space.delegationPortal.delegationType
-  );
+  console.log('space', space);
+
+  const { reader, writer } = getDelegationAdapter(space);
 
   const delegates = ref<DelegateWithPercent[]>([]);
   const delegate = ref<DelegateWithPercent | null>(null);
@@ -54,36 +36,9 @@ export function useDelegates(space: ExtendedSpace) {
   const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
 
-  async function loadExtraDelegateData(spaceId: string, delegates: string[]) {
-    loadProfiles(delegates);
-    await Promise.all([
-      fetchDelegateVotesAndProposals(spaceId, delegates),
-      loadStatements(spaceId, delegates)
-    ]);
-  }
-
   async function fetchDelegateBatch(orderBy: string, skip = 0) {
     hasDelegatesLoadFailed.value = false;
-
-    const query: any = standardConfig.getDelegatesQuery({
-      skip,
-      first: DELEGATES_LIMIT,
-      orderBy
-    });
-
-    const response = await subgraphRequest(
-      adjustUrl(space.delegationPortal.delegationApi),
-      query
-    );
-
-    const formattedResponse = standardConfig.formatDelegatesResponse(response);
-
-    await loadExtraDelegateData(
-      space.id,
-      formattedResponse.map(d => d.id)
-    );
-
-    return formattedResponse;
+    return reader.getDelegates(DELEGATES_LIMIT, skip, orderBy);
   }
 
   async function loadDelegates(orderBy: string) {
@@ -92,9 +47,7 @@ export function useDelegates(space: ExtendedSpace) {
 
     try {
       const response = await fetchDelegateBatch(orderBy);
-
       delegates.value = response;
-
       hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
     } catch (err) {
       console.error(err);
@@ -113,9 +66,7 @@ export function useDelegates(space: ExtendedSpace) {
         orderBy,
         delegates.value.length
       );
-
       delegates.value = [...delegates.value, ...response];
-
       hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
     } catch (err) {
       console.error(err);
@@ -125,32 +76,17 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function loadDelegate(id: string) {
+  async function loadDelegate(addressOrEns: string) {
     hasDelegatesLoadFailed.value = false;
 
     if (isLoadingDelegate.value) return;
     delegate.value = null;
     isLoadingDelegate.value = true;
     try {
-      resolvedAddress.value = await resolveName(id);
-
+      resolvedAddress.value = await resolveName(addressOrEns);
       if (!resolvedAddress.value) return;
-      const query: any = standardConfig.getDelegateQuery(resolvedAddress.value);
-
-      const response = await subgraphRequest(
-        adjustUrl(space.delegationPortal.delegationApi),
-        query
-      );
-
-      if (resolvedAddress.value && !response.delegate)
-        response.delegate = standardConfig.initEmptyDelegate(
-          resolvedAddress.value
-        );
-
-      if (response.delegate) {
-        delegate.value = standardConfig.formatDelegateResponse(response);
-        await loadExtraDelegateData(space.id, [delegate.value.id]);
-      }
+      const response = await reader.getDelegate(resolvedAddress.value);
+      delegate.value = response;
     } catch (err) {
       console.error(err);
       hasDelegatesLoadFailed.value = true;
@@ -160,15 +96,9 @@ export function useDelegates(space: ExtendedSpace) {
   }
 
   async function loadDelegateBalance(id: string) {
-    const query: any = standardConfig.getBalanceQuery(id.toLowerCase());
-
     try {
       isLoadingDelegateBalance.value = true;
-      const response = await subgraphRequest(
-        adjustUrl(space.delegationPortal.delegationApi),
-        query
-      );
-      return standardConfig.formatBalanceResponse(response);
+      return await reader.getBalance(id.toLowerCase());
     } catch (err) {
       console.error(err);
     } finally {
@@ -176,30 +106,15 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function setDelegate(address: string) {
-    const contractMethod = standardConfig.getContractDelegateMethod();
-    const tx = await sendTransaction(
-      auth.web3,
-      space.delegationPortal.delegationContract,
-      contractMethod.abi,
-      contractMethod.action,
-      [address]
-    );
-    return tx;
+  async function setDelegates(addresses: string[], ratio?: number[]) {
+    return writer.sendSetDelegationTx(addresses, ratio);
   }
 
   async function fetchDelegatingTo(address: string) {
     if (!address) return;
     isLoadingDelegatingTo.value = true;
     try {
-      const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
-      const contractMethod = standardConfig.getContractDelegatingToMethod();
-      const provider = getProvider(space.network, { broviderUrl });
-      return await call(provider, contractMethod.abi, [
-        space.delegationPortal.delegationContract,
-        contractMethod.action,
-        [address]
-      ]);
+      return await reader.getDelegatingTo(address);
     } catch (err) {
       console.error(err);
     } finally {
@@ -265,7 +180,7 @@ export function useDelegates(space: ExtendedSpace) {
     loadDelegate,
     loadDelegates,
     fetchMoreDelegates,
-    setDelegate,
+    setDelegates,
     loadDelegateBalance,
     fetchDelegateVotesAndProposals,
     fetchDelegatingTo
