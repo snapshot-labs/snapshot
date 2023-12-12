@@ -67,67 +67,72 @@ watch(paymentTx, () => {
 </script>
 
 <template>
-  <TheLayout>
-    <BaseMessageBlock v-if="!web3Account" level="warning">
-      Connect your wallet
+  <TheLayout class="max-w-lg">
+    <BaseMessageBlock v-if="!web3Account" level="warning" class="mb-3">
+      Connect your wallet first to proceed
     </BaseMessageBlock>
 
     <h1>Network fees</h1>
-    Pay to support your network on Snapshot
+    <span class="text-lg">Pay to support your network on Snapshot</span>
 
     <form v-if="fxLoaded" class="flex flex-col mt-4 gap-4" @submit="pay">
       <fieldset>
-        <legend class="mb-2"><h2>Select your package</h2></legend>
-        <ol class="grid grid-flow-col justify-stretch gap-3">
+        <legend class="mb-2">
+          <h2 class="text-lg">Select your package</h2>
+        </legend>
+        <ol class="flex flex-col gap-2">
           <li v-for="(plan, planId) in PLANS" :key="planId">
             <a
               href="#"
-              class="block border-skin-border md:rounded-xl md:border p-3"
+              class="flex gap-3 border-skin-border md:rounded-xl md:border p-3"
               :class="{
                 '!border-skin-primary': planId === data.plan
               }"
               @click.stop.prevent="setData('plan', planId)"
             >
-              <b>{{ plan.label }}</b>
-              <span
-                v-if="plan.discount"
-                class="bg-yellow-100/[.7] p-1 rounded text-sm ml-2"
-              >
-                Save {{ plan.discount }}%
-              </span>
-              <div>
-                <h4>
+              <TuneRadio :value="planId" :model-value="data.plan" />
+              <div class="flex-grow">
+                <b>{{ plan.label }}</b>
+                <BasePill
+                  v-if="plan.discount"
+                  class="ml-2 py-1 !bg-skin-primary"
+                >
+                  Save {{ plan.discount }}%
+                </BasePill>
+                <small class="block text-skin-text">
                   {{
-                    formatFiatCurrency(
-                      computeFiatPrice(plan.factor, plan.discount)
-                    )
-                  }}
-                </h4>
+                    formatFiatCurrency(computeFiatPrice(1, plan.discount))
+                  }}/month
+                </small>
               </div>
-
-              <small>
+              <span>
                 {{
-                  formatFiatCurrency(computeFiatPrice(1, plan.discount))
-                }}/month
-              </small>
+                  formatFiatCurrency(
+                    computeFiatPrice(plan.factor, plan.discount)
+                  )
+                }}
+              </span>
             </a>
           </li>
         </ol>
       </fieldset>
 
       <fieldset>
-        <legend class="mb-2"><h2>Select your currency</h2></legend>
+        <legend class="mb-2">
+          <h2 class="text-lg">Select your currency</h2>
+        </legend>
 
-        <ol class="grid grid-flow-col gap-3 justify-stretch">
+        <ol class="flex flex-col gap-2">
           <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
             <a
               href="#"
-              class="flex border border-skin-border gap-3 md:rounded-xl md:border p-3"
+              class="flex align-center border border-skin-border gap-3 md:rounded-xl md:border p-3"
               :class="{
                 '!border-skin-primary': currencyId === data.currency
               }"
               @click.stop.prevent="setData('currency', currencyId)"
             >
+              <TuneRadio :value="currencyId" :model-value="data.currency" />
               <BaseAvatar
                 :src="
                   snapshot.utils.getUrl(
@@ -136,20 +141,16 @@ watch(paymentTx, () => {
                 "
                 size="24"
               />
-              <div>
-                <b class="block">{{ currency.code }}</b>
-                <small>
-                  {{
-                    formatCryptoCurrency(
-                      computePrice(
-                        fxRates[currencyId],
-                        PLANS[data.plan].factor
-                      ),
-                      currency
-                    )
-                  }}
-                </small>
-              </div>
+
+              <b class="flex-grow">{{ currency.code }}</b>
+              <small>
+                {{
+                  formatCryptoCurrency(
+                    computePrice(fxRates[currencyId], PLANS[data.plan].factor),
+                    currency
+                  )
+                }}
+              </small>
             </a>
           </li>
         </ol>
