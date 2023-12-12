@@ -10,9 +10,9 @@ const BASE_CURRENCY = {
 };
 
 const PLANS = {
-  '12': { label: '1 year', factor: 12, discount: 20 },
-  '6': { label: '6 months', factor: 6 },
-  '3': { label: '3 months', factor: 3 }
+  y1: { label: '1 year', factor: 12, discount: 20 },
+  m6: { label: '6 months', factor: 6 },
+  m3: { label: '3 months', factor: 3 }
 };
 const CURRENCIES = {
   ethereum: {
@@ -40,7 +40,7 @@ const CURRENCIES = {
   }
 };
 const DEFAULT_CURRENCY = 'ethereum';
-const DEFAULT_PLAN = '12';
+const DEFAULT_PLAN = 'y1';
 const TRANSFER_ABI = [
   {
     name: 'transfer',
