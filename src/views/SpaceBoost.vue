@@ -11,8 +11,8 @@ const route = useRoute();
 const proposal = ref();
 const tokens = ref<TokenlistToken[]>([]);
 const boostForm = ref({
-  numberOfUsers: 'unlimited',
-  eligibleUsers: 'anyone',
+  limit: 'unlimited',
+  eligibility: 'anyone',
   network: '1',
   tokenAddress: '',
   totalAmount: ''
@@ -86,19 +86,19 @@ onMounted(async () => {
             Number of eligible users
             <div class="flex gap-4 pt-1">
               <TuneRadio
-                v-model="boostForm.numberOfUsers"
+                v-model="boostForm.limit"
                 value="unlimited"
                 hint="Unlimited"
               />
               <TuneRadio
-                v-model="boostForm.numberOfUsers"
+                v-model="boostForm.limit"
                 value="fixed"
                 hint="First x voters only"
               />
             </div>
 
             <TuneListbox
-              v-model="boostForm.eligibleUsers"
+              v-model="boostForm.eligibility"
               :items="eligibilityOptions"
               label="Eligible users"
               class="mt-3"
