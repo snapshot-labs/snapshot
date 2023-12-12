@@ -134,11 +134,7 @@ watch(paymentTx, () => {
             >
               <TuneRadio :value="currencyId" :model-value="data.currency" />
               <BaseAvatar
-                :src="
-                  snapshot.utils.getUrl(
-                    'ipfs://QmR2UYZczmYa4s8mr9HZHci5AQwyAnwUW7tSUZz7KWF3sA'
-                  )
-                "
+                :src="snapshot.utils.getUrl(currency.logo)"
                 size="24"
               />
 
