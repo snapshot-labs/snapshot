@@ -21,10 +21,8 @@ defineEmits(['close']);
         below and use on the payment form as proof of payment.
       </p>
 
-      <div
-        class="w-full items-center rounded-lg border p-4 py-3 !text-skin-text"
-      >
-        <b class="font-mono break-all text-lg">{{ tx.hash }}</b>
+      <div class="w-full items-center rounded-lg border p-4">
+        <b class="font-mono break-all text-lg text-skin-link">{{ tx.hash }}</b>
       </div>
       <TuneButton primary @click="copyToClipboard(tx.hash)">
         Copy transaction hash
