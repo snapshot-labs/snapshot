@@ -16,7 +16,6 @@ const boostForm = ref({
   network: '1',
   tokenAddress: '',
   totalAmount: ''
-  //   type: ''
 });
 
 const eligibilityOptions = computed(() => {
@@ -83,7 +82,7 @@ onMounted(async () => {
           </p>
 
           <BaseBlock title="Eligibility" class="mt-4">
-            Number of eligible users
+            <!-- Number of eligible users
             <div class="flex gap-4 pt-1">
               <TuneRadio
                 v-model="boostForm.limit"
@@ -95,13 +94,12 @@ onMounted(async () => {
                 value="fixed"
                 hint="First x voters only"
               />
-            </div>
+            </div> -->
 
             <TuneListbox
               v-model="boostForm.eligibility"
               :items="eligibilityOptions"
               label="Eligible users"
-              class="mt-3"
             />
           </BaseBlock>
 
