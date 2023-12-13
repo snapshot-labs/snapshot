@@ -23,7 +23,6 @@ const data = reactive({
   currency: DEFAULT_CURRENCY,
   plan: DEFAULT_PLAN
 });
-const paymentReceipt = ref(null);
 
 const amount = computed(() => {
   return computePrice(fxRates[data.currency], PLANS[data.plan].factor);
@@ -33,8 +32,8 @@ function setData(key: string, value: any) {
   data[key] = value;
 }
 
-async function pay() {
-  paymentReceipt.value = await transfer(amount.value, data.currency);
+function pay() {
+  transfer(amount.value, data.currency);
 }
 
 function computePrice(fxRate = 1, planFactor = 1, discount = 0): number {
@@ -47,17 +46,17 @@ function computePrice(fxRate = 1, planFactor = 1, discount = 0): number {
   return price;
 }
 
-function computeFiatPrice(factor = 1, discount = 0) {
+function computeFiatPrice(factor = 1, discount = 0): number {
   return computePrice(1, factor, discount);
 }
 
-function formatFiatCurrency(amount: number) {
+function formatFiatCurrency(amount: number): string {
   return `${BASE_CURRENCY.name} ${
     BASE_CURRENCY.symbol
   }${amount.toLocaleString()}`;
 }
 
-function formatCryptoCurrency(amount: number, currency) {
+function formatCryptoCurrency(amount: number, currency): string {
   return `~${currency.code} ${amount.toLocaleString()}`;
 }
 
@@ -190,7 +189,6 @@ watch(paymentTx, () => {
     <ModalPostPayment
       :open="modalPostPaymentOpen"
       :tx="paymentTx"
-      :receipt="paymentReceipt"
       @close="modalPostPaymentOpen = false"
     />
   </TheLayout>
