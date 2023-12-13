@@ -16,20 +16,20 @@ defineEmits(['close']);
       <h3>Payment result</h3>
     </template>
     <div class="flex w-full flex-col space-y-2 p-4 text-center">
+      <div class="text-lg">Your payment transaction has been submitted.</div>
       <p>
-        Your payment transaction has been submitted, copy the transaction hash
-        below and use on the payment form as proof of payment.
+        Copy the transaction hash below and use on the payment form as proof of
+        payment.
       </p>
-
-      <div class="w-full items-center rounded-lg border p-4">
+      <div class="rounded-lg border p-4">
         <b class="font-mono break-all text-lg text-skin-link">{{ tx.hash }}</b>
       </div>
       <TuneButton primary @click="copyToClipboard(tx.hash)">
         Copy transaction hash
       </TuneButton>
-
       <BaseLink
         :link="explorerUrl(tx.network.toString(), tx.hash as string, 'tx')"
+        class="text-skin-text"
       >
         View transaction in explorer
       </BaseLink>

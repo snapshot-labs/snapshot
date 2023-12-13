@@ -7,11 +7,12 @@ const {
   CURRENCIES,
   PLANS,
   BASE_PRICE,
+  BASE_UNIT,
   BASE_CURRENCY,
   fxRates,
   transfer,
-  loading,
   paymentTx,
+  loading,
   fxLoaded
 } = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
 const { web3Account } = useWeb3();
@@ -25,10 +26,10 @@ const data = reactive({
 });
 
 const amount = computed(() => {
-  return computePrice(fxRates[data.currency], PLANS[data.plan].factor);
+  return computePrice(data.currency, PLANS[data.plan].unit);
 });
 
-function setData(key: string, value: any) {
+function setData(key: string, value: string | boolean) {
   data[key] = value;
 }
 
@@ -36,8 +37,13 @@ function pay() {
   transfer(amount.value, data.currency);
 }
 
-function computePrice(fxRate = 1, planFactor = 1, discount = 0): number {
-  let price = (BASE_PRICE / fxRate) * planFactor;
+function computePrice(
+  currencyId: string | null,
+  unit: number,
+  discount = 0
+): number {
+  const fxRate = currencyId ? fxRates[currencyId] : 1;
+  let price = (BASE_PRICE / fxRate) * unit;
 
   if (discount > 0) {
     price = price - (price / 100) * discount;
@@ -46,8 +52,8 @@ function computePrice(fxRate = 1, planFactor = 1, discount = 0): number {
   return price;
 }
 
-function computeFiatPrice(factor = 1, discount = 0): number {
-  return computePrice(1, factor, discount);
+function computePlanFiatPrice(plan, unit?: number): number {
+  return computePrice(null, unit || plan.unit, plan.discount);
 }
 
 function formatFiatCurrency(amount: number): string {
@@ -66,7 +72,7 @@ watch(paymentTx, () => {
 </script>
 
 <template>
-  <TheLayout class="max-w-lg">
+  <TheLayout class="max-w-lg px-4 md:px-0">
     <BaseMessageBlock v-if="!web3Account" level="warning" class="mb-3">
       Connect your wallet first to proceed
     </BaseMessageBlock>
@@ -76,14 +82,14 @@ watch(paymentTx, () => {
 
     <form v-if="fxLoaded" class="flex flex-col mt-4 gap-4" @submit="pay">
       <fieldset>
-        <legend class="mb-2">
-          <h2 class="text-lg">Select your package</h2>
+        <legend>
+          <h2 class="text-lg mb-2">Select your package</h2>
         </legend>
         <ol class="flex flex-col gap-2">
           <li v-for="(plan, planId) in PLANS" :key="planId">
             <a
               href="#"
-              class="flex gap-3 border-skin-border md:rounded-xl md:border p-3"
+              class="flex gap-3 border border-skin-border rounded-xl p-3"
               :class="{
                 '!border-skin-primary': planId === data.plan
               }"
@@ -100,16 +106,12 @@ watch(paymentTx, () => {
                 </BasePill>
                 <small class="block text-skin-text">
                   {{
-                    formatFiatCurrency(computeFiatPrice(1, plan.discount))
+                    formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
                   }}/month
                 </small>
               </div>
               <span>
-                {{
-                  formatFiatCurrency(
-                    computeFiatPrice(plan.factor, plan.discount)
-                  )
-                }}
+                {{ formatFiatCurrency(computePlanFiatPrice(plan)) }}
               </span>
             </a>
           </li>
@@ -117,15 +119,15 @@ watch(paymentTx, () => {
       </fieldset>
 
       <fieldset>
-        <legend class="mb-2">
-          <h2 class="text-lg">Select your currency</h2>
+        <legend>
+          <h2 class="text-lg mb-2">Select your currency</h2>
         </legend>
 
         <ol class="flex flex-col gap-2">
           <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
             <a
               href="#"
-              class="flex align-center border border-skin-border gap-3 md:rounded-xl md:border p-3"
+              class="flex border border-skin-border gap-3 rounded-xl p-3"
               :class="{
                 '!border-skin-primary': currencyId === data.currency
               }"
@@ -136,12 +138,11 @@ watch(paymentTx, () => {
                 :src="snapshot.utils.getUrl(currency.logo)"
                 size="24"
               />
-
               <b class="flex-grow">{{ currency.code }}</b>
               <small>
                 {{
                   formatCryptoCurrency(
-                    computePrice(fxRates[currencyId], PLANS[data.plan].factor),
+                    computePrice(currencyId, PLANS[data.plan].unit),
                     currency
                   )
                 }}
@@ -158,7 +159,6 @@ watch(paymentTx, () => {
           hint="I have signed the network contract"
           @update:model-value="setData('contract_signed', $event as boolean)"
         />
-
         <TuneCheckbox
           :id="'tos'"
           :model-value="data.tos"

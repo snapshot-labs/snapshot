@@ -4,15 +4,16 @@ import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
 const BASE_PRICE = 1;
+const BASE_UNIT = 1;
 const BASE_CURRENCY = {
   name: 'USD',
   symbol: '$'
 };
 
 const PLANS = {
-  y1: { label: '1 year', factor: 12, discount: 20 },
-  m6: { label: '6 months', factor: 6 },
-  m3: { label: '3 months', factor: 3 }
+  y1: { label: '1 year', unit: 12, discount: 20 },
+  m6: { label: '6 months', unit: 6 },
+  m3: { label: '3 months', unit: 3 }
 };
 const CURRENCIES = {
   ethereum: {
@@ -67,14 +68,14 @@ const SNAPSHOT_WALLET = '0x91FD2c8d24767db4Ece7069AA27832ffaf8590f3';
 const fxRates = reactive(
   Object.fromEntries(Object.keys(CURRENCIES).map(id => [id, 0]))
 );
+const fxLoaded = ref(false);
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple';
 const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
-const paymentTx = ref(null);
-const fxLoaded = ref(false);
 
 export function usePayment(network: number) {
   const auth = getInstance();
   const loading = ref(false);
+  const paymentTx = ref(null);
   const { notify } = useFlashNotification();
 
   refreshFx();
@@ -96,17 +97,16 @@ export function usePayment(network: number) {
         tx = await transferErc20(parsedAmount, currency.address[network]);
       }
       paymentTx.value = { network, ...tx };
-      loading.value = false;
 
-      return await tx.wait();
+      return tx.wait();
     } catch (e: any) {
-      loading.value = false;
-
       if (e.code === 'INSUFFICIENT_FUNDS') {
         return notify(['red', 'Insufficient funds']);
       } else {
         console.error('Transfer error', e);
       }
+    } finally {
+      loading.value = false;
     }
   }
 
@@ -125,27 +125,26 @@ export function usePayment(network: number) {
     ]);
   }
 
-  async function callCoinGecko(apiUrl: string) {
-    const res = await fetch(apiUrl);
-    return res.json();
-  }
-
   async function refreshFx(): Promise<void> {
-    const data = await callCoinGecko(
+    const response = await fetch(
       `${COINGECKO_API_URL}/price?ids=${Object.keys(CURRENCIES)
         .map(id => id)
         .join(',')}${COINGECKO_PARAMS}`
     );
 
-    fxLoaded.value = true;
+    try {
+      const data = await response.json();
+      fxLoaded.value = true;
 
-    Object.keys(data).map(id => {
-      fxRates[id] = data[id].usd;
-    });
+      Object.keys(data).map(id => {
+        fxRates[id] = data[id].usd;
+      });
+    } catch (e: any) {}
   }
 
   return {
     BASE_PRICE,
+    BASE_UNIT,
     BASE_CURRENCY,
     DEFAULT_CURRENCY,
     DEFAULT_PLAN,
