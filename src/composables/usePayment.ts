@@ -74,9 +74,11 @@ const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
 
 export function usePayment(network: number) {
   const auth = getInstance();
+  const { web3 } = useWeb3();
+  const { notify } = useFlashNotification();
   const loading = ref(false);
   const paymentTx = ref(null);
-  const { notify } = useFlashNotification();
+  const walletNetworkKey = computed(() => web3.value.network.key);
 
   refreshFx();
 
@@ -85,6 +87,10 @@ export function usePayment(network: number) {
     const currency = CURRENCIES[currencyId];
 
     try {
+      if (network.toString() !== walletNetworkKey.value) {
+        return notify(['red', 'Wrong network']);
+      }
+
       const parsedAmount = parseUnits(
         amount.toFixed(currency.decimal),
         currency.decimal
