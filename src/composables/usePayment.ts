@@ -20,7 +20,7 @@ const CURRENCIES = {
     name: 'Ethereum',
     code: 'ETH',
     decimal: 18,
-    logo: 'ipfs://bafkreiejiuc3c5nzvzqr2kvdfv7lef7vrmgw23albtmqefdymabqgqb67u'
+    logo: 'ipfs://bafybeieaiuehxdqgmdgxfl7addolzht3x5qnyhk4epn5f7yko7h4egpsvi'
   },
   'usd-coin': {
     name: 'USD Coin',
@@ -30,7 +30,7 @@ const CURRENCIES = {
       1: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
       5: '0x07865c6e87b9f70255377e024ace6630c1eaa37f'
     },
-    logo: 'ipfs://bafkreigzrzyag7outg2dcaghtwbawcxline2i5cocxhsnioyzxetydhxga'
+    logo: 'ipfs://bafybeiffspz4hsyc5drzf5ioum2x535dxmvfmt3342g4iizbinie7cpehy'
   },
   dai: {
     name: 'DAI',
@@ -40,7 +40,7 @@ const CURRENCIES = {
       1: '0x6b175474e89094c44da98b954eedeac495271d0f',
       5: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60'
     },
-    logo: 'ipfs://bafkreihm3zlqy3nwejj22n2lr7yltwkmkrojgpbemokzk42hucgmmduzqa'
+    logo: 'ipfs://bafkreib3ujd27dovs3aqezrttibnspkprplyb7nf6wzm2vgjohleajkg4q'
   }
 };
 const DEFAULT_CURRENCY = 'ethereum';
