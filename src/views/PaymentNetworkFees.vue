@@ -87,13 +87,12 @@ watch(paymentTx, () => {
         </legend>
         <ol class="flex flex-col gap-2">
           <li v-for="(plan, planId) in PLANS" :key="planId">
-            <a
-              href="#"
-              class="flex gap-3 border border-skin-border rounded-xl p-3"
+            <label
+              class="flex gap-3 border border-skin-border rounded-xl p-3 cursor-pointer"
               :class="{
                 '!border-skin-primary': planId === data.plan
               }"
-              @click.stop.prevent="setData('plan', planId)"
+              @click="setData('plan', planId)"
             >
               <TuneRadio :value="planId" :model-value="data.plan" />
               <div class="flex-grow">
@@ -113,7 +112,7 @@ watch(paymentTx, () => {
               <span>
                 {{ formatFiatCurrency(computePlanFiatPrice(plan)) }}
               </span>
-            </a>
+            </label>
           </li>
         </ol>
       </fieldset>
@@ -125,13 +124,12 @@ watch(paymentTx, () => {
 
         <ol class="flex flex-col gap-2">
           <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
-            <a
-              href="#"
-              class="flex border border-skin-border gap-3 rounded-xl p-3"
+            <label
+              class="flex border border-skin-border gap-3 rounded-xl p-3 cursor-pointer"
               :class="{
                 '!border-skin-primary': currencyId === data.currency
               }"
-              @click.stop.prevent="setData('currency', currencyId)"
+              @click="setData('currency', currencyId)"
             >
               <TuneRadio :value="currencyId" :model-value="data.currency" />
               <BaseAvatar
@@ -147,7 +145,7 @@ watch(paymentTx, () => {
                   )
                 }}
               </small>
-            </a>
+            </label>
           </li>
         </ol>
       </fieldset>
