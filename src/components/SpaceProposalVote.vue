@@ -36,6 +36,23 @@ const validatedUserChoice = computed(() => {
   return null;
 });
 
+const buttonTooltip = computed(() => {
+  if (
+    props.proposal.type === 'ranked-choice' &&
+    selectedChoices.value < props.proposal.choices.length
+  )
+    return 'Please rank all choices';
+
+  if (
+    props.proposal.type !== 'approval' &&
+    props.proposal.type !== 'ranked-choice' &&
+    selectedChoices.value < 1
+  )
+    return 'Please select at least one choice';
+
+  return '';
+});
+
 const votedAndShutter = computed(
   () => props.proposal.privacy === 'shutter' && userVote.value
 );
@@ -113,7 +130,13 @@ watch(web3Account, loadUserVote, { immediate: true });
         @select-choice="emitChoice"
       />
     </div>
-    <div v-if="!loadingUserVote && (!userVote || isEditing)" class="pt-2">
+    <div
+      v-if="!loadingUserVote && (!userVote || isEditing)"
+      v-tippy="{
+        content: buttonTooltip
+      }"
+      class="pt-2"
+    >
       <TuneButton
         :disabled="
           web3.authLoading ||

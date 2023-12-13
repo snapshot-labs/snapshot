@@ -10,7 +10,7 @@ const connectors = {
     options: {
       projectId: 'e6454bd61aba40b786e866a69bd4c5c6',
       chains: [1],
-      optionalChains: [4, 5, 10, 42, 56, 100, 137, 246, 42161, 73799],
+      optionalChains: [4, 5, 10, 42, 56, 100, 137, 246, 1088, 42161, 73799],
       methods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData_v4'],
       optionalMethods: ['eth_accounts'],
       rpcMap: {
