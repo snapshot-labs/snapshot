@@ -68,7 +68,7 @@ const SNAPSHOT_WALLET = '0x91FD2c8d24767db4Ece7069AA27832ffaf8590f3';
 const fxRates = reactive(
   Object.fromEntries(Object.keys(CURRENCIES).map(id => [id, 0]))
 );
-const fxLoaded = ref(false);
+const fxLoadStatus = ref(0);
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple';
 const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
 
@@ -132,20 +132,21 @@ export function usePayment(network: number) {
   }
 
   async function refreshFx(): Promise<void> {
-    const response = await fetch(
-      `${COINGECKO_API_URL}/price?ids=${Object.keys(CURRENCIES)
-        .map(id => id)
-        .join(',')}${COINGECKO_PARAMS}`
-    );
-
     try {
+      const response = await fetch(
+        `${COINGECKO_API_URL}/price?ids=${Object.keys(CURRENCIES)
+          .map(id => id)
+          .join(',')}${COINGECKO_PARAMS}`
+      );
       const data = await response.json();
-      fxLoaded.value = true;
+      fxLoadStatus.value = 1;
 
       Object.keys(data).map(id => {
         fxRates[id] = data[id].usd;
       });
-    } catch (e: any) {}
+    } catch (e: any) {
+      fxLoadStatus.value = 2;
+    }
   }
 
   return {
@@ -161,6 +162,6 @@ export function usePayment(network: number) {
     loading,
     paymentTx,
     refreshFx,
-    fxLoaded
+    fxLoadStatus
   };
 }

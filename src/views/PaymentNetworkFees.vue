@@ -13,7 +13,7 @@ const {
   transfer,
   paymentTx,
   loading,
-  fxLoaded
+  fxLoadStatus
 } = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
 const { web3Account } = useWeb3();
 const modalPostPaymentOpen = ref(false);
@@ -73,14 +73,19 @@ watch(paymentTx, () => {
 
 <template>
   <TheLayout class="max-w-lg px-4 md:px-0">
-    <BaseMessageBlock v-if="!web3Account" level="warning" class="mb-3">
+    <BaseMessageBlock
+      v-if="!web3Account"
+      level="warning"
+      class="mb-3"
+      is-responsive
+    >
       Connect your wallet first to proceed
     </BaseMessageBlock>
 
     <h1>Network fees</h1>
-    <span class="text-lg">Pay to support your network on Snapshot</span>
+    <div class="text-lg mb-4">Pay to support your network on Snapshot</div>
 
-    <form v-if="fxLoaded" class="flex flex-col mt-4 gap-4" @submit="pay">
+    <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
       <fieldset>
         <legend>
           <h2 class="text-lg mb-2">Select your package</h2>
@@ -180,9 +185,13 @@ watch(paymentTx, () => {
       </TuneButton>
     </form>
 
-    <div v-else>
+    <div v-else-if="fxLoadStatus === 0">
       <LoadingSpinner />
     </div>
+
+    <BaseMessageBlock v-else level="warning-red" is-responsive>
+      Unable to load the form. Please try again later.
+    </BaseMessageBlock>
 
     <ModalPostPayment
       :open="modalPostPaymentOpen"
