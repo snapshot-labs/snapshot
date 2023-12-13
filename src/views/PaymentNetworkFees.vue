@@ -172,7 +172,7 @@ watch(paymentTx, () => {
         "
         :type="'submit'"
         :loading="loading"
-        @click="pay"
+        @click.prevent="pay"
       >
         Pay
         {{ amount.toLocaleString() }}
