@@ -27,5 +27,16 @@ export const SPACE_CATEGORIES = [
 export const ERC20ABI = [
   'function name() public view returns (string)',
   'function decimals() view returns (uint32)',
-  'function symbol() view returns (string)'
+  'function symbol() view returns (string)',
+  'function balanceOf(address) view returns (uint256)'
 ];
+
+export const COINGECKO_ASSET_PLATFORMS = {
+  137: 'polygon-pos',
+  42161: 'arbitrum-one'
+};
+
+export const COINGECKO_BASE_ASSETS = {
+  137: 'matic-network',
+  42161: 'ethereum'
+};

@@ -414,11 +414,3 @@ export type DelegatesProposal = {
   author: string;
   title: string;
 };
-
-export type TokenlistToken = {
-  address: string;
-  chainId: number;
-  decimals: number;
-  name: string;
-  symbol: string;
-};

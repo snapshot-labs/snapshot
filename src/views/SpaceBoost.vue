@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { ExtendedSpace, TokenlistToken } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { getProposal } from '@/helpers/snapshot';
+import { Token } from '@/helpers/alchemy';
 
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
 const route = useRoute();
+const { loadBalances, tokens } = useBalances();
+const { web3Account } = useWeb3();
 
 const proposal = ref();
-const tokens = ref<TokenlistToken[]>([]);
+const customTokens = ref<Token[]>([]);
 const boostForm = ref({
   limit: 'unlimited',
   eligibility: 'anyone',
@@ -17,6 +20,8 @@ const boostForm = ref({
   tokenAddress: '',
   totalAmount: ''
 });
+
+const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
 
 const eligibilityOptions = computed(() => {
   const proposalChoices = proposal.value?.choices.map(
@@ -44,29 +49,32 @@ watchEffect(async () => {
   }
 });
 
-async function fetchTokens(): Promise<any[]> {
-  try {
-    // TODO: How are we going to have lists for other networks?
-    const response = await fetch(
-      'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
-    );
-    const data = await response.json();
-    return data.tokens;
-  } catch {
-    return [];
-  }
-}
-
 const selectedToken = computed(() => {
-  if (!tokens.value) return undefined;
-  return tokens.value.find(
-    (token: TokenlistToken) => token.address === boostForm.value.tokenAddress
+  if (!allTokens.value) return undefined;
+  return allTokens.value.find(
+    (token: Token) => token.contractAddress === boostForm.value.tokenAddress
   );
 });
 
-onMounted(async () => {
-  tokens.value = await fetchTokens();
-});
+function handleAddCustomToken(token: Token) {
+  if (
+    customTokens.value.find(
+      existing => existing.contractAddress === token.contractAddress
+    )
+  ) {
+    return;
+  }
+
+  customTokens.value.push(token);
+}
+
+watch(
+  web3Account,
+  () => {
+    loadBalances(web3Account.value, 1);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -74,7 +82,7 @@ onMounted(async () => {
     <SpaceBreadcrumbs :space="space" />
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
-        <LoadingPage v-if="!proposal || !tokens" />
+        <LoadingPage v-if="!proposal" />
         <template v-else>
           <h1 class="leading-[44px]">New boost</h1>
           <p class="text-md leading-5">
@@ -110,6 +118,7 @@ onMounted(async () => {
                 :network="boostForm.network"
                 :tokens="tokens"
                 @update:selected-token="boostForm.tokenAddress = $event"
+                @add-custom-token="handleAddCustomToken($event)"
               />
               <TuneInput
                 v-model="boostForm.totalAmount"

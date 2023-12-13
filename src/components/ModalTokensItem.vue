@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { shorten, explorerUrl } from '@/helpers/utils';
-import { TokenlistToken } from '@/helpers/interfaces';
+import { Token } from '@/helpers/alchemy';
+import { formatUnits } from '@ethersproject/units';
 
 const props = defineProps<{
-  token: TokenlistToken;
+  token: Token;
   isSelected: boolean;
   network: string;
 }>();
 
 const emit = defineEmits(['select']);
+const { formatNumber, getNumberFormatter } = useIntl();
 
 const exploreUrl = computed(() => {
-  return explorerUrl(props.network, props.token.address);
+  return explorerUrl(props.network, props.token.contractAddress);
 });
 </script>
 
@@ -25,7 +27,7 @@ const exploreUrl = computed(() => {
   >
     <div class="flex items-center">
       <div class="mr-3 flex">
-        <AvatarToken :address="token.address" size="38" />
+        <AvatarToken :address="token.contractAddress" size="38" />
       </div>
 
       <div class="pr-4">
@@ -40,10 +42,18 @@ const exploreUrl = computed(() => {
       </div>
     </div>
 
-    <div class="h-full text-right flex items-end">
+    <div class="h-full text-right">
+      <span class="text-skin-link">
+        {{
+          formatNumber(
+            Number(formatUnits(token.tokenBalance, token.decimals)),
+            getNumberFormatter({ maximumFractionDigits: 6 }).value
+          )
+        }}
+      </span>
       <div>
         <BaseLink v-if="exploreUrl" :link="exploreUrl" @click.stop>
-          {{ shorten(token.address) }}</BaseLink
+          {{ shorten(token.contractAddress) }}</BaseLink
         >
       </div>
     </div>
