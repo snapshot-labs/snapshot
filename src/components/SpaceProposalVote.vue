@@ -34,6 +34,23 @@ const validatedUserChoice = computed(() => {
   return null;
 });
 
+const buttonTooltip = computed(() => {
+  if (
+    props.proposal.type === 'ranked-choice' &&
+    selectedChoices.value < props.proposal.choices.length
+  )
+    return 'Please rank all choices';
+
+  if (
+    props.proposal.type !== 'approval' &&
+    props.proposal.type !== 'ranked-choice' &&
+    selectedChoices.value < 1
+  )
+    return 'Please select at least one choice';
+
+  return '';
+});
+
 function emitChoice(c) {
   emit('update:modelValue', c);
 }
@@ -77,19 +94,25 @@ watch(validatedUserChoice, () => {
         @select-choice="emitChoice"
       />
     </div>
-    <TuneButton
-      :disabled="
-        web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval') ||
-        (selectedChoices < proposal.choices.length &&
-          proposal.type === 'ranked-choice')
-      "
-      class="block w-full"
-      primary
-      data-testid="proposal-vote-button"
-      @click="$emit('clickVote')"
+    <div
+      v-tippy="{
+        content: buttonTooltip
+      }"
     >
-      {{ $t('proposal.vote') }}
-    </TuneButton>
+      <TuneButton
+        :disabled="
+          web3.authLoading ||
+          (selectedChoices < 1 && proposal.type !== 'approval') ||
+          (selectedChoices < proposal.choices.length &&
+            proposal.type === 'ranked-choice')
+        "
+        class="block w-full"
+        primary
+        data-testid="proposal-vote-button"
+        @click="$emit('clickVote')"
+      >
+        {{ $t('proposal.vote') }}
+      </TuneButton>
+    </div>
   </BaseBlock>
 </template>
