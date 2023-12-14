@@ -20,7 +20,11 @@ const CURRENCIES = {
     name: 'Ethereum',
     code: 'ETH',
     decimal: 18,
-    logo: 'ipfs://bafybeieaiuehxdqgmdgxfl7addolzht3x5qnyhk4epn5f7yko7h4egpsvi'
+    logo: 'ipfs://bafybeieaiuehxdqgmdgxfl7addolzht3x5qnyhk4epn5f7yko7h4egpsvi',
+    address: {
+      1: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+      5: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    }
   },
   'usd-coin': {
     name: 'USD Coin',

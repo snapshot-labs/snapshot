@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import snapshot from '@snapshot-labs/snapshot.js';
-
 const {
   DEFAULT_CURRENCY,
   DEFAULT_PLAN,
@@ -137,10 +135,7 @@ watch(paymentTx, () => {
               @click="setData('currency', currencyId)"
             >
               <TuneRadio :value="currencyId" :model-value="data.currency" />
-              <BaseAvatar
-                :src="snapshot.utils.getUrl(currency.logo)"
-                size="24"
-              />
+              <AvatarToken :address="currency.address[1]" size="24" />
               <b class="flex-grow">{{ currency.code }}</b>
               <small>
                 {{
