@@ -83,7 +83,7 @@ watch(paymentTx, () => {
     </BaseMessageBlock>
 
     <h1>Network fees</h1>
-    <div class="text-lg mb-4">Pay to support your network on Snapshot</div>
+    <p class="text-md mb-4 leading-5">Pay to support your network on Snapshot.</p>
 
     <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
       <fieldset>
