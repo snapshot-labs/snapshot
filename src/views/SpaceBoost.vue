@@ -111,11 +111,7 @@ watch(
           <div class="space-y-3 mt-4">
             <TuneBlock>
               <template #title>
-                <TuneBlockHeader
-                  title="Eligibility"
-                  sub-title="Define criteria for eligibility."
-                >
-                </TuneBlockHeader>
+                <TuneBlockHeader title="Proposal" />
               </template>
               <RouterLink
                 :to="{ name: 'spaceProposal', params: { id: proposal.id } }"
@@ -136,8 +132,7 @@ watch(
                 <TuneBlockHeader
                   title="Eligibility"
                   sub-title="Define criteria for eligibility."
-                >
-                </TuneBlockHeader>
+                />
               </template>
               <!-- Number of eligible users
             <div class="flex gap-4 pt-1">
@@ -165,8 +160,7 @@ watch(
                 <TuneBlockHeader
                   title="Deposit amount"
                   sub-title="Define custom token and amount to deposit."
-                >
-                </TuneBlockHeader>
+                />
               </template>
               <div class="flex gap-[12px]">
                 <ButtonSelectToken
@@ -195,8 +189,7 @@ watch(
                 <TuneBlockHeader
                   title="Distribution based on Voting power"
                   sub-title="Define the maximum amount of voting power."
-                >
-                </TuneBlockHeader>
+                />
               </template>
               <TuneSwitch
                 v-model="distributionSwitch"
