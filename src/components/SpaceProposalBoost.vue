@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { Proposal } from '@/helpers/interfaces';
+import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 
 const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const SAMPLE_BOOST = {
+const SAMPLE_BOOST: BoostSubgraphResult = {
   id: '0x123',
   strategyURI: 'ipfs://cid',
   balance: 1000,
@@ -21,7 +21,7 @@ const SAMPLE_BOOST = {
     decimals: 18
   },
   strategy: {
-    strategy: 'strategyABC',
+    strategy: 'snapshot',
     params: {
       eligibility: 1
     }
@@ -35,8 +35,8 @@ const newBoostLink = computed(() => ({
 </script>
 
 <template>
-  <div class="border rounded-xl">
-    <div v-if="SAMPLE_BOOST" class="p-3">
+  <TuneBlock class="border rounded-xl">
+    <div v-if="SAMPLE_BOOST">
       <div class="flex justify-between relative">
         <div>
           <i-s-boost-logo class="text-xs text-skin-link" />
@@ -51,31 +51,10 @@ const newBoostLink = computed(() => ({
         </router-link>
       </div>
       <div class="mt-3">
-        <div class="border rounded-xl p-[12px]">
-          <div class="text-skin-heading">
-            Who votes
-            <TuneTag
-              :label="
-                proposal.choices[SAMPLE_BOOST.strategy.params.eligibility]
-              "
-              class="text-skin-heading"
-            />
-            share a pool of
-            <TuneTag
-              :label="`${SAMPLE_BOOST.balance} ${SAMPLE_BOOST.token.symbol}`"
-              class="text-skin-heading"
-            />
-            based on
-            <TuneTag label="Voting power" class="text-skin-heading" />
-          </div>
-          <div class="flex items-center mt-1">
-            <i-ho-lock-closed class="mr-1 text-xs" />
-            Secured by Snapshot
-          </div>
-        </div>
+        <SpaceProposalBoostItem :boost="SAMPLE_BOOST" :proposal="proposal" />
       </div>
     </div>
-    <div v-else class="py-[32px]">
+    <div v-else class="py-3">
       <div
         class="h-[56px] w-[56px] flex items-center justify-center rounded-[14px] shadow-xl mx-auto"
       >
@@ -91,5 +70,5 @@ const newBoostLink = computed(() => ({
         </router-link>
       </div>
     </div>
-  </div>
+  </TuneBlock>
 </template>

@@ -2,7 +2,6 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
-import { parseUnits } from '@ethersproject/units';
 import { createBoost, getStrategyURI, BoostStrategy } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
@@ -12,12 +11,17 @@ const props = defineProps<{
 }>();
 
 type BoostForm = {
-  limit: 'unlimited' | 'fixed';
-  eligibility: 'anyone' | number;
+  eligibility: {
+    choice: 'any' | number;
+  };
+  distribution: {
+    type: 'even' | 'weighted';
+    hasRatioLimit: boolean;
+    ratioLimit: string | number;
+  };
   network: string;
   token: string;
-  amount: string;
-  type: 'fixed' | 'ratio';
+  amount: string | number;
 };
 
 const route = useRoute();
@@ -34,14 +38,18 @@ const {
 const proposal = ref();
 const customTokens = ref<Token[]>([]);
 const createLoading = ref(false);
-const ratioInput = ref(0);
 const boostForm = ref<BoostForm>({
-  limit: 'unlimited',
-  eligibility: 'anyone',
+  eligibility: {
+    choice: 'any'
+  },
+  distribution: {
+    type: 'even',
+    hasRatioLimit: false,
+    ratioLimit: ''
+  },
   network: '1',
   token: '',
-  amount: '',
-  type: 'fixed'
+  amount: ''
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -58,7 +66,7 @@ const eligibilityOptions = computed(() => {
 
   return [
     {
-      value: 'anyone',
+      value: 'any',
       name: 'Anyone who votes'
     },
     ...proposalChoices
@@ -72,27 +80,37 @@ const selectedToken = computed(() => {
   );
 });
 
-const distributionSwitch = computed({
-  get() {
-    return boostForm.value.type === 'ratio';
-  },
-  set(value: boolean) {
-    boostForm.value.type = value ? 'ratio' : 'fixed';
-  }
-});
+// const distributionSwitch = computed({
+//   get() {
+//     return boostForm.value.distribution === 'weighted';
+//   },
+//   set(value: boolean) {
+//     boostForm.value.distribution = value ? 'weighted' : 'even';
+//   }
+// });
 
 const strategy = computed<BoostStrategy>(() => {
-  const parsedRatioInput = parseUnits(
-    (ratioInput.value || 0).toString(),
-    selectedToken.value?.decimals ?? 0
-  ).toString();
+  const choice =
+    boostForm.value.eligibility.choice === 'any'
+      ? undefined
+      : boostForm.value.eligibility.choice;
+
+  const limit =
+    boostForm.value.distribution.type === 'weighted'
+      ? Number(boostForm.value.distribution.ratioLimit)
+      : undefined;
 
   return {
     strategy: 'snapshot',
     params: {
       proposal: proposal.value.id,
-      type: boostForm.value.type,
-      amount: parsedRatioInput
+      eligibility: {
+        choice
+      },
+      distribution: {
+        type: boostForm.value.distribution.type,
+        limit
+      }
     }
   };
 });
@@ -118,7 +136,7 @@ async function handleCreate() {
     const response = await createBoost(auth.web3, {
       strategyURI,
       token: boostForm.value.token,
-      balance: boostForm.value.amount,
+      balance: Number(boostForm.value.amount),
       guard: SNAPSHOT_GUARD_ADDRESS,
       start: proposal.value.start,
       end: proposal.value.end,
@@ -185,25 +203,12 @@ watchEffect(async () => {
               <template #title>
                 <TuneBlockHeader
                   title="Eligibility"
-                  sub-title="Define criteria for eligibility."
+                  sub-title="Define criteria for choice."
                 />
               </template>
-              <!-- Number of eligible users
-            <div class="flex gap-4 pt-1">
-              <TuneRadio
-                v-model="boostForm.limit"
-                value="unlimited"
-                hint="Unlimited"
-              />
-              <TuneRadio
-                v-model="boostForm.limit"
-                value="fixed"
-                hint="First x voters only"
-              />
-            </div> -->
 
               <TuneListbox
-                v-model="boostForm.eligibility"
+                v-model="boostForm.eligibility.choice"
                 :items="eligibilityOptions"
                 label="Eligible users"
               />
@@ -246,7 +251,7 @@ watchEffect(async () => {
                 />
               </template>
               <TuneSwitch
-                v-model="distributionSwitch"
+                v-model="boostForm.distribution.hasRatioLimit"
                 label="Define a maximum amount"
               />
             </TuneBlock>

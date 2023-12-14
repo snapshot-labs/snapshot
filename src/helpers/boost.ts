@@ -1,6 +1,5 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { pin } from '@snapshot-labs/pineapple';
 
 export const IPFS_GATEWAY = 'pineapple.fyi';
@@ -19,7 +18,7 @@ export const ABI = [
 interface Boost {
   strategyURI: string;
   token: string;
-  balance: string;
+  balance: number;
   guard: string;
   start: number;
   end: number;
@@ -28,40 +27,16 @@ interface Boost {
 
 export interface BoostStrategy {
   strategy: string;
-  params: Record<string, any>;
-}
-
-export async function getBoost(
-  boostId: number,
-  chainId: number
-): Promise<Boost> {
-  const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
-  const provider = getProvider(chainId, { broviderUrl });
-
-  const contract = new Contract(BOOST_ADDRESS, ABI, provider);
-
-  const boost = await contract.boosts(boostId);
-
-  return {
-    strategyURI: boost[0],
-    token: boost[1],
-    balance: boost[2].toString(),
-    guard: boost[3],
-    start: boost[4].toNumber(),
-    end: boost[5].toNumber(),
-    owner: boost[6]
+  params: {
+    proposal: string;
+    eligibility: {
+      choice?: number;
+    };
+    distribution: {
+      type: 'even' | 'weighted';
+      limit?: number;
+    };
   };
-}
-
-export async function getStrategy(
-  strategyURI: string,
-  gateway: string = IPFS_GATEWAY
-): Promise<BoostStrategy> {
-  const url = strategyURI
-    .replace('ipfs://', `https://${gateway}/ipfs/`)
-    .replace('ipns://', `https://${gateway}/ipns/`);
-
-  return fetch(url).then(res => res.json());
 }
 
 export async function createBoost(

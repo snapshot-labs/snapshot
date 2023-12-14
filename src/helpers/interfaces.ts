@@ -414,3 +414,24 @@ export type DelegatesProposal = {
   author: string;
   title: string;
 };
+
+export type BoostSubgraphResult = {
+  id: string;
+  strategyURI: string;
+  balance: number;
+  guard: string;
+  start: string;
+  end: string;
+  owner: string;
+  chainId: string;
+  token: {
+    address: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+  strategy: {
+    strategy: string;
+    params: Record<string, any>;
+  };
+};
