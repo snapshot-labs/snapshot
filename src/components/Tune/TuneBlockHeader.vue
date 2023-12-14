@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex justify-between p-3">
+  <div class="flex justify-between p-3 pb-0">
     <h4 class="">
       <div class="leading-5 flex items-center">
         <span class="text-skin-heading">

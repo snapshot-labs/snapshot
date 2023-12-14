@@ -108,15 +108,38 @@ watch(
             Incentivize people to vote on this proposal
           </p>
 
-          <TuneBlock class="mt-4">
-            <template #title>
-              <TuneBlockHeader
-                title="Eligibility"
-                sub-title="Define criteria for eligibility."
+          <div class="space-y-3 mt-4">
+            <TuneBlock>
+              <template #title>
+                <TuneBlockHeader
+                  title="Eligibility"
+                  sub-title="Define criteria for eligibility."
+                >
+                </TuneBlockHeader>
+              </template>
+              <RouterLink
+                :to="{ name: 'spaceProposal', params: { id: proposal.id } }"
               >
-              </TuneBlockHeader>
-            </template>
-            <!-- Number of eligible users
+                <TuneBlock>
+                  <h4 class="leading-5">
+                    {{ proposal.title }}
+                  </h4>
+                  <p class="line-clamp-2 mt-1">
+                    {{ proposal.body }}
+                  </p>
+                </TuneBlock>
+              </RouterLink>
+            </TuneBlock>
+
+            <TuneBlock>
+              <template #title>
+                <TuneBlockHeader
+                  title="Eligibility"
+                  sub-title="Define criteria for eligibility."
+                >
+                </TuneBlockHeader>
+              </template>
+              <!-- Number of eligible users
             <div class="flex gap-4 pt-1">
               <TuneRadio
                 v-model="boostForm.limit"
@@ -130,56 +153,57 @@ watch(
               />
             </div> -->
 
-            <TuneListbox
-              v-model="boostForm.eligibility"
-              :items="eligibilityOptions"
-              label="Eligible users"
-            />
-          </TuneBlock>
-
-          <TuneBlock class="mt-3">
-            <template #title>
-              <TuneBlockHeader
-                title="Deposit amount"
-                sub-title="Define custom token and amount to deposit."
-              >
-              </TuneBlockHeader>
-            </template>
-            <div class="flex gap-[12px]">
-              <ButtonSelectToken
-                :selected-token="selectedToken"
-                :network="boostForm.network"
-                :tokens="tokens"
-                @update:selected-token="boostForm.tokenAddress = $event"
-                @add-custom-token="handleAddCustomToken($event)"
+              <TuneListbox
+                v-model="boostForm.eligibility"
+                :items="eligibilityOptions"
+                label="Eligible users"
               />
-              <TuneInput
-                v-model="boostForm.totalAmount"
-                label="Total amount"
-                type="number"
-                placeholder="0.00"
-              >
-                <template #after>
-                  <div class="-mr-[8px]">
-                    {{ selectedToken?.symbol ?? '' }}
-                  </div>
-                </template>
-              </TuneInput>
-            </div>
-          </TuneBlock>
-          <TuneBlock class="mt-3">
-            <template #title>
-              <TuneBlockHeader
-                title="Distribution based on Voting power"
-                sub-title="Define the maximum amount of voting power."
-              >
-              </TuneBlockHeader>
-            </template>
-            <TuneSwitch
-              v-model="distributionSwitch"
-              label="Define a maximum amount"
-            />
-          </TuneBlock>
+            </TuneBlock>
+
+            <TuneBlock>
+              <template #title>
+                <TuneBlockHeader
+                  title="Deposit amount"
+                  sub-title="Define custom token and amount to deposit."
+                >
+                </TuneBlockHeader>
+              </template>
+              <div class="flex gap-[12px]">
+                <ButtonSelectToken
+                  :selected-token="selectedToken"
+                  :network="boostForm.network"
+                  :tokens="tokens"
+                  @update:selected-token="boostForm.tokenAddress = $event"
+                  @add-custom-token="handleAddCustomToken($event)"
+                />
+                <TuneInput
+                  v-model="boostForm.totalAmount"
+                  label="Total amount"
+                  type="number"
+                  placeholder="0.00"
+                >
+                  <template #after>
+                    <div class="-mr-[8px]">
+                      {{ selectedToken?.symbol ?? '' }}
+                    </div>
+                  </template>
+                </TuneInput>
+              </div>
+            </TuneBlock>
+            <TuneBlock>
+              <template #title>
+                <TuneBlockHeader
+                  title="Distribution based on Voting power"
+                  sub-title="Define the maximum amount of voting power."
+                >
+                </TuneBlockHeader>
+              </template>
+              <TuneSwitch
+                v-model="distributionSwitch"
+                label="Define a maximum amount"
+              />
+            </TuneBlock>
+          </div>
         </template>
       </template>
 
