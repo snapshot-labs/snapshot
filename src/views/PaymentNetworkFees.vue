@@ -108,9 +108,9 @@ watch(paymentTx, () => {
                   }}/month
                 </small>
               </div>
-              <span>
+              <b class="text-skin-heading">
                 {{ formatFiatCurrency(computePlanFiatPrice(plan)) }}
-              </span>
+              </b>
             </label>
           </li>
         </ol>
