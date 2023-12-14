@@ -2,6 +2,10 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
+import { parseUnits } from '@ethersproject/units';
+import { createBoost, getStrategyURI, BoostStrategy } from '@/helpers/boost';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -11,24 +15,33 @@ type BoostForm = {
   limit: 'unlimited' | 'fixed';
   eligibility: 'anyone' | number;
   network: string;
-  tokenAddress: string;
-  totalAmount: string;
-  distribution: 'fixed' | 'ratio';
+  token: string;
+  amount: string;
+  type: 'fixed' | 'ratio';
 };
 
 const route = useRoute();
+const router = useRouter();
+const auth = getInstance();
 const { loadBalances, tokens } = useBalances();
 const { web3Account } = useWeb3();
+const {
+  createPendingTransaction,
+  updatePendingTransaction,
+  removePendingTransaction
+} = useTxStatus();
 
 const proposal = ref();
 const customTokens = ref<Token[]>([]);
+const createLoading = ref(false);
+const ratioInput = ref(0);
 const boostForm = ref<BoostForm>({
   limit: 'unlimited',
   eligibility: 'anyone',
   network: '1',
-  tokenAddress: '',
-  totalAmount: '',
-  distribution: 'fixed'
+  token: '',
+  amount: '',
+  type: 'fixed'
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -52,27 +65,36 @@ const eligibilityOptions = computed(() => {
   ];
 });
 
-watchEffect(async () => {
-  const id = route.params.proposalId;
-  if (id) {
-    proposal.value = await getProposal(id);
-  }
-});
-
 const selectedToken = computed(() => {
   if (!allTokens.value) return undefined;
   return allTokens.value.find(
-    (token: Token) => token.contractAddress === boostForm.value.tokenAddress
+    (token: Token) => token.contractAddress === boostForm.value.token
   );
 });
 
 const distributionSwitch = computed({
   get() {
-    return boostForm.value.distribution === 'ratio';
+    return boostForm.value.type === 'ratio';
   },
   set(value: boolean) {
-    boostForm.value.distribution = value ? 'ratio' : 'fixed';
+    boostForm.value.type = value ? 'ratio' : 'fixed';
   }
+});
+
+const strategy = computed<BoostStrategy>(() => {
+  const parsedRatioInput = parseUnits(
+    (ratioInput.value || 0).toString(),
+    selectedToken.value?.decimals ?? 0
+  ).toString();
+
+  return {
+    strategy: 'snapshot',
+    params: {
+      proposal: proposal.value.id,
+      type: boostForm.value.type,
+      amount: parsedRatioInput
+    }
+  };
 });
 
 function handleAddCustomToken(token: Token) {
@@ -87,6 +109,31 @@ function handleAddCustomToken(token: Token) {
   customTokens.value.push(token);
 }
 
+async function handleCreate() {
+  createLoading.value = true;
+  const txPendingId = createPendingTransaction();
+
+  try {
+    const strategyURI = await getStrategyURI(strategy.value);
+    const response = await createBoost(auth.web3, {
+      strategyURI,
+      token: boostForm.value.token,
+      balance: boostForm.value.amount,
+      guard: SNAPSHOT_GUARD_ADDRESS,
+      start: proposal.value.start,
+      end: proposal.value.end,
+      owner: web3Account.value
+    });
+
+    updatePendingTransaction(txPendingId, { hash: response.hash });
+    router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
+  } catch (e) {
+    console.log(e);
+  } finally {
+    removePendingTransaction(txPendingId);
+  }
+}
+
 watch(
   web3Account,
   () => {
@@ -94,6 +141,13 @@ watch(
   },
   { immediate: true }
 );
+
+watchEffect(async () => {
+  const id = route.params.proposalId;
+  if (id) {
+    proposal.value = await getProposal(id);
+  }
+});
 </script>
 
 <template>
@@ -167,11 +221,11 @@ watch(
                   :selected-token="selectedToken"
                   :network="boostForm.network"
                   :tokens="tokens"
-                  @update:selected-token="boostForm.tokenAddress = $event"
+                  @update:selected-token="boostForm.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
                 <TuneInput
-                  v-model="boostForm.totalAmount"
+                  v-model="boostForm.amount"
                   label="Total amount"
                   type="number"
                   placeholder="0.00"
@@ -206,7 +260,9 @@ watch(
           <p class="text-md leading-5">
             Boost can’t be changed after publishing, so please be sure.
           </p>
-          <TuneButton primary class="w-full mt-4"> Confirm </TuneButton>
+          <TuneButton primary class="w-full mt-4" @click="handleCreate">
+            Confirm
+          </TuneButton>
           <div class="flex justify-center mt-2">
             <i-ho-information-circle class="inline-block mr-1" />
             This contract is not audited.

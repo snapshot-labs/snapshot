@@ -1,6 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
+import { pin } from '@snapshot-labs/pineapple';
 
 export const IPFS_GATEWAY = 'pineapple.fyi';
 export const BOOST_ADDRESS = '0xaf8b6af86044821eED74E49057De62fB5C48e061';
@@ -25,7 +26,7 @@ interface Boost {
   owner: string;
 }
 
-interface Strategy {
+export interface BoostStrategy {
   strategy: string;
   params: Record<string, any>;
 }
@@ -55,7 +56,7 @@ export async function getBoost(
 export async function getStrategy(
   strategyURI: string,
   gateway: string = IPFS_GATEWAY
-): Promise<Strategy> {
+): Promise<BoostStrategy> {
   const url = strategyURI
     .replace('ipfs://', `https://${gateway}/ipfs/`)
     .replace('ipns://', `https://${gateway}/ipns/`);
@@ -89,4 +90,9 @@ export async function claimTokens(
   };
 
   return await contract.claimTokens(claim, signature);
+}
+
+export async function getStrategyURI(strategy: BoostStrategy) {
+  const { cid } = await pin(strategy);
+  return `ipfs://${cid}`;
 }
