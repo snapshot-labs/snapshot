@@ -116,14 +116,14 @@ watch(
               <RouterLink
                 :to="{ name: 'spaceProposal', params: { id: proposal.id } }"
               >
-                <TuneBlock>
+                <div class="border rounded-xl p-3">
                   <h4 class="leading-5">
                     {{ proposal.title }}
                   </h4>
                   <p class="line-clamp-2 mt-1">
                     {{ proposal.body }}
                   </p>
-                </TuneBlock>
+                </div>
               </RouterLink>
             </TuneBlock>
 
@@ -207,6 +207,10 @@ watch(
             Boost can’t be changed after publishing, so please be sure.
           </p>
           <TuneButton primary class="w-full mt-4"> Confirm </TuneButton>
+          <div class="flex justify-center mt-2">
+            <i-ho-information-circle class="inline-block mr-1" />
+            This contract is not audited.
+          </div>
         </div>
       </template>
     </TheLayout>
