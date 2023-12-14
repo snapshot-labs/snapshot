@@ -87,7 +87,7 @@ watch(paymentTx, () => {
         <ol class="flex flex-col gap-2">
           <li v-for="(plan, planId) in PLANS" :key="planId">
             <label
-              class="flex gap-3 border border-skin-border rounded-xl p-3 cursor-pointer"
+              class="flex gap-3 border border-skin-border hover:border-skin-text rounded-xl p-3 cursor-pointer"
               :class="{
                 '!border-skin-primary': planId === data.plan
               }"
@@ -95,7 +95,7 @@ watch(paymentTx, () => {
             >
               <TuneRadio :value="planId" :model-value="data.plan" />
               <div class="flex-grow">
-                <b>{{ plan.label }}</b>
+                <b class="text-skin-heading">{{ plan.label }}</b>
                 <BasePill
                   v-if="plan.discount"
                   class="ml-2 py-1 !bg-skin-primary"
@@ -124,7 +124,7 @@ watch(paymentTx, () => {
         <ol class="flex flex-col gap-2">
           <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
             <label
-              class="flex border border-skin-border gap-3 rounded-xl p-3 cursor-pointer"
+              class="flex border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
               :class="{
                 '!border-skin-primary': currencyId === data.currency
               }"
@@ -132,7 +132,7 @@ watch(paymentTx, () => {
             >
               <TuneRadio :value="currencyId" :model-value="data.currency" />
               <AvatarToken :address="currency.address[1]" size="24" />
-              <b class="flex-grow">{{ currency.code }}</b>
+              <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
               <small>
                 {{
                   formatCryptoCurrency(
