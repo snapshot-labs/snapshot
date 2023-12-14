@@ -13,12 +13,13 @@ const {
   loading,
   fxLoadStatus
 } = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
-const { web3Account } = useWeb3();
+const { web3 } = useWeb3();
+const { modalAccountOpen } = useModal();
 const modalPostPaymentOpen = ref(false);
 
 const data = reactive({
-  tos: false,
-  contract_signed: false,
+  termsAccepted: false,
+  contractSigned: false,
   currency: DEFAULT_CURRENCY,
   plan: DEFAULT_PLAN
 });
@@ -32,7 +33,9 @@ function setData(key: string, value: string | boolean) {
 }
 
 function pay() {
-  transfer(amount.value, data.currency);
+  !web3.value.account || !data.termsAccepted || !data.contractSigned
+    ? (modalAccountOpen.value = true)
+    : transfer(amount.value, data.currency);
 }
 
 function computePrice(
@@ -71,15 +74,6 @@ watch(paymentTx, () => {
 
 <template>
   <TheLayout class="max-w-lg px-4 md:px-0">
-    <BaseMessageBlock
-      v-if="!web3Account"
-      level="warning"
-      class="mb-3"
-      is-responsive
-    >
-      Connect your wallet first to proceed
-    </BaseMessageBlock>
-
     <h1>Network fees</h1>
     <p class="text-md mb-4 leading-5">
       Pay to support your network on Snapshot.
@@ -154,24 +148,22 @@ watch(paymentTx, () => {
 
       <fieldset class="flex flex-col gap-2">
         <TuneCheckbox
-          :id="'contract_signed'"
-          :model-value="data.contract_signed"
+          :id="'contractSigned'"
+          :model-value="data.contractSigned"
           hint="I have signed the network contract"
-          @update:model-value="setData('contract_signed', $event as boolean)"
+          @update:model-value="setData('contractSigned', $event as boolean)"
         />
         <TuneCheckbox
-          :id="'tos'"
-          :model-value="data.tos"
+          :id="'termsAccepted'"
+          :model-value="data.termsAccepted"
           hint="I agree to the terms and conditions"
-          @update:model-value="setData('tos', $event as boolean)"
+          @update:model-value="setData('termsAccepted', $event as boolean)"
         />
       </fieldset>
 
       <TuneButton
         primary
-        :disabled="
-          !web3Account || !data.tos || !data.contract_signed || loading
-        "
+        :disabled="loading || !data.termsAccepted || !data.contractSigned"
         :type="'submit'"
         :loading="loading"
         @click.prevent="pay"
