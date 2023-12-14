@@ -7,18 +7,28 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
+type BoostForm = {
+  limit: 'unlimited' | 'fixed';
+  eligibility: 'anyone' | number;
+  network: string;
+  tokenAddress: string;
+  totalAmount: string;
+  distribution: 'fixed' | 'ratio';
+};
+
 const route = useRoute();
 const { loadBalances, tokens } = useBalances();
 const { web3Account } = useWeb3();
 
 const proposal = ref();
 const customTokens = ref<Token[]>([]);
-const boostForm = ref({
+const boostForm = ref<BoostForm>({
   limit: 'unlimited',
   eligibility: 'anyone',
   network: '1',
   tokenAddress: '',
-  totalAmount: ''
+  totalAmount: '',
+  distribution: 'fixed'
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -56,6 +66,15 @@ const selectedToken = computed(() => {
   );
 });
 
+const distributionSwitch = computed({
+  get() {
+    return boostForm.value.distribution === 'ratio';
+  },
+  set(value: boolean) {
+    boostForm.value.distribution = value ? 'ratio' : 'fixed';
+  }
+});
+
 function handleAddCustomToken(token: Token) {
   if (
     customTokens.value.find(
@@ -89,7 +108,14 @@ watch(
             Incentivize people to vote on this proposal
           </p>
 
-          <BaseBlock title="Eligibility" class="mt-4">
+          <TuneBlock class="mt-4">
+            <template #title>
+              <TuneBlockHeader
+                title="Eligibility"
+                sub-title="Define criteria for eligibility."
+              >
+              </TuneBlockHeader>
+            </template>
             <!-- Number of eligible users
             <div class="flex gap-4 pt-1">
               <TuneRadio
@@ -109,9 +135,16 @@ watch(
               :items="eligibilityOptions"
               label="Eligible users"
             />
-          </BaseBlock>
+          </TuneBlock>
 
-          <BaseBlock title="Deposit amount" class="mt-3">
+          <TuneBlock class="mt-3">
+            <template #title>
+              <TuneBlockHeader
+                title="Deposit amount"
+                sub-title="Define custom token and amount to deposit."
+              >
+              </TuneBlockHeader>
+            </template>
             <div class="flex gap-[12px]">
               <ButtonSelectToken
                 :selected-token="selectedToken"
@@ -133,14 +166,25 @@ watch(
                 </template>
               </TuneInput>
             </div>
-          </BaseBlock>
-          <BaseBlock title="Distribution" class="mt-3"> </BaseBlock>
-          <BaseBlock title="Dates" class="mt-3"> </BaseBlock>
+          </TuneBlock>
+          <TuneBlock class="mt-3">
+            <template #title>
+              <TuneBlockHeader
+                title="Distribution based on Voting power"
+                sub-title="Define the maximum amount of voting power."
+              >
+              </TuneBlockHeader>
+            </template>
+            <TuneSwitch
+              v-model="distributionSwitch"
+              label="Define a maximum amount"
+            />
+          </TuneBlock>
         </template>
       </template>
 
       <template #sidebar-right>
-        <div class="border rounded-xl p-4">
+        <div class="border rounded-xl p-3">
           <h4 class="leading-5 mb-1">Create boost</h4>
           <p class="text-md leading-5">
             Boost can’t be changed after publishing, so please be sure.
