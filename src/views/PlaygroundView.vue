@@ -203,7 +203,7 @@ function handleNetworkSelect(value) {
             :items="
               filterStrategies(searchInput).map(s => ({ id: s.id, name: s.id }))
             "
-            :selected-id="(route.params.name as string)"
+            :selected-id="route.params.name as string"
             @select="selectStrategy"
             @search="value => (searchInput = value)"
           />
@@ -219,7 +219,7 @@ function handleNetworkSelect(value) {
               <BaseInput
                 v-model="form.snapshot"
                 :title="$t('snapshot')"
-                @update:modelValue="handleURLUpdate"
+                @update:model-value="handleURLUpdate"
               />
             </div>
             <BaseBlock
@@ -235,7 +235,7 @@ function handleNetworkSelect(value) {
             <FormObjectStrategyParams
               v-if="strategyDefinition"
               v-model="form.params"
-              :strategy-name="(route.params.name as string)"
+              :strategy-name="route.params.name as string"
             />
             <TextareaJson
               v-else
@@ -243,7 +243,7 @@ function handleNetworkSelect(value) {
               is-valid
               :placeholder="$t('strategyParameters')"
               class="input text-left"
-              @update:modelValue="handleURLUpdate"
+              @update:model-value="handleURLUpdate"
             />
             <BaseBlock
               v-if="strategyError"
@@ -259,7 +259,7 @@ function handleNetworkSelect(value) {
             <TextareaArray
               v-model="form.addresses"
               :placeholder="`0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c\n0xeF8305E140ac520225DAf050e2f71d5fBcC543e7`"
-              @change:modelValue="handleURLUpdate"
+              @update:model-value="handleURLUpdate"
             />
           </BaseBlock>
         </div>
@@ -268,7 +268,7 @@ function handleNetworkSelect(value) {
     <template #sidebar-right>
       <div class="space-y-3">
         <BaseBlock :title="$t('actions')">
-          <BaseButton
+          <TuneButton
             :loading="loading"
             :disabled="loading || !extendedStrategy"
             class="flex w-full items-center justify-center"
@@ -276,15 +276,15 @@ function handleNetworkSelect(value) {
             @click="loadScores"
           >
             <i-ho-play class="text-lg" />
-          </BaseButton>
-          <BaseButton class="mt-2 w-full" @click="copyURL">
+          </TuneButton>
+          <TuneButton class="mt-2 w-full" @click="copyURL">
             <BaseIcon
               name="insertlink"
               size="18"
               class="mr-1 align-text-bottom"
             />
             {{ t('copyLink') }}
-          </BaseButton>
+          </TuneButton>
         </BaseBlock>
         <BaseBlock v-if="scores" :title="$t('results')">
           <div
@@ -292,7 +292,7 @@ function handleNetworkSelect(value) {
             :key="address"
             class="flex justify-between"
           >
-            <BaseUser :address="(address as string)" />
+            <BaseUser :address="address as string" />
             <span>
               {{ formatCompactNumber(score) }}
               {{ form.params.symbol }}

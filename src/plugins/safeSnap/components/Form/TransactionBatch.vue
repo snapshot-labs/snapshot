@@ -122,7 +122,7 @@ export default {
         :config="config"
         :nonce="index"
         @remove="removeTransaction(index)"
-        @update:modelValue="updateTransaction(index, $event)"
+        @update:model-value="updateTransaction(index, $event)"
       />
     </div>
     <UiCollapsibleText
@@ -159,9 +159,9 @@ export default {
       <span class="!text-red"> Error: {{ safesnap.batchError.message }}</span>
     </BaseBlock>
 
-    <BaseButton v-if="!config.preview" class="mt-2" @click="addTransaction">
+    <TuneButton v-if="!config.preview" class="mt-2" @click="addTransaction">
       {{ $t('safeSnap.addTransaction') }}
-    </BaseButton>
+    </TuneButton>
   </UiCollapsible>
 </template>
 

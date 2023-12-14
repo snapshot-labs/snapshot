@@ -42,7 +42,7 @@ const {
 } = useProposals();
 
 const spaceMembers = computed(() =>
-  props.space.members.length < 1
+  props.space.members?.length < 1
     ? ['none']
     : [...props.space.members, ...props.space.moderators, ...props.space.admins]
 );
@@ -73,7 +73,7 @@ async function getProposals(skip = 0) {
         skip,
         space_in: [props.space.id, ...subSpaces.value],
         state: stateFilter.value,
-        author_in: showOnlyCore.value === '1' ? spaceMembers.value : [],
+        author_in: showOnlyCore.value === '1' ? spaceMembers.value : undefined,
         title_contains: titleSearch.value,
         flagged: showFlagged.value === '0' ? false : undefined
       }
@@ -176,9 +176,9 @@ watch(spaceProposals, () => {
           :link="{ name: 'spaceCreate' }"
           data-testid="create-proposal-button"
         >
-          <BaseButton :primary="isFollowing" class="w-full sm:w-auto">
+          <TuneButton :primary="isFollowing" class="w-full sm:w-auto">
             New proposal
-          </BaseButton>
+          </TuneButton>
         </BaseLink>
       </div>
 

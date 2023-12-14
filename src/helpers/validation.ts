@@ -1,8 +1,16 @@
 import Ajv from 'ajv';
 import type { ErrorObject } from 'ajv';
 import addFormats from 'ajv-formats';
-import { isAddress } from '@ethersproject/address';
 import { parseUnits } from '@ethersproject/units';
+import { isAddress } from '@ethersproject/address';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+
+const networksIds = Object.keys(networks);
+const mainnetNetworkIds = Object.keys(networks).filter(
+  id => !networks[id].testnet
+);
+
+const { env } = useApp();
 
 function getErrorMessage(errorObject: ErrorObject): string {
   if (!errorObject.message) return 'Invalid field.';
@@ -76,6 +84,17 @@ export function validateForm(
     }
   });
 
+  ajv.addKeyword({
+    keyword: 'snapshotNetwork',
+    validate: function (schema, data) {
+      if (env === 'production') return mainnetNetworkIds.includes(data);
+      return networksIds.includes(data);
+    },
+    error: {
+      message: 'testnet not allowed'
+    }
+  });
+
   ajv.validate(schema, form);
 
   return transformAjvErrors(ajv);
@@ -113,6 +132,7 @@ function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
         output,
         path
       );
+
       targetObject[path[path.length - 1]] = getErrorMessage(error);
       return output;
     },

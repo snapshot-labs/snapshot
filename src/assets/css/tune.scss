@@ -1,0 +1,193 @@
+.tune-input {
+  @apply form-input rounded-full border-skin-border bg-transparent text-base text-skin-link focus:border-skin-text focus:outline-none focus:ring-0;
+}
+
+.tune-textarea {
+  @extend .tune-input;
+  @apply no-scrollbar rounded-3xl px-3;
+
+  &.disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.tune-textarea-json {
+  @apply no-scrollbar overflow-x-scroll whitespace-pre;
+
+  &.disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.tune-switch {
+  @apply border-transparent;
+
+  &.switched-on-bg {
+    @apply bg-green;
+  }
+  &.switched-off-bg {
+    @apply bg-skin-border;
+  }
+
+  &.switched-on-text {
+    @apply text-green;
+  }
+  &.switched-off-text {
+    @apply text-skin-text;
+  }
+}
+
+.tune-switch-button {
+  @apply bg-skin-bg;
+}
+
+.tune-input-loading {
+  @apply rounded-r-full bg-skin-bg;
+}
+
+.tune-button {
+  @apply h-[46px] cursor-pointer text-skin-link rounded-full bg-transparent border border-skin-border px-[22px] hover:border-skin-text;
+
+  &.primary {
+    @apply border-skin-primary bg-skin-primary text-white hover:brightness-95;
+
+    &:disabled {
+      @apply border-skin-primary bg-skin-primary text-white opacity-40;
+    }
+  }
+
+  &.danger {
+    @apply text-red hover:border-red;
+
+    &:disabled {
+      @apply text-skin-border hover:border-skin-border;
+    }
+  }
+
+  &.disabled {
+    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
+  }
+}
+
+.tune-button-select {
+  @apply relative h-[42px] w-full justify-start truncate pl-3 pr-5 text-left text-base text-skin-link rounded-full;
+
+  &.disabled {
+    @apply cursor-not-allowed border-skin-border;
+  }
+}
+
+.tune-input-duration {
+  @apply rounded-full border border-skin-border px-3 text-base text-skin-link focus-within:border-skin-text;
+  &.disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.tune-input-duration-label {
+  @apply text-skin-text;
+}
+
+.tune-select {
+  @apply text-left;
+
+  &.disabled {
+    @apply cursor-not-allowed;
+  }
+}
+
+.tune-listbox-button {
+  @apply rounded-full border border-skin-border text-base text-skin-link hover:border-skin-text;
+
+  &.disabled {
+    @apply hover:border-skin-border;
+  }
+
+  &.error {
+    @apply border-red;
+  }
+}
+
+.tune-listbox-options {
+  @apply rounded-md border border-skin-border bg-skin-bg shadow-lg;
+}
+
+.tune-listbox-item {
+  &.selected {
+    @apply text-skin-link;
+  }
+  &.disabled {
+    @apply text-skin-border;
+  }
+  &.active {
+    @apply bg-skin-border;
+  }
+}
+
+.tune-listbox-placeholder {
+  @apply text-skin-text opacity-60;
+}
+
+.tune-label {
+  @apply font-sans text-skin-text;
+}
+
+.tune-sublabel {
+  @apply font-sans text-sm text-skin-text opacity-60;
+}
+
+.tune-icon-hint {
+  @apply text-sm hover:text-skin-link;
+}
+
+.tune-error-text {
+  @apply font-sans text-sm text-red;
+}
+
+.tune-error-border {
+  @apply border-red;
+}
+
+.tune-tag {
+  @apply rounded-md border border-skin-border bg-skin-border px-2 py-1 text-sm text-skin-text;
+}
+
+.tune-menu-list {
+  @apply rounded-md border border-skin-border bg-skin-header-bg shadow-lg;
+}
+
+.tune-menu-list-item {
+  @apply bg-skin-header-bg text-skin-text;
+
+  &.active {
+    @apply bg-skin-border text-skin-link;
+  }
+}
+
+.tune-popover {
+  @apply rounded-md border bg-skin-header-bg shadow-lg;
+}
+
+.tune-modal-panel {
+  @apply rounded-md border border-skin-border bg-skin-bg p-4 sm:w-[440px];
+}
+
+.tune-modal-backdrop {
+  @apply bg-skin-border opacity-70;
+}
+
+.tune-modal-title {
+  @apply text-center text-lg font-medium text-skin-text;
+}
+
+.tune-input-checkbox {
+  @apply form-checkbox h-[20px] w-[20px] rounded-lg border-skin-text bg-skin-bg text-skin-primary focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
+}
+
+.tune-input-radio {
+  @apply form-radio h-[20px] w-[20px] rounded-full border-skin-text bg-skin-bg text-skin-primary focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
+}
+
+.tune-form-array-objects {
+  @apply rounded-xl border p-3;
+}

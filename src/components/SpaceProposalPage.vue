@@ -63,8 +63,8 @@ function clickVote() {
   !web3.value.account
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && props.space.terms
-    ? (modalTermsOpen.value = true)
-    : (modalOpen.value = true);
+      ? (modalTermsOpen.value = true)
+      : (modalOpen.value = true);
 }
 
 function reloadProposal() {
@@ -138,7 +138,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
         v-if="isMessageVisible"
         type="proposal"
         responsive
-        @forceShow="setMessageVisibility(false)"
+        @force-show="setMessageVisibility(false)"
       />
 
       <template v-else>
@@ -183,7 +183,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             v-model="selectedChoices"
             :proposal="proposal"
             @open="modalOpen = true"
-            @clickVote="clickVote"
+            @click-vote="clickVote"
           />
           <SpaceProposalVotesList :space="space" :proposal="proposal" />
           <SpaceProposalPlugins
@@ -235,7 +235,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :strategies="strategies"
       @close="modalOpen = false"
       @reload="reloadProposal()"
-      @openPostVoteModal="openPostVoteModal"
+      @open-post-vote-modal="openPostVoteModal"
     />
     <ModalTerms
       :open="modalTermsOpen"
@@ -251,7 +251,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :selected-choices="selectedChoices"
       :waiting-for-signers="waitingForSigners"
       @close="isModalPostVoteOpen = false"
-      @subscribeEmail="modalEmailSubscriptionOpen = true"
+      @subscribe-email="modalEmailSubscriptionOpen = true"
     />
     <ModalEmailSubscription
       :open="modalEmailSubscriptionOpen"

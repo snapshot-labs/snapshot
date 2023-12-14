@@ -5,7 +5,7 @@ const { domain } = useApp();
 
 const props = defineProps<{
   address: string;
-  space?: ExtendedSpace;
+  space?: Partial<ExtendedSpace>;
   proposal?: Proposal;
   profile?: Profile;
   hideAvatar?: boolean;

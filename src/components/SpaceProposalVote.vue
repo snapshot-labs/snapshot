@@ -34,6 +34,23 @@ const validatedUserChoice = computed(() => {
   return null;
 });
 
+const buttonTooltip = computed(() => {
+  if (
+    props.proposal.type === 'ranked-choice' &&
+    selectedChoices.value < props.proposal.choices.length
+  )
+    return 'Please rank all choices';
+
+  if (
+    props.proposal.type !== 'approval' &&
+    props.proposal.type !== 'ranked-choice' &&
+    selectedChoices.value < 1
+  )
+    return 'Please select at least one choice';
+
+  return '';
+});
+
 function emitChoice(c) {
   emit('update:modelValue', c);
 }
@@ -52,44 +69,50 @@ watch(validatedUserChoice, () => {
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number)"
-        @selectChoice="emitChoice"
+        :user-choice="validatedUserChoice as number"
+        @select-choice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number[])"
-        @selectChoice="emitChoice"
+        :user-choice="validatedUserChoice as number[]"
+        @select-choice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as Record<string, number>)"
-        @selectChoice="emitChoice"
+        :user-choice="validatedUserChoice as Record<string, number>"
+        @select-choice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
         :key="key"
         :proposal="proposal"
-        :user-choice="(validatedUserChoice as number[])"
-        @selectChoice="emitChoice"
+        :user-choice="validatedUserChoice as number[]"
+        @select-choice="emitChoice"
       />
     </div>
-    <BaseButton
-      :disabled="
-        web3.authLoading ||
-        (selectedChoices < 1 && proposal.type !== 'approval') ||
-        (selectedChoices < proposal.choices.length &&
-          proposal.type === 'ranked-choice')
-      "
-      class="block w-full"
-      primary
-      data-testid="proposal-vote-button"
-      @click="$emit('clickVote')"
+    <div
+      v-tippy="{
+        content: buttonTooltip
+      }"
     >
-      {{ $t('proposal.vote') }}
-    </BaseButton>
+      <TuneButton
+        :disabled="
+          web3.authLoading ||
+          (selectedChoices < 1 && proposal.type !== 'approval') ||
+          (selectedChoices < proposal.choices.length &&
+            proposal.type === 'ranked-choice')
+        "
+        class="block w-full"
+        primary
+        data-testid="proposal-vote-button"
+        @click="$emit('clickVote')"
+      >
+        {{ $t('proposal.vote') }}
+      </TuneButton>
+    </div>
   </BaseBlock>
 </template>

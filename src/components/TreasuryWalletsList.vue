@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { TreasuryWallet } from '@/helpers/interfaces';
-import { getEnsAddress } from '@/helpers/profile';
+import { lookupAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   wallets: TreasuryWallet[];
@@ -12,7 +12,7 @@ const { web3Account } = useWeb3();
 const ensAddresses = ref<{ [k: string]: string } | null>(null);
 
 onMounted(async () => {
-  ensAddresses.value = await getEnsAddress(props.wallets.map(w => w.address));
+  ensAddresses.value = await lookupAddress(props.wallets.map(w => w.address));
 });
 </script>
 
@@ -47,13 +47,13 @@ onMounted(async () => {
       <div>
         {{ $t('treasury.wallets.empty') }}
       </div>
-      <BaseButton
+      <TuneButton
         v-if="admins?.includes(web3Account)"
         class="mt-3"
         @click="$router.push({ name: 'spaceSettings' })"
       >
         {{ $t('treasury.wallets.addTreasury') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseBlock>
 </template>

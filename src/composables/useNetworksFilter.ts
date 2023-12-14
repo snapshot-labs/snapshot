@@ -30,16 +30,7 @@ export function useNetworksFilter() {
       (a, b) => (a.key === q ? -1 : b.key === q ? 1 : 0)
     );
 
-    const networksArrayTestnetworksLast = networksArrayByExactKeyMatch.sort(
-      (a, b) =>
-        a.name.toLowerCase().includes('testnet')
-          ? 1
-          : b.name.toLowerCase().includes('testnet')
-          ? -1
-          : 0
-    );
-
-    return networksArrayTestnetworksLast;
+    return networksArrayByExactKeyMatch;
   };
 
   const { apolloQuery } = useApolloQuery();

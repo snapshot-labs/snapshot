@@ -124,7 +124,13 @@ const handleDrop = e => {
               accept="image/jpg, image/jpeg, image/png"
               type="file"
               class="absolute bottom-0 left-0 right-0 top-0 ml-0 w-full p-[5px] opacity-0"
-              @change="e => upload((e.target as HTMLInputElement)?.files?.[0], injectImageToBody)"
+              @change="
+                e =>
+                  upload(
+                    (e.target as HTMLInputElement)?.files?.[0],
+                    injectImageToBody
+                  )
+              "
             />
 
             <span class="pointer-events-none relative pl-1 text-sm">

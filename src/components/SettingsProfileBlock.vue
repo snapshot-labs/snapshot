@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import categories from '@/helpers/categories.json';
+import { SPACE_CATEGORIES } from '@/helpers/constants';
 
 const props = defineProps<{
   context: 'setup' | 'settings';
@@ -34,7 +34,12 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarSpace
                       :preview-file="previewFile"
                       size="80"
-                      :space="{ id: $route.params.ens as string ?? $route.params.key as string, avatar: avatarNotReactive }"
+                      :space="{
+                        id:
+                          ($route.params.ens as string) ??
+                          ($route.params.key as string),
+                        avatar: avatarNotReactive
+                      }"
                     />
                     <AvatarOverlayEdit
                       :loading="uploading"
@@ -81,7 +86,7 @@ const avatarNotReactive = ref(form.value.avatar);
             :placeholder="$t('settings.categories.select')"
             :label="$t(`settings.categories.label`)"
             :items="
-              categories.map(category => ({
+              SPACE_CATEGORIES.map(category => ({
                 value: category,
                 name: $t(`explore.categories.${category}`)
               }))

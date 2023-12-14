@@ -113,7 +113,7 @@ const settingsPages = computed(() => [
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
 
-  const result = await send(props.space, 'delete-space', null);
+  const result = await send(props.space, 'delete-space', {});
   console.log(':handleDelete result', result);
 
   if (result && result.id) {
@@ -148,13 +148,6 @@ async function handleSubmit() {
   }
 }
 
-onMounted(async () => {
-  populateForm(props.space);
-  await loadEnsOwner();
-  await loadSpaceController();
-  loaded.value = true;
-});
-
 const {
   isRevealed: isConfirmLeaveOpen,
   reveal: openConfirmLeave,
@@ -168,15 +161,22 @@ const {
   cancel: cancelDelete
 } = useConfirmDialog();
 
+const isViewOnly = computed(() => {
+  return !(isSpaceController.value || isSpaceAdmin.value);
+});
+
+onMounted(async () => {
+  populateForm(props.space);
+  await loadEnsOwner();
+  await loadSpaceController();
+  loaded.value = true;
+});
+
 onBeforeRouteLeave(async () => {
-  if (hasFormChanged.value) {
+  if (hasFormChanged.value && !isViewOnly.value) {
     const { data } = await openConfirmLeave();
     if (!data) return false;
   }
-});
-
-const isViewOnly = computed(() => {
-  return !(isSpaceController.value || isSpaceAdmin.value);
 });
 </script>
 
@@ -190,6 +190,15 @@ const isViewOnly = computed(() => {
 
       <template v-else>
         <div class="mt-3 space-y-3 sm:mt-0">
+          <SpaceSettingsMessageHibernated
+            v-if="space.hibernated && !isViewOnly"
+            :space="space"
+            :is-sending="isSending"
+            :is-valid="isValid"
+            @show-errors="showFormErrors = true"
+            @reactivate-space="handleSubmit"
+          />
+
           <BaseMessageBlock
             v-if="showFormErrors && Object.keys(validationErrors).length"
             level="warning-red"
@@ -232,6 +241,7 @@ const isViewOnly = computed(() => {
             <SettingsStrategiesBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
           </template>
 
@@ -239,6 +249,7 @@ const isViewOnly = computed(() => {
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
+              :show-errors="showFormErrors"
             />
             <SettingsProposalBlock
               context="settings"
@@ -276,7 +287,9 @@ const isViewOnly = computed(() => {
             />
             <SettingsTreasuriesBlock
               context="settings"
+              :space="space"
               :is-view-only="isViewOnly"
+              :error="validationErrors.treasuries"
             />
             <SettingsSubSpacesBlock
               context="settings"
@@ -300,10 +313,10 @@ const isViewOnly = computed(() => {
             v-if="isSpaceAdmin || isSpaceController"
             class="flex gap-5 px-4 pt-2 md:px-0"
           >
-            <BaseButton class="mb-2 block w-full" @click="resetForm">
+            <TuneButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
-            </BaseButton>
-            <BaseButton
+            </TuneButton>
+            <TuneButton
               :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
               :loading="isSending"
               class="block w-full"
@@ -311,7 +324,7 @@ const isViewOnly = computed(() => {
               @click="handleSubmit"
             >
               {{ $t('save') }}
-            </BaseButton>
+            </TuneButton>
           </div>
         </div>
       </template>
@@ -355,7 +368,7 @@ const isViewOnly = computed(() => {
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
       @close="modalUnsupportedNetworkOpen = false"
-      @networkChanged="modalConfirmSetTextRecordOpen = true"
+      @network-changed="modalConfirmSetTextRecordOpen = true"
     />
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"

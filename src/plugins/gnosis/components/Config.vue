@@ -29,7 +29,7 @@ const getChoices = () => {
   <div class="mb-2 text-center">
     <h4 class="mb-3">{{ $t('marketDetails') }}</h4>
     <div v-if="!preview" class="space-y-2">
-      <BaseButton class="w-full">
+      <TuneButton class="w-full">
         <select
           v-model="input.network"
           class="input w-full text-center"
@@ -39,37 +39,37 @@ const getChoices = () => {
           <option value="1" selected>Mainnet</option>
           <option value="100">xDai</option>
         </select>
-      </BaseButton>
-      <BaseButton class="w-full">
+      </TuneButton>
+      <TuneButton class="w-full">
         <input
           v-model="input.conditionId"
           class="input w-full text-center"
           :placeholder="$t('conditionId')"
           required
         />
-      </BaseButton>
-      <BaseButton class="w-full">
+      </TuneButton>
+      <TuneButton class="w-full">
         <input
           v-model="input.baseTokenAddress"
           class="input w-full text-center"
           :placeholder="$t('basetokenAddress')"
           required
         />
-      </BaseButton>
-      <BaseButton class="w-full">
+      </TuneButton>
+      <TuneButton class="w-full">
         <input
           v-model="input.quoteCurrencyAddress"
           class="input w-full text-center"
           :placeholder="$t('quoteAddress')"
           required
         />
-      </BaseButton>
+      </TuneButton>
     </div>
   </div>
   <div v-if="preview">
     <GnosisCustomBlock :proposal-config="input" :choices="getChoices()" />
   </div>
-  <BaseButton
+  <TuneButton
     v-if="!preview"
     :disabled="!isValid"
     class="my-2 w-full"
@@ -77,13 +77,13 @@ const getChoices = () => {
     @click="preview = true"
   >
     {{ $t('create.preview') }}
-  </BaseButton>
-  <BaseButton
+  </TuneButton>
+  <TuneButton
     v-if="preview"
     class="mb-2 w-full"
     primary
     @click="preview = false"
   >
     {{ $t('back') }}
-  </BaseButton>
+  </TuneButton>
 </template>

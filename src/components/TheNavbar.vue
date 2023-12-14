@@ -3,7 +3,6 @@ const { pendingTransactions, pendingTransactionsWithHash } = useTxStatus();
 const { env, showSidebar, domain } = useApp();
 const { web3Account } = useWeb3();
 
-const showDemoBanner = ref(true);
 const showPendingTransactionsModal = ref(false);
 
 watch(
@@ -15,19 +14,6 @@ watch(
 </script>
 
 <template>
-  <div
-    v-if="env === 'demo' && showDemoBanner"
-    class="relative bg-primary p-3 text-center"
-    style="color: white; font-size: 20px"
-  >
-    {{ $t('demoSite') }}
-    <BaseButtonIcon
-      class="absolute right-3 top-[10px]"
-      @click="showDemoBanner = false"
-    >
-      <i-ho-x />
-    </BaseButtonIcon>
-  </div>
   <div>
     <div class="px-3 sm:px-4">
       <div class="flex items-center py-[12px]">
@@ -45,6 +31,11 @@ watch(
           >
             snapshot
           </router-link>
+          <span
+            v-if="env === 'demo'"
+            class="ml-1 hidden uppercase text-[12px] sm:block mb-1"
+            v-text="'testnet'"
+          />
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <NavbarAccount />
@@ -58,7 +49,7 @@ watch(
   </div>
   <div
     v-if="pendingTransactions.length > 0"
-    class="flex flex-row items-center justify-center gap-x-3 bg-primary py-2 text-center text-white"
+    class="flex flex-row items-center justify-center gap-x-3 bg-skin-primary py-2 text-center text-white"
     :class="{
       'cursor-pointer': pendingTransactions.length > 0
     }"

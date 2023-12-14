@@ -14,6 +14,7 @@ const followingSpaceIds = ref<string[]>([]);
 const isLoading = ref(false);
 
 async function loadSpacesFollowed() {
+  if (!props.userAddress) return [];
   try {
     const response = await apolloQuery(
       {

@@ -6,6 +6,7 @@ import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 const props = defineProps<{
   context: 'setup' | 'settings';
   title?: string;
+  showErrors?: boolean;
   isViewOnly?: boolean;
 }>();
 
@@ -61,6 +62,8 @@ function handleSubmitStrategy(strategy) {
           :network="form.network"
           :hint="$t('settings.network.information')"
           :disabled="isViewOnly"
+          :error="validationErrors?.network"
+          :show-errors="showErrors"
           @select="value => (form.network = value)"
         />
         <TuneInput
@@ -89,14 +92,14 @@ function handleSubmitStrategy(strategy) {
           </div>
         </div>
         <div>
-          <BaseButton
+          <TuneButton
             class="flex w-full items-center gap-1"
             :disabled="isViewOnly"
             @click="handleAddStrategy"
           >
             <i-ho-plus class="text-sm" />
             {{ $t('add') }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
       <div class="mt-3">
@@ -113,6 +116,7 @@ function handleSubmitStrategy(strategy) {
       </div>
 
       <StrategiesBlockWarning
+        v-if="showErrors"
         :error="validationErrors?.strategies"
         :context="context"
       />

@@ -94,13 +94,13 @@ watch(web3Account, loadUserVote, { immediate: true });
         </div>
 
         <template #footer>
-          <BaseButton
+          <TuneButton
             class="w-full"
             primary
             @click="showModalDownloadMessage = false"
           >
             {{ $t('close') }}
-          </BaseButton>
+          </TuneButton>
         </template>
       </BaseModal>
     </template>

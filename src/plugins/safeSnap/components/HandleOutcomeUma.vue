@@ -323,9 +323,9 @@ onMounted(async () => {
         class="my-4 inline-block"
       >
         <BaseContainer class="flex items-center">
-          <BaseButton @click="showProposeModal" class="mr-2">
+          <TuneButton @click="showProposeModal" class="mr-2">
             {{ $t('safeSnap.labels.confirmVoteResults') }}
-          </BaseButton>
+          </TuneButton>
         </BaseContainer>
       </div>
 
@@ -341,13 +341,13 @@ onMounted(async () => {
         class="my-4 inline-block"
       >
         <BaseContainer class="flex items-center">
-          <BaseButton
+          <TuneButton
             :loading="action1State === 'approve-bond'"
             @click="approveBondUma"
             class="mr-2"
           >
             {{ $t('safeSnap.labels.approveBond') }}
-          </BaseButton>
+          </TuneButton>
           <BasePopoverHover placement="top">
             <template #button>
               <i-ho-information-circle />
@@ -421,7 +421,7 @@ onMounted(async () => {
                 </BaseMessage>
               </div>
 
-              <BaseButton
+              <TuneButton
                 :loading="action1State === 'submit-proposal'"
                 @click="submitProposalUma"
                 class="my-1 w-full"
@@ -432,7 +432,7 @@ onMounted(async () => {
                 "
               >
                 {{ $t('safeSnap.labels.request') }}
-              </BaseButton>
+              </TuneButton>
             </div>
           </BaseModal>
         </BaseContainer>
@@ -482,13 +482,13 @@ onMounted(async () => {
         class="my-4 inline-block"
       >
         <BaseContainer class="flex items-center">
-          <BaseButton
+          <TuneButton
             :loading="action2State === 'execute-proposal'"
             @click="executeProposalUma"
             class="mr-2"
           >
             {{ $t('safeSnap.labels.executeTxsUma', [batches.length]) }}
-          </BaseButton>
+          </TuneButton>
           <BasePopoverHover placement="top">
             <template #button>
               <i-ho-information-circle />

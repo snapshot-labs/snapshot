@@ -5,6 +5,7 @@ const props = defineProps<{
   space: ExtendedSpace;
   validationFailed: boolean;
   isValidAuthor: boolean;
+  isValidSpace: boolean;
   validationName: string;
   containsShortUrl: boolean;
 }>();
@@ -41,8 +42,16 @@ const strategySymbolsString = computed(() => {
 
 <template>
   <div class="mb-4 space-y-2">
+    <MessageWarningHibernated v-if="space.hibernated" :space="space" />
+
+    <BaseMessageBlock v-else-if="!isValidSpace" level="warning">
+      Proposal creation is blocked due to invalid space settings. Please contact
+      a space admin or if you are an admin head over to the settings page and
+      save them again.
+    </BaseMessageBlock>
+
     <MessageWarningGnosisNetwork
-      v-if="isGnosisAndNotSpaceNetwork"
+      v-else-if="isGnosisAndNotSpaceNetwork"
       :space="space"
       action="create"
       is-responsive

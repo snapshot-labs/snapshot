@@ -42,11 +42,22 @@ const isValidationsLoaded = ref(false);
 const updateIndex = ref(0);
 
 const validationDefinition = computed(() => {
-  return (
+  const definition =
     validations.value?.[input.value.name]?.schema?.definitions?.Validation ||
-    null
-  );
+    null;
+
+  if (input.value.name === 'passport-gated')
+    return definePassportGated(clone(definition));
+
+  return definition;
 });
+
+function definePassportGated(definition: any) {
+  if (input.value.params.operator === 'NONE')
+    delete definition.properties.stamps;
+
+  return definition;
+}
 
 const validationErrors = computed(() => {
   return validateForm(validationDefinition.value || {}, input.value.params);
@@ -73,12 +84,14 @@ function select(n: string) {
     }
   }
 
-  if (n === 'passport-gated' && !input.value.params.operator) {
-    input.value.params.operator = 'OR';
+  if (n === 'passport-gated') {
+    if (!input.value.params.operator) input.value.params.operator = 'NONE';
   }
 }
 
 function handleSubmit() {
+  if (input.value.name === 'passport-gated') handlePassportGatedNoneOperator();
+
   if (!isValid.value || !isValidParams.value) {
     strategiesFormRef.value?.forceShowError();
     formRef?.value?.forceShowError();
@@ -87,6 +100,16 @@ function handleSubmit() {
 
   emit('add', clone(input.value));
   emit('close');
+}
+
+function handlePassportGatedNoneOperator() {
+  if (!input.value.params.stamps?.[0]) {
+    input.value.params.stamps = undefined;
+    input.value.params.operator = 'NONE';
+  }
+  if (input.value.params.operator === 'NONE') {
+    input.value.params.stamps = undefined;
+  }
 }
 
 function removeProposalValidationOnly(validations: Validations) {
@@ -201,9 +224,9 @@ watch(showStrategies, () => {
       </div>
     </div>
     <template v-if="input.name" #footer>
-      <BaseButton class="w-full" primary @click="handleSubmit">
+      <TuneButton class="w-full" primary @click="handleSubmit">
         {{ $t('applyChanges') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>
