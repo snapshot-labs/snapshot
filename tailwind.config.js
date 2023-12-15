@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        snapshot: '#f3b04e',
+        snapshot: '#F2994A',
         'skin-primary': 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',

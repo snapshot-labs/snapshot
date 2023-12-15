@@ -102,8 +102,8 @@ const newBoostLink = computed(() => ({
 </script>
 
 <template>
-  <TuneBlock slim class="border rounded-xl bg-skin-border p-1 pt-0">
-    <div class="text-skin-heading flex items-center justify-center h-[40px]">
+  <TuneBlock slim class="border rounded-xl bg-snapshot p-1 pt-0">
+    <div class="text-white flex items-center justify-center h-[40px]">
       <template v-if="SAMPLE_BOOST.length">
         <i-ho-fire class="text-xs mr-1" />
         <span> 1 boost active </span>
@@ -127,7 +127,11 @@ const newBoostLink = computed(() => ({
         </div>
         <div class="mt-3 space-y-2">
           <div v-for="boost in SAMPLE_BOOST" :key="boost.id">
-            <SpaceProposalBoostItem :boost="boost" :proposal="proposal" />
+            <SpaceProposalBoostItem
+              :boost="boost"
+              :proposal="proposal"
+              :is-eligible="boost.id === '0x1234'"
+            />
           </div>
         </div>
       </div>
