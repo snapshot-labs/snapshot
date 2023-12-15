@@ -11,33 +11,42 @@ defineEmits(['close']);
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
+  <BaseModal :open="open" max-height="550px" @close="$emit('close')">
     <template #header>
       <h3>Payment result</h3>
     </template>
-    <div class="flex w-full flex-col space-y-2 p-4 text-center">
-      <div class="text-lg">Your payment transaction has been submitted.</div>
+    <div class="flex w-full flex-col space-y-2 p-4">
+      <BaseBlock slim title="Transaction hash">
+        <template #button>
+          <div class="flex gap-3">
+            <BaseLink
+              v-tippy="{ content: 'View transaction in explorer' }"
+              :link="
+                explorerUrl(tx.network.toString(), tx.hash as string, 'tx')
+              "
+              class="text-skin-text pt-[3px]"
+              hide-external-icon
+            >
+              <i-ho-external-link />
+            </BaseLink>
+
+            <BaseButtonIcon
+              v-tippy="{ content: 'Copy transaction hash' }"
+              @click="copyToClipboard(tx.hash)"
+            >
+              <i-ho-duplicate />
+            </BaseButtonIcon>
+          </div>
+        </template>
+        <div class="p-3">
+          <b class="my-3 font-mono break-all text-skin-link">{{ tx.hash }}</b>
+        </div>
+      </BaseBlock>
+
       <p>
-        Copy the transaction hash below and use on the payment form as proof of
+        Copy the transaction hash above and use on the payment form as proof of
         payment.
       </p>
-      <div class="rounded-lg border p-4">
-        <b class="font-mono break-all text-lg text-skin-link">{{ tx.hash }}</b>
-      </div>
-      <TuneButton primary @click="copyToClipboard(tx.hash)">
-        Copy transaction hash
-      </TuneButton>
-      <BaseLink
-        :link="explorerUrl(tx.network.toString(), tx.hash as string, 'tx')"
-        class="text-skin-text"
-      >
-        View transaction in explorer
-      </BaseLink>
     </div>
-    <template #footer>
-      <TuneButton type="button" class="w-full" @click="$emit('close')">
-        {{ $t('close') }}
-      </TuneButton>
-    </template>
   </BaseModal>
 </template>
