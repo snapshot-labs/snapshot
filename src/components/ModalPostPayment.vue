@@ -13,7 +13,7 @@ defineEmits(['close']);
 <template>
   <BaseModal :open="open" max-height="550px" @close="$emit('close')">
     <template #header>
-      <h3>Payment result</h3>
+      <h3>Transaction submitted</h3>
     </template>
     <div class="flex w-full flex-col space-y-2 p-4">
       <BaseBlock slim title="Transaction hash">
@@ -24,7 +24,7 @@ defineEmits(['close']);
               :link="
                 explorerUrl(tx.network.toString(), tx.hash as string, 'tx')
               "
-              class="text-skin-text pt-[3px]"
+              class="text-skin-text pt-[3px] transition-colors duration-200 hover:text-skin-link"
               hide-external-icon
             >
               <i-ho-external-link />
