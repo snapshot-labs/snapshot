@@ -415,6 +415,20 @@ export type DelegatesProposal = {
   title: string;
 };
 
+export interface BoostStrategy {
+  strategy: string;
+  params: {
+    proposal: string;
+    eligibility: {
+      choice?: number;
+    };
+    distribution: {
+      type: 'even' | 'weighted';
+      limit?: number;
+    };
+  };
+}
+
 export type BoostSubgraphResult = {
   id: string;
   strategyURI: string;
@@ -430,8 +444,5 @@ export type BoostSubgraphResult = {
     symbol: string;
     decimals: number;
   };
-  strategy: {
-    strategy: string;
-    params: Record<string, any>;
-  };
+  strategy: BoostStrategy;
 };

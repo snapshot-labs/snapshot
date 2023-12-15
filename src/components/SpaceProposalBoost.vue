@@ -5,28 +5,95 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const SAMPLE_BOOST: BoostSubgraphResult = {
-  id: '0x123',
-  strategyURI: 'ipfs://cid',
-  balance: 1000,
-  guard: '0x123',
-  start: '1712182473',
-  end: '1762192473',
-  owner: '0x123',
-  chainId: '1',
-  token: {
-    address: '0x123',
-    name: 'TokenName',
-    symbol: 'TN',
-    decimals: 18
+const SAMPLE_BOOST: BoostSubgraphResult[] = [
+  {
+    id: '0x1234',
+    strategyURI: 'ipfs://cid',
+    balance: 1000,
+    guard: '0x123',
+    start: '1712182473',
+    end: '1762192473',
+    owner: '0x123',
+    chainId: '1',
+    token: {
+      address: '0x123',
+      name: 'TokenName',
+      symbol: 'TN',
+      decimals: 18
+    },
+    strategy: {
+      strategy: 'proposal',
+      params: {
+        proposal: '0x123',
+        eligibility: {
+          choice: 1
+        },
+        distribution: {
+          type: 'even',
+          limit: undefined
+        }
+      }
+    }
   },
-  strategy: {
-    strategy: 'snapshot',
-    params: {
-      eligibility: 1
+  {
+    id: '0x1235',
+    strategyURI: 'ipfs://cid',
+    balance: 1000,
+    guard: '0x123',
+    start: '1712182473',
+    end: '1762192473',
+    owner: '0x123',
+    chainId: '1',
+    token: {
+      address: '0x123',
+      name: 'TokenName',
+      symbol: 'TN',
+      decimals: 18
+    },
+    strategy: {
+      strategy: 'proposal',
+      params: {
+        proposal: '0x123',
+        eligibility: {
+          choice: undefined
+        },
+        distribution: {
+          type: 'weighted',
+          limit: 100
+        }
+      }
+    }
+  },
+  {
+    id: '0x1235',
+    strategyURI: 'ipfs://cid',
+    balance: 1000,
+    guard: '0x123',
+    start: '1712182473',
+    end: '1762192473',
+    owner: '0x123',
+    chainId: '1',
+    token: {
+      address: '0x123',
+      name: 'TokenName',
+      symbol: 'TN',
+      decimals: 18
+    },
+    strategy: {
+      strategy: 'proposal',
+      params: {
+        proposal: '0x123',
+        eligibility: {
+          choice: undefined
+        },
+        distribution: {
+          type: 'even',
+          limit: undefined
+        }
+      }
     }
   }
-};
+];
 
 const newBoostLink = computed(() => ({
   name: 'spaceBoost',
@@ -37,14 +104,14 @@ const newBoostLink = computed(() => ({
 <template>
   <TuneBlock slim class="border rounded-xl bg-skin-border p-1 pt-0">
     <div class="text-skin-heading flex items-center justify-center h-[40px]">
-      <template v-if="[SAMPLE_BOOST].length">
+      <template v-if="SAMPLE_BOOST.length">
         <i-ho-fire class="text-xs mr-1" />
         <span> 1 boost active </span>
       </template>
       <template v-else> Try out this feature! </template>
     </div>
     <div class="bg-skin-bg rounded-xl p-3">
-      <div v-if="false">
+      <div v-if="SAMPLE_BOOST.length">
         <div class="flex justify-between relative">
           <div>
             <i-s-boost-logo class="text-xs text-skin-link" />
@@ -58,8 +125,10 @@ const newBoostLink = computed(() => ({
             <span class="text-md"> New boost </span>
           </router-link>
         </div>
-        <div class="mt-3">
-          <SpaceProposalBoostItem :boost="SAMPLE_BOOST" :proposal="proposal" />
+        <div class="mt-3 space-y-2">
+          <div v-for="boost in SAMPLE_BOOST" :key="boost.id">
+            <SpaceProposalBoostItem :boost="boost" :proposal="proposal" />
+          </div>
         </div>
       </div>
       <div v-else class="flex items-center gap-3">

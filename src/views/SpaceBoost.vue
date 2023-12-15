@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
-import { createBoost, getStrategyURI, BoostStrategy } from '@/helpers/boost';
+import { createBoost, getStrategyURI } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
 

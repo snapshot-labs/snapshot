@@ -1,6 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { pin } from '@snapshot-labs/pineapple';
+import { BoostStrategy } from '@/helpers/interfaces';
 
 export const IPFS_GATEWAY = 'pineapple.fyi';
 export const BOOST_ADDRESS = '0xaf8b6af86044821eED74E49057De62fB5C48e061';
@@ -23,20 +24,6 @@ interface Boost {
   start: number;
   end: number;
   owner: string;
-}
-
-export interface BoostStrategy {
-  strategy: string;
-  params: {
-    proposal: string;
-    eligibility: {
-      choice?: number;
-    };
-    distribution: {
-      type: 'even' | 'weighted';
-      limit?: number;
-    };
-  };
 }
 
 export async function createBoost(
