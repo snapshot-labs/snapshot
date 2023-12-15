@@ -72,113 +72,106 @@ watch(paymentTx, () => {
 </script>
 
 <template>
-  <TheLayout class="max-w-lg px-4 md:px-0">
-    <h1>Network fees</h1>
-    <p class="text-md mb-4 leading-5">
-      Pay to support your network on Snapshot.
-    </p>
+  <h1>Network fees</h1>
+  <p class="text-md mb-4 leading-5">Pay to support your network on Snapshot.</p>
 
-    <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
-      <fieldset>
-        <legend>
-          <h2 class="text-lg mb-2">Select your package</h2>
-        </legend>
-        <ol class="flex flex-col gap-2">
-          <li v-for="(plan, planId) in PLANS" :key="planId">
-            <label
-              class="flex gap-3 border border-skin-border hover:border-skin-text rounded-xl p-3 cursor-pointer"
-              :class="{
-                '!border-skin-primary': planId === data.plan
-              }"
-              @click="setData('plan', planId)"
-            >
-              <TuneRadio :value="planId" :model-value="data.plan" />
-              <div class="flex-grow">
-                <b class="text-skin-heading">{{ plan.label }}</b>
-                <BasePill
-                  v-if="plan.discount"
-                  class="ml-2 py-1 !bg-skin-primary"
-                >
-                  Save {{ plan.discount }}%
-                </BasePill>
-                <small class="block text-skin-text">
-                  {{
-                    formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
-                  }}/month
-                </small>
-              </div>
-              <b class="text-skin-heading">
-                {{ formatFiatCurrency(computePlanFiatPrice(plan)) }}
-              </b>
-            </label>
-          </li>
-        </ol>
-      </fieldset>
-
-      <fieldset>
-        <legend>
-          <h2 class="text-lg mb-2">Select your currency</h2>
-        </legend>
-
-        <ol class="flex flex-col gap-2">
-          <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
-            <label
-              class="flex border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
-              :class="{
-                '!border-skin-primary': currencyId === data.currency
-              }"
-              @click="setData('currency', currencyId)"
-            >
-              <TuneRadio :value="currencyId" :model-value="data.currency" />
-              <AvatarToken :address="currency.address[1]" size="24" />
-              <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
-              <small>
+  <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
+    <fieldset>
+      <legend>
+        <h2 class="text-lg mb-2">Select your package</h2>
+      </legend>
+      <ol class="flex flex-col gap-2">
+        <li v-for="(plan, planId) in PLANS" :key="planId">
+          <label
+            class="flex gap-3 border border-skin-border hover:border-skin-text rounded-xl p-3 cursor-pointer"
+            :class="{
+              '!border-skin-primary': planId === data.plan
+            }"
+            @click="setData('plan', planId)"
+          >
+            <TuneRadio :value="planId" :model-value="data.plan" />
+            <div class="flex-grow">
+              <b class="text-skin-heading">{{ plan.label }}</b>
+              <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary">
+                Save {{ plan.discount }}%
+              </BasePill>
+              <small class="block text-skin-text">
                 {{
-                  formatCryptoCurrency(
-                    computePrice(currencyId, PLANS[data.plan].unit),
-                    currency
-                  )
-                }}
+                  formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
+                }}/month
               </small>
-            </label>
-          </li>
-        </ol>
-      </fieldset>
+            </div>
+            <b class="text-skin-heading">
+              {{ formatFiatCurrency(computePlanFiatPrice(plan)) }}
+            </b>
+          </label>
+        </li>
+      </ol>
+    </fieldset>
 
-      <fieldset class="flex flex-col gap-2">
-        <TuneCheckbox
-          :id="'termsAccepted'"
-          :model-value="data.termsAccepted"
-          hint="I agree to the terms and conditions"
-          @update:model-value="setData('termsAccepted', $event as boolean)"
-        />
-      </fieldset>
+    <fieldset>
+      <legend>
+        <h2 class="text-lg mb-2">Select your currency</h2>
+      </legend>
 
-      <TuneButton
-        primary
-        :disabled="loading || !data.termsAccepted"
-        :type="'submit'"
-        :loading="loading"
-        @click.prevent="pay"
-      >
-        Pay
-        {{ amount.toLocaleString() }}
-        {{ CURRENCIES[data.currency].code }} for {{ PLANS[data.plan].label }}
-      </TuneButton>
-    </form>
+      <ol class="flex flex-col gap-2">
+        <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
+          <label
+            class="flex border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
+            :class="{
+              '!border-skin-primary': currencyId === data.currency
+            }"
+            @click="setData('currency', currencyId)"
+          >
+            <TuneRadio :value="currencyId" :model-value="data.currency" />
+            <AvatarToken :address="currency.address[1]" size="24" />
+            <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
+            <small>
+              {{
+                formatCryptoCurrency(
+                  computePrice(currencyId, PLANS[data.plan].unit),
+                  currency
+                )
+              }}
+            </small>
+          </label>
+        </li>
+      </ol>
+    </fieldset>
 
-    <div v-else-if="fxLoadStatus === 0">
-      <LoadingSpinner />
-    </div>
+    <fieldset class="flex flex-col gap-2">
+      <TuneCheckbox
+        :id="'termsAccepted'"
+        :model-value="data.termsAccepted"
+        hint="I agree to the terms and conditions"
+        @update:model-value="setData('termsAccepted', $event as boolean)"
+      />
+    </fieldset>
 
-    <BaseMessageBlock v-else level="warning-red" is-responsive>
-      Unable to load the form. Please try again later.
-    </BaseMessageBlock>
+    <TuneButton
+      primary
+      :disabled="loading || !data.termsAccepted"
+      :type="'submit'"
+      :loading="loading"
+      @click.prevent="pay"
+    >
+      Pay
+      {{ amount.toLocaleString() }}
+      {{ CURRENCIES[data.currency].code }} for {{ PLANS[data.plan].label }}
+    </TuneButton>
+  </form>
 
-    <ModalPostPayment
-      :open="modalPostPaymentOpen"
-      :tx="paymentTx"
-      @close="modalPostPaymentOpen = false"
-    />
-  </TheLayout>
+  <div v-else-if="fxLoadStatus === 0">
+    <LoadingSpinner />
+  </div>
+
+  <BaseMessageBlock v-else level="warning-red" is-responsive>
+    Unable to load the form. Please try again later.
+  </BaseMessageBlock>
+
+  <ModalPostPayment
+    :open="modalPostPaymentOpen"
+    :tx="paymentTx"
+    @close="modalPostPaymentOpen = false"
+  />
 </template>
