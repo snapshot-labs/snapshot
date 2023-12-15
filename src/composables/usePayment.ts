@@ -3,7 +3,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
-const BASE_PRICE = 2e10;
+const BASE_PRICE = 1;
 const BASE_UNIT = 1;
 const BASE_CURRENCY = {
   name: 'USD',
