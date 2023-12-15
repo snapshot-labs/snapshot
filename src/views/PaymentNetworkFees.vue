@@ -19,7 +19,6 @@ const modalPostPaymentOpen = ref(false);
 
 const data = reactive({
   termsAccepted: false,
-  contractSigned: false,
   currency: DEFAULT_CURRENCY,
   plan: DEFAULT_PLAN
 });
@@ -33,7 +32,7 @@ function setData(key: string, value: string | boolean) {
 }
 
 function pay() {
-  !web3.value.account || !data.termsAccepted || !data.contractSigned
+  !web3.value.account || !data.termsAccepted
     ? (modalAccountOpen.value = true)
     : transfer(amount.value, data.currency);
 }
@@ -148,12 +147,6 @@ watch(paymentTx, () => {
 
       <fieldset class="flex flex-col gap-2">
         <TuneCheckbox
-          :id="'contractSigned'"
-          :model-value="data.contractSigned"
-          hint="I have signed the network contract"
-          @update:model-value="setData('contractSigned', $event as boolean)"
-        />
-        <TuneCheckbox
           :id="'termsAccepted'"
           :model-value="data.termsAccepted"
           hint="I agree to the terms and conditions"
@@ -163,7 +156,7 @@ watch(paymentTx, () => {
 
       <TuneButton
         primary
-        :disabled="loading || !data.termsAccepted || !data.contractSigned"
+        :disabled="loading || !data.termsAccepted"
         :type="'submit'"
         :loading="loading"
         @click.prevent="pay"
