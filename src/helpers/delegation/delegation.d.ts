@@ -16,5 +16,5 @@ export type DelegationWriter = {
     addresses: string[],
     ratio?: number[],
     expirationTimestamp?: number
-  ) => Promise<void>;
+  ) => Promise<any>;
 };

@@ -228,7 +228,7 @@ watch(
           :key="`${delegate.address}-${delegate.weight}- ${index}`"
         >
           <SpaceDelegateRegistryV2Row
-            :address="form.to ?? delegate.address"
+            :address="delegate.address"
             :weight="delegate.weight"
             @deleteDelegate="deleteDelegate(index)"
             @update:modelValue="form => updateDelegate(index, form)"
