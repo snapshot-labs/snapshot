@@ -57,9 +57,7 @@ function computePlanFiatPrice(plan, unit?: number): number {
 }
 
 function formatFiatCurrency(amount: number): string {
-  return `${BASE_CURRENCY.name} ${
-    BASE_CURRENCY.symbol
-  }${amount.toLocaleString()}`;
+  return `${BASE_CURRENCY.symbol}${amount.toLocaleString()}`;
 }
 
 function formatCryptoCurrency(amount: number, currency): string {

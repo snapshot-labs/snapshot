@@ -6,7 +6,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 const BASE_PRICE = 1;
 const BASE_UNIT = 1;
 const BASE_CURRENCY = {
-  name: 'USD',
   symbol: '$'
 };
 
