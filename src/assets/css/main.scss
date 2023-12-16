@@ -19,6 +19,8 @@
   --header-bg: #1c1b20;
   --block-bg: transparent;
   --shadow-color: rgba(255, 255, 255, 0.036);
+  --border-color-soft: rgb(45, 45, 45, 0.6);
+  --border-color-subtle: rgb(45, 45, 45, 0.32);
 }
 
 [data-color-scheme='light'] {
@@ -32,6 +34,8 @@
   --header-bg: white;
   --block-bg: transparent;
   --shadow-color: #0001;
+  --border-color-soft: rgb(224, 224, 224, 0.6);
+  --border-color-subtle: rgb(224, 224, 224, 0.32);
 }
 
 @layer base {

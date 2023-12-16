@@ -149,7 +149,7 @@
 }
 
 .tune-tag {
-  @apply rounded-lg border border-skin-border bg-skin-border px-[6px] py-[3px] text-sm text-skin-text;
+  @apply rounded-lg border border-[--border-color-soft] bg-[--border-color-subtle] px-[6px] py-[3px] text-sm text-skin-text;
 }
 
 .tune-menu-list {
