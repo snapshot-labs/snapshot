@@ -12,5 +12,9 @@ export type DelegationReader = {
 };
 
 export type DelegationWriter = {
-  sendSetDelegationTx: (addresses: string[], ratio?: number[]) => Promise<void>;
+  sendSetDelegationTx: (
+    addresses: string[],
+    ratio?: number[],
+    expirationTimestamp?: number
+  ) => Promise<void>;
 };
