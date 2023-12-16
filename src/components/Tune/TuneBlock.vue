@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div
-    class="border-y border-skin-border bg-skin-block-bg md:rounded-2xl md:border"
+    class="border-y border-skin-border bg-skin-block-bg md:rounded-2xl md:border overflow-hidden"
   >
     <slot name="title" />
     <div class="p-3" :class="{ '!p-0': slim }">

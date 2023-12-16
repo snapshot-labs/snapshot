@@ -11,7 +11,7 @@ const props = defineProps<{
 <template>
   <div
     class="border rounded-xl p-[12px] flex justify-between"
-    :class="{ '!border-snapshot/40 ': isEligible }"
+    :class="{ '!border-snapshot/40 bg-snapshot/5': isEligible }"
   >
     <div class="pr-4">
       <div class="text-skin-heading">
