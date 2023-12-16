@@ -141,9 +141,15 @@ watch(paymentTx, () => {
       <TuneCheckbox
         :id="'termsAccepted'"
         :model-value="data.termsAccepted"
-        hint="I agree to the terms and conditions"
         @update:model-value="setData('termsAccepted', $event as boolean)"
-      />
+      >
+        <template #hint>
+          I agree to the
+          <BaseLink link="https://docs.snapshot.org" hide-external-icon>
+            terms and conditions </BaseLink
+          >.
+        </template>
+      </TuneCheckbox>
     </fieldset>
 
     <TuneButton

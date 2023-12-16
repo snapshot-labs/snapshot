@@ -27,8 +27,14 @@ const emit = defineEmits(['update:modelValue']);
             )
           "
         />
-        <TuneLabelInput v-if="hint || definition?.description" class="!mb-0">
-          {{ hint || definition.description }}
+        <TuneLabelInput
+          v-if="hint || definition?.description || $slots.hint"
+          class="!mb-0"
+        >
+          <slot v-if="$slots.hint" name="hint" />
+          <template v-else>
+            {{ hint || definition.description }}
+          </template>
         </TuneLabelInput>
       </div>
     </label>
