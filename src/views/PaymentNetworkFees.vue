@@ -61,7 +61,7 @@ function formatFiatCurrency(amount: number): string {
 }
 
 function formatCryptoCurrency(amount: number, currency): string {
-  return `~${currency.code} ${amount.toLocaleString()}`;
+  return `~${amount.toLocaleString()} ${currency.code}`;
 }
 
 watch(paymentTx, () => {
