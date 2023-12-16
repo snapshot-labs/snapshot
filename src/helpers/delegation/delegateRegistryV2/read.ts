@@ -34,7 +34,7 @@ const getDelegations =
   (space: ExtendedSpace): DelegationReader['getDelegates'] =>
   async (first: number, skip: number, orderBy: string) => {
     const response = (await fetch(
-      `${DELEGATE_REGISTRY_BACKEND_URL}/api/${space.id}/latest/delegates/top?by=${orderBy}&limit=${first}`
+      `${DELEGATE_REGISTRY_BACKEND_URL}/api/${space.id}/latest/delegates/top?by=${orderBy}&limit=${first}&offset=${skip}`
     ).then(res => res.json())) as { topDelegates: DelegateFromDRV2[] };
 
     const formatted: DelegateWithPercent[] = response.topDelegates.map(d => ({
