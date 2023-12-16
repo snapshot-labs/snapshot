@@ -1,4 +1,13 @@
 <script setup lang="ts">
+useMeta({
+  title: {
+    key: 'Network plan'
+  },
+  description: {
+    key: 'Pay to support your network on Snapshot.'
+  }
+});
+
 const {
   DEFAULT_CURRENCY,
   DEFAULT_PLAN,
