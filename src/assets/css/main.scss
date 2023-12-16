@@ -21,6 +21,7 @@
   --shadow-color: rgba(255, 255, 255, 0.036);
   --border-color-soft: rgb(45, 45, 45, 0.6);
   --border-color-subtle: rgb(45, 45, 45, 0.32);
+  --border-color-faint: rgb(45, 45, 45, 0.12);
 }
 
 [data-color-scheme='light'] {
@@ -36,6 +37,7 @@
   --shadow-color: #0001;
   --border-color-soft: rgb(224, 224, 224, 0.6);
   --border-color-subtle: rgb(224, 224, 224, 0.32);
+  --border-color-faint: rgb(224, 224, 224, 0.12);
 }
 
 @layer base {
