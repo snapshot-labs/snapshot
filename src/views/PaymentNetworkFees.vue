@@ -72,7 +72,7 @@ watch(paymentTx, () => {
 </script>
 
 <template>
-  <h1>Network fees</h1>
+  <h1>Network plan</h1>
   <p class="text-md mb-4 leading-5">Pay to support your network on Snapshot.</p>
 
   <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
