@@ -11,8 +11,8 @@ const BASE_CURRENCY = {
 
 const PLANS = {
   y1: { label: '1 year', unit: 12, discount: 20 },
-  m6: { label: '6 months', unit: 6 },
-  m3: { label: '3 months', unit: 3 }
+  m6: { label: '6 months', unit: 6, discount: 0 },
+  m3: { label: '3 months', unit: 3, discount: 0 }
 };
 const CURRENCIES = {
   ethereum: {

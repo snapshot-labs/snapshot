@@ -12,7 +12,7 @@ const {
   paymentTx,
   loading,
   fxLoadStatus
-} = usePayment(import.meta.env.VITE_DEFAULT_NETWORK);
+} = usePayment(parseInt(import.meta.env.VITE_DEFAULT_NETWORK));
 const { web3 } = useWeb3();
 const { modalAccountOpen } = useModal();
 const modalPostPaymentOpen = ref(false);
