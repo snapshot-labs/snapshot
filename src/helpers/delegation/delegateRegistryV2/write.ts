@@ -7,7 +7,7 @@ import { hexZeroPad } from '@ethersproject/bytes';
 const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
-    if (addresses.length >= 0) {
+    if (addresses.length <= 0) {
       throw new Error(
         'Delegate Registry V2 delegation must have at least one delegate'
       );
