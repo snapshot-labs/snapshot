@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import legacySpaces from '@/../snapshot-spaces/spaces/legacy.json';
-import {DelegationTypes} from '../helpers/delegation/index'
+import { DelegationTypes } from '../helpers/delegation/index';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -16,8 +16,11 @@ const hasDelegationStrategy = computed(() => {
 });
 
 const hasDelegatesSettings = computed(() => {
-  return props.space.delegationPortal?.delegationType || props.space.strategies?.some(
+  return (
+    props.space.delegationPortal?.delegationType ||
+    props.space.strategies?.some(
       ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+    )
   );
 });
 
