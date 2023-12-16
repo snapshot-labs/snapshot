@@ -15,7 +15,7 @@ const props = defineProps<{
   >
     <div class="pr-4">
       <div class="text-skin-heading">
-        <template v-if="boost.strategy.params.eligibility.choice">
+        <template v-if="boost.strategy.params.eligibility.choice !== undefined">
           Who votes
           <TuneTag
             :label="proposal.choices[boost.strategy.params.eligibility.choice]"

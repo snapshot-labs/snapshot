@@ -80,15 +80,6 @@ const selectedToken = computed(() => {
   );
 });
 
-// const distributionSwitch = computed({
-//   get() {
-//     return boostForm.value.distribution === 'weighted';
-//   },
-//   set(value: boolean) {
-//     boostForm.value.distribution = value ? 'weighted' : 'even';
-//   }
-// });
-
 const strategy = computed<BoostStrategy>(() => {
   const choice =
     boostForm.value.eligibility.choice === 'any'
