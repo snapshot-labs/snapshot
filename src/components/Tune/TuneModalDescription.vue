@@ -3,7 +3,7 @@ import { DialogDescription } from '@headlessui/vue';
 </script>
 
 <template>
-  <DialogDescription as="p" class="tune-modal-description">
+  <DialogDescription as="p">
     <slot />
   </DialogDescription>
 </template>

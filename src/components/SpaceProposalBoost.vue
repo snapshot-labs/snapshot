@@ -5,9 +5,12 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
+const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
+
+const isOpen = ref(false);
 
 const SAMPLE_BOOSTS: BoostSubgraphResult[] = [
   {
@@ -120,6 +123,11 @@ const eligibleBoosts = computed(() => {
   return SAMPLE_BOOSTS.filter(boost => isEligible(boost));
 });
 
+function handleStart() {
+  router.push(newBoostLink.value);
+  isOpen.value = false;
+}
+
 watch(
   web3Account,
   () => {
@@ -158,13 +166,14 @@ watch(
               Get rewards by voting on this proposal
             </p>
           </div>
-          <router-link
-            :to="newBoostLink"
+          <button
+            type="button"
             class="flex items-center absolute -top-[12px] -right-2 p-2"
+            @click="isOpen = true"
           >
             <i-ho-plus class="mr-2 text-xs" />
             <span class="text-md"> New boost </span>
-          </router-link>
+          </button>
         </div>
         <div class="mt-3 space-y-2">
           <div v-for="boost in SAMPLE_BOOSTS" :key="boost.id">
@@ -214,15 +223,19 @@ watch(
         </div>
         <div class="w-full">
           <h4 class="leading-5">Boost proposal</h4>
-          <p class="">Incentivize people to vote with rewards</p>
+          <p>Incentivize people to vote with rewards</p>
         </div>
-        <router-link :to="newBoostLink">
-          <TuneButton class="flex items-center">
-            <i-ho-fire class="text-sm mr-2" />
-            <div>Boost</div>
-          </TuneButton>
-        </router-link>
+
+        <TuneButton class="flex items-center" @click="isOpen = true">
+          <i-ho-fire class="text-sm mr-2" />
+          <div>Boost</div>
+        </TuneButton>
       </div>
     </div>
+    <SpaceProposalBoostModal
+      :open="isOpen"
+      @close="isOpen = false"
+      @start="handleStart"
+    />
   </TuneBlock>
 </template>

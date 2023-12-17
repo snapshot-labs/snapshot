@@ -169,15 +169,11 @@
 }
 
 .tune-modal-panel {
-  @apply rounded-[20px] border border-skin-border bg-skin-bg;
+  @apply rounded-[20px] bg-skin-bg;
 }
 
 .tune-modal-backdrop {
-  @apply bg-skin-border opacity-70;
-}
-
-.tune-modal-title {
-  @apply text-center text-lg font-medium text-skin-text;
+  @apply bg-black opacity-40;
 }
 
 .tune-input-checkbox {
