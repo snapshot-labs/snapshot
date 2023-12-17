@@ -123,6 +123,7 @@ const newBoostLink = computed(() => ({
 const isActive = computed(() => props.proposal.state === 'active');
 
 function isEligible(boost: BoostSubgraphResult) {
+  if (props.proposal.privacy === 'shutter') return false;
   if (userVote.value && boost.strategy.params.eligibility.choice !== undefined)
     return (
       userVote.value.choice === boost.strategy.params.eligibility.choice + 1
