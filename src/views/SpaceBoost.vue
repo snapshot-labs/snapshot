@@ -172,29 +172,46 @@ watchEffect(async () => {
           </p>
 
           <div class="space-y-3 mt-4">
-            <TuneBlock>
-              <template #title>
-                <TuneBlockHeader title="Proposal" />
-              </template>
+            <TuneBlock class="!bg-[--border-color-faint]">
               <RouterLink
                 :to="{ name: 'spaceProposal', params: { id: proposal.id } }"
               >
-                <div class="border rounded-xl p-3">
-                  <h4 class="leading-5">
-                    {{ proposal.title }}
-                  </h4>
-                  <p class="line-clamp-2 mt-1">
-                    {{ proposal.body }}
-                  </p>
-                </div>
+                <h4 class="leading-5">
+                  {{ proposal.title }}
+                </h4>
+                <p class="line-clamp-2 mt-1 text-skin-text">
+                  {{ proposal.body }}
+                </p>
               </RouterLink>
+              <div class="flex gap-3 items-center h-[20px] mt-[12px]">
+                <LinkSpace
+                  class="text-skin-text flex items-center"
+                  :space-id="proposal.space.id"
+                >
+                  <AvatarSpace
+                    :space="proposal.space"
+                    size="20"
+                    class="!text-skin-text"
+                  />
+                  <span
+                    class="ml-1 text-skin-text"
+                    v-text="proposal.space.name"
+                  />
+                </LinkSpace>
+
+                <BaseUser
+                  :address="proposal.author"
+                  :space="space"
+                  text-class="text-skin-text"
+                />
+              </div>
             </TuneBlock>
 
             <TuneBlock>
               <template #title>
                 <TuneBlockHeader
                   title="Eligibility"
-                  sub-title="Define criteria for choice."
+                  sub-title="Define eligibility criteria effortlessly, establishing clear standards for streamlined decision-making in various opportunities or services."
                 />
               </template>
 
@@ -209,7 +226,7 @@ watchEffect(async () => {
               <template #title>
                 <TuneBlockHeader
                   title="Deposit amount"
-                  sub-title="Define custom token and amount to deposit."
+                  sub-title="Customize your deposit: choose a token and amount, tailoring transactions to fit your preferences and goals."
                 />
               </template>
               <div class="flex gap-[12px]">
@@ -238,7 +255,7 @@ watchEffect(async () => {
               <template #title>
                 <TuneBlockHeader
                   title="Distribution based on Voting power"
-                  sub-title="Define the maximum amount of voting power."
+                  sub-title="Define the maximum amount of voting power, enabling you to set limits and optimize your influence within the voting system."
                 />
               </template>
               <TuneSwitch
@@ -252,7 +269,7 @@ watchEffect(async () => {
 
       <template #sidebar-right>
         <div class="border rounded-xl p-3">
-          <h4 class="leading-5 mb-1">Create boost</h4>
+          <h4 class="leading-5 mb-1">New boost</h4>
           <p class="text-md leading-5">
             Boost can’t be changed after publishing, so please be sure.
           </p>

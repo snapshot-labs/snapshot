@@ -16,7 +16,7 @@ defineProps<{
         </span>
         <BaseCounter :counter="counter" class="ml-1 inline-block" />
       </div>
-      <div class="text-skin-text font-normal">
+      <div class="text-skin-text font-normal leading-5 mt-1">
         {{ subTitle }}
       </div>
     </h4>
