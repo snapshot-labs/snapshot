@@ -21,7 +21,7 @@ defineProps<{
       </div>
     </h4>
     <div class="flex items-center relative">
-      <div class="absolute right-0">
+      <div class="absolute right-0 top-0 flex">
         <slot v-if="$slots.default" />
         <IconInformationTooltip
           v-else
