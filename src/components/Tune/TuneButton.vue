@@ -2,7 +2,7 @@
 withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset';
-    variant?: 'danger';
+    variant?: 'danger' | 'white';
     primary?: boolean;
     loading?: boolean;
     disabled?: boolean;
@@ -24,6 +24,7 @@ withDefaults(
       'tune-button',
       {
         primary: primary,
+        'white-border': variant === 'white',
         danger: variant === 'danger',
         disabled: disabled
       }

@@ -102,6 +102,19 @@ const SAMPLE_BOOSTS: BoostSubgraphResult[] = [
   }
 ];
 
+const SAMPLE_BOOSTS_REWARDS = [
+  {
+    boost_id: '0x1234',
+    chain_id: '1',
+    reward: '123456000000'
+  },
+  {
+    boost_id: '0x1235',
+    chain_id: '1',
+    reward: '7323000000'
+  }
+];
+
 const newBoostLink = computed(() => ({
   name: 'spaceBoost',
   params: { proposalId: props.proposal.id }
@@ -139,6 +152,38 @@ watch(
 
 <template>
   <TuneBlock
+    v-if="!isActive"
+    slim
+    class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px]"
+  >
+    <div>
+      <div
+        class="bg-white w-[64px] h-[64px] rounded-[20px] flex justify-center items-center shadow-xl mx-auto relative"
+      >
+        <i-s-boost-icon class="text-black text-[20px]" />
+        <div
+          class="absolute bg-white border -top-[10px] -right-3 border-[#000000]/10 rounded-full flex items-center pr-2 pl-[6px] text-[#444]"
+        >
+          <i-ho-gift class="text-[14px] mr-[2px]" />
+          <span class="text-sm">
+            {{ eligibleBoosts.length }}
+          </span>
+        </div>
+      </div>
+      <div class="text-white text-md text-center leading-5 mt-3">
+        <div class="font-semibold mb-1">Claim rewards</div>
+        You can now claim your rewards!
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-3">
+      <TuneButton variant="white" class="text-white flex items-center">
+        <i-ho-gift class="text-sm mr-2" />
+        Claim now
+      </TuneButton>
+    </div>
+  </TuneBlock>
+  <TuneBlock
     slim
     class="rounded-2xl"
     :class="[
@@ -167,6 +212,7 @@ watch(
             </p>
           </div>
           <button
+            v-if="isActive"
             type="button"
             class="flex items-center absolute -top-[12px] -right-2 p-2"
             @click="isOpen = true"

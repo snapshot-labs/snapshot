@@ -48,11 +48,23 @@
 .tune-button {
   @apply h-[46px] cursor-pointer text-skin-link rounded-full bg-transparent border border-skin-border px-[22px] hover:border-skin-text;
 
+  &.disabled {
+    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
+  }
+
   &.primary {
     @apply border-skin-primary bg-skin-primary text-white hover:brightness-95;
 
     &:disabled {
       @apply border-skin-primary bg-skin-primary text-white opacity-40;
+    }
+  }
+
+  &.white-border {
+    @apply border-white/30  hover:border-white;
+
+    &:disabled {
+      @apply border-white text-white opacity-40;
     }
   }
 
@@ -62,10 +74,6 @@
     &:disabled {
       @apply text-skin-border hover:border-skin-border;
     }
-  }
-
-  &.disabled {
-    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
   }
 }
 
