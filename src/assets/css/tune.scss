@@ -169,7 +169,7 @@
 }
 
 .tune-modal-panel {
-  @apply rounded-md border border-skin-border bg-skin-bg p-4 sm:w-[440px];
+  @apply rounded-[20px] border border-skin-border bg-skin-bg;
 }
 
 .tune-modal-backdrop {
