@@ -15,7 +15,6 @@ const props = defineProps<{
 const emit = defineEmits(['close', 'update:selectedToken', 'addCustomToken']);
 
 const searchInput = ref('');
-const maxTokens = ref(20);
 const customTokenLoading = ref(false);
 const customToken: Ref<Token | null> = ref(null);
 const isSearchValueValidToken = ref(false);
@@ -41,7 +40,7 @@ const tokensFiltered = computed(() => {
     return searchMatch || !searchInput.value;
   };
 
-  return props.tokens.filter(filterTokens).slice(0, maxTokens.value);
+  return props.tokens.filter(filterTokens);
 });
 
 function handleTokenClick(token: Token) {
@@ -110,7 +109,7 @@ watch(searchInput, value => {
         <h3>Assets</h3>
         <BaseSearch
           v-model="searchInput"
-          :placeholder="$t('searchPlaceholderTokens')"
+          placeholder="Search or add token address"
           modal
           focus-on-mount
           class="min-h-[60px] w-full flex-auto !px-3 pb-3 sm:!px-4"
