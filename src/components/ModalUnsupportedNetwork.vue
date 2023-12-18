@@ -89,7 +89,7 @@ const switchToDefaultNetwork = async () => {
         }}
       </TuneButton>
       <div v-if="defaultNetwork === '1'">
-        <BaseLink link="https://demo.snapshot.org" hide-external-icon>
+        <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
           <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
           </TuneButton>

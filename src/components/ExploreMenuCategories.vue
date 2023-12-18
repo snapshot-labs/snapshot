@@ -61,7 +61,7 @@ function selectCategory(c: string) {
           <span v-else>
             {{ $tc('explore.category') }}
           </span>
-          <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
+          <i-ho-chevron-down class="ml-1 text-xs text-skin-link" />
         </div>
       </TuneButton>
     </template>
