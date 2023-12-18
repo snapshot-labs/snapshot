@@ -103,9 +103,8 @@ watch(paymentTx, () => {
                 -{{ Math.round(plan.discount) }}%
               </BasePill>
               <small class="block text-skin-text">
-                {{
-                  formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
-                }}/month
+                {{ formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT)) }}
+                per month
               </small>
             </div>
             <b class="text-skin-heading">
