@@ -157,8 +157,8 @@ watch(paymentTx, () => {
         <template #hint>
           I agree to the
           <BaseLink link="https://docs.snapshot.org" hide-external-icon>
-            terms and conditions </BaseLink
-          >.
+            terms and conditions.</BaseLink
+          >
         </template>
       </TuneCheckbox>
     </fieldset>
