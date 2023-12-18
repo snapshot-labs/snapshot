@@ -66,11 +66,11 @@ function computePlanFiatPrice(plan, unit?: number): number {
 }
 
 function formatFiatCurrency(amount: number): string {
-  return `${BASE_CURRENCY.symbol}${amount.toLocaleString()}`;
+  return `${BASE_CURRENCY.symbol}${Math.round(amount).toLocaleString()}`;
 }
 
 function formatCryptoCurrency(amount: number, currency): string {
-  return `~${amount.toLocaleString()} ${currency.code}`;
+  return `${amount.toLocaleString()} ${currency.code}`;
 }
 
 watch(paymentTx, () => {
@@ -100,7 +100,7 @@ watch(paymentTx, () => {
             <div class="flex-grow">
               <b class="text-skin-heading">{{ plan.label }}</b>
               <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary">
-                Save {{ plan.discount }}%
+                -{{ plan.discount }}%
               </BasePill>
               <small class="block text-skin-text">
                 {{
@@ -131,8 +131,10 @@ watch(paymentTx, () => {
             @click="setData('currency', currencyId)"
           >
             <TuneRadio :value="currencyId" :model-value="data.currency" />
-            <AvatarToken :address="currency.address[1]" size="24" />
-            <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
+            <div class="flex gap-2 flex-grow">
+              <AvatarToken :address="currency.address[1]" size="24" />
+              <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
+            </div>
             <small>
               {{
                 formatCryptoCurrency(
