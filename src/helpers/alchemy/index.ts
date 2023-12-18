@@ -119,6 +119,21 @@ export async function getBalances(
   networkId: number,
   baseToken: { name: string; symbol: string; logo?: string }
 ): Promise<GetBalancesResponse> {
+  if (!address) {
+    return [
+      {
+        name: baseToken.name,
+        symbol: baseToken.symbol,
+        decimals: 18,
+        contractAddress: ETH_CONTRACT,
+        tokenBalance: '0x0',
+        price: 0,
+        value: 0,
+        change: 0
+      }
+    ];
+  }
+
   const [ethBalance, { tokenBalances }] = await Promise.all([
     getBalance(address, networkId),
     getTokenBalances(address, networkId)

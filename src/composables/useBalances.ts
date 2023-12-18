@@ -47,14 +47,8 @@ export function useBalances() {
       loading.value = true;
 
       const baseToken = {
-        ...CHAIN_CURRENCIES[networkId],
-        tokenBalance: '',
-        price: 0,
-        change: 0,
-        value: 0
+        ...CHAIN_CURRENCIES[networkId]
       };
-
-      if (!address) return (tokens.value = [baseToken]);
 
       const data = await getBalances(address, networkId, baseToken);
       const tokensWithBalance = data.filter(
