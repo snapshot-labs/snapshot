@@ -83,20 +83,19 @@ const selectedToken = computed(() => {
 });
 
 const networks = computed(() => {
-  return (
-    Object.values(METADATA)
-      .map(network => {
-        return {
-          value: network.chainId.toString(),
-          name: network.name,
-          extras: {
-            icon: network.avatar
-          }
-        };
-      })
-      // TODO: Add mainnet to this filter when it's ready
-      .filter(network => network.value === '5')
-  );
+  // TODO: Add mainnet to supportedNetworks when it's ready
+  const supportedNetworks = ['5'];
+  return Object.values(METADATA)
+    .map(network => {
+      return {
+        value: network.chainId.toString(),
+        name: network.name,
+        extras: {
+          icon: network.avatar
+        }
+      };
+    })
+    .filter(network => supportedNetworks.includes(network.value));
 });
 
 const strategy = computed<BoostStrategy>(() => {
