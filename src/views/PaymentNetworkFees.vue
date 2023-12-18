@@ -202,6 +202,7 @@ watch(paymentTx, () => {
   />
   <ModalUnsupportedNetwork
     :open="modalUnsupportedNetworkOpen"
+    hide-demo-button
     @close="modalUnsupportedNetworkOpen = false"
     @network-changed="pay"
   />
