@@ -14,6 +14,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'update:selectedToken', 'addCustomToken']);
 
+const { web3Account } = useWeb3();
+
 const searchInput = ref('');
 const customTokenLoading = ref(false);
 const customToken: Ref<Token | null> = ref(null);
@@ -62,7 +64,8 @@ async function fetchCustomToken(address: string) {
       multi.call(`${token}.name`, token, 'name');
       multi.call(`${token}.symbol`, token, 'symbol');
       multi.call(`${token}.decimals`, token, 'decimals');
-      multi.call(`${token}.balance`, token, 'balanceOf', [searchInput.value]);
+      if (web3Account.value)
+        multi.call(`${token}.balance`, token, 'balanceOf', [web3Account.value]);
     });
 
     const result = await multi.execute();
@@ -70,11 +73,10 @@ async function fetchCustomToken(address: string) {
     const fetchedToken = result[address];
 
     customToken.value = {
-      logo: null,
       contractAddress: address,
       symbol: fetchedToken.symbol,
       name: fetchedToken.name,
-      tokenBalance: fetchedToken.balance._hex,
+      tokenBalance: web3Account.value ? fetchedToken.balance._hex : 0,
       decimals: fetchedToken.decimals,
       price: 0,
       change: 0,
