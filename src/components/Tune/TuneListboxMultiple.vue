@@ -96,7 +96,7 @@ defineExpose({
           <span
             class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-[12px]"
           >
-            <i-ho-chevron-down class="text-sm" />
+            <i-ho-chevron-down class="text-sm text-skin-link" />
           </span>
         </ListboxButton>
         <transition

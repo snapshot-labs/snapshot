@@ -74,7 +74,7 @@ watch(open, () => {
           @click="isShowingAllConnectors = true"
         >
           {{ $t('showMore') }}
-          <i-ho-chevron-down class="text-sm text-skin-text" />
+          <i-ho-chevron-down class="text-sm text-skin-link" />
         </TuneButton>
       </div>
     </div>

@@ -45,7 +45,7 @@ const emit = defineEmits(['select']);
         <TuneButton v-else class="flex items-center">
           {{ selected }}
           <i-ho-chevron-down
-            class="-mr-1 ml-1 text-xs text-skin-text"
+            class="-mr-1 ml-1 text-xs text-skin-link"
             aria-hidden="true"
           />
         </TuneButton>
