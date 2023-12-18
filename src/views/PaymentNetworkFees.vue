@@ -58,7 +58,7 @@ function computePrice(
     price = price - (price / 100) * discount;
   }
 
-  return price;
+  return currencyId === 'ethereum' ? price : Math.round(price);
 }
 
 function computePlanFiatPrice(plan, unit?: number): number {
@@ -99,9 +99,9 @@ watch(paymentTx, () => {
             <TuneRadio :value="planId" :model-value="data.plan" />
             <div class="flex-grow">
               <b class="text-skin-heading">{{ plan.label }}</b>
-              <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary">
-                -{{ Math.round(plan.discount) }}%
-              </BasePill>
+              <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary"
+                >-{{ Math.floor(plan.discount) }}%</BasePill
+              >
               <small class="block text-skin-text">
                 {{ formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT)) }}
                 per month
@@ -134,14 +134,14 @@ watch(paymentTx, () => {
               <AvatarToken :address="currency.address[1]" size="24" />
               <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
             </div>
-            <small class="text-skin-heading">
+            <b class="text-skin-heading">
               {{
                 formatCryptoCurrency(
                   computePrice(currencyId, PLANS[data.plan].unit),
                   currency
                 )
               }}
-            </small>
+            </b>
           </label>
         </li>
       </ol>
@@ -156,8 +156,8 @@ watch(paymentTx, () => {
         <template #hint>
           I agree to the
           <BaseLink link="https://docs.snapshot.org" hide-external-icon>
-            terms and conditions.</BaseLink
-          >
+            terms and conditions</BaseLink
+          >.
         </template>
       </TuneCheckbox>
     </fieldset>
@@ -170,8 +170,8 @@ watch(paymentTx, () => {
       @click.prevent="pay"
     >
       Pay
-      {{ amount.toLocaleString() }}
-      {{ CURRENCIES[data.currency].code }} for {{ PLANS[data.plan].label }}
+      {{ formatCryptoCurrency(amount, CURRENCIES[data.currency]) }} for
+      {{ PLANS[data.plan].label }}
     </TuneButton>
   </form>
 
