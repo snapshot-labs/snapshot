@@ -12,7 +12,15 @@ defineProps<{
 
 defineEmits(['update:selectedToken', 'addCustomToken', 'update:amount']);
 
+const { web3Account } = useWeb3();
+const { modalAccountOpen } = useModal();
+
 const isTokenModalOpen = ref(false);
+
+function handleOpenTokenModal() {
+  if (!web3Account.value) return (modalAccountOpen.value = true);
+  isTokenModalOpen.value = true;
+}
 </script>
 
 <template>
@@ -28,7 +36,7 @@ const isTokenModalOpen = ref(false);
         type="button"
         label="Token"
         class="-mr-4 h-full bg-[--border-color-subtle] hover:bg-[--border-color-soft] rounded-r-full"
-        @click="isTokenModalOpen = true"
+        @click="handleOpenTokenModal"
       >
         <div
           v-if="selectedToken?.contractAddress || loading"
