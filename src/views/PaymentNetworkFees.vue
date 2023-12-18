@@ -135,7 +135,7 @@ watch(paymentTx, () => {
               <AvatarToken :address="currency.address[1]" size="24" />
               <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
             </div>
-            <small>
+            <small class="text-skin-heading">
               {{
                 formatCryptoCurrency(
                   computePrice(currencyId, PLANS[data.plan].unit),
