@@ -9,7 +9,7 @@ import { CHAIN_CURRENCIES } from '@/helpers/constants';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
-const props = defineProps<{
+defineProps<{
   space: ExtendedSpace;
 }>();
 
@@ -194,7 +194,6 @@ watch(
 
 <template>
   <div>
-    {{ form }}
     <SpaceBreadcrumbs :space="space" />
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
