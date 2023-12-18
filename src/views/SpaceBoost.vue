@@ -5,6 +5,8 @@ import { Token } from '@/helpers/alchemy';
 import { createBoost, getStrategyURI } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
+import { METADATA } from '@/helpers/networks';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -47,7 +49,7 @@ const boostForm = ref<BoostForm>({
     hasRatioLimit: false,
     ratioLimit: ''
   },
-  network: '1',
+  network: '5',
   token: '',
   amount: ''
 });
@@ -77,6 +79,23 @@ const selectedToken = computed(() => {
   if (!allTokens.value) return undefined;
   return allTokens.value.find(
     (token: Token) => token.contractAddress === boostForm.value.token
+  );
+});
+
+const networks = computed(() => {
+  return (
+    Object.values(METADATA)
+      .map(network => {
+        return {
+          value: network.chainId.toString(),
+          name: network.name,
+          extras: {
+            icon: network.avatar
+          }
+        };
+      })
+      // TODO: Add mainnet to this filter when it's ready
+      .filter(network => network.value === '5')
   );
 });
 
@@ -230,6 +249,37 @@ watchEffect(async () => {
                 />
               </template>
               <div class="flex gap-[12px]">
+                <TuneListbox
+                  v-model="boostForm.network"
+                  label="Network"
+                  :items="networks"
+                  class="w-full"
+                >
+                  <template #item="{ item }">
+                    <div class="flex items-center">
+                      <BaseAvatar
+                        :src="getUrl(item.extras?.icon)"
+                        class="mr-2"
+                      />
+                      <div class="truncate pr-2">
+                        {{ item.name }}
+                      </div>
+
+                      <BasePill class="leading-4"> #{{ item.value }} </BasePill>
+                    </div>
+                  </template>
+                  <template #selected="{ selectedItem }">
+                    <div class="flex items-center">
+                      <BaseAvatar
+                        :src="getUrl(selectedItem.extras?.icon)"
+                        class="mr-2"
+                      />
+                      <div class="truncate pr-2">
+                        {{ selectedItem.name }}
+                      </div>
+                    </div>
+                  </template>
+                </TuneListbox>
                 <ButtonSelectToken
                   :selected-token="selectedToken"
                   :network="boostForm.network"
@@ -237,7 +287,7 @@ watchEffect(async () => {
                   @update:selected-token="boostForm.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
-                <TuneInput
+                <!-- <TuneInput
                   v-model="boostForm.amount"
                   label="Total amount"
                   type="number"
@@ -248,7 +298,7 @@ watchEffect(async () => {
                       {{ selectedToken?.symbol ?? '' }}
                     </div>
                   </template>
-                </TuneInput>
+                </TuneInput> -->
               </div>
             </TuneBlock>
             <TuneBlock>
