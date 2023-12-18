@@ -67,7 +67,7 @@ const TRANSFER_ABI = [
     payable: false
   }
 ];
-const SNAPSHOT_WALLET = '0x8C28Cf33d9Fd3D0293f963b1cd27e3FF422B425c';
+const SNAPSHOT_WALLET = '0x01e8CEC73B020AB9f822fD0dee3Aa4da2fe39e38';
 const fxRates = reactive(
   Object.fromEntries(Object.keys(CURRENCIES).map(id => [id, 0]))
 );
