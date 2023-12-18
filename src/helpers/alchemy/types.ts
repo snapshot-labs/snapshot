@@ -1,7 +1,6 @@
 export type BalanceData = { contractAddress: string; tokenBalance: string };
 export type Metadata = {
   decimals: number;
-  logo: string | null;
   name: string;
   symbol: string;
 };
