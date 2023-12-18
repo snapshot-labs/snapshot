@@ -35,7 +35,7 @@ const isTokenModalOpen = ref(false);
           class="flex flex-row space-x-2 items-center pr-[12px] pl-3"
         >
           <template v-if="loading">
-            <LoadingSpinner />
+            <TuneLoadingSpinner />
           </template>
           <template v-else>
             <AvatarToken :address="selectedToken!.contractAddress" size="20" />

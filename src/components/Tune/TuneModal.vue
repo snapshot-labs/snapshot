@@ -41,8 +41,8 @@ defineProps<{ open: boolean; size?: { width: string; height: string } }>();
               <DialogPanel
                 class="tune-modal-panel transform overflow-hidden align-middle transition-all"
                 :style="{
-                  width: size?.width ? `${size.width}px` : '500px',
-                  height: size?.height ? `${size.height}px` : '500px'
+                  width: size?.width ? `${size.width}px` : '440px',
+                  height: size?.height ? `${size.height}px` : '270px'
                 }"
               >
                 <div class="absolute right-4 top-4">
