@@ -1,21 +1,28 @@
 <script setup lang="ts">
 import { Token } from '@/helpers/alchemy';
 
-const props = defineProps<{
+defineProps<{
   label: string;
   network: string;
   tokens: Token[];
+  amount: string;
   selectedToken?: Token;
   loading?: boolean;
 }>();
 
-defineEmits(['update:selectedToken', 'addCustomToken']);
+defineEmits(['update:selectedToken', 'addCustomToken', 'update:amount']);
 
 const isTokenModalOpen = ref(false);
 </script>
 
 <template>
-  <TuneInput :label="label" placeholder="0.0" type="number">
+  <TuneInput
+    :model-value="amount"
+    :label="label"
+    placeholder="0.0"
+    type="number"
+    @update:model-value="$emit('update:amount', $event)"
+  >
     <template #after>
       <button
         type="button"

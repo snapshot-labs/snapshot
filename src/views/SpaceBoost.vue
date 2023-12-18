@@ -13,18 +13,18 @@ const props = defineProps<{
   space: ExtendedSpace;
 }>();
 
-type BoostForm = {
+type Form = {
   eligibility: {
     choice: 'any' | number;
   };
   distribution: {
     type: 'even' | 'weighted';
     hasRatioLimit: boolean;
-    ratioLimit: string | number;
+    ratioLimit: string;
   };
   network: string;
   token: string;
-  amount: string | number;
+  amount: string;
 };
 
 const route = useRoute();
@@ -41,7 +41,7 @@ const {
 const proposal = ref();
 const customTokens = ref<Token[]>([]);
 const createLoading = ref(false);
-const boostForm = ref<BoostForm>({
+const form = ref<Form>({
   eligibility: {
     choice: 'any'
   },
@@ -79,12 +79,11 @@ const eligibilityOptions = computed(() => {
 const selectedToken = computed(() => {
   if (!allTokens.value) return undefined;
   return allTokens.value.find(
-    (token: Token) => token.contractAddress === boostForm.value.token
+    (token: Token) => token.contractAddress === form.value.token
   );
 });
 
 const filteredNetworks = computed(() => {
-  // TODO: Add mainnet to supportedNetworks when it's ready
   const supportedNetworks = ['1', '5'];
   return Object.values(networks)
     .map((network: any) => {
@@ -101,13 +100,14 @@ const filteredNetworks = computed(() => {
 
 const strategy = computed<BoostStrategy>(() => {
   const choice =
-    boostForm.value.eligibility.choice === 'any'
+    form.value.eligibility.choice === 'any'
       ? undefined
-      : boostForm.value.eligibility.choice;
+      : form.value.eligibility.choice;
 
   const limit =
-    boostForm.value.distribution.type === 'weighted'
-      ? Number(boostForm.value.distribution.ratioLimit)
+    form.value.distribution.type === 'weighted' &&
+    form.value.distribution.ratioLimit
+      ? Number(form.value.distribution.ratioLimit)
       : undefined;
 
   return {
@@ -118,7 +118,7 @@ const strategy = computed<BoostStrategy>(() => {
         choice
       },
       distribution: {
-        type: boostForm.value.distribution.type,
+        type: form.value.distribution.type,
         limit
       }
     }
@@ -145,8 +145,8 @@ async function handleCreate() {
     const strategyURI = await getStrategyURI(strategy.value);
     const response = await createBoost(auth.web3, {
       strategyURI,
-      token: boostForm.value.token,
-      balance: Number(boostForm.value.amount),
+      token: form.value.token,
+      balance: Number(form.value.amount),
       guard: SNAPSHOT_GUARD_ADDRESS,
       start: proposal.value.start,
       end: proposal.value.end,
@@ -163,15 +163,14 @@ async function handleCreate() {
 }
 
 function resetTokenInput() {
-  boostForm.value.token =
-    CHAIN_CURRENCIES[boostForm.value.network].contractAddress;
+  form.value.token = CHAIN_CURRENCIES[form.value.network].contractAddress;
 }
 
 watch(
-  [web3Account, () => boostForm.value.network],
+  [web3Account, () => form.value.network],
   () => {
     resetTokenInput();
-    loadBalances(web3Account.value, Number(boostForm.value.network));
+    loadBalances(web3Account.value, Number(form.value.network));
   },
   { immediate: true }
 );
@@ -182,10 +181,20 @@ watchEffect(async () => {
     proposal.value = await getProposal(id);
   }
 });
+
+watch(
+  () => form.value.distribution.hasRatioLimit,
+  () => {
+    if (!form.value.distribution.hasRatioLimit) {
+      form.value.distribution.ratioLimit = '';
+    }
+  }
+);
 </script>
 
 <template>
   <div>
+    {{ form }}
     <SpaceBreadcrumbs :space="space" />
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
@@ -241,7 +250,7 @@ watchEffect(async () => {
               </template>
 
               <TuneListbox
-                v-model="boostForm.eligibility.choice"
+                v-model="form.eligibility.choice"
                 :items="eligibilityOptions"
                 label="Eligible users"
               />
@@ -256,7 +265,7 @@ watchEffect(async () => {
               </template>
               <div class="flex gap-[12px]">
                 <TuneListbox
-                  v-model="boostForm.network"
+                  v-model="form.network"
                   label="Network"
                   :items="filteredNetworks"
                   class="w-full"
@@ -287,26 +296,15 @@ watchEffect(async () => {
                   </template>
                 </TuneListbox>
                 <InputComboboxToken
+                  v-model:amount="form.amount"
                   label="Amount"
                   :selected-token="selectedToken"
-                  :network="boostForm.network"
+                  :network="form.network"
                   :tokens="tokens"
                   :loading="loading"
-                  @update:selected-token="boostForm.token = $event"
+                  @update:selected-token="form.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
-                <!-- <TuneInput
-                  v-model="boostForm.amount"
-                  label="Total amount"
-                  type="number"
-                  placeholder="0.00"
-                >
-                  <template #after>
-                    <div class="-mr-[8px]">
-                      {{ selectedToken?.symbol ?? '' }}
-                    </div>
-                  </template>
-                </TuneInput> -->
               </div>
             </TuneBlock>
             <TuneBlock>
@@ -317,16 +315,15 @@ watchEffect(async () => {
                 />
               </template>
               <TuneSwitch
-                v-model="boostForm.distribution.hasRatioLimit"
+                v-model="form.distribution.hasRatioLimit"
                 label="Define a maximum amount"
               />
-              <div v-if="boostForm.distribution.hasRatioLimit" class="mt-3">
+              <div v-if="form.distribution.hasRatioLimit" class="mt-3">
                 <TuneInput
-                  v-model="boostForm.distribution.ratioLimit"
+                  v-model="form.distribution.ratioLimit"
                   label="Max amount of voting power"
                   type="number"
                   placeholder="e.g. 1000"
-                  :disabled="!boostForm.distribution.hasRatioLimit"
                 >
                   <template #after>
                     <div class="-mr-[8px]">VP</div>
