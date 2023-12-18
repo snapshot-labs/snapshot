@@ -81,6 +81,7 @@ export function usePayment(network: number) {
   const { notify } = useFlashNotification();
   const loading = ref(false);
   const paymentTx = ref(null);
+  const modalUnsupportedNetworkOpen = ref(false);
   const walletNetworkKey = computed(() => web3.value.network.key);
 
   refreshFx();
@@ -91,7 +92,8 @@ export function usePayment(network: number) {
 
     try {
       if (network.toString() !== walletNetworkKey.value) {
-        return notify(['red', 'Wrong network']);
+        modalUnsupportedNetworkOpen.value = true;
+        return false;
       }
 
       const parsedAmount = parseUnits(
@@ -165,6 +167,7 @@ export function usePayment(network: number) {
     loading,
     paymentTx,
     refreshFx,
-    fxLoadStatus
+    fxLoadStatus,
+    modalUnsupportedNetworkOpen
   };
 }

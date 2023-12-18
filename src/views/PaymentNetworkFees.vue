@@ -20,7 +20,8 @@ const {
   transfer,
   paymentTx,
   loading,
-  fxLoadStatus
+  fxLoadStatus,
+  modalUnsupportedNetworkOpen
 } = usePayment(parseInt(import.meta.env.VITE_DEFAULT_NETWORK));
 const { web3 } = useWeb3();
 const { modalAccountOpen } = useModal();
@@ -198,5 +199,10 @@ watch(paymentTx, () => {
     :open="modalPostPaymentOpen"
     :tx="paymentTx"
     @close="modalPostPaymentOpen = false"
+  />
+  <ModalUnsupportedNetwork
+    :open="modalUnsupportedNetworkOpen"
+    @close="modalUnsupportedNetworkOpen = false"
+    @network-changed="pay"
   />
 </template>
