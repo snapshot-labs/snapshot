@@ -1,6 +1,6 @@
 import { Interface } from '@ethersproject/abi';
 import { Contract } from '@ethersproject/contracts';
-import { NETWORKS } from '@/helpers/networks';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 export async function call(
   provider: any,
@@ -28,7 +28,7 @@ export async function multicall(
     'function aggregate(tuple(address target, bytes callData)[] calls) view returns (uint256 blockNumber, bytes[] returnData)'
   ];
   const multi = new Contract(
-    NETWORKS[network].multicall,
+    networks[network].multicall,
     multicallAbi,
     provider
   );

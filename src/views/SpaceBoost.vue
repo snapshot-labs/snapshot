@@ -5,7 +5,8 @@ import { Token } from '@/helpers/alchemy';
 import { createBoost, getStrategyURI } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
-import { METADATA } from '@/helpers/networks';
+import { CHAIN_CURRENCIES } from '@/helpers/constants';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
@@ -29,7 +30,7 @@ type BoostForm = {
 const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
-const { loadBalances, tokens } = useBalances();
+const { loadBalances, tokens, loading } = useBalances();
 const { web3Account } = useWeb3();
 const {
   createPendingTransaction,
@@ -45,12 +46,12 @@ const boostForm = ref<BoostForm>({
     choice: 'any'
   },
   distribution: {
-    type: 'even',
+    type: 'weighted',
     hasRatioLimit: false,
     ratioLimit: ''
   },
   network: '5',
-  token: '',
+  token: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
   amount: ''
 });
 
@@ -82,16 +83,16 @@ const selectedToken = computed(() => {
   );
 });
 
-const networks = computed(() => {
+const filteredNetworks = computed(() => {
   // TODO: Add mainnet to supportedNetworks when it's ready
-  const supportedNetworks = ['5'];
-  return Object.values(METADATA)
-    .map(network => {
+  const supportedNetworks = ['1', '5'];
+  return Object.values(networks)
+    .map((network: any) => {
       return {
         value: network.chainId.toString(),
         name: network.name,
         extras: {
-          icon: network.avatar
+          icon: network.logo
         }
       };
     })
@@ -161,10 +162,16 @@ async function handleCreate() {
   }
 }
 
+function resetTokenInput() {
+  boostForm.value.token =
+    CHAIN_CURRENCIES[boostForm.value.network].contractAddress;
+}
+
 watch(
-  web3Account,
+  [web3Account, () => boostForm.value.network],
   () => {
-    loadBalances(web3Account.value, 1);
+    resetTokenInput();
+    loadBalances(web3Account.value, Number(boostForm.value.network));
   },
   { immediate: true }
 );
@@ -251,7 +258,7 @@ watchEffect(async () => {
                 <TuneListbox
                   v-model="boostForm.network"
                   label="Network"
-                  :items="networks"
+                  :items="filteredNetworks"
                   class="w-full"
                 >
                   <template #item="{ item }">
@@ -279,10 +286,12 @@ watchEffect(async () => {
                     </div>
                   </template>
                 </TuneListbox>
-                <ButtonSelectToken
+                <InputComboboxToken
+                  label="Amount"
                   :selected-token="selectedToken"
                   :network="boostForm.network"
                   :tokens="tokens"
+                  :loading="loading"
                   @update:selected-token="boostForm.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />

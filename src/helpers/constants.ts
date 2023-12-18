@@ -53,3 +53,37 @@ export const SNAPSHOT_GUARD_ADDRESS =
 export const GUARDS = {
   '0xF63EB3f569C6cB8F5Cf37caD183790Ed1b251c91': 'Snapshot Labs'
 };
+
+type ChainCurrencies = {
+  name: string;
+  symbol: string;
+  decimals: number;
+  contractAddress: string;
+};
+
+export const CHAIN_CURRENCIES: Record<string, ChainCurrencies> = {
+  '1': {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '5': {
+    name: 'Goerli Ether',
+    symbol: 'GoerliETH',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '137': {
+    name: 'MATIC',
+    symbol: 'MATIC',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '42161': {
+    name: 'Arbitrum',
+    symbol: 'ARB',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  }
+};

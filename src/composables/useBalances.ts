@@ -1,6 +1,6 @@
 import { formatUnits } from '@ethersproject/units';
 import { getBalances, GetBalancesResponse } from '@/helpers/alchemy';
-import { METADATA } from '@/helpers/networks';
+import { CHAIN_CURRENCIES } from '@/helpers/constants';
 import {
   ETH_CONTRACT,
   COINGECKO_ASSET_PLATFORMS,
@@ -9,10 +9,6 @@ import {
 
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple';
 const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
-
-const METADATA_BY_CHAIN_ID = new Map(
-  Object.entries(METADATA).map(([, metadata]) => [metadata.chainId, metadata])
-);
 
 export function useBalances() {
   const tokens: Ref<GetBalancesResponse> = ref([]);
@@ -47,48 +43,57 @@ export function useBalances() {
   }
 
   async function loadBalances(address: string, networkId: number) {
-    const metadata = METADATA_BY_CHAIN_ID.get(networkId);
-    const baseToken = metadata?.ticker
-      ? { name: metadata.name, symbol: metadata.ticker }
-      : { name: 'Ether', symbol: 'ETH' };
+    try {
+      loading.value = true;
 
-    const data = await getBalances(address, networkId, baseToken);
-    const tokensWithBalance = data.filter(
-      asset => formatUnits(asset.tokenBalance, asset.decimals) !== '0.0'
-    );
-
-    const coingeckoAssetPlatform = COINGECKO_ASSET_PLATFORMS[networkId];
-    const coingeckoBaseAsset = COINGECKO_BASE_ASSETS[networkId];
-
-    const coins =
-      coingeckoBaseAsset && coingeckoAssetPlatform
-        ? await getCoins(
-            coingeckoAssetPlatform,
-            coingeckoBaseAsset,
-            tokensWithBalance
-              .filter(asset => asset.contractAddress !== ETH_CONTRACT)
-              .map(token => token.contractAddress)
-          )
-        : [];
-
-    tokens.value = tokensWithBalance.map(asset => {
-      if (!coins[asset.contractAddress]) return asset;
-
-      const price = coins[asset.contractAddress]?.usd || 0;
-      const change = coins[asset.contractAddress]?.usd_24h_change || 0;
-      const value =
-        parseFloat(formatUnits(asset.tokenBalance, asset.decimals)) * price;
-
-      return {
-        ...asset,
-        price,
-        change,
-        value
+      const baseToken = CHAIN_CURRENCIES[networkId] || {
+        name: 'Ether',
+        symbol: 'ETH'
       };
-    });
 
-    loading.value = false;
-    loaded.value = true;
+      const data = await getBalances(address, networkId, baseToken);
+      const tokensWithBalance = data.filter(
+        asset =>
+          formatUnits(asset.tokenBalance, asset.decimals) !== '0.0' ||
+          asset.symbol === baseToken.symbol
+      );
+
+      const coingeckoAssetPlatform = COINGECKO_ASSET_PLATFORMS[networkId];
+      const coingeckoBaseAsset = COINGECKO_BASE_ASSETS[networkId];
+
+      const coins =
+        coingeckoBaseAsset && coingeckoAssetPlatform
+          ? await getCoins(
+              coingeckoAssetPlatform,
+              coingeckoBaseAsset,
+              tokensWithBalance
+                .filter(asset => asset.contractAddress !== ETH_CONTRACT)
+                .map(token => token.contractAddress)
+            )
+          : [];
+
+      tokens.value = tokensWithBalance.map(asset => {
+        if (!coins[asset.contractAddress]) return asset;
+
+        const price = coins[asset.contractAddress]?.usd || 0;
+        const change = coins[asset.contractAddress]?.usd_24h_change || 0;
+        const value =
+          parseFloat(formatUnits(asset.tokenBalance, asset.decimals)) * price;
+
+        loaded.value = true;
+
+        return {
+          ...asset,
+          price,
+          change,
+          value
+        };
+      });
+    } catch (e) {
+      console.log(e);
+    } finally {
+      loading.value = false;
+    }
   }
 
   const assetsMap = computed(
