@@ -15,7 +15,7 @@ const isTokenModalOpen = ref(false);
 </script>
 
 <template>
-  <TuneInput :label="label" placeholder="0.0">
+  <TuneInput :label="label" placeholder="0.0" type="number">
     <template #after>
       <button
         type="button"

@@ -320,6 +320,19 @@ watchEffect(async () => {
                 v-model="boostForm.distribution.hasRatioLimit"
                 label="Define a maximum amount"
               />
+              <div v-if="boostForm.distribution.hasRatioLimit" class="mt-3">
+                <TuneInput
+                  v-model="boostForm.distribution.ratioLimit"
+                  label="Max amount of voting power"
+                  type="number"
+                  placeholder="e.g. 1000"
+                  :disabled="!boostForm.distribution.hasRatioLimit"
+                >
+                  <template #after>
+                    <div class="-mr-[8px]">VP</div>
+                  </template>
+                </TuneInput>
+              </div>
             </TuneBlock>
           </div>
         </template>
