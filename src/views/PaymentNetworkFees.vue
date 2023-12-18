@@ -100,7 +100,7 @@ watch(paymentTx, () => {
             <div class="flex-grow">
               <b class="text-skin-heading">{{ plan.label }}</b>
               <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary">
-                -{{ plan.discount }}%
+                -{{ Math.round(plan.discount) }}%
               </BasePill>
               <small class="block text-skin-text">
                 {{
