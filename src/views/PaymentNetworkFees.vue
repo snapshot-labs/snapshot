@@ -33,7 +33,11 @@ const data = reactive({
 });
 
 const amount = computed(() => {
-  return computePrice(data.currency, PLANS[data.plan].unit);
+  return computePrice(
+    data.currency,
+    PLANS[data.plan].unit,
+    PLANS[data.plan].discount
+  );
 });
 
 function setData(key: string, value: string | boolean) {
@@ -137,7 +141,11 @@ watch(paymentTx, () => {
             <b class="text-skin-heading">
               {{
                 formatCryptoCurrency(
-                  computePrice(currencyId, PLANS[data.plan].unit),
+                  computePrice(
+                    currencyId,
+                    PLANS[data.plan].unit,
+                    PLANS[data.plan].discount
+                  ),
                   currency
                 )
               }}
