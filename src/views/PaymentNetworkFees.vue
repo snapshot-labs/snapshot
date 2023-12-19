@@ -101,7 +101,6 @@ watch(paymentTx, () => {
             }"
             @click="setData('plan', planId)"
           >
-            <TuneRadio :value="planId" :model-value="data.plan" />
             <div class="flex-grow">
               <b class="text-skin-heading">{{ plan.label }}</b>
               <BasePill v-if="plan.discount" class="ml-2 py-1 !bg-skin-primary"
@@ -125,8 +124,12 @@ watch(paymentTx, () => {
         <h2 class="text-lg mb-2">Select your currency</h2>
       </legend>
 
-      <ol class="flex flex-col gap-2">
-        <li v-for="(currency, currencyId) in CURRENCIES" :key="currencyId">
+      <ol class="flex gap-2">
+        <li
+          v-for="(currency, currencyId) in CURRENCIES"
+          :key="currencyId"
+          class="basis-1/3"
+        >
           <label
             class="flex border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
             :class="{
@@ -134,23 +137,19 @@ watch(paymentTx, () => {
             }"
             @click="setData('currency', currencyId)"
           >
-            <TuneRadio :value="currencyId" :model-value="data.currency" />
-            <div class="flex gap-2 flex-grow">
-              <AvatarToken :address="currency.address[1]" size="24" />
-              <b class="flex-grow text-skin-heading">{{ currency.code }}</b>
-            </div>
-            <b class="text-skin-heading">
-              {{
-                formatCryptoCurrency(
+            <AvatarToken :address="currency.address[1]" size="28" />
+            <div>
+              <div class="text-skin-heading leading-none">
+                {{
                   computePrice(
                     currencyId,
                     PLANS[data.plan].unit,
                     PLANS[data.plan].discount
-                  ),
-                  currency
-                )
-              }}
-            </b>
+                  ).toLocaleString()
+                }}
+              </div>
+              <small>{{ currency.code }}</small>
+            </div>
           </label>
         </li>
       </ol>
