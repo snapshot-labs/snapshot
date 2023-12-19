@@ -16,7 +16,7 @@ defineProps<{
 </script>
 
 <template>
-  <Teleport to="body">
+  <Teleport to="#modal">
     <TransitionRoot appear :show="open" as="template">
       <Dialog as="div" class="relative z-50" @close="$emit('close')">
         <TransitionChild

@@ -268,7 +268,7 @@ onMounted(() => {
         </template>
       </div>
     </template>
-    <Teleport to="body">
+    <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
         :open="route.query.delegate !== undefined"
         :space="space"

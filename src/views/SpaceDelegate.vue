@@ -282,7 +282,7 @@ onBeforeRouteLeave(async () => {
         </template>
       </TheLayout>
     </div>
-    <Teleport to="body">
+    <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
         :open="showDelegateModal"
         :space="space"

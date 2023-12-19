@@ -2,11 +2,13 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
-defineProps<{
+const props = defineProps<{
   open: boolean;
+  network?: string;
+  hideDemoButton?: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
-const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
+const defaultNetwork = props.network || import.meta.env.VITE_DEFAULT_NETWORK;
 const networkData = {
   '1': {
     name: 'Ethereum Mainnet',
@@ -59,14 +61,7 @@ const switchToDefaultNetwork = async () => {
     </template>
 
     <div class="m-4 space-y-4">
-      <BaseMessageBlock v-if="defaultNetwork === '1'" level="warning">
-        {{
-          $t('unsupportedNetwork.switchNetworkToNetwork', {
-            network: networkData[defaultNetwork].name
-          })
-        }}
-      </BaseMessageBlock>
-      <BaseMessageBlock v-if="defaultNetwork === '5'" level="warning">
+      <BaseMessageBlock level="warning">
         {{
           $t('unsupportedNetwork.switchNetworkToNetwork', {
             network: networkData[defaultNetwork].name
@@ -88,7 +83,7 @@ const switchToDefaultNetwork = async () => {
           })
         }}
       </TuneButton>
-      <div v-if="defaultNetwork === '1'">
+      <div v-if="defaultNetwork === '1' && !hideDemoButton">
         <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
           <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
