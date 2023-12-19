@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { BigNumber } from '@ethersproject/bignumber';
+import { parseUnits } from '@ethersproject/units';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import snapshot from '@snapshot-labs/snapshot.js';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { getUrl, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
+import { createBoost, getStrategyURI, BOOST_ADDRESS } from '@/helpers/boost';
+import { SNAPSHOT_GUARD_ADDRESS, ERC20ABI } from '@/helpers/constants';
+import { CHAIN_CURRENCIES, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
-import { createBoost, getStrategyURI } from '@/helpers/boost';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { SNAPSHOT_GUARD_ADDRESS } from '@/helpers/constants';
-import { CHAIN_CURRENCIES } from '@/helpers/constants';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
   space: ExtendedSpace;
@@ -31,7 +34,12 @@ const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
 const { loadBalances, tokens, loading } = useBalances();
-const { web3Account } = useWeb3();
+const { web3Account, web3 } = useWeb3();
+const createStatus = ref('');
+const account = ref<{
+  balance?: string;
+  allowance?: string;
+}>({});
 const {
   createPendingTransaction,
   updatePendingTransaction,
@@ -40,7 +48,7 @@ const {
 
 const proposal = ref();
 const customTokens = ref<Token[]>([]);
-const createLoading = ref(false);
+const openUnsupportedNetworkModal = ref(false);
 const form = ref<Form>({
   eligibility: {
     choice: 'any'
@@ -56,6 +64,10 @@ const form = ref<Form>({
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
+
+const isWrongNetwork = computed(() => {
+  return form.value.network !== web3.value.network.key.toString();
+});
 
 const eligibilityOptions = computed(() => {
   const proposalChoices = proposal.value?.choices.map(
@@ -74,6 +86,49 @@ const eligibilityOptions = computed(() => {
     },
     ...proposalChoices
   ];
+});
+
+const isValidForm = computed(() => {
+  if (!form.value.token) return false;
+  if (!form.value.amount) return false;
+  if (!form.value.eligibility.choice) return false;
+  if (
+    form.value.distribution.hasRatioLimit &&
+    !form.value.distribution.ratioLimit
+  )
+    return false;
+  return true;
+});
+
+const createStatusModalConfig = computed(() => {
+  switch (createStatus.value) {
+    case 'approve':
+      return {
+        title: 'Approve spending token',
+        subtitle: 'Please approve on your wallet.',
+        variant: 'loading' as const
+      };
+    case 'confirm':
+      return {
+        title: 'Confirm token deposit',
+        subtitle: 'Please confirm deposit on your wallet.',
+        variant: 'loading' as const
+      };
+    case 'success':
+      return {
+        title: 'Well done! 🥳',
+        subtitle: 'Your boost was successfully created.',
+        variant: 'success' as const
+      };
+    case 'error':
+      return {
+        title: 'Transaction failed',
+        subtitle: 'Oops... Your boost creation failed!',
+        variant: 'error' as const
+      };
+    default:
+      return undefined;
+  }
 });
 
 const selectedToken = computed(() => {
@@ -137,26 +192,88 @@ function handleAddCustomToken(token: Token) {
   customTokens.value.push(token);
 }
 
+function handleRetryCreate() {
+  createStatus.value = '';
+  handleCreate();
+}
+
+const amountParsed = computed(
+  () =>
+    (selectedToken.value &&
+      parseUnits(
+        form.value.amount || '0',
+        selectedToken.value.decimals
+      ).toString()) ||
+    '0'
+);
+
+const requireApproval = computed(() =>
+  BigNumber.from(account.value.allowance || '0').lt(
+    BigNumber.from(amountParsed.value || '0')
+  )
+);
+
+function setErrorStatus(error: string) {
+  if (error.includes('user rejected transaction')) {
+    createStatus.value = '';
+  } else {
+    createStatus.value = 'error';
+  }
+}
+
+async function handleApproval() {
+  createStatus.value = 'approve';
+  try {
+    const approveTx = await sendTransaction(
+      auth.web3,
+      form.value.token,
+      ERC20ABI,
+      'approve',
+      [BOOST_ADDRESS, amountParsed.value],
+      {}
+    );
+
+    const receipt = await approveTx.wait(1);
+    console.log('Receipt', receipt);
+
+    await updateAccount();
+    handleCreate();
+  } catch (e: any) {
+    setErrorStatus(e.message);
+  }
+}
+
 async function handleCreate() {
-  createLoading.value = true;
+  if (!isValidForm.value) return;
+  if (isWrongNetwork.value) {
+    openUnsupportedNetworkModal.value = true;
+    return;
+  }
+  if (requireApproval.value) {
+    handleApproval();
+    return;
+  }
+
   const txPendingId = createPendingTransaction();
+  createStatus.value = 'confirm';
 
   try {
     const strategyURI = await getStrategyURI(strategy.value);
     const response = await createBoost(auth.web3, {
       strategyURI,
       token: form.value.token,
-      balance: Number(form.value.amount),
+      balance: amountParsed.value,
       guard: SNAPSHOT_GUARD_ADDRESS,
       start: proposal.value.start,
-      end: proposal.value.end,
+      end: proposal.value.end + TWO_WEEKS,
       owner: web3Account.value
     });
 
     updatePendingTransaction(txPendingId, { hash: response.hash });
     router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
-  } catch (e) {
-    console.log(e);
+    createStatus.value = 'success';
+  } catch (e: any) {
+    setErrorStatus(e.message);
   } finally {
     removePendingTransaction(txPendingId);
   }
@@ -189,6 +306,36 @@ watch(
       form.value.distribution.ratioLimit = '';
     }
   }
+);
+
+async function getAccount(account: string, token: string, chainId: string) {
+  const multi = new snapshot.utils.Multicaller(
+    chainId,
+    auth.web3,
+    ERC20ABI,
+    {}
+  );
+  multi.call('balance', token, 'balanceOf', [account]);
+  multi.call('allowance', token, 'allowance', [account, BOOST_ADDRESS]);
+  return await multi.execute();
+}
+
+async function updateAccount() {
+  account.value = {};
+  if (web3Account.value && form.value.token)
+    account.value = await getAccount(
+      web3Account.value,
+      form.value.token,
+      form.value.network
+    );
+}
+
+watch(
+  [web3Account, () => form.value.token, () => form.value.network],
+  () => {
+    updateAccount();
+  },
+  { immediate: true }
 );
 </script>
 
@@ -350,5 +497,23 @@ watch(
         </div>
       </template>
     </TheLayout>
+    <ModalTransactionStatus
+      v-if="createStatusModalConfig"
+      open
+      :variant="createStatusModalConfig.variant"
+      :title="createStatusModalConfig.title"
+      :subtitle="createStatusModalConfig.subtitle"
+      @close="createStatus = ''"
+      @try-again="handleRetryCreate"
+    />
+    <Teleport to="#modal">
+      <ModalUnsupportedNetwork
+        :open="openUnsupportedNetworkModal"
+        hide-demo-button
+        :network="form.network"
+        @network-changed="handleCreate"
+        @close="openUnsupportedNetworkModal = false"
+      />
+    </Teleport>
   </div>
 </template>
