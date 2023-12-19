@@ -69,7 +69,7 @@
   }
 
   &.danger {
-    @apply text-red hover:border-red;
+    @apply text-red hover:border-red border-red/40;
 
     &:disabled {
       @apply text-skin-border hover:border-skin-border;

@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { isAddress } from '@ethersproject/address';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { ERC20ABI } from '@/helpers/constants';
 import { Token } from '@/helpers/alchemy';
-import Multicaller from '@/helpers/multicaller';
+import snapshot from '@snapshot-labs/snapshot.js';
 
 const props = defineProps<{
   selectedToken?: Token;
@@ -55,11 +54,15 @@ async function fetchCustomToken(address: string) {
 
   customTokenLoading.value = true;
 
-  const provider = getProvider(props.network);
+  const provider = snapshot.utils.getProvider(props.network);
   const tokens = [address];
 
   try {
-    const multi = new Multicaller(props.network, provider, ERC20ABI);
+    const multi = new snapshot.utils.Multicaller(
+      props.network,
+      provider,
+      ERC20ABI
+    );
     tokens.forEach(token => {
       multi.call(`${token}.name`, token, 'name');
       multi.call(`${token}.symbol`, token, 'symbol');

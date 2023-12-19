@@ -8,7 +8,11 @@ import {
 
 defineEmits(['close']);
 
-defineProps<{ open: boolean; size?: { width: string; height: string } }>();
+defineProps<{
+  open: boolean;
+  hideClose?: boolean;
+  size?: { width: string; height: string };
+}>();
 </script>
 
 <template>
@@ -45,7 +49,7 @@ defineProps<{ open: boolean; size?: { width: string; height: string } }>();
                   height: size?.height ? `${size.height}px` : '270px'
                 }"
               >
-                <div class="absolute right-4 top-4">
+                <div v-if="!hideClose" class="absolute right-4 top-4">
                   <BaseButtonIcon @click="$emit('close')">
                     <span class="sr-only">Close</span>
                     <i-ho-x class="text-md" aria-hidden="true" />
