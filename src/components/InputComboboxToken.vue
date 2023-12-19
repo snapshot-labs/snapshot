@@ -51,7 +51,7 @@ function handleOpenTokenModal() {
               selectedToken.symbol
             }}</span>
           </template>
-          <i-ho-chevron-down class="text-sm text-skin-link" />
+          <i-ho-chevron-down class="text-sm text-skin-link shrink-0" />
         </div>
       </button>
     </template>
