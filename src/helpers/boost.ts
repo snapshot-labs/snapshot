@@ -19,7 +19,7 @@ export const ABI = [
 interface Boost {
   strategyURI: string;
   token: string;
-  balance: number;
+  balance: string;
   guard: string;
   start: number;
   end: number;
