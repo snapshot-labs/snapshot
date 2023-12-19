@@ -137,9 +137,9 @@ watch(paymentTx, () => {
             }"
             @click="setData('currency', currencyId)"
           >
-            <AvatarToken :address="currency.address[1]" size="28" />
+            <AvatarToken :address="currency.address[1]" size="30" />
             <div>
-              <div class="text-skin-heading leading-none">
+              <div class="text-skin-heading">
                 {{
                   computePrice(
                     currencyId,
@@ -148,7 +148,7 @@ watch(paymentTx, () => {
                   ).toLocaleString()
                 }}
               </div>
-              <small>{{ currency.code }}</small>
+              <small class="leading-none">{{ currency.code }}</small>
             </div>
           </label>
         </li>
