@@ -103,6 +103,13 @@ watch(searchInput, value => {
 
   fetchCustomToken(value);
 });
+
+watch(
+  () => props.selectedToken,
+  () => {
+    searchInput.value = '';
+  }
+);
 </script>
 
 <template>
