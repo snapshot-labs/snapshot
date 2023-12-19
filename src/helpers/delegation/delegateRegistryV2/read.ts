@@ -2,7 +2,8 @@ import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
 import { DelegationReader } from '../delegation';
 import { BigNumber } from '@ethersproject/bignumber';
 
-const DELEGATE_REGISTRY_BACKEND_URL = 'http://localhost:3000'; // 'https://delegate-registry-backend.vercel.app';
+const DELEGATE_REGISTRY_BACKEND_URL =
+  'https://delegate-registry-backend.vercel.app';
 
 type DelegateFromDRV2 = {
   to_address: string;
