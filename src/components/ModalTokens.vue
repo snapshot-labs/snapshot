@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAddress } from '@ethersproject/address';
-import { ERC20ABI } from '@/helpers/constants';
+import { ERC20ABI, ETH_CONTRACT } from '@/helpers/constants';
 import { Token } from '@/helpers/alchemy';
 import snapshot from '@snapshot-labs/snapshot.js';
 
@@ -9,6 +9,7 @@ const props = defineProps<{
   open: boolean;
   tokens: Token[];
   network: string;
+  disableBaseTokens?: boolean;
 }>();
 
 const emit = defineEmits(['close', 'update:selectedToken', 'addCustomToken']);
@@ -25,24 +26,23 @@ const tokensFiltered = computed(() => {
     return [customToken.value];
   }
 
-  const filterTokens = (token: Token) => {
-    const tokenProperties = [
-      token.symbol,
-      token.name,
-      token.contractAddress
-    ].map(property => property?.toLowerCase());
-
-    const searchQuery = searchInput.value.toLowerCase();
-
-    const searchMatch = tokenProperties.some(
-      property => property?.includes(searchQuery)
-    );
-
-    return searchMatch || !searchInput.value;
-  };
-
-  return props.tokens.filter(filterTokens);
+  return props.tokens.filter(filterToken);
 });
+
+function filterToken(token: Token) {
+  if (props.disableBaseTokens && token.contractAddress === ETH_CONTRACT) {
+    return false;
+  }
+
+  const searchQuery = searchInput.value.toLowerCase();
+  return isTokenMatchingSearch(token, searchQuery) || !searchInput.value;
+}
+
+function isTokenMatchingSearch(token: Token, searchQuery: string) {
+  return [token.symbol, token.name, token.contractAddress].some(
+    property => property?.toLowerCase().includes(searchQuery)
+  );
+}
 
 function handleTokenClick(token: Token) {
   emit('update:selectedToken', token.contractAddress);
@@ -148,10 +148,20 @@ watch(
           />
 
           <div
-            v-if="searchInput.length && tokensFiltered.length === 0"
-            class="flex flex-row content-start items-start justify-center py-4"
+            v-if="!tokensFiltered.length"
+            class="py-[20px] text-center text-skin-link md:py-5"
           >
-            <span>{{ $t('noResultsFound') }}</span>
+            <i-ho-emoji-sad class="mx-auto" />
+            <div class="mt-2">
+              <span v-if="searchInput.length && !tokensFiltered.length">{{
+                $t('noResultsFound')
+              }}</span>
+              <span v-else-if="!tokensFiltered.length">
+                No tokens found.
+                <br />
+                Add a token by searching the contract address.
+              </span>
+            </div>
           </div>
         </template>
       </div>

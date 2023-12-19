@@ -39,17 +39,19 @@ function handleOpenTokenModal() {
         @click="handleOpenTokenModal"
       >
         <div
-          v-if="selectedToken?.contractAddress || loading"
           class="flex flex-row space-x-2 items-center pr-[12px] pl-3 max-w-[150px]"
         >
           <template v-if="loading">
             <TuneLoadingSpinner />
           </template>
-          <template v-else>
-            <AvatarToken :address="selectedToken!.contractAddress" size="20" />
+          <template v-else-if="selectedToken?.contractAddress">
+            <AvatarToken :address="selectedToken.contractAddress" size="20" />
             <span v-if="selectedToken" class="text-skin-link truncate">{{
               selectedToken.symbol
             }}</span>
+          </template>
+          <template v-else>
+            <div>Select token</div>
           </template>
           <i-ho-chevron-down class="text-sm text-skin-link shrink-0" />
         </div>
@@ -63,6 +65,7 @@ function handleOpenTokenModal() {
       :tokens="tokens"
       :open="isTokenModalOpen"
       :network="network"
+      disable-base-tokens
       @update:selected-token="$emit('update:selectedToken', $event)"
       @add-custom-token="$emit('addCustomToken', $event)"
       @close="isTokenModalOpen = false"

@@ -8,7 +8,7 @@ import { getUrl, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
 import { createBoost, getStrategyURI, BOOST_ADDRESS } from '@/helpers/boost';
 import { SNAPSHOT_GUARD_ADDRESS, ERC20ABI } from '@/helpers/constants';
-import { CHAIN_CURRENCIES, TWO_WEEKS } from '@/helpers/constants';
+import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 
@@ -59,7 +59,7 @@ const form = ref<Form>({
     ratioLimit: ''
   },
   network: '5',
-  token: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+  token: '',
   amount: ''
 });
 
@@ -133,9 +133,16 @@ const createStatusModalConfig = computed(() => {
 
 const selectedToken = computed(() => {
   if (!allTokens.value) return undefined;
-  return allTokens.value.find(
+
+  const selectedToken = allTokens.value.find(
     (token: Token) => token.contractAddress === form.value.token
   );
+  const firstTokenWhichIsNotEth = allTokens.value.find(
+    (token: Token) => token.contractAddress !== ETH_CONTRACT
+  );
+
+  if (selectedToken) return selectedToken;
+  if (firstTokenWhichIsNotEth) return firstTokenWhichIsNotEth;
 });
 
 const filteredNetworks = computed(() => {
@@ -280,7 +287,7 @@ async function handleCreate() {
 }
 
 function resetTokenInput() {
-  form.value.token = CHAIN_CURRENCIES[form.value.network].contractAddress;
+  form.value.token = '';
 }
 
 watch(
