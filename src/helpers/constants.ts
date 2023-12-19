@@ -97,3 +97,5 @@ export const CHAIN_CURRENCIES: Record<string, ChainCurrencies> = {
     contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
   }
 };
+
+export const TWO_WEEKS = 1209600;
