@@ -6,7 +6,12 @@ import snapshot from '@snapshot-labs/snapshot.js';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { getUrl, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
-import { createBoost, getStrategyURI, BOOST_ADDRESS } from '@/helpers/boost';
+import {
+  createBoost,
+  getStrategyURI,
+  BOOST_CONTRACTS,
+  SUPPORTED_NETWORKS
+} from '@/helpers/boost';
 import { SNAPSHOT_GUARD_ADDRESS, ERC20ABI } from '@/helpers/constants';
 import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
@@ -58,7 +63,7 @@ const form = ref<Form>({
     hasRatioLimit: false,
     ratioLimit: ''
   },
-  network: '5',
+  network: '1',
   token: '',
   amount: ''
 });
@@ -146,7 +151,6 @@ const selectedToken = computed(() => {
 });
 
 const filteredNetworks = computed(() => {
-  const supportedNetworks = ['1', '5'];
   return Object.values(networks)
     .map((network: any) => {
       return {
@@ -157,7 +161,7 @@ const filteredNetworks = computed(() => {
         }
       };
     })
-    .filter(network => supportedNetworks.includes(network.value));
+    .filter(network => SUPPORTED_NETWORKS.includes(network.value));
 });
 
 const strategy = computed<BoostStrategy>(() => {
@@ -236,7 +240,7 @@ async function handleApproval() {
       form.value.token,
       ERC20ABI,
       'approve',
-      [BOOST_ADDRESS, amountParsed.value],
+      [BOOST_CONTRACTS[form.value.network], amountParsed.value],
       {}
     );
 
@@ -266,7 +270,7 @@ async function handleCreate() {
 
   try {
     const strategyURI = await getStrategyURI(strategy.value);
-    const response = await createBoost(auth.web3, {
+    const response = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
       balance: amountParsed.value,
@@ -323,7 +327,10 @@ async function getAccount(account: string, token: string, chainId: string) {
     {}
   );
   multi.call('balance', token, 'balanceOf', [account]);
-  multi.call('allowance', token, 'allowance', [account, BOOST_ADDRESS]);
+  multi.call('allowance', token, 'allowance', [
+    account,
+    BOOST_CONTRACTS[chainId]
+  ]);
   return await multi.execute();
 }
 

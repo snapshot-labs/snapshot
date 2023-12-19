@@ -3,8 +3,13 @@ import { Contract } from '@ethersproject/contracts';
 import { pin } from '@snapshot-labs/pineapple';
 import { BoostStrategy } from '@/helpers/interfaces';
 
-export const IPFS_GATEWAY = 'pineapple.fyi';
-export const BOOST_ADDRESS = '0xaf8b6af86044821eED74E49057De62fB5C48e061';
+export const BOOST_CONTRACTS = {
+  '1': '0x',
+  '11155111': '0x27b26b007ec742eb8f088ce2ec816db50aee86ae'
+};
+
+export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
+
 export const ABI = [
   'function boosts(uint256) view returns (string strategyURI, address token, uint256 balance, address guard, uint256 start, uint256 end, address owner)',
   'function claimTokens(tuple(uint256 boostId, address recipient, uint256 amount) claim, bytes signature)',
@@ -28,10 +33,11 @@ interface Boost {
 
 export async function createBoost(
   web3: Web3Provider,
+  networkId: string,
   params: Boost
 ): Promise<any> {
   const signer = web3.getSigner();
-  const contract = new Contract(BOOST_ADDRESS, ABI, signer);
+  const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
 
   return await contract.createBoost(params);
 }
@@ -41,10 +47,11 @@ export async function claimTokens(
   boostId: number,
   recipient: string,
   amount: string,
-  signature: string
+  signature: string,
+  networkId: string
 ): Promise<any> {
   const signer = web3.getSigner();
-  const contract = new Contract(BOOST_ADDRESS, ABI, signer);
+  const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
   const claim = {
     boostId,
     recipient,

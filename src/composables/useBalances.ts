@@ -42,54 +42,70 @@ export function useBalances() {
     };
   }
 
-  async function loadBalances(address: string, networkId: number) {
+  function filterValidTokens(data, baseToken) {
+    return data.filter(
+      asset =>
+        formatUnits(asset.tokenBalance, asset.decimals) !== '0.0' ||
+        asset.symbol === baseToken.symbol
+    );
+  }
+
+  function getCoinGeckoConfig(networkId) {
+    return {
+      coingeckoAssetPlatform: COINGECKO_ASSET_PLATFORMS[networkId],
+      coingeckoBaseAsset: COINGECKO_BASE_ASSETS[networkId]
+    };
+  }
+
+  async function fetchCoinPrices(assetPlatform, baseToken, tokensWithBalance) {
+    if (!baseToken || !assetPlatform) return [];
+
+    const contractAddresses = tokensWithBalance
+      .filter(asset => asset.contractAddress !== ETH_CONTRACT)
+      .map(token => token.contractAddress);
+
+    return getCoins(assetPlatform, baseToken, contractAddresses);
+  }
+
+  function mapTokenValues(tokensWithBalance, coins) {
+    return tokensWithBalance.map(asset => {
+      const coinData = coins[asset.contractAddress];
+      if (!coinData) return asset;
+
+      const price = coinData.usd || 0;
+      const change = coinData.usd_24h_change || 0;
+      const value =
+        parseFloat(formatUnits(asset.tokenBalance, asset.decimals)) * price;
+
+      return {
+        ...asset,
+        price,
+        change,
+        value
+      };
+    });
+  }
+
+  async function loadBalances(address, networkId) {
     try {
       loading.value = true;
-
-      const baseToken = {
-        ...CHAIN_CURRENCIES[networkId]
-      };
-
+      const baseToken = { ...CHAIN_CURRENCIES[networkId] };
       const data = await getBalances(address, networkId, baseToken);
-      const tokensWithBalance = data.filter(
-        asset =>
-          formatUnits(asset.tokenBalance, asset.decimals) !== '0.0' ||
-          asset.symbol === baseToken.symbol
+
+      const tokensWithBalance = filterValidTokens(data, baseToken);
+      const { coingeckoAssetPlatform, coingeckoBaseAsset } =
+        getCoinGeckoConfig(networkId);
+
+      const coins = await fetchCoinPrices(
+        coingeckoAssetPlatform,
+        coingeckoBaseAsset,
+        tokensWithBalance
       );
+      tokens.value = mapTokenValues(tokensWithBalance, coins);
 
-      const coingeckoAssetPlatform = COINGECKO_ASSET_PLATFORMS[networkId];
-      const coingeckoBaseAsset = COINGECKO_BASE_ASSETS[networkId];
-
-      const coins =
-        coingeckoBaseAsset && coingeckoAssetPlatform
-          ? await getCoins(
-              coingeckoAssetPlatform,
-              coingeckoBaseAsset,
-              tokensWithBalance
-                .filter(asset => asset.contractAddress !== ETH_CONTRACT)
-                .map(token => token.contractAddress)
-            )
-          : [];
-
-      tokens.value = tokensWithBalance.map(asset => {
-        if (!coins[asset.contractAddress]) return asset;
-
-        const price = coins[asset.contractAddress]?.usd || 0;
-        const change = coins[asset.contractAddress]?.usd_24h_change || 0;
-        const value =
-          parseFloat(formatUnits(asset.tokenBalance, asset.decimals)) * price;
-
-        loaded.value = true;
-
-        return {
-          ...asset,
-          price,
-          change,
-          value
-        };
-      });
-    } catch (e) {
-      console.log(e);
+      loaded.value = true;
+    } catch (error) {
+      console.error('Error loading balances:', error);
     } finally {
       loading.value = false;
     }

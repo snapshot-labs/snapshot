@@ -10,9 +10,9 @@ const apiKey = import.meta.env.VITE_ALCHEMY_API_KEY;
 
 const NETWORKS = {
   1: 'eth-mainnet',
-  5: 'eth-goerli'
-  //   137: 'polygon-mainnet',
-  //   42161: 'arb-mainnet'
+  11155111: 'eth-sepolia',
+  137: 'polygon-mainnet',
+  42161: 'arb-mainnet'
 };
 
 function getApiUrl(networkId: number) {
