@@ -40,14 +40,14 @@ function handleOpenTokenModal() {
       >
         <div
           v-if="selectedToken?.contractAddress || loading"
-          class="flex flex-row space-x-2 items-center pr-[12px] pl-3"
+          class="flex flex-row space-x-2 items-center pr-[12px] pl-3 max-w-[150px]"
         >
           <template v-if="loading">
             <TuneLoadingSpinner />
           </template>
           <template v-else>
             <AvatarToken :address="selectedToken!.contractAddress" size="20" />
-            <span v-if="selectedToken" class="text-skin-link">{{
+            <span v-if="selectedToken" class="text-skin-link truncate">{{
               selectedToken.symbol
             }}</span>
           </template>

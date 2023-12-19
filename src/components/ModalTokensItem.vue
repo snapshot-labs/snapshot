@@ -32,7 +32,7 @@ const exploreUrl = computed(() => {
 
       <div class="pr-4">
         <div class="flex w-full items-center text-skin-link">
-          <div class="flex items-center gap-1">
+          <div class="text-left text-skin-text line-clamp-1">
             {{ token.symbol }}
           </div>
         </div>
