@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
+import { DelegationTypes } from '../helpers/delegation/index';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -270,6 +271,19 @@ onMounted(() => {
     </template>
     <Teleport to="body">
       <SpaceDelegatesDelegateModal
+        v-if="space.delegationPortal != null"
+        :open="route.query.delegate !== undefined"
+        :space="space"
+        :address="(route.query.delegate as string) || ''"
+        @close="handleCloseModalDelegate"
+        @reload="loadDelegates(matchFilter)"
+      />
+      <SpaceDelegatesDelegateRegistryV2Modal
+        v-if="
+          space.strategies?.some(
+            ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+          )
+        "
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

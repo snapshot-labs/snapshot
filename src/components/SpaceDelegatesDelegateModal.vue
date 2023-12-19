@@ -20,7 +20,7 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegate, loadDelegateBalance, isLoadingDelegateBalance } =
+const { setDelegates, loadDelegateBalance, isLoadingDelegateBalance } =
   useDelegates(props.space);
 const { formatCompactNumber } = useIntl();
 const { web3Account } = useWeb3();
@@ -73,7 +73,7 @@ async function handleConfirm() {
   const txPendingId = createPendingTransaction();
   try {
     isAwaitingSignature.value = true;
-    const tx = await setDelegate(resolvedAddress.value);
+    const tx = await setDelegates([resolvedAddress.value]);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
