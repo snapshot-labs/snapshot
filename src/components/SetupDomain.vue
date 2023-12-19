@@ -73,7 +73,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           scope="global"
         >
           <template #link>
-            <BaseLink link="https://demo.snapshot.org">
+            <BaseLink link="https://testnet.snapshot.org">
               {{ $t('setup.domain.tryDemo') }}
             </BaseLink>
           </template>

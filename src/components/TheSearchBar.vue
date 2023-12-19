@@ -65,7 +65,7 @@ function handleUpdateSearch(e: string) {
         <template #button>
           <button class="flex h-full flex-grow items-center">
             <span class="ml-3" v-text="searchSelectedOption" />
-            <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-text" />
+            <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-link" />
           </button>
         </template>
       </BaseMenu>
