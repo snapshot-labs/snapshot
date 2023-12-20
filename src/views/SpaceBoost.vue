@@ -275,7 +275,7 @@ async function handleCreate() {
       token: form.value.token,
       amount: amountParsed.value,
       guard: SNAPSHOT_GUARD_ADDRESS,
-      start: proposal.value.start,
+      start: proposal.value.end,
       end: proposal.value.end + TWO_WEEKS,
       owner: web3Account.value
     });
