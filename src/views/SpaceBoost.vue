@@ -61,7 +61,7 @@ const form = ref<Form>({
   },
   network: '11155111',
   token: '',
-  amount: '0.1'
+  amount: '0.01'
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -270,7 +270,7 @@ async function handleCreate() {
 
   try {
     const strategyURI = await getStrategyURI(strategy.value);
-    const response = await createBoost(auth.web3, form.value.network, {
+    const tx = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
       amount: amountParsed.value,
@@ -280,14 +280,21 @@ async function handleCreate() {
       owner: web3Account.value
     });
 
-    updatePendingTransaction(txPendingId, { hash: response.hash });
-    router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
+    await tx.wait(1);
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
+    // router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
     createStatus.value = 'success';
   } catch (e: any) {
     setErrorStatus(e.message);
   } finally {
     removePendingTransaction(txPendingId);
   }
+}
+
+function handleCloseStatusModal() {
+  if (createStatus.value === 'success')
+    router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
+  createStatus.value = '';
 }
 
 function resetTokenInput() {
@@ -426,7 +433,7 @@ watch(
           </TuneButton>
           <div class="flex justify-center mt-2">
             <i-ho-information-circle class="inline-block mr-1" />
-            This contract is not audited.
+            This contract is not audited and in beta.
           </div>
         </div>
       </template>
@@ -437,7 +444,7 @@ watch(
       :variant="createStatusModalConfig.variant"
       :title="createStatusModalConfig.title"
       :subtitle="createStatusModalConfig.subtitle"
-      @close="createStatus = ''"
+      @close="handleCloseStatusModal"
       @try-again="handleRetryCreate"
     />
     <Teleport to="#modal">

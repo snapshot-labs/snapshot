@@ -21,8 +21,6 @@ const badgeClass = computed(() => {
 
 const cancelButtonVariant = computed(() => {
   switch (props.variant) {
-    case 'loading':
-      return 'danger';
     default:
       return undefined;
   }
@@ -33,13 +31,13 @@ const cancelButtonText = computed(() => {
     case 'success':
       return 'Done!';
     default:
-      return 'Cancel';
+      return 'Close';
   }
 });
 </script>
 
 <template>
-  <TuneModal :open="open" hide-close>
+  <TuneModal :open="open" hide-close @close="emit('close')">
     <div class="pt-[40px] h-full flex flex-col justify-between">
       <div>
         <div
