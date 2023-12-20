@@ -120,6 +120,7 @@
     "useEmailFetchClient": true,
     "useStatement": true,
     "useMixpanel": true,
-    "useBalances": true
+    "useBalances": true,
+    "useAccount": true
   }
 }

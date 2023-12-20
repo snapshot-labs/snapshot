@@ -2,20 +2,19 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-import snapshot from '@snapshot-labs/snapshot.js';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { getUrl, sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
 import {
   createBoost,
   getStrategyURI,
-  BOOST_CONTRACTS,
-  SUPPORTED_NETWORKS
+  SUPPORTED_NETWORKS,
+  SNAPSHOT_GUARD_ADDRESS,
+  BOOST_CONTRACTS
 } from '@/helpers/boost';
-import { SNAPSHOT_GUARD_ADDRESS, ERC20ABI } from '@/helpers/constants';
 import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
+import { sendApprovalTransaction } from '@/helpers/transaction';
 
 defineProps<{
   space: ExtendedSpace;
@@ -40,11 +39,7 @@ const router = useRouter();
 const auth = getInstance();
 const { loadBalances, tokens, loading } = useBalances();
 const { web3Account, web3 } = useWeb3();
-const createStatus = ref('');
-const account = ref<{
-  balance?: string;
-  allowance?: string;
-}>({});
+const { account, updatingAccount, updateAccount } = useAccount();
 const {
   createPendingTransaction,
   updatePendingTransaction,
@@ -52,6 +47,7 @@ const {
 } = useTxStatus();
 
 const proposal = ref();
+const createStatus = ref('');
 const customTokens = ref<Token[]>([]);
 const openUnsupportedNetworkModal = ref(false);
 const form = ref<Form>({
@@ -63,9 +59,9 @@ const form = ref<Form>({
     hasRatioLimit: false,
     ratioLimit: ''
   },
-  network: '1',
+  network: '11155111',
   token: '',
-  amount: ''
+  amount: '0.1'
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -102,6 +98,7 @@ const isValidForm = computed(() => {
     !form.value.distribution.ratioLimit
   )
     return false;
+  if (updatingAccount.value) return false;
   return true;
 });
 
@@ -147,7 +144,10 @@ const selectedToken = computed(() => {
   );
 
   if (selectedToken) return selectedToken;
-  if (firstTokenWhichIsNotEth) return firstTokenWhichIsNotEth;
+  if (firstTokenWhichIsNotEth) {
+    form.value.token = firstTokenWhichIsNotEth.contractAddress;
+    return firstTokenWhichIsNotEth;
+  }
 });
 
 const filteredNetworks = computed(() => {
@@ -235,21 +235,21 @@ function setErrorStatus(error: string) {
 async function handleApproval() {
   createStatus.value = 'approve';
   try {
-    const approveTx = await sendTransaction(
+    await sendApprovalTransaction(
       auth.web3,
       form.value.token,
-      ERC20ABI,
-      'approve',
-      [BOOST_CONTRACTS[form.value.network], amountParsed.value],
-      {}
+      BOOST_CONTRACTS[form.value.network],
+      amountParsed.value
     );
 
-    const receipt = await approveTx.wait(1);
-    console.log('Receipt', receipt);
-
-    await updateAccount();
+    await updateAccount(
+      form.value.token,
+      form.value.network,
+      BOOST_CONTRACTS[form.value.network]
+    );
     handleCreate();
   } catch (e: any) {
+    console.log('Approval error:', e);
     setErrorStatus(e.message);
   }
 }
@@ -273,7 +273,7 @@ async function handleCreate() {
     const response = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
-      balance: amountParsed.value,
+      amount: amountParsed.value,
       guard: SNAPSHOT_GUARD_ADDRESS,
       start: proposal.value.start,
       end: proposal.value.end + TWO_WEEKS,
@@ -319,35 +319,15 @@ watch(
   }
 );
 
-async function getAccount(account: string, token: string, chainId: string) {
-  const multi = new snapshot.utils.Multicaller(
-    chainId,
-    auth.web3,
-    ERC20ABI,
-    {}
-  );
-  multi.call('balance', token, 'balanceOf', [account]);
-  multi.call('allowance', token, 'allowance', [
-    account,
-    BOOST_CONTRACTS[chainId]
-  ]);
-  return await multi.execute();
-}
-
-async function updateAccount() {
-  account.value = {};
-  if (web3Account.value && form.value.token)
-    account.value = await getAccount(
-      web3Account.value,
-      form.value.token,
-      form.value.network
-    );
-}
-
 watch(
   [web3Account, () => form.value.token, () => form.value.network],
   () => {
-    updateAccount();
+    if (!web3Account.value || !form.value.token) return;
+    updateAccount(
+      form.value.token,
+      form.value.network,
+      BOOST_CONTRACTS[form.value.network]
+    );
   },
   { immediate: true }
 );
