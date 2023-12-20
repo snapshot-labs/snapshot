@@ -121,9 +121,12 @@ const newBoostLink = computed(() => ({
 }));
 
 const isActive = computed(() => props.proposal.state === 'active');
+const isClosed = computed(() => props.proposal.state === 'closed');
+const isFinal = computed(() => props.proposal.scores_state === 'final');
 
 function isEligible(boost: BoostSubgraphResult) {
-  if (props.proposal.privacy === 'shutter') return false;
+  if (props.proposal.privacy === 'shutter' && !isFinal.value && !isClosed.value)
+    return false;
   if (userVote.value && boost.strategy.params.eligibility.choice !== undefined)
     return (
       userVote.value.choice === boost.strategy.params.eligibility.choice + 1
@@ -142,6 +145,10 @@ function handleStart() {
   isOpen.value = false;
 }
 
+async function handleClaimAll() {
+  console.log('Claim all');
+}
+
 watch(
   web3Account,
   () => {
@@ -153,7 +160,7 @@ watch(
 
 <template>
   <TuneBlock
-    v-if="!isActive"
+    v-if="!isActive && eligibleBoosts.length"
     slim
     class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px]"
   >
@@ -178,13 +185,19 @@ watch(
     </div>
 
     <div class="flex justify-center mt-3">
-      <TuneButton variant="white" class="text-white flex items-center">
+      <TuneButton
+        variant="white"
+        class="text-white flex items-center"
+        @click="handleClaimAll"
+      >
         <i-ho-gift class="text-sm mr-2" />
         Claim now
       </TuneButton>
     </div>
   </TuneBlock>
+
   <TuneBlock
+    v-if="isActive || SAMPLE_BOOSTS.length"
     slim
     class="rounded-2xl"
     :class="[
@@ -194,7 +207,7 @@ watch(
     ]"
   >
     <div
-      v-if="proposal.state === 'active'"
+      v-if="isActive"
       class="text-white flex items-center justify-center h-[40px] bg-[url('@/assets/images/stars.png')]"
     >
       <template v-if="SAMPLE_BOOSTS.length">
@@ -262,7 +275,7 @@ watch(
           </div>
         </div>
       </div>
-      <div v-else class="flex items-center gap-3">
+      <div v-else-if="isActive" class="flex items-center gap-3">
         <div class="h-[46px] w-[46px] flex-shrink-0 rounded-2xl shadow-xl">
           <div class="flex items-center justify-center h-full">
             <i-s-boost-icon class="text-skin-heading" />
