@@ -22,6 +22,8 @@ const strategyTestnetErrors = computed(() => {
     #{{ strategyTestnetErrors.map(e => Number(e[0]) + 1).join(', ') }}
     is using a test network which is no longer supported. If you are looking to
     setup a space for testing, please checkout
-    <BaseLink link="https://demo.snapshot.org"> demo.snapshot.org</BaseLink>
+    <BaseLink link="https://testnet.snapshot.org">
+      testnet.snapshot.org</BaseLink
+    >
   </BaseMessageBlock>
 </template>

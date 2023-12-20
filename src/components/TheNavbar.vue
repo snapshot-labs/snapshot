@@ -31,7 +31,11 @@ watch(
           >
             snapshot
           </router-link>
-          <span v-if="env === 'demo'" class="ml-1">testnet</span>
+          <span
+            v-if="env === 'demo'"
+            class="ml-1 hidden uppercase text-[12px] sm:block mb-1"
+            v-text="'testnet'"
+          />
         </div>
         <div :key="web3Account" class="flex space-x-2">
           <NavbarAccount />

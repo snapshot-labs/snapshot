@@ -52,7 +52,7 @@
     @apply border-skin-primary bg-skin-primary text-white hover:brightness-95;
 
     &:disabled {
-      @apply border-skin-border bg-skin-border text-skin-link;
+      @apply border-skin-primary bg-skin-primary text-white opacity-40;
     }
   }
 
