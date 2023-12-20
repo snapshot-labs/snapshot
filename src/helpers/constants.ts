@@ -55,15 +55,6 @@ export const COINGECKO_BASE_ASSETS = {
   42161: 'ethereum'
 };
 
-export const BOOST_ADDRESS = '0xaf8b6af86044821eED74E49057De62fB5C48e061';
-
-export const SNAPSHOT_GUARD_ADDRESS =
-  '0xF63EB3f569C6cB8F5Cf37caD183790Ed1b251c91';
-
-export const GUARDS = {
-  '0xF63EB3f569C6cB8F5Cf37caD183790Ed1b251c91': 'Snapshot Labs'
-};
-
 type ChainCurrencies = {
   name: string;
   symbol: string;
