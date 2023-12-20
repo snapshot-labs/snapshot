@@ -47,13 +47,13 @@ onMounted(async () => {
       <div>
         {{ $t('treasury.wallets.empty') }}
       </div>
-      <BaseButton
+      <TuneButton
         v-if="admins?.includes(web3Account)"
         class="mt-3"
         @click="$router.push({ name: 'spaceSettings' })"
       >
         {{ $t('treasury.wallets.addTreasury') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseBlock>
 </template>

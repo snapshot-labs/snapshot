@@ -59,7 +59,7 @@ const items = computed(() => [
         <div
           v-tippy="{ content: item.disabled ? item.disabledInformation : '' }"
         >
-          <BaseButton
+          <TuneButton
             variant="danger"
             class="ml-4 whitespace-nowrap"
             :disabled="item.disabled"
@@ -67,7 +67,7 @@ const items = computed(() => [
             @click="item.disabled ? null : item.action()"
           >
             {{ item.button }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
     </div>

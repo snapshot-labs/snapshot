@@ -160,7 +160,7 @@ onMounted(() => {
               <BaseMenu :items="filterItems" @select="handleSelectFilter">
                 <template #button>
                   <div>
-                    <BaseButton class="hidden items-center sm:flex">
+                    <TuneButton class="hidden items-center sm:flex">
                       <div class="whitespace-nowrap">
                         {{
                           filterItems.find(i => i.action === selectedFilter)
@@ -168,9 +168,9 @@ onMounted(() => {
                         }}
                       </div>
                       <i-ho-chevron-down
-                        class="-mr-1 ml-1 text-xs text-skin-text"
+                        class="-mr-1 ml-1 text-xs text-skin-link"
                       />
-                    </BaseButton>
+                    </TuneButton>
 
                     <BaseButtonRound class="sm:hidden">
                       <i-ho-sort-descending class="text-skin-text" />
@@ -197,13 +197,13 @@ onMounted(() => {
                     v-if="web3Account"
                     @click="handleClickProfile(web3Account)"
                   />
-                  <BaseButton
+                  <TuneButton
                     :primary="isFollowing"
                     class="w-full md:w-auto"
                     @click="handleClickDelegate()"
                   >
                     Delegate
-                  </BaseButton>
+                  </TuneButton>
                 </div>
               </TheActionbar>
             </div>

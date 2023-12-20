@@ -33,7 +33,7 @@ const { web3Account } = useWeb3();
           v-if="userAddress === web3Account"
           class="flex flex-grow justify-end lg:mt-3 lg:flex-auto lg:justify-center"
         >
-          <BaseButton
+          <TuneButton
             :disabled="!profiles[userAddress]"
             class="whitespace-nowrap lg:w-full"
             @click="emit('edit')"
@@ -41,7 +41,7 @@ const { web3Account } = useWeb3();
             <span>
               {{ $t('profile.buttonEdit') }}
             </span>
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
 

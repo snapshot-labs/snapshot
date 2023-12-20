@@ -53,26 +53,6 @@ const updateFormValue = <T extends keyof DelegateRowForm>(
   emit('update:modelValue', clone(form.value));
 };
 
-// function handleWeightKeydown(e: KeyboardEvent) {
-//   let increment = 0;
-
-//   if (e.key === 'ArrowUp' && e.shiftKey) {
-//     increment = 10;
-//   } else if (e.key === 'ArrowDown' && e.shiftKey) {
-//     increment = -10;
-//   } else if (e.key === 'ArrowUp') {
-//     increment = 1;
-//   } else if (e.key === 'ArrowDown') {
-//     increment = -1;
-//   }
-
-//   const newWeight = form.value.weight + increment;
-//   if (newWeight < 0 || newWeight > 100) {
-//     return;
-//   }
-//   handleWeightUpdate(newWeight);
-// }
-
 watch(
   () => props.address,
   newAddress => {
@@ -101,7 +81,6 @@ watch(
       />
     </div>
     <div class="relative">
-      {{ console.log('validationErrors', validationErrors) }}
       <TuneInput
         :model-value="form.weight"
         type="number"

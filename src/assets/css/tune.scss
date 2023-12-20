@@ -46,19 +46,31 @@
 }
 
 .tune-button {
-  @apply flex h-[42px] cursor-pointer justify-center rounded-full border border-skin-border px-3 py-2 hover:border-skin-text disabled:cursor-not-allowed;
+  @apply h-[46px] cursor-pointer text-skin-link rounded-full bg-transparent border border-skin-border px-[22px] hover:border-skin-text;
 
   &.primary {
-    @apply border-skin-primary bg-skin-primary text-white;
+    @apply border-skin-primary bg-skin-primary text-white hover:brightness-95;
+
+    &:disabled {
+      @apply border-skin-primary bg-skin-primary text-white opacity-40;
+    }
+  }
+
+  &.danger {
+    @apply text-red hover:border-red;
+
+    &:disabled {
+      @apply text-skin-border hover:border-skin-border;
+    }
   }
 
   &.disabled {
-    @apply border-skin-border bg-skin-bg text-skin-border;
+    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
   }
 }
 
 .tune-button-select {
-  @apply relative flex w-full justify-start truncate pl-3 pr-5 text-left text-base text-skin-link rounded-full;
+  @apply relative h-[42px] w-full justify-start truncate pl-3 pr-5 text-left text-base text-skin-link rounded-full;
 
   &.disabled {
     @apply cursor-not-allowed border-skin-border;

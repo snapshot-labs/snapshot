@@ -93,7 +93,7 @@ export default {
         :uma-address="safe.umaAddress"
         :multi-send-address="safe.multiSendAddress"
         :model-value="safe.txs"
-        @update:modelValue="updateSafeTransactions(index, $event)"
+        @update:model-value="updateSafeTransactions(index, $event)"
       />
     </div>
   </div>

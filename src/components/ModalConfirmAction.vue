@@ -21,17 +21,17 @@ defineEmits(['close', 'confirm']);
 
     <template #footer>
       <div class="flex gap-3">
-        <BaseButton v-if="showCancel" class="w-full" @click="$emit('close')">
+        <TuneButton v-if="showCancel" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           class="w-full"
           primary
           :disabled="disabled"
           @click="$emit('confirm'), $emit('close')"
         >
           {{ $t('confirm') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

@@ -19,9 +19,9 @@ import SpaceProposal from '@/views/SpaceProposal.vue';
 import SpaceCreate from '@/views/SpaceCreate.vue';
 import SpaceSettings from '@/views/SpaceSettings.vue';
 import SpaceAbout from '@/views/SpaceAbout.vue';
-import SpaceTreasury from './views/SpaceTreasury.vue';
-import SpaceDelegates from './views/SpaceDelegates.vue';
-import SpaceDelegate from './views/SpaceDelegate.vue';
+import SpaceTreasury from '@/views/SpaceTreasury.vue';
+import SpaceDelegates from '@/views/SpaceDelegates.vue';
+import SpaceDelegate from '@/views/SpaceDelegate.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.

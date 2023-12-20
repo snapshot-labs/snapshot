@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { PROPOSAL_QUERY } from '@/helpers/queries';
 import { proposalValidation } from '@/helpers/snapshot';
-import { ExtendedSpace } from '@/helpers/interfaces';
 import Plugin from '@/plugins/safeSnap';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const safeSnapPlugin = new Plugin();
 
@@ -47,6 +47,8 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
 const { containsShortUrl } = useShortUrls();
+const { isValid: isValidSpaceSettings, populateForm } =
+  useFormSpaceSettings('settings');
 
 const {
   form,
@@ -352,9 +354,18 @@ watch(
   { immediate: true }
 );
 
+const hasOsnapPlugin = computed(() => {
+  return !!props.space?.plugins?.oSnap;
+});
+const shouldUseOsnap = ref(false);
+
+function toggleShouldUseOsnap() {
+  shouldUseOsnap.value = !shouldUseOsnap.value;
+}
+
 // We need to know if the space is using osnap, this will change what types of voting we can do
 // We also need to know if the user plans to use osnap
-const osnap = ref<{
+const legacyOsnap = ref<{
   enabled: boolean;
   selection: boolean;
 }>({
@@ -364,15 +375,14 @@ const osnap = ref<{
 
 // Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
 function shouldSkipTransactions() {
-  return (
-    osnap.value.enabled &&
-    !osnap.value.selection &&
-    currentStep.value === Step.VOTING
-  );
+  if (currentStep.value !== Step.VOTING) return false;
+  if (legacyOsnap.value.enabled && !legacyOsnap.value.selection) return true;
+  if (hasOsnapPlugin.value && !shouldUseOsnap.value) return true;
+  return false;
 }
 
-function handleOsnapToggle() {
-  osnap.value.selection = !osnap.value.selection;
+function handleLegacyOsnapToggle() {
+  legacyOsnap.value.selection = !legacyOsnap.value.selection;
 }
 
 onMounted(async () => {
@@ -380,7 +390,7 @@ onMounted(async () => {
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
-    osnap.value.enabled =
+    legacyOsnap.value.enabled =
       (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
   }
   if (sourceProposal.value && !sourceProposalLoaded.value)
@@ -405,6 +415,8 @@ onBeforeRouteLeave(async () => {
     resetForm();
   }
 });
+
+onMounted(() => populateForm(props.space));
 </script>
 
 <template>
@@ -425,6 +437,7 @@ onBeforeRouteLeave(async () => {
         :space="space"
         :validation-failed="hasAuthorValidationFailed"
         :is-valid-author="isValidAuthor"
+        :is-valid-space="isValidSpaceSettings"
         :validation-name="validationName"
         :contains-short-url="formContainsShortUrl"
         data-testid="create-proposal-connect-wallet-warning"
@@ -444,9 +457,12 @@ onBeforeRouteLeave(async () => {
         :space="space"
         :date-start="dateStart"
         :date-end="dateEnd"
-        :osnap="osnap"
+        :has-osnap-plugin="hasOsnapPlugin"
+        :should-use-osnap="shouldUseOsnap"
+        :legacy-osnap="legacyOsnap"
         :is-editing="isEditing"
-        @osnapToggle="handleOsnapToggle"
+        @toggle-should-use-osnap="toggleShouldUseOsnap"
+        @legacy-osnap-toggle="handleLegacyOsnapToggle"
       />
 
       <!-- Step 3 (only when plugins) -->
@@ -459,17 +475,17 @@ onBeforeRouteLeave(async () => {
     </template>
     <template #sidebar-right>
       <BaseBlock class="lg:fixed lg:w-[320px]">
-        <BaseButton
+        <TuneButton
           v-if="currentStep === Step.CONTENT"
           class="mb-2 block w-full"
           @click="preview = !preview"
         >
           {{ preview ? $t('create.edit') : $t('create.preview') }}
-        </BaseButton>
-        <BaseButton v-else class="mb-2 block w-full" @click="previousStep">
+        </TuneButton>
+        <TuneButton v-else class="mb-2 block w-full" @click="previousStep">
           {{ $t('back') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           v-if="
             currentStep === Step.PLUGINS ||
             (!needsPluginConfigs && currentStep === Step.VOTING) ||
@@ -483,8 +499,8 @@ onBeforeRouteLeave(async () => {
           @click="handleSubmit"
         >
           {{ isEditing ? 'Save changes' : $t('create.publish') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           v-else
           class="block w-full"
           :loading="validationLoading || isSnapshotLoading"
@@ -494,7 +510,8 @@ onBeforeRouteLeave(async () => {
             hasAuthorValidationFailed ||
             validationLoading ||
             isGnosisAndNotSpaceNetwork ||
-            space.hibernated
+            space.hibernated ||
+            !isValidSpaceSettings
           "
           primary
           :data-testid="
@@ -505,7 +522,7 @@ onBeforeRouteLeave(async () => {
           @click="web3Account ? nextStep() : (modalAccountOpen = true)"
         >
           {{ web3Account ? $t('create.continue') : $t('connectWallet') }}
-        </BaseButton>
+        </TuneButton>
       </BaseBlock>
     </template>
   </TheLayout>

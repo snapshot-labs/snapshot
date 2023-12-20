@@ -1,6 +1,5 @@
-<script setup>
-const { domain } = useApp();
-const { init, isReady, showSidebar } = useApp();
+<script setup lang="ts">
+const { domain, init, isReady, showSidebar } = useApp();
 const route = useRoute();
 const { restorePendingTransactions } = useTxStatus();
 

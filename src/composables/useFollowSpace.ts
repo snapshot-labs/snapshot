@@ -18,7 +18,9 @@ export function useFollowSpace(spaceId: any = {}) {
   const loadingFollow = ref('');
 
   const followingSpaces = computed(() =>
-    following.value.map((f: any) => f.space.id)
+    Array.isArray(following.value)
+      ? following.value.map((f: any) => f.space.id)
+      : []
   );
 
   const isFollowing = computed(() =>

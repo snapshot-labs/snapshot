@@ -13,7 +13,7 @@ const emit = defineEmits(['select']);
 <template>
   <div class="w-full">
     <LabelInput :information="information">{{ title }}</LabelInput>
-    <BaseButton
+    <TuneButton
       v-tippy="{ content: tooltip }"
       :class="[
         $attrs.class,
@@ -27,8 +27,8 @@ const emit = defineEmits(['select']);
         {{ modelValue }}
       </span>
       <i-ho-chevron-down
-        class="absolute inset-y-[12px] right-[14px] text-xs text-skin-text"
+        class="absolute inset-y-[12px] right-[14px] text-xs text-skin-link"
       />
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>

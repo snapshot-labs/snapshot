@@ -176,9 +176,9 @@ watchDebounced(
 
 watch(
   () => props.address,
-  () => {
-    form.value.to = props.address;
-    resolvedAddress.value = props.address;
+  newAddress => {
+    form.value.to = newAddress;
+    resolvedAddress.value = newAddress;
   },
   { immediate: true }
 );
@@ -212,7 +212,7 @@ watch(
         </div>
       </div>
       <div class="space-y-1">
-        <div class="flex justify-between" v-if="spaceDelegates.length > 0">
+        <div v-if="spaceDelegates.length > 0" class="flex justify-between">
           <TuneLabelInput :hint="definition.properties.to.description">
             {{ definition.properties.to.title }}
           </TuneLabelInput>
@@ -228,7 +228,7 @@ watch(
           :key="`${delegate.address}-${delegate.weight}- ${index}`"
         >
           <SpaceDelegateRegistryV2Row
-            :address="delegate.address"
+            :address="form.to ?? delegate.address"
             :weight="delegate.weight"
             @deleteDelegate="deleteDelegate(index)"
             @update:modelValue="form => updateDelegate(index, form)"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import categories from '@/helpers/categories.json';
+import { SPACE_CATEGORIES } from '@/helpers/constants';
 
 const props = defineProps<{
   metrics: Record<string, number>;
@@ -25,16 +25,14 @@ const categoryItems = computed(() => {
         selected: !selected.value
       }
     },
-    ...categories
-      .map(c => ({
-        text: tc(`explore.categories.${c}`),
-        action: c,
-        extras: {
-          count: props.metrics?.[c] || 0,
-          selected: selected.value === c
-        }
-      }))
-      .sort((a, b) => b.extras.count - a.extras.count)
+    ...SPACE_CATEGORIES.map(c => ({
+      text: tc(`explore.categories.${c}`),
+      action: c,
+      extras: {
+        count: props.metrics?.[c] || 0,
+        selected: selected.value === c
+      }
+    })).sort((a, b) => b.extras.count - a.extras.count)
   ];
 });
 
@@ -54,7 +52,7 @@ function selectCategory(c: string) {
     @select="selectCategory"
   >
     <template #button>
-      <BaseButton class="w-full whitespace-nowrap pr-3">
+      <TuneButton class="w-full whitespace-nowrap pr-3">
         <div class="leading-2 flex items-center leading-3">
           <i-ho-view-grid class="mr-2 text-xs" />
           <span v-if="selected">
@@ -63,9 +61,9 @@ function selectCategory(c: string) {
           <span v-else>
             {{ $tc('explore.category') }}
           </span>
-          <i-ho-chevron-down class="ml-1 text-xs text-skin-text" />
+          <i-ho-chevron-down class="ml-1 text-xs text-skin-link" />
         </div>
-      </BaseButton>
+      </TuneButton>
     </template>
     <template #item="{ item }">
       <div class="flex">

@@ -39,16 +39,16 @@ const emit = defineEmits(['select']);
       :flip="16"
       :z-index="50"
     >
-      <MenuButton class="h-full" as="template">
+      <MenuButton as="template">
         <slot v-if="$slots.button" name="button" />
 
-        <BaseButton v-else class="flex items-center">
+        <TuneButton v-else class="flex items-center">
           {{ selected }}
           <i-ho-chevron-down
-            class="-mr-1 ml-1 text-xs text-skin-text"
+            class="-mr-1 ml-1 text-xs text-skin-link"
             aria-hidden="true"
           />
-        </BaseButton>
+        </TuneButton>
       </MenuButton>
 
       <MenuItems

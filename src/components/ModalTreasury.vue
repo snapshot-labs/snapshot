@@ -89,14 +89,14 @@ watch(open, () => {
     </div>
 
     <template #footer>
-      <BaseButton
+      <TuneButton
         :disabled="!isValid"
         class="w-full"
         primary
         @click="handleSubmit"
       >
         {{ treasury.name ? $t('applyChanges') : $t('add') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

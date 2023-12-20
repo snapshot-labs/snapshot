@@ -113,7 +113,7 @@ const settingsPages = computed(() => [
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
 
-  const result = await send(props.space, 'delete-space', null);
+  const result = await send(props.space, 'delete-space', {});
   console.log(':handleDelete result', result);
 
   if (result && result.id) {
@@ -287,6 +287,7 @@ onBeforeRouteLeave(async () => {
             />
             <SettingsTreasuriesBlock
               context="settings"
+              :space="space"
               :is-view-only="isViewOnly"
               :error="validationErrors.treasuries"
             />
@@ -312,10 +313,10 @@ onBeforeRouteLeave(async () => {
             v-if="isSpaceAdmin || isSpaceController"
             class="flex gap-5 px-4 pt-2 md:px-0"
           >
-            <BaseButton class="mb-2 block w-full" @click="resetForm">
+            <TuneButton class="mb-2 block w-full" @click="resetForm">
               {{ $t('reset') }}
-            </BaseButton>
-            <BaseButton
+            </TuneButton>
+            <TuneButton
               :disabled="!isReadyToSubmit || isGnosisAndNotDefaultNetwork"
               :loading="isSending"
               class="block w-full"
@@ -323,7 +324,7 @@ onBeforeRouteLeave(async () => {
               @click="handleSubmit"
             >
               {{ $t('save') }}
-            </BaseButton>
+            </TuneButton>
           </div>
         </div>
       </template>
@@ -367,7 +368,7 @@ onBeforeRouteLeave(async () => {
     <ModalUnsupportedNetwork
       :open="modalUnsupportedNetworkOpen"
       @close="modalUnsupportedNetworkOpen = false"
-      @networkChanged="modalConfirmSetTextRecordOpen = true"
+      @network-changed="modalConfirmSetTextRecordOpen = true"
     />
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"

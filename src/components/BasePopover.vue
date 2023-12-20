@@ -44,10 +44,13 @@ withDefaults(
         :class="[{ 'cursor-not-allowed': disabled }]"
       >
         <slot v-if="$slots.button" name="button" />
-        <BaseButton v-else class="flex items-center">
+        <TuneButton v-else class="flex items-center">
           <span>{{ label }}</span>
-          <i-ho-chevron-down class="ml-2 h-5 w-5" aria-hidden="true" />
-        </BaseButton>
+          <i-ho-chevron-down
+            class="ml-2 h-5 w-5 text-skin-link"
+            aria-hidden="true"
+          />
+        </TuneButton>
       </PopoverButton>
 
       <PopoverPanel
