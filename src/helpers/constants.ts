@@ -55,14 +55,14 @@ export const COINGECKO_BASE_ASSETS = {
   42161: 'ethereum'
 };
 
-type ChainCurrencies = {
+export type ChainCurrency = {
   name: string;
   symbol: string;
   decimals: number;
   contractAddress: string;
 };
 
-export const CHAIN_CURRENCIES: Record<string, ChainCurrencies> = {
+export const CHAIN_CURRENCIES: Record<string, ChainCurrency> = {
   '1': {
     name: 'Ether',
     symbol: 'ETH',

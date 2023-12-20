@@ -203,7 +203,7 @@ function handleAddCustomToken(token: Token) {
   customTokens.value.push(token);
 }
 
-function handleRetryCreate() {
+function retryCreation() {
   createStatus.value = '';
   handleCreate();
 }
@@ -282,30 +282,26 @@ async function handleCreate() {
 
     await tx.wait(1);
     updatePendingTransaction(txPendingId, { hash: tx.hash });
-    // router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
     createStatus.value = 'success';
   } catch (e: any) {
+    console.log('Create boost error:', e);
     setErrorStatus(e.message);
   } finally {
     removePendingTransaction(txPendingId);
   }
 }
 
-function handleCloseStatusModal() {
+function closeStatusModal() {
   if (createStatus.value === 'success')
     router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
   createStatus.value = '';
 }
 
-function resetTokenInput() {
-  form.value.token = '';
-}
-
 watch(
   [web3Account, () => form.value.network],
   () => {
-    resetTokenInput();
-    loadBalances(web3Account.value, Number(form.value.network));
+    form.value.token = '';
+    loadBalances(web3Account.value, form.value.network);
   },
   { immediate: true }
 );
@@ -444,8 +440,8 @@ watch(
       :variant="createStatusModalConfig.variant"
       :title="createStatusModalConfig.title"
       :subtitle="createStatusModalConfig.subtitle"
-      @close="handleCloseStatusModal"
-      @try-again="handleRetryCreate"
+      @close="closeStatusModal"
+      @try-again="retryCreation"
     />
     <Teleport to="#modal">
       <ModalUnsupportedNetwork
