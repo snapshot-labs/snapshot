@@ -90,7 +90,7 @@ watch(paymentTx, () => {
   <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
     <fieldset>
       <legend>
-        <h2 class="text-lg mb-2">Select your package</h2>
+        <h2 class="text-lg mb-2">Select your plan duration</h2>
       </legend>
       <ol class="flex flex-col gap-2">
         <li v-for="(plan, planId) in PLANS" :key="planId">
