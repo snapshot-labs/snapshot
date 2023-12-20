@@ -1,30 +1,31 @@
 import { formatUnits } from '@ethersproject/units';
 import { getBalances, GetBalancesResponse } from '@/helpers/alchemy';
-import { CHAIN_CURRENCIES } from '@/helpers/constants';
 import {
   ETH_CONTRACT,
   COINGECKO_ASSET_PLATFORMS,
-  COINGECKO_BASE_ASSETS
+  COINGECKO_BASE_ASSETS,
+  CHAIN_CURRENCIES,
+  ChainCurrency
 } from '@/helpers/constants';
 
 const COINGECKO_API_URL = 'https://api.coingecko.com/api/v3/simple';
 const COINGECKO_PARAMS = '&vs_currencies=usd&include_24hr_change=true';
 
 export function useBalances() {
-  const tokens: Ref<GetBalancesResponse> = ref([]);
+  const tokens = ref<GetBalancesResponse>([]);
   const loading = ref(true);
   const loaded = ref(false);
 
-  async function callCoinGecko(apiUrl: string) {
-    const res = await fetch(apiUrl);
-    return res.json();
+  async function callCoinGecko(apiUrl: string): Promise<any> {
+    const response = await fetch(apiUrl);
+    return response.json();
   }
 
   async function getCoins(
     assetPlatform: string,
     baseToken: string,
     contractAddresses: string[]
-  ) {
+  ): Promise<Record<string, any>> {
     const [baseTokenData, tokenData] = await Promise.all([
       callCoinGecko(
         `${COINGECKO_API_URL}/price?ids=${baseToken}${COINGECKO_PARAMS}`
@@ -42,7 +43,10 @@ export function useBalances() {
     };
   }
 
-  function filterValidTokens(data, baseToken) {
+  function filterValidTokens(
+    data: GetBalancesResponse,
+    baseToken: ChainCurrency
+  ): GetBalancesResponse {
     return data.filter(
       asset =>
         formatUnits(asset.tokenBalance, asset.decimals) !== '0.0' ||
@@ -50,24 +54,38 @@ export function useBalances() {
     );
   }
 
-  function getCoinGeckoConfig(networkId) {
+  function getCoinGeckoConfig(networkId: string): {
+    coingeckoAssetPlatform: string;
+    coingeckoBaseAsset: string;
+  } {
     return {
       coingeckoAssetPlatform: COINGECKO_ASSET_PLATFORMS[networkId],
       coingeckoBaseAsset: COINGECKO_BASE_ASSETS[networkId]
     };
   }
 
-  async function fetchCoinPrices(assetPlatform, baseToken, tokensWithBalance) {
-    if (!baseToken || !assetPlatform) return [];
+  async function fetchCoinPrices(
+    coingeckoAssetPlatform: string,
+    coingeckoBaseAsset: string,
+    tokensWithBalance: GetBalancesResponse
+  ): Promise<Record<string, any>> {
+    if (!coingeckoBaseAsset || !coingeckoAssetPlatform) return {};
 
     const contractAddresses = tokensWithBalance
       .filter(asset => asset.contractAddress !== ETH_CONTRACT)
       .map(token => token.contractAddress);
 
-    return getCoins(assetPlatform, baseToken, contractAddresses);
+    return getCoins(
+      coingeckoAssetPlatform,
+      coingeckoBaseAsset,
+      contractAddresses
+    );
   }
 
-  function mapTokenValues(tokensWithBalance, coins) {
+  function mapTokenValues(
+    tokensWithBalance: GetBalancesResponse,
+    coins: Record<string, any>
+  ): GetBalancesResponse {
     return tokensWithBalance.map(asset => {
       const coinData = coins[asset.contractAddress];
       if (!coinData) return asset;
@@ -86,11 +104,14 @@ export function useBalances() {
     });
   }
 
-  async function loadBalances(address, networkId) {
+  async function loadBalances(
+    address: string,
+    networkId: string
+  ): Promise<void> {
     try {
       loading.value = true;
-      const baseToken = { ...CHAIN_CURRENCIES[networkId] };
-      const data = await getBalances(address, networkId, baseToken);
+      const baseToken = CHAIN_CURRENCIES[networkId];
+      const data = await getBalances(address, Number(networkId), baseToken);
 
       const tokensWithBalance = filterValidTokens(data, baseToken);
       const { coingeckoAssetPlatform, coingeckoBaseAsset } =

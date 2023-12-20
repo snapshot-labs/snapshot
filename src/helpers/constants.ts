@@ -46,13 +46,13 @@ export const ERC20ABI = [
 ];
 
 export const COINGECKO_ASSET_PLATFORMS = {
-  137: 'polygon-pos',
-  42161: 'arbitrum-one'
+  '137': 'polygon-pos',
+  '42161': 'arbitrum-one'
 };
 
 export const COINGECKO_BASE_ASSETS = {
-  137: 'matic-network',
-  42161: 'ethereum'
+  '137': 'matic-network',
+  '42161': 'ethereum'
 };
 
 export type ChainCurrency = {
