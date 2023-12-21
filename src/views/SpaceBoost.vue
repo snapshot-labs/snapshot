@@ -15,6 +15,7 @@ import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
+import { getIpfsUrl } from '@/helpers/utils';
 
 defineProps<{
   space: ExtendedSpace;
@@ -177,8 +178,9 @@ const strategy = computed<BoostStrategy>(() => {
       : undefined;
 
   return {
-    strategy: 'snapshot',
+    strategy: 'proposal',
     params: {
+      version: '0.0.1',
       proposal: proposal.value.id,
       eligibility: {
         choice
@@ -270,6 +272,7 @@ async function handleCreate() {
 
   try {
     const strategyURI = await getStrategyURI(strategy.value);
+    console.log('URL:', getIpfsUrl(strategyURI));
     const tx = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
