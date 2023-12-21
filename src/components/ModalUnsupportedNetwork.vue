@@ -17,6 +17,10 @@ const networkData = {
   '5': {
     name: 'Goerli Testnet',
     chainId: '0x5'
+  },
+  '11155111': {
+    name: 'Sepolia Testnet',
+    chainId: '0xaa36a7'
   }
 };
 
