@@ -7,7 +7,7 @@ import ABI from './abi.json';
 
 export const BOOST_CONTRACTS = {
   '1': '0x',
-  '11155111': '0x3ef426688D6eF5ca47b4414B9f67E9E582dFc4d3'
+  '11155111': '0x12B1544A55a0a7dc335B64Ba123D9BD5d1b1f3A2'
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
@@ -19,10 +19,10 @@ interface Boost {
   strategyURI: string;
   token: string;
   amount: string;
+  owner: string;
   guard: string;
   start: number;
   end: number;
-  owner: string;
 }
 
 export async function createBoost(
@@ -48,21 +48,47 @@ export async function createBoost(
 
 export async function claimTokens(
   web3: Web3Provider,
-  boostId: number,
-  recipient: string,
-  amount: string,
-  signature: string,
-  networkId: string
+  networkId: string,
+  boost: {
+    boostId: string;
+    recipient: string;
+    amount: string;
+    ref: string;
+  },
+  signature: string
 ): Promise<any> {
+  console.log('🚀 ~ file: index.ts:61 ~ signature:', signature);
+  console.log('🚀 ~ file: index.ts:61 ~ boost:', boost);
+
+  const { boostId, recipient, amount, ref } = boost;
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
-  const claim = {
-    boostId,
-    recipient,
-    amount
-  };
+  return await contract.claim([boostId, recipient, amount, ref], signature);
+}
 
-  return await contract.claimTokens(claim, signature);
+export async function claimAllTokens(
+  web3: Web3Provider,
+  networkId: string,
+  boosts: {
+    boostId: string;
+    recipient: string;
+    amount: string;
+    ref: string;
+  }[],
+  signatures: string[]
+): Promise<any> {
+  console.log('🚀 ~ file: index.ts:74 ~ signatures:', signatures);
+  console.log('🚀 ~ file: index.ts:74 ~ boosts:', boosts);
+
+  const boostsArray = boosts.map(boost => [
+    boost.boostId,
+    boost.recipient,
+    boost.amount,
+    boost.ref
+  ]);
+  const signer = web3.getSigner();
+  const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
+  return await contract.claimMultiple(boostsArray, signatures);
 }
 
 export async function getStrategyURI(strategy: BoostStrategy) {
