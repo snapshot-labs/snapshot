@@ -50,7 +50,7 @@ const {
 const proposal = ref();
 const createStatus = ref('');
 const customTokens = ref<Token[]>([]);
-const openUnsupportedNetworkModal = ref(false);
+const modalWrongNetworkOpen = ref(false);
 const form = ref<Form>({
   eligibility: {
     choice: 'any'
@@ -259,7 +259,7 @@ async function handleApproval() {
 async function handleCreate() {
   if (!isValidForm.value) return;
   if (isWrongNetwork.value) {
-    openUnsupportedNetworkModal.value = true;
+    modalWrongNetworkOpen.value = true;
     return;
   }
   if (requireApproval.value) {
@@ -446,14 +446,12 @@ watch(
       @close="closeStatusModal"
       @try-again="retryCreation"
     />
-    <Teleport to="#modal">
-      <ModalUnsupportedNetwork
-        :open="openUnsupportedNetworkModal"
-        hide-demo-button
-        :network="form.network"
-        @network-changed="handleCreate"
-        @close="openUnsupportedNetworkModal = false"
-      />
-    </Teleport>
+
+    <ModalWrongNetwork
+      :open="modalWrongNetworkOpen"
+      :network="form.network"
+      @network-changed="handleCreate"
+      @close="modalWrongNetworkOpen = false"
+    />
   </div>
 </template>

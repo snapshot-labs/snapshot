@@ -5,7 +5,7 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   open: boolean;
   network?: string;
-  hideDemoButton?: boolean;
+  showDemoButton?: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
 const defaultNetwork = props.network || import.meta.env.VITE_DEFAULT_NETWORK;
@@ -57,43 +57,47 @@ const switchToDefaultNetwork = async () => {
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
-    <template #header>
-      <div class="flex flex-row items-center justify-center">
-        <h3>{{ $t('unsupportedNetwork.unsupportedNetwork') }}</h3>
-      </div>
-    </template>
+  <TuneModal :open="open" hide-close @close="$emit('close')">
+    <div class="pt-[40px] h-full">
+      <div class="mx-4">
+        <TuneModalIndicator variant="error" />
 
-    <div class="m-4 space-y-4">
-      <BaseMessageBlock level="warning">
-        {{
-          $t('unsupportedNetwork.switchNetworkToNetwork', {
-            network: networkData[defaultNetwork].name
-          })
-        }}
-      </BaseMessageBlock>
-    </div>
-    <div class="m-4 space-y-4"></div>
-    <div v-if="usingMetaMask" class="m-4 space-y-2">
-      <TuneButton
-        :loading="switchingChain"
-        class="w-full"
-        primary
-        @click="switchToDefaultNetwork"
-      >
-        {{
-          $t('unsupportedNetwork.switchToNetwork', {
-            network: networkData[defaultNetwork].name
-          })
-        }}
-      </TuneButton>
-      <div v-if="defaultNetwork === '1' && !hideDemoButton">
+        <div class="my-[20px] text-center">
+          <TuneModalTitle class="m-0 leading-6"> Wrong network </TuneModalTitle>
+          <TuneModalDescription class="text-md leading-5 mt-1">
+            To continue, you need to change the network in your wallet to
+            <span class="font-semibold">{{
+              networkData[defaultNetwork].name
+            }}</span
+            >.
+          </TuneModalDescription>
+        </div>
+      </div>
+
+      <div v-if="usingMetaMask" class="m-4 space-y-2">
+        <TuneButton
+          :loading="switchingChain"
+          class="w-full"
+          primary
+          @click="switchToDefaultNetwork"
+        >
+          {{
+            $t('unsupportedNetwork.switchToNetwork', {
+              network: networkData[defaultNetwork].name
+            })
+          }}
+        </TuneButton>
+      </div>
+      <div v-else-if="defaultNetwork === '1' && showDemoButton">
         <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
           <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
           </TuneButton>
         </BaseLink>
       </div>
+      <div v-else class="m-4">
+        <TuneButton class="w-full"> Close </TuneButton>
+      </div>
     </div>
-  </BaseModal>
+  </TuneModal>
 </template>
