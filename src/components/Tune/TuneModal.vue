@@ -46,7 +46,7 @@ defineProps<{
                 class="tune-modal-panel transform overflow-hidden align-middle transition-all"
                 :style="{
                   width: size?.width ? `${size.width}px` : '440px',
-                  height: size?.height ? `${size.height}px` : '270px'
+                  'min-height': size?.height ? `${size.height}px` : '270px'
                 }"
               >
                 <div v-if="!hideClose" class="absolute right-4 top-4">
