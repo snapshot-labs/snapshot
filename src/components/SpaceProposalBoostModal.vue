@@ -28,6 +28,7 @@ const content = [
 <template>
   <TuneModal
     :open="open"
+    hide-close
     :size="{ width: '860', height: '628' }"
     @close="$emit('close')"
   >
