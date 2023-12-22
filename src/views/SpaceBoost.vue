@@ -41,11 +41,6 @@ const auth = getInstance();
 const { loadBalances, tokens, loading } = useBalances();
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
-const {
-  createPendingTransaction,
-  updatePendingTransaction,
-  removePendingTransaction
-} = useTxStatus();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -267,7 +262,6 @@ async function handleCreate() {
     return;
   }
 
-  const txPendingId = createPendingTransaction();
   createStatus.value = 'confirm';
 
   try {
@@ -284,13 +278,11 @@ async function handleCreate() {
     });
 
     await tx.wait(1);
-    updatePendingTransaction(txPendingId, { hash: tx.hash });
     createStatus.value = 'success';
   } catch (e: any) {
     console.log('Create boost error:', e);
     setErrorStatus(e.message);
   } finally {
-    removePendingTransaction(txPendingId);
   }
 }
 
