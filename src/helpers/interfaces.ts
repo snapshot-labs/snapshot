@@ -416,7 +416,7 @@ export type DelegatesProposal = {
 };
 
 export interface BoostStrategy {
-  strategy: string;
+  name: string;
   params: {
     proposal: string;
     eligibility: {
@@ -439,7 +439,7 @@ export type BoostSubgraphResult = {
   owner: string;
   chainId: string;
   token: {
-    address: string;
+    id: string;
     name: string;
     symbol: string;
     decimals: number;

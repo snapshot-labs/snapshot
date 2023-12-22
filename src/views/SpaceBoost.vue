@@ -6,7 +6,6 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
 import {
   createBoost,
-  getStrategyURI,
   SUPPORTED_NETWORKS,
   SNAPSHOT_GUARD_ADDRESS,
   BOOST_CONTRACTS
@@ -15,7 +14,7 @@ import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
-import { getIpfsUrl } from '@/helpers/utils';
+import { pin } from '@snapshot-labs/pineapple';
 
 defineProps<{
   space: ExtendedSpace;
@@ -173,7 +172,7 @@ const strategy = computed<BoostStrategy>(() => {
       : undefined;
 
   return {
-    strategy: 'proposal',
+    name: 'proposal',
     params: {
       version: '0.0.1',
       proposal: proposal.value.id,
@@ -265,8 +264,12 @@ async function handleCreate() {
   createStatus.value = 'confirm';
 
   try {
-    const strategyURI = await getStrategyURI(strategy.value);
-    console.log('URL:', getIpfsUrl(strategyURI));
+    const { cid: strategyURI } = await pin(strategy.value);
+    console.log(
+      '🚀 ~ file: SpaceBoost.vue:270 ~ handleCreate ~ strategyURI:',
+      strategyURI
+    );
+
     const tx = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,

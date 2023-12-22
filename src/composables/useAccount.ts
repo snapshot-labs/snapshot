@@ -27,7 +27,7 @@ export function useAccount() {
 
   async function updateAccount(
     token: string,
-    network: string,
+    chainId: string,
     contract: string
   ) {
     account.value = {};
@@ -37,7 +37,7 @@ export function useAccount() {
         auth.web3,
         web3Account.value,
         token,
-        network,
+        chainId,
         contract
       );
     } catch (e) {

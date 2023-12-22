@@ -6,7 +6,6 @@ import { BoostStrategy } from '@/helpers/interfaces';
 import ABI from './abi.json';
 
 export const BOOST_CONTRACTS = {
-  '1': '0x',
   '11155111': '0x2f2949c073ea257db96dd3c0bb1fa1157450c13f'
 };
 
