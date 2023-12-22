@@ -64,6 +64,13 @@ const safeLink = computed(() =>
       @update-transaction="(...args) => emit('updateTransaction', ...args)"
       @remove-transaction="(...args) => emit('removeTransaction', ...args)"
     />
+    <TenderlySimulation
+      v-if="transactions.length"
+      :transactions="transactions"
+      :safe-address="safeAddress"
+      :module-address="moduleAddress"
+      :network="props.network"
+    />
   </div>
 
   <TuneButton
