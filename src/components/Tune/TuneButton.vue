@@ -31,7 +31,7 @@ withDefaults(
     ]"
     :disabled="disabled || loading"
   >
-    <TuneLoadingSpinner v-if="loading" class="mx-auto" />
+    <TuneLoadingSpinner v-if="loading" class="mx-auto !text-white" />
 
     <slot v-else />
   </button>
