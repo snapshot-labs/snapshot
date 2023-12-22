@@ -99,7 +99,11 @@ async function loadResults() {
 }
 
 function handleBackClick() {
-  if (!browserHasHistory.value || browserHasHistory.value.includes('create'))
+  if (
+    !browserHasHistory.value ||
+    browserHasHistory.value.includes('create') ||
+    browserHasHistory.value.includes('boost')
+  )
     return router.push({ name: 'spaceProposals' });
   return router.go(-1);
 }
