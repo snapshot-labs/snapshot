@@ -3,7 +3,7 @@ import { DialogTitle } from '@headlessui/vue';
 
 withDefaults(
   defineProps<{
-    as: string;
+    as?: string;
   }>(),
   {
     as: 'h3'
