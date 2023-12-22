@@ -33,6 +33,7 @@ export async function getRewards(
     }
   );
 
+  if (results.status !== 200) throw new Error('Error fetching rewards');
   return results.json();
 }
 
@@ -56,5 +57,6 @@ export async function getVouchers(
     }
   );
 
+  if (results.status !== 200) throw new Error('Error fetching vouchers');
   return results.json();
 }

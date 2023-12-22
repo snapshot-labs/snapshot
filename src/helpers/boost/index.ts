@@ -7,7 +7,7 @@ import ABI from './abi.json';
 
 export const BOOST_CONTRACTS = {
   '1': '0x',
-  '11155111': '0x12B1544A55a0a7dc335B64Ba123D9BD5d1b1f3A2'
+  '11155111': '0x2f2949c073ea257db96dd3c0bb1fa1157450c13f'
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
@@ -53,17 +53,16 @@ export async function claimTokens(
     boostId: string;
     recipient: string;
     amount: string;
-    ref: string;
   },
   signature: string
 ): Promise<any> {
   console.log('🚀 ~ file: index.ts:61 ~ signature:', signature);
   console.log('🚀 ~ file: index.ts:61 ~ boost:', boost);
 
-  const { boostId, recipient, amount, ref } = boost;
+  const { boostId, recipient, amount } = boost;
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
-  return await contract.claim([boostId, recipient, amount, ref], signature);
+  return await contract.claim([boostId, recipient, amount], signature);
 }
 
 export async function claimAllTokens(
@@ -73,7 +72,6 @@ export async function claimAllTokens(
     boostId: string;
     recipient: string;
     amount: string;
-    ref: string;
   }[],
   signatures: string[]
 ): Promise<any> {
@@ -83,8 +81,7 @@ export async function claimAllTokens(
   const boostsArray = boosts.map(boost => [
     boost.boostId,
     boost.recipient,
-    boost.amount,
-    boost.ref
+    boost.amount
   ]);
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
