@@ -45,11 +45,20 @@ const validationErrors = computed(() => {
   return validateForm(definition.value || {}, clone(form.value));
 });
 
+const roundedWeight = computed(() => {
+  return Math.round(form.value.weight * 10) / 10;
+});
+
 const updateFormValue = <T extends keyof DelegateRowForm>(
   value: DelegateRowForm[T],
   field: T
 ) => {
-  form.value[field] = value;
+  if (field === 'weight') {
+    form.value[field] = (Math.round(parseFloat(value as string) * 10) /
+      10) as DelegateRowForm[T];
+  } else {
+    form.value[field] = value;
+  }
   emit('update:modelValue', clone(form.value));
 };
 
@@ -82,7 +91,7 @@ watch(
     </div>
     <div class="relative">
       <TuneInput
-        :model-value="form.weight"
+        :model-value="roundedWeight"
         type="number"
         :class="[
           'text-right pr-5',
