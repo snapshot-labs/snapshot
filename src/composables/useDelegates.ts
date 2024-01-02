@@ -6,6 +6,7 @@ import {
 } from '@/helpers/interfaces';
 import { setupDelegation as getDelegationAdapter } from '@/helpers/delegation/index';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 type DelegatesStats = Record<
   string,
@@ -15,14 +16,11 @@ type DelegatesStats = Record<
 const DELEGATES_LIMIT = 18;
 
 export function useDelegates(space: ExtendedSpace) {
+  const auth = getInstance();
   const { resolveName } = useResolveName();
   const { apolloQuery } = useApolloQuery();
-  const { loadStatements } = useStatement();
-  const { loadProfiles } = useProfiles();
 
-  console.log('space', space);
-
-  const { reader, writer } = getDelegationAdapter(space);
+  const { reader, writer } = getDelegationAdapter(space, auth);
 
   const delegates = ref<DelegateWithPercent[]>([]);
   const delegate = ref<DelegateWithPercent | null>(null);
