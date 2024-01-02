@@ -3,7 +3,8 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { update } from 'lodash';
+import { useRoute } from 'vue-router';
+const route = useRoute();
 
 const props = defineProps<{
   open: boolean;
@@ -21,11 +22,16 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegates, loadDelegateBalance, isLoadingDelegateBalance } =
-  useDelegates(props.space);
-const { formatCompactNumber } = useIntl();
+const { setDelegates, loadDelegateBalance } = useDelegates(props.space);
 const { web3Account } = useWeb3();
 
+const defaultSpaceDelegates = {
+  address: props.address,
+  space: props.space,
+  weight: 100
+};
+
+const spaceDelegates = ref([defaultSpaceDelegates]);
 const form = ref({
   to: ''
 });
@@ -34,6 +40,18 @@ const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
+const isSpaceDelegatesValid = computed(() => {
+  const allDelegatesHaveAddress = spaceDelegates.value.every(
+    delegate => delegate.address
+  );
+
+  const totalWeight = spaceDelegates.value.reduce(
+    (total, delegate) => total + delegate.weight,
+    0
+  );
+
+  return !allDelegatesHaveAddress || totalWeight !== 100;
+});
 
 const definition = computed(() => {
   return {
@@ -52,14 +70,6 @@ const definition = computed(() => {
   };
 });
 
-const defaultSpaceDelegates = {
-  address: props.address,
-  space: props.space,
-  weight: 100
-};
-
-const spaceDelegates = ref([defaultSpaceDelegates]);
-
 function deleteDelegate(index: number) {
   const delegates = clone(spaceDelegates.value);
   delegates.splice(index, 1);
@@ -77,12 +87,12 @@ function updateDelegate(index: number, form: { to: string; weight: number }) {
 }
 
 function deleteAllDelegates() {
-  spaceDelegates.value = [];
+  spaceDelegates.value = [defaultSpaceDelegates];
 }
 
 function addDelegate() {
   const newDelegate = {
-    address: props.address,
+    address: '',
     space: props.space,
     weight: 0
   };
@@ -105,7 +115,6 @@ function divideEqually() {
   updatedDelegates[0].weight += remainingWeight;
 
   spaceDelegates.value = updatedDelegates;
-  console.log(spaceDelegates.value);
 }
 
 const validationErrors = computed(() => {
@@ -128,13 +137,17 @@ async function handleConfirm() {
   }
 
   const txPendingId = createPendingTransaction();
+
   try {
     isAwaitingSignature.value = true;
-    console.log('resolvedAddress.value', resolvedAddress.value);
-    const tx = await setDelegates(
-      [resolvedAddress.value],
-      spaceDelegates.value.map(_ => 1)
+    const addresses = spaceDelegates.value.map(
+      delegation => delegation.address
     );
+    const ratio = spaceDelegates.value.map(delegation =>
+      Math.round(delegation.weight * 100)
+    );
+
+    const tx = await setDelegates(addresses, ratio);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
@@ -190,10 +203,35 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  route,
+  newDelegateAddress => {
+    if (newDelegateAddress) {
+      const delegateAddress = newDelegateAddress.query.delegate;
+      if (spaceDelegates.value.length === 1) {
+        const space = clone(spaceDelegates.value);
+        space[0].address = delegateAddress;
+        spaceDelegates.value = space;
+      }
+    }
+  },
+  { immediate: true }
+);
+
+const handleCloseModal = () => {
+  spaceDelegates.value = [defaultSpaceDelegates];
+  resolvedAddress.value = '';
+  isResolvingName.value = false;
+  addressRef.value = undefined;
+  isAwaitingSignature.value = false;
+  accountBalance.value = '';
+  emit('close');
+};
 </script>
 
 <template>
-  <BaseModal :open="open" @close="emit('close')">
+  <BaseModal :open="open" @close="handleCloseModal">
     <template #header>
       <div class="px-4 pt-1 text-left text-skin-heading">
         <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
@@ -225,17 +263,20 @@ watch(
         </div>
         <div
           v-for="(delegate, index) in spaceDelegates"
-          :key="`${delegate.address}-${delegate.weight}- ${index}`"
+          :key="`delegate-registry-row-${index}`"
         >
           <SpaceDelegateRegistryV2Row
             :address="delegate.address"
             :weight="delegate.weight"
-            @deleteDelegate="deleteDelegate(index)"
-            @update:modelValue="form => updateDelegate(index, form)"
+            @delete-delegate="deleteDelegate(index)"
+            @update:model-value="form => updateDelegate(index, form)"
           />
         </div>
         <div class="flex justify-between">
-          <TuneButton class="text-skin-link items-center" @click="addDelegate">
+          <TuneButton
+            class="flex text-skin-link items-center"
+            @click="addDelegate"
+          >
             <i-ho-plus class="text-xs mr-2" />
             Add Delegate
           </TuneButton>
@@ -249,16 +290,16 @@ watch(
         </div>
       </div>
     </div>
-
     <template #footer>
-      <BaseButton
-        :loading="isResolvingName || isAwaitingSignature"
+      <TuneButton
         class="w-full"
-        primary
+        type="button"
+        :disabled="isSpaceDelegatesValid"
+        :loading="isResolvingName || isAwaitingSignature"
         @click="handleConfirm"
       >
         {{ $t('confirm') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>
