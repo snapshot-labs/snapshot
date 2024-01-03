@@ -43,6 +43,7 @@ const { account, updatingAccount, updateAccount } = useAccount();
 
 const proposal = ref();
 const createStatus = ref('');
+const createTx = ref();
 const customTokens = ref<Token[]>([]);
 const modalWrongNetworkOpen = ref(false);
 const form = ref<Form>({
@@ -109,6 +110,12 @@ const createStatusModalConfig = computed(() => {
       return {
         title: 'Confirm token deposit',
         subtitle: 'Please confirm deposit on your wallet.',
+        variant: 'loading' as const
+      };
+    case createTx.value?.hash && 'pending':
+      return {
+        title: 'Transaction pending',
+        subtitle: createTx.value.hash,
         variant: 'loading' as const
       };
     case 'success':
@@ -243,10 +250,11 @@ async function handleApproval() {
       form.value.network,
       BOOST_CONTRACTS[form.value.network]
     );
-    handleCreate();
   } catch (e: any) {
     console.log('Approval error:', e);
     setErrorStatus(e.message);
+  } finally {
+    handleCreate();
   }
 }
 
@@ -265,12 +273,9 @@ async function handleCreate() {
 
   try {
     const { cid: strategyURI } = await pin(strategy.value);
-    console.log(
-      '🚀 ~ file: SpaceBoost.vue:270 ~ handleCreate ~ strategyURI:',
-      strategyURI
-    );
+    if (!strategyURI) throw new Error('Strategy URI is empty');
 
-    const tx = await createBoost(auth.web3, form.value.network, {
+    createTx.value = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
       amount: amountParsed.value,
@@ -280,12 +285,15 @@ async function handleCreate() {
       owner: web3Account.value
     });
 
-    await tx.wait(1);
+    createStatus.value = 'pending';
+
+    await createTx.value.wait(1);
     createStatus.value = 'success';
   } catch (e: any) {
     console.log('Create boost error:', e);
     setErrorStatus(e.message);
   } finally {
+    createTx.value = undefined;
   }
 }
 
@@ -438,6 +446,7 @@ watch(
       :variant="createStatusModalConfig.variant"
       :title="createStatusModalConfig.title"
       :subtitle="createStatusModalConfig.subtitle"
+      :network="form.network"
       @close="closeStatusModal"
       @try-again="retryCreation"
     />

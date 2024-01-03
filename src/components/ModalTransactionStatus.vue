@@ -1,19 +1,15 @@
 <script setup lang="ts">
+import { explorerUrl } from '@/helpers/utils';
+
 const props = defineProps<{
   open: boolean;
   title: string;
   subtitle: string;
+  network?: string;
   variant: 'success' | 'loading' | 'error';
 }>();
 
 const emit = defineEmits(['close', 'tryAgain']);
-
-const cancelButtonVariant = computed(() => {
-  switch (props.variant) {
-    default:
-      return undefined;
-  }
-});
 
 const cancelButtonText = computed(() => {
   switch (props.variant) {
@@ -35,17 +31,21 @@ const cancelButtonText = computed(() => {
             {{ title }}
           </TuneModalTitle>
           <TuneModalDescription class="text-md leading-5 mt-1">
-            {{ subtitle }}
+            <span v-if="subtitle.startsWith('0x')">
+              <BaseLink :link="explorerUrl(network, subtitle, 'tx')">
+                View on Etherscan</BaseLink
+              >
+            </span>
+            <span v-else>
+              {{ subtitle }}
+            </span>
           </TuneModalDescription>
         </div>
       </div>
       <div class="m-3 flex gap-[12px]">
-        <TuneButton
-          class="w-full"
-          :variant="cancelButtonVariant"
-          @click="emit('close')"
-          >{{ cancelButtonText }}</TuneButton
-        >
+        <TuneButton class="w-full" @click="emit('close')">{{
+          cancelButtonText
+        }}</TuneButton>
         <TuneButton
           v-if="variant === 'error'"
           primary
