@@ -7,6 +7,7 @@ import HandleOutcome from './components/HandleOutcome/HandleOutcome.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
+import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
 const keyOrder = [
   'to',
@@ -94,8 +95,9 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 <template>
   <template v-if="safe.transactions.length > 0">
     <div
-      class="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-3 md:p-4"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-3 md:p-4 relative"
     >
+      <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
       <h2 class="text-lg">oSnap Transactions</h2>
       <div class="flex flex-col items-center gap-3 md:flex-row">
         <SafeLinkWithAvatar :safe="safe" />
