@@ -143,11 +143,12 @@ async function handleConfirm() {
     const addresses = spaceDelegates.value.map(
       delegation => delegation.address
     );
-    const ratio = spaceDelegates.value.map(delegation =>
-      Math.round(delegation.weight * 100)
+
+    const weights = spaceDelegates.value.map(delegation =>
+      Math.floor(delegation.weight)
     );
 
-    const tx = await setDelegates(addresses, ratio);
+    const tx = await setDelegates(addresses, weights);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
