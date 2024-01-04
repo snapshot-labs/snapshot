@@ -31,7 +31,7 @@ const cancelButtonText = computed(() => {
             {{ title }}
           </TuneModalTitle>
           <TuneModalDescription class="text-md leading-5 mt-1">
-            <span v-if="subtitle.startsWith('0x')">
+            <span v-if="subtitle.startsWith('0x') && network">
               <BaseLink :link="explorerUrl(network, subtitle, 'tx')">
                 View on Etherscan</BaseLink
               >
