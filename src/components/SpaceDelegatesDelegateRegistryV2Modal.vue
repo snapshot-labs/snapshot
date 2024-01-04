@@ -148,7 +148,10 @@ async function handleConfirm() {
       Math.floor(delegation.weight)
     );
 
-    const tx = await setDelegates(addresses, weights);
+    // TODO: The expiration time should be taken from the modal UI
+    const expirationTime = Date.now() * 2;
+
+    const tx = await setDelegates(addresses, weights, expirationTime);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
     emit('close');
