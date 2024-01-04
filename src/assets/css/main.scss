@@ -58,6 +58,12 @@
     scrollbar-gutter: stable;
   }
 
+  *,
+  ::before,
+  ::after {
+    @apply border-skin-border;
+  }
+
   body {
     overflow-x: hidden;
   }
@@ -149,18 +155,6 @@ a,
 ::placeholder {
   color: var(--text-color);
   opacity: 0.6 !important;
-}
-
-// TODO: Remove this and use border-skin-border in the templates. Tailwind has
-// dozens of modifiers (md:, sm:, hover: etc.) which would all need to be listed here.
-.border,
-.border-md,
-.border-lg,
-.border-b,
-.border-t,
-.border-r,
-.border-l {
-  @apply border-skin-border;
 }
 
 input[type='number']::-webkit-inner-spin-button,
