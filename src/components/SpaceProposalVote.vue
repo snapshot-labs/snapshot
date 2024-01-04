@@ -10,9 +10,11 @@ const props = defineProps<{
 const emit = defineEmits(['update:modelValue', 'clickVote']);
 
 const { web3, web3Account } = useWeb3();
-const { userVote, loadUserVote } = useProposalVotes(props.proposal);
+const { userVote, loadUserVote, loadingUserVote } = useProposalVotes(
+  props.proposal
+);
 
-const key = ref(0);
+const isEditing = ref(false);
 
 const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
@@ -29,7 +31,7 @@ const validatedUserChoice = computed(() => {
       props.proposal.choices
     )
   ) {
-    return userVote.value.choice;
+    return userVote.value.choice as any;
   }
   return null;
 });
@@ -51,53 +53,85 @@ const buttonTooltip = computed(() => {
   return '';
 });
 
+const votedAndShutter = computed(
+  () => props.proposal.privacy === 'shutter' && userVote.value
+);
+
 function emitChoice(c) {
   emit('update:modelValue', c);
 }
 
 watch(web3Account, loadUserVote, { immediate: true });
-
-watch(validatedUserChoice, () => {
-  key.value++;
-});
 </script>
 
 <template>
-  <BaseBlock class="mb-4" :title="$t('proposal.castVote')">
-    <div class="mb-3">
+  <BaseBlock
+    v-if="!loadingUserVote"
+    class="mb-4"
+    :title="
+      isEditing ? 'Change your vote' : userVote ? 'Your vote' : 'Cast your vote'
+    "
+  >
+    <template #button>
+      <button
+        v-if="!isEditing && userVote"
+        type="button"
+        class="flex items-center gap-1"
+        @click="isEditing = true"
+      >
+        <i-ho-pencil class="text-sm" />
+        Change vote
+      </button>
+    </template>
+    <div v-if="votedAndShutter && !isEditing">
+      <i-ho-lock-closed class="inline-block text-sm" />
+      Your vote is encrypted with Shutter privacy until the proposal ends. You
+      can still change it until then.
+    </div>
+    <BaseMessageBlock
+      v-else-if="userVote && !validatedUserChoice && !isEditing"
+      level="info"
+    >
+      Oops, we were unable to validate your vote. Please try voting again or
+      consider opening a ticket with our support team on
+      <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+    </BaseMessageBlock>
+    <div v-else>
       <SpaceProposalVoteSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
-        :key="key"
         :proposal="proposal"
-        :user-choice="validatedUserChoice as number"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing || !userVote"
         @select-choice="emitChoice"
       />
       <SpaceProposalVoteApproval
         v-if="proposal.type === 'approval'"
-        :key="key"
         :proposal="proposal"
-        :user-choice="validatedUserChoice as number[]"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing || !userVote"
         @select-choice="emitChoice"
       />
       <SpaceProposalVoteQuadratic
         v-if="proposal.type === 'quadratic' || proposal.type === 'weighted'"
-        :key="key"
         :proposal="proposal"
-        :user-choice="validatedUserChoice as Record<string, number>"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing || !userVote"
         @select-choice="emitChoice"
       />
       <SpaceProposalVoteRankedChoice
         v-if="proposal.type === 'ranked-choice'"
-        :key="key"
         :proposal="proposal"
-        :user-choice="validatedUserChoice as number[]"
+        :user-choice="validatedUserChoice"
+        :is-editing="isEditing || !userVote"
         @select-choice="emitChoice"
       />
     </div>
     <div
+      v-if="!loadingUserVote && (!userVote || isEditing)"
       v-tippy="{
         content: buttonTooltip
       }"
+      class="pt-3"
     >
       <TuneButton
         :disabled="

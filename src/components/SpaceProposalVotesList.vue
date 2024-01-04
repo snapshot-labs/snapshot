@@ -7,14 +7,11 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
+const VOTES_LIMIT = 6;
+
 const { web3Account } = useWeb3();
-const {
-  profiles,
-  userPrioritizedVotes,
-  loadingVotes,
-  loadVotes,
-  loadUserVote
-} = useProposalVotes(props.proposal, 6);
+const { profiles, votes, loadingVotes, loadVotes, loadUserVote } =
+  useProposalVotes(props.proposal, VOTES_LIMIT);
 
 const modalVotesmOpen = ref(false);
 
@@ -105,7 +102,7 @@ watch(web3Account, loadUserVote, { immediate: true });
       </BaseModal>
     </template>
     <SpaceProposalVotesListItem
-      v-for="(vote, i) in userPrioritizedVotes.slice(0, 6)"
+      v-for="(vote, i) in votes"
       :key="i"
       :vote="vote"
       :profiles="profiles"
@@ -113,9 +110,10 @@ watch(web3Account, loadUserVote, { immediate: true });
       :proposal="proposal"
       :class="{ '!border-0': i === 0 }"
       :data-testid="`proposal-votes-list-item-${i}`"
+      class="!px-4"
     />
     <a
-      v-if="userPrioritizedVotes.length < voteCount"
+      v-if="votes.length > VOTES_LIMIT"
       tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesmOpen = true"
