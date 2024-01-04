@@ -444,5 +444,17 @@ export type BoostSubgraphResult = {
     symbol: string;
     decimals: number;
   };
-  strategy: BoostStrategy;
+  strategy: {
+    name: string;
+    params: {
+      proposal: string;
+      eligibility: {
+        choice: number | null;
+      };
+      distribution: {
+        type: 'even' | 'weighted';
+        limit?: number;
+      };
+    };
+  };
 };

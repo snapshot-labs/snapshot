@@ -77,7 +77,9 @@ const claimAllAmountFormatted = computed(() => {
 });
 
 async function handleClaimAll() {
-  if (firstEligibleBoost.value.chainId !== web3.value.network.chainId) {
+  if (
+    firstEligibleBoost.value.chainId !== web3.value.network.chainId.toString()
+  ) {
     modalWrongNetworkOpen.value = true;
     return;
   }

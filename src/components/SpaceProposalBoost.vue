@@ -14,11 +14,11 @@ const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
 
-// const SAMPLE_BOOSTS: BoostSubgraphResult[] = [
+// const boosts = ref<BoostSubgraphResult[]>([
 //   {
-//     id: '0',
+//     id: '6',
 //     strategyURI: 'ipfs://cid',
-//     balance: 1000,
+//     balance: 0.01,
 //     guard: '0x123',
 //     start: '1712182473',
 //     end: '1762192473',
@@ -34,7 +34,7 @@ const { web3Account } = useWeb3();
 //       name: 'proposal',
 //       params: {
 //         proposal:
-//           '0xc1b7679e0dc0b17d8fe38a800f4846cea0e4c438d2e9c6336188c1aefe8c5d47',
+//           '0x054faa6a452476eecf4b7a627d8d8452f6b55fc95b2768127dae2e6758a16493',
 //         eligibility: {
 //           choice: undefined
 //         },
@@ -45,7 +45,7 @@ const { web3Account } = useWeb3();
 //       }
 //     }
 //   }
-// ];
+// ]);
 
 const newBoostLink = computed(() => ({
   name: 'spaceBoost',
@@ -57,7 +57,7 @@ const isFinal = computed(() => props.proposal.scores_state === 'final');
 
 function isEligible(boost: BoostSubgraphResult) {
   if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
-  if (userVote.value && boost.strategy.params.eligibility.choice !== undefined)
+  if (userVote.value && boost.strategy.params.eligibility.choice !== null)
     return (
       userVote.value.choice === boost.strategy.params.eligibility.choice + 1
     );
@@ -78,7 +78,7 @@ function handleStart() {
 
 async function loadBoosts() {
   try {
-    boosts.value = await subgraphRequest(
+    const { boosts: response } = await subgraphRequest(
       'https://api.thegraph.com/subgraphs/name/pscott/boost-sepolia',
       {
         boosts: {
@@ -99,11 +99,22 @@ async function loadBoosts() {
           },
           strategy: {
             name: true,
-            params: true
+            params: {
+              version: true,
+              proposal: true,
+              eligibility: {
+                choice: true
+              },
+              distribution: {
+                type: true
+              }
+            }
           }
         }
       }
     );
+
+    boosts.value = response;
   } catch (e) {
     console.log('Load boosts error:', e);
   }
@@ -118,7 +129,7 @@ watch(
 );
 
 onMounted(async () => {
-  loadBoosts();
+  await loadBoosts();
   console.log(
     '🚀 ~ file: SpaceProposalBoost.vue:146 ~ onMounted ~ boosts:',
     boosts.value
