@@ -21,17 +21,28 @@ const sendSetDelegationTx =
       );
     }
 
+    if (expirationTimestamp == null) {
+      throw new Error(
+        'Delegate Registry V2 delegation must have an expiration timestamp'
+      );
+    }
+
+    if (expirationTimestamp && expirationTimestamp < Date.now()) {
+      throw new Error(
+        'Delegate Registry V2 delegation expiration must be in the future'
+      );
+    }
+
     const delegations = addresses.map((address, index) => ({
       delegate: hexZeroPad(address, 32),
       ratio: ratio[index]
     }));
-    const expiration = expirationTimestamp ?? Date.now() * 2;
     const tx = await sendTransaction(
       auth.web3,
       DELEGATION_CONTRACT,
       abi,
       'setDelegation',
-      [space.id, delegations, expiration] //space.id should be the ENS name
+      [space.id, delegations, expirationTimestamp] //space.id should be the ENS name
     );
     return tx;
   };

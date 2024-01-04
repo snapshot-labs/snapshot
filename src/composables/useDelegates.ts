@@ -104,8 +104,12 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function setDelegates(addresses: string[], ratio?: number[]) {
-    return writer.sendSetDelegationTx(addresses, ratio);
+  async function setDelegates(
+    addresses: string[],
+    ratio?: number[],
+    expirationTimestamp?: number
+  ) {
+    return writer.sendSetDelegationTx(addresses, ratio, expirationTimestamp);
   }
 
   async function fetchDelegatingTo(address: string) {
