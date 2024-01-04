@@ -4,6 +4,8 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { abi } from './abi';
 import { hexZeroPad } from '@ethersproject/bytes';
 
+const DELEGATION_CONTRACT = '0xDE1e8A7E184Babd9F0E3af18f40634e9Ed6F0905'; //All chains
+
 const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
@@ -23,13 +25,13 @@ const sendSetDelegationTx =
       delegate: hexZeroPad(address, 32),
       ratio: ratio[index]
     }));
-
+    const expiration = expirationTimestamp ?? Date.now() * 2;
     const tx = await sendTransaction(
       auth.web3,
-      space.delegationPortal.delegationContract,
+      DELEGATION_CONTRACT,
       abi,
       'setDelegation',
-      [space.name, delegations, expirationTimestamp]
+      [space.id, delegations, expiration] //space.id should be the ENS name
     );
     return tx;
   };
