@@ -32,7 +32,7 @@ const claimStatusModalConfig = computed(() => {
     case 'success':
       return {
         title: 'Well done! 🥳',
-        subtitle: 'Your have claimed your reward.',
+        subtitle: 'Your reward has been claimed.',
         variant: 'success' as const
       };
     case 'error':
@@ -90,7 +90,7 @@ async function handleClaimAll() {
     const boosts = boostVouchers.value.map(voucher => ({
       boostId: voucher.boost_id,
       recipient: getAddress(web3Account.value),
-      amount: '10000000000'
+      amount: voucher.reward
     }));
     const signatures = boostVouchers.value.map(voucher => voucher.signature);
     const chainId = boostVouchers.value[0].chain_id;
@@ -134,6 +134,8 @@ async function loadRewards() {
       web3Account.value,
       boosts
     );
+    boostRewards.value[0].reward = '10000000000000000';
+    // TODO: Fix reward
   } catch (e) {
     boostRewards.value = [];
     console.log('Get rewards error:', e);

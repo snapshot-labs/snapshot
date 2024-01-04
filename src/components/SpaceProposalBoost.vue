@@ -14,39 +14,6 @@ const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
 
-// const boosts = ref<BoostSubgraphResult[]>([
-//   {
-//     id: '6',
-//     strategyURI: 'ipfs://cid',
-//     balance: 0.01,
-//     guard: '0x123',
-//     start: '1712182473',
-//     end: '1762192473',
-//     owner: '0x3901d0fde202af1427216b79f5243f8a022d68cf',
-//     chainId: '11155111',
-//     token: {
-//       id: '0xfFf9976782d46CC05630D1f6eBAb18b2324d6B14',
-//       name: 'Wrapped Ether',
-//       symbol: 'WETH',
-//       decimals: 18
-//     },
-//     strategy: {
-//       name: 'proposal',
-//       params: {
-//         proposal:
-//           '0x054faa6a452476eecf4b7a627d8d8452f6b55fc95b2768127dae2e6758a16493',
-//         eligibility: {
-//           choice: undefined
-//         },
-//         distribution: {
-//           type: 'weighted',
-//           limit: undefined
-//         }
-//       }
-//     }
-//   }
-// ]);
-
 const newBoostLink = computed(() => ({
   name: 'spaceBoost',
   params: { proposalId: props.proposal.id }
@@ -56,14 +23,13 @@ const isActive = computed(() => props.proposal.state === 'active');
 const isFinal = computed(() => props.proposal.scores_state === 'final');
 
 function isEligible(boost: BoostSubgraphResult) {
+  const choice = boost.strategy.params.eligibility.choice;
+
   if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
-  if (userVote.value && boost.strategy.params.eligibility.choice !== null)
-    return (
-      userVote.value.choice === boost.strategy.params.eligibility.choice + 1
-    );
-  if (userVote.value && boost.strategy.params.eligibility.choice === undefined)
-    return true;
-  return false;
+  if (!userVote.value) return false;
+  if (choice === null) return true;
+
+  return userVote.value.choice === choice + 1;
 }
 
 const eligibleBoosts = computed(() => {
@@ -114,7 +80,10 @@ async function loadBoosts() {
       }
     );
 
-    boosts.value = response;
+    boosts.value = response.filter(
+      boost => boost.strategy.params.proposal === props.proposal.id
+    );
+    // TODO: Fix query and remove filter
   } catch (e) {
     console.log('Load boosts error:', e);
   }
