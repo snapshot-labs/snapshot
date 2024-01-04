@@ -189,6 +189,7 @@ watch(
       >
         <i-ho-gift class="text-sm mr-2" />
         Claim
+        <!-- TODO: Add loading -->
         <span v-if="canClaimAll" class="ml-[6px]">
           {{ claimAllAmountFormatted }}
           {{ firstEligibleBoost.token.symbol }}
