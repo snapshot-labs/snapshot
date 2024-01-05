@@ -16,6 +16,7 @@ const boostRewards = ref<Reward[]>([]);
 const boostVouchers = ref<Voucher[]>([]);
 const claimStatus = ref('');
 const modalWrongNetworkOpen = ref(false);
+const loadingRewards = ref(false);
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
@@ -77,6 +78,7 @@ const claimAllAmountFormatted = computed(() => {
 });
 
 async function handleClaimAll() {
+  if (loadingRewards.value) return;
   if (
     firstEligibleBoost.value.chainId !== web3.value.network.chainId.toString()
   ) {
@@ -128,6 +130,8 @@ async function loadVouchers() {
 
 async function loadRewards() {
   if (!web3Account.value) return;
+  loadingRewards.value = true;
+
   const boosts = props.boosts.map(boost => [boost.id, boost.chainId]);
   try {
     boostRewards.value = await getRewards(
@@ -140,6 +144,8 @@ async function loadRewards() {
   } catch (e) {
     boostRewards.value = [];
     console.log('Get rewards error:', e);
+  } finally {
+    loadingRewards.value = false;
   }
 
   console.log(
@@ -183,21 +189,19 @@ watch(
     </div>
 
     <div class="flex justify-center mt-3">
-      <TuneButton
-        variant="white"
-        class="text-white flex items-center"
-        @click="handleClaimAll"
-      >
-        <i-ho-gift class="text-sm mr-2" />
-        Claim
-        <!-- TODO: Add loading -->
-        <span v-if="canClaimAll" class="ml-[6px]">
-          {{ claimAllAmountFormatted }}
-          {{ firstEligibleBoost.token.symbol }}
-        </span>
-        <span v-else class="ml-[6px]">
-          {{ eligibleBoosts.length }} rewards
-        </span>
+      <TuneButton variant="white" class="text-white" @click="handleClaimAll">
+        <TuneLoadingSpinner v-if="loadingRewards" class="text-white" />
+        <div v-else class="flex items-center">
+          <i-ho-gift class="text-sm mr-2" />
+          Claim
+          <span v-if="canClaimAll" class="ml-[6px]">
+            {{ claimAllAmountFormatted }}
+            {{ firstEligibleBoost.token.symbol }}
+          </span>
+          <span v-else class="ml-[6px]">
+            {{ eligibleBoosts.length }} rewards
+          </span>
+        </div>
       </TuneButton>
     </div>
     <ModalTransactionStatus
