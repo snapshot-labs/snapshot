@@ -28,6 +28,7 @@ const isFinal = computed(() => props.proposal.scores_state === 'final');
 function isEligible(boost: BoostSubgraphResult) {
   const choice = boost.strategy.params.eligibility.choice;
 
+  if (!web3Account.value) return false;
   if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
   if (!userVote.value) return false;
   if (choice === null) return true;
