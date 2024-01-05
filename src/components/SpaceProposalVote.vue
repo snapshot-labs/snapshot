@@ -83,19 +83,19 @@ watch(web3Account, loadUserVote, { immediate: true });
         Change vote
       </button>
     </template>
-    <div v-if="votedAndShutter && !isEditing">
+    <div v-if="votedAndShutter && !isEditing && proposal.state === 'active'">
       <i-ho-lock-closed class="inline-block text-sm" />
       Your vote is encrypted with Shutter privacy until the proposal ends. You
       can still change it until then.
     </div>
-    <BaseMessageBlock
+    <BaseMessage
       v-else-if="userVote && !validatedUserChoice && !isEditing"
       level="info"
     >
       Oops, we were unable to validate your vote. Please try voting again or
       consider opening a ticket with our support team on
       <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
-    </BaseMessageBlock>
+    </BaseMessage>
     <div v-else>
       <SpaceProposalVoteSingleChoice
         v-if="proposal.type === 'single-choice' || proposal.type === 'basic'"
