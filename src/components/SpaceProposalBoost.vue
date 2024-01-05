@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import { BigNumber } from '@ethersproject/bignumber';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -8,6 +9,8 @@ const props = defineProps<{
 
 const isOpen = ref(false);
 const boosts = ref<BoostSubgraphResult[]>([]);
+const claims = ref<{ id: string; amount: string }[]>([]);
+const loaded = ref(false);
 
 const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -35,6 +38,14 @@ function isEligible(boost: BoostSubgraphResult) {
 const eligibleBoosts = computed(() => {
   if (!boosts.value.length) return [];
   return boosts.value.filter(boost => isEligible(boost));
+});
+
+const hasUserClaimed = computed(() => {
+  if (!eligibleBoosts.value.length) return false;
+  const claimsIds = claims.value.map(claim => claim.id.split('.')[0]);
+  return eligibleBoosts.value.every(boost => {
+    return claimsIds.some(id => BigNumber.from(id).toString() === boost.id);
+  });
 });
 
 function handleStart() {
@@ -80,35 +91,61 @@ async function loadBoosts() {
       }
     );
 
-    boosts.value = response.filter(
-      boost => boost.strategy.params.proposal === props.proposal.id
-    );
     // TODO: Fix query and remove filter
+    boosts.value = response.filter(
+      (boost: any) => boost.strategy.params.proposal === props.proposal.id
+    );
   } catch (e) {
     console.log('Load boosts error:', e);
   }
 }
 
+async function loadClaims() {
+  if (props.proposal.scores_state !== 'final' || !web3Account.value) return;
+  try {
+    const { claims: response } = await subgraphRequest(
+      'https://api.thegraph.com/subgraphs/name/pscott/boost-sepolia',
+      {
+        claims: {
+          __args: {
+            where: {
+              recipient: '0x3901d0fde202af1427216b79f5243f8a022d68cf'
+            }
+          },
+          id: true,
+          amount: true
+        }
+      }
+    );
+
+    claims.value = response;
+  } catch (e) {
+    console.log('Load boosts error:', e);
+  }
+}
+
+async function loadAll() {
+  loaded.value = false;
+  await Promise.all([
+    loadUserVote(web3Account.value),
+    loadBoosts(),
+    loadClaims()
+  ]);
+  loaded.value = true;
+}
+
 watch(
   web3Account,
-  () => {
-    loadUserVote(web3Account.value);
+  async () => {
+    loadAll();
   },
   { immediate: true }
 );
-
-onMounted(async () => {
-  await loadBoosts();
-  console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:146 ~ onMounted ~ boosts:',
-    boosts.value
-  );
-});
 </script>
 
 <template>
   <SpaceProposalBoostClaim
-    v-if="eligibleBoosts.length && isFinal"
+    v-if="eligibleBoosts.length && isFinal && loaded && !hasUserClaimed"
     :proposal="proposal"
     :boosts="boosts"
     :eligible-boosts="eligibleBoosts"
@@ -153,15 +190,18 @@ onMounted(async () => {
             <span> New boost </span>
           </TuneButton>
         </div>
-        <div class="mt-3 space-y-2">
+        <div v-if="loaded" class="mt-3 space-y-2">
           <div v-for="boost in boosts" :key="boost.id">
             <SpaceProposalBoostItem
               :boost="boost"
+              :claims="claims"
               :proposal="proposal"
+              :web3-account="web3Account"
               :is-eligible="isEligible(boost)"
             />
           </div>
         </div>
+        <LoadingList v-else class="mt-3" />
         <div
           v-if="eligibleBoosts.length && isActive"
           class="bg-[--border-color-faint] border-t border-[--border-color-soft] -mx-3 -mb-3 mt-3 p-3"

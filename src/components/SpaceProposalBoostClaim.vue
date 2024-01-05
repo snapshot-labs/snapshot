@@ -118,7 +118,8 @@ async function loadVouchers() {
     boostVouchers.value = [];
     console.log('Get vouchers error:', e);
   }
-
+  boostVouchers.value[0].reward = '10000000000000000';
+  // TODO: Fix reward
   console.log(
     '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
     boostVouchers.value

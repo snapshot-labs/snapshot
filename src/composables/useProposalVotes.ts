@@ -122,6 +122,7 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadUserVote(voter: string) {
+    if (!voter) return;
     try {
       loadingUserVote.value = true;
       const response = await _fetchVote({ voter });
