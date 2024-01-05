@@ -66,7 +66,7 @@ watch(web3Account, loadUserVote, { immediate: true });
 
 <template>
   <BaseBlock
-    v-if="!loadingUserVote"
+    v-if="!loadingUserVote && (userVote || proposal.state === 'active')"
     class="mb-4"
     :title="
       isEditing ? 'Change your vote' : userVote ? 'Your vote' : 'Cast your vote'
@@ -74,7 +74,7 @@ watch(web3Account, loadUserVote, { immediate: true });
   >
     <template #button>
       <button
-        v-if="!isEditing && userVote"
+        v-if="!isEditing && userVote && proposal.state === 'active'"
         type="button"
         class="flex items-center gap-1"
         @click="isEditing = true"
