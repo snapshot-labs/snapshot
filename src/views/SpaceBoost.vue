@@ -350,9 +350,7 @@ watch(
         <LoadingPage v-if="!proposal" />
         <template v-else>
           <h1 class="leading-[44px]">New boost</h1>
-          <p class="text-md leading-5">
-            Incentivize people to vote on this proposal
-          </p>
+          <p class="text-md leading-5">Incentivize voters on this proposal</p>
 
           <div class="space-y-3 mt-4">
             <SpaceBoostCardProposal :proposal="proposal" :space="space" />
@@ -361,7 +359,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Eligibility"
-                  sub-title="Define eligibility criteria effortlessly, establishing clear standards for streamlined decision-making in various opportunities or services."
+                  sub-title="Define eligibility the criteria, bribe by selecting a specific choice or simply incentivize participation."
                 />
               </template>
 
@@ -376,7 +374,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Deposit amount"
-                  sub-title="Customize your deposit: choose a token and amount, tailoring transactions to fit your preferences and goals."
+                  sub-title="Choose a token and amount, which will be distributed to voters based on their voting power."
                 />
               </template>
               <div class="flex gap-[12px]">
@@ -400,7 +398,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Distribution based on Voting power"
-                  sub-title="Define the maximum amount of voting power, enabling you to set limits and optimize your influence within the voting system."
+                  sub-title="Define the maximum amount of voting power to be rewarded. If you don’t set a limit, voters will be rewarded based on their total voting power."
                 />
               </template>
               <TuneSwitch
