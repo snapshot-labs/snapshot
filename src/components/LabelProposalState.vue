@@ -12,7 +12,7 @@ const stateClass = computed(() => {
 
 <template>
   <div
-    class="text-white rounded-full px-[12px] text-[16px] h-[26px] w-fit"
+    class="text-white rounded-full px-[12px] text-sm h-[24px] w-fit leading-6"
     :class="stateClass"
   >
     {{ $t(`proposals.states.${state}`) }}
