@@ -7,7 +7,6 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 const props = defineProps<{
   proposal: Proposal;
   userChoice: number[] | null;
-  isEditing: boolean;
 }>();
 
 const emit = defineEmits(['selectChoice']);
@@ -39,19 +38,18 @@ watch(
 </script>
 
 <template>
-  <div class="space-y-3">
-    <div v-if="selectedChoices.length">
+  <div class="mb-3">
+    <div :class="{ 'mb-5': selectedChoices.length > 0 }">
       <draggable
         v-model="selectedChoices"
         :component-data="{ name: 'list' }"
         item-key="id"
         data-testid="ranked-choice-selected-list"
-        :disabled="userChoice?.length && !isEditing"
         @change="updateChoices"
       >
         <template #item="{ element, index }">
           <TuneButton
-            class="!mb-2 last:!mb-0 flex w-full items-center justify-between !border-skin-link !px-3"
+            class="!mb-2 flex w-full items-center justify-between !border-skin-link !px-3"
           >
             <div class="min-w-[60px] text-left">
               ({{ getNumberWithOrdinal(index + 1) }})
@@ -64,35 +62,25 @@ watch(
               :data-testid="`ranked-choice-selected-delete-${index}`"
               @click="removeChoice(index)"
             >
-              <BaseIcon
-                v-if="!userChoice || isEditing"
-                name="close"
-                size="12"
-              />
+              <BaseIcon name="close" size="12" />
             </div>
           </TuneButton>
         </template>
       </draggable>
     </div>
-
     <div
-      v-if="selectedChoices.length !== proposal.choices.length"
-      class="space-y-2"
+      v-for="(choice, i) in proposal.choices"
+      :key="i"
+      data-testid="ranked-choice-select-list"
     >
-      <div
-        v-for="(choice, i) in proposal.choices"
-        :key="i"
-        data-testid="ranked-choice-select-list"
+      <TuneButton
+        v-if="!selectedChoices.includes(i + 1)"
+        class="mb-2 block w-full"
+        :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
+        @click="selectChoice(i + 1)"
       >
-        <TuneButton
-          v-if="!selectedChoices.includes(i + 1)"
-          class="block w-full"
-          :class="selectedChoices.includes(i + 1) && 'border-skin-link'"
-          @click="selectChoice(i + 1)"
-        >
-          <span class="truncate">{{ choice }}</span>
-        </TuneButton>
-      </div>
+        <span class="truncate">{{ choice }}</span>
+      </TuneButton>
     </div>
   </div>
 </template>
