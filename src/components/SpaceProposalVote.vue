@@ -83,10 +83,12 @@ watch(web3Account, loadUserVote, { immediate: true });
         Change vote
       </button>
     </template>
-    <div v-if="votedAndShutter && !isEditing && proposal.state === 'active'">
+    <div
+      v-if="votedAndShutter && !isEditing && proposal.scores_state !== 'final'"
+    >
       <i-ho-lock-closed class="inline-block text-sm" />
-      Your vote is encrypted with Shutter privacy until the proposal ends. You
-      can still change it until then.
+      Your vote is encrypted with Shutter privacy until the proposal ends and
+      the final score is calculated. You can still change your vote until then.
     </div>
     <BaseMessage
       v-else-if="userVote && !validatedUserChoice && !isEditing"
