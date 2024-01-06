@@ -20,8 +20,8 @@ const selectedChoices = computed(() => {
   if (Array.isArray(props.modelValue)) return props.modelValue.length;
   if (typeof props.modelValue === 'object' && props.modelValue !== null)
     return Object.keys(props.modelValue).length;
-  return props.modelValue;
-}) as ComputedRef<number>;
+  return props.modelValue ?? 0;
+});
 
 const validatedUserChoice = computed(() => {
   if (!userVote.value?.choice) return null;
