@@ -128,12 +128,8 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
-  <SpaceBreadcrumbs
-    :space="space"
-    :proposal="proposal"
-    class="mx-3 md:mx-4 -mt-1 mb-[40px]"
-  />
-  <TheLayout v-bind="$attrs">
+  <SpaceBreadcrumbs :space="space" :proposal="proposal" />
+  <TheLayout v-bind="$attrs" class="mt-[20px]">
     <template #content-left>
       <MessageWarningFlagged
         v-if="isMessageVisible"

@@ -50,5 +50,8 @@ const pages = computed(() => {
 </script>
 
 <template>
-  <BaseBreadcrumbs :pages="pages" />
+  <BaseBreadcrumbs
+    :pages="pages"
+    class="px-3 md:px-4 -mt-1 pb-[16px] lg:pb-[20px]"
+  />
 </template>
