@@ -5,13 +5,12 @@ import { shorten } from '@/helpers/utils';
 const props = defineProps<{ space: ExtendedSpace }>();
 
 const route = useRoute();
-const { domain } = useApp();
 
 const pages = computed(() => {
   let pages: any = [];
   const spaceRoute = `/${props.space.id}`;
   const basePages = [
-    { name: domain ? 'Home' : props.space.name, to: spaceRoute, current: false }
+    { name: props.space.name, to: spaceRoute, current: false }
   ];
 
   if (route.name === 'spaceProposal') {
@@ -27,7 +26,7 @@ const pages = computed(() => {
     pages = [
       ...basePages,
       {
-        name: 'Delegates',
+        name: props.space.name,
         to: `${spaceRoute}/delegates`,
         current: false
       },
@@ -55,5 +54,5 @@ const pages = computed(() => {
 </script>
 
 <template>
-  <BaseBreadcrumbs :pages="pages" class="mx-4 -mt-1 pb-[16px] lg:pb-[20px]" />
+  <BaseBreadcrumbs :pages="pages" />
 </template>
