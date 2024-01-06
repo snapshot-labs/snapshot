@@ -128,12 +128,13 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
+  <SpaceBreadcrumbs
+    :space="space"
+    :proposal="proposal"
+    class="mx-3 md:mx-4 -mt-1 mb-[40px]"
+  />
   <TheLayout v-bind="$attrs">
     <template #content-left>
-      <div class="mb-3 px-3 md:px-0">
-        <ButtonBack @click="handleBackClick" />
-      </div>
-
       <MessageWarningFlagged
         v-if="isMessageVisible"
         type="proposal"
@@ -143,6 +144,8 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 
       <template v-else>
         <div class="px-3 md:px-0">
+          <LabelProposalState :state="proposal.state" class="mb-[12px]" />
+
           <SpaceProposalHeader
             :space="space"
             :proposal="proposal"
