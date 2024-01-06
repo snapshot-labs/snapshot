@@ -24,7 +24,6 @@ const pages = computed(() => {
   if (route.name === 'spaceDelegate') {
     const delegate = route.params.address as string;
     pages = [
-      ...basePages,
       {
         name: props.space.name,
         to: `${spaceRoute}/delegates`,
