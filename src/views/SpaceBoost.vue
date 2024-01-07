@@ -349,8 +349,10 @@ watch(
       <template #content-left>
         <LoadingPage v-if="!proposal" />
         <template v-else>
-          <h1 class="leading-[44px]">New boost</h1>
-          <p class="text-md leading-5">Incentivize voters on this proposal</p>
+          <h1 class="leading-[44px]">Create a new boost</h1>
+          <p class="text-md leading-5">
+            Reward voters on this proposal and drive engagement
+          </p>
 
           <div class="space-y-3 mt-4">
             <SpaceBoostCardProposal :proposal="proposal" :space="space" />
@@ -359,7 +361,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Eligibility"
-                  sub-title="Define eligibility the criteria, bribe by selecting a specific choice or simply incentivize participation."
+                  sub-title="Set the criteria for who gets rewarded. Choose an option that best incentivizes meaningful participation."
                 />
               </template>
 
@@ -374,7 +376,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Deposit amount"
-                  sub-title="Choose a token and amount, which will be distributed to voters based on their voting power."
+                  sub-title="Select a token and specify the total amount to establish the reward pool for all eligible voters."
                 />
               </template>
               <div class="flex gap-[12px]">
@@ -398,7 +400,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Distribution based on Voting power"
-                  sub-title="Define the maximum amount of voting power to be rewarded. If you don’t set a limit, voters will be rewarded based on their total voting power."
+                  sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale with the voter's total voting power."
                 />
               </template>
               <TuneSwitch
@@ -424,17 +426,19 @@ watch(
 
       <template #sidebar-right>
         <div class="border rounded-xl p-3">
-          <h4 class="leading-5 mb-1">New boost</h4>
+          <h4 class="leading-5 mb-1">Create boost</h4>
           <p class="text-md leading-5">
-            Boost can’t be changed after publishing, so please be sure.
+            Once created, a boost cannot be modified. Ensure everything is
+            correct before confirming.
           </p>
-          <TuneButton primary class="w-full mt-4" @click="handleCreate">
-            Confirm
-          </TuneButton>
-          <div class="flex justify-center mt-2">
-            <i-ho-information-circle class="inline-block mr-1" />
+          <div class="flex justify-center mt-3 leading-5">
+            <i-ho-exclamation-circle class="inline-block text-sm mr-2" />
+
             This contract is not audited and in beta.
           </div>
+          <TuneButton primary class="w-full mt-3" @click="handleCreate">
+            Confirm
+          </TuneButton>
         </div>
       </template>
     </TheLayout>
