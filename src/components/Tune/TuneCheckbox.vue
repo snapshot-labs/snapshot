@@ -13,13 +13,13 @@ const emit = defineEmits(['update:modelValue']);
 <template>
   <div>
     <label :for="id" class="hover:cursor-pointer">
-      <div class="flex items-center gap-[10px]">
+      <div class="flex gap-[10px]">
         <input
           :id="id"
           :checked="modelValue"
           :name="label || definition?.title"
           type="checkbox"
-          class="tune-input-checkbox hover:cursor-pointer"
+          class="tune-input-checkbox hover:cursor-pointer my-[2px]"
           @input="
             emit(
               'update:modelValue',
