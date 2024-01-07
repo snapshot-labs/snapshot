@@ -6,21 +6,21 @@ const props = defineProps<{
 
 const commonStyles = {
   outlined: 'leading-[22px]',
-  default: 'leading-[23px]'
+  default: 'leading-[23px] text-white'
 };
 
 const classesMap = {
   pending: {
     outlined: 'border border-gray-500/40 text-gray-500',
-    default: 'bg-gray-500 text-white'
+    default: 'bg-gray-500'
   },
   closed: {
     outlined: 'border border-red/40 text-red',
-    default: 'bg-red text-white'
+    default: 'bg-red'
   },
   active: {
     outlined: 'border border-green/40 text-green',
-    default: 'bg-green text-white'
+    default: 'bg-green'
   }
 };
 
