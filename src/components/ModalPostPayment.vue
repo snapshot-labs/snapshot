@@ -17,8 +17,8 @@ defineEmits(['close']);
     </template>
     <div class="mx-4 mb-4">
       <p class="mt-2 text-center">
-        Copy the transaction hash above and use on the payment form as proof of
-        payment.
+        Copy the transaction hash below for use on the network request form as
+        proof of payment.
       </p>
 
       <BaseBlock slim class="p-3 my-2 text-sm text-center">
