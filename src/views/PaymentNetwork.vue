@@ -131,7 +131,7 @@ watch(paymentTx, () => {
           class="basis-1/3"
         >
           <label
-            class="flex border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
+            class="flex flex-col sm:flex-row border border-skin-border hover:border-skin-text gap-3 rounded-xl p-3 cursor-pointer"
             :class="{
               '!border-skin-primary': currencyId === data.currency
             }"
