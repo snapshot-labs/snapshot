@@ -11,15 +11,15 @@ const commonStyles = {
 
 const classesMap = {
   pending: {
-    outlined: 'border border-gray-500 text-gray-500',
+    outlined: 'border border-gray-500/40 text-gray-500',
     default: 'bg-gray-500 text-white'
   },
   closed: {
-    outlined: 'border border-[#BB6BD9] text-[#BB6BD9]',
-    default: 'bg-[#BB6BD9] text-white'
+    outlined: 'border border-red/40 text-red',
+    default: 'bg-red text-white'
   },
   active: {
-    outlined: 'border border-green text-green',
+    outlined: 'border border-green/40 text-green',
     default: 'bg-green text-white'
   }
 };
