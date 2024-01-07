@@ -21,9 +21,9 @@ defineEmits(['close']);
         proof of payment.
       </p>
 
-      <BaseBlock slim class="p-3 my-2 text-sm text-center">
+      <div class="p-3 my-2 text-sm text-center border rounded-xl">
         <b class="font-mono break-all text-skin-link">{{ tx.hash }}</b>
-      </BaseBlock>
+      </div>
 
       <div class="flex">
         <BaseLink
