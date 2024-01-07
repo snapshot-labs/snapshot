@@ -39,14 +39,12 @@ const truncateMarkdownBody = computed(() => {
       }"
     >
       <TuneButton
-        class="z-10 !bg-skin-bg"
+        class="z-10 !bg-skin-bg flex items-center gap-2 !pr-[18px]"
         @click="showFullMarkdownBody = !showFullMarkdownBody"
       >
-        {{
-          showFullMarkdownBody
-            ? $t('proposals.showLess')
-            : $t('proposals.showMore')
-        }}
+        {{ showFullMarkdownBody ? 'View less' : 'View more' }}
+        <i-ho-arrow-sm-up v-if="showFullMarkdownBody" />
+        <i-ho-arrow-sm-down v-else />
       </TuneButton>
     </div>
     <div
