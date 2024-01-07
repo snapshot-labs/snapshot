@@ -24,7 +24,7 @@ import SpaceTreasury from '@/views/SpaceTreasury.vue';
 import SpaceDelegates from '@/views/SpaceDelegates.vue';
 import SpaceDelegate from '@/views/SpaceDelegate.vue';
 
-import PaymentNetworkFees from '@/views/PaymentNetworkFees.vue';
+import PaymentNetwork from '@/views/PaymentNetwork.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -94,8 +94,8 @@ const profileRoutes = [
 const paymentRoutes = [
   {
     path: 'network',
-    name: 'paymentNetworkFees',
-    component: PaymentNetworkFees
+    name: 'paymentNetwork',
+    component: PaymentNetwork
   }
 ];
 
