@@ -159,7 +159,7 @@ watch(paymentTx, () => {
       <TuneCheckbox
         :id="'termsAccepted'"
         :model-value="data.termsAccepted"
-        hint="I confirm I will provide all required information in the network request form"
+        hint="By proceeding, I understand that completing the network request form is mandatory after payment."
         @update:model-value="setData('termsAccepted', $event as boolean)"
       >
       </TuneCheckbox>
