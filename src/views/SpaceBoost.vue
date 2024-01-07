@@ -400,7 +400,7 @@ watch(
               <template #title>
                 <TuneBlockHeader
                   title="Distribution based on Voting power"
-                  sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale with the voter's total voting power."
+                  sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale indefinitely with the voter's total voting power."
                 />
               </template>
               <TuneSwitch
