@@ -286,7 +286,7 @@ onMounted(async () => {
             v-for="(delegate, i) in delegates"
             :key="i"
             class="flex border-t px-4 py-3"
-            :class="{ '!border-0': i !== 0 }"
+            :class="{ '!border-0': i === 0 }"
           >
             <BaseUser
               :address="delegate.delegate"
