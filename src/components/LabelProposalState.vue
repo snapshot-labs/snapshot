@@ -1,18 +1,41 @@
 <script setup lang="ts">
 const props = defineProps<{
   state: string;
+  outlined?: boolean;
 }>();
 
+const commonStyles = {
+  outlined: 'leading-[22px]',
+  default: 'leading-[23px]'
+};
+
+const classesMap = {
+  pending: {
+    outlined: 'border border-gray-500 text-gray-500',
+    default: 'bg-gray-500 text-white'
+  },
+  closed: {
+    outlined: 'border border-[#BB6BD9] text-[#BB6BD9]',
+    default: 'bg-[#BB6BD9] text-white'
+  },
+  active: {
+    outlined: 'border border-green text-green',
+    default: 'bg-green text-white'
+  }
+};
+
 const stateClass = computed(() => {
-  if (props.state === 'closed') return 'bg-[#BB6BD9]';
-  if (props.state === 'active') return 'bg-green';
-  return 'bg-gray-500';
+  const style =
+    classesMap[props.state][props.outlined ? 'outlined' : 'default'];
+  const common = commonStyles[props.outlined ? 'outlined' : 'default'];
+
+  return `${common} ${style}`;
 });
 </script>
 
 <template>
   <div
-    class="text-white rounded-full px-[12px] text-sm h-[24px] w-fit leading-6"
+    class="rounded-full px-[12px] text-sm h-[24px] w-fit"
     :class="stateClass"
   >
     {{ $t(`proposals.states.${state}`) }}
