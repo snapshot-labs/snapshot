@@ -98,12 +98,6 @@ async function loadResults() {
   loadedResults.value = true;
 }
 
-function handleBackClick() {
-  if (!browserHasHistory.value || browserHasHistory.value.includes('create'))
-    return router.push({ name: 'spaceProposals' });
-  return router.go(-1);
-}
-
 function handleChoiceQuery() {
   const choice = route.query.choice as string;
   if (web3Account.value && choice && props.proposal.state === 'active') {
