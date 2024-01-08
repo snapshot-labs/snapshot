@@ -15,6 +15,8 @@ defineProps<{
 }>();
 </script>
 
+<!-- TODO: Fix bug with sidebar -->
+
 <template>
   <Teleport to="#modal">
     <TransitionRoot appear :show="open" as="template">

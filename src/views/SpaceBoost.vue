@@ -237,6 +237,7 @@ function setErrorStatus(error: string) {
 
 async function handleApproval() {
   createStatus.value = 'approve';
+  // TODO: Show tx hash in modal when approving
   try {
     await sendApprovalTransaction(
       auth.web3,
