@@ -1,14 +1,14 @@
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
 import { useStorage, useMediaQuery } from '@vueuse/core';
 
-/**
- * Handle theme (dark/light mode)
- * - use local storage or fall back to OS preference
- */
 export const DARK = 'dark';
 export const LIGHT = 'light';
 
-const osTheme = useMediaQuery('(prefers-color-scheme: dark)') ? DARK : LIGHT;
+const osTheme = useMediaQuery('(prefers-color-scheme: dark)').value
+  ? DARK
+  : LIGHT;
+
+console.log(useMediaQuery('(prefers-color-scheme: dark)'));
 
 const userTheme = useStorage('snapshot.userTheme', osTheme);
 
@@ -24,9 +24,6 @@ const theme = computed(() =>
   [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
 );
 
-/**
- * Handle skin (e.g. uniswap)
- */
 const skinClass = ref('default');
 
 export function useSkin() {
