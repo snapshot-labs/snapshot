@@ -31,7 +31,7 @@ const modalDateSelectOpen = ref(false);
       />
     </TuneButton>
   </div>
-  <teleport to="#modal">
+  <teleport to="body">
     <ModalSelectDate
       :type="type"
       :open="modalDateSelectOpen"
