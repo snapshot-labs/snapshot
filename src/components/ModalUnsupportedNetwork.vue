@@ -4,6 +4,7 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
   open: boolean;
+  hideDemoButton?: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
@@ -88,7 +89,7 @@ const switchToDefaultNetwork = async () => {
           })
         }}
       </TuneButton>
-      <div v-if="defaultNetwork === '1'">
+      <div v-if="defaultNetwork === '1' && !hideDemoButton">
         <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
           <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
