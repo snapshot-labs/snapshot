@@ -19,7 +19,8 @@ const pages = computed(() => {
     pages = [
       ...basePages,
       {
-        name: `${props.proposal?.title.slice(0, 24)}...`,
+        id: 'spaceProposal',
+        name: props.proposal?.title,
         to: `${spaceRoute}/proposal/${id}`,
         current: true
       }
