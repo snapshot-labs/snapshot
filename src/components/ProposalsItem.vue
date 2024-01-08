@@ -58,7 +58,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
                 :hide-avatar="!hideSpaceAvatar"
               />
             </div>
-            <LabelProposalState :state="proposal.state" outlined />
+            <LabelProposalState :state="proposal.state" />
           </div>
 
           <router-link :to="to" class="cursor-pointer">

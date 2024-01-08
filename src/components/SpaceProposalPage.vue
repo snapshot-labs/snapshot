@@ -140,11 +140,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 
       <template v-else>
         <div class="px-3 md:px-0">
-          <LabelProposalState
-            :state="proposal.state"
-            class="mb-[12px]"
-            outlined
-          />
+          <LabelProposalState :state="proposal.state" class="mb-[12px]" />
 
           <SpaceProposalHeader
             :space="space"
