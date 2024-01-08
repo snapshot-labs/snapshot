@@ -14,7 +14,7 @@ defineProps<{
         <span
           class="text-skin-link opacity-40"
           :class="{
-            'line-clamp-1 max-w-[340px]': page.id === 'proposal-title'
+            'line-clamp-1 max-w-[380px]': page.id === 'proposal-title'
           }"
           >{{ page.name }}</span
         >
