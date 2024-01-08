@@ -8,8 +8,6 @@ const osTheme = useMediaQuery('(prefers-color-scheme: dark)').value
   ? DARK
   : LIGHT;
 
-console.log(useMediaQuery('(prefers-color-scheme: dark)'));
-
 const userTheme = useStorage('snapshot.userTheme', osTheme);
 
 function toggleUserTheme() {
