@@ -61,7 +61,14 @@ function emitChoice(c) {
   emit('update:modelValue', c);
 }
 
-watch(web3Account, loadUserVote, { immediate: true });
+watch(
+  web3Account,
+  () => {
+    isEditing.value = false;
+    loadUserVote(web3Account.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
