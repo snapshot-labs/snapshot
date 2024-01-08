@@ -122,6 +122,7 @@
     "useMixpanel": true,
     "useBalances": true,
     "useAccount": true,
-    "useNetwork": true
+    "useNetwork": true,
+    "usePayment": true
   }
 }
