@@ -22,7 +22,6 @@ useMeta({
 });
 
 const route = useRoute();
-const router = useRouter();
 const { web3, web3Account } = useWeb3();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
@@ -53,8 +52,6 @@ const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => props.proposal?.strategies ?? props.space.strategies
 );
-
-const browserHasHistory = computed(() => window.history.state.back);
 
 const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
