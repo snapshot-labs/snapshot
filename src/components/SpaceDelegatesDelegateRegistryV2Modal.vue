@@ -12,7 +12,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
+const emit = defineEmits(['close', 'reload', 'deleteDelegate', 'expiration']);
 
 const {
   createPendingTransaction,
@@ -252,6 +252,18 @@ const handleCloseModal = () => {
           <AvatarSpace :space="space" />
           <span class="text-skin-heading"> {{ space.name }} </span>
         </div>
+      </div>
+      <div>
+        <TuneLabelInput hint="Your delegations will expire after this date">
+          Set Expiration
+        </TuneLabelInput>
+        <InputDate
+          :disabled="isDisabled"
+          :date="date"
+          :date-string="dateString"
+          :tooltip="!!delay && !isEditing ? $t('create.delayEnforced') : null"
+          @update:date="emit('expiration', $event)"
+        />
       </div>
       <div class="space-y-1">
         <div v-if="spaceDelegates.length > 0" class="flex justify-between">
