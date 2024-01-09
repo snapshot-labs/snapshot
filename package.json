@@ -49,7 +49,6 @@
     "@vueuse/core": "^10.6.1",
     "@vueuse/head": "^2.0.0",
     "ajv": "^8.12.0",
-    "ajv-formats": "^2.1.1",
     "autolinker": "^4.0.0",
     "bluebird": "^3.7.2",
     "graphql": "16.6.0",
