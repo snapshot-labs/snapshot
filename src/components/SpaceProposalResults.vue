@@ -29,7 +29,7 @@ const refreshScores = async () => {
 
   if (result.result === true) {
     emit('reload');
-  } else if (result.result === 'queued') {
+  } else {
     clearInterval(refreshScoresInterval);
     refreshScoresInterval = setInterval(refreshScores, 5000);
   }
