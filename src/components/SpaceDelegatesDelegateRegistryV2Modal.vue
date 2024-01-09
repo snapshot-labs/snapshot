@@ -4,6 +4,7 @@ import { watchDebounced } from '@vueuse/core';
 import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
+const { d } = useI18n();
 const route = useRoute();
 
 const props = defineProps<{
@@ -40,6 +41,7 @@ const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
+const expirationDate = ref<number>(calculateInitialDate());
 const isSpaceDelegatesValid = computed(() => {
   const allDelegatesHaveAddress = spaceDelegates.value.every(
     delegate => delegate.address
@@ -51,6 +53,15 @@ const isSpaceDelegatesValid = computed(() => {
   );
 
   return !allDelegatesHaveAddress || totalWeight !== 100;
+});
+
+const validationErrors = computed(() => {
+  return validateForm(
+    definition.value || {},
+    clone({
+      to: resolvedAddress.value
+    })
+  );
 });
 
 const definition = computed(() => {
@@ -69,6 +80,21 @@ const definition = computed(() => {
     additionalProperties: false
   };
 });
+
+const dateString = computed(() =>
+  d(expirationDate.value * 1e3, 'short', 'en-US')
+);
+
+const handleExpirationDate = (date: number) => {
+  console.log('newDate', d(date * 1e3, 'short', 'en-US'));
+  expirationDate.value = date;
+};
+
+function calculateInitialDate(): number {
+  const date = new Date();
+  date.setFullYear(date.getFullYear());
+  return Math.floor(date.getTime() / 1000);
+}
 
 function deleteDelegate(index: number) {
   const delegates = clone(spaceDelegates.value);
@@ -117,15 +143,6 @@ function divideEqually() {
   spaceDelegates.value = updatedDelegates;
 }
 
-const validationErrors = computed(() => {
-  return validateForm(
-    definition.value || {},
-    clone({
-      to: resolvedAddress.value
-    })
-  );
-});
-
 const isValid = computed(() => {
   return Object.values(validationErrors.value).length === 0;
 });
@@ -148,8 +165,7 @@ async function handleConfirm() {
       Math.floor(delegation.weight)
     );
 
-    // TODO: The expiration time should be taken from the modal UI
-    const expirationTime = Date.now() * 2;
+    const expirationTime = expirationDate.value;
 
     const tx = await setDelegates(addresses, weights, expirationTime);
     isAwaitingSignature.value = false;
@@ -230,8 +246,11 @@ const handleCloseModal = () => {
   addressRef.value = undefined;
   isAwaitingSignature.value = false;
   accountBalance.value = '';
+  expirationDate.value = calculateInitialDate();
   emit('close');
 };
+console.log('dateString.value', dateString.value);
+console.log('expirationDate.value', expirationDate.value);
 </script>
 
 <template>
@@ -258,12 +277,15 @@ const handleCloseModal = () => {
           Set Expiration
         </TuneLabelInput>
         <InputDate
-          :disabled="isDisabled"
-          :date="date"
+          :tooltip="$t('create.delayEnforced')"
+          :date="expirationDate"
           :date-string="dateString"
-          :tooltip="!!delay && !isEditing ? $t('create.delayEnforced') : null"
-          @update:date="emit('expiration', $event)"
+          @update:date="handleExpirationDate"
         />
+        <!-- dateString="2022-01-01" -->
+        <!-- :disabled="isDisabled" -->
+        <!-- :date-string="dateString"
+          :tooltip="!!delay && !isEditing ? $t('create.delayEnforced') : null" -->
       </div>
       <div class="space-y-1">
         <div v-if="spaceDelegates.length > 0" class="flex justify-between">

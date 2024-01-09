@@ -9,6 +9,8 @@ const DELEGATION_CONTRACT = '0xDE1e8A7E184Babd9F0E3af18f40634e9Ed6F0905'; //All 
 const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear());
     if (addresses.length <= 0) {
       throw new Error(
         'Delegate Registry V2 delegation must have at least one delegate'
@@ -27,7 +29,10 @@ const sendSetDelegationTx =
       );
     }
 
-    if (expirationTimestamp && expirationTimestamp < Date.now()) {
+    if (
+      expirationTimestamp &&
+      expirationTimestamp < Math.floor(date.getTime() / 1000)
+    ) {
       throw new Error(
         'Delegate Registry V2 delegation expiration must be in the future'
       );
