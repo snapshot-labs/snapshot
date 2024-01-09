@@ -32,7 +32,7 @@ export function validateForm(
   }
 ): Record<string, any> {
   const valid = snapshot.utils.validateSchema(schema, form, {
-    spaceType: options.spaceType ? options.spaceType : 'default',
+    spaceType: options.spaceType || 'default',
     snapshotEnv: env === 'production' ? 'mainnet' : 'default'
   });
   if (!Array.isArray(valid)) return {};
