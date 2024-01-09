@@ -119,6 +119,7 @@
     "useEmailSubscription": true,
     "useEmailFetchClient": true,
     "useStatement": true,
-    "useMixpanel": true
+    "useMixpanel": true,
+    "usePayment": true
   }
 }
