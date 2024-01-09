@@ -249,8 +249,6 @@ const handleCloseModal = () => {
   expirationDate.value = calculateInitialDate();
   emit('close');
 };
-console.log('dateString.value', dateString.value);
-console.log('expirationDate.value', expirationDate.value);
 </script>
 
 <template>
@@ -282,10 +280,6 @@ console.log('expirationDate.value', expirationDate.value);
           :date-string="dateString"
           @update:date="handleExpirationDate"
         />
-        <!-- dateString="2022-01-01" -->
-        <!-- :disabled="isDisabled" -->
-        <!-- :date-string="dateString"
-          :tooltip="!!delay && !isEditing ? $t('create.delayEnforced') : null" -->
       </div>
       <div class="space-y-1">
         <div v-if="spaceDelegates.length > 0" class="flex justify-between">
