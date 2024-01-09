@@ -92,7 +92,7 @@ const handleExpirationDate = (date: number) => {
 
 function calculateInitialDate(): number {
   const date = new Date();
-  date.setFullYear(date.getFullYear());
+  date.setFullYear(date.getFullYear() + 1);
   return Math.floor(date.getTime() / 1000);
 }
 
