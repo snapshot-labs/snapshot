@@ -13,7 +13,7 @@ const props = defineProps<{
   address: string;
 }>();
 
-const emit = defineEmits(['close', 'reload', 'deleteDelegate', 'expiration']);
+const emit = defineEmits(['close', 'reload', 'deleteDelegate']);
 
 const {
   createPendingTransaction,
