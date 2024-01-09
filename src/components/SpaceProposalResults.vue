@@ -17,7 +17,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['reload']);
 
-const ts = Number((Date.now() / 1e3).toFixed());
 let refreshScoresInterval;
 
 const refreshScores = async () => {
@@ -61,15 +60,26 @@ onBeforeUnmount(() => {
 <template>
   <BaseBlock
     :loading="!loaded"
-    :title="ts >= proposal.end ? $t('results') : $t('currentResults')"
+    :title="proposal.state === 'closed' ? $t('results') : $t('currentResults')"
   >
-    <SpaceProposalResultsError
-      v-if="isInvalidScore || isPendingScore"
-      :is-admin="isAdmin"
-      :proposal="proposal"
-      :is-pending="isPendingScore"
-      :is-invalid="isInvalidScore"
-    />
+    <template v-if="isPendingScore || isInvalidScore">
+      <BaseMessage v-if="isPendingScore" level="info">
+        {{ $t('resultsCalculating') }}
+      </BaseMessage>
+      <BaseMessage v-else-if="isInvalidScore" level="warning">
+        <div>{{ t('resultsError') }}</div>
+      </BaseMessage>
+      <BaseLink
+        v-if="isAdmin"
+        link="https://discord.snapshot.org/"
+        class="mt-3 block"
+        hide-external-icon
+      >
+        <TuneButton tabindex="-1" class="w-full">
+          {{ t('getHelp') }}
+        </TuneButton>
+      </BaseLink>
+    </template>
     <template v-else>
       <SpaceProposalResultsList
         v-if="results"
