@@ -346,6 +346,7 @@ watch(
 <template>
   <div>
     <SpaceBreadcrumbs :space="space" />
+    <!-- TODO: Show warning proposal ending soon -->
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
         <LoadingPage v-if="!proposal" />

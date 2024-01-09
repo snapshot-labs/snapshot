@@ -25,6 +25,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
   <div>
     <div class="block p-3 text-skin-text sm:p-4">
       <div>
+        <!-- TODO: Add boosted indicator -->
         <MessageWarningFlagged
           v-if="isMessageVisible"
           type="proposal"

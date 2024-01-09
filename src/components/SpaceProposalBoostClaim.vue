@@ -120,7 +120,7 @@ async function loadVouchers() {
     boostVouchers.value = [];
     console.log('Get vouchers error:', e);
   }
-  boostVouchers.value[0].reward = '10000000000000000';
+  // boostVouchers.value[0].reward = '10000000000000000';
   // TODO: Fix reward
   console.log(
     '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
@@ -139,7 +139,7 @@ async function loadRewards() {
       web3Account.value,
       boosts
     );
-    boostRewards.value[0].reward = '10000000000000000';
+    // boostRewards.value[0].reward = '10000000000000000';
     // TODO: Fix reward
   } catch (e) {
     boostRewards.value = [];

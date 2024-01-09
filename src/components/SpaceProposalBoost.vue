@@ -96,6 +96,10 @@ async function loadBoosts() {
     boosts.value = response.filter(
       (boost: any) => boost.strategy.params.proposal === props.proposal.id
     );
+    console.log(
+      '🚀 ~ file: SpaceProposalBoost.vue:99 ~ loadBoosts ~ boosts.value :',
+      boosts.value
+    );
   } catch (e) {
     console.log('Load boosts error:', e);
   }
