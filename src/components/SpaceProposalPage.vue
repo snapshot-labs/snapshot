@@ -212,6 +212,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :results="results"
           :strategies="strategies"
           :is-admin="isAdmin"
+          @reload="reloadProposal()"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"

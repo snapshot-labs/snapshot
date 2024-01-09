@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * When proposalState is invalid or live calculation of
- * scores failed. Show error message
+ * scores failed. Show error message, and trigger refresh in the background
  * Also shows a "Get help" button for space admins, pointing to discord.
  */
 

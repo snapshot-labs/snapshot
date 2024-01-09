@@ -15,7 +15,25 @@ const props = defineProps<{
   isAdmin: boolean;
 }>();
 
+const emit = defineEmits(['reload']);
+
 const ts = Number((Date.now() / 1e3).toFixed());
+let refreshScoresInterval;
+
+const refreshScores = async () => {
+  const response = await fetch(
+    `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
+  );
+
+  const result = await response.json();
+
+  if (result.result === true) {
+    emit('reload');
+  } else if (result.result === 'queued') {
+    clearInterval(refreshScoresInterval);
+    refreshScoresInterval = setInterval(refreshScores, 5000);
+  }
+};
 
 const isInvalidScore = computed(
   () =>
@@ -28,6 +46,16 @@ const isPendingScore = computed(
     props.proposal?.scores_state === 'pending' &&
     props.proposal.state === 'closed'
 );
+
+onMounted(() => {
+  if (isPendingScore.value || isInvalidScore.value) {
+    refreshScores();
+  }
+});
+
+onBeforeUnmount(() => {
+  clearInterval(refreshScoresInterval);
+});
 </script>
 
 <template>
