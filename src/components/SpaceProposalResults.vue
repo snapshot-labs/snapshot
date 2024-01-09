@@ -15,8 +15,6 @@ const props = defineProps<{
   isAdmin: boolean;
 }>();
 
-const emit = defineEmits(['reload']);
-
 const ts = Number((Date.now() / 1e3).toFixed());
 
 const isInvalidScore = computed(
@@ -43,7 +41,6 @@ const isPendingScore = computed(
       :proposal="proposal"
       :is-pending="isPendingScore"
       :is-invalid="isInvalidScore"
-      @reload="emit('reload')"
     />
     <template v-else>
       <SpaceProposalResultsList

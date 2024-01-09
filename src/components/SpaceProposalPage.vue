@@ -63,8 +63,8 @@ function clickVote() {
   !web3.value.account
     ? (modalAccountOpen.value = true)
     : !termsAccepted.value && props.space.terms
-      ? (modalTermsOpen.value = true)
-      : (modalOpen.value = true);
+    ? (modalTermsOpen.value = true)
+    : (modalOpen.value = true);
 }
 
 function reloadProposal() {
@@ -212,7 +212,6 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :results="results"
           :strategies="strategies"
           :is-admin="isAdmin"
-          @reload="reloadProposal()"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
