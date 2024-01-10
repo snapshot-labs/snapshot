@@ -1,14 +1,12 @@
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
-import { useStorage, useMediaQuery } from '@vueuse/core';
+import { useStorage, usePreferredColorScheme } from '@vueuse/core';
 
 export const DARK = 'dark';
 export const LIGHT = 'light';
 
-const osTheme = useMediaQuery('(prefers-color-scheme: dark)').value
-  ? DARK
-  : LIGHT;
+const preferredColor = usePreferredColorScheme();
 
-const userTheme = useStorage('snapshot.userTheme', osTheme);
+const userTheme = useStorage('snapshot.userTheme', '');
 
 function toggleUserTheme() {
   if (userTheme.value === LIGHT) {
@@ -19,7 +17,9 @@ function toggleUserTheme() {
 }
 
 const theme = computed(() =>
-  [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
+  [DARK, LIGHT].includes(userTheme.value)
+    ? userTheme.value
+    : preferredColor.value
 );
 
 const skinClass = ref('default');
@@ -59,9 +59,6 @@ export function useSkin() {
   );
 
   return {
-    skinClass,
-    userTheme,
-    theme,
     getThemeIcon,
     toggleUserTheme,
     getSkin
