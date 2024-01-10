@@ -11,7 +11,7 @@ const isCore = computed(() => {
 <template>
   <div
     v-if="isCore"
-    class="ml-1 rounded-full border px-[7px] text-xs text-skin-text"
+    class="ml-1 rounded-full border px-[7px] text-xs text-skin-text leading-[22px]"
   >
     {{ $t('isCore') }}
   </div>
