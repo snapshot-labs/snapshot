@@ -32,7 +32,6 @@ const content = [
     :size="{ width: '860', height: '628' }"
     @close="$emit('close')"
   >
-    <!-- TODO: Fix token contract address search bug -->
     <div class="flex">
       <div class="h-[628px] w-[240px] shrink-0 bg-snapshot relative">
         <div

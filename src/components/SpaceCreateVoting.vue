@@ -112,6 +112,7 @@ defineEmits<{
   />
   <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
+      <!-- TODO: Show warning that Boost is only available on Basic and Single -->
       <InputSelectVoteType
         :type="space.voting?.type || form.type"
         :disabled="
