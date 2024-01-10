@@ -43,35 +43,27 @@ watch(
     <div v-if="selectedChoices.length">
       <draggable
         v-model="selectedChoices"
-        :component-data="{ name: 'list' }"
+        :component-data="{ name: 'list', type: 'transition-group' }"
         item-key="id"
         data-testid="ranked-choice-selected-list"
+        v-bind="{ animation: 200 }"
         :disabled="userChoice?.length && !isEditing"
         @change="updateChoices"
       >
         <template #item="{ element, index }">
           <TuneButton
             class="!mb-2 last:!mb-0 flex w-full items-center justify-between !border-skin-link !px-3"
-            :class="{
-              '!cursor-default': !isEditing
-            }"
+            :class="[!isEditing ? '!cursor-default' : 'cursor-grabbing']"
           >
-            <div class="min-w-[60px] text-left">
-              ({{ getNumberWithOrdinal(index + 1) }})
+            <div class="pl-1 flex truncate">
+              <div>#{{ index + 1 }}</div>
+
+              <div class="truncate pl-1">
+                {{ proposal.choices[element - 1] }}
+              </div>
             </div>
-            <div class="mx-2 w-full truncate text-center">
-              {{ proposal.choices[element - 1] }}
-            </div>
-            <div
-              class="ml-[40px] min-w-[20px] text-right"
-              :data-testid="`ranked-choice-selected-delete-${index}`"
-              @click="removeChoice(index)"
-            >
-              <BaseIcon
-                v-if="!userChoice || isEditing"
-                name="close"
-                size="12"
-              />
+            <div class="pl-6">
+              <i-ho-menu-alt-4 class="text-sm" />
             </div>
           </TuneButton>
         </template>
