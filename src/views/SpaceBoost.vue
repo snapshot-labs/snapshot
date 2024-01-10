@@ -446,7 +446,7 @@ watch(
             This contract is not audited and in beta.
           </div>
           <TuneButton primary class="w-full mt-3" @click="handleCreate">
-            Confirm
+            Create
           </TuneButton>
         </div>
       </template>
