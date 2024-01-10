@@ -1,13 +1,7 @@
 <script setup lang="ts">
-const props = withDefaults(
-  defineProps<{
-    state: string;
-    slim?: boolean;
-  }>(),
-  {
-    slim: false
-  }
-);
+const props = defineProps<{
+  state: string;
+}>();
 
 const stateClass = computed(() => {
   if (props.state === 'closed') return 'bg-[#BB6BD9]';
@@ -17,30 +11,10 @@ const stateClass = computed(() => {
 </script>
 
 <template>
-  <span v-if="slim" :class="stateClass" class="State slim text-white" />
-  <span
-    v-else
+  <div
+    class="text-white rounded-full px-[12px] text-sm h-[24px] w-fit leading-[23px]"
     :class="stateClass"
-    class="State text-white"
-    v-text="$t(`proposals.states.${state}`)"
-  />
+  >
+    {{ $t(`proposals.states.${state}`) }}
+  </div>
 </template>
-
-<style scoped>
-.State {
-  font-size: 16px;
-  height: 26px;
-  vertical-align: middle;
-  padding: 0 12px;
-  border-radius: 14px;
-  line-height: 24px;
-}
-
-.State.slim {
-  padding: 0;
-  height: 12px;
-  width: 13px;
-  border-radius: 50%;
-  display: inline-block;
-}
-</style>
