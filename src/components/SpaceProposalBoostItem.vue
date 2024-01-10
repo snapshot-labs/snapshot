@@ -16,7 +16,7 @@ const { formatNumber, getNumberFormatter } = useIntl();
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
-    props.boost.balance,
+    props.boost.poolSize,
     props.boost.token.decimals
   );
   return formatNumber(

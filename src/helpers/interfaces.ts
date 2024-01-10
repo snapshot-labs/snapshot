@@ -432,7 +432,7 @@ export interface BoostStrategy {
 export type BoostSubgraphResult = {
   id: string;
   strategyURI: string;
-  balance: number;
+  poolSize: number;
   guard: string;
   start: string;
   end: string;

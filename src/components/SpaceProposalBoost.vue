@@ -56,35 +56,40 @@ function handleStart() {
 
 async function loadBoosts() {
   try {
-    const { boosts: response } = await subgraphRequest(
+    const { proposal: response } = await subgraphRequest(
       'https://api.thegraph.com/subgraphs/name/pscott/boost-sepolia',
       {
-        boosts: {
-          __args: {},
-          id: true,
-          strategyURI: true,
-          balance: true,
-          guard: true,
-          start: true,
-          end: true,
-          owner: true,
-          chainId: true,
-          token: {
-            id: true,
-            name: true,
-            symbol: true,
-            decimals: true
+        proposal: {
+          __args: {
+            id: props.proposal.id
           },
-          strategy: {
-            name: true,
-            params: {
-              version: true,
-              proposal: true,
-              eligibility: {
-                choice: true
-              },
-              distribution: {
-                type: true
+
+          boosts: {
+            id: true,
+            strategyURI: true,
+            poolSize: true,
+            guard: true,
+            start: true,
+            end: true,
+            owner: true,
+            chainId: true,
+            token: {
+              id: true,
+              name: true,
+              symbol: true,
+              decimals: true
+            },
+            strategy: {
+              name: true,
+              params: {
+                version: true,
+                proposal: true,
+                eligibility: {
+                  choice: true
+                },
+                distribution: {
+                  type: true
+                }
               }
             }
           }
@@ -92,10 +97,7 @@ async function loadBoosts() {
       }
     );
 
-    // TODO: Fix query and remove filter
-    boosts.value = response.filter(
-      (boost: any) => boost.strategy.params.proposal === props.proposal.id
-    );
+    boosts.value = response.boosts;
     console.log(
       '🚀 ~ file: SpaceProposalBoost.vue:99 ~ loadBoosts ~ boosts.value :',
       boosts.value
