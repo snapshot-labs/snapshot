@@ -176,6 +176,9 @@ const strategy = computed<BoostStrategy>(() => {
       ? undefined
       : form.value.eligibility.choice;
 
+  const eligibilityType =
+    form.value.eligibility.choice === 'any' ? 'incentive' : 'bribe';
+
   const limit =
     form.value.distribution.type === 'weighted' &&
     form.value.distribution.ratioLimit
@@ -188,6 +191,7 @@ const strategy = computed<BoostStrategy>(() => {
       version: '0.0.1',
       proposal: proposal.value.id,
       eligibility: {
+        type: eligibilityType,
         choice
       },
       distribution: {
