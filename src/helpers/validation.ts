@@ -1,9 +1,8 @@
-import type { ErrorObject } from 'ajv';
 import snapshot from '@snapshot-labs/snapshot.js';
 
 const { env } = useApp();
 
-function getErrorMessage(errorObject: ErrorObject): string {
+function getErrorMessage(errorObject): string {
   if (!errorObject.message) return 'Invalid field.';
 
   if (errorObject.keyword === 'format') {
@@ -33,7 +32,7 @@ export function validateForm(
   }
 ): Record<string, any> {
   const valid = snapshot.utils.validateSchema(schema, form, {
-    spaceType: options.spaceType ? options.spaceType : 'default',
+    spaceType: options.spaceType || 'default',
     snapshotEnv: env === 'production' ? 'mainnet' : 'default'
   });
   if (!Array.isArray(valid)) return {};
@@ -55,7 +54,7 @@ function transformAjvErrors(errors): ValidationErrorOutput {
     };
   });
 
-  return errors.reduce((output: ValidationErrorOutput, error: ErrorObject) => {
+  return errors.reduce((output: ValidationErrorOutput, error) => {
     const path: string[] = extractPathFromError(error);
 
     // Skip the current error if the path is empty
@@ -73,7 +72,7 @@ function transformAjvErrors(errors): ValidationErrorOutput {
   }, {});
 }
 
-function extractPathFromError(error: ErrorObject): string[] {
+function extractPathFromError(error): string[] {
   if (!error.instancePath) {
     return [];
   }
