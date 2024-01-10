@@ -5,6 +5,7 @@ import { proposalValidation } from '@/helpers/snapshot';
 import Plugin from '@/plugins/safeSnap';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import proposalSchema from '@snapshot-labs/snapshot.js/src/schemas/proposal.json';
 
 const safeSnapPlugin = new Plugin();
 
@@ -14,11 +15,16 @@ enum Step {
   PLUGINS
 }
 
-const BODY_LIMIT_CHARACTERS = 20000;
-
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
+const spaceType = computed(() => (props.space.turbo ? 'turbo' : 'default'));
+const bodyCharactersLimit = computed(
+  () =>
+    proposalSchema.definitions.Proposal.properties.body.maxLengthWithSpaceType[
+      spaceType.value
+    ]
+);
 
 useMeta({
   title: {
@@ -47,8 +53,12 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
 const { containsShortUrl } = useShortUrls();
-const { isValid: isValidSpaceSettings, populateForm } =
-  useFormSpaceSettings('settings');
+const { isValid: isValidSpaceSettings, populateForm } = useFormSpaceSettings(
+  'settings',
+  {
+    spaceType: spaceType.value
+  }
+);
 
 const {
   form,
@@ -58,7 +68,9 @@ const {
   sourceProposal,
   validationErrors,
   resetForm
-} = useFormSpaceProposal();
+} = useFormSpaceProposal({
+  spaceType: spaceType.value
+});
 
 const isValidAuthor = ref(false);
 const validationLoading = ref(false);
@@ -128,7 +140,7 @@ const isFormValid = computed(() => {
 
   return (
     !isSending.value &&
-    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
+    form.value.body.length <= bodyCharactersLimit.value &&
     dateEnd.value &&
     dateEnd.value > dateStart.value &&
     form.value.snapshot &&
@@ -154,7 +166,7 @@ const stepIsValid = computed(() => {
   if (
     currentStep.value === Step.CONTENT &&
     form.value.name &&
-    form.value.body.length <= BODY_LIMIT_CHARACTERS &&
+    form.value.body.length <= bodyCharactersLimit.value &&
     isValidAuthor.value &&
     !validationErrors.value.name &&
     !validationErrors.value.body &&
@@ -448,7 +460,7 @@ onMounted(() => populateForm(props.space));
         v-if="currentStep === Step.CONTENT"
         :space="space"
         :preview="preview"
-        :body-limit="BODY_LIMIT_CHARACTERS"
+        :body-limit="bodyCharactersLimit"
       />
 
       <!-- Step 2 -->
