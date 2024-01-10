@@ -128,7 +128,10 @@ const createStatusModalConfig = computed(() => {
     case 'error':
       return {
         title: 'Transaction failed',
-        subtitle: 'Oops... Your boost creation failed!',
+        subtitle:
+          createTx.value?.hash ||
+          approveTx.value?.hash ||
+          'Oops... Your boost creation failed!',
         variant: 'error' as const
       };
     default:
