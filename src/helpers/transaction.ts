@@ -1,13 +1,13 @@
 import { ERC20ABI } from '@/helpers/constants';
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
 
-export async function sendApprovalTransaction(
+export function sendApprovalTransaction(
   provider: any,
   token: string,
   contract: string,
   amount: string
 ) {
-  const approveTx = await sendTransaction(
+  return sendTransaction(
     provider,
     token,
     ERC20ABI,
@@ -15,6 +15,4 @@ export async function sendApprovalTransaction(
     [contract, amount],
     {}
   );
-
-  return approveTx.wait(1);
 }

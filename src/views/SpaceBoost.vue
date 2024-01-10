@@ -116,7 +116,7 @@ const createStatusModalConfig = computed(() => {
     case (createTx.value?.hash || approveTx.value?.hash) && 'pending':
       return {
         title: 'Transaction pending',
-        subtitle: createTx.value.hash || approveTx.value.hash,
+        subtitle: createTx.value?.hash || approveTx.value?.hash,
         variant: 'loading' as const
       };
     case 'success':
