@@ -57,7 +57,7 @@ function handleStart() {
 async function loadBoosts() {
   try {
     const { proposal: response } = await subgraphRequest(
-      'https://api.thegraph.com/subgraphs/name/pscott/boost-sepolia',
+      'https://api.thegraph.com/subgraphs/name/snapshot-labs/boost-sepolia',
       {
         proposal: {
           __args: {
