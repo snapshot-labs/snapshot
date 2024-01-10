@@ -44,6 +44,7 @@ const { account, updatingAccount, updateAccount } = useAccount();
 const proposal = ref();
 const createStatus = ref('');
 const createTx = ref();
+const approveTx = ref();
 const customTokens = ref<Token[]>([]);
 const modalWrongNetworkOpen = ref(false);
 const form = ref<Form>({
@@ -112,10 +113,10 @@ const createStatusModalConfig = computed(() => {
         subtitle: 'Please confirm deposit on your wallet.',
         variant: 'loading' as const
       };
-    case createTx.value?.hash && 'pending':
+    case (createTx.value?.hash || approveTx.value?.hash) && 'pending':
       return {
         title: 'Transaction pending',
-        subtitle: createTx.value.hash,
+        subtitle: createTx.value.hash || approveTx.value.hash,
         variant: 'loading' as const
       };
     case 'success':
@@ -237,25 +238,28 @@ function setErrorStatus(error: string) {
 
 async function handleApproval() {
   createStatus.value = 'approve';
-  // TODO: Show tx hash in modal when approving
+
   try {
-    await sendApprovalTransaction(
+    approveTx.value = await sendApprovalTransaction(
       auth.web3,
       form.value.token,
       BOOST_CONTRACTS[form.value.network],
       amountParsed.value
     );
 
+    createStatus.value = 'pending';
+
+    await approveTx.value.wait(1);
+
     await updateAccount(
       form.value.token,
       form.value.network,
       BOOST_CONTRACTS[form.value.network]
     );
+    handleCreate();
   } catch (e: any) {
     console.log('Approval error:', e);
     setErrorStatus(e.message);
-  } finally {
-    handleCreate();
   }
 }
 
