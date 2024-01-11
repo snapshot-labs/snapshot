@@ -447,8 +447,7 @@ watch(
         <div class="border rounded-xl p-3">
           <h4 class="leading-5 mb-1">Create boost</h4>
           <p class="text-md leading-5">
-            Once created, a boost cannot be modified. Ensure everything is
-            correct before confirming.
+            Once a boost is created, it can no longer be modified.
           </p>
           <div class="flex justify-center mt-3 leading-5">
             <i-ho-exclamation-circle class="inline-block text-sm mr-2" />
