@@ -78,16 +78,18 @@ const claimAllAmountFormatted = computed(() => {
 });
 
 async function handleClaimAll() {
-  if (loadingRewards.value) return;
+  if (loadingRewards.value || !boostRewards.value.length) return;
   if (
     firstEligibleBoost.value.chainId !== web3.value.network.chainId.toString()
   ) {
     modalWrongNetworkOpen.value = true;
     return;
   }
-  await loadVouchers();
 
   try {
+    await loadVouchers();
+    if (!boostVouchers.value.length) throw new Error('No vouchers found');
+
     claimStatus.value = 'claiming';
     const boosts = boostVouchers.value.map(voucher => ({
       boostId: voucher.boost_id,
@@ -120,8 +122,7 @@ async function loadVouchers() {
     boostVouchers.value = [];
     console.log('Get vouchers error:', e);
   }
-  // boostVouchers.value[0].reward = '10000000000000000';
-  // TODO: Fix reward
+
   console.log(
     '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
     boostVouchers.value
@@ -139,8 +140,6 @@ async function loadRewards() {
       web3Account.value,
       boosts
     );
-    // boostRewards.value[0].reward = '10000000000000000';
-    // TODO: Fix reward
   } catch (e) {
     boostRewards.value = [];
     console.log('Get rewards error:', e);
@@ -166,7 +165,7 @@ watch(
 <template>
   <TuneBlock
     slim
-    class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0"
+    class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
   >
     <div>
       <div
