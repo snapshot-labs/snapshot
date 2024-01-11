@@ -170,7 +170,6 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           </div>
 
           <SpaceProposalVote
-            v-if="proposal.state === 'active'"
             v-model="selectedChoices"
             :proposal="proposal"
             @open="modalOpen = true"

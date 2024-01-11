@@ -47,11 +47,7 @@ onMounted(() => {
 
 <template>
   <div>
-    <TheLayout v-if="loadingProposal" :slim="false">
-      <template #content-left>
-        <LoadingPage />
-      </template>
-    </TheLayout>
+    <LoadingSpinner v-if="loadingProposal" class="overlay big" />
 
     <SpaceProposalPage
       v-else-if="proposal && space"
