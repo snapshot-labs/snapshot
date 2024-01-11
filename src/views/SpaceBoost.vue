@@ -132,6 +132,12 @@ const createStatusModalConfig = computed(() => {
           'Oops... Your boost creation failed!',
         variant: 'error' as const
       };
+    case 'pinning':
+      return {
+        title: 'Pinning boost',
+        subtitle: 'Please wait while we pin the boost on IPFS.',
+        variant: 'loading' as const
+      };
     default:
       return undefined;
   }
@@ -326,13 +332,12 @@ async function handleCreate() {
     return;
   }
 
-  createStatus.value = 'confirm';
-
   try {
+    createStatus.value = 'pinning';
     const { cid: strategyURI } = await pin(strategy.value);
-    // TODO: SHow pinning in modal
-    if (!strategyURI) throw new Error('Strategy URI is empty');
+    if (!strategyURI) throw new Error('Error pinning the strategy');
 
+    createStatus.value = 'confirm';
     createTx.value = await createBoost(auth.web3, form.value.network, {
       strategyURI,
       token: form.value.token,
