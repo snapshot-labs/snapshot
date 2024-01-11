@@ -60,6 +60,7 @@ const content = [
             <h4 class="leading-5 mb-2">{{ c.title }}</h4>
             <p class="text-md leading-5">{{ c.description }}</p>
           </div>
+          <!-- TODO: Add don't show again checkbox -->
           <TuneButton @click="$emit('start')"> Get started </TuneButton>
         </div>
       </div>

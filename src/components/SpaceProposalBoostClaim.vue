@@ -149,7 +149,7 @@ async function loadRewards() {
   }
 
   console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ boostRewards.value:',
+    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ rewards:',
     boostRewards.value
   );
 }

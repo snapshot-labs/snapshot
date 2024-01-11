@@ -384,7 +384,7 @@ watch(
                 label="Eligible users"
               />
             </TuneBlock>
-
+            <!-- TODO: Add validation when invalid form -->
             <TuneBlock>
               <template #title>
                 <TuneBlockHeader
@@ -449,6 +449,7 @@ watch(
 
             This contract is not audited and in beta.
           </div>
+          <!-- TODO: Add loading while page and tokens load -->
           <TuneButton primary class="w-full mt-3" @click="handleCreate">
             Create
           </TuneButton>
