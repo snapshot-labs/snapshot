@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable';
-import { getNumberWithOrdinal } from '@/helpers/utils';
 import { Proposal } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
@@ -17,10 +16,6 @@ const selectedChoices = ref<number[]>([]);
 function selectChoice(i) {
   selectedChoices.value.push(i);
   emit('selectChoice', selectedChoices.value);
-}
-
-function removeChoice(i) {
-  selectedChoices.value.splice(i, 1);
 }
 
 function updateChoices() {
