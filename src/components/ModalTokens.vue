@@ -105,7 +105,7 @@ watch(searchInput, value => {
 });
 
 watch(
-  () => props.selectedToken,
+  () => props.open,
   () => {
     searchInput.value = '';
   }
