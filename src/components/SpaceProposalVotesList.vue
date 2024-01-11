@@ -7,16 +7,14 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const { web3Account } = useWeb3();
-const {
-  profiles,
-  userPrioritizedVotes,
-  loadingVotes,
-  loadVotes,
-  loadUserVote
-} = useProposalVotes(props.proposal, 6);
+const VOTES_LIMIT = 6;
 
-const modalVotesmOpen = ref(false);
+const { profiles, votes, loadingVotes, loadVotes } = useProposalVotes(
+  props.proposal,
+  VOTES_LIMIT
+);
+
+const modalVotesOpen = ref(false);
 
 const voteCount = computed(() => props.proposal.votes);
 
@@ -31,7 +29,7 @@ async function downloadReport(proposalId: string) {
   }
 }
 
-const errorMessagekeyPrefix = computed(() => {
+const errorMessageKeyPrefix = computed(() => {
   const knownErrors = ['PENDING_GENERATION', 'UNSUPPORTED_ENV'];
 
   return `proposal.downloadCsvVotes.postDownloadModal.message.${camelCase(
@@ -44,8 +42,6 @@ const errorMessagekeyPrefix = computed(() => {
 onMounted(async () => {
   await loadVotes();
 });
-
-watch(web3Account, loadUserVote, { immediate: true });
 </script>
 
 <template>
@@ -86,10 +82,10 @@ watch(web3Account, loadUserVote, { immediate: true });
             class="mx-auto my-4 text-center text-[3em] text-red"
           />
           <h3>
-            {{ $t(`${errorMessagekeyPrefix}.title`) }}
+            {{ $t(`${errorMessageKeyPrefix}.title`) }}
           </h3>
           <p class="mt-3 italic">
-            {{ $t(`${errorMessagekeyPrefix}.description`) }}
+            {{ $t(`${errorMessageKeyPrefix}.description`) }}
           </p>
         </div>
 
@@ -105,7 +101,7 @@ watch(web3Account, loadUserVote, { immediate: true });
       </BaseModal>
     </template>
     <SpaceProposalVotesListItem
-      v-for="(vote, i) in userPrioritizedVotes.slice(0, 6)"
+      v-for="(vote, i) in votes"
       :key="i"
       :vote="vote"
       :profiles="profiles"
@@ -113,13 +109,14 @@ watch(web3Account, loadUserVote, { immediate: true });
       :proposal="proposal"
       :class="{ '!border-0': i === 0 }"
       :data-testid="`proposal-votes-list-item-${i}`"
+      class="!px-4"
     />
     <a
-      v-if="userPrioritizedVotes.length < voteCount"
+      v-if="votes.length > VOTES_LIMIT"
       tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-      @click="modalVotesmOpen = true"
-      @keypress="modalVotesmOpen = true"
+      @click="modalVotesOpen = true"
+      @keypress="modalVotesOpen = true"
     >
       <span v-text="$t('seeMore')" />
     </a>
@@ -127,8 +124,8 @@ watch(web3Account, loadUserVote, { immediate: true });
       <SpaceProposalVotesModal
         :space="space"
         :proposal="proposal"
-        :open="modalVotesmOpen"
-        @close="modalVotesmOpen = false"
+        :open="modalVotesOpen"
+        @close="modalVotesOpen = false"
       />
     </teleport>
   </BaseBlock>
