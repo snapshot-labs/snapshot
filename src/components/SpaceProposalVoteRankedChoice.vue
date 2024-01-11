@@ -58,7 +58,7 @@ watch(
               </div>
             </div>
             <div class="pl-6">
-              <i-ho-menu-alt-4 class="text-sm" />
+              <i-ho-menu-alt-4 v-if="isEditing" class="text-sm" />
             </div>
           </TuneButton>
         </template>
