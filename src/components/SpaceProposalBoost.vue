@@ -3,6 +3,7 @@ import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
 import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { BigNumber } from '@ethersproject/bignumber';
+import { useStorage } from '@vueuse/core';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -17,6 +18,10 @@ const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
+const dontShowModalAgain = useStorage(
+  'snapshot.boosts-modal-dont-show-again',
+  false
+);
 
 const newBoostLink = computed(() => ({
   name: 'spaceBoost',
@@ -92,6 +97,14 @@ async function loadAll() {
   loaded.value = true;
 }
 
+function handleBoost() {
+  if (dontShowModalAgain.value) {
+    handleStart();
+  } else {
+    isOpen.value = true;
+  }
+}
+
 watch(
   web3Account,
   async () => {
@@ -143,7 +156,7 @@ watch(
               v-if="isActive"
               type="button"
               class="flex items-center pl-[18px] pr-[22px]"
-              @click="isOpen = true"
+              @click="handleBoost"
             >
               <i-ho-plus class="mr-2 text-xs" />
               <span> New boost </span>
@@ -208,7 +221,7 @@ watch(
             <p>Incentivize people to vote with rewards</p>
           </div>
 
-          <TuneButton class="flex items-center" @click="isOpen = true">
+          <TuneButton class="flex items-center" @click="handleBoost">
             <i-ho-fire class="text-sm mr-2" />
             <div>Boost</div>
           </TuneButton>

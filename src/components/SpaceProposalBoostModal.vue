@@ -1,10 +1,17 @@
 <script setup lang="ts">
+import { useStorage } from '@vueuse/core';
+
 defineProps<{
   open: boolean;
   size?: { width: string; height: string };
 }>();
 
 defineEmits(['close', 'start']);
+
+const dontShowAgain = useStorage(
+  'snapshot.boosts-modal-dont-show-again',
+  false
+);
 
 const content = [
   {
@@ -60,8 +67,16 @@ const content = [
             <h4 class="leading-5 mb-2">{{ c.title }}</h4>
             <p class="text-md leading-5">{{ c.description }}</p>
           </div>
-          <!-- TODO: Add don't show again checkbox -->
-          <TuneButton @click="$emit('start')"> Get started </TuneButton>
+
+          <div class="flex justify-between items-center">
+            <TuneButton @click="$emit('start')"> Get started </TuneButton>
+            <TuneCheckbox
+              id="dont-show-again"
+              v-model="dontShowAgain"
+              class="text-sm"
+              hint="Don't show this again"
+            />
+          </div>
         </div>
       </div>
     </div>
