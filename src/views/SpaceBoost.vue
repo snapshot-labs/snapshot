@@ -93,13 +93,7 @@ const isLoading = computed(() => {
 });
 
 const isValidForm = computed(() => {
-  if (!form.value.token) return false;
-  if (!form.value.amount) return false;
-  if (
-    form.value.distribution.hasRatioLimit &&
-    !form.value.distribution.ratioLimit
-  )
-    return false;
+  if (Object.keys(formValidation.value).length > 0) return false;
   return true;
 });
 
@@ -117,10 +111,10 @@ const createStatusModalConfig = computed(() => {
         subtitle: 'Please confirm deposit on your wallet.',
         variant: 'loading' as const
       };
-    case (createTx.value?.hash || approveTx.value?.hash) && 'pending':
+    case 'pending':
       return {
         title: 'Transaction pending',
-        subtitle: createTx.value?.hash || approveTx.value?.hash,
+        subtitle: createTx.value?.hash || approveTx.value?.hash || '',
         variant: 'loading' as const
       };
     case 'success':
@@ -206,7 +200,7 @@ const strategy = computed<BoostStrategy>(() => {
   };
 });
 
-const formErrors = computed(() => {
+const formValidation = computed(() => {
   const errors: Record<string, string> = {};
 
   if (form.value.distribution.hasRatioLimit) {
@@ -227,7 +221,21 @@ const formErrors = computed(() => {
     errors.amount = 'Please enter a value greater than 0';
   }
 
-  return showFormErrors.value ? errors : {};
+  if (selectedToken.value) {
+    const balance = BigNumber.from(account.value.balance || '0');
+
+    const amount = BigNumber.from(amountParsed.value || '0');
+
+    if (balance.lt(amount)) {
+      errors.balance = 'Insufficient balance';
+    }
+  }
+
+  return errors;
+});
+
+const formErrorMessages = computed(() => {
+  return showFormErrors.value ? formValidation.value : {};
 });
 
 function handleAddCustomToken(token: Token) {
@@ -295,6 +303,8 @@ async function handleApproval() {
   } catch (e: any) {
     console.log('Approval error:', e);
     setErrorStatus(e.message);
+  } finally {
+    approveTx.value = undefined;
   }
 }
 
@@ -420,7 +430,6 @@ watch(
                 label="Eligible users"
               />
             </TuneBlock>
-            <!-- TODO: Add validation when invalid form -->
             <TuneBlock>
               <template #title>
                 <TuneBlockHeader
@@ -440,7 +449,11 @@ watch(
                   :network="form.network"
                   :tokens="tokens"
                   :loading="loadingBalances"
-                  :error="formErrors?.token || formErrors?.amount"
+                  :error="
+                    formErrorMessages?.token ||
+                    formErrorMessages?.amount ||
+                    formErrorMessages?.balance
+                  "
                   @update:selected-token="form.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
@@ -464,7 +477,7 @@ watch(
                   type="number"
                   placeholder="e.g. 1000"
                   always-show-error
-                  :error="formErrors?.ratioLimit"
+                  :error="formErrorMessages?.ratioLimit"
                 >
                   <template #after>
                     <div class="-mr-[8px]">VP</div>
