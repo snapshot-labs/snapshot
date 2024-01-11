@@ -37,9 +37,10 @@ type Form = {
 const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
-const { loadBalances, tokens, loading } = useBalances();
+const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
+const { modalAccountOpen } = useModal();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -84,6 +85,10 @@ const eligibilityOptions = computed(() => {
     },
     ...proposalChoices
   ];
+});
+
+const isLoading = computed(() => {
+  return loadingBalances.value || updatingAccount.value;
 });
 
 const isValidForm = computed(() => {
@@ -236,7 +241,7 @@ const requireApproval = computed(() =>
 );
 
 function setErrorStatus(error: string) {
-  if (error.includes('user rejected transaction')) {
+  if (error?.includes('user rejected transaction')) {
     createStatus.value = '';
   } else {
     createStatus.value = 'error';
@@ -271,6 +276,7 @@ async function handleApproval() {
 }
 
 async function handleCreate() {
+  if (!web3Account.value) return (modalAccountOpen.value = true);
   if (!isValidForm.value) return;
   if (isWrongNetwork.value) {
     modalWrongNetworkOpen.value = true;
@@ -403,7 +409,7 @@ watch(
                   :selected-token="selectedToken"
                   :network="form.network"
                   :tokens="tokens"
-                  :loading="loading"
+                  :loading="loadingBalances"
                   @update:selected-token="form.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
@@ -449,8 +455,12 @@ watch(
 
             This contract is not audited and in beta.
           </div>
-          <!-- TODO: Add loading while page and tokens load -->
-          <TuneButton primary class="w-full mt-3" @click="handleCreate">
+          <TuneButton
+            :loading="isLoading"
+            primary
+            class="w-full mt-3"
+            @click="handleCreate"
+          >
             Create
           </TuneButton>
         </div>
