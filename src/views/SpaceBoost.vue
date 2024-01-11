@@ -10,7 +10,7 @@ import {
   SNAPSHOT_GUARD_ADDRESS,
   BOOST_CONTRACTS
 } from '@/helpers/boost';
-import { ETH_CONTRACT, TWO_WEEKS } from '@/helpers/constants';
+import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
@@ -41,6 +41,7 @@ const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
 const { modalAccountOpen } = useModal();
+const { getRelativeProposalPeriod } = useIntl();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -204,6 +205,12 @@ const strategy = computed<BoostStrategy>(() => {
       }
     }
   };
+});
+
+const isEndingSoon = computed(() => {
+  if (!proposal.value) return false;
+  const now = Math.floor(Date.now() / 1000);
+  return proposal.value.end - now < ONE_DAY;
 });
 
 const formValidation = computed(() => {
@@ -408,7 +415,6 @@ watch(
 <template>
   <div>
     <SpaceBreadcrumbs :space="space" />
-    <!-- TODO: Show warning proposal ending soon -->
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
         <LoadingPage v-if="!proposal" />
@@ -501,7 +507,7 @@ watch(
             Once a boost is created, it can no longer be modified.
           </p>
           <div class="flex justify-center mt-3 leading-5">
-            <i-ho-exclamation-circle class="inline-block text-sm mr-2" />
+            <i-ho-exclamation-circle class="inline-block text-sm mr-1" />
 
             This contract is not audited and in beta.
           </div>
@@ -513,6 +519,16 @@ watch(
           >
             Create
           </TuneButton>
+          <div
+            v-if="isEndingSoon"
+            class="text-snapshot flex items-center gap-1 justify-center mt-[6px]"
+          >
+            <i-ho-clock />
+            Proposal
+            {{
+              getRelativeProposalPeriod('active', proposal.start, proposal.end)
+            }}
+          </div>
         </div>
       </template>
     </TheLayout>
