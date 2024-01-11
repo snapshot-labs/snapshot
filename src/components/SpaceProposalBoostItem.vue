@@ -68,7 +68,9 @@ const claimedAmount = computed(() => {
         <template v-if="boost.strategy.params.eligibility?.choice !== null">
           Who votes
           <TuneTag
-            :label="proposal.choices[boost.strategy.params.eligibility.choice]"
+            :label="
+              proposal.choices[boost.strategy.params.eligibility.choice - 1]
+            "
             class="text-skin-heading"
           />
         </template>
