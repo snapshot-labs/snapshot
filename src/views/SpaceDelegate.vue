@@ -155,10 +155,7 @@ onBeforeRouteLeave(async () => {
 
 <template>
   <div class="mb-[80px] md:mb-0">
-    <SpaceBreadcrumbs
-      :space="space"
-      class="mx-4 -mt-1 pb-[16px] lg:pb-[20px]"
-    />
+    <SpaceBreadcrumbs :space="space" />
 
     <BaseContainer v-if="isLoggedUser" class="pb-2 pt-3 lg:py-[20px]">
       <ButtonSwitch
