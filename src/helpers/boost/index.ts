@@ -55,9 +55,6 @@ export async function claimTokens(
   },
   signature: string
 ): Promise<any> {
-  console.log('🚀 ~ file: index.ts:61 ~ signature:', signature);
-  console.log('🚀 ~ file: index.ts:61 ~ boost:', boost);
-
   const { boostId, recipient, amount } = boost;
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
