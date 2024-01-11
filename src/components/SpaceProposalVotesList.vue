@@ -112,7 +112,7 @@ onMounted(async () => {
       class="!px-4"
     />
     <a
-      v-if="votes.length > VOTES_LIMIT"
+      v-if="proposal.votes > VOTES_LIMIT"
       tabindex="0"
       class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
       @click="modalVotesOpen = true"
