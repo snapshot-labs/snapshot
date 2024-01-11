@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
+import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
-import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { BigNumber } from '@ethersproject/bignumber';
 
 const props = defineProps<{
@@ -56,52 +57,12 @@ function handleStart() {
 
 async function loadBoosts() {
   try {
-    const { proposal: response } = await subgraphRequest(
-      'https://api.thegraph.com/subgraphs/name/snapshot-labs/boost-sepolia',
-      {
-        proposal: {
-          __args: {
-            id: props.proposal.id
-          },
-
-          boosts: {
-            id: true,
-            strategyURI: true,
-            poolSize: true,
-            guard: true,
-            start: true,
-            end: true,
-            owner: true,
-            chainId: true,
-            token: {
-              id: true,
-              name: true,
-              symbol: true,
-              decimals: true
-            },
-            strategy: {
-              name: true,
-              params: {
-                version: true,
-                proposal: true,
-                eligibility: {
-                  choice: true
-                },
-                distribution: {
-                  type: true
-                }
-              }
-            }
-          }
-        }
-      }
+    const requests = SUPPORTED_NETWORKS.map(chainId =>
+      getBoosts(props.proposal.id, chainId)
     );
+    const responses = await Promise.all(requests);
 
-    boosts.value = response.boosts;
-    console.log(
-      '🚀 ~ file: SpaceProposalBoost.vue:99 ~ loadBoosts ~ boosts.value :',
-      boosts.value
-    );
+    boosts.value = responses.map(response => response.proposal.boosts).flat();
   } catch (e) {
     console.log('Load boosts error:', e);
   }
@@ -110,22 +71,12 @@ async function loadBoosts() {
 async function loadClaims() {
   if (props.proposal.scores_state !== 'final' || !web3Account.value) return;
   try {
-    const { claims: response } = await subgraphRequest(
-      'https://api.thegraph.com/subgraphs/name/pscott/boost-sepolia',
-      {
-        claims: {
-          __args: {
-            where: {
-              recipient: '0x3901d0fde202af1427216b79f5243f8a022d68cf'
-            }
-          },
-          id: true,
-          amount: true
-        }
-      }
+    const requests = SUPPORTED_NETWORKS.map(chainId =>
+      getClaims(web3Account.value, chainId)
     );
+    const responses = await Promise.all(requests);
 
-    claims.value = response;
+    claims.value = responses.map(response => response.claims).flat();
   } catch (e) {
     console.log('Load boosts error:', e);
   }
