@@ -50,7 +50,11 @@ const spaceMembers = computed(() => {
         >
           {{ getUsername(address, profile) }}
         </span>
-        <BaseBadge :address="address" :members="spaceMembers" />
+        <BaseBadge
+          v-if="getUsername(address, profile) !== 'You'"
+          :address="address"
+          :members="spaceMembers"
+        />
       </div>
     </BaseLink>
   </PopoverHoverProfile>
