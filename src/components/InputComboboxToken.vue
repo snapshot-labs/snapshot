@@ -8,6 +8,7 @@ defineProps<{
   amount: string;
   selectedToken?: Token;
   loading?: boolean;
+  error?: string;
 }>();
 
 defineEmits(['update:selectedToken', 'addCustomToken', 'update:amount']);
@@ -27,6 +28,8 @@ function handleOpenTokenModal() {
   <TuneInput
     :model-value="amount"
     :label="label"
+    :error="error"
+    always-show-error
     placeholder="0.0"
     type="number"
     @update:model-value="$emit('update:amount', $event)"
@@ -35,7 +38,7 @@ function handleOpenTokenModal() {
       <button
         type="button"
         label="Token"
-        class="-mr-4 h-full bg-[--border-color-subtle] hover:bg-[--border-color-soft] rounded-r-full"
+        class="-mr-[23px] h-[40px] bg-[--border-color-subtle] hover:bg-[--border-color-soft] rounded-r-full"
         @click="handleOpenTokenModal"
       >
         <div

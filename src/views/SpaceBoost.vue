@@ -48,6 +48,7 @@ const createTx = ref();
 const approveTx = ref();
 const customTokens = ref<Token[]>([]);
 const modalWrongNetworkOpen = ref(false);
+const showFormErrors = ref(false);
 const form = ref<Form>({
   eligibility: {
     choice: 'any'
@@ -94,13 +95,11 @@ const isLoading = computed(() => {
 const isValidForm = computed(() => {
   if (!form.value.token) return false;
   if (!form.value.amount) return false;
-  if (!form.value.eligibility.choice) return false;
   if (
     form.value.distribution.hasRatioLimit &&
     !form.value.distribution.ratioLimit
   )
     return false;
-  if (updatingAccount.value) return false;
   return true;
 });
 
@@ -207,6 +206,30 @@ const strategy = computed<BoostStrategy>(() => {
   };
 });
 
+const formErrors = computed(() => {
+  const errors: Record<string, string> = {};
+
+  if (form.value.distribution.hasRatioLimit) {
+    if (!form.value.distribution.ratioLimit) {
+      errors.ratioLimit = 'Please enter a value';
+    } else if (Number(form.value.distribution.ratioLimit) === 0) {
+      errors.ratioLimit = 'Please enter a value greater than 0';
+    }
+  }
+
+  if (!form.value.token) {
+    errors.token = 'Please select a token';
+  }
+
+  if (!form.value.amount) {
+    errors.amount = 'Please enter a value';
+  } else if (Number(form.value.amount) === 0) {
+    errors.amount = 'Please enter a value greater than 0';
+  }
+
+  return showFormErrors.value ? errors : {};
+});
+
 function handleAddCustomToken(token: Token) {
   if (
     customTokens.value.find(
@@ -276,8 +299,14 @@ async function handleApproval() {
 }
 
 async function handleCreate() {
-  if (!web3Account.value) return (modalAccountOpen.value = true);
-  if (!isValidForm.value) return;
+  if (!web3Account.value) {
+    modalAccountOpen.value = true;
+    return;
+  }
+  if (!isValidForm.value) {
+    showFormErrors.value = true;
+    return;
+  }
   if (isWrongNetwork.value) {
     modalWrongNetworkOpen.value = true;
     return;
@@ -291,6 +320,7 @@ async function handleCreate() {
 
   try {
     const { cid: strategyURI } = await pin(strategy.value);
+    // TODO: SHow pinning in modal
     if (!strategyURI) throw new Error('Strategy URI is empty');
 
     createTx.value = await createBoost(auth.web3, form.value.network, {
@@ -410,6 +440,7 @@ watch(
                   :network="form.network"
                   :tokens="tokens"
                   :loading="loadingBalances"
+                  :error="formErrors?.token || formErrors?.amount"
                   @update:selected-token="form.token = $event"
                   @add-custom-token="handleAddCustomToken($event)"
                 />
@@ -432,6 +463,8 @@ watch(
                   label="Max amount of voting power"
                   type="number"
                   placeholder="e.g. 1000"
+                  always-show-error
+                  :error="formErrors?.ratioLimit"
                 >
                   <template #after>
                     <div class="-mr-[8px]">VP</div>
