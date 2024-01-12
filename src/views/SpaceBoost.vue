@@ -190,6 +190,8 @@ const strategy = computed<BoostStrategy>(() => {
       ? Number(form.value.distribution.ratioLimit)
       : undefined;
 
+  // TODO: Use NFT format
+
   return {
     name: 'proposal',
     params: {

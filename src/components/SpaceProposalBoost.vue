@@ -121,6 +121,7 @@ watch(
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
+      @reload="loadClaims"
     />
 
     <TuneBlock

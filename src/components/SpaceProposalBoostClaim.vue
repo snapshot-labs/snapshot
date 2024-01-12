@@ -12,11 +12,14 @@ const props = defineProps<{
   eligibleBoosts: BoostSubgraphResult[];
 }>();
 
+const emit = defineEmits(['reload']);
+
 const boostRewards = ref<Reward[]>([]);
 const boostVouchers = ref<Voucher[]>([]);
 const claimStatus = ref('');
 const modalWrongNetworkOpen = ref(false);
 const loadingRewards = ref(false);
+const claimTx = ref();
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
@@ -24,10 +27,16 @@ const { formatNumber, getNumberFormatter } = useIntl();
 
 const claimStatusModalConfig = computed(() => {
   switch (claimStatus.value) {
-    case 'claiming':
+    case 'approve':
       return {
         title: 'Confirm claim',
         subtitle: 'Please confirm transaction on your wallet.',
+        variant: 'loading' as const
+      };
+    case 'pending':
+      return {
+        title: 'Transaction pending',
+        subtitle: claimTx.value?.hash || '',
         variant: 'loading' as const
       };
     case 'success':
@@ -39,7 +48,7 @@ const claimStatusModalConfig = computed(() => {
     case 'error':
       return {
         title: 'Transaction failed',
-        subtitle: 'Oops... Your claim failed!',
+        subtitle: claimTx.value?.hash || 'Oops... Your claim failed!',
         variant: 'error' as const
       };
     default:
@@ -90,7 +99,8 @@ async function handleClaimAll() {
     await loadVouchers();
     if (!boostVouchers.value.length) throw new Error('No vouchers found');
 
-    claimStatus.value = 'claiming';
+    claimStatus.value = 'approve';
+
     const boosts = boostVouchers.value.map(voucher => ({
       boostId: voucher.boost_id,
       recipient: getAddress(web3Account.value),
@@ -98,8 +108,16 @@ async function handleClaimAll() {
     }));
     const signatures = boostVouchers.value.map(voucher => voucher.signature);
     const chainId = boostVouchers.value[0].chain_id;
-    await claimAllTokens(auth.web3, chainId, boosts, signatures);
-    claimStatus.value = 'success';
+    claimTx.value = await claimAllTokens(
+      auth.web3,
+      chainId,
+      boosts,
+      signatures
+    );
+
+    claimStatus.value = 'pending';
+
+    await claimTx.value.wait();
   } catch (e: any) {
     console.error('Claim error:', e);
     if (e.message.includes('user rejected transaction')) {
@@ -107,6 +125,10 @@ async function handleClaimAll() {
     } else {
       claimStatus.value = 'error';
     }
+  } finally {
+    claimTx.value = undefined;
+    claimStatus.value = '';
+    emit('reload');
   }
 }
 
@@ -163,53 +185,57 @@ watch(
 </script>
 
 <template>
-  <TuneBlock
-    slim
-    class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
-  >
-    <!-- TODO: Handle different tokens when claim -->
-    <div>
-      <div
-        class="bg-white w-[64px] h-[64px] rounded-[20px] flex justify-center items-center shadow-xl mx-auto relative"
-      >
-        <i-s-boost-icon class="text-black text-[20px]" />
+  <div>
+    <TuneBlock
+      slim
+      class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
+    >
+      <!-- TODO: Make sure to handle different tokens when claim -->
+      <div>
         <div
-          class="absolute bg-white border -top-[10px] -right-3 border-[#000000]/10 rounded-full flex items-center pr-2 pl-[6px] text-[#444]"
+          class="bg-white w-[64px] h-[64px] rounded-[20px] flex justify-center items-center shadow-xl mx-auto relative"
         >
-          <i-ho-gift class="text-[14px] mr-[2px]" />
-          <span class="text-sm">
-            {{ eligibleBoosts.length }}
-          </span>
+          <i-s-boost-icon class="text-black text-[20px]" />
+          <div
+            class="absolute bg-white border -top-[10px] -right-3 border-[#000000]/10 rounded-full flex items-center pr-2 pl-[6px] text-[#444]"
+          >
+            <i-ho-gift class="text-[14px] mr-[2px]" />
+            <span class="text-sm">
+              {{ eligibleBoosts.length }}
+            </span>
+          </div>
+        </div>
+        <div class="text-white text-md text-center leading-5 mt-3">
+          <div class="font-semibold mb-1">Claim rewards</div>
+          You can now claim your rewards!
         </div>
       </div>
-      <div class="text-white text-md text-center leading-5 mt-3">
-        <div class="font-semibold mb-1">Claim rewards</div>
-        You can now claim your rewards!
-      </div>
-    </div>
 
-    <div class="flex justify-center mt-3">
-      <TuneButton variant="white" class="text-white" @click="handleClaimAll">
-        <TuneLoadingSpinner v-if="loadingRewards" class="text-white" />
-        <div v-else class="flex items-center">
-          <i-ho-gift class="text-sm mr-2" />
-          Claim
-          <span v-if="canClaimAll" class="ml-[6px]">
-            {{ claimAllAmountFormatted }}
-            {{ firstEligibleBoost.token.symbol }}
-          </span>
-          <span v-else class="ml-[6px]">
-            {{ eligibleBoosts.length }} rewards
-          </span>
-        </div>
-      </TuneButton>
-    </div>
+      <div class="flex justify-center mt-3">
+        <TuneButton variant="white" class="text-white" @click="handleClaimAll">
+          <TuneLoadingSpinner v-if="loadingRewards" class="text-white" />
+          <div v-else class="flex items-center">
+            <i-ho-gift class="text-sm mr-2" />
+            Claim
+            <span v-if="canClaimAll" class="ml-[6px]">
+              {{ claimAllAmountFormatted }}
+              {{ firstEligibleBoost.token.symbol }}
+            </span>
+            <span v-else class="ml-[6px]">
+              {{ eligibleBoosts.length }} rewards
+            </span>
+          </div>
+        </TuneButton>
+      </div>
+    </TuneBlock>
+    <!-- TODO: Move to composable and root level and fix claim success modal -->
     <ModalTransactionStatus
       v-if="claimStatusModalConfig"
       open
       :variant="claimStatusModalConfig.variant"
       :title="claimStatusModalConfig?.title"
       :subtitle="claimStatusModalConfig?.subtitle"
+      :network="firstEligibleBoost?.chainId"
       @close="claimStatus = ''"
       @try-again="handleClaimAll"
     />
@@ -220,5 +246,5 @@ watch(
       @network-changed="handleClaimAll"
       @close="modalWrongNetworkOpen = false"
     />
-  </TuneBlock>
+  </div>
 </template>
