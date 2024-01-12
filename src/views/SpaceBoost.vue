@@ -305,7 +305,7 @@ async function handleApproval() {
 
     createStatus.value = 'pending';
 
-    await approveTx.value.wait(1);
+    await approveTx.value.wait();
 
     await updateAccount(
       form.value.token,
@@ -357,7 +357,7 @@ async function handleCreate() {
 
     createStatus.value = 'pending';
 
-    await createTx.value.wait(1);
+    await createTx.value.wait();
     createStatus.value = 'success';
   } catch (e: any) {
     console.log('Create boost error:', e);
