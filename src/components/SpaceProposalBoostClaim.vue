@@ -167,6 +167,7 @@ watch(
     slim
     class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
   >
+    <!-- TODO: Handle different tokens when claim -->
     <div>
       <div
         class="bg-white w-[64px] h-[64px] rounded-[20px] flex justify-center items-center shadow-xl mx-auto relative"
@@ -210,6 +211,7 @@ watch(
       :title="claimStatusModalConfig?.title"
       :subtitle="claimStatusModalConfig?.subtitle"
       @close="claimStatus = ''"
+      @try-again="handleClaimAll"
     />
     <ModalWrongNetwork
       v-if="firstEligibleBoost && canClaimAll"
