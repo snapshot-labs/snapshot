@@ -42,7 +42,7 @@ const isPendingScore = computed(
 );
 
 onMounted(() => {
-  if (isPendingScore.value || isInvalidScore.value) {
+  if (isPendingScore.value) {
     refreshScores();
   }
 });
