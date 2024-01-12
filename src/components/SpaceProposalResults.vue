@@ -18,15 +18,17 @@ const props = defineProps<{
 const emit = defineEmits(['reload']);
 
 const refreshScores = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
-  );
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
+    );
 
-  const result = await response.json();
+    const result = await response.json();
 
-  if (result.result === true) {
-    emit('reload');
-  }
+    if (result.result === true) {
+      emit('reload');
+    }
+  } catch (e) {}
 };
 
 const isInvalidScore = computed(
