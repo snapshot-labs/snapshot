@@ -2,7 +2,8 @@
 import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
-import spaceSchema from '@snapshot-labs/snapshot.js/src/schemas/space.json';
+
+const spaceSchema = schemas.space;
 
 const props = defineProps<{
   context: 'setup' | 'settings';
