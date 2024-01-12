@@ -89,5 +89,5 @@ export const CHAIN_CURRENCIES: Record<string, ChainCurrency> = {
   }
 };
 
-export const TWO_WEEKS = 1209600;
+export const TWO_WEEKS = 300;
 export const ONE_DAY = 86400;
