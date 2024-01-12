@@ -84,7 +84,6 @@ const handleDrop = e => {
         v-else
         v-model="inputName"
         :label="$t('create.proposalTitle')"
-        :max-length="128"
         :error="validationErrors?.name"
         focus-on-mount
         data-testid="input-proposal-title"
@@ -112,7 +111,6 @@ const handleDrop = e => {
               ref="textAreaEl"
               v-model.trim="inputBody"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
-              :maxlength="bodyLimit"
               data-testid="input-proposal-body"
               @paste="handlePaste"
               @blur="visitedBodyInput = true"
@@ -159,7 +157,7 @@ const handleDrop = e => {
           </label>
         </div>
         <TuneErrorInput
-          v-if="visitedBodyInput"
+          v-if="validationErrors?.body && visitedBodyInput"
           :error="validationErrors?.body"
         />
       </div>
