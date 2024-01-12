@@ -25,7 +25,10 @@ const isSpaceRelatedProposal = computed(() => {
   );
 });
 
-async function loadProposal() {
+async function loadProposal(softReload = false) {
+  if (!softReload) {
+    loadingProposal.value = true;
+  }
   proposal.value = await getProposal(proposalId);
   if (!proposal.value) return router.push({ name: 'error-404' });
 
@@ -36,11 +39,13 @@ async function loadProposal() {
     ) ?? null;
 
   if (!isSpaceRelatedProposal.value) return router.push({ name: 'error-404' });
+
+  if (!softReload) {
+    loadingProposal.value = false;
+  }
 }
 onMounted(() => {
-  loadingProposal.value = true;
   loadProposal();
-  loadingProposal.value = false;
 });
 </script>
 
@@ -52,7 +57,8 @@ onMounted(() => {
       v-else-if="proposal && space"
       :space="space"
       :proposal="proposal"
-      @reload-proposal="loadProposal"
+      @reload-proposal="loadProposal()"
+      @soft-reload-proposal="loadProposal(true)"
     />
   </div>
 </template>
