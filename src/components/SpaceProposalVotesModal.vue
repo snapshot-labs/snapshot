@@ -101,7 +101,7 @@ watch(filters, value => {
           :placeholder="$t('searchPlaceholderVotes')"
           modal
           focus-on-mount
-          class="max-h-[56px] w-full px-3 pb-3"
+          class="max-h-[56px] w-full !px-3 pb-3"
         >
           <template #after>
             <SpaceProposalVotesFilters

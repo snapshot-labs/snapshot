@@ -162,6 +162,17 @@ watch(
           <div class="flex">
             <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
             <span
+              v-if="
+                proposal.type === 'approval' &&
+                Array.isArray(selectedChoices) &&
+                selectedChoices?.length === 0
+              "
+              class="text-right"
+            >
+              Blank vote
+            </span>
+            <span
+              v-else
               v-tippy="{
                 content:
                   format(proposal, selectedChoices).length > 30
