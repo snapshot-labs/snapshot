@@ -59,7 +59,10 @@ const formSettings = ref(clone(EMPTY_SPACE_FORM));
 const initialFormState = ref(clone(EMPTY_SPACE_FORM));
 const inputRefs = ref<any[]>([]);
 
-export function useFormSpaceSettings(context: 'setup' | 'settings') {
+export function useFormSpaceSettings(
+  context: 'setup' | 'settings',
+  { spaceType = 'default' } = {}
+) {
   const { isSending } = useClient();
   const { isUploadingImage } = useImageUpload();
 
@@ -192,7 +195,7 @@ export function useFormSpaceSettings(context: 'setup' | 'settings') {
   }
 
   const validationErrors = computed(() => {
-    const errors = validateForm(schemas.space, prunedForm.value);
+    const errors = validateForm(schemas.space, prunedForm.value, { spaceType });
 
     validateStrategies(errors);
     validateProposalValidation(errors);

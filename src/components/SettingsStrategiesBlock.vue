@@ -3,15 +3,26 @@ import { SpaceStrategy } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 
+const spaceSchema = schemas.space;
+
 const props = defineProps<{
   context: 'setup' | 'settings';
   title?: string;
   showErrors?: boolean;
   isViewOnly?: boolean;
+  spaceType?: string;
 }>();
 
-const { form, validationErrors } = useFormSpaceSettings(props.context);
+const { form, validationErrors } = useFormSpaceSettings(props.context, {
+  spaceType: props.spaceType
+});
 
+const strategiesLimit = computed(
+  () =>
+    spaceSchema.definitions.Space.properties.strategies.maxItemsWithSpaceType[
+      props.spaceType
+    ]
+);
 const strategies = computed(() => form.value.strategies);
 
 const strategyObj = {
@@ -81,7 +92,9 @@ function handleSubmitStrategy(strategy) {
       <div class="flex justify-between">
         <div>
           <div class="flex items-center gap-1">
-            <h4>{{ $t('settings.strategiesList') }}</h4>
+            <h4>
+              {{ $tc('settings.strategiesList', [strategiesLimit]) }}
+            </h4>
             <IconInformationTooltip
               class="text-sm"
               :information="$t('settings.strategies.information')"
