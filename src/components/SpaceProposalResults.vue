@@ -17,8 +17,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['reload']);
 
-let refreshScoresInterval;
-
 const refreshScores = async () => {
   const response = await fetch(
     `${import.meta.env.VITE_HUB_URL}/api/scores/${props.proposal.id}`
@@ -28,9 +26,6 @@ const refreshScores = async () => {
 
   if (result.result === true) {
     emit('reload');
-  } else {
-    clearInterval(refreshScoresInterval);
-    refreshScoresInterval = setInterval(refreshScores, 5000);
   }
 };
 
@@ -50,10 +45,6 @@ onMounted(() => {
   if (isPendingScore.value || isInvalidScore.value) {
     refreshScores();
   }
-});
-
-onBeforeUnmount(() => {
-  clearInterval(refreshScoresInterval);
 });
 </script>
 
