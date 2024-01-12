@@ -64,7 +64,7 @@ onMounted(() => {
         {{ $t('resultsCalculating') }}
       </div>
       <BaseMessage v-else-if="isInvalidScore" level="warning">
-        <div>{{ t('resultsError') }}</div>
+        <div>{{ $t('resultsError') }}</div>
       </BaseMessage>
       <BaseLink
         v-if="isAdmin"
@@ -73,7 +73,7 @@ onMounted(() => {
         hide-external-icon
       >
         <TuneButton tabindex="-1" class="w-full">
-          {{ t('getHelp') }}
+          {{ $t('getHelp') }}
         </TuneButton>
       </BaseLink>
     </template>
