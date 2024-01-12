@@ -56,7 +56,7 @@ onMounted(() => {
     :title="proposal.state === 'closed' ? $t('results') : $t('currentResults')"
   >
     <template v-if="isPendingScore || isInvalidScore">
-      <div class="leading-5" v-if="isPendingScore">
+      <div v-if="isPendingScore" class="leading-5">
         <p class="flex gap-2 text-skin-link mb-3">
           <LoadingSpinner />
           Finalizing results…
