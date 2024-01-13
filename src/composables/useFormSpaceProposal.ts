@@ -51,7 +51,7 @@ const userSelectedDateStart = ref(false);
 const userSelectedDateEnd = ref(false);
 const sourceProposalLoaded = ref(false);
 
-export function useFormSpaceProposal() {
+export function useFormSpaceProposal({ spaceType = 'default' } = {}) {
   const route = useRoute();
 
   const formDraft = useStorage<{
@@ -72,7 +72,7 @@ export function useFormSpaceProposal() {
   }
 
   const validationErrors = computed(() =>
-    validateForm(schemas.proposal, form.value)
+    validateForm(schemas.proposal, form.value, { spaceType })
   );
 
   const isValid = computed(() => {
