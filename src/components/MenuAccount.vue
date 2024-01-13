@@ -6,9 +6,8 @@ const props = defineProps<{
 const emit = defineEmits(['switchWallet']);
 const { domain } = useApp();
 const { logout } = useWeb3();
+const { modalEmailOpen } = useModal();
 const router = useRouter();
-
-const showModalEmail = ref(false);
 
 function handleAction(e) {
   if (e === 'viewProfile')
@@ -21,7 +20,7 @@ function handleAction(e) {
         });
   if (e === 'switchWallet') return emit('switchWallet');
   if (e === 'subscribeEmail') {
-    showModalEmail.value = true;
+    modalEmailOpen.value = true;
     return true;
   }
 
@@ -82,6 +81,6 @@ function handleAction(e) {
   </div>
 
   <teleport to="#modal">
-    <ModalEmail :open="showModalEmail" @close="showModalEmail = false" />
+    <ModalEmail :open="modalEmailOpen" @close="modalEmailOpen = false" />
   </teleport>
 </template>
