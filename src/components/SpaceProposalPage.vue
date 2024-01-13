@@ -3,7 +3,7 @@ import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
-const emit = defineEmits(['reload-proposal', 'soft-reload-proposal']);
+const emit = defineEmits(['reload-proposal']);
 
 useMeta({
   title: {
@@ -65,7 +65,7 @@ function clickVote() {
 }
 
 function reloadProposal(softReload = false) {
-  emit(softReload ? 'soft-reload-proposal' : 'reload-proposal');
+  emit('reload-proposal', softReload);
 }
 
 function openPostVoteModal(isWaitingForSigners: boolean) {

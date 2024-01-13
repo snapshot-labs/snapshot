@@ -57,8 +57,7 @@ onMounted(() => {
       v-else-if="proposal && space"
       :space="space"
       :proposal="proposal"
-      @reload-proposal="loadProposal()"
-      @soft-reload-proposal="loadProposal(true)"
+      @reload-proposal="loadProposal"
     />
   </div>
 </template>
