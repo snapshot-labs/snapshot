@@ -25,8 +25,10 @@ const isSpaceRelatedProposal = computed(() => {
   );
 });
 
-async function loadProposal() {
-  loadingProposal.value = true;
+async function loadProposal(softReload = false) {
+  if (!softReload) {
+    loadingProposal.value = true;
+  }
   proposal.value = await getProposal(proposalId);
   if (!proposal.value) return router.push({ name: 'error-404' });
 
@@ -38,7 +40,9 @@ async function loadProposal() {
 
   if (!isSpaceRelatedProposal.value) return router.push({ name: 'error-404' });
 
-  loadingProposal.value = false;
+  if (!softReload) {
+    loadingProposal.value = false;
+  }
 }
 onMounted(() => {
   loadProposal();
