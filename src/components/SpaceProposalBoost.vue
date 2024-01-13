@@ -116,6 +116,7 @@ watch(
 
 <template>
   <div>
+    <!-- TODO: Sort boosts -->
     <SpaceProposalBoostClaim
       v-if="eligibleBoosts.length && isFinal && loaded && !hasUserClaimed"
       :proposal="proposal"
