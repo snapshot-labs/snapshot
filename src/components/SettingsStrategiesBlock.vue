@@ -18,10 +18,7 @@ const { form, validationErrors } = useFormSpaceSettings(props.context, {
 });
 
 const strategiesLimit = computed(
-  () =>
-    spaceSchema.definitions.Space.properties.strategies.maxItemsWithSpaceType[
-      props.spaceType
-    ]
+  () => spaceSchema.properties.strategies.maxItemsWithSpaceType[props.spaceType]
 );
 const strategies = computed(() => form.value.strategies);
 
