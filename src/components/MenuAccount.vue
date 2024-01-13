@@ -7,16 +7,8 @@ const emit = defineEmits(['switchWallet']);
 const { domain } = useApp();
 const { logout } = useWeb3();
 const router = useRouter();
-const { userState, loadEmailSubscriptions } = useEmailSubscription();
 
 const showModalEmail = ref(false);
-
-onMounted(loadEmailSubscriptions);
-watch(showModalEmail, () => {
-  if (!showModalEmail.value) {
-    loadEmailSubscriptions();
-  }
-});
 
 function handleAction(e) {
   if (e === 'viewProfile')
@@ -90,20 +82,6 @@ function handleAction(e) {
   </div>
 
   <teleport to="#modal">
-    <ModalEmailSubscription
-      v-if="userState === 'NOT_SUBSCRIBED'"
-      :open="showModalEmail"
-      @close="showModalEmail = false"
-    />
-    <ModalEmailResend
-      v-else-if="userState === 'UNVERIFIED'"
-      :open="showModalEmail"
-      @close="showModalEmail = false"
-    />
-    <ModalEmailManagement
-      v-else-if="userState === 'VERIFIED'"
-      :open="showModalEmail"
-      @close="showModalEmail = false"
-    />
+    <ModalEmail :open="showModalEmail" @close="showModalEmail = false" />
   </teleport>
 </template>
