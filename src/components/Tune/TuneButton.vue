@@ -31,7 +31,11 @@ withDefaults(
     ]"
     :disabled="disabled || loading"
   >
-    <TuneLoadingSpinner v-if="loading" class="mx-auto !text-white" />
+    <TuneLoadingSpinner
+      v-if="loading"
+      class="mx-auto"
+      :class="[primary ? 'text-white' : 'text-black']"
+    />
 
     <slot v-else />
   </button>
