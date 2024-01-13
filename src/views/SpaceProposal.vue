@@ -37,6 +37,7 @@ async function loadProposal() {
 
   if (!isSpaceRelatedProposal.value) return router.push({ name: 'error-404' });
 }
+
 onMounted(() => {
   loadingProposal.value = true;
   loadProposal();
