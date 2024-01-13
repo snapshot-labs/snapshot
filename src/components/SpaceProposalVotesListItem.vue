@@ -30,7 +30,8 @@ const balanceFormatted = computed(() => {
 useTippy(refReasonTooltip, {
   content: h(TextAutolinker, { text: props.vote.reason }),
   interactive: true,
-  theme: 'urlified'
+  theme: 'urlified',
+  trigger: 'mouseenter focus click'
 });
 </script>
 
