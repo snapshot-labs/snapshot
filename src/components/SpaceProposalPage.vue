@@ -111,9 +111,11 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
-  loadResults();
-});
+watch(
+  () => props.proposal,
+  () => loadResults(),
+  { immediate: true }
+);
 
 onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>

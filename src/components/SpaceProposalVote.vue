@@ -69,6 +69,14 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  () => props.proposal,
+  () => {
+    isEditing.value = false;
+    loadUserVote(web3Account.value);
+  }
+);
 </script>
 
 <template>

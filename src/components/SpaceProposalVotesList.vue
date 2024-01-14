@@ -39,9 +39,11 @@ const errorMessageKeyPrefix = computed(() => {
   )}`;
 });
 
-onMounted(async () => {
-  await loadVotes();
-});
+watch(
+  () => props.proposal,
+  async () => await loadVotes(),
+  { immediate: true }
+);
 </script>
 
 <template>
