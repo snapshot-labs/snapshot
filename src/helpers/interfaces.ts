@@ -167,6 +167,7 @@ export interface ExtendedSpace {
   verified: boolean;
   flagged: boolean;
   hibernated: boolean;
+  turbo: boolean;
   voting: {
     delay: number | null;
     hideAbstain: boolean;
