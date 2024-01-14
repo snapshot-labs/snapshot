@@ -23,6 +23,7 @@ useMeta({
 
 const route = useRoute();
 const { web3, web3Account } = useWeb3();
+const { modalEmailOpen } = useModal();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -30,7 +31,6 @@ const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
-const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const results = ref<Results | null>(null);
@@ -242,12 +242,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :selected-choices="selectedChoices"
       :waiting-for-signers="waitingForSigners"
       @close="isModalPostVoteOpen = false"
-      @subscribe-email="modalEmailSubscriptionOpen = true"
-    />
-    <ModalEmailSubscription
-      :open="modalEmailSubscriptionOpen"
-      :address="web3Account"
-      @close="modalEmailSubscriptionOpen = false"
+      @subscribe-email="modalEmailOpen = true"
     />
   </teleport>
 </template>
