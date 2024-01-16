@@ -457,6 +457,7 @@ export const SPACE_QUERY = gql`
       verified
       flagged
       hibernated
+      turbo
       parent {
         id
         name

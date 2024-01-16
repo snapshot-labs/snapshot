@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   preview: boolean;
   bodyLimit: number;
 }>();
 
 const { formatNumber } = useIntl();
-const { form, formDraft, validationErrors } = useFormSpaceProposal();
+const spaceType = computed(() => (props.space.turbo ? 'turbo' : 'default'));
+const { form, formDraft, validationErrors } = useFormSpaceProposal({
+  spaceType: spaceType.value
+});
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
@@ -156,7 +159,7 @@ const handleDrop = e => {
           </label>
         </div>
         <TuneErrorInput
-          v-if="visitedBodyInput"
+          v-if="visitedBodyInput && validationErrors?.body"
           :error="validationErrors?.body"
         />
       </div>

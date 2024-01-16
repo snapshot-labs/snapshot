@@ -6,6 +6,7 @@ import { useConfirmDialog, useStorage } from '@vueuse/core';
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
+const spaceType = computed(() => (props.space.turbo ? 'turbo' : 'default'));
 
 useMeta({
   title: {
@@ -35,7 +36,9 @@ const {
   populateForm,
   resetForm,
   forceShowError
-} = useFormSpaceSettings('settings');
+} = useFormSpaceSettings('settings', {
+  spaceType: spaceType.value
+});
 const { resetTreasuryAssets } = useTreasury();
 const { notify } = useFlashNotification();
 const { isGnosisAndNotDefaultNetwork } = useGnosis();
@@ -242,6 +245,7 @@ onBeforeRouteLeave(async () => {
               context="settings"
               :is-view-only="isViewOnly"
               :show-errors="showFormErrors"
+              :space-type="spaceType"
             />
           </template>
 
