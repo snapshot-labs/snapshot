@@ -20,7 +20,7 @@ const truncateMarkdownBody = computed(() => {
   const markdownBodyHeight = markdownBody.value?.clientHeight
     ? markdownBody.value.clientHeight
     : 0;
-  return markdownBodyHeight > 400;
+  return markdownBodyHeight > 580;
 });
 </script>
 
