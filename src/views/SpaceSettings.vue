@@ -69,6 +69,7 @@ const loaded = ref(false);
 const modalControllerEditOpen = ref(false);
 const currentPage = ref(Page.GENERAL);
 const modalDeleteSpaceConfirmation = ref('');
+const modalDeleteSpaceAcknowledge = ref(false);
 const modalSettingsSavedOpen = ref(false);
 const modalSettingsSavedIgnore = useStorage(
   'snapshot.settings.saved.ignore',
@@ -115,11 +116,12 @@ const settingsPages = computed(() => [
 
 async function handleDelete() {
   modalDeleteSpaceConfirmation.value = '';
+  modalDeleteSpaceAcknowledge.value = false;
 
   const result = await send(props.space, 'delete-space', {});
   console.log(':handleDelete result', result);
 
-  if (result && result.id) {
+  if (result?.id) {
     if (domain) {
       return window.open(`https://snapshot.org/#/`, '_self');
     } else {
@@ -399,12 +401,15 @@ onBeforeRouteLeave(async () => {
     />
     <ModalConfirmAction
       :open="isConfirmDeleteOpen"
-      :disabled="modalDeleteSpaceConfirmation !== space.id"
+      :disabled="
+        modalDeleteSpaceConfirmation !== space.id ||
+        !modalDeleteSpaceAcknowledge
+      "
       show-cancel
       @close="cancelDelete"
       @confirm="handleDelete"
     >
-      <BaseMessageBlock level="warning" class="m-4">
+      <BaseMessageBlock level="warning-red" class="m-4">
         {{ $t('settings.confirmDeleteSpace') }}
       </BaseMessageBlock>
       <div class="px-4 pb-4">
@@ -414,6 +419,12 @@ onBeforeRouteLeave(async () => {
           focus-on-mount
         >
         </BaseInput>
+        <TuneCheckbox
+          id="space-delete-acknowledge"
+          v-model="modalDeleteSpaceAcknowledge"
+          hint="I acknowledge that I can not create a new space with the same name ENS domain name"
+          class="mt-3"
+        />
       </div>
     </ModalConfirmAction>
     <ModalNotice
