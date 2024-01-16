@@ -422,7 +422,7 @@ onBeforeRouteLeave(async () => {
         <TuneCheckbox
           id="space-delete-acknowledge"
           v-model="modalDeleteSpaceAcknowledge"
-          hint="I acknowledge that I can not create a new space with the same name ENS domain name"
+          :hint="`I acknowledge that I will not be able to use ${space.id} again to create a new space.`"
           class="mt-3"
         />
       </div>
