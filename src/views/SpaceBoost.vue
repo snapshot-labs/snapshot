@@ -345,7 +345,6 @@ async function handleCreate() {
     createStatus.value = 'pinning';
 
     const { cid: strategyURI } = await pinGraph(strategy.value);
-    console.log('🚀 ~ handleCreate ~ strategyURI:', strategyURI);
     if (!strategyURI) throw new Error('Error pinning the strategy');
 
     createStatus.value = 'confirm';
