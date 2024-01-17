@@ -6,7 +6,7 @@ import { BoostStrategy } from '@/helpers/interfaces';
 import ABI from './abi.json';
 
 export const BOOST_CONTRACTS = {
-  '11155111': '0x21A25436228161Cc1Ccc9329FC678aD5D80CE953'
+  '11155111': '0x3a18420c0646cc8e6d46e43d792335aecb657fd0'
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
