@@ -12,7 +12,7 @@ export const BOOST_CONTRACTS = {
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
 
 export const SNAPSHOT_GUARD_ADDRESS =
-  '0xF63EB3f569C6cB8F5Cf37caD183790Ed1b251c91';
+  '0x06A85356DCb5b307096726FB86A78c59D38e08ee';
 
 interface Boost {
   strategyURI: string;
