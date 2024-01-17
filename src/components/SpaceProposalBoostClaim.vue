@@ -15,7 +15,6 @@ const props = defineProps<{
 const emit = defineEmits(['reload']);
 
 const boostRewards = ref<Reward[]>([]);
-const boostVouchers = ref<Voucher[]>([]);
 const claimStatus = ref('');
 const modalWrongNetworkOpen = ref(false);
 const loadingRewards = ref(false);
@@ -96,18 +95,18 @@ async function handleClaimAll() {
   }
 
   try {
-    await loadVouchers();
-    if (!boostVouchers.value.length) throw new Error('No vouchers found');
+    const vouchers = await loadVouchers();
+    if (!vouchers?.length) throw new Error('No vouchers found');
 
     claimStatus.value = 'approve';
 
-    const boosts = boostVouchers.value.map(voucher => ({
+    const boosts = vouchers.map(voucher => ({
       boostId: voucher.boost_id,
       recipient: getAddress(web3Account.value),
       amount: voucher.reward
     }));
-    const signatures = boostVouchers.value.map(voucher => voucher.signature);
-    const chainId = boostVouchers.value[0].chain_id;
+    const signatures = vouchers.map(voucher => voucher.signature);
+    const chainId = vouchers[0].chain_id;
     claimTx.value = await claimAllTokens(
       auth.web3,
       chainId,
@@ -135,20 +134,20 @@ async function handleClaimAll() {
 async function loadVouchers() {
   const boosts = props.boosts.map(boost => [boost.id, boost.chainId]);
   try {
-    boostVouchers.value = await getVouchers(
+    const vouchers = await getVouchers(
       props.proposal.id,
       web3Account.value,
       boosts
     );
+
+    console.log(
+      '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
+      vouchers
+    );
+    return vouchers;
   } catch (e) {
-    boostVouchers.value = [];
     console.log('Get vouchers error:', e);
   }
-
-  console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
-    boostVouchers.value
-  );
 }
 
 async function loadRewards() {

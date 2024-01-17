@@ -106,9 +106,10 @@ function handleBoost() {
 }
 
 watch(
-  web3Account,
+  [web3Account, () => props.proposal],
   async () => {
     loadAll();
+    loadUserVote(web3Account.value);
   },
   { immediate: true }
 );
