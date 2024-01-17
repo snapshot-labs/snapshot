@@ -55,6 +55,30 @@ const hasUserClaimed = computed(() => {
   });
 });
 
+const boostsSorted = computed(() => {
+  if (!boosts.value.length) return [];
+
+  const eligible: BoostSubgraphResult[] = [];
+  const claimed: BoostSubgraphResult[] = [];
+  const other: BoostSubgraphResult[] = [];
+
+  boosts.value.forEach(boost => {
+    const isClaimed = claims.value.some(
+      claim => BigNumber.from(claim.id.split('.')[0]).toString() === boost.id
+    );
+
+    if (isEligible(boost) && !isClaimed) {
+      eligible.push(boost);
+    } else if (isClaimed) {
+      claimed.push(boost);
+    } else {
+      other.push(boost);
+    }
+  });
+
+  return [...eligible, ...claimed, ...other];
+});
+
 function handleStart() {
   router.push(newBoostLink.value);
   isOpen.value = false;
@@ -67,7 +91,10 @@ async function loadBoosts() {
     );
     const responses = await Promise.all(requests);
 
-    boosts.value = responses.map(response => response.proposal.boosts).flat();
+    boosts.value = responses
+      .map(response => response.proposal?.boosts)
+      .filter(boost => boost)
+      .flat();
   } catch (e) {
     console.log('Load boosts error:', e);
   }
@@ -116,7 +143,6 @@ watch(
 
 <template>
   <div>
-    <!-- TODO: Sort boosts -->
     <SpaceProposalBoostClaim
       v-if="eligibleBoosts.length && isFinal && loaded"
       :proposal="proposal"
@@ -166,7 +192,7 @@ watch(
             </TuneButton>
           </div>
           <div v-if="loaded" class="mt-3 space-y-2">
-            <div v-for="boost in boosts" :key="boost.id">
+            <div v-for="boost in boostsSorted" :key="boost.id">
               <SpaceProposalBoostItem
                 :boost="boost"
                 :claims="claims"
