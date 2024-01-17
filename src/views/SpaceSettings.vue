@@ -410,7 +410,7 @@ onBeforeRouteLeave(async () => {
       @confirm="handleDelete"
     >
       <BaseMessageBlock level="warning-red" class="m-4">
-        {{ $t('settings.confirmDeleteSpace') }}
+        {{ $t('settings.confirmDeleteSpace', { name: space.id }) }}
       </BaseMessageBlock>
       <div class="px-4 pb-4">
         <BaseInput
