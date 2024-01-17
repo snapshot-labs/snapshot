@@ -118,10 +118,11 @@ watch(
   <div>
     <!-- TODO: Sort boosts -->
     <SpaceProposalBoostClaim
-      v-if="eligibleBoosts.length && isFinal && loaded && !hasUserClaimed"
+      v-if="eligibleBoosts.length && isFinal && loaded"
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
+      :has-user-claimed="hasUserClaimed"
       @reload="loadClaims"
     />
 

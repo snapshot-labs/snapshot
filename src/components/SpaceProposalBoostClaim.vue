@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
-import { getRewards, getVouchers, Reward, Voucher } from '@/helpers/boost/api';
+import { getRewards, getVouchers, Reward } from '@/helpers/boost/api';
 import { formatUnits } from '@ethersproject/units';
 import { claimAllTokens } from '@/helpers/boost';
 import { getAddress } from '@ethersproject/address';
@@ -10,6 +10,7 @@ const props = defineProps<{
   proposal: Proposal;
   boosts: BoostSubgraphResult[];
   eligibleBoosts: BoostSubgraphResult[];
+  hasUserClaimed: boolean;
 }>();
 
 const emit = defineEmits(['reload']);
@@ -56,6 +57,7 @@ const claimStatusModalConfig = computed(() => {
 });
 
 const firstEligibleBoost = computed(() => {
+  if (!props.eligibleBoosts.length) return undefined;
   return props.eligibleBoosts[0];
 });
 
@@ -68,19 +70,17 @@ const canClaimAll = computed(() => {
   );
 });
 
-const claimAllAmountUnits = computed(() => {
-  if (!canClaimAll.value) return 0;
-  return boostRewards.value.reduce((total, reward) => {
-    return total + Number(reward.reward);
-  }, 0);
-});
-
 const claimAllAmountFormatted = computed(() => {
   if (!canClaimAll.value) return 0;
-  const decimals = firstEligibleBoost.value.token.decimals;
-  const amount = formatUnits(claimAllAmountUnits.value.toString(), decimals);
+  const units = boostRewards.value.reduce((total, reward) => {
+    return total + Number(reward.reward);
+  }, 0);
+
+  const decimals = firstEligibleBoost.value!.token.decimals;
+  const amountDecimal = formatUnits(units.toString(), decimals);
+
   return formatNumber(
-    Number(amount),
+    Number(amountDecimal),
     getNumberFormatter({ maximumFractionDigits: 6 }).value
   );
 });
@@ -88,7 +88,7 @@ const claimAllAmountFormatted = computed(() => {
 async function handleClaimAll() {
   if (loadingRewards.value || !boostRewards.value.length) return;
   if (
-    firstEligibleBoost.value.chainId !== web3.value.network.chainId.toString()
+    firstEligibleBoost.value!.chainId !== web3.value.network.chainId.toString()
   ) {
     modalWrongNetworkOpen.value = true;
     return;
@@ -186,6 +186,7 @@ watch(
 <template>
   <div>
     <TuneBlock
+      v-if="!hasUserClaimed"
       slim
       class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
     >
@@ -218,7 +219,7 @@ watch(
             Claim
             <span v-if="canClaimAll" class="ml-[6px]">
               {{ claimAllAmountFormatted }}
-              {{ firstEligibleBoost.token.symbol }}
+              {{ firstEligibleBoost!.token.symbol }}
             </span>
             <span v-else class="ml-[6px]">
               {{ eligibleBoosts.length }} rewards
@@ -227,7 +228,6 @@ watch(
         </TuneButton>
       </div>
     </TuneBlock>
-    <!-- TODO: Move to composable and root level and fix claim success modal -->
     <ModalTransactionStatus
       v-if="claimStatusModalConfig"
       open
