@@ -54,6 +54,7 @@
     "graphql-tag": "^2.12.6",
     "js-sha256": "^0.10.1",
     "jsonexport": "^3.2.0",
+    "kubo-rpc-client": "^3.0.2",
     "lodash": "^4.17.21",
     "minisearch": "^6.2.0",
     "mixpanel-browser": "^2.48.1",
