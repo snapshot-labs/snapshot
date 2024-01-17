@@ -109,7 +109,6 @@ watch(
   [web3Account, () => props.proposal],
   async () => {
     loadAll();
-    loadUserVote(web3Account.value);
   },
   { immediate: true }
 );
