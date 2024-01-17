@@ -14,7 +14,7 @@ import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
-import { pin } from '@snapshot-labs/pineapple';
+import { pinGraph } from '@/helpers/pin';
 
 defineProps<{
   space: ExtendedSpace;
@@ -343,7 +343,9 @@ async function handleCreate() {
 
   try {
     createStatus.value = 'pinning';
-    const { cid: strategyURI } = await pin(strategy.value);
+
+    const { cid: strategyURI } = await pinGraph(strategy.value);
+    console.log('🚀 ~ handleCreate ~ strategyURI:', strategyURI);
     if (!strategyURI) throw new Error('Error pinning the strategy');
 
     createStatus.value = 'confirm';
