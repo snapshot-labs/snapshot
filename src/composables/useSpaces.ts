@@ -159,12 +159,33 @@ export function useSpaces() {
     }
   }
 
+  async function getDeletedSpaces(ids: string[]) {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_HUB_URL}/api/deleted-spaces`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            spaces: ids
+          })
+        }
+      );
+
+      return await response.json();
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
+  }
+
   return {
     loadSpaces,
     loadSpacesHome,
     loadMoreSpacesHome,
     loadSpacesRanking,
     loadMoreSpacesRanking,
+    getDeletedSpaces,
     spaces,
     spacesHome,
     spacesHomeMetrics,

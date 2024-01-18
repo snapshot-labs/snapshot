@@ -9,10 +9,11 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
+const { loadSpaces, spaces, isLoadingSpaces, getDeletedSpaces } = useSpaces();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
+const deletedSpaces = ref<string[]>([]);
 
 watch(
   web3Account,
@@ -21,8 +22,12 @@ watch(
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
-    if (ownedEnsDomains.value.map(d => d.name).length)
-      await loadSpaces(ownedEnsDomains.value.map(d => d.name));
+
+    const ids = ownedEnsDomains.value.map(d => d.name);
+    if (ids.length) {
+      await loadSpaces(ids);
+      deletedSpaces.value = await getDeletedSpaces(ids);
+    }
   },
   { immediate: true }
 );
@@ -111,10 +116,10 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               )
             }}
           </div>
-          <div class="space-y-2">
+          <div class="space-y-2 flex flex-col">
             <template v-for="(ens, i) in domainsWithoutExistingSpace" :key="i">
               <TuneButton
-                v-if="!ens.isInvalid"
+                v-if="!ens.isInvalid && !deletedSpaces.includes(ens.name)"
                 class="flex w-full items-center justify-between"
                 :primary="domainsWithoutExistingSpace.length === 1"
                 @click="emit('next', ens.name)"
@@ -122,6 +127,26 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 {{ ens.name }}
                 <i-ho-arrow-sm-right class="-mr-2" />
               </TuneButton>
+
+              <BaseLink
+                v-else-if="deletedSpaces.includes(ens.name)"
+                link="https://docs.snapshot.org/"
+                hide-external-icon
+              >
+                <TuneButton
+                  tabindex="-1"
+                  class="flex w-full items-center justify-between"
+                >
+                  {{ ens.name }}
+                  <i-ho-exclamation-circle
+                    v-tippy="{
+                      content:
+                        'This ENS name is used by a previously deleted space, and can not be used it anymore to create a new space.'
+                    }"
+                    class="-mr-2"
+                  />
+                </TuneButton>
+              </BaseLink>
               <BaseLink
                 v-else
                 :link="`https://app.ens.domains/address/${web3Account}/controller`"
@@ -134,9 +159,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                   {{ shortenInvalidEns(ens.name) }}
                   <i-ho-exclamation-circle
                     v-tippy="{
-                      content: ens.isInvalid
-                        ? $t('setup.domain.invalidEns')
-                        : null
+                      content: $t('setup.domain.invalidEns')
                     }"
                     class="-mr-2"
                   />
