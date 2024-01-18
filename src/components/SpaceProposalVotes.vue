@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
-import camelCase from 'lodash/camelCase';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -29,16 +28,6 @@ async function downloadReport(proposalId: string) {
   }
 }
 
-const errorMessageKeyPrefix = computed(() => {
-  const knownErrors = ['PENDING_GENERATION', 'UNSUPPORTED_ENV'];
-
-  return `proposal.downloadCsvVotes.postDownloadModal.message.${camelCase(
-    knownErrors.includes(errorCode?.value?.message as string)
-      ? errorCode?.value?.message
-      : 'UNKNOWN_ERROR'
-  )}`;
-});
-
 watch(
   () => props.proposal,
   async () => await loadVotes(),
@@ -62,45 +51,6 @@ watch(
       >
         <i-ho-download />
       </BaseButtonIcon>
-      <BaseModal
-        :open="showModalDownloadMessage"
-        @close="showModalDownloadMessage = false"
-      >
-        <template #header>
-          <div class="flex flex-row items-center justify-center">
-            <h3>
-              {{ $t('proposal.downloadCsvVotes.postDownloadModal.title') }}
-            </h3>
-          </div>
-        </template>
-
-        <div class="m-4 text-center">
-          <i-ho-clock
-            v-if="errorCode?.message === 'PENDING_GENERATION'"
-            class="mx-auto my-4 text-center text-[3em]"
-          />
-          <i-ho-exclamation
-            v-else
-            class="mx-auto my-4 text-center text-[3em] text-red"
-          />
-          <h3>
-            {{ $t(`${errorMessageKeyPrefix}.title`) }}
-          </h3>
-          <p class="mt-3 italic">
-            {{ $t(`${errorMessageKeyPrefix}.description`) }}
-          </p>
-        </div>
-
-        <template #footer>
-          <TuneButton
-            class="w-full"
-            primary
-            @click="showModalDownloadMessage = false"
-          >
-            {{ $t('close') }}
-          </TuneButton>
-        </template>
-      </BaseModal>
     </template>
     <SpaceProposalVotesItem
       v-for="(vote, i) in votes"
@@ -123,6 +73,11 @@ watch(
       <span v-text="$t('seeMore')" />
     </a>
     <teleport to="#modal">
+      <SpaceProposalVotesModalDownload
+        :open="showModalDownloadMessage"
+        :error-code="errorCode"
+        @close="showModalDownloadMessage = false"
+      />
       <SpaceProposalVotesModal
         :space="space"
         :proposal="proposal"
