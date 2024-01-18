@@ -155,7 +155,7 @@ watch(
     <TuneBlock
       v-if="isActive || boosts.length"
       slim
-      class="rounded-2xl"
+      class="rounded-2xl mx-4 md:mx-0"
       :class="[
         {
           '!border-0 ring-4 ring-snapshot bg-snapshot': isActive
@@ -239,18 +239,26 @@ watch(
             </div>
           </div>
         </div>
-        <div v-else-if="isActive" class="flex items-center gap-3">
-          <div class="h-[46px] w-[46px] flex-shrink-0 rounded-2xl shadow-xl">
-            <div class="flex items-center justify-center h-full">
-              <i-s-boost-icon class="text-skin-heading" />
+        <div
+          v-else-if="isActive"
+          class="md:flex items-center justify-between gap-3"
+        >
+          <div class="flex items-center gap-3">
+            <div class="h-[46px] w-[46px] flex-shrink-0 rounded-2xl shadow-xl">
+              <div class="flex items-center justify-center h-full">
+                <i-s-boost-icon class="text-skin-heading" />
+              </div>
+            </div>
+            <div class="w-full">
+              <h4 class="leading-5">Boost proposal</h4>
+              <p>Incentivize people to vote with rewards.</p>
             </div>
           </div>
-          <div class="w-full">
-            <h4 class="leading-5">Boost proposal</h4>
-            <p>Incentivize people to vote with rewards</p>
-          </div>
 
-          <TuneButton class="flex items-center" @click="handleBoost">
+          <TuneButton
+            class="flex items-center justify-center w-full md:w-auto mt-3 md:mt-0"
+            @click="handleBoost"
+          >
             <i-ho-fire class="text-sm mr-2" />
             <div>Boost</div>
           </TuneButton>
