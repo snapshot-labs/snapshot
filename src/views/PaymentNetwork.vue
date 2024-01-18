@@ -102,7 +102,7 @@ watch(paymentTx, () => {
         >
           <div v-if="plan.discount" class="p-2 text-center text-skin-primary">
             Save
-            <BasePill class="ml-2 py-1 !bg-skin-primary"
+            <BasePill class="py-1 !bg-skin-primary"
               >{{ Math.floor(plan.discount) }}%</BasePill
             >
             in your package
