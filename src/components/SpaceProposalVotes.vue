@@ -102,7 +102,7 @@ watch(
         </template>
       </BaseModal>
     </template>
-    <SpaceProposalVotesListItem
+    <SpaceProposalVotesItem
       v-for="(vote, i) in votes"
       :key="i"
       :vote="vote"
