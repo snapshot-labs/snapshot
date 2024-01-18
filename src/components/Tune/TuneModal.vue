@@ -11,8 +11,13 @@ defineEmits(['close']);
 const props = defineProps<{
   open: boolean;
   hideClose?: boolean;
-  size?: { width: string; height: string };
+  size?: 'big';
 }>();
+
+const sizeClass = computed(() => {
+  if (!props.size) return '';
+  if (props.size === 'big') return 'w-[860px] md:h-[628px] h-full';
+});
 
 watch(
   () => props.open,
@@ -29,6 +34,7 @@ let mutationObserver;
 
 onMounted(() => {
   const targetElement = document.documentElement;
+  const targetBody = document.body;
 
   mutationObserver = new MutationObserver(mutations => {
     for (const mutation of mutations) {
@@ -37,11 +43,13 @@ onMounted(() => {
         mutation.attributeName === 'style'
       ) {
         targetElement.removeAttribute('style');
+        targetBody.removeAttribute('style');
       }
     }
   });
 
   mutationObserver.observe(targetElement, { attributes: true });
+  mutationObserver.observe(targetBody, { attributes: true });
 });
 
 onUnmounted(() => {
@@ -58,16 +66,16 @@ onUnmounted(() => {
         as="template"
         enter="duration-300 ease-out"
         enter-from="opacity-0"
-        enter-to="opacity-40"
+        enter-to="opacity-100"
         leave="duration-200 ease-in"
-        leave-from="opacity-40"
+        leave-from="opacity-100"
         leave-to="opacity-0"
       >
-        <div class="tune-modal-backdrop fixed inset-0" />
+        <div class="bg-black/40 fixed inset-0" />
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex min-h-full items-center justify-center p-4">
+        <div class="flex h-full items-center justify-center md:p-4">
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
@@ -78,11 +86,8 @@ onUnmounted(() => {
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="tune-modal-panel transform overflow-hidden align-middle transition-all"
-              :style="{
-                width: size?.width ? `${size.width}px` : '440px',
-                'min-height': size?.height ? `${size.height}px` : '270px'
-              }"
+              class="rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all h-full md:h-auto"
+              :class="sizeClass"
             >
               <div v-if="!hideClose" class="absolute right-4 top-4">
                 <BaseButtonIcon @click="$emit('close')">

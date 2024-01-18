@@ -33,12 +33,7 @@ const content = [
 </script>
 
 <template>
-  <TuneModal
-    :open="open"
-    hide-close
-    :size="{ width: '860', height: '628' }"
-    @close="$emit('close')"
-  >
+  <TuneModal :open="open" hide-close size="big" @close="$emit('close')">
     <div class="flex">
       <div class="h-[628px] w-[240px] shrink-0 bg-snapshot relative">
         <div

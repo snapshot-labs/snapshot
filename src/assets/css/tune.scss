@@ -176,14 +176,6 @@
   @apply rounded-md border bg-skin-header-bg shadow-lg;
 }
 
-.tune-modal-panel {
-  @apply rounded-[20px] bg-skin-bg;
-}
-
-.tune-modal-backdrop {
-  @apply bg-black opacity-40;
-}
-
 .tune-input-checkbox {
   @apply form-checkbox h-[20px] w-[20px] rounded-lg border-skin-text bg-skin-bg text-skin-primary focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
 }
