@@ -70,13 +70,13 @@ const content = [
         <div
           class="flex justify-between items-center border-t md:border-0 px-[20px] py-3 md:p-[32px]"
         >
-          <TuneButton @click="$emit('start')"> Get started </TuneButton>
           <TuneCheckbox
             id="dont-show-again"
             v-model="dontShowAgain"
             class="text-sm"
             hint="Don't show this again"
           />
+          <TuneButton @click="$emit('start')"> Get started </TuneButton>
         </div>
       </div>
     </div>
