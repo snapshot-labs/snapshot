@@ -74,10 +74,6 @@ function formatFiatCurrency(amount: number): string {
   return `${BASE_CURRENCY.symbol}${Math.round(amount).toLocaleString()}`;
 }
 
-function formatCryptoCurrency(amount: number, currency): string {
-  return `${amount.toLocaleString()} ${currency.code}`;
-}
-
 watch(paymentTx, () => {
   modalPostPaymentOpen.value = !!paymentTx.value;
 });
