@@ -179,11 +179,10 @@ watch(paymentTx, () => {
     <div class="flex items-center justify-between">
       <div class="leading-none">
         Pay now
-        <div class="flex gap-2">
+        <div class="flex gap-2 items-center">
           <AvatarToken
             :address="CURRENCIES[data.currency].address[1]"
-            size="36"
-            class="mt-1"
+            size="28"
           />
           <b class="text-2xl leading-[44px] text-skin-heading"
             >{{
