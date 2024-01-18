@@ -185,7 +185,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             :proposal="proposal"
           />
 
-          <SpaceProposalVotesList :space="space" :proposal="proposal" />
+          <SpaceProposalVotes :space="space" :proposal="proposal" />
 
           <SpaceProposalPlugins
             v-if="proposal?.plugins && loadedResults && results"
