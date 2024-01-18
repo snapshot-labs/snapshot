@@ -5,16 +5,18 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex items-center">
+  <div class="flex items-center overflow-x-scroll no-scrollbar">
     <div v-for="(page, i) in pages" :key="i" class="flex items-center">
       <router-link v-if="!page.current" :to="page.to" class="flex items-center">
-        <span class="text-skin-link whitespace-nowrap">{{ page.name }}</span>
+        <span class="text-skin-link truncate max-w-[180px]">{{
+          page.name
+        }}</span>
       </router-link>
       <div v-else class="flex cursor-default items-center">
         <span
-          class="text-skin-link opacity-40"
+          class="text-skin-link opacity-40 truncate max-w-[180px]"
           :class="{
-            'line-clamp-1 max-w-[380px]': page.id === 'proposal-title'
+            '!max-w-[320px]': page.id === 'proposal-title'
           }"
           >{{ page.name }}</span
         >

@@ -48,7 +48,11 @@ const pages = computed(() => {
     const id = route.params.proposalId as string;
     pages = [
       ...basePages,
-      { name: shorten(id), to: `${spaceRoute}/proposal/${id}`, current: false },
+      {
+        name: props.proposal?.title,
+        to: `${spaceRoute}/proposal/${id}`,
+        current: false
+      },
       { name: 'New boost', current: true }
     ];
   }

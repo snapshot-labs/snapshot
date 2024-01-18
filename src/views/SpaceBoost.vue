@@ -416,8 +416,10 @@ watch(
 </script>
 
 <template>
-  <div>
-    <SpaceBreadcrumbs :space="space" />
+  <LoadingSpinner v-if="!proposal" class="overlay big" />
+
+  <div v-else>
+    <SpaceBreadcrumbs :space="space" :proposal="proposal" />
     <TheLayout reverse class="pt-[12px]">
       <template #content-left>
         <LoadingPage v-if="!proposal" />
