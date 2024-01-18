@@ -5,9 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div
-    class="border-y border-skin-border bg-skin-block-bg md:rounded-2xl md:border"
-  >
+  <div class="border-skin-border bg-skin-block-bg rounded-2xl border">
     <slot name="title" />
     <div class="p-3" :class="{ '!p-0': slim }">
       <slot />

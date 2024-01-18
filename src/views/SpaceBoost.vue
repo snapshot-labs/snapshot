@@ -75,7 +75,7 @@ const eligibilityOptions = computed(() => {
     (choice: string, index: number) => {
       return {
         value: index + 1,
-        name: `Anyone who votes '${choice}'`
+        name: `Who votes '${choice}'`
       };
     }
   );
@@ -83,7 +83,7 @@ const eligibilityOptions = computed(() => {
   return [
     {
       value: 'any',
-      name: 'Anyone who votes'
+      name: 'Who votes'
     },
     ...proposalChoices
   ];
@@ -420,121 +420,124 @@ watch(
 
   <div v-else>
     <SpaceBreadcrumbs :space="space" :proposal="proposal" />
-    <TheLayout reverse class="pt-[12px]">
+    <TheLayout class="pt-[12px] px-[20px] mb-[96px] md:mb-0">
       <template #content-left>
-        <LoadingPage v-if="!proposal" />
-        <template v-else>
-          <h1 class="leading-[44px]">Create a new boost</h1>
-          <p class="text-md leading-5">
-            Reward voters on this proposal and drive engagement
-          </p>
+        <h1 class="leading-[44px]">Create a new boost</h1>
+        <p class="text-md leading-5">
+          Reward voters on this proposal and drive engagement
+        </p>
 
-          <div class="space-y-3 mt-4">
-            <SpaceBoostCardProposal :proposal="proposal" :space="space" />
+        <div class="space-y-3 mt-[20px] md:mt-4">
+          <SpaceBoostCardProposal :proposal="proposal" :space="space" />
 
-            <TuneBlock>
-              <template #title>
-                <TuneBlockHeader
-                  title="Eligibility"
-                  sub-title="Set the criteria for who gets rewarded. Choose an option that best incentivizes meaningful participation."
-                />
-              </template>
-
-              <TuneListbox
-                v-model="form.eligibility.choice"
-                :items="eligibilityOptions"
-                label="Eligible users"
+          <TuneBlock>
+            <template #title>
+              <TuneBlockHeader
+                title="Eligibility"
+                sub-title="Set the criteria for who gets rewarded. Choose an option that best incentivizes meaningful participation."
               />
-            </TuneBlock>
-            <TuneBlock>
-              <template #title>
-                <TuneBlockHeader
-                  title="Deposit amount"
-                  sub-title="Select a token and specify the total amount to establish the reward pool for all eligible voters."
-                />
-              </template>
-              <div class="flex gap-[12px]">
-                <ListboxNetwork
-                  v-model="form.network"
-                  :networks="filteredNetworks"
-                />
-                <InputComboboxToken
-                  v-model:amount="form.amount"
-                  label="Amount"
-                  :selected-token="selectedToken"
-                  :network="form.network"
-                  :tokens="tokens"
-                  :loading="loadingBalances"
-                  :error="
-                    formErrorMessages?.token ||
-                    formErrorMessages?.amount ||
-                    formErrorMessages?.balance
-                  "
-                  @update:selected-token="form.token = $event"
-                  @add-custom-token="handleAddCustomToken($event)"
-                />
-              </div>
-            </TuneBlock>
-            <TuneBlock>
-              <template #title>
-                <TuneBlockHeader
-                  title="Distribution based on Voting power"
-                  sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale indefinitely with the voter's total voting power."
-                />
-              </template>
-              <TuneSwitch
-                v-model="form.distribution.hasRatioLimit"
-                label="Define a maximum amount"
+            </template>
+
+            <TuneListbox
+              v-model="form.eligibility.choice"
+              :items="eligibilityOptions"
+              label="Eligible to"
+            />
+          </TuneBlock>
+          <TuneBlock>
+            <template #title>
+              <TuneBlockHeader
+                title="Deposit amount"
+                sub-title="Select a token and specify the total amount to establish the reward pool for all eligible voters."
               />
-              <div v-if="form.distribution.hasRatioLimit" class="mt-3">
-                <TuneInput
-                  v-model="form.distribution.ratioLimit"
-                  label="Max amount of voting power"
-                  type="number"
-                  placeholder="e.g. 1000"
-                  always-show-error
-                  :error="formErrorMessages?.ratioLimit"
-                >
-                  <template #after>
-                    <div class="-mr-[8px]">VP</div>
-                  </template>
-                </TuneInput>
-              </div>
-            </TuneBlock>
-          </div>
-        </template>
+            </template>
+            <div class="flex flex-col md:flex-row gap-[12px]">
+              <ListboxNetwork
+                v-model="form.network"
+                :networks="filteredNetworks"
+              />
+              <InputComboboxToken
+                v-model:amount="form.amount"
+                label="Amount"
+                :selected-token="selectedToken"
+                :network="form.network"
+                :tokens="tokens"
+                :loading="loadingBalances"
+                :error="
+                  formErrorMessages?.token ||
+                  formErrorMessages?.amount ||
+                  formErrorMessages?.balance
+                "
+                @update:selected-token="form.token = $event"
+                @add-custom-token="handleAddCustomToken($event)"
+              />
+            </div>
+          </TuneBlock>
+          <TuneBlock>
+            <template #title>
+              <TuneBlockHeader
+                title="Distribution based on Voting power"
+                sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale indefinitely with the voter's total voting power."
+              />
+            </template>
+            <TuneSwitch
+              v-model="form.distribution.hasRatioLimit"
+              label="Define a maximum amount"
+            />
+            <div v-if="form.distribution.hasRatioLimit" class="mt-3">
+              <TuneInput
+                v-model="form.distribution.ratioLimit"
+                label="Max amount of voting power"
+                type="number"
+                placeholder="e.g. 1000"
+                always-show-error
+                :error="formErrorMessages?.ratioLimit"
+              >
+                <template #after>
+                  <div class="-mr-[8px]">VP</div>
+                </template>
+              </TuneInput>
+            </div>
+          </TuneBlock>
+        </div>
       </template>
 
       <template #sidebar-right>
-        <div class="border rounded-xl p-3">
-          <h4 class="leading-5 mb-1">Create boost</h4>
-          <p class="text-md leading-5">
-            Once a boost is created, it can no longer be modified.
-          </p>
-          <div class="flex justify-center mt-3 leading-5">
-            <i-ho-exclamation-circle class="inline-block text-sm mr-1" />
+        <TheActionbar break-point="md">
+          <div class="md:border rounded-xl p-3 md:mt-3 lg:mt-0">
+            <h4 class="leading-5 mb-1 hidden md:block">Create boost</h4>
+            <p class="text-md leading-5 hidden md:block">
+              Once a boost is created, it can no longer be modified.
+            </p>
+            <div class="flex justify-left md:mt-3 leading-5">
+              <i-ho-exclamation-circle class="inline-block text-sm mr-1" />
 
-            This contract is not audited and in beta.
+              This contract is not audited and in beta.
+            </div>
+            <TuneButton
+              :loading="isLoading"
+              primary
+              class="w-full mt-3"
+              @click="handleCreate"
+            >
+              Create
+            </TuneButton>
+            <div
+              v-if="isEndingSoon"
+              class="text-snapshot flex items-center gap-1 justify-center mt-[6px]"
+            >
+              <i-ho-clock />
+              Proposal
+              {{
+                getRelativeProposalPeriod(
+                  'active',
+                  proposal.start,
+                  proposal.end
+                )
+              }}
+            </div>
           </div>
-          <TuneButton
-            :loading="isLoading"
-            primary
-            class="w-full mt-3"
-            @click="handleCreate"
-          >
-            Create
-          </TuneButton>
-          <div
-            v-if="isEndingSoon"
-            class="text-snapshot flex items-center gap-1 justify-center mt-[6px]"
-          >
-            <i-ho-clock />
-            Proposal
-            {{
-              getRelativeProposalPeriod('active', proposal.start, proposal.end)
-            }}
-          </div>
-        </div>
+        </TheActionbar>
       </template>
     </TheLayout>
     <ModalTransactionStatus
