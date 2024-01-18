@@ -14,7 +14,7 @@ defineProps<{
       'transition-colors hover:border-skin-text cursor-pointer',
       {
         '!border-skin-link': selected,
-        'hover:!border-skin-border cursor-not-allowed': disabled
+        'hover:!border-skin-border hover:!cursor-not-allowed': disabled
       }
     ]"
   >
