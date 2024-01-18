@@ -23,19 +23,19 @@ const content = [
     title: 'Get started',
     description:
       'Click "Get started" on the proposal page to set eligibility criteria, deposit amount, and maximum voting power for tailored rewards and increased participation.'
-  },
-  {
-    title: 'Creation tips',
-    description:
-      'Ensure clear objectives, fair participation criteria, and a reasonable deposit amount to encourage broader engagement. Promote your Boost within the community for maximum impact.'
   }
 ];
 </script>
 
 <template>
-  <TuneModal :open="open" hide-close size="big" @close="$emit('close')">
-    <div class="flex">
-      <div class="h-[628px] w-[240px] shrink-0 bg-snapshot relative">
+  <TuneModal :open="open" size="big" @close="$emit('close')">
+    <TuneModalTitle as="h1" class="md:hidden text-lg px-[20px] py-3 leading-6"
+      >Welcome to Boosts!</TuneModalTitle
+    >
+    <div class="md:flex">
+      <div
+        class="h-[160px] md:h-[628px] md:w-[240px] shrink-0 bg-snapshot relative"
+      >
         <div
           class="bg-[url('@/assets/images/stars-big.png')] absolute top-4 left-0 right-0 bottom-0"
         />
@@ -48,30 +48,35 @@ const content = [
         </div>
       </div>
 
-      <div class="p-[32px]">
-        <TuneModalTitle as="h1" class="leading-7 mb-4"
-          >Welcome to Boosts!</TuneModalTitle
+      <div class="flex flex-col justify-between">
+        <div
+          class="p-[20px] md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-none"
         >
-        <TuneModalDescription class="text-lg leading-6 mb-5">
-          Welcome to the new Boosts feature on Snapshot! Boosts are a powerful
-          way to incentivize voting on proposals while rewarding active
-          participation within the community.
-        </TuneModalDescription>
-        <div class="space-y-5">
-          <div v-for="(c, i) in content" :key="i">
-            <h4 class="leading-5 mb-2">{{ c.title }}</h4>
-            <p class="text-md leading-5">{{ c.description }}</p>
+          <TuneModalTitle as="h1" class="hidden md:block leading-7 mb-4"
+            >Welcome to Boosts!</TuneModalTitle
+          >
+          <TuneModalDescription class="text-lg leading-6 mb-5">
+            Welcome to the new Boosts feature on Snapshot! Boosts are a powerful
+            way to incentivize voting on proposals while rewarding active
+            participation within the community.
+          </TuneModalDescription>
+          <div class="space-y-5">
+            <div v-for="(c, i) in content" :key="i">
+              <h4 class="leading-5 mb-2">{{ c.title }}</h4>
+              <p class="text-md leading-5">{{ c.description }}</p>
+            </div>
           </div>
-
-          <div class="flex justify-between items-center">
-            <TuneButton @click="$emit('start')"> Get started </TuneButton>
-            <TuneCheckbox
-              id="dont-show-again"
-              v-model="dontShowAgain"
-              class="text-sm"
-              hint="Don't show this again"
-            />
-          </div>
+        </div>
+        <div
+          class="flex justify-between items-center border-t md:border-0 px-[20px] py-3 md:p-[32px]"
+        >
+          <TuneButton @click="$emit('start')"> Get started </TuneButton>
+          <TuneCheckbox
+            id="dont-show-again"
+            v-model="dontShowAgain"
+            class="text-sm"
+            hint="Don't show this again"
+          />
         </div>
       </div>
     </div>

@@ -15,8 +15,8 @@ const props = defineProps<{
 }>();
 
 const sizeClass = computed(() => {
-  if (!props.size) return '';
-  if (props.size === 'big') return 'w-[860px] md:h-[628px] h-full';
+  if (!props.size) return 'md:w-[440px] h-[270px] w-full';
+  if (props.size === 'big') return 'md:w-[860px] md:h-[628px] w-full';
 });
 
 watch(
@@ -75,7 +75,9 @@ onUnmounted(() => {
       </TransitionChild>
 
       <div class="fixed inset-0 overflow-y-auto">
-        <div class="flex h-full items-center justify-center md:p-4">
+        <div
+          class="flex h-full items-end md:items-center justify-center md:p-4"
+        >
           <TransitionChild
             as="template"
             enter="duration-300 ease-out"
@@ -86,10 +88,13 @@ onUnmounted(() => {
             leave-to="opacity-0 scale-95"
           >
             <DialogPanel
-              class="rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all h-full md:h-auto"
+              class="rounded-t-[20px] md:rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all md:h-auto"
               :class="sizeClass"
             >
-              <div v-if="!hideClose" class="absolute right-4 top-4">
+              <div
+                v-if="!hideClose"
+                class="absolute md:right-4 md:top-[26px] right-[10px] top-[10px]"
+              >
                 <BaseButtonIcon @click="$emit('close')">
                   <span class="sr-only">Close</span>
                   <i-ho-x class="text-md" aria-hidden="true" />
