@@ -113,7 +113,9 @@ watch(paymentTx, () => {
               '!ring-skin-primary': planId === data.plan,
               'ring-transparent': plan.discount
             }"
+            tabindex="0"
             @click="setData('plan', planId)"
+            @keyup.space="setData('plan', planId)"
           >
             <div class="flex-grow leading-none gap-[2px] flex flex-col">
               <div>{{ plan.label }}</div>
@@ -153,7 +155,9 @@ watch(paymentTx, () => {
             :class="{
               '!ring-skin-primary': currencyId === data.currency
             }"
+            tabindex="0"
             @click="setData('currency', currencyId)"
+            @keyup.space="setData('currency', currencyId)"
           >
             <AvatarToken :address="currency.address[1]" size="18" />
 
