@@ -205,6 +205,7 @@ watch(paymentTx, () => {
         :disabled="loading || !data.termsAccepted"
         :type="'submit'"
         :loading="loading"
+        class="px-5"
         @click.prevent="pay"
       >
         Pay
