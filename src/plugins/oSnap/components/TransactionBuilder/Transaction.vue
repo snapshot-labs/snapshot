@@ -66,6 +66,7 @@ function updateTransaction(transaction: TTransaction) {
       v-if="transaction.type === 'contractInteraction'"
       :transaction="newTransaction as ContractInteractionTransaction"
       :network="network"
+      @update-transaction="updateTransaction"
     />
 
     <TransferFunds

@@ -38,7 +38,6 @@ const selectedMethod = computed(
     methods.value[0]
 );
 const parameters = ref<string[]>([]);
-const selectedParameters = ref<string[]>([]);
 
 function updateTransaction() {
   if (!isValueValid || !isToValid || !isAbiValid) return;
@@ -48,7 +47,7 @@ function updateTransaction() {
       value: value.value,
       abi: abi.value,
       method: selectedMethod.value,
-      parameters: selectedParameters.value
+      parameters: parameters.value
     });
 
     if (validateTransaction(transaction)) {
@@ -56,7 +55,7 @@ function updateTransaction() {
       return;
     }
   } catch (error) {
-    console.warn('invalid transaction');
+    console.warn('ContractInteraction - Invalid Transaction:',error);
   }
 }
 
@@ -66,7 +65,7 @@ function updateParameter(index: number, value: string) {
 }
 
 function updateMethod(methodName: string) {
-  selectedParameters.value = [];
+  parameters.value = [];
   selectedMethodName.value = methodName;
   updateTransaction();
 }
