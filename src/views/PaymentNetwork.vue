@@ -67,7 +67,7 @@ function computePrice(
 }
 
 function computePlanFiatPrice(plan, unit?: number): number {
-  return computePrice(null, unit || plan.unit, plan.discount);
+  return computePrice(null, unit ?? plan.unit, plan.discount);
 }
 
 function formatFiatCurrency(amount: number): string {
