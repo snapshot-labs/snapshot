@@ -316,7 +316,7 @@ async function handleApproval() {
     );
     handleCreate();
   } catch (e: any) {
-    console.log('Approval error:', e);
+    console.error('Approval error:', e);
     setErrorStatus(e.message);
   } finally {
     approveTx.value = undefined;
@@ -363,7 +363,7 @@ async function handleCreate() {
     await createTx.value.wait();
     createStatus.value = 'success';
   } catch (e: any) {
-    console.log('Create boost error:', e);
+    console.error('Create boost error:', e);
     setErrorStatus(e.message);
   } finally {
     createTx.value = undefined;

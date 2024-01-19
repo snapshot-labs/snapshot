@@ -96,7 +96,7 @@ async function loadBoosts() {
       .filter(boost => boost)
       .flat();
   } catch (e) {
-    console.log('Load boosts error:', e);
+    console.error('Load boosts error:', e);
   }
 }
 
@@ -110,7 +110,7 @@ async function loadClaims() {
 
     claims.value = responses.map(response => response.claims).flat();
   } catch (e) {
-    console.log('Load boosts error:', e);
+    console.error('Load boosts error:', e);
   }
 }
 
