@@ -111,7 +111,7 @@ watch(paymentTx, () => {
             class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-pointer"
             :class="{
               '!ring-skin-primary': planId === data.plan,
-              'ring-[#384aff]/0': plan.discount
+              'ring-transparent': plan.discount
             }"
             @click="setData('plan', planId)"
           >
