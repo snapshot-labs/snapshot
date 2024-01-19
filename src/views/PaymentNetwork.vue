@@ -86,7 +86,7 @@ watch(paymentTx, () => {
   <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
     <fieldset>
       <legend
-        class="text-[20px] mb-[12px] leading-none text-skin-heading font-semibold"
+        class="text-md mb-[12px] leading-none text-skin-heading font-semibold"
       >
         Select your plan duration
       </legend>
