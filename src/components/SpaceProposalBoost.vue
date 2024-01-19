@@ -158,7 +158,7 @@ watch(
       class="rounded-2xl mx-4 md:mx-0"
       :class="[
         {
-          '!border-0 ring-4 ring-snapshot bg-snapshot': isActive
+          '!border-0 ring-1 ring-snapshot bg-snapshot': isActive
         }
       ]"
     >
