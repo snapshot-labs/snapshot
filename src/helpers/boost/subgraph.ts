@@ -21,38 +21,35 @@ export function getClaims(recipient: string, chainId: string) {
 
 export function getBoosts(proposalId: string, chainId: string) {
   return subgraphRequest(SUBGRAPH_URLS[chainId], {
-    proposal: {
+    boosts: {
       __args: {
-        id: proposalId
+        where: { strategy_: { proposal: proposalId } }
       },
-
-      boosts: {
+      id: true,
+      strategyURI: true,
+      poolSize: true,
+      guard: true,
+      start: true,
+      end: true,
+      owner: true,
+      chainId: true,
+      token: {
         id: true,
-        strategyURI: true,
-        poolSize: true,
-        guard: true,
-        start: true,
-        end: true,
-        owner: true,
-        chainId: true,
-        token: {
-          id: true,
-          name: true,
-          symbol: true,
-          decimals: true
+        name: true,
+        symbol: true,
+        decimals: true
+      },
+      strategy: {
+        id: true,
+        name: true,
+        version: true,
+        proposal: true,
+        eligibility: {
+          type: true,
+          choice: true
         },
-        strategy: {
-          name: true,
-          params: {
-            version: true,
-            proposal: true,
-            eligibility: {
-              choice: true
-            },
-            distribution: {
-              type: true
-            }
-          }
+        distribution: {
+          type: true
         }
       }
     }

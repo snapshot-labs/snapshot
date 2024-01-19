@@ -447,15 +447,14 @@ export type BoostSubgraphResult = {
   };
   strategy: {
     name: string;
-    params: {
-      proposal: string;
-      eligibility: {
-        choice: number | null;
-      };
-      distribution: {
-        type: 'even' | 'weighted';
-        limit?: number;
-      };
+    proposal: string;
+    eligibility: {
+      type: 'incentive' | 'bribe';
+      choice: number | null;
+    };
+    distribution: {
+      type: 'even' | 'weighted';
+      limit?: number;
     };
   };
 };

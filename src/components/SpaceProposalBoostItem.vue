@@ -65,12 +65,10 @@ const claimedAmount = computed(() => {
   >
     <div class="pr-4">
       <div class="text-skin-heading">
-        <template v-if="boost.strategy.params.eligibility?.choice !== null">
+        <template v-if="boost.strategy.eligibility.choice !== null">
           Who votes
           <TuneTag
-            :label="
-              proposal.choices[boost.strategy.params.eligibility.choice - 1]
-            "
+            :label="proposal.choices[boost.strategy.eligibility.choice - 1]"
             class="text-skin-heading"
           />
         </template>
@@ -80,9 +78,7 @@ const claimedAmount = computed(() => {
           :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
           class="text-skin-heading"
         />
-        <template
-          v-if="boost.strategy.params.distribution?.type === 'weighted'"
-        >
+        <template v-if="boost.strategy.distribution.type === 'weighted'">
           based on
           <TuneTag label="Voting power" class="text-skin-heading" />
         </template>

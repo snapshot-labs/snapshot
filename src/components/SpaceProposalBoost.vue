@@ -32,7 +32,7 @@ const isActive = computed(() => props.proposal.state === 'active');
 const isFinal = computed(() => props.proposal.scores_state === 'final');
 
 function isEligible(boost: BoostSubgraphResult) {
-  const choice = boost.strategy.params.eligibility.choice;
+  const choice = boost.strategy.eligibility.choice;
 
   if (!web3Account.value) return false;
   if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
@@ -92,7 +92,7 @@ async function loadBoosts() {
     const responses = await Promise.all(requests);
 
     boosts.value = responses
-      .map(response => response.proposal?.boosts)
+      .map(response => response.boosts)
       .filter(boost => boost)
       .flat();
   } catch (e) {
