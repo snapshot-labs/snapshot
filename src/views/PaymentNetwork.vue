@@ -162,7 +162,7 @@ watch(paymentTx, () => {
             }}</small>
             <span
               v-if="currencyId === data.currency"
-              :class="['absolute right-0 pr-3']"
+              class="absolute right-0 pr-3"
             >
               <i-ho-check class="text-skin-primary text-sm" />
             </span>
