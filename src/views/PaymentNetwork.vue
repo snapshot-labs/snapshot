@@ -80,42 +80,48 @@ watch(paymentTx, () => {
 </script>
 
 <template>
-  <h1 class="leading-[44px]">Network plan</h1>
+  <h1 class="leading-[44px] mb-[2px]">Network plan</h1>
   <p class="mb-4 leading-[20px]">Pay to support your network on Snapshot</p>
 
   <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
     <fieldset>
-      <legend>
-        <h2 class="text-[20px] leading-none mb-[12px]">
-          Select your plan duration
-        </h2>
+      <legend
+        class="text-[20px] mb-[12px] leading-none text-skin-heading font-semibold"
+      >
+        Select your plan duration
       </legend>
       <ol class="flex flex-col gap-2">
         <li
           v-for="(plan, planId) in PLANS"
           :key="planId"
-          :class="[{ 'bg-[#384aff]/[0.16] rounded-xl ': plan.discount }]"
+          :class="[
+            {
+              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px]': plan.discount
+            }
+          ]"
         >
           <div v-if="plan.discount" class="p-2 text-center text-skin-primary">
             Save
             <BasePill class="py-1 !bg-skin-primary"
               >{{ Math.floor(plan.discount) }}%</BasePill
             >
-            in your package
           </div>
           <label
-            class="flex relative bg-skin-bg gap-3 border border-skin-border hover:border-skin-text rounded-xl p-3 cursor-pointer"
+            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-pointer"
             :class="{
-              '!border-skin-primary': planId === data.plan
+              '!ring-skin-primary': planId === data.plan,
+              'ring-[#384aff]/0 mt-[-2px]': plan.discount
             }"
             @click="setData('plan', planId)"
           >
-            <div class="flex-grow">
-              <div class="leading-none">{{ plan.label }}</div>
-              <b class="text-skin-heading text-lg">{{
-                formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
-              }}</b
-              >/mo
+            <div class="flex-grow leading-none gap-[2px] flex flex-col">
+              <div>{{ plan.label }}</div>
+              <div>
+                <b class="text-skin-heading leading-none text-lg">{{
+                  formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
+                }}</b
+                >/mo
+              </div>
             </div>
             <span
               v-if="planId === data.plan"
@@ -129,8 +135,10 @@ watch(paymentTx, () => {
     </fieldset>
 
     <fieldset>
-      <legend>
-        <h2 class="text-[20px] leading-none mb-[12px]">Select your currency</h2>
+      <legend
+        class="text-[20px] mb-[12px] leading-none text-skin-heading font-semibold"
+      >
+        Select your currency
       </legend>
 
       <ol class="flex gap-2">
@@ -140,9 +148,9 @@ watch(paymentTx, () => {
           class="basis-1/3"
         >
           <label
-            class="flex relative flex-col sm:flex-row border border-skin-border hover:border-skin-text gap-2 rounded-xl p-[12px] pl-3 cursor-pointer"
+            class="flex relative flex-col sm:flex-row gap-2 ring-1 ring-skin-border hover:ring-skin-text rounded-xl p-[12px] pl-3 cursor-pointer"
             :class="{
-              '!border-skin-primary': currencyId === data.currency
+              '!ring-skin-primary': currencyId === data.currency
             }"
             @click="setData('currency', currencyId)"
           >
@@ -198,7 +206,7 @@ watch(paymentTx, () => {
         :loading="loading"
         @click.prevent="pay"
       >
-        Go to payment
+        Pay
       </TuneButton>
     </div>
   </form>
