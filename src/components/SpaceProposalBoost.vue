@@ -174,7 +174,7 @@ watch(
       </div>
       <div class="bg-skin-bg rounded-2xl p-3">
         <div v-if="boosts.length">
-          <div class="flex justify-between">
+          <div class="md:flex md:justify-between">
             <div>
               <i-s-boost-logo class="text-xs text-skin-link" />
               <p v-if="isActive" class="text-md leading-5 mt-2">
@@ -184,7 +184,7 @@ watch(
             <TuneButton
               v-if="isActive"
               type="button"
-              class="flex items-center pl-[18px] pr-[22px]"
+              class="flex items-center pl-[18px] pr-[22px] w-full md:w-auto justify-center mt-[12px] md:mt-0"
               @click="handleBoost"
             >
               <i-ho-plus class="mr-2 text-xs" />
@@ -207,22 +207,29 @@ watch(
             v-if="eligibleBoosts.length && isActive"
             class="bg-[--border-color-faint] border-t border-[--border-color-soft] -mx-3 -mb-3 mt-3 p-3"
           >
-            <div class="flex items-center gap-3">
-              <div
-                class="h-[46px] w-[46px] flex-shrink-0 rounded-2xl shadow-xl"
-              >
-                <div class="flex items-center justify-center h-full">
-                  <i-ho-gift class="text-skin-heading" />
+            <div class="md:flex md:items-center gap-3">
+              <div class="flex gap-[12px] items-center w-full">
+                <div
+                  class="h-[44px] w-[44px] flex-shrink-0 rounded-2xl shadow-xl"
+                >
+                  <div class="flex items-center justify-center h-full">
+                    <i-ho-gift class="text-skin-heading text-sm" />
+                  </div>
+                </div>
+                <div class="w-full">
+                  <h5 class="leading-none">Rewards</h5>
+                  <p class="leading-none">
+                    You’re eligible to {{ eligibleBoosts.length }} boost<span
+                      v-if="boosts.length > 1"
+                      >s</span
+                    >
+                  </p>
                 </div>
               </div>
-              <div class="w-full">
-                <h4 class="leading-5">Rewards</h4>
-                <p class="">
-                  You’re eligible to {{ eligibleBoosts.length }} boost rewards
-                </p>
-              </div>
 
-              <TuneButton disabled>
+              <div
+                class="border text-border rounded-full py-1 px-[12px] justify-center flex md:mt-0 mt-3"
+              >
                 <div class="text-skin-link flex items-center opacity-40">
                   <i-ho-fire class="text-sm mr-2" />
                   <div class="whitespace-nowrap">
@@ -235,7 +242,7 @@ watch(
                     }}
                   </div>
                 </div>
-              </TuneButton>
+              </div>
             </div>
           </div>
         </div>
