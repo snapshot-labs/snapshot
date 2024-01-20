@@ -89,11 +89,12 @@ const claimedAmount = computed(() => {
           </template>
         </div>
       </div>
-      <div class="mt-2">
+      <div class="mt-2 md:flex">
         <div class="flex items-center gap-1 mb-[2px]">
           <i-ho-lock-closed class="text-xs" />
           Secured by Snapshot
         </div>
+        <span class="hidden md:block px-2 text-lg leading-none">·</span>
         <div v-if="isClaimedByUser" class="flex items-center gap-1">
           <i-ho-cash class="text-xs" />
           Claimed {{ claimedAmount }} {{ boost.token.symbol }}
