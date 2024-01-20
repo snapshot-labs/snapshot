@@ -117,6 +117,7 @@ async function handleClaimAll() {
     claimStatus.value = 'pending';
 
     await claimTx.value.wait();
+    claimStatus.value = 'success';
   } catch (e: any) {
     console.error('Claim error:', e);
     if (e.message.includes('user rejected transaction')) {
@@ -126,7 +127,6 @@ async function handleClaimAll() {
     }
   } finally {
     claimTx.value = undefined;
-    claimStatus.value = '';
     emit('reload');
   }
 }

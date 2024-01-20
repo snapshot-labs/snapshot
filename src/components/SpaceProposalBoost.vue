@@ -115,13 +115,11 @@ async function loadClaims() {
 }
 
 async function loadAll() {
-  loaded.value = false;
   await Promise.all([
     loadUserVote(web3Account.value),
     loadBoosts(),
     loadClaims()
   ]);
-  loaded.value = true;
 }
 
 function handleBoost() {
@@ -135,7 +133,9 @@ function handleBoost() {
 watch(
   [web3Account, () => props.proposal],
   async () => {
-    loadAll();
+    loaded.value = false;
+    await loadAll();
+    loaded.value = true;
   },
   { immediate: true }
 );
