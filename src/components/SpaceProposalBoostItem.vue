@@ -65,7 +65,7 @@ const claimedAmount = computed(() => {
   >
     <div class="pr-5">
       <div class="text-skin-heading flex flex-wrap -mt-1">
-        <div class="whitespace-nowrap mt-1">
+        <div class="whitespace-nowrap mt-1 mr-1">
           <template v-if="boost.strategy.eligibility.choice !== null">
             Who votes
             <TuneTag
@@ -75,7 +75,7 @@ const claimedAmount = computed(() => {
           </template>
           <template v-else> Voters </template>
         </div>
-        <div class="whitespace-nowrap mt-1">
+        <div class="whitespace-nowrap mt-1 mr-1">
           share a pool of
           <TuneTag
             :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
