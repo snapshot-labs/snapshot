@@ -234,7 +234,8 @@ watch(
         <i-ho-clock class="mr-1 text-sm" />
         {{
           formatDuration(
-            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start)
+            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start),
+            'short'
           )
         }}
         left to claim
