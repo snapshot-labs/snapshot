@@ -188,7 +188,7 @@ watch(
     <TuneBlock
       v-if="!hasUserClaimed"
       slim
-      class="bg-snapshot bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
+      class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
     >
       <!-- TODO: Make sure to handle different tokens when claim -->
       <div>
