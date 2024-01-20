@@ -34,6 +34,7 @@ export function getBoosts(proposalId: string, chainId: string) {
       owner: true,
       chainId: true,
       currentBalance: true,
+      transaction: true,
       token: {
         id: true,
         name: true,

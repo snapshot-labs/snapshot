@@ -13,8 +13,8 @@ const router = useRouter();
 function handleAction(action: string) {
   if (action === 'viewEtherscan') {
     window.open(
-      explorerUrl(props.boost.chainId, props.boost.token.id),
-      // TODO: Use boost tx hash
+      explorerUrl(props.boost.chainId, props.boost.transaction, 'tx'),
+
       '_blank'
     );
   } else if (action === 'seeCreatorProfile') {
