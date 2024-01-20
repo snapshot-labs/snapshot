@@ -58,7 +58,6 @@ function removeTransaction(transactionIndex: number) {
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-
   newPluginData.value.safe.transactions[transactionIndex] = transaction;
   update(newPluginData.value);
 }
