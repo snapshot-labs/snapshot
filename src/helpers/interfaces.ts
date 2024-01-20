@@ -433,7 +433,7 @@ export interface BoostStrategy {
 export type BoostSubgraphResult = {
   id: string;
   strategyURI: string;
-  poolSize: number;
+  poolSize: string;
   guard: string;
   start: string;
   end: string;
@@ -443,9 +443,11 @@ export type BoostSubgraphResult = {
     id: string;
     name: string;
     symbol: string;
-    decimals: number;
+    decimals: string;
   };
   strategy: {
+    id: string;
+    version: string;
     name: string;
     proposal: string;
     eligibility: {
@@ -454,7 +456,7 @@ export type BoostSubgraphResult = {
     };
     distribution: {
       type: 'even' | 'weighted';
-      limit?: number;
+      limit: number | null;
     };
   };
 };
