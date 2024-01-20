@@ -42,6 +42,7 @@ const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
 const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
+const { env } = useApp();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -169,10 +170,12 @@ const filteredNetworks = computed(() => {
         name: network.name,
         extras: {
           icon: network.logo
-        }
+        },
+        testnet: network.testnet
       };
     })
-    .filter(network => SUPPORTED_NETWORKS.includes(network.value));
+    .filter(network => SUPPORTED_NETWORKS.includes(network.value))
+    .filter(network => network.testnet && env === 'demo');
 });
 
 const strategy = computed<BoostStrategy>(() => {
@@ -193,9 +196,16 @@ const strategy = computed<BoostStrategy>(() => {
   // TODO: Use NFT format
 
   return {
+    title: 'Boost',
+    properties: {
+      name: 'Boost',
+      description: 'Boost',
+      image: 'ipfs'
+    },
     name: 'proposal',
     params: {
       version: '0.0.1',
+      testnet: env === 'demo',
       proposal: proposal.value.id,
       eligibility: {
         type: eligibilityType,
