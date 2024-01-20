@@ -46,7 +46,7 @@ function withdrawalAmount(boost: BoostSubgraphResult) {
         >
           <div
             v-if="claimPeriodEnded(boost)"
-            class="flex justify-between items-center"
+            class="sm:flex justify-between items-center"
           >
             <div class="leading-none">
               <div class="font-semibold text-skin-heading">Withdraw</div>
@@ -55,11 +55,13 @@ function withdrawalAmount(boost: BoostSubgraphResult) {
               </div>
             </div>
 
-            <TuneButton class="h-5 px-[12px] text-skin-link bg-skin-bg">
+            <TuneButton
+              class="h-5 px-[12px] text-skin-link bg-skin-bg w-full sm:w-auto mt-2 sm:mt-0"
+            >
               Withdraw {{ withdrawalAmount(boost) }} {{ boost.token.symbol }}
             </TuneButton>
           </div>
-          <div v-else class="flex">
+          <div v-else class="md:flex">
             <div>
               Remaining amount:
               <span class="text-skin-heading">
@@ -67,7 +69,7 @@ function withdrawalAmount(boost: BoostSubgraphResult) {
               </span>
             </div>
             <span class="hidden md:block px-2 text-lg leading-none">·</span>
-            <div>
+            <div class="mt-[2px] md:mt-0">
               Withdrawable in:
               <span class="text-skin-heading">
                 {{ formatDuration(Number(boost.end) - Number(boost.start)) }}
