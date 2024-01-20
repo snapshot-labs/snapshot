@@ -439,6 +439,7 @@ export type BoostSubgraphResult = {
   end: string;
   owner: string;
   chainId: string;
+  currentBalance: string;
   token: {
     id: string;
     name: string;

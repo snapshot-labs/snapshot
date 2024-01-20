@@ -7,9 +7,9 @@ import { getAddress } from '@ethersproject/address';
 const props = defineProps<{
   proposal: Proposal;
   boost: BoostSubgraphResult;
-  claims: { id: string; amount: string }[];
+  claims?: { id: string; amount: string }[];
   web3Account: string;
-  isEligible: boolean;
+  isEligible?: boolean;
 }>();
 
 const { formatNumber, getNumberFormatter } = useIntl();
@@ -26,7 +26,7 @@ const boostBalanceFormatted = computed(() => {
 });
 
 const isClaimedByUser = computed(() => {
-  if (!props.web3Account) return false;
+  if (!props.web3Account || !props.claims?.length) return false;
   // Need to split because the id is in the format: boostId.address
   const claims = props.claims.map(claim => claim.id.split('.'));
 
@@ -38,6 +38,7 @@ const isClaimedByUser = computed(() => {
 });
 
 const claimedAmount = computed(() => {
+  if (!props.claims?.length) return '0';
   // Need to split because the id is in the format: boostId.address
   const claim = props.claims.find(
     claim =>
@@ -57,7 +58,7 @@ const claimedAmount = computed(() => {
 
 <template>
   <div
-    class="border rounded-xl p-[12px] flex justify-between relative"
+    class="border border-[--border-color-soft] rounded-xl p-[12px] flex justify-between relative"
     :class="[
       { 'border-snapshot/40 bg-snapshot/5': isEligible && !isClaimedByUser },
       { 'border-green/30 bg-green/5': isClaimedByUser }
@@ -94,7 +95,11 @@ const claimedAmount = computed(() => {
           <i-ho-lock-closed class="text-xs" />
           Secured by Snapshot
         </div>
-        <span class="hidden md:block px-2 text-lg leading-none">·</span>
+        <span
+          v-if="isClaimedByUser || isEligible"
+          class="hidden md:block px-2 text-lg leading-none"
+          >·</span
+        >
         <div v-if="isClaimedByUser" class="flex items-center gap-1">
           <i-ho-cash class="text-xs" />
           Claimed {{ claimedAmount }} {{ boost.token.symbol }}

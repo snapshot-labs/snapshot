@@ -33,6 +33,7 @@ export function getBoosts(proposalId: string, chainId: string) {
       end: true,
       owner: true,
       chainId: true,
+      currentBalance: true,
       token: {
         id: true,
         name: true,

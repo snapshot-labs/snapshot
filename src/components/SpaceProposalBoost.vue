@@ -4,6 +4,7 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useStorage } from '@vueuse/core';
+import { getAddress } from '@ethersproject/address';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -76,7 +77,16 @@ const boostsSorted = computed(() => {
     }
   });
 
-  return [...eligible, ...claimed, ...other];
+  return [...eligible, ...claimed, ...other].filter(
+    boost => getAddress(boost.owner) !== getAddress(web3Account.value)
+  );
+});
+
+const boostsOwner = computed(() => {
+  if (!boosts.value.length) return [];
+  return boosts.value.filter(
+    boost => getAddress(boost.owner) === getAddress(web3Account.value)
+  );
 });
 
 function handleStart() {
@@ -192,6 +202,11 @@ watch(
             </TuneButton>
           </div>
           <div v-if="loaded" class="mt-3 space-y-2">
+            <SpaceProposalBoostOwner
+              v-if="boostsOwner.length"
+              :boosts="boostsOwner"
+              :proposal="proposal"
+            />
             <div v-for="boost in boostsSorted" :key="boost.id">
               <SpaceProposalBoostItem
                 :boost="boost"
