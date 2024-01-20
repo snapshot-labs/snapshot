@@ -49,7 +49,8 @@ export function getBoosts(proposalId: string, chainId: string) {
           choice: true
         },
         distribution: {
-          type: true
+          type: true,
+          limit: true
         }
       }
     }
