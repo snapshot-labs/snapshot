@@ -49,6 +49,26 @@ const getDurationAndUnit = (seconds: number) => {
   return { duration, unit };
 };
 
+const getShortUnit = (unit: string): string => {
+  switch (unit) {
+    case 'second':
+    case 'minute':
+      return unit.charAt(0); // 's' for seconds, 'm' for minutes
+    case 'hour':
+      return 'h';
+    case 'day':
+      return 'd';
+    case 'week':
+      return 'wk';
+    case 'month':
+      return 'mo';
+    case 'year':
+      return 'yr';
+    default:
+      return unit;
+  }
+};
+
 export function useIntl() {
   const { currentLocale, t } = useI18n();
 
@@ -125,8 +145,9 @@ export function useIntl() {
   // doesn't use Intl (yet), needs useI18n's t function, to translate the unit
   const formatDuration = (seconds: number) => {
     const { duration, unit } = getDurationAndUnit(seconds);
+    const shortUnit = getShortUnit(unit);
 
-    return t(`timeUnits.${unit}`, { n: duration });
+    return `${duration}${shortUnit}`;
   };
 
   const formatNumber = (number: number, formatter?: Intl.NumberFormat) => {

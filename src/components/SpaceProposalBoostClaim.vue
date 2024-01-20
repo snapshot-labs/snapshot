@@ -23,7 +23,7 @@ const claimTx = ref();
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
-const { formatNumber, getNumberFormatter } = useIntl();
+const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 
 const claimStatusModalConfig = computed(() => {
   switch (claimStatus.value) {
@@ -188,7 +188,7 @@ watch(
     <TuneBlock
       v-if="!hasUserClaimed"
       slim
-      class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] h-[250px] py-[32px] !border-0 mb-4"
+      class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
     >
       <!-- TODO: Make sure to handle different tokens when claim -->
       <div>
@@ -226,6 +226,18 @@ watch(
             </span>
           </div>
         </TuneButton>
+      </div>
+      <div
+        v-if="firstEligibleBoost"
+        class="flex text-white justify-center items-center mt-2"
+      >
+        <i-ho-clock class="mr-1 text-sm" />
+        {{
+          formatDuration(
+            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start)
+          )
+        }}
+        left to claim
       </div>
     </TuneBlock>
     <ModalTransactionStatus
