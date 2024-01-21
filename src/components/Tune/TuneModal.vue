@@ -5,6 +5,8 @@ import {
   TransitionChild,
   TransitionRoot
 } from '@headlessui/vue';
+import { useBreakpoints } from '@vueuse/core';
+import { SNAPSHOT_BREAKPOINTS } from '@/helpers/constants';
 
 defineEmits(['close']);
 
@@ -17,6 +19,28 @@ const props = defineProps<{
 const sizeClass = computed(() => {
   if (!props.size) return 'md:w-[440px] h-[270px] w-full';
   if (props.size === 'big') return 'md:w-[860px] md:h-[628px] w-full';
+});
+
+const isDesktop = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('md');
+
+const panelTransitionClasses = computed(() => {
+  return isDesktop.value
+    ? {
+        enter: 'duration-300 ease-out',
+        enterFrom: 'opacity-0 scale-95',
+        enterTo: 'opacity-100 scale-100',
+        leave: 'duration-200 ease-in',
+        leaveFrom: 'opacity-100 scale-100',
+        leaveTo: 'opacity-0 scale-95'
+      }
+    : {
+        enter: 'duration-300 ease-out',
+        enterFrom: 'opacity-0 translate-y-full',
+        enterTo: 'opacity-100 translate-y-0',
+        leave: 'duration-200 ease-in',
+        leaveFrom: 'opacity-100 translate-y-0',
+        leaveTo: 'opacity-0 translate-y-full'
+      };
 });
 
 watch(
@@ -80,12 +104,12 @@ onUnmounted(() => {
         >
           <TransitionChild
             as="template"
-            enter="duration-300 ease-out"
-            enter-from="opacity-0 scale-95"
-            enter-to="opacity-100 scale-100"
-            leave="duration-200 ease-in"
-            leave-from="opacity-100 scale-100"
-            leave-to="opacity-0 scale-95"
+            :enter="panelTransitionClasses.enter"
+            :enter-from="panelTransitionClasses.enterFrom"
+            :enter-to="panelTransitionClasses.enterTo"
+            :leave="panelTransitionClasses.leave"
+            :leave-from="panelTransitionClasses.leaveFrom"
+            :leave-to="panelTransitionClasses.leaveTo"
           >
             <DialogPanel
               class="rounded-t-[20px] md:rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all md:h-auto"
