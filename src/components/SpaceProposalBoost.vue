@@ -11,7 +11,8 @@ const props = defineProps<{
   proposal: Proposal;
 }>();
 
-const isOpen = ref(false);
+const createModalOpen = ref(false);
+const boostsModalOpen = ref(false);
 const boosts = ref<BoostSubgraphResult[]>([]);
 const claims = ref<{ id: string; amount: string }[]>([]);
 const loaded = ref(false);
@@ -80,9 +81,7 @@ const boostsSorted = computed(() => {
     }
   });
 
-  return [...eligible, ...claimed, ...other].filter(
-    boost => getAddress(boost.owner) !== getAddress(web3Account.value)
-  );
+  return [...eligible, ...claimed, ...other];
 });
 
 const boostsOwner = computed(() => {
@@ -94,7 +93,7 @@ const boostsOwner = computed(() => {
 
 function handleStart() {
   router.push(newBoostLink.value);
-  isOpen.value = false;
+  createModalOpen.value = false;
 }
 
 async function loadBoosts() {
@@ -139,7 +138,7 @@ function handleBoost() {
   if (dontShowModalAgain.value) {
     handleStart();
   } else {
-    isOpen.value = true;
+    createModalOpen.value = true;
   }
 }
 
@@ -243,28 +242,37 @@ watch(
               <span> New boost </span>
             </TuneButton>
           </div>
-          <div v-if="loaded" class="mt-3 space-y-2">
-            <SpaceProposalBoostOwner
-              v-if="boostsOwner.length"
-              :boosts="boostsOwner"
-              :proposal="proposal"
-            />
-            <div v-for="boost in boostsSorted" :key="boost.id">
-              <SpaceProposalBoostItem
-                :boost="boost"
-                :claims="claims"
+          <div v-if="loaded">
+            <div class="mt-3 space-y-2">
+              <SpaceProposalBoostOwner
+                v-if="boostsOwner.length"
+                :boosts="boostsOwner.slice(0, 2)"
                 :proposal="proposal"
-                :web3-account="web3Account"
-                :reward="
-                  boostRewards.find(
-                    reward =>
-                      reward.boost_id === boost.id &&
-                      reward.chain_id === boost.chainId
-                  )
-                "
-                :is-eligible="isEligible(boost)"
               />
+              <div v-for="boost in boostsSorted.slice(0, 2)" :key="boost.id">
+                <SpaceProposalBoostItem
+                  :boost="boost"
+                  :claims="claims"
+                  :proposal="proposal"
+                  :web3-account="web3Account"
+                  :reward="
+                    boostRewards.find(
+                      reward =>
+                        reward.boost_id === boost.id &&
+                        reward.chain_id === boost.chainId
+                    )
+                  "
+                  :is-eligible="isEligible(boost)"
+                />
+              </div>
             </div>
+            <TuneButton
+              v-if="boostsOwner.length > 2 || boostsSorted.length > 2"
+              class="w-full mt-3"
+              @click="boostsModalOpen = true"
+            >
+              View all
+            </TuneButton>
           </div>
           <LoadingList v-else class="mt-3" />
           <div
@@ -336,10 +344,20 @@ watch(
         </div>
       </div>
     </TuneBlock>
-    <SpaceProposalBoostModal
-      :open="isOpen"
-      @close="isOpen = false"
+    <SpaceProposalBoostModalCreate
+      :open="createModalOpen"
+      @close="createModalOpen = false"
       @start="handleStart"
+    />
+    <SpaceProposalBoostModalBoosts
+      :open="boostsModalOpen"
+      :boosts="boostsSorted"
+      :boosts-owner="boostsOwner"
+      :claims="claims"
+      :proposal="proposal"
+      :rewards="boostRewards"
+      :is-eligible="isEligible"
+      @close="boostsModalOpen = false"
     />
   </div>
 </template>

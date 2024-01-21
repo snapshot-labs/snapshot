@@ -121,11 +121,7 @@ const rewardFormatted = computed(() => {
         <div v-else-if="isEligible" class="flex items-center gap-1">
           <i-ho-fire class="text-xs" />
           Eligible to
-          {{
-            rewardFormatted
-              ? `${rewardFormatted} ${boost.token.symbol}`
-              : 'reward'
-          }}
+          {{ reward ? `${rewardFormatted} ${boost.token.symbol}` : 'reward' }}
         </div>
       </div>
     </div>

@@ -13,12 +13,20 @@ defineEmits(['close']);
 const props = defineProps<{
   open: boolean;
   hideClose?: boolean;
-  size?: 'big';
+  size?: 'big' | 'medium';
 }>();
 
 const sizeClass = computed(() => {
-  if (!props.size) return 'md:w-[440px] h-[270px] w-full';
-  if (props.size === 'big') return 'md:w-[860px] md:h-[628px] w-full';
+  if (!props.size) return 'md:w-[440px] w-full';
+  if (props.size === 'big') return 'md:w-[860px] w-full';
+  if (props.size === 'medium') return 'md:w-[578px] w-full';
+});
+
+const closePositionClass = computed(() => {
+  if (!props.size) return 'md:top-[12px] md:right-[10px]';
+  if (props.size === 'big')
+    return 'md:right-4 md:top-[26px] right-[10px] top-[10px]';
+  if (props.size === 'medium') return 'top-[12px] right-[10px]';
 });
 
 const isDesktop = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater('md');
@@ -112,12 +120,13 @@ onUnmounted(() => {
             :leave-to="panelTransitionClasses.leaveTo"
           >
             <DialogPanel
-              class="rounded-t-[20px] md:rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all md:h-auto"
+              class="rounded-t-[20px] md:rounded-[20px] bg-skin-bg transform overflow-hidden align-middle transition-all"
               :class="sizeClass"
             >
               <div
                 v-if="!hideClose"
-                class="absolute md:right-4 md:top-[26px] right-[10px] top-[10px]"
+                class="absolute"
+                :class="closePositionClass"
               >
                 <BaseButtonIcon @click="$emit('close')">
                   <span class="sr-only">Close</span>
