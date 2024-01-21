@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
-import { getRewards, getVouchers, Reward } from '@/helpers/boost/api';
+import { getVouchers, Reward } from '@/helpers/boost/api';
 import { formatUnits } from '@ethersproject/units';
 import { claimAllTokens } from '@/helpers/boost';
 import { getAddress } from '@ethersproject/address';
@@ -11,14 +11,14 @@ const props = defineProps<{
   boosts: BoostSubgraphResult[];
   eligibleBoosts: BoostSubgraphResult[];
   hasUserClaimed: boolean;
+  rewards: Reward[];
+  loadingRewards: boolean;
 }>();
 
 const emit = defineEmits(['reload']);
 
-const boostRewards = ref<Reward[]>([]);
 const claimStatus = ref('');
 const modalWrongNetworkOpen = ref(false);
-const loadingRewards = ref(false);
 const claimTx = ref();
 
 const auth = getInstance();
@@ -72,7 +72,7 @@ const canClaimAll = computed(() => {
 
 const claimAllAmountFormatted = computed(() => {
   if (!canClaimAll.value) return 0;
-  const units = boostRewards.value.reduce((total, reward) => {
+  const units = props.rewards.reduce((total, reward) => {
     return total + Number(reward.reward);
   }, 0);
 
@@ -86,7 +86,7 @@ const claimAllAmountFormatted = computed(() => {
 });
 
 async function handleClaimAll() {
-  if (loadingRewards.value || !boostRewards.value.length) return;
+  if (props.loadingRewards || !props.rewards.length) return;
   if (
     firstEligibleBoost.value!.chainId !== web3.value.network.chainId.toString()
   ) {
@@ -149,38 +149,6 @@ async function loadVouchers() {
     console.log('Get vouchers error:', e);
   }
 }
-
-async function loadRewards() {
-  if (!web3Account.value) return;
-  loadingRewards.value = true;
-
-  const boosts = props.boosts.map(boost => [boost.id, boost.chainId]);
-  try {
-    boostRewards.value = await getRewards(
-      props.proposal.id,
-      web3Account.value,
-      boosts
-    );
-  } catch (e) {
-    boostRewards.value = [];
-    console.log('Get rewards error:', e);
-  } finally {
-    loadingRewards.value = false;
-  }
-
-  console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ rewards:',
-    boostRewards.value
-  );
-}
-
-watch(
-  web3Account,
-  () => {
-    loadRewards();
-  },
-  { immediate: true }
-);
 </script>
 
 <template>

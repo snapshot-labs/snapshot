@@ -3,6 +3,7 @@ import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 import { getAddress } from '@ethersproject/address';
+import { Reward } from '@/helpers/boost/api';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -10,6 +11,7 @@ const props = defineProps<{
   claims?: { id: string; amount: string }[];
   web3Account: string;
   isEligible?: boolean;
+  reward?: Reward;
 }>();
 
 const { formatNumber, getNumberFormatter } = useIntl();
@@ -49,6 +51,18 @@ const claimedAmount = computed(() => {
 
   const formattedUnits = formatUnits(claim.amount, props.boost.token.decimals);
 
+  return formatNumber(
+    Number(formattedUnits),
+    getNumberFormatter({ maximumFractionDigits: 16 }).value
+  );
+});
+
+const rewardFormatted = computed(() => {
+  if (!props.reward) return '0';
+  const formattedUnits = formatUnits(
+    props.reward.reward,
+    props.boost.token.decimals
+  );
   return formatNumber(
     Number(formattedUnits),
     getNumberFormatter({ maximumFractionDigits: 16 }).value
@@ -106,7 +120,12 @@ const claimedAmount = computed(() => {
         </div>
         <div v-else-if="isEligible" class="flex items-center gap-1">
           <i-ho-fire class="text-xs" />
-          Eligible to reward
+          Eligible to
+          {{
+            rewardFormatted
+              ? `${rewardFormatted} ${boost.token.symbol}`
+              : 'reward'
+          }}
         </div>
       </div>
     </div>

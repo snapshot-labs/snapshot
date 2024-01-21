@@ -5,6 +5,7 @@ import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { BigNumber } from '@ethersproject/bignumber';
 import { useStorage } from '@vueuse/core';
 import { getAddress } from '@ethersproject/address';
+import { getRewards, Reward } from '@/helpers/boost/api';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -14,6 +15,8 @@ const isOpen = ref(false);
 const boosts = ref<BoostSubgraphResult[]>([]);
 const claims = ref<{ id: string; amount: string }[]>([]);
 const loaded = ref(false);
+const loadingRewards = ref(false);
+const boostRewards = ref<Reward[]>([]);
 
 const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -140,6 +143,43 @@ function handleBoost() {
   }
 }
 
+async function loadRewards() {
+  if (
+    !web3Account.value ||
+    !loaded.value ||
+    props.proposal.scores_state !== 'final'
+  )
+    return;
+  loadingRewards.value = true;
+
+  const boostsMap = boosts.value.map(boost => [boost.id, boost.chainId]);
+  try {
+    boostRewards.value = await getRewards(
+      props.proposal.id,
+      web3Account.value,
+      boostsMap
+    );
+  } catch (e) {
+    boostRewards.value = [];
+    console.log('Get rewards error:', e);
+  } finally {
+    loadingRewards.value = false;
+  }
+
+  console.log(
+    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ rewards:',
+    boostRewards.value
+  );
+}
+
+watch(
+  [web3Account, loaded, () => props.proposal.scores_state],
+  () => {
+    loadRewards();
+  },
+  { immediate: true }
+);
+
 watch(
   [web3Account, () => props.proposal],
   async () => {
@@ -159,6 +199,8 @@ watch(
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
       :has-user-claimed="hasUserClaimed"
+      :rewards="boostRewards"
+      :loading-rewards="loadingRewards"
       @reload="loadClaims"
     />
 
@@ -213,6 +255,13 @@ watch(
                 :claims="claims"
                 :proposal="proposal"
                 :web3-account="web3Account"
+                :reward="
+                  boostRewards.find(
+                    reward =>
+                      reward.boost_id === boost.id &&
+                      reward.chain_id === boost.chainId
+                  )
+                "
                 :is-eligible="isEligible(boost)"
               />
             </div>
