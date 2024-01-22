@@ -27,6 +27,7 @@ const emit = defineEmits(['select']);
 <template>
   <Menu as="div" class="inline-block h-full text-left">
     <Float
+      portal
       enter="transition ease-out duration-100"
       enter-from="transform opacity-0 scale-95"
       enter-to="transform opacity-100 scale-100"
