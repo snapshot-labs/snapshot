@@ -188,7 +188,7 @@ watch(
 <template>
   <div>
     <SpaceProposalBoostClaim
-      v-if="eligibleBoosts.length && isFinal"
+      v-if="eligibleBoosts.length && isFinal && loaded"
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
