@@ -55,11 +55,13 @@ function withdrawalAmount(boost: BoostSubgraph) {
             <div class="leading-none">
               <div class="font-semibold text-skin-heading">Withdraw</div>
               <div>
-                You have {{ withdrawalAmount(boost) }} {{ boost.token.symbol }}
+                You have {{ withdrawalAmount(boost) }}
+                {{ boost.token.symbol }} to withdraw
               </div>
             </div>
 
             <TuneButton
+              v-if="Number(withdrawalAmount(boost)) > 0"
               class="h-5 px-[12px] text-skin-link bg-skin-bg w-full sm:w-auto mt-2 sm:mt-0"
               @click="
                 withdrawAndBurn(auth.web3, boost.chainId, boost.id, web3Account)
