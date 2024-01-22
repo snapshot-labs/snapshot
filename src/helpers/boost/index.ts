@@ -2,7 +2,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { parseEther } from '@ethersproject/units';
 import { pin } from '@snapshot-labs/pineapple';
-import { BoostStrategy } from '@/helpers/interfaces';
+import { BoostStrategy } from '@/helpers/boost/types';
 import ABI from './abi.json';
 
 export const BOOST_CONTRACTS = {
@@ -14,20 +14,18 @@ export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
 export const SNAPSHOT_GUARD_ADDRESS =
   '0x06A85356DCb5b307096726FB86A78c59D38e08ee';
 
-interface Boost {
-  strategyURI: string;
-  token: string;
-  amount: string;
-  owner: string;
-  guard: string;
-  start: number;
-  end: number;
-}
-
 export async function createBoost(
   web3: Web3Provider,
   networkId: string,
-  params: Boost
+  params: {
+    strategyURI: string;
+    token: string;
+    amount: string;
+    owner: string;
+    guard: string;
+    start: number;
+    end: number;
+  }
 ): Promise<any> {
   const { strategyURI, token, amount, guard, start, end, owner } = params;
   const signer = web3.getSigner();
@@ -87,4 +85,15 @@ export async function claimAllTokens(
 export async function getStrategyURI(strategy: BoostStrategy) {
   const { cid } = await pin(strategy);
   return `ipfs://${cid}`;
+}
+
+export async function withdrawAndBurn(
+  web3: Web3Provider,
+  networkId: string,
+  boostId: string,
+  to: string
+): Promise<any> {
+  const signer = web3.getSigner();
+  const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
+  return await contract.burn(boostId, to);
 }

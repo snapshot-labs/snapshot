@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
-import { getVouchers, Reward } from '@/helpers/boost/api';
+import { Proposal } from '@/helpers/interfaces';
+import { getVouchers } from '@/helpers/boost/api';
 import { formatUnits } from '@ethersproject/units';
 import { claimAllTokens } from '@/helpers/boost';
 import { getAddress } from '@ethersproject/address';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { BoostRewardGuard, BoostSubgraph } from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
-  boosts: BoostSubgraphResult[];
-  eligibleBoosts: BoostSubgraphResult[];
+  boosts: BoostSubgraph[];
+  eligibleBoosts: BoostSubgraph[];
   hasUserClaimed: boolean;
-  rewards: Reward[];
+  rewards: BoostRewardGuard[];
   loadingRewards: boolean;
 }>();
 

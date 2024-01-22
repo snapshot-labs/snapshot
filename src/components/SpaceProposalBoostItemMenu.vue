@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { BoostSubgraphResult } from '@/helpers/interfaces';
+import { BoostSubgraph } from '@/helpers/boost/types';
 import { explorerUrl } from '@/helpers/utils';
 import { openProfile } from '@/helpers/utils';
 
 const props = defineProps<{
-  boost: BoostSubgraphResult;
+  boost: BoostSubgraph;
 }>();
 
 const { domain } = useApp();

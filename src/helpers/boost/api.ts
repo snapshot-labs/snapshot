@@ -1,23 +1,12 @@
+import { BoostRewardGuard, BoostVoucherGuard } from '@/helpers/boost/types';
+
 type Boosts = string[][];
-
-export type Reward = {
-  boost_id: string;
-  chain_id: string;
-  reward: string;
-};
-
-export type Voucher = {
-  boost_id: string;
-  chain_id: string;
-  signature: string;
-  reward: string;
-};
 
 export async function getRewards(
   proposal_id: string,
   voter_address: string,
   boosts: Boosts
-): Promise<Reward[]> {
+): Promise<BoostRewardGuard[]> {
   const results = await fetch(
     'https://boost-guard-djc2x.ondigitalocean.app/get-rewards',
     {
@@ -41,7 +30,7 @@ export async function getVouchers(
   proposal_id: string,
   voter_address: string,
   boosts: Boosts
-): Promise<Voucher[]> {
+): Promise<BoostVoucherGuard[]> {
   const results = await fetch(
     'https://boost-guard-djc2x.ondigitalocean.app/create-vouchers',
     {

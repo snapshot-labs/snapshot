@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
 import { SUPPORTED_NETWORKS } from '@/helpers/boost';
-import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
+import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getAddress } from '@ethersproject/address';
-import { getRewards, Reward } from '@/helpers/boost/api';
-import { BoostClaimSubgraph } from '@/helpers/boost/types';
+import { getRewards } from '@/helpers/boost/api';
+import {
+  BoostClaimSubgraph,
+  BoostRewardGuard,
+  BoostSubgraph
+} from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -13,11 +17,11 @@ const props = defineProps<{
 
 const createModalOpen = ref(false);
 const boostsModalOpen = ref(false);
-const boosts = ref<BoostSubgraphResult[]>([]);
+const boosts = ref<BoostSubgraph[]>([]);
 const claims = ref<BoostClaimSubgraph[]>([]);
 const loaded = ref(false);
 const loadingRewards = ref(false);
-const boostRewards = ref<Reward[]>([]);
+const boostRewards = ref<BoostRewardGuard[]>([]);
 
 const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -36,7 +40,7 @@ const newBoostLink = computed(() => ({
 const isActive = computed(() => props.proposal.state === 'active');
 const isFinal = computed(() => props.proposal.scores_state === 'final');
 
-function isEligible(boost: BoostSubgraphResult) {
+function isEligible(boost: BoostSubgraph) {
   const choice = boost.strategy.eligibility.choice;
 
   if (!web3Account.value) return false;
@@ -62,9 +66,9 @@ const hasUserClaimed = computed(() => {
 const boostsSorted = computed(() => {
   if (!boosts.value.length) return [];
 
-  const eligible: BoostSubgraphResult[] = [];
-  const claimed: BoostSubgraphResult[] = [];
-  const other: BoostSubgraphResult[] = [];
+  const eligible: BoostSubgraph[] = [];
+  const claimed: BoostSubgraph[] = [];
+  const other: BoostSubgraph[] = [];
 
   boosts.value.forEach(boost => {
     const isClaimed = claims.value.some(claim => claim.boost.id === boost.id);

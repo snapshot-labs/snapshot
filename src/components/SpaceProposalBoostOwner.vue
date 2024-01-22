@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
+import { Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
+import { withdrawAndBurn } from '@/helpers/boost';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { BoostSubgraph } from '@/helpers/boost/types';
 
 defineProps<{
-  boosts: BoostSubgraphResult[];
+  boosts: BoostSubgraph[];
   proposal: Proposal;
 }>();
 
+const auth = getInstance();
 const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 const { web3Account } = useWeb3();
 
-function claimPeriodEnded(boost: BoostSubgraphResult) {
+function claimPeriodEnded(boost: BoostSubgraph) {
   return Number(boost.end) < Date.now() / 1000;
 }
 
-function withdrawalAmount(boost: BoostSubgraphResult) {
+function withdrawalAmount(boost: BoostSubgraph) {
   const formattedUnits = formatUnits(
     boost.currentBalance,
     boost.token.decimals
@@ -57,6 +61,9 @@ function withdrawalAmount(boost: BoostSubgraphResult) {
 
             <TuneButton
               class="h-5 px-[12px] text-skin-link bg-skin-bg w-full sm:w-auto mt-2 sm:mt-0"
+              @click="
+                withdrawAndBurn(auth.web3, boost.chainId, boost.id, web3Account)
+              "
             >
               Withdraw {{ withdrawalAmount(boost) }} {{ boost.token.symbol }}
             </TuneButton>

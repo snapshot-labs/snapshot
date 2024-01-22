@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
+import { Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
-import { Reward } from '@/helpers/boost/api';
-import { BoostClaimSubgraph } from '@/helpers/boost/types';
+import {
+  BoostClaimSubgraph,
+  BoostRewardGuard,
+  BoostSubgraph
+} from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
-  boost: BoostSubgraphResult;
+  boost: BoostSubgraph;
   claims?: BoostClaimSubgraph[];
   web3Account: string;
   isEligible?: boolean;
-  reward?: Reward;
+  reward?: BoostRewardGuard;
 }>();
 
 const { formatNumber, getNumberFormatter } = useIntl();

@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { ExtendedSpace, BoostStrategy } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import {
   createBoost,
   SUPPORTED_NETWORKS,
@@ -15,6 +15,7 @@ import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
 import { pinGraph } from '@/helpers/pin';
+import { BoostStrategy } from '@/helpers/boost/types';
 
 defineProps<{
   space: ExtendedSpace;
