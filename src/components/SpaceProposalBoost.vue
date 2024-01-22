@@ -113,7 +113,7 @@ async function loadBoosts() {
 }
 
 async function loadClaims() {
-  if (props.proposal.scores_state !== 'final' || !web3Account.value) return;
+  if (!isFinal.value || !web3Account.value) return;
   try {
     const requests = SUPPORTED_NETWORKS.map(chainId =>
       getClaims(web3Account.value, chainId)
@@ -143,12 +143,7 @@ function handleBoost() {
 }
 
 async function loadRewards() {
-  if (
-    !web3Account.value ||
-    !loaded.value ||
-    props.proposal.scores_state !== 'final'
-  )
-    return;
+  if (!web3Account.value || !loaded.value || !isFinal.value) return;
   loadingRewards.value = true;
 
   const boostsMap = boosts.value.map(boost => [boost.id, boost.chainId]);
@@ -172,7 +167,7 @@ async function loadRewards() {
 }
 
 watch(
-  [web3Account, loaded, () => props.proposal.scores_state],
+  [web3Account, loaded, isFinal],
   () => {
     loadRewards();
   },
@@ -193,7 +188,7 @@ watch(
 <template>
   <div>
     <SpaceProposalBoostClaim
-      v-if="eligibleBoosts.length && isFinal && loaded"
+      v-if="eligibleBoosts.length && isFinal"
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
