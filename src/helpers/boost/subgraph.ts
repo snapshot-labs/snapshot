@@ -14,7 +14,10 @@ export function getClaims(recipient: string, chainId: string) {
         }
       },
       id: true,
-      amount: true
+      amount: true,
+      boost: {
+        id: true
+      }
     }
   });
 }

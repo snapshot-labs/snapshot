@@ -2,10 +2,10 @@
 import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
 import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
-import { BigNumber } from '@ethersproject/bignumber';
 import { useStorage } from '@vueuse/core';
 import { getAddress } from '@ethersproject/address';
 import { getRewards, Reward } from '@/helpers/boost/api';
+import { BoostClaimSubgraph } from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -14,7 +14,7 @@ const props = defineProps<{
 const createModalOpen = ref(false);
 const boostsModalOpen = ref(false);
 const boosts = ref<BoostSubgraphResult[]>([]);
-const claims = ref<{ id: string; amount: string }[]>([]);
+const claims = ref<BoostClaimSubgraph[]>([]);
 const loaded = ref(false);
 const loadingRewards = ref(false);
 const boostRewards = ref<Reward[]>([]);
@@ -54,9 +54,8 @@ const eligibleBoosts = computed(() => {
 
 const hasUserClaimed = computed(() => {
   if (!eligibleBoosts.value.length) return false;
-  const claimsIds = claims.value.map(claim => claim.id.split('.')[0]);
   return eligibleBoosts.value.every(boost => {
-    return claimsIds.some(id => BigNumber.from(id).toString() === boost.id);
+    return claims.value.some(claim => claim.boost.id === boost.id);
   });
 });
 
@@ -68,9 +67,7 @@ const boostsSorted = computed(() => {
   const other: BoostSubgraphResult[] = [];
 
   boosts.value.forEach(boost => {
-    const isClaimed = claims.value.some(
-      claim => BigNumber.from(claim.id.split('.')[0]).toString() === boost.id
-    );
+    const isClaimed = claims.value.some(claim => claim.boost.id === boost.id);
 
     if (isEligible(boost) && !isClaimed) {
       eligible.push(boost);

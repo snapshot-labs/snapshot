@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { Proposal, BoostSubgraphResult } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
-import { BigNumber } from '@ethersproject/bignumber';
-import { getAddress } from '@ethersproject/address';
 import { Reward } from '@/helpers/boost/api';
+import { BoostClaimSubgraph } from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
   boost: BoostSubgraphResult;
-  claims?: { id: string; amount: string }[];
+  claims?: BoostClaimSubgraph[];
   web3Account: string;
   isEligible?: boolean;
   reward?: Reward;
@@ -28,24 +27,14 @@ const boostBalanceFormatted = computed(() => {
 });
 
 const isClaimedByUser = computed(() => {
-  if (!props.web3Account || !props.claims?.length) return false;
-  // Need to split because the id is in the format: boostId.address
-  const claims = props.claims.map(claim => claim.id.split('.'));
+  if (!props.claims?.length) return false;
 
-  return claims.some(
-    claim =>
-      BigNumber.from(claim[0]).toString() === props.boost.id &&
-      getAddress(claim[1]) === getAddress(props.web3Account)
-  );
+  return props.claims.some(claim => claim.boost.id === props.boost.id);
 });
 
 const claimedAmount = computed(() => {
   if (!props.claims?.length) return '0';
-  // Need to split because the id is in the format: boostId.address
-  const claim = props.claims.find(
-    claim =>
-      BigNumber.from(claim.id.split('.')[0]).toString() === props.boost.id
-  );
+  const claim = props.claims.find(claim => claim.boost.id === props.boost.id);
 
   if (!claim) return '0';
 

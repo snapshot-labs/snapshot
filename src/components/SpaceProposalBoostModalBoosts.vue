@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { BoostSubgraphResult, Proposal } from '@/helpers/interfaces';
 import { Reward } from '@/helpers/boost/api';
+import { BoostClaimSubgraph } from '@/helpers/boost/types';
 
 defineProps<{
   open: boolean;
   boosts: BoostSubgraphResult[];
   boostsOwner: BoostSubgraphResult[];
-  claims: { id: string; amount: string }[];
+  claims: BoostClaimSubgraph[];
   proposal: Proposal;
   rewards: Reward[];
   isEligible: (boost: BoostSubgraphResult) => boolean;
