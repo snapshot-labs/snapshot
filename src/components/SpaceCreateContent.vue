@@ -15,7 +15,6 @@ const { form, formDraft, validationErrors } = useFormSpaceProposal({
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
-const visitedBodyInput = ref(false);
 
 const inputName = computed({
   get: () => form.value.name,
@@ -105,7 +104,10 @@ const handleDrop = e => {
           @dragleave="imageDragging = false"
         >
           <div
-            class="peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text"
+            :class="[
+              'peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text',
+              { 'tune-error-border': validationErrors?.body }
+            ]"
           >
             <textarea
               ref="textAreaEl"
@@ -113,13 +115,14 @@ const handleDrop = e => {
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
               data-testid="input-proposal-body"
               @paste="handlePaste"
-              @blur="visitedBodyInput = true"
-              @focus="visitedBodyInput = false"
             />
           </div>
 
           <label
-            class="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border px-2 py-1 peer-focus-within:border-skin-text"
+            :class="[
+              'relative flex items-center justify-between rounded-b-xl border border-t-0 px-2 py-1 peer-focus-within:border-skin-text',
+              { 'tune-error-border': validationErrors?.body }
+            ]"
           >
             <input
               accept="image/jpg, image/jpeg, image/png"
@@ -157,7 +160,7 @@ const handleDrop = e => {
           </label>
         </div>
         <TuneErrorInput
-          v-if="visitedBodyInput && validationErrors?.body"
+          v-if="validationErrors?.body"
           :error="validationErrors?.body"
         />
       </div>
