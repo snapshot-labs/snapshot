@@ -91,7 +91,9 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             class="bg-snapshot/5 border border-snapshot/20 px-[12px] py-2 rounded-xl text-snapshot flex items-center justify-center gap-1 mt-2"
           >
             <i-ho-fire class="text-sm" />
-            {{ boostsCount }} boosts active
+            {{ boostsCount }}
+            <div>boost<span v-if="boostsCount > 1">s</span></div>
+            active
           </div>
         </template>
       </div>
