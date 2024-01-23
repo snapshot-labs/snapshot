@@ -96,7 +96,7 @@ const switchToDefaultNetwork = async () => {
         </BaseLink>
       </div>
       <div v-else class="m-4">
-        <TuneButton class="w-full"> Close </TuneButton>
+        <TuneButton class="w-full" @click="$emit('close')"> Close </TuneButton>
       </div>
     </div>
   </TuneModal>
