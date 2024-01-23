@@ -1,6 +1,6 @@
 import snapshot from '@snapshot-labs/snapshot.js';
 import { ERC20ABI } from '@/helpers/constants';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 async function getERC20Account(
   provider: any,
@@ -16,7 +16,6 @@ async function getERC20Account(
 }
 
 export function useAccount() {
-  const auth = getInstance();
   const { web3Account } = useWeb3();
 
   const account = ref<{
@@ -32,9 +31,12 @@ export function useAccount() {
   ) {
     account.value = {};
     updatingAccount.value = true;
+    const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
+    const provider = getProvider(chainId, { broviderUrl });
+
     try {
       account.value = await getERC20Account(
-        auth.web3,
+        provider,
         web3Account.value,
         token,
         chainId,
