@@ -203,11 +203,10 @@ async function loadVouchers() {
         <i-ho-clock class="mr-1 text-sm" />
         {{
           formatDuration(
-            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start),
-            'short'
+            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start)
           )
         }}
-        left to claim
+        left
       </div>
     </TuneBlock>
     <ModalTransactionStatus
