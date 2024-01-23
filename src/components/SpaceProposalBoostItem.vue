@@ -25,7 +25,7 @@ const boostBalanceFormatted = computed(() => {
   );
   return formatNumber(
     Number(formattedUnits),
-    getNumberFormatter({ maximumFractionDigits: 16 }).value
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 });
 
@@ -45,7 +45,7 @@ const claimedAmount = computed(() => {
 
   return formatNumber(
     Number(formattedUnits),
-    getNumberFormatter({ maximumFractionDigits: 16 }).value
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 });
 
@@ -57,7 +57,7 @@ const rewardFormatted = computed(() => {
   );
   return formatNumber(
     Number(formattedUnits),
-    getNumberFormatter({ maximumFractionDigits: 16 }).value
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 });
 </script>
