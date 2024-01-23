@@ -236,6 +236,7 @@ watch(
                 v-if="boostsOwner.length"
                 :boosts="boostsOwner.slice(0, 2)"
                 :proposal="proposal"
+                @reload="loadAll"
               />
               <div v-for="boost in boostsSorted.slice(0, 2)" :key="boost.id">
                 <SpaceProposalBoostItem

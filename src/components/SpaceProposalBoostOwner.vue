@@ -10,6 +10,8 @@ defineProps<{
   proposal: Proposal;
 }>();
 
+const emit = defineEmits(['reload']);
+
 const auth = getInstance();
 const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 const { web3Account } = useWeb3();
@@ -27,6 +29,21 @@ function withdrawalAmount(boost: BoostSubgraph) {
     Number(formattedUnits),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
+}
+
+async function withdraw(boost: BoostSubgraph) {
+  try {
+    const tx = await withdrawAndBurn(
+      auth.web3,
+      boost.chainId,
+      boost.id,
+      web3Account.value
+    );
+    await tx.wait();
+    emit('reload');
+  } catch (e) {
+    console.error('Error withdrawing boost', e);
+  }
 }
 </script>
 
@@ -63,9 +80,7 @@ function withdrawalAmount(boost: BoostSubgraph) {
             <TuneButton
               v-if="Number(withdrawalAmount(boost)) > 0"
               class="h-5 px-[12px] text-skin-link bg-skin-bg w-full sm:w-auto mt-2 sm:mt-0"
-              @click="
-                withdrawAndBurn(auth.web3, boost.chainId, boost.id, web3Account)
-              "
+              @click="withdraw(boost)"
             >
               Withdraw {{ withdrawalAmount(boost) }} {{ boost.token.symbol }}
             </TuneButton>
