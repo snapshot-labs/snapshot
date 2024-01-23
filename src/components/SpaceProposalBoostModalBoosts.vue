@@ -27,7 +27,7 @@ const { web3Account } = useWeb3();
       Boosts <TuneTag label="4" class="leading-none rounded-full px-2" />
     </TuneModalTitle>
     <div
-      class="p-3 pt-0 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-scroll"
+      class="p-3 pt-0 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
     >
       <SpaceProposalBoostOwner
         v-if="boostsOwner.length"
