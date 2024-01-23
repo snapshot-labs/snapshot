@@ -97,7 +97,6 @@ async function loadBoosts(proposals: Proposal[]) {
       proposalsToLoad.map(proposal => proposal.id)
     );
     boosts.value = boosts.value.concat(response);
-    console.log('🚀 ~ loadBoosts ~ boosts.value:', boosts.value);
   } catch (e) {
     console.error('Load boosts error:', e);
   }
@@ -167,10 +166,16 @@ watchDebounced(
   { debounce: 300 }
 );
 
-watch(spaceProposals, value => {
-  loadProfiles(value.map((proposal: any) => proposal.author));
-  loadBoosts(value);
-});
+watch(
+  spaceProposals,
+  value => {
+    loadProfiles(value.map((proposal: Proposal) => proposal.author));
+    loadBoosts(value);
+  },
+  {
+    immediate: true
+  }
+);
 </script>
 
 <template>
