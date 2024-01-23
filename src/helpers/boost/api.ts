@@ -1,11 +1,13 @@
-import { BoostRewardGuard, BoostVoucherGuard } from '@/helpers/boost/types';
-
-type Boosts = string[][];
+import {
+  BoostRewardGuard,
+  BoostVoucherGuard,
+  BoostSubgraph
+} from '@/helpers/boost/types';
 
 export async function getRewards(
   proposal_id: string,
   voter_address: string,
-  boosts: Boosts
+  boosts: BoostSubgraph[]
 ): Promise<BoostRewardGuard[]> {
   const results = await fetch(
     'https://boost-guard-djc2x.ondigitalocean.app/get-rewards',
@@ -17,7 +19,7 @@ export async function getRewards(
       body: JSON.stringify({
         proposal_id,
         voter_address,
-        boosts
+        boosts: boosts.map(boost => [boost.id, boost.chainId])
       })
     }
   );
@@ -29,7 +31,7 @@ export async function getRewards(
 export async function getVouchers(
   proposal_id: string,
   voter_address: string,
-  boosts: Boosts
+  boosts: BoostSubgraph[]
 ): Promise<BoostVoucherGuard[]> {
   const results = await fetch(
     'https://boost-guard-djc2x.ondigitalocean.app/create-vouchers',
@@ -41,7 +43,7 @@ export async function getVouchers(
       body: JSON.stringify({
         proposal_id,
         voter_address,
-        boosts
+        boosts: boosts.map(boost => [boost.id, boost.chainId])
       })
     }
   );

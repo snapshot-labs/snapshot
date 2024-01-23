@@ -1,30 +1,37 @@
 <script setup lang="ts">
 import { Proposal } from '@/helpers/interfaces';
 import { getVouchers } from '@/helpers/boost/api';
-import { formatUnits } from '@ethersproject/units';
-import { claimAllTokens } from '@/helpers/boost';
+import { claimAllTokens, claimTokens } from '@/helpers/boost';
 import { getAddress } from '@ethersproject/address';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { BoostRewardGuard, BoostSubgraph } from '@/helpers/boost/types';
+import {
+  BoostRewardGuard,
+  BoostSubgraph,
+  BoostClaimSubgraph
+} from '@/helpers/boost/types';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
   boosts: BoostSubgraph[];
   eligibleBoosts: BoostSubgraph[];
-  hasUserClaimed: boolean;
   rewards: BoostRewardGuard[];
+  claims: BoostClaimSubgraph[];
+  hasUserClaimed: boolean;
   loadingRewards: boolean;
 }>();
 
 const emit = defineEmits(['reload']);
 
 const claimStatus = ref('');
-const modalWrongNetworkOpen = ref(false);
 const claimTx = ref();
+const claimModalOpen = ref(false);
+const loadingClaim = ref();
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
-const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
+const { formatDuration } = useIntl();
+const { changeNetwork } = useChangeNetwork();
 
 const claimStatusModalConfig = computed(() => {
   switch (claimStatus.value) {
@@ -57,48 +64,26 @@ const claimStatusModalConfig = computed(() => {
   }
 });
 
-const firstEligibleBoost = computed(() => {
-  if (!props.eligibleBoosts.length) return undefined;
-  return props.eligibleBoosts[0];
-});
-
-const canClaimAll = computed(() => {
-  if (!firstEligibleBoost.value) return false;
-  const chainId = firstEligibleBoost.value.chainId;
-  const tokenAddress = firstEligibleBoost.value.token.id;
-  return props.eligibleBoosts.every(
-    boost => boost.chainId === chainId && boost.token.id === tokenAddress
-  );
-});
-
-const claimAllAmountFormatted = computed(() => {
-  if (!canClaimAll.value) return 0;
-  const units = props.rewards.reduce((total, reward) => {
-    return total + Number(reward.reward);
-  }, 0);
-
-  const decimals = firstEligibleBoost.value!.token.decimals;
-  const amountDecimal = formatUnits(units.toString(), decimals);
-
-  return formatNumber(
-    Number(amountDecimal),
-    getNumberFormatter({ maximumFractionDigits: 6 }).value
-  );
-});
-
 async function handleClaimAll() {
-  if (props.loadingRewards || !props.rewards.length) return;
-  if (
-    firstEligibleBoost.value!.chainId !== web3.value.network.chainId.toString()
-  ) {
-    modalWrongNetworkOpen.value = true;
-    return;
+  if (props.rewards[0].chain_id !== web3.value.network.chainId.toString()) {
+    return await changeNetwork(props.rewards[0].chain_id);
   }
 
   try {
-    const vouchers = await loadVouchers();
-    if (!vouchers?.length) throw new Error('No vouchers found');
+    claimStatus.value = 'loading';
+    const response = await loadVouchers(props.boosts);
+    if (!response?.length) throw new Error('No vouchers found');
 
+    // Incase user has claimed some of the boosts
+    const vouchers = response.filter(voucher => {
+      const hasClaimed = props.claims.some(
+        claim => claim.boost.id === voucher.boost_id
+      );
+      return !hasClaimed;
+    });
+
+    claimModalOpen.value = false;
+    await sleep(300);
     claimStatus.value = 'approve';
 
     const boosts = vouchers.map(voucher => ({
@@ -119,6 +104,7 @@ async function handleClaimAll() {
 
     await claimTx.value.wait();
     claimStatus.value = 'success';
+    emit('reload');
   } catch (e: any) {
     console.error('Claim error:', e);
     if (e.message.includes('user rejected transaction')) {
@@ -128,12 +114,45 @@ async function handleClaimAll() {
     }
   } finally {
     claimTx.value = undefined;
-    emit('reload');
   }
 }
 
-async function loadVouchers() {
-  const boosts = props.boosts.map(boost => [boost.id, boost.chainId]);
+async function handleClaim(boost: BoostSubgraph) {
+  if (boost.chainId !== web3.value.network.chainId.toString()) {
+    return await changeNetwork(boost.chainId);
+  }
+
+  try {
+    loadingClaim.value = {
+      [boost.id]: boost.chainId
+    };
+    const response = await loadVouchers([boost]);
+    if (!response) throw new Error('Failed to get vouchers');
+
+    const voucher = response[0];
+    const signature = voucher.signature;
+    const chainId = voucher.chain_id;
+    claimTx.value = await claimTokens(
+      auth.web3,
+      chainId,
+      {
+        boostId: voucher.boost_id,
+        recipient: getAddress(web3Account.value),
+        amount: voucher.reward
+      },
+      signature
+    );
+
+    await claimTx.value.wait();
+    emit('reload');
+  } catch (e: any) {
+    console.error('Claim error:', e);
+  } finally {
+    loadingClaim.value = undefined;
+  }
+}
+
+async function loadVouchers(boosts: BoostSubgraph[]) {
   try {
     const vouchers = await getVouchers(
       props.proposal.id,
@@ -147,7 +166,7 @@ async function loadVouchers() {
     );
     return vouchers;
   } catch (e) {
-    console.log('Get vouchers error:', e);
+    console.error('Get vouchers error:', e);
   }
 }
 </script>
@@ -159,7 +178,6 @@ async function loadVouchers() {
       slim
       class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
     >
-      <!-- TODO: Make sure to handle different tokens when claim -->
       <div>
         <div
           class="bg-white w-[64px] h-[64px] rounded-[20px] flex justify-center items-center shadow-xl mx-auto relative"
@@ -181,31 +199,25 @@ async function loadVouchers() {
       </div>
 
       <div class="flex justify-center mt-3">
-        <TuneButton variant="white" class="text-white" @click="handleClaimAll">
+        <TuneButton
+          variant="white"
+          class="text-white"
+          @click="!loadingRewards && (claimModalOpen = true)"
+        >
           <TuneLoadingSpinner v-if="loadingRewards" class="text-white" />
           <div v-else class="flex items-center">
             <i-ho-gift class="text-sm mr-2" />
             Claim
-            <span v-if="canClaimAll" class="ml-[6px]">
-              {{ claimAllAmountFormatted }}
-              {{ firstEligibleBoost!.token.symbol }}
-            </span>
-            <span v-else class="ml-[6px]">
-              {{ eligibleBoosts.length }} rewards
-            </span>
+            <span class="ml-[6px]"> {{ eligibleBoosts.length }} rewards </span>
           </div>
         </TuneButton>
       </div>
       <div
-        v-if="firstEligibleBoost"
+        v-if="boosts.length"
         class="flex text-white justify-center items-center mt-2"
       >
         <i-ho-clock class="mr-1 text-sm" />
-        {{
-          formatDuration(
-            Number(firstEligibleBoost.end) - Number(firstEligibleBoost.start)
-          )
-        }}
+        {{ formatDuration(Number(boosts[0].end) - Number(boosts[0].start)) }}
         left
       </div>
     </TuneBlock>
@@ -215,16 +227,20 @@ async function loadVouchers() {
       :variant="claimStatusModalConfig.variant"
       :title="claimStatusModalConfig?.title"
       :subtitle="claimStatusModalConfig?.subtitle"
-      :network="firstEligibleBoost?.chainId"
+      :network="rewards[0].chain_id"
       @close="claimStatus = ''"
       @try-again="handleClaimAll"
     />
-    <ModalWrongNetwork
-      v-if="firstEligibleBoost && canClaimAll"
-      :open="modalWrongNetworkOpen"
-      :network="firstEligibleBoost.chainId"
-      @network-changed="handleClaimAll"
-      @close="modalWrongNetworkOpen = false"
+    <SpaceProposalBoostClaimModal
+      :open="claimModalOpen"
+      :boosts="eligibleBoosts"
+      :claims="claims"
+      :rewards="rewards"
+      :loading-claim-all="claimStatus === 'loading'"
+      :loading-claim="loadingClaim"
+      @close="claimModalOpen = false"
+      @claim-all="handleClaimAll"
+      @claim="handleClaim"
     />
   </div>
 </template>

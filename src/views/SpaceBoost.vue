@@ -19,6 +19,7 @@ import { BoostStrategy } from '@/helpers/boost/types';
 
 defineProps<{
   space: ExtendedSpace;
+  // TODO: Add space setting to allow boost or no bribe
 }>();
 
 type Form = {

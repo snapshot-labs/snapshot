@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   open: boolean;
@@ -8,44 +7,24 @@ const props = defineProps<{
   showDemoButton?: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
-const defaultNetwork = props.network || import.meta.env.VITE_DEFAULT_NETWORK;
-const networkData = {
-  '1': {
-    name: 'Ethereum Mainnet',
-    chainId: '0x1'
-  },
-  '5': {
-    name: 'Goerli Testnet',
-    chainId: '0x5'
-  },
-  '11155111': {
-    name: 'Sepolia Testnet',
-    chainId: '0xaa36a7'
-  }
-};
 
 const { notify } = useFlashNotification();
 const { t } = useI18n();
+const { changeNetwork, NETWORKS } = useChangeNetwork();
+
+const switchingChain = ref(false);
 
 const usingMetaMask = computed(() => {
   return window.ethereum && getInstance().provider.value?.isMetaMask;
 });
 
-const switchingChain = ref(false);
+const desiredNetwork = computed(() => {
+  return props.network ?? import.meta.env.VITE_DEFAULT_NETWORK;
+});
 
-const switchToDefaultNetwork = async () => {
+async function handleChange() {
   try {
-    switchingChain.value = true;
-    await window.ethereum?.request({
-      method: 'wallet_switchEthereumChain',
-      params: [
-        {
-          chainId: networkData[defaultNetwork].chainId
-        }
-      ]
-    });
-    await sleep(1000);
-    switchingChain.value = false;
+    await changeNetwork(desiredNetwork.value);
     emit('close');
     emit('networkChanged');
   } catch (e) {
@@ -53,7 +32,7 @@ const switchToDefaultNetwork = async () => {
     console.error(e);
     switchingChain.value = false;
   }
-};
+}
 </script>
 
 <template>
@@ -67,7 +46,7 @@ const switchToDefaultNetwork = async () => {
           <TuneModalDescription class="text-md leading-5 mt-1">
             To continue, you need to change the network in your wallet to
             <span class="font-semibold">{{
-              networkData[defaultNetwork].name
+              NETWORKS[desiredNetwork].name
             }}</span
             >.
           </TuneModalDescription>
@@ -79,16 +58,16 @@ const switchToDefaultNetwork = async () => {
           :loading="switchingChain"
           class="w-full"
           primary
-          @click="switchToDefaultNetwork"
+          @click="handleChange"
         >
           {{
             $t('unsupportedNetwork.switchToNetwork', {
-              network: networkData[defaultNetwork].name
+              network: NETWORKS[desiredNetwork].name
             })
           }}
         </TuneButton>
       </div>
-      <div v-else-if="defaultNetwork === '1' && showDemoButton">
+      <div v-else-if="desiredNetwork === '1' && showDemoButton">
         <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
           <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}

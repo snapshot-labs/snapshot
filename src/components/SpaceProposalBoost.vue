@@ -18,10 +18,10 @@ const props = defineProps<{
 const createModalOpen = ref(false);
 const boostsModalOpen = ref(false);
 const boosts = ref<BoostSubgraph[]>([]);
-const claims = ref<BoostClaimSubgraph[]>([]);
+const boostClaims = ref<BoostClaimSubgraph[]>([]);
+const boostRewards = ref<BoostRewardGuard[]>([]);
 const loaded = ref(false);
 const loadingRewards = ref(false);
-const boostRewards = ref<BoostRewardGuard[]>([]);
 
 const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -59,7 +59,7 @@ const eligibleBoosts = computed(() => {
 const hasUserClaimed = computed(() => {
   if (!eligibleBoosts.value.length) return false;
   return eligibleBoosts.value.every(boost => {
-    return claims.value.some(claim => claim.boost.id === boost.id);
+    return boostClaims.value.some(claim => claim.boost.id === boost.id);
   });
 });
 
@@ -71,7 +71,9 @@ const boostsSorted = computed(() => {
   const other: BoostSubgraph[] = [];
 
   boosts.value.forEach(boost => {
-    const isClaimed = claims.value.some(claim => claim.boost.id === boost.id);
+    const isClaimed = boostClaims.value.some(
+      claim => claim.boost.id === boost.id
+    );
 
     if (isEligible(boost) && !isClaimed) {
       eligible.push(boost);
@@ -113,7 +115,7 @@ async function loadClaims() {
     );
     const responses = await Promise.all(requests);
 
-    claims.value = responses.map(response => response.claims).flat();
+    boostClaims.value = responses.map(response => response.claims).flat();
   } catch (e) {
     console.error('Load boosts error:', e);
   }
@@ -139,22 +141,21 @@ async function loadRewards() {
   if (!web3Account.value || !loaded.value || !isFinal.value) return;
   loadingRewards.value = true;
 
-  const boostsMap = boosts.value.map(boost => [boost.id, boost.chainId]);
   try {
     boostRewards.value = await getRewards(
       props.proposal.id,
       web3Account.value,
-      boostsMap
+      boosts.value
     );
   } catch (e) {
     boostRewards.value = [];
-    console.log('Get rewards error:', e);
+    console.log('Get boostRewards error:', e);
   } finally {
     loadingRewards.value = false;
   }
 
   console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ rewards:',
+    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ boostRewards:',
     boostRewards.value
   );
 }
@@ -187,6 +188,7 @@ watch(
       :eligible-boosts="eligibleBoosts"
       :has-user-claimed="hasUserClaimed"
       :rewards="boostRewards"
+      :claims="boostClaims"
       :loading-rewards="loadingRewards"
       @reload="loadClaims"
     />
@@ -241,7 +243,7 @@ watch(
               <div v-for="boost in boostsSorted.slice(0, 2)" :key="boost.id">
                 <SpaceProposalBoostItem
                   :boost="boost"
-                  :claims="claims"
+                  :claims="boostClaims"
                   :proposal="proposal"
                   :web3-account="web3Account"
                   :reward="
@@ -342,7 +344,7 @@ watch(
       :open="boostsModalOpen"
       :boosts="boostsSorted"
       :boosts-owner="boostsOwner"
-      :claims="claims"
+      :claims="boostClaims"
       :proposal="proposal"
       :rewards="boostRewards"
       :is-eligible="isEligible"

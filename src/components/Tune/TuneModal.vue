@@ -23,7 +23,7 @@ const sizeClass = computed(() => {
 });
 
 const closePositionClass = computed(() => {
-  if (!props.size) return 'md:top-[12px] md:right-[10px]';
+  if (!props.size) return 'top-[12px] right-[10px]';
   if (props.size === 'big')
     return 'md:right-4 md:top-[26px] right-[10px] top-[10px]';
   if (props.size === 'medium') return 'top-[12px] right-[10px]';
@@ -130,7 +130,7 @@ onUnmounted(() => {
               >
                 <BaseButtonIcon @click="$emit('close')">
                   <span class="sr-only">Close</span>
-                  <i-ho-x class="text-md" aria-hidden="true" />
+                  <i-ho-x class="text-base" aria-hidden="true" />
                 </BaseButtonIcon>
               </div>
 
