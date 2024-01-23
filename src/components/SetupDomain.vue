@@ -130,7 +130,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
               <BaseLink
                 v-else-if="deletedSpaces.includes(ens.name)"
-                link="https://docs.snapshot.org/"
+                link="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name"
                 hide-external-icon
               >
                 <TuneButton
