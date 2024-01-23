@@ -99,15 +99,7 @@ function handleStart() {
 
 async function loadBoosts() {
   try {
-    const requests = SUPPORTED_NETWORKS.map(chainId =>
-      getBoosts(props.proposal.id, chainId)
-    );
-    const responses = await Promise.all(requests);
-
-    boosts.value = responses
-      .map(response => response.boosts)
-      .filter(boost => boost)
-      .flat();
+    boosts.value = await getBoosts([props.proposal.id]);
   } catch (e) {
     console.error('Load boosts error:', e);
   }

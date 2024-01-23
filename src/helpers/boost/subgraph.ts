@@ -1,4 +1,6 @@
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
+import { SUPPORTED_NETWORKS } from '@/helpers/boost';
+import { BoostSubgraph } from '@/helpers/boost/types';
 
 const SUBGRAPH_URLS = {
   '11155111':
@@ -22,42 +24,51 @@ export function getClaims(recipient: string, chainId: string) {
   });
 }
 
-export function getBoosts(proposalId: string, chainId: string) {
-  return subgraphRequest(SUBGRAPH_URLS[chainId], {
-    boosts: {
-      __args: {
-        where: { strategy_: { proposal: proposalId } }
-      },
-      id: true,
-      strategyURI: true,
-      poolSize: true,
-      guard: true,
-      start: true,
-      end: true,
-      owner: true,
-      chainId: true,
-      currentBalance: true,
-      transaction: true,
-      token: {
-        id: true,
-        name: true,
-        symbol: true,
-        decimals: true
-      },
-      strategy: {
-        id: true,
-        name: true,
-        version: true,
-        proposal: true,
-        eligibility: {
-          type: true,
-          choice: true
+export async function getBoosts(proposalIds: string[]) {
+  async function query(chainId: string) {
+    return subgraphRequest(SUBGRAPH_URLS[chainId], {
+      boosts: {
+        __args: {
+          where: { strategy_: { proposal_in: proposalIds } }
         },
-        distribution: {
-          type: true,
-          limit: true
+        id: true,
+        strategyURI: true,
+        poolSize: true,
+        guard: true,
+        start: true,
+        end: true,
+        owner: true,
+        chainId: true,
+        currentBalance: true,
+        transaction: true,
+        token: {
+          id: true,
+          name: true,
+          symbol: true,
+          decimals: true
+        },
+        strategy: {
+          id: true,
+          name: true,
+          version: true,
+          proposal: true,
+          eligibility: {
+            type: true,
+            choice: true
+          },
+          distribution: {
+            type: true,
+            limit: true
+          }
         }
       }
-    }
-  });
+    });
+  }
+  const requests = SUPPORTED_NETWORKS.map(chainId => query(chainId));
+  const responses: { boosts: BoostSubgraph }[] = await Promise.all(requests);
+
+  return responses
+    .map(response => response.boosts)
+    .filter(boost => boost)
+    .flat();
 }

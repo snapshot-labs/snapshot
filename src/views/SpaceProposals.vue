@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { PROPOSALS_QUERY } from '@/helpers/queries';
-import { ExtendedSpace } from '@/helpers/interfaces';
+import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
+import { getBoosts } from '@/helpers/boost/subgraph';
+import { BoostSubgraph } from '@/helpers/boost/types';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -24,6 +26,7 @@ useMeta({
 });
 
 const loading = ref(false);
+const boosts = ref<BoostSubgraph[]>([]);
 
 const route = useRoute();
 const router = useRouter();
@@ -80,6 +83,24 @@ async function getProposals(skip = 0) {
     },
     'proposals'
   );
+}
+
+async function loadBoosts(proposals: Proposal[]) {
+  const alreadyLoadedProposals = boosts.value.map(
+    boost => boost.strategy.proposal
+  );
+  const proposalsToLoad = proposals.filter(
+    proposal => !alreadyLoadedProposals.includes(proposal.id)
+  );
+  try {
+    const response = await getBoosts(
+      proposalsToLoad.map(proposal => proposal.id)
+    );
+    boosts.value = boosts.value.concat(response);
+    console.log('🚀 ~ loadBoosts ~ boosts.value:', boosts.value);
+  } catch (e) {
+    console.error('Load boosts error:', e);
+  }
 }
 
 async function loadMoreProposals(skip: number) {
@@ -146,8 +167,9 @@ watchDebounced(
   { debounce: 300 }
 );
 
-watch(spaceProposals, () => {
-  loadProfiles(spaceProposals.value.map((proposal: any) => proposal.author));
+watch(spaceProposals, value => {
+  loadProfiles(value.map((proposal: any) => proposal.author));
+  loadBoosts(value);
 });
 </script>
 
@@ -198,6 +220,7 @@ watch(spaceProposals, () => {
                 name: 'spaceProposal',
                 params: { id: proposal.id, key: proposal.space.id }
               }"
+              :boosts="boosts"
             />
           </BaseBlock>
         </template>

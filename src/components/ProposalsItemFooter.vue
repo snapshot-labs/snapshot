@@ -17,7 +17,7 @@ const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
           (proposal.state === 'pending' ? proposal.start : proposal.end) * 1000
         ).toUTCString()
       }"
-      class="cursor-help text-sm"
+      class="cursor-help"
     >
       {{
         capitalize(
