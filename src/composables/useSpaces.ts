@@ -160,23 +160,25 @@ export function useSpaces() {
   }
 
   async function getDeletedSpaces(ids: string[]) {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_HUB_URL}/api/deleted-spaces`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            spaces: ids
-          })
-        }
-      );
+    const results = await Promise.allSettled(
+      ids.map(async id => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_HUB_URL}/api/spaces/${id}`,
+            {
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
 
-      return await response.json();
-    } catch (e) {
-      console.error(e);
-      return [];
-    }
+          return (await response.json())?.deleted === true ? id : null;
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      })
+    );
+
+    return results.map(r => r.value).filter(a => a);
   }
 
   return {
