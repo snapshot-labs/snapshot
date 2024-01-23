@@ -1,8 +1,4 @@
 <script setup lang="ts">
-defineProps<{
-  open: boolean;
-}>();
-
 const emit = defineEmits(['close']);
 
 const { loading, error, clientSubscriptions, updateSubscriptions } =
@@ -32,20 +28,12 @@ const submit = async () => {
 </script>
 
 <template>
-  <BaseModal :open="open" max-height="510px" @close="emit('close')">
-    <template #header>
-      <div class="flex flex-row items-center justify-center">
-        <h3>{{ $t('emailManagement.title') }}</h3>
-      </div>
-    </template>
+  <div class="m-4 flex flex-col gap-4">
+    <p class="text-sm text-skin-text opacity-60">
+      {{ t('emailManagement.subtitle') }}
+    </p>
 
-    <div class="mx-4 mb-4 mt-2 text-center">
-      <p class="text-sm text-skin-text opacity-60">
-        {{ t('emailManagement.subtitle') }}
-      </p>
-    </div>
-
-    <form class="mx-6 my-4 flex flex-col space-y-4" @submit.prevent="submit">
+    <form class="flex flex-col space-y-4" @submit.prevent="submit">
       <TuneSwitch
         :model-value="clientSubscriptions.summary"
         :label="t('emailManagement.optionSummary')"
@@ -67,9 +55,9 @@ const submit = async () => {
         @update:model-value="updateSubscriptionKeys('closedProposal', $event)"
       />
 
-      <TuneButton class="mt-6 w-full" primary type="submit" :loading="loading">
+      <TuneButton class="w-full" primary type="submit" :loading="loading">
         {{ t('emailManagement.updatePreferences') }}
       </TuneButton>
     </form>
-  </BaseModal>
+  </div>
 </template>

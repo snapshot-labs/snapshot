@@ -157,7 +157,7 @@ const handleDrop = e => {
           </label>
         </div>
         <TuneErrorInput
-          v-if="validationErrors?.body && visitedBodyInput"
+          v-if="visitedBodyInput && validationErrors?.body"
           :error="validationErrors?.body"
         />
       </div>

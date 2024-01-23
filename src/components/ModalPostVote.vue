@@ -4,7 +4,8 @@ import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { shareVote, shareProposalTwitter, shareProposalHey } = useSharing();
 const { web3Account } = useWeb3();
-const { userState } = useEmailSubscription();
+const { userState, loadEmailSubscriptions, initialized } =
+  useEmailSubscription();
 
 const props = defineProps<{
   open: boolean;
@@ -34,6 +35,12 @@ function share(shareTo: 'twitter' | 'hey') {
     choices: getChoiceString(props.proposal, props.selectedChoices)
   });
 }
+
+onMounted(() => {
+  if (!initialized.value) {
+    loadEmailSubscriptions();
+  }
+});
 </script>
 
 <template>
@@ -87,7 +94,7 @@ function share(shareTo: 'twitter' | 'hey') {
         </TuneButton>
 
         <TuneButton
-          v-if="userState !== 'VERIFIED'"
+          v-if="userState !== 'VERIFIED' && initialized"
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="subscribeEmail"
         >

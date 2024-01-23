@@ -19,6 +19,7 @@ watch(
       <div class="flex items-center py-[12px]">
         <div class="flex flex-auto items-center">
           <BaseButtonRound
+            v-if="!domain"
             class="sm:hidden"
             @click="showSidebar = !showSidebar"
           >

@@ -143,8 +143,14 @@ async function onApproveBond() {
     if (step.value) {
       txPendingId = createPendingTransaction(step.value.hash);
       await approvingBond.next();
-      notify('Successfully approved bond');
       await sleep(3e3);
+      notify('Successfully approved bond');
+      // update our knowledge of users approval
+      userCollateralAllowance.value = await getUserCollateralAllowance(
+        collateralDetails.value.erc20Contract,
+        web3.value.account,
+        props.moduleAddress
+      );
       await updateOgProposalState();
     }
   } catch (e) {
