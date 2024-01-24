@@ -27,8 +27,6 @@ export function useImageUpload() {
     isUploadingImage.value = true;
     const formData = new FormData();
 
-    // TODO: Make this composable useFileUpload
-
     if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
       imageUploadError.value = t('errors.unsupportedImageType');
       isUploadingImage.value = false;

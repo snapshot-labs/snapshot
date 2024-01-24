@@ -8,6 +8,8 @@ defineProps<{
 
 const emit = defineEmits(['close', 'update:selected']);
 
+const { env } = useApp();
+
 const types = ['shutter'];
 
 function select(id) {
@@ -31,8 +33,13 @@ function select(id) {
           :title="$t('privacy.none')"
         />
       </a>
-      <a v-for="(type, key) in types" :key="key" @click="select(type)">
+      <a
+        v-for="(type, key) in types"
+        :key="key"
+        @click="env === 'demo' ? null : select(type)"
+      >
         <BaseModalSelectItem
+          :disabled="env === 'demo'"
           :selected="type === selected"
           :title="$t(`privacy.${type}.label`)"
           :description="$t(`privacy.${type}.description`)"
