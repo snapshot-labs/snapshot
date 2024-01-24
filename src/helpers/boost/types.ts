@@ -28,7 +28,7 @@ export interface BoostStrategy {
     };
     distribution: {
       type: 'even' | 'weighted';
-      limit?: number;
+      limit?: string;
     };
   };
 }
