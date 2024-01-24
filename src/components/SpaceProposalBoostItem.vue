@@ -205,7 +205,9 @@ async function withdraw(boost: BoostSubgraph) {
         <div class="mt-[2px] md:mt-0">
           Withdrawable in:
           <span class="text-skin-heading">
-            {{ formatDuration(Number(boost.end) - Number(boost.start)) }}
+            {{
+              formatDuration(Number(boost.end) - Math.floor(Date.now() / 1000))
+            }}
           </span>
         </div>
       </div>

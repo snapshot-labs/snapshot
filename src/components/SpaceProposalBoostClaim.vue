@@ -167,6 +167,11 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
     console.error('Get vouchers error:', e);
   }
 }
+
+const timeLeftToClaim = computed(() => {
+  if (!unclaimedBoosts.value.length) return 0;
+  return Number(unclaimedBoosts.value[0].end) - Math.floor(Date.now() / 1000);
+});
 </script>
 
 <template>
@@ -200,7 +205,12 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
         <TuneButton
           variant="white"
           class="text-white"
-          @click="!loadingRewards && (claimModalOpen = true)"
+          :class="{
+            'cursor-not-allowed': loadingRewards || timeLeftToClaim <= 0
+          }"
+          @click="
+            !loadingRewards && timeLeftToClaim > 0 && (claimModalOpen = true)
+          "
         >
           <TuneLoadingSpinner v-if="loadingRewards" class="text-white" />
           <div v-else class="flex items-center">
@@ -211,12 +221,18 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
         </TuneButton>
       </div>
       <div
-        v-if="boosts.length"
-        class="flex text-white justify-center items-center mt-2"
+        v-if="eligibleBoosts.length"
+        class="flex text-white justify-center mt-2"
       >
-        <i-ho-clock class="mr-1 text-sm" />
-        {{ formatDuration(Number(boosts[0].end) - Number(boosts[0].start)) }}
-        left
+        <span v-if="timeLeftToClaim > 0" class="flex items-center">
+          <i-ho-clock class="mr-1 text-sm" />
+          {{ formatDuration(timeLeftToClaim) }}
+          left
+        </span>
+        <span v-else class="flex items-center">
+          <i-ho-exclamation-circle class="mr-1 text-sm" />
+          Claiming period ended
+        </span>
       </div>
     </TuneBlock>
     <ModalTransactionStatus
