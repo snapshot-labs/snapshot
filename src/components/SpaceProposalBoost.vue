@@ -81,7 +81,7 @@ const boostsSorted = computed(() => {
 });
 
 const boostsOwner = computed(() => {
-  if (!boosts.value.length) return [];
+  if (!boosts.value.length || !web3Account.value) return [];
   return boosts.value.filter(
     boost => getAddress(boost.owner) === getAddress(web3Account.value)
   );
@@ -237,7 +237,6 @@ watch(
                   :boost="boost"
                   :claims="boostClaims"
                   :proposal="proposal"
-                  :web3-account="web3Account"
                   :reward="
                     boostRewards.find(
                       reward =>

@@ -11,7 +11,6 @@ const props = defineProps<{
   proposal: Proposal;
   boost: BoostSubgraph;
   claims?: BoostClaimSubgraph[];
-  web3Account: string;
   isEligible?: boolean;
   reward?: BoostRewardGuard;
 }>();
