@@ -3,8 +3,8 @@ import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
 import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
-import { getAddress } from '@ethersproject/address';
 import { getRewards } from '@/helpers/boost/api';
+import { getAddress } from '@ethersproject/address';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -59,6 +59,7 @@ const eligibleBoosts = computed(() => {
 const boostsSorted = computed(() => {
   if (!boosts.value.length) return [];
 
+  const owned: BoostSubgraph[] = [];
   const eligible: BoostSubgraph[] = [];
   const claimed: BoostSubgraph[] = [];
   const other: BoostSubgraph[] = [];
@@ -68,7 +69,9 @@ const boostsSorted = computed(() => {
       claim => claim.boost.id === boost.id
     );
 
-    if (isEligible(boost) && !isClaimed) {
+    if (getAddress(boost.owner) === getAddress(web3Account.value)) {
+      owned.push(boost);
+    } else if (isEligible(boost) && !isClaimed) {
       eligible.push(boost);
     } else if (isClaimed) {
       claimed.push(boost);
@@ -77,14 +80,7 @@ const boostsSorted = computed(() => {
     }
   });
 
-  return [...eligible, ...claimed, ...other];
-});
-
-const boostsOwner = computed(() => {
-  if (!boosts.value.length || !web3Account.value) return [];
-  return boosts.value.filter(
-    boost => getAddress(boost.owner) === getAddress(web3Account.value)
-  );
+  return [...owned, ...eligible, ...claimed, ...other];
 });
 
 function handleStart() {
@@ -227,12 +223,6 @@ watch(
           </div>
           <div v-if="loaded">
             <div class="mt-3 space-y-2">
-              <SpaceProposalBoostOwner
-                v-if="boostsOwner.length"
-                :boosts="boostsOwner.slice(0, 2)"
-                :proposal="proposal"
-                @reload="loadAll"
-              />
               <div v-for="boost in boostsSorted.slice(0, 2)" :key="boost.id">
                 <SpaceProposalBoostItem
                   :boost="boost"
@@ -246,11 +236,12 @@ watch(
                     )
                   "
                   :is-eligible="isEligible(boost)"
+                  @reload="loadAll"
                 />
               </div>
             </div>
             <TuneButton
-              v-if="boostsOwner.length > 2 || boostsSorted.length > 2"
+              v-if="boostsSorted.length > 3"
               class="w-full mt-3"
               @click="boostsModalOpen = true"
             >
@@ -335,7 +326,6 @@ watch(
     <SpaceProposalBoostModalBoosts
       :open="boostsModalOpen"
       :boosts="boostsSorted"
-      :boosts-owner="boostsOwner"
       :claims="boostClaims"
       :proposal="proposal"
       :rewards="boostRewards"

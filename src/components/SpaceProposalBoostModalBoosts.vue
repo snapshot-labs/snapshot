@@ -9,7 +9,6 @@ import {
 defineProps<{
   open: boolean;
   boosts: BoostSubgraph[];
-  boostsOwner: BoostSubgraph[];
   claims: BoostClaimSubgraph[];
   proposal: Proposal;
   rewards: BoostRewardGuard[];
@@ -29,11 +28,6 @@ const { web3Account } = useWeb3();
     <div
       class="p-3 pt-0 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
     >
-      <SpaceProposalBoostOwner
-        v-if="boostsOwner.length"
-        :boosts="boostsOwner"
-        :proposal="proposal"
-      />
       <div v-for="boost in boosts" :key="boost.id">
         <SpaceProposalBoostItem
           :boost="boost"
