@@ -192,7 +192,10 @@ const strategy = computed<BoostStrategy>(() => {
   const limit =
     form.value.distribution.type === 'weighted' &&
     form.value.distribution.ratioLimit
-      ? Number(form.value.distribution.ratioLimit)
+      ? parseUnits(
+          form.value.distribution.ratioLimit || '0',
+          selectedToken.value?.decimals || '18'
+        ).toString()
       : undefined;
 
   // TODO: Use NFT format
@@ -207,7 +210,7 @@ const strategy = computed<BoostStrategy>(() => {
     name: 'proposal',
     params: {
       version: '0.0.1',
-      testnet: env === 'demo',
+      env: env === 'demo' ? 'snapshot-testnet' : 'snapshot',
       proposal: proposal.value.id,
       eligibility: {
         type: eligibilityType,
@@ -488,8 +491,8 @@ watch(
           <TuneBlock>
             <template #title>
               <TuneBlockHeader
-                title="Distribution based on Voting power"
-                sub-title="Set the maximum reward linked to voting power. Without a limit, the reward will scale indefinitely with the voter's total voting power."
+                title="Distribution"
+                sub-title="Set a limit for how much each voter can receive. Without a limit, the reward will scale indefinitely with the voter's total voting power."
               />
             </template>
             <TuneSwitch
@@ -499,14 +502,14 @@ watch(
             <div v-if="form.distribution.hasRatioLimit" class="mt-3">
               <TuneInput
                 v-model="form.distribution.ratioLimit"
-                label="Max amount of voting power"
+                label="Max amount"
                 type="number"
-                placeholder="e.g. 1000"
+                :placeholder="`e.g. ${Number(form.amount) / 1000}`"
                 always-show-error
                 :error="formErrorMessages?.ratioLimit"
               >
                 <template #after>
-                  <div class="-mr-[8px]">VP</div>
+                  <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
                 </template>
               </TuneInput>
             </div>
