@@ -16,7 +16,7 @@ const props = defineProps<{
 
 defineEmits(['close', 'claimAll', 'claim']);
 
-const allNetworksAreSame = computed(() => {
+const allOnSameNetwork = computed(() => {
   const chainIds = new Set(props.boosts.map(boost => boost.chainId));
   return chainIds.size === 1;
 });
@@ -48,7 +48,7 @@ const allNetworksAreSame = computed(() => {
     </div>
     <div class="m-3">
       <TuneButton
-        v-if="allNetworksAreSame"
+        v-if="allOnSameNetwork"
         class="w-full"
         :loading="loadingClaimAll"
         @click="$emit('claimAll')"

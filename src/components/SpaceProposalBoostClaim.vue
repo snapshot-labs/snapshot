@@ -17,7 +17,6 @@ const props = defineProps<{
   eligibleBoosts: BoostSubgraph[];
   rewards: BoostRewardGuard[];
   claims: BoostClaimSubgraph[];
-  hasUserClaimed: boolean;
   loadingRewards: boolean;
 }>();
 
@@ -64,6 +63,13 @@ const claimStatusModalConfig = computed(() => {
   }
 });
 
+const unclaimedBoosts = computed(() =>
+  props.eligibleBoosts.filter(boost => {
+    const hasClaimed = props.claims.some(claim => claim.boost.id === boost.id);
+    return !hasClaimed;
+  })
+);
+
 async function handleClaimAll() {
   if (props.rewards[0].chain_id !== web3.value.network.chainId.toString()) {
     return await changeNetwork(props.rewards[0].chain_id);
@@ -71,16 +77,8 @@ async function handleClaimAll() {
 
   try {
     claimStatus.value = 'loading';
-    const response = await loadVouchers(props.boosts);
-    if (!response?.length) throw new Error('No vouchers found');
-
-    // Incase user has claimed some of the boosts
-    const vouchers = response.filter(voucher => {
-      const hasClaimed = props.claims.some(
-        claim => claim.boost.id === voucher.boost_id
-      );
-      return !hasClaimed;
-    });
+    const vouchers = await loadVouchers(unclaimedBoosts.value);
+    if (!vouchers?.length) throw new Error('No vouchers found');
 
     claimModalOpen.value = false;
     await sleep(300);
@@ -174,7 +172,7 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
 <template>
   <div>
     <TuneBlock
-      v-if="!hasUserClaimed"
+      v-if="unclaimedBoosts.length"
       slim
       class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
     >
@@ -188,7 +186,7 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
           >
             <i-ho-gift class="text-[14px] mr-[2px]" />
             <span class="text-sm">
-              {{ eligibleBoosts.length }}
+              {{ unclaimedBoosts.length }}
             </span>
           </div>
         </div>
@@ -208,7 +206,7 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
           <div v-else class="flex items-center">
             <i-ho-gift class="text-sm mr-2" />
             Claim
-            <span class="ml-[6px]"> {{ eligibleBoosts.length }} rewards </span>
+            <span class="ml-[6px]"> {{ unclaimedBoosts.length }} rewards </span>
           </div>
         </TuneButton>
       </div>

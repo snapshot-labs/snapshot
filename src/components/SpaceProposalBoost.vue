@@ -56,13 +56,6 @@ const eligibleBoosts = computed(() => {
   return boosts.value.filter(boost => isEligible(boost));
 });
 
-const hasUserClaimed = computed(() => {
-  if (!eligibleBoosts.value.length) return false;
-  return eligibleBoosts.value.every(boost => {
-    return boostClaims.value.some(claim => claim.boost.id === boost.id);
-  });
-});
-
 const boostsSorted = computed(() => {
   if (!boosts.value.length) return [];
 
@@ -186,7 +179,6 @@ watch(
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
-      :has-user-claimed="hasUserClaimed"
       :rewards="boostRewards"
       :claims="boostClaims"
       :loading-rewards="loadingRewards"
