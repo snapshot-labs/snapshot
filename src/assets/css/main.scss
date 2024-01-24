@@ -142,7 +142,6 @@
   opacity: 0;
 }
 
-// TODO: Move this to BaseLink components
 a,
 .a {
   color: var(--link-color);
@@ -153,7 +152,6 @@ a,
   }
 }
 
-// TODO: Move this and ::placeholder to a new BaseInput component
 .input {
   @apply bg-transparent text-skin-link outline-none;
 }
