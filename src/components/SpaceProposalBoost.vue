@@ -131,7 +131,8 @@ function handleBoost() {
 }
 
 async function loadRewards() {
-  if (!web3Account.value || !loaded.value || !isFinal.value) return;
+  if (!web3Account.value || !loaded.value || !isFinal.value || !userVote.value)
+    return;
   loadingRewards.value = true;
 
   try {
