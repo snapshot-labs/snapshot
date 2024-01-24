@@ -24,7 +24,7 @@ export interface BoostStrategy {
   params: {
     proposal: string;
     eligibility: {
-      choice?: number;
+      choice?: string;
     };
     distribution: {
       type: 'even' | 'weighted';

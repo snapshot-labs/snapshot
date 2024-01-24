@@ -184,7 +184,7 @@ const strategy = computed<BoostStrategy>(() => {
   const choice =
     form.value.eligibility.choice === 'any'
       ? undefined
-      : form.value.eligibility.choice;
+      : form.value.eligibility.choice.toString();
 
   const eligibilityType =
     form.value.eligibility.choice === 'any' ? 'incentive' : 'bribe';
