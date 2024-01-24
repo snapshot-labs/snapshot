@@ -112,7 +112,6 @@ defineEmits<{
   />
   <div class="mb-5 space-y-4">
     <BaseBlock :title="$t('create.voting')">
-      <!-- TODO: Show warning that Boost is only available on Basic and Single -->
       <InputSelectVoteType
         :type="space.voting?.type || form.type"
         :disabled="
@@ -120,6 +119,14 @@ defineEmits<{
         "
         @update:type="value => (form.type = value)"
       />
+      <BaseMessage
+        v-if="form.type !== 'single-choice' && form.type !== 'basic'"
+        level="info"
+        class="mt-1"
+      >
+        Note that Boost is not available for this voting type. Please use Basic
+        or Single Choice if you want to use Boost.
+      </BaseMessage>
 
       <h4 class="mb-1 mt-3" v-text="$t('create.choices')" />
       <div class="flex">
