@@ -48,8 +48,8 @@ function enrichTransactionsForDisplay(transactions: Transaction[]) {
 }
 
 function enrichTransactionForDisplay(transaction: Transaction) {
-  const { to, value } = transaction;
-  const commonProperties = { to, value: formatEther(value) };
+  const { to, value, data } = transaction;
+  const commonProperties = { to, value: formatEther(value), data };
   if (transaction.type === 'raw') {
     return { ...commonProperties, type: 'Raw' };
   }
