@@ -48,7 +48,7 @@ const allOnSameNetwork = computed(() => {
     </div>
     <div class="m-3">
       <TuneButton
-        v-if="allOnSameNetwork"
+        v-if="allOnSameNetwork && boosts.length > 1"
         class="w-full"
         :loading="loadingClaimAll"
         @click="$emit('claimAll')"
