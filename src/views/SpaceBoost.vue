@@ -355,12 +355,12 @@ async function handleCreate() {
   try {
     createStatus.value = 'pinning';
 
-    const { cid: strategyURI } = await pinGraph(strategy.value);
-    if (!strategyURI) throw new Error('Error pinning the strategy');
+    const { cid: ipfsHash } = await pinGraph(strategy.value);
+    if (!ipfsHash) throw new Error('Error pinning the strategy');
 
     createStatus.value = 'confirm';
     createTx.value = await createBoost(auth.web3, form.value.network, {
-      strategyURI,
+      strategyURI: `ipfs://${ipfsHash}`,
       token: form.value.token,
       amount: amountParsed.value,
       guard: SNAPSHOT_GUARD_ADDRESS,
