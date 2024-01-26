@@ -8,7 +8,8 @@ import {
   createBoost,
   SUPPORTED_NETWORKS,
   SNAPSHOT_GUARD_ADDRESS,
-  BOOST_CONTRACTS
+  BOOST_CONTRACTS,
+  BOOST_VERSION
 } from '@/helpers/boost';
 import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
@@ -17,7 +18,7 @@ import { sendApprovalTransaction } from '@/helpers/transaction';
 import { pinGraph } from '@/helpers/pin';
 import { BoostStrategy } from '@/helpers/boost/types';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   // TODO: Add space setting to allow boost or no bribe
 }>();
@@ -198,18 +199,13 @@ const strategy = computed<BoostStrategy>(() => {
         ).toString()
       : undefined;
 
-  // TODO: Use NFT format
-
   return {
     title: 'Boost',
-    properties: {
-      name: 'Boost',
-      description: 'Boost',
-      image: 'ipfs'
-    },
-    name: 'proposal',
+    description: 'Snapshot.org Boost',
+    image: 'ipfs://bafkreiel2xc6swtzopy2ho5taaz3ejxfcdhdiwe55igmlupsalep6w7x2e',
+    external_url: `https://snapshot.org/#/${props.space.id}/proposal/${proposal.value.id}`,
     params: {
-      version: '0.0.1',
+      version: BOOST_VERSION,
       env: env === 'demo' ? 'snapshot-testnet' : 'snapshot',
       proposal: proposal.value.id,
       eligibility: {
