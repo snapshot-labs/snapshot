@@ -91,6 +91,7 @@ function handleStart() {
 async function loadBoosts() {
   try {
     boosts.value = await getBoosts([props.proposal.id]);
+    console.log('🚀 ~ loadBoosts ~ boosts.value:', boosts.value);
   } catch (e) {
     console.error('Load boosts error:', e);
   }
