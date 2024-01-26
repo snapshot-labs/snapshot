@@ -33,6 +33,10 @@ const EMPTY_SPACE_FORM = {
     type: '',
     privacy: ''
   },
+  boost: {
+    enabled: false,
+    restriction: ''
+  },
   validation: clone(DEFAULT_PROPOSAL_VALIDATION),
   voteValidation: clone(DEFAULT_VOTE_VALIDATION),
   name: '',
@@ -154,6 +158,7 @@ export function useFormSpaceSettings(
       ? formData.children.map((child: any) => child.id)
       : [];
     formData.parent = formData.parent?.id || '';
+    formData.boost = formData.boost || { enabled: false, restriction: '' };
   }
 
   function shouldUseAnyValidation(formData: any) {

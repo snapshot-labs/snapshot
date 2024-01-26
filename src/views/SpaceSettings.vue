@@ -252,6 +252,7 @@ onBeforeRouteLeave(async () => {
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
+            <SettingsBoostBlock context="settings" :is-view-only="isViewOnly" />
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
