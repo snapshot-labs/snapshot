@@ -14,8 +14,8 @@ module.exports = {
         'skin-block-bg': 'var(--block-bg)',
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
-        green: '#21b66f',
-        red: '#ff3856'
+        green: 'hsl(var(--green) / <alpha-value>)',
+        red: 'hsl(var(--red) / <alpha-value>)'
       },
       keyframes: {
         fadeIn: {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Transaction as TTransaction, Network } from '../../types';
+import { computed } from 'vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -9,9 +10,12 @@ const props = defineProps<{
   network: Network;
 }>();
 
-// button state
-type Status = 'SUCCESS' | 'FAIL' | 'LOADING' | 'IDLE';
+// ERROR => unable to simulate
+// FAIL => tx failed in simulation
+// SUCCESS =>  tx Succeeded in simulation
+type Status = 'SUCCESS' | 'FAIL' | 'ERROR' | 'LOADING' | 'IDLE';
 const simulationState = ref<Status>('IDLE');
+const simulationLink = ref<string>();
 
 // TODO: get interface/url when serverless func is implemented
 type SimulationResponse = {
@@ -32,14 +36,20 @@ async function simulate() {
       // TODO: edit payload where necessary
       body: JSON.stringify(props)
     });
+
     const data: SimulationResponse = await response.json();
-    // handle outcome, set state for button
-    simulationState.value = 'SUCCESS';
     // TODO: parse Success response
-    return { data };
+
+    // check if tx passed in simulation
+    simulationState.value = 'ERROR';
+    // simulationState.value = 'FAIL';
+
+    // set tender simulation link
+    simulationLink.value =
+      'https://docs.tenderly.co/web3-gateway/references/simulate-json-rpc';
   } catch (error) {
-    // TODO: parse FAIL response
-    simulationState.value = 'FAIL';
+    // network error
+    simulationState.value = 'ERROR';
     return { error };
     // TODO: remove sleep logic this is just for testing the UI
   } finally {
@@ -48,6 +58,12 @@ async function simulate() {
   }
 }
 
+const showResult = computed(() => {
+  return (
+    simulationState.value === 'FAIL' || simulationState.value === 'SUCCESS'
+  );
+});
+
 // IDLE => run simulation
 // FAIL || SUCCESS => re-run
 // FAIL => show info on failure
@@ -55,28 +71,40 @@ async function simulate() {
 </script>
 
 <template>
-  <div
-    class="flex justify-between items-center border rounded-xl mt-4 px-3 py-2 border-skin-border"
-  >
-    <div class="flex flex-col items-start justify-center gap-1">
-      <p class="text-skin-link">Simulate these transactions</p>
-      <p class="text-sm opacity-50">
-        Powered by <IconTenderly class="text-skin-link inline h-[1em]" />
-      </p>
-    </div>
-
+  <div>
     <button
-      :class="[
-        'group border border-skin-primary p-1 rounded-lg min-w-[100px] text-skin-link',
-        simulationState === 'LOADING' ? 'opacity-60' : 'opacity-100'
-      ]"
+      v-if="!showResult"
       @click="simulate"
-      :disabled="simulationState === 'LOADING'"
+      :disabled="simulationState !== 'IDLE'"
+      class="flex w-full enabled:hover:border-skin-text gap-2 justify-center h-[48px] px-[20px] items-center border disabled:cursor-not-allowed rounded-full border-skin-border"
     >
-      <LoadingSpinner v-if="simulationState === 'LOADING'" />
-      <span v-if="simulationState === 'IDLE'">Simulate</span>
-      <span v-if="simulationState === 'SUCCESS'">Success</span>
-      <span v-if="simulationState === 'FAIL'">Fail</span>
+      <IconTenderly class="text-skin-link inline h-[20px] w-[20px]" />
+      <span v-if="simulationState === 'IDLE'">Simulate Transaction</span>
+      <span v-if="simulationState === 'LOADING'">Checking transaction...</span>
+      <span v-if="simulationState === 'ERROR'">Failed to simulate!</span>
+
+      <LoadingSpinner class="ml-auto" v-if="simulationState === 'LOADING'" />
     </button>
+    <div
+      v-if="showResult"
+      :class="[
+        'flex w-full gap-2 justify-between h-[48px] px-[20px] items-center rounded-full',
+        {
+          'bg-green/20 border-green text-green': simulationState === 'SUCCESS',
+          'bg-red/20 border-red text-red': simulationState === 'FAIL'
+        }
+      ]"
+    >
+      <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
+      <span v-if="simulationState === 'SUCCESS'">Transaction passed!</span>
+      <span v-if="simulationState === 'FAIL'">Transaction failed!</span>
+      <a
+        target="_blank"
+        class="flex py-2 pl-2 items-center gap-1 ml-auto text-inherit hover:underline"
+        :href="simulationLink"
+        >View on Tenderly
+        <IHoExternalLink class="text-inherit inline w-[1em] h-[1em]"
+      /></a>
+    </div>
   </div>
 </template>

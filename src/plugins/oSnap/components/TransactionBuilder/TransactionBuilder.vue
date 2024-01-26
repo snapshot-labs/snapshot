@@ -4,6 +4,7 @@ import { shorten } from '@/helpers/utils';
 import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
 import { getSafeAppLink } from '../../utils';
 import Transaction from './Transaction.vue';
+import TenderlySimulation from './TenderlySimulation.vue';
 
 const props = defineProps<{
   safeAddress: string;
@@ -70,6 +71,7 @@ const safeLink = computed(() =>
       :safe-address="safeAddress"
       :module-address="moduleAddress"
       :network="props.network"
+      class="mt-4"
     />
   </div>
 
