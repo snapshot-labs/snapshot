@@ -20,10 +20,17 @@ export type BoostVoucherGuard = {
 };
 
 export interface BoostStrategy {
-  name: string;
+  title: string;
+  description: string;
+  image: string;
+  external_url: string;
   params: {
+    version: string;
+    env: string;
+
     proposal: string;
     eligibility: {
+      type: 'incentive' | 'bribe';
       choice?: string;
     };
     distribution: {
