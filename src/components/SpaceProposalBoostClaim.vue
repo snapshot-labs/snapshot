@@ -216,7 +216,12 @@ const timeLeftToClaim = computed(() => {
           <div v-else class="flex items-center">
             <i-ho-gift class="text-sm mr-2" />
             Claim
-            <span class="ml-[6px]"> {{ unclaimedBoosts.length }} rewards </span>
+            <span class="ml-[4px]">
+              {{ unclaimedBoosts.length }} reward<span
+                v-if="unclaimedBoosts.length > 1"
+                >s</span
+              >
+            </span>
           </div>
         </TuneButton>
       </div>
