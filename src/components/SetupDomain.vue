@@ -47,8 +47,10 @@ const waitForRegistration = () => {
 };
 
 function shortenInvalidEns(ens: string) {
-  const [name, domain] = ens.split('.');
-  return `${shorten(name)}.${domain}`;
+  if (!/\[.*\]/.test(ens)) return ens;
+
+  const [name, ...args] = ens.split('.');
+  return `${shorten(name)}.${args.join('.')}`;
 }
 
 // stop lookup when leaving
