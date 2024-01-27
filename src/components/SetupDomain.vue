@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
 
@@ -32,9 +31,23 @@ watch(
   { immediate: true }
 );
 
-const domainsWithoutExistingSpace = computed(() => {
-  const spaceIds = clone(spaces.value.map(space => space.id));
-  return ownedEnsDomains.value.filter(d => !spaceIds.includes(d.name));
+const availableDomains = computed(() => {
+  const spaceIds = spaces.value.map(space => space.id);
+  return ownedEnsDomains.value.filter(
+    d =>
+      !spaceIds.includes(d.name) &&
+      !d.isInvalid &&
+      !deletedSpaces.value.includes(d.name)
+  );
+});
+
+const unavailableDomains = computed(() => {
+  const spaceIds = spaces.value.map(space => space.id);
+  return ownedEnsDomains.value.filter(
+    d =>
+      !spaceIds.includes(d.name) &&
+      (d.isInvalid || deletedSpaces.value.includes(d.name))
+  );
 });
 
 const domainsWithExistingSpace = computed(() => {
@@ -106,79 +119,99 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </BaseMessageBlock>
 
       <BaseBlock>
-        <div v-if="domainsWithoutExistingSpace.length">
-          <div class="mb-3">
-            {{
-              $t(
-                domainsWithoutExistingSpace.length > 1
-                  ? 'setup.chooseExistingEns'
-                  : 'setup.useSingleExistingEns'
-              )
-            }}
-          </div>
-          <div class="space-y-2 flex flex-col">
-            <template v-for="(ens, i) in domainsWithoutExistingSpace" :key="i">
-              <TuneButton
-                v-if="!ens.isInvalid && !deletedSpaces.includes(ens.name)"
-                class="flex w-full items-center justify-between"
-                :primary="domainsWithoutExistingSpace.length === 1"
-                @click="emit('next', ens.name)"
-              >
-                {{ ens.name }}
-                <i-ho-arrow-sm-right class="-mr-2" />
-              </TuneButton>
-
-              <BaseLink
-                v-else-if="deletedSpaces.includes(ens.name)"
-                link="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name"
-                hide-external-icon
-              >
+        <div class="flex flex-col space-y-4">
+          <div v-if="availableDomains.length">
+            <div class="mb-3">
+              {{
+                $t(
+                  availableDomains.length > 1
+                    ? 'setup.chooseExistingEns'
+                    : 'setup.useSingleExistingEns'
+                )
+              }}
+            </div>
+            <div class="space-y-2 flex flex-col">
+              <template v-for="(ens, i) in availableDomains" :key="i">
                 <TuneButton
-                  tabindex="-1"
                   class="flex w-full items-center justify-between"
+                  :primary="availableDomains.length === 1"
+                  @click="emit('next', ens.name)"
                 >
                   {{ ens.name }}
-                  <i-ho-exclamation-circle
-                    v-tippy="{
-                      content:
-                        'This ENS name is used by a previously deleted space, and can not be used it anymore to create a new space.'
-                    }"
-                    class="-mr-2"
-                  />
+                  <i-ho-arrow-sm-right class="-mr-2" />
                 </TuneButton>
-              </BaseLink>
-              <BaseLink
-                v-else
-                :link="`https://app.ens.domains/address/${web3Account}/controller`"
-                hide-external-icon
-              >
-                <TuneButton
-                  tabindex="-1"
-                  class="flex w-full items-center justify-between"
-                >
-                  {{ shortenInvalidEns(ens.name) }}
-                  <i-ho-exclamation-circle
-                    v-tippy="{
-                      content: $t('setup.domain.invalidEns')
-                    }"
-                    class="-mr-2"
-                  />
-                </TuneButton>
-              </BaseLink>
-            </template>
+              </template>
+            </div>
           </div>
-          <div class="mt-4">
-            {{ $t('setup.orRegisterNewEns') }}
+
+          <div v-if="unavailableDomains.length">
+            <div class="mb-3">Unavailable ENS domain:</div>
+            <div class="space-y-2 flex flex-col">
+              <template v-for="(ens, i) in unavailableDomains" :key="i">
+                <template v-if="deletedSpaces.includes(ens.name)">
+                  <TuneButton
+                    :disabled="true"
+                    tabindex="-1"
+                    class="flex w-full items-center justify-between"
+                  >
+                    {{ ens.name }}
+                    <i-ho-exclamation-circle class="-mr-2" />
+                  </TuneButton>
+                  <TuneErrorInput>
+                    <template #error>
+                      This ENS name is used by a previously deleted space, and
+                      can not be used anymore to create a new space.
+                      <BaseLink
+                        link="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name"
+                        class="inline"
+                      >
+                        Learn more
+                      </BaseLink>
+                    </template>
+                  </TuneErrorInput>
+                </template>
+
+                <template v-else-if="ens.isInvalid">
+                  <TuneButton
+                    tabindex="-1"
+                    :disabled="true"
+                    true
+                    class="flex w-full items-center justify-between"
+                  >
+                    {{ shortenInvalidEns(ens.name) }}
+                    <i-ho-exclamation-circle class="-mr-2" />
+                  </TuneButton>
+                  <TuneErrorInput>
+                    <template #error>
+                      {{ $t('setup.domain.invalidEns') }}
+                      <BaseLink
+                        :link="`https://app.ens.domains/address/${web3Account}/controller`"
+                        class="inline"
+                      >
+                        View details
+                      </BaseLink>
+                    </template>
+                  </TuneErrorInput>
+                </template>
+              </template>
+            </div>
           </div>
-        </div>
-        <div>
-          <div v-if="!domainsWithoutExistingSpace.length" class="mb-3">
-            {{ $t('setup.toCreateASpace') }}
+
+          <div>
+            <div class="mb-2">
+              {{ $t('setup.orRegisterNewEns') }}
+            </div>
+
+            <div>
+              <div v-if="!availableDomains.length" class="mb-3">
+                {{ $t('setup.toCreateASpace') }}
+              </div>
+              <SetupDomainRegister
+                v-model.trim="inputDomain"
+                @wait-for-registration="waitForRegistration"
+              />
+            </div>
           </div>
-          <SetupDomainRegister
-            v-model.trim="inputDomain"
-            @wait-for-registration="waitForRegistration"
-          />
         </div>
       </BaseBlock>
     </div>
