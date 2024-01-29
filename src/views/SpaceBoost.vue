@@ -200,10 +200,10 @@ const strategy = computed<BoostStrategy>(() => {
 
   return {
     title: 'Boost',
-    description: 'Snapshot.org Boost',
-    image: 'ipfs://bafkreiel2xc6swtzopy2ho5taaz3ejxfcdhdiwe55igmlupsalep6w7x2e',
+    description: 'Snapshot.org proposal boost',
+    image: 'https://snapshot.org/boost.png',
     external_url: `https://snapshot.org/#/${props.space.id}/proposal/${proposal.value.id}`,
-    name: 'proposal',
+    strategyType: 'proposal',
     params: {
       version: BOOST_VERSION,
       env: env === 'demo' ? 'snapshot-testnet' : 'snapshot',
