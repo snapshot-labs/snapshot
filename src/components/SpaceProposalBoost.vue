@@ -111,12 +111,8 @@ async function loadClaims() {
   }
 }
 
-async function loadAll() {
-  await Promise.all([
-    loadUserVote(web3Account.value),
-    loadBoosts(),
-    loadClaims()
-  ]);
+async function handleReload() {
+  loadBoosts();
 }
 
 function handleBoost() {
@@ -128,7 +124,12 @@ function handleBoost() {
 }
 
 async function loadRewards() {
-  if (!web3Account.value || !loaded.value || !isFinal.value || !userVote.value)
+  if (
+    !web3Account.value ||
+    !isFinal.value ||
+    !userVote.value ||
+    !boosts.value.length
+  )
     return;
   loadingRewards.value = true;
 
@@ -152,22 +153,25 @@ async function loadRewards() {
 }
 
 watch(
-  [web3Account, loaded, isFinal],
-  () => {
+  [() => props.proposal],
+  async () => {
+    loaded.value = false;
+    await Promise.all([
+      loadBoosts(),
+      loadClaims(),
+      loadUserVote(web3Account.value)
+    ]);
+    loaded.value = true;
     loadRewards();
   },
   { immediate: true }
 );
 
-watch(
-  [web3Account, () => props.proposal],
-  async () => {
-    loaded.value = false;
-    await loadAll();
-    loaded.value = true;
-  },
-  { immediate: true }
-);
+watch(web3Account, async value => {
+  if (!loaded.value) return;
+  await loadUserVote(value);
+  loadRewards();
+});
 </script>
 
 <template>
@@ -237,7 +241,7 @@ watch(
                     )
                   "
                   :is-eligible="isEligible(boost)"
-                  @reload="loadAll"
+                  @reload="handleReload"
                 />
               </div>
             </div>
