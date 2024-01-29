@@ -111,10 +111,6 @@ async function loadClaims() {
   }
 }
 
-async function handleReload() {
-  loadBoosts();
-}
-
 function handleBoost() {
   if (dontShowModalAgain.value) {
     handleStart();
@@ -241,7 +237,7 @@ watch(web3Account, async value => {
                     )
                   "
                   :is-eligible="isEligible(boost)"
-                  @reload="handleReload"
+                  @reload="loadBoosts()"
                 />
               </div>
             </div>
