@@ -142,7 +142,7 @@ async function withdraw(boost: BoostSubgraph) {
             </template>
           </div>
         </div>
-        <div class="mt-2 md:flex">
+        <div class="mt-2 md:flex whitespace-nowrap flex-wrap">
           <div v-if="isOwner" class="flex items-center gap-1 mb-[2px]">
             <i-s-crown class="text-xs" />
             Your boost
