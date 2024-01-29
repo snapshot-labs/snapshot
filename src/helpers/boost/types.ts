@@ -64,11 +64,11 @@ export type BoostSubgraph = {
     proposal: string;
     eligibility: {
       type: 'incentive' | 'bribe';
-      choice: number | null;
+      choice: string | null;
     };
     distribution: {
       type: 'even' | 'weighted';
-      limit: number | null;
+      limit: string | null;
     };
   };
 };

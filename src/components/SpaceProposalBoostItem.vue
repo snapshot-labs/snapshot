@@ -118,7 +118,11 @@ async function withdraw(boost: BoostSubgraph) {
             <template v-if="boost.strategy.eligibility.choice !== null">
               Who votes
               <TuneTag
-                :label="proposal.choices[boost.strategy.eligibility.choice - 1]"
+                :label="
+                  proposal.choices[
+                    Number(boost.strategy.eligibility.choice) - 1
+                  ]
+                "
                 class="text-skin-heading"
               />
             </template>

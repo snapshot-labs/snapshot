@@ -8,7 +8,7 @@ import ABI from './abi.json';
 export const BOOST_VERSION = '0.0.1';
 
 export const BOOST_CONTRACTS = {
-  '11155111': '0x3a18420c0646cc8e6d46e43d792335aecb657fd0'
+  '11155111': '0x2062f5330fF35F601f3c9C926ed01697bdF70f20'
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);

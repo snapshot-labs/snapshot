@@ -48,7 +48,7 @@ function isEligible(boost: BoostSubgraph) {
   if (!userVote.value) return false;
   if (choice === null) return true;
 
-  return userVote.value.choice === choice;
+  return userVote.value.choice.toString() === choice;
 }
 
 const eligibleBoosts = computed(() => {
