@@ -103,7 +103,9 @@ const resetState = () => {
       <IconTenderly class="text-skin-link inline h-[20px] w-[20px]" />
       <span v-if="simulationState === 'IDLE'">Simulate Transaction</span>
       <span v-if="simulationState === 'LOADING'">Checking transaction...</span>
-      <span v-if="simulationState === 'ERROR'">{{ errorMessage }}</span>
+      <span class="text-xs" v-if="simulationState === 'ERROR'">{{
+        errorMessage
+      }}</span>
 
       <LoadingSpinner class="ml-auto" v-if="simulationState === 'LOADING'" />
     </button>
@@ -119,8 +121,12 @@ const resetState = () => {
     >
       <div class="flex items-center gap-2">
         <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
-        <span v-if="simulationState === 'SUCCESS'">Transaction passed!</span>
-        <span v-if="simulationState === 'FAIL'">Transaction failed!</span>
+        <span class="hidden sm:inline" v-if="simulationState === 'SUCCESS'"
+          >Success!</span
+        >
+        <span class="hidden sm:inline" v-if="simulationState === 'FAIL'"
+          >Transaction failed!</span
+        >
       </div>
       <button
         class="text-sm p-2 hover:cursor-pointer"
@@ -132,10 +138,11 @@ const resetState = () => {
       </button>
       <a
         target="_blank"
-        class="flex py-2 pl-2 items-center gap-1 text-inherit hover:underline"
+        class="flex items-center gap-1 text-inherit hover:underline"
         :href="simulationLink"
-        >View on Tenderly
-        <IHoExternalLink class="text-inherit inline w-[1em] h-[1em]"
+      >
+        <span class="hidden sm:inline">View on Tenderly</span>
+        <IHoExternalLink class="text-inherit inline w-[1.2em] h-[1.2em]"
       /></a>
     </div>
   </div>
