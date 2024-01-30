@@ -162,7 +162,6 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
               <template v-for="(ens, i) in unavailableDomains" :key="i">
                 <template v-if="deletedSpaces.includes(ens.name)">
                   <TuneButton
-                    tabindex="-1"
                     class="flex w-full items-center justify-between hover:cursor-default hover:border-skin-border"
                   >
                     {{ ens.name }}
@@ -176,10 +175,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                 </template>
 
                 <template v-else-if="ens.isInvalid">
-                  <TuneButton
-                    tabindex="-1"
-                    class="flex w-full items-center justify-between"
-                  >
+                  <TuneButton class="flex w-full items-center justify-between">
                     {{ shortenInvalidEns(ens.name) }}
                     <i-ho-exclamation-circle
                       v-tippy="{ content: $t('setup.domain.invalidEns') }"
