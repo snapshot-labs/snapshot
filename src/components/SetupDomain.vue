@@ -145,53 +145,35 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
           </div>
 
           <div v-if="unavailableDomains.length">
-            <div class="mb-3">Unavailable ENS domain:</div>
+            <div class="mb-3">Unavailable ENS domains:</div>
             <div class="space-y-2 flex flex-col">
               <template v-for="(ens, i) in unavailableDomains" :key="i">
                 <template v-if="deletedSpaces.includes(ens.name)">
                   <TuneButton
-                    :disabled="true"
                     tabindex="-1"
-                    class="flex w-full items-center justify-between"
+                    class="flex w-full items-center justify-between hover:cursor-default hover:border-skin-border"
                   >
                     {{ ens.name }}
-                    <i-ho-exclamation-circle class="-mr-2" />
+                    <i-ho-exclamation-circle
+                      v-tippy="{
+                        content:
+                          'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space.'
+                      }"
+                    />
                   </TuneButton>
-                  <TuneErrorInput>
-                    <template #error>
-                      This ENS name is used by a previously deleted space, and
-                      can not be used anymore to create a new space.
-                      <BaseLink
-                        link="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name"
-                        class="inline"
-                      >
-                        Learn more
-                      </BaseLink>
-                    </template>
-                  </TuneErrorInput>
                 </template>
 
                 <template v-else-if="ens.isInvalid">
                   <TuneButton
                     tabindex="-1"
-                    :disabled="true"
-                    true
                     class="flex w-full items-center justify-between"
                   >
                     {{ shortenInvalidEns(ens.name) }}
-                    <i-ho-exclamation-circle class="-mr-2" />
+                    <i-ho-exclamation-circle
+                      v-tippy="{ content: $t('setup.domain.invalidEns') }"
+                      class="-mr-2"
+                    />
                   </TuneButton>
-                  <TuneErrorInput>
-                    <template #error>
-                      {{ $t('setup.domain.invalidEns') }}
-                      <BaseLink
-                        :link="`https://app.ens.domains/address/${web3Account}/controller`"
-                        class="inline"
-                      >
-                        View details
-                      </BaseLink>
-                    </template>
-                  </TuneErrorInput>
                 </template>
               </template>
             </div>
