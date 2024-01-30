@@ -231,13 +231,9 @@ onMounted(async () => {
 <template>
   <template v-if="hasLegacyPluginInstalled">
     <div class="rounded-2xl border p-4 text-md">
-      <h2 class="mb-2">Warning: Legacy plugin detected</h2>
+      <h2 class="mb-2">Warning: Multiple oSnap enabled plugins detected</h2>
       <p class="mb-2">
-        Using the oSnap plugin while the SafeSnap plugin is still installed on
-        your place will cause unexpected behavior.
-      </p>
-      <p class="font-bold">
-        Please remove the SafeSnap plugin before using the oSnap plugin.
+      For best experience using oSnap, please remove the SafeSnap plugin from your space.
       </p>
     </div>
   </template>
