@@ -23,7 +23,8 @@ const { web3Account } = useWeb3();
 <template>
   <TuneModal size="medium" :open="open" @close="$emit('close')">
     <TuneModalTitle as="h4" class="flex items-center gap-1 m-3">
-      Boosts <TuneTag label="4" class="leading-none rounded-full px-2" />
+      Boosts
+      <TuneTag :label="boosts.length" class="leading-none rounded-full px-2" />
     </TuneModalTitle>
     <div
       class="p-3 pt-0 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
