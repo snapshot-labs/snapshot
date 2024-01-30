@@ -22,7 +22,7 @@ function getErrorMessage(errorObject): string {
 
   return `${errorObject.message
     .charAt(0)
-    .toLocaleUpperCase()}${errorObject.message.slice(1).toLocaleLowerCase()}.`;
+    .toLocaleUpperCase()}${errorObject.message.slice(1)}.`;
 }
 export function validateForm(
   schema: Record<string, any>,
