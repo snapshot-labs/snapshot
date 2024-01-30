@@ -241,7 +241,7 @@ const timeLeftToClaim = computed(() => {
       </div>
     </TuneBlock>
     <ModalTransactionStatus
-      v-if="claimStatusModalConfig"
+      v-if="claimStatusModalConfig && claimStatus !== 'success'"
       open
       :variant="claimStatusModalConfig.variant"
       :title="claimStatusModalConfig?.title"
@@ -249,6 +249,10 @@ const timeLeftToClaim = computed(() => {
       :network="rewards[0].chain_id"
       @close="claimStatus = ''"
       @try-again="handleClaimAll"
+    />
+    <SpaceProposalBoostClaimModalSuccess
+      :open="claimStatus === 'success'"
+      @close="claimStatus = ''"
     />
     <SpaceProposalBoostClaimModal
       :open="claimModalOpen"
