@@ -242,7 +242,7 @@ watch(web3Account, async value => {
               </div>
             </div>
             <TuneButton
-              v-if="boostsSorted.length > 3"
+              v-if="boostsSorted.length > 2"
               class="w-full mt-3"
               @click="boostsModalOpen = true"
             >

@@ -109,7 +109,7 @@ async function withdraw(boost: BoostSubgraph) {
       :class="[
         { 'border-boost/40 bg-boost/5': isEligible && !isClaimedByUser },
         { 'border-green/30 bg-green/5': isClaimedByUser },
-        { 'border-b-0 rounded-b-none': isOwner }
+        { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
       ]"
     >
       <div class="pr-5">
