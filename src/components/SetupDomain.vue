@@ -31,7 +31,10 @@ watch(
     const ids = ownedEnsDomains.value.map(d => d.name);
     if (ids.length) {
       await loadSpaces(ids);
-      deletedSpaces.value = await getDeletedSpaces(ids);
+      const spaceIds = spaces.value.map(space => space.id);
+      deletedSpaces.value = await getDeletedSpaces(
+        ids.filter(id => !spaceIds.includes(id))
+      );
     }
   },
   { immediate: true }
