@@ -21,6 +21,7 @@ export function useSpaces() {
   const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 
   const isLoadingSpaces = ref(false);
+  const isLoadingDeletedSpaces = ref(false);
   const spaces = ref<Space[]>([]);
 
   function _fetchRankedSpaces(variables: any = {}, skip = 0) {
@@ -160,6 +161,7 @@ export function useSpaces() {
   }
 
   async function getDeletedSpaces(ids: string[]) {
+    isLoadingDeletedSpaces.value = true;
     const results = await Promise.allSettled(
       ids.map(async id => {
         try {
@@ -177,6 +179,7 @@ export function useSpaces() {
         }
       })
     );
+    isLoadingDeletedSpaces.value = false;
 
     return results.map(r => r.value).filter(a => a);
   }
@@ -192,6 +195,7 @@ export function useSpaces() {
     spacesHome,
     spacesHomeMetrics,
     isLoadingSpaces,
+    isLoadingDeletedSpaces,
     loadingSpacesHome,
     loadingMoreSpacesHome,
     enableSpaceHomeScroll,

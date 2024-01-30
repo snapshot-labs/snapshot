@@ -8,7 +8,13 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadSpaces, spaces, isLoadingSpaces, getDeletedSpaces } = useSpaces();
+const {
+  loadSpaces,
+  spaces,
+  isLoadingSpaces,
+  isLoadingDeletedSpaces,
+  getDeletedSpaces
+} = useSpaces();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
@@ -75,7 +81,10 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
 <template>
   <div>
-    <LoadingRow v-if="loadingOwnedEnsDomains || isLoadingSpaces" block />
+    <LoadingRow
+      v-if="loadingOwnedEnsDomains || isLoadingSpaces || isLoadingDeletedSpaces"
+      block
+    />
     <div v-else>
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.domain.title') }}</h4>
       <BaseMessageBlock
