@@ -34,7 +34,7 @@ const content = [
     >
     <div class="md:flex">
       <div
-        class="h-[160px] md:h-[628px] md:w-[240px] shrink-0 bg-snapshot relative"
+        class="h-[160px] md:h-[628px] md:w-[240px] shrink-0 bg-boost relative"
       >
         <div
           class="bg-[url('@/assets/images/stars-big.png')] absolute top-4 left-0 right-0 bottom-0"

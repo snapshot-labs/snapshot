@@ -179,7 +179,7 @@ const timeLeftToClaim = computed(() => {
     <TuneBlock
       v-if="unclaimedBoosts.length"
       slim
-      class="bg-snapshot mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
+      class="bg-boost mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
     >
       <div>
         <div

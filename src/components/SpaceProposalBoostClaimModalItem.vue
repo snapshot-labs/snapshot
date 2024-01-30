@@ -46,7 +46,7 @@ const claimLoading = computed(() => {
     class="flex items-center justify-between border rounded-xl p-[12px] h-[58px]"
     :class="{
       'border-green/30 bg-green/5': hasClaimed,
-      'border-snapshot/30 bg-snapshot/5': !hasClaimed
+      'border-boost/30 bg-boost/5': !hasClaimed
     }"
   >
     <div class="text-skin-heading flex items-center">
@@ -54,11 +54,11 @@ const claimLoading = computed(() => {
         class="border rounded-full p-[3px] mr-2"
         :class="{
           'border-green/40 bg-green/10': hasClaimed,
-          'border-snapshot/40 bg-snapshot/10': !hasClaimed
+          'border-boost/40 bg-boost/10': !hasClaimed
         }"
       >
         <i-ho-cash v-if="hasClaimed" class="text-green text-xs" />
-        <i-ho-gift v-else class="text-snapshot text-xs" />
+        <i-ho-gift v-else class="text-boost text-xs" />
       </div>
       <span class="mr-1">
         {{ hasClaimed ? 'Claimed' : 'Eligible to' }}

@@ -88,7 +88,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           <ProposalsItemFooter :proposal="proposal" />
           <div
             v-if="boostsCount > 0"
-            class="bg-snapshot/5 border border-snapshot/20 px-[12px] py-2 rounded-xl text-snapshot flex items-center justify-center gap-1 mt-2"
+            class="bg-boost/5 border border-boost/20 px-[12px] py-2 rounded-xl text-boost flex items-center justify-center gap-1 mt-2"
           >
             <i-ho-fire class="text-sm" />
             {{ boostsCount }}

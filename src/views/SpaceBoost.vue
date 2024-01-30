@@ -535,7 +535,7 @@ watch(
             </TuneButton>
             <div
               v-if="isEndingSoon"
-              class="text-snapshot flex items-center gap-1 justify-center mt-[6px]"
+              class="text-boost flex items-center gap-1 justify-center mt-[6px]"
             >
               <i-ho-clock />
               Proposal

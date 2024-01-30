@@ -12,7 +12,7 @@ const badgeClass = computed(() => {
     case 'error':
       return 'bg-red/10 border-red/40';
     case 'gift':
-      return 'bg-snapshot/10 border-snapshot/40';
+      return 'bg-boost/10 border-boost/40';
   }
 });
 </script>
@@ -27,7 +27,7 @@ const badgeClass = computed(() => {
       class="text-green text-sm"
     />
     <i-ho-exclamation-circle v-else-if="variant === 'error'" class="text-red" />
-    <i-ho-gift v-else-if="variant === 'gift'" class="text-snapshot" />
+    <i-ho-gift v-else-if="variant === 'gift'" class="text-boost" />
     <TuneLoadingSpinner v-else />
   </div>
 </template>
