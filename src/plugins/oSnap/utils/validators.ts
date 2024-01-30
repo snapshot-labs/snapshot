@@ -42,10 +42,8 @@ export const mustBeEthereumContractAddress = memoize(
 export function validateTransaction(transaction: BaseTransaction) {
   const addressNotEmptyOrInvalid =
     transaction.to !== '' && isAddress(transaction.to);
-  const valueIsPositive =
-    isBigNumberish(transaction.value) && parseInt(transaction.value) > 0;
   return (
-    valueIsPositive &&
+    isBigNumberish(transaction.value) &&
     addressNotEmptyOrInvalid &&
     (!transaction.data || isHexString(transaction.data))
   );

@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
 import { shorten } from '@/helpers/utils';
-import { NFT, Network, Transaction as TTransaction, Token } from '../../types';
+import {
+  GnosisSafe,
+  NFT,
+  Network,
+  Transaction as TTransaction,
+  Token
+} from '../../types';
 import { getSafeAppLink } from '../../utils';
 import Transaction from './Transaction.vue';
 import TenderlySimulation from './TenderlySimulation.vue';
@@ -16,6 +22,7 @@ const props = defineProps<{
   proposal?: Proposal;
   space: ExtendedSpace;
   results?: Results;
+  safe: GnosisSafe | null;
 }>();
 
 const emit = defineEmits<{
@@ -68,8 +75,7 @@ const safeLink = computed(() =>
     <TenderlySimulation
       v-if="transactions.length"
       :transactions="transactions"
-      :safe-address="safeAddress"
-      :module-address="moduleAddress"
+      :safe="props.safe"
       :network="props.network"
       class="mt-4"
     />

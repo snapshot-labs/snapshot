@@ -28,7 +28,7 @@ export type SafeNetworkPrefixes = typeof safePrefixes;
  * One of the supported network prefixes as defined in EIP-3770 used by Safe apps.
  * @see SafeNetworkPrefixes
  */
-export type SafeNetworkPrefix = SafeNetworkPrefixes[Network];
+export type SafeNetworkPrefix = SafeNetworkPrefixes[keyof SafeNetworkPrefixes];
 
 /**
  * Represents the four different types of transactions that oSnap supports.
@@ -406,3 +406,24 @@ export type OGProposalState =
   | (AssertionTransactionDetails & {
       status: 'transactions-executed';
     });
+
+interface ResultUrl {
+  url: string; // This is the URL to the simulation result page (public or private).
+  public: boolean; // This is false if the project is not publicly accessible.
+}
+
+export interface TenderlySimulationResult {
+  id: string;
+  status: boolean; // True if the simulation succeeded, false if it reverted.
+  gasUsed: number;
+  resultUrl: ResultUrl;
+}
+
+export type ErrorWithMessage = InstanceType<typeof Error> & {
+  message: string;
+};
+
+// predicate for better error handling
+export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return error !== null && typeof error === 'object' && 'message' in error;
+}
