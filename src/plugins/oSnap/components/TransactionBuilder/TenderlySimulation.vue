@@ -109,41 +109,39 @@ const resetState = () => {
 
       <LoadingSpinner class="ml-auto" v-if="simulationState === 'LOADING'" />
     </button>
-    <div
-      v-if="showResult"
-      :class="[
-        'flex w-full justify-between h-[48px] px-[20px] items-center rounded-full',
-        {
-          'bg-green/20 text-green': simulationState === 'SUCCESS',
-          'bg-red/20 text-red': simulationState === 'FAIL'
-        }
-      ]"
-    >
-      <div class="flex items-center gap-2">
-        <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
-        <span class="hidden sm:inline" v-if="simulationState === 'SUCCESS'"
-          >Success!</span
+    <div class="flex flex-col gap-2" v-if="showResult">
+      <div
+        :class="[
+          'flex w-full text-sm md:text-[18px] justify-between h-[48px] px-[20px] items-center rounded-full',
+          {
+            'bg-green/20 text-green': simulationState === 'SUCCESS',
+            'bg-red/20 text-red': simulationState === 'FAIL'
+          }
+        ]"
+      >
+        <div class="flex items-center gap-2">
+          <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
+          <span v-if="simulationState === 'SUCCESS'">Success!</span>
+          <span v-if="simulationState === 'FAIL'">Transaction failed!</span>
+        </div>
+        <a
+          target="_blank"
+          class="flex items-center gap-1 text-inherit hover:underline"
+          :href="simulationLink"
         >
-        <span class="hidden sm:inline" v-if="simulationState === 'FAIL'"
-          >Transaction failed!</span
-        >
+          <span>View on Tenderly</span>
+          <IHoExternalLink class="text-inherit inline w-[1.2em] h-[1.2em]"
+        /></a>
       </div>
-      <button
-        class="text-sm p-2 hover:cursor-pointer"
+      <TuneButton
+        class="group text-sm md:text-[18px] hover:cursor-pointer justify-center w-full flex gap-2 mx-auto items-center"
         :tooltip="'Reset Simulation'"
         v-if="showResult"
         @click="resetState"
       >
-        <IHoRefresh class="text-inherit inline w-[1.4em] h-[1.4em]" />
-      </button>
-      <a
-        target="_blank"
-        class="flex items-center gap-1 text-inherit hover:underline"
-        :href="simulationLink"
-      >
-        <span class="hidden sm:inline">View on Tenderly</span>
-        <IHoExternalLink class="text-inherit inline w-[1.2em] h-[1.2em]"
-      /></a>
+        Reset
+        <IHoRefresh class="text-inherit w-[1em] h-[1em]" />
+      </TuneButton>
     </div>
   </div>
 </template>
