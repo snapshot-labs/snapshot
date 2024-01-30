@@ -19,7 +19,7 @@ import {
   getIsOsnapEnabled,
   getModuleAddressForTreasury
 } from './utils';
-import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue'
+import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -72,7 +72,6 @@ async function fetchTokens(url: string): Promise<Token[]> {
   }
 }
 
-// todo: wire up and use these balances to enrich details in the ui, e.g. 'your safe does not have enough funds for this transaction'
 async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
