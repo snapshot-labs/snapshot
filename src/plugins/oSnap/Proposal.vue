@@ -48,18 +48,20 @@ function enrichTransactionsForDisplay(transactions: Transaction[]) {
 }
 
 function enrichTransactionForDisplay(transaction: Transaction) {
-  const { to, value } = transaction;
-  const commonProperties = { to, value: formatEther(value) };
+  const { to, value, data } = transaction;
+  const commonProperties = { to, value: formatEther(value), data };
   if (transaction.type === 'raw') {
     return { ...commonProperties, type: 'Raw' };
   }
   if (transaction.type === 'contractInteraction') {
-    const { methodName, parameters } = transaction;
+    const { method, parameters } = transaction;
     return {
       ...commonProperties,
       type: 'Contract interaction',
-      'method name': methodName,
-      parameters: parameters?.join(', ')
+      'method name': method.name,
+      ...Object.fromEntries(method.inputs.map((input,i)=>{
+        return [`${input.name} (param ${i+1}): `,parameters[i]]
+      }))
     };
   }
   if (transaction.type === 'transferFunds') {

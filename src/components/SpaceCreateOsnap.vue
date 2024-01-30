@@ -17,13 +17,16 @@ defineEmits<{
       <h6>Warning</h6>
       <p class="mb-3">
         You currently have both the oSnap plugin and the SafeSnap plugin
-        installed in your space. You will continue using SafeSnap for now. If
-        you would like to use the oSnap plugin please see the oSnap
+        installed in your space. You can continue using oSnap with SafeSnap
+        without any changes to your space. If you would like to use the oSnap
+        plugin instead, please see the
         <a
           target="_blank"
           href="https://docs.uma.xyz/developers/osnap/osnap-configuration-parameters-1"
-          >migration docs.</a
+          >oSnap plugin migration docs.</a
         >
+        Otherwise please remove the oSnap plugin from your space settings for
+        the best experience with SafeSnap.
       </p>
     </div>
     <div v-else>

@@ -404,7 +404,7 @@ export async function getOGModuleDetails(params: {
   ] = await multicall(network, provider, OPTIMISTIC_GOVERNOR_ABI as any, [
     [moduleAddress, 'optimisticOracleV3'],
     [moduleAddress, 'rules'],
-    [moduleAddress, 'bondAmount'],
+    [moduleAddress, 'getProposalBond'],
     [moduleAddress, 'liveness']
   ]);
 
