@@ -1400,10 +1400,10 @@
     "@snapshot-labs/eslint-config-base" "^0.1.0-beta.15"
     eslint-plugin-vue "^9.18.1"
 
-"@snapshot-labs/lock@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.2.tgz#e3df7456982e09bcfeb49700b4a5ee50bf012f6f"
-  integrity sha512-VyRtV0VPZ1NIbMguDvSF1drTS1YjTQrVlRMz2dPfki6FdhkFe8ED1532c5iZiwYKM0YZgVcpB3R1xFMHmeSmJg==
+"@snapshot-labs/lock@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.3.tgz#6023433ac2c5ad9edb388e6913d8ccb4fedf5c38"
+  integrity sha512-D1yCbwukV0DHBWO5/yBGRO+0rkpngG52p52RRqsBg4gytyum9FW+GCULix+mq4VKmhN9V1xhH7Oc7BpBWIAJCg==
   dependencies:
     "@coinbase/wallet-sdk" "^3.4.0"
     "@portis/web3" "^4.0.6"
