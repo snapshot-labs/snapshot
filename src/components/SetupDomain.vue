@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { shorten } from '@/helpers/utils';
 
@@ -9,10 +8,17 @@ const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const { loadSpaces, spaces, isLoadingSpaces } = useSpaces();
+const {
+  loadSpaces,
+  spaces,
+  isLoadingSpaces,
+  isLoadingDeletedSpaces,
+  getDeletedSpaces
+} = useSpaces();
 
 const inputDomain = ref('');
 const loadingOwnedEnsDomains = ref(false);
+const deletedSpaces = ref<string[]>([]);
 
 watch(
   web3Account,
@@ -21,15 +27,36 @@ watch(
     loadingOwnedEnsDomains.value = true;
     await loadOwnedEnsDomains(web3Account.value);
     loadingOwnedEnsDomains.value = false;
-    if (ownedEnsDomains.value.map(d => d.name).length)
-      await loadSpaces(ownedEnsDomains.value.map(d => d.name));
+
+    const ids = ownedEnsDomains.value.map(d => d.name);
+    if (ids.length) {
+      await loadSpaces(ids);
+      const spaceIds = spaces.value.map(space => space.id);
+      deletedSpaces.value = await getDeletedSpaces(
+        ids.filter(id => !spaceIds.includes(id))
+      );
+    }
   },
   { immediate: true }
 );
 
-const domainsWithoutExistingSpace = computed(() => {
-  const spaceIds = clone(spaces.value.map(space => space.id));
-  return ownedEnsDomains.value.filter(d => !spaceIds.includes(d.name));
+const availableDomains = computed(() => {
+  const spaceIds = spaces.value.map(space => space.id);
+  return ownedEnsDomains.value.filter(
+    d =>
+      !spaceIds.includes(d.name) &&
+      !d.isInvalid &&
+      !deletedSpaces.value.includes(d.name)
+  );
+});
+
+const unavailableDomains = computed(() => {
+  const spaceIds = spaces.value.map(space => space.id);
+  return ownedEnsDomains.value.filter(
+    d =>
+      !spaceIds.includes(d.name) &&
+      (d.isInvalid || deletedSpaces.value.includes(d.name))
+  );
 });
 
 const domainsWithExistingSpace = computed(() => {
@@ -57,7 +84,10 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
 <template>
   <div>
-    <LoadingRow v-if="loadingOwnedEnsDomains || isLoadingSpaces" block />
+    <LoadingRow
+      v-if="loadingOwnedEnsDomains || isLoadingSpaces || isLoadingDeletedSpaces"
+      block
+    />
     <div v-else>
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.domain.title') }}</h4>
       <BaseMessageBlock
@@ -101,61 +131,78 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       </BaseMessageBlock>
 
       <BaseBlock>
-        <div v-if="domainsWithoutExistingSpace.length">
-          <div class="mb-3">
-            {{
-              $t(
-                domainsWithoutExistingSpace.length > 1
-                  ? 'setup.chooseExistingEns'
-                  : 'setup.useSingleExistingEns'
-              )
-            }}
-          </div>
-          <div class="space-y-2">
-            <template v-for="(ens, i) in domainsWithoutExistingSpace" :key="i">
-              <TuneButton
-                v-if="!ens.isInvalid"
-                class="flex w-full items-center justify-between"
-                :primary="domainsWithoutExistingSpace.length === 1"
-                @click="emit('next', ens.name)"
-              >
-                {{ ens.name }}
-                <i-ho-arrow-sm-right class="-mr-2" />
-              </TuneButton>
-              <BaseLink
-                v-else
-                :link="`https://app.ens.domains/address/${web3Account}/controller`"
-                hide-external-icon
-              >
+        <div class="flex flex-col space-y-4">
+          <div v-if="availableDomains.length">
+            <div class="mb-3">
+              {{
+                $t(
+                  availableDomains.length > 1
+                    ? 'setup.chooseExistingEns'
+                    : 'setup.useSingleExistingEns'
+                )
+              }}
+            </div>
+            <div class="space-y-2 flex flex-col">
+              <template v-for="(ens, i) in availableDomains" :key="i">
                 <TuneButton
-                  tabindex="-1"
                   class="flex w-full items-center justify-between"
+                  :primary="availableDomains.length === 1"
+                  @click="emit('next', ens.name)"
                 >
-                  {{ shortenInvalidEns(ens.name) }}
-                  <i-ho-exclamation-circle
-                    v-tippy="{
-                      content: ens.isInvalid
-                        ? $t('setup.domain.invalidEns')
-                        : null
-                    }"
-                    class="-mr-2"
-                  />
+                  {{ ens.name }}
+                  <i-ho-arrow-sm-right class="-mr-2" />
                 </TuneButton>
-              </BaseLink>
-            </template>
+              </template>
+            </div>
           </div>
-          <div class="mt-4">
-            {{ $t('setup.orRegisterNewEns') }}
+
+          <div v-if="unavailableDomains.length">
+            <div class="mb-3">Unavailable ENS domains:</div>
+            <div class="space-y-2 flex flex-col">
+              <template v-for="(ens, i) in unavailableDomains" :key="i">
+                <template v-if="deletedSpaces.includes(ens.name)">
+                  <TuneButton
+                    class="flex w-full items-center justify-between hover:cursor-default hover:border-skin-border"
+                  >
+                    {{ ens.name }}
+                    <i-ho-exclamation-circle
+                      v-tippy="{
+                        content:
+                          'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space.'
+                      }"
+                      class="text-red -mr-2"
+                    />
+                  </TuneButton>
+                </template>
+
+                <template v-else-if="ens.isInvalid">
+                  <TuneButton class="flex w-full items-center justify-between">
+                    {{ shortenInvalidEns(ens.name) }}
+                    <i-ho-exclamation-circle
+                      v-tippy="{ content: $t('setup.domain.invalidEns') }"
+                      class="-mr-2 text-red"
+                    />
+                  </TuneButton>
+                </template>
+              </template>
+            </div>
           </div>
-        </div>
-        <div>
-          <div v-if="!domainsWithoutExistingSpace.length" class="mb-3">
-            {{ $t('setup.toCreateASpace') }}
+
+          <div>
+            <div class="mb-2">
+              {{ $t('setup.orRegisterNewEns') }}
+            </div>
+
+            <div>
+              <div v-if="!availableDomains.length" class="mb-3">
+                {{ $t('setup.toCreateASpace') }}
+              </div>
+              <SetupDomainRegister
+                v-model.trim="inputDomain"
+                @wait-for-registration="waitForRegistration"
+              />
+            </div>
           </div>
-          <SetupDomainRegister
-            v-model.trim="inputDomain"
-            @wait-for-registration="waitForRegistration"
-          />
         </div>
       </BaseBlock>
     </div>
