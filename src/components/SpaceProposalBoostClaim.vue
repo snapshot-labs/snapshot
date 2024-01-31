@@ -2,7 +2,7 @@
 import { Proposal } from '@/helpers/interfaces';
 import { getVouchers } from '@/helpers/boost/api';
 import { claimAllTokens, claimTokens } from '@/helpers/boost';
-import { getAddress } from '@ethersproject/address';
+import { getNormalizedAddress } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import {
   BoostRewardGuard,
@@ -86,7 +86,7 @@ async function handleClaimAll() {
 
     const boosts = vouchers.map(voucher => ({
       boostId: voucher.boost_id,
-      recipient: getAddress(web3Account.value),
+      recipient: getNormalizedAddress(web3Account.value),
       amount: voucher.reward
     }));
     const signatures = vouchers.map(voucher => voucher.signature);
@@ -135,7 +135,7 @@ async function handleClaim(boost: BoostSubgraph) {
       chainId,
       {
         boostId: voucher.boost_id,
-        recipient: getAddress(web3Account.value),
+        recipient: getNormalizedAddress(web3Account.value),
         amount: voucher.reward
       },
       signature

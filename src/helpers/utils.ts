@@ -4,6 +4,7 @@ import { BigNumber } from '@ethersproject/bignumber';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import { getAddress } from '@ethersproject/address';
 
 export function shortenAddress(str = '') {
   return `${str.slice(0, 6)}...${str.slice(str.length - 4)}`;
@@ -190,4 +191,12 @@ export function isSnapshotUrl(url: string) {
   }
 
   return false;
+}
+
+export function getNormalizedAddress(address: string) {
+  try {
+    return getAddress(address);
+  } catch (e) {
+    return address;
+  }
 }

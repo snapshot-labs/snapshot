@@ -4,7 +4,7 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
-import { getAddress } from '@ethersproject/address';
+import { getNormalizedAddress } from '@/helpers/utils';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -69,7 +69,10 @@ const boostsSorted = computed(() => {
       claim => claim.boost.id === boost.id
     );
 
-    if (getAddress(boost.owner) === getAddress(web3Account.value)) {
+    if (
+      getNormalizedAddress(boost.owner) ===
+      getNormalizedAddress(web3Account.value)
+    ) {
       owned.push(boost);
     } else if (isEligible(boost) && !isClaimed) {
       eligible.push(boost);
