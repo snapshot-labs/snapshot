@@ -14,7 +14,7 @@ defineEmits<{
     class="mb-4 border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-4"
   >
     <div v-if="legacyOsnap.enabled">
-      <h6>Warning</h6>
+      <h6>oSnap Warning</h6>
       <p class="mb-3">
         You currently have both the oSnap plugin and the SafeSnap plugin
         installed in your space. You can continue using oSnap with SafeSnap

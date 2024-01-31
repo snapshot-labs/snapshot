@@ -93,7 +93,6 @@ type DateRange = {
 };
 function sanitizeDateRange({ dateStart, dateEnd }: DateRange): DateRange {
   const { delay = 0, period = 0 } = props.space?.voting ?? {};
-  console.log('sanitizeDateRange', { dateStart, dateEnd, delay, period });
   const threeDays = 259200;
   const currentTimestamp = Math.floor(Date.now() / 1000);
 
@@ -382,19 +381,26 @@ const legacyOsnap = ref<{
   selection: boolean;
 }>({
   selection: false,
-  enabled: false
+  enabled: false,
+  valid: false
 });
 
 // Skip transaction page if osnap is enabled, its not selected to be used, and we are on the voting page
 function shouldSkipTransactions() {
   if (currentStep.value !== Step.VOTING) return false;
-  if (legacyOsnap.value.enabled && !legacyOsnap.value.selection) return true;
+  if (
+    legacyOsnap.value.enabled &&
+    legacyOsnap.value.valid &&
+    !legacyOsnap.value.selection
+  )
+    return true;
   if (hasOsnapPlugin.value && !shouldUseOsnap.value) return true;
   return false;
 }
 
 function handleLegacyOsnapToggle() {
   legacyOsnap.value.selection = !legacyOsnap.value.selection;
+  shouldUseOsnap.value = !shouldUseOsnap.value;
 }
 
 onMounted(async () => {
@@ -402,7 +408,8 @@ onMounted(async () => {
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
-    legacyOsnap.value.enabled =
+    legacyOsnap.value.enabled = true;
+    legacyOsnap.value.valid =
       (await safeSnapPlugin.validateUmaModule(network, umaAddress)) === 'uma';
   }
   if (sourceProposal.value && !sourceProposalLoaded.value)
