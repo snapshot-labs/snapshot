@@ -35,8 +35,9 @@ export interface BoostStrategy {
       choice?: string;
     };
     distribution: {
-      type: 'even' | 'weighted';
+      type: 'weighted' | 'lottery';
       limit?: string;
+      numWinners?: string;
     };
   };
 }
@@ -68,8 +69,9 @@ export type BoostSubgraph = {
       choice: string | null;
     };
     distribution: {
-      type: 'even' | 'weighted';
+      type: 'weighted' | 'lottery';
       limit: string | null;
+      numWinners: string | null;
     };
   };
 };

@@ -27,9 +27,10 @@ type Form = {
     choice: 'any' | number;
   };
   distribution: {
-    type: 'even' | 'weighted';
+    type: 'weighted' | 'lottery';
     hasRatioLimit: boolean;
     ratioLimit: string;
+    numWinners: string;
   };
   network: string;
   token: string;
@@ -45,6 +46,7 @@ const { account, updatingAccount, updateAccount } = useAccount();
 const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
+const { formatNumber, getNumberFormatter } = useIntl();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -60,7 +62,8 @@ const form = ref<Form>({
   distribution: {
     type: 'weighted',
     hasRatioLimit: false,
-    ratioLimit: ''
+    ratioLimit: '',
+    numWinners: ''
   },
   network: '11155111',
   token: '',
@@ -86,7 +89,7 @@ const eligibilityOptions = computed(() => {
   return [
     {
       value: 'any',
-      name: 'Who votes'
+      name: 'Anyone who votes'
     },
     ...proposalChoices
   ];
@@ -257,6 +260,14 @@ const formValidation = computed(() => {
     }
   }
 
+  if (form.value.distribution.type === 'lottery') {
+    if (!form.value.distribution.numWinners) {
+      errors.numWinners = 'Please enter a value';
+    } else if (Number(form.value.distribution.numWinners) === 0) {
+      errors.numWinners = 'Please enter a value greater than 0';
+    }
+  }
+
   return errors;
 });
 
@@ -404,12 +415,20 @@ watchEffect(async () => {
 });
 
 watch(
-  () => form.value.distribution.hasRatioLimit,
+  () => form.value.distribution,
   () => {
     if (!form.value.distribution.hasRatioLimit) {
       form.value.distribution.ratioLimit = '';
     }
-  }
+    if (form.value.distribution.type === 'lottery') {
+      form.value.distribution.hasRatioLimit = false;
+      form.value.distribution.ratioLimit = '';
+    }
+    if (form.value.distribution.type === 'weighted') {
+      form.value.distribution.numWinners = '';
+    }
+  },
+  { deep: true }
 );
 
 watch(
@@ -445,7 +464,7 @@ watch(
             <template #title>
               <TuneBlockHeader
                 title="Eligibility"
-                sub-title="Set the criteria for who gets rewarded. Choose an option that best incentivizes meaningful participation."
+                sub-title="Choose an option that best incentivises meaningful participation."
               />
             </template>
 
@@ -459,7 +478,7 @@ watch(
             <template #title>
               <TuneBlockHeader
                 title="Deposit amount"
-                sub-title="Select a token and specify the total amount to establish the reward pool for all eligible voters."
+                sub-title="Select a token and specify the total amount for the reward pool."
               />
             </template>
             <div class="flex flex-col md:flex-row gap-[12px]">
@@ -488,15 +507,56 @@ watch(
             <template #title>
               <TuneBlockHeader
                 title="Distribution"
-                sub-title="Set a limit for how much each voter can receive. Without a limit, the reward will scale indefinitely with the voter's total voting power."
+                sub-title="Define how the reward pool is distributed to eligible voters."
               />
             </template>
-            <TuneSwitch
-              v-model="form.distribution.hasRatioLimit"
-              label="Define a maximum amount"
-            />
-            <div v-if="form.distribution.hasRatioLimit" class="mt-3">
+            <div class="space-y-2">
+              <TuneListbox
+                v-model="form.distribution.type"
+                :items="[
+                  {
+                    value: 'weighted',
+                    name: 'Distributed based on voting power'
+                  },
+                  {
+                    value: 'lottery',
+                    name: 'Lottery based on voting power'
+                  }
+                ]"
+                label="Distribution type"
+              />
+              <TuneSwitch
+                v-if="form.distribution.type === 'weighted'"
+                v-model="form.distribution.hasRatioLimit"
+                label="Define a maximum amount"
+              />
               <TuneInput
+                v-if="form.distribution.type === 'lottery'"
+                v-model="form.distribution.numWinners"
+                label="Number of winners"
+                type="number"
+                placeholder="e.g 50"
+                always-show-error
+                :error="formErrorMessages?.numWinners"
+              >
+                <template
+                  v-if="form.amount && form.distribution.numWinners"
+                  #after
+                >
+                  {{
+                    formatNumber(
+                      Number(form.amount) /
+                        Number(form.distribution.numWinners),
+                      getNumberFormatter({ maximumFractionDigits: 8 }).value
+                    )
+                  }}
+
+                  {{ selectedToken?.symbol }}
+                  per winner
+                </template>
+              </TuneInput>
+              <TuneInput
+                v-if="form.distribution.hasRatioLimit"
                 v-model="form.distribution.ratioLimit"
                 label="Max amount"
                 type="number"
@@ -523,7 +583,7 @@ watch(
             <div class="flex justify-left md:mt-3 leading-5">
               <i-ho-exclamation-circle class="inline-block text-sm mr-1" />
 
-              This contract is not audited and in beta.
+              The boost contract is not audited.
             </div>
             <TuneButton
               :loading="isLoading"
