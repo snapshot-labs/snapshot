@@ -170,6 +170,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                         content:
                           'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space.'
                       }"
+                      class="text-red -mr-2"
                     />
                   </TuneButton>
                 </template>
@@ -179,7 +180,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                     {{ shortenInvalidEns(ens.name) }}
                     <i-ho-exclamation-circle
                       v-tippy="{ content: $t('setup.domain.invalidEns') }"
-                      class="-mr-2"
+                      class="-mr-2 text-red"
                     />
                   </TuneButton>
                 </template>
