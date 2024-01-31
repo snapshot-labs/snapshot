@@ -3,7 +3,7 @@ import { Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { withdrawAndBurn } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { getNormalizedAddress } from '@/helpers/utils';
+import { getNormalizedAddress, explorerUrl } from '@/helpers/utils';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -53,6 +53,15 @@ const claimedAmount = computed(() => {
     Number(formattedUnits),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
+});
+
+const claimedTransactionHash = computed(() => {
+  if (!props.claims?.length) return undefined;
+  const claim = props.claims.find(claim => claim.boost.id === props.boost.id);
+
+  if (!claim) return undefined;
+
+  return claim.transactionHash;
 });
 
 const rewardFormatted = computed(() => {
@@ -158,14 +167,19 @@ async function withdraw(boost: BoostSubgraph) {
             Secured by Snapshot
           </div>
           <span
-            v-if="isClaimedByUser || isEligible"
+            v-if="claimedTransactionHash || isEligible"
             class="hidden md:block px-2 text-lg leading-none"
             >·</span
           >
-          <div v-if="isClaimedByUser" class="flex items-center gap-1">
+          <BaseLink
+            v-if="claimedTransactionHash"
+            hide-external-icon
+            :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
+            class="flex items-center gap-1 text-skin-text hover:text-skin-link"
+          >
             <i-ho-cash class="text-xs" />
             Claimed {{ claimedAmount }} {{ boost.token.symbol }}
-          </div>
+          </BaseLink>
           <div v-else-if="isEligible" class="flex items-center gap-1">
             <i-ho-fire class="text-xs" />
             Eligible to
@@ -173,7 +187,10 @@ async function withdraw(boost: BoostSubgraph) {
           </div>
         </div>
       </div>
-      <SpaceProposalBoostItemMenu :boost="boost" />
+      <SpaceProposalBoostItemMenu
+        :boost="boost"
+        :claimed-transaction-hash="claimedTransactionHash"
+      />
     </div>
     <div
       v-if="isOwner"

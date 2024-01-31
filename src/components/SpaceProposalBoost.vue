@@ -168,6 +168,7 @@ watch(
 
 watch(web3Account, async value => {
   if (!loaded.value) return;
+  loadClaims();
   await loadUserVote(value);
   loadRewards();
 });

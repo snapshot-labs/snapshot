@@ -17,6 +17,7 @@ export function getClaims(recipient: string, chainId: string) {
       },
       id: true,
       amount: true,
+      transactionHash: true,
       boost: {
         id: true
       }
