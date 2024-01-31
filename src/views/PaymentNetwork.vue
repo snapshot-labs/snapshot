@@ -101,7 +101,10 @@ watch(paymentTx, () => {
             }
           ]"
         >
-          <div v-if="plan.discount" class="p-2 text-center text-skin-primary">
+          <div
+            v-if="plan.discount"
+            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.png')]"
+          >
             Save
             <BasePill class="py-1 !bg-skin-primary"
               >{{ Math.floor(plan.discount) }}%</BasePill
