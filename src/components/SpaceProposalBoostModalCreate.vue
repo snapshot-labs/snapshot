@@ -15,14 +15,19 @@ const dontShowAgain = useStorage(
 
 const content = [
   {
-    title: 'What are boosts?',
+    title: 'Who are boosts for?',
     description:
-      'Boosts allow you to create incentives tied to specific proposals. By creating a Boost, you can reward users who participate in voting based on certain eligibility criteria that you define.'
+      "Boosts are primarily for DAOs that want to increase voting participation. They can also serve as a tool for 'bribes' in DeFi, incentivizing specific actions or decisions."
   },
   {
-    title: 'Get started',
+    title: 'Distribution',
     description:
-      'Click "Get started" on the proposal page to set eligibility criteria, deposit amount, and maximum voting power for tailored rewards and increased participation.'
+      'Rewards are distributed either proportionally to voting power or through a lottery system. The lottery system is weighted by voting power, meaning the more voting power, the higher your chances of winning.'
+  },
+  {
+    title: 'Disclaimer',
+    description:
+      'Boosts are a new and experimental feature and currently not audited. Use at your own risk.'
   }
 ];
 </script>
@@ -50,15 +55,14 @@ const content = [
 
       <div class="flex flex-col justify-between">
         <div
-          class="p-[20px] md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-none"
+          class="p-[20px] md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[500px]"
         >
           <TuneModalTitle as="h1" class="hidden md:block leading-7 mb-4"
             >Welcome to Boosts!</TuneModalTitle
           >
           <TuneModalDescription class="text-lg leading-6 mb-5">
-            Welcome to the new Boosts feature on Snapshot! Boosts are a powerful
-            way to incentivize voting on proposals while rewarding active
-            participation within the community.
+            Boosts are a powerful way to incentivize voting on proposals by
+            rewarding active participation and more.
           </TuneModalDescription>
           <div class="space-y-5">
             <div v-for="(c, i) in content" :key="i">
