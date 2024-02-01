@@ -366,7 +366,7 @@ onMounted(async () => {
       </div>
     </template>
     <template v-if="networkSupportsDelegate" #sidebar-right>
-      <BaseBlock>
+      <BaseBlock class="mt-4 lg:mt-0">
         <TuneButton
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading"
