@@ -3,7 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 
 defineProps<{
   space: ExtendedSpace | undefined;
-  legacyOsnap: { selection: boolean };
+  legacyOsnap: { selection: boolean; valid: boolean };
 }>();
 
 defineEmits<{
@@ -27,7 +27,7 @@ defineEmits<{
         will allow you to create oSnap proposals.
       </p>
     </div>
-    <div v-else>
+    <div v-else-if="legacyOsnap.valid">
       <h6>oSnap Proposal</h6>
       <p>
         Are you planning for this proposal to initiate a transaction that your
@@ -45,6 +45,22 @@ defineEmits<{
         Yes, use oSnap for transactions (this will restrict voting type to
         Basic).
       </label>
+    </div>
+    <div v-else>
+      <div
+        class="mb-4 border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-4"
+      >
+        <h6>oSnap Error</h6>
+        <p>
+          Something is wrong with your SafeSnap settings and oSnap will not work
+          correctly. Have an admin check SafeSnap configuration or
+          <a
+            href="https://docs.uma.xyz/developers/osnap/osnap-configuration-parameters-1"
+            target="_blank"
+            >migrate to the dedicated oSnap plugin.</a
+          >
+        </p>
+      </div>
     </div>
   </div>
 </template>
