@@ -87,6 +87,16 @@ const withdrawalAmount = computed(() => {
   );
 });
 
+const amountPerWinner = computed(() => {
+  const amount =
+    Number(boostBalanceFormatted.value) /
+    Number(props.boost.strategy.distribution.numWinners!);
+  return `${formatNumber(
+    Number(amount),
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
+  )} ${props.boost.token.symbol}`;
+});
+
 const claimPeriodEnded = computed(() => {
   return Number(props.boost.end) < Date.now() / 1000;
 });
@@ -155,13 +165,7 @@ async function withdraw(boost: BoostSubgraph) {
             class="mt-1"
           >
             has a chance to win
-            <TuneTag
-              :label="`${
-                Number(boostBalanceFormatted) /
-                Number(boost.strategy.distribution.numWinners!)
-              } ${boost.token.symbol}`"
-              class="text-skin-heading"
-            />
+            <TuneTag :label="amountPerWinner" class="text-skin-heading" />
           </div>
           <div class="whitespace-nowrap mt-1">
             <template v-if="boost.strategy.distribution.type === 'weighted'">
