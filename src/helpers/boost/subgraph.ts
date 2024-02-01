@@ -59,7 +59,8 @@ export async function getBoosts(proposalIds: string[]) {
           },
           distribution: {
             type: true,
-            limit: true
+            limit: true,
+            numWinners: true
           }
         }
       }

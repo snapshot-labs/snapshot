@@ -8,6 +8,7 @@ import {
 const props = defineProps<{
   open: boolean;
   boosts: BoostSubgraph[];
+  claimableBoosts: BoostSubgraph[];
   claims: BoostClaimSubgraph[];
   rewards: BoostRewardGuard[];
   loadingClaimAll: boolean;
@@ -48,7 +49,7 @@ const allOnSameNetwork = computed(() => {
     </div>
     <div class="m-3">
       <TuneButton
-        v-if="allOnSameNetwork && boosts.length > 1"
+        v-if="allOnSameNetwork && claimableBoosts.length > 1"
         class="w-full"
         :loading="loadingClaimAll"
         @click="$emit('claimAll')"

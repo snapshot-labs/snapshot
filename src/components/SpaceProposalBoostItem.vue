@@ -138,12 +138,28 @@ async function withdraw(boost: BoostSubgraph) {
                 class="text-skin-heading"
               />
             </template>
-            <template v-else> Voters </template>
+            <template v-else> Anyone who votes </template>
           </div>
-          <div class="whitespace-nowrap mt-1 mr-1">
-            share a pool of
+          <div
+            v-if="boost.strategy.distribution.type === 'weighted'"
+            class="whitespace-nowrap mt-1 mr-1"
+          >
+            shares a pool of
             <TuneTag
               :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
+              class="text-skin-heading"
+            />
+          </div>
+          <div
+            v-else-if="boost.strategy.distribution.type === 'lottery'"
+            class="mt-1"
+          >
+            has a chance to win
+            <TuneTag
+              :label="`${
+                Number(boostBalanceFormatted) /
+                Number(boost.strategy.distribution.numWinners!)
+              } ${boost.token.symbol}`"
               class="text-skin-heading"
             />
           </div>
@@ -182,8 +198,11 @@ async function withdraw(boost: BoostSubgraph) {
           </BaseLink>
           <div v-else-if="isEligible" class="flex items-center gap-1">
             <i-ho-fire class="text-xs" />
-            Eligible to
-            {{ reward ? `${rewardFormatted} ${boost.token.symbol}` : 'reward' }}
+            <span v-if="reward || proposal.scores_state === 'final'">
+              Eligible to
+              {{ `${rewardFormatted} ${boost.token.symbol}` }}
+            </span>
+            <span v-else> Eligible to reward </span>
           </div>
         </div>
       </div>

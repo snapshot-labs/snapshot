@@ -217,7 +217,8 @@ const strategy = computed<BoostStrategy>(() => {
       },
       distribution: {
         type: form.value.distribution.type,
-        limit
+        limit,
+        numWinners: form.value.distribution.numWinners || undefined
       }
     }
   };

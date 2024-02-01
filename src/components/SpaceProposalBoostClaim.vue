@@ -63,12 +63,20 @@ const claimStatusModalConfig = computed(() => {
   }
 });
 
-const unclaimedBoosts = computed(() =>
-  props.eligibleBoosts.filter(boost => {
-    const hasClaimed = props.claims.some(claim => claim.boost.id === boost.id);
-    return !hasClaimed;
-  })
-);
+const unclaimedBoostsWithReward = computed(() => {
+  if (!props.rewards.length) return [];
+  return props.eligibleBoosts
+    .filter(boost => {
+      const hasClaimed = props.claims.some(
+        claim => claim.boost.id === boost.id
+      );
+      return !hasClaimed;
+    })
+    .filter(boost => {
+      const reward = props.rewards.find(reward => reward.boost_id === boost.id);
+      return Number(reward?.reward) > 0;
+    });
+});
 
 async function handleClaimAll() {
   if (props.rewards[0].chain_id !== web3.value.network.chainId.toString()) {
@@ -77,7 +85,7 @@ async function handleClaimAll() {
 
   try {
     claimStatus.value = 'loading';
-    const vouchers = await loadVouchers(unclaimedBoosts.value);
+    const vouchers = await loadVouchers(unclaimedBoostsWithReward.value);
     if (!vouchers?.length) throw new Error('No vouchers found');
 
     claimModalOpen.value = false;
@@ -169,15 +177,18 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
 }
 
 const timeLeftToClaim = computed(() => {
-  if (!unclaimedBoosts.value.length) return 0;
-  return Number(unclaimedBoosts.value[0].end) - Math.floor(Date.now() / 1000);
+  if (!unclaimedBoostsWithReward.value.length) return 0;
+  return (
+    Number(unclaimedBoostsWithReward.value[0].end) -
+    Math.floor(Date.now() / 1000)
+  );
 });
 </script>
 
 <template>
   <div>
     <TuneBlock
-      v-if="unclaimedBoosts.length"
+      v-if="unclaimedBoostsWithReward.length"
       slim
       class="!bg-boost mx-4 md:mx-0 bg-[url('@/assets/images/stars-big-horizontal.png')] py-[32px] !border-0 mb-4"
     >
@@ -191,7 +202,7 @@ const timeLeftToClaim = computed(() => {
           >
             <i-ho-gift class="text-[14px] mr-[2px]" />
             <span class="text-sm">
-              {{ unclaimedBoosts.length }}
+              {{ unclaimedBoostsWithReward.length }}
             </span>
           </div>
         </div>
@@ -217,18 +228,15 @@ const timeLeftToClaim = computed(() => {
             <i-ho-gift class="text-sm mr-2" />
             Claim
             <span class="ml-[4px]">
-              {{ unclaimedBoosts.length }} reward<span
-                v-if="unclaimedBoosts.length > 1"
+              {{ unclaimedBoostsWithReward.length }} reward<span
+                v-if="unclaimedBoostsWithReward.length > 1"
                 >s</span
               >
             </span>
           </div>
         </TuneButton>
       </div>
-      <div
-        v-if="eligibleBoosts.length"
-        class="flex text-white justify-center mt-2"
-      >
+      <div class="flex text-white justify-center mt-2">
         <span v-if="timeLeftToClaim > 0" class="flex items-center">
           <i-ho-clock class="mr-1 text-sm" />
           {{ formatDuration(timeLeftToClaim) }}
@@ -257,6 +265,7 @@ const timeLeftToClaim = computed(() => {
     <SpaceProposalBoostClaimModal
       :open="claimModalOpen"
       :boosts="eligibleBoosts"
+      :claimable-boosts="unclaimedBoostsWithReward"
       :claims="claims"
       :rewards="rewards"
       :loading-claim-all="claimStatus === 'loading'"
