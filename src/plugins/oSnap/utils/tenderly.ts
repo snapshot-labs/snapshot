@@ -2,7 +2,8 @@ import {
   OsnapPluginData,
   Transaction as TTransaction,
   GnosisSafe,
-  Network
+  Network,
+  TenderlySimulationResult
 } from '../types';
 import {
   validateModuleAddress,
@@ -11,6 +12,8 @@ import {
 
 export const SIMULATION_ENDPOINT =
   'https://ethereum-api-read-prod-77jg7zf4ea-ue.a.run.app/osnap/simulate';
+
+export const OSNAP_GAS_SUBSIDY = 500_000;
 
 export function validatePayload(data: OsnapPluginData): void | never {
   const { safe } = data;
@@ -52,4 +55,8 @@ export function prepareTenderlySimulationPayload(props: {
   };
 
   return { safe: payload };
+}
+
+export function exceedsOsnapGasSubsidy(res: TenderlySimulationResult): boolean {
+  return res.gasUsed > OSNAP_GAS_SUBSIDY;
 }

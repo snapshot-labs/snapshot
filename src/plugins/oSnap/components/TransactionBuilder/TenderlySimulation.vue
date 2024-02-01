@@ -7,18 +7,14 @@ import {
   GnosisSafe,
   isErrorWithMessage
 } from '../../types';
-import { computed } from 'vue';
 import { ref } from 'vue';
 import {
   SIMULATION_ENDPOINT,
+  exceedsOsnapGasSubsidy,
   prepareTenderlySimulationPayload,
-  validatePayload
+  validatePayload,
+  OSNAP_GAS_SUBSIDY
 } from '../../utils/tenderly';
-
-// ERROR => unable to simulate
-// FAIL => tx Failed in simulation
-// SUCCESS =>  tx Succeeded in simulation
-type Status = 'SUCCESS' | 'FAIL' | 'ERROR' | 'LOADING' | 'IDLE';
 
 const props = defineProps<{
   transactions: TTransaction[];
@@ -26,21 +22,59 @@ const props = defineProps<{
   network: Network;
 }>();
 
-const simulationState = ref<Status>('IDLE');
-const simulationLink = ref<string>();
-const simulationError = ref<string>();
+type State =
+  | {
+      status: 'SUCCESS';
+      simulationLink: TenderlySimulationResult['resultUrl'];
+      gasUsed: TenderlySimulationResult['gasUsed'];
+      exceedsGasSubsidy: boolean;
+    }
+  | {
+      status: 'FAIL';
+      simulationLink: TenderlySimulationResult['resultUrl'];
+      gasUsed: TenderlySimulationResult['gasUsed'];
+      exceedsGasSubsidy: boolean;
+    }
+  | {
+      status: 'ERROR';
+      error: string;
+    }
+  | {
+      status: 'LOADING';
+    }
+  | {
+      status: 'IDLE';
+    };
+
+const simulationState = ref<State>({ status: 'IDLE' });
+
+const resetState = () => {
+  simulationState.value = { status: 'IDLE' };
+};
 
 function handleSimulationResult(res: TenderlySimulationResult) {
+  // if gas exceeds osnap gas subsidy, tx will not be automatically executed
+  const exceedsGasSubsidy = exceedsOsnapGasSubsidy(res);
+
   if (res.status === true) {
-    simulationState.value = 'SUCCESS';
+    simulationState.value = {
+      status: 'SUCCESS',
+      simulationLink: res.resultUrl,
+      gasUsed: res.gasUsed,
+      exceedsGasSubsidy
+    };
   } else {
-    simulationState.value = 'FAIL';
+    simulationState.value = {
+      status: 'FAIL',
+      simulationLink: res.resultUrl,
+      gasUsed: res.gasUsed,
+      exceedsGasSubsidy
+    };
   }
-  simulationLink.value = res.resultUrl.url;
 }
 
 async function simulate() {
-  simulationState.value = 'LOADING';
+  simulationState.value = { status: 'LOADING' };
   try {
     const payload = prepareTenderlySimulationPayload(props);
 
@@ -64,84 +98,102 @@ async function simulate() {
   } catch (error) {
     console.error(error);
     if (isErrorWithMessage(error)) {
-      simulationError.value = error.message;
+      simulationState.value = { status: 'ERROR', error: error.message };
+    } else {
+      simulationState.value = {
+        status: 'ERROR',
+        error: 'Failed to simulate!'
+      };
     }
-    simulationState.value = 'ERROR';
     await sleep(5_000);
-    simulationState.value = 'IDLE';
+    simulationState.value = {
+      status: 'IDLE'
+    };
   }
 }
-
-const errorMessage = simulationError ?? 'Failed to simulate!';
-
-const showResult = computed(() => {
-  return (
-    simulationState.value === 'FAIL' || simulationState.value === 'SUCCESS'
-  );
-});
-
-const resetState = () => {
-  simulationState.value = 'IDLE';
-  simulationLink.value = undefined;
-  simulationError.value = undefined;
-};
 </script>
 
 <template>
   <div>
     <button
-      v-if="!showResult"
+      v-if="
+        !(
+          simulationState.status === 'SUCCESS' ||
+          simulationState.status === 'FAIL'
+        )
+      "
       @click="simulate"
-      :disabled="simulationState !== 'IDLE'"
+      :disabled="simulationState.status !== 'IDLE'"
       :class="[
         'flex w-full enabled:hover:border-skin-text gap-2 justify-center h-[48px] px-[20px] items-center border disabled:cursor-not-allowed rounded-full border-skin-border',
         {
-          'text-red': simulationState === 'ERROR'
+          'text-red': simulationState.status === 'ERROR'
         }
       ]"
     >
       <IconTenderly class="text-skin-link inline h-[20px] w-[20px]" />
-      <span v-if="simulationState === 'IDLE'">Simulate Transaction</span>
-      <span v-if="simulationState === 'LOADING'">Checking transaction...</span>
-      <span class="text-xs" v-if="simulationState === 'ERROR'">{{
-        errorMessage
+      <span v-if="simulationState.status === 'IDLE'">Simulate Transaction</span>
+      <span v-if="simulationState.status === 'LOADING'"
+        >Checking transaction...</span
+      >
+      <span class="text-xs" v-if="simulationState.status === 'ERROR'">{{
+        simulationState.error
       }}</span>
 
-      <LoadingSpinner class="ml-auto" v-if="simulationState === 'LOADING'" />
+      <LoadingSpinner
+        class="ml-auto"
+        v-if="simulationState.status === 'LOADING'"
+      />
     </button>
-    <div class="flex flex-col gap-2" v-if="showResult">
+    <div class="flex flex-col gap-2" v-else>
       <div
         :class="[
           'flex w-full text-sm md:text-[18px] justify-between h-[48px] px-[20px] items-center rounded-full',
           {
-            'bg-green/20 text-green': simulationState === 'SUCCESS',
-            'bg-red/20 text-red': simulationState === 'FAIL'
+            'bg-green/20 text-green': simulationState.status === 'SUCCESS',
+            'bg-red/20 text-red': simulationState.status === 'FAIL'
           }
         ]"
       >
         <div class="flex items-center gap-2">
           <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
-          <span v-if="simulationState === 'SUCCESS'">Success!</span>
-          <span v-if="simulationState === 'FAIL'">Transaction failed!</span>
+          <span v-if="simulationState.status === 'SUCCESS'">Success!</span>
+          <span v-if="simulationState.status === 'FAIL'"
+            >Transaction failed!</span
+          >
         </div>
         <a
+          v-if="simulationState.simulationLink.public"
           target="_blank"
           class="flex items-center gap-1 text-inherit hover:underline"
-          :href="simulationLink"
+          :href="simulationState.simulationLink.url"
         >
           <span>View on Tenderly</span>
-          <IHoExternalLink class="text-inherit inline w-[1.2em] h-[1.2em]"
-        /></a>
+          <IHoExternalLink class="text-inherit inline w-[1.2em] h-[1.2em]" />
+        </a>
+        <div v-else class="text-inherit">Simulation not public</div>
       </div>
+
       <TuneButton
         class="group text-sm md:text-[18px] hover:cursor-pointer justify-center w-full flex gap-2 mx-auto items-center"
         :tooltip="'Reset Simulation'"
-        v-if="showResult"
         @click="resetState"
       >
-        Reset
+        Reset Simulation
         <IHoRefresh class="text-inherit w-[1em] h-[1em]" />
       </TuneButton>
+
+      <p v-if="simulationState.exceedsGasSubsidy" class="text-sm text-left">
+        <strong class="text-skins text-base text-red">Warning:</strong>
+        This transaction will
+        <strong class="underline"
+          >not be automatically executed by oSnap.</strong
+        >
+        This transaction used
+        {{ simulationState.gasUsed.toLocaleString() }} gas, which exceeds
+        oSnap's maximum subsidized amount of
+        {{ OSNAP_GAS_SUBSIDY.toLocaleString() }}.
+      </p>
     </div>
   </div>
 </template>
