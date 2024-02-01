@@ -327,6 +327,7 @@ onMounted(async () => {
             />
           </div>
         </BaseBlock>
+
         <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
@@ -379,7 +380,10 @@ onMounted(async () => {
       </BaseBlock>
     </template>
   </TheLayout>
-  <teleport v-if="networkSupportsDelegate" to="#modal">
+  <teleport
+    v-if="networkSupportsDelegate && profiles[currentDelegate]"
+    to="#modal"
+  >
     <ModalRevokeDelegate
       v-if="loaded"
       :id="currentId"
