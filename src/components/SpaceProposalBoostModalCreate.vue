@@ -55,7 +55,7 @@ const content = [
 
       <div class="flex flex-col justify-between">
         <div
-          class="p-[20px] md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[500px]"
+          class="p-[20px] md:pb-0 md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[526px]"
         >
           <TuneModalTitle as="h1" class="hidden md:block leading-7 mb-4"
             >Welcome to Boosts!</TuneModalTitle
@@ -72,7 +72,7 @@ const content = [
           </div>
         </div>
         <div
-          class="flex justify-between items-center border-t md:border-0 px-[20px] py-3 md:p-[32px]"
+          class="flex justify-between items-center border-t md:border-0 px-[20px] py-3 md:p-[32px] md:!pt-0"
         >
           <TuneCheckbox
             id="dont-show-again"
