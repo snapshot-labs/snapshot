@@ -91,6 +91,7 @@ export type BaseTransaction = {
   value: string;
   data: string;
   formatted: OptimisticGovernorTransaction;
+  isValid?: boolean;
 };
 
 /**

@@ -28,6 +28,7 @@ const nativeAsset = getNativeAsset(props.network);
 const amount = ref(props.transaction.amount ?? '');
 const recipient = ref(props.transaction.recipient ?? '');
 const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
+
 const selectedTokenAddress = ref<Token['address']>(
   props.transaction?.token?.address ?? 'main'
 );
@@ -42,8 +43,6 @@ const selectedTokenIsNative = computed(
 const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
-  if (!isBigNumberish(amount.value) || !isAddress(recipient.value)) return;
-
   try {
     const data = selectedTokenIsNative.value
       ? '0x'
@@ -55,10 +54,10 @@ function updateTransaction() {
       recipient: recipient.value,
       token: selectedToken.value
     });
+    emit('updateTransaction', transaction);
     const isTransactionValid = validateTransaction(transaction);
-    if (isTransactionValid) {
-      emit('updateTransaction', transaction);
-      return;
+    if (!isTransactionValid) {
+      console.warn('invalid transaction');
     }
   } catch (error) {
     console.warn('invalid transaction', error);

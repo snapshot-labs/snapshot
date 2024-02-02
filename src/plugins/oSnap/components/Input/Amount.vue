@@ -16,23 +16,30 @@ const dirty = ref(false);
 
 const format = (amount: string) => {
   try {
-    return parseUnits(amount, props.decimals).toString();
+    // empty string throws
+    const parsed = parseUnits(amount, props.decimals).toString();
+    return parsed;
   } catch (error) {
-    return undefined;
+    return parseUnits('0', props.decimals).toString();
   }
 };
 
 const handleInput = () => {
   dirty.value = true;
   const value = format(input.value);
-  isValid.value = !!value;
-  emit('update:modelValue', value ?? '');
+  // empty string value will throw error being converted to BigNumber
+  emit('update:modelValue', value ?? '0');
 };
 
 onMounted(() => {
   if (props.modelValue) {
     input.value = formatUnits(props.modelValue, props.decimals);
   }
+});
+
+watch(input, () => {
+  const value = format(input.value);
+  isValid.value = !!value && parseInt(value) > 0;
 });
 </script>
 
