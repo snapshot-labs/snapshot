@@ -21,7 +21,7 @@ function handleChange(event) {
       :disabled="disabled"
       :value="modelValue"
       :class="{ disabled }"
-      class="input h-full w-full flex-auto"
+      class="input h-full w-full flex-auto !bg-skin-bg"
       @change="handleChange($event)"
     >
       <slot />
