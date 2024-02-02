@@ -24,7 +24,7 @@ const allOnSameNetwork = computed(() => {
 });
 
 const claimableBoostsSortedByReward = computed(() => {
-  return clone(props.claimableBoosts).sort((a, b) => {
+  return clone(props.boosts).sort((a, b) => {
     const rewardA = props.rewards.find(reward => reward.boost_id === a.id);
     const rewardB = props.rewards.find(reward => reward.boost_id === b.id);
     return (Number(rewardB?.reward) || 0) - (Number(rewardA?.reward) || 0);

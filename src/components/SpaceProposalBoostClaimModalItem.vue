@@ -47,7 +47,7 @@ const claimLoading = computed(() => {
     class="flex items-center justify-between border rounded-xl p-[12px] h-[58px]"
     :class="{
       'border-green/30 bg-green/5': hasClaimed,
-      'border-boost/30 bg-boost/5': !hasClaimed
+      'border-boost/30 bg-boost/5': !hasClaimed && Number(reward) > 0
     }"
   >
     <div class="text-skin-heading flex items-center">
@@ -55,7 +55,7 @@ const claimLoading = computed(() => {
         class="border rounded-full p-[3px] mr-2"
         :class="{
           'border-green/40 bg-green/10': hasClaimed,
-          'border-boost/40 bg-boost/10': !hasClaimed
+          'border-boost/40 bg-boost/10': !hasClaimed && Number(reward) > 0
         }"
       >
         <i-ho-cash v-if="hasClaimed" class="text-green text-xs" />
@@ -70,7 +70,7 @@ const claimLoading = computed(() => {
     </div>
 
     <TuneButton
-      v-if="!hasClaimed"
+      v-if="!hasClaimed && Number(reward) > 0"
       class="h-[32px] px-[12px] bg-skin-bg"
       :loading="claimLoading"
       @click="$emit('claim', boost)"
