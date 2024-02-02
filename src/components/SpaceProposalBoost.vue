@@ -59,12 +59,22 @@ const eligibleBoosts = computed(() => {
 const boostsSorted = computed(() => {
   if (!boosts.value.length) return [];
 
+  const boostsWithReward = boosts.value.map(boost => {
+    const reward = boostRewards.value.find(
+      reward => reward.boost_id === boost.id
+    );
+    return {
+      ...boost,
+      rewardAmount: reward ? reward.reward : 0
+    };
+  });
+
   const owned: BoostSubgraph[] = [];
   const eligible: BoostSubgraph[] = [];
   const claimed: BoostSubgraph[] = [];
   const other: BoostSubgraph[] = [];
 
-  boosts.value.forEach(boost => {
+  boostsWithReward.forEach(boost => {
     const isClaimed = boostClaims.value.some(
       claim => claim.boost.id === boost.id
     );
@@ -83,7 +93,13 @@ const boostsSorted = computed(() => {
     }
   });
 
-  return [...owned, ...eligible, ...claimed, ...other];
+  const sortFn = (a, b) => Number(b.rewardAmount) - Number(a.rewardAmount);
+  return [
+    ...owned.sort(sortFn),
+    ...eligible.sort(sortFn),
+    ...claimed.sort(sortFn),
+    ...other.sort(sortFn)
+  ];
 });
 
 function handleStart() {

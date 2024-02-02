@@ -4,6 +4,7 @@ import {
   BoostRewardGuard,
   BoostSubgraph
 } from '@/helpers/boost/types';
+import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   open: boolean;
@@ -21,6 +22,14 @@ const allOnSameNetwork = computed(() => {
   const chainIds = new Set(props.boosts.map(boost => boost.chainId));
   return chainIds.size === 1;
 });
+
+const claimableBoostsSortedByReward = computed(() => {
+  return clone(props.claimableBoosts).sort((a, b) => {
+    const rewardA = props.rewards.find(reward => reward.boost_id === a.id);
+    const rewardB = props.rewards.find(reward => reward.boost_id === b.id);
+    return (Number(rewardB?.reward) || 0) - (Number(rewardA?.reward) || 0);
+  });
+});
 </script>
 
 <template>
@@ -37,7 +46,7 @@ const allOnSameNetwork = computed(() => {
     <div
       class="px-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[200px] overflow-y-auto"
     >
-      <div v-for="boost in boosts" :key="boost.id">
+      <div v-for="boost in claimableBoostsSortedByReward" :key="boost.id">
         <SpaceProposalBoostClaimModalItem
           :boost="boost"
           :rewards="rewards"
