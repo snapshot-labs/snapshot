@@ -17,7 +17,8 @@ import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles,
   getIsOsnapEnabled,
-  getModuleAddressForTreasury
+  getModuleAddressForTreasury,
+  validateTransaction
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
@@ -43,22 +44,30 @@ const safes = ref<GnosisSafe[]>([]);
 const tokens = ref<Token[]>([]);
 const collectables = ref<NFT[]>([]);
 
+const transactionsValid = ref(false);
+
 function addTransaction(transaction: Transaction) {
   if (newPluginData.value.safe === null) return;
-  newPluginData.value.safe.transactions.push(transaction);
+  newPluginData.value.safe.transactions.push({
+    ...transaction,
+    isValid: validateTransaction(transaction)
+  });
   update(newPluginData.value);
 }
 
 function removeTransaction(transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
   update(newPluginData.value);
 }
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-  newPluginData.value.safe.transactions[transactionIndex] = transaction;
+  newPluginData.value.safe.transactions[transactionIndex] = {
+    ...transaction,
+    isValid: validateTransaction(transaction)
+  };
+
   update(newPluginData.value);
 }
 
@@ -76,7 +85,6 @@ async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
   }
-
   try {
     const balances = await getGnosisSafeBalances(network, safeAddress);
 
@@ -226,6 +234,25 @@ onMounted(async () => {
   update(newPluginData.value);
   isLoading.value = false;
 });
+
+watch(newPluginData, () => {
+  // validate form here, set isValid accordingly upstream
+  if (!newPluginData.value.safe) {
+    return;
+  }
+  // can't publish without transactions
+  if (newPluginData.value.safe.transactions.length === 0) {
+    transactionsValid.value = false;
+    return;
+  }
+  // check ALL transactions
+  if (newPluginData.value.safe.transactions.every(validateTransaction)) {
+    transactionsValid.value = false;
+    return;
+  }
+  // default to invalid
+  transactionsValid.value = false;
+});
 </script>
 
 <template>
@@ -233,7 +260,8 @@ onMounted(async () => {
     <div class="rounded-2xl border p-4 text-md">
       <h2 class="mb-2">Warning: Multiple oSnap enabled plugins detected</h2>
       <p class="mb-2">
-      For best experience using oSnap, please remove the SafeSnap plugin from your space.
+        For best experience using oSnap, please remove the SafeSnap plugin from
+        your space.
       </p>
     </div>
   </template>
