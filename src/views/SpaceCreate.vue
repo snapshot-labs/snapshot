@@ -6,6 +6,7 @@ import Plugin from '@/plugins/safeSnap';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import proposalSchema from '@snapshot-labs/snapshot.js/src/schemas/proposal.json';
+import { validateTransaction } from '@/plugins/oSnap/utils';
 
 const safeSnapPlugin = new Plugin();
 
@@ -18,6 +19,7 @@ enum Step {
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
+
 const spaceType = computed(() => (props.space.turbo ? 'turbo' : 'default'));
 const bodyCharactersLimit = computed(
   () =>
@@ -53,6 +55,7 @@ const { isGnosisAndNotSpaceNetwork } = useGnosis(props.space);
 const { isSnapshotLoading } = useSnapshot();
 const { apolloQuery, queryLoading } = useApolloQuery();
 const { containsShortUrl } = useShortUrls();
+
 const { isValid: isValidSpaceSettings, populateForm } = useFormSpaceSettings(
   'settings',
   {
@@ -137,7 +140,16 @@ const isFormValid = computed(() => {
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
 
+  const isOsnapPluginValid = form.value.metadata.plugins?.oSnap?.safe
+    ?.transactions
+    ? form.value.metadata.plugins.oSnap.safe.transactions.every(
+        validateTransaction
+      )
+    : true;
+
   return (
+    !web3.value.authLoading &&
+    isOsnapPluginValid &&
     !isSending.value &&
     form.value.body.length <= bodyCharactersLimit.value &&
     dateEnd.value &&
@@ -146,8 +158,7 @@ const isFormValid = computed(() => {
     form.value.choices.length >= 1 &&
     !form.value.choices.some((a, i) => a.text === '' && i === 0) &&
     isValidAuthor.value &&
-    isSafeSnapPluginValid &&
-    !web3.value.authLoading
+    isSafeSnapPluginValid
   );
 });
 
@@ -379,6 +390,7 @@ function toggleShouldUseOsnap() {
 const legacyOsnap = ref<{
   enabled: boolean;
   selection: boolean;
+  valid: boolean;
 }>({
   selection: false,
   enabled: false,
