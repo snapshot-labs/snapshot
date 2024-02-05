@@ -8,6 +8,7 @@ import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
   getContractABI,
+  processContractInteractionTransaction,
   validateTransaction
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
@@ -40,23 +41,17 @@ const selectedMethod = computed(
 const parameters = ref<string[]>([]);
 
 function updateTransaction() {
-  if (!isValueValid || !isToValid || !isAbiValid) return;
-  try {
-    const transaction = createContractInteractionTransaction({
-      to: to.value,
-      value: value.value,
-      abi: abi.value,
-      method: selectedMethod.value,
-      parameters: parameters.value
-    });
+  // if (!isValueValid || !isToValid || !isAbiValid) return;
 
-    if (validateTransaction(transaction)) {
-      emit('updateTransaction', transaction);
-      return;
-    }
-  } catch (error) {
-    console.warn('ContractInteraction - Invalid Transaction:',error);
-  }
+  const transaction = processContractInteractionTransaction({
+    to: to.value,
+    value: value.value,
+    abi: abi.value,
+    method: selectedMethod.value,
+    parameters: parameters.value
+  });
+
+  emit('updateTransaction', transaction);
 }
 
 function updateParameter(index: number, value: string) {
@@ -73,7 +68,6 @@ function updateMethod(methodName: string) {
 function updateAbi(newAbi: string) {
   abi.value = newAbi;
   methods.value = [];
-
   try {
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
@@ -137,8 +131,11 @@ function updateValue(newValue: string) {
         </option>
       </UiSelect>
 
-      <div v-if="selectedMethod && selectedMethod.inputs.length">
-        <div class="divider"></div>
+      <div
+        v-if="selectedMethod && selectedMethod.inputs.length"
+        class="flex flex-col gap-2"
+      >
+        <div class="divider h-[1px] bg-skin-border my-3" />
 
         <MethodParameterInput
           v-for="(input, index) in selectedMethod.inputs"

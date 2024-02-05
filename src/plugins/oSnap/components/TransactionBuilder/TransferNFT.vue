@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
-import { isAddress } from '@ethersproject/address';
 import { NFT, Network, TransferNftTransaction } from '../../types';
-import {
-  createTransferNftTransaction,
-  getERC721TokenTransferTransactionData,
-  validateTransaction
-} from '../../utils';
+import { processTransferNftInput } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
@@ -32,28 +27,13 @@ const selectedCollectable = computed(() => {
 });
 
 function updateTransaction() {
-  if (!isAddress(recipient.value) || !selectedCollectable.value) return;
-
-  try {
-    const data = getERC721TokenTransferTransactionData(
-      props.safeAddress,
-      recipient.value,
-      selectedCollectable.value.id
-    );
-
-    const transaction = createTransferNftTransaction({
-      data,
-      recipient: recipient.value,
-      collectable: selectedCollectable.value
-    });
-
-    if (validateTransaction(transaction)) {
-      emit('updateTransaction', transaction);
-      return;
-    }
-  } catch (error) {
-    console.warn('invalid transaction');
-  }
+  // if (!isAddress(recipient.value) || !selectedCollectable.value) return;
+  const processedTransaction = processTransferNftInput({
+    safeAddress: props.safeAddress,
+    recipient: recipient.value,
+    collectible: selectedCollectable.value
+  });
+  emit('updateTransaction', processedTransaction);
 }
 
 watch(recipient, updateTransaction);
