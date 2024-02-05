@@ -1,4 +1,4 @@
-import { Network } from '../types';
+import { Network, Token } from '../types';
 
 export const ETHEREUM_COIN = {
   name: 'Ether',
@@ -58,4 +58,8 @@ export function getNativeAsset(network: Network) {
   }
 
   return ETHEREUM_COIN;
+}
+
+export function isNativeAsset(token: Token | undefined) {
+  return token ? token.address === 'main' : false;
 }

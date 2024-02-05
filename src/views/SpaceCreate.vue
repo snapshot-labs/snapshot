@@ -6,7 +6,6 @@ import Plugin from '@/plugins/safeSnap';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import proposalSchema from '@snapshot-labs/snapshot.js/src/schemas/proposal.json';
-import { validateTransaction } from '@/plugins/oSnap/utils';
 
 const safeSnapPlugin = new Plugin();
 

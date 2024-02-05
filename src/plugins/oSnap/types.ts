@@ -221,6 +221,7 @@ export type BalanceResponse = {
  * @field `network` field is the id for network that the safe is on.
  * @field `moduleAddress` field is the address of the Optimistic Governor contract that was deployed for this safe.
  * @field `transactions` field is the list of transactions that the Optimistic Governor contract will execute.
+ * @field `isValid?` field check if ALL transactions have passed their respective validation checks
  */
 export type GnosisSafe = {
   safeName: string;
@@ -228,6 +229,7 @@ export type GnosisSafe = {
   network: Network;
   moduleAddress: string;
   transactions: Transaction[];
+  isValid?: boolean;
 };
 
 /**
