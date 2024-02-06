@@ -150,7 +150,7 @@ const isFormValid = computed(() => {
       //  using osnap, but no transactions
       return false;
     }
-    if (osnapData && !osnapData.transactions.every(validateTransaction)) {
+    if (osnapData && !osnapData.transactions.every(tx => tx.isValid)) {
       //  all transactions must be valid
       return false;
     }
