@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { formatUnits, parseUnits } from '@ethersproject/units';
+import { amountPositive } from '../../utils';
 
 const props = defineProps<{
   modelValue: string;
   label: string;
   decimals: number | undefined;
+  enforcePositiveValue?: boolean;
 }>();
+
 const emit = defineEmits<{
   'update:modelValue': [value: string];
 }>();
@@ -39,7 +42,10 @@ onMounted(() => {
 
 watch(input, () => {
   const value = format(input.value);
-  isValid.value = !!value && parseInt(value) > 0;
+  isValid.value = !!value;
+  if (props.enforcePositiveValue) {
+    isValid.value = amountPositive(input.value);
+  }
 });
 </script>
 

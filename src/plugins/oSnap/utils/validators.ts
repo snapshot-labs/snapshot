@@ -118,8 +118,8 @@ export function isTransferNftValid(params: {
   return true;
 }
 
-function amountPositive(amount: string) {
-  return isBigNumberish(amount) && parseInt(amount) > 0;
+export function amountPositive(amount: string) {
+  return isBigNumberish(amount) && parseFloat(amount) > 0;
 }
 
 export function allTransactionsValid(transactions: Transaction[]): boolean {
