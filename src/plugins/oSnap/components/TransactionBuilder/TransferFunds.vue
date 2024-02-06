@@ -6,7 +6,8 @@ import {
   createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
   getNativeAsset,
-  isTransferFundsValid
+  isTransferFundsValid,
+  amountPositive
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import AmountInput from '../Input/Amount.vue';
@@ -106,6 +107,7 @@ watch(selectedTokenAddress, updateTransaction);
   <div class="space-y-2">
     <AddressInput v-model="recipient" :label="$t('safeSnap.to')" />
     <AmountInput
+      :enforcePositiveValue="true"
       :key="selectedToken?.decimals"
       v-model="amount"
       :label="$t('safeSnap.amount')"
