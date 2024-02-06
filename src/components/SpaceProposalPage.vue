@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { BOOST_WHITELIST } from '@/helpers/boost';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -27,6 +28,7 @@ const { modalEmailOpen } = useModal();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
+const { env } = useApp();
 
 const proposalId: string = route.params.id as string;
 
@@ -180,7 +182,9 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 
           <SpaceProposalBoost
             v-if="
-              proposal.type === 'basic' || proposal.type === 'single-choice'
+              (proposal.type === 'basic' ||
+                proposal.type === 'single-choice') &&
+              BOOST_WHITELIST[env]?.includes(props.proposal.space.id)
             "
             :proposal="proposal"
           />
