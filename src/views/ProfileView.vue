@@ -3,7 +3,9 @@ const route = useRoute();
 
 const modalProfileFormOpen = ref(false);
 
-const userAddress = computed(() => route.params.address as string);
+const userAddress = computed(
+  () => route.params.address.toLowerCase() as string
+);
 
 const { profiles, loadProfiles } = useProfiles();
 
