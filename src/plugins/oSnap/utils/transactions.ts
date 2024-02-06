@@ -132,23 +132,27 @@ export function createContractInteractionTransaction(params: {
   method: FunctionFragment;
   parameters: string[];
 }): ContractInteractionTransaction {
-  const type = 'contractInteraction';
-  const data = encodeMethodAndParams(
-    params.abi,
-    params.method,
-    params.parameters
-  );
-  const formatted = createFormattedOptimisticGovernorTransaction({
-    ...params,
-    data
-  });
-  return {
-    ...params,
-    data,
-    type,
-    formatted,
-    isValid: true
-  };
+  try {
+    const type = 'contractInteraction';
+    const data = encodeMethodAndParams(
+      params.abi,
+      params.method,
+      params.parameters
+    );
+    const formatted = createFormattedOptimisticGovernorTransaction({
+      ...params,
+      data
+    });
+    return {
+      ...params,
+      data,
+      type,
+      formatted,
+      isValid: true
+    };
+  } catch {
+    throw new Error('Invalid function parameters');
+  }
 }
 
 export function parseAmount(input: string) {

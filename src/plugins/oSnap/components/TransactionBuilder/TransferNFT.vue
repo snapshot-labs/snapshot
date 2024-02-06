@@ -18,7 +18,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   updateTransaction: [transaction: TransferNftTransaction];
-  setTransactionAsInvalid: [];
 }>();
 
 const recipient = ref(props.transaction.recipient ?? '');

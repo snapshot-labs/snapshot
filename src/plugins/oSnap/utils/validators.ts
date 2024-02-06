@@ -81,16 +81,6 @@ export async function validateModuleAddress(
     .catch(() => false);
 }
 
-export function isContractInteractionParamsValid(params: {
-  value: string;
-  selectedMethod: string;
-  params: string[];
-}): boolean {
-  // TODO: validate function params
-
-  return true;
-}
-
 export function isTransferFundsValid(params: {
   token: Token;
   recipient: string;
