@@ -56,7 +56,7 @@ export function useProfiles() {
       Object.keys(profilesRes[0] ?? {}).forEach(address => {
         profilesRes[0][address] = {
           ...{ ens: profilesRes[0][address] },
-          ...profilesRes[1]?.find(p => p.id === address)
+          ...profilesRes[1]?.find(p => p.id.toLowerCase() === address)
         };
       });
     }
