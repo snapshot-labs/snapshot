@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
 import { NFT, Network, TransferNftTransaction } from '../../types';
-import { processTransferNftInput } from '../../utils';
+import {
+  createTransferNftTransaction,
+  getERC721TokenTransferTransactionData,
+  isTransferNftValid
+} from '../../utils';
 import AddressInput from '../Input/Address.vue';
 
 const props = defineProps<{
@@ -9,10 +13,12 @@ const props = defineProps<{
   collectables: NFT[];
   transaction: TransferNftTransaction;
   safeAddress: string;
+  setTransactionAsInvalid: () => void;
 }>();
 
 const emit = defineEmits<{
   updateTransaction: [transaction: TransferNftTransaction];
+  setTransactionAsInvalid: [];
 }>();
 
 const recipient = ref(props.transaction.recipient ?? '');
@@ -27,13 +33,34 @@ const selectedCollectable = computed(() => {
 });
 
 function updateTransaction() {
-  // if (!isAddress(recipient.value) || !selectedCollectable.value) return;
-  const processedTransaction = processTransferNftInput({
-    safeAddress: props.safeAddress,
-    recipient: recipient.value,
-    collectible: selectedCollectable.value
-  });
-  emit('updateTransaction', processedTransaction);
+  try {
+    if (!selectedCollectable.value) {
+      throw new Error('No token selected');
+    }
+    if (
+      !isTransferNftValid({
+        recipient: recipient.value,
+        collectable: selectedCollectable.value
+      })
+    ) {
+      throw new Error('Validation error');
+    }
+
+    const data = getERC721TokenTransferTransactionData(
+      props.safeAddress,
+      recipient.value,
+      selectedCollectable.value.id
+    );
+
+    const transaction = createTransferNftTransaction({
+      data,
+      recipient: recipient.value,
+      collectable: selectedCollectable.value
+    });
+    emit('updateTransaction', transaction);
+  } catch {
+    props.setTransactionAsInvalid();
+  }
 }
 
 watch(recipient, updateTransaction);

@@ -19,8 +19,8 @@ const format = (amount: string) => {
     // empty string throws
     const parsed = parseUnits(amount, props.decimals).toString();
     return parsed;
-  } catch (error) {
-    return parseUnits('0', props.decimals).toString();
+  } catch {
+    return '0';
   }
 };
 

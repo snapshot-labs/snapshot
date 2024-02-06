@@ -18,17 +18,8 @@ import {
   TransferFundsTransaction,
   TransferNftTransaction
 } from '../types';
-import {
-  createContractInteractionTransaction,
-  createTransferFundsTransaction,
-  createTransferNftTransaction
-} from './transactions';
-import {
-  getERC20TokenTransferTransactionData,
-  getERC721TokenTransferTransactionData
-} from './abi';
+import { extractMethodArgs, getABIWriteFunctions } from './abi';
 import { isNativeAsset } from './coins';
-import { FunctionFragment } from '@ethersproject/abi';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -90,170 +81,46 @@ export async function validateModuleAddress(
     .catch(() => false);
 }
 
-export function processTransferFundsInput(params: {
+export function isContractInteractionParamsValid(params: {
+  value: string;
+  selectedMethod: string;
+  params: string[];
+}): boolean {
+  // TODO: validate function params
+
+  return true;
+}
+
+export function isTransferFundsValid(params: {
+  token: Token;
   recipient: string;
   amount: string;
-  token: Token;
-}): TransferFundsTransaction {
-  try {
-    const { recipient, amount, token } = params;
-    const data =
-      token.address === 'main'
-        ? '0x'
-        : getERC20TokenTransferTransactionData(recipient, amount);
-    const transaction = createTransferFundsTransaction({
-      data,
-      amount: amount,
-      recipient: recipient,
-      token: token
-    });
-    return transaction;
-  } catch {
-    // if processing throws, we can not keep possibly valid state upstream, we must reset to empty values, while retaining form state
-    return {
-      type: 'transferFunds',
-      to: '',
-      value: '0',
-      data: '0x',
-      formatted: ['', 0, '0', '0x'],
-      isValid: false
-    };
+}): boolean {
+  if (!amountPositive(params.amount)) {
+    return false;
   }
+  if (!params.recipient || !isAddress(params.recipient)) {
+    return false;
+  }
+  if (!(params.token.address === 'main') && !isAddress(params.token.address)) {
+    return false;
+  }
+
+  return true;
 }
 
-export function processTransferNftInput(params: {
-  safeAddress: string;
+export function isTransferNftValid(params: {
+  collectable: NFT | undefined;
   recipient: string;
-  collectible: NFT | undefined;
-}): TransferNftTransaction {
-  try {
-    const { safeAddress, recipient, collectible } = params;
-    if (!collectible) {
-      throw new Error('no NFT selected');
-    }
-    const data = getERC721TokenTransferTransactionData(
-      safeAddress,
-      recipient,
-      collectible.id
-    );
-
-    const transaction = createTransferNftTransaction({
-      data,
-      recipient: recipient,
-      collectable: collectible
-    });
-
-    return transaction;
-  } catch {
-    // if processing throws, we can not keep possibly valid state upstream, we must reset to empty values, while retaining form state
-    return createTransferNftTransaction({
-      data: '',
-      recipient: '',
-      collectable: {
-        name: '',
-        address: '',
-        id: ''
-      }
-    });
-  }
-}
-
-export function processContractInteractionTransaction(params: {
-  to: string;
-  value: string;
-  abi: string;
-  method: FunctionFragment;
-  parameters: string[];
-}): ContractInteractionTransaction {
-  try {
-    const { to, value, abi, method, parameters } = params;
-    const transaction = createContractInteractionTransaction({
-      to,
-      value,
-      abi,
-      method,
-      parameters
-    });
-    return transaction;
-  } catch {
-    // if processing throws, we can not keep possibly valid state upstream, we must reset to empty values, while retaining form state
-    return {
-      type: 'contractInteraction',
-      to: '',
-      value: '0',
-      data: '0x',
-      formatted: ['', 0, '0', '0x'],
-      isValid: false
-    };
-  }
-}
-
-function isContractInteractionValid(
-  tx: ContractInteractionTransaction
-): boolean {
-  // TODO: validate
-  return true;
-}
-
-function validateContractInteraction(
-  tx: ContractInteractionTransaction
-): ContractInteractionTransaction {
-  return {
-    ...tx,
-    isValid: isContractInteractionValid(tx)
-  };
-}
-
-function isTransferFundsValid(tx: TransferFundsTransaction): boolean {
-  // validate base transaction
-  if (!validateTransaction(tx)) {
-    return false;
-  }
-
-  // check empty values
-  if (!tx.recipient || !tx.amount) {
-    return false;
-  }
-
-  if (!isNativeAsset(tx.token)) {
-    // must have data for ERC20 transfers
-    if (tx.data === '' || tx.data === '0x') {
-      return false;
-    }
-  }
-
-  if (!isAddress(tx.recipient) || !amountPositive(tx.amount)) {
-    return false;
-  }
-
-  return true;
-}
-
-function validateTransferFunds(
-  tx: TransferFundsTransaction
-): TransferFundsTransaction {
-  return {
-    ...tx,
-    isValid: isTransferFundsValid(tx)
-  };
-}
-
-function isTransferNftValid(tx: TransferNftTransaction): boolean {
-  // validate base transaction
-  if (!validateTransaction(tx)) {
-    return false;
-  }
-
-  // check empty values
-  if (!tx.recipient || !tx.collectable) {
-    return false;
-  }
-
+}): boolean {
   // check NFT transfer variables are correct
+  if (!params.collectable) {
+    return false;
+  }
   if (
-    !isAddress(tx.recipient) ||
-    !isAddress(tx.collectable.address) ||
-    !tx.collectable.id
+    !isAddress(params.recipient) ||
+    !isAddress(params.collectable.address) ||
+    !params.collectable.id
   ) {
     return false;
   }
@@ -261,31 +128,8 @@ function isTransferNftValid(tx: TransferNftTransaction): boolean {
   return true;
 }
 
-function validateTransferNft(
-  tx: TransferNftTransaction
-): TransferNftTransaction {
-  return {
-    ...tx,
-    isValid: isTransferNftValid(tx)
-  };
-}
-
 function amountPositive(amount: string) {
   return isBigNumberish(amount) && parseInt(amount) > 0;
-}
-
-export function validateOsnapTransaction(tx: Transaction) {
-  //  handle validation for each type individually
-  switch (tx.type) {
-    case 'transferFunds':
-      return validateTransferFunds(tx);
-    case 'transferNFT':
-      return validateTransferNft(tx);
-    case 'contractInteraction':
-      return validateContractInteraction(tx);
-    default:
-      return tx;
-  }
 }
 
 export function allTransactionsValid(transactions: Transaction[]): boolean {

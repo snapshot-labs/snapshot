@@ -2,7 +2,12 @@
 import { ETH_CONTRACT } from '@/helpers/constants';
 import { shorten } from '@/helpers/utils';
 import { Network, Token, TransferFundsTransaction } from '../../types';
-import { getNativeAsset, processTransferFundsInput } from '../../utils';
+import {
+  createTransferFundsTransaction,
+  getERC20TokenTransferTransactionData,
+  getNativeAsset,
+  isTransferFundsValid
+} from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import AmountInput from '../Input/Amount.vue';
 import TokensModal from './TokensModal.vue';
@@ -11,6 +16,7 @@ const props = defineProps<{
   network: Network;
   tokens: Token[];
   transaction: TransferFundsTransaction;
+  setTransactionAsInvalid: () => void;
 }>();
 
 const emit = defineEmits<{
@@ -35,12 +41,30 @@ const selectedToken = computed(
 const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
-  const processedTransaction = processTransferFundsInput({
-    recipient: recipient.value,
-    amount: amount.value,
-    token: selectedToken.value
-  });
-  emit('updateTransaction', processedTransaction);
+  try {
+    if (
+      !isTransferFundsValid({
+        amount: amount.value,
+        recipient: recipient.value,
+        token: selectedToken.value
+      })
+    ) {
+      throw new Error('Validation error');
+    }
+    const data =
+      selectedToken.value.address === 'main'
+        ? '0x'
+        : getERC20TokenTransferTransactionData(recipient.value, amount.value);
+    const transaction = createTransferFundsTransaction({
+      data,
+      amount: amount.value,
+      recipient: recipient.value,
+      token: selectedToken.value
+    });
+    emit('updateTransaction', transaction);
+  } catch {
+    props.setTransactionAsInvalid();
+  }
 }
 
 function openModal() {

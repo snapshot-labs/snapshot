@@ -8,8 +8,7 @@ import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
   getContractABI,
-  processContractInteractionTransaction,
-  validateTransaction
+  isContractInteractionParamsValid
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import MethodParameterInput from '../Input/MethodParameter.vue';
@@ -17,15 +16,17 @@ import MethodParameterInput from '../Input/MethodParameter.vue';
 const props = defineProps<{
   network: Network;
   transaction: ContractInteractionTransaction;
+  setTransactionAsInvalid: () => void;
 }>();
 
 const emit = defineEmits<{
   updateTransaction: [transaction: ContractInteractionTransaction];
+  setTransactionAsInvalid: [];
 }>();
 
 const to = ref(props.transaction.to ?? '');
 const isToValid = computed(() => {
-  return to.value === '' || isAddress(to.value);
+  return to.value !== '' && isAddress(to.value);
 });
 const abi = ref(props.transaction.abi ?? '');
 const isAbiValid = ref(true);
@@ -41,17 +42,36 @@ const selectedMethod = computed(
 const parameters = ref<string[]>([]);
 
 function updateTransaction() {
-  // if (!isValueValid || !isToValid || !isAbiValid) return;
-
-  const transaction = processContractInteractionTransaction({
-    to: to.value,
-    value: value.value,
-    abi: abi.value,
-    method: selectedMethod.value,
-    parameters: parameters.value
-  });
-
-  emit('updateTransaction', transaction);
+  try {
+    if (!isToValid) {
+      throw new Error('"TO" address invalid');
+    }
+    if (!isAbiValid) {
+      throw new Error('ABI invalid');
+    }
+    if (!isValueValid) {
+      throw new Error('Value invalid');
+    }
+    if (
+      !isContractInteractionParamsValid({
+        selectedMethod: selectedMethodName.value,
+        value: value.value,
+        params: parameters.value
+      })
+    ) {
+      throw new Error('Invalid function parameters');
+    }
+    const transaction = createContractInteractionTransaction({
+      to: to.value,
+      value: value.value,
+      abi: abi.value,
+      method: selectedMethod.value,
+      parameters: parameters.value
+    });
+    emit('updateTransaction', transaction);
+  } catch {
+    props.setTransactionAsInvalid();
+  }
 }
 
 function updateParameter(index: number, value: string) {
@@ -68,6 +88,7 @@ function updateMethod(methodName: string) {
 function updateAbi(newAbi: string) {
   abi.value = newAbi;
   methods.value = [];
+  updateTransaction();
   try {
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
@@ -76,26 +97,25 @@ function updateAbi(newAbi: string) {
     isAbiValid.value = false;
     console.warn('error extracting useful methods', error);
   }
-  updateTransaction();
 }
 
 async function updateAddress() {
+  updateTransaction();
   const result = await getContractABI(props.network, to.value);
   if (result && result !== abi.value) {
     updateAbi(result);
   }
-  updateTransaction();
 }
 
 function updateValue(newValue: string) {
   value.value = newValue;
+  updateTransaction();
   try {
     parseAmount(newValue);
     isValueValid.value = true;
   } catch (error) {
     isValueValid.value = false;
   }
-  updateTransaction();
 }
 </script>
 

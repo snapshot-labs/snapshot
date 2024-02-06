@@ -59,7 +59,6 @@ export async function getContractABI(
   }
 
   try {
-    debugger;
     const { result, status } = await fetchContractABI(apiUrl, contractAddress);
 
     if (status === '0') {
