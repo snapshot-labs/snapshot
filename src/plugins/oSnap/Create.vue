@@ -47,9 +47,7 @@ const collectables = ref<NFT[]>([]);
 
 function addTransaction(transaction: Transaction) {
   if (newPluginData.value.safe === null) return;
-  newPluginData.value.safe.transactions.push(
-    validateOsnapTransaction(transaction)
-  );
+  newPluginData.value.safe.transactions.push(transaction);
   newPluginData.value.safe.isValid = allTransactionsValid(
     newPluginData.value.safe.transactions
   );
@@ -64,8 +62,7 @@ function removeTransaction(transactionIndex: number) {
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-  newPluginData.value.safe.transactions[transactionIndex] =
-    validateOsnapTransaction(transaction);
+  newPluginData.value.safe.transactions[transactionIndex] = transaction;
   newPluginData.value.safe.isValid = allTransactionsValid(
     newPluginData.value.safe.transactions
   );

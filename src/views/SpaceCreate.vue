@@ -93,6 +93,7 @@ type DateRange = {
   dateStart: number;
   dateEnd?: number;
 };
+
 function sanitizeDateRange({ dateStart, dateEnd }: DateRange): DateRange {
   const { delay = 0, period = 0 } = props.space?.voting ?? {};
   const threeDays = 259200;

@@ -45,7 +45,8 @@ export function createRawTransaction(params: {
   return {
     ...params,
     type,
-    formatted
+    formatted,
+    isValid: true
   };
 }
 
@@ -75,7 +76,8 @@ export function createTransferNftTransaction(params: {
     to,
     value,
     data,
-    formatted
+    formatted,
+    isValid: true
   };
 }
 
@@ -90,6 +92,9 @@ export function createTransferFundsTransaction(params: {
   token: Token;
   data: string;
 }): TransferFundsTransaction {
+  if (!(parseFloat(params.amount) > 0)) {
+    throw new Error('Amount invalid');
+  }
   const type = 'transferFunds';
   const isNativeToken = params.token.address === 'main';
   const data = isNativeToken ? '0x' : params.data;
@@ -108,7 +113,8 @@ export function createTransferFundsTransaction(params: {
     to,
     value,
     amount,
-    formatted
+    formatted,
+    isValid: true
   };
 }
 
@@ -140,7 +146,8 @@ export function createContractInteractionTransaction(params: {
     ...params,
     data,
     type,
-    formatted
+    formatted,
+    isValid: true
   };
 }
 
