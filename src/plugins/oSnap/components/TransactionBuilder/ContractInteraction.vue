@@ -7,8 +7,7 @@ import { ContractInteractionTransaction, Network } from '../../types';
 import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
-  getContractABI,
-  isContractInteractionParamsValid
+  getContractABI
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import MethodParameterInput from '../Input/MethodParameter.vue';
@@ -21,7 +20,6 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   updateTransaction: [transaction: ContractInteractionTransaction];
-  setTransactionAsInvalid: [];
 }>();
 
 const to = ref(props.transaction.to ?? '');
@@ -52,15 +50,7 @@ function updateTransaction() {
     if (!isValueValid) {
       throw new Error('Value invalid');
     }
-    if (
-      !isContractInteractionParamsValid({
-        selectedMethod: selectedMethodName.value,
-        value: value.value,
-        params: parameters.value
-      })
-    ) {
-      throw new Error('Invalid function parameters');
-    }
+    // throws is method params are invalid
     const transaction = createContractInteractionTransaction({
       to: to.value,
       value: value.value,
