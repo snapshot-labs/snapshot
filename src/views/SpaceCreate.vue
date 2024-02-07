@@ -140,12 +140,22 @@ const isFormValid = computed(() => {
     ? form.value.metadata.plugins.safeSnap.valid
     : true;
 
-  const isOsnapPluginValid = form.value.metadata.plugins?.oSnap?.safe
-    ?.transactions
-    ? form.value.metadata.plugins.oSnap.safe.transactions.every(
-        validateTransaction
-      )
-    : true;
+  const isOsnapPluginValid = (() => {
+    const osnapData = form.value.metadata.plugins.oSnap?.safe;
+    if (!osnapData) {
+      //  not using osnap plugin
+      return true;
+    }
+    if (osnapData && !(osnapData.transactions.length > 0)) {
+      //  using osnap, but no transactions
+      return false;
+    }
+    if (osnapData && !osnapData.transactions.every(validateTransaction)) {
+      //  all transactions must be valid
+      return false;
+    }
+    return true;
+  })();
 
   return (
     !web3.value.authLoading &&
