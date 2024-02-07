@@ -35,7 +35,13 @@ const emit = defineEmits<{
 const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
 
 function updateTransactionType(transactionType: TTransactionType) {
-  newTransaction.value.type = transactionType;
+  newTransaction.value = {
+    type: transactionType,
+    to: '',
+    value: '0',
+    data: '0x',
+    formatted: ['', 0, '0', '0x']
+  };
   emit('updateTransaction', newTransaction.value, props.transactionIndex);
 }
 
