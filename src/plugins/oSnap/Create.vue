@@ -44,8 +44,6 @@ const safes = ref<GnosisSafe[]>([]);
 const tokens = ref<Token[]>([]);
 const collectables = ref<NFT[]>([]);
 
-const transactionsValid = ref(false);
-
 function addTransaction(transaction: Transaction) {
   if (newPluginData.value.safe === null) return;
   newPluginData.value.safe.transactions.push({
@@ -222,7 +220,7 @@ watch(newPluginData, async () => {
 onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();
-  newPluginData.value.safe = safes.value[0];
+  newPluginData.value.safe = cloneDeep(safes.value[0]);
   tokens.value = await fetchBalances(
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
@@ -233,25 +231,6 @@ onMounted(async () => {
   );
   update(newPluginData.value);
   isLoading.value = false;
-});
-
-watch(newPluginData, () => {
-  // validate form here, set isValid accordingly upstream
-  if (!newPluginData.value.safe) {
-    return;
-  }
-  // can't publish without transactions
-  if (newPluginData.value.safe.transactions.length === 0) {
-    transactionsValid.value = false;
-    return;
-  }
-  // check ALL transactions
-  if (newPluginData.value.safe.transactions.every(validateTransaction)) {
-    transactionsValid.value = false;
-    return;
-  }
-  // default to invalid
-  transactionsValid.value = false;
 });
 </script>
 
