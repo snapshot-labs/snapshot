@@ -30,6 +30,7 @@ defineEmits(['delegate']);
             </h4>
             <IconVerifiedSpace
               v-if="space.verified"
+              :turbo="space.turbo"
               size="19"
               class="ml-1 flex text-skin-primary"
             />
