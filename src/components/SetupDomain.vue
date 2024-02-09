@@ -46,7 +46,8 @@ const triggerEnsUnavailableTooltip = (key: string, error_code: string) => {
   useTippy(refEnsUnavailableTooltip.value[key], {
     content: text,
     interactive: true,
-    allowHTML: true
+    allowHTML: true,
+    theme: 'urlified'
   });
 };
 
