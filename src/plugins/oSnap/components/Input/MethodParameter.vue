@@ -52,9 +52,7 @@ watch(props.parameter, () => {
 });
 
 watch(newValue, () => {
-  if (isInputValid.value) {
-    emit('updateParameterValue', newValue.value);
-  }
+  emit('updateParameterValue', newValue.value);
 });
 
 function validateNumberInput(value: string) {

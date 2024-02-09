@@ -20,6 +20,7 @@ import {
 } from '../types';
 import { extractMethodArgs, getABIWriteFunctions } from './abi';
 import { isNativeAsset } from './coins';
+import { FunctionFragment } from '@ethersproject/abi';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -124,4 +125,11 @@ export function amountPositive(amount: string) {
 
 export function allTransactionsValid(transactions: Transaction[]): boolean {
   return transactions.every(tx => tx.isValid === true);
+}
+
+export function validateParameters(
+  method: FunctionFragment,
+  parameters: string[]
+): boolean {
+  return true;
 }
