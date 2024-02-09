@@ -125,7 +125,11 @@ onMounted(() => {
                   class="mb-0 mt-0 !h-[32px] overflow-hidden pb-0 text-[22px]"
                   v-text="shorten(space.name, 16)"
                 />
-                <IconVerifiedSpace v-if="space.verified" class="pt-[1px]" />
+                <IconVerifiedSpace
+                  v-if="space.verified"
+                  :turbo="space.turbo"
+                  class="pt-[1px]"
+                />
               </div>
               <div class="mb-[12px] text-skin-text">
                 {{
