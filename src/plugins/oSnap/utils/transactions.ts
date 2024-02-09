@@ -160,9 +160,8 @@ export function parseAmount(input: string) {
 }
 
 export function parseValueInput(input: string) {
-  try {
-    return parseAmount(input);
-  } catch (e) {
-    return input;
+  if (input === '') {
+    return parseAmount('0');
   }
+  return parseAmount(input);
 }

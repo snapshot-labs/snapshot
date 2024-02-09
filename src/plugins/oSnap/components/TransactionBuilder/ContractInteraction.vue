@@ -7,7 +7,8 @@ import { ContractInteractionTransaction, Network } from '../../types';
 import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
-  getContractABI
+  getContractABI,
+  parseValueInput
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import MethodParameterInput from '../Input/MethodParameter.vue';
@@ -37,17 +38,18 @@ const selectedMethod = computed(
     methods.value.find(method => method.name === selectedMethodName.value) ??
     methods.value[0]
 );
+
 const parameters = ref<string[]>([]);
 
 function updateTransaction() {
   try {
-    if (!isToValid) {
+    if (!isToValid.value) {
       throw new Error('"TO" address invalid');
     }
-    if (!isAbiValid) {
+    if (!isAbiValid.value) {
       throw new Error('ABI invalid');
     }
-    if (!isValueValid) {
+    if (!isValueValid.value) {
       throw new Error('Value invalid');
     }
     // throws is method params are invalid
@@ -66,19 +68,16 @@ function updateTransaction() {
 
 function updateParameter(index: number, value: string) {
   parameters.value[index] = value;
-  updateTransaction();
 }
 
 function updateMethod(methodName: string) {
   parameters.value = [];
   selectedMethodName.value = methodName;
-  updateTransaction();
 }
 
 function updateAbi(newAbi: string) {
   abi.value = newAbi;
   methods.value = [];
-  updateTransaction();
   try {
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
@@ -90,7 +89,6 @@ function updateAbi(newAbi: string) {
 }
 
 async function updateAddress() {
-  updateTransaction();
   const result = await getContractABI(props.network, to.value);
   if (result && result !== abi.value) {
     updateAbi(result);
@@ -98,15 +96,22 @@ async function updateAddress() {
 }
 
 function updateValue(newValue: string) {
-  value.value = newValue;
-  updateTransaction();
   try {
-    parseAmount(newValue);
+    const parsed = parseValueInput(newValue);
+    value.value = parsed;
     isValueValid.value = true;
   } catch (error) {
     isValueValid.value = false;
+  } finally {
+    updateTransaction();
   }
 }
+
+watch(to, updateTransaction);
+watch(abi, updateTransaction);
+watch(selectedMethodName, updateTransaction);
+watch(selectedMethod, updateTransaction);
+watch(parameters, updateTransaction, { deep: true });
 </script>
 
 <template>
