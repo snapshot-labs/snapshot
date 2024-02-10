@@ -327,6 +327,7 @@ onMounted(async () => {
             />
           </div>
         </BaseBlock>
+
         <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
@@ -366,7 +367,7 @@ onMounted(async () => {
       </div>
     </template>
     <template v-if="networkSupportsDelegate" #sidebar-right>
-      <BaseBlock>
+      <BaseBlock class="mt-4 lg:mt-0">
         <TuneButton
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading"
@@ -379,7 +380,10 @@ onMounted(async () => {
       </BaseBlock>
     </template>
   </TheLayout>
-  <teleport v-if="networkSupportsDelegate" to="#modal">
+  <teleport
+    v-if="networkSupportsDelegate && profiles[currentDelegate]"
+    to="#modal"
+  >
     <ModalRevokeDelegate
       v-if="loaded"
       :id="currentId"
