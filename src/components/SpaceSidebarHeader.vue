@@ -44,7 +44,7 @@ watchEffect(() => {
           >
             {{ space.name }}
           </div>
-          <IconVerifiedSpace v-if="space.verified" />
+          <IconVerifiedSpace v-if="space.verified" :turbo="space.turbo" />
         </h3>
         <div class="text-md text-skin-text lg:text-base">
           {{
