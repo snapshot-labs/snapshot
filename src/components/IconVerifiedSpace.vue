@@ -2,9 +2,11 @@
 withDefaults(
   defineProps<{
     size?: string;
+    turbo: boolean;
   }>(),
   {
-    size: '20'
+    size: '20',
+    turbo: false
   }
 );
 </script>
@@ -18,6 +20,7 @@ withDefaults(
       }"
       name="check"
       :size="size"
+      :class="[{ 'text-[#ffb503]': turbo }]"
     />
   </div>
 </template>

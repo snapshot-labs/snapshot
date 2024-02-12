@@ -52,6 +52,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
                     />
                     <IconVerifiedSpace
                       v-if="showVerifiedIcon && space.verified"
+                      :turbo="space.turbo"
                       class="mt-[2px] pl-[2px]"
                       size="18"
                     />
