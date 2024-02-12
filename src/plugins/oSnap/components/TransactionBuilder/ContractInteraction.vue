@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { parseAmount } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 

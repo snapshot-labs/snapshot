@@ -9,18 +9,7 @@ import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
-import {
-  BaseTransaction,
-  ContractInteractionTransaction,
-  NFT,
-  Token,
-  Transaction,
-  TransferFundsTransaction,
-  TransferNftTransaction
-} from '../types';
-import { extractMethodArgs, getABIWriteFunctions } from './abi';
-import { isNativeAsset } from './coins';
-import { FunctionFragment } from '@ethersproject/abi';
+import { BaseTransaction, NFT, Token, Transaction } from '../types';
 import { parseUnits } from '@ethersproject/units';
 
 /**

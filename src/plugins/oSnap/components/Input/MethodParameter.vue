@@ -3,7 +3,6 @@ import { ParamType } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import AddressInput from './Address.vue';
-import { formatBytes32String } from '@ethersproject/strings';
 import { hexZeroPad, isBytesLike } from '@ethersproject/bytes';
 
 const props = defineProps<{
