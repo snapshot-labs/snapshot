@@ -6,8 +6,7 @@ import {
   createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
   getNativeAsset,
-  isTransferFundsValid,
-  amountPositive
+  isTransferFundsValid
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import AmountInput from '../Input/Amount.vue';

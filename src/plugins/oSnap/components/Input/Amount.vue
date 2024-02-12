@@ -42,9 +42,11 @@ onMounted(() => {
 
 watch(input, () => {
   const value = format(input.value);
-  isValid.value = !!value;
+  const valid = !!value;
+  isValid.value = valid;
   if (props.enforcePositiveValue) {
-    isValid.value = amountPositive(input.value);
+    const isPositive = amountPositive(input.value, props.decimals);
+    isValid.value = isPositive;
   }
 });
 </script>

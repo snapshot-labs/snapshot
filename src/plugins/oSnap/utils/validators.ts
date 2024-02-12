@@ -21,6 +21,7 @@ import {
 import { extractMethodArgs, getABIWriteFunctions } from './abi';
 import { isNativeAsset } from './coins';
 import { FunctionFragment } from '@ethersproject/abi';
+import { parseUnits } from '@ethersproject/units';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -87,7 +88,7 @@ export function isTransferFundsValid(params: {
   recipient: string;
   amount: string;
 }): boolean {
-  if (!amountPositive(params.amount)) {
+  if (!amountPositive(params.amount, params.token.decimals)) {
     return false;
   }
   if (!params.recipient || !isAddress(params.recipient)) {
@@ -119,8 +120,14 @@ export function isTransferNftValid(params: {
   return true;
 }
 
-export function amountPositive(amount: string) {
-  return isBigNumberish(amount) && parseFloat(amount) > 0;
+export function amountPositive(amount: string, decimals = 18) {
+  try {
+    const isBigNumber = isBigNumberish(parseUnits(amount, decimals)); // checks for underflow
+    const isPositive = parseFloat(amount) > 0;
+    return isBigNumber && isPositive;
+  } catch {
+    return false;
+  }
 }
 
 export function allTransactionsValid(transactions: Transaction[]): boolean {
