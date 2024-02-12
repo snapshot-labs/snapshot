@@ -133,10 +133,3 @@ export function amountPositive(amount: string, decimals = 18) {
 export function allTransactionsValid(transactions: Transaction[]): boolean {
   return transactions.every(tx => tx.isValid === true);
 }
-
-export function validateParameters(
-  method: FunctionFragment,
-  parameters: string[]
-): boolean {
-  return true;
-}
