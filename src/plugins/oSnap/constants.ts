@@ -1418,6 +1418,15 @@ export const contractData = [
     deployBlock: 27816737
   },
   {
+    // core
+    network: '1116',
+    name: 'OptimisticOracleV3',
+    address: '0xD84ACa67d683aF7702705141b3C7E57e4e5e7726',
+    subgraph:
+      'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-oracle-v3',
+    deployBlock: 11341063
+  },
+  {
     // mainnet
     network: '1',
     name: 'OptimisticGovernor',
@@ -1480,6 +1489,15 @@ export const contractData = [
     deployBlock: 28050250,
     subgraph:
       'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-governor'
+  },
+  {
+    // core
+    network: '1116',
+    name: 'OptimisticGovernor',
+    address: '0x596Fd6A5A185c67aBD1c845b39f593fBA9C233aa',
+    deployBlock: 11341122,
+    subgraph:
+    'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
   }
 ] as const;
 
