@@ -43,6 +43,14 @@ const BNB_COIN = {
   logoUri:
     'https://safe-transaction-assets.safe.global/chains/56/currency_logo.png'
 } as const;
+const CORE_COIN = {
+  name: 'Core',
+  symbol: 'CORE',
+  address: 'main',
+  decimals: 18,
+  logiUri:
+    'https://cloudflare-ipfs.com/ipfs/bafkreigjv5yb7uhlrryzib7j2f73nnwqan2tmfnwjdu26vkk365fyesoiu'
+} as const;
 
 export function getNativeAsset(network: Network) {
   switch (parseInt(network)) {
@@ -55,6 +63,8 @@ export function getNativeAsset(network: Network) {
       return EWC_COIN;
     case 56:
       return BNB_COIN;
+    case 1116:
+      return CORE_COIN;
   }
 
   return ETHEREUM_COIN;
