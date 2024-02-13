@@ -48,7 +48,7 @@ const CORE_COIN = {
   symbol: 'CORE',
   address: 'main',
   decimals: 18,
-  logiUri:
+  logoUri:
     'https://cloudflare-ipfs.com/ipfs/bafkreigjv5yb7uhlrryzib7j2f73nnwqan2tmfnwjdu26vkk365fyesoiu'
 } as const;
 
