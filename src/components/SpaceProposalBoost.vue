@@ -5,6 +5,7 @@ import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
 import { getNormalizedAddress } from '@/helpers/utils';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -126,6 +127,7 @@ async function loadClaims() {
     const responses = await Promise.all(requests);
 
     boostClaims.value = responses.map(response => response.claims).flat();
+    console.log('🚀 ~ loadClaims ~ boostClaims.value:', boostClaims.value);
   } catch (e) {
     console.error('Load boosts error:', e);
   }
@@ -145,8 +147,10 @@ async function loadRewards() {
     !isFinal.value ||
     !userVote.value ||
     !boosts.value.length
-  )
+  ) {
     return;
+  }
+
   loadingRewards.value = true;
 
   try {
@@ -180,7 +184,7 @@ watch(
     loaded.value = true;
     loadRewards();
   },
-  { immediate: true }
+  { immediate: true, deep: true }
 );
 
 watch(web3Account, async value => {
@@ -190,12 +194,22 @@ watch(web3Account, async value => {
   loadRewards();
 });
 
-watchEffect(() => {
-  const interval = setInterval(() => {
+onMounted(() => {
+  if (!isActive.value) return;
+
+  const interval = setInterval(async () => {
     relativeEndTime.value = formatRelativeTime(
       props.proposal.end,
       longRelativeTimeFormatter.value
     );
+
+    const timestampNow = Math.floor(Date.now() / 1000);
+    const isClaimable = props.proposal.end < timestampNow;
+    if (isClaimable) {
+      clearInterval(interval);
+      await sleep(3000);
+      window.location.reload();
+    }
   }, 1000);
 
   onUnmounted(() => {
@@ -207,7 +221,7 @@ watchEffect(() => {
 <template>
   <div>
     <SpaceProposalBoostClaim
-      v-if="eligibleBoosts.length && isFinal && loaded"
+      v-if="eligibleBoosts.length && loaded && isFinal"
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"

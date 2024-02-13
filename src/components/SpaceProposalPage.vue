@@ -66,8 +66,8 @@ function clickVote() {
       : (modalOpen.value = true);
 }
 
-function reloadProposal(softReload = false) {
-  emit('reload-proposal', softReload);
+function reloadProposal() {
+  emit('reload-proposal');
 }
 
 function openPostVoteModal(isWaitingForSigners: boolean) {
@@ -217,7 +217,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :results="results"
           :strategies="strategies"
           :is-admin="isAdmin"
-          @reload="reloadProposal(true)"
+          @reload="reloadProposal"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
@@ -239,7 +239,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :selected-choices="selectedChoices"
       :strategies="strategies"
       @close="modalOpen = false"
-      @reload="reloadProposal()"
+      @reload="reloadProposal"
       @open-post-vote-modal="openPostVoteModal"
     />
     <ModalTerms
