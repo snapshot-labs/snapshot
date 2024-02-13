@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { shorten } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { useStorage } from '@vueuse/core';
 
 const { login, web3, web3Account } = useWeb3();
 const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
@@ -9,6 +10,8 @@ const { modalAccountOpen } = useModal();
 const auth = getInstance();
 
 const loading = ref(false);
+
+const termsAccepted = useStorage('snapshot.termsAccepted', false);
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
@@ -64,10 +67,15 @@ watch(
 
   <teleport to="#modal">
     <ModalAccount
-      :open="modalAccountOpen"
+      :open="modalAccountOpen && termsAccepted"
       :profile="profile"
       @close="modalAccountOpen = false"
       @login="handleLogin"
     />
   </teleport>
+  <ModalSnapshotTerms
+    :open="modalAccountOpen && !termsAccepted"
+    @close="modalAccountOpen = false"
+    @accept="termsAccepted = true"
+  />
 </template>
