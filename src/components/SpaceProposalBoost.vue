@@ -22,6 +22,7 @@ const boostClaims = ref<BoostClaimSubgraph[]>([]);
 const boostRewards = ref<BoostRewardGuard[]>([]);
 const loaded = ref(false);
 const loadingRewards = ref(false);
+const relativeEndTime = ref('');
 
 const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
@@ -188,6 +189,19 @@ watch(web3Account, async value => {
   await loadUserVote(value);
   loadRewards();
 });
+
+watchEffect(() => {
+  const interval = setInterval(() => {
+    relativeEndTime.value = formatRelativeTime(
+      props.proposal.end,
+      longRelativeTimeFormatter.value
+    );
+  }, 1000);
+
+  onUnmounted(() => {
+    clearInterval(interval);
+  });
+});
 </script>
 
 <template>
@@ -301,12 +315,7 @@ watch(web3Account, async value => {
                   <i-ho-fire class="text-sm mr-2" />
                   <div class="whitespace-nowrap">
                     Claim
-                    {{
-                      formatRelativeTime(
-                        proposal.end,
-                        longRelativeTimeFormatter
-                      )
-                    }}
+                    {{ relativeEndTime }}
                   </div>
                 </div>
               </div>
