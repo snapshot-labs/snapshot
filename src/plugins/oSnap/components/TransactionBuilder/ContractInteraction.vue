@@ -25,7 +25,7 @@ const emit = defineEmits<{
   updateTransaction: [transaction: ContractInteractionTransaction];
 }>();
 
-const to = ref(props.transaction.to ?? '');
+const to = ref('');
 const isToValid = computed(() => {
   return to.value !== '' && isAddress(to.value);
 });
@@ -67,7 +67,8 @@ function updateTransaction() {
       parameters: parameters.value
     });
     emit('updateTransaction', transaction);
-  } catch {
+  } catch (error) {
+    console.error(error);
     props.setTransactionAsInvalid();
   }
 }

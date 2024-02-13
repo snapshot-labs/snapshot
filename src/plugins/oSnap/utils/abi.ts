@@ -14,7 +14,7 @@ import { fetchImplementationAddress } from './getters';
  *
  * If this is the case, we must parse the value as JSON and verify that it is valid.
  */
-export async function isArrayParameter(parameter: string): Promise<boolean> {
+export function isArrayParameter(parameter: string): boolean {
   return ['tuple', 'array'].includes(parameter);
 }
 

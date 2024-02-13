@@ -27,8 +27,8 @@ export function validatePayload(data: OsnapPluginData): void | never {
     throw new Error('No transactions to simulate');
   }
   safe.transactions.forEach((tx, i) => {
-    if (!validateTransaction(tx)) {
-      throw new Error(`Transaction ${i + 1} has missing data`);
+    if (!tx.isValid) {
+      throw new Error(`Transaction ${i + 1} in invalid`);
     }
   });
   return;
