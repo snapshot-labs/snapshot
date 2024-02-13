@@ -13,8 +13,8 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:modelValue', 'blur']);
 
-function handleInput(e) {
-  const input = e.target.value;
+function handleInput(e: Event) {
+  const input = (e.target as HTMLInputElement).value;
   if (props.number) {
     return emit('update:modelValue', !input ? undefined : parseFloat(input));
   }
