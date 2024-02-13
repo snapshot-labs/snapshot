@@ -2,6 +2,7 @@ import { useStorage } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { validateForm } from '@/helpers/validation';
+import { OsnapPluginData } from '@/plugins/oSnap/types';
 
 interface ProposalForm {
   name: string;
@@ -15,6 +16,7 @@ interface ProposalForm {
   metadata: {
     plugins: {
       safeSnap?: { valid: boolean };
+      oSnap?: OsnapPluginData;
     };
   };
 }
