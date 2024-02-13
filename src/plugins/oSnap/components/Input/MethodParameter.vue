@@ -3,6 +3,7 @@ import { ParamType } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import AddressInput from './Address.vue';
+import { hexZeroPad, isBytesLike } from '@ethersproject/bytes';
 
 const props = defineProps<{
   parameter: ParamType;
@@ -17,7 +18,8 @@ const isDirty = ref(false);
 const isBooleanInput = computed(() => props.parameter.baseType === 'bool');
 const isAddressInput = computed(() => props.parameter.baseType === 'address');
 const isNumberInput = computed(() => props.parameter.baseType.includes('int'));
-const isBytesInput = computed(() => props.parameter.baseType.includes('bytes'));
+const isBytesInput = computed(() => props.parameter.baseType === 'bytes');
+const isBytes32Input = computed(() => props.parameter.baseType === 'bytes32');
 const isArrayInput = computed(
   () =>
     props.parameter.baseType === 'array' || props.parameter.baseType === 'tuple'
@@ -28,6 +30,7 @@ const inputType = computed(() => {
   if (isAddressInput.value) return 'address';
   if (isNumberInput.value) return 'number';
   if (isBytesInput.value) return 'bytes';
+  if (isBytes32Input.value) return 'bytes32';
   if (isArrayInput.value) return 'array';
   return 'text';
 });
@@ -40,6 +43,7 @@ const isInputValid = computed(() => {
   if (isAddressInput.value) return isAddress(newValue.value);
   if (isArrayInput.value) return validateArrayInput(newValue.value);
   if (isNumberInput.value) return validateNumberInput(newValue.value);
+  if (isBytes32Input.value) return validateBytes32Input(newValue.value);
   if (isBytesInput.value) return validateBytesInput(newValue.value);
   return true;
 });
@@ -52,9 +56,7 @@ watch(props.parameter, () => {
 });
 
 watch(newValue, () => {
-  if (isInputValid.value) {
-    emit('updateParameterValue', newValue.value);
-  }
+  emit('updateParameterValue', newValue.value);
 });
 
 function validateNumberInput(value: string) {
@@ -62,7 +64,18 @@ function validateNumberInput(value: string) {
 }
 
 function validateBytesInput(value: string) {
-  return value.startsWith('0x');
+  return isBytesLike(value);
+}
+
+function validateBytes32Input(value: string) {
+  try {
+    if (value.slice(2).length > 64) {
+      throw new Error('String too long');
+    }
+    return isBytesLike(value);
+  } catch {
+    return false;
+  }
 }
 
 function validateArrayInput(value: string) {
@@ -83,6 +96,12 @@ function validateArrayInput(value: string) {
 function onChange(value: string) {
   newValue.value = value;
   isDirty.value = true;
+}
+
+function formatBytes32() {
+  if (isBytes32Input) {
+    newValue.value = hexZeroPad(newValue.value, 32);
+  }
 }
 </script>
 
@@ -126,6 +145,16 @@ function onChange(value: string) {
     placeholder="0x123abc"
     :error="!isInputValid && `Invalid ${parameter.baseType}`"
     :model-value="value"
+    @update:model-value="onChange($event)"
+  >
+    <template #label>{{ label }}</template>
+  </UiInput>
+  <UiInput
+    v-if="inputType === 'bytes32'"
+    placeholder="0x123abc"
+    :error="!isInputValid && `Invalid ${parameter.baseType}`"
+    :model-value="value"
+    @blur="formatBytes32"
     @update:model-value="onChange($event)"
   >
     <template #label>{{ label }}</template>

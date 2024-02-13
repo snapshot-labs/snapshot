@@ -14,10 +14,12 @@ import {
   Transaction
 } from './types';
 import {
+  allTransactionsValid,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles,
   getIsOsnapEnabled,
-  getModuleAddressForTreasury
+  getModuleAddressForTreasury,
+  validateOsnapTransaction
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
@@ -51,7 +53,6 @@ function addTransaction(transaction: Transaction) {
 
 function removeTransaction(transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
   update(newPluginData.value);
 }
@@ -76,7 +77,6 @@ async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
   }
-
   try {
     const balances = await getGnosisSafeBalances(network, safeAddress);
 
@@ -214,7 +214,7 @@ watch(newPluginData, async () => {
 onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();
-  newPluginData.value.safe = safes.value[0];
+  newPluginData.value.safe = cloneDeep(safes.value[0]);
   tokens.value = await fetchBalances(
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
@@ -233,7 +233,8 @@ onMounted(async () => {
     <div class="rounded-2xl border p-4 text-md">
       <h2 class="mb-2">Warning: Multiple oSnap enabled plugins detected</h2>
       <p class="mb-2">
-      For best experience using oSnap, please remove the SafeSnap plugin from your space.
+        For best experience using oSnap, please remove the SafeSnap plugin from
+        your space.
       </p>
     </div>
   </template>
