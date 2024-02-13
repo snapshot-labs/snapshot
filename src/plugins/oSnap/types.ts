@@ -427,3 +427,13 @@ export type ErrorWithMessage = InstanceType<typeof Error> & {
 export function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
   return error !== null && typeof error === 'object' && 'message' in error;
 }
+
+export const Status = {
+  IDLE: 'IDLE',
+  LOADING: 'LOADING',
+  SUCCESS: 'SUCCESS',
+  FAIL: 'FAIL',
+  ERROR: 'ERROR'
+} as const;
+
+export type Status = keyof typeof Status;

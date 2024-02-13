@@ -40,6 +40,7 @@ export const mustBeEthereumContractAddress = memoize(
  * Validates a transaction.
  */
 export function validateTransaction(transaction: BaseTransaction) {
+  debugger;
   const addressNotEmptyOrInvalid =
     transaction.to !== '' && isAddress(transaction.to);
   return (
