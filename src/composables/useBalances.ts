@@ -110,6 +110,7 @@ export function useBalances() {
   ): Promise<void> {
     try {
       loading.value = true;
+      tokens.value = [];
       const baseToken = CHAIN_CURRENCIES[networkId];
       const data = await getBalances(address, Number(networkId), baseToken);
 
