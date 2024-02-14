@@ -15,16 +15,19 @@ const dontShowAgain = useStorage(
 
 const content = [
   {
-    title: 'Who are boosts for?',
+    id: 1,
+    title: 'How does it work?',
     description:
-      "Boosts are primarily for DAOs that want to increase voting participation. They can also serve as a tool for 'bribes' in DeFi, incentivizing specific actions or decisions."
+      'When you create a boost, you specify the amount of tokens you want to deposit and the rules for distribution. After the boost was created you receive an NFT from the Boost contract, this represents the ownership of the boost and can be used to withdraw unclaimed rewards.'
   },
   {
+    id: 2,
     title: 'Distribution',
     description:
       'Rewards are distributed either proportionally to voting power or through a lottery system. The lottery system is weighted by voting power, meaning the more voting power, the higher your chances of winning.'
   },
   {
+    id: 3,
     title: 'Disclaimer',
     description:
       'Boosts are a new and experimental feature and currently not audited. Use at your own risk.'
@@ -35,7 +38,7 @@ const content = [
 <template>
   <TuneModal :open="open" size="big" @close="$emit('close')">
     <TuneModalTitle as="h1" class="md:hidden text-lg px-[20px] py-3 leading-6"
-      >Welcome to Boosts!</TuneModalTitle
+      >Welcome to Boost!</TuneModalTitle
     >
     <div class="md:flex">
       <div
@@ -58,16 +61,21 @@ const content = [
           class="p-[20px] md:pb-0 md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[526px]"
         >
           <TuneModalTitle as="h1" class="hidden md:block leading-7 mb-4"
-            >Welcome to Boosts!</TuneModalTitle
+            >Welcome to Boost!</TuneModalTitle
           >
           <TuneModalDescription class="text-lg leading-6 mb-5">
             Boosts are a powerful way to incentivize voting on proposals by
-            rewarding active participation and more.
+            rewarding active participation or specific actions.
           </TuneModalDescription>
           <div class="space-y-5">
             <div v-for="(c, i) in content" :key="i">
               <h4 class="leading-5 mb-2">{{ c.title }}</h4>
               <p class="text-md leading-5">{{ c.description }}</p>
+              <p v-if="c.id === 1" class="text-md leading-5 mt-3">
+                <BaseLink link="https://docs.snapshot.org/"
+                  >Learn more</BaseLink
+                >
+              </p>
             </div>
           </div>
         </div>
