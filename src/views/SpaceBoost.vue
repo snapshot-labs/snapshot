@@ -402,6 +402,7 @@ watch(
   [web3Account, () => form.value.network],
   () => {
     form.value.token = '';
+    customTokens.value = [];
     loadBalances(web3Account.value, form.value.network);
   },
   { immediate: true }
