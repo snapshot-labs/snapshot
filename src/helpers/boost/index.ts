@@ -8,6 +8,7 @@ import ABI from './abi.json';
 export const BOOST_VERSION = '0.0.1';
 
 export const BOOST_CONTRACTS = {
+  '1': '',
   '11155111': '0x2062f5330fF35F601f3c9C926ed01697bdF70f20'
 };
 

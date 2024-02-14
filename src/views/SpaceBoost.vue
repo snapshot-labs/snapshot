@@ -65,9 +65,9 @@ const form = ref<Form>({
     ratioLimit: '',
     numWinners: ''
   },
-  network: '11155111',
+  network: '1',
   token: '',
-  amount: '0.01'
+  amount: ''
 });
 
 const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
@@ -179,8 +179,7 @@ const filteredNetworks = computed(() => {
         testnet: network.testnet
       };
     })
-    .filter(network => SUPPORTED_NETWORKS.includes(network.value))
-    .filter(network => network.testnet && env === 'demo');
+    .filter(network => SUPPORTED_NETWORKS.includes(network.value));
 });
 
 const strategy = computed<BoostStrategy>(() => {
