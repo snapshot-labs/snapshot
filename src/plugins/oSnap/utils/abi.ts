@@ -6,8 +6,6 @@ import {
   mustBeEthereumAddress,
   mustBeEthereumContractAddress
 } from './validators';
-import { isErrorWithMessage } from '../types';
-import { fetchImplementationAddress } from './getters';
 
 /**
  * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.

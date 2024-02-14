@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computedAsync } from '@vueuse/core';
-import { Network } from '../../types';
-import { isContractAddress, mustBeEthereumAddress } from '../../utils';
+import { mustBeEthereumAddress } from '../../utils';
 
 const props = defineProps<{
   modelValue: string;

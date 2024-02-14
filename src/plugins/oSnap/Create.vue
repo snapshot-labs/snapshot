@@ -14,12 +14,10 @@ import {
   Transaction
 } from './types';
 import {
-  allTransactionsValid,
   getGnosisSafeBalances,
   getGnosisSafeCollectibles,
   getIsOsnapEnabled,
-  getModuleAddressForTreasury,
-  validateOsnapTransaction
+  getModuleAddressForTreasury
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
