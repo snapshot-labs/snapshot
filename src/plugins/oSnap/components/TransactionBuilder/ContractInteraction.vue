@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
-import { useDebounceFn } from '@vueuse/core';
+import { asyncComputed, useDebounceFn } from '@vueuse/core';
 
 import { ContractInteractionTransaction, Network, Status } from '../../types';
 import {
+  checkIsContract,
   createContractInteractionTransaction,
   fetchImplementationAddress,
   getABIWriteFunctions,
@@ -26,15 +27,25 @@ const emit = defineEmits<{
 }>();
 
 const to = ref('');
+
+const isToContract = asyncComputed(() => {
+  if (!isAddress(to.value)) {
+    return true;
+  }
+  return checkIsContract(to.value, props.network);
+}, true);
+
 const isToValid = computed(() => {
   return to.value !== '' && isAddress(to.value);
 });
+
 const abi = ref('');
 const abiFetchStatus = ref<Status>(Status.IDLE);
 const implementationAddress = ref('');
 const showAbiChoiceModal = ref(false);
 
 const isAbiValid = ref(true);
+const abiError = ref<string>();
 const value = ref(props.transaction.value ?? '0');
 const isValueValid = ref(true);
 const methods = ref<FunctionFragment[]>([]);
@@ -99,7 +110,7 @@ function updateAbi(newAbi: string) {
     updateMethod(methods.value[0].name);
   } catch (error) {
     handleFail();
-    console.warn('error extracting useful methods', error);
+    abiError.value = 'Error extracting write methods.';
   }
 }
 
@@ -128,7 +139,7 @@ async function handleUseImplementationAbi() {
   showAbiChoiceModal.value = false;
   try {
     if (!implementationAddress.value) {
-      throw new Error(' No Implementation address');
+      throw new Error('No Implementation address');
     }
     const res = await getContractABI(
       props.network,
@@ -148,6 +159,9 @@ async function handleUseImplementationAbi() {
 async function fetchABI() {
   try {
     abiFetchStatus.value = Status.LOADING;
+    if (!isToContract.value) {
+      throw new Error('Address provided is not a contract on this network');
+    }
     const res = await fetchImplementationAddress(to.value, props.network);
     if (!res) {
       handleUseProxyAbi();
@@ -192,6 +206,8 @@ function handleDismissModal() {
       v-model="to"
       :label="$t('safeSnap.to')"
       :disabled="abiFetchStatus === Status.LOADING"
+      :error="!isToContract ? 'Not Contract address' : undefined"
+      :network="network"
       @update:model-value="debouncedUpdateAddress()"
     />
 
@@ -205,7 +221,7 @@ function handleDismissModal() {
 
     <UiInput
       :disabled="abiFetchStatus === Status.LOADING"
-      :error="!isAbiValid && $t('safeSnap.invalidAbi')"
+      :error="!isAbiValid && (abiError ?? $t('safeSnap.invalidAbi'))"
       :model-value="abi"
       @update:model-value="updateAbi($event)"
     >

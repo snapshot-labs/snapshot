@@ -11,6 +11,7 @@ import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
 import { BaseTransaction, NFT, Token, Transaction } from '../types';
 import { parseUnits } from '@ethersproject/units';
+import { useMemoize } from '@vueuse/core';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -121,3 +122,17 @@ export function amountPositive(amount: string, decimals = 18) {
 export function allTransactionsValid(transactions: Transaction[]): boolean {
   return transactions.every(tx => tx.isValid === true);
 }
+
+export async function isContractAddress(
+  address: string,
+  network: string
+): Promise<boolean> {
+  const provider = getProvider(network);
+  const code = await provider.getCode(address);
+  return code !== '0x' && code !== '0x0';
+}
+
+export const checkIsContract = useMemoize(
+  async (address: string, network: string) =>
+    await isContractAddress(address, network)
+);
