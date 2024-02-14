@@ -19,7 +19,7 @@ export const SNAPSHOT_GUARD_ADDRESS =
 
 export const BOOST_WHITELIST = {
   demo: ['testsnap.eth'],
-  production: []
+  production: ['testsnap.eth']
 };
 
 export async function createBoost(
