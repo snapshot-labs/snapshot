@@ -3,7 +3,7 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
 
 const SUBGRAPH_URLS = {
-  '1': 'https://api.thegraph.com/subgraphs/name/snapshot-labs/snapshot-ethereum',
+  '1': 'https://api.thegraph.com/subgraphs/name/pscott/snapshot-ethereum',
   '11155111':
     'https://api.thegraph.com/subgraphs/name/snapshot-labs/boost-sepolia'
 };
