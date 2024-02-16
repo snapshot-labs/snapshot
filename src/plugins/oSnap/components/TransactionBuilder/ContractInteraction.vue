@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { parseAmount } from '@/helpers/utils';
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
 
@@ -8,7 +7,7 @@ import {
   createContractInteractionTransaction,
   getABIWriteFunctions,
   getContractABI,
-  validateTransaction
+  parseValueInput
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import MethodParameterInput from '../Input/MethodParameter.vue';
@@ -16,6 +15,7 @@ import MethodParameterInput from '../Input/MethodParameter.vue';
 const props = defineProps<{
   network: Network;
   transaction: ContractInteractionTransaction;
+  setTransactionAsInvalid: () => void;
 }>();
 
 const emit = defineEmits<{
@@ -24,7 +24,7 @@ const emit = defineEmits<{
 
 const to = ref(props.transaction.to ?? '');
 const isToValid = computed(() => {
-  return to.value === '' || isAddress(to.value);
+  return to.value !== '' && isAddress(to.value);
 });
 const abi = ref(props.transaction.abi ?? '');
 const isAbiValid = ref(true);
@@ -37,11 +37,21 @@ const selectedMethod = computed(
     methods.value.find(method => method.name === selectedMethodName.value) ??
     methods.value[0]
 );
+
 const parameters = ref<string[]>([]);
 
 function updateTransaction() {
-  if (!isValueValid || !isToValid || !isAbiValid) return;
   try {
+    if (!isToValid.value) {
+      throw new Error('"TO" address invalid');
+    }
+    if (!isAbiValid.value) {
+      throw new Error('ABI invalid');
+    }
+    if (!isValueValid.value) {
+      throw new Error('Value invalid');
+    }
+    // throws is method params are invalid
     const transaction = createContractInteractionTransaction({
       to: to.value,
       value: value.value,
@@ -49,31 +59,24 @@ function updateTransaction() {
       method: selectedMethod.value,
       parameters: parameters.value
     });
-
-    if (validateTransaction(transaction)) {
-      emit('updateTransaction', transaction);
-      return;
-    }
-  } catch (error) {
-    console.warn('ContractInteraction - Invalid Transaction:',error);
+    emit('updateTransaction', transaction);
+  } catch {
+    props.setTransactionAsInvalid();
   }
 }
 
 function updateParameter(index: number, value: string) {
   parameters.value[index] = value;
-  updateTransaction();
 }
 
 function updateMethod(methodName: string) {
   parameters.value = [];
   selectedMethodName.value = methodName;
-  updateTransaction();
 }
 
 function updateAbi(newAbi: string) {
   abi.value = newAbi;
   methods.value = [];
-
   try {
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
@@ -82,7 +85,6 @@ function updateAbi(newAbi: string) {
     isAbiValid.value = false;
     console.warn('error extracting useful methods', error);
   }
-  updateTransaction();
 }
 
 async function updateAddress() {
@@ -90,19 +92,25 @@ async function updateAddress() {
   if (result && result !== abi.value) {
     updateAbi(result);
   }
-  updateTransaction();
 }
 
 function updateValue(newValue: string) {
-  value.value = newValue;
   try {
-    parseAmount(newValue);
+    const parsed = parseValueInput(newValue);
+    value.value = parsed;
     isValueValid.value = true;
   } catch (error) {
     isValueValid.value = false;
+  } finally {
+    updateTransaction();
   }
-  updateTransaction();
 }
+
+watch(to, updateTransaction);
+watch(abi, updateTransaction);
+watch(selectedMethodName, updateTransaction);
+watch(selectedMethod, updateTransaction);
+watch(parameters, updateTransaction, { deep: true });
 </script>
 
 <template>
@@ -137,8 +145,11 @@ function updateValue(newValue: string) {
         </option>
       </UiSelect>
 
-      <div v-if="selectedMethod && selectedMethod.inputs.length">
-        <div class="divider"></div>
+      <div
+        v-if="selectedMethod && selectedMethod.inputs.length"
+        class="flex flex-col gap-2"
+      >
+        <div class="divider h-[1px] bg-skin-border my-3" />
 
         <MethodParameterInput
           v-for="(input, index) in selectedMethod.inputs"

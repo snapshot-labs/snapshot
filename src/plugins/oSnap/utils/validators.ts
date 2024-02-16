@@ -9,7 +9,8 @@ import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
-import { BaseTransaction } from '../types';
+import { BaseTransaction, NFT, Token, Transaction } from '../types';
+import { parseUnits } from '@ethersproject/units';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -39,11 +40,13 @@ export const mustBeEthereumContractAddress = memoize(
  * Validates a transaction.
  */
 export function validateTransaction(transaction: BaseTransaction) {
-  const addressEmptyOrValidate =
-    transaction.to === '' || isAddress(transaction.to);
+  const addressNotEmptyOrInvalid =
+    transaction.to !== '' && isAddress(transaction.to);
+  const valueIsPositive =
+    isBigNumberish(transaction.value) && parseInt(transaction.value) > 0;
   return (
-    isBigNumberish(transaction.value) &&
-    addressEmptyOrValidate &&
+    valueIsPositive &&
+    addressNotEmptyOrInvalid &&
     (!transaction.data || isHexString(transaction.data))
   );
 }
@@ -67,4 +70,55 @@ export async function validateModuleAddress(
     .rules()
     .then(() => true)
     .catch(() => false);
+}
+
+export function isTransferFundsValid(params: {
+  token: Token;
+  recipient: string;
+  amount: string;
+}): boolean {
+  if (!amountPositive(params.amount, params.token.decimals)) {
+    return false;
+  }
+  if (!params.recipient || !isAddress(params.recipient)) {
+    return false;
+  }
+  if (!(params.token.address === 'main') && !isAddress(params.token.address)) {
+    return false;
+  }
+
+  return true;
+}
+
+export function isTransferNftValid(params: {
+  collectable: NFT | undefined;
+  recipient: string;
+}): boolean {
+  // check NFT transfer variables are correct
+  if (!params.collectable) {
+    return false;
+  }
+  if (
+    !isAddress(params.recipient) ||
+    !isAddress(params.collectable.address) ||
+    !params.collectable.id
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+export function amountPositive(amount: string, decimals = 18) {
+  try {
+    const isBigNumber = isBigNumberish(parseUnits(amount, decimals)); // checks for underflow
+    const isPositive = parseFloat(amount) > 0;
+    return isBigNumber && isPositive;
+  } catch {
+    return false;
+  }
+}
+
+export function allTransactionsValid(transactions: Transaction[]): boolean {
+  return transactions.every(tx => tx.isValid === true);
 }
