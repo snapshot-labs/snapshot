@@ -32,7 +32,7 @@ watch(
       @switch-wallet="modalAccountOpen = true"
     >
       <TuneButton
-        :loading="web3.authLoading || loadingProfiles || reloadingProfile"
+        :loading="web3.authLoading"
         class="flex items-center"
         data-testid="button-account-menu"
       >
