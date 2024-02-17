@@ -16,7 +16,12 @@ withDefaults(
   }
 );
 
+const skin = ref<string | null>(null);
+
 const { domain } = useApp();
+const { getSkin } = useSkin();
+
+onMounted(async () => await getSkin(domain));
 </script>
 
 <template>
@@ -29,7 +34,7 @@ const { domain } = useApp();
         'white-border': variant === 'white',
         danger: variant === 'danger',
         disabled: disabled,
-        '!text-skin-bg': !domain && primary
+        '!text-skin-bg': !skin && primary
       }
     ]"
     :disabled="disabled || loading"
