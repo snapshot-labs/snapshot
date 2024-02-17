@@ -27,7 +27,7 @@ const skinClass = ref('default');
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
 
-  async function getSkin(domain: string) {
+  async function getSkin(domain: string): Promise<string | null> {
     if (domain) {
       const space = await apolloQuery(
         {
@@ -41,8 +41,12 @@ export function useSkin() {
       if (space?.skin) {
         skinClass.value = space.skin;
         document.body.classList.add(skinClass.value);
+
+        return space.skin;
       }
     }
+
+    return null;
   }
 
   const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
