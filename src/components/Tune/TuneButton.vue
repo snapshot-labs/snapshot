@@ -15,6 +15,8 @@ withDefaults(
     disabled: false
   }
 );
+
+const { domain } = useApp();
 </script>
 
 <template>
@@ -25,7 +27,8 @@ withDefaults(
       {
         primary: primary,
         danger: variant === 'danger',
-        disabled: disabled
+        disabled: disabled,
+        '!text-skin-bg': !domain && primary
       }
     ]"
     :disabled="disabled || loading"
