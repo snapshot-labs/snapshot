@@ -3,8 +3,7 @@ import { shorten } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
-  useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const auth = getInstance();
 
