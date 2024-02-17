@@ -6,13 +6,15 @@ withDefaults(
     primary?: boolean;
     loading?: boolean;
     disabled?: boolean;
+    useWhiteText?: boolean;
   }>(),
   {
     type: 'button',
     variant: undefined,
     primary: false,
     loading: false,
-    disabled: false
+    disabled: false,
+    useWhiteText: false
   }
 );
 
@@ -34,7 +36,7 @@ onMounted(async () => await getSkin(domain));
         'white-border': variant === 'white',
         danger: variant === 'danger',
         disabled: disabled,
-        '!text-skin-bg': !skin && primary
+        '!text-skin-bg': !skin && primary && !useWhiteText
       }
     ]"
     :disabled="disabled || loading"
