@@ -18,7 +18,7 @@ export const SNAPSHOT_GUARD_ADDRESS =
   '0x06A85356DCb5b307096726FB86A78c59D38e08ee';
 
 export const BOOST_WHITELIST = {
-  demo: ['fabien.eth'],
+  demo: [],
   production: ['testsnap.eth', 'fabien.eth']
 };
 
