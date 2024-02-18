@@ -229,6 +229,15 @@ const isEndingSoon = computed(() => {
   return proposal.value.end - now < ONE_DAY;
 });
 
+const amountPerWinner = computed(() => {
+  const formattedAmount = formatNumber(
+    Number(form.value.amount) / Number(form.value.distribution.numWinners),
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
+  );
+
+  return Number(formattedAmount) > 0 ? formattedAmount : 0;
+});
+
 const formValidation = computed(() => {
   const errors: Record<string, string> = {};
 
@@ -536,26 +545,15 @@ watch(
                 v-model="form.distribution.numWinners"
                 label="Number of winners"
                 type="number"
-                placeholder="e.g 50"
+                placeholder="5"
                 always-show-error
                 :error="formErrorMessages?.numWinners"
               >
-                <template
-                  v-if="form.amount && form.distribution.numWinners"
-                  #after
-                >
-                  {{
-                    formatNumber(
-                      Number(form.amount) /
-                        Number(form.distribution.numWinners),
-                      getNumberFormatter({ maximumFractionDigits: 8 }).value
-                    )
-                  }}
-
-                  {{ selectedToken?.symbol }}
-                  per winner
+                <template #after>
+                  <div class="-mr-2">Winners</div>
                 </template>
               </TuneInput>
+
               <TuneInput
                 v-if="form.distribution.hasRatioLimit"
                 v-model="form.distribution.ratioLimit"
@@ -569,6 +567,18 @@ watch(
                   <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
                 </template>
               </TuneInput>
+            </div>
+            <div
+              v-if="form.distribution.type === 'lottery'"
+              class="bg-[--border-color-faint] border-t border-[--border-color-soft] -mx-3 -mb-3 p-3 rounded-b-xl mt-3"
+            >
+              <div class="flex justify-between">
+                Reward per winner
+                <div class="text-skin-heading">
+                  {{ amountPerWinner }}
+                  {{ selectedToken?.symbol }}
+                </div>
+              </div>
             </div>
           </TuneBlock>
         </div>
