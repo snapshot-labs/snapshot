@@ -9,7 +9,9 @@ import {
   SUPPORTED_NETWORKS,
   SNAPSHOT_GUARD_ADDRESS,
   BOOST_CONTRACTS,
-  BOOST_VERSION
+  BOOST_VERSION,
+  TOKEN_FEE_PERCENTAGE,
+  ETH_FEE
 } from '@/helpers/boost';
 import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
 import { getProposal } from '@/helpers/snapshot';
@@ -236,6 +238,21 @@ const amountPerWinner = computed(() => {
   );
 
   return Number(formattedAmount) > 0 ? formattedAmount : 0;
+});
+
+const tokenFee = computed(() => {
+  const formattedAmount = formatNumber(
+    (Number(form.value.amount) / 100) * TOKEN_FEE_PERCENTAGE,
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
+  );
+
+  return Number(formattedAmount) > 0 ? formattedAmount : 0;
+});
+
+const rewardsAfterTokenFee = computed(() => {
+  const amount = Number(form.value.amount) - Number(tokenFee.value);
+
+  return amount > 0 ? amount : 0;
 });
 
 const formValidation = computed(() => {
@@ -512,6 +529,29 @@ watch(
                 @add-custom-token="handleAddCustomToken($event)"
               />
             </div>
+            <TuneBlockFooter>
+              <div v-if="ETH_FEE" class="flex justify-between">
+                ETH fee
+                <div class="text-skin-heading">
+                  {{ ETH_FEE }}
+                  ETH
+                </div>
+              </div>
+              <div class="flex justify-between">
+                Network fee
+                <div class="text-skin-heading">
+                  {{ tokenFee }}
+                  {{ selectedToken?.symbol }}
+                </div>
+              </div>
+              <div class="flex justify-between">
+                Final rewards
+                <div class="text-skin-heading">
+                  {{ rewardsAfterTokenFee }}
+                  {{ selectedToken?.symbol }}
+                </div>
+              </div>
+            </TuneBlockFooter>
           </TuneBlock>
           <TuneBlock>
             <template #title>
@@ -568,10 +608,7 @@ watch(
                 </template>
               </TuneInput>
             </div>
-            <div
-              v-if="form.distribution.type === 'lottery'"
-              class="bg-[--border-color-faint] border-t border-[--border-color-soft] -mx-3 -mb-3 p-3 rounded-b-xl mt-3"
-            >
+            <TuneBlockFooter v-if="form.distribution.type === 'lottery'">
               <div class="flex justify-between">
                 Reward per winner
                 <div class="text-skin-heading">
@@ -579,7 +616,7 @@ watch(
                   {{ selectedToken?.symbol }}
                 </div>
               </div>
-            </div>
+            </TuneBlockFooter>
           </TuneBlock>
         </div>
       </template>
