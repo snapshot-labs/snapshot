@@ -22,6 +22,10 @@ export const BOOST_WHITELIST = {
   production: ['testsnap.eth', 'fabien.eth']
 };
 
+export const ETH_FEE = '0.01';
+
+export const TOKEN_FEE_PERCENTAGE = 1;
+
 export async function createBoost(
   web3: Web3Provider,
   networkId: string,
@@ -38,7 +42,7 @@ export async function createBoost(
   const { strategyURI, token, amount, guard, start, end, owner } = params;
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
-  const options = { value: parseEther('0.01') };
+  const options = { value: parseEther(ETH_FEE) };
   return await contract.mint(
     strategyURI,
     token,
