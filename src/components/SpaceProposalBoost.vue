@@ -12,6 +12,8 @@ import {
   BoostSubgraph
 } from '@/helpers/boost/types';
 
+const VISIBLE_BOOSTS = 3;
+
 const props = defineProps<{
   proposal: Proposal;
 }>();
@@ -272,7 +274,10 @@ onMounted(() => {
           </div>
           <div v-if="loaded">
             <div class="mt-3 space-y-2">
-              <div v-for="boost in boostsSorted.slice(0, 2)" :key="boost.id">
+              <div
+                v-for="boost in boostsSorted.slice(0, VISIBLE_BOOSTS)"
+                :key="boost.id"
+              >
                 <SpaceProposalBoostItem
                   :boost="boost"
                   :claims="boostClaims"
@@ -290,7 +295,7 @@ onMounted(() => {
               </div>
             </div>
             <TuneButton
-              v-if="boostsSorted.length > 2"
+              v-if="boostsSorted.length > VISIBLE_BOOSTS"
               class="w-full mt-3"
               @click="boostsModalOpen = true"
             >
