@@ -3,9 +3,9 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
 
 const SUBGRAPH_URLS = {
-  '1': 'https://api.thegraph.com/subgraphs/name/pscott/boost-mainnet',
+  '1': 'https://api.studio.thegraph.com/query/23545/boost/version/latest',
   '11155111':
-    'https://api.thegraph.com/subgraphs/name/snapshot-labs/boost-sepolia'
+    'https://api.studio.thegraph.com/query/23545/boost-sepolia/version/latest'
 };
 
 export function getClaims(recipient: string, chainId: string) {
