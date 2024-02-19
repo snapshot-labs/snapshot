@@ -38,7 +38,7 @@ function handleOpenTokenModal() {
       <button
         type="button"
         label="Token"
-        class="-mr-[23px] h-[40px] bg-[--border-color-subtle] hover:bg-[--border-color-soft] rounded-r-full"
+        class="-mr-[23px] h-[40px] hover:bg-[--border-color-subtle] rounded-r-full border-l"
         @click="handleOpenTokenModal"
       >
         <div
