@@ -11,12 +11,21 @@ const props = defineProps<{
 
 const emit = defineEmits(['close', 'tryAgain']);
 
-const cancelButtonText = computed(() => {
+const closeButtonText = computed(() => {
   switch (props.variant) {
     case 'success':
       return 'Done!';
     default:
       return 'Close';
+  }
+});
+
+const closeButtonVariant = computed(() => {
+  switch (props.variant) {
+    case 'loading':
+      return 'danger';
+    default:
+      return undefined;
   }
 });
 </script>
@@ -43,9 +52,12 @@ const cancelButtonText = computed(() => {
         </div>
       </div>
       <div class="m-3 flex gap-[12px]">
-        <TuneButton class="w-full" @click="emit('close')">{{
-          cancelButtonText
-        }}</TuneButton>
+        <TuneButton
+          class="w-full"
+          :variant="closeButtonVariant"
+          @click="emit('close')"
+          >{{ closeButtonText }}</TuneButton
+        >
         <TuneButton
           v-if="variant === 'error'"
           primary
