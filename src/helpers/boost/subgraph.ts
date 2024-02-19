@@ -28,7 +28,7 @@ export function getClaims(recipient: string, chainId: string) {
 
 export async function getBoosts(proposalIds: string[]) {
   async function query(chainId: string) {
-    return subgraphRequest(SUBGRAPH_URLS[chainId], {
+    const data = await subgraphRequest(SUBGRAPH_URLS[chainId], {
       boosts: {
         __args: {
           where: { strategy_: { proposal_in: proposalIds } }
@@ -40,7 +40,6 @@ export async function getBoosts(proposalIds: string[]) {
         start: true,
         end: true,
         owner: true,
-        chainId: true,
         currentBalance: true,
         transaction: true,
         token: {
@@ -66,9 +65,17 @@ export async function getBoosts(proposalIds: string[]) {
         }
       }
     });
+    if (data && data.boosts) {
+      data.boosts = data.boosts.map(boost => ({
+        ...boost,
+        chainId
+      }));
+    }
+    return data;
   }
   const requests = SUPPORTED_NETWORKS.map(chainId => query(chainId));
   const responses: { boosts: BoostSubgraph }[] = await Promise.all(requests);
+  console.log('🚀 ~ getBoosts ~ responses:', responses);
 
   return responses
     .map(response => response.boosts)
