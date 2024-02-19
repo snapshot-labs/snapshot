@@ -108,6 +108,10 @@ const isOwner = computed(() => {
   );
 });
 
+const isLottery = computed(() => {
+  return props.boost.strategy.distribution.type === 'lottery';
+});
+
 async function withdraw(boost: BoostSubgraph) {
   try {
     const tx = await withdrawAndBurn(
@@ -164,10 +168,7 @@ async function withdraw(boost: BoostSubgraph) {
               class="text-skin-heading"
             />
           </div>
-          <div
-            v-else-if="boost.strategy.distribution.type === 'lottery'"
-            class="mt-1"
-          >
+          <div v-else-if="isLottery" class="mt-1">
             has a chance to win
             <TuneTag :label="amountPerWinner" class="text-skin-heading" />
           </div>
@@ -204,10 +205,14 @@ async function withdraw(boost: BoostSubgraph) {
           >
             <i-ho-fire class="text-xs" />
             <span v-if="reward && proposal.scores_state === 'final'">
-              Eligible to
+              <span v-if="isLottery"> You won </span>
+              <span v-else> Eligible to </span>
               {{ `${rewardFormatted} ${boost.token.symbol}` }}
             </span>
-            <span v-else> Eligible to reward </span>
+            <span v-else>
+              <span v-if="isLottery"> Eligible to win </span>
+              <span v-else> Eligible to reward </span>
+            </span>
           </div>
         </div>
       </div>
