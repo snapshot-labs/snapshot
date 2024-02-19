@@ -20,6 +20,7 @@ import {
   getModuleAddressForTreasury
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
+import BotSupportWarning from './components/BotSupportWarning.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -273,6 +274,11 @@ onMounted(async () => {
           :safes="safes"
           :selectedSafe="newPluginData.safe"
           @updateSafe="updateSafe($event)"
+        />
+        <BotSupportWarning
+          v-if="newPluginData.safe"
+          :safe-address="newPluginData.safe?.safeAddress"
+          :chain-id="newPluginData.safe?.network"
         />
         <div class="mt-4 border-b last:border-b-0">
           <TransactionBuilder
