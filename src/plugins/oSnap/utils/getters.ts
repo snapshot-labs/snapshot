@@ -767,3 +767,28 @@ export async function fetchImplementationAddress(
     console.error(error);
   }
 }
+
+export type SpaceConfigResponse =
+  | {
+      automaticExecution: true;
+    }
+  | {
+      automaticExecution: false;
+      rules: boolean;
+      bondToken: boolean;
+      bondAmount: boolean;
+    };
+
+/**
+ * Check if a space's deployed (on-chain) settings are supported by oSnap bots for auto execution
+ */
+export async function isConfigCompliant(safeAddress: string, chainId: Network) {
+  const res = await fetch(
+    `https://osnap.uma.xyz/api?address${safeAddress}&chainId=${chainId}`
+  );
+  if (!res.ok) {
+    throw new Error('Unable to fetch setting status');
+  }
+  const data = await res.json();
+  return data as unknown as SpaceConfigResponse;
+}
