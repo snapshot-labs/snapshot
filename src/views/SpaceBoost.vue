@@ -503,6 +503,15 @@ watch(
               :items="eligibilityOptions"
               label="Eligible to"
             />
+            <TuneBlockFooter>
+              <BaseMessage level="info">
+                Selecting a specific choice is disabled for the
+                <span class="font-semibold">
+                  {{ space.id }}
+                </span>
+                space
+              </BaseMessage>
+            </TuneBlockFooter>
           </TuneBlock>
           <TuneBlock>
             <template #title>
