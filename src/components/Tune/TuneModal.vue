@@ -25,7 +25,7 @@ const sizeClass = computed(() => {
 const closePositionClass = computed(() => {
   if (!props.size) return 'top-[12px] right-[10px]';
   if (props.size === 'big')
-    return 'md:right-4 md:top-[26px] right-[10px] top-[10px]';
+    return 'md:right-[28px] md:top-[16px] right-[10px] top-[10px]';
   if (props.size === 'medium') return 'top-[12px] right-[10px]';
 });
 
