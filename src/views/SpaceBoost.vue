@@ -233,7 +233,8 @@ const isEndingSoon = computed(() => {
 
 const amountPerWinner = computed(() => {
   const formattedAmount = formatNumber(
-    Number(form.value.amount) / Number(form.value.distribution.numWinners),
+    Number(amountAfterTokenFee.value) /
+      Number(form.value.distribution.numWinners),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 
@@ -249,7 +250,7 @@ const tokenFee = computed(() => {
   return Number(formattedAmount) > 0 ? formattedAmount : 0;
 });
 
-const rewardsAfterTokenFee = computed(() => {
+const amountAfterTokenFee = computed(() => {
   const amount = Number(form.value.amount) - Number(tokenFee.value);
 
   return amount > 0 ? amount : 0;
@@ -557,7 +558,7 @@ watch(
               <div class="flex justify-between">
                 Final amount
                 <div class="text-skin-heading">
-                  {{ rewardsAfterTokenFee }}
+                  {{ amountAfterTokenFee }}
                   {{ selectedToken?.symbol }}
                 </div>
               </div>
