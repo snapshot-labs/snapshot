@@ -102,12 +102,15 @@ function updateMethod(methodName: string) {
 }
 
 function updateAbi(newAbi: string) {
-  abi.value = newAbi;
-  methods.value = [];
+  if (newAbi === abi.value) {
+    return;
+  }
   try {
+    abi.value = newAbi;
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
     updateMethod(methods.value[0].name);
+    parameters.value = [];
   } catch (error) {
     handleFail();
     abiError.value = 'Error extracting write methods.';
