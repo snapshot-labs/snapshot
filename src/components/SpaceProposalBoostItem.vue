@@ -24,6 +24,8 @@ const auth = getInstance();
 const { web3Account } = useWeb3();
 const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 
+const openWinnersModal = ref(false);
+
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
     props.boost.poolSize,
@@ -33,6 +35,10 @@ const boostBalanceFormatted = computed(() => {
     Number(formattedUnits),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
+});
+
+const isFinal = computed(() => {
+  return props.proposal.scores_state === 'final';
 });
 
 const isClaimedByUser = computed(() => {
@@ -138,7 +144,7 @@ async function withdraw(boost: BoostSubgraph) {
         { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
       ]"
     >
-      <div>
+      <div class="w-full">
         <div v-if="isOwner" class="flex items-center gap-1 mb-[12px]">
           <i-s-crown class="text-xs" />
           Your boost
@@ -200,14 +206,35 @@ async function withdraw(boost: BoostSubgraph) {
             Claimed {{ claimedAmount }} {{ boost.token.symbol }}
           </BaseLink>
           <div
+            v-else-if="!reward && isFinal"
+            class="flex items-center justify-center gap-2"
+          >
+            <i-ho-emoji-sad class="text-sm" />
+
+            <button
+              type="button"
+              class="text-skin-link"
+              @click="openWinnersModal = true"
+            >
+              View winners
+            </button>
+          </div>
+          <div
             v-else-if="isEligible"
             class="flex items-center justify-center gap-2"
           >
             <i-ho-fire class="text-xs" />
-            <span v-if="reward && proposal.scores_state === 'final'">
+            <span v-if="reward && isFinal">
               <span v-if="isLottery"> You won </span>
               <span v-else> Eligible to </span>
               {{ `${rewardFormatted} ${boost.token.symbol}` }}
+              <button
+                type="button"
+                class="ml-2 text-skin-link"
+                @click="openWinnersModal = true"
+              >
+                View winners
+              </button>
             </span>
             <span v-else>
               <span v-if="isLottery"> Eligible to win </span>
@@ -265,5 +292,10 @@ async function withdraw(boost: BoostSubgraph) {
         </div>
       </div>
     </div>
+    <SpaceProposalBoostWinnersModal
+      :open="openWinnersModal"
+      :boost="boost"
+      @close="openWinnersModal = false"
+    />
   </div>
 </template>

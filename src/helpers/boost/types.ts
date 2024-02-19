@@ -20,6 +20,11 @@ export type BoostVoucherGuard = {
   reward: string;
 };
 
+export type BoostWinnersGuard = {
+  winners: string[];
+  prize: string;
+};
+
 export interface BoostStrategy {
   title: string;
   description: string;

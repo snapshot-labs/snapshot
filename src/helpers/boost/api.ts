@@ -1,6 +1,7 @@
 import {
   BoostRewardGuard,
   BoostVoucherGuard,
+  BoostWinnersGuard,
   BoostSubgraph
 } from '@/helpers/boost/types';
 
@@ -49,5 +50,29 @@ export async function getVouchers(
   );
 
   if (results.status !== 200) throw new Error('Error fetching vouchers');
+  return results.json();
+}
+
+export async function getWinners(
+  proposal_id: string,
+  boost_id: string,
+  chain_id: string
+): Promise<BoostWinnersGuard> {
+  const results = await fetch(
+    'https://boost-guard-djc2x.ondigitalocean.app/get-lottery-winners',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        proposal_id,
+        boost_id,
+        chain_id
+      })
+    }
+  );
+
+  if (results.status !== 200) throw new Error('Error fetching rewards');
   return results.json();
 }
