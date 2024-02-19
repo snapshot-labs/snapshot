@@ -281,7 +281,7 @@ const formValidation = computed(() => {
 
     const amount = BigNumber.from(amountParsed.value || '0');
 
-    if (balance.lt(amount)) {
+    if (balance.lt(amount) && !isLoading.value) {
       errors.balance = 'Insufficient balance';
     }
   }
