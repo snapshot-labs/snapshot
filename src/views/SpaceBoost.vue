@@ -531,21 +531,31 @@ watch(
             </div>
             <TuneBlockFooter>
               <div v-if="ETH_FEE" class="flex justify-between">
-                ETH fee
+                <div class="flex items-center gap-1">
+                  ETH fee
+                  <TuneIconHint
+                    hint="This fee is required for additional gas costs on our end"
+                  />
+                </div>
                 <div class="text-skin-heading">
                   {{ ETH_FEE }}
                   ETH
                 </div>
               </div>
               <div class="flex justify-between">
-                Network fee
+                <div class="flex items-center gap-1">
+                  Token fee
+                  <TuneIconHint
+                    hint="This is the fee we charge for the boost service"
+                  />
+                </div>
                 <div class="text-skin-heading">
                   {{ tokenFee }}
                   {{ selectedToken?.symbol }}
                 </div>
               </div>
               <div class="flex justify-between">
-                Final rewards
+                Final amount
                 <div class="text-skin-heading">
                   {{ rewardsAfterTokenFee }}
                   {{ selectedToken?.symbol }}
@@ -578,7 +588,7 @@ watch(
               <TuneSwitch
                 v-if="form.distribution.type === 'weighted'"
                 v-model="form.distribution.hasRatioLimit"
-                label="Define a maximum amount"
+                label="Define a maximum reward per voter"
               />
               <TuneInput
                 v-if="form.distribution.type === 'lottery'"
@@ -595,13 +605,14 @@ watch(
               </TuneInput>
 
               <TuneInput
-                v-if="form.distribution.hasRatioLimit"
+                v-if="form.distribution.type === 'weighted'"
                 v-model="form.distribution.ratioLimit"
-                label="Max amount"
+                label="Max reward"
                 type="number"
-                :placeholder="`e.g. ${Number(form.amount) / 1000}`"
+                placeholder="100"
                 always-show-error
                 :error="formErrorMessages?.ratioLimit"
+                @click="form.distribution.hasRatioLimit = true"
               >
                 <template #after>
                   <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
