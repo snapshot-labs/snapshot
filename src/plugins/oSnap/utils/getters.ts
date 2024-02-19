@@ -774,7 +774,7 @@ export async function fetchImplementationAddress(
  */
 export async function isConfigCompliant(safeAddress: string, chainId: string) {
   const res = await fetch(
-    `http://localhost:3000/api/space-config?address=${safeAddress}&chainId=${chainId}`
+    `https://osnap.uma.xyz/api/space-config?address=${safeAddress}&chainId=${chainId}`
   );
   if (!res.ok) {
     throw new Error('Unable to fetch setting status');
