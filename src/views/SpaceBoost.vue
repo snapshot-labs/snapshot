@@ -503,11 +503,11 @@ watch(
               :items="eligibilityOptions"
               label="Eligible to"
             />
-            <TuneBlockFooter>
+            <TuneBlockFooter v-if="bribeDisabled">
               <BaseMessage level="info">
                 Selecting a specific choice is disabled for the
                 <span class="font-semibold">
-                  {{ space.id }}
+                  {{ space.name }}
                 </span>
                 space
               </BaseMessage>
