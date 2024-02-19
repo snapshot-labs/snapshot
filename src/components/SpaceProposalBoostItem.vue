@@ -200,7 +200,7 @@ async function withdraw(boost: BoostSubgraph) {
             v-if="claimedTransactionHash"
             hide-external-icon
             :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
-            class="flex items-center gap-1 text-skin-text hover:text-skin-link"
+            class="flex items-center gap-1 text-green hover:text-skin-link justify-center"
           >
             <i-ho-cash class="text-xs" />
             Claimed {{ claimedAmount }} {{ boost.token.symbol }}
