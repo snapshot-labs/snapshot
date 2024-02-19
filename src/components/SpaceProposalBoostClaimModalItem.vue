@@ -40,6 +40,10 @@ const hasClaimed = computed(() => {
 const claimLoading = computed(() => {
   return props.loading?.[props.boost.id] === props.boost.chainId;
 });
+
+const isLottery = computed(() => {
+  return props.boost.strategy.distribution.type === 'lottery';
+});
 </script>
 
 <template>
@@ -61,7 +65,10 @@ const claimLoading = computed(() => {
         <i-ho-cash v-if="hasClaimed" class="text-green text-xs" />
         <i-ho-gift v-else class="text-boost text-xs" />
       </div>
-      <span class="mr-1">
+      <span v-if="isLottery">
+        {{ hasClaimed ? 'Claimed' : 'You won' }}
+      </span>
+      <span v-else class="mr-1">
         {{ hasClaimed ? 'Claimed' : 'Eligible to' }}
       </span>
       <TuneTag class="text-skin-heading text-base">
