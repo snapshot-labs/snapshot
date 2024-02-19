@@ -41,11 +41,7 @@ onMounted(async () => await getSkin(domain));
     ]"
     :disabled="disabled || loading"
   >
-    <TuneLoadingSpinner
-      v-if="loading"
-      class="mx-auto"
-      :class="[primary ? 'text-white' : 'text-black']"
-    />
+    <TuneLoadingSpinner v-if="loading" class="mx-auto" />
 
     <slot v-else />
   </button>
