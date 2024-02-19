@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { BOOST_WHITELIST } from '@/helpers/boost';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -25,10 +24,10 @@ useMeta({
 const route = useRoute();
 const { web3, web3Account } = useWeb3();
 const { modalEmailOpen } = useModal();
+const { isWhitelisted } = useBoost({ spaceId: props.space.id });
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
-const { env } = useApp();
 
 const proposalId: string = route.params.id as string;
 
@@ -54,6 +53,14 @@ const strategies = computed(
   // Needed for older proposal that are missing strategies
   () => props.proposal?.strategies ?? props.space.strategies
 );
+
+const boostEnabled = computed(() => {
+  return (
+    (props.proposal.type === 'basic' ||
+      props.proposal.type === 'single-choice') &&
+    isWhitelisted.value
+  );
+});
 
 const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
@@ -180,14 +187,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             @click-vote="clickVote"
           />
 
-          <SpaceProposalBoost
-            v-if="
-              (proposal.type === 'basic' ||
-                proposal.type === 'single-choice') &&
-              BOOST_WHITELIST[env]?.includes(props.proposal.space.id)
-            "
-            :proposal="proposal"
-          />
+          <SpaceProposalBoost v-if="boostEnabled" :proposal="proposal" />
 
           <SpaceProposalVotes :space="space" :proposal="proposal" />
 

@@ -123,6 +123,7 @@
     "useBalances": true,
     "useAccount": true,
     "usePayment": true,
-    "useChangeNetwork": true
+    "useChangeNetwork": true,
+    "useBoost": true
   }
 }

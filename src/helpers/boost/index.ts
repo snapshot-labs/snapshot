@@ -17,9 +17,12 @@ export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
 export const SNAPSHOT_GUARD_ADDRESS =
   '0x06A85356DCb5b307096726FB86A78c59D38e08ee';
 
-export const BOOST_WHITELIST = {
+export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
-  production: ['testsnap.eth', 'fabien.eth']
+  production: {
+    'testsnap.eth': { bribeDisabled: true },
+    'fabien.eth': {}
+  }
 };
 
 export const ETH_FEE = '0.01';

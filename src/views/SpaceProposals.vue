@@ -5,7 +5,6 @@ import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { useInfiniteScroll, watchDebounced } from '@vueuse/core';
 import { getBoosts } from '@/helpers/boost/subgraph';
 import { BoostSubgraph } from '@/helpers/boost/types';
-import { BOOST_WHITELIST } from '@/helpers/boost';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -31,13 +30,13 @@ const boosts = ref<BoostSubgraph[]>([]);
 
 const route = useRoute();
 const router = useRouter();
-const { env } = useApp();
 const { loadBy, loadingMore, stopLoadingMore, loadMore } = useInfiniteLoader();
 const { emitUpdateLastSeenProposal } = useUnseenProposals();
 const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
 const { isFollowing } = useFollowSpace(props.space.id);
+const { isWhitelisted } = useBoost({ spaceId: props.space.id });
 const {
   store,
   userVotedProposalIds,
@@ -88,7 +87,7 @@ async function getProposals(skip = 0) {
 }
 
 async function loadBoosts(proposals: Proposal[]) {
-  if (!BOOST_WHITELIST[env]?.includes(props.space.id)) return;
+  if (!isWhitelisted.value) return;
 
   const alreadyLoadedProposals = boosts.value.map(
     boost => boost.strategy.proposal

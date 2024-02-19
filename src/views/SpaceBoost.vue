@@ -49,6 +49,7 @@ const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
+const { bribeDisabled } = useBoost({ spaceId: props.space.id });
 
 const proposal = ref();
 const createStatus = ref('');
@@ -83,7 +84,8 @@ const eligibilityOptions = computed(() => {
     (choice: string, index: number) => {
       return {
         value: index + 1,
-        name: `Who votes '${choice}'`
+        name: `Who votes '${choice}'`,
+        extras: { disabled: bribeDisabled.value }
       };
     }
   );
