@@ -134,8 +134,12 @@ async function withdraw(boost: BoostSubgraph) {
         { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
       ]"
     >
-      <div class="pr-5">
-        <div class="text-skin-heading flex flex-wrap -mt-1">
+      <div>
+        <div v-if="isOwner" class="flex items-center gap-1 mb-[12px]">
+          <i-s-crown class="text-xs" />
+          Your boost
+        </div>
+        <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
           <div class="whitespace-nowrap mt-1 mr-1">
             <template v-if="boost.strategy.eligibility.choice !== null">
               Who votes
@@ -174,39 +178,37 @@ async function withdraw(boost: BoostSubgraph) {
             </template>
           </div>
         </div>
-        <div class="mt-2 md:flex whitespace-nowrap flex-wrap">
-          <div v-if="isOwner" class="flex items-center gap-1 mb-[2px]">
-            <i-s-crown class="text-xs" />
-            Your boost
-          </div>
-          <span v-if="isOwner" class="hidden md:block px-2 text-lg leading-none"
-            >·</span
+        <div class="mt-[12px]">
+          <div
+            class="bg-boost/5 border w-full border-boost/30 px-[12px] py-2 rounded-xl"
+            :class="[
+              {
+                'border-green/30 bg-green/5 text-green': isClaimedByUser,
+                'border-boost/30 bg-boost/5 text-boost':
+                  isEligible && !isClaimedByUser
+              }
+            ]"
           >
-          <div class="flex items-center gap-1 mb-[2px]">
-            <i-ho-lock-closed class="text-xs" />
-            Secured by Snapshot
-          </div>
-          <span
-            v-if="claimedTransactionHash || isEligible"
-            class="hidden md:block px-2 text-lg leading-none"
-            >·</span
-          >
-          <BaseLink
-            v-if="claimedTransactionHash"
-            hide-external-icon
-            :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
-            class="flex items-center gap-1 text-skin-text hover:text-skin-link"
-          >
-            <i-ho-cash class="text-xs" />
-            Claimed {{ claimedAmount }} {{ boost.token.symbol }}
-          </BaseLink>
-          <div v-else-if="isEligible" class="flex items-center gap-1">
-            <i-ho-fire class="text-xs" />
-            <span v-if="reward || proposal.scores_state === 'final'">
-              Eligible to
-              {{ `${rewardFormatted} ${boost.token.symbol}` }}
-            </span>
-            <span v-else> Eligible to reward </span>
+            <BaseLink
+              v-if="claimedTransactionHash"
+              hide-external-icon
+              :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
+              class="flex items-center gap-1 text-skin-text hover:text-skin-link"
+            >
+              <i-ho-cash class="text-xs" />
+              Claimed {{ claimedAmount }} {{ boost.token.symbol }}
+            </BaseLink>
+            <div
+              v-else-if="isEligible"
+              class="flex items-center justify-center gap-2"
+            >
+              <i-ho-fire class="text-xs" />
+              <span v-if="reward || proposal.scores_state === 'final'">
+                Eligible to
+                {{ `${rewardFormatted} ${boost.token.symbol}` }}
+              </span>
+              <span v-else> Eligible to reward </span>
+            </div>
           </div>
         </div>
       </div>
