@@ -178,37 +178,36 @@ async function withdraw(boost: BoostSubgraph) {
             </template>
           </div>
         </div>
-        <div class="mt-[12px]">
-          <div
-            class="bg-boost/5 border w-full border-boost/30 px-[12px] py-2 rounded-xl"
-            :class="[
-              {
-                'border-green/30 bg-green/5 text-green': isClaimedByUser,
-                'border-boost/30 bg-boost/5 text-boost':
-                  isEligible && !isClaimedByUser
-              }
-            ]"
+        <div
+          v-if="claimedTransactionHash || isEligible"
+          class="bg-boost/5 border w-full border-boost/30 px-[12px] py-2 rounded-xl mt-[12px]"
+          :class="[
+            {
+              'border-green/30 bg-green/5 text-green': isClaimedByUser,
+              'border-boost/30 bg-boost/5 text-boost':
+                isEligible && !isClaimedByUser
+            }
+          ]"
+        >
+          <BaseLink
+            v-if="claimedTransactionHash"
+            hide-external-icon
+            :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
+            class="flex items-center gap-1 text-skin-text hover:text-skin-link"
           >
-            <BaseLink
-              v-if="claimedTransactionHash"
-              hide-external-icon
-              :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
-              class="flex items-center gap-1 text-skin-text hover:text-skin-link"
-            >
-              <i-ho-cash class="text-xs" />
-              Claimed {{ claimedAmount }} {{ boost.token.symbol }}
-            </BaseLink>
-            <div
-              v-else-if="isEligible"
-              class="flex items-center justify-center gap-2"
-            >
-              <i-ho-fire class="text-xs" />
-              <span v-if="reward || proposal.scores_state === 'final'">
-                Eligible to
-                {{ `${rewardFormatted} ${boost.token.symbol}` }}
-              </span>
-              <span v-else> Eligible to reward </span>
-            </div>
+            <i-ho-cash class="text-xs" />
+            Claimed {{ claimedAmount }} {{ boost.token.symbol }}
+          </BaseLink>
+          <div
+            v-else-if="isEligible"
+            class="flex items-center justify-center gap-2"
+          >
+            <i-ho-fire class="text-xs" />
+            <span v-if="reward && proposal.scores_state === 'final'">
+              Eligible to
+              {{ `${rewardFormatted} ${boost.token.symbol}` }}
+            </span>
+            <span v-else> Eligible to reward </span>
           </div>
         </div>
       </div>
