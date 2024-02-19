@@ -437,3 +437,14 @@ export const Status = {
 } as const;
 
 export type Status = keyof typeof Status;
+
+export type SpaceConfigResponse =
+  | {
+      automaticExecution: true;
+    }
+  | {
+      automaticExecution: false;
+      rules: boolean;
+      bondToken: boolean;
+      bondAmount: boolean;
+    };

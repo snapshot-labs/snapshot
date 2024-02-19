@@ -9,6 +9,7 @@ import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 import TenderlySimulation from './components/TransactionBuilder/TenderlySimulation.vue';
+import BotSupportWarning from './components/BotSupportWarning.vue';
 
 const keyOrder = [
   'to',
@@ -107,6 +108,12 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       <div class="flex flex-col items-center gap-3 md:flex-row">
         <SafeLinkWithAvatar :safe="safe" />
       </div>
+
+      <BotSupportWarning
+        :chain-id="safe.network"
+        :safe-address="safe.safeAddress"
+      />
+
       <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
       <div
         v-for="({ type, ...details }, index) in transactionsForDisplay"
