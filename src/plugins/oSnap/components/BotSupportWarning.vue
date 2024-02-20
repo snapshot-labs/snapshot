@@ -29,7 +29,8 @@ watch([props.chainId, props.safeAddress], getConfigStatus);
     <BasePopoverHover v-if="configStatus.automaticExecution">
       <template v-slot:button>
         <span class="text-green">
-          <BaseIcon name="check" :size="'14'" class="mr-1" /> Bot Support
+          <BaseIcon name="check" :size="'14'" class="mr-1" /> Automatic
+          Execution
         </span>
       </template>
       <template v-slot:content>
@@ -47,7 +48,8 @@ watch([props.chainId, props.safeAddress], getConfigStatus);
     <BasePopoverHover v-else>
       <template v-slot:button>
         <span class="text-red">
-          <BaseIcon name="warning" :size="'14'" class="mr-1" /> No Bot Support
+          <BaseIcon name="warning" :size="'14'" class="mr-1" /> Automatic
+          Execution
         </span>
       </template>
       <template v-slot:content>
