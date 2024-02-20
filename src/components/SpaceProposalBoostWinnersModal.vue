@@ -76,7 +76,6 @@ watch(
     <BaseSearch
       v-model="searchInput"
       placeholder="Search by address"
-      focus-on-mount
       modal
       class="!pl-3"
     />

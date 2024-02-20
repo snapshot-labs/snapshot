@@ -230,7 +230,7 @@ async function withdraw(boost: BoostSubgraph) {
               {{ `${rewardFormatted} ${boost.token.symbol}` }}
               <button
                 type="button"
-                class="ml-2 text-skin-link"
+                class="ml-1 text-skin-link"
                 @click="openWinnersModal = true"
               >
                 View winners
