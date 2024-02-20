@@ -1105,7 +1105,8 @@ export const EXPLORER_API_URLS = {
   '246': 'https://explorer.energyweb.org/api',
   '137': 'https://api.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
-  '42161': 'https://api.arbiscan.io/api'
+  '42161': 'https://api.arbiscan.io/api',
+  // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
 } as const;
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
@@ -1116,7 +1117,20 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '246': 'https://safe-transaction-ewc.safe.global/api',
   '137': 'https://safe-transaction-polygon.safe.global/api',
   '56': 'https://safe-transaction-bsc.safe.global/api',
-  '42161': 'https://safe-transaction-arbitrum.safe.global/api'
+  '42161': 'https://safe-transaction-arbitrum.safe.global/api',
+  // '1116': Add when public tx service is available for Core
+} as const;
+
+export const SAFE_APP_URLS = {
+  '1': 'https://app.safe.global/apps/open',
+  '5': 'https://app.safe.global/apps/open',
+  '100': 'https://app.safe.global/apps/open',
+  '73799': 'https://app.safe.global/apps/open',
+  '246': 'https://app.safe.global/apps/open',
+  '137': 'https://app.safe.global/apps/open',
+  '56': 'https://app.safe.global/apps/open',
+  '42161': 'https://app.safe.global/apps/open',
+  '1116': 'https://safe.coredao.org/apps/open'
 } as const;
 
 // ABIs
