@@ -9,12 +9,14 @@ const { modalAccountOpen } = useModal();
 const auth = getInstance();
 
 const loading = ref(false);
+const modalTermsOpen = ref(false);
 
 const termsAccepted = useStorage('snapshot.termsAccepted', false);
 
 async function handleLogin(connector) {
   modalAccountOpen.value = false;
   loading.value = true;
+  termsAccepted.value = true;
   await login(connector);
   loading.value = false;
 }
@@ -66,15 +68,12 @@ watch(
 
   <teleport to="#modal">
     <ModalAccount
-      :open="modalAccountOpen && termsAccepted"
+      :open="modalAccountOpen"
       :profile="profile"
       @close="modalAccountOpen = false"
       @login="handleLogin"
+      @open-terms="modalTermsOpen = true"
     />
   </teleport>
-  <ModalSnapshotTerms
-    :open="modalAccountOpen && !termsAccepted"
-    @close="modalAccountOpen = false"
-    @accept="termsAccepted = true"
-  />
+  <ModalSnapshotTerms :open="modalTermsOpen" @close="modalTermsOpen = false" />
 </template>

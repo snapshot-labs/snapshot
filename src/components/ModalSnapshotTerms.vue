@@ -3,14 +3,12 @@ defineProps<{
   open: boolean;
 }>();
 
-defineEmits(['close', 'accept']);
+defineEmits(['close']);
 </script>
 
 <template>
   <TuneModal size="medium" :open="open" @close="$emit('close')">
-    <TuneModalTitle as="h4" class="flex items-center gap-1 m-3">
-      Term of use
-    </TuneModalTitle>
+    <TuneModalTitle as="h4" class="m-3"> Term of use </TuneModalTitle>
     <div
       class="p-3 pt-0 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
     >
@@ -63,9 +61,6 @@ defineEmits(['close', 'accept']);
     </div>
     <div class="p-3 flex gap-3">
       <TuneButton class="w-full" @click="$emit('close')"> Close </TuneButton>
-      <TuneButton primary class="w-full" @click="$emit('accept')">
-        Accept
-      </TuneButton>
     </div>
   </TuneModal>
 </template>

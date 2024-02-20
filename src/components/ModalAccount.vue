@@ -7,7 +7,7 @@ const props = defineProps<{
   open: boolean;
 }>();
 
-defineEmits(['login', 'close']);
+defineEmits(['login', 'close', 'openTerms']);
 
 const { open } = toRefs(props);
 
@@ -27,14 +27,22 @@ watch(open, () => {
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
-    <template #header>
-      <h3>
-        {{ $t('connectWallet') }}
-      </h3>
-    </template>
+  <TuneModal :open="open" @close="$emit('close')">
+    <TuneModalTitle as="h4" class="mx-3 mt-3">
+      Connect to Snapshot
+    </TuneModalTitle>
+    <TuneModalDescription class="mx-3 pb-3">
+      By continuing you agree to our
+      <button
+        type="button"
+        class="inline-block font-semibold"
+        @click="$emit('openTerms')"
+      >
+        Terms</button
+      >.
+    </TuneModalDescription>
     <div>
-      <div class="m-4 space-y-2">
+      <div class="m-3 space-y-2">
         <div
           v-for="cId in filteredConnectors"
           :key="cId"
@@ -78,5 +86,5 @@ watch(open, () => {
         </TuneButton>
       </div>
     </div>
-  </BaseModal>
+  </TuneModal>
 </template>
