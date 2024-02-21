@@ -55,7 +55,7 @@ const handleInput = () => {
   <UiInput
     v-model="input"
     :disabled="disabled"
-    :error="$props.error ?? (error || '')"
+    :error="props.error ?? (error || '')"
     @input="handleInput()"
     @blur="dirty = true"
   >
