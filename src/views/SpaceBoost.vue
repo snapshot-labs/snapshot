@@ -20,6 +20,19 @@ import { sendApprovalTransaction } from '@/helpers/transaction';
 import { pinGraph } from '@/helpers/pin';
 import { BoostStrategy } from '@/helpers/boost/types';
 
+const DISTRIBUTION_TYPE_ITEMS = [
+  {
+    value: 'lottery' as const,
+    name: 'Lottery',
+    description: 'Randomly selected based on voting power.'
+  },
+  {
+    value: 'weighted' as const,
+    name: 'Distributed',
+    description: 'Distributed to voters based on voting power.'
+  }
+];
+
 const props = defineProps<{
   space: ExtendedSpace;
 }>();
@@ -63,7 +76,7 @@ const form = ref<Form>({
     choice: 'any'
   },
   distribution: {
-    type: 'weighted',
+    type: 'lottery',
     hasRatioLimit: false,
     ratioLimit: '',
     numWinners: ''
@@ -564,6 +577,7 @@ watch(
                 <div class="text-skin-heading">
                   {{ tokenFee }}
                   {{ selectedToken?.symbol }}
+                  ({{ TOKEN_FEE_PERCENTAGE }}%)
                 </div>
               </div>
               <div class="flex justify-between">
@@ -583,20 +597,28 @@ watch(
               />
             </template>
             <div class="space-y-2">
-              <TuneListbox
-                v-model="form.distribution.type"
-                :items="[
-                  {
-                    value: 'weighted',
-                    name: 'Distributed based on voting power'
-                  },
-                  {
-                    value: 'lottery',
-                    name: 'Lottery based on voting power'
-                  }
-                ]"
-                label="Distribution type"
-              />
+              <div class="flex gap-[12px]">
+                <div
+                  v-for="item in DISTRIBUTION_TYPE_ITEMS"
+                  :key="item.value"
+                  class="rounded-xl p-3 cursor-pointer border w-1/2"
+                  :class="{
+                    'border-skin-link': form.distribution.type === item.value
+                  }"
+                  @click="form.distribution.type = item.value"
+                >
+                  <div
+                    class="flex justify-between font-semibold text-skin-heading"
+                  >
+                    {{ item.name }}
+                    <i-ho-check v-if="form.distribution.type === item.value" />
+                  </div>
+                  <div class="leading-[18px] pr-4">
+                    {{ item.description }}
+                  </div>
+                </div>
+              </div>
+
               <TuneSwitch
                 v-if="form.distribution.type === 'weighted'"
                 v-model="form.distribution.hasRatioLimit"
