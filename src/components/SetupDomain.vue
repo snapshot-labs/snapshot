@@ -1,32 +1,28 @@
 <script setup lang="ts">
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { useTippy } from 'vue-tippy';
 import { shorten } from '@/helpers/utils';
 
 const { env } = useApp();
+const { t } = useI18n();
 
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
 
 const { web3Account } = useWeb3();
 const { loadOwnedEnsDomains, ownedEnsDomains } = useEns();
-const {
-  loadSpaces,
-  spaces,
-  isLoadingSpaces,
-  isLoadingDeletedSpaces,
-  getDeletedSpaces
-} = useSpaces();
+const { loadSpaces, spaces, getDeletedSpaces } = useSpaces();
 
 const inputDomain = ref('');
-const loadingOwnedEnsDomains = ref(false);
+const isLoading = ref(false);
 const deletedSpaces = ref<string[]>([]);
+const refEnsUnavailableTooltip = ref<Record<string, any>>({});
 
 watch(
   web3Account,
   async () => {
     ownedEnsDomains.value = [];
-    loadingOwnedEnsDomains.value = true;
+    isLoading.value = true;
     await loadOwnedEnsDomains(web3Account.value);
-    loadingOwnedEnsDomains.value = false;
 
     const ids = ownedEnsDomains.value.map(d => d.name);
     if (ids.length) {
@@ -36,9 +32,24 @@ watch(
         ids.filter(id => !spaceIds.includes(id))
       );
     }
+    isLoading.value = false;
   },
   { immediate: true }
 );
+
+const triggerEnsUnavailableTooltip = (key: string, error_code: string) => {
+  const text =
+    error_code === 'deleted-space'
+      ? 'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space. <a target="_blank" href="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name">Learn more.</a>'
+      : t('setup.domain.invalidEns');
+
+  useTippy(refEnsUnavailableTooltip.value[key], {
+    content: text,
+    interactive: true,
+    allowHTML: true,
+    theme: 'urlified'
+  });
+};
 
 const availableDomains = computed(() => {
   const spaceIds = spaces.value.map(space => space.id);
@@ -84,10 +95,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
 
 <template>
   <div>
-    <LoadingRow
-      v-if="loadingOwnedEnsDomains || isLoadingSpaces || isLoadingDeletedSpaces"
-      block
-    />
+    <LoadingRow v-if="isLoading" block />
     <div v-else>
       <h4 class="mb-2 px-4 md:px-0">{{ $t('setup.domain.title') }}</h4>
       <BaseMessageBlock
@@ -165,23 +173,47 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                     class="flex w-full items-center justify-between hover:cursor-default hover:border-skin-border"
                   >
                     {{ ens.name }}
-                    <i-ho-exclamation-circle
-                      v-tippy="{
-                        content:
-                          'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space.'
-                      }"
-                      class="text-red -mr-2"
-                    />
+                    <div
+                      @mouseenter="
+                        triggerEnsUnavailableTooltip(ens.name, 'deleted-space')
+                      "
+                      @focus="
+                        triggerEnsUnavailableTooltip(ens.name, 'deleted-space')
+                      "
+                    >
+                      <div :ref="v => (refEnsUnavailableTooltip[ens.name] = v)">
+                        <i-ho-exclamation-circle
+                          class="text-red -mr-2 cursor-help"
+                        />
+                      </div>
+                    </div>
                   </TuneButton>
                 </template>
 
                 <template v-else-if="ens.isInvalid">
                   <TuneButton class="flex w-full items-center justify-between">
                     {{ shortenInvalidEns(ens.name) }}
-                    <i-ho-exclamation-circle
-                      v-tippy="{ content: $t('setup.domain.invalidEns') }"
-                      class="-mr-2 text-red"
-                    />
+
+                    <div
+                      @mouseenter="
+                        triggerEnsUnavailableTooltip(ens.name, 'invalid-ens')
+                      "
+                      @focus="
+                        triggerEnsUnavailableTooltip(ens.name, 'invalid-ens')
+                      "
+                    >
+                      <div
+                        :ref="
+                          v => {
+                            refEnsUnavailableTooltip[ens.name] = v;
+                          }
+                        "
+                      >
+                        <i-ho-exclamation-circle
+                          class="-mr-2 text-red cursor-help"
+                        />
+                      </div>
+                    </div>
                   </TuneButton>
                 </template>
               </template>
