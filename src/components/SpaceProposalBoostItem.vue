@@ -118,6 +118,10 @@ const isLottery = computed(() => {
   return props.boost.strategy.distribution.type === 'lottery';
 });
 
+const lotteryNoRewardFinal = computed(() => {
+  return isLottery.value && !props.reward && isFinal.value;
+});
+
 async function withdraw(boost: BoostSubgraph) {
   try {
     const tx = await withdrawAndBurn(
@@ -139,7 +143,10 @@ async function withdraw(boost: BoostSubgraph) {
     <div
       class="border border-[--border-color-soft] rounded-xl p-[12px] flex justify-between relative"
       :class="[
-        { 'border-boost/40 bg-boost/5': isEligible && !isClaimedByUser },
+        {
+          'border-boost/40 bg-boost/5':
+            isEligible && !isClaimedByUser && !lotteryNoRewardFinal
+        },
         { 'border-green/30 bg-green/5': isClaimedByUser },
         { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
       ]"
@@ -187,12 +194,12 @@ async function withdraw(boost: BoostSubgraph) {
         </div>
         <div
           v-if="claimedTransactionHash || isEligible"
-          class="bg-boost/5 border w-full border-boost/30 px-[12px] py-2 rounded-xl mt-[12px]"
+          class="border w-full bg-[--border-color-faint] px-[12px] py-2 rounded-xl mt-[12px]"
           :class="[
             {
-              'border-green/30 bg-green/5 text-green': isClaimedByUser,
               'border-boost/30 bg-boost/5 text-boost':
-                isEligible && !isClaimedByUser
+                isEligible && !isClaimedByUser && !lotteryNoRewardFinal,
+              'border-green/30 bg-green/5 text-green': isClaimedByUser
             }
           ]"
         >
@@ -210,7 +217,7 @@ async function withdraw(boost: BoostSubgraph) {
             class="flex items-center justify-center gap-2"
           >
             <i-ho-emoji-sad class="text-sm" />
-
+            Oops, you didn't win this time!
             <button
               type="button"
               class="text-skin-link"
