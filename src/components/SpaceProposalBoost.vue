@@ -190,8 +190,8 @@ watch(
       loadClaims(),
       loadUserVote(web3Account.value)
     ]);
+    await loadRewards();
     loaded.value = true;
-    loadRewards();
   },
   { immediate: true, deep: true }
 );
