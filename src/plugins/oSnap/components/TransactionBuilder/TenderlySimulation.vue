@@ -131,7 +131,7 @@ async function simulate() {
         }
       ]"
     >
-      <IconTenderly class="text-skin-link inline h-[20px] w-[20px]" />
+      <i-s-tenderly class="text-skin-link inline h-[20px] w-[20px]" />
       <span v-if="simulationState.status === 'IDLE'">Simulate Transaction</span>
       <span v-if="simulationState.status === 'LOADING'"
         >Checking transaction...</span
@@ -156,7 +156,7 @@ async function simulate() {
         ]"
       >
         <div class="flex items-center gap-2">
-          <IconTenderly class="inline h-[20px] w-[20px] text-inherit" />
+          <i-s-tenderly class="inline h-[20px] w-[20px] text-inherit" />
           <span v-if="simulationState.status === 'SUCCESS'">Success!</span>
           <span v-if="simulationState.status === 'FAIL'"
             >Transaction failed!</span
