@@ -150,7 +150,8 @@ export function createContractInteractionTransaction(params: {
       formatted,
       isValid: true
     };
-  } catch {
+  } catch (error) {
+    console.error(error);
     throw new Error('Invalid function parameters');
   }
 }

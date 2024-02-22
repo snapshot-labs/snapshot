@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { FunctionFragment } from '@ethersproject/abi';
 import { isAddress } from '@ethersproject/address';
+import { asyncComputed, useDebounceFn } from '@vueuse/core';
 
-import { ContractInteractionTransaction, Network } from '../../types';
+import { ContractInteractionTransaction, Network, Status } from '../../types';
 import {
+  checkIsContract,
   createContractInteractionTransaction,
+  fetchImplementationAddress,
   getABIWriteFunctions,
   getContractABI,
   parseValueInput
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import MethodParameterInput from '../Input/MethodParameter.vue';
+import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   network: Network;
@@ -22,12 +26,26 @@ const emit = defineEmits<{
   updateTransaction: [transaction: ContractInteractionTransaction];
 }>();
 
-const to = ref(props.transaction.to ?? '');
+const to = ref('');
+
+const isToContract = asyncComputed(() => {
+  if (!isAddress(to.value)) {
+    return true;
+  }
+  return checkIsContract(to.value, props.network);
+}, true);
+
 const isToValid = computed(() => {
   return to.value !== '' && isAddress(to.value);
 });
-const abi = ref(props.transaction.abi ?? '');
+
+const abi = ref('');
+const abiFetchStatus = ref<Status>(Status.IDLE);
+const implementationAddress = ref('');
+const showAbiChoiceModal = ref(false);
+
 const isAbiValid = ref(true);
+const abiError = ref<string>();
 const value = ref(props.transaction.value ?? '0');
 const isValueValid = ref(true);
 const methods = ref<FunctionFragment[]>([]);
@@ -60,8 +78,17 @@ function updateTransaction() {
       parameters: parameters.value
     });
     emit('updateTransaction', transaction);
-  } catch {
+  } catch (error) {
+    console.error(error);
     props.setTransactionAsInvalid();
+  }
+}
+
+async function handleFail() {
+  abiFetchStatus.value = Status.FAIL;
+  await sleep(3000);
+  if (abiFetchStatus.value === Status.FAIL) {
+    abiFetchStatus.value = Status.IDLE;
   }
 }
 
@@ -75,22 +102,80 @@ function updateMethod(methodName: string) {
 }
 
 function updateAbi(newAbi: string) {
-  abi.value = newAbi;
-  methods.value = [];
+  if (newAbi === abi.value) {
+    return;
+  }
   try {
+    abi.value = newAbi;
     methods.value = getABIWriteFunctions(abi.value);
     isAbiValid.value = true;
     updateMethod(methods.value[0].name);
+    parameters.value = [];
   } catch (error) {
-    isAbiValid.value = false;
-    console.warn('error extracting useful methods', error);
+    handleFail();
+    abiError.value = 'Error extracting write methods.';
   }
 }
 
-async function updateAddress() {
-  const result = await getContractABI(props.network, to.value);
-  if (result && result !== abi.value) {
-    updateAbi(result);
+const debouncedUpdateAddress = useDebounceFn(() => {
+  if (isAddress(to.value)) {
+    fetchABI();
+  }
+}, 300);
+
+async function handleUseProxyAbi() {
+  showAbiChoiceModal.value = false;
+  try {
+    const res = await getContractABI(props.network, to.value);
+    if (!res) {
+      throw new Error('Failed to fetch ABI.');
+    }
+    updateAbi(res);
+    abiFetchStatus.value = Status.SUCCESS;
+  } catch (error) {
+    handleFail();
+    console.error(error);
+  }
+}
+
+async function handleUseImplementationAbi() {
+  showAbiChoiceModal.value = false;
+  try {
+    if (!implementationAddress.value) {
+      throw new Error('No Implementation address');
+    }
+    const res = await getContractABI(
+      props.network,
+      implementationAddress.value
+    );
+    if (!res) {
+      throw new Error('Failed to fetch ABI.');
+    }
+    abiFetchStatus.value = Status.SUCCESS;
+    updateAbi(res);
+  } catch (error) {
+    handleFail();
+    console.error(error);
+  }
+}
+
+async function fetchABI() {
+  try {
+    abiFetchStatus.value = Status.LOADING;
+    if (!isToContract.value) {
+      throw new Error('Address provided is not a contract on this network');
+    }
+    const res = await fetchImplementationAddress(to.value, props.network);
+    if (!res) {
+      handleUseProxyAbi();
+      return;
+    }
+    // if proxy, let user decide which ABI we should fetch
+    implementationAddress.value = res;
+    showAbiChoiceModal.value = true;
+  } catch (error) {
+    handleFail();
+    console.error(error);
   }
 }
 
@@ -111,6 +196,11 @@ watch(abi, updateTransaction);
 watch(selectedMethodName, updateTransaction);
 watch(selectedMethod, updateTransaction);
 watch(parameters, updateTransaction, { deep: true });
+
+function handleDismissModal() {
+  abiFetchStatus.value = Status.IDLE;
+  showAbiChoiceModal.value = false;
+}
 </script>
 
 <template>
@@ -118,7 +208,10 @@ watch(parameters, updateTransaction, { deep: true });
     <AddressInput
       v-model="to"
       :label="$t('safeSnap.to')"
-      @update:model-value="updateAddress()"
+      :disabled="abiFetchStatus === Status.LOADING"
+      :error="!isToContract ? 'Not Contract address' : undefined"
+      :network="network"
+      @update:model-value="debouncedUpdateAddress()"
     />
 
     <UiInput
@@ -130,12 +223,28 @@ watch(parameters, updateTransaction, { deep: true });
     </UiInput>
 
     <UiInput
-      :error="!isAbiValid && $t('safeSnap.invalidAbi')"
+      :disabled="abiFetchStatus === Status.LOADING"
+      :error="!isAbiValid && (abiError ?? $t('safeSnap.invalidAbi'))"
       :model-value="abi"
       @update:model-value="updateAbi($event)"
     >
       <template #label>ABI</template>
     </UiInput>
+    <div
+      v-if="abiFetchStatus === Status.LOADING"
+      class="flex items-center justify-start gap-2 p-2"
+    >
+      <LoadingSpinner />
+      <p>Fetching ABI...</p>
+    </div>
+
+    <div
+      v-if="abiFetchStatus === Status.FAIL"
+      class="flex items-center justify-start gap-2 p-2 text-red"
+    >
+      <BaseIcon name="warning" class="text-inherit" />
+      <p>Failed to fetch ABI</p>
+    </div>
 
     <div v-if="methods.length">
       <UiSelect v-model="selectedMethodName" @change="updateMethod($event)">
@@ -161,4 +270,22 @@ watch(parameters, updateTransaction, { deep: true });
       </div>
     </div>
   </div>
+
+  <BaseModal :open="showAbiChoiceModal" @close="handleDismissModal">
+    <template #header>
+      <h3 class="text-left px-3">Use Implementation ABI?</h3>
+    </template>
+    <div class="flex flex-col gap-4 p-3">
+      <p class="pr-8">
+        This contract looks like a proxy. Would you like to use the
+        implementation ABI?
+      </p>
+      <div class="flex gap-2 justify-center">
+        <TuneButton @click="handleUseProxyAbi"> Keep proxy ABI </TuneButton>
+        <TuneButton @click="handleUseImplementationAbi">
+          Use Implementation ABI
+        </TuneButton>
+      </div>
+    </div>
+  </BaseModal>
 </template>

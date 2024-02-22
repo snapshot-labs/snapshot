@@ -8,6 +8,7 @@ import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
+import TenderlySimulation from './components/TransactionBuilder/TenderlySimulation.vue';
 
 const keyOrder = [
   'to',
@@ -59,9 +60,11 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       ...commonProperties,
       type: 'Contract interaction',
       'method name': method.name,
-      ...Object.fromEntries(method.inputs.map((input,i)=>{
-        return [`${input.name} (param ${i+1}): `,parameters[i]]
-      }))
+      ...Object.fromEntries(
+        method.inputs.map((input, i) => {
+          return [`${input.name} (param ${i + 1}): `, parameters[i]];
+        })
+      )
     };
   }
   if (transaction.type === 'transferFunds') {
@@ -97,7 +100,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 <template>
   <template v-if="safe.transactions.length > 0">
     <div
-      class="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-3 md:p-4 relative"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
     >
       <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
       <h2 class="text-lg">oSnap Transactions</h2>
@@ -119,6 +122,12 @@ function enrichTransactionForDisplay(transaction: Transaction) {
           <span class="break-all">{{ value }}</span>
         </ReadOnly>
       </div>
+
+      <TenderlySimulation
+        :transactions="safe.transactions"
+        :safe="safe"
+        :network="safe.network"
+      />
 
       <HandleOutcome
         v-if="!!results"

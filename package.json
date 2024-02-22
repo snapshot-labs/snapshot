@@ -50,6 +50,7 @@
     "@vueuse/head": "^2.0.0",
     "autolinker": "^4.0.0",
     "bluebird": "^3.7.2",
+    "evm-proxy-detection": "^1.2.0",
     "graphql": "16.6.0",
     "graphql-tag": "^2.12.6",
     "js-sha256": "^0.10.1",
