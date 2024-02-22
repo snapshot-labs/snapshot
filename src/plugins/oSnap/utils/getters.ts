@@ -31,6 +31,7 @@ import {
   OptimisticGovernorTransaction,
   ProposalExecutedEvent,
   SafeNetworkPrefix,
+  SpaceConfigResponse,
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
@@ -766,4 +767,18 @@ export async function fetchImplementationAddress(
   } catch (error) {
     console.error(error);
   }
+}
+
+/**
+ * Check if a space's deployed (on-chain) settings are supported by oSnap bots for auto execution
+ */
+export async function isConfigCompliant(safeAddress: string, chainId: string) {
+  const res = await fetch(
+    `https://osnap.uma.xyz/api/space-config?address=${safeAddress}&chainId=${chainId}`
+  );
+  if (!res.ok) {
+    throw new Error('Unable to fetch setting status');
+  }
+  const data = await res.json();
+  return data as unknown as SpaceConfigResponse;
 }
