@@ -34,7 +34,7 @@ const selectedTokenAddress = ref<Token['address']>(
 const selectedToken = computed(
   () =>
     tokens.value.find(token => token.address === selectedTokenAddress.value) ??
-    tokens.value.find(token => !token.address) ??
+    tokens.value.find(token => token.address === 'main') ??
     tokens.value[0]
 );
 
