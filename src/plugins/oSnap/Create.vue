@@ -200,8 +200,9 @@ const update = (newPluginData: OsnapPluginData) => {
   emit('update', { key: 'oSnap', form: newPluginData });
 };
 
-watch(newPluginData, async () => {
+async function loadBalancesAndCollectibles() {
   if (!newPluginData.value.safe?.safeAddress) return;
+  isLoading.value = true;
   tokens.value = await fetchBalances(
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
@@ -210,20 +211,26 @@ watch(newPluginData, async () => {
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
   );
-});
+
+  isLoading.value = false;
+}
+
+watch(
+  () => [
+    newPluginData.value.safe?.safeAddress,
+    newPluginData.value.safe?.network
+  ],
+  async () => {
+    await loadBalancesAndCollectibles();
+    update(newPluginData.value);
+  }
+);
 
 onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();
   newPluginData.value.safe = cloneDeep(safes.value[0]);
-  tokens.value = await fetchBalances(
-    newPluginData.value.safe.network,
-    newPluginData.value.safe.safeAddress
-  );
-  collectables.value = await fetchCollectibles(
-    newPluginData.value.safe.network,
-    newPluginData.value.safe.safeAddress
-  );
+  await loadBalancesAndCollectibles();
   update(newPluginData.value);
   isLoading.value = false;
 });
