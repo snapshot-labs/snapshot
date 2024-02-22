@@ -112,9 +112,13 @@ function enhanceTokensWithBalances(
     )
     .map(balance => enhanceTokenWithBalance(balance, tokens, network))
     .sort((a, b) => {
-      if (a.verified && b.verified) return 0;
-      if (a.verified) return -1;
-      return 1;
+      if (a.address === 'main' && b.address !== 'main') return -1;
+      if (!(a.address === 'main') && b.address === 'main') return 1;
+      if (a.verified && !b.verified) return -1;
+      if (!a.verified && b.verified) return +1;
+      if (!a.balance || !b.balance) return 0;
+      if (parseFloat(a.balance) > parseFloat(b.balance)) return -1;
+      return 0;
     });
 }
 
