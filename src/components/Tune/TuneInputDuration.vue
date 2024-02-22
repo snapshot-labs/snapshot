@@ -3,6 +3,7 @@ interface DurationInputProps {
   modelValue: number;
   label?: string;
   hint?: string;
+  error?: string;
   definition?: any;
   hideDay?: boolean;
   hideMinutes?: boolean;
@@ -75,6 +76,16 @@ const inputRef = ref<any[]>([]);
 function addRef(ref: any) {
   inputRef.value.push(ref);
 }
+
+const showErrorMessage = ref(false);
+
+function forceShowError() {
+  showErrorMessage.value = true;
+}
+
+defineExpose({
+  forceShowError
+});
 </script>
 
 <template>
@@ -86,6 +97,7 @@ function addRef(ref: any) {
       :class="[
         'tune-input-duration inline-flex overflow-hidden',
         { 'w-full': block },
+        { 'tune-error-border': error && showErrorMessage },
         { disabled: disabled }
       ]"
       @click="inputRef?.[0].focus()"
@@ -111,6 +123,8 @@ function addRef(ref: any) {
                 ($event.target as HTMLInputElement)?.valueAsNumber
               )
             "
+            @blur="error ? (showErrorMessage = true) : null"
+            @focus="error ? null : (showErrorMessage = false)"
           />
           <span class="tune-input-duration-label">
             {{ item.label }}
@@ -118,6 +132,7 @@ function addRef(ref: any) {
         </div>
       </template>
     </div>
+    <TuneErrorInput v-if="error && showErrorMessage" :error="error" />
   </div>
 </template>
 
