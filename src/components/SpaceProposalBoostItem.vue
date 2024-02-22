@@ -157,7 +157,7 @@ async function withdraw(boost: BoostSubgraph) {
           Your boost
         </div>
         <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
-          <div class="whitespace-nowrap mt-1 mr-1">
+          <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
             <template v-if="boost.strategy.eligibility.choice !== null">
               Who votes
               <TuneTag
@@ -166,29 +166,35 @@ async function withdraw(boost: BoostSubgraph) {
                     Number(boost.strategy.eligibility.choice) - 1
                   ]
                 "
-                class="text-skin-heading"
+                class="text-skin-heading ml-1"
               />
             </template>
             <template v-else> Anyone who votes </template>
           </div>
           <div
             v-if="boost.strategy.distribution.type === 'weighted'"
-            class="whitespace-nowrap mt-1 mr-1"
+            class="whitespace-nowrap mt-1 mr-1 flex items-center"
           >
             shares a pool of
             <TuneTag
               :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
-              class="text-skin-heading"
+              class="text-skin-heading ml-1"
             />
           </div>
-          <div v-else-if="isLottery" class="mt-1">
-            has a chance to win
-            <TuneTag :label="amountPerWinner" class="text-skin-heading" />
+          <div v-else-if="isLottery" class="mt-1 flex items-center">
+            can win
+            <TuneTag
+              v-tippy="{
+                content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power.`
+              }"
+              :label="amountPerWinner"
+              class="text-skin-heading ml-1 cursor-help"
+            />
           </div>
-          <div class="whitespace-nowrap mt-1">
+          <div class="whitespace-nowrap mt-1 flex items-center">
             <template v-if="boost.strategy.distribution.type === 'weighted'">
               based on
-              <TuneTag label="Voting power" class="text-skin-heading" />
+              <TuneTag label="Voting power" class="text-skin-heading ml-1" />
             </template>
           </div>
         </div>
