@@ -55,7 +55,7 @@ async function callGnosisSafeTransactionApi<TResult = any>(
  */
 export const getGnosisSafeBalances = memoize(
   (network: Network, safeAddress: string) => {
-    const endpointPath = `/v1/safes/${safeAddress}/balances/`;
+    const endpointPath = `/v1/safes/${safeAddress}/balances?exclude_spam=true`;
     return callGnosisSafeTransactionApi<Partial<BalanceResponse>[]>(
       network,
       endpointPath

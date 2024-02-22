@@ -23,10 +23,9 @@ const emit = defineEmits<{
   updateTransaction: [transaction: TransferFundsTransaction];
 }>();
 
-const nativeAsset = getNativeAsset(props.network);
 const amount = ref(props.transaction.amount ?? '');
 const recipient = ref(props.transaction.recipient ?? '');
-const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
+const tokens = ref<Token[]>(props.tokens);
 
 const selectedTokenAddress = ref<Token['address']>(
   props.transaction?.token?.address ?? 'main'
@@ -35,7 +34,8 @@ const selectedTokenAddress = ref<Token['address']>(
 const selectedToken = computed(
   () =>
     tokens.value.find(token => token.address === selectedTokenAddress.value) ??
-    nativeAsset
+    tokens.value.find(token => !token.address) ??
+    tokens.value[0]
 );
 
 const isTokenModalOpen = ref(false);
