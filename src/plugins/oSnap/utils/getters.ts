@@ -9,6 +9,7 @@ import { toUtf8Bytes } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import memoize from 'lodash/memoize';
+import detectProxyTarget from 'evm-proxy-detection';
 import {
   ERC20_ABI,
   GNOSIS_SAFE_TRANSACTION_API_URLS,
@@ -30,6 +31,7 @@ import {
   OptimisticGovernorTransaction,
   ProposalExecutedEvent,
   SafeNetworkPrefix,
+  SpaceConfigResponse,
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
@@ -752,4 +754,31 @@ export function getOracleUiLink(
     return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
   return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
+}
+
+export async function fetchImplementationAddress(
+  proxyAddress: string,
+  network: string
+): Promise<string | undefined> {
+  try {
+    const provider = getProvider(network);
+    const requestFunc = ({ method, params }) => provider.send(method, params);
+    return (await detectProxyTarget(proxyAddress, requestFunc)) ?? undefined;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Check if a space's deployed (on-chain) settings are supported by oSnap bots for auto execution
+ */
+export async function isConfigCompliant(safeAddress: string, chainId: string) {
+  const res = await fetch(
+    `https://osnap.uma.xyz/api/space-config?address=${safeAddress}&chainId=${chainId}`
+  );
+  if (!res.ok) {
+    throw new Error('Unable to fetch setting status');
+  }
+  const data = await res.json();
+  return data as unknown as SpaceConfigResponse;
 }
