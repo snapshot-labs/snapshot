@@ -93,5 +93,8 @@ watch(
         </div>
       </template>
     </div>
+    <div class="p-3">
+      <TuneButton class="w-full" @click="$emit('close')"> Close </TuneButton>
+    </div>
   </TuneModal>
 </template>
