@@ -310,6 +310,8 @@ const formValidation = computed(() => {
       errors.numWinners = 'Please enter a value';
     } else if (Number(form.value.distribution.numWinners) === 0) {
       errors.numWinners = 'Please enter a value greater than 0';
+    } else if (Number(form.value.distribution.numWinners) > 1e7) {
+      errors.numWinners = 'Please enter a value less than 10,000,000';
     }
   }
 
