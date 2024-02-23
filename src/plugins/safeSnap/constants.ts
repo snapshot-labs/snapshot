@@ -18,7 +18,8 @@ export const EIP3770_PREFIXES = {
   246: 'ewt',
   73799: 'vt',
   42161: 'arb1',
-  137: 'matic'
+  137: 'matic',
+  1116: 'core'
 };
 
 export const EXPLORER_API_URLS = {
@@ -29,7 +30,8 @@ export const EXPLORER_API_URLS = {
   '246': 'https://explorer.energyweb.org/api',
   '137': 'https://api.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
-  '42161': 'https://api.arbiscan.io/api'
+  '42161': 'https://api.arbiscan.io/api',
+  // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
@@ -40,7 +42,8 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '246': 'https://safe-transaction-ewc.safe.global/api',
   '137': 'https://safe-transaction-polygon.safe.global/api',
   '56': 'https://safe-transaction-bsc.safe.global/api',
-  '42161': 'https://safe-transaction-arbitrum.safe.global/api'
+  '42161': 'https://safe-transaction-arbitrum.safe.global/api',
+  // '1116': // Add when public tx service is available for Core
 };
 
 // ABIs
@@ -348,6 +351,7 @@ export const MULTI_SEND_V1_3_0 = {
   '288': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
   '588': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
   '1088': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
+  '1116': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '1285': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '1287': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '4002': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
@@ -461,6 +465,15 @@ export const contractData: ContractData[] = [
     deployBlock: 27816737
   },
   {
+    // core
+    network: '43114',
+    name: 'OptimisticOracleV3',
+    address: '0xD84ACa67d683aF7702705141b3C7E57e4e5e7726',
+    subgraph:
+      'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-oracle-v3',
+    deployBlock: 11341063
+  },
+  {
     // mainnet
     network: '1',
     name: 'OptimisticGovernor',
@@ -523,5 +536,14 @@ export const contractData: ContractData[] = [
     deployBlock: 28050250,
     subgraph:
       'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-governor'
+  },
+  {
+    // core
+    network: '1116',
+    name: 'OptimisticGovernor',
+    address: '0x596Fd6A5A185c67aBD1c845b39f593fBA9C233aa',
+    deployBlock: 11341122,
+    subgraph:
+      'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
   }
 ];
