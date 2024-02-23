@@ -145,7 +145,7 @@ async function withdraw(boost: BoostSubgraph) {
       :class="[
         {
           'border-boost/40 bg-boost/5':
-            isEligible && !isClaimedByUser && !lotteryNoRewardFinal
+            !isClaimedByUser && !lotteryNoRewardFinal
         },
         { 'border-green/30 bg-green/5': isClaimedByUser },
         { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
@@ -220,7 +220,7 @@ async function withdraw(boost: BoostSubgraph) {
           </BaseLink>
           <div
             v-else-if="!reward && isFinal"
-            class="flex items-center justify-center gap-2"
+            class="flex flex-wrap items-center justify-center gap-x-2"
           >
             <i-ho-emoji-sad class="text-sm" />
             Oops, you didn't win this time!
