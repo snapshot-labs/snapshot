@@ -211,7 +211,6 @@ async function withdraw(boost: BoostSubgraph) {
         >
           <BaseLink
             v-if="claimedTransactionHash"
-            hide-external-icon
             :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
             class="flex items-center gap-1 text-green hover:text-skin-link justify-center"
           >
@@ -242,6 +241,7 @@ async function withdraw(boost: BoostSubgraph) {
               <span v-else> Eligible to </span>
               {{ `${rewardFormatted} ${boost.token.symbol}` }}
               <button
+                v-if="isLottery"
                 type="button"
                 class="ml-1 text-skin-link"
                 @click="openWinnersModal = true"
@@ -259,6 +259,8 @@ async function withdraw(boost: BoostSubgraph) {
       <SpaceProposalBoostItemMenu
         :boost="boost"
         :claimed-transaction-hash="claimedTransactionHash"
+        :lottery-and-final="isLottery && isFinal"
+        @open-winners-modal="openWinnersModal = true"
       />
     </div>
     <div
