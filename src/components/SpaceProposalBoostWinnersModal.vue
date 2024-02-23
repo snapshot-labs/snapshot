@@ -12,11 +12,12 @@ defineEmits(['close']);
 
 const { web3Account } = useWeb3();
 const { formatNumber, getNumberFormatter } = useIntl();
-const searchInput = ref('');
-const loading = ref(false);
+const { loadProfiles, profiles } = useProfiles();
 
 const winners = ref();
 const prize = ref();
+const searchInput = ref('');
+const loading = ref(false);
 
 const formattedPrize = computed(() => {
   if (!prize.value) return '0';
@@ -61,6 +62,15 @@ watch(
     }
   }
 );
+
+watch(
+  winners,
+  () => {
+    if (!winners.value) return;
+    loadProfiles(winners.value);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -86,7 +96,7 @@ watch(
       <template v-else>
         <div v-for="winner in sortedWinners" :key="winner.id">
           <div class="flex justify-between">
-            <BaseUser :address="winner" />
+            <BaseUser :address="winner" :profile="profiles[winner]" />
             {{ formattedPrize }}
             {{ props.boost.token.symbol }}
           </div>
