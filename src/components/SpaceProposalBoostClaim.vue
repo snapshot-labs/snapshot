@@ -68,7 +68,7 @@ const unclaimedBoostsWithReward = computed(() => {
   return props.eligibleBoosts
     .filter(boost => {
       const hasClaimed = props.claims.some(
-        claim => claim.boost.id === boost.id
+        claim => claim.boost.id === boost.id && claim.chainId === boost.chainId
       );
       return !hasClaimed;
     })

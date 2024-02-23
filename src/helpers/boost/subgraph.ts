@@ -8,22 +8,37 @@ const SUBGRAPH_URLS = {
     'https://api.studio.thegraph.com/query/23545/boost-sepolia/version/latest'
 };
 
-export function getClaims(recipient: string, chainId: string) {
-  return subgraphRequest(SUBGRAPH_URLS[chainId], {
-    claims: {
-      __args: {
-        where: {
-          recipient
+export async function getClaims(recipient: string) {
+  async function query(chainId: string) {
+    const data = await subgraphRequest(SUBGRAPH_URLS[chainId], {
+      claims: {
+        __args: {
+          where: {
+            recipient
+          }
+        },
+        id: true,
+        amount: true,
+        transactionHash: true,
+        boost: {
+          id: true
         }
-      },
-      id: true,
-      amount: true,
-      transactionHash: true,
-      boost: {
-        id: true
       }
+    });
+
+    if (data && data.claims) {
+      data.claims = data.claims.map(claim => ({
+        ...claim,
+        chainId
+      }));
     }
-  });
+    return data;
+  }
+
+  const requests = SUPPORTED_NETWORKS.map(chainId => query(chainId));
+  const responses = await Promise.all(requests);
+
+  return responses.map(response => response.claims).flat();
 }
 
 export async function getBoosts(proposalIds: string[]) {

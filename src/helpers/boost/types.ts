@@ -2,6 +2,7 @@ export type BoostClaimSubgraph = {
   id: string;
   amount: string;
   transactionHash: string;
+  chainId: string;
   boost: {
     id: string;
   };

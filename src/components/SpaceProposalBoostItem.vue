@@ -41,10 +41,13 @@ const isFinal = computed(() => {
   return props.proposal.scores_state === 'final';
 });
 
-const isClaimedByUser = computed(() => {
+const hasClaimed = computed(() => {
   if (!props.claims?.length) return false;
 
-  return props.claims.some(claim => claim.boost.id === props.boost.id);
+  return props.claims.some(
+    claim =>
+      claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
+  );
 });
 
 const claimedAmount = computed(() => {
@@ -63,7 +66,10 @@ const claimedAmount = computed(() => {
 
 const claimedTransactionHash = computed(() => {
   if (!props.claims?.length) return undefined;
-  const claim = props.claims.find(claim => claim.boost.id === props.boost.id);
+  const claim = props.claims.find(
+    claim =>
+      claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
+  );
 
   if (!claim) return undefined;
 
@@ -144,10 +150,9 @@ async function withdraw(boost: BoostSubgraph) {
       class="border border-[--border-color-soft] rounded-xl p-[12px] flex justify-between relative"
       :class="[
         {
-          'border-boost/30 bg-boost/5':
-            !isClaimedByUser && !lotteryNoRewardFinal
+          'border-boost/30 bg-boost/5': !hasClaimed && !lotteryNoRewardFinal
         },
-        { 'border-green/30 bg-green/5': isClaimedByUser },
+        { 'border-green/30 bg-green/5': hasClaimed },
         { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
       ]"
     >
@@ -204,8 +209,8 @@ async function withdraw(boost: BoostSubgraph) {
           :class="[
             {
               'border-boost/30 bg-boost/5 text-boost':
-                isEligible && !isClaimedByUser && !lotteryNoRewardFinal,
-              'border-green/30 bg-green/5 text-green': isClaimedByUser
+                isEligible && !hasClaimed && !lotteryNoRewardFinal,
+              'border-green/30 bg-green/5 text-green': hasClaimed
             }
           ]"
         >
@@ -268,10 +273,9 @@ async function withdraw(boost: BoostSubgraph) {
       class="border border-[--border-color-soft] bg-[--border-color-faint] p-[12px] rounded-b-xl"
       :class="[
         {
-          'border-boost/30 bg-boost/5':
-            !isClaimedByUser && !lotteryNoRewardFinal
+          'border-boost/30 bg-boost/5': !hasClaimed && !lotteryNoRewardFinal
         },
-        { 'border-green/30 bg-green/5': isClaimedByUser }
+        { 'border-green/30 bg-green/5': hasClaimed }
       ]"
     >
       <div v-if="claimPeriodEnded" class="sm:flex justify-between items-center">

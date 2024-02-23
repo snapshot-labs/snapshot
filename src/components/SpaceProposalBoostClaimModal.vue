@@ -23,12 +23,32 @@ const allOnSameNetwork = computed(() => {
   return chainIds.size === 1;
 });
 
-const claimableBoostsSortedByReward = computed(() => {
-  return clone(props.boosts).sort((a, b) => {
-    const rewardA = props.rewards.find(reward => reward.boost_id === a.id);
-    const rewardB = props.rewards.find(reward => reward.boost_id === b.id);
-    return (Number(rewardB?.reward) || 0) - (Number(rewardA?.reward) || 0);
-  });
+const boostsSorted = computed(() => {
+  return clone(props.boosts)
+    .sort((a, b) => {
+      const rewardA = props.rewards.find(reward => reward.boost_id === a.id);
+      const rewardB = props.rewards.find(reward => reward.boost_id === b.id);
+      return (Number(rewardB?.reward) || 0) - (Number(rewardA?.reward) || 0);
+    })
+    .sort((a, b) => {
+      const claimedA = props.claims.some(
+        claim => claim.boost.id === a.id && claim.chainId === a.chainId
+      )
+        ? 1
+        : 0;
+      const claimedB = props.claims.some(
+        claim => claim.boost.id === b.id && claim.chainId === b.chainId
+      )
+        ? 1
+        : 0;
+      return claimedA - claimedB;
+    })
+    .filter(boost =>
+      props.rewards.some(
+        reward =>
+          reward.boost_id === boost.id && reward.chain_id === boost.chainId
+      )
+    );
 });
 </script>
 
@@ -46,7 +66,7 @@ const claimableBoostsSortedByReward = computed(() => {
     <div
       class="px-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[200px] overflow-y-auto"
     >
-      <div v-for="boost in claimableBoostsSortedByReward" :key="boost.id">
+      <div v-for="boost in boostsSorted" :key="boost.id">
         <SpaceProposalBoostClaimModalItem
           :boost="boost"
           :rewards="rewards"

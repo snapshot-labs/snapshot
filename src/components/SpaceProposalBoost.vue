@@ -12,14 +12,14 @@ import {
   BoostSubgraph
 } from '@/helpers/boost/types';
 
-const VISIBLE_BOOSTS = 3;
+const INITIAL_VISIBLE_BOOSTS = 3;
 
 const props = defineProps<{
   proposal: Proposal;
 }>();
 
 const createModalOpen = ref(false);
-const boostsModalOpen = ref(false);
+const showAllBoosts = ref(false);
 const boosts = ref<BoostSubgraph[]>([]);
 const boostClaims = ref<BoostClaimSubgraph[]>([]);
 const boostRewards = ref<BoostRewardGuard[]>([]);
@@ -66,7 +66,8 @@ const boostsSorted = computed(() => {
 
   const boostsWithReward = boosts.value.map(boost => {
     const reward = boostRewards.value.find(
-      reward => reward.boost_id === boost.id
+      reward =>
+        reward.boost_id === boost.id && reward.chain_id === boost.chainId
     );
     return {
       ...boost,
@@ -129,12 +130,7 @@ async function loadBoosts() {
 async function loadClaims() {
   if (!isFinal.value || !web3Account.value) return;
   try {
-    const requests = SUPPORTED_NETWORKS.map(chainId =>
-      getClaims(web3Account.value, chainId)
-    );
-    const responses = await Promise.all(requests);
-
-    boostClaims.value = responses.map(response => response.claims).flat();
+    boostClaims.value = await getClaims(web3Account.value);
     console.log('🚀 ~ loadClaims ~ boostClaims.value:', boostClaims.value);
   } catch (e) {
     console.error('Load boosts error:', e);
@@ -281,7 +277,9 @@ onMounted(() => {
           <div v-if="loaded">
             <div class="mt-3 space-y-2">
               <div
-                v-for="boost in boostsSorted.slice(0, VISIBLE_BOOSTS)"
+                v-for="boost in showAllBoosts
+                  ? boostsSorted
+                  : boostsSorted.slice(0, INITIAL_VISIBLE_BOOSTS)"
                 :key="boost.id"
               >
                 <SpaceProposalBoostItem
@@ -301,11 +299,14 @@ onMounted(() => {
               </div>
             </div>
             <TuneButton
-              v-if="boostsSorted.length > VISIBLE_BOOSTS"
-              class="w-full mt-3"
-              @click="boostsModalOpen = true"
+              v-if="
+                boostsSorted.length > INITIAL_VISIBLE_BOOSTS && !showAllBoosts
+              "
+              class="w-full mt-3 flex items-center justify-center"
+              @click="showAllBoosts = true"
             >
-              View all
+              View more
+              <i-ho-arrow-sm-down class="ml-2" />
             </TuneButton>
           </div>
           <LoadingList v-else class="mt-3" />
@@ -377,15 +378,6 @@ onMounted(() => {
       :open="createModalOpen"
       @close="createModalOpen = false"
       @start="handleStart"
-    />
-    <SpaceProposalBoostModalBoosts
-      :open="boostsModalOpen"
-      :boosts="boostsSorted"
-      :claims="boostClaims"
-      :proposal="proposal"
-      :rewards="boostRewards"
-      :is-eligible="isEligible"
-      @close="boostsModalOpen = false"
     />
   </div>
 </template>
