@@ -21,7 +21,11 @@ export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
   production: {
     'testsnap.eth': { bribeDisabled: true },
-    'fabien.eth': {}
+    'fabien.eth': {},
+    'pscott.eth': {},
+    'gillvill.eth': {},
+    '0cf5e.eth': {},
+    'thanku.eth': {}
   }
 };
 
