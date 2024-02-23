@@ -193,7 +193,7 @@ export function isSnapshotUrl(url: string) {
   return false;
 }
 
-export function getNormalizedAddress(address: string) {
+export function toChecksumAddress(address: string) {
   try {
     return getAddress(address);
   } catch (e) {

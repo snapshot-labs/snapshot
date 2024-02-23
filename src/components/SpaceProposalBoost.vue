@@ -4,7 +4,7 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
-import { getNormalizedAddress } from '@/helpers/utils';
+import { toChecksumAddress } from '@/helpers/utils';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import {
   BoostClaimSubgraph,
@@ -85,8 +85,7 @@ const boostsSorted = computed(() => {
     );
 
     if (
-      getNormalizedAddress(boost.owner) ===
-      getNormalizedAddress(web3Account.value)
+      toChecksumAddress(boost.owner) === toChecksumAddress(web3Account.value)
     ) {
       owned.push(boost);
     } else if (isEligible(boost) && !isClaimed) {

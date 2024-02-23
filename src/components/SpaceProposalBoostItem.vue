@@ -3,7 +3,7 @@ import { Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { withdrawAndBurn } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
-import { getNormalizedAddress, explorerUrl } from '@/helpers/utils';
+import { toChecksumAddress, explorerUrl } from '@/helpers/utils';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -109,8 +109,8 @@ const claimPeriodEnded = computed(() => {
 
 const isOwner = computed(() => {
   return (
-    getNormalizedAddress(props.boost.owner) ===
-    getNormalizedAddress(web3Account.value)
+    toChecksumAddress(props.boost.owner) ===
+    toChecksumAddress(web3Account.value)
   );
 });
 
