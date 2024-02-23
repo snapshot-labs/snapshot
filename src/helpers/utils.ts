@@ -184,6 +184,11 @@ export function isSnapshotUrl(url: string) {
   return false;
 }
 
+
 export function toChecksumAddress(address: string) {
-  return getAddress(address.toLowerCase());
+  try {
+    return getAddress(address.toLowerCase());
+  } catch (e) {
+    return address;
+  }
 }
