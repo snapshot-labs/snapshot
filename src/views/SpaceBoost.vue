@@ -73,6 +73,7 @@ const modalWrongNetworkOpen = ref(false);
 const showFormErrors = ref(false);
 const ethFee = ref('');
 const tokenFeePercent = ref('');
+const loadingFees = ref(false);
 const form = ref<Form>({
   eligibility: {
     choice: 'any'
@@ -115,7 +116,7 @@ const eligibilityOptions = computed(() => {
 });
 
 const isLoading = computed(() => {
-  return loadingBalances.value || updatingAccount.value;
+  return loadingBalances.value || updatingAccount.value || loadingFees.value;
 });
 
 const isValidForm = computed(() => {
@@ -361,10 +362,17 @@ function setErrorStatus(error: string) {
 }
 
 async function loadFees() {
-  const provider = getProvider(form.value.network);
-  const response = await getFees(provider, form.value.network);
-  ethFee.value = formatEther(response.ethFee);
-  tokenFeePercent.value = (Number(response.tokenFeePercent) / 100).toString();
+  try {
+    loadingFees.value = true;
+    const provider = getProvider(form.value.network);
+    const response = await getFees(provider, form.value.network);
+    ethFee.value = formatEther(response.ethFee);
+    tokenFeePercent.value = (Number(response.tokenFeePercent) / 100).toString();
+  } catch (e: any) {
+    console.error('Error loading fees:', e);
+  } finally {
+    loadingFees.value = false;
+  }
 }
 
 async function handleApproval() {
@@ -618,7 +626,7 @@ watch(
                 sub-title="Define how the reward pool is distributed to eligible voters."
               />
             </template>
-            <div class="space-y-2">
+            <div class="space-y-3">
               <div class="flex gap-[12px]">
                 <div
                   v-for="item in DISTRIBUTION_TYPE_ITEMS"
