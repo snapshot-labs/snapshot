@@ -65,7 +65,7 @@ watch(
 
 <template>
   <TuneModal :open="open" @close="$emit('close')">
-    <TuneModalTitle as="h4" class="flex items-center gap-1 m-3">
+    <TuneModalTitle as="h4" class="flex items-center gap-1 m-3 mb-2">
       Winners
       <TuneTag
         v-if="winners"
