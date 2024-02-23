@@ -27,7 +27,7 @@ export type BoostWinnersGuard = {
 };
 
 export interface BoostStrategy {
-  title: string;
+  name: string;
   description: string;
   image: string;
   external_url: string;

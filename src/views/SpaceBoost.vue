@@ -221,7 +221,7 @@ const strategy = computed<BoostStrategy>(() => {
       : undefined;
 
   return {
-    title: 'Boost',
+    name: 'Boost',
     description: 'Snapshot.org proposal boost',
     image: 'https://snapshot.org/boost.png',
     external_url: `https://snapshot.org/#/${props.space.id}/proposal/${proposal.value.id}`,
