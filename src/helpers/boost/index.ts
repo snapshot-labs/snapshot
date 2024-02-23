@@ -25,13 +25,10 @@ export const BOOST_WHITELIST_SETTINGS = {
   }
 };
 
-export const ETH_FEE = '0.01';
-
-export const TOKEN_FEE_PERCENTAGE = 1;
-
 export async function createBoost(
   web3: Web3Provider,
   networkId: string,
+  ethFee: string,
   params: {
     strategyURI: string;
     token: string;
@@ -45,7 +42,7 @@ export async function createBoost(
   const { strategyURI, token, amount, guard, start, end, owner } = params;
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
-  const options = { value: parseEther(ETH_FEE) };
+  const options = { value: parseEther(ethFee) };
   return await contract.mint(
     strategyURI,
     token,
@@ -111,4 +108,11 @@ export async function withdrawAndBurn(
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
   return await contract.burn(boostId, to);
+}
+
+export async function getFees(web3: Web3Provider, networkId: string) {
+  const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, web3);
+  const ethFee = await contract.ethFee();
+  const tokenFeePercent = await contract.tokenFee();
+  return { ethFee, tokenFeePercent };
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BigNumber } from '@ethersproject/bignumber';
-import { parseUnits } from '@ethersproject/units';
+import { parseUnits, formatEther } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
@@ -10,10 +10,10 @@ import {
   SNAPSHOT_GUARD_ADDRESS,
   BOOST_CONTRACTS,
   BOOST_VERSION,
-  TOKEN_FEE_PERCENTAGE,
-  ETH_FEE
+  getFees
 } from '@/helpers/boost';
 import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
+import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
@@ -71,6 +71,8 @@ const approveTx = ref();
 const customTokens = ref<Token[]>([]);
 const modalWrongNetworkOpen = ref(false);
 const showFormErrors = ref(false);
+const ethFee = ref('');
+const tokenFeePercent = ref('');
 const form = ref<Form>({
   eligibility: {
     choice: 'any'
@@ -258,7 +260,7 @@ const amountPerWinner = computed(() => {
 
 const tokenFee = computed(() => {
   const formattedAmount = formatNumber(
-    (Number(form.value.amount) / 100) * TOKEN_FEE_PERCENTAGE,
+    (Number(form.value.amount) / 100) * Number(tokenFeePercent.value),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 
@@ -358,6 +360,13 @@ function setErrorStatus(error: string) {
   }
 }
 
+async function loadFees() {
+  const provider = getProvider(form.value.network);
+  const response = await getFees(provider, form.value.network);
+  ethFee.value = formatEther(response.ethFee);
+  tokenFeePercent.value = (Number(response.tokenFeePercent) / 100).toString();
+}
+
 async function handleApproval() {
   createStatus.value = 'approve';
 
@@ -412,15 +421,20 @@ async function handleCreate() {
     if (!ipfsHash) throw new Error('Error pinning the strategy');
 
     createStatus.value = 'confirm';
-    createTx.value = await createBoost(auth.web3, form.value.network, {
-      strategyURI: `ipfs://${ipfsHash}`,
-      token: form.value.token,
-      amount: amountParsed.value,
-      guard: SNAPSHOT_GUARD_ADDRESS,
-      start: proposal.value.end,
-      end: proposal.value.end + TWO_WEEKS,
-      owner: web3Account.value
-    });
+    createTx.value = await createBoost(
+      auth.web3,
+      form.value.network,
+      ethFee.value,
+      {
+        strategyURI: `ipfs://${ipfsHash}`,
+        token: form.value.token,
+        amount: amountParsed.value,
+        guard: SNAPSHOT_GUARD_ADDRESS,
+        start: proposal.value.end,
+        end: proposal.value.end + TWO_WEEKS,
+        owner: web3Account.value
+      }
+    );
 
     createStatus.value = 'pending';
 
@@ -483,6 +497,14 @@ watch(
       form.value.network,
       BOOST_CONTRACTS[form.value.network]
     );
+  },
+  { immediate: true }
+);
+
+watch(
+  () => form.value.network,
+  async () => {
+    loadFees();
   },
   { immediate: true }
 );
@@ -555,7 +577,7 @@ watch(
               />
             </div>
             <TuneBlockFooter>
-              <div v-if="ETH_FEE" class="flex justify-between">
+              <div v-if="ethFee" class="flex justify-between">
                 <div class="flex items-center gap-1">
                   ETH fee
                   <TuneIconHint
@@ -563,7 +585,7 @@ watch(
                   />
                 </div>
                 <div class="text-skin-heading">
-                  {{ ETH_FEE }}
+                  {{ ethFee }}
                   ETH
                 </div>
               </div>
@@ -577,7 +599,7 @@ watch(
                 <div class="text-skin-heading">
                   {{ tokenFee }}
                   {{ selectedToken?.symbol }}
-                  ({{ TOKEN_FEE_PERCENTAGE }}%)
+                  ({{ tokenFeePercent }}%)
                 </div>
               </div>
               <div class="flex justify-between">
