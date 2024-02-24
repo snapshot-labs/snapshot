@@ -22,7 +22,7 @@ import {
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 import BotSupportWarning from './components/BotSupportWarning.vue';
-import { getAddress } from '@ethersproject/address';
+import { toChecksumAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -184,7 +184,7 @@ async function createOsnapEnabledSafes() {
       );
       return {
         safeName: treasury.name,
-        safeAddress: getAddress(treasury.address),
+        safeAddress: toChecksumAddress(treasury.address),
         network: treasury.network as Network,
         transactions: [] as Transaction[],
         moduleAddress
