@@ -299,14 +299,16 @@ onMounted(() => {
               </div>
             </div>
             <TuneButton
-              v-if="
-                boostsSorted.length > INITIAL_VISIBLE_BOOSTS && !showAllBoosts
-              "
+              v-if="boostsSorted.length > INITIAL_VISIBLE_BOOSTS"
               class="w-full mt-3 flex items-center justify-center"
-              @click="showAllBoosts = true"
+              @click="showAllBoosts = !showAllBoosts"
             >
-              View more
-              <i-ho-arrow-sm-down class="ml-2" />
+              <span v-if="showAllBoosts"> View less </span>
+              <span v-else> View more </span>
+              <i-ho-arrow-sm-down
+                class="ml-2"
+                :class="{ 'rotate-180': showAllBoosts }"
+              />
             </TuneButton>
           </div>
           <LoadingList v-else class="mt-3" />
