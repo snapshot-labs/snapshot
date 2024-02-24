@@ -247,7 +247,7 @@ onMounted(() => {
     >
       <div
         v-if="isActive"
-        class="text-white flex items-center justify-center h-[40px] bg-[url('@/assets/images/stars.png')]"
+        class="text-white flex items-center justify-center h-[40px] bg-[url('@/assets/images/stars.svg')]"
       >
         <template v-if="boosts.length">
           <i-ho-fire class="text-xs mr-1" />

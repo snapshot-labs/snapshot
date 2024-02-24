@@ -103,7 +103,7 @@ watch(paymentTx, () => {
         >
           <div
             v-if="plan.discount"
-            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.png')]"
+            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.svg')]"
           >
             Save
             <BasePill class="py-1 !bg-skin-primary"

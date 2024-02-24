@@ -42,10 +42,10 @@ const content = [
     >
     <div class="md:flex">
       <div
-        class="h-[160px] md:h-[628px] md:w-[240px] shrink-0 bg-boost relative"
+        class="h-[160px] md:h-[506px] md:w-[240px] shrink-0 bg-boost relative"
       >
         <div
-          class="bg-[url('@/assets/images/stars-big.png')] absolute top-4 left-0 right-0 bottom-0"
+          class="md:bg-[url('@/assets/images/stars-big.svg')] bg-right bg-[url('@/assets/images/stars-big-horizontal.svg')] md:bg-cover absolute top-0 left-0 right-0 bottom-0"
         />
         <div class="flex justify-center items-center h-full">
           <div
@@ -58,7 +58,7 @@ const content = [
 
       <div class="flex flex-col justify-between">
         <div
-          class="p-[20px] md:pb-0 md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[526px]"
+          class="p-[20px] md:pb-0 md:p-[32px] overflow-y-auto max-h-[calc(100vh-330px)] md:max-h-[410px]"
         >
           <TuneModalTitle as="h1" class="hidden md:block leading-7 mb-4"
             >Welcome to Boost!</TuneModalTitle
