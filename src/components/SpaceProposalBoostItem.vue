@@ -160,7 +160,7 @@ async function withdraw(boost: BoostSubgraph) {
           'border-boost/30 bg-boost/5': !hasClaimed
         },
         { 'border-green/30 bg-green/5': hasClaimed },
-        { 'border-b-0 rounded-b-none !bg-[--border-color-faint]': isOwner }
+        { 'border-b-0 rounded-b-none': isOwner }
       ]"
     >
       <div class="w-full">
