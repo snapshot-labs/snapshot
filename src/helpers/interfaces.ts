@@ -170,10 +170,6 @@ export interface ExtendedSpace {
   flagged: boolean;
   hibernated: boolean;
   turbo: boolean;
-  boost: {
-    enabled: boolean;
-    restriction: 'no-bribe' | '';
-  };
   voting: {
     delay: number | null;
     hideAbstain: boolean;
