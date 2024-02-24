@@ -43,7 +43,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '137': 'https://safe-transaction-polygon.safe.global/api',
   '56': 'https://safe-transaction-bsc.safe.global/api',
   '42161': 'https://safe-transaction-arbitrum.safe.global/api',
-  // '1116': // Add when public tx service is available for Core
+  '1116': 'https://safetx.coredao.org/api',
 };
 
 // ABIs
