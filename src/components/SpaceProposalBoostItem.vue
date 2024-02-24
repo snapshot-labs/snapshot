@@ -100,12 +100,16 @@ const withdrawalAmount = computed(() => {
 });
 
 const amountPerWinner = computed(() => {
-  const amountOfWinners =
+  const isFinalAndLessVotes =
     Number(props.boost.strategy.distribution.numWinners) >
-    Number(props.proposal.votes)
-      ? Number(props.proposal.votes)
-      : Number(props.boost.strategy.distribution.numWinners);
+      Number(props.proposal.votes) && isFinal.value;
+
+  const amountOfWinners = isFinalAndLessVotes
+    ? Number(props.proposal.votes)
+    : Number(props.boost.strategy.distribution.numWinners);
+
   const amount = Number(boostBalanceFormatted.value) / amountOfWinners;
+
   return `${formatNumber(
     Number(amount),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
