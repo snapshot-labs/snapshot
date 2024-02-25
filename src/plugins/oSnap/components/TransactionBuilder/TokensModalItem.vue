@@ -54,7 +54,7 @@ const exploreUrl = computed(() => {
     </div>
 
     <div class="h-full text-right">
-      <span v-if="token.address !== 'main'" class="text-skin-link">
+      <span class="text-skin-link">
         {{
           formatNumber(
             Number(token.balance),

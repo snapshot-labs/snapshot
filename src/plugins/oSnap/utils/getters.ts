@@ -15,6 +15,7 @@ import {
   GNOSIS_SAFE_TRANSACTION_API_URLS,
   OPTIMISTIC_GOVERNOR_ABI,
   OPTIMISTIC_ORACLE_V3_ABI,
+  SAFE_APP_URLS,
   contractData,
   safePrefixes,
   solidityZeroHexString
@@ -35,6 +36,7 @@ import {
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
+import { toChecksumAddress } from '@/helpers/utils';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -55,7 +57,8 @@ async function callGnosisSafeTransactionApi<TResult = any>(
  */
 export const getGnosisSafeBalances = memoize(
   (network: Network, safeAddress: string) => {
-    const endpointPath = `/v1/safes/${safeAddress}/balances/`;
+    const checksumAddress = toChecksumAddress(safeAddress);
+    const endpointPath = `/v1/safes/${checksumAddress}/balances?exclude_spam=true`;
     return callGnosisSafeTransactionApi<Partial<BalanceResponse>[]>(
       network,
       endpointPath
@@ -249,9 +252,12 @@ export function makeConfigureOsnapUrl(params: {
     network,
     spaceName,
     spaceUrl,
-    baseUrl = 'https://app.safe.global/apps/open',
     appUrl = 'https://osnap.uma.xyz/'
   } = params;
+  const baseUrl =
+    params.baseUrl ??
+    SAFE_APP_URLS[network] ??
+    'https://app.safe.global/apps/open';
   const safeAddressPrefix = getSafeNetworkPrefix(network);
   const appUrlSearchParams = new URLSearchParams();
   appUrlSearchParams.set('spaceName', spaceName);
