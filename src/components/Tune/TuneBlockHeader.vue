@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <div class="flex justify-between p-3 pb-0">
-    <h4 class="">
+    <h4>
       <div class="leading-5 flex items-center">
         <span class="text-skin-heading">
           {{ title }}

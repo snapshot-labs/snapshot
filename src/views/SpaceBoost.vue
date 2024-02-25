@@ -535,7 +535,7 @@ watch(
           <SpaceBoostCardProposal :proposal="proposal" :space="space" />
 
           <TuneBlock>
-            <template #title>
+            <template #header>
               <TuneBlockHeader
                 title="Eligibility"
                 sub-title="Choose an option that best incentivises meaningful participation."
@@ -558,7 +558,7 @@ watch(
             </TuneBlockFooter>
           </TuneBlock>
           <TuneBlock>
-            <template #title>
+            <template #header>
               <TuneBlockHeader
                 title="Deposit amount"
                 sub-title="Select a token and specify the total amount for the reward pool."
@@ -628,7 +628,7 @@ watch(
             </TuneBlockFooter>
           </TuneBlock>
           <TuneBlock>
-            <template #title>
+            <template #header>
               <TuneBlockHeader
                 title="Distribution"
                 sub-title="Define how the reward pool is distributed to eligible voters."
