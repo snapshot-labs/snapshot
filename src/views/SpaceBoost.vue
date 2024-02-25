@@ -611,7 +611,9 @@ watch(
                   ({{ tokenFeePercent }}%)
                 </div>
               </div>
-              <div class="flex justify-between mt-1">
+              <div
+                class="flex justify-between mt-2 border-t pt-2 border-[--border-color-soft]"
+              >
                 Final cost
                 <div class="text-skin-heading">
                   {{ amountWithTokenFee }}
