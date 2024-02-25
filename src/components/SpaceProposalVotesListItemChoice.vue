@@ -16,7 +16,7 @@ defineProps<{
     <i-ho-lock-closed
       v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
       v-tippy="{ content: $t('privacy.shutter.tooltip') }"
-      class="mx-auto cursor-help"
+      class="cursor-help"
     />
 
     <i-ho-exclamation
@@ -24,7 +24,7 @@ defineProps<{
         !voting[proposal.type].isValidChoice(vote.choice, proposal.choices)
       "
       v-tippy="{ content: $t('proposal.invalidChoice') }"
-      class="mx-auto cursor-help"
+      class="cursor-help"
     />
 
     <div

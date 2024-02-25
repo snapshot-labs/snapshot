@@ -37,7 +37,7 @@ useTippy(refReasonTooltip, {
 </script>
 
 <template>
-  <div class="py-[12px]">
+  <div class="py-[12px]" :class="{ 'py-[8px]': isSmall }">
     <div
       class="flex items-center gap-4"
       :class="{ 'justify-between': isSmall }"
@@ -48,7 +48,11 @@ useTippy(refReasonTooltip, {
         :address="vote.voter"
         :space="space"
         :proposal="proposal"
-        width-class="w-[160px] min-w-[160px] xs:w-[176px] xs:min-w-[176px] text-left"
+        :width-class="
+          isSmall
+            ? 'w-[136px] min-w-[136px] text-left'
+            : 'w-[176px] min-w-[176px] text-left'
+        "
       />
 
       <SpaceProposalVotesListItemChoice
@@ -57,7 +61,7 @@ useTippy(refReasonTooltip, {
         :vote="vote"
       />
       <div
-        class="flex w-[120px] min-w-[120px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:w-[130px] xs:min-w-[130px]"
+        class="flex w-[130px] min-w-[130px] items-center justify-end whitespace-nowrap text-right text-skin-link"
       >
         <span
           v-tippy="{
@@ -68,6 +72,7 @@ useTippy(refReasonTooltip, {
               )
               .join(' + ')
           }"
+          class="truncate"
         >
           {{
             `${balanceFormatted} ${shorten(
@@ -136,13 +141,12 @@ useTippy(refReasonTooltip, {
         </div>
       </div>
     </div>
-    <div class="w-fit">
-      <SpaceProposalVotesListItemChoice
-        v-if="isSmall"
-        :proposal="proposal"
-        :vote="vote"
-        class="mt-1"
-      />
-    </div>
+
+    <SpaceProposalVotesListItemChoice
+      v-if="isSmall"
+      :proposal="proposal"
+      :vote="vote"
+      class="mt-1"
+    />
   </div>
 </template>
