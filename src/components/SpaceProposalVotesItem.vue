@@ -46,7 +46,6 @@ useTippy(refReasonTooltip, {
         :key="vote.voter"
         :profile="profiles[vote.voter]"
         :address="vote.voter"
-        :space="space"
         :proposal="proposal"
         :width-class="
           isSmall
