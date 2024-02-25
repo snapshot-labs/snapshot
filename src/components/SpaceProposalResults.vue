@@ -51,10 +51,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseBlock
+  <TuneBlock
     :loading="!loaded"
     :title="proposal.state === 'closed' ? $t('results') : $t('currentResults')"
   >
+    <template #header>
+      <TuneBlockHeader
+        :title="
+          proposal.state === 'closed' ? $t('results') : $t('currentResults')
+        "
+      />
+    </template>
     <template v-if="isPendingScore || isInvalidScore">
       <div v-if="isPendingScore" class="leading-5">
         <p class="flex gap-2 text-skin-link mb-3">
@@ -90,5 +97,5 @@ onMounted(() => {
         class="pt-2"
       />
     </template>
-  </BaseBlock>
+  </TuneBlock>
 </template>

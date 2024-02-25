@@ -238,7 +238,7 @@ onMounted(() => {
     <TuneBlock
       v-if="isActive || boosts.length"
       slim
-      class="rounded-2xl mx-4 md:mx-0"
+      class="rounded-2xl"
       :class="[
         {
           '!border-0 ring-1 ring-boost !bg-boost': isActive

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { useBreakpoints } from '@vueuse/core';
+import { SNAPSHOT_BREAKPOINTS } from '@/helpers/constants';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -7,6 +9,8 @@ const props = defineProps<{
 }>();
 
 const VOTES_LIMIT = 6;
+
+const isSmallScreen = useBreakpoints(SNAPSHOT_BREAKPOINTS).smaller('sm');
 
 const { profiles, votes, loadingVotes, loadVotes } = useProposalVotes(
   props.proposal,
@@ -36,21 +40,22 @@ watch(
 </script>
 
 <template>
-  <BaseBlock
-    v-if="proposal.votes > 0"
-    :title="$t('votes')"
-    :counter="voteCount"
-    :loading="loadingVotes"
-    slim
-  >
-    <template v-if="props.proposal.state === 'closed'" #button>
-      <BaseButtonIcon
-        v-tippy="{ content: $t('proposal.downloadCsvVotes.title') }"
-        :loading="isDownloadingVotes"
-        @click="downloadReport(proposal.id)"
-      >
-        <i-ho-download />
-      </BaseButtonIcon>
+  <TuneBlock v-if="proposal.votes > 0" :loading="loadingVotes">
+    <template #header>
+      <TuneBlockHeader :title="$t('votes')" :counter="voteCount">
+        <BaseButtonIcon
+          v-if="props.proposal.state === 'closed'"
+          v-tippy="{
+            content: $t('proposal.downloadCsvVotes.title'),
+            delay: 100
+          }"
+          :loading="isDownloadingVotes"
+          class="!p-0 !pr-1"
+          @click="downloadReport(proposal.id)"
+        >
+          <i-ho-download />
+        </BaseButtonIcon>
+      </TuneBlockHeader>
     </template>
     <SpaceProposalVotesItem
       v-for="(vote, i) in votes"
@@ -59,19 +64,19 @@ watch(
       :profiles="profiles"
       :space="space"
       :proposal="proposal"
-      :class="{ '!border-0': i === 0 }"
+      :is-small="isSmallScreen"
       :data-testid="`proposal-votes-list-item-${i}`"
-      class="!px-4"
     />
-    <a
-      v-if="proposal.votes > VOTES_LIMIT"
-      tabindex="0"
-      class="block rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-      @click="modalVotesOpen = true"
-      @keypress="modalVotesOpen = true"
-    >
-      <span v-text="$t('seeMore')" />
-    </a>
+    <div class="pt-3">
+      <TuneButton
+        v-if="proposal.votes > VOTES_LIMIT"
+        class="w-full"
+        @click="modalVotesOpen = true"
+        @keypress="modalVotesOpen = true"
+      >
+        View all
+      </TuneButton>
+    </div>
     <teleport to="#modal">
       <SpaceProposalVotesModalDownload
         :open="showModalDownloadMessage"
@@ -85,5 +90,5 @@ watch(
         @close="modalVotesOpen = false"
       />
     </teleport>
-  </BaseBlock>
+  </TuneBlock>
 </template>

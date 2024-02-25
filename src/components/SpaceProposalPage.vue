@@ -141,7 +141,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       />
 
       <template v-else>
-        <div class="px-3 md:px-0">
+        <div class="px-[20px] md:px-0">
           <LabelProposalState :state="proposal.state" class="mb-[12px]" />
 
           <SpaceProposalHeader
@@ -150,26 +150,10 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             :is-admin="isAdmin"
             :is-moderator="isModerator"
           />
-          <div
-            v-if="
-              proposal?.id ===
-              '0xb356f9a8bd8aa3210b5cfb7c8c34c950aada63c1d9dc72916730e214e7d380b8'
-            "
-            class="mb-4 rounded-lg border !border-skin-link bg-skin-block-bg p-4"
-          >
-            <i-ho-exclamation-circle class="inline-block" />
-            The proposal is rejected due to an obvious mistake "Utilizing Cyber
-            Community Treasury’s unlocked CYBER to provide liquidity for
-            bridging. The foundation will try to keep 25k CYBER-ETH, 25k
-            CYBER-BSC, 25k CYBER-OP in the bridge. A total of 7,000,000
-            CYBER-BSC and 3,888,000 CYBER-ETH can be used to maintain liquidity
-            on the bridging service." Only 1,088,000 CYBER were unlocked to
-            Community Treasury so far, not the 10.888M stated here.
-          </div>
           <SpaceProposalContent :space="space" :proposal="proposal" />
         </div>
-        <div class="space-y-4">
-          <div v-if="proposal?.discussion" class="px-3 md:px-0">
+        <div class="space-y-[20px] md:space-y-4 px-[20px] md:px-0">
+          <div v-if="proposal?.discussion">
             <BlockLink
               :link="proposal.discussion"
               data-testid="proposal-page-discussion-link"
@@ -204,7 +188,10 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       </template>
     </template>
     <template #sidebar-right>
-      <div v-if="!isMessageVisible" class="mt-4 space-y-4 lg:mt-0">
+      <div
+        v-if="!isMessageVisible"
+        class="mt-[20px] lg:space-y-3 space-y-[20px] lg:mt-0 px-[20px] md:px-0"
+      >
         <SpaceProposalInformation
           :space="space"
           :proposal="proposal"

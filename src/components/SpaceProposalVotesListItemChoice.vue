@@ -12,7 +12,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="flex-auto truncate px-2 text-center text-skin-link">
+  <div class="flex-auto truncate text-skin-link">
     <i-ho-lock-closed
       v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
       v-tippy="{ content: $t('privacy.shutter.tooltip') }"
@@ -32,7 +32,7 @@ defineProps<{
       v-tippy="{
         content: format(proposal, vote.choice)
       }"
-      class="truncate text-center text-skin-link"
+      class="truncate text-skin-link"
     >
       {{ format(proposal, vote.choice) }}
     </div>

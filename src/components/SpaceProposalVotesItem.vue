@@ -9,6 +9,7 @@ const props = defineProps<{
   proposal: Proposal;
   vote: Vote;
   profiles: Record<string, Profile>;
+  isSmall: boolean;
 }>();
 
 defineEmits(['openReceiptModal']);
@@ -36,91 +37,112 @@ useTippy(refReasonTooltip, {
 </script>
 
 <template>
-  <div class="flex items-center gap-3 border-t px-3 py-[14px]">
-    <BaseUser
-      :key="vote.voter"
-      :profile="profiles[vote.voter]"
-      :address="vote.voter"
-      :space="space"
-      :proposal="proposal"
-      width-class="w-[110px] min-w-[110px] xs:w-[130px] xs:min-w-[130px] text-left"
-    />
-
-    <SpaceProposalVotesListItemChoice :proposal="proposal" :vote="vote" />
+  <div class="py-[12px]">
     <div
-      class="flex w-[110px] min-w-[110px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:w-[130px] xs:min-w-[130px]"
+      class="flex items-center gap-4"
+      :class="{ 'justify-between': isSmall }"
     >
-      <span
-        v-tippy="{
-          content: vote.scores
-            ?.map(
-              (score, index) => `${formatCompactNumber(score)} ${titles[index]}`
-            )
-            .join(' + ')
-        }"
-      >
-        {{
-          `${balanceFormatted} ${shorten(
-            proposal.symbol || space.symbol,
-            'symbol'
-          )}`
-        }}
-      </span>
-      <BasePopover>
-        <template #button>
-          <BaseButtonIcon>
-            <BaseIcon name="signature" />
-          </BaseButtonIcon>
-        </template>
-        <template #content>
-          <div class="m-4 space-y-4">
-            <h3 class="text-center">{{ $t('receipt') }}</h3>
-            <BaseBlock slim class="p-4 text-skin-link">
-              <div class="flex">
-                <span
-                  class="mr-1 flex-auto text-skin-text"
-                  v-text="$t('author')"
-                />
-                <BaseLink :link="getIpfsUrl(vote.ipfs)" class="text-skin-link">
-                  #{{ vote.ipfs.slice(0, 7) }}
-                </BaseLink>
-              </div>
-              <div v-if="relayerIpfsHash" class="flex">
-                <span
-                  class="mr-1 flex-auto text-skin-text"
-                  v-text="$t('relayer')"
-                />
-                <BaseLink
-                  :link="getIpfsUrl(relayerIpfsHash)"
-                  class="text-skin-link"
-                >
-                  #{{ relayerIpfsHash.slice(0, 7) }}
-                </BaseLink>
-              </div>
-            </BaseBlock>
-            <BaseLink
-              :link="`https://signator.io/view?ipfs=${vote.ipfs}`"
-              class="mb-2 block"
-              hide-external-icon
-            >
-              <TuneButton class="w-full" tabindex="-1">
-                {{ $t('verifyOnSignatorio') }}
-                <i-ho-external-link
-                  class="mb-[2px] ml-1 inline-block text-xs"
-                />
-              </TuneButton>
-            </BaseLink>
-          </div>
-        </template>
-      </BasePopover>
+      <BaseUser
+        :key="vote.voter"
+        :profile="profiles[vote.voter]"
+        :address="vote.voter"
+        :space="space"
+        :proposal="proposal"
+        width-class="w-[160px] min-w-[160px] xs:w-[176px] xs:min-w-[176px] text-left"
+      />
+
+      <SpaceProposalVotesListItemChoice
+        v-if="!isSmall"
+        :proposal="proposal"
+        :vote="vote"
+      />
       <div
-        v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
-        ref="refReasonTooltip"
+        class="flex w-[120px] min-w-[120px] items-center justify-end whitespace-nowrap text-right text-skin-link xs:w-[130px] xs:min-w-[130px]"
       >
-        <BaseButtonIcon class="cursor-default p-0">
-          <i-ho-annotation class="text-[16px]" />
-        </BaseButtonIcon>
+        <span
+          v-tippy="{
+            content: vote.scores
+              ?.map(
+                (score, index) =>
+                  `${formatCompactNumber(score)} ${titles[index]}`
+              )
+              .join(' + ')
+          }"
+        >
+          {{
+            `${balanceFormatted} ${shorten(
+              proposal.symbol || space.symbol,
+              'symbol'
+            )}`
+          }}
+        </span>
+        <BasePopover>
+          <template #button>
+            <BaseButtonIcon class="!py-0">
+              <BaseIcon name="signature" />
+            </BaseButtonIcon>
+          </template>
+          <template #content>
+            <div class="m-4 space-y-4">
+              <h3 class="text-center">{{ $t('receipt') }}</h3>
+              <BaseBlock slim class="p-4 text-skin-link">
+                <div class="flex">
+                  <span
+                    class="mr-1 flex-auto text-skin-text"
+                    v-text="$t('author')"
+                  />
+                  <BaseLink
+                    :link="getIpfsUrl(vote.ipfs)"
+                    class="text-skin-link"
+                  >
+                    #{{ vote.ipfs.slice(0, 7) }}
+                  </BaseLink>
+                </div>
+                <div v-if="relayerIpfsHash" class="flex">
+                  <span
+                    class="mr-1 flex-auto text-skin-text"
+                    v-text="$t('relayer')"
+                  />
+                  <BaseLink
+                    :link="getIpfsUrl(relayerIpfsHash)"
+                    class="text-skin-link"
+                  >
+                    #{{ relayerIpfsHash.slice(0, 7) }}
+                  </BaseLink>
+                </div>
+              </BaseBlock>
+              <BaseLink
+                :link="`https://signator.io/view?ipfs=${vote.ipfs}`"
+                class="mb-2 block"
+                hide-external-icon
+              >
+                <TuneButton class="w-full" tabindex="-1">
+                  {{ $t('verifyOnSignatorio') }}
+                  <i-ho-external-link
+                    class="mb-[2px] ml-1 inline-block text-xs"
+                  />
+                </TuneButton>
+              </BaseLink>
+            </div>
+          </template>
+        </BasePopover>
+        <div
+          v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
+          ref="refReasonTooltip"
+        >
+          <BaseButtonIcon class="cursor-default p-0">
+            <i-ho-annotation class="text-[16px]" />
+          </BaseButtonIcon>
+        </div>
       </div>
+    </div>
+    <div class="w-fit">
+      <SpaceProposalVotesListItemChoice
+        v-if="isSmall"
+        :proposal="proposal"
+        :vote="vote"
+        class="mt-1"
+      />
     </div>
   </div>
 </template>

@@ -122,7 +122,7 @@ watch(filters, value => {
         <BaseNoResults v-else-if="showNoResults" />
 
         <div v-else-if="votes.length">
-          <div class="flex h-full min-h-full flex-col overflow-auto">
+          <div class="flex h-full min-h-full flex-col overflow-auto px-[20px]">
             <SpaceProposalVotesItem
               v-for="(vote, i) in votes"
               :key="i"
@@ -130,6 +130,7 @@ watch(filters, value => {
               :profiles="profiles"
               :space="space"
               :proposal="proposal"
+              is-small
               :class="{ '!border-0': i === 0 }"
               :data-testid="`proposal-votes-list-item-${i}`"
             />
