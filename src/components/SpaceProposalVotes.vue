@@ -68,7 +68,7 @@ watch(
       :data-testid="`proposal-votes-list-item-${i}`"
       class="last:pb-0"
     />
-    <div v-if="proposal.votes > VOTES_LIMIT" class="pt-[28px]">
+    <div v-if="proposal.votes > VOTES_LIMIT" class="pt-3">
       <TuneButton
         class="w-full"
         @click="modalVotesOpen = true"
