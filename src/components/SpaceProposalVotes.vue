@@ -66,10 +66,10 @@ watch(
       :proposal="proposal"
       :is-small="isSmallScreen"
       :data-testid="`proposal-votes-list-item-${i}`"
+      class="last:pb-0"
     />
-    <div class="pt-3">
+    <div v-if="proposal.votes > VOTES_LIMIT" class="pt-[28px]">
       <TuneButton
-        v-if="proposal.votes > VOTES_LIMIT"
         class="w-full"
         @click="modalVotesOpen = true"
         @keypress="modalVotesOpen = true"
