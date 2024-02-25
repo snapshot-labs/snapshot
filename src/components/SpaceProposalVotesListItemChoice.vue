@@ -32,7 +32,7 @@ defineProps<{
       v-tippy="{
         content: format(proposal, vote.choice)
       }"
-      class="truncate text-skin-link"
+      class="truncate text-skin-link w-fit max-w-full"
     >
       {{ format(proposal, vote.choice) }}
     </div>
