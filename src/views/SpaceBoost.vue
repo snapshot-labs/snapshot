@@ -251,8 +251,7 @@ const isEndingSoon = computed(() => {
 
 const amountPerWinner = computed(() => {
   const formattedAmount = formatNumber(
-    Number(amountAfterTokenFee.value) /
-      Number(form.value.distribution.numWinners),
+    Number(form.value.amount) / Number(form.value.distribution.numWinners),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 
@@ -266,12 +265,6 @@ const tokenFee = computed(() => {
   );
 
   return Number(formattedAmount) > 0 ? formattedAmount : 0;
-});
-
-const amountAfterTokenFee = computed(() => {
-  const amount = Number(form.value.amount) - Number(tokenFee.value);
-
-  return amount > 0 ? amount : 0;
 });
 
 const formValidation = computed(() => {
@@ -298,7 +291,7 @@ const formValidation = computed(() => {
   if (selectedToken.value) {
     const balance = BigNumber.from(account.value.balance || '0');
 
-    const amount = BigNumber.from(amountParsed.value || '0');
+    const amount = BigNumber.from(amountWithTokenFeeParsed.value || '0');
 
     if (balance.lt(amount) && !isLoading.value) {
       errors.balance = 'Insufficient balance';
@@ -339,11 +332,17 @@ function retryCreation() {
   handleCreate();
 }
 
-const amountParsed = computed(
+const amountWithTokenFee = computed(() => {
+  const amount = Number(form.value.amount) + Number(tokenFee.value);
+
+  return amount > 0 ? amount : 0;
+});
+
+const amountWithTokenFeeParsed = computed(
   () =>
     (selectedToken.value &&
       parseUnits(
-        form.value.amount || '0',
+        amountWithTokenFee.value.toString() || '0',
         selectedToken.value.decimals
       ).toString()) ||
     '0'
@@ -351,7 +350,7 @@ const amountParsed = computed(
 
 const requireApproval = computed(() =>
   BigNumber.from(account.value.allowance || '0').lt(
-    BigNumber.from(amountParsed.value || '0')
+    BigNumber.from(amountWithTokenFeeParsed.value || '0')
   )
 );
 
@@ -385,7 +384,7 @@ async function handleApproval() {
       auth.web3,
       form.value.token,
       BOOST_CONTRACTS[form.value.network],
-      amountParsed.value
+      amountWithTokenFeeParsed.value
     );
 
     createStatus.value = 'pending';
@@ -438,7 +437,7 @@ async function handleCreate() {
       {
         strategyURI: `ipfs://${ipfsHash}`,
         token: form.value.token,
-        amount: amountParsed.value,
+        amount: amountWithTokenFeeParsed.value,
         guard: SNAPSHOT_GUARD_ADDRESS,
         start: proposal.value.end,
         end: proposal.value.end + TWO_WEEKS,
@@ -612,11 +611,16 @@ watch(
                   ({{ tokenFeePercent }}%)
                 </div>
               </div>
-              <div class="flex justify-between">
-                Final amount
+              <div class="flex justify-between mt-1">
+                Final cost
                 <div class="text-skin-heading">
-                  {{ amountAfterTokenFee }}
+                  {{ amountWithTokenFee }}
                   {{ selectedToken?.symbol }}
+
+                  +
+
+                  {{ ethFee }}
+                  ETH
                 </div>
               </div>
             </TuneBlockFooter>
