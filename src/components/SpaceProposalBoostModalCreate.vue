@@ -72,7 +72,8 @@ const content = [
               <h4 class="leading-5 mb-2">{{ c.title }}</h4>
               <p class="text-md leading-5">{{ c.description }}</p>
               <p v-if="c.id === 1" class="text-md leading-5 mt-3">
-                <BaseLink link="https://docs.snapshot.org/"
+                <BaseLink
+                  link="https://docs.snapshot.org/user-guides/boost#distribution-types"
                   >Learn more</BaseLink
                 >
               </p>
