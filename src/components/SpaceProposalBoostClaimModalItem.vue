@@ -34,7 +34,10 @@ const reward = computed(() => {
 });
 
 const hasClaimed = computed(() => {
-  return props.claims.some(claim => claim.boost.id === props.boost.id);
+  return props.claims.some(
+    claim =>
+      claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
+  );
 });
 
 const claimLoading = computed(() => {
