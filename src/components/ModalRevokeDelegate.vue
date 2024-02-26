@@ -71,12 +71,12 @@ async function handleSubmit() {
       </h4>
       <div class="overflow-hidden border-t p-4 text-center">
         <div class="float-left w-2/4 pr-2">
-          <BaseButton type="button" class="w-full" @click="$emit('close')">
+          <TuneButton type="button" class="w-full" @click="$emit('close')">
             {{ $t('cancel') }}
-          </BaseButton>
+          </TuneButton>
         </div>
         <div class="float-left w-2/4 pl-2">
-          <BaseButton
+          <TuneButton
             :disabled="loading"
             :loading="loading"
             type="submit"
@@ -84,7 +84,7 @@ async function handleSubmit() {
             primary
           >
             {{ $t('confirm') }}
-          </BaseButton>
+          </TuneButton>
         </div>
       </div>
     </form>

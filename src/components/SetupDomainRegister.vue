@@ -45,14 +45,14 @@ const isValidDomain = computed(() => {
       hide-external-icon
       @click="$emit('waitForRegistration')"
     >
-      <BaseButton
+      <TuneButton
         tabindex="-1"
         :disabled="!isValidDomain"
         class="mt-2 w-full"
         primary
       >
         {{ $t('setup.registerEnsButton') }}
-      </BaseButton>
+      </TuneButton>
     </BaseLink>
   </div>
 </template>

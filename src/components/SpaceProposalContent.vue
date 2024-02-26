@@ -20,7 +20,7 @@ const truncateMarkdownBody = computed(() => {
   const markdownBodyHeight = markdownBody.value?.clientHeight
     ? markdownBody.value.clientHeight
     : 0;
-  return markdownBodyHeight > 400 ? true : false;
+  return markdownBodyHeight > 580;
 });
 </script>
 
@@ -38,21 +38,19 @@ const truncateMarkdownBody = computed(() => {
         '-bottom-[14px]': !showFullMarkdownBody
       }"
     >
-      <BaseButton
-        class="z-10 !bg-skin-bg"
+      <TuneButton
+        class="z-10 !bg-skin-bg flex items-center gap-2 !pr-[18px]"
         @click="showFullMarkdownBody = !showFullMarkdownBody"
       >
-        {{
-          showFullMarkdownBody
-            ? $t('proposals.showLess')
-            : $t('proposals.showMore')
-        }}
-      </BaseButton>
+        {{ showFullMarkdownBody ? 'View less' : 'View more' }}
+        <i-ho-arrow-sm-up v-if="showFullMarkdownBody" />
+        <i-ho-arrow-sm-down v-else />
+      </TuneButton>
     </div>
     <div
       class="overflow-hidden"
       :class="{
-        'h-[420px]': !showFullMarkdownBody && truncateMarkdownBody,
+        'h-[600px]': !showFullMarkdownBody && truncateMarkdownBody,
         'mb-[92px]': showFullMarkdownBody,
         'mb-[56px]': !showFullMarkdownBody
       }"

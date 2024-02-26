@@ -101,14 +101,14 @@ watch(
       </div>
     </div>
     <div class="p-4">
-      <BaseButton
+      <TuneButton
         :loading="actionLoading"
         class="w-full"
         primary
         @click="actionWithAlias(save)"
       >
         {{ $t('save') }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseModal>
 </template>

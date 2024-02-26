@@ -14,11 +14,19 @@ defineEmits<{
     class="mb-4 border-y border-skin-border bg-skin-block-bg text-base md:rounded-xl md:border p-4"
   >
     <div v-if="legacyOsnap.enabled">
-      <h6>Warning</h6>
+      <h6>oSnap Warning</h6>
       <p class="mb-3">
-        The new oSnap plugin is not compatible with the legacy safeSnap plugin.
-        Please remove the safeSnap plugin in your space settings to enable
-        oSnap.
+        You currently have both the oSnap plugin and the SafeSnap plugin
+        installed in your space. You can continue using oSnap with SafeSnap
+        without any changes to your space. If you would like to use the oSnap
+        plugin instead, please see the
+        <a
+          target="_blank"
+          href="https://docs.uma.xyz/developers/osnap/osnap-configuration-parameters-1"
+          >oSnap plugin migration docs.</a
+        >
+        Otherwise please remove the oSnap plugin from your space settings for
+        the best experience with SafeSnap.
       </p>
     </div>
     <div v-else>

@@ -164,7 +164,7 @@ export default {
   </div>
 
   <div v-else>
-    <BaseButton
+    <TuneButton
       class="safesnap-custom-select mb-2 flex w-full flex-row items-center justify-between !px-3"
       @click="openModal()"
     >
@@ -188,7 +188,7 @@ export default {
         </span>
       </div>
       <i-ho-chevron-down class="text-xs text-skin-link" />
-    </BaseButton>
+    </TuneButton>
 
     <div class="space-y-2">
       <SafeSnapInputAddress

@@ -155,10 +155,7 @@ onBeforeRouteLeave(async () => {
 
 <template>
   <div class="mb-[80px] md:mb-0">
-    <SpaceBreadcrumbs
-      :space="space"
-      class="mx-4 -mt-1 pb-[16px] lg:pb-[20px]"
-    />
+    <SpaceBreadcrumbs :space="space" />
 
     <BaseContainer v-if="isLoggedUser" class="pb-2 pt-3 lg:py-[20px]">
       <ButtonSwitch
@@ -255,7 +252,7 @@ onBeforeRouteLeave(async () => {
             </div>
             <TheActionbar break-point="md">
               <div class="flex h-full items-center px-[20px] md:px-0">
-                <BaseButton
+                <TuneButton
                   v-if="!showUndelegate"
                   class="w-full md:mt-3"
                   primary
@@ -263,21 +260,21 @@ onBeforeRouteLeave(async () => {
                   @click="handleClickDelegate"
                 >
                   {{ isLoggedUser ? 'Delegate to yourself' : 'Delegate' }}
-                </BaseButton>
+                </TuneButton>
 
                 <div
                   v-else
                   v-tippy="{ content: 'You can not un-delegate from yourself' }"
                   class="w-full md:mt-3"
                 >
-                  <BaseButton
+                  <TuneButton
                     variant="danger"
                     class="w-full"
                     :disabled="isLoggedUser"
                     @click="showDelegateModal = true"
                   >
                     Un-delegate
-                  </BaseButton>
+                  </TuneButton>
                 </div>
               </div>
             </TheActionbar>

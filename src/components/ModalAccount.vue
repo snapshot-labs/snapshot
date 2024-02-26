@@ -41,7 +41,7 @@ watch(open, () => {
           class="block"
           @click="$emit('login', connectors[cId].id)"
         >
-          <BaseButton
+          <TuneButton
             v-if="cId === 'injected' && injected"
             class="flex w-full items-center justify-center"
             data-testid="button-connnect-wallet-injected"
@@ -54,8 +54,8 @@ watch(open, () => {
               :alt="injected.name"
             />
             {{ injected.name }}
-          </BaseButton>
-          <BaseButton
+          </TuneButton>
+          <TuneButton
             v-else-if="cId !== 'injected' && !connectors[cId].hidden"
             class="flex w-full items-center justify-center gap-2"
           >
@@ -66,16 +66,16 @@ watch(open, () => {
               :alt="connectors[cId].name"
             />
             <span>{{ connectors[cId].name }}</span>
-          </BaseButton>
+          </TuneButton>
         </div>
-        <BaseButton
+        <TuneButton
           v-if="!isShowingAllConnectors"
           class="flex w-full items-center justify-center gap-1"
           @click="isShowingAllConnectors = true"
         >
           {{ $t('showMore') }}
-          <i-ho-chevron-down class="text-sm text-skin-text" />
-        </BaseButton>
+          <i-ho-chevron-down class="text-sm text-skin-link" />
+        </TuneButton>
       </div>
     </div>
   </BaseModal>

@@ -162,6 +162,17 @@ watch(
           <div class="flex">
             <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
             <span
+              v-if="
+                proposal.type === 'approval' &&
+                Array.isArray(selectedChoices) &&
+                selectedChoices?.length === 0
+              "
+              class="text-right"
+            >
+              Blank vote
+            </span>
+            <span
+              v-else
               v-tippy="{
                 content:
                   format(proposal, selectedChoices).length > 30
@@ -321,12 +332,12 @@ watch(
 
     <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton type="button" class="w-full" @click="$emit('close')">
+        <TuneButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
-        </BaseButton>
+        </TuneButton>
       </div>
       <div class="float-left w-2/4 pl-2">
-        <BaseButton
+        <TuneButton
           :disabled="
             votingPower === 0 ||
             !isValidVoter ||
@@ -341,7 +352,7 @@ watch(
           @click="handleSubmit"
         >
           {{ $t('confirm') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

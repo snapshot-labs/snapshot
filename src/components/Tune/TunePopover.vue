@@ -35,7 +35,10 @@ withDefaults(
         <slot v-if="$slots.button" name="button" />
         <TuneButton v-else class="flex items-center gap-1">
           <span>{{ label }}</span>
-          <i-ho-chevron-down class="text-sm" aria-hidden="true" />
+          <i-ho-chevron-down
+            class="text-sm text-skin-link"
+            aria-hidden="true"
+          />
         </TuneButton>
       </PopoverButton>
 

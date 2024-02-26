@@ -97,14 +97,14 @@ watch(open, () => {
       </div>
     </div>
     <template v-if="selectedPlugin?.key" #footer>
-      <BaseButton
+      <TuneButton
         :disabled="!isValid"
         class="w-full"
         primary
         @click="handleSubmit"
       >
         {{ Object.keys(plugin).length ? $t('applyChanges') : $t('add') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

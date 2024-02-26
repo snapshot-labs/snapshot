@@ -57,7 +57,7 @@ watch(
         class="absolute inset-y-0 right-1 flex items-center px-2 focus:outline-none"
         :class="{ 'cursor-not-allowed': isDisabled }"
       >
-        <i-ho-chevron-down class="text-[14px] text-skin-text" />
+        <i-ho-chevron-down class="text-[14px] text-skin-link" />
       </ComboboxButton>
       <ComboboxOptions
         v-if="items.length > 0"

@@ -16,7 +16,7 @@
         <img src="https://img.shields.io/discord/707079246388133940.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2" alt="Discord">
     </a>
     <a href="https://twitter.com/SnapshotLabs">
-        <img src="https://img.shields.io/twitter/follow/SnapshotLabs?label=SnapshotLabs&style=flat&logo=twitter&color=1DA1F2" alt="Twitter">
+        <img src="https://img.shields.io/twitter/follow/SnapshotLabs?label=SnapshotLabs&style=social">
     </a>
 </div>
 <div align="center">

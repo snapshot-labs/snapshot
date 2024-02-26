@@ -1,6 +1,5 @@
 import { Proposal, Vote, VoteFilters } from '@/helpers/interfaces';
 import { VOTES_QUERY } from '@/helpers/queries';
-import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
 type QueryParams = {
   voter?: string;
@@ -13,23 +12,9 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
 
   const loadingVotes = ref(false);
   const loadingMoreVotes = ref(false);
+  const loadingUserVote = ref(false);
   const votes = ref<Vote[]>([]);
   const userVote = ref<Vote | null>(null);
-
-  const userPrioritizedVotes = computed(() => {
-    const votesClone = clone(votes.value);
-    if (userVote.value) {
-      const index = votesClone.findIndex(
-        vote => vote.ipfs === userVote.value?.ipfs
-      );
-      if (index !== -1) {
-        votesClone.splice(index, 1);
-      }
-      votesClone.unshift(userVote.value);
-    }
-
-    return votesClone;
-  });
 
   async function _fetchVotes(queryParams: QueryParams, skip = 0) {
     const response = await apolloQuery(
@@ -121,20 +106,27 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadUserVote(voter: string) {
+    if (!voter) {
+      userVote.value = null;
+      return;
+    }
     try {
+      loadingUserVote.value = true;
       const response = await _fetchVote({ voter });
       userVote.value = formatProposalVotes(response)[0];
     } catch (e) {
       console.log(e);
+    } finally {
+      loadingUserVote.value = false;
     }
   }
 
   return {
     votes,
-    userPrioritizedVotes,
     profiles,
     loadingVotes,
     loadingMoreVotes,
+    loadingUserVote: computed(() => loadingUserVote.value),
     userVote,
     formatProposalVotes,
     loadVotes,

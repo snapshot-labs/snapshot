@@ -17,7 +17,7 @@ const modalDateSelectOpen = ref(false);
 <template>
   <div class="w-full">
     <LabelInput :information="information">{{ title }}</LabelInput>
-    <BaseButton
+    <TuneButton
       v-tippy="{ content: tooltip }"
       class="relative inset-y-0 flex !h-[42px] w-full items-center truncate pl-[44px] pr-3 text-left"
       :class="[disabled ? 'cursor-not-allowed' : 'cursor-pointer']"
@@ -29,7 +29,7 @@ const modalDateSelectOpen = ref(false);
       <i-ho-calendar
         class="absolute left-[16px] -mt-[1px] text-sm text-skin-text"
       />
-    </BaseButton>
+    </TuneButton>
   </div>
   <teleport to="#modal">
     <ModalSelectDate

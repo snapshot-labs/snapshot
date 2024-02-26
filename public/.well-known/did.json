@@ -1,0 +1,35 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:snapshot.org",
+  "verificationMethod": [
+    {
+      "id": "did:web:snapshot.org#wc-notify-subscribe-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:snapshot.org",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "X25519",
+        "x": "gL37Y5hbjW4__xM7n4JrtAqc1OAGUWKiASb1W1cReA0"
+      }
+    },
+    {
+      "id": "did:web:snapshot.org#wc-notify-authentication-key",
+      "type": "JsonWebKey2020",
+      "controller": "did:web:snapshot.org",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "iCZGVaUtesmG6RinZVff-GlW5qzap8uAI1opXKmuPA4"
+      }
+    }
+  ],
+  "keyAgreement": [
+    "did:web:snapshot.org#wc-notify-subscribe-key"
+  ],
+  "authentication": [
+    "did:web:snapshot.org#wc-notify-authentication-key"
+  ]
+}

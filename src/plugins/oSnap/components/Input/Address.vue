@@ -4,6 +4,7 @@ import { mustBeEthereumAddress } from '../../utils';
 const props = defineProps<{
   modelValue: string;
   label: string;
+  error?: string;
   disabled?: boolean;
 }>();
 const emit = defineEmits<{
@@ -12,12 +13,25 @@ const emit = defineEmits<{
 
 const input = ref('');
 const dirty = ref(false);
-const error = computed(() => {
-  if (!dirty.value) return '';
-  if (input.value === '') return 'Address is required';
-  if (!mustBeEthereumAddress(input.value)) return 'Invalid address';
-  return '';
-});
+const error = ref('');
+
+const validate = () => {
+  if (!dirty.value) {
+    error.value = '';
+    return;
+  }
+  if (input.value === '') {
+    error.value = 'Address is required';
+    return;
+  }
+  if (!mustBeEthereumAddress(input.value)) {
+    error.value = 'Invalid address';
+    return;
+  }
+  error.value = '';
+};
+
+watch(input, validate);
 
 watch(
   () => props.modelValue,
@@ -41,7 +55,7 @@ const handleInput = () => {
   <UiInput
     v-model="input"
     :disabled="disabled"
-    :error="error !== '' && error"
+    :error="props.error ?? (error || '')"
     @input="handleInput()"
     @blur="dirty = true"
   >

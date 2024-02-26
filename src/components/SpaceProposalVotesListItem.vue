@@ -30,7 +30,8 @@ const balanceFormatted = computed(() => {
 useTippy(refReasonTooltip, {
   content: h(TextAutolinker, { text: props.vote.reason }),
   interactive: true,
-  theme: 'urlified'
+  theme: 'urlified',
+  trigger: 'mouseenter focus click'
 });
 </script>
 
@@ -102,12 +103,12 @@ useTippy(refReasonTooltip, {
               class="mb-2 block"
               hide-external-icon
             >
-              <BaseButton class="w-full" tabindex="-1">
+              <TuneButton class="w-full" tabindex="-1">
                 {{ $t('verifyOnSignatorio') }}
                 <i-ho-external-link
                   class="mb-[2px] ml-1 inline-block text-xs"
                 />
-              </BaseButton>
+              </TuneButton>
             </BaseLink>
           </div>
         </template>

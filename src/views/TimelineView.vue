@@ -35,9 +35,12 @@ const isFeedJoinedSpaces = computed(
 );
 
 async function getProposals(skip = 0) {
-  if (!web3Account.value && isFeedJoinedSpaces.value) return [];
+  if (
+    isFeedJoinedSpaces.value &&
+    (!web3Account.value || followingSpaces.value.length < 1)
+  )
+    return [];
   const spaces = isFeedJoinedSpaces.value ? followingSpaces.value : undefined;
-  if (!spaces?.length) return [];
   const verified = route.query.feed === 'all' ? true : undefined;
 
   return (
@@ -186,7 +189,7 @@ useInfiniteScroll(
         >
           <div class="mb-3">{{ $t('noSpacesJoined') }}</div>
           <router-link :to="{ path: '/' }">
-            <BaseButton tabindex="-1">{{ $t('joinSpaces') }}</BaseButton>
+            <TuneButton tabindex="-1">{{ $t('joinSpaces') }}</TuneButton>
           </router-link>
         </div>
         <BaseNoResults

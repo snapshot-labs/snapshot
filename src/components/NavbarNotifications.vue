@@ -62,7 +62,7 @@ onMounted(() => loadNotifications());
           </BaseMenu>
         </div>
         <div class="mb-3 space-x-2 px-3">
-          <BaseButton
+          <TuneButton
             v-for="filter in filters"
             :key="filter"
             class="!h-[44px]"
@@ -70,7 +70,7 @@ onMounted(() => loadNotifications());
             @click="selectedFilter = filter"
           >
             {{ $t(`notifications.${filter}`) }}
-          </BaseButton>
+          </TuneButton>
         </div>
         <div v-if="!notificationsSortedByTime.length && notificationsLoading">
           <LoadingRow class="!px-0" />

@@ -35,7 +35,7 @@ watch(
     }"
     v-bind="$attrs"
   >
-    <BaseButton
+    <TuneButton
       v-bind="$attrs"
       :loading="loadingFollow === space.id"
       :disabled="isGnosisSafe"
@@ -62,7 +62,7 @@ watch(
           {{ $t('leave') }}
         </span>
       </span>
-    </BaseButton>
+    </TuneButton>
   </div>
   <teleport to="#modal">
     <ModalTerms

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const route = useRoute();
 
 const { getExtendedStrategy, extendedStrategy: strategy } = useStrategies();
@@ -7,7 +7,7 @@ useMeta({
   title: {
     key: 'metaInfo.strategy.title',
     params: {
-      strategy: route.params.name
+      strategy: route.params.name as string
     }
   },
   description: {
@@ -16,7 +16,7 @@ useMeta({
 });
 
 onMounted(async () => {
-  await getExtendedStrategy(route.params.name);
+  await getExtendedStrategy(route.params.name as string);
 });
 </script>
 
@@ -41,7 +41,11 @@ onMounted(async () => {
           class="text-skin-text"
           v-text="`In ${strategy.spacesCount} space(s)`"
         />
-        <BaseMarkdown :body="strategy.about" class="mb-6 mt-4" />
+        <BaseMarkdown
+          v-if="strategy.about"
+          :body="strategy.about"
+          class="mb-6 mt-4"
+        />
       </div>
     </template>
     <template #sidebar-right>
@@ -69,9 +73,9 @@ onMounted(async () => {
           </div>
         </div>
         <router-link :to="`/playground/${$route.params.name}`">
-          <BaseButton tabindex="-1" class="mt-2 w-full">{{
+          <TuneButton tabindex="-1" class="mt-2 w-full">{{
             $t('playground')
-          }}</BaseButton>
+          }}</TuneButton>
         </router-link>
       </BaseBlock>
     </template>

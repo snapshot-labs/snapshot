@@ -393,12 +393,12 @@ export default {
       </div>
       <div v-if="!preview || proposalResolved" class="flex w-full flex-col">
         <div class="flex w-full items-center justify-between" v-if="!preview">
-          <BaseButton @click="addTransactionBatch">
+          <TuneButton class="my-3" @click="addTransactionBatch">
             {{ $t('safeSnap.addBatch') }}
-          </BaseButton>
-          <BaseButton @click="openJsonModal">
+          </TuneButton>
+          <TuneButton @click="openJsonModal">
             Transaction Batch with JSON
-          </BaseButton>
+          </TuneButton>
           <teleport to="#modal">
             <SafeSnapModalImportTransaction
               :open="showBatchWithJsonModal"

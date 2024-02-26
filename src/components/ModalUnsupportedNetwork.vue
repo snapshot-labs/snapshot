@@ -4,6 +4,7 @@ import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 defineProps<{
   open: boolean;
+  hideDemoButton?: boolean;
 }>();
 const emit = defineEmits(['close', 'networkChanged']);
 const defaultNetwork = import.meta.env.VITE_DEFAULT_NETWORK;
@@ -76,7 +77,7 @@ const switchToDefaultNetwork = async () => {
     </div>
     <div class="m-4 space-y-4"></div>
     <div v-if="usingMetaMask" class="m-4 space-y-2">
-      <BaseButton
+      <TuneButton
         :loading="switchingChain"
         class="w-full"
         primary
@@ -87,12 +88,12 @@ const switchToDefaultNetwork = async () => {
             network: networkData[defaultNetwork].name
           })
         }}
-      </BaseButton>
-      <div v-if="defaultNetwork === '1'">
-        <BaseLink link="https://demo.snapshot.org" hide-external-icon>
-          <BaseButton tabindex="-1" class="w-full">
+      </TuneButton>
+      <div v-if="defaultNetwork === '1' && !hideDemoButton">
+        <BaseLink link="https://testnet.snapshot.org" hide-external-icon>
+          <TuneButton tabindex="-1" class="w-full">
             {{ $t('unsupportedNetwork.goToDemoSite') }}
-          </BaseButton>
+          </TuneButton>
         </BaseLink>
       </div>
     </div>

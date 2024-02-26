@@ -4,7 +4,8 @@ import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
 const { shareVote, shareProposalTwitter, shareProposalHey } = useSharing();
 const { web3Account } = useWeb3();
-const { userState } = useEmailSubscription();
+const { userState, loadEmailSubscriptions, initialized } =
+  useEmailSubscription();
 
 const props = defineProps<{
   open: boolean;
@@ -34,6 +35,12 @@ function share(shareTo: 'twitter' | 'hey') {
     choices: getChoiceString(props.proposal, props.selectedChoices)
   });
 }
+
+onMounted(() => {
+  if (!initialized.value) {
+    loadEmailSubscriptions();
+  }
+});
 </script>
 
 <template>
@@ -63,7 +70,7 @@ function share(shareTo: 'twitter' | 'hey') {
     </div>
     <template #footer>
       <div class="space-y-2">
-        <BaseButton
+        <TuneButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
             props.waitingForSigners
@@ -73,8 +80,8 @@ function share(shareTo: 'twitter' | 'hey') {
         >
           <i-s-twitter class="text-md text-[#1DA1F2]" />
           {{ $t('shareOnTwitter') }}
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
             props.waitingForSigners
@@ -84,39 +91,39 @@ function share(shareTo: 'twitter' | 'hey') {
         >
           <i-s-hey class="text-[#FB3A5D]" />
           {{ $t('shareOnHey') }}
-        </BaseButton>
+        </TuneButton>
 
-        <BaseButton
-          v-if="userState !== 'VERIFIED'"
+        <TuneButton
+          v-if="userState !== 'VERIFIED' && initialized"
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="subscribeEmail"
         >
           <i-ho-mail class="text-skin-link" />
           {{ $t('proposal.postVoteModal.subscribe') }}
-        </BaseButton>
+        </TuneButton>
 
         <div v-if="props.waitingForSigners">
           <BaseLink
             :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
             hide-external-icon
           >
-            <BaseButton tabindex="-1" class="w-full">
+            <TuneButton tabindex="-1" class="w-full">
               <div class="flex flex-grow items-center justify-center gap-1">
                 {{ $t('proposal.postVoteModal.seeQueue') }}
                 <i-ho-external-link class="text-sm" />
               </div>
-            </BaseButton>
+            </TuneButton>
           </BaseLink>
         </div>
 
-        <BaseButton
+        <TuneButton
           primary
           class="!h-[42px] w-full"
           data-testid="post-vote-modal-close"
           @click="emit('close')"
         >
           {{ $t('close') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

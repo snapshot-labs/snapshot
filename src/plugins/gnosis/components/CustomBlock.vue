@@ -108,7 +108,6 @@ export default {
         {{ $t('predictedImpact') }}
       </b>
       <div class="float-right">
-        <!-- TODO: use tooltip component -->
         <span :aria-label="baseToken.name" class="tooltipped tooltipped-n">
           <img
             class="circle inline-block border !align-middle leading-none"

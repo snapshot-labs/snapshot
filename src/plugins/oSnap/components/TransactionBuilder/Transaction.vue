@@ -35,13 +35,27 @@ const emit = defineEmits<{
 const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
 
 function updateTransactionType(transactionType: TTransactionType) {
-  newTransaction.value.type = transactionType;
+  newTransaction.value = {
+    type: transactionType,
+    to: '',
+    value: '0',
+    data: '0x',
+    formatted: ['', 0, '0', '0x']
+  };
   emit('updateTransaction', newTransaction.value, props.transactionIndex);
 }
 
 function updateTransaction(transaction: TTransaction) {
   newTransaction.value = transaction;
   emit('updateTransaction', newTransaction.value, props.transactionIndex);
+}
+
+function setTransactionAsInvalid() {
+  const tx: TTransaction = {
+    ...newTransaction.value,
+    isValid: false
+  };
+  emit('updateTransaction', tx, props.transactionIndex);
 }
 </script>
 
@@ -66,6 +80,8 @@ function updateTransaction(transaction: TTransaction) {
       v-if="transaction.type === 'contractInteraction'"
       :transaction="newTransaction as ContractInteractionTransaction"
       :network="network"
+      :setTransactionAsInvalid="setTransactionAsInvalid"
+      @update-transaction="updateTransaction"
     />
 
     <TransferFunds
@@ -73,6 +89,7 @@ function updateTransaction(transaction: TTransaction) {
       :network="network"
       :tokens="tokens"
       :transaction="newTransaction as TransferFundsTransaction"
+      :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
 
@@ -82,12 +99,14 @@ function updateTransaction(transaction: TTransaction) {
       :safe-address="safeAddress"
       :collectables="collectables"
       :transaction="newTransaction as TransferNftTransaction"
+      :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
 
     <RawTransaction
       v-if="transaction.type === 'raw'"
       :transaction="newTransaction as TRawTransaction"
+      :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
   </div>

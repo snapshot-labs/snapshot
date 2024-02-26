@@ -120,9 +120,6 @@
     "useEmailFetchClient": true,
     "useStatement": true,
     "useMixpanel": true,
-    "ExtractDefaultPropTypes": true,
-    "ExtractPropTypes": true,
-    "ExtractPublicPropTypes": true,
-    "WritableComputedRef": true
+    "usePayment": true
   }
 }

@@ -48,10 +48,10 @@ function clickPlayground() {
 </script>
 
 <template>
-  <BaseButton v-if="big" class="w-full" @click="clickPlayground">
+  <TuneButton v-if="big" class="w-full" @click="clickPlayground">
     {{ $t('settings.testInPlayground') }}
     <i-ho-external-link class="mb-[2px] inline-block text-xs" />
-  </BaseButton>
+  </TuneButton>
 
   <BaseButtonIcon
     v-else

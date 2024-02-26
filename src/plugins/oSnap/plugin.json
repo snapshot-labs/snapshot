@@ -2,8 +2,8 @@
   "name": "oSnap by UMA",
   "version": "1.0.0",
   "author": "UMA",
-  "website": "https://safe.global",
-  "icon": "ipfs://QmQjZaheMTLRrk22mrGCkGk2LNoNqqYMR8Bxtwa8mBHyc9",
+  "website": "https://uma.xyz/osnap",
+  "icon": "https://osnap.uma.xyz/osnap-icon.svg",
   "defaults": {
     "proposal": {
       "safe": null

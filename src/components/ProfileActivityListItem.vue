@@ -7,7 +7,7 @@ defineProps<{ activity: ProfileActivity }>();
 </script>
 
 <template>
-  <div class="border-b border-skin-text last:border-b-0">
+  <div class="border-b last:border-b-0">
     <!-- Vote activities -->
     <router-link
       v-if="activity.type === 'vote'"

@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   space: ExtendedSpace;
   preview: boolean;
   bodyLimit: number;
 }>();
 
 const { formatNumber } = useIntl();
-const { form, formDraft, validationErrors } = useFormSpaceProposal();
+const spaceType = computed(() => (props.space.turbo ? 'turbo' : 'default'));
+const { form, formDraft, validationErrors } = useFormSpaceProposal({
+  spaceType: spaceType.value
+});
 
 const imageDragging = ref(false);
 const textAreaEl = ref<HTMLTextAreaElement | null>(null);
-const visitedBodyInput = ref(false);
 
 const inputName = computed({
   get: () => form.value.name,
@@ -81,7 +83,6 @@ const handleDrop = e => {
         v-else
         v-model="inputName"
         :label="$t('create.proposalTitle')"
-        :max-length="128"
         :error="validationErrors?.name"
         focus-on-mount
         data-testid="input-proposal-title"
@@ -103,22 +104,25 @@ const handleDrop = e => {
           @dragleave="imageDragging = false"
         >
           <div
-            class="peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text"
+            :class="[
+              'peer min-h-[240px] overflow-hidden rounded-t-xl border focus-within:border-skin-text',
+              { 'tune-error-border': validationErrors?.body }
+            ]"
           >
             <textarea
               ref="textAreaEl"
               v-model.trim="inputBody"
               class="s-input mt-0 h-full min-h-[240px] w-full !rounded-xl border-none pt-0 text-base"
-              :maxlength="bodyLimit"
               data-testid="input-proposal-body"
               @paste="handlePaste"
-              @blur="visitedBodyInput = true"
-              @focus="visitedBodyInput = false"
             />
           </div>
 
           <label
-            class="relative flex items-center justify-between rounded-b-xl border border-t-0 border-skin-border px-2 py-1 peer-focus-within:border-skin-text"
+            :class="[
+              'relative flex items-center justify-between rounded-b-xl border border-t-0 px-2 py-1 peer-focus-within:border-skin-text',
+              { 'tune-error-border': validationErrors?.body }
+            ]"
           >
             <input
               accept="image/jpg, image/jpeg, image/png"
@@ -156,7 +160,7 @@ const handleDrop = e => {
           </label>
         </div>
         <TuneErrorInput
-          v-if="visitedBodyInput"
+          v-if="validationErrors?.body"
           :error="validationErrors?.body"
         />
       </div>

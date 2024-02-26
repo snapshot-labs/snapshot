@@ -30,6 +30,7 @@ defineEmits(['delegate']);
             </h4>
             <IconVerifiedSpace
               v-if="space.verified"
+              :turbo="space.turbo"
               size="19"
               class="ml-1 flex text-skin-primary"
             />
@@ -50,14 +51,14 @@ defineEmits(['delegate']);
           <div>{{ $t('profile.about.delegated') }}</div>
         </div>
 
-        <BaseButton
+        <TuneButton
           v-else-if="userAddress !== web3Account"
           class="!h-[44px]"
           primary
           @click="$emit('delegate', space)"
         >
           {{ $t('profile.about.delegate') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </div>
   </div>

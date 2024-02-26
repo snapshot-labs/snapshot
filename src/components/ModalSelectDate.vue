@@ -95,12 +95,12 @@ watch(step, () => {
     </div>
     <template #footer>
       <div class="float-left w-2/4 pr-2">
-        <BaseButton type="button" class="w-full" @click="$emit('close')">
+        <TuneButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
-        </BaseButton>
+        </TuneButton>
       </div>
       <div class="float-left w-2/4 pl-2">
-        <BaseButton
+        <TuneButton
           :disabled="!isTimeValid"
           class="w-full"
           primary
@@ -108,7 +108,7 @@ watch(step, () => {
         >
           <span v-if="step === 0">{{ $t('next') }}</span>
           <span v-else>{{ $t('select') }}</span>
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

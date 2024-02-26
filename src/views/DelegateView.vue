@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { debouncedWatch } from '@vueuse/core';
 import { isAddress } from '@ethersproject/address';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
@@ -23,14 +23,14 @@ const currentId = ref('');
 const currentDelegate = ref('');
 const loaded = ref(false);
 const delegatesLoading = ref(false);
-const delegates = ref([]);
-const delegatesWithScore = ref([]);
-const delegators = ref([]);
+const delegates = ref<any[]>([]);
+const delegatesWithScore = ref<any[]>([]);
+const delegators = ref<any[]>([]);
 const specifySpaceChecked = ref(false);
-const space = ref({});
+const space = ref();
 const form = ref({
-  address: route.params.to || '',
-  id: route.params.key || ''
+  address: (route.params.to as string) || '',
+  id: (route.params.key as string) || ''
 });
 
 const { profiles, loadProfiles } = useProfiles();
@@ -44,11 +44,11 @@ const isEnsOwnedByWeb3Account = computed(() =>
 
 const validateSpaceInput = computed(() => {
   if (space.value === null) return t('delegate.noValidSpaceId');
-  return false;
+  return '';
 });
 
 const validateToInput = computed(() => {
-  if (form.value.address === '') return false;
+  if (form.value.address === '') return '';
   const address = form.value.address;
   if (!isValidEnsDomain(address) && !isAddress(address)) {
     if (address.includes('.'))
@@ -60,7 +60,7 @@ const validateToInput = computed(() => {
   if (address.toLowerCase() === web3Account.value.toLowerCase())
     return t('delegate.delegateToSelf');
   if (isEnsOwnedByWeb3Account.value) return t('delegate.delegateToSelfAddress');
-  return false;
+  return '';
 });
 
 watch(
@@ -126,7 +126,7 @@ async function getDelegatesWithScore() {
 
   delegatesLoading.value = true;
   try {
-    const delegations = await getDelegatesBySpace(
+    const delegations: any = await getDelegatesBySpace(
       space.value.network,
       space.value.id,
       'latest'
@@ -285,8 +285,8 @@ onMounted(async () => {
           <div
             v-for="(delegate, i) in delegates"
             :key="i"
-            :style="i === 0 && 'border: 0 !important;'"
             class="flex border-t px-4 py-3"
+            :class="{ '!border-0': i === 0 }"
           >
             <BaseUser
               :address="delegate.delegate"
@@ -313,7 +313,7 @@ onMounted(async () => {
           <div
             v-for="(delegator, i) in delegators"
             :key="i"
-            :style="i === 0 && 'border: 0 !important;'"
+            :class="{ '!border-0': i === 0 }"
             class="flex border-t px-4 py-3"
           >
             <BaseUser
@@ -327,6 +327,7 @@ onMounted(async () => {
             />
           </div>
         </BaseBlock>
+
         <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
@@ -336,13 +337,13 @@ onMounted(async () => {
           <div
             v-for="(delegate, i) in delegatesWithScore"
             :key="i"
-            :style="i === 0 && 'border: 0 !important;'"
+            :class="{ '!border-0': i === 0 }"
             class="flex border-t px-4 py-3"
           >
             <BaseUser
               :profile="profiles[delegate.delegate]"
-              :address="delegate.delegate"
               :space="{ network: networkKey }"
+              :address="delegate.delegate"
               class="w-[160px]"
             />
             <div
@@ -366,8 +367,8 @@ onMounted(async () => {
       </div>
     </template>
     <template v-if="networkSupportsDelegate" #sidebar-right>
-      <BaseBlock>
-        <BaseButton
+      <BaseBlock class="mt-4 lg:mt-0">
+        <TuneButton
           :disabled="!isValidForm && !!web3Account"
           :loading="delegationLoading"
           class="block w-full"
@@ -375,11 +376,14 @@ onMounted(async () => {
           @click="web3Account ? handleSubmit() : (modalAccountOpen = true)"
         >
           {{ $t('confirm') }}
-        </BaseButton>
+        </TuneButton>
       </BaseBlock>
     </template>
   </TheLayout>
-  <teleport v-if="networkSupportsDelegate" to="#modal">
+  <teleport
+    v-if="networkSupportsDelegate && profiles[currentDelegate]"
+    to="#modal"
+  >
     <ModalRevokeDelegate
       v-if="loaded"
       :id="currentId"

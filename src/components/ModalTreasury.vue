@@ -2,6 +2,7 @@
 import { clone, validateSchema } from '@snapshot-labs/snapshot.js/src/utils';
 import schemas from '@snapshot-labs/snapshot.js/src/schemas';
 import { TreasuryWallet } from '@/helpers/interfaces';
+import { toChecksumAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   open: boolean;
@@ -35,7 +36,9 @@ const isValid = computed(() =>
 );
 
 function handleSubmit() {
+  const checksumAddress = toChecksumAddress(input.value.address);
   const treasuryObj = clone(input.value);
+  treasuryObj.address = checksumAddress;
   emit('add', treasuryObj);
   emit('close');
 }
@@ -89,14 +92,14 @@ watch(open, () => {
     </div>
 
     <template #footer>
-      <BaseButton
+      <TuneButton
         :disabled="!isValid"
         class="w-full"
         primary
         @click="handleSubmit"
       >
         {{ treasury.name ? $t('applyChanges') : $t('add') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

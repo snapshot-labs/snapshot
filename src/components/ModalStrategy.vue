@@ -152,14 +152,14 @@ watch(open, () => {
         :network="strategy.network"
         :params="strategy.params"
       />
-      <BaseButton
+      <TuneButton
         :disabled="loading"
         class="mt-2 w-full"
         primary
         @click="handleSubmit"
       >
         {{ strategy.name ? $t('save') : $t('add') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

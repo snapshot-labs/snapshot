@@ -17,13 +17,13 @@ export const initSentry = (app, router) => {
       }),
       new Sentry.Replay()
     ],
-    sampleRate: 0.01,
+    sampleRate: 0,
     maxBreadcrumbs: 50,
     tracingOptions: {
       trackComponents: true
     },
-    replaysSessionSampleRate: 0.1,
-    replaysOnErrorSampleRate: 1.0,
+    replaysSessionSampleRate: 0,
+    replaysOnErrorSampleRate: 0,
     denyUrls: [/extensions\//i, /^chrome:\/\//i, /^chrome-extension:\/\//i]
   });
 };

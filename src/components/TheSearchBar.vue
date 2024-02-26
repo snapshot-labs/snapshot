@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { watchDebounced } from '@vueuse/core';
+
 const route = useRoute();
 const router = useRouter();
 const { t } = useI18n();
@@ -46,10 +48,17 @@ function selectFilter(e) {
 function handleUpdateSearch(e: string) {
   input.value = e;
   emit('update:inputSearch', e);
-  router.push({
-    query: { ...route.query, q: e || undefined }
-  });
 }
+
+watchDebounced(
+  input,
+  () => {
+    router.push({
+      query: { ...route.query, q: input.value || undefined }
+    });
+  },
+  { debounce: 300 }
+);
 </script>
 
 <template>
@@ -65,7 +74,7 @@ function handleUpdateSearch(e: string) {
         <template #button>
           <button class="flex h-full flex-grow items-center">
             <span class="ml-3" v-text="searchSelectedOption" />
-            <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-text" />
+            <i-ho-chevron-down class="ml-1 mr-[12px] text-xs text-skin-link" />
           </button>
         </template>
       </BaseMenu>

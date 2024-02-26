@@ -83,7 +83,7 @@ export function useClient() {
 
       mixpanel.track('Update proposal', {
         space: space.id,
-        proposalId: payload.proposal.id
+        proposalId: payload.id
       });
 
       return receipt;

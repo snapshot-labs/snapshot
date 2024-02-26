@@ -9,7 +9,7 @@ defineProps<{
   address: string;
   profile?: Profile;
   proposal?: Proposal;
-  space?: ExtendedSpace;
+  space?: Partial<ExtendedSpace>;
 }>();
 
 const { domain } = useApp();
@@ -45,9 +45,9 @@ const { domain } = useApp();
               "
               hide-external-icon
             >
-              <BaseButton primary class="w-full" tabindex="-1">
+              <TuneButton primary class="w-full" tabindex="-1">
                 {{ $t('profile.viewProfile') }}
-              </BaseButton>
+              </TuneButton>
             </BaseLink>
           </div>
           <div class="w-1/2 pl-2">
@@ -57,10 +57,10 @@ const { domain } = useApp();
               "
               hide-external-icon
             >
-              <BaseButton class="w-full" tabindex="-1">
+              <TuneButton class="w-full" tabindex="-1">
                 {{ $t('seeInExplorer') }}
                 <i-ho-external-link class="mb-[2px] inline-block text-xs" />
-              </BaseButton>
+              </TuneButton>
             </BaseLink>
           </div>
         </div>

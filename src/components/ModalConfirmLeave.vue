@@ -22,17 +22,17 @@ defineEmits(['close', 'save', 'leave']);
 
     <template #footer>
       <div class="flex gap-3">
-        <BaseButton class="w-full" @click="$emit('leave'), $emit('close')">
+        <TuneButton class="w-full" @click="$emit('leave'), $emit('close')">
           Leave
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           class="w-full"
           primary
           :disabled="disabled"
           @click="$emit('save'), $emit('close')"
         >
           Save
-        </BaseButton>
+        </TuneButton>
       </div>
     </template>
   </BaseModal>

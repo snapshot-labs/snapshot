@@ -26,7 +26,10 @@ const steps = [
               <span
                 class="relative flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-skin-primary"
               >
-                <i-ho-check class="text-[14px] text-white" aria-hidden="true" />
+                <i-ho-check
+                  class="text-[14px] text-skin-bg"
+                  aria-hidden="true"
+                />
                 <span
                   v-if="i > 0"
                   class="absolute -top-4 h-4 w-[1px] bg-skin-primary"

@@ -21,6 +21,7 @@ export function useSpaces() {
   const spacesRankingMetrics = ref<Metrics>({ total: 0, categories: {} });
 
   const isLoadingSpaces = ref(false);
+  const isLoadingDeletedSpaces = ref(false);
   const spaces = ref<Space[]>([]);
 
   function _fetchRankedSpaces(variables: any = {}, skip = 0) {
@@ -159,16 +160,42 @@ export function useSpaces() {
     }
   }
 
+  async function getDeletedSpaces(ids: string[]) {
+    isLoadingDeletedSpaces.value = true;
+    const results = await Promise.allSettled(
+      ids.map(async id => {
+        try {
+          const response = await fetch(
+            `${import.meta.env.VITE_HUB_URL}/api/spaces/${id}`,
+            {
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
+
+          return (await response.json())?.deleted === true ? id : null;
+        } catch (e) {
+          console.error(e);
+          return null;
+        }
+      })
+    );
+    isLoadingDeletedSpaces.value = false;
+
+    return results.map(r => r.value).filter(a => a);
+  }
+
   return {
     loadSpaces,
     loadSpacesHome,
     loadMoreSpacesHome,
     loadSpacesRanking,
     loadMoreSpacesRanking,
+    getDeletedSpaces,
     spaces,
     spacesHome,
     spacesHomeMetrics,
     isLoadingSpaces,
+    isLoadingDeletedSpaces,
     loadingSpacesHome,
     loadingMoreSpacesHome,
     enableSpaceHomeScroll,

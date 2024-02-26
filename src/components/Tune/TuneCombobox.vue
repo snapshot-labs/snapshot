@@ -98,7 +98,7 @@ const filteredItems = computed(() => {
           class="absolute inset-y-0 right-1 flex items-center px-2 focus:outline-none"
           :class="{ 'cursor-not-allowed': disabled }"
         >
-          <i-ho-chevron-down class="text-sm" />
+          <i-ho-chevron-down class="text-sm text-skin-link" />
         </ComboboxButton>
         <ComboboxOptions
           v-if="filteredItems.length > 0"

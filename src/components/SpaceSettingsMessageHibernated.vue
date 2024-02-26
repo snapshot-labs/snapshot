@@ -24,7 +24,7 @@ onMounted(() => {
       {{ $t('settings.reactivatingHibernatedSpace.disabledInformation') }}
     </div>
 
-    <BaseButton
+    <TuneButton
       primary
       :loading="isSending"
       :disabled="!isValid"
@@ -32,6 +32,6 @@ onMounted(() => {
       @click="emit('reactivateSpace')"
     >
       {{ $t('reactivateSpace') }}
-    </BaseButton>
+    </TuneButton>
   </BaseMessageBlock>
 </template>

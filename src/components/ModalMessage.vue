@@ -20,9 +20,9 @@ defineEmits(['close']);
       <slot name="message" />
     </BaseMessageBlock>
     <template #footer>
-      <BaseButton class="w-full" primary @click="$emit('close')">
+      <TuneButton class="w-full" primary @click="$emit('close')">
         {{ $t('continue') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

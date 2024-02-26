@@ -150,9 +150,12 @@ export default {
       />
     </div>
 
-    <BaseButton v-if="!config.preview" class="mt-2" @click="addTransaction">
+    <TuneButton v-if="!config.preview" class="mt-2" @click="addTransaction">
       Add Single Transaction
-    </BaseButton>
+    </TuneButton>
+    <TuneButton v-if="!config.preview" class="mt-2" @click="addTransaction">
+      {{ $t('safeSnap.addTransaction') }}
+    </TuneButton>
   </UiCollapsible>
 </template>
 

@@ -47,7 +47,7 @@
   "warningFlaggedProposal": "This proposal might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
   "warningFlaggedSpace": "This space might contain scams, offensive material, or be malicious in nature. Please proceed with caution.",
   "warningFlaggedActionShow": "Show",
-  "linkPreview": "This link will take you to {url}.</br> Are you sure you want to continue?",
+  "linkPreview": "This link will take you to {url}.</br> Be careful, this link could be malicious. Are you sure you want to continue? ",
   "version": "Version",
   "timeline": "Timeline",
   "ended": "ended",
@@ -372,7 +372,7 @@
   "settings": {
     "header": "Settings",
     "confirmLeaveMessage": " Do you really want to leave? You have unsaved changes that will be lost.",
-    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone and you will not be able to create a new space with the same ENS domain name.",
+    "confirmDeleteSpace": " Do you really want to delete this space? This action cannot be undone and you will not be able to use {name} again to create another space.",
     "validationErrorsMessage": "Please fix the following fields before saving:",
     "confirmInputDeleteSpace": "Enter {space} to continue:",
     "noticeSavedTitle": "Settings saved",
@@ -446,7 +446,7 @@
       "label": "Symbol",
       "information": "The default symbol used for this space, usually the token symbol i.e. BAL for Balancer"
     },
-    "strategiesList": "Select up to 8 strategies",
+    "strategiesList": "Select up to {0} strategies",
     "votingPowerIsCumulative": "Voting power is cumulative",
     "addStrategy": "Add strategy",
     "testInPlayground": "Test in playground",

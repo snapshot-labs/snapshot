@@ -13,10 +13,10 @@ const emit = defineEmits<{
       This will execute the transactions from this proposal and return the
       asserter's bond.
     </p>
-    <BaseButton @click="emit('executeProposal')" class="w-full">
+    <TuneButton @click="emit('executeProposal')" class="w-full">
       Execute {{ transactionCount }} transaction{{
         transactionCount > 1 ? 's' : ''
       }}
-    </BaseButton>
+    </TuneButton>
   </div>
 </template>

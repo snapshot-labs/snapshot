@@ -123,6 +123,7 @@ export const PROPOSALS_QUERY = gql`
         avatar
         symbol
         verified
+        turbo
         plugins
       }
       scores_state
@@ -202,9 +203,11 @@ export const ENS_DOMAINS_BY_ACCOUNT_QUERY = gql`
     account(id: $id) {
       domains {
         name
+        expiryDate
       }
       wrappedDomains {
         name
+        expiryDate
       }
     }
   }
@@ -382,6 +385,7 @@ export const SPACES_RANKING_QUERY = gql`
         avatar
         private
         verified
+        turbo
         categories
         rank
         activeProposals
@@ -404,6 +408,7 @@ export const SPACES_QUERY = gql`
       name
       avatar
       verified
+      turbo
       activeProposals
       followersCount
       terms
@@ -453,6 +458,7 @@ export const SPACE_QUERY = gql`
       template
       guidelines
       verified
+      turbo
       flagged
       hibernated
       parent {

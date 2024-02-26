@@ -14,7 +14,7 @@ defineEmits<{
   <!-- eslint-disable vue/no-v-html -->
   <ModalConfirmAction
     :open="open"
-    title="Link preview"
+    title="Proceed with caution!"
     show-cancel
     @close="$emit('close')"
     @confirm="$emit('confirm')"

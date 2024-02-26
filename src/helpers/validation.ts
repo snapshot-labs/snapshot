@@ -1,18 +1,8 @@
-import Ajv from 'ajv';
-import type { ErrorObject } from 'ajv';
-import addFormats from 'ajv-formats';
-import { parseUnits } from '@ethersproject/units';
-import { isAddress } from '@ethersproject/address';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
-
-const networksIds = Object.keys(networks);
-const mainnetNetworkIds = Object.keys(networks).filter(
-  id => !networks[id].testnet
-);
+import snapshot from '@snapshot-labs/snapshot.js';
 
 const { env } = useApp();
 
-function getErrorMessage(errorObject: ErrorObject): string {
+function getErrorMessage(errorObject): string {
   if (!errorObject.message) return 'Invalid field.';
 
   if (errorObject.keyword === 'format') {
@@ -32,83 +22,28 @@ function getErrorMessage(errorObject: ErrorObject): string {
 
   return `${errorObject.message
     .charAt(0)
-    .toLocaleUpperCase()}${errorObject.message.slice(1).toLocaleLowerCase()}.`;
+    .toLocaleUpperCase()}${errorObject.message.slice(1)}.`;
 }
-
 export function validateForm(
   schema: Record<string, any>,
-  form: Record<string, any>
+  form: Record<string, any>,
+  options = {
+    spaceType: 'default'
+  }
 ): Record<string, any> {
-  const ajv = new Ajv({ allErrors: true });
-
-  addFormats(ajv);
-
-  ajv.addFormat('address', {
-    validate: (value: string) => {
-      try {
-        return isAddress(value);
-      } catch (err) {
-        return false;
-      }
-    }
+  const valid = snapshot.utils.validateSchema(schema, form, {
+    spaceType: options.spaceType || 'default',
+    snapshotEnv: env === 'production' ? 'mainnet' : 'default'
   });
-
-  ajv.addFormat('long', {
-    validate: () => true
-  });
-
-  ajv.addFormat('ethValue', {
-    validate: (value: string) => {
-      if (!value.match(/^([0-9]|[1-9][0-9]+)(\.[0-9]+)?$/)) return false;
-
-      try {
-        parseUnits(value, 18);
-        return true;
-      } catch {
-        return false;
-      }
-    }
-  });
-
-  ajv.addFormat('customUrl', {
-    type: 'string',
-    validate: (str: any) => {
-      if (!str.length) return true;
-      return (
-        str.startsWith('http://') ||
-        str.startsWith('https://') ||
-        str.startsWith('ipfs://') ||
-        str.startsWith('ipns://') ||
-        str.startsWith('snapshot://')
-      );
-    }
-  });
-
-  ajv.addKeyword({
-    keyword: 'snapshotNetwork',
-    validate: function (schema, data) {
-      if (env === 'production') return mainnetNetworkIds.includes(data);
-      return networksIds.includes(data);
-    },
-    error: {
-      message: 'testnet not allowed'
-    }
-  });
-
-  ajv.validate(schema, form);
-
-  return transformAjvErrors(ajv);
+  if (!Array.isArray(valid)) return {};
+  return transformAjvErrors(valid);
 }
 
 interface ValidationErrorOutput {
   [key: string]: ValidationErrorOutput | string;
 }
-function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
-  if (!ajv.errors) {
-    return {};
-  }
-
-  ajv.errors = ajv.errors.map(error => {
+function transformAjvErrors(errors): ValidationErrorOutput {
+  errors = errors.map(error => {
     if (error.instancePath) return error;
     const propertyName = error.params.missingProperty;
     if (!propertyName) return error;
@@ -119,28 +54,25 @@ function transformAjvErrors(ajv: Ajv): ValidationErrorOutput {
     };
   });
 
-  return ajv.errors.reduce(
-    (output: ValidationErrorOutput, error: ErrorObject) => {
-      const path: string[] = extractPathFromError(error);
+  return errors.reduce((output: ValidationErrorOutput, error) => {
+    const path: string[] = extractPathFromError(error);
 
-      // Skip the current error if the path is empty
-      if (path.length === 0) {
-        return output;
-      }
-
-      const targetObject: ValidationErrorOutput = findOrCreateNestedObject(
-        output,
-        path
-      );
-
-      targetObject[path[path.length - 1]] = getErrorMessage(error);
+    // Skip the current error if the path is empty
+    if (path.length === 0) {
       return output;
-    },
-    {}
-  );
+    }
+
+    const targetObject: ValidationErrorOutput = findOrCreateNestedObject(
+      output,
+      path
+    );
+
+    targetObject[path[path.length - 1]] = getErrorMessage(error);
+    return output;
+  }, {});
 }
 
-function extractPathFromError(error: ErrorObject): string[] {
+function extractPathFromError(error): string[] {
   if (!error.instancePath) {
     return [];
   }

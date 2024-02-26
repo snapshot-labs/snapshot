@@ -18,22 +18,21 @@ const onChange = (event: Event) => {
 </script>
 
 <template>
-  <div>
-    <label :for="id || value">
-      <div class="flex items-center gap-[10px]">
-        <input
-          :id="id || value"
-          type="radio"
-          :name="label || definition?.title"
-          :checked="modelValue === value"
-          :value="value"
-          class="tune-input-radio"
-          @input="onChange"
-        />
-        <TuneLabelInput v-if="hint || definition?.description" class="!mb-0">
-          {{ hint || definition.description }}
-        </TuneLabelInput>
-      </div>
-    </label>
-  </div>
+  <label
+    :for="id || value"
+    class="flex items-center align-center gap-[10px] hover:cursor-pointer"
+  >
+    <input
+      :id="id || value"
+      type="radio"
+      :name="label || definition?.title"
+      :checked="modelValue === value"
+      :value="value"
+      class="tune-input-radio hover:cursor-pointer"
+      @input="onChange"
+    />
+    <TuneLabelInput v-if="hint || definition?.description" class="!mb-0">
+      {{ hint || definition.description }}
+    </TuneLabelInput>
+  </label>
 </template>

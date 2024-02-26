@@ -1,16 +1,12 @@
 import { SPACE_SKIN_QUERY } from '@/helpers/queries';
-import { useStorage, useMediaQuery } from '@vueuse/core';
+import { useStorage, usePreferredColorScheme } from '@vueuse/core';
 
-/**
- * Handle theme (dark/light mode)
- * - use local storage or fall back to OS preference
- */
 export const DARK = 'dark';
 export const LIGHT = 'light';
 
-const osTheme = useMediaQuery('(prefers-color-scheme: dark)') ? DARK : LIGHT;
+const preferredColor = usePreferredColorScheme();
 
-const userTheme = useStorage('snapshot.userTheme', osTheme);
+const userTheme = useStorage('snapshot.userTheme', '');
 
 function toggleUserTheme() {
   if (userTheme.value === LIGHT) {
@@ -21,18 +17,17 @@ function toggleUserTheme() {
 }
 
 const theme = computed(() =>
-  [DARK, LIGHT].includes(userTheme.value) ? userTheme.value : osTheme
+  [DARK, LIGHT].includes(userTheme.value)
+    ? userTheme.value
+    : preferredColor.value
 );
 
-/**
- * Handle skin (e.g. uniswap)
- */
 const skinClass = ref('default');
 
 export function useSkin() {
   const { apolloQuery } = useApolloQuery();
 
-  async function getSkin(domain: string) {
+  async function getSkin(domain: string): Promise<string | null> {
     if (domain) {
       const space = await apolloQuery(
         {
@@ -46,8 +41,12 @@ export function useSkin() {
       if (space?.skin) {
         skinClass.value = space.skin;
         document.body.classList.add(skinClass.value);
+
+        return space.skin;
       }
     }
+
+    return null;
   }
 
   const getThemeIcon = () => (theme.value === LIGHT ? 'moon' : 'sun');
@@ -64,9 +63,6 @@ export function useSkin() {
   );
 
   return {
-    skinClass,
-    userTheme,
-    theme,
     getThemeIcon,
     toggleUserTheme,
     getSkin

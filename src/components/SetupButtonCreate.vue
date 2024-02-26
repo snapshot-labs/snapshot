@@ -7,12 +7,12 @@ defineProps<{
 </script>
 
 <template>
-  <BaseButton
+  <TuneButton
     class="float-right"
     primary
     :loading="creatingSpace"
     @click="emit('create')"
   >
     {{ $t('createButton') }}
-  </BaseButton>
+  </TuneButton>
 </template>

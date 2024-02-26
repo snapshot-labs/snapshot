@@ -54,12 +54,12 @@ const createdSpaces = useStorage(
             </template>
           </i18n-t>
         </div>
-        <BaseButton
+        <TuneButton
           class="mt-3"
           @click="createdSpaces[spaceId].showMessage = false"
         >
           {{ $t('newSpaceNotice.gotIt') }}
-        </BaseButton>
+        </TuneButton>
       </div>
     </div>
   </BaseBlock>

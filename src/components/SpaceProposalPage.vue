@@ -22,8 +22,8 @@ useMeta({
 });
 
 const route = useRoute();
-const router = useRouter();
 const { web3, web3Account } = useWeb3();
+const { modalEmailOpen } = useModal();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -31,7 +31,6 @@ const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
 const proposalId: string = route.params.id as string;
 
 const modalOpen = ref(false);
-const modalEmailSubscriptionOpen = ref(false);
 const selectedChoices = ref<any>(null);
 const loadedResults = ref(false);
 const results = ref<Results | null>(null);
@@ -54,8 +53,6 @@ const strategies = computed(
   () => props.proposal?.strategies ?? props.space.strategies
 );
 
-const browserHasHistory = computed(() => window.history.state.back);
-
 const { modalAccountOpen, isModalPostVoteOpen } = useModal();
 const { modalTermsOpen, termsAccepted, acceptTerms } = useTerms(props.space.id);
 
@@ -67,8 +64,8 @@ function clickVote() {
       : (modalOpen.value = true);
 }
 
-function reloadProposal() {
-  emit('reload-proposal');
+function reloadProposal(softReload = false) {
+  emit('reload-proposal', softReload);
 }
 
 function openPostVoteModal(isWaitingForSigners: boolean) {
@@ -98,12 +95,6 @@ async function loadResults() {
   loadedResults.value = true;
 }
 
-function handleBackClick() {
-  if (!browserHasHistory.value || browserHasHistory.value.includes('create'))
-    return router.push({ name: 'spaceProposals' });
-  return router.go(-1);
-}
-
 function handleChoiceQuery() {
   const choice = route.query.choice as string;
   if (web3Account.value && choice && props.proposal.state === 'active') {
@@ -120,20 +111,19 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
-  loadResults();
-});
+watch(
+  () => props.proposal,
+  () => loadResults(),
+  { immediate: true }
+);
 
 onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
 
 <template>
-  <TheLayout v-bind="$attrs">
+  <SpaceBreadcrumbs :space="space" :proposal="proposal" />
+  <TheLayout v-bind="$attrs" class="mt-[20px]">
     <template #content-left>
-      <div class="mb-3 px-3 md:px-0">
-        <ButtonBack @click="handleBackClick" />
-      </div>
-
       <MessageWarningFlagged
         v-if="isMessageVisible"
         type="proposal"
@@ -143,6 +133,8 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 
       <template v-else>
         <div class="px-3 md:px-0">
+          <LabelProposalState :state="proposal.state" class="mb-[12px]" />
+
           <SpaceProposalHeader
             :space="space"
             :proposal="proposal"
@@ -179,7 +171,6 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             </BlockLink>
           </div>
           <SpaceProposalVote
-            v-if="proposal?.state === 'active'"
             v-model="selectedChoices"
             :proposal="proposal"
             @open="modalOpen = true"
@@ -212,7 +203,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           :results="results"
           :strategies="strategies"
           :is-admin="isAdmin"
-          @reload="reloadProposal()"
+          @reload="reloadProposal(true)"
         />
         <SpaceProposalPluginsSidebar
           v-if="proposal.plugins && loadedResults && results"
@@ -251,12 +242,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
       :selected-choices="selectedChoices"
       :waiting-for-signers="waitingForSigners"
       @close="isModalPostVoteOpen = false"
-      @subscribe-email="modalEmailSubscriptionOpen = true"
-    />
-    <ModalEmailSubscription
-      :open="modalEmailSubscriptionOpen"
-      :address="web3Account"
-      @close="modalEmailSubscriptionOpen = false"
+      @subscribe-email="modalEmailOpen = true"
     />
   </teleport>
 </template>

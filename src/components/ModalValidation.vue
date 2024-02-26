@@ -226,9 +226,9 @@ watch(showStrategies, () => {
       </div>
     </div>
     <template v-if="input.name" #footer>
-      <BaseButton class="w-full" primary @click="handleSubmit">
+      <TuneButton class="w-full" primary @click="handleSubmit">
         {{ $t('applyChanges') }}
-      </BaseButton>
+      </TuneButton>
     </template>
   </BaseModal>
 </template>

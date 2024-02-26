@@ -72,7 +72,7 @@ async function handleClickSave() {
 
         <TheActionbar break-point="md">
           <div class="px-4 md:px-0">
-            <BaseButton
+            <TuneButton
               class="mt-3 w-full"
               :loading="saving"
               :disabled="!edited"
@@ -80,7 +80,7 @@ async function handleClickSave() {
               @click="handleClickSave"
             >
               Save changes
-            </BaseButton>
+            </TuneButton>
           </div>
         </TheActionbar>
       </BaseBlock>

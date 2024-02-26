@@ -160,7 +160,7 @@ export default {
           max-width: 125px;
         "
       />
-      <BaseButton
+      <TuneButton
         v-if="currentState !== 'NO_POAP'"
         class="mb-2 mt-3 w-full"
         :disabled="!actionEnabled"
@@ -168,7 +168,7 @@ export default {
         @click="action"
       >
         {{ $t(buttonText) }}
-      </BaseButton>
+      </TuneButton>
     </div>
   </BaseBlock>
 </template>

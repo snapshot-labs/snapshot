@@ -3,8 +3,7 @@ import { shorten } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
-  useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const auth = getInstance();
 
@@ -18,10 +17,11 @@ async function handleLogin(connector) {
 }
 
 const profile = computed(() => profiles.value[web3Account.value]);
-
-watch(web3Account, () => {
-  loadProfiles([web3Account.value]);
-});
+watch(
+  () => web3Account,
+  () => loadProfiles([web3Account.value]),
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -30,8 +30,8 @@ watch(web3Account, () => {
       :address="web3Account"
       @switch-wallet="modalAccountOpen = true"
     >
-      <BaseButton
-        :loading="web3.authLoading || loadingProfiles || reloadingProfile"
+      <TuneButton
+        :loading="web3.authLoading"
         class="flex items-center"
         data-testid="button-account-menu"
       >
@@ -46,11 +46,11 @@ watch(web3Account, () => {
           v-text="profile.name || profile.ens"
         />
         <span v-else class="hidden sm:block" v-text="shorten(web3Account)" />
-      </BaseButton>
+      </TuneButton>
     </MenuAccount>
   </template>
 
-  <BaseButton
+  <TuneButton
     v-if="!auth.isAuthenticated.value"
     :loading="loading || web3.authLoading"
     :aria-label="$t('connectWallet')"
@@ -59,7 +59,7 @@ watch(web3Account, () => {
   >
     <span class="hidden sm:block" v-text="$t('connectWallet')" />
     <i-ho-login class="-ml-2 -mr-[11px] block align-text-bottom sm:hidden" />
-  </BaseButton>
+  </TuneButton>
 
   <teleport to="#modal">
     <ModalAccount
