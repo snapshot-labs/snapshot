@@ -186,7 +186,7 @@ export default {
       ></textarea>
     </div>
     <div class="my-3 flex items-center justify-between">
-      <BaseButton @click="importFromText">Parse JSON</BaseButton>
+      <TuneButton @click="importFromText">Parse JSON</TuneButton>
       <a
         class="mb-1 mt-2"
         style="text-decoration: underline; font-size: 14px"

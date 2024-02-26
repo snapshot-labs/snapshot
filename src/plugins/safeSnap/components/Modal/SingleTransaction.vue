@@ -250,14 +250,14 @@ const buttonStates = computed(() => {
 
       <hr class="my-4 border-skin-border" />
       <div class="flex justify-between">
-        <BaseButton
+        <TuneButton
           v-if="!config.preview"
           @click="submitTransaction"
           :disabled="buttonStates"
         >
           Add Transaction
-        </BaseButton>
-        <BaseButton
+        </TuneButton>
+        <TuneButton
           v-if="
             !config.preview &&
             transactionBatchTypeSelected.includes('connext') &&
@@ -267,7 +267,7 @@ const buttonStates = computed(() => {
           @click="handleSimulation"
         >
           Simulate
-        </BaseButton>
+        </TuneButton>
       </div>
 
       <div v-if="showSimulation && transactionBatchTypeSelected === 'connext'">

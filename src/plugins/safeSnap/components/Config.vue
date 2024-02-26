@@ -183,7 +183,7 @@ const handleDeleteSafe = (safeToDelete: SafeDetails) => {
       />
     </div>
     <div class="my-3 ml-4" v-if="!preview">
-      <BaseButton @click="handleButtonClick">Add a Safe</BaseButton>
+      <TuneButton @click="handleButtonClick">Add a Safe</TuneButton>
       <SafeSnapsSafeSelect
         v-if="isButtonClicked"
         :safes="input.safes"
