@@ -51,7 +51,7 @@ useTippy(refReasonTooltip, {
         :width-class="
           isSmall
             ? 'w-[136px] min-w-[136px] text-left'
-            : 'w-[176px] min-w-[176px] text-left'
+            : 'w-[200px] min-w-[200px] text-left'
         "
       />
 

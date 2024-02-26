@@ -80,7 +80,7 @@ watch(
       <TuneTag
         v-if="winners"
         :label="winners.length"
-        class="leading-none rounded-full px-2"
+        class="leading-none rounded-full"
       />
     </TuneModalTitle>
     <BaseSearch
@@ -92,7 +92,7 @@ watch(
     <div
       class="p-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
     >
-      <TuneLoadingSpinner v-if="loading" class="mx-auto h-[24px]" />
+      <LoadingList v-if="loading" class="mx-auto" />
       <template v-else>
         <div v-for="winner in sortedWinners" :key="winner.id">
           <div class="flex justify-between">
