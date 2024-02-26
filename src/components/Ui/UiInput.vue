@@ -9,7 +9,6 @@ const props = defineProps<{
   additionalInputClass?: string;
   focusOnMount?: boolean;
   readonly?: boolean;
-  customStyles?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'blur']);
@@ -34,11 +33,8 @@ onMounted(() => {
 <template>
   <div class="w-full rounded-3xl">
     <div
-      :class="[
-        { '!border-red': !!error },
-        customStyles,
-        'relative z-10 flex w-full rounded-3xl border border-skin-border bg-skin-bg px-3 text-left leading-[42px] outline-none transition-colors focus-within:border-skin-text'
-      ]"
+      class="relative z-10 flex w-full rounded-3xl border border-skin-border bg-skin-bg px-3 text-left leading-[42px] outline-none transition-colors focus-within:border-skin-text"
+      :class="{ '!border-red': !!error }"
     >
       <div class="mr-2 whitespace-nowrap text-skin-text">
         <slot name="label" />

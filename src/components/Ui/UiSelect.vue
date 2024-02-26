@@ -2,7 +2,6 @@
 defineProps<{
   modelValue?: string | number;
   disabled?: boolean;
-  customStyles?: string;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'change']);
