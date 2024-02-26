@@ -14,7 +14,8 @@ export const SNAPSHOT_BREAKPOINTS = {
 export const KNOWN_HOSTS = [
   'app.safe.global',
   'pilot.gnosisguild.org',
-  'metissafe.tech'
+  'metissafe.tech',
+  'multisig.mantle.xyz'
 ];
 
 export const SPACE_CATEGORIES = [
