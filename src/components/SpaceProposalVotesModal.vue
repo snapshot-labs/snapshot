@@ -92,9 +92,9 @@ watch(filters, value => {
 <template>
   <TuneModal :open="open" @close="$emit('close')">
     <div class="px-3 pb-3">
-      <TuneModalTitle as="h4" class="mt-3">
+      <TuneModalTitle as="h4" class="mt-3 flex items-center gap-1">
         {{ $t('proposal.votesModal.title') }}
-        <TuneTag :label="proposal.votes" class="leading-none rounded-full" />
+        <BaseCounter :counter="proposal.votes" />
       </TuneModalTitle>
     </div>
     <BaseSearch
@@ -121,7 +121,9 @@ watch(filters, value => {
       <BaseNoResults v-else-if="showNoResults" />
 
       <div v-else-if="votes.length">
-        <div class="flex h-full min-h-full flex-col overflow-auto px-[20px]">
+        <div
+          class="flex h-full min-h-full flex-col overflow-auto px-[20px] pt-2"
+        >
           <SpaceProposalVotesItem
             v-for="(vote, i) in votes"
             :key="i"

@@ -14,11 +14,7 @@ defineProps<{
         <span class="text-skin-heading">
           {{ title }}
         </span>
-        <TuneTag
-          v-if="counter"
-          :label="counter"
-          class="leading-none rounded-full mx-1"
-        />
+        <BaseCounter :counter="counter" class="mx-1" />
       </div>
       <div class="text-skin-text font-normal leading-5 mt-1">
         {{ subTitle }}

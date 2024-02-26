@@ -77,11 +77,7 @@ watch(
   <TuneModal :open="open" @close="$emit('close')">
     <TuneModalTitle as="h4" class="flex items-center gap-1 m-3 mb-2">
       Winners
-      <TuneTag
-        v-if="winners"
-        :label="winners.length"
-        class="leading-none rounded-full"
-      />
+      <BaseCounter v-if="winners" :counter="winners.length" />
     </TuneModalTitle>
     <BaseSearch
       v-model="searchInput"
