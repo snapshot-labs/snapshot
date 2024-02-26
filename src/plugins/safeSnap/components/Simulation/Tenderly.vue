@@ -176,7 +176,6 @@ const extractTransactionResult = (
     const transaction = result.transaction;
     const simulationId = result.simulation.id;
     const method = result.simulation.method;
-    console.log('simulationId', simulationId);
 
     const addEvent = (type: string, message: string, simulationId?: string) => {
       events.push({
@@ -217,7 +216,6 @@ const extractTransactionResult = (
       );
     }
     simulationState.value.logs = events;
-    console.log(events);
   });
 };
 

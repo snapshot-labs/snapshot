@@ -183,12 +183,8 @@ export async function getDecimals(network: string, tokenAddress: string) {
     broviderUrl
   });
   try {
-    console.log('provider', provider);
-    console.log('tokenAddress', tokenAddress);
     const tokenContract = new Contract(tokenAddress, TOKEN_ABI, provider);
-    console.log('tokenContract', tokenContract);
     const decimals = await tokenContract.decimals();
-    console.log('decimals', decimals);
     return decimals;
   } catch (error) {
     console.error(error);

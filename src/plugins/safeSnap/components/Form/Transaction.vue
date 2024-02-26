@@ -85,7 +85,6 @@ export default {
       }
 
       if (this.modelValue) {
-        console.log('this.modelValue', this.modelValue);
         try {
           const recipientAddr = shorten(this.modelValue.recipient);
           const toAddr = shorten(this.modelValue.to);

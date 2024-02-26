@@ -364,18 +364,9 @@ export const generateConnextTransaction = async ({
       zodiacMod: destinationSafeSelected?.connextAddress ?? ''
     });
     if (plugin.validateTransaction(transaction)) {
-      console.log('Connext transaction:', transaction);
       return transaction;
     }
   }
-};
-
-export const decodeConnextTransaction = async (data: string, abi: string) => {
-  const connextInterface = new Interface(abi);
-  console.log('connextInterface', connextInterface);
-  console.log('data', data);
-  const decoded = connextInterface.parseTransaction({ data });
-  console.log('decoded', decoded);
 };
 
 export function prepareERC20BridgeTransaction({

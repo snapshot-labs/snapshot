@@ -88,7 +88,6 @@ const updateTransaction = (modelValue: SafeTransaction) => {
 const updateConnextTransaction = (modelValue: CustomConnextTransaction) => {
   if (modelValue.simpleTransaction) {
     currentConnextModelValue.value = modelValue;
-    console.log('modelValue', modelValue);
     return;
   }
   modelValueToSimulate.value = modelValue;

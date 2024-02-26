@@ -239,7 +239,7 @@ export default {
         connextAddress: this.transactionConfig?.connextAddress,
         umaAddress: this.umaAddress
       });
-      console.log('moduleType', moduleType);
+
       if (['reality', 'uma'].includes(moduleType)) {
         const { dao } =
           moduleType === 'reality'
@@ -251,7 +251,7 @@ export default {
 
         const moduleAddress =
           moduleType === 'reality' ? this.realityAddress : this.umaAddress;
-        console.log('moduleAddress', moduleAddress);
+
         if (!this.gnosisSafeAddress && dao) {
           this.transactionConfig.gnosisSafeAddress = dao;
           this.gnosisSafeAddress = dao;

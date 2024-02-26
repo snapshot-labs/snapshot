@@ -37,7 +37,6 @@ const isConnextAvailable = computed(() => {
   if (!originChain) return false;
   return AVAILABLE_ORIGIN_NETWORKS.includes(originChain);
 });
-console.log('isConnextAvailable', isConnextAvailable);
 
 const props = defineProps<ConnextTransactionProps>();
 const emit = defineEmits(['update:modelValue', 'clearParams']);
@@ -297,7 +296,6 @@ const updateField = async (
       break;
     case 'contractAddress':
       contractAddress.value = value;
-      console.log('connextModList.value', connextModList.value);
       if (connextModList.value.length) {
         const { network } = connextModList.value.filter(safe => {
           if (safe.dao === destinationSafe.value) return safe;
@@ -307,7 +305,6 @@ const updateField = async (
           network ?? '',
           contractAddress.value
         );
-        console.log('result', JSON.parse(result) as Fragment[]);
         abi.value = JSON.parse(result) as Fragment[];
         handleABIChanged(abi.value);
       }
