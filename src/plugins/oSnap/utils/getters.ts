@@ -9,11 +9,13 @@ import { toUtf8Bytes } from '@ethersproject/strings';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import memoize from 'lodash/memoize';
+import detectProxyTarget from 'evm-proxy-detection';
 import {
   ERC20_ABI,
   GNOSIS_SAFE_TRANSACTION_API_URLS,
   OPTIMISTIC_GOVERNOR_ABI,
   OPTIMISTIC_ORACLE_V3_ABI,
+  SAFE_APP_URLS,
   contractData,
   safePrefixes,
   solidityZeroHexString
@@ -30,9 +32,11 @@ import {
   OptimisticGovernorTransaction,
   ProposalExecutedEvent,
   SafeNetworkPrefix,
+  SpaceConfigResponse,
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
+import { toChecksumAddress } from '@/helpers/utils';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -53,7 +57,8 @@ async function callGnosisSafeTransactionApi<TResult = any>(
  */
 export const getGnosisSafeBalances = memoize(
   (network: Network, safeAddress: string) => {
-    const endpointPath = `/v1/safes/${safeAddress}/balances/`;
+    const checksumAddress = toChecksumAddress(safeAddress);
+    const endpointPath = `/v1/safes/${checksumAddress}/balances?exclude_spam=true`;
     return callGnosisSafeTransactionApi<Partial<BalanceResponse>[]>(
       network,
       endpointPath
@@ -247,9 +252,12 @@ export function makeConfigureOsnapUrl(params: {
     network,
     spaceName,
     spaceUrl,
-    baseUrl = 'https://app.safe.global/apps/open',
     appUrl = 'https://osnap.uma.xyz/'
   } = params;
+  const baseUrl =
+    params.baseUrl ??
+    SAFE_APP_URLS[network] ??
+    'https://app.safe.global/apps/open';
   const safeAddressPrefix = getSafeNetworkPrefix(network);
   const appUrlSearchParams = new URLSearchParams();
   appUrlSearchParams.set('spaceName', spaceName);
@@ -752,4 +760,31 @@ export function getOracleUiLink(
     return `https://oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
   }
   return `https://testnet.oracle.uma.xyz?transactionHash=${txHash}&eventIndex=${logIndex}`;
+}
+
+export async function fetchImplementationAddress(
+  proxyAddress: string,
+  network: string
+): Promise<string | undefined> {
+  try {
+    const provider = getProvider(network);
+    const requestFunc = ({ method, params }) => provider.send(method, params);
+    return (await detectProxyTarget(proxyAddress, requestFunc)) ?? undefined;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+/**
+ * Check if a space's deployed (on-chain) settings are supported by oSnap bots for auto execution
+ */
+export async function isConfigCompliant(safeAddress: string, chainId: string) {
+  const res = await fetch(
+    `https://osnap.uma.xyz/api/space-config?address=${safeAddress}&chainId=${chainId}`
+  );
+  if (!res.ok) {
+    throw new Error('Unable to fetch setting status');
+  }
+  const data = await res.json();
+  return data as unknown as SpaceConfigResponse;
 }

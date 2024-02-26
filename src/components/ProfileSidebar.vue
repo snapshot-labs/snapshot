@@ -30,7 +30,7 @@ const { web3Account } = useWeb3();
         <ProfileSidebarHeaderSkeleton v-else />
 
         <div
-          v-if="userAddress === web3Account"
+          v-if="userAddress === web3Account.toLowerCase()"
           class="flex flex-grow justify-end lg:mt-3 lg:flex-auto lg:justify-center"
         >
           <TuneButton

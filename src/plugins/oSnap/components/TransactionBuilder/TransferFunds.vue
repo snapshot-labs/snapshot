@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { ETH_CONTRACT } from '@/helpers/constants';
 import { shorten } from '@/helpers/utils';
-import { isAddress } from '@ethersproject/address';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { Network, Token, TransferFundsTransaction } from '../../types';
 import {
   createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
   getNativeAsset,
-  validateTransaction
+  isTransferFundsValid
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
 import AmountInput from '../Input/Amount.vue';
@@ -18,50 +16,54 @@ const props = defineProps<{
   network: Network;
   tokens: Token[];
   transaction: TransferFundsTransaction;
+  setTransactionAsInvalid: () => void;
 }>();
 
 const emit = defineEmits<{
   updateTransaction: [transaction: TransferFundsTransaction];
 }>();
 
-const nativeAsset = getNativeAsset(props.network);
 const amount = ref(props.transaction.amount ?? '');
 const recipient = ref(props.transaction.recipient ?? '');
-const tokens = ref<Token[]>([nativeAsset, ...props.tokens]);
+const tokens = ref<Token[]>(props.tokens);
+
 const selectedTokenAddress = ref<Token['address']>(
   props.transaction?.token?.address ?? 'main'
 );
+
 const selectedToken = computed(
   () =>
     tokens.value.find(token => token.address === selectedTokenAddress.value) ??
-    nativeAsset
+    tokens.value.find(token => token.address === 'main') ??
+    tokens.value[0]
 );
-const selectedTokenIsNative = computed(
-  () => selectedToken.value?.address === 'main'
-);
+
 const isTokenModalOpen = ref(false);
 
 function updateTransaction() {
-  if (!isBigNumberish(amount.value) || !isAddress(recipient.value)) return;
-
   try {
-    const data = selectedTokenIsNative.value
-      ? '0x'
-      : getERC20TokenTransferTransactionData(recipient.value, amount.value);
-
+    if (
+      !isTransferFundsValid({
+        amount: amount.value,
+        recipient: recipient.value,
+        token: selectedToken.value
+      })
+    ) {
+      throw new Error('Validation error');
+    }
+    const data =
+      selectedToken.value.address === 'main'
+        ? '0x'
+        : getERC20TokenTransferTransactionData(recipient.value, amount.value);
     const transaction = createTransferFundsTransaction({
       data,
       amount: amount.value,
       recipient: recipient.value,
       token: selectedToken.value
     });
-    const isTransactionValid = validateTransaction(transaction);
-    if (isTransactionValid) {
-      emit('updateTransaction', transaction);
-      return;
-    }
-  } catch (error) {
-    console.warn('invalid transaction', error);
+    emit('updateTransaction', transaction);
+  } catch {
+    props.setTransactionAsInvalid();
   }
 }
 
@@ -104,6 +106,7 @@ watch(selectedTokenAddress, updateTransaction);
   <div class="space-y-2">
     <AddressInput v-model="recipient" :label="$t('safeSnap.to')" />
     <AmountInput
+      :enforcePositiveValue="true"
       :key="selectedToken?.decimals"
       v-model="amount"
       :label="$t('safeSnap.amount')"

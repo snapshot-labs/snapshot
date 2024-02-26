@@ -1426,10 +1426,10 @@
   resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.15.tgz#07e5ae35ed36304250462218e115bab1c1609812"
   integrity sha512-va6zYSl8oIraBJeIZWEatOI292rfJQouyyvEeHv8qi9ns+LgxMsKayQtXSqn9GcmAfdWQVs/P9bDaCQ77FyJYw==
 
-"@snapshot-labs/snapshot.js@^0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.10.1.tgz#d783ee394d6e3ad3d3a6e91fea67411752d15180"
-  integrity sha512-PacD8HdsYZhb1Yifp6n+11Og+nZUvGhTosu+ejnEwhP6zQOFMg6gaIEsWGjoAMnjos0sgA/oIbWdPIzqJRTECw==
+"@snapshot-labs/snapshot.js@^0.11.3":
+  version "0.11.3"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.11.3.tgz#6ce8bee2dcf6614281a3f8841fe5ca4ddb59b41d"
+  integrity sha512-bP4+vkWnOYZmNM1wPzuGoJYUwUl0TprmmO8Uq+sAg6hOTdWLmFeOzeETLuVr2geOnUg43LG9Oz73bKnaIxW+Yg==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -1441,6 +1441,7 @@
     "@ethersproject/units" "^5.7.0"
     "@ethersproject/wallet" "^5.6.2"
     ajv "^8.11.0"
+    ajv-errors "^3.0.0"
     ajv-formats "^2.1.1"
     cross-fetch "^3.1.6"
     json-to-graphql-query "^2.2.4"
@@ -2490,6 +2491,11 @@ agentkeepalive@^4.2.1:
     debug "^4.1.0"
     depd "^2.0.0"
     humanize-ms "^1.2.1"
+
+ajv-errors@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-3.0.0.tgz#e54f299f3a3d30fe144161e5f0d8d51196c527bc"
+  integrity sha512-V3wD15YHfHz6y0KdhYFjyy9vWtEVALT9UrxfN3zqlI6dMioHnJrqOYfyPKol3oqrnCM9uwkcdCwkJ0WUcbLMTQ==
 
 ajv-formats@^2.1.1:
   version "2.1.1"
@@ -4325,6 +4331,11 @@ events@^3.0.0, events@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
   integrity sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==
+
+evm-proxy-detection@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/evm-proxy-detection/-/evm-proxy-detection-1.2.0.tgz#090a0812d09638b0ef2389d2de121704dc21fb86"
+  integrity sha512-pujpLG5JIiNWLRvjqI7qeT63dAQMMZvO8gaDWMfIsur1GYaJwtqrerXjXjbb0s/P3fIYu9nUJMJTd8/HudR3ow==
 
 evp_bytestokey@^1.0.3:
   version "1.0.3"

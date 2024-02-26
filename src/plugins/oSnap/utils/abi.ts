@@ -104,7 +104,7 @@ export function getABIWriteFunctions(abi: string) {
  *
  * If the parameter is an array or tuple, we parse the value as JSON.
  */
-function extractMethodArgs(values: string[]) {
+export function extractMethodArgs(values: string[]) {
   return (param: ParamType, index: number) => {
     const value = values[index];
     if (isArrayParameter(param.baseType)) {

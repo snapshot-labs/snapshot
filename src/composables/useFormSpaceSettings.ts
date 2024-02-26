@@ -127,6 +127,7 @@ export function useFormSpaceSettings(
     delete formData.verified;
     delete formData.flagged;
     delete formData.hibernated;
+    delete formData.turbo;
 
     if (formData.filters.invalids) delete formData.filters.invalids;
   }

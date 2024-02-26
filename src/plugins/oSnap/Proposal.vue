@@ -8,6 +8,8 @@ import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
 import { GnosisSafe, Transaction } from './types';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
+import TenderlySimulation from './components/TransactionBuilder/TenderlySimulation.vue';
+import BotSupportWarning from './components/BotSupportWarning.vue';
 
 const keyOrder = [
   'to',
@@ -59,9 +61,11 @@ function enrichTransactionForDisplay(transaction: Transaction) {
       ...commonProperties,
       type: 'Contract interaction',
       'method name': method.name,
-      ...Object.fromEntries(method.inputs.map((input,i)=>{
-        return [`${input.name} (param ${i+1}): `,parameters[i]]
-      }))
+      ...Object.fromEntries(
+        method.inputs.map((input, i) => {
+          return [`${input.name} (param ${i + 1}): `, parameters[i]];
+        })
+      )
     };
   }
   if (transaction.type === 'transferFunds') {
@@ -97,13 +101,19 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 <template>
   <template v-if="safe.transactions.length > 0">
     <div
-      class="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-3 md:p-4 relative"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
     >
       <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
       <h2 class="text-lg">oSnap Transactions</h2>
       <div class="flex flex-col items-center gap-3 md:flex-row">
         <SafeLinkWithAvatar :safe="safe" />
       </div>
+
+      <BotSupportWarning
+        :chain-id="safe.network"
+        :safe-address="safe.safeAddress"
+      />
+
       <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
       <div
         v-for="({ type, ...details }, index) in transactionsForDisplay"
@@ -119,6 +129,12 @@ function enrichTransactionForDisplay(transaction: Transaction) {
           <span class="break-all">{{ value }}</span>
         </ReadOnly>
       </div>
+
+      <TenderlySimulation
+        :transactions="safe.transactions"
+        :safe="safe"
+        :network="safe.network"
+      />
 
       <HandleOutcome
         v-if="!!results"

@@ -3,8 +3,7 @@ import { shorten } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 const { login, web3, web3Account } = useWeb3();
-const { profiles, loadProfiles, loadingProfiles, reloadingProfile } =
-  useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const auth = getInstance();
 
@@ -32,7 +31,7 @@ watch(
       @switch-wallet="modalAccountOpen = true"
     >
       <TuneButton
-        :loading="web3.authLoading || loadingProfiles || reloadingProfile"
+        :loading="web3.authLoading"
         class="flex items-center"
         data-testid="button-account-menu"
       >

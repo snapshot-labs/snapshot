@@ -17,9 +17,12 @@ import {
   getGnosisSafeBalances,
   getGnosisSafeCollectibles,
   getIsOsnapEnabled,
-  getModuleAddressForTreasury
+  getModuleAddressForTreasury,
+  getNativeAsset
 } from './utils';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
+import BotSupportWarning from './components/BotSupportWarning.vue';
+import { toChecksumAddress } from '@/helpers/utils';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -51,7 +54,6 @@ function addTransaction(transaction: Transaction) {
 
 function removeTransaction(transactionIndex: number) {
   if (!newPluginData.value.safe) return;
-
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
   update(newPluginData.value);
 }
@@ -76,24 +78,22 @@ async function fetchBalances(network: Network, safeAddress: string) {
   if (!safeAddress) {
     return [];
   }
-
   try {
     const balances = await getGnosisSafeBalances(network, safeAddress);
+    const balancesWithNative = balances.map(balance => {
+      if (!balance.tokenAddress || !balance.token) {
+        return {
+          ...balance,
+          token: getNativeAsset(network),
+          tokenAddress: 'main'
+        };
+      }
+      return balance;
+    });
 
-    const uniswapTokensPromise = fetchTokens(
-      'https://gateway.ipfs.io/ipns/tokens.uniswap.org'
-    );
-    const snapshotTokensPromise = fetchTokens(
-      `${import.meta.env.VITE_SIDEKICK_URL}/api/moderation?list=verifiedTokens`
-    );
+    const tokens = await fetchTokens('https://tokens.uniswap.org');
 
-    const tokensLists = await Promise.all([
-      uniswapTokensPromise,
-      snapshotTokensPromise
-    ]);
-    const tokens = tokensLists.flat();
-
-    return enhanceTokensWithBalances(balances, tokens);
+    return enhanceTokensWithBalances(balancesWithNative, tokens, network);
   } catch (e) {
     console.warn('Error fetching balances');
     return [];
@@ -102,7 +102,8 @@ async function fetchBalances(network: Network, safeAddress: string) {
 
 function enhanceTokensWithBalances(
   balances: Partial<BalanceResponse>[],
-  tokens: Token[]
+  tokens: Token[],
+  network: Network
 ) {
   console.log({ balances, tokens });
   return balances
@@ -110,18 +111,23 @@ function enhanceTokensWithBalances(
       (balance): balance is BalanceResponse =>
         !!balance.token && !!balance.tokenAddress && !!balance.balance
     )
-    .map(balance => enhanceTokenWithBalance(balance, tokens))
+    .map(balance => enhanceTokenWithBalance(balance, tokens, network))
     .sort((a, b) => {
-      if (a.verified && b.verified) return 0;
-      if (a.verified) return -1;
-      return 1;
+      if (a.address === 'main' && b.address !== 'main') return -1;
+      if (!(a.address === 'main') && b.address === 'main') return 1;
+      if (a.verified && !b.verified) return -1;
+      if (!a.verified && b.verified) return +1;
+      if (!a.balance || !b.balance) return 0;
+      if (parseFloat(a.balance) > parseFloat(b.balance)) return -1;
+      return 0;
     });
 }
 
 // gets token balances and also determines if the token is verified
 function enhanceTokenWithBalance(
   balance: BalanceResponse,
-  tokens: Token[]
+  tokens: Token[],
+  network: Network
 ): Token {
   const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
   return {
@@ -131,7 +137,7 @@ function enhanceTokenWithBalance(
       ? formatUnits(balance.balance, balance.token.decimals)
       : '0',
     verified: !!verifiedToken,
-    chainId: verifiedToken ? verifiedToken.chainId : undefined
+    chainId: network
   };
 }
 
@@ -178,7 +184,7 @@ async function createOsnapEnabledSafes() {
       );
       return {
         safeName: treasury.name,
-        safeAddress: treasury.address,
+        safeAddress: toChecksumAddress(treasury.address),
         network: treasury.network as Network,
         transactions: [] as Transaction[],
         moduleAddress
@@ -199,8 +205,9 @@ const update = (newPluginData: OsnapPluginData) => {
   emit('update', { key: 'oSnap', form: newPluginData });
 };
 
-watch(newPluginData, async () => {
+async function loadBalancesAndCollectibles() {
   if (!newPluginData.value.safe?.safeAddress) return;
+  isLoading.value = true;
   tokens.value = await fetchBalances(
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
@@ -209,20 +216,26 @@ watch(newPluginData, async () => {
     newPluginData.value.safe.network,
     newPluginData.value.safe.safeAddress
   );
-});
+
+  isLoading.value = false;
+}
+
+watch(
+  () => [
+    newPluginData.value.safe?.safeAddress,
+    newPluginData.value.safe?.network
+  ],
+  async () => {
+    await loadBalancesAndCollectibles();
+    update(newPluginData.value);
+  }
+);
 
 onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();
-  newPluginData.value.safe = safes.value[0];
-  tokens.value = await fetchBalances(
-    newPluginData.value.safe.network,
-    newPluginData.value.safe.safeAddress
-  );
-  collectables.value = await fetchCollectibles(
-    newPluginData.value.safe.network,
-    newPluginData.value.safe.safeAddress
-  );
+  newPluginData.value.safe = cloneDeep(safes.value[0]);
+  await loadBalancesAndCollectibles();
   update(newPluginData.value);
   isLoading.value = false;
 });
@@ -233,7 +246,8 @@ onMounted(async () => {
     <div class="rounded-2xl border p-4 text-md">
       <h2 class="mb-2">Warning: Multiple oSnap enabled plugins detected</h2>
       <p class="mb-2">
-      For best experience using oSnap, please remove the SafeSnap plugin from your space.
+        For best experience using oSnap, please remove the SafeSnap plugin from
+        your space.
       </p>
     </div>
   </template>
@@ -275,6 +289,11 @@ onMounted(async () => {
           :selectedSafe="newPluginData.safe"
           @updateSafe="updateSafe($event)"
         />
+        <BotSupportWarning
+          v-if="newPluginData.safe"
+          :safe-address="newPluginData.safe?.safeAddress"
+          :chain-id="newPluginData.safe?.network"
+        />
         <div class="mt-4 border-b last:border-b-0">
           <TransactionBuilder
             v-if="!!newPluginData.safe"
@@ -285,6 +304,7 @@ onMounted(async () => {
             :collectables="collectables"
             :network="newPluginData.safe.network"
             :transactions="newPluginData.safe.transactions"
+            :safe="newPluginData.safe"
             @add-transaction="addTransaction"
             @remove-transaction="removeTransaction"
             @update-transaction="updateTransaction"
