@@ -5,11 +5,10 @@ import SafeSnapFormContractInteraction from './ContractInteraction.vue';
 import SafeSnapFormTransferFunds from './TransferFunds.vue';
 import SafeSnapFormSendAsset from './SendAsset.vue';
 import SafeSnapFormRawTransaction from './RawTransaction.vue';
-import SafeSnapFormConnextTransaction from './ConnextTransaction.vue';
+import SafeSnapFormConnextTransactionBuilder from './ConnextTransactionBuilder.vue';
 import Plugin from '../../index';
-import { shorten, getNetworkKeyByDomainId } from '@/helpers/utils';
-
-const plugin = new Plugin();
+import { shorten } from '@/helpers/utils';
+import { decodeXCall } from '../../utils/encodeXCall';
 
 const labels = {
   contractInteraction: 'Contract Interaction',
@@ -24,25 +23,14 @@ export default {
     SafeSnapFormTransferFunds,
     SafeSnapFormSendAsset,
     SafeSnapFormRawTransaction,
-    SafeSnapFormConnextTransaction
+    SafeSnapFormConnextTransactionBuilder
   },
-  props: [
-    'modelValue',
-    'connextModelValue',
-    'nonce',
-    'config',
-    'isDetails',
-    'transactionType'
-  ],
+  props: ['modelValue', 'nonce', 'config', 'isDetails', 'transactionType'],
   emits: ['update:modelValue', 'remove', 'edit'],
   data() {
     let type = 'transferFunds';
     if (this.modelValue) {
       type = this.modelValue.type ? this.modelValue.type : 'raw';
-    }
-
-    if (this.connextModelValue && this.connextModelValue.length) {
-      type = 'connext';
     }
 
     return {
@@ -58,18 +46,6 @@ export default {
       async handler(newVal, oldVal) {
         if (!newVal) return;
 
-        if (newVal !== oldVal || (newVal && !oldVal)) {
-          this.resolvedTitle = await this.computeTitle();
-        }
-        if (newVal.type) {
-          this.type = this.modelValue.type;
-        }
-      }
-    },
-    connextModelValue: {
-      immediate: true,
-      async handler(newVal, oldVal) {
-        if (!newVal) return;
         if (newVal !== oldVal || (newVal && !oldVal)) {
           this.resolvedTitle = await this.computeTitle();
         }
@@ -96,18 +72,20 @@ export default {
   },
   methods: {
     async computeTitle() {
-      if (!this.modelValue && !this.connextModelValue) {
+      if (!this.modelValue) {
         return this.getLabel(this.type);
       }
-      if (this.type === 'connext' && this.connextModelValue.length) {
-        const txData = this.connextModelValue[1].data;
-        const decoded = await plugin.decodeConnextXcallData(txData);
-        const destinationChain = getNetworkKeyByDomainId(decoded[0]);
-        const destinationAddress = shorten(decoded[1]);
-        return `Cross-chain to ${destinationAddress} (${destinationChain})`;
+      if (this.type === 'connext') {
+        const { originTx } = this.modelValue;
+        const { to: zodiacConnextMod } = decodeXCall(originTx.data);
+
+        return `Cross-chain to ${shorten(
+          zodiacConnextMod ?? ''
+        )} (Zodiac Connext Mod)`;
       }
 
       if (this.modelValue) {
+        console.log('this.modelValue', this.modelValue);
         try {
           const recipientAddr = shorten(this.modelValue.recipient);
           const toAddr = shorten(this.modelValue.to);
@@ -162,13 +140,7 @@ export default {
       this.$emit('edit');
     },
     showNonce() {
-      if (this.transactionType === 'connext') {
-        const tx = this.connextModelValue;
-        const nonceTransferFunds = parseInt(tx[0].nonce);
-        const nonceRaw = parseInt(tx[1].nonce);
-        return `${nonceTransferFunds + 1}-${nonceRaw + 1}`;
-      }
-      return this.nonce + 1;
+      return parseInt(this.nonce) + 1;
     }
   }
 };
@@ -267,14 +239,22 @@ export default {
         @update:model-value="handleFormUpdate"
       />
     </div>
-
-    <SafeSnapFormConnextTransaction
+    <SafeSnapFormConnextTransactionBuilder
+      v-if="transactionType === 'connext'"
+      :is-details="isDetails"
+      :model-value="modelValue"
+      :config="config"
+      :nonce="nonce"
+      @update:modelValue="updateConnextTransaction"
+    />
+    <!-- @clear-params="clearConnextParams" -->
+    <!-- <SafeSnapFormConnextTransaction
       v-if="transactionType === 'connext'"
       :model-value="connextModelValue"
       :config="config"
       :is-details="isDetails"
       @update:model-value="handleFormUpdate"
-    />
+    /> -->
   </UiCollapsible>
 </template>
 <style lang="scss">

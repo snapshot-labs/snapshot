@@ -3,10 +3,11 @@ import { watch, ref } from 'vue';
 import { SafeTransaction, SafeTransactionConfig } from '@/helpers/interfaces';
 import SafeSnapFormTransaction from './Transaction.vue';
 import SafeSnapModalSingleTransaction from '../Modal/SingleTransaction.vue';
+import { emit } from 'process';
 
 type TransactionWithType = {
   type: 'standard' | 'connext';
-  transactions: SafeTransaction | SafeTransaction[];
+  transactions: SafeTransaction;
 };
 
 type TransactionBatchItemProps = {
@@ -55,31 +56,17 @@ watch(
 watchEffect(() => {
   const newTransactions = props.transactions;
 
-  // Create connext transactions group
-  const connextPairs = newTransactions
-    .filter(tx => tx.transactionBatchType === 'connext')
-    .reduce<SafeTransaction[][]>((acc, current, _index, array) => {
-      if (current.type === 'contractInteraction') {
-        const next = array.find(
-          t =>
-            t.type === 'raw' &&
-            parseInt(t.nonce) === parseInt(current.nonce) + 1
-        );
-        if (next) {
-          acc.push([current, next]);
-        }
-      }
-      return acc;
-    }, []);
-
+  // Get standard transactions
+  const connextTransactions = newTransactions.filter(
+    tx => tx.transactionBatchType === 'connext' || !tx.transactionBatchType
+  );
   // Get standard transactions
   const standardTransactions = newTransactions.filter(
     tx => tx.transactionBatchType === 'standard' || !tx.transactionBatchType
   );
-
   // Combine and tag transactions
   const combinedTransactions: TransactionWithType[] = [
-    ...connextPairs.map(pair => ({
+    ...connextTransactions.map(pair => ({
       type: 'connext' as const,
       transactions: pair
     })),
@@ -110,20 +97,20 @@ const removeStandardItem = (nonce: string) => {
   }
 };
 
-const removeConnextItem = (index: number) => {
-  const connextTransactionToRemove = allTransactions.value[index]
-    .transactions as SafeTransaction[];
-  if (connextTransactionToRemove.length) {
-    connextTransactionToRemove.forEach(tx => {
-      const indexToRemove = props.transactions.findIndex(
-        transaction => transaction.nonce === tx.nonce
-      );
-      if (indexToRemove !== -1) {
-        emits('remove', indexToRemove);
-      }
-    });
-  }
-};
+// const removeConnextItem = (index: number) => {
+//   const connextTransactionToRemove = allTransactions.value[index]
+//     .transactions as SafeTransaction[];
+//   if (connextTransactionToRemove.length) {
+//     connextTransactionToRemove.forEach(tx => {
+//       const indexToRemove = props.transactions.findIndex(
+//         transaction => transaction.nonce === tx.nonce
+//       );
+//       if (indexToRemove !== -1) {
+//         emits('remove', indexToRemove);
+//       }
+//     });
+//   }
+// };
 
 const resetTransactionToEdit = () => {
   transactionToEdit.value = {
@@ -157,38 +144,29 @@ const handleCloseModal = () => {
 const handleFormUpdate = (
   index: number,
   transaction: SafeTransaction,
-  oldTransaction: SafeTransaction | SafeTransaction[]
+  type: 'connext' | 'standard'
 ) => {
+  transactionBatchType.value = transaction.type as 'standard' | 'connext';
+  console.log('transaction', transaction);
   if (transaction.transactionBatchType) {
     transactionBatchType.value = transaction.transactionBatchType;
   }
-  //if oldTransaction is connext
-  if (Array.isArray(oldTransaction)) {
-    const nonce = oldTransaction[0].nonce;
-    const nonceToRemove = oldTransaction[1].nonce;
-    const indexToRemove = props.transactions.findIndex(
-      transaction => transaction.nonce === nonceToRemove
-    );
-    if (indexToRemove !== -1) {
-      emits('remove', indexToRemove);
-    }
-    const indexToUpd = props.transactions.findIndex(
-      transaction => transaction.nonce === nonce
-    );
-    if (indexToUpd !== -1) {
-      transaction.nonce = indexToUpd as unknown as string;
-      return emits('update:modelValue', { index: indexToUpd, transaction });
-    }
-  } else {
-    emits('update:modelValue', { index, transaction });
+  if (transaction.transactionBatchType === 'connext') {
+    const { simpleTransaction } = transaction as any;
+    const { approveTx, xCallJson } = simpleTransaction;
+    console.log('transaction', transaction);
+    // emits('update:modelValue', {
+    //   index: approveTx.nonce,
+    //   transaction: approveTx
+    // });
+    // emits('update:modelValue', {
+    //   index: xCallJson.nonce,
+    //   transaction: xCallJson
+    // });
+    return;
   }
-};
-
-const handleConnextFormUpdate = (transactions: SafeTransaction[]) => {
-  transactionBatchType.value = 'connext';
-  transactions.forEach(tx =>
-    emits('update:modelValue', { index: tx.nonce, transaction: tx })
-  );
+  console.log('{ index, transaction }', { index, transaction });
+  emits('update:modelValue', { index, transaction });
 };
 
 const generateNonce = () => {
@@ -244,7 +222,7 @@ const getNonce = (batch: SafeTransaction | SafeTransaction[]): string => {
       :key="index"
       class="transaction-batch-item-container mb-2"
     >
-      <template v-if="Array.isArray(batch.transactions)">
+      <!-- <template v-if="Array.isArray(batch.transactions)">
         <SafeSnapFormTransaction
           :connext-model-value="batch.transactions"
           :config="props.config"
@@ -254,49 +232,43 @@ const getNonce = (batch: SafeTransaction | SafeTransaction[]): string => {
           @remove="removeConnextItem(index)"
           @edit="handleConnextEdit(batch.transactions)"
         />
-      </template>
-      <template v-else>
-        <SafeSnapFormTransaction
-          :key="`form-transaction-${index}`"
-          :model-value="batch.transactions"
-          :config="props.config"
-          :nonce="
-            batch.transactions ? (batch.transactions as SafeTransaction ).nonce : index
-          "
-          :is-details="true"
-          :transaction-type="'standard'"
-          @remove="
-            removeStandardItem((batch.transactions as SafeTransaction).nonce)
-          "
-          @edit="
-            handleStandardEdit(
-              batch.transactions as SafeTransaction,
-              (batch.transactions as SafeTransaction).nonce
-            )
-          "
-        />
-      </template>
+      </template> -->
+      {{ console.log('batch', batch) }}
+      <!-- <template> -->
+      <SafeSnapFormTransaction
+        :key="`form-transaction-${index}`"
+        :model-value="batch.transactions"
+        :config="props.config"
+        :nonce="batch.transactions ? batch.transactions.nonce : index"
+        :is-details="true"
+        :transaction-type="batch.type"
+        @remove="removeStandardItem(batch.transactions.nonce)"
+        @edit="handleStandardEdit(batch.transactions, batch.transactions.nonce)"
+      />
+      <!-- </template> -->
     </div>
 
     <teleport to="#modal" v-if="transactionToEdit">
       <SafeSnapModalSingleTransaction
-        :standard-model-value="(!Array.isArray(transactionToEdit.transaction) ? transactionToEdit.transaction : {} as SafeTransaction)"
-        :connext-model-value="
-          Array.isArray(transactionToEdit.transaction)
+        :standard-model-value="
+          !Array.isArray(transactionToEdit.transaction)
             ? transactionToEdit.transaction
-            : []
+            : ({} as SafeTransaction)
+        "
+        :connext-model-value="
+          !Array.isArray(transactionToEdit.transaction)
+            ? transactionToEdit.transaction
+            : ({} as SafeTransaction)
         "
         :nonce="parseInt(getNonce(transactionToEdit.transaction))"
         :open="showModal"
         :config="config"
         @update:modelValue="
-          handleFormUpdate(
-            transactionToEdit.nonce ?? 0,
-            $event,
-            transactionToEdit.transaction
-          )
+          handleFormUpdate(transactionToEdit.nonce ?? 0, $event, 'standard')
         "
-        @update:connextModelValue="handleConnextFormUpdate($event)"
+        @update:connextModelValue="
+          handleFormUpdate(transactionToEdit.nonce ?? 0, $event, 'connext')
+        "
         @close="handleCloseModal"
       />
     </teleport>

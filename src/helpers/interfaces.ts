@@ -283,6 +283,7 @@ export type SimulationLog = {
 export type SimulationState = {
   status: 'success' | 'error' | 'idle';
   logs: SimulationLog[];
+  id?: string;
 };
 
 export interface SafeTransaction {
@@ -376,6 +377,16 @@ export interface TokenAssetTransaction extends SafeTransaction {
 export interface CustomContractTransaction extends SafeTransaction {
   type: 'contractInteraction';
   abi: string[];
+}
+export interface CustomConnextTransaction extends SafeTransaction {
+  type: 'connext';
+  abi: string[];
+  destinationTx: any;
+  originTx: any;
+  simpleTransaction: any;
+  simulation?: SimulationState;
+  destinationChain: string;
+  zodiacMod: string;
 }
 
 export interface SafeModuleTransactionBatch {

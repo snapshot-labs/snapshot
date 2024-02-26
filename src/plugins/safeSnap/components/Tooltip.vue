@@ -6,6 +6,7 @@ defineProps<{
   multiSendAddress: string;
   moduleType: string;
   connextModAddress: string | undefined;
+  description?: string;
 }>();
 
 const { copyToClipboard } = useCopy();
@@ -17,7 +18,8 @@ const { copyToClipboard } = useCopy();
       <i-ho-information-circle />
     </template>
     <template #content>
-      <div class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
+      <div v-if="description" class="p-3 text-sm">{{ description }}</div>
+      <div v-else class="border bg-skin-bg p-3 text-md shadow-lg md:rounded-lg">
         <div>Multisend address</div>
         <BaseButton
           class="flex w-full items-center justify-between"
@@ -26,16 +28,19 @@ const { copyToClipboard } = useCopy();
           {{ shorten(multiSendAddress) }}
           <i-ho-duplicate class="ml-1" />
         </BaseButton>
-        <div class="mt-3">
-          {{ moduleType === 'reality' ? 'Reality' : 'UMA' }} Module address
+        <div v-if="moduleAddress">
+          <div class="mt-3">
+            {{ moduleType === 'reality' ? 'Reality' : 'UMA' }} Module address
+          </div>
+          <BaseButton
+            class="flex w-full items-center justify-between"
+            @click="copyToClipboard(moduleAddress)"
+          >
+            {{ shorten(moduleAddress) }}
+            <i-ho-duplicate class="ml-1" />
+          </BaseButton>
         </div>
-        <BaseButton
-          class="flex w-full items-center justify-between"
-          @click="copyToClipboard(moduleAddress)"
-        >
-          {{ shorten(moduleAddress) }}
-          <i-ho-duplicate class="ml-1" />
-        </BaseButton>
+
         <div v-if="connextModAddress">
           <div class="mt-3">Connext Module address</div>
           <BaseButton

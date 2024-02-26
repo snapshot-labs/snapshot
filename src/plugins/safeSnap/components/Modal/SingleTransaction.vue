@@ -2,7 +2,7 @@
 type ModalSingleTransactionProps = {
   open: boolean;
   standardModelValue: SafeTransaction;
-  connextModelValue: SafeTransaction[];
+  connextModelValue: SafeTransaction;
   nonce: number;
   config: SafeTransactionConfig;
 };
@@ -10,7 +10,7 @@ type ModalSingleTransactionProps = {
 type ModalSingleTransactionEmits = {
   (e: 'close', value: void): void;
   (e: 'update:modelValue', value: SafeTransaction): void;
-  (e: 'update:connextModelValue', value: SafeTransaction[]): void;
+  (e: 'update:connextModelValue', value: SafeTransaction): void;
 };
 
 type TransactionType = {
@@ -23,8 +23,10 @@ import SafeSnapFormTransferFunds from '../Form/TransferFunds.vue';
 import SafeSnapFormSendAsset from '../Form/SendAsset.vue';
 import SafeSnapFormRawTransaction from '../Form/RawTransaction.vue';
 import SafeSnapFormConnextTransaction from '../Form/ConnextTransaction.vue';
+import SafeSnapFormConnextTransactionBuilder from '../Form/ConnextTransactionBuilder.vue';
 import SafeSnapSimulationTenderly from '../Simulation/Tenderly.vue';
 import {
+  CustomConnextTransaction,
   SafeTransaction,
   SafeTransactionConfig,
   SimulationState
@@ -34,16 +36,16 @@ const props = defineProps<ModalSingleTransactionProps>();
 const emit = defineEmits<ModalSingleTransactionEmits>();
 const transactionTypeList: TransactionType[] = [
   { key: 'Standard', value: 'standard' },
-  { key: 'Cross-chain Transaction (via Connext)', value: 'connext' }
+  { key: 'Cross chain (via Connext)', value: 'connext' }
 ];
 
 const transactionBatchTypeSelected = ref<'standard' | 'connext'>('standard');
-const modelValueToSimulate = ref<SafeTransaction[]>([]);
+const modelValueToSimulate = ref<CustomConnextTransaction>();
 const currentStandardModelValue = ref<SafeTransaction>(
   props.standardModelValue
 );
-const currentConnextModelValue = ref<SafeTransaction[]>(
-  props.connextModelValue
+const currentConnextModelValue = ref<CustomConnextTransaction>(
+  props.connextModelValue as CustomConnextTransaction
 );
 const transactionTypeSelected = ref<string>(
   props.standardModelValue && props.standardModelValue.type
@@ -66,7 +68,7 @@ watch(
 watch(
   () => props.connextModelValue,
   newVal => {
-    currentConnextModelValue.value = newVal || [];
+    currentConnextModelValue.value = newVal as CustomConnextTransaction;
   },
   { immediate: true }
 );
@@ -83,9 +85,20 @@ const updateTransaction = (modelValue: SafeTransaction) => {
   currentStandardModelValue.value = modelValue;
 };
 
-const updateConnextTransaction = (modelValue: SafeTransaction[]) => {
+const updateConnextTransaction = (modelValue: CustomConnextTransaction) => {
+  if (modelValue.simpleTransaction) {
+    currentConnextModelValue.value = modelValue;
+    console.log('modelValue', modelValue);
+    return;
+  }
   modelValueToSimulate.value = modelValue;
   currentConnextModelValue.value = modelValue;
+};
+
+const clearConnextParams = () => {
+  modelValueToSimulate.value = undefined;
+  currentConnextModelValue.value =
+    props.connextModelValue as CustomConnextTransaction;
 };
 
 const submitTransaction = () => {
@@ -96,7 +109,11 @@ const submitTransaction = () => {
     });
   }
   if (transactionBatchTypeSelected.value === 'connext') {
-    emit('update:connextModelValue', currentConnextModelValue.value);
+    emit('update:modelValue', {
+      ...currentConnextModelValue.value,
+      transactionBatchType: transactionBatchTypeSelected.value
+    });
+    // emit('update:connextModelValue', currentConnextModelValue.value);
   }
   emit('close');
 };
@@ -107,10 +124,8 @@ const handleSimulation = () => {
 };
 
 const handleSimulationResult = (state: SimulationState) => {
-  const connext = [...currentConnextModelValue.value].map(tx => {
-    return { ...tx, simulation: state };
-  });
-  currentConnextModelValue.value = connext;
+  const tx = { ...currentConnextModelValue.value };
+  currentConnextModelValue.value = { ...tx, simulation: state };
   runSimulation.value = false;
 };
 
@@ -122,7 +137,7 @@ const buttonStates = computed(() => {
   switch (transactionBatchTypeSelected.value) {
     case 'connext':
       return !(
-        currentConnextModelValue.value && currentConnextModelValue.value.length
+        currentConnextModelValue.value && currentConnextModelValue.value.type
       );
     case 'standard':
       return !(
@@ -148,10 +163,10 @@ const buttonStates = computed(() => {
       <UiSelect
         :custom-styles="'safesnap-custom-select'"
         :model-value="transactionBatchTypeSelected"
-        :disabled="!props.config.connextAddress ? true : false"
         @update:modelValue="handleBatchTypeSelection($event)"
       >
-        <template #label>Batch Type</template>
+        <!-- :disabled="!props.config.connextAddress ? true : false" -->
+        <template #label>Transaction Type</template>
         <option
           v-for="{ key, value } in transactionTypeList"
           :key="key"
@@ -217,13 +232,21 @@ const buttonStates = computed(() => {
       </div>
 
       <div v-if="transactionBatchTypeSelected.includes('connext')" class="pb-3">
-        <SafeSnapFormConnextTransaction
+        <SafeSnapFormConnextTransactionBuilder
           :is-details="false"
           :model-value="currentConnextModelValue"
           :config="config"
           :nonce="nonce"
           @update:modelValue="updateConnextTransaction"
+          @clear-params="clearConnextParams"
         />
+        <!-- <SafeSnapFormConnextTransaction
+          :is-details="false"
+          :model-value="currentConnextModelValue"
+          :config="config"
+          :nonce="nonce"
+          @update:modelValue="updateConnextTransaction"
+        /> -->
       </div>
 
       <hr class="my-4 border-skin-border" />
@@ -239,8 +262,7 @@ const buttonStates = computed(() => {
           v-if="
             !config.preview &&
             transactionBatchTypeSelected.includes('connext') &&
-            modelValueToSimulate &&
-            modelValueToSimulate.length
+            modelValueToSimulate
           "
           :disabled="runSimulation"
           @click="handleSimulation"
@@ -252,6 +274,7 @@ const buttonStates = computed(() => {
       <div v-if="showSimulation && transactionBatchTypeSelected === 'connext'">
         <hr class="my-4 border-skin-border" />
         <SafeSnapSimulationTenderly
+          v-if="modelValueToSimulate"
           :config="config"
           :run-simulation="runSimulation"
           :model-value-to-simulate="modelValueToSimulate"

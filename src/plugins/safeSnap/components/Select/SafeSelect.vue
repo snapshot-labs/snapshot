@@ -36,11 +36,19 @@ onMounted(async () => {
 
     await Promise.all(
       props.safes.map(async safe => {
-        const { realityAddress, umaAddress, network } = safe;
+        const { realityAddress, umaAddress, network, connextAddress } = safe;
+        if (connextAddress) {
+          const { dao } = await plugin.getModuleDetailsConnext(
+            network,
+            connextAddress
+          );
+          currentSafeList.push({ ...safe, gnosisSafeAddress: dao });
+        }
         if (umaAddress) {
           const { dao } = await plugin.getModuleDetailsUma(network, umaAddress);
           currentSafeList.push({ ...safe, gnosisSafeAddress: dao });
-        } else if (realityAddress) {
+        }
+        if (realityAddress) {
           const { dao } = await plugin.getModuleDetailsReality(
             network,
             realityAddress
@@ -88,7 +96,9 @@ const handleSafeSelected = (safe: SafeDetails) => {
             size="28"
           />
           {{ networkName(safe.network) }} Safe
-          <p>{{ shorten(safe.gnosisSafeAddress) }}</p>
+          <p>
+            {{ safe.gnosisSafeAddress ? shorten(safe.gnosisSafeAddress) : '' }}
+          </p>
         </div>
         <div v-if="index < safeList.length - 1" class="divider"></div>
       </div>

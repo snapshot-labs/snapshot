@@ -197,7 +197,6 @@ export default {
       ),
       gnosisSafeAddress: this.gnosisSafeAddress,
       moduleType: undefined,
-      connextModAddress: undefined,
       moduleAddress: undefined,
       moduleTypeReady: false,
       showHash: false,
@@ -236,48 +235,38 @@ export default {
   },
   async mounted() {
     try {
-      const connextModule = await plugin.validateConnextModule(
-        this.network,
-        this.connextAddress
-      );
+      const moduleType = await plugin.getModuleType(this.network, {
+        connextAddress: this.transactionConfig?.connextAddress,
+        umaAddress: this.umaAddress
+      });
+      console.log('moduleType', moduleType);
+      if (['reality', 'uma'].includes(moduleType)) {
+        const { dao } =
+          moduleType === 'reality'
+            ? await plugin.getModuleDetailsReality(
+                this.network,
+                this.realityAddress
+              )
+            : await plugin.getModuleDetailsUma(this.network, this.umaAddress);
 
-      if (connextModule === 'connext') {
-        this.connextModAddress = this.connextAddress;
-      }
-
-      const moduleType = await plugin.validateUmaModule(
-        this.network,
-        this.umaAddress
-      );
-
-      const { dao } =
-        moduleType === 'reality'
-          ? await plugin.getModuleDetailsReality(
-              this.network,
-              this.realityAddress
-            )
-          : await plugin.getModuleDetailsUma(this.network, this.umaAddress);
-
-      const moduleAddress =
-        moduleType === 'reality' ? this.realityAddress : this.umaAddress;
-
-      if (!this.gnosisSafeAddress && dao) {
-        this.transactionConfig.gnosisSafeAddress = dao;
+        const moduleAddress =
+          moduleType === 'reality' ? this.realityAddress : this.umaAddress;
+        console.log('moduleAddress', moduleAddress);
+        if (!this.gnosisSafeAddress && dao) {
+          this.transactionConfig.gnosisSafeAddress = dao;
+          this.gnosisSafeAddress = dao;
+        }
+        this.moduleAddress = moduleAddress;
         this.gnosisSafeAddress = dao;
       }
 
       this.moduleType = moduleType;
-      this.moduleAddress = moduleAddress;
-      this.gnosisSafeAddress = dao;
       this.transactionConfig = {
         ...this.transactionConfig,
-        tokens: await fetchBalances(
-          this.network,
-          this.gnosisSafeAddress ?? dao
-        ),
+        tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
         collectables: await fetchCollectibles(
           this.network,
-          this.gnosisSafeAddress ?? dao
+          this.gnosisSafeAddress
         )
       };
       this.moduleTypeReady = true;
@@ -366,7 +355,7 @@ export default {
         :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
         :module-type="moduleType"
-        :connext-mod-address="connextModAddress"
+        :connext-mod-address="transactionConfig.connextAddress"
       />
       <LoadingSpinner v-else />
       <div v-if="!preview" class="cursor" @click="handleRemoveSafe">
@@ -404,10 +393,10 @@ export default {
       </div>
       <div v-if="!preview || proposalResolved" class="flex w-full flex-col">
         <div class="flex w-full items-center justify-between" v-if="!preview">
-          <BaseButton @click="addTransactionBatch" :disabled="!moduleTypeReady">
+          <BaseButton @click="addTransactionBatch">
             {{ $t('safeSnap.addBatch') }}
           </BaseButton>
-          <BaseButton @click="openJsonModal" :disabled="!moduleTypeReady">
+          <BaseButton @click="openJsonModal">
             Transaction Batch with JSON
           </BaseButton>
           <teleport to="#modal">
@@ -421,12 +410,7 @@ export default {
 
         <div class="w-full">
           <SafeSnapHandleOutcome
-            v-if="
-              preview &&
-              proposalResolved &&
-              moduleType === 'reality' &&
-              moduleTypeReady
-            "
+            v-if="preview && proposalResolved && moduleType === 'reality'"
             :batches="input"
             :proposal="proposal"
             :reality-address="transactionConfig.realityAddress"
@@ -435,12 +419,7 @@ export default {
           />
 
           <SafeSnapHandleOutcomeUma
-            v-if="
-              preview &&
-              proposalResolved &&
-              moduleType === 'uma' &&
-              moduleTypeReady
-            "
+            v-if="preview && proposalResolved && moduleType === 'uma'"
             :batches="input"
             :proposal="proposal"
             :space="space"

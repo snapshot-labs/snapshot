@@ -2,6 +2,7 @@ import {
   CollectableAsset,
   CollectableAssetTransaction,
   CustomContractTransaction,
+  CustomConnextTransaction,
   SafeTransaction,
   TokenAsset,
   TokenAssetTransaction
@@ -16,6 +17,7 @@ import { InterfaceDecoder } from './decoder';
 import { fetchTextSignatures } from './index';
 import { getGnosisSafeToken } from './safe';
 import { Network } from '../types';
+import { ContractTransactionData } from './connextModule';
 
 export function rawToModuleTransaction({
   to,
@@ -34,6 +36,44 @@ export function rawToModuleTransaction({
     data,
     nonce,
     operation: '0'
+  };
+}
+
+export function connextModuleTransaction({
+  to,
+  value,
+  data,
+  nonce,
+  method,
+  destinationTx,
+  originTx,
+  destinationChain,
+  zodiacMod
+}: {
+  to: string;
+  value: string;
+  data: string;
+  nonce: string;
+  type: string;
+  method: FunctionFragment;
+  destinationTx: ContractTransactionData;
+  originTx: ContractTransactionData;
+  destinationChain: string;
+  zodiacMod: string;
+}): CustomConnextTransaction {
+  return {
+    to,
+    value,
+    data,
+    nonce,
+    operation: '0',
+    transactionBatchType: 'connext',
+    type: 'connext',
+    abi: parseMethodToABI(method),
+    destinationTx,
+    originTx,
+    destinationChain,
+    zodiacMod
   };
 }
 

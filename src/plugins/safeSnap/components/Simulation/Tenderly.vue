@@ -4,7 +4,7 @@ import { shorten } from '../../../../helpers/utils';
 import { sanitizeUrl } from '@braintree/sanitize-url';
 import { formatUnits } from '@ethersproject/units';
 import {
-  SafeTransaction,
+  CustomConnextTransaction,
   SafeTransactionConfig,
   SimulationLog,
   SimulationState
@@ -12,8 +12,22 @@ import {
 import SimulationMessage from './Message.vue';
 import { ref } from 'vue';
 
+export interface TenderlySimulationBody {
+  from: string;
+  gas: number; //8000000
+  gas_price: number; //0
+  input: string;
+  network_id: string;
+  save: boolean;
+  to: string; //
+  value: string;
+  state_objects?: Object;
+  save_if_fails: boolean;
+  simulation_type: 'full';
+}
+
 type SimulationTenderlyProps = {
-  modelValueToSimulate: SafeTransaction[];
+  modelValueToSimulate: CustomConnextTransaction;
   config: SafeTransactionConfig;
   runSimulation: boolean;
   defaultSimulationResult?: SimulationState;
@@ -26,16 +40,39 @@ type TenderlySimulation = {
   method: string;
 };
 
-type TenderlyResultLogs = {
-  name: string;
-  inputs: {
-    soltype: {
-      name: string;
+type LogInput = {
+  soltype: {
+    name: string;
+    type: string;
+    storage_location: string;
+    offset: number;
+    index: string;
+    indexed?: boolean;
+    simple_type: {
       type: string;
     };
-    value: string;
-  }[];
+  };
+  value: string;
 };
+
+type Log = {
+  name: string;
+  methodName?: string;
+  anonymous: boolean;
+  inputs: LogInput[] | null;
+  raw?: {
+    address: string;
+    topics: string[];
+    data: string;
+  };
+  trace_index: number | null;
+};
+
+type AddEventFunction = (
+  type: string,
+  message: string,
+  simulationId?: string
+) => void;
 
 type TenderlyResultTransaction = {
   hash: string;
@@ -55,9 +92,9 @@ type TenderlyResultTransaction = {
       from: string;
       to: string;
       input: string;
-      logs: TenderlyResultLogs[];
+      logs: any[];
     };
-    logs: TenderlyResultLogs[];
+    logs: any[];
   };
 };
 
@@ -84,22 +121,51 @@ const generateSimulationUrl = (id: string): string => {
 };
 
 const generateTransactionBody = (
-  transactions: SafeTransaction[],
+  transaction: CustomConnextTransaction,
   network: Network
-) => {
-  return transactions.map(tx => {
-    return {
+): TenderlySimulationBody[] => {
+  // 'network_id': '1',
+  //   'from': '0x3f41a1cfd3c8b8d9c162de0f42307a0095a6e5df',
+  //   'to': '0xdef171fe48cf0115b1d80b88dc8eab59176fee57',
+  //   'input': '0xa94e78ef000000000000000000000000000000000000000000000000000000000000002000000000000000000000000068037790a0229e9ce6eaa8a99ea92964106c470300000000000000000000000000000000000000000000010f0cf064dd592000000000000000000000000000000000000000000000000000000000000145dc1b2e00000000000000000000000000000000000000000000000000000001477f4d7d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001600000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000007800000000000000000000000000000000000000000000000000000000064d281e65c9438a5a99c4bccb1035296d5d2d8d200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000320000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000009be264469ef954c139da4a45cf76cbcc5e3a6a73000000000000000000000000000000000000000000000000000000000000271000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000006000000000000000000000000e592427a0aece92de3edee1f18e0157c05861564000000000000000000000000000000000000000000000000000000000000271000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000064db6806000000000000000000000000000000000000000000000000000000000000002b68037790a0229e9ce6eaa8a99ea92964106c47030001f4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000000000000000000000000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000200000000000000000000000009be264469ef954c139da4a45cf76cbcc5e3a6a730000000000000000000000000000000000000000000000000000000000002710000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000060000000000000000000000001b81d678ffb9c0263b24a97847620c99d213eb14000000000000000000000000000000000000000000000000000000000000271000000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000064db6806000000000000000000000000000000000000000000000000000000000000002ba0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000064dac17f958d2ee523a2206206994597c13d831ec70000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+  //   'gas': 648318,
+  //   'block_number': 17884583,
+  //   'value': '0',
+  //   'save': true,
+  //   'save_if_fails': true,
+  //   'simulation_type': 'full'
+  const { destinationTx, destinationChain, zodiacMod } = transaction;
+  return [
+    {
       network_id: network,
       from: props.config.gnosisSafeAddress,
-      to: tx.to,
-      input: tx.data,
-      value: '0',
+      to: transaction.to,
+      input: transaction.data,
+      value: transaction.value,
       save: true,
       save_if_fails: true,
-      gas: 30000000,
-      gas_price: 0
-    };
-  });
+      gas: 8000000,
+      gas_price: 0,
+      simulation_type: 'full',
+      state_objects: {
+        [props.config.gnosisSafeAddress]: {
+          balance: '99999999999999999999'
+        }
+      }
+    },
+    {
+      network_id: destinationChain,
+      from: zodiacMod,
+      to: destinationTx.to,
+      input: destinationTx.data,
+      value: destinationTx.value,
+      save: true,
+      save_if_fails: true,
+      gas: 8000000,
+      gas_price: 0,
+      simulation_type: 'full'
+    }
+  ];
 };
 
 const extractTransactionResult = (
@@ -109,78 +175,40 @@ const extractTransactionResult = (
   simulationResult.simulation_results.forEach(result => {
     const transaction = result.transaction;
     const simulationId = result.simulation.id;
-    const addEvent = (type: string, message: string, simulationId: string) => {
+    const method = result.simulation.method;
+    console.log('simulationId', simulationId);
+
+    const addEvent = (type: string, message: string, simulationId?: string) => {
       events.push({
         type,
         message,
-        url: generateSimulationUrl(simulationId)
+        url: generateSimulationUrl(simulationId ?? '')
       });
     };
+
     if (transaction.status) {
       simulationState.value.status = 'success';
+      simulationState.value.id = simulationId;
       const logs = transaction.transaction_info.logs;
       logs.forEach(log => {
-        if (log.name === 'Transfer') {
-          const from = log.inputs.find(
-            input => input.soltype.name === 'from'
-          )?.value;
-          const to = log.inputs.find(
-            input => input.soltype.name === 'to'
-          )?.value;
-          const value = log.inputs.find(
-            input => input.soltype.name === 'value'
-          )?.value;
-          addEvent(
-            'Transfer',
-            `from ${shorten(from as string)} to ${shorten(
-              to as string
-            )} value ${formatUnits(value ?? '0').toString()}`,
-            simulationId
-          );
+        const inputsMap = log.inputs
+          ? new Map(log.inputs.map(input => [input.soltype.name, input.value]))
+          : new Map();
+
+        switch (log.name) {
+          case 'SafeReceived':
+          case 'TransferRelayerFeesIncreased':
+          case 'LeafInserted':
+          case 'Dispatch':
+          case 'XCalled':
+            specificLogHandler(log.name, inputsMap, addEvent, simulationId);
+            break;
+          default:
+            genericLogHandler(log, addEvent, simulationId, method);
+            break;
         }
       });
-
-      logs.forEach(log => {
-        if (log.name === 'Approval') {
-          const owner = log.inputs.find(
-            input => input.soltype.name === 'owner'
-          )?.value;
-          const spender = log.inputs.find(
-            input => input.soltype.name === 'spender'
-          )?.value;
-          addEvent(
-            'Approval',
-            `owner ${shorten(owner as string)} spender ${shorten(
-              spender as string
-            )}`,
-            simulationId
-          );
-        }
-      });
-
-      logs.forEach(log => {
-        if (log.name === 'XCalled') {
-          const transferId = log.inputs.find(
-            input => input.soltype.name === 'transferId'
-          )?.value;
-          const asset = log.inputs.find(
-            input => input.soltype.name === 'asset'
-          )?.value;
-          const amount = log.inputs.find(
-            input => input.soltype.name === 'amount'
-          )?.value;
-
-          addEvent(
-            'xcall',
-            `transferId ${shorten(transferId as string)}, asset ${shorten(
-              asset as string
-            )} amount ${formatUnits(amount ?? '0').toString()}`,
-            simulationId
-          );
-        }
-      });
-    }
-    if (!transaction.status) {
+    } else {
       simulationState.value.status = 'error';
       addEvent(
         `The transaction failed during the simulation throwing error ${transaction.error_message}. Full simulation report is available on`,
@@ -188,17 +216,102 @@ const extractTransactionResult = (
         simulationId
       );
     }
+    simulationState.value.logs = events;
+    console.log(events);
   });
-  simulationState.value.logs = events;
+};
+
+const specificLogHandler = (
+  logName: string,
+  inputsMap: Map<string, string>,
+  addEvent: AddEventFunction,
+  simulationId: string
+) => {
+  if (logName === 'SafeReceived') {
+    const sender = inputsMap.get('sender');
+    const value = inputsMap.get('value');
+    if (sender && value) {
+      addEvent(
+        'Safe Received',
+        ` from ${shorten(sender.toString())} value ${formatUnits(
+          value.toString()
+        )}`,
+        simulationId
+      );
+    }
+  }
+  if (logName === 'TransferRelayerFeesIncreased') {
+    const transferId = inputsMap.get('transferId');
+    const increase = inputsMap.get('increase');
+    if (transferId && increase) {
+      addEvent(
+        'Transfer relayer fees increased',
+        ` for transferId ${shorten(
+          transferId.toString()
+        )}, increase ${formatUnits(increase.toString())}`,
+        simulationId
+      );
+    }
+  }
+  if (logName === 'LeafInserted') {
+    const root = inputsMap.get('root');
+    const count = inputsMap.get('count');
+    if (root && count) {
+      addEvent(
+        'Leaf Inserted',
+        ` with root ${shorten(root.toString())} and count ${count}`,
+        simulationId
+      );
+    }
+  }
+  if (logName === 'Dispatch') {
+    const leaf = inputsMap.get('leaf');
+    const index = inputsMap.get('index');
+    if (leaf && index) {
+      addEvent(
+        'Dispatch',
+        ` called with leaf ${shorten(leaf.toString())} and index ${index}`,
+        simulationId
+      );
+    }
+  }
+  if (logName === 'XCalled') {
+    const xCalledTransferId = inputsMap.get('transferId');
+    const asset = inputsMap.get('asset');
+    const amount = inputsMap.get('amount');
+    if (xCalledTransferId && asset && amount) {
+      addEvent(
+        'XCalled',
+        ` with transferId ${shorten(
+          xCalledTransferId.toString()
+        )}, asset ${shorten(asset.toString())}`,
+        simulationId
+      );
+    }
+  }
+};
+
+const genericLogHandler = (
+  log: Log,
+  addEvent: AddEventFunction,
+  simulationId: string,
+  method: string
+) => {
+  let message = log.methodName ? log.methodName + ': ' : method;
+  log.inputs?.forEach(input => {
+    message += `${input.soltype.name}: ${input.value}, `;
+  });
+  addEvent(log.name || 'Generic Event', message, simulationId);
 };
 
 const simulateTransaction = async (
-  transactions: SafeTransaction[]
+  transactions: CustomConnextTransaction
 ): Promise<TenderlySimulationResult> => {
   const apiURL = `https://api.tenderly.co/api/v1/account/juliopavilaa/project/safesnap-plugin/simulate-bundle`;
   const body = {
     simulations: generateTransactionBody(transactions, props.config.network)
   };
+
   const response = await fetch(apiURL, {
     method: 'POST',
     headers: {
@@ -222,9 +335,8 @@ const simulateTransaction = async (
 
 const simulate = async () => {
   loading.value = true;
-
   try {
-    if (props.modelValueToSimulate && props.modelValueToSimulate.length) {
+    if (props.modelValueToSimulate && props.modelValueToSimulate) {
       const transactions = props.modelValueToSimulate;
       const tenderlySimulation = await simulateTransaction(transactions);
       extractTransactionResult(tenderlySimulation);
@@ -260,7 +372,7 @@ const className = computed(() => {
   <div :class="className">
     <div v-if="loading" class="flex space-x-2">
       <LoadingSpinner class="pb-[3px]" />
-      <p class="text-[12px] text-white">Running simulation</p>
+      <p class="text-[12px">Running simulation</p>
     </div>
 
     <SimulationMessage

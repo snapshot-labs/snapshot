@@ -43,6 +43,7 @@ import { getModuleDetailsUma, getModuleDetailsUmaGql } from './utils/umaModule';
 import { retrieveInfoFromOracle } from './utils/realityETH';
 import { getNativeAsset } from '@/plugins/safeSnap/utils/coins';
 import { Network } from './types';
+import { getModuleDetailsConnext } from './utils/connextModule';
 
 export * from './constants';
 
@@ -58,6 +59,21 @@ export * from './utils/realityModule';
 
 const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
 export default class Plugin {
+  async getModuleType(
+    network: string,
+    moduleAddresses: {
+      connextAddress?: string;
+      umaAddress?: string;
+      realityAddress?: string;
+    }
+  ) {
+    const { connextAddress, umaAddress } = moduleAddresses;
+    if (connextAddress) return 'connext';
+    if (umaAddress) {
+      return await this.validateUmaModule(network, umaAddress);
+    }
+  }
+
   validateTransaction(transaction: SafeTransaction) {
     const addressEmptyOrValidate =
       transaction.to === '' || isAddress(transaction.to);
@@ -154,6 +170,13 @@ export default class Plugin {
     return getModuleDetailsReality(provider, network, moduleAddress);
   }
 
+  async getModuleDetailsConnext(network: string, moduleAddress: string) {
+    const provider: StaticJsonRpcProvider = getProvider(network, {
+      broviderUrl
+    });
+    return getModuleDetailsConnext(provider, network, moduleAddress);
+  }
+
   async validateConnextModule(network: string, connextAddress: string) {
     if (!isAddress(connextAddress)) return 'reality';
 
@@ -171,6 +194,7 @@ export default class Plugin {
       .then(() => 'connext')
       .catch(() => 'reality');
   }
+
   async getConnextModule(network: string, connextAddress: string) {
     const provider: StaticJsonRpcProvider = getProvider(network, {
       broviderUrl
@@ -186,6 +210,7 @@ export default class Plugin {
 
   async generateConnextXcallData({
     network,
+    slippage,
     connext,
     tokenAddress,
     destinationAddress,
@@ -196,7 +221,6 @@ export default class Plugin {
     const to = destinationAddress;
     const asset = tokenAddress;
     const delegate = destinationAddress;
-    const slippage = 0;
     const callData = '0x';
     const provider: StaticJsonRpcProvider = getProvider(network, {
       broviderUrl
@@ -206,14 +230,14 @@ export default class Plugin {
       CONNEXT_BRIDGE_FACET,
       provider
     );
-
+    const slippageTolerance = slippage * 100; // convert to percentage, 1% = 100
     const txData = bridgeContract.interface.encodeFunctionData('xcall', [
       destination,
       to,
       asset,
       delegate,
       amount,
-      slippage,
+      slippageTolerance,
       callData
     ]);
     return txData;
@@ -272,7 +296,7 @@ export default class Plugin {
       '',
       transactions
     );
-
+    console.log('moduleDetails', moduleDetails);
     const approveTx = await sendTransaction(
       web3,
       moduleDetails.collateral,
@@ -281,6 +305,7 @@ export default class Plugin {
       [moduleAddress, moduleDetails.minimumBond],
       {}
     );
+    console.log('approveTx', approveTx);
     yield approveTx;
     const approvalReceipt = await approveTx.wait();
     console.log('[DAO module] token transfer approved:', approvalReceipt);
@@ -351,6 +376,7 @@ export default class Plugin {
       [transactions, explanationBytes]
       // [[["0xB8034521BB1a343D556e5005680B3F17FFc74BeD", 0, "0", "0x"]], '0x']
     );
+    console.log('tx', tx);
     yield tx;
     const receipt = await tx.wait();
     console.log('[DAO module] submitted proposal:', receipt);
