@@ -64,8 +64,8 @@ onMounted(async () => {
 
 const networkName = (network: string) => {
   if (network === '1') return 'Mainnet';
-  const { shortName, name } = networks[network] || {};
-  return shortName || name || `#${network}`;
+  const { name } = networks[network] || {};
+  return name || `#${network}`;
 };
 
 const networkIcon = (network: string) => {
