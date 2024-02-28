@@ -685,16 +685,74 @@ export const getConstants = (): Constants => {
     TESTNET_AVAILABLE_DESTINY_NETWORKS: ['goerli', 'mumbai'],
 
     tokensDecimals: {
-      USDC: 6,
-      WETH: 18,
-      DAI: 18,
-      USDT: 6,
-      nextUSDC: 6,
-      nextWETH: 18,
-      nextDAI: 18,
-      nextUSDT: 6,
-      TEST: 18
+      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': 6, // USDC on Ethereum
+      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2': 18, // WETH on Ethereum
+      '0x6B175474E89094C44Da98b954EedeAC495271d0F': 18, // DAI on Ethereum
+      '0xdAC17F958D2ee523a2206206994597C13D831ec7': 6, // USDT on Ethereum
+      '0xF96C6d2537e1af1a9503852eB2A4AF264272a5B6': 6, // nextUSDC on Polygon
+      '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174': 6, // USDC on Polygon
+      '0x4b8BaC8Dd1CAA52E32C07755c17eFadeD6A0bbD0': 18, // nextWETH on Polygon
+      '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619': 18, // WETH on Polygon
+      '0xaDCe87b14d570665222C1172D18a221BF7690d5a': 18, // nextDAI on Polygon
+      '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063': 18, // DAI on Polygon
+      '0xE221C5A2a8348f12dcb2b0e88693522EbAD2690f': 6, // nextUSDT on Polygon
+      '0xc2132D05D31c914a87C6611C10748AEb04B58e8F': 6, // USDT on Polygon
+      '0x67E51f46e8e14D4E4cab9dF48c59ad8F512486DD': 6, // nextUSDC on Optimism
+      '0x7F5c764cBc14f9669B88837ca1490cCa17c31607': 6, // USDC on Optimism
+      '0xbAD5B3c68F855EaEcE68203312Fd88AD3D365e50': 18, // nextWETH on Optimism
+      '0x4200000000000000000000000000000000000006': 18, // WETH on Optimism
+      '0xd64Bd028b560bbFc732eA18f282c64B86F3468e0': 18, // nextDAI on Optimism
+      '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': 18, // DAI on Optimism
+      '0x4cBB28FA12264cD8E87C62F4E1d9f5955Ce67D20': 6, // nextUSDT on Optimism
+      '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58': 6, // USDT on Optimism
+      '0x8c556cF37faa0eeDAC7aE665f1Bb0FbD4b2eae36': 6, // nextUSDC on Arbitrum
+      '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': 6, // USDC on Arbitrum
+      '0x2983bf5c334743Aa6657AD70A55041d720d225dB': 18, // nextWETH on Arbitrum
+      '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1': 18, // WETH on Arbitrum
+      '0xfDe99b3B3fbB69553D7DaE105EF34Ba4FE971190': 18, // nextDAI on Arbitrum
+      '0x2fD7E61033b3904c65AA9A9B83DCd344Fa19Ffd2': 6, // nextUSDT on Arbitrum
+      '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9': 6, // USDT on Arbitrum
+      '0x5e7D83dA751F4C9694b13aF351B30aC108f32C38': 6, // nextUSDC on BNB Chain
+      '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d': 6, // USDC on BNB Chain
+      '0xA9CB51C666D2AF451d87442Be50747B31BB7d805': 18, // nextWETH on BNB Chain
+      '0x2170Ed0880ac9A755fd29B2688956BD959F933F8': 18, // WETH on BNB Chain
+      '0x86a343BCF17D79C475d300eed35F0145F137D0c9': 18, // nextDAI on BNB Chain
+      '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3': 18, // DAI on BNB Chain
+      '0xD609f26B5547d5E31562B29150769Cb7c774B97a': 6, // nextUSDT on BNB Chain
+      '0x55d398326f99059fF775485246999027B3197955': 6, // USDT on BNB Chain
+      '0x44CF74238d840a5fEBB0eAa089D05b763B73faB8': 6, // nextUSDC on Gnosis Chain
+      '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83': 6, // USDC on Gnosis Chain
+      '0x538E2dDbfDf476D24cCb1477A518A82C9EA81326': 18, // nextWETH on Gnosis Chain
+      '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1': 18, // WETH on Gnosis Chain
+      '0x0e1D5Bcd2Ac5CF2f71841A9667afC1E995CaAf4F': 18, // nextDAI on Gnosis Chain
+      '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d': 18, // DAI on Gnosis Chain
+      '0xF4d944883D6FddC56d3534986feF82105CaDbfA1': 6, // nextUSDT on Gnosis Chain
+      '0x4ECaBa5870353805a9F068101A40E0f32ed605C6': 6, // USDT on Gnosis Chain
+      '0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1': 18, // TEST on Goerli
+      '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6': 18, // WETH on Goerli
+      '0x68Db1c8d85C09d546097C65ec7DCBFF4D6497CbF': 18, // TEST on Optimism Goerli
+      '0x39B061B7e41DE8B721f9aEcEB6b3f17ECB7ba63E': 18, // nextWETH on Optimism Goerli
+      '0x74c6FD7D2Bc6a8F0Ebd7D78321A95471b8C2B806': 18, // WETH on Optimism Goerli
+      '0xeDb95D8037f769B72AAab41deeC92903A98C9E16': 18, // TEST on Mumbai
+      '0x1E5341E4b7ed5D0680d9066aac0396F0b1bD1E69': 18, // nextWETH on Mumbai
+      '0xFD2AB41e083c75085807c4A65C0A14FDD93d55A9': 18, // WETH on Mumbai
+      '0xDC805eAaaBd6F68904cA706C221c72F8a8a68F9f': 18, // TEST on Arbitrum Goerli
+      '0x1346786E6A5e07b90184a1Ba58E55444b99DC4A2': 18, // WETH on Arbitrum Goerli
+      '0x7c1412e456ad60b8ee458c4eb3a9852c3e389353': 18, // TEST on zkSync Era Testnet
+      '0xB706319D37b945727E71ae0d4353699d19112576': 18 // TEST on Linea Testnet
     },
+
+    // tokensDecimals: {
+    //   USDC: 6,
+    //   WETH: 18,
+    //   DAI: 18,
+    //   USDT: 6,
+    //   nextUSDC: 6,
+    //   nextWETH: 18,
+    //   nextDAI: 18,
+    //   nextUSDT: 6,
+    //   TEST: 18
+    // },
 
     // See: https://docs.connext.network/resources/supported-chains#mainnet
     //      https://docs.gelato.network/developer-services/relay/payment-and-fees#gelatos-fees

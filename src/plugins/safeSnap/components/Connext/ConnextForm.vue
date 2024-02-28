@@ -17,6 +17,7 @@ import {
   SafeTransactionConfig
 } from '@/helpers/interfaces';
 import { findAssetKeyByAddress } from '../../utils/connextModule';
+import { formatUnits } from '@ethersproject/units';
 export interface ConnextFormProps {
   network: Network;
   loading: boolean;
@@ -28,7 +29,6 @@ export interface ConnextFormProps {
   amount: number;
   isDetails: boolean;
   preview: boolean;
-
   modelValue: CustomConnextTransaction;
 }
 const props = defineProps<ConnextFormProps>();
@@ -52,25 +52,7 @@ const assetsList = computed(() => {
   return [];
 });
 
-const tokenDecimal = computed(() => {
-  const { tokensDecimals } = getConstants();
-  const { assetAddress, modelValue } = props;
-  const { approveTx } = modelValue;
-  let selectedAssetAddress = assetAddress;
-  if (approveTx && approveTx.to && approveTx.to !== assetAddress) {
-    selectedAssetAddress = approveTx.to;
-  }
-
-  if (selectedAssetAddress) {
-    const tokenName = findAssetKeyByAddress(selectedAssetAddress);
-
-    if (tokenName && tokensDecimals.hasOwnProperty(tokenName.assetKey)) {
-      return tokensDecimals[tokenName.assetKey];
-    }
-  }
-
-  return null;
-});
+const { tokensDecimals } = getConstants();
 
 const destinationChainList = computed(() => {
   const {
@@ -159,13 +141,15 @@ const networkName = (network: string) => {
     </p>
     <p>Asset Address: {{ shorten(props.modelValue.approveTx.to) }}</p>
     <div :class="'flex space-x-1'">
-      <p>Amount:</p>
-      <SafeSnapInputAmount
-        v-if="props.modelValue.approveTx.to && tokenDecimal"
-        :is-details="true"
-        :decimals="tokenDecimal"
-        :model-value="props.modelValue.amount"
-      />
+      <p v-if="props.modelValue.approveTx.to">
+        Amount:
+        {{
+          formatUnits(
+            props.modelValue.amount ? props.modelValue.amount.toString() : '0',
+            tokensDecimals[props.modelValue.approveTx.to]
+          ).toString()
+        }}
+      </p>
     </div>
 
     <SafeSnapSimulationTenderly
@@ -240,10 +224,10 @@ const networkName = (network: string) => {
         "
       />
       <SafeSnapInputAmount
-        v-if="assetAddress && tokenDecimal"
+        v-if="assetAddress"
         :label="$t('safeSnap.amount')"
-        :decimals="tokenDecimal"
-        :model-value="props.amount"
+        :decimals="tokensDecimals[assetAddress]"
+        :model-value="props.amount.toString()"
         :disabled="props.preview"
         @update:modelValue="
           amount =>
