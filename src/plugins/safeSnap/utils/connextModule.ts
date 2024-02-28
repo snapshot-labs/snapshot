@@ -486,7 +486,7 @@ function prepareERC20BridgeTransaction({
       data: xCallEncodedData,
       calldatas: params,
       operation: '0',
-      nonce: nonce + 1
+      nonce: nonce
     };
     return {
       approveTx,
@@ -553,7 +553,7 @@ function prepareNativeBridgeTransaction({
         data: xCallEncodedData,
         calldatas: params,
         operation: '0',
-        nonce: nonce + 1
+        nonce: nonce
       };
       return {
         approveTx,

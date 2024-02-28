@@ -16,6 +16,7 @@ import {
   CustomConnextTransaction,
   SafeTransactionConfig
 } from '@/helpers/interfaces';
+import { findAssetKeyByAddress } from '../../utils/connextModule';
 export interface ConnextFormProps {
   network: Network;
   loading: boolean;
@@ -53,26 +54,24 @@ const assetsList = computed(() => {
 
 const tokenDecimal = computed(() => {
   const { tokensDecimals } = getConstants();
+  const { assetAddress, modelValue } = props;
+  const { approveTx } = modelValue;
+  let selectedAssetAddress = assetAddress;
+  if (approveTx && approveTx.to && approveTx.to !== assetAddress) {
+    selectedAssetAddress = approveTx.to;
+  }
 
-  if (
-    (props.assetAddress || props.modelValue.approveTx.to) &&
-    (props.destinationChain || props.modelValue.destinationChain)
-  ) {
-    const token = assetsList.value.find(asset => {
-      if (
-        asset.value === (props.assetAddress || props.modelValue.approveTx.to)
-      ) {
-        return asset.name;
-      }
-    });
+  if (selectedAssetAddress) {
+    const tokenName = findAssetKeyByAddress(selectedAssetAddress);
 
-    if (token) {
-      return tokensDecimals[token.name];
+    if (tokenName && tokensDecimals.hasOwnProperty(tokenName.assetKey)) {
+      return tokensDecimals[tokenName.assetKey];
     }
   }
+
+  return null;
 });
 
-console.log('tokenDecimal', tokenDecimal);
 const destinationChainList = computed(() => {
   const {
     Chains,
@@ -162,11 +161,7 @@ const networkName = (network: string) => {
     <div :class="'flex space-x-1'">
       <p>Amount:</p>
       <SafeSnapInputAmount
-        v-if="
-          props.modelValue.approveTx.to &&
-          tokenDecimal &&
-          props.modelValue.amount
-        "
+        v-if="props.modelValue.approveTx.to && tokenDecimal"
         :is-details="true"
         :decimals="tokenDecimal"
         :model-value="props.modelValue.amount"
