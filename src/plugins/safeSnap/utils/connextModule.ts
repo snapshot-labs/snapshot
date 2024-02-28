@@ -10,18 +10,29 @@ import {
 import { Contract, ContractInterface } from '@ethersproject/contracts';
 // import { Contract, ContractInterface } from '@ethersproject';
 import { multicall } from '@snapshot-labs/snapshot.js/src/utils';
-import { CONNEXT_MODULE_ABI, getConstants } from '../constants';
+import {
+  CONNEXT_MODULE_ABI,
+  findChainKeyById,
+  getConstants
+} from '../constants';
 import { ConnextModDetails } from '../types/connext';
 import { encodeFunction } from './encodeFunction';
 import { getParams } from './getParams';
-import { encodeReceiverCallData } from './encodeReceiverCalldata';
+import {
+  encodeReceiverCallData,
+  encodeRecipientCallData
+} from './encodeReceiverCalldata';
 import { encodeXCall } from './encodeXCall';
 import { getDestinationProvider } from './getDestinationProvider';
 import { estimateRelayerFee } from './estimateRelayerFee';
 import { getTransactionJson } from './getTransactionJson';
-import { SafeDetails, SafeTransaction } from '@/helpers/interfaces';
+import {
+  CustomConnextTransaction,
+  SafeDetails,
+  SafeTransaction
+} from '@/helpers/interfaces';
 import { connextModuleTransaction } from './transactions';
-import Plugin from '../index';
+import Plugin, { createMultiSendTx } from '../index';
 import { BigNumber } from '@ethersproject/bignumber';
 import { hexlify } from '@ethersproject/bytes';
 import { APPROVE_ABI, encodeApprove } from './encodeApprove';
@@ -55,6 +66,18 @@ interface ConnextTransactionParams {
   contractAddress: string;
   originSafeAddress: string;
   originChain: string;
+  nonce: number;
+}
+
+interface ConnextSimpleBridgeParams {
+  originChainId: number;
+  assetAddress: string;
+  amount: string;
+  destinationAddress: string;
+  destinationChainId: string;
+  slippage: number;
+  relayerFee?: string;
+  originSafeAddress: string;
   nonce: number;
 }
 
@@ -102,6 +125,7 @@ const getOriginChainKey = (originChain: string) => {
     }
   }
 };
+
 const getDomainIdById = (chain: string): number | undefined => {
   const chainId = parseInt(chain);
   for (const chainKey in Chains) {
@@ -126,6 +150,31 @@ export const getChainIdByDomainId = (chain: string): number | undefined => {
     }
   }
   return undefined;
+};
+
+export const getChainByDomainId = (domainId: number) => {
+  const chainId = domainId;
+  for (const chainKey in Chains) {
+    if (Chains.hasOwnProperty(chainKey)) {
+      const chain = Chains[chainKey];
+      if (chain.domainId === chainId) {
+        return chain;
+      }
+    }
+  }
+  return undefined;
+};
+
+export const findAssetKeyByAddress = (address: string) => {
+  for (const chain in Chains) {
+    const assets = Chains[chain].assets;
+    for (const key in assets) {
+      if (assets[key] === address) {
+        return { chain: chain, assetKey: key };
+      }
+    }
+  }
+  return null;
 };
 
 export const encodeDestinationTx = (
@@ -160,6 +209,7 @@ const getApproveTx = (
   const name = methodSignature;
   const data = encodedTx;
   return {
+    operation: '0',
     to: contractAddress,
     value: '0',
     data: data || '',
@@ -213,7 +263,7 @@ const getXCallsParams = (
   const to = connextZodiacMod;
   const asset =
     Chains[originChainKey].assets.WETH || Chains[originChainKey].assets.TEST;
-  const destinationDomainId = getDomainIdById(destinationChain) ?? '';
+  const domainIdId = getDomainIdById(destinationChain) ?? '';
   const calldata = getReceiverCallData(destinationParams);
   /* xCallParams:
       0: destination domaninId
@@ -225,7 +275,7 @@ const getXCallsParams = (
       6: callData
     */
   const xCallParams: string[] = [
-    destinationDomainId.toString(),
+    domainIdId.toString(),
     to, //e.g:Zodiac mod deployed en Gnosis chain to,
     asset,
     originSender,
@@ -369,121 +419,173 @@ export const generateConnextTransaction = async ({
   }
 };
 
-export function prepareERC20BridgeTransaction({
-  tokenAddress,
+const getSimpleBridgeTransaction = (
+  connextTx,
+  multiSendTx,
+  params: ConnextSimpleBridgeParams
+): CustomConnextTransaction => {
+  return {
+    type: 'connext',
+    abi: [],
+    destinationTx: undefined,
+    originTx: connextTx.xCallJson,
+    approveTx: connextTx.approveTx,
+    amount: parseInt(params.amount),
+    data: multiSendTx.data,
+    to: multiSendTx.to,
+    destinationChain: params.destinationChainId,
+    zodiacMod: '',
+    value: multiSendTx.value,
+    operation: multiSendTx.operation,
+    nonce: multiSendTx.nonce
+  };
+};
+
+function prepareERC20BridgeTransaction({
+  originChainId,
+  assetAddress,
   amount,
-  recipient,
-  destinationDomain,
+  destinationAddress,
+  destinationChainId,
   slippage,
+  originSafeAddress,
   relayerFee,
-  signerAddress,
   nonce
-}: {
-  tokenAddress: string;
-  amount: string;
-  recipient: string;
-  destinationDomain: number;
-  slippage: number;
-  relayerFee: string;
-  signerAddress: string;
-  nonce: number;
-}) {
-  /* 
-    Approve Params:
-      0: spender
-      1: amount
-    */
-  const approveParams: string[] = [Chains['polygon'].connextContract, amount];
-  const { encodedData, signature } = encodeApprove(approveParams);
-  const approveTx = getApproveTx(signature, encodedData, tokenAddress, nonce);
-  const xCallParams: string[] = [
-    destinationDomain.toString(),
-    recipient, //e.g:To address will be received the funds,
-    tokenAddress, //asset,
-    signerAddress, // Origin address in this case the safe
-    amount,
-    slippage.toString(),
-    '0x' //call data empty because is a simple transaction
-  ];
-  const {
-    encodedData: xCallEncodedData,
-    params,
-    signature: xCallSignature
-  } = encodeXCall(xCallParams);
-  const xCallJson = {
-    name: xCallSignature,
-    value: relayerFee,
-    to: Chains['polygon'].connextContract,
-    from: signerAddress, //userAddress,
-    data: xCallEncodedData,
-    calldatas: params,
-    nonce: nonce + 1
-  };
-
-  return {
-    approveTx,
-    xCallJson
-  };
-}
-
-export async function prepareETHBridgeTransaction({
-  wethAddress,
-  wethAbi,
-  connextAbi,
-  amount,
-  recipient,
-  destinationDomain,
-  slippage,
-  relayerFee,
-  provider,
-  signerAddress,
-  connextAddress
-}: {
-  wethAddress: string;
-  wethAbi: string;
-  connextAbi: string;
-  amount: string;
-  recipient: string;
-  destinationDomain: number;
-  slippage: number;
-  relayerFee: string;
-  provider: StaticJsonRpcProvider;
-  signerAddress: string;
-  connextAddress: string;
-}): Promise<any | undefined> {
-  const wethContract = new Contract(wethAddress, wethAbi, provider);
-  const connextContract = new Contract(connextAddress, connextAbi, provider);
-
-  // 1. Preparar la transacción para depositar en WETH
-  const depositTx = wethContract.populateTransaction.deposit({ value: amount });
-
-  // 2. Preparar la transacción de aprobación si es necesario
-  const allowance = await wethContract.allowance(signerAddress, connextAddress);
-  let approveTxData: string | undefined;
-  if (allowance.lt(BigNumber.from(amount))) {
-    const approveTx = await wethContract.populateTransaction.approve(
-      connextAddress,
-      MaxUint256
-    );
-    approveTxData = approveTx.data ?? undefined;
+}: ConnextSimpleBridgeParams) {
+  const domainId = getDomainIdById(destinationChainId);
+  const originChainName: string = findChainKeyById(Chains, originChainId) ?? '';
+  const connextAddress = Chains[originChainName].connextContract;
+  if (domainId) {
+    /* 
+      Approve Params:
+        0: spender address connext address
+        1: amount
+      */
+    const approveParams: string[] = [connextAddress, amount];
+    const { encodedData, signature } = encodeApprove(approveParams);
+    const approveTx = getApproveTx(signature, encodedData, assetAddress, nonce);
+    const xCallParams: string[] = [
+      domainId.toString(),
+      destinationAddress, //e.g:To address will be received the funds,
+      assetAddress, //asset,
+      originSafeAddress, // Origin address in this case the safe
+      amount,
+      slippage.toString(),
+      '0x' //call data empty because is a simple transaction
+    ];
+    const {
+      encodedData: xCallEncodedData,
+      params,
+      signature: xCallSignature
+    } = encodeXCall(xCallParams);
+    const xCallJson = {
+      name: xCallSignature,
+      value: relayerFee,
+      to: Chains[originChainName].connextContract,
+      from: originSafeAddress, //userAddress,
+      data: xCallEncodedData,
+      calldatas: params,
+      operation: '0',
+      nonce: nonce + 1
+    };
+    return {
+      approveTx,
+      xCallJson
+    };
   }
-
-  // 3. Preparar la transacción xcall
-  const xCallTx = await connextContract.populateTransaction.xcall(
-    destinationDomain,
-    recipient,
-    wethAddress,
-    signerAddress,
-    amount,
-    slippage,
-    defaultAbiCoder.encode(['address'], [recipient]),
-    { value: relayerFee }
-  );
-
-  // Ajusta el tipo de retorno según tus necesidades
-  return {
-    depositTx,
-    approveTxData,
-    xCallTx
-  };
 }
+
+function prepareNativeBridgeTransaction({
+  originChainId,
+  assetAddress,
+  amount,
+  destinationAddress,
+  destinationChainId,
+  slippage,
+  originSafeAddress,
+  relayerFee,
+  nonce
+}: ConnextSimpleBridgeParams) {
+  const domainId = getDomainIdById(destinationChainId);
+  if (domainId) {
+    const destinyChain = getChainByDomainId(domainId ?? 0);
+
+    if (destinyChain) {
+      const originChainName: string =
+        findChainKeyById(Chains, originChainId) ?? '';
+      const connextAddress = Chains[originChainName].connextContract;
+      const weth = assetAddress;
+      const destinationUnwrapper = destinyChain.assets.WETH;
+      const calldata = encodeRecipientCallData(destinationAddress);
+      /* 
+        Approve Params:
+          0: spender address connext address
+          1: amount
+        */
+      const approveParams: string[] = [connextAddress, amount];
+      const { encodedData, signature } = encodeApprove(approveParams);
+      const approveTx = getApproveTx(
+        signature,
+        encodedData,
+        assetAddress,
+        nonce
+      );
+
+      const xCallParams: string[] = [
+        domainId.toString(),
+        destinationUnwrapper, //e.g: _to: Unwrapper contract,
+        weth, //asset,
+        originSafeAddress, // _delegate: Origin address in this case the safe
+        amount, // _amount: amount of tokens to transfer
+        slippage.toString(),
+        calldata //_callData: calldata with encoded recipient address
+      ];
+      const {
+        encodedData: xCallEncodedData,
+        params,
+        signature: xCallSignature
+      } = encodeXCall(xCallParams);
+      const xCallJson = {
+        name: xCallSignature,
+        value: relayerFee,
+        to: Chains[originChainName].connextContract,
+        from: originSafeAddress, //userAddress,
+        data: xCallEncodedData,
+        calldatas: params,
+        operation: '0',
+        nonce: nonce + 1
+      };
+      return {
+        approveTx,
+        xCallJson
+      };
+    }
+  }
+}
+
+const connextNativeTransaction = (
+  params: ConnextSimpleBridgeParams,
+  multiSendAddress: string,
+  isNative: boolean
+) => {
+  const connextTransaction = isNative
+    ? prepareNativeBridgeTransaction(params)
+    : prepareERC20BridgeTransaction(params);
+  if (connextTransaction) {
+    const multiSendTx = createMultiSendTx(
+      [connextTransaction.approveTx as any, connextTransaction.xCallJson],
+      params.nonce,
+      multiSendAddress
+    );
+
+    return getSimpleBridgeTransaction(connextTransaction, multiSendTx, params);
+  }
+};
+
+export const generateSimpleBridgeTransaction = (
+  params: ConnextSimpleBridgeParams,
+  isNative: boolean,
+  multiSendAddress: string
+) => {
+  return connextNativeTransaction(params, multiSendAddress, isNative);
+};

@@ -20,3 +20,9 @@ export const encodeReceiverCallData = (
 
   return encodedParams;
 };
+
+export const encodeRecipientCallData = (recipient: string) => {
+  const encodedParams = defaultAbiCoder.encode(['address'], [recipient]);
+
+  return encodedParams;
+};

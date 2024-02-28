@@ -49,7 +49,12 @@ const zodiacConnextModList = computed(() =>
 
 <template>
   <div
-    v-if="props.isDetails && props.modelValue && props.selectedMethod.inputs"
+    v-if="
+      props.isDetails &&
+      props.modelValue &&
+      props.selectedMethod &&
+      props.selectedMethod.inputs
+    "
     class="grid gap-y-3 grid-cols-1 mt-3 px-3"
   >
     <div class="flex space-x-1">

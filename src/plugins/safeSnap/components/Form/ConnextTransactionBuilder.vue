@@ -20,25 +20,17 @@ import { Fragment, FunctionFragment } from '@ethersproject/abi';
 import ConnextZodiacModForm from '../Connext/ConnextZodiacModForm.vue';
 import ConnextForm from '../Connext/ConnextForm.vue';
 import {
+  findAssetKeyByAddress,
   generateConnextTransaction,
-  getChainIdByDomainId,
-  encodeDestinationTx,
-  prepareETHBridgeTransaction,
-  prepareERC20BridgeTransaction
+  generateSimpleBridgeTransaction,
+  getChainIdByDomainId
 } from '../../utils/connextModule';
 import { debounce } from 'lodash';
-import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 
 const plugin = new Plugin();
 
-const isConnextAvailable = computed(() => {
-  const { Chains, AVAILABLE_ORIGIN_NETWORKS } = getConstants();
-  const originChain = findChainKeyById(Chains, parseInt(props.config.network));
-  if (!originChain) return false;
-  return AVAILABLE_ORIGIN_NETWORKS.includes(originChain);
-});
-
 const props = defineProps<ConnextTransactionProps>();
+
 const emit = defineEmits(['update:modelValue', 'clearParams']);
 const safeList = useStorage<SafeDetails[]>('snapshot.safeList', []);
 const generateTxLoading = ref<boolean>(false);
@@ -58,84 +50,66 @@ const parameters = ref<string[]>([]);
 const amount = ref<number>(0);
 const selectedMethod = ref();
 
+const isMainnet = computed(() => {
+  if (props) {
+    const { MAINNET_CHAINS } = getConstants();
+    return MAINNET_CHAINS.includes(props.config.network);
+  }
+});
+
+const isConnextAvailable = computed(() => {
+  const {
+    Chains,
+    AVAILABLE_ORIGIN_NETWORKS,
+    TESTNET_AVAILABLE_ORIGIN_NETWORKS
+  } = getConstants();
+  const originChain = findChainKeyById(Chains, parseInt(props.config.network));
+  if (!originChain) return false;
+  if (isMainnet.value) return AVAILABLE_ORIGIN_NETWORKS.includes(originChain);
+  if (!isMainnet.value)
+    return TESTNET_AVAILABLE_ORIGIN_NETWORKS.includes(originChain);
+});
+
 const debouncedValidation = debounce(() => {
   if (allZodiacModFieldsCompleted()) {
-    submit();
+    submit('zodiac');
   }
 }, 500);
 
-const ASSET_ABI = [
-  'function approve(address spender, uint256 amount) external returns (bool)',
-  'function allowance(address owner, address spender) external view returns (uint256)',
-  'function transfer(address to, uint256 amount) external returns (bool)',
-  'function balanceOf(address account) external view returns (uint256)'
-];
-
-const CONNEXT_ABI = [
-  {
-    inputs: [
-      {
-        internalType: 'uint32',
-        name: '_destination',
-        type: 'uint32'
-      },
-      {
-        internalType: 'address',
-        name: '_to',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_asset',
-        type: 'address'
-      },
-      {
-        internalType: 'address',
-        name: '_delegate',
-        type: 'address'
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256'
-      },
-      {
-        internalType: 'uint256',
-        name: '_slippage',
-        type: 'uint256'
-      },
-      {
-        internalType: 'bytes',
-        name: '_callData',
-        type: 'bytes'
-      },
-      {
-        internalType: 'uint256',
-        name: '_relayerFee',
-        type: 'uint256'
-      }
-    ],
-    name: 'xcall',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32'
-      }
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function'
+const debouncedSimpleConnextValidation = debounce(() => {
+  if (allConnextCompleted()) {
+    submit('simple');
   }
-];
+}, 500);
 
-async function initialize() {
+const isNativeAsset = computed(() => {
+  if (assetAddress.value) {
+    const asset = findAssetKeyByAddress(assetAddress.value);
+    return asset && asset.assetKey === 'WETH';
+  }
+  return false;
+});
+
+const initialize = async () => {
   if (props.modelValue && safeList.value.length) {
-    await loadTransactionDetails(props.modelValue);
+    if (
+      !props.modelValue.approveTx &&
+      props.modelValue.destinationTx &&
+      props.modelValue.originTx
+    ) {
+      zodiacConnextMod.value = true;
+      await loadZodiacConnextTransactionDetails(props.modelValue);
+    }
+  }
+  if (props.modelValue && props.modelValue.approveTx) {
+    loadSimpleConnextTransactionDetails(props.modelValue);
   }
   await loadConnextModDetails();
-}
+};
 
-async function loadTransactionDetails(modelValue: CustomConnextTransaction) {
+const loadZodiacConnextTransactionDetails = async (
+  modelValue: CustomConnextTransaction
+) => {
   const { originTx, destinationTx } = modelValue;
   if (!destinationTx || !originTx) return;
   contractAddress.value = destinationTx.to;
@@ -152,12 +126,23 @@ async function loadTransactionDetails(modelValue: CustomConnextTransaction) {
   } catch (error) {
     console.error('Error fetching contract ABI:', error);
   }
-}
+};
 
-function setDestinationSafe(
+const loadSimpleConnextTransactionDetails = (
+  modelValue: CustomConnextTransaction
+) => {
+  const { originTx, approveTx } = modelValue;
+  if (!approveTx || !originTx) return;
+  amount.value = modelValue.amount ?? 0;
+  destinationChain.value = modelValue.destinationChain;
+  assetAddress.value = approveTx.to;
+  destinationAddress.value = originTx.calldatas[1].value;
+};
+
+const setDestinationSafe = (
   zodiacConnextModAddress: string,
   destinationAddress: string
-) {
+) => {
   const defaultDestinationSafe = safeList.value.find(
     safe => safe.connextAddress === zodiacConnextModAddress
   );
@@ -168,9 +153,9 @@ function setDestinationSafe(
   } else {
     destinationSafe.value = destinationAddress;
   }
-}
+};
 
-async function loadConnextModDetails() {
+const loadConnextModDetails = async () => {
   const relevantSafes = safeList.value.filter(
     safe =>
       props.config.gnosisSafeAddress !== safe.gnosisSafeAddress &&
@@ -187,11 +172,13 @@ async function loadConnextModDetails() {
   } catch (error) {
     console.error('Error fetching Connext module details:', error);
   }
-}
+};
+
 onMounted(initialize);
 
 onUnmounted(() => {
   debouncedValidation.cancel();
+  debouncedSimpleConnextValidation.cancel();
 });
 
 watch(
@@ -203,9 +190,9 @@ watch(
 );
 
 watch(
-  [amount],
+  [destinationChain, assetAddress, destinationAddress, amount],
   () => {
-    allConnextCompleted();
+    debouncedSimpleConnextValidation();
   },
   { deep: true }
 );
@@ -227,7 +214,12 @@ const allZodiacModFieldsCompleted = () => {
   );
 };
 const allConnextCompleted = () => {
-  console.log('amount.value', amount.value);
+  return (
+    destinationAddress.value &&
+    assetAddress.value &&
+    destinationAddress.value &&
+    amount.value >= 0
+  );
 };
 
 const fetchConnextModDetails = async (
@@ -312,77 +304,92 @@ const updateField = async (
   }
 };
 
-const submit = async () => {
-  const simpleConnextTx = prepareERC20BridgeTransaction({
-    tokenAddress: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
-    amount: '100',
-    recipient: '0x2a438dB1D761c33a0179FfC23D2bF7282B8bCb55',
-    destinationDomain: 6778479, // Gnosis Chain domainId
-    slippage: 300,
-    relayerFee: '4000',
-    signerAddress: '0x89e5F188F17AD9d7Ba4b54ABE7Bce5c9FEFBb348',
-    nonce: props.nonce
+const isValidateSimpleBridgeTransaction = () => {
+  return zodiacConnextMod || allConnextCompleted();
+};
+
+const isValidateZodiacTransaction = () => {
+  return zodiacConnextMod && allZodiacModFieldsCompleted();
+};
+
+const handleSimpleBridgeTransaction = () => {
+  const simpleBridgeTx = generateSimpleBridgeTransaction(
+    {
+      originChainId: parseInt(props.config.network),
+      assetAddress: assetAddress.value,
+      amount: amount.value.toString(),
+      destinationAddress: destinationAddress.value,
+      destinationChainId: destinationChain.value,
+      slippage: 300,
+      relayerFee: '0',
+      originSafeAddress: props.config.gnosisSafeAddress,
+      nonce: props.nonce
+    },
+    isNativeAsset.value ?? false,
+    props.config.multiSendAddress
+  );
+  console.log('simpleBridgeTx', simpleBridgeTx);
+  return emit('update:modelValue', simpleBridgeTx);
+};
+
+const handleZodiacTransaction = async () => {
+  const destinationChainZodiac = connextModList.value.find(
+    safe => safe.dao === destinationSafe.value
+  );
+  const destinationSafeSelected = safeList.value.find(safe => {
+    if (safe.gnosisSafeAddress === destinationSafe.value) {
+      return safe.connextAddress;
+    }
   });
-  const connextTx: CustomConnextTransaction = {
-    type: 'connext',
-    simpleTransaction: simpleConnextTx,
-    abi: [],
-    destinationTx: undefined,
-    originTx: undefined,
-    destinationChain: '100',
-    zodiacMod: '',
-    to: '',
-    value: '',
-    data: '',
-    operation: '',
-    nonce: ''
-  };
-  emit('update:modelValue', connextTx);
+  if (destinationChainZodiac && destinationSafeSelected) {
+    const zodiacConnextModTx = await generateConnextTransaction({
+      destinationChain: destinationChainZodiac,
+      destinationSafeSelected,
+      abi: abi.value,
+      method: methods.value[methodIndex.value],
+      parameters: parameters.value,
+      contractAddress: contractAddress.value,
+      originSafeAddress: props.config.gnosisSafeAddress,
+      originChain: props.config.network,
+      nonce: props.nonce
+    });
+    if (zodiacConnextModTx) {
+      emit('update:modelValue', zodiacConnextModTx);
+    }
+    console.log('Submit the following tx:', zodiacConnextModTx);
+  }
+};
 
-  // allConnextCompleted();
+const submit = async (type: 'simple' | 'zodiac') => {
+  if (
+    props.isDetails ||
+    (type === 'simple' && !isValidateSimpleBridgeTransaction()) ||
+    (type === 'zodiac' && !isValidateZodiacTransaction())
+  ) {
+    generateTxLoading.value = false;
+    return;
+  }
 
-  // if ((zodiacConnextMod && !allZodiacModFieldsCompleted()) || props.isDetails) {
-  //   generateTxLoading.value = false;
-  //   return;
-  // }
+  generateTxLoading.value = true;
 
-  // generateTxLoading.value = true;
-  // const destinationChain = connextModList.value.find(
-  //   safe => safe.dao === destinationSafe.value
-  // );
-  // const destinationSafeSelected = safeList.value.find(safe => {
-  //   if (safe.gnosisSafeAddress === destinationSafe.value) {
-  //     return safe.connextAddress;
-  //   }
-  // });
-
-  // if (destinationChain && destinationSafeSelected) {
-  //   const connextTx = await generateConnextTransaction({
-  //     destinationChain: {},
-  //     destinationSafeSelected,
-  //     abi: abi.value,
-  //     method: methods.value[methodIndex.value],
-  //     parameters: parameters.value,
-  //     contractAddress: contractAddress.value,
-  //     originSafeAddress: props.config.gnosisSafeAddress,
-  //     originChain: props.config.network,
-  //     nonce: props.nonce
-  //   });
-  //   if (connextTx) {
-  //     emit('update:modelValue', connextTx);
-  //   }
-  //   console.log('Submit the following tx:', connextTx);
-  // }
-  // generateTxLoading.value = false;
+  try {
+    if (type === 'simple') {
+      return handleSimpleBridgeTransaction();
+    } else if (type === 'zodiac') {
+      return await handleZodiacTransaction();
+    }
+  } catch (error) {
+    console.error('Error handling transaction:', error);
+  } finally {
+    generateTxLoading.value = false;
+  }
 };
 </script>
 
 <template>
-  <template v-if="!isConnextAvailable">
-    <ConnextChainAvailability :network="props.config.network" />
-  </template>
-  <template v-else>
+  <template v-if="isConnextAvailable">
     <TuneSwitch
+      v-if="!props.isDetails"
       :class="`${props.isDetails ? 'px-3' : ''} `"
       :disabled="props.isDetails || generateTxLoading"
       :model-value="zodiacConnextMod"
@@ -414,8 +421,10 @@ const submit = async () => {
       />
     </template>
 
-    <template v-if="!zodiacConnextMod">
+    <template v-if="!zodiacConnextMod && !props.modelValue.destinationTx">
       <ConnextForm
+        :config="props.config"
+        :model-value="props.modelValue"
         :amount="amount"
         :assetAddress="assetAddress"
         :network="props.config.network"
@@ -427,7 +436,9 @@ const submit = async () => {
         :contract-address="contractAddress"
         @update:model-value="({ field, value }) => updateField(field, value)"
       />
-      <button @click="submit">TEST</button>
     </template>
+  </template>
+  <template v-else>
+    <ConnextChainAvailability :network="props.config.network" />
   </template>
 </template>

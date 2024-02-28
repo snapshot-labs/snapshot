@@ -12,7 +12,8 @@ const TESTNET_CHAINS = [
   'Mumbai',
   'Arbitrum Goerli',
   'zkSyncEra Testnet',
-  'linea Testnet'
+  'linea Testnet',
+  'Goerli'
 ];
 
 const isMainnet = computed(() => {

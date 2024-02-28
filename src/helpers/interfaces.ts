@@ -387,10 +387,11 @@ export interface CustomConnextTransaction extends SafeTransaction {
   abi: string[];
   destinationTx: any;
   originTx: any;
-  simpleTransaction: any;
+  approveTx: any;
   simulation?: SimulationState;
   destinationChain: string;
   zodiacMod: string;
+  amount?: number;
 }
 
 export interface SafeModuleTransactionBatch {

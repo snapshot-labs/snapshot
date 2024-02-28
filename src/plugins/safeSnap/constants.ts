@@ -51,7 +51,7 @@ export const EXPLORER_API_URLS = {
   '246': 'https://explorer.energyweb.org/api',
   '137': 'https://api.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
-  '42161': 'https://api.arbiscan.io/api',
+  '42161': 'https://api.arbiscan.io/api'
   // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
 };
 
@@ -64,7 +64,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '137': 'https://safe-transaction-polygon.safe.global/api',
   '56': 'https://safe-transaction-bsc.safe.global/api',
   '42161': 'https://safe-transaction-arbitrum.safe.global/api',
-  '1116': 'https://safetx.coredao.org/api',
+  '1116': 'https://safetx.coredao.org/api'
 };
 
 // ABIs
@@ -679,9 +679,10 @@ export const getConstants = (): Constants => {
       'mumbai',
       'arbitrumGoerli',
       'zkSyncEraTestnet',
-      'lineaTestnet'
+      'lineaTestnet',
+      'goerli'
     ],
-    TESTNET_AVAILABLE_DESTINY_NETWORKS: ['goerli'],
+    TESTNET_AVAILABLE_DESTINY_NETWORKS: ['goerli', 'mumbai'],
 
     tokensDecimals: {
       USDC: 6,
@@ -692,7 +693,7 @@ export const getConstants = (): Constants => {
       nextWETH: 18,
       nextDAI: 18,
       nextUSDT: 6,
-      TEST:18
+      TEST: 18
     },
 
     // See: https://docs.connext.network/resources/supported-chains#mainnet
