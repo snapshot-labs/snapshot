@@ -6,7 +6,8 @@ const props = defineProps([
   'inputProps',
   'label',
   'disabled',
-  'decimals'
+  'decimals',
+  'isDetails'
 ]);
 const emit = defineEmits(['update:modelValue', 'valid']);
 
@@ -36,7 +37,7 @@ onMounted(() => {
 
 watch(
   () => props.modelValue,
-  (value) => {
+  value => {
     if (value !== undefined) {
       input.value = formatUnits(value, props.decimals);
     }
@@ -53,7 +54,11 @@ watch(
 </script>
 
 <template>
+  <p v-if="props.isDetails">
+    {{ input }}
+  </p>
   <UiInput
+    v-if="!props.isDetails"
     :custom-styles="'safesnap-custom-input'"
     v-model="input"
     v-bind="inputProps"

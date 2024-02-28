@@ -6,7 +6,6 @@ import SafeSnapFormTransferFunds from './TransferFunds.vue';
 import SafeSnapFormSendAsset from './SendAsset.vue';
 import SafeSnapFormRawTransaction from './RawTransaction.vue';
 import SafeSnapFormConnextTransactionBuilder from './ConnextTransactionBuilder.vue';
-import Plugin from '../../index';
 import { shorten } from '@/helpers/utils';
 import { decodeXCall } from '../../utils/encodeXCall';
 
@@ -76,12 +75,12 @@ export default {
         return this.getLabel(this.type);
       }
       if (this.type === 'connext') {
-        const { originTx } = this.modelValue;
+        const { originTx, approveTx } = this.modelValue;
         const { to: zodiacConnextMod } = decodeXCall(originTx.data);
 
-        return `Cross-chain to ${shorten(
-          zodiacConnextMod ?? ''
-        )} (Zodiac Connext Mod)`;
+        return `Cross-chain to ${shorten(zodiacConnextMod ?? '')} ${
+          approveTx ? '' : '(Zodiac Connext Mod)'
+        }`;
       }
 
       if (this.modelValue) {
@@ -246,14 +245,6 @@ export default {
       :nonce="nonce"
       @update:modelValue="updateConnextTransaction"
     />
-    <!-- @clear-params="clearConnextParams" -->
-    <!-- <SafeSnapFormConnextTransaction
-      v-if="transactionType === 'connext'"
-      :model-value="connextModelValue"
-      :config="config"
-      :is-details="isDetails"
-      @update:model-value="handleFormUpdate"
-    /> -->
   </UiCollapsible>
 </template>
 <style lang="scss">

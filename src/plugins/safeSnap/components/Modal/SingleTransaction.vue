@@ -22,7 +22,6 @@ import SafeSnapFormContractInteraction from '../Form/ContractInteraction.vue';
 import SafeSnapFormTransferFunds from '../Form/TransferFunds.vue';
 import SafeSnapFormSendAsset from '../Form/SendAsset.vue';
 import SafeSnapFormRawTransaction from '../Form/RawTransaction.vue';
-import SafeSnapFormConnextTransaction from '../Form/ConnextTransaction.vue';
 import SafeSnapFormConnextTransactionBuilder from '../Form/ConnextTransactionBuilder.vue';
 import SafeSnapSimulationTenderly from '../Simulation/Tenderly.vue';
 import {
@@ -86,10 +85,6 @@ const updateTransaction = (modelValue: SafeTransaction) => {
 };
 
 const updateConnextTransaction = (modelValue: CustomConnextTransaction) => {
-  if (modelValue.simpleTransaction) {
-    currentConnextModelValue.value = modelValue;
-    return;
-  }
   modelValueToSimulate.value = modelValue;
   currentConnextModelValue.value = modelValue;
 };
@@ -239,13 +234,6 @@ const buttonStates = computed(() => {
           @update:modelValue="updateConnextTransaction"
           @clear-params="clearConnextParams"
         />
-        <!-- <SafeSnapFormConnextTransaction
-          :is-details="false"
-          :model-value="currentConnextModelValue"
-          :config="config"
-          :nonce="nonce"
-          @update:modelValue="updateConnextTransaction"
-        /> -->
       </div>
 
       <hr class="my-4 border-skin-border" />

@@ -14,8 +14,8 @@ const networkIcon = (network: string) => {
 
 const networkName = (network: string) => {
   if (network === '1') return 'Mainnet';
-  const { name } = networks[network] || {};
-  return name || `#${network}`;
+  const { shortName } = networks[network] || {};
+  return shortName || `#${network}`;
 };
 </script>
 

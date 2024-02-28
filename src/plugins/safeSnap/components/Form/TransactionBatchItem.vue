@@ -3,7 +3,6 @@ import { watch, ref } from 'vue';
 import { SafeTransaction, SafeTransactionConfig } from '@/helpers/interfaces';
 import SafeSnapFormTransaction from './Transaction.vue';
 import SafeSnapModalSingleTransaction from '../Modal/SingleTransaction.vue';
-import { emit } from 'process';
 
 type TransactionWithType = {
   type: 'standard' | 'connext';
@@ -97,21 +96,6 @@ const removeStandardItem = (nonce: string) => {
   }
 };
 
-// const removeConnextItem = (index: number) => {
-//   const connextTransactionToRemove = allTransactions.value[index]
-//     .transactions as SafeTransaction[];
-//   if (connextTransactionToRemove.length) {
-//     connextTransactionToRemove.forEach(tx => {
-//       const indexToRemove = props.transactions.findIndex(
-//         transaction => transaction.nonce === tx.nonce
-//       );
-//       if (indexToRemove !== -1) {
-//         emits('remove', indexToRemove);
-//       }
-//     });
-//   }
-// };
-
 const resetTransactionToEdit = () => {
   transactionToEdit.value = {
     transaction: {} as SafeTransaction,
@@ -127,13 +111,6 @@ const handleStandardEdit = (transaction: SafeTransaction, nonce: string) => {
   showModal.value = true;
 };
 
-const handleConnextEdit = (transactions: SafeTransaction[]) => {
-  transactionToEdit.value = {
-    transaction: transactions
-  };
-  showModal.value = true;
-};
-
 const handleCloseModal = () => {
   showModal.value = false;
   resetTransactionToEdit();
@@ -141,31 +118,13 @@ const handleCloseModal = () => {
   transactionBatchType.value = 'standard';
 };
 
-const handleFormUpdate = (
-  index: number,
-  transaction: SafeTransaction,
-  type: 'connext' | 'standard'
-) => {
+const handleFormUpdate = (index: number, transaction: SafeTransaction) => {
   transactionBatchType.value = transaction.type as 'standard' | 'connext';
-  console.log('transaction', transaction);
+
   if (transaction.transactionBatchType) {
     transactionBatchType.value = transaction.transactionBatchType;
   }
-  if (transaction.transactionBatchType === 'connext') {
-    const { simpleTransaction } = transaction as any;
-    const { approveTx, xCallJson } = simpleTransaction;
-    console.log('transaction', transaction);
-    // emits('update:modelValue', {
-    //   index: approveTx.nonce,
-    //   transaction: approveTx
-    // });
-    // emits('update:modelValue', {
-    //   index: xCallJson.nonce,
-    //   transaction: xCallJson
-    // });
-    return;
-  }
-  console.log('{ index, transaction }', { index, transaction });
+
   emits('update:modelValue', { index, transaction });
 };
 
@@ -222,19 +181,6 @@ const getNonce = (batch: SafeTransaction | SafeTransaction[]): string => {
       :key="index"
       class="transaction-batch-item-container mb-2"
     >
-      <!-- <template v-if="Array.isArray(batch.transactions)">
-        <SafeSnapFormTransaction
-          :connext-model-value="batch.transactions"
-          :config="props.config"
-          :is-details="true"
-          :nonce="batch.transactions[0].nonce"
-          :transaction-type="'connext'"
-          @remove="removeConnextItem(index)"
-          @edit="handleConnextEdit(batch.transactions)"
-        />
-      </template> -->
-      {{ console.log('batch', batch) }}
-      <!-- <template> -->
       <SafeSnapFormTransaction
         :key="`form-transaction-${index}`"
         :model-value="batch.transactions"
@@ -245,7 +191,6 @@ const getNonce = (batch: SafeTransaction | SafeTransaction[]): string => {
         @remove="removeStandardItem(batch.transactions.nonce)"
         @edit="handleStandardEdit(batch.transactions, batch.transactions.nonce)"
       />
-      <!-- </template> -->
     </div>
 
     <teleport to="#modal" v-if="transactionToEdit">
@@ -264,10 +209,10 @@ const getNonce = (batch: SafeTransaction | SafeTransaction[]): string => {
         :open="showModal"
         :config="config"
         @update:modelValue="
-          handleFormUpdate(transactionToEdit.nonce ?? 0, $event, 'standard')
+          handleFormUpdate(transactionToEdit.nonce ?? 0, $event)
         "
         @update:connextModelValue="
-          handleFormUpdate(transactionToEdit.nonce ?? 0, $event, 'connext')
+          handleFormUpdate(transactionToEdit.nonce ?? 0, $event)
         "
         @close="handleCloseModal"
       />
