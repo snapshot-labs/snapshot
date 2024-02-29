@@ -42,9 +42,11 @@ type Form = {
     choice: 'any' | number;
   };
   distribution: {
-    type: 'weighted' | 'lottery';
-    hasRatioLimit: boolean;
-    ratioLimit: string;
+    type: 'lottery' | 'weighted';
+    hasWeightedLimit: boolean;
+    weightedLimit: string;
+    hasLotteryLimit: boolean;
+    lotteryLimit: string;
     numWinners: string;
   };
   network: string;
@@ -80,8 +82,10 @@ const form = ref<Form>({
   },
   distribution: {
     type: 'lottery',
-    hasRatioLimit: false,
-    ratioLimit: '',
+    hasWeightedLimit: false,
+    weightedLimit: '',
+    hasLotteryLimit: false,
+    lotteryLimit: '',
     numWinners: ''
   },
   network: '1',
@@ -202,6 +206,28 @@ const filteredNetworks = computed(() => {
     .filter(network => SUPPORTED_NETWORKS.includes(network.value));
 });
 
+const strategyDistributionLimit = computed(() => {
+  if (
+    form.value.distribution.type === 'lottery' &&
+    form.value.distribution.lotteryLimit
+  ) {
+    return parseUnits(
+      form.value.distribution.lotteryLimit || '0',
+      selectedToken.value?.decimals ?? '18'
+    ).toString();
+  }
+  if (
+    form.value.distribution.type === 'weighted' &&
+    form.value.distribution.weightedLimit
+  ) {
+    return parseUnits(
+      form.value.distribution.weightedLimit || '0',
+      selectedToken.value?.decimals ?? '18'
+    ).toString();
+  }
+  return undefined;
+});
+
 const strategy = computed<BoostStrategy>(() => {
   const choice =
     form.value.eligibility.choice === 'any'
@@ -210,15 +236,6 @@ const strategy = computed<BoostStrategy>(() => {
 
   const eligibilityType =
     form.value.eligibility.choice === 'any' ? 'incentive' : 'bribe';
-
-  const limit =
-    form.value.distribution.type === 'weighted' &&
-    form.value.distribution.ratioLimit
-      ? parseUnits(
-          form.value.distribution.ratioLimit || '0',
-          selectedToken.value?.decimals || '18'
-        ).toString()
-      : undefined;
 
   return {
     name: 'Boost',
@@ -236,7 +253,7 @@ const strategy = computed<BoostStrategy>(() => {
       },
       distribution: {
         type: form.value.distribution.type,
-        limit,
+        limit: strategyDistributionLimit.value,
         numWinners: form.value.distribution.numWinners || undefined
       }
     }
@@ -270,11 +287,19 @@ const tokenFee = computed(() => {
 const formValidation = computed(() => {
   const errors: Record<string, string> = {};
 
-  if (form.value.distribution.hasRatioLimit) {
-    if (!form.value.distribution.ratioLimit) {
-      errors.ratioLimit = 'Please enter a value';
-    } else if (Number(form.value.distribution.ratioLimit) === 0) {
-      errors.ratioLimit = 'Please enter a value greater than 0';
+  if (form.value.distribution.hasWeightedLimit) {
+    if (!form.value.distribution.weightedLimit) {
+      errors.weightedLimit = 'Please enter a number or disable';
+    } else if (Number(form.value.distribution.weightedLimit) === 0) {
+      errors.weightedLimit = 'Please enter a value greater than 0 or disable';
+    }
+  }
+
+  if (form.value.distribution.hasLotteryLimit) {
+    if (!form.value.distribution.lotteryLimit) {
+      errors.lotteryLimit = 'Please enter a number or disable';
+    } else if (Number(form.value.distribution.lotteryLimit) === 0) {
+      errors.lotteryLimit = 'Please enter a value greater than 0 or disable';
     }
   }
 
@@ -483,14 +508,19 @@ watchEffect(async () => {
 watch(
   () => form.value.distribution,
   () => {
-    if (!form.value.distribution.hasRatioLimit) {
-      form.value.distribution.ratioLimit = '';
+    if (!form.value.distribution.hasWeightedLimit) {
+      form.value.distribution.weightedLimit = '';
+    }
+    if (!form.value.distribution.hasLotteryLimit) {
+      form.value.distribution.lotteryLimit = '';
     }
     if (form.value.distribution.type === 'lottery') {
-      form.value.distribution.hasRatioLimit = false;
-      form.value.distribution.ratioLimit = '';
+      form.value.distribution.hasWeightedLimit = false;
+      form.value.distribution.weightedLimit = '';
     }
     if (form.value.distribution.type === 'weighted') {
+      form.value.distribution.hasLotteryLimit = false;
+      form.value.distribution.lotteryLimit = '';
       form.value.distribution.numWinners = '';
     }
   },
@@ -656,40 +686,61 @@ watch(
                   </div>
                 </div>
               </div>
+              <template v-if="form.distribution.type === 'weighted'">
+                <TuneSwitch
+                  v-model="form.distribution.hasWeightedLimit"
+                  label="Define a maximum reward per voter"
+                />
 
-              <TuneSwitch
-                v-if="form.distribution.type === 'weighted'"
-                v-model="form.distribution.hasRatioLimit"
-                label="Define a maximum reward per voter"
-              />
-              <TuneInput
-                v-if="form.distribution.type === 'lottery'"
-                v-model="form.distribution.numWinners"
-                label="Number of winners"
-                type="number"
-                placeholder="5"
-                always-show-error
-                :error="formErrorMessages?.numWinners"
-              >
-                <template #after>
-                  <div class="-mr-2">Winners</div>
-                </template>
-              </TuneInput>
+                <TuneInput
+                  v-model="form.distribution.weightedLimit"
+                  label="Max reward"
+                  type="number"
+                  placeholder="100"
+                  always-show-error
+                  :error="formErrorMessages?.weightedLimit"
+                  @click="form.distribution.hasWeightedLimit = true"
+                >
+                  <template #after>
+                    <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
+                  </template>
+                </TuneInput>
+              </template>
 
-              <TuneInput
-                v-if="form.distribution.type === 'weighted'"
-                v-model="form.distribution.ratioLimit"
-                label="Max reward"
-                type="number"
-                placeholder="100"
-                always-show-error
-                :error="formErrorMessages?.ratioLimit"
-                @click="form.distribution.hasRatioLimit = true"
-              >
-                <template #after>
-                  <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
-                </template>
-              </TuneInput>
+              <template v-if="form.distribution.type === 'lottery'">
+                <TuneInput
+                  v-model="form.distribution.numWinners"
+                  label="Number of winners"
+                  type="number"
+                  placeholder="5"
+                  always-show-error
+                  :error="formErrorMessages?.numWinners"
+                >
+                  <template #after>
+                    <div class="-mr-2">Winners</div>
+                  </template>
+                </TuneInput>
+
+                <TuneSwitch
+                  v-model="form.distribution.hasLotteryLimit"
+                  label="Define a maximum chance to win"
+                  hint="As the chance to win is based on voting power, setting a limit will ensure a more fair lottery. If set to 1% and the voter has 5% of the voted voting power, the voter will only have a 1% chance to win."
+                />
+
+                <TuneInput
+                  v-model="form.distribution.lotteryLimit"
+                  label="Max chance to win"
+                  type="number"
+                  placeholder="1"
+                  always-show-error
+                  :error="formErrorMessages?.lotteryLimit"
+                  @click="form.distribution.hasLotteryLimit = true"
+                >
+                  <template #after>
+                    <div class="-mr-[8px]">%</div>
+                  </template>
+                </TuneInput>
+              </template>
             </div>
             <TuneBlockFooter v-if="form.distribution.type === 'lottery'">
               <div class="flex justify-between">
