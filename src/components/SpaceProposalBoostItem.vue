@@ -183,10 +183,6 @@ async function withdraw(boost: BoostSubgraph) {
       ]"
     >
       <div class="w-full">
-        <!-- <div v-if="isOwner" class="flex items-center gap-1 mb-[12px]">
-          <i-s-crown class="text-xs" />
-          Your boost
-        </div> -->
         <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
           <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
             <template v-if="boost.strategy.eligibility.choice !== null">
@@ -350,6 +346,7 @@ async function withdraw(boost: BoostSubgraph) {
         { 'border-green/30 bg-green/5': hasClaimed }
       ]"
     >
+      <div v-if="isOwner" class="text-skin-heading">Manage your boost</div>
       <div v-if="claimPeriodEnded" class="sm:flex justify-between items-center">
         <div class="leading-none">
           <div class="font-semibold text-skin-heading">Withdraw</div>
@@ -368,7 +365,7 @@ async function withdraw(boost: BoostSubgraph) {
       </div>
       <div v-else class="md:flex items-center">
         <div>
-          Remaining amount:
+          Amount remaining:
           <span class="text-skin-heading">
             {{ withdrawalAmount }} {{ boost.token.symbol }}
           </span>
