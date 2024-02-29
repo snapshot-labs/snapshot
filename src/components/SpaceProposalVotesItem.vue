@@ -73,7 +73,7 @@ const balanceFormatted = computed(() => {
         </span>
         <BasePopover>
           <template #button>
-            <BaseButtonIcon class="!py-0">
+            <BaseButtonIcon class="!p-0 ml-1">
               <BaseIcon name="signature" />
             </BaseButtonIcon>
           </template>
