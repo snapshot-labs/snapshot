@@ -18,7 +18,8 @@ useTippy(refReasonTooltip, {
   content: h(TextAutolinker, { text: `Reason: ${props.vote.reason}` }),
   interactive: true,
   theme: 'urlified',
-  trigger: 'mouseenter focus click'
+  trigger: 'mouseenter focus click',
+  delay: 100
 });
 </script>
 
