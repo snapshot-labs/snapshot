@@ -386,14 +386,9 @@ watch(
   { immediate: true }
 );
 
-//Check if exist oSnap plugin or UMA Zodiac Mod
 const hasOsnapPlugin = computed(() => {
-  return (
-    !!props.space?.plugins?.oSnap ||
-    !!props.space?.plugins?.safeSnap?.safes?.filter(safe => safe.umaAddress)
-  );
+  return !!props.space?.plugins?.oSnap;
 });
-
 const shouldUseOsnap = ref(false);
 
 function toggleShouldUseOsnap() {
@@ -433,7 +428,6 @@ function handleLegacyOsnapToggle() {
 onMounted(async () => {
   const network = props?.space?.plugins?.safeSnap?.safes?.[0]?.network;
   const umaAddress = props?.space?.plugins?.safeSnap?.safes?.[0]?.umaAddress;
-
   if (network && umaAddress) {
     // this is how we check if osnap is enabled and valid.
     legacyOsnap.value.enabled = true;

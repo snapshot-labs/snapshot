@@ -22,9 +22,7 @@ const fetchContractABI = memoize(
       action: 'getAbi',
       address: contractAddress
     });
-
-    const response = await fetch(`${url}?${params}&apiKey=2Q1TPC846G7FHQS8H6NTP4NJYDGKXBCN2W`);
-
+    const response = await fetch(`${url}?${params}`);
     if (!response.ok) {
       return { status: 0, result: '' };
     }
@@ -43,7 +41,7 @@ export async function getContractABI(
   contractAddress: string
 ): Promise<string> {
   const apiUrl = EXPLORER_API_URLS[network as keyof typeof EXPLORER_API_URLS];
- if (!apiUrl) {
+  if (!apiUrl) {
     return '';
   }
 
