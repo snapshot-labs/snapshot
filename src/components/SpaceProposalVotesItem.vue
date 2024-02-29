@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { ExtendedSpace, Proposal, Vote, Profile } from '@/helpers/interfaces';
 import { shorten, getIpfsUrl } from '@/helpers/utils';
-import { useTippy } from 'vue-tippy';
-import TextAutolinker from './TextAutolinker.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -15,7 +13,6 @@ const props = defineProps<{
 defineEmits(['openReceiptModal']);
 
 const relayerIpfsHash = ref('');
-const refReasonTooltip = ref();
 
 const titles = computed(() =>
   props.proposal.strategies.map(strategy => strategy.params.symbol || '')
@@ -26,13 +23,6 @@ const { formatCompactNumber } = useIntl();
 const balanceFormatted = computed(() => {
   const balance = formatCompactNumber(props.vote.balance);
   return balance.length >= 8 ? shorten(balance) : balance;
-});
-
-useTippy(refReasonTooltip, {
-  content: h(TextAutolinker, { text: props.vote.reason }),
-  interactive: true,
-  theme: 'urlified',
-  trigger: 'mouseenter focus click'
 });
 </script>
 
@@ -131,14 +121,6 @@ useTippy(refReasonTooltip, {
             </div>
           </template>
         </BasePopover>
-        <div
-          v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
-          ref="refReasonTooltip"
-        >
-          <BaseButtonIcon class="cursor-default !p-0">
-            <i-ho-annotation class="text-[16px]" />
-          </BaseButtonIcon>
-        </div>
       </div>
     </div>
 
