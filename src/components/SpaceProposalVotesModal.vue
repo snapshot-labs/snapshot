@@ -122,7 +122,7 @@ watch(filters, value => {
 
       <div v-else-if="votes.length">
         <div
-          class="flex h-full min-h-full flex-col overflow-auto px-[20px] pt-2"
+          class="flex h-full min-h-full flex-col overflow-auto px-[16px] pt-2"
         >
           <SpaceProposalVotesItem
             v-for="(vote, i) in votes"
