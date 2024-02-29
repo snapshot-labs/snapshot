@@ -328,7 +328,6 @@ const handleSimpleBridgeTransaction = () => {
     false,
     props.config.multiSendAddress
   );
-  console.log('simpleBridgeTx', simpleBridgeTx);
   return emit('update:modelValue', simpleBridgeTx);
 };
 
@@ -356,7 +355,6 @@ const handleZodiacTransaction = async () => {
     if (zodiacConnextModTx) {
       emit('update:modelValue', zodiacConnextModTx);
     }
-    console.log('Submit the following tx:', zodiacConnextModTx);
   }
 };
 
@@ -388,15 +386,27 @@ const submit = async (type: 'simple' | 'zodiac') => {
 
 <template>
   <template v-if="isConnextAvailable">
-    <TuneSwitch
-      v-if="!props.isDetails"
-      :class="`${props.isDetails ? 'px-3' : ''} `"
-      :disabled="props.isDetails || generateTxLoading"
-      :model-value="zodiacConnextMod"
-      label="Use a Zodiac Connext Module"
-      @update:model-value="() => (zodiacConnextMod = !zodiacConnextMod)"
-    />
+    <div :class="'flex space-x-2 items-center !mb-0'">
+      <TuneSwitch
+        v-if="!props.isDetails"
+        :class="`${props.isDetails ? 'px-3' : ''} mb-[2px] !pt-0`"
+        :disabled="
+          props.isDetails || generateTxLoading || !connextModList.length
+        "
+        :model-value="zodiacConnextMod"
+        @update:model-value="() => (zodiacConnextMod = !zodiacConnextMod)"
+      />
 
+      <LabelInput
+        :information="
+          !connextModList.length
+            ? `The current safe is not registered as the originating sender's address
+        for the Connext Zodiac module within the listed safes in the settings.`
+            : undefined
+        "
+        >Use a Zodiac Connext Module</LabelInput
+      >
+    </div>
     <template v-if="zodiacConnextMod">
       <ConnextZodiacModForm
         :loading="generateTxLoading"
