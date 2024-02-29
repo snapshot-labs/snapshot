@@ -191,14 +191,16 @@ async function withdraw(boost: BoostSubgraph) {
           <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
             <template v-if="boost.strategy.eligibility.choice !== null">
               Who votes
-              <TuneTag
-                :label="
-                  proposal.choices[
-                    Number(boost.strategy.eligibility.choice) - 1
-                  ]
-                "
-                class="text-skin-heading ml-1"
-              />
+              <div>
+                <TuneTag
+                  :label="
+                    proposal.choices[
+                      Number(boost.strategy.eligibility.choice) - 1
+                    ]
+                  "
+                  class="text-skin-heading ml-1"
+                />
+              </div>
             </template>
             <template v-else> Anyone who votes </template>
           </div>
@@ -207,25 +209,31 @@ async function withdraw(boost: BoostSubgraph) {
             class="whitespace-nowrap mt-1 mr-1 flex items-center"
           >
             shares a pool of
-            <TuneTag
-              :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
-              class="text-skin-heading ml-1"
-            />
+            <div>
+              <TuneTag
+                :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
+                class="text-skin-heading ml-1"
+              />
+            </div>
           </div>
           <div v-else-if="isLottery" class="mt-1 mr-1 flex items-center">
             can win
-            <TuneTag
-              v-tippy="{
-                content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power.`
-              }"
-              :label="amountPerWinner"
-              class="text-skin-heading ml-1 cursor-help"
-            />
+            <div>
+              <TuneTag
+                v-tippy="{
+                  content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power.`
+                }"
+                :label="amountPerWinner"
+                class="text-skin-heading ml-1 cursor-help"
+              />
+            </div>
           </div>
           <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
             <span v-if="isLottery" class="mr-1"> chances </span>
             based on
-            <TuneTag label="Voting power" class="text-skin-heading ml-1" />
+            <div>
+              <TuneTag label="Voting power" class="text-skin-heading ml-1" />
+            </div>
           </div>
           <div
             v-if="boost.strategy.distribution.limit"
