@@ -296,12 +296,15 @@ export default {
       this.$emit('update:modelValue', this.input);
     },
     handleImport(txs) {
+      const transactions = [...txs].map(tx => {
+        return { ...tx, transactionBatchType: 'standard' };
+      });
       this.input.push(
         createBatch(
           this.moduleAddress,
           parseInt(this.network),
           this.input.length,
-          txs,
+          transactions,
           this.multiSendAddress
         )
       );

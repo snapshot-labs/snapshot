@@ -118,32 +118,32 @@ const handleCloseModal = () => {
   transactionBatchType.value = 'standard';
 };
 
-const handleFormUpdate = (index: number, transaction: SafeTransaction) => {
+const handleFormUpdate = (nonce: number, transaction: SafeTransaction) => {
   transactionBatchType.value = transaction.type as 'standard' | 'connext';
 
   if (transaction.transactionBatchType) {
     transactionBatchType.value = transaction.transactionBatchType;
   }
+  if (props.transactions.length < nonce) {
+    removeStandardItem(nonce.toString());
+    let netTransaction = transaction;
+    const index = props.transactions.findIndex(
+      t => parseInt(t.nonce) === nonce
+    );
+    netTransaction.nonce = index.toString();
+    return emits('update:modelValue', { index, transaction });
+  }
 
-  emits('update:modelValue', { index, transaction });
+  emits('update:modelValue', { index: nonce, transaction });
 };
 
 const generateNonce = () => {
   let maxNonce = -1; // Initialize to -1 so that if there are no transactions, the result is 0
 
   allTransactions.value.forEach(transactionWithType => {
-    if (Array.isArray(transactionWithType.transactions)) {
-      transactionWithType.transactions.forEach(tx => {
-        const currentNonce = parseInt(tx.nonce);
-        if (currentNonce > maxNonce) {
-          maxNonce = currentNonce;
-        }
-      });
-    } else {
-      const currentNonce = parseInt(transactionWithType.transactions.nonce);
-      if (currentNonce > maxNonce) {
-        maxNonce = currentNonce;
-      }
+    const currentNonce = parseInt(transactionWithType.transactions.nonce);
+    if (currentNonce > maxNonce) {
+      maxNonce = currentNonce;
     }
   });
 

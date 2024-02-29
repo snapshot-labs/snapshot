@@ -76,9 +76,12 @@ export default {
       }
       if (this.type === 'connext') {
         const { originTx, approveTx } = this.modelValue;
-        const { to: zodiacConnextMod } = decodeXCall(originTx.data);
-
-        return `Cross-chain to ${shorten(zodiacConnextMod ?? '')} ${
+        let zodiacConnextMod = '';
+        if (originTx) {
+          const { to } = decodeXCall(originTx.data);
+          zodiacConnextMod = to;
+        }
+        return `Cross-chain to ${shorten(zodiacConnextMod)} ${
           approveTx ? '' : '(Zodiac Connext Mod)'
         }`;
       }
