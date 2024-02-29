@@ -32,9 +32,15 @@ watch(open, () => {
       Connect to Snapshot
     </TuneModalTitle>
     <TuneModalDescription class="mx-3 pb-3">
-      By connecting a wallet, you agree to
-      <button type="button" class="font-semibold" @click="$emit('openTerms')">
-        Snapshot Labs' Terms of Service</button
+      By connecting, you agree to
+      <a
+        role="button"
+        tabindex="0"
+        class="font-semibold"
+        @click="$emit('openTerms')"
+        @keyup.enter="$emit('openTerms')"
+      >
+        Snapshot Labs' Terms of Service</a
       >.
     </TuneModalDescription>
     <div>
