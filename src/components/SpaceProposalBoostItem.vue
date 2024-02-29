@@ -4,6 +4,8 @@ import { formatUnits } from '@ethersproject/units';
 import { withdrawAndBurn } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { toChecksumAddress, explorerUrl } from '@/helpers/utils';
+import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -135,6 +137,23 @@ const lotteryNoRewardFinal = computed(() => {
   return isLottery.value && !props.reward && isFinal.value;
 });
 
+const lotteryLimit = computed(() => {
+  if (!isLottery || !props.boost.strategy.distribution.limit) return 0;
+  return Number(props.boost.strategy.distribution.limit) / 100;
+});
+
+const weightedLimit = computed(() => {
+  if (isLottery.value || !props.boost.strategy.distribution.limit) return 0;
+  return formatUnits(
+    props.boost.strategy.distribution.limit,
+    props.boost.token.decimals
+  );
+});
+
+const boostNetworkInfo = computed(() => {
+  return networks?.[props.boost.chainId];
+});
+
 async function withdraw(boost: BoostSubgraph) {
   try {
     const tx = await withdrawAndBurn(
@@ -164,10 +183,10 @@ async function withdraw(boost: BoostSubgraph) {
       ]"
     >
       <div class="w-full">
-        <div v-if="isOwner" class="flex items-center gap-1 mb-[12px]">
+        <!-- <div v-if="isOwner" class="flex items-center gap-1 mb-[12px]">
           <i-s-crown class="text-xs" />
           Your boost
-        </div>
+        </div> -->
         <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
           <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
             <template v-if="boost.strategy.eligibility.choice !== null">
@@ -193,7 +212,7 @@ async function withdraw(boost: BoostSubgraph) {
               class="text-skin-heading ml-1"
             />
           </div>
-          <div v-else-if="isLottery" class="mt-1 flex items-center">
+          <div v-else-if="isLottery" class="mt-1 mr-1 flex items-center">
             can win
             <TuneTag
               v-tippy="{
@@ -203,11 +222,49 @@ async function withdraw(boost: BoostSubgraph) {
               class="text-skin-heading ml-1 cursor-help"
             />
           </div>
-          <div class="whitespace-nowrap mt-1 flex items-center">
-            <template v-if="boost.strategy.distribution.type === 'weighted'">
-              based on
-              <TuneTag label="Voting power" class="text-skin-heading ml-1" />
-            </template>
+          <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
+            <span v-if="isLottery" class="mr-1"> chances </span>
+            based on
+            <TuneTag label="Voting power" class="text-skin-heading ml-1" />
+          </div>
+          <div
+            v-if="boost.strategy.distribution.limit"
+            class="flex items-center gap-1 mt-1 whitespace-nowrap"
+          >
+            with a max
+            <div v-if="isLottery">
+              chance of
+              <TuneTag :label="`${lotteryLimit}%`" class="text-skin-heading" />
+            </div>
+            <div v-else>
+              reward of
+              <TuneTag
+                :label="`${weightedLimit} ${boost.token.symbol}`"
+                class="text-skin-heading"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mt-1 flex items-center">
+          <span
+            v-tippy="{
+              content: 'Boost ID',
+              delay: 100
+            }"
+          >
+            #{{ boost.id }}
+          </span>
+          <BaseInterpunct />
+          <div class="flex items-center gap-2">
+            <BaseAvatar
+              v-if="boostNetworkInfo?.logo"
+              :src="getUrl(boostNetworkInfo.logo)"
+              size="18"
+            />
+
+            <span class="text-skin-heading">
+              {{ boostNetworkInfo?.name }}
+            </span>
           </div>
         </div>
         <div
@@ -301,14 +358,14 @@ async function withdraw(boost: BoostSubgraph) {
           Withdraw {{ withdrawalAmount }} {{ boost.token.symbol }}
         </TuneButton>
       </div>
-      <div v-else class="md:flex">
+      <div v-else class="md:flex items-center">
         <div>
           Remaining amount:
           <span class="text-skin-heading">
             {{ withdrawalAmount }} {{ boost.token.symbol }}
           </span>
         </div>
-        <span class="hidden md:block px-2 text-lg leading-none">·</span>
+        <BaseInterpunct class="hidden md:block" />
         <div class="mt-[2px] md:mt-0">
           Withdrawable in:
           <span class="text-skin-heading">
