@@ -88,7 +88,7 @@ const form = ref<Form>({
     lotteryLimit: '',
     numWinners: ''
   },
-  network: '1',
+  network: '11155111',
   token: '',
   amount: ''
 });
