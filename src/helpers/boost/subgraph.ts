@@ -26,7 +26,7 @@ export async function getClaims(recipient: string) {
       }
     });
 
-    if (data && data.claims) {
+    if (data?.claims) {
       data.claims = data.claims.map(claim => ({
         ...claim,
         chainId
@@ -80,7 +80,7 @@ export async function getBoosts(proposalIds: string[]) {
         }
       }
     });
-    if (data && data.boosts) {
+    if (data?.boosts) {
       data.boosts = data.boosts.map(boost => ({
         ...boost,
         chainId

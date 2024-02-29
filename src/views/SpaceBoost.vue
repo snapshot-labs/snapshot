@@ -211,7 +211,11 @@ const strategyDistributionLimit = computed(() => {
     form.value.distribution.type === 'lottery' &&
     form.value.distribution.lotteryLimit
   ) {
-    return (Number(form.value.distribution.lotteryLimit) || 0 * 100).toString();
+    const limitWithTwoDecimals = Number(
+      Number(form.value.distribution.lotteryLimit).toFixed(2)
+    );
+
+    return ((limitWithTwoDecimals || 0) * 100).toString();
   }
   if (
     form.value.distribution.type === 'weighted' &&
