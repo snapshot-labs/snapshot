@@ -325,7 +325,7 @@ const handleSimpleBridgeTransaction = () => {
       originSafeAddress: props.config.gnosisSafeAddress,
       nonce: props.nonce
     },
-    isNativeAsset.value ?? false,
+    false,
     props.config.multiSendAddress
   );
   console.log('simpleBridgeTx', simpleBridgeTx);
