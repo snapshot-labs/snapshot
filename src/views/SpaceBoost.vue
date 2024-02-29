@@ -211,10 +211,7 @@ const strategyDistributionLimit = computed(() => {
     form.value.distribution.type === 'lottery' &&
     form.value.distribution.lotteryLimit
   ) {
-    return parseUnits(
-      form.value.distribution.lotteryLimit || '0',
-      selectedToken.value?.decimals ?? '18'
-    ).toString();
+    return (Number(form.value.distribution.lotteryLimit) || 0 * 100).toString();
   }
   if (
     form.value.distribution.type === 'weighted' &&
@@ -300,6 +297,10 @@ const formValidation = computed(() => {
       errors.lotteryLimit = 'Please enter a number or disable';
     } else if (Number(form.value.distribution.lotteryLimit) === 0) {
       errors.lotteryLimit = 'Please enter a value greater than 0 or disable';
+    } else if (Number(form.value.distribution.lotteryLimit) >= 100) {
+      errors.lotteryLimit = 'Please enter a value less than 100%';
+    } else if (Number(form.value.distribution.lotteryLimit) < 0.01) {
+      errors.lotteryLimit = 'Please enter a value greater than 0.01%';
     }
   }
 
