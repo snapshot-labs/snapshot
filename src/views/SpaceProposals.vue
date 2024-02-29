@@ -103,6 +103,7 @@ async function loadBoosts(proposals: Proposal[]) {
       if (bribeDisabled.value) {
         return boost.strategy.eligibility.type !== 'bribe';
       }
+      return true;
     });
     boosts.value = boosts.value.concat(cleanBoosts);
   } catch (e) {

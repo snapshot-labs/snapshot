@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
-import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { Proposal } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
@@ -119,6 +118,7 @@ async function loadBoosts() {
       if (bribeDisabled.value) {
         return boost.strategy.eligibility.type !== 'bribe';
       }
+      return true;
     });
     boosts.value = cleanBoosts;
     console.log('🚀 ~ loadBoosts ~ boosts.value:', boosts.value);
