@@ -135,7 +135,7 @@ useTippy(refReasonTooltip, {
           v-if="vote.reason !== '' && props.proposal.privacy !== 'shutter'"
           ref="refReasonTooltip"
         >
-          <BaseButtonIcon class="cursor-default p-0">
+          <BaseButtonIcon class="cursor-default !p-0">
             <i-ho-annotation class="text-[16px]" />
           </BaseButtonIcon>
         </div>
