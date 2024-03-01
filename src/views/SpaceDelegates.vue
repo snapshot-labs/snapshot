@@ -2,7 +2,7 @@
 import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
-import { DelegationTypes } from '../helpers/delegation/index';
+import { DelegationTypes } from '';
 
 const props = defineProps<{
   space: ExtendedSpace;

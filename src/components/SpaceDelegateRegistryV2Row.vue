@@ -101,7 +101,6 @@ watch(
           event => updateFormValue(parseFloat(event), 'weight')
         "
       />
-      <!-- @keydown="e => handleWeightKeydown(e)" -->
       <div
         class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
       >

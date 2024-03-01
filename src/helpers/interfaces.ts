@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
-import { DelegationTypes } from './delegation/index';
+import { DelegationTypes } from './delegationV2/index';
 
 export interface Strategy {
   id: string;
