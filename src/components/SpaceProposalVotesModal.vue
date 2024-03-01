@@ -122,7 +122,7 @@ watch(filters, value => {
 
       <div v-else-if="votes.length">
         <div
-          class="flex h-full min-h-full flex-col overflow-auto px-[16px] pt-2"
+          class="flex h-full min-h-full flex-col overflow-auto px-[16px] py-2"
         >
           <SpaceProposalVotesItem
             v-for="(vote, i) in votes"
@@ -135,8 +135,11 @@ watch(filters, value => {
             :data-testid="`proposal-votes-list-item-${i}`"
           />
           <div ref="votesEndEl" />
-          <div class="block min-h-[50px] pb-3 text-center">
-            <LoadingSpinner v-if="loadingMoreVotes" />
+          <div
+            v-if="loadingMoreVotes"
+            class="block min-h-[50px] pb-3 text-center"
+          >
+            <LoadingSpinner />
           </div>
         </div>
       </div>
