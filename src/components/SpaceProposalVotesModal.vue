@@ -135,10 +135,7 @@ watch(filters, value => {
             :data-testid="`proposal-votes-list-item-${i}`"
           />
           <div ref="votesEndEl" />
-          <div
-            v-if="loadingMoreVotes"
-            class="block min-h-[50px] pb-3 text-center"
-          >
+          <div v-if="loadingMoreVotes" class="block min-h-[34px] text-center">
             <LoadingSpinner />
           </div>
         </div>
