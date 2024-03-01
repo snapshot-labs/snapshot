@@ -19,7 +19,8 @@ useTippy(refReasonTooltip, {
   interactive: true,
   theme: 'urlified',
   trigger: 'mouseenter focus click',
-  delay: 100
+  delay: 100,
+  appendTo: () => document.body
 });
 </script>
 
