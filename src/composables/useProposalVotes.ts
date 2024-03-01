@@ -92,7 +92,12 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadMoreVotes(filter: Partial<VoteFilters> = {}) {
-    if (loadingMoreVotes.value || loadingVotes.value) return;
+    if (
+      loadingMoreVotes.value ||
+      loadingVotes.value ||
+      loadBy > votes.value.length
+    )
+      return;
 
     loadingMoreVotes.value = true;
     try {
