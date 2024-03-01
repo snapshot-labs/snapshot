@@ -4,7 +4,7 @@ import {
   DelegatesProposal,
   ExtendedSpace
 } from '@/helpers/interfaces';
-import { setupDelegation as getDelegationAdapter } from '@/helpers/delegation/index';
+import { setupDelegation as getDelegationAdapter } from '@/helpers/delegationV2';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
