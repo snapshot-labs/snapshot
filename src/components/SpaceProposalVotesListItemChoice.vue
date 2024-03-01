@@ -26,19 +26,25 @@ useTippy(refReasonTooltip, {
 
 <template>
   <div class="flex-auto truncate text-skin-link">
-    <i-ho-lock-closed
+    <div
       v-if="proposal.privacy === 'shutter' && proposal.scores_state !== 'final'"
       v-tippy="{ content: $t('privacy.shutter.tooltip') }"
-      class="cursor-help"
-    />
+      class="cursor-help flex items-center gap-1 w-fit max-w-full"
+    >
+      <i-ho-lock-closed class="text-sm" />
+      Encrypted choice
+    </div>
 
-    <i-ho-exclamation
+    <div
       v-else-if="
         !voting[proposal.type].isValidChoice(vote.choice, proposal.choices)
       "
       v-tippy="{ content: $t('proposal.invalidChoice') }"
-      class="cursor-help"
-    />
+      class="cursor-help flex items-center gap-1 w-fit max-w-full"
+    >
+      <i-ho-exclamation class="text-sm" />
+      Invalid choice
+    </div>
 
     <div v-else class="flex items-center gap-1">
       <div
