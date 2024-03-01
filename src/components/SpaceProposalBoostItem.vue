@@ -176,7 +176,7 @@ async function withdraw(boost: BoostSubgraph) {
       class="border border-[--border-color-soft] rounded-xl p-[12px] flex justify-between relative"
       :class="[
         {
-          'border-boost/30 bg-boost/5': !hasClaimed
+          'border-boost/30 bg-boost/5': !hasClaimed && isEligible
         },
         { 'border-green/30 bg-green/5': hasClaimed },
         { 'border-b-0 rounded-b-none': isOwner }
@@ -341,7 +341,7 @@ async function withdraw(boost: BoostSubgraph) {
       class="border border-[--border-color-soft] bg-[--border-color-faint] p-[12px] rounded-b-xl"
       :class="[
         {
-          'border-boost/30 bg-boost/5': !hasClaimed
+          'border-boost/30 bg-boost/5': !hasClaimed && isEligible
         },
         { 'border-green/30 bg-green/5': hasClaimed }
       ]"
