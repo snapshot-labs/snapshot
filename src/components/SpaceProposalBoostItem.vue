@@ -252,7 +252,8 @@ async function withdraw(boost: BoostSubgraph) {
         <div class="mt-1 flex items-center">
           <span
             v-tippy="{
-              content: 'Boost ID',
+              content:
+                'Boost ID is a unique identifier for this boost on the given network.',
               delay: 100
             }"
           >
