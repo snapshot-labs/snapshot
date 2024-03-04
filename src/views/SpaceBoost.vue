@@ -291,7 +291,7 @@ const formValidation = computed(() => {
   if (form.value.distribution.hasWeightedLimit) {
     if (!form.value.distribution.weightedLimit) {
       errors.weightedLimit = 'Please enter a number or disable';
-    } else if (Number(form.value.distribution.weightedLimit) === 0) {
+    } else if (Number(form.value.distribution.weightedLimit) <= 0) {
       errors.weightedLimit = 'Please enter a value greater than 0 or disable';
     }
   }
@@ -299,7 +299,7 @@ const formValidation = computed(() => {
   if (form.value.distribution.hasLotteryLimit) {
     if (!form.value.distribution.lotteryLimit) {
       errors.lotteryLimit = 'Please enter a number or disable';
-    } else if (Number(form.value.distribution.lotteryLimit) === 0) {
+    } else if (Number(form.value.distribution.lotteryLimit) <= 0) {
       errors.lotteryLimit = 'Please enter a value greater than 0 or disable';
     } else if (Number(form.value.distribution.lotteryLimit) >= 100) {
       errors.lotteryLimit = 'Please enter a value less than 100%';
@@ -314,7 +314,7 @@ const formValidation = computed(() => {
 
   if (!form.value.amount) {
     errors.amount = 'Please enter a value';
-  } else if (Number(form.value.amount) === 0) {
+  } else if (Number(form.value.amount) <= 0) {
     errors.amount = 'Please enter a value greater than 0';
   }
 
@@ -331,10 +331,12 @@ const formValidation = computed(() => {
   if (form.value.distribution.type === 'lottery') {
     if (!form.value.distribution.numWinners) {
       errors.numWinners = 'Please enter a value';
-    } else if (Number(form.value.distribution.numWinners) === 0) {
+    } else if (Number(form.value.distribution.numWinners) <= 0) {
       errors.numWinners = 'Please enter a value greater than 0';
     } else if (Number(form.value.distribution.numWinners) > 1e7) {
       errors.numWinners = 'Please enter a value less than 10,000,000';
+    } else if (!Number.isInteger(Number(form.value.distribution.numWinners))) {
+      errors.numWinners = 'Please enter a whole number without any decimals';
     }
   }
 
