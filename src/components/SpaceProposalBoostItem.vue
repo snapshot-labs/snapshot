@@ -269,7 +269,7 @@ async function withdraw(boost: BoostSubgraph) {
                 delay: 100
               }"
             >
-              Boost #{{ boost.id + 1 }}
+              Boost #{{ boost.id }}
             </span>
             <BaseInterpunct />
             <div class="flex items-center gap-2">
