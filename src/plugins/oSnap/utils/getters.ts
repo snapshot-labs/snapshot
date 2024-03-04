@@ -616,12 +616,14 @@ export async function getOGProposalStateGql(params: {
     return { status: 'can-propose-to-og', isDisputed: true };
   }
 
+  // no assertion made yet
   if (!hasAssertionId) {
     return { status: 'can-propose-to-og', isDisputed: false };
   }
 
   const assertion = await getAssertionGql({ network, assertionId });
 
+  // cannot find assertion for some reason
   if (!assertion) {
     return { status: 'can-propose-to-og', isDisputed: false };
   }
@@ -666,9 +668,8 @@ export async function getOGProposalStateGql(params: {
     };
   }
 
-  // if all the above fails, fall back to the no assertion state
-  // this should not be possible though
-  return { status: 'can-propose-to-og', isDisputed: false };
+  // request execution if there is no settlement yet and liveness has expired
+  return { status: 'can-request-tx-execution', assertionHash, assertionLogIndex };
 }
 
 /**
