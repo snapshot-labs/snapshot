@@ -729,7 +729,7 @@ watch(
                 <TuneSwitch
                   v-model="form.distribution.hasLotteryLimit"
                   label="Define a maximum chance to win"
-                  hint="As the chance to win is based on voting power, setting a limit will ensure a more fair lottery. If set to 1% and the voter has 5% of the voted voting power, the voter will only have a 1% chance to win."
+                  hint="As the chance to win is based on voting power, setting a limit will ensure a more fair lottery. If set to 1% and the voter has 5% of the voted voting power, the voter will only have a 1% chance to win. If there are not enough voters, the chance to win will be increased to reach a total of 100%."
                 />
 
                 <TuneInput

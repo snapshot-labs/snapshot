@@ -57,7 +57,7 @@ const items = computed(() => {
 <template>
   <BaseMenu :items="items" @select="handleAction">
     <template #button>
-      <BaseButtonIcon class="absolute right-2 top-[6px]">
+      <BaseButtonIcon class="absolute right-[-4px] top-[-5px]">
         <i-ho-dots-horizontal class="text-[18px]" />
       </BaseButtonIcon>
     </template>
