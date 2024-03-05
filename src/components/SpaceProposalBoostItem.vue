@@ -173,19 +173,22 @@ async function withdraw(boost: BoostSubgraph) {
 }
 
 async function loadWinners() {
-  const response = await getWinners(
-    props.boost.strategy.proposal,
-    props.boost.id,
-    props.boost.chainId
-  );
-  console.log('🚀 ~ loadWinners ~ response:', response);
+  try {
+    const response = await getWinners(
+      props.boost.strategy.proposal,
+      props.boost.id,
+      props.boost.chainId
+    );
 
-  if (response.winners.length > 0) {
-    lotteryWinners.value = response.winners;
-    lotteryPrize.value = response.prize;
-    if (!props.reward) window.location.reload();
+    if (response.winners.length > 0) {
+      lotteryWinners.value = response.winners;
+      lotteryPrize.value = response.prize;
+      if (!props.reward) window.location.reload();
+    }
+    return response.winners;
+  } catch (e) {
+    console.error('Error loading winners', e);
   }
-  return response.winners;
 }
 
 watch(
@@ -198,7 +201,7 @@ watch(
       const interval = setInterval(async () => {
         const winners = await loadWinners();
 
-        if (winners?.length > 0) {
+        if (winners && winners.length > 0) {
           clearInterval(interval);
         }
       }, 60000);
