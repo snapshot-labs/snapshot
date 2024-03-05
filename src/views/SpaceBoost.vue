@@ -28,7 +28,7 @@ const DISTRIBUTION_TYPE_ITEMS = [
   },
   {
     value: 'weighted' as const,
-    name: 'Distributed',
+    name: 'Proportional',
     description: 'Distributed to voters based on voting power.'
   }
 ];
