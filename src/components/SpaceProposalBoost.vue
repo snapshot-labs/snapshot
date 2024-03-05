@@ -22,7 +22,7 @@ const showAllBoosts = ref(false);
 const boosts = ref<BoostSubgraph[]>([]);
 const boostClaims = ref<BoostClaimSubgraph[]>([]);
 const boostRewards = ref<BoostRewardGuard[]>([]);
-const loaded = ref(false);
+const loading = ref(false);
 const loadingRewards = ref(false);
 const relativeEndTime = ref('');
 
@@ -179,20 +179,20 @@ async function loadRewards() {
 watch(
   [() => props.proposal],
   async () => {
-    loaded.value = false;
+    loading.value = true;
     await Promise.all([
       loadBoosts(),
       loadClaims(),
       loadUserVote(web3Account.value)
     ]);
     await loadRewards();
-    loaded.value = true;
+    loading.value = false;
   },
   { immediate: true, deep: true }
 );
 
 watch(web3Account, async value => {
-  if (!loaded.value) return;
+  if (loading.value) return;
   loadClaims();
   await loadUserVote(value);
   loadRewards();
@@ -225,7 +225,7 @@ onMounted(() => {
 <template>
   <div>
     <SpaceProposalBoostClaim
-      v-if="eligibleBoosts.length && loaded && isFinal"
+      v-if="eligibleBoosts.length && isFinal"
       :proposal="proposal"
       :boosts="boosts"
       :eligible-boosts="eligibleBoosts"
@@ -274,7 +274,8 @@ onMounted(() => {
               <span> New boost </span>
             </TuneButton>
           </div>
-          <div v-if="loaded">
+          <LoadingList v-if="loading" class="mt-3" />
+          <div v-else>
             <div class="mt-3 space-y-2">
               <div
                 v-for="boost in showAllBoosts
@@ -311,7 +312,6 @@ onMounted(() => {
               />
             </TuneButton>
           </div>
-          <LoadingList v-else class="mt-3" />
           <div
             v-if="eligibleBoosts.length && isActive"
             class="bg-[--border-color-faint] border-t border-[--border-color-soft] -mx-3 -mb-3 mt-3 p-3"
@@ -368,6 +368,7 @@ onMounted(() => {
 
           <TuneButton
             class="flex items-center justify-center w-full md:w-auto mt-3 md:mt-0"
+            :loading="loading"
             @click="handleBoost"
           >
             <i-ho-fire class="text-sm mr-2" />
