@@ -68,7 +68,7 @@ const isLottery = computed(() => {
         <i-ho-cash v-if="hasClaimed" class="text-green text-xs" />
         <i-ho-gift v-else class="text-boost text-xs" />
       </div>
-      <span v-if="isLottery">
+      <span v-if="isLottery" class="mr-1">
         {{ hasClaimed ? 'Claimed' : 'You won' }}
       </span>
       <span v-else class="mr-1">
