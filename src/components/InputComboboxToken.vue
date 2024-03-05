@@ -32,6 +32,7 @@ function handleOpenTokenModal() {
     always-show-error
     placeholder="0.0"
     type="number"
+    class="pr-[142px]"
     @update:model-value="$emit('update:amount', $event)"
   >
     <template #after>
