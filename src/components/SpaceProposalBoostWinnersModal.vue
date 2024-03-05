@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { BoostSubgraph } from '@/helpers/boost/types';
-import { getWinners } from '@/helpers/boost/api';
 import { formatUnits } from '@ethersproject/units';
 
 const props = defineProps<{
   open: boolean;
   boost: BoostSubgraph;
+  winners: string[];
+  prize: string;
 }>();
 
 defineEmits(['close']);
@@ -14,14 +15,12 @@ const { web3Account } = useWeb3();
 const { formatNumber, getNumberFormatter } = useIntl();
 const { loadProfiles, profiles } = useProfiles();
 
-const winners = ref();
-const prize = ref();
 const searchInput = ref('');
 const loading = ref(false);
 
 const formattedPrize = computed(() => {
-  if (!prize.value) return '0';
-  const formattedPrize = formatUnits(prize.value, props.boost.token.decimals);
+  if (!props.prize) return '0';
+  const formattedPrize = formatUnits(props.prize, props.boost.token.decimals);
   return formatNumber(
     +formattedPrize,
     getNumberFormatter({ maximumFractionDigits: 8 }).value
@@ -29,8 +28,8 @@ const formattedPrize = computed(() => {
 });
 
 const sortedWinners = computed(() => {
-  if (!winners.value) return [];
-  return winners.value
+  if (!props.winners) return [];
+  return props.winners
     .filter(winner =>
       winner.toLowerCase().includes(searchInput.value.toLowerCase())
     )
@@ -42,38 +41,17 @@ const sortedWinners = computed(() => {
 });
 
 watch(
-  () => props.open,
-  async () => {
-    if (props.open) {
-      try {
-        loading.value = true;
-        const response = await getWinners(
-          props.boost.strategy.proposal,
-          props.boost.id,
-          props.boost.chainId
-        );
-        winners.value = response.winners;
-        prize.value = response.prize;
-      } catch (e) {
-        console.error(e);
-      } finally {
-        loading.value = false;
-      }
-    }
-  }
-);
-
-watch(
-  winners,
+  () => props.winners,
   () => {
-    if (!winners.value) return;
-    loadProfiles(winners.value);
+    if (!props.winners) return;
+    loadProfiles(props.winners);
   },
   { immediate: true }
 );
 </script>
 
 <template>
+  <!-- TODO: Show link to randomness docs  -->
   <TuneModal :open="open" @close="$emit('close')">
     <TuneModalTitle as="h4" class="flex items-center gap-1 m-3 mb-2">
       Winners
@@ -90,7 +68,7 @@ watch(
     >
       <LoadingList v-if="loading" class="mx-auto" />
       <template v-else>
-        <div v-for="winner in sortedWinners" :key="winner.id">
+        <div v-for="winner in sortedWinners" :key="winner">
           <div class="flex justify-between">
             <BaseUser :address="winner" :profile="profiles[winner]" />
             {{ formattedPrize }}

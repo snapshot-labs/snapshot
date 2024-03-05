@@ -6,6 +6,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { toChecksumAddress, explorerUrl } from '@/helpers/utils';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
+import { getWinners } from '@/helpers/boost/api';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -27,6 +28,8 @@ const { web3Account } = useWeb3();
 const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 
 const openWinnersModal = ref(false);
+const lotteryWinners = ref<string[]>([]);
+const lotteryPrize = ref('0');
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -168,6 +171,44 @@ async function withdraw(boost: BoostSubgraph) {
     console.error('Error withdrawing boost', e);
   }
 }
+
+async function loadWinners() {
+  const response = await getWinners(
+    props.boost.strategy.proposal,
+    props.boost.id,
+    props.boost.chainId
+  );
+  console.log('🚀 ~ loadWinners ~ response:', response);
+
+  if (response.winners.length > 0) {
+    lotteryWinners.value = response.winners;
+    lotteryPrize.value = response.prize;
+    if (!props.reward) window.location.reload();
+  }
+  return response.winners;
+}
+
+watch(
+  isFinal,
+  async () => {
+    if (isFinal.value) {
+      await loadWinners();
+      if (lotteryWinners.value.length) return;
+
+      const interval = setInterval(async () => {
+        const winners = await loadWinners();
+
+        if (winners?.length > 0) {
+          clearInterval(interval);
+        }
+      }, 60000);
+      onUnmounted(() => {
+        clearInterval(interval);
+      });
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -304,6 +345,13 @@ async function withdraw(boost: BoostSubgraph) {
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
             </BaseLink>
             <div
+              v-else-if="!reward && isFinal && !lotteryWinners?.length"
+              class="flex items-center gap-1 justify-center"
+            >
+              <i-ho-clock class="text-sm" />
+              Finalizing winners takes a moment. Please check back shortly!
+            </div>
+            <div
               v-else-if="!reward && isFinal"
               class="flex flex-wrap items-center justify-center gap-x-2"
             >
@@ -345,7 +393,7 @@ async function withdraw(boost: BoostSubgraph) {
         <SpaceProposalBoostItemMenu
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
-          :lottery-and-final="isLottery && isFinal"
+          :has-winners="lotteryWinners?.length > 0"
           @open-winners-modal="openWinnersModal = true"
         />
       </div>
@@ -405,6 +453,8 @@ async function withdraw(boost: BoostSubgraph) {
     <SpaceProposalBoostWinnersModal
       :open="openWinnersModal"
       :boost="boost"
+      :winners="lotteryWinners"
+      :prize="lotteryPrize"
       @close="openWinnersModal = false"
     />
   </div>

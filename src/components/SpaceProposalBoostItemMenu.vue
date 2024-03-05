@@ -5,7 +5,7 @@ import { explorerUrl, openProfile } from '@/helpers/utils';
 const props = defineProps<{
   boost: BoostSubgraph;
   claimedTransactionHash?: string;
-  lotteryAndFinal?: boolean;
+  hasWinners?: boolean;
 }>();
 
 const emit = defineEmits(['openWinnersModal']);
@@ -44,7 +44,7 @@ const items = computed(() => {
     });
   }
 
-  if (props.lotteryAndFinal) {
+  if (props.hasWinners) {
     itemList.push({ text: 'View winners', action: 'viewWinners' });
   }
 
