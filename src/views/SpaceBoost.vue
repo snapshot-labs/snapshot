@@ -598,8 +598,10 @@ watch(
                 @add-custom-token="handleAddCustomToken($event)"
               />
             </div>
-            <TuneBlockFooter>
-              <div v-if="ethFee" class="flex justify-between">
+            <TuneBlockFooter
+              v-if="Number(tokenFeePercent) > 0 || Number(ethFee) > 0"
+            >
+              <div v-if="Number(ethFee) > 0" class="flex justify-between">
                 <div class="flex items-center gap-1">
                   ETH fee
                   <TuneIconHint
@@ -611,7 +613,10 @@ watch(
                   ETH
                 </div>
               </div>
-              <div class="flex justify-between">
+              <div
+                v-if="Number(tokenFeePercent) > 0"
+                class="flex justify-between"
+              >
                 <div class="flex items-center gap-1">
                   Token fee
                   <TuneIconHint
@@ -629,13 +634,16 @@ watch(
               >
                 Final cost
                 <div class="text-skin-heading">
-                  {{ amountWithTokenFee }}
-                  {{ selectedToken?.symbol }}
+                  <span v-if="Number(tokenFeePercent) > 0">
+                    {{ amountWithTokenFee }}
+                    {{ selectedToken?.symbol }}
+                  </span>
+                  <span v-if="Number(ethFee) > 0">
+                    +
 
-                  +
-
-                  {{ ethFee }}
-                  ETH
+                    {{ ethFee }}
+                    ETH
+                  </span>
                 </div>
               </div>
             </TuneBlockFooter>
