@@ -570,30 +570,6 @@ watch(
 
         <div class="space-y-3 mt-[20px] md:mt-4">
           <SpaceBoostCardProposal :proposal="proposal" :space="space" />
-
-          <TuneBlock>
-            <template #header>
-              <TuneBlockHeader
-                title="Eligibility"
-                sub-title="Choose an option that best incentivises meaningful participation."
-              />
-            </template>
-
-            <TuneListbox
-              v-model="form.eligibility.choice"
-              :items="eligibilityOptions"
-              label="Eligible to"
-            />
-            <TuneBlockFooter v-if="bribeDisabled">
-              <BaseMessage level="info">
-                Selecting a specific choice is disabled for the
-                <span class="font-semibold">
-                  {{ space.name }}
-                </span>
-                space
-              </BaseMessage>
-            </TuneBlockFooter>
-          </TuneBlock>
           <TuneBlock>
             <template #header>
               <TuneBlockHeader
@@ -664,6 +640,30 @@ watch(
               </div>
             </TuneBlockFooter>
           </TuneBlock>
+          <TuneBlock>
+            <template #header>
+              <TuneBlockHeader
+                title="Eligibility"
+                sub-title="Choose an option that best incentivises meaningful participation."
+              />
+            </template>
+
+            <TuneListbox
+              v-model="form.eligibility.choice"
+              :items="eligibilityOptions"
+              label="Eligible to"
+            />
+            <TuneBlockFooter v-if="bribeDisabled">
+              <BaseMessage level="info">
+                Selecting a specific choice is disabled for the
+                <span class="font-semibold">
+                  {{ space.name }}
+                </span>
+                space
+              </BaseMessage>
+            </TuneBlockFooter>
+          </TuneBlock>
+
           <TuneBlock>
             <template #header>
               <TuneBlockHeader
