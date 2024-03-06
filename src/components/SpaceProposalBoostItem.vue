@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Proposal } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
+import { BigNumber } from '@ethersproject/bignumber';
 import { withdrawAndBurn } from '@/helpers/boost';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { toChecksumAddress, explorerUrl } from '@/helpers/utils';
@@ -105,27 +106,6 @@ const withdrawalAmount = computed(() => {
   );
 });
 
-const amountPerWinner = computed(() => {
-  const hasVotes = Number(props.proposal.votes) > 0;
-
-  const hasLessVotesThanNumWinners =
-    hasVotes &&
-    Number(props.boost.strategy.distribution.numWinners) >
-      Number(props.proposal.votes);
-
-  const amountOfWinners =
-    hasLessVotesThanNumWinners && isFinal.value
-      ? Number(props.proposal.votes)
-      : Number(props.boost.strategy.distribution.numWinners);
-
-  const amount = Number(boostBalanceFormatted.value) / amountOfWinners;
-
-  return `${formatNumber(
-    Number(amount),
-    getNumberFormatter({ maximumFractionDigits: 8 }).value
-  )} ${props.boost.token.symbol}`;
-});
-
 const claimPeriodEnded = computed(() => {
   return Number(props.boost.end) < Date.now() / 1000;
 });
@@ -139,6 +119,18 @@ const isOwner = computed(() => {
 
 const isLottery = computed(() => {
   return props.boost.strategy.distribution.type === 'lottery';
+});
+
+const amountPerWinner = computed(() => {
+  if (!isLottery.value) return;
+  const amount = BigNumber.from(props.boost.poolSize).div(
+    BigNumber.from(props.boost.strategy.distribution.numWinners)
+  );
+
+  return `${formatNumber(
+    Number(formatUnits(amount, props.boost.token.decimals)),
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
+  )} ${props.boost.token.symbol}`;
 });
 
 const lotteryNoRewardFinal = computed(() => {
@@ -254,7 +246,7 @@ watch(
               <div>
                 <TuneTag
                   v-tippy="{
-                    content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power.`
+                    content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power. If the maximum amount of winners is not reached, the reward will be increased equally.`
                   }"
                   :label="amountPerWinner"
                   class="text-skin-heading ml-1 cursor-help"
