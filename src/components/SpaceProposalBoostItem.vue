@@ -30,6 +30,7 @@ const { formatNumber, getNumberFormatter, formatDuration } = useIntl();
 const openWinnersModal = ref(false);
 const lotteryWinners = ref<string[]>([]);
 const lotteryPrize = ref('0');
+const lotteryEpochNotFinalized = ref(false);
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -173,6 +174,8 @@ async function withdraw(boost: BoostSubgraph) {
 }
 
 async function loadWinners() {
+  if (!isFinal.value || !isLottery.value) return;
+
   try {
     const response = await getWinners(
       props.boost.strategy.proposal,
@@ -180,36 +183,20 @@ async function loadWinners() {
       props.boost.chainId
     );
 
-    if (response.winners.length > 0) {
-      lotteryWinners.value = response.winners;
-      lotteryPrize.value = response.prize;
-      // TODO: Figure out reload
-      // if (!props.reward) window.location.reload();
-    }
-    return response.winners;
-  } catch (e) {
+    lotteryWinners.value = response.winners;
+    lotteryPrize.value = response.prize;
+  } catch (e: any) {
     console.error('Error loading winners', e);
+    if (e.message === 'epoch is not finalized') {
+      lotteryEpochNotFinalized.value = true;
+    }
   }
 }
 
 watch(
   isFinal,
   async () => {
-    if (isFinal.value && isLottery.value) {
-      await loadWinners();
-      if (lotteryWinners.value.length) return;
-
-      const interval = setInterval(async () => {
-        const winners = await loadWinners();
-
-        if (winners && winners.length > 0) {
-          clearInterval(interval);
-        }
-      }, 60000);
-      onUnmounted(() => {
-        clearInterval(interval);
-      });
-    }
+    loadWinners();
   },
   { immediate: true }
 );
@@ -217,6 +204,7 @@ watch(
 
 <template>
   <div>
+    <!-- TODO: Fix Ui when claim period has ended -->
     <div
       class="border border-[--border-color-soft] rounded-xl p-[12px]"
       :class="[
@@ -349,7 +337,7 @@ watch(
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
             </BaseLink>
             <div
-              v-else-if="!reward && isFinal && !lotteryWinners?.length"
+              v-else-if="isFinal && lotteryEpochNotFinalized"
               class="flex items-center gap-1 justify-center"
             >
               <i-ho-clock class="text-sm" />
@@ -397,7 +385,7 @@ watch(
         <SpaceProposalBoostItemMenu
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
-          :has-winners="lotteryWinners?.length > 0"
+          :epoch-finalized="!lotteryEpochNotFinalized"
           @open-winners-modal="openWinnersModal = true"
         />
       </div>

@@ -16,7 +16,6 @@ const { formatNumber, getNumberFormatter } = useIntl();
 const { loadProfiles, profiles } = useProfiles();
 
 const searchInput = ref('');
-const loading = ref(false);
 
 const formattedPrize = computed(() => {
   if (!props.prize) return '0';
@@ -66,7 +65,13 @@ watch(
     <div
       class="p-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
     >
-      <LoadingList v-if="loading" class="mx-auto" />
+      <div
+        v-if="winners.length === 0"
+        class="pt-3 flex flex-col items-center text-center"
+      >
+        <i-ho-emoji-sad class="mb-1" />
+        No winners due to no eligible votes.
+      </div>
       <template v-else>
         <div v-for="winner in sortedWinners" :key="winner">
           <div class="flex justify-between">

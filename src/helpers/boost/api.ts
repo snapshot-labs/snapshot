@@ -66,6 +66,9 @@ export async function getWinners(
     })
   });
 
-  if (results.status !== 200) throw new Error('Error fetching rewards');
+  if (results.status !== 200) {
+    const text = await results.text();
+    throw new Error(text ? text : 'Error fetching winners');
+  }
   return results.json();
 }
