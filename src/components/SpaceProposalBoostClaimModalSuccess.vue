@@ -16,7 +16,7 @@ function handleClose() {
 
 <template>
   <TuneModal :open="open" @close="emit('close')">
-    <div class="h-full bg-[url('@/assets/images/stars-purple.svg')] pt-[48px]">
+    <div class="h-full bg-[url('@/assets/images/stars-success.svg')] pt-[48px]">
       <div class="text-center">
         <div
           class="w-[64px] h-[64px] mb-[40px] mx-auto shadow-xl bg-boost rounded-[20px] flex justify-center items-center"
