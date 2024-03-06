@@ -88,24 +88,13 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
 
           <ProposalsItemFooter :proposal="proposal" />
           <div
-            v-if="boostsCount > 0"
-            class="border px-[12px] py-2 rounded-xl flex items-center justify-center gap-1 mt-2"
-            :class="{
-              'bg-green/5 border-green/20 text-green':
-                proposal.state === 'closed',
-              'bg-boost/5 border-boost/20 text-boost':
-                proposal.state === 'active'
-            }"
+            v-if="boostsCount > 0 && proposal.state === 'active'"
+            class="bg-boost/5 border border-boost/20 px-[12px] py-2 rounded-xl text-boost flex items-center justify-center gap-1 mt-2"
           >
-            <i-ho-fire v-if="proposal.state === 'active'" class="text-sm" />
-            <i-ho-cash
-              v-else-if="proposal.state === 'closed'"
-              class="text-sm"
-            />
+            <i-ho-fire class="text-sm" />
             {{ boostsCount }}
             <div>boost<span v-if="boostsCount > 1">s</span></div>
-            <span v-if="proposal.state === 'active'">active</span>
-            <span v-else-if="proposal.state === 'closed'">claimable</span>
+            active
           </div>
         </template>
       </div>
