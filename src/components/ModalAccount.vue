@@ -31,7 +31,8 @@ watch(open, () => {
     <TuneModalTitle as="h4" class="mx-3 mt-3">
       Connect to Snapshot
     </TuneModalTitle>
-    <TuneModalDescription class="mx-3 pb-3">
+    <!-- TODO: Enable when TOS ready and remember to enable disconnect in useApp -->
+    <!-- <TuneModalDescription class="mx-3 pb-3">
       By connecting, you agree to
       <a
         role="button"
@@ -42,7 +43,7 @@ watch(open, () => {
       >
         Snapshot Labs' Terms of Service</a
       >.
-    </TuneModalDescription>
+    </TuneModalDescription> -->
     <div>
       <div class="m-3 space-y-2">
         <div

@@ -4,7 +4,7 @@ defineProps<{
 }>();
 
 defineEmits(['close']);
-// TODO: Disable TOS for now
+// TODO: Add correct TOS text
 </script>
 
 <template>

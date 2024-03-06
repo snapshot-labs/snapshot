@@ -2,7 +2,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import domains from '@/../snapshot-spaces/spaces/domains.json';
 import aliases from '@/../snapshot-spaces/spaces/aliases.json';
 import { getInjected } from '@snapshot-labs/lock/src/utils';
-import { useStorage } from '@vueuse/core';
+// import { useStorage } from '@vueuse/core';
 
 const domainName = window.location.hostname;
 const env = import.meta.env.VITE_ENV;
@@ -26,12 +26,12 @@ export function useApp() {
   const { getSkin } = useSkin();
   const { login } = useWeb3();
 
-  const termsAccepted = useStorage('snapshot.termsAccepted', false);
+  // const termsAccepted = useStorage('snapshot.termsAccepted', false);
 
   function connectWallet() {
     const auth = getInstance();
 
-    if (!termsAccepted.value) return;
+    // if (!termsAccepted.value) return;
 
     if (window?.parent === window)
       // Auto connect if previous session was connected
