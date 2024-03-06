@@ -25,7 +25,8 @@ export const BOOST_WHITELIST_SETTINGS = {
     'pscott.eth': {},
     'gillvill.eth': {},
     '0cf5e.eth': {},
-    'thanku.eth': {}
+    'thanku.eth': {},
+    'test.wa0x6e.eth': {}
   }
 };
 
