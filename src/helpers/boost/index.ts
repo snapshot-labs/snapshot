@@ -20,7 +20,7 @@ export const SNAPSHOT_GUARD_ADDRESS =
 export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
   production: {
-    'testsnap.eth': { bribeDisabled: true },
+    'testsnap.eth': {},
     'fabien.eth': {},
     'pscott.eth': {},
     'gillvill.eth': {},
