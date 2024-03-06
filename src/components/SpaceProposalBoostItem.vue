@@ -357,7 +357,7 @@ watch(
             </div>
             <div
               v-else-if="!reward && isFinal"
-              class="flex flex-wrap items-center justify-center gap-x-2"
+              class="flex flex-wrap items-center justify-center gap-x-1"
             >
               <i-ho-emoji-sad class="text-sm" />
               Oops, you didn't win this time!
@@ -371,10 +371,10 @@ watch(
             </div>
             <div
               v-else-if="isEligible"
-              class="flex items-center justify-center gap-2"
+              class="flex flex-wrap items-center justify-center gap-x-1"
             >
               <i-ho-fire class="text-xs" />
-              <span v-if="reward && isFinal">
+              <template v-if="reward && isFinal">
                 <span v-if="isLottery"> You won </span>
                 <span v-else> Eligible to </span>
                 {{ `${rewardFormatted} ${boost.token.symbol}` }}
@@ -386,11 +386,11 @@ watch(
                 >
                   View winners
                 </button>
-              </span>
-              <span v-else>
+              </template>
+              <template v-else>
                 <span v-if="isLottery"> Eligible to win </span>
                 <span v-else> Eligible to reward </span>
-              </span>
+              </template>
             </div>
           </div>
         </div>
