@@ -580,7 +580,7 @@ watch(
 
   <div v-else>
     <SpaceBreadcrumbs :space="space" :proposal="proposal" />
-    <TheLayout class="pt-[12px] px-[20px] mb-[96px] md:mb-0">
+    <TheLayout class="pt-[12px] px-[20px] mb-[124px] md:mb-0">
       <template #content-left>
         <h1 class="leading-[44px]">Create a new boost</h1>
         <p class="text-md leading-5">
