@@ -43,7 +43,7 @@ const exploreUrl = computed(() => {
     </div>
 
     <div class="h-full text-right">
-      <span v-if="token.tokenBalance && token.decimals" class="text-skin-link">
+      <span class="text-skin-link">
         {{
           formatNumber(
             Number(formatUnits(token.tokenBalance, token.decimals)),
