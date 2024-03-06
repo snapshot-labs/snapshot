@@ -10,7 +10,7 @@ const props = defineProps<{
   boost: BoostSubgraph;
   rewards: BoostRewardGuard[];
   claims: BoostClaimSubgraph[];
-  loading?: { [key: string]: string };
+  loading: boolean;
 }>();
 
 defineEmits(['claim']);
@@ -38,10 +38,6 @@ const hasClaimed = computed(() => {
     claim =>
       claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
   );
-});
-
-const claimLoading = computed(() => {
-  return props.loading?.[props.boost.id] === props.boost.chainId;
 });
 
 const isLottery = computed(() => {
@@ -81,8 +77,8 @@ const isLottery = computed(() => {
 
     <TuneButton
       v-if="!hasClaimed && Number(reward) > 0"
+      :disabled="loading"
       class="h-[32px] px-[12px] bg-skin-bg"
-      :loading="claimLoading"
       @click="$emit('claim', boost)"
     >
       Claim

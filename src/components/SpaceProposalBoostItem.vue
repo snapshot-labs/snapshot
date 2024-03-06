@@ -183,7 +183,8 @@ async function loadWinners() {
     if (response.winners.length > 0) {
       lotteryWinners.value = response.winners;
       lotteryPrize.value = response.prize;
-      if (!props.reward) window.location.reload();
+      // TODO: Figure out reload
+      // if (!props.reward) window.location.reload();
     }
     return response.winners;
   } catch (e) {

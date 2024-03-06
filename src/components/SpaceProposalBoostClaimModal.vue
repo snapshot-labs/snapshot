@@ -12,8 +12,7 @@ const props = defineProps<{
   claimableBoosts: BoostSubgraph[];
   claims: BoostClaimSubgraph[];
   rewards: BoostRewardGuard[];
-  loadingClaimAll: boolean;
-  loadingClaim?: { [key: string]: string };
+  loadingClaim: boolean;
 }>();
 
 defineEmits(['close', 'claimAll', 'claim']);
@@ -80,7 +79,7 @@ const boostsSorted = computed(() => {
       <TuneButton
         v-if="allOnSameNetwork && claimableBoosts.length > 1"
         class="w-full"
-        :loading="loadingClaimAll"
+        :loading="loadingClaim"
         @click="$emit('claimAll')"
       >
         Claim all

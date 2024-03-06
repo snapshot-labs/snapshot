@@ -22,46 +22,46 @@ const props = defineProps<{
 
 const emit = defineEmits(['reload']);
 
-const claimStatus = ref('');
+const claimSuccessOpen = ref(false);
 const claimTx = ref();
 const claimModalOpen = ref(false);
-const loadingClaim = ref();
+const loadingClaim = ref(false);
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
 const { formatDuration } = useIntl();
 const { changeNetwork } = useChangeNetwork();
 
-const claimStatusModalConfig = computed(() => {
-  switch (claimStatus.value) {
-    case 'approve':
-      return {
-        title: 'Confirm claim',
-        subtitle: 'Please confirm transaction on your wallet.',
-        variant: 'loading' as const
-      };
-    case 'pending':
-      return {
-        title: 'Transaction pending',
-        subtitle: claimTx.value?.hash || '',
-        variant: 'loading' as const
-      };
-    case 'success':
-      return {
-        title: 'Well done! 🥳',
-        subtitle: 'Your reward has been claimed.',
-        variant: 'success' as const
-      };
-    case 'error':
-      return {
-        title: 'Transaction failed',
-        subtitle: claimTx.value?.hash || 'Oops... Your claim failed!',
-        variant: 'error' as const
-      };
-    default:
-      return undefined;
-  }
-});
+// const claimStatusModalConfig = computed(() => {
+//   switch (claimStatus.value) {
+//     case 'approve':
+//       return {
+//         title: 'Confirm claim',
+//         subtitle: 'Please confirm transaction on your wallet.',
+//         variant: 'loading' as const
+//       };
+//     case 'pending':
+//       return {
+//         title: 'Transaction pending',
+//         subtitle: claimTx.value?.hash || '',
+//         variant: 'loading' as const
+//       };
+//     case 'success':
+//       return {
+//         title: 'Well done! 🥳',
+//         subtitle: 'Your reward has been claimed.',
+//         variant: 'success' as const
+//       };
+//     case 'error':
+//       return {
+//         title: 'Transaction failed',
+//         subtitle: claimTx.value?.hash || 'Oops... Your claim failed!',
+//         variant: 'error' as const
+//       };
+//     default:
+//       return undefined;
+//   }
+// });
 
 const unclaimedBoostsWithReward = computed(() => {
   if (!props.rewards.length) return [];
@@ -80,17 +80,14 @@ const unclaimedBoostsWithReward = computed(() => {
 
 async function handleClaimAll() {
   if (props.rewards[0].chain_id !== web3.value.network.chainId.toString()) {
-    return await changeNetwork(props.rewards[0].chain_id);
+    await changeNetwork(props.rewards[0].chain_id);
+    handleClaimAll();
   }
 
   try {
-    claimStatus.value = 'loading';
+    loadingClaim.value = true;
     const vouchers = await loadVouchers(unclaimedBoostsWithReward.value);
     if (!vouchers?.length) throw new Error('No vouchers found');
-
-    claimModalOpen.value = false;
-    await sleep(300);
-    claimStatus.value = 'approve';
 
     const boosts = vouchers.map(voucher => ({
       boostId: voucher.boost_id,
@@ -106,32 +103,26 @@ async function handleClaimAll() {
       signatures
     );
 
-    claimStatus.value = 'pending';
-
     await claimTx.value.wait();
-    claimStatus.value = 'success';
+    claimModalOpen.value = false;
+    claimSuccessOpen.value = true;
     emit('reload');
   } catch (e: any) {
     console.error('Claim error:', e);
-    if (e.message.includes('user rejected transaction')) {
-      claimStatus.value = '';
-    } else {
-      claimStatus.value = 'error';
-    }
   } finally {
     claimTx.value = undefined;
+    loadingClaim.value = false;
   }
 }
 
 async function handleClaim(boost: BoostSubgraph) {
   if (boost.chainId !== web3.value.network.chainId.toString()) {
-    return await changeNetwork(boost.chainId);
+    await changeNetwork(boost.chainId);
+    handleClaim(boost);
   }
 
   try {
-    loadingClaim.value = {
-      [boost.id]: boost.chainId
-    };
+    loadingClaim.value = true;
     const response = await loadVouchers([boost]);
     if (!response) throw new Error('Failed to get vouchers');
 
@@ -150,11 +141,14 @@ async function handleClaim(boost: BoostSubgraph) {
     );
 
     await claimTx.value.wait();
+    claimModalOpen.value = false;
+    claimSuccessOpen.value = true;
     emit('reload');
   } catch (e: any) {
     console.error('Claim error:', e);
   } finally {
-    loadingClaim.value = undefined;
+    claimTx.value = undefined;
+    loadingClaim.value = false;
   }
 }
 
@@ -248,19 +242,11 @@ const timeLeftToClaim = computed(() => {
         </span>
       </div>
     </TuneBlock>
-    <ModalTransactionStatus
-      v-if="claimStatusModalConfig && claimStatus !== 'success'"
-      open
-      :variant="claimStatusModalConfig.variant"
-      :title="claimStatusModalConfig?.title"
-      :subtitle="claimStatusModalConfig?.subtitle"
-      :network="rewards[0].chain_id"
-      @close="claimStatus = ''"
-      @try-again="handleClaimAll"
-    />
     <SpaceProposalBoostClaimModalSuccess
-      :open="claimStatus === 'success'"
-      @close="claimStatus = ''"
+      :open="claimSuccessOpen === true"
+      :more-to-claim="unclaimedBoostsWithReward.length > 0"
+      @close="claimSuccessOpen = false"
+      @open-claim-modal="claimModalOpen = true"
     />
     <SpaceProposalBoostClaimModal
       :open="claimModalOpen"
@@ -268,7 +254,6 @@ const timeLeftToClaim = computed(() => {
       :claimable-boosts="unclaimedBoostsWithReward"
       :claims="claims"
       :rewards="rewards"
-      :loading-claim-all="claimStatus === 'loading'"
       :loading-claim="loadingClaim"
       @close="claimModalOpen = false"
       @claim-all="handleClaimAll"

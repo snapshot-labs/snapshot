@@ -1,9 +1,17 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   open: boolean;
+  moreToClaim: boolean;
 }>();
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'openClaimModal']);
+
+function handleClose() {
+  if (props.moreToClaim) {
+    emit('openClaimModal');
+  }
+  emit('close');
+}
 </script>
 
 <template>
@@ -18,8 +26,9 @@ const emit = defineEmits(['close']);
         <TuneModalTitle class="m-0 leading-6">
           Congratulations!
         </TuneModalTitle>
-        <TuneModalDescription class="text-md leading-5 mt-1">
-          You have now claimed your rewards!
+        <TuneModalDescription class="text-md leading-5 mt-1 mx-5">
+          You have successfully claimed your rewards. Thanks you for your
+          participation!
         </TuneModalDescription>
       </div>
       <!-- <div class="flex flex-col gap-[12px] items-center mt-[24px]">
@@ -33,7 +42,9 @@ const emit = defineEmits(['close']);
         </TuneButton>
       </div> -->
       <div class="p-3 pt-4">
-        <TuneButton class="w-full" @click="emit('close')"> Close </TuneButton>
+        <TuneButton class="w-full" @click="handleClose">
+          {{ moreToClaim ? 'Claim more' : 'Close' }}
+        </TuneButton>
       </div>
     </div>
   </TuneModal>
