@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { BigNumber } from '@ethersproject/bignumber';
-import { parseUnits, formatEther } from '@ethersproject/units';
+import { parseUnits, formatEther, formatUnits } from '@ethersproject/units';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
@@ -58,6 +58,7 @@ const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
 const { loadBalances, tokens, loading: loadingBalances } = useBalances();
+// TODO: Filter WETH WBTC and stablecoins for AML reasons
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
 const { modalAccountOpen } = useModal();
@@ -267,22 +268,42 @@ const isEndingSoon = computed(() => {
   return proposal.value.end - now < ONE_DAY;
 });
 
-const amountPerWinner = computed(() => {
-  const formattedAmount = formatNumber(
-    Number(form.value.amount) / Number(form.value.distribution.numWinners),
-    getNumberFormatter({ maximumFractionDigits: 8 }).value
-  );
-
-  return Number(formattedAmount) > 0 ? formattedAmount : 0;
+const amountParsed = computed(() => {
+  try {
+    return parseUnits(
+      form.value.amount || '0',
+      selectedToken.value?.decimals ?? '18'
+    );
+  } catch (e) {
+    return BigNumber.from('0');
+  }
 });
 
-const tokenFee = computed(() => {
+const amountPerWinner = computed(() => {
+  if (!amountParsed.value || !form.value.distribution.numWinners) return '0';
+  const amountPer = amountParsed.value.div(
+    Number(form.value.distribution.numWinners)
+  );
   const formattedAmount = formatNumber(
-    (Number(form.value.amount) / 100) * Number(tokenFeePercent.value),
+    Number(formatUnits(amountPer, selectedToken.value?.decimals ?? '18')),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 
-  return Number(formattedAmount) > 0 ? formattedAmount : 0;
+  return formattedAmount;
+});
+
+const tokenFeeParsed = computed(() => {
+  const feeAmount = amountParsed.value.div(100).mul(tokenFeePercent.value);
+  return feeAmount.lte(0) ? '0' : feeAmount;
+});
+
+const tokenFeeFormatted = computed(() => {
+  return formatNumber(
+    Number(
+      formatUnits(tokenFeeParsed.value, selectedToken.value?.decimals ?? '18')
+    ),
+    getNumberFormatter({ maximumFractionDigits: 8 }).value
+  );
 });
 
 const formValidation = computed(() => {
@@ -314,14 +335,14 @@ const formValidation = computed(() => {
 
   if (!form.value.amount) {
     errors.amount = 'Please enter a value';
-  } else if (Number(form.value.amount) <= 0) {
+  } else if (amountParsed.value.lte(0)) {
     errors.amount = 'Please enter a value greater than 0';
   }
 
   if (selectedToken.value) {
     const balance = BigNumber.from(account.value.balance || '0');
 
-    const amount = BigNumber.from(amountWithTokenFeeParsed.value || '0');
+    const amount = amountWithTokenFeeParsed.value;
 
     if (balance.lt(amount) && !isLoading.value) {
       errors.balance = 'Insufficient balance';
@@ -364,25 +385,23 @@ function retryCreation() {
   handleCreate();
 }
 
-const amountWithTokenFee = computed(() => {
-  const amount = Number(form.value.amount) + Number(tokenFee.value);
-
-  return amount > 0 ? amount : 0;
+const amountWithTokenFeeParsed = computed(() => {
+  return amountParsed.value.add(tokenFeeParsed.value).toString();
 });
 
-const amountWithTokenFeeParsed = computed(
+const amountWithTokenFeeFormatted = computed(
   () =>
     (selectedToken.value &&
-      parseUnits(
-        amountWithTokenFee.value.toString() || '0',
+      formatUnits(
+        amountWithTokenFeeParsed.value,
         selectedToken.value.decimals
-      ).toString()) ||
+      )) ||
     '0'
 );
 
 const requireApproval = computed(() =>
   BigNumber.from(account.value.allowance || '0').lt(
-    BigNumber.from(amountWithTokenFeeParsed.value || '0')
+    amountWithTokenFeeParsed.value
   )
 );
 
@@ -624,7 +643,7 @@ watch(
                   />
                 </div>
                 <div class="text-skin-heading">
-                  {{ tokenFee }}
+                  {{ tokenFeeFormatted }}
                   {{ selectedToken?.symbol }}
                   ({{ tokenFeePercent }}%)
                 </div>
@@ -635,7 +654,7 @@ watch(
                 Final cost
                 <div class="text-skin-heading">
                   <span v-if="Number(tokenFeePercent) > 0">
-                    {{ amountWithTokenFee }}
+                    {{ amountWithTokenFeeFormatted }}
                     {{ selectedToken?.symbol }}
                   </span>
                   <span v-if="Number(ethFee) > 0">
