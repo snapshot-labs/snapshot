@@ -194,7 +194,7 @@ async function loadWinners() {
 watch(
   isFinal,
   async () => {
-    if (isFinal.value) {
+    if (isFinal.value && isLottery.value) {
       await loadWinners();
       if (lotteryWinners.value.length) return;
 
