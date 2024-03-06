@@ -791,7 +791,9 @@ watch(
 
       <template #sidebar-right>
         <TheActionbar break-point="md">
-          <div class="md:border rounded-xl p-3 md:mt-3 lg:mt-0">
+          <div
+            class="md:border rounded-xl p-3 md:mt-3 lg:mt-0 lg:fixed lg:w-[320px]"
+          >
             <h4 class="leading-5 mb-1 hidden md:block">Create boost</h4>
             <p class="text-md leading-5 hidden md:block">
               Once a boost is created, it can no longer be modified.
