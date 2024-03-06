@@ -727,6 +727,7 @@ watch(
                 />
 
                 <TuneInput
+                  v-if="form.distribution.hasWeightedLimit"
                   v-model="form.distribution.weightedLimit"
                   label="Max reward"
                   type="number"
@@ -762,6 +763,7 @@ watch(
                 />
 
                 <TuneInput
+                  v-if="form.distribution.hasLotteryLimit"
                   v-model="form.distribution.lotteryLimit"
                   label="Max chance to win"
                   type="number"
