@@ -77,7 +77,7 @@ const isLottery = computed(() => {
 
     <TuneButton
       v-if="!hasClaimed && Number(reward) > 0"
-      :disabled="loading"
+      :loading="loading"
       class="h-[32px] px-[12px] bg-skin-bg"
       @click="$emit('claim', boost)"
     >
