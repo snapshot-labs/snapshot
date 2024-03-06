@@ -35,7 +35,7 @@ onMounted(async () => await getSkin(domain));
         primary: primary,
         'white-border': variant === 'white',
         danger: variant === 'danger',
-        disabled: disabled,
+        disabled: disabled || loading,
         '!text-skin-bg': !skin && primary && !useWhiteText
       }
     ]"
