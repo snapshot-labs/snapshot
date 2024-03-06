@@ -50,7 +50,7 @@ function handleOpenTokenModal() {
           </template>
           <template v-else-if="selectedToken?.contractAddress">
             <AvatarToken :address="selectedToken.contractAddress" size="20" />
-            <span v-if="selectedToken" class="text-skin-link truncate">{{
+            <span class="text-skin-link truncate">{{
               selectedToken.symbol
             }}</span>
           </template>
