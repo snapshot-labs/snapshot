@@ -183,7 +183,10 @@ async function loadWinners() {
     lotteryPrize.value = response.prize;
   } catch (e: any) {
     console.error('Error loading winners', e);
-    if (e.message === 'epoch is not finalized') {
+    if (
+      e.message === 'epoch is not finalized' ||
+      e.message === 'failed to parse epoch'
+    ) {
       lotteryEpochNotFinalized.value = true;
     }
   }
@@ -200,7 +203,7 @@ watch(
 
 <template>
   <div>
-    <!-- TODO: Fix Ui when claim period has ended -->
+    <!-- TODO: Fix Ui when boost was burnt -->
     <div
       class="border border-[--border-color-soft] rounded-xl p-[12px]"
       :class="[
@@ -395,13 +398,24 @@ watch(
           { 'border-green/20 bg-green/5': hasClaimed }
         ]"
       >
-        <div v-if="isOwner" class="text-skin-heading">Manage your boost</div>
+        <div v-if="isOwner && !claimPeriodEnded" class="text-skin-heading">
+          About your boost
+        </div>
         <div
           v-if="claimPeriodEnded"
           class="sm:flex justify-between items-center"
         >
           <div class="leading-none">
-            <div class="font-semibold text-skin-heading">Withdraw</div>
+            <div class="font-semibold text-skin-heading flex items-center">
+              Withdraw
+              <i-ho-information-circle
+                v-tippy="{
+                  content:
+                    'You can withdraw your remaining unclaimed tokens and burn the boost NFT or you give voters more time to claim their rewards and withdraw your remaining tokens later.'
+                }"
+                class="text-xs ml-1 text-skin-text"
+              />
+            </div>
             <div>
               You have {{ withdrawalAmount }} {{ boost.token.symbol }} to
               withdraw
