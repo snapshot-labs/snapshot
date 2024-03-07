@@ -56,7 +56,6 @@ type Form = {
 const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
-// TODO: Filter WETH WBTC and stablecoins for AML reasons
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
 const { modalAccountOpen } = useModal();
