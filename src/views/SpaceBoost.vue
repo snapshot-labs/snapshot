@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { BigNumber } from '@ethersproject/bignumber';
 import { parseUnits, formatEther, formatUnits } from '@ethersproject/units';
-import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import {
   createBoost,
-  SUPPORTED_NETWORKS,
   SNAPSHOT_GUARD_ADDRESS,
   BOOST_CONTRACTS,
   BOOST_VERSION,
@@ -50,14 +48,13 @@ type Form = {
     numWinners: string;
   };
   network: string;
-  token: string;
+  token?: Token;
   amount: string;
 };
 
 const route = useRoute();
 const router = useRouter();
 const auth = getInstance();
-const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 // TODO: Filter WETH WBTC and stablecoins for AML reasons
 const { web3Account, web3 } = useWeb3();
 const { account, updatingAccount, updateAccount } = useAccount();
@@ -66,12 +63,12 @@ const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
 const { bribeDisabled } = useBoost({ spaceId: props.space.id });
+const loadingBalances = ref(false);
 
 const proposal = ref();
 const createStatus = ref('');
 const createTx = ref();
 const approveTx = ref();
-const customTokens = ref<Token[]>([]);
 const modalWrongNetworkOpen = ref(false);
 const showFormErrors = ref(false);
 const ethFee = ref('');
@@ -90,11 +87,11 @@ const form = ref<Form>({
     numWinners: ''
   },
   network: '11155111',
-  token: '',
+  token: undefined,
   amount: ''
 });
 
-const allTokens = computed(() => [...tokens.value, ...customTokens.value]);
+const formToken = computed(() => form.value.token);
 
 const isWrongNetwork = computed(() => {
   return form.value.network !== web3.value.network.key.toString();
@@ -175,36 +172,6 @@ const createStatusModalConfig = computed(() => {
   }
 });
 
-const selectedToken = computed(() => {
-  if (!allTokens.value) return undefined;
-
-  const selectedToken = allTokens.value.find(
-    (token: Token) => token.contractAddress === form.value.token
-  );
-  const firstTokenInList = allTokens.value?.[0];
-
-  if (selectedToken) return selectedToken;
-  if (firstTokenInList) {
-    form.value.token = firstTokenInList.contractAddress;
-    return firstTokenInList;
-  }
-});
-
-const filteredNetworks = computed(() => {
-  return Object.values(networks)
-    .map((network: any) => {
-      return {
-        value: network.chainId.toString(),
-        name: network.name,
-        extras: {
-          icon: network.logo
-        },
-        testnet: network.testnet
-      };
-    })
-    .filter(network => SUPPORTED_NETWORKS.includes(network.value));
-});
-
 const strategyDistributionLimit = computed(() => {
   if (
     form.value.distribution.type === 'lottery' &&
@@ -222,7 +189,7 @@ const strategyDistributionLimit = computed(() => {
   ) {
     return parseUnits(
       form.value.distribution.weightedLimit || '0',
-      selectedToken.value?.decimals ?? '18'
+      formToken.value?.decimals ?? '18'
     ).toString();
   }
   return undefined;
@@ -270,7 +237,7 @@ const amountParsed = computed(() => {
   try {
     return parseUnits(
       form.value.amount || '0',
-      selectedToken.value?.decimals ?? '18'
+      formToken.value?.decimals ?? '18'
     );
   } catch (e) {
     return BigNumber.from('0');
@@ -283,7 +250,7 @@ const amountPerWinner = computed(() => {
     Number(form.value.distribution.numWinners)
   );
   const formattedAmount = formatNumber(
-    Number(formatUnits(amountPer, selectedToken.value?.decimals ?? '18')),
+    Number(formatUnits(amountPer, formToken.value?.decimals ?? '18')),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
   );
 
@@ -291,17 +258,9 @@ const amountPerWinner = computed(() => {
 });
 
 const tokenFeeParsed = computed(() => {
+  if (!tokenFeePercent.value || !amountParsed.value) return BigNumber.from('0');
   const feeAmount = amountParsed.value.div(100).mul(tokenFeePercent.value);
-  return feeAmount.lte(0) ? '0' : feeAmount;
-});
-
-const tokenFeeFormatted = computed(() => {
-  return formatNumber(
-    Number(
-      formatUnits(tokenFeeParsed.value, selectedToken.value?.decimals ?? '18')
-    ),
-    getNumberFormatter({ maximumFractionDigits: 8 }).value
-  );
+  return feeAmount.lte(0) ? BigNumber.from('0') : feeAmount;
 });
 
 const formValidation = computed(() => {
@@ -327,7 +286,7 @@ const formValidation = computed(() => {
     }
   }
 
-  if (!form.value.token) {
+  if (!formToken.value) {
     errors.token = 'Please select a token';
   }
 
@@ -337,7 +296,7 @@ const formValidation = computed(() => {
     errors.amount = 'Please enter a value greater than 0';
   }
 
-  if (selectedToken.value) {
+  if (formToken.value) {
     const balance = BigNumber.from(account.value.balance || '0');
 
     const amount = amountWithTokenFeeParsed.value;
@@ -366,18 +325,6 @@ const formErrorMessages = computed(() => {
   return showFormErrors.value ? formValidation.value : {};
 });
 
-function handleAddCustomToken(token: Token) {
-  if (
-    customTokens.value.find(
-      existing => existing.contractAddress === token.contractAddress
-    )
-  ) {
-    return;
-  }
-
-  customTokens.value.push(token);
-}
-
 function retryCreation() {
   createStatus.value = '';
   handleCreate();
@@ -386,16 +333,6 @@ function retryCreation() {
 const amountWithTokenFeeParsed = computed(() => {
   return amountParsed.value.add(tokenFeeParsed.value).toString();
 });
-
-const amountWithTokenFeeFormatted = computed(
-  () =>
-    (selectedToken.value &&
-      formatUnits(
-        amountWithTokenFeeParsed.value,
-        selectedToken.value.decimals
-      )) ||
-    '0'
-);
 
 const requireApproval = computed(() =>
   BigNumber.from(account.value.allowance || '0').lt(
@@ -431,7 +368,7 @@ async function handleApproval() {
   try {
     approveTx.value = await sendApprovalTransaction(
       auth.web3,
-      form.value.token,
+      formToken.value!.contractAddress,
       BOOST_CONTRACTS[form.value.network],
       amountWithTokenFeeParsed.value
     );
@@ -441,7 +378,7 @@ async function handleApproval() {
     await approveTx.value.wait();
 
     await updateAccount(
-      form.value.token,
+      formToken.value!.contractAddress,
       form.value.network,
       BOOST_CONTRACTS[form.value.network]
     );
@@ -485,7 +422,7 @@ async function handleCreate() {
       ethFee.value,
       {
         strategyURI: `ipfs://${ipfsHash}`,
-        token: form.value.token,
+        token: formToken.value!.contractAddress,
         amount: amountWithTokenFeeParsed.value,
         guard: SNAPSHOT_GUARD_ADDRESS,
         start: proposal.value.end,
@@ -511,16 +448,6 @@ function closeStatusModal() {
     router.push({ name: 'spaceProposal', params: { id: proposal.value.id } });
   createStatus.value = '';
 }
-
-watch(
-  [web3Account, () => form.value.network],
-  () => {
-    form.value.token = '';
-    customTokens.value = [];
-    loadBalances(web3Account.value, form.value.network);
-  },
-  { immediate: true }
-);
 
 watchEffect(async () => {
   const id = route.params.proposalId;
@@ -552,11 +479,11 @@ watch(
 );
 
 watch(
-  [web3Account, () => form.value.token, () => form.value.network],
+  [web3Account, formToken, () => form.value.network],
   () => {
-    if (!web3Account.value || !form.value.token) return;
+    if (!web3Account.value || !formToken.value) return;
     updateAccount(
-      form.value.token,
+      formToken.value.contractAddress,
       form.value.network,
       BOOST_CONTRACTS[form.value.network]
     );
@@ -587,84 +514,19 @@ watch(
 
         <div class="space-y-3 mt-[20px] md:mt-4">
           <SpaceBoostCardProposal :proposal="proposal" :space="space" />
-          <TuneBlock>
-            <template #header>
-              <TuneBlockHeader
-                title="Deposit amount"
-                sub-title="Select a token and specify the total amount for the reward pool."
-              />
-            </template>
-            <div class="flex flex-col md:flex-row gap-[12px]">
-              <ListboxNetwork
-                v-model="form.network"
-                :networks="filteredNetworks"
-              />
-              <InputComboboxToken
-                v-model:amount="form.amount"
-                label="Amount"
-                :selected-token="selectedToken"
-                :network="form.network"
-                :tokens="tokens"
-                :loading="loadingBalances"
-                :error="
-                  formErrorMessages?.token ||
-                  formErrorMessages?.amount ||
-                  formErrorMessages?.balance
-                "
-                @update:selected-token="form.token = $event"
-                @add-custom-token="handleAddCustomToken($event)"
-              />
-            </div>
-            <TuneBlockFooter
-              v-if="Number(tokenFeePercent) > 0 || Number(ethFee) > 0"
-            >
-              <div v-if="Number(ethFee) > 0" class="flex justify-between">
-                <div class="flex items-center gap-1">
-                  ETH fee
-                  <TuneIconHint
-                    hint="This fee is required for additional gas costs on our end"
-                  />
-                </div>
-                <div class="text-skin-heading">
-                  {{ ethFee }}
-                  ETH
-                </div>
-              </div>
-              <div
-                v-if="Number(tokenFeePercent) > 0"
-                class="flex justify-between"
-              >
-                <div class="flex items-center gap-1">
-                  Token fee
-                  <TuneIconHint
-                    hint="This is the fee we charge for the boost service"
-                  />
-                </div>
-                <div class="text-skin-heading">
-                  {{ tokenFeeFormatted }}
-                  {{ selectedToken?.symbol }}
-                  ({{ tokenFeePercent }}%)
-                </div>
-              </div>
-              <div
-                class="flex justify-between mt-2 border-t pt-2 border-[--border-color-soft]"
-              >
-                Final cost
-                <div class="text-skin-heading">
-                  <span v-if="Number(tokenFeePercent) > 0">
-                    {{ amountWithTokenFeeFormatted }}
-                    {{ selectedToken?.symbol }}
-                  </span>
-                  <span v-if="Number(ethFee) > 0">
-                    +
 
-                    {{ ethFee }}
-                    ETH
-                  </span>
-                </div>
-              </div>
-            </TuneBlockFooter>
-          </TuneBlock>
+          <SpaceBoostDeposit
+            v-model:formToken="form.token"
+            v-model:formNetwork="form.network"
+            v-model:formAmount="form.amount"
+            :amount-with-token-fee-parsed="amountWithTokenFeeParsed"
+            :form-error-messages="formErrorMessages"
+            :token-fee-percent="tokenFeePercent"
+            :token-fee-parsed="tokenFeeParsed"
+            :eth-fee="ethFee"
+            @loading-balances="loadingBalances = $event"
+          />
+
           <TuneBlock>
             <template #header>
               <TuneBlockHeader
@@ -735,7 +597,7 @@ watch(
                   @click="form.distribution.hasWeightedLimit = true"
                 >
                   <template #after>
-                    <div class="-mr-[8px]">{{ selectedToken?.symbol }}</div>
+                    <div class="-mr-[8px]">{{ formToken?.symbol }}</div>
                   </template>
                 </TuneInput>
               </template>
@@ -781,7 +643,7 @@ watch(
                 Reward per winner
                 <div class="text-skin-heading">
                   {{ amountPerWinner }}
-                  {{ selectedToken?.symbol }}
+                  {{ formToken?.symbol }}
                 </div>
               </div>
             </TuneBlockFooter>

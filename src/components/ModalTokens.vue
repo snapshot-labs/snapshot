@@ -11,7 +11,7 @@ const props = defineProps<{
   network: string;
 }>();
 
-const emit = defineEmits(['close', 'update:selectedToken', 'addCustomToken']);
+const emit = defineEmits(['close', 'update:selectedToken']);
 
 const { web3Account } = useWeb3();
 
@@ -40,7 +40,7 @@ function isTokenMatchingSearch(token: Token, searchQuery: string) {
 }
 
 function handleTokenClick(token: Token) {
-  emit('update:selectedToken', token.contractAddress);
+  emit('update:selectedToken', token);
   emit('close');
 }
 
@@ -81,7 +81,6 @@ async function fetchCustomToken(address: string) {
       value: 0
     };
 
-    emit('addCustomToken', customToken.value);
     isSearchValueValidToken.value = true;
   } catch (e) {
     isSearchValueValidToken.value = false;

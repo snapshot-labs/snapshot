@@ -11,7 +11,7 @@ defineProps<{
   error?: string;
 }>();
 
-defineEmits(['update:selectedToken', 'addCustomToken', 'update:amount']);
+defineEmits(['update:selectedToken', 'update:amount']);
 
 const { web3Account } = useWeb3();
 const { modalAccountOpen } = useModal();
@@ -70,7 +70,6 @@ function handleOpenTokenModal() {
       :open="isTokenModalOpen"
       :network="network"
       @update:selected-token="$emit('update:selectedToken', $event)"
-      @add-custom-token="$emit('addCustomToken', $event)"
       @close="isTokenModalOpen = false"
     />
   </teleport>
