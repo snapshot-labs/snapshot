@@ -58,7 +58,8 @@ const boostEnabled = computed(() => {
   return (
     (props.proposal.type === 'basic' ||
       props.proposal.type === 'single-choice') &&
-    isWhitelisted.value
+    isWhitelisted.value &&
+    props.space.voting.privacy !== 'shutter'
   );
 });
 
