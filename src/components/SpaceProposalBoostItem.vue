@@ -207,7 +207,6 @@ watch(
 
 <template>
   <div>
-    <!-- TODO: Fix Ui when boost was burnt -->
     <div
       class="border border-[--border-color-soft] rounded-xl p-[12px]"
       :class="[
@@ -347,7 +346,7 @@ watch(
               Finalizing winners takes a moment. Please check back shortly!
             </div>
             <div
-              v-else-if="!reward && isFinal"
+              v-else-if="!reward && isFinal && isLottery"
               class="flex flex-wrap items-center justify-center gap-x-1"
             >
               <i-ho-emoji-sad class="text-sm" />
