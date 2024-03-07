@@ -33,6 +33,7 @@ const lotteryWinners = ref<string[]>([]);
 const lotteryPrize = ref('0');
 const lotteryEpochNotFinalized = ref(false);
 const loadingWithdraw = ref(false);
+const loadingWinners = ref(false);
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -175,6 +176,7 @@ async function withdraw(boost: BoostSubgraph) {
 
 async function loadWinners() {
   if (!isFinal.value || !isLottery.value) return;
+  loadingWinners.value = true;
 
   try {
     const response = await getWinners(
@@ -193,6 +195,8 @@ async function loadWinners() {
     ) {
       lotteryEpochNotFinalized.value = true;
     }
+  } finally {
+    loadingWinners.value = false;
   }
 }
 
@@ -320,7 +324,7 @@ watch(
             </div>
           </div>
           <div
-            v-if="claimedTransactionHash || isEligible"
+            v-if="(claimedTransactionHash || isEligible) && !loadingWinners"
             class="border w-full bg-[--border-color-faint] px-[12px] py-2 rounded-xl mt-[12px]"
             :class="[
               {
