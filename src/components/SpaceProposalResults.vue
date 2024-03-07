@@ -51,10 +51,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <TuneBlock
-    :loading="!loaded"
-    :title="proposal.state === 'closed' ? $t('results') : $t('currentResults')"
-  >
+  <TuneBlock :loading="!loaded">
     <template #header>
       <TuneBlockHeader
         :title="
