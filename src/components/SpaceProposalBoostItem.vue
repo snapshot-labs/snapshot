@@ -32,6 +32,7 @@ const openWinnersModal = ref(false);
 const lotteryWinners = ref<string[]>([]);
 const lotteryPrize = ref('0');
 const lotteryEpochNotFinalized = ref(false);
+const loadingWithdraw = ref(false);
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -156,6 +157,7 @@ const boostNetworkInfo = computed(() => {
 
 async function withdraw(boost: BoostSubgraph) {
   try {
+    loadingWithdraw.value = true;
     const tx = await withdrawAndBurn(
       auth.web3,
       boost.chainId,
@@ -166,6 +168,8 @@ async function withdraw(boost: BoostSubgraph) {
     emit('reload');
   } catch (e) {
     console.error('Error withdrawing boost', e);
+  } finally {
+    loadingWithdraw.value = false;
   }
 }
 
@@ -425,6 +429,7 @@ watch(
           <TuneButton
             v-if="Number(withdrawalAmount) > 0"
             class="h-5 px-[12px] text-skin-link bg-skin-bg w-full sm:w-auto mt-2 sm:mt-0"
+            :loading="loadingWithdraw"
             @click="withdraw(boost)"
           >
             Withdraw {{ withdrawalAmount }} {{ boost.token.symbol }}
