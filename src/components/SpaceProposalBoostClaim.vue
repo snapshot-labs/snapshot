@@ -9,7 +9,6 @@ import {
   BoostSubgraph,
   BoostClaimSubgraph
 } from '@/helpers/boost/types';
-import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -31,37 +30,6 @@ const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
 const { formatDuration } = useIntl();
 const { changeNetwork } = useChangeNetwork();
-
-// const claimStatusModalConfig = computed(() => {
-//   switch (claimStatus.value) {
-//     case 'approve':
-//       return {
-//         title: 'Confirm claim',
-//         subtitle: 'Please confirm transaction on your wallet.',
-//         variant: 'loading' as const
-//       };
-//     case 'pending':
-//       return {
-//         title: 'Transaction pending',
-//         subtitle: claimTx.value?.hash || '',
-//         variant: 'loading' as const
-//       };
-//     case 'success':
-//       return {
-//         title: 'Well done! 🥳',
-//         subtitle: 'Your reward has been claimed.',
-//         variant: 'success' as const
-//       };
-//     case 'error':
-//       return {
-//         title: 'Transaction failed',
-//         subtitle: claimTx.value?.hash || 'Oops... Your claim failed!',
-//         variant: 'error' as const
-//       };
-//     default:
-//       return undefined;
-//   }
-// });
 
 const unclaimedBoostsWithReward = computed(() => {
   if (!props.rewards.length) return [];
