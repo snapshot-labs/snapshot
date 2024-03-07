@@ -6,6 +6,9 @@
         "name": "_protocolOwner",
         "type": "address"
       },
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "string", "name": "symbol", "type": "string" },
+      { "internalType": "string", "name": "version", "type": "string" },
       { "internalType": "uint256", "name": "_ethFee", "type": "uint256" },
       { "internalType": "uint256", "name": "_tokenFee", "type": "uint256" }
     ],
@@ -29,11 +32,13 @@
     "name": "BoostNotStarted",
     "type": "error"
   },
+  { "inputs": [], "name": "ClaimingPeriodStarted", "type": "error" },
   { "inputs": [], "name": "InsufficientBoostBalance", "type": "error" },
   { "inputs": [], "name": "InsufficientEthFee", "type": "error" },
   { "inputs": [], "name": "InvalidGuard", "type": "error" },
   { "inputs": [], "name": "InvalidRecipient", "type": "error" },
   { "inputs": [], "name": "InvalidSignature", "type": "error" },
+  { "inputs": [], "name": "InvalidTokenFee", "type": "error" },
   { "inputs": [], "name": "OnlyBoostOwner", "type": "error" },
   { "inputs": [], "name": "RecipientAlreadyClaimed", "type": "error" },
   {
@@ -320,16 +325,6 @@
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "_boostId", "type": "uint256" },
-      { "internalType": "address", "name": "_to", "type": "address" }
-    ],
-    "name": "burn",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
       {
         "components": [
           { "internalType": "uint256", "name": "boostId", "type": "uint256" },
@@ -597,6 +592,16 @@
       { "internalType": "address", "name": "newOwner", "type": "address" }
     ],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_boostId", "type": "uint256" },
+      { "internalType": "address", "name": "_to", "type": "address" }
+    ],
+    "name": "withdrawAndBurn",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
