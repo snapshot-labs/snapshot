@@ -61,6 +61,18 @@ export const EXCLUDED_TOKENS = {
     {
       ticker: 'ETH',
       contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+    },
+    {
+      ticker: 'WETH',
+      contractAddress: '0x7b79995e5f793a07bc00c21412e50ecae098e7f9'
     }
   ]
 };
+
+export function isExcludedToken(network: string, contractAddress: string) {
+  return (
+    EXCLUDED_TOKENS?.[network]?.find(
+      excludedToken => excludedToken.contractAddress === contractAddress
+    ) !== undefined
+  );
+}

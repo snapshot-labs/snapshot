@@ -17,6 +17,7 @@ import { Token } from '@/helpers/alchemy';
 import { sendApprovalTransaction } from '@/helpers/transaction';
 import { pinGraph } from '@/helpers/pin';
 import { BoostStrategy } from '@/helpers/boost/types';
+import { isExcludedToken } from '@/helpers/boost/tokens';
 
 const DISTRIBUTION_TYPE_ITEMS = [
   {
@@ -288,6 +289,10 @@ const formValidation = computed(() => {
 
   if (!formToken.value) {
     errors.token = 'Please select a token';
+  } else if (
+    isExcludedToken(form.value.network, formToken.value.contractAddress)
+  ) {
+    errors.token = 'This token is not allowed';
   }
 
   if (!form.value.amount) {

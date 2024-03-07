@@ -4,7 +4,7 @@ import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { Token } from '@/helpers/alchemy';
 import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { BigNumber } from '@ethersproject/bignumber';
-import { EXCLUDED_TOKENS } from '@/helpers/boost/tokens';
+import { isExcludedToken } from '@/helpers/boost/tokens';
 
 const props = defineProps<{
   formToken?: Token;
@@ -29,11 +29,8 @@ const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 const { web3Account } = useWeb3();
 
 const tokensWithoutExcluded = computed(() => {
-  const excludedTokens =
-    EXCLUDED_TOKENS?.[props.formNetwork]?.map(token => token.contractAddress) ||
-    [];
   return tokens.value.filter(token => {
-    return !excludedTokens.includes(token.contractAddress);
+    return !isExcludedToken(props.formNetwork, token.contractAddress);
   });
 });
 
