@@ -10,6 +10,8 @@ const props = defineProps<{
   formToken?: Token;
   formNetwork: string;
   formAmount: string;
+  tokens: Token[];
+  loadingBalances: boolean;
   amountWithTokenFeeParsed: string;
   formErrorMessages: Record<string, string>;
   tokenFeePercent: string;
@@ -20,16 +22,13 @@ const props = defineProps<{
 const emit = defineEmits([
   'update:formNetwork',
   'update:formAmount',
-  'update:formToken',
-  'loadingBalances'
+  'update:formToken'
 ]);
 
 const { formatNumber, getNumberFormatter } = useIntl();
-const { loadBalances, tokens, loading: loadingBalances } = useBalances();
-const { web3Account } = useWeb3();
 
 const tokensWithoutExcluded = computed(() => {
-  return tokens.value.filter(token => {
+  return props.tokens.filter(token => {
     return !isExcludedToken(props.formNetwork, token.contractAddress);
   });
 });
@@ -66,15 +65,6 @@ const filteredNetworks = computed(() => {
 });
 
 watch(
-  [web3Account, () => props.formNetwork],
-  () => {
-    emit('update:formToken', undefined);
-    loadBalances(web3Account.value, props.formNetwork);
-  },
-  { immediate: true }
-);
-
-watch(
   tokensWithoutExcluded,
   () => {
     if (!props.formToken && tokensWithoutExcluded.value.length > 0) {
@@ -83,10 +73,6 @@ watch(
   },
   { immediate: true }
 );
-
-watch(loadingBalances, () => {
-  emit('loadingBalances', loadingBalances);
-});
 </script>
 
 <template>

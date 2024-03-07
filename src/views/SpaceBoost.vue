@@ -63,7 +63,7 @@ const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
 const { bribeDisabled } = useBoost({ spaceId: props.space.id });
-const loadingBalances = ref(false);
+const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -502,6 +502,15 @@ watch(
   },
   { immediate: true }
 );
+
+watch(
+  [web3Account, () => form.value.network],
+  () => {
+    form.value.token = undefined;
+    loadBalances(web3Account.value, form.value.network);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
@@ -523,12 +532,13 @@ watch(
             v-model:formToken="form.token"
             v-model:formNetwork="form.network"
             v-model:formAmount="form.amount"
+            :tokens="tokens"
+            :loading-balances="loadingBalances"
             :amount-with-token-fee-parsed="amountWithTokenFeeParsed"
             :form-error-messages="formErrorMessages"
             :token-fee-percent="tokenFeePercent"
             :token-fee-parsed="tokenFeeParsed"
             :eth-fee="ethFee"
-            @loading-balances="loadingBalances = $event"
           />
 
           <TuneBlock>
