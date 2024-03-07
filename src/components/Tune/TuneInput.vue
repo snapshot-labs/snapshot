@@ -45,9 +45,10 @@ defineEmits(['update:modelValue']);
 const inputRef = ref();
 
 const forceError = ref(false);
+const showError = ref(false);
 
 const showErrorMessage = computed(() => {
-  return forceError.value || props.alwaysShowError;
+  return forceError.value || props.alwaysShowError || showError.value;
 });
 
 function forceShowError() {
@@ -96,8 +97,8 @@ onMounted(() => {
           :readonly="readonly"
           :disabled="disabled"
           :maxlength="maxLength || definition?.maxLength"
-          @blur="error ? (showErrorMessage = true) : null"
-          @focus="error ? null : (showErrorMessage = false)"
+          @blur="error ? (showError = true) : null"
+          @focus="error ? null : (showError = false)"
           @input="
             $emit(
               'update:modelValue',
@@ -119,9 +120,6 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <TuneErrorInput
-      v-if="error && (showErrorMessage || alwaysShowError)"
-      :error="error"
-    />
+    <TuneErrorInput v-if="error && showErrorMessage" :error="error" />
   </div>
 </template>
