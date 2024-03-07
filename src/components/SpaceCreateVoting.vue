@@ -122,7 +122,7 @@ defineEmits<{
       <BaseMessage
         v-if="form.type !== 'single-choice' && form.type !== 'basic'"
         level="info"
-        class="mt-1"
+        class="mt-2 border bg-[--border-color-subtle] p-3 rounded-xl"
       >
         Note that Boost is not available for this voting type. Please use Basic
         or Single Choice if you want to use Boost.
@@ -130,7 +130,7 @@ defineEmits<{
       <BaseMessage
         v-else-if="space.voting.privacy === 'shutter'"
         level="info"
-        class="mt-1"
+        class="mt-2 border bg-[--border-color-subtle] p-3 rounded-xl"
       >
         Note that Boost is not available with Shutter encrypted voting. Please
         disable it in the space settings if you want to use Boost.
