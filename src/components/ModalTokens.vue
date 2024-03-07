@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { isAddress } from '@ethersproject/address';
-import { ERC20ABI, ETH_CONTRACT } from '@/helpers/constants';
+import { ERC20ABI } from '@/helpers/constants';
 import { Token } from '@/helpers/alchemy';
 import snapshot from '@snapshot-labs/snapshot.js';
 
@@ -9,7 +9,6 @@ const props = defineProps<{
   open: boolean;
   tokens: Token[];
   network: string;
-  disableBaseTokens?: boolean;
 }>();
 
 const emit = defineEmits(['close', 'update:selectedToken', 'addCustomToken']);
@@ -30,10 +29,6 @@ const tokensFiltered = computed(() => {
 });
 
 function filterToken(token: Token) {
-  if (props.disableBaseTokens && token.contractAddress === ETH_CONTRACT) {
-    return false;
-  }
-
   const searchQuery = searchInput.value.toLowerCase();
   return isTokenMatchingSearch(token, searchQuery) || !searchInput.value;
 }

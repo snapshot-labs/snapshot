@@ -69,7 +69,6 @@ function handleOpenTokenModal() {
       :tokens="tokens"
       :open="isTokenModalOpen"
       :network="network"
-      disable-base-tokens
       @update:selected-token="$emit('update:selectedToken', $event)"
       @add-custom-token="$emit('addCustomToken', $event)"
       @close="isTokenModalOpen = false"

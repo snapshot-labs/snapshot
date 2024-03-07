@@ -12,7 +12,7 @@ import {
   BOOST_VERSION,
   getFees
 } from '@/helpers/boost';
-import { ETH_CONTRACT, TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
+import { TWO_WEEKS, ONE_DAY } from '@/helpers/constants';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { getProposal } from '@/helpers/snapshot';
 import { Token } from '@/helpers/alchemy';
@@ -181,14 +181,12 @@ const selectedToken = computed(() => {
   const selectedToken = allTokens.value.find(
     (token: Token) => token.contractAddress === form.value.token
   );
-  const firstTokenWhichIsNotEth = allTokens.value.find(
-    (token: Token) => token.contractAddress !== ETH_CONTRACT
-  );
+  const firstTokenInList = allTokens.value?.[0];
 
   if (selectedToken) return selectedToken;
-  if (firstTokenWhichIsNotEth) {
-    form.value.token = firstTokenWhichIsNotEth.contractAddress;
-    return firstTokenWhichIsNotEth;
+  if (firstTokenInList) {
+    form.value.token = firstTokenInList.contractAddress;
+    return firstTokenInList;
   }
 });
 
