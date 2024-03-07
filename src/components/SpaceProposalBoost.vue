@@ -328,7 +328,7 @@ onMounted(() => {
                 <div class="w-full">
                   <h5 class="leading-none">Rewards</h5>
                   <p class="leading-none">
-                    You’re eligible to {{ eligibleBoosts.length }} boost<span
+                    You're eligible to {{ eligibleBoosts.length }} boost<span
                       v-if="boosts.length > 1"
                       >s</span
                     >
