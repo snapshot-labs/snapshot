@@ -31,6 +31,7 @@ function handleClose() {
           participation!
         </TuneModalDescription>
       </div>
+      <!-- TODO: Add share and farcaster -->
       <!-- <div class="flex flex-col gap-[12px] items-center mt-[24px]">
         <TuneButton class="flex items-center gap-2">
           <i-s-twitter class="text-[#1DA1F2]" />

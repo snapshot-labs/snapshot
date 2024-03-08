@@ -356,7 +356,7 @@ const { pause } = useIntervalFn(() => {
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
             </BaseLink>
             <div
-              v-else-if="(isFinal && lotteryEpochNotFinalized) || true"
+              v-else-if="isFinal && lotteryEpochNotFinalized"
               class="flex items-center gap-1 justify-center"
             >
               <i-ho-clock class="text-sm" />
