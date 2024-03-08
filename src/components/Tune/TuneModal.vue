@@ -61,34 +61,6 @@ watch(
 onBeforeUnmount(() => {
   document.body.classList.remove('overflow-hidden');
 });
-
-let mutationObserver;
-
-onMounted(() => {
-  const targetElement = document.documentElement;
-  const targetBody = document.body;
-
-  mutationObserver = new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      if (
-        mutation.type === 'attributes' &&
-        mutation.attributeName === 'style'
-      ) {
-        targetElement.removeAttribute('style');
-        targetBody.removeAttribute('style');
-      }
-    }
-  });
-
-  mutationObserver.observe(targetElement, { attributes: true });
-  mutationObserver.observe(targetBody, { attributes: true });
-});
-
-onUnmounted(() => {
-  if (mutationObserver) {
-    mutationObserver.disconnect();
-  }
-});
 </script>
 
 <template>
