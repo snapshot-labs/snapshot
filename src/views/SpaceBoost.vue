@@ -546,40 +546,17 @@ watch(
           <TuneBlock>
             <template #header>
               <TuneBlockHeader
-                title="Eligibility"
-                sub-title="Choose an option that best incentivises meaningful participation."
-              />
-            </template>
-
-            <TuneListbox
-              v-model="form.eligibility.choice"
-              :items="eligibilityOptions"
-              label="Eligible to"
-            />
-            <TuneBlockFooter v-if="bribeDisabled">
-              <BaseMessage level="info">
-                Selecting a specific choice is disabled for the
-                <span class="font-semibold">
-                  {{ space.name }}
-                </span>
-                space
-              </BaseMessage>
-            </TuneBlockFooter>
-          </TuneBlock>
-
-          <TuneBlock>
-            <template #header>
-              <TuneBlockHeader
                 title="Distribution"
                 sub-title="Define how the reward pool is distributed to eligible voters."
               />
             </template>
             <div class="space-y-3">
-              <div class="flex gap-[12px]">
-                <div
+              <div class="flex flex-col sm:flex-row gap-[12px]">
+                <button
                   v-for="item in DISTRIBUTION_TYPE_ITEMS"
                   :key="item.value"
-                  class="rounded-xl p-3 cursor-pointer border w-1/2"
+                  type="button"
+                  class="rounded-xl p-3 cursor-pointer border sm:w-1/2 text-left"
                   :class="{
                     'border-skin-link': form.distribution.type === item.value
                   }"
@@ -594,7 +571,7 @@ watch(
                   <div class="leading-[18px] pr-4">
                     {{ item.description }}
                   </div>
-                </div>
+                </button>
               </div>
               <template v-if="form.distribution.type === 'weighted'">
                 <TuneSwitch
@@ -662,6 +639,30 @@ watch(
                   {{ formToken?.symbol }}
                 </div>
               </div>
+            </TuneBlockFooter>
+          </TuneBlock>
+
+          <TuneBlock>
+            <template #header>
+              <TuneBlockHeader
+                title="Eligibility"
+                sub-title="Choose an option that best incentivises meaningful participation."
+              />
+            </template>
+
+            <TuneListbox
+              v-model="form.eligibility.choice"
+              :items="eligibilityOptions"
+              label="Eligible to"
+            />
+            <TuneBlockFooter v-if="bribeDisabled">
+              <BaseMessage level="info">
+                Selecting a specific choice is disabled for the
+                <span class="font-semibold">
+                  {{ space.name }}
+                </span>
+                space
+              </BaseMessage>
             </TuneBlockFooter>
           </TuneBlock>
         </div>
