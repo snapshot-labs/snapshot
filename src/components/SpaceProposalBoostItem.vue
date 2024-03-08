@@ -8,6 +8,7 @@ import { toChecksumAddress, explorerUrl } from '@/helpers/utils';
 import { getUrl } from '@snapshot-labs/snapshot.js/src/utils';
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { getWinners } from '@/helpers/boost/api';
+import { useIntervalFn } from '@vueuse/core';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -34,6 +35,7 @@ const lotteryPrize = ref('0');
 const lotteryEpochNotFinalized = ref(false);
 const loadingWithdraw = ref(false);
 const loadingWinners = ref(false);
+const minutesUntilEpochEnd = ref(0);
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -207,6 +209,17 @@ watch(
   },
   { immediate: true }
 );
+
+const { pause } = useIntervalFn(() => {
+  if (!isFinal.value) return;
+  const proposalEnd = Number(props.proposal.end);
+  const twentyMinutes = 20 * 60;
+  minutesUntilEpochEnd.value = Math.floor(
+    (proposalEnd + twentyMinutes - Date.now() / 1000) / 60
+  );
+
+  if (minutesUntilEpochEnd.value <= 2) pause();
+}, 1000);
 </script>
 
 <template>
@@ -343,11 +356,15 @@ watch(
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
             </BaseLink>
             <div
-              v-else-if="isFinal && lotteryEpochNotFinalized"
+              v-else-if="(isFinal && lotteryEpochNotFinalized) || true"
               class="flex items-center gap-1 justify-center"
             >
               <i-ho-clock class="text-sm" />
-              Finalizing winners takes a moment. Please check back shortly!
+              Finalizing winners. Please check back in
+              <span v-if="minutesUntilEpochEnd > 2">
+                {{ minutesUntilEpochEnd }} minutes!
+              </span>
+              <span v-else> shortly!</span>
             </div>
             <div
               v-else-if="!reward && isFinal && isLottery"

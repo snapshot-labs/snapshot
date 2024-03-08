@@ -5,6 +5,7 @@ import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
 import { toChecksumAddress } from '@/helpers/utils';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import { useIntervalFn } from '@vueuse/core';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -192,28 +193,22 @@ watch(web3Account, async value => {
   loadRewards();
 });
 
-onMounted(() => {
+const { pause } = useIntervalFn(async () => {
   if (!isActive.value) return;
 
-  const interval = setInterval(async () => {
-    relativeEndTime.value = formatRelativeTime(
-      props.proposal.end,
-      longRelativeTimeFormatter.value
-    );
+  relativeEndTime.value = formatRelativeTime(
+    props.proposal.end,
+    longRelativeTimeFormatter.value
+  );
 
-    const timestampNow = Math.floor(Date.now() / 1000);
-    const isClaimable = props.proposal.end < timestampNow;
-    if (isClaimable) {
-      clearInterval(interval);
-      await sleep(3000);
-      window.location.reload();
-    }
-  }, 1000);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
+  const timestampNow = Math.floor(Date.now() / 1000);
+  const isClaimable = props.proposal.end < timestampNow;
+  if (isClaimable) {
+    pause();
+    await sleep(3000);
+    window.location.reload();
+  }
+}, 1000);
 </script>
 
 <template>
