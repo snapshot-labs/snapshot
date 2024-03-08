@@ -30,7 +30,65 @@ export const SPACE_CATEGORIES = [
 ];
 
 export const ERC20ABI = [
-  'function name() public view returns (string)',
-  'function decimals() view returns (uint32)',
-  'function symbol() view returns (string)'
+  'constructor(string name, string symbol)',
+  'event Approval(address indexed owner, address indexed spender, uint256 value)',
+  'event Transfer(address indexed from, address indexed to, uint256 value)',
+  'function allowance(address owner, address spender) view returns (uint256)',
+  'function approve(address spender, uint256 amount) returns (bool)',
+  'function balanceOf(address account) view returns (uint256)',
+  'function decimals() view returns (uint8)',
+  'function decreaseAllowance(address spender, uint256 subtractedValue) returns (bool)',
+  'function increaseAllowance(address spender, uint256 addedValue) returns (bool)',
+  'function name() view returns (string)',
+  'function symbol() view returns (string)',
+  'function totalSupply() view returns (uint256)',
+  'function transfer(address recipient, uint256 amount) returns (bool)',
+  'function transferFrom(address sender, address recipient, uint256 amount) returns (bool)'
 ];
+
+export const COINGECKO_ASSET_PLATFORMS = {
+  '137': 'polygon-pos',
+  '42161': 'arbitrum-one'
+};
+
+export const COINGECKO_BASE_ASSETS = {
+  '137': 'matic-network',
+  '42161': 'ethereum'
+};
+
+export type ChainCurrency = {
+  name: string;
+  symbol: string;
+  decimals: number;
+  contractAddress: string;
+};
+
+export const CHAIN_CURRENCIES: Record<string, ChainCurrency> = {
+  '1': {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '11155111': {
+    name: 'Sepolia Ether',
+    symbol: 'SepoliaETH',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '137': {
+    name: 'MATIC',
+    symbol: 'MATIC',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
+  '42161': {
+    name: 'Arbitrum',
+    symbol: 'ARB',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  }
+};
+
+export const TWO_WEEKS = 1209600;
+export const ONE_DAY = 86400;

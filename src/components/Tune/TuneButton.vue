@@ -2,7 +2,7 @@
 withDefaults(
   defineProps<{
     type?: 'button' | 'submit' | 'reset';
-    variant?: 'danger';
+    variant?: 'danger' | 'white';
     primary?: boolean;
     loading?: boolean;
     disabled?: boolean;
@@ -33,8 +33,9 @@ onMounted(async () => await getSkin(domain));
       'tune-button',
       {
         primary: primary,
+        'white-border': variant === 'white',
         danger: variant === 'danger',
-        disabled: disabled,
+        disabled: disabled || loading,
         '!text-skin-bg': !skin && primary && !useWhiteText
       }
     ]"

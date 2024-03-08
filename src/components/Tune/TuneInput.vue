@@ -20,6 +20,7 @@ const props = withDefaults(
     readonly?: boolean;
     disabled?: boolean;
     definition?: any;
+    alwaysShowError?: boolean;
   }>(),
   {
     label: '',
@@ -34,7 +35,8 @@ const props = withDefaults(
     maxLength: undefined,
     readonly: false,
     disabled: false,
-    definition: {}
+    definition: {},
+    alwaysShowError: false
   }
 );
 
@@ -42,10 +44,15 @@ defineEmits(['update:modelValue']);
 
 const inputRef = ref();
 
-const showErrorMessage = ref(false);
+const forceError = ref(false);
+const showError = ref(false);
+
+const showErrorMessage = computed(() => {
+  return forceError.value || props.alwaysShowError || showError.value;
+});
 
 function forceShowError() {
-  showErrorMessage.value = true;
+  forceError.value = true;
 }
 
 defineExpose({
@@ -90,8 +97,8 @@ onMounted(() => {
           :readonly="readonly"
           :disabled="disabled"
           :maxlength="maxLength || definition?.maxLength"
-          @blur="error ? (showErrorMessage = true) : null"
-          @focus="error ? null : (showErrorMessage = false)"
+          @blur="error ? (showError = true) : null"
+          @focus="error ? null : (showError = false)"
           @input="
             $emit(
               'update:modelValue',
@@ -100,7 +107,7 @@ onMounted(() => {
           "
         />
         <div
-          v-if="loading || (error && showErrorMessage)"
+          v-if="loading"
           class="tune-input-loading absolute inset-y-0 right-0 top-[1px] mr-1 flex h-[40px] items-center overflow-hidden pl-2 pr-2"
         >
           <TuneLoadingSpinner v-if="loading" />

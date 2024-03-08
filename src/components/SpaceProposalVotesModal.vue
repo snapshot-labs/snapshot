@@ -90,58 +90,56 @@ watch(filters, value => {
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
-    <template #header>
-      <div
-        class="flex flex-col content-center items-center justify-center gap-x-4"
-      >
-        <h3>{{ $t('proposal.votesModal.title') }}</h3>
-        <BaseSearch
-          v-model="searchInput"
-          :placeholder="$t('searchPlaceholderVotes')"
-          modal
-          focus-on-mount
-          class="max-h-[56px] w-full !px-3 pb-3"
-        >
-          <template #after>
-            <SpaceProposalVotesFilters
-              v-if="!searchInput"
-              v-model="filterOptions"
-              :proposal="proposal"
-            />
-          </template>
-        </BaseSearch>
+  <TuneModal :open="open" @close="$emit('close')">
+    <div class="px-3 pb-3">
+      <TuneModalTitle as="h4" class="mt-3 flex items-center gap-1">
+        {{ $t('proposal.votesModal.title') }}
+        <BaseCounter :counter="proposal.votes" />
+      </TuneModalTitle>
+    </div>
+    <BaseSearch
+      v-model="searchInput"
+      :placeholder="$t('searchPlaceholderVotes')"
+      modal
+      focus-on-mount
+      class="max-h-[56px] w-full !px-3 pb-3"
+    >
+      <template #after>
+        <SpaceProposalVotesFilters
+          v-if="!searchInput"
+          v-model="filterOptions"
+          :proposal="proposal"
+        />
+      </template>
+    </BaseSearch>
+
+    <div class="max-h-[calc(100vh-130px)] md:max-h-[400px] overflow-y-auto">
+      <div v-if="loadingVotes" class="block p-3">
+        <LoadingList />
       </div>
-    </template>
-    <template #default="{ maxHeight }">
-      <div :style="{ minHeight: maxHeight }">
-        <div v-if="loadingVotes" class="block px-4 pt-4">
-          <LoadingList />
-        </div>
 
-        <BaseNoResults v-else-if="showNoResults" />
+      <BaseNoResults v-else-if="showNoResults" />
 
-        <div v-else-if="votes.length">
-          <div class="flex h-full min-h-full flex-col overflow-auto">
-            <SpaceProposalVotesListItem
-              v-for="(vote, i) in votes"
-              :key="i"
-              :vote="vote"
-              :profiles="profiles"
-              :space="space"
-              :proposal="proposal"
-              :class="{ '!border-0': i === 0 }"
-              :data-testid="`proposal-votes-list-item-${i}`"
-            />
-            <div ref="votesEndEl" />
-            <div
-              class="block min-h-[50px] rounded-b-none border-t px-4 py-3 text-center md:rounded-b-md"
-            >
-              <LoadingSpinner v-if="loadingMoreVotes" />
-            </div>
+      <div v-else-if="votes.length">
+        <div
+          class="flex h-full min-h-full flex-col overflow-auto px-[16px] py-2"
+        >
+          <SpaceProposalVotesItem
+            v-for="(vote, i) in votes"
+            :key="i"
+            :vote="vote"
+            :profiles="profiles"
+            :space="space"
+            :proposal="proposal"
+            is-small
+            :data-testid="`proposal-votes-list-item-${i}`"
+          />
+          <div ref="votesEndEl" />
+          <div v-if="loadingMoreVotes" class="block min-h-[34px] text-center">
+            <LoadingSpinner />
           </div>
         </div>
       </div>
-    </template>
-  </BaseModal>
+    </div>
+  </TuneModal>
 </template>

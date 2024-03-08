@@ -120,6 +120,10 @@
     "useEmailFetchClient": true,
     "useStatement": true,
     "useMixpanel": true,
-    "usePayment": true
+    "useBalances": true,
+    "useAccount": true,
+    "usePayment": true,
+    "useChangeNetwork": true,
+    "useBoost": true
   }
 }

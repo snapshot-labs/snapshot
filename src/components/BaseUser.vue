@@ -11,6 +11,7 @@ const props = defineProps<{
   hideAvatar?: boolean;
   hideUsername?: boolean;
   widthClass?: string;
+  textClass?: string;
 }>();
 
 const { getUsername } = useUsername();
@@ -31,6 +32,7 @@ const spaceMembers = computed(() => {
     :profile="profile"
     :proposal="proposal"
     :space="space"
+    class="flex"
   >
     <BaseLink
       :link="
@@ -47,6 +49,7 @@ const spaceMembers = computed(() => {
         <span
           v-if="!hideUsername"
           class="w-full cursor-pointer truncate text-skin-link"
+          :class="textClass"
         >
           {{ getUsername(address, profile) }}
         </span>

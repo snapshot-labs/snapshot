@@ -80,26 +80,35 @@ watch(
 </script>
 
 <template>
-  <BaseBlock
+  <TuneBlock
     v-if="!loadingUserVote && (userVote || proposal.state === 'active')"
-    class="mb-4"
-    :title="
-      isEditing ? 'Change your vote' : userVote ? 'Your vote' : 'Cast your vote'
-    "
   >
-    <template #button>
-      <button
-        v-if="!isEditing && userVote && proposal.state === 'active'"
-        type="button"
-        class="flex items-center gap-1"
-        @click="isEditing = true"
+    <template #header>
+      <TuneBlockHeader
+        :title="
+          isEditing
+            ? 'Change your vote'
+            : userVote
+              ? 'Your vote'
+              : 'Cast your vote'
+        "
       >
-        <i-ho-pencil class="text-sm" />
-        Change vote
-      </button>
+        <BaseButtonIcon
+          v-if="!isEditing && userVote && proposal.state === 'active'"
+          v-tippy="{
+            content: 'Change your vote',
+            delay: 100
+          }"
+          class="!p-0 !pr-1"
+          @click="isEditing = true"
+        >
+          <i-ho-pencil class="text-sm" />
+        </BaseButtonIcon>
+      </TuneBlockHeader>
     </template>
     <div
       v-if="votedAndShutter && !isEditing && proposal.scores_state !== 'final'"
+      class="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]"
     >
       <i-ho-lock-closed class="inline-block text-sm" />
       Your vote is encrypted with Shutter privacy until the proposal ends and
@@ -108,6 +117,7 @@ watch(
     <BaseMessage
       v-else-if="userVote && !validatedUserChoice && !isEditing"
       level="info"
+      class="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]"
     >
       Oops, we were unable to validate your vote. Please try voting again or
       consider opening a ticket with our support team on
@@ -144,7 +154,7 @@ watch(
       />
     </div>
     <div
-      v-if="!loadingUserVote && (!userVote || isEditing)"
+      v-if="!userVote || isEditing"
       v-tippy="{
         content: buttonTooltip
       }"
@@ -165,5 +175,5 @@ watch(
         {{ $t('proposal.vote') }}
       </TuneButton>
     </div>
-  </BaseBlock>
+  </TuneBlock>
 </template>
