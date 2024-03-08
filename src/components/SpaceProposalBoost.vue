@@ -112,6 +112,7 @@ function handleStart() {
 }
 
 async function loadBoosts() {
+  // TODO: Filter boosts that where start doesn't match proposal end
   try {
     const response = await getBoosts([props.proposal.id]);
     const cleanBoosts = response.filter(boost => {
@@ -121,7 +122,6 @@ async function loadBoosts() {
       return true;
     });
     boosts.value = cleanBoosts;
-    console.log('🚀 ~ loadBoosts ~ boosts.value:', boosts.value);
   } catch (e) {
     console.error('Load boosts error:', e);
   }
@@ -131,7 +131,6 @@ async function loadClaims() {
   if (!isFinal.value || !web3Account.value) return;
   try {
     boostClaims.value = await getClaims(web3Account.value);
-    console.log('🚀 ~ loadClaims ~ boostClaims.value:', boostClaims.value);
   } catch (e) {
     console.error('Load boosts error:', e);
   }
@@ -169,11 +168,6 @@ async function loadRewards() {
   } finally {
     loadingRewards.value = false;
   }
-
-  console.log(
-    '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadRewards ~ boostRewards:',
-    boostRewards.value
-  );
 }
 
 watch(

@@ -86,9 +86,6 @@ export async function claimAllTokens(
   }[],
   signatures: string[]
 ): Promise<any> {
-  console.log('🚀 ~ file: index.ts:74 ~ signatures:', signatures);
-  console.log('🚀 ~ file: index.ts:74 ~ boosts:', boosts);
-
   const boostsArray = boosts.map(boost => [
     boost.boostId,
     boost.recipient,

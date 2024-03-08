@@ -128,10 +128,6 @@ async function loadVouchers(boosts: BoostSubgraph[]) {
       boosts
     );
 
-    console.log(
-      '🚀 ~ file: SpaceProposalBoost.vue:153 ~ loadVouchers ~ vouchers:',
-      vouchers
-    );
     return vouchers;
   } catch (e) {
     console.error('Get vouchers error:', e);

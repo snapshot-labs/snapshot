@@ -90,7 +90,6 @@ export async function getBoosts(proposalIds: string[]) {
   }
   const requests = SUPPORTED_NETWORKS.map(chainId => query(chainId));
   const responses: { boosts: BoostSubgraph }[] = await Promise.all(requests);
-  console.log('🚀 ~ getBoosts ~ responses:', responses);
 
   return responses
     .map(response => response.boosts)
