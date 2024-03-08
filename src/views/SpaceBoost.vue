@@ -455,9 +455,11 @@ function closeStatusModal() {
 
 watchEffect(async () => {
   const id = route.params.proposalId;
-  if (id) {
-    proposal.value = await getProposal(id);
-  }
+
+  proposal.value = await getProposal(id);
+  if (proposal.value) return;
+
+  router.push({ name: 'spaceProposals', params: { key: props.space.id } });
 });
 
 watch(
