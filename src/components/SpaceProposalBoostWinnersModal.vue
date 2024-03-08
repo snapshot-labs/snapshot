@@ -50,7 +50,6 @@ watch(
 </script>
 
 <template>
-  <!-- TODO: Show link to randomness docs  -->
   <TuneModal :open="open" @close="$emit('close')">
     <TuneModalTitle as="h4" class="flex items-center gap-1 m-3 mb-2">
       Winners
@@ -60,7 +59,7 @@ watch(
       v-model="searchInput"
       placeholder="Search by address"
       modal
-      class="!pl-3"
+      class="!pl-3 pr-[12px]"
     />
     <div
       class="p-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[488px] overflow-y-auto"
@@ -72,6 +71,7 @@ watch(
         <i-ho-emoji-sad class="mb-1" />
         No winners due to no eligible votes.
       </div>
+      <BaseNoResults v-else-if="sortedWinners.length === 0" class="!py-0" />
       <template v-else>
         <div v-for="winner in sortedWinners" :key="winner">
           <div class="flex justify-between">
@@ -82,7 +82,16 @@ watch(
         </div>
       </template>
     </div>
-    <div class="p-3">
+    <BaseMessage
+      level="info"
+      class="p-3 border bg-[--border-color-subtle] rounded-xl mx-3 mb-3"
+    >
+      Wondering how the winners are chosen? Check out
+      <BaseLink link="https://docs.snapshot.org/user-guides/boost"
+        >the docs</BaseLink
+      >
+    </BaseMessage>
+    <div class="px-3 pb-3">
       <TuneButton class="w-full" @click="$emit('close')"> Close </TuneButton>
     </div>
   </TuneModal>
