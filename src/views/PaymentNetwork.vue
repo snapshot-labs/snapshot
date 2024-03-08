@@ -96,7 +96,7 @@ watch(paymentTx, () => {
           :key="planId"
           :class="[
             {
-              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px] mb-[-1px]':
+              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px] mb-[-1px] overflow-hidden':
                 plan.discount
             }
           ]"
