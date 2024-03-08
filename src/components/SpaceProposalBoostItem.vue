@@ -408,7 +408,7 @@ const { pause } = useIntervalFn(() => {
         <SpaceProposalBoostItemMenu
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
-          :epoch-finalized="!lotteryEpochNotFinalized"
+          :show-winners="!lotteryEpochNotFinalized && isLottery"
           @open-winners-modal="openWinnersModal = true"
         />
       </div>
