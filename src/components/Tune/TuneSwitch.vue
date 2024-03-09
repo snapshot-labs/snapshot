@@ -88,7 +88,9 @@ const emit = defineEmits(['update:modelValue']);
       :hint="hint || definition?.description"
       :sublabel="sublabel || definition?.sublabel"
     >
-      {{ label || definition?.title }}
+      <div class="text-skin-heading">
+        {{ label || definition?.title }}
+      </div>
     </TuneLabelInput>
   </div>
 </template>

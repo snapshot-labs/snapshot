@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { openProfile } from '@/helpers/utils';
+
 const props = defineProps<{
   address: string;
 }>();
@@ -10,14 +12,7 @@ const { modalEmailOpen } = useModal();
 const router = useRouter();
 
 function handleAction(e) {
-  if (e === 'viewProfile')
-    // Link to profile page, if on custom domain then the link is external
-    return domain
-      ? window.open(`https://snapshot.org/#/profile/${props.address}`, '_blank')
-      : router.push({
-          name: 'profileActivity',
-          params: { address: props.address }
-        });
+  if (e === 'viewProfile') return openProfile(props.address, domain, router);
   if (e === 'switchWallet') return emit('switchWallet');
   if (e === 'subscribeEmail') {
     modalEmailOpen.value = true;

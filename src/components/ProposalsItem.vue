@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import removeMd from 'remove-markdown';
 import { Proposal, ExtendedSpace, Profile } from '@/helpers/interfaces';
+import { BoostSubgraph } from '@/helpers/boost/types';
 
 const props = defineProps<{
   proposal: Proposal;
@@ -10,6 +11,7 @@ const props = defineProps<{
   to: Record<string, unknown>;
   hideSpaceAvatar?: boolean;
   showVerifiedIcon?: boolean;
+  boosts?: BoostSubgraph[];
 }>();
 
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
@@ -17,6 +19,13 @@ const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
 );
 
 const body = computed(() => removeMd(props.proposal.body));
+
+const boostsCount = computed(() => {
+  if (!props.boosts) return 0;
+  return props.boosts.filter(
+    boost => boost.strategy.proposal === props.proposal.id
+  ).length;
+});
 
 onMounted(() => setMessageVisibility(props.proposal.flagged));
 </script>
@@ -78,6 +87,15 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           </router-link>
 
           <ProposalsItemFooter :proposal="proposal" />
+          <div
+            v-if="boostsCount > 0 && proposal.state === 'active'"
+            class="bg-boost/5 border border-boost/20 px-[12px] py-2 rounded-xl text-boost flex items-center justify-center gap-1 mt-2"
+          >
+            <i-ho-fire class="text-sm" />
+            {{ boostsCount }}
+            <div>boost<span v-if="boostsCount > 1">s</span></div>
+            active
+          </div>
         </template>
       </div>
     </div>

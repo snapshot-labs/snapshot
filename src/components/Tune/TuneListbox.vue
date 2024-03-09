@@ -97,17 +97,20 @@ defineExpose({
                 v-slot="{ active, selected, disabled: itemDisabled }"
                 as="template"
                 :value="item"
+                :disabled="item.extras?.disabled"
               >
                 <li
                   :class="[
-                    { active: active && !itemDisabled },
+                    {
+                      active: active && !itemDisabled && !item.extras?.disabled
+                    },
+                    { disabled: itemDisabled || item.extras?.disabled },
                     'tune-listbox-item relative cursor-default select-none py-2 pl-3 pr-[50px]'
                   ]"
                 >
                   <span
                     :class="[
                       selected ? 'selected' : 'font-normal',
-                      { disabled: itemDisabled },
                       'tune-listbox-item block truncate'
                     ]"
                   >

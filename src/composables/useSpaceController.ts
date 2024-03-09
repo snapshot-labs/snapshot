@@ -9,7 +9,7 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 
 const spaceControllerInput = ref('');
-const modalUnsupportedNetworkOpen = ref(false);
+const modalWrongNetworkOpen = ref(false);
 const modalConfirmSetTextRecordOpen = ref(false);
 const settingENSRecord = ref(false);
 const pendingENSRecord = ref(false);
@@ -73,8 +73,7 @@ export function useSpaceController() {
   }
 
   function confirmSetRecord() {
-    if (networkKey.value !== defaultNetwork)
-      modalUnsupportedNetworkOpen.value = true;
+    if (networkKey.value !== defaultNetwork) modalWrongNetworkOpen.value = true;
     else modalConfirmSetTextRecordOpen.value = true;
   }
 
@@ -96,7 +95,7 @@ export function useSpaceController() {
     spaceControllerInput,
     settingENSRecord,
     pendingENSRecord,
-    modalUnsupportedNetworkOpen,
+    modalWrongNetworkOpen,
     modalConfirmSetTextRecordOpen,
     setRecord,
     confirmSetRecord,

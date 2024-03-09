@@ -44,6 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- TODO: Add gratitude message -->
   <BaseModal :open="open" max-height="550px" @close="emit('close')">
     <div class="flex flex-col justify-between p-4 md:h-auto">
       <div>

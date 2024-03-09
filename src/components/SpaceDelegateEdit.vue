@@ -71,9 +71,9 @@ async function handleClickSave() {
         You can always come back and edit your profile at any time.
 
         <TheActionbar break-point="md">
-          <div class="px-4 md:px-0">
+          <div class="px-4 md:px-0 py-[16px] md:pb-0">
             <TuneButton
-              class="mt-3 w-full"
+              class="w-full"
               :loading="saving"
               :disabled="!edited"
               primary

@@ -48,6 +48,10 @@
 .tune-button {
   @apply h-[46px] cursor-pointer text-skin-link rounded-full bg-transparent border border-skin-border px-[22px] hover:border-skin-text;
 
+  &.disabled {
+    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
+  }
+
   &.primary {
     @apply border-skin-primary bg-skin-primary text-white hover:brightness-95;
 
@@ -56,16 +60,20 @@
     }
   }
 
+  &.white-border {
+    @apply border-white/30  hover:border-white;
+
+    &:disabled {
+      @apply border-white text-white opacity-40;
+    }
+  }
+
   &.danger {
-    @apply text-red hover:border-red;
+    @apply text-red hover:border-red border-red/40;
 
     &:disabled {
       @apply text-skin-border hover:border-skin-border;
     }
-  }
-
-  &.disabled {
-    @apply border-skin-border bg-skin-bg text-skin-border cursor-not-allowed;
   }
 }
 
@@ -137,7 +145,7 @@
 }
 
 .tune-icon-hint {
-  @apply text-sm hover:text-skin-link;
+  @apply text-xs hover:text-skin-link;
 }
 
 .tune-error-text {
@@ -149,7 +157,7 @@
 }
 
 .tune-tag {
-  @apply rounded-md border border-skin-border bg-skin-border px-2 py-1 text-sm text-skin-text;
+  @apply rounded-lg border border-[--border-color-soft] bg-[--border-color-subtle] px-[6px] py-[3px] text-sm text-skin-text;
 }
 
 .tune-menu-list {
@@ -168,24 +176,12 @@
   @apply rounded-md border bg-skin-header-bg shadow-lg;
 }
 
-.tune-modal-panel {
-  @apply rounded-md border border-skin-border bg-skin-bg p-4 sm:w-[440px];
-}
-
-.tune-modal-backdrop {
-  @apply bg-skin-border opacity-70;
-}
-
-.tune-modal-title {
-  @apply text-center text-lg font-medium text-skin-text;
-}
-
 .tune-input-checkbox {
-  @apply form-checkbox h-[20px] w-[20px] rounded-lg border-skin-text bg-skin-bg text-skin-primary focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
+  @apply form-checkbox h-[20px] w-[20px] rounded-lg border-skin-text text-skin-text focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
 }
 
 .tune-input-radio {
-  @apply form-radio h-[20px] w-[20px] rounded-full border-skin-text bg-skin-bg text-skin-primary focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
+  @apply form-radio h-[20px] w-[20px] rounded-full border-skin-text text-skin-text focus:ring-0 focus:ring-offset-0 focus-visible:ring-offset-1 focus-visible:ring-offset-skin-text;
 }
 
 .tune-form-array-objects {

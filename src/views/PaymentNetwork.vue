@@ -96,14 +96,14 @@ watch(paymentTx, () => {
           :key="planId"
           :class="[
             {
-              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px] mb-[-1px]':
+              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px] mb-[-1px] overflow-hidden':
                 plan.discount
             }
           ]"
         >
           <div
             v-if="plan.discount"
-            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.png')]"
+            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.svg')]"
           >
             Save
             <BasePill class="py-1 !bg-skin-primary"
@@ -233,9 +233,8 @@ watch(paymentTx, () => {
     :tx="paymentTx"
     @close="modalPostPaymentOpen = false"
   />
-  <ModalUnsupportedNetwork
+  <ModalWrongNetwork
     :open="modalUnsupportedNetworkOpen"
-    hide-demo-button
     @close="modalUnsupportedNetworkOpen = false"
     @network-changed="pay"
   />
