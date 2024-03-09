@@ -370,20 +370,15 @@ const { pause } = useIntervalFn(() => {
             </div>
             <div
               v-else-if="isFinal && lotteryEpochNotFinalized"
-              class="flex items-center gap-x-1 justify-center"
+              class="text-center"
             >
-              <i-ho-clock class="text-xs" />
-              Finalizing winners. Please check back in
+              Finalizing winners. Please check back
               <span v-if="minutesUntilEpochEnd > 2">
-                {{ minutesUntilEpochEnd }} minutes!
+                in {{ minutesUntilEpochEnd }} minutes!
               </span>
               <span v-else> shortly!</span>
             </div>
-            <div
-              v-else-if="winnersError"
-              class="flex justify-center items-center gap-x-1"
-            >
-              <i-ho-exclamation-circle class="text-xs" />
+            <div v-else-if="winnersError" class="text-center">
               Something went wrong. Please try again later.
             </div>
             <div
