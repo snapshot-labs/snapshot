@@ -23,6 +23,7 @@ import SpaceAbout from '@/views/SpaceAbout.vue';
 import SpaceTreasury from '@/views/SpaceTreasury.vue';
 import SpaceDelegates from '@/views/SpaceDelegates.vue';
 import SpaceDelegate from '@/views/SpaceDelegate.vue';
+import SpaceBoost from '@/views/SpaceBoost.vue';
 
 import PaymentNetwork from '@/views/PaymentNetwork.vue';
 
@@ -75,6 +76,11 @@ const spaceRoutes = [
     path: 'delegate/:address?',
     name: 'spaceDelegate',
     component: SpaceDelegate
+  },
+  {
+    path: 'boost/:proposalId',
+    name: 'spaceBoost',
+    component: SpaceBoost
   }
 ];
 

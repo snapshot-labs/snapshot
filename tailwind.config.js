@@ -5,7 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        snapshot: '#f3b04e',
+        snapshot: '#F2994A',
+        boost: '#F2994A',
         'skin-primary': 'var(--primary-color)',
         'skin-border': 'var(--border-color)',
         'skin-text': 'var(--text-color)',
@@ -62,7 +63,8 @@ module.exports = {
       xs: ['14px']
     },
     boxShadow: {
-      lg: '2px 4px 9px var(--shadow-color)'
+      lg: '2px 4px 9px var(--shadow-color)',
+      xl: '7px 10.5px 28px 0px var(--shadow-color)'
     }
   },
   plugins: [

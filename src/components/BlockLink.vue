@@ -96,7 +96,7 @@ debouncedWatch(
           </div>
         </div>
       </div>
-      <div class="overflow-hidden py-3 pr-4">
+      <div class="overflow-hidden py-3 pr-3">
         <div v-if="!loaded" class="flex h-[48px] flex-col justify-center">
           <div class="lazy-loading h-[10px] w-[90px] rounded" />
           <div class="lazy-loading mt-2 h-[10px] w-[160px] rounded" />

@@ -92,7 +92,12 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadMoreVotes(filter: Partial<VoteFilters> = {}) {
-    if (loadingMoreVotes.value || loadingVotes.value) return;
+    if (
+      loadingMoreVotes.value ||
+      loadingVotes.value ||
+      loadBy > votes.value.length
+    )
+      return;
 
     loadingMoreVotes.value = true;
     try {
@@ -106,10 +111,9 @@ export function useProposalVotes(proposal: Proposal, loadBy = 6) {
   }
 
   async function loadUserVote(voter: string) {
-    if (!voter) {
-      userVote.value = null;
-      return;
-    }
+    if (!voter) return;
+    userVote.value = null;
+
     try {
       loadingUserVote.value = true;
       const response = await _fetchVote({ voter });

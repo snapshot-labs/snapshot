@@ -190,7 +190,7 @@ onMounted(() => {
             <div class="flex justify-center gap-[12px]">
               <TheActionbar break-point="md">
                 <div
-                  class="flex h-full items-center gap-[12px] px-[20px] md:px-0"
+                  class="flex h-full items-center gap-[12px] px-[20px] py-[16px] md:py-0 md:px-0"
                 >
                   <SpaceDelegatesAccount
                     v-if="web3Account"
@@ -268,7 +268,7 @@ onMounted(() => {
         </template>
       </div>
     </template>
-    <Teleport to="body">
+    <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
         :open="route.query.delegate !== undefined"
         :space="space"

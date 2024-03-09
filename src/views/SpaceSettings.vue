@@ -44,7 +44,7 @@ const { notify } = useFlashNotification();
 const { isGnosisAndNotDefaultNetwork } = useGnosis();
 const {
   settingENSRecord,
-  modalUnsupportedNetworkOpen,
+  modalWrongNetworkOpen,
   modalConfirmSetTextRecordOpen,
   spaceControllerInput,
   setRecord,
@@ -252,6 +252,10 @@ onBeforeRouteLeave(async () => {
           </template>
 
           <template v-if="currentPage === Page.PROPOSAL">
+            <!-- <SettingsBoostBlock
+              context="settings"
+              :is-view-only="isViewOnly"
+            /> -->
             <SettingsValidationBlock
               context="settings"
               :is-view-only="isViewOnly"
@@ -365,17 +369,20 @@ onBeforeRouteLeave(async () => {
     </template>
   </TheLayout>
 
+  <ModalWrongNetwork
+    :open="modalWrongNetworkOpen"
+    show-demo-button
+    @close="modalWrongNetworkOpen = false"
+    @network-changed="modalConfirmSetTextRecordOpen = true"
+  />
+
   <teleport to="#modal">
     <ModalControllerEdit
       :open="modalControllerEditOpen"
       :ens-address="space.id"
       @close="modalControllerEditOpen = false"
     />
-    <ModalUnsupportedNetwork
-      :open="modalUnsupportedNetworkOpen"
-      @close="modalUnsupportedNetworkOpen = false"
-      @network-changed="modalConfirmSetTextRecordOpen = true"
-    />
+
     <ModalConfirmAction
       :open="modalConfirmSetTextRecordOpen"
       @close="modalConfirmSetTextRecordOpen = false"

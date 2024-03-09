@@ -18,7 +18,10 @@ const symbols = computed((): string[] =>
 </script>
 
 <template>
-  <BaseBlock :title="$t('information')">
+  <TuneBlock>
+    <template #header>
+      <TuneBlockHeader :title="$t('information')" />
+    </template>
     <div class="space-y-1">
       <div>
         <b>{{ $t('strategies') }}</b>
@@ -95,7 +98,7 @@ const symbols = computed((): string[] =>
         </BaseLink>
       </div>
     </div>
-  </BaseBlock>
+  </TuneBlock>
   <teleport to="#modal">
     <ModalStrategies
       :open="isModalStrategiesOpen"
