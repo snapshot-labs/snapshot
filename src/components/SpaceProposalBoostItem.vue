@@ -300,7 +300,7 @@ const { pause } = useIntervalFn(() => {
                   v-tippy="{
                     content:
                       // TODO: Fix text clarity
-                      'If there are not enough voters, the chance to win will be increased to reach a total of 100%.',
+                      'If there are not enough voters, this limit will not be enforced and the chance to win will be increased proportionally to voting power.',
                     delay: 100
                   }"
                   :label="`${lotteryLimit}%`"
