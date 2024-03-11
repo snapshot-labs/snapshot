@@ -36,6 +36,7 @@ const lotteryEpochNotFinalized = ref(false);
 const loadingWithdraw = ref(false);
 const loadingWinners = ref(false);
 const minutesUntilEpochEnd = ref(0);
+const winnersError = ref(false);
 
 const boostBalanceFormatted = computed(() => {
   const formattedUnits = formatUnits(
@@ -179,6 +180,8 @@ async function withdraw(boost: BoostSubgraph) {
 async function loadWinners() {
   if (!isFinal.value || !isLottery.value) return;
   loadingWinners.value = true;
+  winnersError.value = false;
+  lotteryEpochNotFinalized.value = false;
 
   try {
     const response = await getWinners(
@@ -196,6 +199,8 @@ async function loadWinners() {
       e.message === 'failed to parse epoch'
     ) {
       lotteryEpochNotFinalized.value = true;
+    } else {
+      winnersError.value = true;
     }
   } finally {
     loadingWinners.value = false;
@@ -266,6 +271,7 @@ const { pause } = useIntervalFn(() => {
             </div>
             <div v-else-if="isLottery" class="mt-1 mr-1 flex items-center">
               can win
+              <!-- TODO: Show final reward when final -->
               <div>
                 <TuneTag
                   v-tippy="{
@@ -293,7 +299,7 @@ const { pause } = useIntervalFn(() => {
                 <TuneTag
                   v-tippy="{
                     content:
-                      'If there are not enough voters, the chance to win will be increased to reach a total of 100%.',
+                      'If there are not enough voters, this limit will not be enforced and the chance to win will be increased proportionally to voting power.',
                     delay: 100
                   }"
                   :label="`${lotteryLimit}%`"
@@ -337,7 +343,7 @@ const { pause } = useIntervalFn(() => {
             </div>
           </div>
           <div
-            v-if="(claimedTransactionHash || isEligible) && !loadingWinners"
+            v-if="claimedTransactionHash || isEligible"
             class="border w-full bg-[--border-color-faint] px-[12px] py-2 rounded-xl mt-[12px]"
             :class="[
               {
@@ -356,21 +362,29 @@ const { pause } = useIntervalFn(() => {
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
             </BaseLink>
             <div
-              v-else-if="isFinal && lotteryEpochNotFinalized"
-              class="flex items-center gap-1 justify-center"
+              v-else-if="loadingWinners"
+              class="text-skin-heading flex justify-center h-[24px]"
             >
-              <i-ho-clock class="text-sm" />
-              Finalizing winners. Please check back in
+              <TuneLoadingSpinner />
+            </div>
+            <div
+              v-else-if="isFinal && lotteryEpochNotFinalized"
+              class="text-center"
+            >
+              Finalizing winners. Please check back
               <span v-if="minutesUntilEpochEnd > 2">
-                {{ minutesUntilEpochEnd }} minutes!
+                in {{ minutesUntilEpochEnd }} minutes!
               </span>
               <span v-else> shortly!</span>
+            </div>
+            <div v-else-if="winnersError" class="text-center">
+              Something went wrong. Please try again later.
             </div>
             <div
               v-else-if="!reward && isFinal && isLottery"
               class="flex flex-wrap items-center justify-center gap-x-1"
             >
-              <i-ho-emoji-sad class="text-sm" />
+              <i-ho-emoji-sad class="text-xs" />
               Oops, you didn't win this time!
               <button
                 type="button"
@@ -380,14 +394,14 @@ const { pause } = useIntervalFn(() => {
                 View winners
               </button>
             </div>
+
             <div
               v-else-if="isEligible"
               class="flex flex-wrap items-center justify-center gap-x-1"
             >
               <i-ho-fire class="text-xs" />
               <template v-if="reward && isFinal">
-                <span v-if="isLottery"> You won </span>
-                <span v-else> Eligible to </span>
+                You can claim
                 {{ `${rewardFormatted} ${boost.token.symbol}` }}
                 <button
                   v-if="isLottery"
@@ -398,17 +412,16 @@ const { pause } = useIntervalFn(() => {
                   View winners
                 </button>
               </template>
-              <template v-else>
-                <span v-if="isLottery"> Eligible to win </span>
-                <span v-else> Eligible to reward </span>
-              </template>
+              <template v-else> You are eligible </template>
             </div>
           </div>
         </div>
         <SpaceProposalBoostItemMenu
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
-          :show-winners="!lotteryEpochNotFinalized && isLottery"
+          :show-winners="
+            !lotteryEpochNotFinalized && isLottery && !winnersError
+          "
           @open-winners-modal="openWinnersModal = true"
         />
       </div>

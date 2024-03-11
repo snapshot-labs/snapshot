@@ -39,13 +39,10 @@ const hasClaimed = computed(() => {
       claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
   );
 });
-
-const isLottery = computed(() => {
-  return props.boost.strategy.distribution.type === 'lottery';
-});
 </script>
 
 <template>
+  <!-- TODO: Add network and boost ID -->
   <div
     class="flex items-center justify-between border rounded-xl p-[12px] h-[58px]"
     :class="{
@@ -64,11 +61,8 @@ const isLottery = computed(() => {
         <i-ho-cash v-if="hasClaimed" class="text-green text-xs" />
         <i-ho-gift v-else class="text-boost text-xs" />
       </div>
-      <span v-if="isLottery" class="mr-1">
-        {{ hasClaimed ? 'Claimed' : 'You won' }}
-      </span>
-      <span v-else class="mr-1">
-        {{ hasClaimed ? 'Claimed' : 'Eligible to' }}
+      <span class="mr-1">
+        {{ hasClaimed ? 'Claimed' : 'You can claim' }}
       </span>
       <TuneTag class="text-skin-heading text-base">
         {{ reward }} {{ props.boost.token.symbol }}
