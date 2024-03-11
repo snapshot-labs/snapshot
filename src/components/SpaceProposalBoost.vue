@@ -117,8 +117,8 @@ function handleStart() {
 async function loadBoosts() {
   try {
     const response = await getBoosts([props.proposal.id]);
-    const cleanBoosts = sanitizeBoosts(response, [props.proposal]);
-    boosts.value = cleanBoosts;
+    const sanitizedBoosts = sanitizeBoosts(response, [props.proposal]);
+    boosts.value = sanitizedBoosts;
   } catch (e) {
     console.error('Load boosts error:', e);
   }
