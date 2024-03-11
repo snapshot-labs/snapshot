@@ -251,10 +251,12 @@ onBeforeRouteLeave(async () => {
               </div>
             </div>
             <TheActionbar break-point="md">
-              <div class="flex h-full items-center px-[20px] md:px-0">
+              <div
+                class="flex h-full items-center px-[20px] py-[16px] md:px-0 md:pb-0"
+              >
                 <TuneButton
                   v-if="!showUndelegate"
-                  class="w-full md:mt-3"
+                  class="w-full"
                   primary
                   :loading="isLoadingDelegatingTo"
                   @click="handleClickDelegate"
@@ -265,7 +267,7 @@ onBeforeRouteLeave(async () => {
                 <div
                   v-else
                   v-tippy="{ content: 'You can not un-delegate from yourself' }"
-                  class="w-full md:mt-3"
+                  class="w-full"
                 >
                   <TuneButton
                     variant="danger"
@@ -282,7 +284,7 @@ onBeforeRouteLeave(async () => {
         </template>
       </TheLayout>
     </div>
-    <Teleport to="body">
+    <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
         :open="showDelegateModal"
         :space="space"

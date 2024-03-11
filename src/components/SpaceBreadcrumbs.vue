@@ -44,6 +44,19 @@ const pages = computed(() => {
     ];
   }
 
+  if (route.name === 'spaceBoost') {
+    const id = route.params.proposalId as string;
+    pages = [
+      ...basePages,
+      {
+        name: props.proposal?.title,
+        to: `${spaceRoute}/proposal/${id}`,
+        current: false
+      },
+      { name: 'New boost', current: true }
+    ];
+  }
+
   pages = pages.filter((page: any) => page.name);
 
   return pages;
@@ -53,6 +66,6 @@ const pages = computed(() => {
 <template>
   <BaseBreadcrumbs
     :pages="pages"
-    class="px-3 md:px-4 -mt-1 pb-[16px] lg:pb-[20px]"
+    class="px-[20px] md:px-4 -mt-1 pb-[16px] lg:pb-[20px]"
   />
 </template>

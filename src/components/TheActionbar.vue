@@ -17,7 +17,7 @@ const disabled = useBreakpoints(SNAPSHOT_BREAKPOINTS).greater(props.breakPoint);
 <template>
   <Teleport v-if="!disabled" to="#action-bar">
     <div
-      class="fixed bottom-0 z-40 h-[78px] w-full border-t border-skin-border bg-skin-bg sm:w-[calc(100%-60px)]"
+      class="fixed bottom-0 z-40 w-full border-t border-skin-border bg-skin-bg sm:w-[calc(100%-60px)]"
     >
       <slot />
     </div>

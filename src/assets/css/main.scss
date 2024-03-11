@@ -15,10 +15,13 @@
   --text-color: #8b949e;
   --link-color: #ffffff;
   --heading-color: #ffffff;
-  --border-color: #2d2d2d;
+  --border-color: #343434;
   --header-bg: #1c1b20;
   --block-bg: transparent;
   --shadow-color: rgba(255, 255, 255, 0.036);
+  --border-color-soft: rgba(45, 45, 45, 0.8);
+  --border-color-subtle: rgba(45, 45, 45, 0.5);
+  --border-color-faint: rgba(45, 45, 45, 0.3);
 }
 
 [data-color-scheme='light'] {
@@ -32,6 +35,9 @@
   --header-bg: white;
   --block-bg: transparent;
   --shadow-color: #0001;
+  --border-color-soft: rgb(224, 224, 224, 0.6);
+  --border-color-subtle: rgb(224, 224, 224, 0.32);
+  --border-color-faint: rgb(224, 224, 224, 0.12);
 }
 
 @layer base {
@@ -56,6 +62,7 @@
 
   html {
     scrollbar-gutter: stable;
+    overflow: visible !important;
   }
 
   *,

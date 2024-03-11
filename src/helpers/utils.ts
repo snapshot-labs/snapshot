@@ -95,6 +95,15 @@ export function explorerUrl(network, str: string, type = 'address'): string {
   return `${networks[network].explorer.url}/${type}/${str}`;
 }
 
+export function openProfile(address: string, domain: string, router: any) {
+  return domain
+    ? window.open(`https://snapshot.org/#/profile/${address}`, '_blank')
+    : router.push({
+        name: 'profileActivity',
+        params: { address: address }
+      });
+}
+
 export function calcFromSeconds(value, unit) {
   if (unit === 'm') return Math.floor(value / 60);
   if (unit === 'h') return Math.floor(value / (60 * 60));
