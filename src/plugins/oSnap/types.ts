@@ -77,7 +77,8 @@ export type Transaction =
   | RawTransaction
   | ContractInteractionTransaction
   | TransferNftTransaction
-  | TransferFundsTransaction;
+  | TransferFundsTransaction
+  | SafeImportTransaction;
 
 /**
  * Represents the fields that all transactions share.
@@ -92,6 +93,24 @@ export type BaseTransaction = {
   data: string;
   formatted: OptimisticGovernorTransaction;
   isValid?: boolean;
+};
+/**
+ * Represents a transaction that interacts with an arbitrary contract from safe json file import.
+ *
+ * @field `abi` field is the ABI of the contract that the transaction interacts with, represented as a JSON string.
+ *
+ * @field `methodName` field is the name of the method on the contract that the transaction calls.
+ *
+ * @field `parameters` field is an array of strings that represent the parameters that the method takes. NOTE: some methods take arrays or tuples as arguments, so some of these strings in the array may be JSON formatted arrays or tuples.
+ */
+export type SafeImportTransaction = BaseTransaction & {
+  type: 'safeImport';
+  methodName?: string;
+  parameters?: Array<{
+    name: string;
+    type: string;
+    value: string | boolean | number | undefined | null;
+  }>
 };
 
 /**
@@ -448,3 +467,69 @@ export type SpaceConfigResponse =
       bondToken: boolean;
       bondAmount: boolean;
     };
+
+export namespace GnosisSafe { 
+  export interface ProposedTransaction {
+    id: number
+    contractInterface: ContractInterface | null
+    description: {
+      to: string
+      value: string
+      customTransactionData?: string
+      contractMethod?: ContractMethod
+      contractFieldsValues?: Record<string, string>
+      contractMethodIndex?: string
+      nativeCurrencySymbol?: string
+      networkPrefix?: string
+    }
+    raw: { to: string; value: string; data: string }
+  }
+
+  export interface ContractInterface {
+    methods: ContractMethod[]
+  }
+
+  export interface Batch {
+    id: number | string
+    name: string
+    transactions: ProposedTransaction[]
+  }
+
+  export interface BatchFile {
+    version: string
+    chainId: string
+    createdAt: number
+    meta: BatchFileMeta
+    transactions: BatchTransaction[]
+  }
+
+  export interface BatchFileMeta {
+    txBuilderVersion?: string
+    checksum?: string
+    createdFromSafeAddress?: string
+    createdFromOwnerAddress?: string
+    name: string
+    description?: string
+  }
+
+  export interface BatchTransaction {
+    to: string
+    value: string
+    data?: string
+    contractMethod?: ContractMethod
+    contractInputsValues?: { [key: string]: string }
+  }
+
+  export interface ContractMethod {
+    inputs: ContractInput[]
+    name: string
+    payable: boolean
+  }
+
+  export interface ContractInput {
+    internalType: string
+    name: string
+    type: string
+    components?: ContractInput[]
+  }
+}

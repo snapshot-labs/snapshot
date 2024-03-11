@@ -7,7 +7,8 @@ import {
   RawTransaction,
   Token,
   TransferFundsTransaction,
-  TransferNftTransaction
+  TransferNftTransaction,
+  SafeImportTransaction,
 } from '../types';
 import { encodeMethodAndParams } from './abi';
 
@@ -165,4 +166,23 @@ export function parseValueInput(input: string) {
     return parseAmount('0');
   }
   return parseAmount(input);
+}
+
+export function createSafeImportTransaction(params:{
+  to: string;
+  value: string;
+  data: string,
+  methodName:string,
+  parameters: string[];
+}):SafeImportTransaction {
+  const formatted = createFormattedOptimisticGovernorTransaction({
+    to:params.to,
+    value:params.value,
+    data:params.data,
+  });
+  return {
+    type:'safeImport',
+    ...params,
+    formatted
+  }
 }

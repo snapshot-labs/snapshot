@@ -16,6 +16,7 @@ import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
+import SafeImport from './SafeImport.vue';
 
 const props = defineProps<{
   transaction: TTransaction;
@@ -105,6 +106,13 @@ function setTransactionAsInvalid() {
 
     <RawTransaction
       v-if="transaction.type === 'raw'"
+      :transaction="newTransaction as TRawTransaction"
+      :setTransactionAsInvalid="setTransactionAsInvalid"
+      @update-transaction="updateTransaction"
+    />
+
+    <SafeImport
+      v-if="transaction.type === 'safeImport'"
       :transaction="newTransaction as TRawTransaction"
       :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"

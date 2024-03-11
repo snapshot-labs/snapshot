@@ -36,6 +36,11 @@ const transactionTypesWithDetails: {
     type: 'raw',
     title: 'Raw transaction',
     description: 'Send a raw transaction'
+  },
+  {
+    type: 'safeImport',
+    title: 'Import Safe File',
+    description: 'Import JSON file exported from Gnosis Safe transaction builder'
   }
 ];
 </script>
