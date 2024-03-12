@@ -3,20 +3,27 @@ import { BoostSubgraph } from '@/helpers/boost/types';
 import { Proposal } from '@/helpers/interfaces';
 import { TWO_WEEKS } from '@/helpers/constants';
 
-export function useBoost({ spaceId }: { spaceId: string }) {
+export function useBoost() {
   const { env } = useApp();
 
-  const isWhitelisted = computed(() => {
-    return !!BOOST_WHITELIST_SETTINGS[env]?.[spaceId];
-  });
+  function isWhitelisted(spaceId: string) {
+    return !!BOOST_WHITELIST_SETTINGS[env][spaceId];
+  }
 
-  const bribeDisabled = computed(() => {
-    return BOOST_WHITELIST_SETTINGS[env]?.[spaceId]?.bribeDisabled;
-  });
+  function bribeDisabled(spaceId: string) {
+    return BOOST_WHITELIST_SETTINGS[env][spaceId]?.bribeDisabled;
+  }
 
-  function sanitizeBoosts(boosts: BoostSubgraph[], proposals: Proposal[]) {
+  function sanitizeBoosts(
+    boosts: BoostSubgraph[],
+    proposals: Proposal[],
+    spaceId: string
+  ) {
     return boosts.filter(boost => {
-      if (bribeDisabled.value && boost.strategy.eligibility.type === 'bribe') {
+      if (
+        bribeDisabled(spaceId) &&
+        boost.strategy.eligibility.type === 'bribe'
+      ) {
         return false;
       }
       if (

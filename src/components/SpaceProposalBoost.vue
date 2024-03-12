@@ -31,9 +31,7 @@ const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
-const { sanitizeBoosts } = useBoost({
-  spaceId: props.proposal.space.id
-});
+const { sanitizeBoosts } = useBoost();
 const dontShowModalAgain = useStorage(
   'snapshot.boosts-modal-dont-show-again',
   false
@@ -117,7 +115,11 @@ function handleStart() {
 async function loadBoosts() {
   try {
     const response = await getBoosts([props.proposal.id]);
-    const sanitizedBoosts = sanitizeBoosts(response, [props.proposal]);
+    const sanitizedBoosts = sanitizeBoosts(
+      response,
+      [props.proposal],
+      props.proposal.space.id
+    );
     boosts.value = sanitizedBoosts;
   } catch (e) {
     console.error('Load boosts error:', e);

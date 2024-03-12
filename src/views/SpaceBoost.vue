@@ -62,7 +62,7 @@ const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
-const { bribeDisabled } = useBoost({ spaceId: props.space.id });
+const { bribeDisabled } = useBoost();
 const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 
 const proposal = ref();
@@ -103,7 +103,7 @@ const eligibilityOptions = computed(() => {
       return {
         value: index + 1,
         name: `Who votes '${choice}'`,
-        extras: { disabled: bribeDisabled.value }
+        extras: { disabled: bribeDisabled(props.space.id) }
       };
     }
   );
@@ -655,7 +655,7 @@ watch(
               :items="eligibilityOptions"
               label="Eligible to"
             />
-            <TuneBlockFooter v-if="bribeDisabled">
+            <TuneBlockFooter v-if="bribeDisabled(space.id)">
               <BaseMessage level="info">
                 Selecting a specific choice is disabled for the
                 <span class="font-semibold">
