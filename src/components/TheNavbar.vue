@@ -50,7 +50,7 @@ watch(
   </div>
   <div
     v-if="pendingTransactions.length > 0"
-    class="flex flex-row items-center justify-center gap-x-3 bg-skin-border py-2 text-center text-skin-heading"
+    class="flex items-center justify-center gap-x-2 bg-skin-border py-2 text-center text-skin-link"
     :class="{
       'cursor-pointer': pendingTransactions.length > 0
     }"
@@ -60,7 +60,7 @@ watch(
         : null
     "
   >
-    <LoadingSpinner class="mb-1" />
+    <TuneLoadingSpinner class="text-skin-link" />
     <span>
       {{ $t('setup.pendingTransactions') }}:
       {{ pendingTransactions.length }}
