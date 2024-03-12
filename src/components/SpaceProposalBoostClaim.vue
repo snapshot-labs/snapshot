@@ -175,6 +175,7 @@ const timeLeftToClaim = computed(() => {
       @close="claimModalOpen = false"
       @claim-all="handleClaimAll"
       @reload="$emit('reload')"
+      @open-success="claimSuccessOpen = true"
     />
   </div>
 </template>

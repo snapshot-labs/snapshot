@@ -17,7 +17,7 @@ const props = defineProps<{
   loadingClaimAll: boolean;
 }>();
 
-defineEmits(['close', 'claimAll', 'reload']);
+const emit = defineEmits(['close', 'claimAll', 'reload', 'openSuccess']);
 
 const allOnSameNetwork = computed(() => {
   const chainIds = new Set(props.claimableBoosts.map(boost => boost.chainId));
@@ -51,6 +51,18 @@ const boostsSorted = computed(() => {
       )
     );
 });
+
+function handleOpenSuccess() {
+  emit('openSuccess');
+  emit('close');
+}
+
+watch(
+  () => props.claimableBoosts,
+  () => {
+    if (props.claimableBoosts.length === 0) handleOpenSuccess();
+  }
+);
 </script>
 
 <template>
