@@ -177,7 +177,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           <SpaceProposalVotes :space="space" :proposal="proposal" />
 
           <SpaceProposalPlugins
-            v-if="proposal?.plugins && loadedResults && results"
+            v-if="Object.keys(space.plugins).length && loadedResults && results"
             :id="proposalId"
             :space="space"
             :proposal="proposal"
@@ -208,7 +208,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           @reload="reloadProposal"
         />
         <SpaceProposalPluginsSidebar
-          v-if="proposal.plugins && loadedResults && results"
+          v-if="Object.keys(space.plugins).length && loadedResults && results"
           :id="proposalId"
           :space="space"
           :proposal="proposal"
