@@ -31,7 +31,9 @@ const router = useRouter();
 const { formatRelativeTime, longRelativeTimeFormatter } = useIntl();
 const { userVote, loadUserVote } = useProposalVotes(props.proposal);
 const { web3Account } = useWeb3();
-const { bribeDisabled } = useBoost({ spaceId: props.proposal.space.id });
+const { sanitizeBoosts } = useBoost({
+  spaceId: props.proposal.space.id
+});
 const dontShowModalAgain = useStorage(
   'snapshot.boosts-modal-dont-show-again',
   false
@@ -113,16 +115,10 @@ function handleStart() {
 }
 
 async function loadBoosts() {
-  // TODO: Filter boosts that where start doesn't match proposal end
   try {
     const response = await getBoosts([props.proposal.id]);
-    const cleanBoosts = response.filter(boost => {
-      if (bribeDisabled.value) {
-        return boost.strategy.eligibility.type !== 'bribe';
-      }
-      return true;
-    });
-    boosts.value = cleanBoosts;
+    const sanitizedBoosts = sanitizeBoosts(response, [props.proposal]);
+    boosts.value = sanitizedBoosts;
   } catch (e) {
     console.error('Load boosts error:', e);
   }
