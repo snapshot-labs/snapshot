@@ -2,7 +2,7 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { DelegationTypes } from '../helpers/delegationV2';
+import { DelegationTypes } from '@/helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',

@@ -2,7 +2,7 @@
 import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
-import { DelegationTypes } from '';
+import { DelegationTypes } from '@/helpers/delegationV2';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -28,6 +28,7 @@ const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { getStatement } = useStatement();
+console.log('space', props.space);
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);

@@ -1,5 +1,5 @@
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
-import { DelegationWriter } from '../delegation';
+import { DelegationWriter } from '@/helpers/delegationV2/delegation';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 const sendSetDelegationTx =
