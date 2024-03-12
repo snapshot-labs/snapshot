@@ -65,7 +65,7 @@ const boostsSorted = computed(() => {
       </TuneModalDescription>
     </div>
     <div
-      class="px-3 space-y-2 max-h-[calc(100vh-255px)] md:max-h-[200px] overflow-y-auto"
+      class="px-3 space-y-2 max-h-[calc(100vh-255px)] md:max-h-[300px] overflow-y-auto"
     >
       <div v-for="boost in boostsSorted" :key="boost.id">
         <SpaceProposalBoostClaimModalItem
