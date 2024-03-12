@@ -5,17 +5,19 @@ import {
   BoostSubgraph
 } from '@/helpers/boost/types';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   open: boolean;
+  proposal: Proposal;
   boosts: BoostSubgraph[];
   claimableBoosts: BoostSubgraph[];
   claims: BoostClaimSubgraph[];
   rewards: BoostRewardGuard[];
-  loadingClaim: boolean;
+  loadingClaimAll: boolean;
 }>();
 
-defineEmits(['close', 'claimAll', 'claim']);
+defineEmits(['close', 'claimAll', 'reload']);
 
 const allOnSameNetwork = computed(() => {
   const chainIds = new Set(props.boosts.map(boost => boost.chainId));
@@ -67,11 +69,11 @@ const boostsSorted = computed(() => {
     >
       <div v-for="boost in boostsSorted" :key="boost.id">
         <SpaceProposalBoostClaimModalItem
+          :proposal="proposal"
           :boost="boost"
           :rewards="rewards"
           :claims="claims"
-          :loading="loadingClaim"
-          @claim="$emit('claim', boost)"
+          @reload="$emit('reload')"
         />
       </div>
     </div>
@@ -79,7 +81,7 @@ const boostsSorted = computed(() => {
       <TuneButton
         v-if="allOnSameNetwork && claimableBoosts.length > 1"
         class="w-full"
-        :loading="loadingClaim"
+        :loading="loadingClaimAll"
         @click="$emit('claimAll')"
       >
         Claim all

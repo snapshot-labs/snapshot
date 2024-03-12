@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Proposal } from '@/helpers/interfaces';
-import { getVouchers } from '@/helpers/boost/api';
-import { claimAllTokens, claimTokens } from '@/helpers/boost';
+import { claimAllTokens } from '@/helpers/boost';
 import { toChecksumAddress } from '@/helpers/utils';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import {
@@ -24,12 +23,13 @@ const emit = defineEmits(['reload']);
 const claimSuccessOpen = ref(false);
 const claimTx = ref();
 const claimModalOpen = ref(false);
-const loadingClaim = ref(false);
+const loadingClaimAll = ref(false);
 
 const auth = getInstance();
 const { web3Account, web3 } = useWeb3();
 const { formatDuration } = useIntl();
 const { changeNetwork } = useChangeNetwork();
+const { loadVouchers } = useBoost();
 
 const unclaimedBoostsWithReward = computed(() => {
   if (!props.rewards.length) return [];
@@ -53,8 +53,11 @@ async function handleClaimAll() {
   }
 
   try {
-    loadingClaim.value = true;
-    const vouchers = await loadVouchers(unclaimedBoostsWithReward.value);
+    loadingClaimAll.value = true;
+    const vouchers = await loadVouchers(
+      unclaimedBoostsWithReward.value,
+      props.proposal.id
+    );
     if (!vouchers?.length) throw new Error('No vouchers found');
 
     const boosts = vouchers.map(voucher => ({
@@ -79,58 +82,7 @@ async function handleClaimAll() {
     console.error('Claim error:', e);
   } finally {
     claimTx.value = undefined;
-    loadingClaim.value = false;
-  }
-}
-
-async function handleClaim(boost: BoostSubgraph) {
-  if (boost.chainId !== web3.value.network.chainId.toString()) {
-    await changeNetwork(boost.chainId);
-    handleClaim(boost);
-  }
-
-  try {
-    loadingClaim.value = true;
-    const response = await loadVouchers([boost]);
-    if (!response) throw new Error('Failed to get vouchers');
-
-    const voucher = response[0];
-    const signature = voucher.signature;
-    const chainId = voucher.chain_id;
-    claimTx.value = await claimTokens(
-      auth.web3,
-      chainId,
-      {
-        boostId: voucher.boost_id,
-        recipient: toChecksumAddress(web3Account.value),
-        amount: voucher.reward
-      },
-      signature
-    );
-
-    await claimTx.value.wait();
-    claimModalOpen.value = false;
-    claimSuccessOpen.value = true;
-    emit('reload');
-  } catch (e: any) {
-    console.error('Claim error:', e);
-  } finally {
-    claimTx.value = undefined;
-    loadingClaim.value = false;
-  }
-}
-
-async function loadVouchers(boosts: BoostSubgraph[]) {
-  try {
-    const vouchers = await getVouchers(
-      props.proposal.id,
-      web3Account.value,
-      boosts
-    );
-
-    return vouchers;
-  } catch (e) {
-    console.error('Get vouchers error:', e);
+    loadingClaimAll.value = false;
   }
 }
 
@@ -214,14 +166,15 @@ const timeLeftToClaim = computed(() => {
     />
     <SpaceProposalBoostClaimModal
       :open="claimModalOpen"
+      :proposal="proposal"
       :boosts="eligibleBoosts"
       :claimable-boosts="unclaimedBoostsWithReward"
       :claims="claims"
       :rewards="rewards"
-      :loading-claim="loadingClaim"
+      :loading-claim-all="loadingClaimAll"
       @close="claimModalOpen = false"
       @claim-all="handleClaimAll"
-      @claim="handleClaim"
+      @reload="$emit('reload')"
     />
   </div>
 </template>

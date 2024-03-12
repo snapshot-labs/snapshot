@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { formatUnits } from '@ethersproject/units';
+import { Proposal } from '@/helpers/interfaces';
+import { explorerUrl } from '@/helpers/utils';
 import {
   BoostClaimSubgraph,
   BoostRewardGuard,
@@ -7,14 +9,15 @@ import {
 } from '@/helpers/boost/types';
 
 const props = defineProps<{
+  proposal: Proposal;
   boost: BoostSubgraph;
   rewards: BoostRewardGuard[];
   claims: BoostClaimSubgraph[];
-  loading: boolean;
 }>();
 
-defineEmits(['claim']);
+const emit = defineEmits(['reload']);
 
+const { handleClaim, loadingClaim } = useBoost();
 const { formatNumber, getNumberFormatter } = useIntl();
 
 const reward = computed(() => {
@@ -33,12 +36,21 @@ const reward = computed(() => {
   );
 });
 
-const hasClaimed = computed(() => {
-  return props.claims.some(
+const claim = computed(() => {
+  return props.claims.find(
     claim =>
       claim.boost.id === props.boost.id && claim.chainId === props.boost.chainId
   );
 });
+
+const hasClaimed = computed(() => {
+  return claim.value !== undefined;
+});
+
+async function handleClaimAndReload() {
+  await handleClaim(props.boost, props.proposal.id);
+  emit('reload');
+}
 </script>
 
 <template>
@@ -62,7 +74,7 @@ const hasClaimed = computed(() => {
         <i-ho-gift v-else class="text-boost text-xs" />
       </div>
       <span class="mr-1">
-        {{ hasClaimed ? 'Claimed' : 'You can claim' }}
+        {{ hasClaimed ? 'Claimed' : 'Reward' }}
       </span>
       <TuneTag class="text-skin-heading text-base">
         {{ reward }} {{ props.boost.token.symbol }}
@@ -71,11 +83,16 @@ const hasClaimed = computed(() => {
 
     <TuneButton
       v-if="!hasClaimed && Number(reward) > 0"
-      :loading="loading"
+      :loading="loadingClaim"
       class="h-[32px] px-[12px] bg-skin-bg"
-      @click="$emit('claim', boost)"
+      @click="handleClaimAndReload"
     >
       Claim
     </TuneButton>
+    <BaseLink
+      v-else-if="claim?.transactionHash"
+      :link="explorerUrl(boost.chainId, claim.transactionHash, 'tx')"
+      >View
+    </BaseLink>
   </div>
 </template>
