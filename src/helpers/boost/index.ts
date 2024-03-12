@@ -20,13 +20,17 @@ export const SNAPSHOT_GUARD_ADDRESS =
 export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
   production: {
+    // External testers
+    'community.daosquare.eth': { bribeDisabled: true },
+    // Internal testers
     'testsnap.eth': {},
     'fabien.eth': {},
     'pscott.eth': {},
     'gillvill.eth': {},
     '0cf5e.eth': {},
     'thanku.eth': {},
-    'test.wa0x6e.eth': {}
+    'test.wa0x6e.eth': {},
+    'aurelianob.eth': {}
   }
 };
 
