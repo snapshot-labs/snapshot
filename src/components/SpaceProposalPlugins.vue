@@ -15,13 +15,21 @@ const components = getPluginComponents(
   'Proposal',
   Object.keys(props.space.plugins)
 );
+
+const showPlugin = computed(() => {
+  if (props.space.plugins.hasOwnProperty('oSnap'))
+    return props.proposal.plugins.hasOwnProperty('oSnap');
+  else return true;
+});
 </script>
 
 <template>
-  <component
-    :is="component"
-    v-for="(component, key) in components"
-    :key="key"
-    v-bind="props"
-  />
+  <div v-if="showPlugin">
+    <component
+      :is="component"
+      v-for="(component, key) in components"
+      :key="key"
+      v-bind="props"
+    />
+  </div>
 </template>
