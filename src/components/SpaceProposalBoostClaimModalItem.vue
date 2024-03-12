@@ -60,7 +60,6 @@ async function handleClaimAndReload() {
 </script>
 
 <template>
-  <!-- TODO: Add network and boost ID -->
   <div
     class="flex items-center justify-between border rounded-xl p-[12px]"
     :class="{
