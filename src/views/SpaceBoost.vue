@@ -102,7 +102,7 @@ const eligibilityOptions = computed(() => {
     (choice: string, index: number) => {
       return {
         value: index + 1,
-        name: `Who votes '${choice}'`,
+        label: `Who votes '${choice}'`,
         extras: { disabled: bribeDisabled(props.space.id) }
       };
     }
@@ -111,7 +111,7 @@ const eligibilityOptions = computed(() => {
   return [
     {
       value: 'any',
-      name: 'Anyone who votes'
+      label: 'Anyone who votes'
     },
     ...proposalChoices
   ];
@@ -650,7 +650,7 @@ watch(
               />
             </template>
 
-            <TuneListbox
+            <TuneSelect
               v-model="form.eligibility.choice"
               :items="eligibilityOptions"
               label="Eligible to"

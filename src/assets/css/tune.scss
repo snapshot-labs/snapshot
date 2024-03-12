@@ -97,7 +97,7 @@
 }
 
 .tune-select {
-  @apply text-left;
+  @apply form-select text-left px-3 border border-skin-border w-full rounded-full outline-none focus:ring-0 focus:border-skin-text text-skin-link bg-skin-bg text-base;
 
   &.disabled {
     @apply cursor-not-allowed;
