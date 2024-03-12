@@ -1,6 +1,5 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
-import { DelegationReader } from '../delegation';
-import { BigNumber } from '@ethersproject/bignumber';
+import { DelegationReader } from '@/helpers/delegationV2/delegation';
 
 const DELEGATE_REGISTRY_BACKEND_URL =
   'https://delegate-registry-backend.vercel.app';

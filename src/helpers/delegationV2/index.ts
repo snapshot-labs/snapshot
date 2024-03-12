@@ -1,7 +1,10 @@
-import { DelegationReader, DelegationWriter } from './delegation';
-import * as compound from './compound';
-import * as delegateRegistry2 from './delegateRegistryV2';
-import { ExtendedSpace } from '../interfaces';
+import {
+  DelegationReader,
+  DelegationWriter
+} from '@/helpers/delegationV2/delegation';
+import * as compound from '@/helpers/delegationV2/compound';
+import * as delegateRegistry2 from '@/helpers/delegationV2/delegateRegistryV2';
+import { ExtendedSpace } from '@/helpers/interfaces';
 
 export enum DelegationTypes {
   COMPOUND = 'compound-governor',

@@ -1,5 +1,5 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
-import { DelegationReader } from '../delegation';
+import { DelegationReader } from '@/helpers/delegationV2/delegation';
 import { subgraphRequest } from '@snapshot-labs/snapshot.js/src/utils';
 import { getBalanceQuery, getDelegateQuery, getDelegatesQuery } from './querys';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
