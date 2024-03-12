@@ -17,8 +17,8 @@ const components = getPluginComponents(
 );
 
 const showPlugin = computed(() => {
-  if (Object.keys(props.space.plugins).includes('oSnap'))
-    return Object.keys(props.proposal.plugins).includes('oSnap');
+  if (props.space.plugins.hasOwnProperty('oSnap'))
+    return props.proposal.plugins.hasOwnProperty('oSnap');
   else return true;
 });
 </script>
