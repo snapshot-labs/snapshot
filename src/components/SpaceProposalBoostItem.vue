@@ -431,7 +431,7 @@ const { pause } = useIntervalFn(() => {
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
           :show-winners="
-            !lotteryEpochNotFinalized && isLottery && !winnersError
+            !lotteryEpochNotFinalized && isLottery && !winnersError && isFinal
           "
           @open-winners-modal="openWinnersModal = true"
         />
