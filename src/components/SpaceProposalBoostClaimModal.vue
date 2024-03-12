@@ -5,20 +5,22 @@ import {
   BoostSubgraph
 } from '@/helpers/boost/types';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { Proposal } from '@/helpers/interfaces';
 
 const props = defineProps<{
   open: boolean;
+  proposal: Proposal;
   boosts: BoostSubgraph[];
   claimableBoosts: BoostSubgraph[];
   claims: BoostClaimSubgraph[];
   rewards: BoostRewardGuard[];
-  loadingClaim: boolean;
+  loadingClaimAll: boolean;
 }>();
 
-defineEmits(['close', 'claimAll', 'claim']);
+const emit = defineEmits(['close', 'claimAll', 'reload', 'openSuccess']);
 
 const allOnSameNetwork = computed(() => {
-  const chainIds = new Set(props.boosts.map(boost => boost.chainId));
+  const chainIds = new Set(props.claimableBoosts.map(boost => boost.chainId));
   return chainIds.size === 1;
 });
 
@@ -49,6 +51,18 @@ const boostsSorted = computed(() => {
       )
     );
 });
+
+function handleOpenSuccess() {
+  emit('openSuccess');
+  emit('close');
+}
+
+watch(
+  () => props.claimableBoosts,
+  () => {
+    if (props.claimableBoosts.length === 0) handleOpenSuccess();
+  }
+);
 </script>
 
 <template>
@@ -63,15 +77,15 @@ const boostsSorted = computed(() => {
       </TuneModalDescription>
     </div>
     <div
-      class="px-3 space-y-2 max-h-[calc(100vh-130px)] md:max-h-[200px] overflow-y-auto"
+      class="px-3 space-y-2 max-h-[calc(100vh-255px)] md:max-h-[300px] overflow-y-auto"
     >
       <div v-for="boost in boostsSorted" :key="boost.id">
         <SpaceProposalBoostClaimModalItem
+          :proposal="proposal"
           :boost="boost"
           :rewards="rewards"
           :claims="claims"
-          :loading="loadingClaim"
-          @claim="$emit('claim', boost)"
+          @reload="$emit('reload')"
         />
       </div>
     </div>
@@ -79,7 +93,7 @@ const boostsSorted = computed(() => {
       <TuneButton
         v-if="allOnSameNetwork && claimableBoosts.length > 1"
         class="w-full"
-        :loading="loadingClaim"
+        :loading="loadingClaimAll"
         @click="$emit('claimAll')"
       >
         Claim all

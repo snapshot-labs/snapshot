@@ -1,22 +1,37 @@
-import { BOOST_WHITELIST_SETTINGS } from '@/helpers/boost';
+import { BOOST_WHITELIST_SETTINGS, claimTokens } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
 import { Proposal } from '@/helpers/interfaces';
 import { TWO_WEEKS } from '@/helpers/constants';
+import { getVouchers } from '@/helpers/boost/api';
+import { toChecksumAddress } from '@/helpers/utils';
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
-export function useBoost({ spaceId }: { spaceId: string }) {
+export function useBoost() {
+  const auth = getInstance();
   const { env } = useApp();
+  const { web3Account, web3 } = useWeb3();
+  const { changeNetwork } = useChangeNetwork();
 
-  const isWhitelisted = computed(() => {
-    return !!BOOST_WHITELIST_SETTINGS[env]?.[spaceId];
-  });
+  const loadingClaim = ref(false);
 
-  const bribeDisabled = computed(() => {
-    return BOOST_WHITELIST_SETTINGS[env]?.[spaceId]?.bribeDisabled;
-  });
+  function isWhitelisted(spaceId: string) {
+    return !!BOOST_WHITELIST_SETTINGS[env][spaceId];
+  }
 
-  function sanitizeBoosts(boosts: BoostSubgraph[], proposals: Proposal[]) {
+  function bribeDisabled(spaceId: string) {
+    return BOOST_WHITELIST_SETTINGS[env][spaceId]?.bribeDisabled;
+  }
+
+  function sanitizeBoosts(
+    boosts: BoostSubgraph[],
+    proposals: Proposal[],
+    spaceId: string
+  ) {
     return boosts.filter(boost => {
-      if (bribeDisabled.value && boost.strategy.eligibility.type === 'bribe') {
+      if (
+        bribeDisabled(spaceId) &&
+        boost.strategy.eligibility.type === 'bribe'
+      ) {
         return false;
       }
       if (
@@ -32,9 +47,54 @@ export function useBoost({ spaceId }: { spaceId: string }) {
     });
   }
 
+  async function loadVouchers(boosts: BoostSubgraph[], proposalId: string) {
+    try {
+      const vouchers = await getVouchers(proposalId, web3Account.value, boosts);
+
+      return vouchers;
+    } catch (e) {
+      console.error('Get vouchers error:', e);
+    }
+  }
+
+  async function handleClaim(boost: BoostSubgraph, proposalId: string) {
+    if (boost.chainId !== web3.value.network.chainId.toString()) {
+      await changeNetwork(boost.chainId);
+      handleClaim(boost, proposalId);
+    }
+
+    try {
+      loadingClaim.value = true;
+      const response = await loadVouchers([boost], proposalId);
+      if (!response) throw new Error('Failed to get vouchers');
+
+      const voucher = response[0];
+      const signature = voucher.signature;
+      const chainId = voucher.chain_id;
+      const tx = await claimTokens(
+        auth.web3,
+        chainId,
+        {
+          boostId: voucher.boost_id,
+          recipient: toChecksumAddress(web3Account.value),
+          amount: voucher.reward
+        },
+        signature
+      );
+      await tx.wait();
+    } catch (e: any) {
+      console.error('Claim error:', e);
+    } finally {
+      loadingClaim.value = false;
+    }
+  }
+
   return {
     isWhitelisted,
     bribeDisabled,
-    sanitizeBoosts
+    sanitizeBoosts,
+    loadVouchers,
+    handleClaim,
+    loadingClaim
   };
 }
