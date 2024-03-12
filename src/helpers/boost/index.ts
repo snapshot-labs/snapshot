@@ -21,7 +21,7 @@ export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
   production: {
     // External testers
-    'community.daosquare.eth': { bribeDisabled: true },
+    'community.daosquare.eth': {},
     // Internal testers
     'testsnap.eth': {},
     'fabien.eth': {},

@@ -399,7 +399,7 @@ const { pause } = useIntervalFn(() => {
             >
               <i-ho-fire class="text-xs" />
               <template v-if="reward && isFinal">
-                Claim
+                Reward
                 {{ `${rewardFormatted} ${boost.token.symbol}` }}
                 <button
                   v-if="isLottery"
@@ -431,7 +431,7 @@ const { pause } = useIntervalFn(() => {
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
           :show-winners="
-            !lotteryEpochNotFinalized && isLottery && !winnersError
+            !lotteryEpochNotFinalized && isLottery && !winnersError && isFinal
           "
           @open-winners-modal="openWinnersModal = true"
         />

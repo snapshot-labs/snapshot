@@ -24,7 +24,7 @@ useMeta({
 const route = useRoute();
 const { web3, web3Account } = useWeb3();
 const { modalEmailOpen } = useModal();
-const { isWhitelisted } = useBoost({ spaceId: props.space.id });
+const { isWhitelisted } = useBoost();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -58,7 +58,7 @@ const boostEnabled = computed(() => {
   return (
     (props.proposal.type === 'basic' ||
       props.proposal.type === 'single-choice') &&
-    isWhitelisted.value &&
+    isWhitelisted(props.space.id) &&
     props.proposal.privacy !== 'shutter'
   );
 });
