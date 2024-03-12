@@ -60,7 +60,7 @@ function handleOpenSuccess() {
 watch(
   () => props.claimableBoosts,
   () => {
-    if (props.claimableBoosts.length === 0) handleOpenSuccess();
+    if (props.open && props.claimableBoosts.length === 0) handleOpenSuccess();
   }
 );
 </script>
