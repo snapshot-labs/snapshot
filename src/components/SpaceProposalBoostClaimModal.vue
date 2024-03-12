@@ -20,7 +20,7 @@ const props = defineProps<{
 defineEmits(['close', 'claimAll', 'reload']);
 
 const allOnSameNetwork = computed(() => {
-  const chainIds = new Set(props.boosts.map(boost => boost.chainId));
+  const chainIds = new Set(props.claimableBoosts.map(boost => boost.chainId));
   return chainIds.size === 1;
 });
 
