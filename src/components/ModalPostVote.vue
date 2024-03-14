@@ -2,7 +2,7 @@
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 
-const { shareVote, shareProposalTwitter, shareProposalHey } = useSharing();
+const { shareVote, shareProposalX, shareProposalHey } = useSharing();
 const { web3Account } = useWeb3();
 const { userState, loadEmailSubscriptions, initialized } =
   useEmailSubscription();
@@ -28,7 +28,7 @@ const imgPath = computed(() => {
     : '/stickers/hooray.png';
 });
 
-function share(shareTo: 'twitter' | 'hey') {
+function share(shareTo: 'x' | 'hey') {
   shareVote(shareTo, {
     space: props.space,
     proposal: props.proposal,
@@ -75,12 +75,12 @@ onMounted(() => {
           class="flex !h-[42px] w-full items-center justify-center gap-2"
           @click="
             props.waitingForSigners
-              ? shareProposalTwitter(space, proposal)
-              : share('twitter')
+              ? shareProposalX(space, proposal)
+              : share('x')
           "
         >
-          <i-s-twitter class="text-md text-[#1DA1F2]" />
-          {{ $t('shareOnTwitter') }}
+          <i-s-x class="text-md" />
+          Share on X
         </TuneButton>
         <TuneButton
           class="flex !h-[42px] w-full items-center justify-center gap-2"

@@ -6,12 +6,12 @@ export function useSharing() {
 
   const sharingItems = [
     {
-      text: 'Twitter',
-      action: 'shareProposalTwitter',
-      extras: { icon: 'twitter' }
+      text: 'Share on X',
+      action: 'shareProposalX',
+      extras: { icon: 'x' }
     },
     {
-      text: 'Hey',
+      text: 'Share on Hey',
       action: 'shareProposalHey',
       extras: { icon: 'hey' }
     },
@@ -39,10 +39,7 @@ export function useSharing() {
     });
   }
 
-  function shareClaim(
-    shareTo: 'twitter' | 'hey',
-    payload: { proposal: Proposal }
-  ) {
+  function shareClaim(shareTo: 'x' | 'hey', payload: { proposal: Proposal }) {
     const postText = getClaimedText(shareTo, payload);
 
     if (window && shareTo === 'hey') return shareHey(postText);
@@ -52,11 +49,11 @@ export function useSharing() {
         text: postText,
         url: proposalUrl(payload.proposal.space.id, payload.proposal)
       });
-    if (window && shareTo === 'twitter') return shareTwitter(postText);
+    if (window && shareTo === 'x') return shareX(postText);
   }
 
   function getClaimedText(
-    shareTo: 'twitter' | 'hey',
+    shareTo: 'x' | 'hey',
     payload: { proposal: Proposal }
   ): string {
     const claimedText = `I just claimed my reward for voting on`;
@@ -76,7 +73,7 @@ export function useSharing() {
       )}&hashtags=${hashTag}`;
     if (isSupported.value)
       return `${claimedText} "${payload.proposal.title}" ${spaceHandle} #${hashTag}`;
-    if (shareTo === 'twitter')
+    if (shareTo === 'x')
       return `${encodeURIComponent(claimedText)}%20"${encodeURIComponent(
         payload.proposal.title
       )}"%20${encodedProposalUrl(
@@ -88,7 +85,7 @@ export function useSharing() {
   }
 
   function shareVote(
-    shareTo: 'twitter' | 'hey',
+    shareTo: 'x' | 'hey',
     payload: { space: ExtendedSpace; proposal: Proposal; choices: string }
   ) {
     const postText = getVotedText(shareTo, payload);
@@ -100,10 +97,10 @@ export function useSharing() {
         text: postText,
         url: proposalUrl(payload.space.id, payload.proposal)
       });
-    if (window && shareTo === 'twitter') return shareTwitter(postText);
+    if (window && shareTo === 'x') return shareX(postText);
   }
 
-  function getVotedText(shareTo: 'twitter' | 'hey', payload): string {
+  function getVotedText(shareTo: 'x' | 'hey', payload): string {
     const isSingleChoice =
       payload.proposal.type === 'single-choice' ||
       payload.proposal.type === 'basic';
@@ -128,7 +125,7 @@ export function useSharing() {
       )}&hashtags=${hashTag}`;
     if (isSupported.value)
       return `${votedText} "${payload.proposal.title}" ${spaceHandle} #${hashTag}`;
-    if (shareTo === 'twitter')
+    if (shareTo === 'x')
       return `${encodeURIComponent(votedText)}%20"${encodeURIComponent(
         payload.proposal.title
       )}"%20${encodedProposalUrl(
@@ -139,8 +136,8 @@ export function useSharing() {
     return `${votedText} "${payload.proposal.title}"`;
   }
 
-  function shareTwitter(text) {
-    const url = `https://twitter.com/intent/tweet?text=${text}`;
+  function shareX(text) {
+    const url = `https://x.com/intent/tweet?text=${text}`;
     window.open(url, '_blank')?.focus();
   }
 
@@ -149,9 +146,9 @@ export function useSharing() {
     window.open(url, '_blank')?.focus();
   }
 
-  function shareProposalTwitter(space, proposal) {
+  function shareProposalX(space, proposal) {
     const handle = space.twitter ? `@${space.twitter}` : space.name;
-    shareTwitter(
+    shareX(
       `${encodeURIComponent(proposal.title)}%20${encodedProposalUrl(
         space.id,
         proposal
@@ -175,7 +172,7 @@ export function useSharing() {
   }
 
   return {
-    shareProposalTwitter,
+    shareProposalX,
     shareProposalHey,
     shareToClipboard,
     proposalUrl,

@@ -10,8 +10,8 @@ const socials = computed<SocialItem[]>(() => {
 
   if (props.space?.twitter) {
     socialsArray.push({
-      icon: 'twitter',
-      link: `https://twitter.com/${props.space?.twitter}`
+      icon: 'x',
+      link: `https://x.com/${props.space?.twitter}`
     });
   }
 
@@ -49,7 +49,7 @@ const socials = computed<SocialItem[]>(() => {
       class="text-sm text-skin-text hover:text-skin-link"
       hide-external-icon
     >
-      <i-s-twitter v-if="social.icon === 'twitter'" class="text-[18px]" />
+      <i-s-x v-if="social.icon === 'x'" class="text-[18px]" />
       <i-s-github v-if="social.icon === 'github'" />
       <i-ho-globe-alt v-if="social.icon === 'earth'" class="text-[19px]" />
       <i-s-coingecko v-if="social.icon === 'coingecko'" />
