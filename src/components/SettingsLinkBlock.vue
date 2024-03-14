@@ -20,7 +20,7 @@ const socialInputs: Array<{
     label: 'X (Twitter)',
     icon: 'x',
     placeholder: 'e.g. elonmusk',
-    key: 'x'
+    key: 'twitter'
   },
   {
     label: 'Github',
