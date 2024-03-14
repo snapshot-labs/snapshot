@@ -160,6 +160,7 @@ const timeLeftToClaim = computed(() => {
     </TuneBlock>
     <SpaceProposalBoostClaimModalSuccess
       :open="claimSuccessOpen === true"
+      :proposal="proposal"
       :more-to-claim="unclaimedBoostsWithReward.length > 0"
       @close="claimSuccessOpen = false"
       @open-claim-modal="claimModalOpen = true"

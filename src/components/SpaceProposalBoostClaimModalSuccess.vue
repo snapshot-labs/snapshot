@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { Proposal } from '@/helpers/interfaces';
+
 const props = defineProps<{
   open: boolean;
   moreToClaim: boolean;
+  proposal: Proposal;
 }>();
 
 const emit = defineEmits(['close', 'openClaimModal']);
+
+const { shareClaim } = useSharing();
 
 function handleClose() {
   if (props.moreToClaim) {
@@ -44,11 +49,13 @@ function handleClose() {
         <div class="flex gap-x-2">
           <TuneButton
             class="w-[46px] h-[46px] p-0 flex justify-center items-center"
+            @click="shareClaim('twitter', { proposal: proposal })"
           >
             <i-s-twitter class="text-[#1DA1F2]" />
           </TuneButton>
           <TuneButton
             class="w-[46px] h-[46px] p-0 flex justify-center items-center"
+            @click="shareClaim('hey', { proposal: proposal })"
           >
             <i-s-hey class="text-[#FB3A5D] text-sm" />
           </TuneButton>
