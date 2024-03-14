@@ -49,9 +49,9 @@ function handleClose() {
         <div class="flex gap-x-2">
           <TuneButton
             class="w-[46px] h-[46px] p-0 flex justify-center items-center"
-            @click="shareClaim('twitter', { proposal: proposal })"
+            @click="shareClaim('x', { proposal: proposal })"
           >
-            <i-s-twitter class="text-[#1DA1F2]" />
+            <i-s-x />
           </TuneButton>
           <TuneButton
             class="w-[46px] h-[46px] p-0 flex justify-center items-center"

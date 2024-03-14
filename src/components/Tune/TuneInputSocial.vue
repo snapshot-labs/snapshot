@@ -6,7 +6,7 @@ defineProps<{
   maxLength?: number;
   label?: string;
   disabled?: boolean;
-  icon?: 'twitter' | 'github' | 'earth' | 'coingecko';
+  icon?: 'x' | 'github' | 'earth' | 'coingecko';
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -35,7 +35,7 @@ defineExpose({
     @update:model-value="(value: string) => emit('update:modelValue', value)"
   >
     <template #before>
-      <i-s-twitter v-if="icon === 'twitter'" class="text-[16px]" />
+      <i-s-x v-if="icon === 'x'" class="text-[16px]" />
       <i-s-github v-if="icon === 'github'" class="text-[16px]" />
       <i-ho-globe-alt v-if="icon === 'earth'" class="text-[16px]" />
       <i-s-coingecko v-if="icon === 'coingecko'" class="text-[16px]" />
