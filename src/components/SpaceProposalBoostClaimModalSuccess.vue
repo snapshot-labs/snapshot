@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { Proposal } from '@/helpers/interfaces';
+
 const props = defineProps<{
   open: boolean;
   moreToClaim: boolean;
+  proposal: Proposal;
 }>();
 
 const emit = defineEmits(['close', 'openClaimModal']);
+
+const { shareClaim } = useSharing();
 
 function handleClose() {
   if (props.moreToClaim) {
@@ -16,33 +21,47 @@ function handleClose() {
 
 <template>
   <TuneModal :open="open" @close="emit('close')">
-    <div class="h-full bg-[url('@/assets/images/stars-success.svg')] pt-[48px]">
+    <div
+      class="h-full bg-[url('@/assets/images/confetti.svg')] pt-[40px] bg-no-repeat"
+    >
       <div class="text-center">
         <div
-          class="w-[64px] h-[64px] mb-[40px] mx-auto shadow-xl bg-boost rounded-[20px] flex justify-center items-center"
+          class="w-[64px] h-[64px] mb-[24px] mx-auto shadow-xl bg-boost rounded-[20px] flex justify-center items-center"
         >
           <i-ho-gift class="text-white" />
         </div>
         <TuneModalTitle class="m-0 leading-6">
           Congratulations!
         </TuneModalTitle>
-        <TuneModalDescription class="text-md leading-5 mt-1 mx-5">
-          You have successfully claimed your rewards. Thanks you for your
-          participation!
+        <TuneModalDescription class="text-md leading-5 mt-1 mx-[48px]">
+          Your rewards have been claimed.
         </TuneModalDescription>
       </div>
-      <!-- TODO: Add share and farcaster -->
-      <!-- <div class="flex flex-col gap-[12px] items-center mt-[24px]">
-        <TuneButton class="flex items-center gap-2">
-          <i-s-twitter class="text-[#1DA1F2]" />
-          Share with world
-        </TuneButton>
-        <TuneButton class="flex items-center gap-2 border-0 -my-2">
-          <i-s-hey class="text-[#FB3A5D]" />
-          Share on Hey
-        </TuneButton>
-      </div> -->
-      <div class="p-3 pt-4">
+      <div
+        class="border rounded-xl mx-3 p-[12px] border-boost/20 bg-boost/5 flex justify-between items-center mt-[40px]"
+      >
+        <div>
+          <div class="font-semibold text-skin-heading leading-5 text-md">
+            Tell the world!
+          </div>
+          <div class="leading-5 text-md">Share your victory with friends.</div>
+        </div>
+        <div class="flex gap-x-2">
+          <TuneButton
+            class="w-[46px] h-[46px] p-0 flex justify-center items-center"
+            @click="shareClaim('twitter', { proposal: proposal })"
+          >
+            <i-s-twitter class="text-[#1DA1F2]" />
+          </TuneButton>
+          <TuneButton
+            class="w-[46px] h-[46px] p-0 flex justify-center items-center"
+            @click="shareClaim('hey', { proposal: proposal })"
+          >
+            <i-s-hey class="text-[#FB3A5D] text-sm" />
+          </TuneButton>
+        </div>
+      </div>
+      <div class="p-3 pt-[12px]">
         <TuneButton class="w-full" @click="handleClose">
           {{ moreToClaim ? 'Claim more' : 'Close' }}
         </TuneButton>
