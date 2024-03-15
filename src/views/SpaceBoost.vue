@@ -700,7 +700,7 @@ watch(
               v-if="isEndingSoon || proposal.state === 'closed'"
               class="text-boost flex items-center gap-1 justify-center mt-[6px]"
             >
-              <template v-if="proposal.state !== 'closed'">
+              <template v-if="proposal.state === 'closed'">
                 <i-ho-exclamation-circle />
                 This proposal is closed
               </template>
