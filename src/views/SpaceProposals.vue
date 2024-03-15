@@ -87,7 +87,7 @@ async function getProposals(skip = 0) {
 }
 
 async function loadBoosts(proposals: Proposal[]) {
-  if (!isWhitelisted(props.space.id)) return;
+  if (!isWhitelisted(props.space.id) || !props.space.boost.enabled) return;
 
   const alreadyLoadedProposals = boosts.value.map(
     boost => boost.strategy.proposal

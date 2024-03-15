@@ -27,6 +27,7 @@ const { web3Account } = useWeb3();
 const { send, isSending } = useClient();
 const { reloadSpace, deleteSpace } = useExtendedSpaces();
 const { loadFollows } = useFollowSpace();
+const { isWhitelisted } = useBoost();
 const {
   validationErrors,
   isValid,
@@ -264,7 +265,11 @@ onBeforeRouteLeave(async () => {
           </template>
 
           <template v-if="currentPage === Page.VOTING">
-            <SettingsBoostBlock context="settings" :is-view-only="isViewOnly" />
+            <SettingsBoostBlock
+              v-if="isWhitelisted(space.id)"
+              context="settings"
+              :is-view-only="isViewOnly"
+            />
 
             <SettingsVotingBlock
               context="settings"
