@@ -34,7 +34,7 @@ const EMPTY_SPACE_FORM = {
     privacy: ''
   },
   boost: {
-    enabled: false,
+    enabled: true,
     bribeEnabled: false
   },
   validation: clone(DEFAULT_PROPOSAL_VALIDATION),
