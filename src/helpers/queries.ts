@@ -514,6 +514,10 @@ export const SPACE_QUERY = gql`
         address
         network
       }
+      boost {
+        enabled
+        bribeEnabled
+      }
     }
   }
 `;
