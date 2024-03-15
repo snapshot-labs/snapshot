@@ -6,7 +6,7 @@ export function useUsername() {
 
   function getUsername(address: string, profile?: Profile) {
     if (
-      web3Account &&
+      web3Account?.value &&
       address.toLowerCase() === web3Account.value.toLowerCase()
     ) {
       return 'You';
