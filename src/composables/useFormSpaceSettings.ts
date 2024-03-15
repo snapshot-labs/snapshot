@@ -34,7 +34,7 @@ const EMPTY_SPACE_FORM = {
     privacy: ''
   },
   boost: {
-    disabled: false,
+    enabled: false,
     bribeEnabled: false
   },
   validation: clone(DEFAULT_PROPOSAL_VALIDATION),
@@ -159,7 +159,7 @@ export function useFormSpaceSettings(
       ? formData.children.map((child: any) => child.id)
       : [];
     formData.parent = formData.parent?.id || '';
-    formData.boost = formData.boost || { disabled: false, bribeEnabled: false };
+    formData.boost = formData.boost || { enabled: true, bribeEnabled: false };
   }
 
   function shouldUseAnyValidation(formData: any) {

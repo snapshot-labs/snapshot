@@ -5,29 +5,13 @@ const props = defineProps<{
 }>();
 
 const { form } = useFormSpaceSettings(props.context);
-
-watch(
-  () => form.value.boost.enabled,
-  value => {
-    if (value === false) {
-      form.value.boost.restriction = '';
-    }
-  }
-);
-
-const boostEnabled = computed({
-  get: () => !form.value.boost.disabled,
-  set: (value: boolean) => {
-    form.value.boost.disabled = !value;
-  }
-});
 </script>
 
 <template>
   <BaseBlock title="Boost">
     <div class="space-y-2">
       <TuneSwitch
-        v-model="boostEnabled"
+        v-model="form.boost.enabled"
         label="Enable Boost"
         sublabel="Allow users to set up rewards for voters."
         :disabled="props.isViewOnly"
