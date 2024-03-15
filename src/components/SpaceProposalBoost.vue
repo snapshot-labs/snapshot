@@ -118,7 +118,7 @@ async function loadBoosts() {
     const sanitizedBoosts = sanitizeBoosts(
       response,
       [props.proposal],
-      props.proposal.space.id
+      props.proposal.space
     );
     boosts.value = sanitizedBoosts;
   } catch (e) {

@@ -99,7 +99,7 @@ async function loadBoosts(proposals: Proposal[]) {
     const response = await getBoosts(
       proposalsToLoad.map(proposal => proposal.id)
     );
-    const sanitizedBoosts = sanitizeBoosts(response, proposals, props.space.id);
+    const sanitizedBoosts = sanitizeBoosts(response, proposals, props.space);
     boosts.value = boosts.value.concat(sanitizedBoosts);
   } catch (e) {
     console.error('Load boosts error:', e);

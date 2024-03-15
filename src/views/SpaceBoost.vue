@@ -62,7 +62,6 @@ const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
-const { bribeDisabled } = useBoost();
 const { loadBalances, tokens, loading: loadingBalances } = useBalances();
 
 const proposal = ref();
@@ -103,7 +102,7 @@ const eligibilityOptions = computed(() => {
       return {
         value: index + 1,
         label: `Who votes '${choice}'`,
-        extras: { disabled: bribeDisabled(props.space.id) }
+        extras: { disabled: !props.space.boost.bribeEnabled }
       };
     }
   );
@@ -655,13 +654,14 @@ watch(
               :items="eligibilityOptions"
               label="Eligible to"
             />
-            <TuneBlockFooter v-if="bribeDisabled(space.id)">
+            <TuneBlockFooter v-if="!space.boost.bribeEnabled">
               <BaseMessage level="info">
                 Selecting a specific choice is disabled for the
                 <span class="font-semibold">
                   {{ space.name }}
                 </span>
-                space
+                space. Please enable strategic incentivization in the space
+                settings to enable this feature.
               </BaseMessage>
             </TuneBlockFooter>
           </TuneBlock>
