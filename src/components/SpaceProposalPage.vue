@@ -173,7 +173,11 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             @click-vote="clickVote"
           />
 
-          <SpaceProposalBoost v-if="boostEnabled" :proposal="proposal" />
+          <SpaceProposalBoost
+            v-if="boostEnabled"
+            :proposal="proposal"
+            :space="space"
+          />
 
           <SpaceProposalVotes :space="space" :proposal="proposal" />
 

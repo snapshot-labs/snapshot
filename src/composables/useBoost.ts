@@ -15,7 +15,7 @@ export function useBoost() {
   const loadingClaim = ref(false);
 
   function isWhitelisted(spaceId: string) {
-    return !!BOOST_WHITELIST_SETTINGS[env].find(spaceId);
+    return BOOST_WHITELIST_SETTINGS[env].includes(spaceId);
   }
 
   function sanitizeBoosts(
