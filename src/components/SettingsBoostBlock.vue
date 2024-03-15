@@ -14,27 +14,29 @@ watch(
     }
   }
 );
+
+const boostEnabled = computed({
+  get: () => !form.value.boost.disabled,
+  set: (value: boolean) => {
+    form.value.boost.disabled = !value;
+  }
+});
 </script>
 
 <template>
   <BaseBlock title="Boost">
     <div class="space-y-2">
       <TuneSwitch
-        v-model="form.boost.enabled"
-        label="Enable boost"
+        v-model="boostEnabled"
+        label="Enable Boost"
+        sublabel="Allow users to set up rewards for voters."
         :disabled="props.isViewOnly"
       />
-      <TuneListbox
-        v-model="form.boost.restriction"
-        :disabled="form.boost.enabled === false || props.isViewOnly"
-        label="Restrict usage"
-        :items="[
-          {
-            value: 'no-bribe',
-            name: 'Disable bribe'
-          }
-        ]"
-        title="Boost"
+      <TuneSwitch
+        v-model="form.boost.bribeEnabled"
+        label="Enable strategic incentivization"
+        sublabel="Allow users to set up rewards for voting on a specific choice."
+        :disabled="props.isViewOnly"
       />
     </div>
   </BaseBlock>
