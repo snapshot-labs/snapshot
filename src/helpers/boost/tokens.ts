@@ -3,7 +3,7 @@ export const EXCLUDED_TOKENS = [
     symbol: 'default',
     '1': '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
     '11155111': '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-    '137': '0x0000000000000000000000000000000000001010'
+    '137': '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
   },
   {
     symbol: 'USDT',

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 
 const props = defineProps<{
   open: boolean;
@@ -10,7 +11,7 @@ const emit = defineEmits(['close', 'networkChanged']);
 
 const { notify } = useFlashNotification();
 const { t } = useI18n();
-const { changeNetwork, NETWORKS } = useChangeNetwork();
+const { changeNetwork } = useChangeNetwork();
 
 const switchingChain = ref(false);
 
@@ -46,7 +47,7 @@ async function handleChange() {
           <TuneModalDescription class="text-md leading-5 mt-1">
             To continue, you need to change the network in your wallet to
             <span class="font-semibold">{{
-              NETWORKS[desiredNetwork].name
+              networks[desiredNetwork].name
             }}</span
             >.
           </TuneModalDescription>
@@ -62,7 +63,7 @@ async function handleChange() {
         >
           {{
             $t('unsupportedNetwork.switchToNetwork', {
-              network: NETWORKS[desiredNetwork].name
+              network: networks[desiredNetwork].name
             })
           }}
         </TuneButton>
