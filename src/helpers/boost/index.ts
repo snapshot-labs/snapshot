@@ -23,6 +23,10 @@ export const BOOST_WHITELIST_SETTINGS = {
   production: [
     // External testers
     'community.daosquare.eth',
+    'nsfwgov.eth',
+    'worldassociation.eth',
+    'kumaprotocol.eth',
+    'mimo.eth',
     // Internal testers
     'testsnap.eth',
     'fabien.eth',
