@@ -5,8 +5,8 @@ import {
 } from '@apollo/client/core';
 
 const uri =
-  import.meta.env.VITE_DEFAULT_NETWORK === '5'
-    ? 'https://api.thegraph.com/subgraphs/name/ensdomains/ensgoerli'
+  import.meta.env.VITE_DEFAULT_NETWORK === '11155111'
+    ? 'https://api.thegraph.com/subgraphs/name/ensdomains/enssepolia'
     : 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
 
 const httpLink = createHttpLink({ uri });
