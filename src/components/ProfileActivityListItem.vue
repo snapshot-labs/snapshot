@@ -20,7 +20,7 @@ defineProps<{ activity: ProfileActivity }>();
         <div class="relative min-w-[52px]">
           <AvatarSpace size="44" :space="activity.space" />
           <div
-            class="absolute right-0 top-[24px] rounded-full bg-skin-primary p-[6px] pr-[5px] text-[9px] text-white"
+            class="absolute right-0 top-[24px] rounded-full bg-skin-primary p-[6px] pr-[5px] text-[9px] text-skin-bg"
           >
             <i-s-signature />
           </div>

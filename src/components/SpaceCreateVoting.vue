@@ -20,7 +20,7 @@ const {
   userSelectedDateStart,
   userSelectedDateEnd
 } = useFormSpaceProposal();
-const { isWhitelisted } = useBoost({ spaceId: props.space.id });
+const { isWhitelisted } = useBoost();
 
 const disableChoiceEdit = computed(() => form.value.type === 'basic');
 
@@ -120,7 +120,7 @@ defineEmits<{
         "
         @update:type="value => (form.type = value)"
       />
-      <template v-if="isWhitelisted">
+      <template v-if="isWhitelisted(space.id)">
         <BaseMessage
           v-if="form.type !== 'single-choice' && form.type !== 'basic'"
           level="info"

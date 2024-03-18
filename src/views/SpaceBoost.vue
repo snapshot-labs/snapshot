@@ -62,8 +62,8 @@ const { modalAccountOpen } = useModal();
 const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
-const { bribeDisabled } = useBoost({ spaceId: props.space.id });
 const { loadBalances, tokens, loading: loadingBalances } = useBalances();
+const { isWhitelisted } = useBoost();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -86,7 +86,7 @@ const form = ref<Form>({
     lotteryLimit: '',
     numWinners: ''
   },
-  network: '11155111',
+  network: '1',
   token: undefined,
   amount: ''
 });
@@ -102,8 +102,8 @@ const eligibilityOptions = computed(() => {
     (choice: string, index: number) => {
       return {
         value: index + 1,
-        name: `Who votes '${choice}'`,
-        extras: { disabled: bribeDisabled.value }
+        label: `Who votes '${choice}'`,
+        extras: { disabled: !props.space.boost.bribeEnabled }
       };
     }
   );
@@ -111,7 +111,7 @@ const eligibilityOptions = computed(() => {
   return [
     {
       value: 'any',
-      name: 'Anyone who votes'
+      label: 'Anyone who votes'
     },
     ...proposalChoices
   ];
@@ -650,18 +650,19 @@ watch(
               />
             </template>
 
-            <TuneListbox
+            <TuneSelect
               v-model="form.eligibility.choice"
               :items="eligibilityOptions"
               label="Eligible to"
             />
-            <TuneBlockFooter v-if="bribeDisabled">
+            <TuneBlockFooter v-if="!space.boost.bribeEnabled">
               <BaseMessage level="info">
                 Selecting a specific choice is disabled for the
                 <span class="font-semibold">
                   {{ space.name }}
                 </span>
-                space
+                space. Please enable strategic incentivization in the space
+                settings to enable this feature.
               </BaseMessage>
             </TuneBlockFooter>
           </TuneBlock>
@@ -684,6 +685,11 @@ watch(
             </div>
             <TuneButton
               :loading="isLoading"
+              :disabled="
+                !isWhitelisted(space.id) ||
+                !space.boost.enabled ||
+                proposal.state === 'closed'
+              "
               primary
               class="w-full mt-3"
               @click="handleCreate"
@@ -697,6 +703,12 @@ watch(
               <template v-if="proposal.state === 'closed'">
                 <i-ho-exclamation-circle />
                 This proposal is closed
+              </template>
+              <template
+                v-else-if="!isWhitelisted(space.id) || !space.boost.enabled"
+              >
+                <i-ho-exclamation-circle />
+                Boost is not enabled in this space
               </template>
               <template v-else-if="isEndingSoon">
                 <i-ho-clock />

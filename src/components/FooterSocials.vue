@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const socials = [
   {
-    icon: 'twitter',
-    link: 'https://twitter.com/SnapshotLabs'
+    icon: 'x',
+    link: 'https://x.com/SnapshotLabs'
   },
   {
     icon: 'discord',
@@ -24,8 +24,8 @@ const socials = [
         <FooterSocialsItem v-if="social.icon === 'youtube'">
           <i-s-youtube class="text-[25px]" />
         </FooterSocialsItem>
-        <FooterSocialsItem v-else-if="social.icon === 'twitter'">
-          <i-s-twitter class="text-[24px]" />
+        <FooterSocialsItem v-else-if="social.icon === 'x'">
+          <i-s-x class="text-[23px]" />
         </FooterSocialsItem>
         <FooterSocialsItem v-else-if="social.icon === 'discord'">
           <i-s-discord class="text-[23px]" />

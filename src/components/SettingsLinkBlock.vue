@@ -8,7 +8,7 @@ const props = defineProps<{
 
 const { form, validationErrors, addRef } = useFormSpaceSettings(props.context);
 
-type SocialIcon = 'twitter' | 'github' | 'coingecko';
+type SocialIcon = 'x' | 'github' | 'coingecko';
 
 const socialInputs: Array<{
   label: string;
@@ -17,8 +17,8 @@ const socialInputs: Array<{
   key: string;
 }> = [
   {
-    label: 'Twitter',
-    icon: 'twitter',
+    label: 'X (Twitter)',
+    icon: 'x',
     placeholder: 'e.g. elonmusk',
     key: 'twitter'
   },

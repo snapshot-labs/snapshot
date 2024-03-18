@@ -47,7 +47,7 @@ async function deleteProposal() {
 }
 
 const {
-  shareProposalTwitter,
+  shareProposalX,
   shareProposalHey,
   shareToClipboard,
   shareProposal,
@@ -86,8 +86,8 @@ function handleSelectShare(e: string) {
   if (sharingIsSupported.value)
     return shareProposal(props.space, props.proposal);
 
-  if (e === 'shareProposalTwitter')
-    return shareProposalTwitter(props.space, props.proposal);
+  if (e === 'shareProposalX')
+    return shareProposalX(props.space, props.proposal);
 
   if (e === 'shareToClipboard')
     return shareToClipboard(props.space, props.proposal);
@@ -139,7 +139,7 @@ watch(
         </template>
         <template #item="{ item }">
           <div class="flex items-center gap-2">
-            <i-s-twitter v-if="item.extras.icon === 'twitter'" />
+            <i-s-x v-if="item.extras.icon === 'x'" />
             <i-s-hey v-if="item.extras.icon === 'hey'" class="mr-1 text-sm" />
             <i-ho-link v-if="item.extras.icon === 'link'" />
             {{ item.text }}
