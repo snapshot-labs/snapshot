@@ -1,4 +1,9 @@
-import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
+import {
+  FunctionFragment,
+  Interface,
+  JsonFragmentType,
+  ParamType
+} from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { memoize } from 'lodash';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
@@ -6,6 +11,8 @@ import {
   mustBeEthereumAddress,
   mustBeEthereumContractAddress
 } from './validators';
+import { GnosisSafe } from '../types';
+import { CreateSafeTransactionParams } from './transactions';
 
 /**
  * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.
@@ -125,6 +132,55 @@ export function encodeMethodAndParams(
   const contractInterface = new Interface(abi);
   const parameterValues = method.inputs.map(extractMethodArgs(values));
   return contractInterface.encodeFunctionData(method, parameterValues);
+}
+
+export function transformSafeMethodToFunctionFragment(
+  method: GnosisSafe.ContractMethod
+): FunctionFragment {
+  const fragment = FunctionFragment.from({
+    ...method,
+    type: 'function',
+    stateMutability: method.payable ? 'payable' : 'nonpayable'
+  });
+  return fragment;
+}
+
+export function extractSafeMethodAndParams(
+  unprocessedTransactions: GnosisSafe.BatchTransaction
+): CreateSafeTransactionParams {
+  return {
+    to: unprocessedTransactions.to,
+    value: unprocessedTransactions.value,
+    data: unprocessedTransactions.data ?? null,
+    functionFragment: unprocessedTransactions.contractMethod
+      ? transformSafeMethodToFunctionFragment(
+          unprocessedTransactions.contractMethod
+        )
+      : undefined,
+    parameters: unprocessedTransactions.contractInputsValues
+  };
+}
+
+export function encodeSafeMethodAndParams(
+  method: CreateSafeTransactionParams['functionFragment'],
+  params: CreateSafeTransactionParams['parameters']
+) {
+  if (!params || !method) return;
+  const missingParams = Object.values(params).length !== method.inputs.length;
+  if (missingParams) {
+    throw new Error('Some params are missing');
+  }
+  const abiSlice = Array(method);
+  const contractInterface = new Interface(abiSlice);
+
+  const parameterValues = method.inputs.map(input => {
+    const value = params[input.name];
+    if (isArrayParameter(input.baseType)) {
+      return JSON.parse(value);
+    }
+    return value;
+  });
+  return contractInterface.encodeFunctionData(method.name, parameterValues);
 }
 
 /**

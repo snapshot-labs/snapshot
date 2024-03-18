@@ -1,11 +1,22 @@
 <script setup lang="ts">
 import { parseAmount } from '@/helpers/utils';
-import { isAddress, FunctionFragment } from '@ethersproject/address';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import { isAddress } from '@ethersproject/address';
 import { isHexString } from '@ethersproject/bytes';
 import { SafeImportTransaction, GnosisSafe } from '../../types';
-import { createSafeImportTransaction, parseValueInput, isSafeFile, getABIWriteFunctions } from '../../utils';
+import {
+  createSafeImportTransaction,
+  parseValueInput,
+  isSafeFile,
+  getABIWriteFunctions,
+  CreateSafeTransactionParams,
+  extractSafeMethodAndParams
+} from '../../utils';
 import AddressInput from '../Input/Address.vue';
+import { parseGnosisSafeFile } from '../../utils/safeImport';
+import { FunctionFragment } from '@ethersproject/abi';
+import MethodParameterInput from '../../components/Input/MethodParameter.vue';
+
+type PartialSafeImportTransaction = Omit<SafeImportTransaction, 'formatted'>;
 
 const props = defineProps<{
   transaction: SafeImportTransaction | undefined;
@@ -16,55 +27,50 @@ const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
-const file = ref(null);
-const safeTransactions:null | GnosisSafe.BatchFile = ref(null);
-const selectedTransactionIndex: null | number = ref(null);
+const file = ref<File>();
+const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
+const selectedTransactionIndex = ref<number>();
+const processedTransactions = ref<CreateSafeTransactionParams[]>();
 
+const finalTransaction = ref<CreateSafeTransactionParams>(); // decoded method, extracted args
 
-const importFile = async (file: File): Promise<BatchFile> => {
-  return new Promise((res,rej) => {
-    const reader = new FileReader()
-    reader.readAsText(file)
-    reader.onload = async () => {
-      try{
-        const json = JSON.parse(
-          reader.result,
-        )
-        if(isSafeFile(json)){
-          return res(json)
-        }
-        throw new Error('Not a Gnosis Safe transaction file!')
-      }catch(err){
-        rej(err)
-      }
+function updateParams(
+  paramsToUpdate: CreateSafeTransactionParams['parameters']
+) {
+  finalTransaction.value = {
+    ...finalTransaction.value,
+    parameters: {
+      ...finalTransaction.value?.parameters,
+      ...paramsToUpdate
     }
-  })
+  } as CreateSafeTransactionParams;
 }
 
-const handleFileUpload = (event) => {
-  file.value = event.target.files[0];
-  if(!file.value) return;
-  importFile(file.value).then(result=>{
-    safeTransactions.value = result
-    console.log(safeTransactions.value)
-  }).catch(console.error)
+function handleFileChange(event: Event) {
+  const _file = (event?.currentTarget as HTMLInputElement)?.files?.[0];
+  if (!_file) return;
+  file.value = _file;
+  return (
+    parseGnosisSafeFile(file.value)
+      .then(result => {
+        safeFile.value = result;
+        // TODO: remove log
+        console.log(safeFile.value);
+      })
+      // TODO: show error
+      .catch(console.error)
+  );
+}
 
-};
-
-function updateTransaction(partialTx:PartialSafeImportTransaction) {
+function updateTransaction() {
   try {
-//  if (!isToValid.value) {
-//    throw new Error('"To" address invalid');
-//  }
-//  if (!isValueValid.value) {
-//    throw new Error('"Value" amount invalid invalid');
-//  }
-//  if (!isDataValid.value) {
-//    throw new Error('"Data" field invalid');
-//  }
-
-    const tx = createSafeImportTransaction(partialTx)
-    console.log(tx)
+    debugger;
+    if (!finalTransaction.value) {
+      throw new Error('No Transaction selected');
+    }
+    //  TODO: validate
+    const tx = createSafeImportTransaction(finalTransaction.value);
+    console.log(tx);
     emit('updateTransaction', tx);
   } catch (error) {
     console.error(error);
@@ -72,80 +78,94 @@ function updateTransaction(partialTx:PartialSafeImportTransaction) {
   }
 }
 
-
-// need a way to select which transaction we want toimport
-watch(selectedTransactionIndex, (index=>{
-  console.log({index},safeTransactions.value)
-  if(index >= 0){
-    const convertedTxs = convertSafeTransactions(safeTransactions.value)
-    console.log(convertedTxs[index])
-    updateTransaction(convertedTxs[index])
+watch(safeFile, safeFile => {
+  if (safeFile) {
+    //reset
+    finalTransaction.value = undefined;
+    const convertedTxs = safeFile.transactions.map(extractSafeMethodAndParams);
+    processedTransactions.value = convertedTxs;
   }
-}));
+});
 
+// need a way to select which transaction we want to import
+watch(selectedTransactionIndex, index => {
+  if (
+    index === undefined ||
+    !processedTransactions.value ||
+    processedTransactions.value[index] === undefined
+  )
+    return;
+  finalTransaction.value = processedTransactions.value[index];
+});
 
-type PartialSafeImportTransaction = Omit<SafeImportTransaction | 'formatted'>
-function convertSafeTransactions(txs?:GnosisSafe.BatchFile):PartialSafeImportTransaction[] {
-  if(!txs) return  []
-  return txs.transactions.map(safeTx=>{
-    return {
-      methodName:safeTx.contractMethod?.name,
-      parameters:safeTx.contractMethod?.inputs?.map(({name,type})=>({
-        name,
-        type,
-        value:safeTx.contractInputsValues?.[name] 
-      })),
-      to:safeTx.to,
-      value: safeTx.value,
-      data: safeTx.data,
-    }
-  })
-}
-const objectFromEntriesSorted = (obj: Object) => {
-  // set as array first to the correct preserve order
-  let entries = Object.entries(obj);
-  let sorted: Array<[string, any]> = [];
-
-  keyOrder.forEach(key => {
-    if (obj.hasOwnProperty(key)) {
-      sorted.push([key, obj[key]]);
-      entries = entries.filter(item => item[0] !== key);
-    }
-  });
-  // ensure we don't filter out any items we didn't explicitly sort
-  return [...sorted, ...entries];
-};
-
+watch(finalTransaction, updateTransaction);
 </script>
 
 <template>
   <div class="space-y-2">
-    <input type="file" @change="handleFileUpload($event)" />
-    <div v-if="file">
-      Selected file: {{ file.name }}
-    </div>
+    <input
+      accept="application/json"
+      type="file"
+      @change="handleFileChange($event)"
+    />
+    <div v-if="file">Selected file: {{ file.name }}</div>
   </div>
   <div
-      v-if="safeTransactions?.transactions.length > 0"
+    v-if="safeFile?.transactions?.length"
     class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
   >
     <UiSelect v-model="selectedTransactionIndex">
       <template #label>Select Transaction</template>
-      <option v-for="(tx,i) in safeTransactions?.transactions" :key="i" :value="i">
-        {{i+1}}. {{ tx.contractMethod.name }}
+      <option v-for="(tx, i) in safeFile.transactions" :key="i" :value="i">
+        {{ i + 1 }}. {{ tx?.contractMethod?.name }}
       </option>
     </UiSelect>
   </div>
+
   <div
-    v-if="props?.transaction?.parameters.length"
+    class="flex flex-col gap-2"
+    v-if="finalTransaction && finalTransaction.functionFragment?.inputs?.length"
+  >
+    <MethodParameterInput
+      v-for="input in finalTransaction.functionFragment.inputs"
+      :key="input.name"
+      :validateOnMount="true"
+      :parameter="input"
+      :value="finalTransaction?.parameters?.[input.name] ?? ''"
+      @update-parameter-value="(e: string) => updateParams({ [input.name]: e })"
+    />
+  </div>
+
+  <div v-if="props.transaction">
+    <strong>{{ props.transaction.subtype }}</strong>
+    <!-- ContractInteraction -->
+    <div v-if="props.transaction.methodName">
+      {{ props.transaction.methodName }}
+    </div>
+    <div v-if="props.transaction.parameters">
+      <p
+        v-for="[paramName, paramValue] in Object.entries(
+          props.transaction.parameters
+        )"
+      ></p>
+    </div>
+    <pre lang="json">
+        {{ JSON.stringify(props.transaction.parameters) }}</pre
+    >
+
+    <!-- Native Transfer -->
+  </div>
+
+  <!-- <div
+    v-if="props?.transaction?.parameters?.length"
     class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
   >
     <ReadOnly v-for="param in props.transaction.parameters">
       <strong
         class="mr-2 inline-block whitespace-nowrap first-letter:capitalize"
-        >{{ param.name }} ({{param.type}})</strong
+        >{{ param.name }} ({{ param.type }})</strong
       >
       <span class="break-all">{{ param.value }}</span>
     </ReadOnly>
-  </div>
+  </div> -->
 </template>

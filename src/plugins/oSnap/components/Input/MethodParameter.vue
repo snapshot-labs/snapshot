@@ -8,6 +8,7 @@ import { hexZeroPad, isBytesLike } from '@ethersproject/bytes';
 const props = defineProps<{
   parameter: ParamType;
   value: string;
+  validateOnMount?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -37,8 +38,12 @@ const inputType = computed(() => {
 
 const label = `${props.parameter.name} (${props.parameter.type})`;
 const arrayPlaceholder = `E.g. ["text", 123, 0x123]`;
+const newValue = ref(props.value);
 
-const isInputValid = computed(() => {
+const validationState = ref(true);
+const isInputValid = computed(() => validationState.value);
+
+function validate() {
   if (!isDirty.value) return true;
   if (isAddressInput.value) return isAddress(newValue.value);
   if (isArrayInput.value) return validateArrayInput(newValue.value);
@@ -46,9 +51,7 @@ const isInputValid = computed(() => {
   if (isBytes32Input.value) return validateBytes32Input(newValue.value);
   if (isBytesInput.value) return validateBytesInput(newValue.value);
   return true;
-});
-
-const newValue = ref(props.value);
+}
 
 watch(props.parameter, () => {
   newValue.value = '';
@@ -56,6 +59,7 @@ watch(props.parameter, () => {
 });
 
 watch(newValue, () => {
+  validationState.value = validate();
   emit('updateParameterValue', newValue.value);
 });
 
@@ -103,6 +107,12 @@ function formatBytes32() {
     newValue.value = hexZeroPad(newValue.value, 32);
   }
 }
+onMounted(() => {
+  if (props.validateOnMount) {
+    isDirty.value = true;
+  }
+  validationState.value = validate();
+});
 </script>
 
 <template>

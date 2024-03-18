@@ -139,76 +139,74 @@ export const checkIsContract = useMemoize(
 
 // check if json is a safe json type
 export const isSafeFile = (input: any): input is GnosisSafe.BatchFile => {
-    const $io0 = (input: any): boolean =>
-    "string" === typeof input.version &&
-    "string" === typeof input.chainId &&
-    "number" === typeof input.createdAt &&
-    "object" === typeof input.meta &&
+  const $io0 = (input: any): boolean =>
+    'string' === typeof input.version &&
+    'string' === typeof input.chainId &&
+    'number' === typeof input.createdAt &&
+    'object' === typeof input.meta &&
     null !== input.meta &&
     $io1(input.meta) &&
     Array.isArray(input.transactions) &&
     input.transactions.every(
-      (elem: any) => "object" === typeof elem && null !== elem && $io2(elem),
+      (elem: any) => 'object' === typeof elem && null !== elem && $io2(elem)
     );
   const $io1 = (input: any): boolean =>
     (null === input.txBuilderVersion ||
       undefined === input.txBuilderVersion ||
-      "string" === typeof input.txBuilderVersion) &&
+      'string' === typeof input.txBuilderVersion) &&
     (null === input.checksum ||
       undefined === input.checksum ||
-      "string" === typeof input.checksum) &&
+      'string' === typeof input.checksum) &&
     (null === input.createdFromSafeAddress ||
       undefined === input.createdFromSafeAddress ||
-      "string" === typeof input.createdFromSafeAddress) &&
+      'string' === typeof input.createdFromSafeAddress) &&
     (null === input.createdFromOwnerAddress ||
       undefined === input.createdFromOwnerAddress ||
-      "string" === typeof input.createdFromOwnerAddress) &&
-    "string" === typeof input.name &&
+      'string' === typeof input.createdFromOwnerAddress) &&
+    'string' === typeof input.name &&
     (null === input.description ||
       undefined === input.description ||
-      "string" === typeof input.description);
+      'string' === typeof input.description);
   const $io2 = (input: any): boolean =>
-    "string" === typeof input.to &&
-    "string" === typeof input.value &&
+    'string' === typeof input.to &&
+    'string' === typeof input.value &&
     (null === input.data ||
       undefined === input.data ||
-      "string" === typeof input.data) &&
+      'string' === typeof input.data) &&
     (null === input.contractMethod ||
       undefined === input.contractMethod ||
-      ("object" === typeof input.contractMethod &&
+      ('object' === typeof input.contractMethod &&
         null !== input.contractMethod &&
         $io3(input.contractMethod))) &&
     (null === input.contractInputsValues ||
       undefined === input.contractInputsValues ||
-      ("object" === typeof input.contractInputsValues &&
+      ('object' === typeof input.contractInputsValues &&
         null !== input.contractInputsValues &&
         false === Array.isArray(input.contractInputsValues) &&
         $io5(input.contractInputsValues)));
   const $io3 = (input: any): boolean =>
     Array.isArray(input.inputs) &&
     input.inputs.every(
-      (elem: any) => "object" === typeof elem && null !== elem && $io4(elem),
+      (elem: any) => 'object' === typeof elem && null !== elem && $io4(elem)
     ) &&
-    "string" === typeof input.name &&
-    "boolean" === typeof input.payable;
+    'string' === typeof input.name &&
+    'boolean' === typeof input.payable;
   const $io4 = (input: any): boolean =>
     (undefined === input.internalType ||
-      "string" === typeof input.internalType) &&
-    "string" === typeof input.name &&
-    "string" === typeof input.type &&
+      'string' === typeof input.internalType) &&
+    'string' === typeof input.name &&
+    'string' === typeof input.type &&
     (null === input.components ||
       undefined === input.components ||
       (Array.isArray(input.components) &&
         input.components.every(
-          (elem: any) =>
-            "object" === typeof elem && null !== elem && $io4(elem),
+          (elem: any) => 'object' === typeof elem && null !== elem && $io4(elem)
         )));
   const $io5 = (input: any): boolean =>
     Object.keys(input).every((key: any) => {
       const value = input[key];
       if (undefined === value) return true;
-      return "string" === typeof value;
+      return 'string' === typeof value;
     });
-  return "object" === typeof input && null !== input && $io0(input);
+  return 'object' === typeof input && null !== input && $io0(input);
 };
-

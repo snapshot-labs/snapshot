@@ -9,8 +9,9 @@ import {
   TransferFundsTransaction,
   TransferNftTransaction,
   SafeImportTransaction,
+  GnosisSafe
 } from '../types';
-import { encodeMethodAndParams } from './abi';
+import { encodeMethodAndParams, encodeSafeMethodAndParams } from './abi';
 
 /**
  * Creates a formatted transaction for the Optimistic Governor to execute
@@ -168,21 +169,169 @@ export function parseValueInput(input: string) {
   return parseAmount(input);
 }
 
-export function createSafeImportTransaction(params:{
+export type CreateSafeTransactionParams = {
   to: string;
   value: string;
-  data: string,
-  methodName:string,
-  parameters: string[];
-}):SafeImportTransaction {
-  const formatted = createFormattedOptimisticGovernorTransaction({
-    to:params.to,
-    value:params.value,
-    data:params.data,
-  });
-  return {
-    type:'safeImport',
-    ...params,
-    formatted
+  data: string | null;
+  functionFragment?: FunctionFragment;
+  parameters?: { [key: string]: string };
+};
+
+export function createSafeImportTransaction(
+  params: CreateSafeTransactionParams
+): SafeImportTransaction {
+  const abi = JSON.stringify(Array(params.functionFragment));
+  const subtype = params.functionFragment
+    ? 'contractInteraction'
+    : 'nativeTransfer';
+  const methodName = params.functionFragment?.name;
+  const parameters = params.parameters;
+  // is native transfer funds
+  if (!params.functionFragment) {
+    const data = '0x';
+    const formatted = createFormattedOptimisticGovernorTransaction({
+      to: params.to,
+      value: params.value,
+      data
+    });
+    return {
+      type: 'safeImport',
+      isValid: true,
+      abi,
+      formatted,
+      to: params.to,
+      value: params.value,
+      data,
+      subtype,
+      methodName,
+      parameters
+    };
   }
+  // is contract interaction with NO args
+  if (!params.parameters) {
+    const data = params?.data || '0x';
+    const formatted = createFormattedOptimisticGovernorTransaction({
+      to: params.to,
+      value: params.value,
+      data
+    });
+    return {
+      type: 'safeImport',
+      isValid: true,
+      abi,
+      formatted,
+      to: params.to,
+      value: params.value,
+      data,
+      subtype,
+      methodName,
+      parameters
+    };
+  }
+
+  // is contract interaction WITH args
+  const encodedData =
+    params?.data ||
+    encodeSafeMethodAndParams(params.functionFragment, params.parameters) ||
+    '0x';
+
+  const formatted = createFormattedOptimisticGovernorTransaction({
+    to: params.to,
+    value: params.value,
+    data: encodedData
+  });
+
+  return {
+    type: 'safeImport',
+    isValid: true,
+    abi,
+    formatted,
+    to: params.to,
+    value: params.value,
+    data: encodedData,
+    subtype,
+    methodName,
+    parameters
+  };
 }
+
+// export function createSafeImportTransaction(
+//   params: GnosisSafe.BatchTransaction
+// ): SafeImportTransaction {
+//   const abi = JSON.stringify([params.contractMethod]);
+//   const subtype = params.contractMethod
+//     ? 'contractInteraction'
+//     : 'nativeTransfer';
+//   const methodName = params.contractMethod?.name;
+//   const parameters = params.contractInputsValues;
+//   // is native transfer funds
+//   if (!params.contractMethod) {
+//     const data = '0x';
+//     const formatted = createFormattedOptimisticGovernorTransaction({
+//       to: params.to,
+//       value: params.value,
+//       data
+//     });
+//     return {
+//       type: 'safeImport',
+//       isValid: true,
+//       abi,
+//       formatted,
+//       to: params.to,
+//       value: params.value,
+//       data,
+//       subtype,
+//       methodName,
+//       parameters
+//     };
+//   }
+//   // is contract interaction with NO args
+//   if (!params.contractInputsValues) {
+//     const data = params?.data || '0x';
+//     const formatted = createFormattedOptimisticGovernorTransaction({
+//       to: params.to,
+//       value: params.value,
+//       data
+//     });
+//     return {
+//       type: 'safeImport',
+//       isValid: true,
+//       abi,
+//       formatted,
+//       to: params.to,
+//       value: params.value,
+//       data,
+//       subtype,
+//       methodName,
+//       parameters
+//     };
+//   }
+
+//   // is contract interaction WITH args
+//   const encodedData =
+//     params?.data ||
+//     encodeSafeMethodAndParams(
+//       params.contractMethod,
+//       params.contractInputsValues
+//     ) ||
+//     '0x';
+
+//   const formatted = createFormattedOptimisticGovernorTransaction({
+//     to: params.to,
+//     value: params.value,
+//     data: encodedData
+//   });
+
+//   return {
+//     type: 'safeImport',
+//     isValid: true,
+//     abi,
+//     formatted,
+//     to: params.to,
+//     value: params.value,
+//     data: encodedData,
+//     subtype,
+//     methodName,
+//     parameters
+//   };
+// }
