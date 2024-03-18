@@ -33,6 +33,7 @@ const handleInput = () => {
 
 <template>
   <UiInput
+    :custom-styles="'safesnap-custom-input'"
     v-model="input"
     v-bind="inputProps"
     :disabled="disabled"

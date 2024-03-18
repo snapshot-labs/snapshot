@@ -1,4 +1,25 @@
+import { SafeAsset, TokenAsset } from '@/helpers/interfaces';
 import { MULTI_SEND_VERSION } from './utils/multiSend';
+
+export enum Network {
+  //Mainnet
+  Mainnet = '1',
+  BSC = '56',
+  GnosisChain = '100',
+  Polygon = '137',
+  EWC = '246',
+  Arbitrum = '42161',
+  Volta = '73799',
+  Optimism = '10',
+  //Testnet
+  Goerli = '5',
+  OptimismGoerli = '420',
+  Mumbai = '80001',
+  ArbitrumGoerli = '421613',
+  zkSyncEraTestnet = '280',
+  LineaTestnet = '59140',
+  PolygonZkEVMTestnet = '1442'
+}
 
 export const EIP712_TYPES = {
   Transaction: [
@@ -30,7 +51,7 @@ export const EXPLORER_API_URLS = {
   '246': 'https://explorer.energyweb.org/api',
   '137': 'https://api.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
-  '42161': 'https://api.arbiscan.io/api',
+  '42161': 'https://api.arbiscan.io/api'
   // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
 };
 
@@ -43,7 +64,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '137': 'https://safe-transaction-polygon.safe.global/api',
   '56': 'https://safe-transaction-bsc.safe.global/api',
   '42161': 'https://safe-transaction-arbitrum.safe.global/api',
-  '1116': 'https://safetx.coredao.org/api',
+  '1116': 'https://safetx.coredao.org/api'
 };
 
 // ABIs
@@ -66,6 +87,16 @@ export const REALITY_MODULE_ABI = [
   // Write functions
   'function addProposal(string proposalId, bytes32[] txHashes)',
   'function executeProposalWithIndex(string proposalId, bytes32[] txHashes, address to, uint256 value, bytes data, uint8 operation, uint256 txIndex)'
+];
+
+export const TOKEN_ABI = [
+  {
+    constant: true,
+    inputs: [],
+    name: 'decimals',
+    outputs: [{ name: '', type: 'uint8' }],
+    type: 'function'
+  }
 ];
 
 export const ORACLE_ABI = [
@@ -312,6 +343,41 @@ export const UMA_FINDER_ABI = [
   'function transferOwnership(address newOwner)'
 ];
 
+export const CONNEXT_MODULE_ABI = [
+  'event AvatarSet(address indexed previousAvatar, address indexed newAvatar)',
+  'event ChangedGuard(address guard)',
+  'event ConnextSet(address connext)',
+  'event Initialized(uint8 version)',
+  'event ModuleSetUp(address owner, address avatar, address target, address originSender, uint32 origin, address connext)',
+  'event OriginSenderSet(address originSender)',
+  'event OriginSet(uint32 origin)',
+  'event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)',
+  'event TargetSet(address indexed previousTarget, address indexed newTarget)',
+  'function avatar() view returns (address)',
+  'function connext() view returns (address)',
+  'function getGuard() view returns (address)',
+  'function guard() view returns (address)',
+  'function origin() view returns (uint32)',
+  'function originSender() view returns (address)',
+  'function owner() view returns (address)',
+  'function renounceOwnership()',
+  'function setAvatar(address _avatar)',
+  'function setConnext(address _connext)',
+  'function setGuard(address _guard)',
+  'function setOrigin(uint32 _origin)',
+  'function setOriginSender(address _originSender)',
+  'function setTarget(address _target)',
+  'function setUp(bytes initializeParams)',
+  'function target() view returns (address)',
+  'function transferOwnership(address newOwner)',
+  'function xReceive(bytes32, uint256 _amount, address _asset, address _originSender, uint32 _origin, bytes _callData) returns (bytes)'
+];
+
+export const CONNEXT_BRIDGE_FACET = [
+  // xcall functions
+  'function xcall(uint32 _destination, address _to, address _asset, address _delegate, uint256 _amount, uint256 _slippage, bytes _callData) payable returns (bytes32)'
+];
+
 export const ERC20_ABI = [
   //Read functions
   'function balanceOf(address account) view returns (uint256)',
@@ -547,3 +613,396 @@ export const contractData: ContractData[] = [
       'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
   }
 ];
+
+interface ChainData {
+  [key: string]: {
+    safeIdentifier?: string | undefined;
+    name: string;
+    id: number;
+    domainId: number;
+    connextContract: string;
+    ZCMFactory: string;
+    safeMasterCopy: string;
+    multicallAddress: string;
+    assets: {
+      [key: string]: string;
+    };
+    publicRpcProvider: string;
+  };
+}
+
+interface Constants {
+  SETUP_SAFE_GAS_LIMIT: number;
+  MAINNET_CHAINS: string[];
+  TESTNETS_CHAINS: string[];
+  relayerFeeBoost: number;
+  Chains: ChainData;
+  AVAILABLE_ORIGIN_NETWORKS: string[];
+  AVAILABLE_DESTINY_NETWORKS: string[];
+  tokensDecimals: { [key: string]: number };
+  TESTNET_AVAILABLE_ORIGIN_NETWORKS: string[];
+  TESTNET_AVAILABLE_DESTINY_NETWORKS: string[];
+}
+
+interface AssetDetails {
+  [key: string]: string;
+}
+
+export const getConstants = (): Constants => {
+  return {
+    SETUP_SAFE_GAS_LIMIT: 2400000,
+
+    relayerFeeBoost: 150, // 1.5x
+
+    MAINNET_CHAINS: ['1', '137', '10', '42161', '56', '100'],
+    TESTNETS_CHAINS: ['5', '420', '80001', '421613', '280', '59140'],
+
+    AVAILABLE_ORIGIN_NETWORKS: [
+      'ethereum',
+      'polygon',
+      'optimism',
+      'arbitrum',
+      'bnbChain',
+      'gnosisChain'
+    ],
+    AVAILABLE_DESTINY_NETWORKS: [
+      'ethereum',
+      'polygon',
+      'optimism',
+      'arbitrum',
+      'bnbChain',
+      'gnosisChain'
+    ],
+
+    TESTNET_AVAILABLE_ORIGIN_NETWORKS: [
+      'optimismGoerli',
+      'mumbai',
+      'arbitrumGoerli',
+      'zkSyncEraTestnet',
+      'lineaTestnet',
+      'goerli'
+    ],
+    TESTNET_AVAILABLE_DESTINY_NETWORKS: ['goerli', 'mumbai'],
+
+    tokensDecimals: {
+      '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48': 6, // USDC on Ethereum
+      '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2': 18, // WETH on Ethereum
+      '0x6B175474E89094C44Da98b954EedeAC495271d0F': 18, // DAI on Ethereum
+      '0xdAC17F958D2ee523a2206206994597C13D831ec7': 6, // USDT on Ethereum
+      '0xF96C6d2537e1af1a9503852eB2A4AF264272a5B6': 6, // nextUSDC on Polygon
+      '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174': 6, // USDC on Polygon
+      '0x4b8BaC8Dd1CAA52E32C07755c17eFadeD6A0bbD0': 18, // nextWETH on Polygon
+      '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619': 18, // WETH on Polygon
+      '0xaDCe87b14d570665222C1172D18a221BF7690d5a': 18, // nextDAI on Polygon
+      '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063': 18, // DAI on Polygon
+      '0xE221C5A2a8348f12dcb2b0e88693522EbAD2690f': 6, // nextUSDT on Polygon
+      '0xc2132D05D31c914a87C6611C10748AEb04B58e8F': 6, // USDT on Polygon
+      '0x67E51f46e8e14D4E4cab9dF48c59ad8F512486DD': 6, // nextUSDC on Optimism
+      '0x7F5c764cBc14f9669B88837ca1490cCa17c31607': 6, // USDC on Optimism
+      '0xbAD5B3c68F855EaEcE68203312Fd88AD3D365e50': 18, // nextWETH on Optimism
+      '0x4200000000000000000000000000000000000006': 18, // WETH on Optimism
+      '0xd64Bd028b560bbFc732eA18f282c64B86F3468e0': 18, // nextDAI on Optimism
+      '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1': 18, // DAI on Optimism
+      '0x4cBB28FA12264cD8E87C62F4E1d9f5955Ce67D20': 6, // nextUSDT on Optimism
+      '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58': 6, // USDT on Optimism
+      '0x8c556cF37faa0eeDAC7aE665f1Bb0FbD4b2eae36': 6, // nextUSDC on Arbitrum
+      '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8': 6, // USDC on Arbitrum
+      '0x2983bf5c334743Aa6657AD70A55041d720d225dB': 18, // nextWETH on Arbitrum
+      '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1': 18, // WETH on Arbitrum
+      '0xfDe99b3B3fbB69553D7DaE105EF34Ba4FE971190': 18, // nextDAI on Arbitrum
+      '0x2fD7E61033b3904c65AA9A9B83DCd344Fa19Ffd2': 6, // nextUSDT on Arbitrum
+      '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9': 6, // USDT on Arbitrum
+      '0x5e7D83dA751F4C9694b13aF351B30aC108f32C38': 6, // nextUSDC on BNB Chain
+      '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d': 6, // USDC on BNB Chain
+      '0xA9CB51C666D2AF451d87442Be50747B31BB7d805': 18, // nextWETH on BNB Chain
+      '0x2170Ed0880ac9A755fd29B2688956BD959F933F8': 18, // WETH on BNB Chain
+      '0x86a343BCF17D79C475d300eed35F0145F137D0c9': 18, // nextDAI on BNB Chain
+      '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3': 18, // DAI on BNB Chain
+      '0xD609f26B5547d5E31562B29150769Cb7c774B97a': 6, // nextUSDT on BNB Chain
+      '0x55d398326f99059fF775485246999027B3197955': 6, // USDT on BNB Chain
+      '0x44CF74238d840a5fEBB0eAa089D05b763B73faB8': 6, // nextUSDC on Gnosis Chain
+      '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83': 6, // USDC on Gnosis Chain
+      '0x538E2dDbfDf476D24cCb1477A518A82C9EA81326': 18, // nextWETH on Gnosis Chain
+      '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1': 18, // WETH on Gnosis Chain
+      '0x0e1D5Bcd2Ac5CF2f71841A9667afC1E995CaAf4F': 18, // nextDAI on Gnosis Chain
+      '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d': 18, // DAI on Gnosis Chain
+      '0xF4d944883D6FddC56d3534986feF82105CaDbfA1': 6, // nextUSDT on Gnosis Chain
+      '0x4ECaBa5870353805a9F068101A40E0f32ed605C6': 6, // USDT on Gnosis Chain
+      '0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1': 18, // TEST on Goerli
+      '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6': 18, // WETH on Goerli
+      '0x68Db1c8d85C09d546097C65ec7DCBFF4D6497CbF': 18, // TEST on Optimism Goerli
+      '0x39B061B7e41DE8B721f9aEcEB6b3f17ECB7ba63E': 18, // nextWETH on Optimism Goerli
+      '0x74c6FD7D2Bc6a8F0Ebd7D78321A95471b8C2B806': 18, // WETH on Optimism Goerli
+      '0xeDb95D8037f769B72AAab41deeC92903A98C9E16': 18, // TEST on Mumbai
+      '0x1E5341E4b7ed5D0680d9066aac0396F0b1bD1E69': 18, // nextWETH on Mumbai
+      '0xFD2AB41e083c75085807c4A65C0A14FDD93d55A9': 18, // WETH on Mumbai
+      '0xDC805eAaaBd6F68904cA706C221c72F8a8a68F9f': 18, // TEST on Arbitrum Goerli
+      '0x1346786E6A5e07b90184a1Ba58E55444b99DC4A2': 18, // WETH on Arbitrum Goerli
+      '0x7c1412e456ad60b8ee458c4eb3a9852c3e389353': 18, // TEST on zkSync Era Testnet
+      '0xB706319D37b945727E71ae0d4353699d19112576': 18 // TEST on Linea Testnet
+    },
+
+    // tokensDecimals: {
+    //   USDC: 6,
+    //   WETH: 18,
+    //   DAI: 18,
+    //   USDT: 6,
+    //   nextUSDC: 6,
+    //   nextWETH: 18,
+    //   nextDAI: 18,
+    //   nextUSDT: 6,
+    //   TEST: 18
+    // },
+
+    // See: https://docs.connext.network/resources/supported-chains#mainnet
+    //      https://docs.gelato.network/developer-services/relay/payment-and-fees#gelatos-fees
+    Chains: {
+      ethereum: {
+        name: 'Ethereum',
+        id: 1,
+        safeIdentifier: 'eth',
+        domainId: 6648936,
+        connextContract: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://eth.llamarpc.com',
+        assets: {
+          USDC: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+          WETH: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+          DAI: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+          USDT: '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+        }
+      },
+      polygon: {
+        name: 'Polygon',
+        id: 137,
+        domainId: 1886350457,
+        safeIdentifier: 'matic',
+        connextContract: '0x11984dc4465481512eb5b777E44061C158CF2259',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://polygon.llamarpc.com',
+        assets: {
+          nextUSDC: '0xF96C6d2537e1af1a9503852eB2A4AF264272a5B6',
+          USDC: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+          nextWETH: '0x4b8BaC8Dd1CAA52E32C07755c17eFadeD6A0bbD0',
+          WETH: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+          nextDAI: '0xaDCe87b14d570665222C1172D18a221BF7690d5a',
+          DAI: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+          nextUSDT: '0xE221C5A2a8348f12dcb2b0e88693522EbAD2690f',
+          USDT: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F'
+        }
+      },
+      optimism: {
+        name: 'Optimism',
+        id: 10,
+        domainId: 1869640809,
+        safeIdentifier: 'oeth',
+        connextContract: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0xfb1bffC9d739B8D520DaF37dF666da4C687191EA',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://mainnet.optimism.io',
+        assets: {
+          nextUSDC: '0x67E51f46e8e14D4E4cab9dF48c59ad8F512486DD',
+          USDC: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+          nextWETH: '0xbAD5B3c68F855EaEcE68203312Fd88AD3D365e50',
+          WETH: '0x4200000000000000000000000000000000000006',
+          nextDAI: '0xd64Bd028b560bbFc732eA18f282c64B86F3468e0',
+          DAI: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+          nextUSDT: '0x4cBB28FA12264cD8E87C62F4E1d9f5955Ce67D20',
+          USDT: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58'
+        }
+      },
+      arbitrum: {
+        name: 'Arbitrum One',
+        id: 42161,
+        domainId: 1634886255,
+        safeIdentifier: 'arb1',
+        connextContract: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://arb1.arbitrum.io/rpc',
+        assets: {
+          nextUSDC: '0x8c556cF37faa0eeDAC7aE665f1Bb0FbD4b2eae36',
+          USDC: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
+          nextWETH: '0x2983bf5c334743Aa6657AD70A55041d720d225dB',
+          WETH: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+          nextDAI: '0xfDe99b3B3fbB69553D7DaE105EF34Ba4FE971190',
+          DAI: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+          nextUSDT: '0x2fD7E61033b3904c65AA9A9B83DCd344Fa19Ffd2',
+          USDT: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9'
+        }
+      },
+      bnbChain: {
+        name: 'BNB Chain',
+        id: 56,
+        domainId: 6450786,
+        safeIdentifier: 'bnb',
+        connextContract: '0xCd401c10afa37d641d2F594852DA94C700e4F2CE',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://bsc-dataseed1.binance.org',
+        assets: {
+          nextUSDC: '0x5e7D83dA751F4C9694b13aF351B30aC108f32C38',
+          USDC: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
+          nextWETH: '0xA9CB51C666D2AF451d87442Be50747B31BB7d805',
+          WETH: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+          nextDAI: '0x86a343BCF17D79C475d300eed35F0145F137D0c9',
+          DAI: '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
+          nextUSDT: '0xD609f26B5547d5E31562B29150769Cb7c774B97a',
+          USDT: '0x55d398326f99059fF775485246999027B3197955'
+        }
+      },
+      gnosisChain: {
+        name: 'Gnosis Chain',
+        id: 100,
+        safeIdentifier: 'gno',
+        domainId: 6778479,
+        connextContract: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://rpc.gnosischain.com',
+        assets: {
+          nextUSDC: '0x44CF74238d840a5fEBB0eAa089D05b763B73faB8',
+          USDC: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
+          nextWETH: '0x538E2dDbfDf476D24cCb1477A518A82C9EA81326',
+          WETH: '0x6A023CCd1ff6F2045C3309768eAd9E68F978f6e1',
+          nextDAI: '0x0e1D5Bcd2Ac5CF2f71841A9667afC1E995CaAf4F',
+          DAI: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+          nextUSDT: '0xF4d944883D6FddC56d3534986feF82105CaDbfA1',
+          USDT: '0x4ECaBa5870353805a9F068101A40E0f32ed605C6'
+        }
+      },
+
+      //Testnet
+      goerli: {
+        name: 'Goerli',
+        id: 5,
+        domainId: 1735353714,
+        safeIdentifier: 'gor',
+        connextContract: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
+        ZCMFactory: '0x614F9Ffe9C7EaA5F5BE877F47217Cf77C3D142d3',
+        safeMasterCopy: '0x3E5c63644E683549055b9Be8653de26E0B4CD36E',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://ethereum-goerli.publicnode.com',
+        assets: {
+          TEST: '0x7ea6eA49B0b0Ae9c5db7907d139D9Cd3439862a1',
+          WETH: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
+        }
+      },
+      optimismGoerli: {
+        name: 'Optimism Goerli',
+        id: 420,
+        domainId: 1735356532,
+        connextContract: '0x5Ea1bb242326044699C3d81341c5f535d5Af1504',
+        ZCMFactory: '0x0000000000000000000000000000000000000000',
+        safeMasterCopy: '0x0000000000000000000000000000000000000000',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://goerli.optimism.io',
+        assets: {
+          TEST: '0x68Db1c8d85C09d546097C65ec7DCBFF4D6497CbF',
+          nextWETH: '0x39B061B7e41DE8B721f9aEcEB6b3f17ECB7ba63E',
+          WETH: '0x74c6FD7D2Bc6a8F0Ebd7D78321A95471b8C2B806'
+        }
+      },
+      mumbai: {
+        name: 'Mumbai',
+        id: 80001,
+        domainId: 9991,
+        connextContract: '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
+        ZCMFactory: '0x0000000000000000000000000000000000000000',
+        safeMasterCopy: '0x0000000000000000000000000000000000000000',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://polygon-mumbai-bor.publicnode.com',
+        assets: {
+          TEST: '0xeDb95D8037f769B72AAab41deeC92903A98C9E16',
+          nextWETH: '0x1E5341E4b7ed5D0680d9066aac0396F0b1bD1E69',
+          WETH: '0xFD2AB41e083c75085807c4A65C0A14FDD93d55A9'
+        }
+      },
+      arbitrumGoerli: {
+        name: 'Arbitrum-Goerli',
+        id: 421613,
+        domainId: 1734439522,
+        connextContract: '0x2075c9E31f973bb53CAE5BAC36a8eeB4B082ADC2',
+        ZCMFactory: '0x0000000000000000000000000000000000000000',
+        safeMasterCopy: '0x0000000000000000000000000000000000000000',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://arbitrum-goerli.publicnode.com',
+        assets: {
+          TEST: '0xDC805eAaaBd6F68904cA706C221c72F8a8a68F9f',
+          WETH: '0x1346786E6A5e07b90184a1Ba58E55444b99DC4A2'
+        }
+      },
+      zkSyncEraTestnet: {
+        name: 'zkSync Era Testnet',
+        id: 280,
+        domainId: 2053862260,
+        connextContract: '0xB0694fEcEdd88e5590A563aDb5f194d2dE30F0b6',
+        ZCMFactory: '0x0000000000000000000000000000000000000000',
+        safeMasterCopy: '0x0000000000000000000000000000000000000000',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://testnet.era.zksync.dev',
+        assets: {
+          TEST: '0x7c1412e456ad60b8ee458c4eb3a9852c3e389353'
+        }
+      },
+      lineaTestnet: {
+        name: 'Linea Testnet',
+        id: 59140,
+        domainId: 1668247156,
+        connextContract: '0xfdb6B853C1945Dbffe78A3091BeBB9A928234fA3',
+        ZCMFactory: '0x0000000000000000000000000000000000000000',
+        safeMasterCopy: '0x0000000000000000000000000000000000000000',
+        multicallAddress: '0xcA11bde05977b3631167028862bE2a173976CA11',
+        publicRpcProvider: 'https://rpc.goerli.linea.build',
+        assets: {
+          TEST: '0xB706319D37b945727E71ae0d4353699d19112576'
+        }
+      }
+      // polygonZkEvmTestnet: {
+      //   name: "Polygon zkEVM Testnet",
+      //   id: 1442,
+      //   domainId: 1887071092,
+      //   connextContract: "0x20b4789065DE09c71848b9A4FcAABB2c10006FA2",
+      //   ZCMFactory: "0x0000000000000000000000000000000000000000",
+      //   safeMasterCopy: "0x0000000000000000000000000000000000000000",
+      //   multicallAddress: "0xcA11bde05977b3631167028862bE2a173976CA11",
+      //   publicRpcProvider: "https://rpc.public.zkevm-test.net",
+      //   assets: {
+      //     TEST: "0x5f921E4DE609472632CEFc72a3846eCcfbed4ed8",
+      //   },
+      // },
+    }
+  };
+};
+
+export const findChainKeyById = (
+  chains: ChainData,
+  id: number
+): string | null => {
+  for (const [key, value] of Object.entries(chains)) {
+    if (value.id === id) {
+      return key;
+    }
+  }
+  return null;
+};
+
+export const getAssetsByChainId = (
+  chains: ChainData,
+  id: number
+): AssetDetails | null => {
+  for (const chainKey in chains) {
+    if (chains[chainKey].id === id) {
+      return chains[chainKey].assets;
+    }
+  }
+  return null; // Return null if no matching chain is found
+};

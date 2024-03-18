@@ -8,13 +8,13 @@ import Plugin, {
 } from '../../index';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isAddress } from '@ethersproject/address';
-import { parseAmount } from '@/helpers/utils';
+import { parseAmount, shorten } from '@/helpers/utils';
 import SafeSnapInputAddress from '../Input/Address.vue';
 import SafeSnapInputMethodParameter from '../Input/MethodParameter.vue';
 
 export default {
   components: { SafeSnapInputAddress, SafeSnapInputMethodParameter },
-  props: ['modelValue', 'nonce', 'config'],
+  props: ['modelValue', 'nonce', 'config', 'isDetails'],
   emits: ['update:modelValue'],
   data() {
     let to = '';
@@ -36,11 +36,14 @@ export default {
         to = _to;
         abi = typeof _abi === 'object' ? JSON.stringify(_abi) : _abi;
         value = _value;
-
-        const transactionDecoder = new InterfaceDecoder(abi);
-        selectedMethod = transactionDecoder.getMethodFragment(data);
-        parameters = transactionDecoder.decodeFunction(data, selectedMethod);
-        methods = [selectedMethod];
+        if (this.isValidJSON(abi)) {
+          const transactionDecoder = new InterfaceDecoder(abi);
+          selectedMethod = transactionDecoder.getMethodFragment(data);
+          parameters = transactionDecoder.decodeFunction(data, selectedMethod);
+          methods = [selectedMethod];
+        } else {
+          console.error('Provided ABI is not a valid JSON:', abi);
+        }
       } catch (err) {
         console.error('error decoding contract interaction tx', err);
       }
@@ -61,7 +64,11 @@ export default {
       parameters
     };
   },
+
   watch: {
+    modelValue(newModelValue) {
+      this.decodeTransaction(newModelValue);
+    },
     to() {
       this.updateTransaction();
     },
@@ -83,30 +90,49 @@ export default {
   },
   mounted() {
     if (this.modelValue) {
-      const { to = '', abi = '', value = '0', data } = this.modelValue;
-      this.to = to;
+      this.decodeTransaction(this.modelValue);
+    }
+  },
+  methods: {
+    decodeTransaction(modelValue) {
+      if (!modelValue) return;
 
-      if (this.config.preview) {
+      const to = modelValue.to || '';
+      const value = modelValue.value || '0';
+      const abi = modelValue.abi || [];
+      const data = modelValue.data || '';
+
+      if (this.config.preview || this.isDetails) {
         const transactionDecoder = new InterfaceDecoder(abi);
         this.selectedMethod = transactionDecoder.getMethodFragment(data);
-        this.parameters = transactionDecoder.decodeFunction(
+        const params = transactionDecoder.decodeFunction(
           data,
           this.selectedMethod
         );
-
         this.methods = [this.selectedMethod];
         this.handleValueChange(value);
         this.handleABIChanged(
           typeof abi === 'object' ? JSON.stringify(abi) : abi
         );
+        this.parameters = params;
+        this.abi = abi;
+        this.value = value;
+        this.to = to;
       } else {
         setTimeout(() => this.updateTransaction(), 1000);
       }
-    }
-  },
-  methods: {
+    },
+    isValidJSON(str) {
+      try {
+        JSON.parse(str);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    },
     updateTransaction() {
       if (this.config.preview) return;
+
       try {
         if (isBigNumberish(this.value) && isAddress(this.to)) {
           const data = getContractTransactionData(
@@ -125,7 +151,6 @@ export default {
             },
             this.config.multiSendAddress
           );
-
           if (this.plugin.validateTransaction(transaction)) {
             this.$emit('update:modelValue', transaction);
             return;
@@ -174,43 +199,69 @@ export default {
     handleParameterChanged(index, value) {
       this.parameters[index] = value;
       this.updateTransaction();
+    },
+    format(value) {
+      return shorten(value);
     }
   }
 };
 </script>
 
 <template>
-  <div class="space-y-2">
-    <SafeSnapInputAddress
-      v-model="to"
-      :disabled="config.preview"
-      :input-props="{
-        required: true
-      }"
-      :label="$t('safeSnap.to')"
-      @validAddress="handleAddressChanged()"
-    />
+  <div>
+    <div v-if="isDetails" class="flex flex-col space-y-2 px-3">
+      <div class="flex space-x-2">
+        <span class="text-skin-text">{{ $t('safeSnap.to') }}</span>
+        <p>{{ format(to ?? '') }}</p>
+      </div>
+      <div class="flex space-x-2">
+        <p class="text-skin-text">{{ $t('safeSnap.value') }}</p>
+        <p>{{ value }}</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <p class="text-skin-text">ABI</p>
+        <p>{{ abi }}</p>
+      </div>
+      <div class="flex space-x-2">
+        <p class="text-skin-text">Function</p>
+        <p>{{ selectedMethod.name }}()</p>
+      </div>
+    </div>
+    <div v-if="!isDetails" class="space-y-2">
+      <SafeSnapInputAddress
+        v-model="to"
+        :disabled="config.preview"
+        :input-props="{
+          required: true
+        }"
+        :label="$t('safeSnap.to')"
+        @validAddress="handleAddressChanged()"
+      />
 
-    <UiInput
-      :disabled="config.preview"
-      :error="!validValue && $t('safeSnap.invalidValue')"
-      :model-value="value"
-      @update:model-value="handleValueChange($event)"
-    >
-      <template #label>{{ $t('safeSnap.value') }}</template>
-    </UiInput>
+      <UiInput
+        :custom-styles="'safesnap-custom-input'"
+        :disabled="config.preview"
+        :error="!validValue && $t('safeSnap.invalidValue')"
+        :model-value="value"
+        @update:model-value="handleValueChange($event)"
+      >
+        <template #label>{{ $t('safeSnap.value') }}</template>
+      </UiInput>
 
-    <UiInput
-      :disabled="config.preview"
-      :error="!validAbi && $t('safeSnap.invalidAbi')"
-      :model-value="abi"
-      @update:model-value="handleABIChanged($event)"
-    >
-      <template #label>ABI</template>
-    </UiInput>
-
-    <div v-if="methods.length">
+      <UiInput
+        :custom-styles="'safesnap-custom-input'"
+        :disabled="config.preview"
+        :error="!validAbi && $t('safeSnap.invalidAbi')"
+        :model-value="abi"
+        @update:model-value="handleABIChanged($event)"
+      >
+        <template #label>ABI</template>
+      </UiInput>
+    </div>
+    <div v-if="methods.length" class="mt-2">
       <UiSelect
+        v-if="!isDetails"
+        :custom-styles="'safesnap-custom-select'"
         v-model="methodIndex"
         :disabled="config.preview"
         @change="handleMethodChanged()"
@@ -220,17 +271,18 @@ export default {
           {{ method.name }}()
         </option>
       </UiSelect>
-
-      <div v-if="selectedMethod && selectedMethod.inputs.length">
-        <div class="divider"></div>
-
+      <div
+        v-if="selectedMethod && selectedMethod.inputs.length"
+        class="space-y-2"
+      >
         <SafeSnapInputMethodParameter
           v-for="(input, index) in selectedMethod.inputs"
           :key="input.name"
           :disabled="config.preview"
           :model-value="parameters[index]"
           :parameter="input"
-          @update:model-value="handleParameterChanged(index, $event)"
+          :is-details="isDetails"
+          @update:modelValue="handleParameterChanged(index, $event)"
         />
       </div>
     </div>

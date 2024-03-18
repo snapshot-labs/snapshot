@@ -19,13 +19,20 @@ export function getMultiSend(
 }
 
 export function encodeTransactions(transactions: SafeTransaction[]) {
-  const values = transactions.map(tx => [
-    tx.operation,
-    tx.to,
-    tx.value,
-    hexDataLength(tx.data || '0x'),
-    tx.data || '0x'
-  ]);
+  const values = transactions.reduce((acc: (string | number)[][], tx) => {
+    if (!tx.to || !tx.operation || !tx.value || !tx.data) {
+      console.error('Invalid Transaction: ', tx);
+      throw new Error('[Encoding transaction] - Invalid Transaction');
+    }
+    const operation = tx.operation;
+    const to = tx.to;
+    const value = tx.value;
+    const dataLength = hexDataLength(tx.data) ?? 0;
+    const data = tx.data;
+
+    acc.push([operation, to, value, dataLength, data]);
+    return acc;
+  }, []);
 
   const types = transactions.map(() => [
     'uint8',
@@ -34,8 +41,7 @@ export function encodeTransactions(transactions: SafeTransaction[]) {
     'uint256',
     'bytes'
   ]);
-
-  return pack(types.flat(1), values.flat(1));
+  return pack(types.flat(), values.flat());
 }
 
 export function createMultiSendTx(

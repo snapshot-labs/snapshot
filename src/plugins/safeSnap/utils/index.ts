@@ -1,12 +1,18 @@
 import { isAddress } from '@ethersproject/address';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import {
+  JsonRpcProvider,
+  StaticJsonRpcProvider
+} from '@ethersproject/providers';
 import { keccak256 } from '@ethersproject/solidity';
 import memoize from 'lodash/memoize';
 
 import { SafeExecutionData, SafeTransaction } from '@/helpers/interfaces';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
-import SafeSnapPlugin, { MULTI_SEND_VERSION } from '../index';
+import SafeSnapPlugin, { MULTI_SEND_VERSION, TOKEN_ABI } from '../index';
 import { createMultiSendTx, getMultiSend } from './multiSend';
+import { Contract } from '@ethersproject/contracts';
+
+const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
 
 export const mustBeEthereumAddress = memoize((address: string) => {
   const startsWith0x = address?.startsWith('0x');
@@ -170,4 +176,17 @@ export async function fetchTextSignatures(
   const response = await fetch(url.toString());
   const { results } = await response.json();
   return results.map(signature => signature.text_signature);
+}
+
+export async function getDecimals(network: string, tokenAddress: string) {
+  const provider: StaticJsonRpcProvider = getProvider(network, {
+    broviderUrl
+  });
+  try {
+    const tokenContract = new Contract(tokenAddress, TOKEN_ABI, provider);
+    const decimals = await tokenContract.decimals();
+    return decimals;
+  } catch (error) {
+    console.error(error);
+  }
 }

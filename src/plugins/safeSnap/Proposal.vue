@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Config from './components/Config.vue';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { Network } from './types';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -43,7 +44,7 @@ const safeSnapInput = computed(
     :proposal="proposal"
     :preview="true"
     :config="space.plugins.safeSnap"
-    :network="space.network"
+    :network="(space.network as Network)"
     :space="space"
     :results="results"
   />

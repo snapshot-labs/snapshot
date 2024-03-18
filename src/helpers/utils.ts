@@ -117,8 +117,7 @@ export function calcToSeconds(value, unit) {
 }
 
 export function getIpfsUrl(url: string) {
-  const gateway: any =
-    import.meta.env.VITE_IPFS_GATEWAY || 'cloudflare-ipfs.com';
+  const gateway: any = 'cloudflare-ipfs.com';
   return getUrl(url, gateway);
 }
 

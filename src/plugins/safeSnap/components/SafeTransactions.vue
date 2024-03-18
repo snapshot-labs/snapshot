@@ -6,6 +6,7 @@ import SafeSnapHandleOutcome from './HandleOutcome.vue';
 import SafeSnapHandleOutcomeUma from './HandleOutcomeUma.vue';
 import SafeSnapFormImportTransactionsButton from './Form/ImportTransactionsButton.vue';
 import SafeSnapFormTransactionBatch from './Form/TransactionBatch.vue';
+import SafeSnapModalImportTransaction from './Modal/ImportTransaction.vue';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { formatUnits } from '@ethersproject/units';
@@ -165,7 +166,8 @@ export default {
     SafeSnapFormImportTransactionsButton,
     SafeSnapHandleOutcome,
     SafeSnapHandleOutcomeUma,
-    SafeSnapFormTransactionBatch
+    SafeSnapFormTransactionBatch,
+    SafeSnapModalImportTransaction
   },
   props: [
     'modelValue',
@@ -175,11 +177,13 @@ export default {
     'network',
     'realityAddress',
     'umaAddress',
+    'connextAddress',
+    'gnosisSafeAddress',
     'multiSendAddress',
     'preview',
     'hash'
   ],
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'delete:safe'],
   setup() {
     return { shorten };
   },
@@ -191,21 +195,23 @@ export default {
         this.modelValue,
         this.multiSendAddress
       ),
-      gnosisSafeAddress: undefined,
+      gnosisSafeAddress: this.gnosisSafeAddress,
       moduleType: undefined,
       moduleAddress: undefined,
       moduleTypeReady: false,
       showHash: false,
       transactionConfig: {
         preview: this.preview,
-        gnosisSafeAddress: undefined,
+        gnosisSafeAddress: this.gnosisSafeAddress,
         realityAddress: this.realityAddress,
         umaAddress: this.umaAddress,
+        connextAddress: this.connextAddress,
         network: this.network,
         multiSendAddress: this.multiSendAddress,
         tokens: [],
         collectables: []
-      }
+      },
+      showBatchWithJsonModal: false
     };
   },
   computed: {
@@ -229,28 +235,34 @@ export default {
   },
   async mounted() {
     try {
-      const moduleType = await plugin.validateUmaModule(
-        this.network,
-        this.umaAddress
-      );
+      const moduleType = await plugin.getModuleType(this.network, {
+        connextAddress: this.transactionConfig?.connextAddress,
+        umaAddress: this.umaAddress
+      });
 
-      const { dao } =
-        moduleType === 'reality'
-          ? await plugin.getModuleDetailsReality(
-              this.network,
-              this.realityAddress
-            )
-          : await plugin.getModuleDetailsUma(this.network, this.umaAddress);
+      if (['reality', 'uma'].includes(moduleType)) {
+        const { dao } =
+          moduleType === 'reality'
+            ? await plugin.getModuleDetailsReality(
+                this.network,
+                this.realityAddress
+              )
+            : await plugin.getModuleDetailsUma(this.network, this.umaAddress);
 
-      const moduleAddress =
-        moduleType === 'reality' ? this.realityAddress : this.umaAddress;
+        const moduleAddress =
+          moduleType === 'reality' ? this.realityAddress : this.umaAddress;
+
+        if (!this.gnosisSafeAddress && dao) {
+          this.transactionConfig.gnosisSafeAddress = dao;
+          this.gnosisSafeAddress = dao;
+        }
+        this.moduleAddress = moduleAddress;
+        this.gnosisSafeAddress = dao;
+      }
 
       this.moduleType = moduleType;
-      this.moduleAddress = moduleAddress;
-      this.gnosisSafeAddress = dao;
       this.transactionConfig = {
         ...this.transactionConfig,
-        gnosisSafeAddress: this.gnosisSafeAddress,
         tokens: await fetchBalances(this.network, this.gnosisSafeAddress),
         collectables: await fetchCollectibles(
           this.network,
@@ -284,23 +296,48 @@ export default {
       this.$emit('update:modelValue', this.input);
     },
     handleImport(txs) {
+      const transactions = [...txs].map(tx => {
+        return { ...tx, transactionBatchType: 'standard' };
+      });
       this.input.push(
         createBatch(
           this.moduleAddress,
           parseInt(this.network),
           this.input.length,
-          txs,
+          transactions,
           this.multiSendAddress
         )
       );
       this.$emit('update:modelValue', this.input);
+    },
+    handleRemoveSafe() {
+      this.$emit('delete:safe');
+    },
+    openJsonModal() {
+      this.showBatchWithJsonModal = true;
+    },
+    handleJsonModal(txs) {
+      this.showBatchWithJsonModal = false;
+      if (txs) {
+        this.handleImport(txs);
+      }
     }
   }
 };
 </script>
 
 <template>
-  <div>
+  <div
+    :class="[
+      preview ? '' : 'mx-4',
+      'rounded-none',
+      'border-b',
+      'border-t',
+      'bg-skin-block-bg',
+      'md:rounded-xl',
+      'md:border'
+    ]"
+  >
     <h4
       class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
     >
@@ -321,8 +358,12 @@ export default {
         :module-address="moduleAddress"
         :multi-send-address="multiSendAddress"
         :module-type="moduleType"
+        :connext-mod-address="transactionConfig.connextAddress"
       />
       <LoadingSpinner v-else />
+      <div v-if="!preview" class="cursor" @click="handleRemoveSafe">
+        <i-ho-x class="ml-1" />
+      </div>
     </h4>
     <UiCollapsibleText
       v-if="hash"
@@ -334,61 +375,64 @@ export default {
       title="Complete Transaction Hash"
       @toggle="showHash = !showHash"
     />
-    <div class="text-center">
+
+    <div class="flex flex-col items-start gap-3 self-stretch px-4 py-3">
+      <h6>{{ $t('safeSnap.batch') }} ({{ input.length }})</h6>
       <div
+        v-if="moduleTypeReady"
         v-for="(batch, index) in input"
         :key="index"
-        class="border-b last:border-b-0"
+        class="w-full rounded-xl border"
       >
         <SafeSnapFormTransactionBatch
+          :network="network"
           :config="transactionConfig"
           :model-value="batch"
           :nonce="index"
+          @import="handleImport($event)"
           @remove="removeBatch(index)"
           @update:model-value="updateTransactionBatch(index, $event)"
         />
       </div>
+      <div v-if="!preview || proposalResolved" class="flex w-full flex-col">
+        <div class="flex w-full items-center justify-between" v-if="!preview">
+          <TuneButton class="my-3" @click="addTransactionBatch">
+            {{ $t('safeSnap.addBatch') }}
+          </TuneButton>
+          <TuneButton @click="openJsonModal">
+            Transaction Batch with JSON
+          </TuneButton>
+          <teleport to="#modal">
+            <SafeSnapModalImportTransaction
+              :open="showBatchWithJsonModal"
+              :network="network"
+              @close="handleJsonModal"
+            />
+          </teleport>
+        </div>
 
-      <div v-if="!preview || proposalResolved">
-        <TuneButton v-if="!preview" class="my-3" @click="addTransactionBatch">
-          {{ $t('safeSnap.addBatch') }}
-        </TuneButton>
+        <div class="w-full">
+          <SafeSnapHandleOutcome
+            v-if="preview && proposalResolved && moduleType === 'reality'"
+            :batches="input"
+            :proposal="proposal"
+            :reality-address="transactionConfig.realityAddress"
+            :multi-send-address="transactionConfig.multiSendAddress"
+            :network="transactionConfig.network"
+          />
 
-        <SafeSnapFormImportTransactionsButton
-          v-if="!preview"
-          :network="network"
-          @import="handleImport($event)"
-        />
-
-        <SafeSnapHandleOutcome
-          v-if="
-            preview &&
-            proposalResolved &&
-            moduleType === 'reality' &&
-            moduleTypeReady
-          "
-          :batches="input"
-          :proposal="proposal"
-          :reality-address="transactionConfig.realityAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
-          :network="transactionConfig.network"
-        />
-
-        <SafeSnapHandleOutcomeUma
-          v-if="
-            preview &&
-            proposalResolved &&
-            moduleType === 'uma' &&
-            moduleTypeReady
-          "
-          :batches="input"
-          :proposal="proposal"
-          :space="space"
-          :results="results"
-          :uma-address="transactionConfig.umaAddress"
-          :multi-send-address="transactionConfig.multiSendAddress"
-          :network="transactionConfig.network"
-        />
+          <SafeSnapHandleOutcomeUma
+            v-if="preview && proposalResolved && moduleType === 'uma'"
+            :batches="input"
+            :proposal="proposal"
+            :space="space"
+            :results="results"
+            :gnosis-safe-address="transactionConfig.gnosisSafeAddress"
+            :uma-address="transactionConfig.umaAddress"
+            :multi-send-address="transactionConfig.multiSendAddress"
+            :network="transactionConfig.network"
+          />
+        </div>
       </div>
     </div>
   </div>

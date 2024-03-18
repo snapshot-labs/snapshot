@@ -13,7 +13,10 @@ const components = getPluginComponents(
   Object.keys(props.space.plugins)
 );
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: any): void;
+}>();
+
 const update = data => {
   const allConfig = props.modelValue;
   allConfig[data.key] = data.form;

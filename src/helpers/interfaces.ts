@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { Fragment, JsonFragment } from '@ethersproject/abi';
+import { Network } from '@/plugins/safeSnap/types';
 
 export interface Strategy {
   id: string;
@@ -281,12 +282,39 @@ export interface PendingTransaction {
   hash: string | null;
 }
 
+export type SimulationLog = {
+  type: string;
+  message: string;
+  url?: string;
+};
+
+export type SimulationState = {
+  status: 'success' | 'error' | 'idle';
+  logs: SimulationLog[];
+  id?: string;
+};
+
 export interface SafeTransaction {
   to: string;
   value: string;
   data: string;
   operation: string;
   nonce: string;
+  type?: string;
+  transactionBatchType?: 'connext' | 'standard';
+  simulation?: SimulationState;
+}
+
+export interface SafeTransactionConfig {
+  preview: boolean;
+  gnosisSafeAddress: string;
+  realityAddress: string;
+  umaAddress: string;
+  connextAddress: string;
+  network: Network;
+  multiSendAddress: string;
+  tokens: TokenAsset[];
+  collectables: CollectableAsset[];
 }
 
 export interface RealityOracleProposal {
@@ -358,12 +386,31 @@ export interface CustomContractTransaction extends SafeTransaction {
   type: 'contractInteraction';
   abi: string[];
 }
+export interface CustomConnextTransaction extends SafeTransaction {
+  type: 'connext';
+  abi: string[];
+  destinationTx: any;
+  originTx: any;
+  approveTx: any;
+  simulation?: SimulationState;
+  destinationChain: string;
+  zodiacMod: string;
+  amount?: number;
+}
 
 export interface SafeModuleTransactionBatch {
   hash: string;
   transactions: SafeTransaction[];
 }
 
+export interface SafeDetails extends SafeExecutionData {
+  connextAddress?: string;
+  multiSendAddress: string;
+  realityAddress?: string;
+  umaAddress?: string;
+  network: Network;
+  gnosisSafeAddress?: string;
+}
 export interface SafeExecutionData {
   hash: string | null;
   txs: SafeModuleTransactionBatch[];
