@@ -20,6 +20,7 @@ const dirty = ref(false);
 const format = (amount: string) => {
   try {
     // empty string throws
+    debugger;
     const parsed = parseUnits(amount, props.decimals).toString();
     return parsed;
   } catch {

@@ -9,7 +9,8 @@ import {
   type Transaction as TTransaction,
   type TransactionType as TTransactionType,
   type Token,
-  type TransferFundsTransaction
+  type TransferFundsTransaction,
+  SafeImportTransaction
 } from '../../types';
 import TransactionType from '../Input/TransactionType.vue';
 import ContractInteraction from './ContractInteraction.vue';
@@ -113,7 +114,8 @@ function setTransactionAsInvalid() {
 
     <SafeImport
       v-if="transaction.type === 'safeImport'"
-      :transaction="newTransaction as TRawTransaction"
+      :transaction="newTransaction as SafeImportTransaction"
+      :network="network"
       :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />

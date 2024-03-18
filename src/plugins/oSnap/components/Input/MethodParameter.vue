@@ -73,8 +73,8 @@ function validateBytesInput(value: string) {
 
 function validateBytes32Input(value: string) {
   try {
-    if (value.slice(2).length > 64) {
-      throw new Error('String too long');
+    if (value.slice(2).length !== 64) {
+      throw new Error('Not 32 bytes');
     }
     return isBytesLike(value);
   } catch {

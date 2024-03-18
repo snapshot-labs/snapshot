@@ -111,7 +111,6 @@ export type SafeImportTransaction = BaseTransaction & {
   methodName?: string;
   method?: GnosisSafe.BatchTransaction['contractMethod'];
   parameters?: GnosisSafe.BatchTransaction['contractInputsValues'];
-  subtype: string;
 };
 
 /**
