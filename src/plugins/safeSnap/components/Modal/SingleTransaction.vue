@@ -107,7 +107,6 @@ const submitTransaction = () => {
       ...currentConnextModelValue.value,
       transactionBatchType: transactionBatchTypeSelected.value
     });
-    // emit('update:connextModelValue', currentConnextModelValue.value);
   }
   emit('close');
 };
