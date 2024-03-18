@@ -16,7 +16,7 @@ defineEmits(['close']);
       {{ $t('strategiesPage') }}
     </TuneModalTitle>
     <div
-      class="max-h-[calc(100vh-175px)] md:max-h-[488px] overflow-y-auto space-y-3 px-3"
+      class="max-h-[calc(100vh-100px)] md:max-h-[488px] overflow-y-auto space-y-3 px-3 pb-3"
     >
       <StrategiesListItem
         v-for="(strategy, i) in strategies"
@@ -24,10 +24,6 @@ defineEmits(['close']);
         :strategy="strategy"
         :proposal="proposal"
       />
-    </div>
-
-    <div class="px-3 py-3">
-      <TuneButton class="w-full" @click="$emit('close')"> Close </TuneButton>
     </div>
   </TuneModal>
 </template>
