@@ -115,12 +115,11 @@ onMounted(() => {
           slim
           @show-more="isModalStrategiesOpen = true"
         >
-          <div class="grid grid-cols-1 gap-0 px-0 md:gap-4 md:p-4 md:px-4">
+          <div class="p-4 space-y-3">
             <StrategiesListItem
               v-for="(strategy, i) in space.strategies.slice(0, 2)"
               :key="i"
               :strategy="strategy"
-              class="!mb-0 !border-t-0 last:border-b-0 md:!border-b md:!border-t"
             />
           </div>
         </BaseBlock>

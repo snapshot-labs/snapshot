@@ -117,7 +117,6 @@ function handleSubmitStrategy(strategy) {
           v-for="(strategy, i) in strategies"
           :key="i"
           :strategy="strategy"
-          class="rounded-md !border last:!mb-0"
           :show-delete="!isViewOnly"
           :show-edit="!isViewOnly"
           @edit="handleEditStrategy(i)"
