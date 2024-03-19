@@ -101,7 +101,7 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 <template>
   <template v-if="safe.transactions.length > 0">
     <div
-      class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
+      class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 relative"
     >
       <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
       <h2 class="text-lg">oSnap Transactions</h2>
