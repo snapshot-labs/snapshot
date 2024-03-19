@@ -20,7 +20,10 @@ const props = defineProps<{
 const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
-
+const isDropping = ref(false);
+function toggleIsDropping() {
+  isDropping.value = !isDropping.value;
+}
 const file = ref<File>();
 const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
 const selectedTransactionIndex = ref<number>();
@@ -71,18 +74,27 @@ function updateValue(newValue: string) {
   }
 }
 
-function handleFileChange(event: Event) {
-  const _file = (event?.currentTarget as HTMLInputElement)?.files?.[0];
-  if (!_file) return;
-  file.value = _file;
-  return (
+watch(file, async () => {
+  if (file.value) {
     parseGnosisSafeFile(file.value)
       .then(result => {
         safeFile.value = result;
       })
       // TODO: show error
-      .catch(console.error)
-  );
+      .catch(console.error);
+  }
+});
+
+function handleDrop(event: DragEvent) {
+  const _file = event.dataTransfer?.files?.[0];
+  if (!_file) return;
+  file.value = _file;
+}
+
+function handleFileChange(event: Event) {
+  const _file = (event?.currentTarget as HTMLInputElement)?.files?.[0];
+  if (!_file) return;
+  file.value = _file;
 }
 
 function updateTransaction() {
@@ -111,6 +123,7 @@ function updateTransaction() {
 watch(safeFile, safeFile => {
   if (safeFile) {
     finalTransaction.value = undefined;
+    selectedTransactionIndex.value = undefined;
     const convertedTxs = safeFile.transactions.map(extractSafeMethodAndParams);
     processedTransactions.value = convertedTxs;
   }
@@ -130,24 +143,41 @@ watch(finalTransaction, updateTransaction);
 </script>
 
 <template>
-  <div class="my-3">
+  <label
+    for="file_input"
+    @dragenter.prevent="toggleIsDropping"
+    @dragleave.prevent="toggleIsDropping"
+    @dragover.prevent
+    @drop.prevent="handleDrop($event)"
+    class="my-3 group hover:cursor-pointer hover:bg-green/10 hover:border-solid hover:border-green/50 inline-block border border-dashed border-space-border p-1 w-full rounded-full"
+    :class="{
+      'bg-green/10 border-solid border-green/50': isDropping
+    }"
+  >
+    {{ file?.name ?? 'Click to select file, or drag n drop' }}
+
     <input
+      id="file_input"
+      class="hidden"
       accept="application/json"
       type="file"
-      @change="handleFileChange($event)"
+      @change="handleFileChange"
     />
-  </div>
-  <div
+  </label>
+
+  <UiSelect
     v-if="safeFile?.transactions?.length"
-    class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 md:p-4 relative"
+    v-model="selectedTransactionIndex"
   >
-    <UiSelect v-model="selectedTransactionIndex">
-      <template #label>Select Transaction</template>
-      <option v-for="(tx, i) in safeFile.transactions" :key="i" :value="i">
-        {{ i + 1 }}. {{ tx?.contractMethod?.name ?? 'send Funds' }}
-      </option>
-    </UiSelect>
-  </div>
+    <template #label>Select Transaction</template>
+    <option v-for="(tx, i) in safeFile.transactions" :key="i" :value="i">
+      {{
+        tx?.contractMethod?.name
+          ? `Contract interaction (${tx?.contractMethod?.name})`
+          : 'Native Transfer'
+      }}
+    </option>
+  </UiSelect>
 
   <div v-if="finalTransaction" class="flex flex-col gap-2 mt-2">
     <AddressInput
@@ -171,7 +201,7 @@ watch(finalTransaction, updateTransaction);
       class="flex flex-col gap-2"
       v-if="finalTransaction.functionFragment?.inputs?.length"
     >
-      <strong class="text-left mt-3">Parameters</strong>
+      <div class="text-left mt-3">Function Parameters</div>
       <div class="divider h-[1px] bg-skin-border mb-3" />
       <MethodParameterInput
         v-for="input in finalTransaction.functionFragment.inputs"
