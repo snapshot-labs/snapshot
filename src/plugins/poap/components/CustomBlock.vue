@@ -143,7 +143,6 @@ export default {
 <template>
   <TuneBlock
     v-if="currentState === 'LOADING' || currentState !== 'NO_POAP'"
-    title="I voted POAP"
     :loading="loading"
   >
     <div class="flex flex-col items-center">

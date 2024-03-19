@@ -13,9 +13,6 @@ const halLogoUrl = computed(
 
 <template>
   <TuneBlock>
-    <template #header>
-      <TuneBlockHeader :title="$t('hal.title', { spaceName: space.name })" />
-    </template>
     <div class="flex flex-col items-center">
       <div>
         <a :href="halUrl" target="_blank">
