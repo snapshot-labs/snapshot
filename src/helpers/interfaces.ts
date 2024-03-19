@@ -230,6 +230,7 @@ export interface Proposal {
   validation: VoteValidation;
   discussion: string;
   quorum: number;
+  quorumType: string;
   scores: number[];
   scores_state: string;
   scores_total: number;

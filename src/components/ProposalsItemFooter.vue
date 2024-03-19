@@ -33,12 +33,31 @@ const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
       v-if="
         proposal.quorum &&
         proposal.scores_total &&
-        !proposal.space.plugins?.quorum
+        proposal.quorumType === 'default'
       "
     >
       -
       {{ formatPercentNumber(Number(proposal.scores_total / proposal.quorum)) }}
       {{ $t('quorumReached') }}
+    </template>
+    <template
+      v-else-if="
+        proposal.quorum &&
+        proposal.scores_total &&
+        proposal.quorumType === 'optimistic'
+      "
+    >
+      -
+      {{
+        formatPercentNumber(
+          Number(
+            proposal.scores
+              .filter((c, i) => i === 1)
+              .reduce((a, b) => a + b, 0) / proposal.quorum
+          )
+        )
+      }}
+      {{ $t('quorumRejection') }}
     </template>
   </div>
 </template>
