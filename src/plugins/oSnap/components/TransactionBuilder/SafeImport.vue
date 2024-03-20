@@ -6,7 +6,11 @@ import {
   extractSafeMethodAndParams,
   parseValueInput
 } from '../../utils';
-import { parseGnosisSafeFile } from '../../utils/safeImport';
+import {
+  isJsonFile,
+  getFileFromEvent,
+  parseGnosisSafeFile
+} from '../../utils/safeImport';
 import MethodParameterInput from '../../components/Input/MethodParameter.vue';
 import AddressInput from '../../components/Input/Address.vue';
 import { isAddress } from '@ethersproject/address';
@@ -40,6 +44,7 @@ const isValueValid = ref(true);
 const finalTransaction = ref<CreateSafeTransactionParams>(); // decoded method, extracted args
 
 function resetState() {
+  fileInputState.value = 'IDLE';
   file.value = undefined;
   safeFile.value = undefined;
   selectedTransactionIndex.value = undefined;
@@ -107,9 +112,9 @@ watch(file, async () => {
 function handleDrop(event: DragEvent) {
   resetState();
   dropping.value = false;
-  const _file = event.dataTransfer?.files?.[0];
+  const _file = getFileFromEvent(event);
   if (!_file) return;
-  if (_file.type !== 'application/json') {
+  if (!isJsonFile(_file)) {
     updateFileInputState('INVALID_TYPE');
     return;
   }
@@ -118,9 +123,9 @@ function handleDrop(event: DragEvent) {
 
 function handleFileChange(event: Event) {
   resetState();
-  const _file = (event?.currentTarget as HTMLInputElement)?.files?.[0];
+  const _file = getFileFromEvent(event);
   if (!_file) return;
-  if (_file.type !== 'application/json') {
+  if (!isJsonFile(_file)) {
     updateFileInputState('INVALID_TYPE');
     return;
   }
