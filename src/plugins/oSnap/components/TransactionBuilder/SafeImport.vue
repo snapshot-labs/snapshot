@@ -21,24 +21,16 @@ const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
-type FileInputState =
-  | 'IDLE'
-  | 'DROPPING'
-  | 'INVALID_TYPE'
-  | 'PARSING_ERROR'
-  | 'VALID';
+type FileInputState = 'IDLE' | 'INVALID_TYPE' | 'PARSING_ERROR' | 'VALID';
 const fileInputState = ref<FileInputState>('IDLE');
+const dropping = ref(false);
 function updateFileInputState(state: FileInputState) {
   fileInputState.value = state;
 }
-function toggleDropping() {
-  if (fileInputState.value === 'DROPPING') {
-    updateFileInputState('IDLE');
-    return;
-  }
-  updateFileInputState('DROPPING');
-}
-const isDropping = computed(() => fileInputState.value === 'DROPPING');
+const toggleDropping = () => {
+  dropping.value = !dropping.value;
+};
+const isDropping = computed(() => dropping.value === true);
 
 const file = ref<File>();
 const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
@@ -114,6 +106,7 @@ watch(file, async () => {
 
 function handleDrop(event: DragEvent) {
   resetState();
+  dropping.value = false;
   const _file = event.dataTransfer?.files?.[0];
   if (!_file) return;
   if (_file.type !== 'application/json') {
@@ -196,7 +189,7 @@ watch(finalTransaction, updateTransaction);
   >
     <div class="flex flex-col gap-1 items-center justify-center">
       <i-ho-upload />
-      <span v-if="fileInputState === 'IDLE' || fileInputState === 'DROPPING'"
+      <span v-if="fileInputState === 'IDLE'"
         >Click to select file, or drag n drop</span
       >
       <span v-if="fileInputState === 'INVALID_TYPE'"
