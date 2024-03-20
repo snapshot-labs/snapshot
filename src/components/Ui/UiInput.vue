@@ -75,7 +75,7 @@ onMounted(() => {
       <!-- Allow parent to format value with action -->
       <button
         v-if="quickFix"
-        class="ml-auto h-full px-1 rounded-full"
+        class="ml-auto flex items-center gap-1 h-full px-1 rounded-full"
         @click="quickFix"
       >
         Quick Fix
