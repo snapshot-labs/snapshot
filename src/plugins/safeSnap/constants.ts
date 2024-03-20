@@ -19,7 +19,8 @@ export const EIP3770_PREFIXES = {
   73799: 'vt',
   42161: 'arb1',
   137: 'matic',
-  1116: 'core'
+  1116: 'core',
+  11155111: 'sep'
 };
 
 export const EXPLORER_API_URLS = {
@@ -32,6 +33,7 @@ export const EXPLORER_API_URLS = {
   '56': 'https://api.bscscan.com/api',
   '42161': 'https://api.arbiscan.io/api',
   // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
+  '11155111': 'https://api-sepolia.etherscan.io/api',
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
@@ -44,6 +46,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '56': 'https://safe-transaction-bsc.safe.global/api',
   '42161': 'https://safe-transaction-arbitrum.safe.global/api',
   '1116': 'https://safetx.coredao.org/api',
+  '11155111': 'https://safe-transaction-sepolia.safe.global/api',
 };
 
 // ABIs
@@ -361,6 +364,7 @@ export const MULTI_SEND_V1_3_0 = {
   '73799': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '80001': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '333999': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  '11155111': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '1313161554': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '1313161555': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761'
 };
@@ -474,6 +478,15 @@ export const contractData: ContractData[] = [
     deployBlock: 11341063
   },
   {
+    // sepolia
+    network: '11155111',
+    name: 'OptimisticOracleV3',
+    address: '0xFd9e2642a170aDD10F53Ee14a93FcF2F31924944',
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/reinis-frp/sepolia-optimistic-oracle-v3',
+    deployBlock: 5421195
+  },
+  {
     // mainnet
     network: '1',
     name: 'OptimisticGovernor',
@@ -545,5 +558,14 @@ export const contractData: ContractData[] = [
     deployBlock: 11341122,
     subgraph:
       'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
-  }
+  },
+  {
+    // sepolia
+    network: '11155111',
+    name: 'OptimisticGovernor',
+    address: '0x40153DdFAd90C49dbE3F5c9F96f2a5B25ec67461',
+    deployBlock: 5421242,
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/reinis-frp/sepolia-optimistic-governor'
+  },
 ];

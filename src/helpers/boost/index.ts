@@ -27,6 +27,7 @@ export const BOOST_WHITELIST_SETTINGS = {
     'worldassociation.eth',
     'kumaprotocol.eth',
     'mimo.eth',
+    'vote.vitadao.eth',
     // Internal testers
     'testsnap.eth',
     'fabien.eth',
