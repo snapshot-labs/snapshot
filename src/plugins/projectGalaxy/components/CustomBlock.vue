@@ -193,14 +193,13 @@ export default {
 </script>
 
 <template>
-  <BaseBlock
+  <TuneBlock
     v-if="!disabled && currentState !== 'NO_OAT'"
     title="OAT for Vote"
     :loading="loading"
-    :slim="true"
     class="overflow-hidden"
   >
-    <div class="relative overflow-hidden">
+    <div class="relative overflow-hidden -m-3">
       <!-- background image -->
       <div class="absolute bottom-0 left-0 right-0 top-0 z-0 w-full blur-3xl">
         <img
@@ -284,5 +283,5 @@ export default {
         </a>
       </div>
     </div>
-  </BaseBlock>
+  </TuneBlock>
 </template>
