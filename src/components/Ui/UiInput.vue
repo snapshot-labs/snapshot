@@ -9,6 +9,7 @@ const props = defineProps<{
   additionalInputClass?: string;
   focusOnMount?: boolean;
   readonly?: boolean;
+  quickFix?(): void;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'blur']);
@@ -64,13 +65,22 @@ onMounted(() => {
     </div>
     <div
       :class="[
-        's-error relative z-0',
+        's-error relative z-0 flex justify-start',
         !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
       ]"
     >
       <BaseIcon name="warning" class="text-red-500 mr-2" />
-      {{ error || '' }}
       <!-- The fact that error can be bool or string makes this necessary -->
+      {{ error || '' }}
+      <!-- Allow parent to format value with action -->
+      <button
+        v-if="quickFix"
+        class="ml-auto h-full px-1 rounded-full"
+        @click="quickFix"
+      >
+        Quick Fix
+        <i-ho-sparkles class="inline" />
+      </button>
     </div>
   </div>
 </template>
