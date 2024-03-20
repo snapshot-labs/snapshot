@@ -60,10 +60,10 @@ export default {
 <template>
   <div
     v-if="!preview || input.safes.length > 0"
-    class="mb-4 rounded-none border-b border-t bg-skin-block-bg md:rounded-xl md:border"
+    class="bg-skin-block-bg rounded-xl border"
   >
     <div
-      class="block border-b px-4 pt-3"
+      class="block px-3 pt-3"
       style="
         padding-bottom: 12px;
         display: flex;
