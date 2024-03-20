@@ -20,16 +20,40 @@ const props = defineProps<{
 const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
-const isDropping = ref(false);
-function toggleIsDropping() {
-  isDropping.value = !isDropping.value;
+
+type FileInputState =
+  | 'IDLE'
+  | 'DROPPING'
+  | 'INVALID_TYPE'
+  | 'PARSING_ERROR'
+  | 'VALID';
+const fileInputState = ref<FileInputState>('IDLE');
+function updateFileInputState(state: FileInputState) {
+  fileInputState.value = state;
 }
+function toggleDropping() {
+  if (fileInputState.value === 'DROPPING') {
+    updateFileInputState('IDLE');
+    return;
+  }
+  updateFileInputState('DROPPING');
+}
+const isDropping = computed(() => fileInputState.value === 'DROPPING');
+
 const file = ref<File>();
 const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
 const selectedTransactionIndex = ref<number>();
 const processedTransactions = ref<CreateSafeTransactionParams[]>();
 const isValueValid = ref(true);
 const finalTransaction = ref<CreateSafeTransactionParams>(); // decoded method, extracted args
+
+function resetState() {
+  file.value = undefined;
+  safeFile.value = undefined;
+  selectedTransactionIndex.value = undefined;
+  processedTransactions.value = undefined;
+  finalTransaction.value = undefined;
+}
 
 const isToValid = computed(() => {
   if (!finalTransaction?.value?.to) {
@@ -41,7 +65,7 @@ const isToValid = computed(() => {
 function updateFinalTransaction(tx: Partial<CreateSafeTransactionParams>) {
   finalTransaction.value = {
     ...finalTransaction.value,
-    tx
+    ...tx
   } as CreateSafeTransactionParams;
 }
 
@@ -75,25 +99,38 @@ function updateValue(newValue: string) {
 }
 
 watch(file, async () => {
-  if (file.value) {
-    parseGnosisSafeFile(file.value)
-      .then(result => {
-        safeFile.value = result;
-      })
-      // TODO: show error
-      .catch(console.error);
-  }
+  if (!file.value) return;
+  parseGnosisSafeFile(file.value)
+    .then(result => {
+      safeFile.value = result;
+      updateFileInputState('VALID');
+    })
+    .catch(e => {
+      updateFileInputState('PARSING_ERROR');
+
+      console.error(e);
+    });
 });
 
 function handleDrop(event: DragEvent) {
+  resetState();
   const _file = event.dataTransfer?.files?.[0];
   if (!_file) return;
+  if (_file.type !== 'application/json') {
+    updateFileInputState('INVALID_TYPE');
+    return;
+  }
   file.value = _file;
 }
 
 function handleFileChange(event: Event) {
+  resetState();
   const _file = (event?.currentTarget as HTMLInputElement)?.files?.[0];
   if (!_file) return;
+  if (_file.type !== 'application/json') {
+    updateFileInputState('INVALID_TYPE');
+    return;
+  }
   file.value = _file;
 }
 
@@ -145,16 +182,33 @@ watch(finalTransaction, updateTransaction);
 <template>
   <label
     for="file_input"
-    @dragenter.prevent="toggleIsDropping"
-    @dragleave.prevent="toggleIsDropping"
+    @dragenter.prevent="toggleDropping"
+    @dragleave.prevent="toggleDropping"
     @dragover.prevent
     @drop.prevent="handleDrop($event)"
-    class="my-3 group hover:cursor-pointer hover:bg-green/10 hover:border-solid hover:border-green/50 inline-block border border-dashed border-space-border p-1 w-full rounded-full"
+    class="my-2 w-full group hover:bg-transparent hover:border-skin-text border-skin-border hover:cursor-pointer inline-block border border-dashed py-2 px-4 rounded-xl"
     :class="{
-      'bg-green/10 border-solid border-green/50': isDropping
+      'border-solid border-skin-text bg-transparent': isDropping,
+      'bg-red/10 border-red/50 text-red/80':
+        fileInputState === 'INVALID_TYPE' || fileInputState === 'PARSING_ERROR',
+      'bg-green/10 border-green/50 text-green/80': fileInputState === 'VALID'
     }"
   >
-    {{ file?.name ?? 'Click to select file, or drag n drop' }}
+    <div class="flex flex-col gap-1 items-center justify-center">
+      <i-ho-upload />
+      <span v-if="fileInputState === 'IDLE' || fileInputState === 'DROPPING'"
+        >Click to select file, or drag n drop</span
+      >
+      <span v-if="fileInputState === 'INVALID_TYPE'"
+        >File type must be JSON. Please choose another.</span
+      >
+      <span v-if="fileInputState === 'PARSING_ERROR'"
+        >Safe file corrupted, please choose another.</span
+      >
+      <span v-if="fileInputState === 'VALID' && file?.name">{{
+        file.name
+      }}</span>
+    </div>
 
     <input
       id="file_input"
@@ -191,12 +245,12 @@ watch(finalTransaction, updateTransaction);
       placeholder="123456"
       :error="!isValueValid && 'Invalid value'"
       :model-value="finalTransaction.value"
-      @update:model-value="(e: string) => updateFinalTransaction({ value: e })"
+      @update:model-value="(e: string) => updateValue(e)"
     >
       <template #label>Value (wei)</template>
     </UiInput>
 
-    <!-- ContractInteraction With Args -->
+    <!-- ContractInteraction Parameters -->
     <div
       class="flex flex-col gap-2"
       v-if="finalTransaction.functionFragment?.inputs?.length"

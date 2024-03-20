@@ -181,9 +181,6 @@ export function createSafeImportTransaction(
   params: CreateSafeTransactionParams
 ): SafeImportTransaction {
   const abi = JSON.stringify(Array(params.functionFragment));
-  const subtype = params.functionFragment
-    ? 'contractInteraction'
-    : 'nativeTransfer';
   const methodName = params.functionFragment?.name;
   const parameters = params.parameters;
   // is native transfer funds
@@ -202,7 +199,6 @@ export function createSafeImportTransaction(
       to: params.to,
       value: params.value,
       data,
-      subtype,
       methodName,
       parameters
     };
@@ -223,7 +219,6 @@ export function createSafeImportTransaction(
       to: params.to,
       value: params.value,
       data,
-      subtype,
       methodName,
       parameters
     };
@@ -249,7 +244,6 @@ export function createSafeImportTransaction(
     to: params.to,
     value: params.value,
     data: encodedData,
-    subtype,
     methodName,
     parameters
   };
