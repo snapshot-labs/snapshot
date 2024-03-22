@@ -25,7 +25,9 @@ const halLogoUrl = computed(
           />
         </a>
       </div>
-      <div class="mb-2 text-center text-skin-link">{{ $t('hal.text') }}</div>
+      <div class="mb-2 text-center text-skin-link">
+        {{ $t('hal.text', { space: space.name }) }}
+      </div>
       <a :href="halUrl" target="_blank">
         <TuneButton tabindex="-1">Be notified</TuneButton>
       </a>
