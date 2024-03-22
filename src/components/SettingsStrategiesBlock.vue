@@ -112,7 +112,7 @@ function handleSubmitStrategy(strategy) {
           </TuneButton>
         </div>
       </div>
-      <div class="mt-3">
+      <div class="mt-3 space-y-3">
         <StrategiesListItem
           v-for="(strategy, i) in strategies"
           :key="i"
