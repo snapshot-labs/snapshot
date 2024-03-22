@@ -63,11 +63,8 @@ onMounted(() => {
 
           <template v-else>
             <h3 v-text="$t('proposal.postVoteModal.defaultTitle')" />
-            <p class="italic" v-text="'Thank you for your participation!'" />
-            <p
-              class="italic"
-              v-text="'Votes can be changed while the proposal is active.'"
-            />
+            <p>Thank you for your participation!</p>
+            <p>Votes can be changed while the proposal is active.</p>
           </template>
         </div>
       </div>
