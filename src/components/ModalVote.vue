@@ -157,189 +157,177 @@ watch(
       <TuneModalTitle class="mt-3 mx-1">
         {{ $tc('proposal.castVote') }}
       </TuneModalTitle>
-      <div class="flex flex-auto flex-col">
-        <div class="space-y-3 text-skin-link">
-          <div class="mx-1">
-            <div class="flex">
-              <span
-                class="mr-1 flex-auto text-skin-text"
-                v-text="$t('choice')"
-              />
-              <span
-                v-if="
-                  proposal.type === 'approval' &&
-                  Array.isArray(selectedChoices) &&
-                  selectedChoices?.length === 0
-                "
-                class="text-right"
-              >
-                Blank vote
-              </span>
-              <span
-                v-else
-                v-tippy="{
-                  content:
-                    format(proposal, selectedChoices).length > 30
-                      ? format(proposal, selectedChoices)
-                      : null
-                }"
-                class="ml-4 truncate text-right"
-              >
-                {{ format(proposal, selectedChoices) }}
-              </span>
-            </div>
 
-            <div class="flex">
-              <span
-                class="mr-1 flex-auto text-skin-text"
-                v-text="$t('snapshot')"
-              />
-              <BaseLink
-                :link="
-                  explorerUrl(proposal.network, proposal.snapshot, 'block')
-                "
-                class="float-right"
-              >
-                {{ formatNumber(Number(proposal.snapshot)) }}
-              </BaseLink>
-            </div>
-
-            <div
+      <div class="space-y-3 text-skin-link">
+        <div class="mx-1">
+          <div class="flex">
+            <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
+            <span
               v-if="
-                proposal.validation?.name !== 'any' &&
-                isValidationAndPowerLoaded &&
-                !isValidationAndPowerLoading
+                proposal.type === 'approval' &&
+                Array.isArray(selectedChoices) &&
+                selectedChoices?.length === 0
               "
-              class="flex"
+              class="text-right"
             >
-              <span
-                class="mr-1 flex-auto text-skin-text"
-                v-text="$t('votingValidation.label')"
-              />
-              <div class="flex items-center gap-1">
-                <span
-                  v-if="hasVotingValidationFailed"
-                  class="flex items-center gap-1"
-                >
-                  <i-ho-exclamation-circle class="text-sm text-red" />
-                  {{ $t('failed') }}
-                </span>
-                <span v-else class="flex items-center">
-                  <i-ho-check v-if="isValidVoter" class="text-green" />
-                  <i-ho-x v-else class="text-red" />
-                  {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
-                </span>
-              </div>
-            </div>
+              Blank vote
+            </span>
+            <span
+              v-else
+              v-tippy="{
+                content:
+                  format(proposal, selectedChoices).length > 30
+                    ? format(proposal, selectedChoices)
+                    : null
+              }"
+              class="ml-4 truncate text-right"
+            >
+              {{ format(proposal, selectedChoices) }}
+            </span>
+          </div>
 
-            <div class="flex">
+          <div class="flex">
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('snapshot')"
+            />
+            <BaseLink
+              :link="explorerUrl(proposal.network, proposal.snapshot, 'block')"
+              class="float-right"
+            >
+              {{ formatNumber(Number(proposal.snapshot)) }}
+            </BaseLink>
+          </div>
+
+          <div
+            v-if="
+              proposal.validation?.name !== 'any' &&
+              isValidationAndPowerLoaded &&
+              !isValidationAndPowerLoading
+            "
+            class="flex"
+          >
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('votingValidation.label')"
+            />
+            <div class="flex items-center gap-1">
               <span
-                class="mr-1 flex-auto text-skin-text"
-                v-text="$t('votingPower')"
-              />
-              <span v-if="hasVotingPowerFailed" class="flex items-center gap-1">
+                v-if="hasVotingValidationFailed"
+                class="flex items-center gap-1"
+              >
                 <i-ho-exclamation-circle class="text-sm text-red" />
                 {{ $t('failed') }}
               </span>
-              <span
-                v-else-if="
-                  isValidationAndPowerLoaded && !isValidationAndPowerLoading
-                "
-                v-tippy="{
-                  content: votingPowerByStrategy
-                    .map(
-                      (score, index) =>
-                        `${formatCompactNumber(
-                          votingPower === 0 ? 0 : score
-                        )} ${symbols[index]}`
-                    )
-                    .join(' + ')
-                }"
-              >
-                {{ formatCompactNumber(votingPower) }}
-                {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
+              <span v-else class="flex items-center">
+                <i-ho-check v-if="isValidVoter" class="text-green" />
+                <i-ho-x v-else class="text-red" />
+                {{ $t(`votingValidation.${proposal.validation.name}.label`) }}
               </span>
-              <LoadingSpinner v-else />
             </div>
           </div>
 
-          <MessageWarningGnosisNetwork
-            v-if="isGnosisAndNotSpaceNetwork"
-            :space="space"
-            action="vote"
-          />
-          <template
-            v-else-if="
-              isValidationAndPowerLoaded && !isValidationAndPowerLoading
-            "
-          >
-            <!-- Voting power messages -->
-            <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
-              <i18n-t
-                keypath="votingPowerFailedMessage"
-                tag="span"
-                scope="global"
-              >
-                <template #discord>
-                  <BaseLink link="https://discord.snapshot.org"
-                    >Discord</BaseLink
-                  >
-                </template>
-              </i18n-t>
-            </BaseMessageBlock>
-
-            <!-- Voting validation messages -->
-            <BaseMessageBlock
-              v-else-if="hasVotingValidationFailed"
-              level="warning"
-            >
-              <!-- {{ t('votingValidationFailedMessage') }} -->
-
-              <i18n-t
-                keypath="votingValidationFailedMessage"
-                tag="span"
-                scope="global"
-              >
-                <template #discord>
-                  <BaseLink link="https://discord.snapshot.org"
-                    >Discord</BaseLink
-                  >
-                </template>
-              </i18n-t>
-            </BaseMessageBlock>
-            <MessageWarningValidation
-              v-else-if="!isValidVoter && proposal.validation?.name"
-              context="voting"
-              :space-id="proposal.space.id"
-              :validation-name="proposal.validation.name"
-              :validation-params="proposal.validation?.params || {}"
-              :min-score="proposal.validation?.params?.minScore || 0"
-              :symbol="validationStrategySymbolsString"
+          <div class="flex">
+            <span
+              class="mr-1 flex-auto text-skin-text"
+              v-text="$t('votingPower')"
             />
-            <!-- No voting power -->
-            <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
-              {{
-                $t('noVotingPower', {
-                  blockNumber: formatNumber(Number(proposal.snapshot))
-                })
-              }}
-              <BaseLink
-                link="https://github.com/snapshot-labs/snapshot/discussions/767"
-              >
-                {{ $t('learnMore') }}</BaseLink
-              >
-            </BaseMessageBlock>
-            <!-- Reason field -->
-            <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
-              <TextareaAutosize
-                v-model="reason"
-                :max-length="140"
-                class="s-input !rounded-3xl"
-                :placeholder="$t('comment.placeholder')"
-              />
-            </div>
-          </template>
+            <span v-if="hasVotingPowerFailed" class="flex items-center gap-1">
+              <i-ho-exclamation-circle class="text-sm text-red" />
+              {{ $t('failed') }}
+            </span>
+            <span
+              v-else-if="
+                isValidationAndPowerLoaded && !isValidationAndPowerLoading
+              "
+              v-tippy="{
+                content: votingPowerByStrategy
+                  .map(
+                    (score, index) =>
+                      `${formatCompactNumber(votingPower === 0 ? 0 : score)} ${
+                        symbols[index]
+                      }`
+                  )
+                  .join(' + ')
+              }"
+            >
+              {{ formatCompactNumber(votingPower) }}
+              {{ shorten(proposal.symbol || space.symbol, 'symbol') }}
+            </span>
+            <LoadingSpinner v-else />
+          </div>
         </div>
+
+        <MessageWarningGnosisNetwork
+          v-if="isGnosisAndNotSpaceNetwork"
+          :space="space"
+          action="vote"
+        />
+        <template
+          v-else-if="isValidationAndPowerLoaded && !isValidationAndPowerLoading"
+        >
+          <!-- Voting power messages -->
+          <BaseMessageBlock v-if="hasVotingPowerFailed" level="warning">
+            <i18n-t
+              keypath="votingPowerFailedMessage"
+              tag="span"
+              scope="global"
+            >
+              <template #discord>
+                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              </template>
+            </i18n-t>
+          </BaseMessageBlock>
+
+          <!-- Voting validation messages -->
+          <BaseMessageBlock
+            v-else-if="hasVotingValidationFailed"
+            level="warning"
+          >
+            <!-- {{ t('votingValidationFailedMessage') }} -->
+
+            <i18n-t
+              keypath="votingValidationFailedMessage"
+              tag="span"
+              scope="global"
+            >
+              <template #discord>
+                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              </template>
+            </i18n-t>
+          </BaseMessageBlock>
+          <MessageWarningValidation
+            v-else-if="!isValidVoter && proposal.validation?.name"
+            context="voting"
+            :space-id="proposal.space.id"
+            :validation-name="proposal.validation.name"
+            :validation-params="proposal.validation?.params || {}"
+            :min-score="proposal.validation?.params?.minScore || 0"
+            :symbol="validationStrategySymbolsString"
+          />
+          <!-- No voting power -->
+          <BaseMessageBlock v-else-if="votingPower === 0" level="warning">
+            {{
+              $t('noVotingPower', {
+                blockNumber: formatNumber(Number(proposal.snapshot))
+              })
+            }}
+            <BaseLink
+              link="https://github.com/snapshot-labs/snapshot/discussions/767"
+            >
+              {{ $t('learnMore') }}</BaseLink
+            >
+          </BaseMessageBlock>
+          <!-- Reason field -->
+          <div v-else-if="props.proposal.privacy !== 'shutter'" class="flex">
+            <TextareaAutosize
+              v-model="reason"
+              :max-length="140"
+              class="s-input !rounded-3xl"
+              :placeholder="$t('comment.placeholder')"
+            />
+          </div>
+        </template>
       </div>
 
       <div class="mb-3 mt-5 flex gap-x-[12px]">
