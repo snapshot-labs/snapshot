@@ -28,7 +28,9 @@ export function useClient() {
     try {
       return await sendEIP712(space, type, payload);
     } catch (e: any) {
-      errorNotification(e?.error_description || e?.message || '');
+      errorNotification(
+        e?.error_description || e?.message || JSON.stringify(e) || ''
+      );
       return e;
     } finally {
       isSending.value = false;
