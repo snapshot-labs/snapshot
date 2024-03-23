@@ -141,9 +141,8 @@ export default {
 </script>
 
 <template>
-  <BaseBlock
+  <TuneBlock
     v-if="currentState === 'LOADING' || currentState !== 'NO_POAP'"
-    title="I voted POAP"
     :loading="loading"
   >
     <div class="flex flex-col items-center">
@@ -162,7 +161,7 @@ export default {
       />
       <TuneButton
         v-if="currentState !== 'NO_POAP'"
-        class="mb-2 mt-3 w-full"
+        class="mt-3 w-full"
         :disabled="!actionEnabled"
         :loading="actionLoading"
         @click="action"
@@ -170,5 +169,5 @@ export default {
         {{ $t(buttonText) }}
       </TuneButton>
     </div>
-  </BaseBlock>
+  </TuneBlock>
 </template>

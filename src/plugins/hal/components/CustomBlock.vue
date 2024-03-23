@@ -12,7 +12,7 @@ const halLogoUrl = computed(
 </script>
 
 <template>
-  <BaseBlock :title="$t('hal.title', { spaceName: space.name })">
+  <TuneBlock>
     <div class="flex flex-col items-center">
       <div>
         <a :href="halUrl" target="_blank">
@@ -25,10 +25,12 @@ const halLogoUrl = computed(
           />
         </a>
       </div>
-      <div class="mb-2 text-center text-skin-link">{{ $t('hal.text') }}</div>
+      <div class="mb-2 text-center text-skin-link">
+        {{ $t('hal.text', { space: space.name }) }}
+      </div>
       <a :href="halUrl" target="_blank">
         <TuneButton tabindex="-1">Be notified</TuneButton>
       </a>
     </div>
-  </BaseBlock>
+  </TuneBlock>
 </template>
