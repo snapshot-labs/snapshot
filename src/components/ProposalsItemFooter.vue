@@ -57,7 +57,7 @@ const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
           )
         )
       }}
-      {{ $t('quorumRejection') }}
+      quorum rejection
     </template>
   </div>
 </template>

@@ -18,11 +18,7 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
     <div class="flex justify-between">
       <div class="flex items-center gap-1">
         {{
-          $t(
-            `settings.quorum.${
-              quorumType === 'optimistic' ? 'optimisticLabel' : 'label'
-            }`
-          )
+          quorumType === 'optimistic' ? 'Optimistic Quorum' : 'Quorum'
         }}
       </div>
       <LoadingSpinner v-if="loadingQuorum" class="mr-1" />

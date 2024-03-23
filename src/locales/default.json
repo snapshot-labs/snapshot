@@ -87,7 +87,6 @@
   "removeSpace": "for the space {0}",
   "noVotingPower": "Oops, it seems you don't have any voting power at block {blockNumber}.",
   "quorumReached": "quorum reached",
-  "quorumRejection": "quorum rejection",
   "options": "Option(s)",
   "votingPower": "Your voting power",
   "comment": {
@@ -486,7 +485,6 @@
     "days": "Days",
     "quorum": {
       "label": "Quorum",
-      "optimisticLabel": "Optimistic Quorum",
       "information": "The minimum amount of voting power required for the proposal to pass"
     },
     "type": {
