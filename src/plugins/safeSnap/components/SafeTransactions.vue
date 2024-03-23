@@ -302,7 +302,7 @@ export default {
 <template>
   <div>
     <h4
-      class="flex rounded-t-none border-b px-4 pb-[12px] pt-3 md:rounded-t-md"
+      class="flex rounded-t-none border-b px-3 pb-[12px] pt-3 md:rounded-t-md"
     >
       <BaseAvatar class="float-left mr-2" :src="networkIcon" size="28" />
       {{ networkName }} Safe
