@@ -934,7 +934,7 @@
   },
   "hal": {
     "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a new proposal is created or ends"
+    "text": "Receive notifications every time a {space} proposal is created or ends"
   },
   "timeUnits": {
     "second": "1 second | {n} seconds",

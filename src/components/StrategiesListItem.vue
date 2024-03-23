@@ -33,8 +33,8 @@ function openStrategy() {
 </script>
 
 <template>
-  <BaseBlock slim class="group mb-3 p-4 text-skin-link">
-    <div class="items-center justify-between sm:flex">
+  <TuneBlock class="group text-skin-link">
+    <div class="items-center justify-between sm:flex -mt-1">
       <h3 class="my-0 leading-5" v-text="strategy.name" />
       <div class="flex">
         <div
@@ -97,5 +97,5 @@ function openStrategy() {
         />
       </div>
     </div>
-  </BaseBlock>
+  </TuneBlock>
 </template>
