@@ -32,8 +32,8 @@ const { form, validationErrors } = useFormSpaceSettings(props.context);
         <TuneListbox
           v-model="form.voting.quorumType"
           placeholder="Default"
-          :label="$t(`settings.quorumType.label`)"
-          :hint="$t(`settings.quorumType.information`)"
+          label="Quorum type"
+          hint="The type of quorum used for this space."
           :items="[
             {
               value: 'default',
