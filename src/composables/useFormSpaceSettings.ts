@@ -156,7 +156,7 @@ export function useFormSpaceSettings(
       period: formData.voting.period || undefined,
       type: formData.voting.type || undefined,
       quorum: formData.voting?.quorum || undefined,
-      quorumType: formData.voting.quorumType || undefined,
+      quorumType: formData.voting.quorumType || 'default',
       privacy: formData.voting.privacy || undefined
     };
     formData.children = formData.children
