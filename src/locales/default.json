@@ -487,10 +487,6 @@
       "label": "Quorum",
       "information": "The minimum amount of voting power required for the proposal to pass"
     },
-    "quorumType": {
-      "label": "Quorum type",
-      "information": "The type of quorum used for this space."
-    },
     "type": {
       "label": "Type",
       "information": "The type of voting system used for this space. (Enforced on all future proposals)"
