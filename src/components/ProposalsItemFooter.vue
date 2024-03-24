@@ -2,11 +2,30 @@
 import capitalize from 'lodash/capitalize';
 import { Proposal } from '@/helpers/interfaces';
 
-defineProps<{
+const props = defineProps<{
   proposal: Proposal;
 }>();
 
 const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
+const quorumText = computed(() => {
+  if (!props.proposal.quorum || !props.proposal.scores_total) {
+    return '';
+  }
+
+  const optimisticQuorum = props.proposal.quorumType === 'optimistic';
+  const percentage = formatPercentNumber(
+    optimisticQuorum
+      ? Number(
+          props.proposal.scores
+            .filter((c, i) => i === 1)
+            .reduce((a, b) => a + b, 0) / props.proposal.quorum
+        )
+      : Number(props.proposal.scores_total / props.proposal.quorum)
+  );
+  return optimisticQuorum
+    ? `${percentage} quorum rejection`
+    : `${percentage} quorum reached`;
+});
 </script>
 
 <template>
@@ -29,35 +48,9 @@ const { getRelativeProposalPeriod, formatPercentNumber } = useIntl();
         )
       }}
     </span>
-    <template
-      v-if="
-        proposal.quorum &&
-        proposal.scores_total &&
-        proposal.quorumType === 'default'
-      "
-    >
+    <template v-if="proposal.quorum && proposal.scores_total">
       -
-      {{ formatPercentNumber(Number(proposal.scores_total / proposal.quorum)) }}
-      {{ $t('quorumReached') }}
-    </template>
-    <template
-      v-else-if="
-        proposal.quorum &&
-        proposal.scores_total &&
-        proposal.quorumType === 'optimistic'
-      "
-    >
-      -
-      {{
-        formatPercentNumber(
-          Number(
-            proposal.scores
-              .filter((c, i) => i === 1)
-              .reduce((a, b) => a + b, 0) / proposal.quorum
-          )
-        )
-      }}
-      quorum rejection
+      {{ quorumText }}
     </template>
   </div>
 </template>
