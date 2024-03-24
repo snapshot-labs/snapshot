@@ -34,13 +34,7 @@ const symbols = computed((): string[] =>
             :key="symbol"
             class="flex"
           >
-            <span
-              v-tippy="{
-                content: symbol
-              }"
-            >
-              <AvatarSpace :space="space" :symbol-index="symbolIndex" />
-            </span>
+            <AvatarSpace :space="space" :symbol-index="symbolIndex" />
             <span v-show="symbolIndex !== symbols.length - 1" class="ml-1" />
           </span>
         </span>
