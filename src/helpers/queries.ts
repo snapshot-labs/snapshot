@@ -56,6 +56,7 @@ export const PROPOSAL_QUERY = gql`
       network
       type
       quorum
+      quorumType
       symbol
       privacy
       validation {
@@ -131,6 +132,7 @@ export const PROPOSALS_QUERY = gql`
       scores
       votes
       quorum
+      quorumType
       symbol
       flagged
     }
@@ -484,6 +486,7 @@ export const SPACE_QUERY = gql`
         period
         type
         quorum
+        quorumType
         privacy
         hideAbstain
       }
