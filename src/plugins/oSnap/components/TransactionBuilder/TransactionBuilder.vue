@@ -65,6 +65,7 @@ function addImportedTransactions(transactions: SafeImportTransaction[]) {
     ><span class="ml-2 inline-block">{{ transactions.length }}</span>
     <TransactionImport
       @update:imported-transactions="addImportedTransactions"
+      :safe="props.safe"
       :network="props.network"
     />
   </p>

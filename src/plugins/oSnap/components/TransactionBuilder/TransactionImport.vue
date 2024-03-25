@@ -1,11 +1,17 @@
 <script setup lang="ts">
-import { GnosisSafe, Network, SafeImportTransaction } from '../../types';
+import {
+  GnosisSafe,
+  Network,
+  SafeImportTransaction,
+  isErrorWithMessage
+} from '../../types';
 import { initializeSafeImportTransaction } from '../../utils';
 import { parseGnosisSafeFile } from '../../utils/safeImport';
 import FileInput from '../Input/FileInput/FileInput.vue';
 
 const props = defineProps<{
   network: Network;
+  safe: GnosisSafe | null;
 }>();
 
 // Emits definition
@@ -19,27 +25,29 @@ const emit = defineEmits<{
 const file = ref<File>(); // raw file, if valid type
 const safeFile = ref<GnosisSafe.BatchFile>(); // parsed, type-safe file
 
-const isFileInvalid = computed(() => {
-  return file.value && !safeFile.value;
-});
+const error = ref<string>();
 
 function resetState() {
   file.value = undefined;
   safeFile.value = undefined;
+  error.value = undefined;
 }
 
-// TODO: check network and "createdFromSafeAddress"
 // TODO: allow multiple files at once
 
 watch(file, async () => {
   if (!file.value) return;
-  parseGnosisSafeFile(file.value)
+  parseGnosisSafeFile(file.value, props.safe)
     .then(result => {
       safeFile.value = result;
     })
     .catch(e => {
       safeFile.value = undefined;
-      console.error(e);
+      if (isErrorWithMessage(e)) {
+        error.value = e.message;
+        return;
+      }
+      error.value = 'Safe file corrupted. Please select another.';
     });
 });
 
@@ -63,9 +71,7 @@ watch(safeFile, safeFile => {
 <template>
   <div class="text-skin-link mt-2">Import from Safe, or use the builder</div>
   <FileInput
-    :error="
-      isFileInvalid ? 'Safe file corrupted. Please select another.' : undefined
-    "
+    :error="error"
     @update:file="handleFileChange"
     :file-type="'application/json'"
   />
