@@ -82,7 +82,7 @@ function updateTransaction() {
   }
 }
 
-watch(finalTransaction, updateTransaction);
+watch(finalTransaction, updateTransaction, { deep: true });
 onMounted(updateTransaction);
 </script>
 
@@ -97,8 +97,8 @@ onMounted(updateTransaction);
 
   <div v-if="finalTransaction" class="flex flex-col gap-2 mt-2">
     <AddressInput
-      :modelValue="finalTransaction.to"
-      @change="(e: string) => updateFinalTransaction({ to: e })"
+      @update:model-value="(e: string) => updateFinalTransaction({ to: e })"
+      :model-value="finalTransaction.to"
       :label="$t('safeSnap.to')"
       :error="!isToValid ? 'Invalid address' : undefined"
     />
