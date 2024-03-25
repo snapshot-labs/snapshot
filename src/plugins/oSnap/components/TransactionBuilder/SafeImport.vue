@@ -6,14 +6,11 @@ import {
   extractSafeMethodAndParams,
   parseValueInput
 } from '../../utils';
-import {
-  isJsonFile,
-  getFileFromEvent,
-  parseGnosisSafeFile
-} from '../../utils/safeImport';
+import { parseGnosisSafeFile } from '../../utils/safeImport';
 import MethodParameterInput from '../../components/Input/MethodParameter.vue';
 import AddressInput from '../../components/Input/Address.vue';
 import { isAddress } from '@ethersproject/address';
+import FileInput from '../Input/FileInput/FileInput.vue';
 
 const props = defineProps<{
   transaction: SafeImportTransaction | undefined;
@@ -25,26 +22,17 @@ const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
-type FileInputState = 'IDLE' | 'INVALID_TYPE' | 'PARSING_ERROR' | 'VALID';
-const fileInputState = ref<FileInputState>('IDLE');
-const dropping = ref(false);
-function updateFileInputState(state: FileInputState) {
-  fileInputState.value = state;
-}
-const toggleDropping = () => {
-  dropping.value = !dropping.value;
-};
-const isDropping = computed(() => dropping.value === true);
-
 const file = ref<File>();
 const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
 const selectedTransactionIndex = ref<number>();
 const processedTransactions = ref<CreateSafeTransactionParams[]>();
 const isValueValid = ref(true);
+const isFileInvalid = computed(() => {
+  return file.value && !safeFile.value;
+});
 const finalTransaction = ref<CreateSafeTransactionParams>(); // decoded method, extracted args
 
 function resetState() {
-  fileInputState.value = 'IDLE';
   file.value = undefined;
   safeFile.value = undefined;
   selectedTransactionIndex.value = undefined;
@@ -100,37 +88,12 @@ watch(file, async () => {
   parseGnosisSafeFile(file.value)
     .then(result => {
       safeFile.value = result;
-      updateFileInputState('VALID');
     })
     .catch(e => {
-      updateFileInputState('PARSING_ERROR');
-
+      safeFile.value = undefined;
       console.error(e);
     });
 });
-
-function handleDrop(event: DragEvent) {
-  resetState();
-  dropping.value = false;
-  const _file = getFileFromEvent(event);
-  if (!_file) return;
-  if (!isJsonFile(_file)) {
-    updateFileInputState('INVALID_TYPE');
-    return;
-  }
-  file.value = _file;
-}
-
-function handleFileChange(event: Event) {
-  resetState();
-  const _file = getFileFromEvent(event);
-  if (!_file) return;
-  if (!isJsonFile(_file)) {
-    updateFileInputState('INVALID_TYPE');
-    return;
-  }
-  file.value = _file;
-}
 
 function updateTransaction() {
   try {
@@ -152,6 +115,13 @@ function updateTransaction() {
   } catch (error) {
     console.error(error);
     props.setTransactionAsInvalid();
+  }
+}
+
+function handleFileChange(_file: File | null) {
+  if (_file) {
+    resetState();
+    file.value = _file;
   }
 }
 
@@ -178,44 +148,13 @@ watch(finalTransaction, updateTransaction);
 </script>
 
 <template>
-  <label
-    for="file_input"
-    @dragenter.prevent="toggleDropping"
-    @dragleave.prevent="toggleDropping"
-    @dragover.prevent
-    @drop.prevent="handleDrop($event)"
-    class="my-2 w-full group hover:bg-transparent hover:border-skin-text border-skin-border hover:cursor-pointer inline-block border border-dashed py-2 px-4 rounded-xl"
-    :class="{
-      'border-solid border-skin-text bg-transparent': isDropping,
-      'bg-red/10 border-red/50 text-red/80':
-        fileInputState === 'INVALID_TYPE' || fileInputState === 'PARSING_ERROR',
-      'bg-green/10 border-green/50 text-green/80': fileInputState === 'VALID'
-    }"
-  >
-    <div class="flex flex-col gap-1 items-center justify-center">
-      <i-ho-upload />
-      <span v-if="fileInputState === 'IDLE'"
-        >Click to select file, or drag n drop</span
-      >
-      <span v-if="fileInputState === 'INVALID_TYPE'"
-        >File type must be JSON. Please choose another.</span
-      >
-      <span v-if="fileInputState === 'PARSING_ERROR'"
-        >Safe file corrupted, please choose another.</span
-      >
-      <span v-if="fileInputState === 'VALID' && file?.name">{{
-        file.name
-      }}</span>
-    </div>
-
-    <input
-      id="file_input"
-      class="hidden"
-      accept="application/json"
-      type="file"
-      @change="handleFileChange"
-    />
-  </label>
+  <FileInput
+    :error="
+      isFileInvalid ? 'Safe file corrupted. Please select another.' : undefined
+    "
+    @update:file="handleFileChange"
+    :file-type="'application/json'"
+  />
 
   <UiSelect
     v-if="safeFile?.transactions?.length"
