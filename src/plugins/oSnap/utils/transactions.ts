@@ -8,8 +8,7 @@ import {
   Token,
   TransferFundsTransaction,
   TransferNftTransaction,
-  SafeImportTransaction,
-  GnosisSafe
+  SafeImportTransaction
 } from '../types';
 import { encodeMethodAndParams, encodeSafeMethodAndParams } from './abi';
 
@@ -169,22 +168,12 @@ export function parseValueInput(input: string) {
   return parseAmount(input);
 }
 
-export type CreateSafeTransactionParams = {
-  to: string;
-  value: string;
-  data: string | null;
-  functionFragment?: FunctionFragment;
-  parameters?: { [key: string]: string };
-};
-
 export function createSafeImportTransaction(
-  params: CreateSafeTransactionParams
+  params: SafeImportTransaction
 ): SafeImportTransaction {
-  const abi = JSON.stringify(Array(params.functionFragment));
-  const methodName = params.functionFragment?.name;
-  const parameters = params.parameters;
+  const abi = JSON.stringify(Array(params.method));
   // is native transfer funds
-  if (!params.functionFragment) {
+  if (!params.method) {
     const data = '0x';
     const formatted = createFormattedOptimisticGovernorTransaction({
       to: params.to,
@@ -192,15 +181,11 @@ export function createSafeImportTransaction(
       data
     });
     return {
-      type: 'safeImport',
+      ...params,
       isValid: true,
       abi,
       formatted,
-      to: params.to,
-      value: params.value,
-      data,
-      methodName,
-      parameters
+      data
     };
   }
   // is contract interaction with NO args
@@ -212,22 +197,18 @@ export function createSafeImportTransaction(
       data
     });
     return {
-      type: 'safeImport',
+      ...params,
       isValid: true,
       abi,
       formatted,
-      to: params.to,
-      value: params.value,
-      data,
-      methodName,
-      parameters
+      data
     };
   }
 
   // is contract interaction WITH args
   const encodedData =
     params?.data ||
-    encodeSafeMethodAndParams(params.functionFragment, params.parameters) ||
+    encodeSafeMethodAndParams(params.method, params.parameters) ||
     '0x';
 
   const formatted = createFormattedOptimisticGovernorTransaction({
@@ -237,95 +218,10 @@ export function createSafeImportTransaction(
   });
 
   return {
-    type: 'safeImport',
+    ...params,
     isValid: true,
     abi,
     formatted,
-    to: params.to,
-    value: params.value,
-    data: encodedData,
-    methodName,
-    parameters
+    data: encodedData
   };
 }
-
-// export function createSafeImportTransaction(
-//   params: GnosisSafe.BatchTransaction
-// ): SafeImportTransaction {
-//   const abi = JSON.stringify([params.contractMethod]);
-//   const subtype = params.contractMethod
-//     ? 'contractInteraction'
-//     : 'nativeTransfer';
-//   const methodName = params.contractMethod?.name;
-//   const parameters = params.contractInputsValues;
-//   // is native transfer funds
-//   if (!params.contractMethod) {
-//     const data = '0x';
-//     const formatted = createFormattedOptimisticGovernorTransaction({
-//       to: params.to,
-//       value: params.value,
-//       data
-//     });
-//     return {
-//       type: 'safeImport',
-//       isValid: true,
-//       abi,
-//       formatted,
-//       to: params.to,
-//       value: params.value,
-//       data,
-//       subtype,
-//       methodName,
-//       parameters
-//     };
-//   }
-//   // is contract interaction with NO args
-//   if (!params.contractInputsValues) {
-//     const data = params?.data || '0x';
-//     const formatted = createFormattedOptimisticGovernorTransaction({
-//       to: params.to,
-//       value: params.value,
-//       data
-//     });
-//     return {
-//       type: 'safeImport',
-//       isValid: true,
-//       abi,
-//       formatted,
-//       to: params.to,
-//       value: params.value,
-//       data,
-//       subtype,
-//       methodName,
-//       parameters
-//     };
-//   }
-
-//   // is contract interaction WITH args
-//   const encodedData =
-//     params?.data ||
-//     encodeSafeMethodAndParams(
-//       params.contractMethod,
-//       params.contractInputsValues
-//     ) ||
-//     '0x';
-
-//   const formatted = createFormattedOptimisticGovernorTransaction({
-//     to: params.to,
-//     value: params.value,
-//     data: encodedData
-//   });
-
-//   return {
-//     type: 'safeImport',
-//     isValid: true,
-//     abi,
-//     formatted,
-//     to: params.to,
-//     value: params.value,
-//     data: encodedData,
-//     subtype,
-//     methodName,
-//     parameters
-//   };
-// }

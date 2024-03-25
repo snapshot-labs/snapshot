@@ -5,12 +5,14 @@ import {
   GnosisSafe,
   NFT,
   Network,
+  SafeImportTransaction,
   Transaction as TTransaction,
   Token
 } from '../../types';
 import { getSafeAppLink } from '../../utils';
 import Transaction from './Transaction.vue';
 import TenderlySimulation from './TenderlySimulation.vue';
+import TransactionImport from './TransactionImport.vue';
 
 const props = defineProps<{
   safeAddress: string;
@@ -34,6 +36,10 @@ const emit = defineEmits<{
 const safeLink = computed(() =>
   getSafeAppLink(props.network, props.safeAddress)
 );
+
+function addImportedTransactions(transactions: SafeImportTransaction[]) {
+  transactions.forEach(tx => emit('addTransaction', tx));
+}
 </script>
 
 <template>
@@ -57,6 +63,10 @@ const safeLink = computed(() =>
   <p class="my-2">
     <strong>Number of transactions</strong
     ><span class="ml-2 inline-block">{{ transactions.length }}</span>
+    <TransactionImport
+      @update:imported-transactions="addImportedTransactions"
+      :network="props.network"
+    />
   </p>
   <div class="text-center">
     <Transaction

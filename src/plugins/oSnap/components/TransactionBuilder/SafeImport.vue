@@ -1,19 +1,12 @@
 <script setup lang="ts">
-import { SafeImportTransaction, GnosisSafe, Network } from '../../types';
-import {
-  createSafeImportTransaction,
-  CreateSafeTransactionParams,
-  extractSafeMethodAndParams,
-  parseValueInput
-} from '../../utils';
-import { parseGnosisSafeFile } from '../../utils/safeImport';
+import { SafeImportTransaction, Network } from '../../types';
+import { createSafeImportTransaction, parseValueInput } from '../../utils';
 import MethodParameterInput from '../../components/Input/MethodParameter.vue';
 import AddressInput from '../../components/Input/Address.vue';
 import { isAddress } from '@ethersproject/address';
-import FileInput from '../Input/FileInput/FileInput.vue';
 
 const props = defineProps<{
-  transaction: SafeImportTransaction | undefined;
+  transaction: SafeImportTransaction;
   network: Network;
   setTransactionAsInvalid(): void;
 }>();
@@ -22,23 +15,8 @@ const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
-const file = ref<File>();
-const safeFile = ref<GnosisSafe.BatchFile>(); // raw, type-safe file
-const selectedTransactionIndex = ref<number>();
-const processedTransactions = ref<CreateSafeTransactionParams[]>();
 const isValueValid = ref(true);
-const isFileInvalid = computed(() => {
-  return file.value && !safeFile.value;
-});
-const finalTransaction = ref<CreateSafeTransactionParams>(); // decoded method, extracted args
-
-function resetState() {
-  file.value = undefined;
-  safeFile.value = undefined;
-  selectedTransactionIndex.value = undefined;
-  processedTransactions.value = undefined;
-  finalTransaction.value = undefined;
-}
+const finalTransaction = ref<SafeImportTransaction>(props.transaction); // decoded method, extracted args
 
 const isToValid = computed(() => {
   if (!finalTransaction?.value?.to) {
@@ -47,23 +25,21 @@ const isToValid = computed(() => {
   return isAddress(finalTransaction.value.to);
 });
 
-function updateFinalTransaction(tx: Partial<CreateSafeTransactionParams>) {
+function updateFinalTransaction(tx: Partial<SafeImportTransaction>) {
   finalTransaction.value = {
     ...finalTransaction.value,
     ...tx
-  } as CreateSafeTransactionParams;
+  } as SafeImportTransaction;
 }
 
-function updateParams(
-  paramsToUpdate: CreateSafeTransactionParams['parameters']
-) {
+function updateParams(paramsToUpdate: SafeImportTransaction['parameters']) {
   finalTransaction.value = {
     ...finalTransaction.value,
     parameters: {
       ...finalTransaction.value?.parameters,
       ...paramsToUpdate
     }
-  } as CreateSafeTransactionParams;
+  } as SafeImportTransaction;
 }
 
 function updateValue(newValue: string) {
@@ -82,18 +58,6 @@ function updateValue(newValue: string) {
     updateTransaction();
   }
 }
-
-watch(file, async () => {
-  if (!file.value) return;
-  parseGnosisSafeFile(file.value)
-    .then(result => {
-      safeFile.value = result;
-    })
-    .catch(e => {
-      safeFile.value = undefined;
-      console.error(e);
-    });
-});
 
 function updateTransaction() {
   try {
@@ -118,57 +82,18 @@ function updateTransaction() {
   }
 }
 
-function handleFileChange(_file: File | null) {
-  if (_file) {
-    resetState();
-    file.value = _file;
-  }
-}
-
-watch(safeFile, safeFile => {
-  if (safeFile) {
-    finalTransaction.value = undefined;
-    selectedTransactionIndex.value = undefined;
-    const convertedTxs = safeFile.transactions.map(extractSafeMethodAndParams);
-    processedTransactions.value = convertedTxs;
-  }
-});
-
-watch(selectedTransactionIndex, index => {
-  if (
-    index === undefined ||
-    !processedTransactions.value ||
-    processedTransactions.value[index] === undefined
-  )
-    return;
-  finalTransaction.value = processedTransactions.value[index];
-});
-
 watch(finalTransaction, updateTransaction);
+onMounted(updateTransaction);
 </script>
 
 <template>
-  <FileInput
-    :error="
-      isFileInvalid ? 'Safe file corrupted. Please select another.' : undefined
-    "
-    @update:file="handleFileChange"
-    :file-type="'application/json'"
-  />
-
-  <UiSelect
-    v-if="safeFile?.transactions?.length"
-    v-model="selectedTransactionIndex"
-  >
-    <template #label>Select Transaction</template>
-    <option v-for="(tx, i) in safeFile.transactions" :key="i" :value="i">
-      {{
-        tx?.contractMethod?.name
-          ? `Contract interaction (${tx?.contractMethod?.name})`
-          : 'Native Transfer'
-      }}
-    </option>
-  </UiSelect>
+  <div class="text-skin-text text-left">
+    {{
+      props.transaction?.method?.name
+        ? `Contract interaction (${props.transaction.method.name})`
+        : 'Native Transfer'
+    }}
+  </div>
 
   <div v-if="finalTransaction" class="flex flex-col gap-2 mt-2">
     <AddressInput
@@ -190,12 +115,12 @@ watch(finalTransaction, updateTransaction);
     <!-- ContractInteraction Parameters -->
     <div
       class="flex flex-col gap-2"
-      v-if="finalTransaction.functionFragment?.inputs?.length"
+      v-if="finalTransaction.method?.inputs?.length"
     >
       <div class="text-left mt-3">Function Parameters</div>
       <div class="divider h-[1px] bg-skin-border mb-3" />
       <MethodParameterInput
-        v-for="input in finalTransaction.functionFragment.inputs"
+        v-for="input in finalTransaction.method.inputs"
         :key="input.name"
         :validateOnMount="true"
         :parameter="input"

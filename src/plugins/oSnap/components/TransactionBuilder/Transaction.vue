@@ -67,10 +67,7 @@ function setTransactionAsInvalid() {
       <h3 class="text-left text-base">
         Transaction {{ transactionIndex + 1 }}
       </h3>
-      <button
-        v-if="transactionIndex !== 0"
-        @click="emit('removeTransaction', transactionIndex)"
-      >
+      <button @click="emit('removeTransaction', transactionIndex)">
         Remove
       </button>
     </div>

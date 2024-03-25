@@ -1,9 +1,4 @@
-import {
-  FunctionFragment,
-  Interface,
-  JsonFragmentType,
-  ParamType
-} from '@ethersproject/abi';
+import { FunctionFragment, Interface, ParamType } from '@ethersproject/abi';
 import { BigNumberish } from '@ethersproject/bignumber';
 import { memoize } from 'lodash';
 import { ERC20_ABI, ERC721_ABI, EXPLORER_API_URLS } from '../constants';
@@ -11,8 +6,7 @@ import {
   mustBeEthereumAddress,
   mustBeEthereumContractAddress
 } from './validators';
-import { GnosisSafe } from '../types';
-import { CreateSafeTransactionParams } from './transactions';
+import { GnosisSafe, SafeImportTransaction } from '../types';
 
 /**
  * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.
@@ -145,25 +139,27 @@ export function transformSafeMethodToFunctionFragment(
   return fragment;
 }
 
-export function extractSafeMethodAndParams(
+export function initializeSafeImportTransaction(
   unprocessedTransactions: GnosisSafe.BatchTransaction
-): CreateSafeTransactionParams {
+): SafeImportTransaction {
   return {
+    type: 'safeImport',
     to: unprocessedTransactions.to,
     value: unprocessedTransactions.value,
-    data: unprocessedTransactions.data ?? null,
-    functionFragment: unprocessedTransactions.contractMethod
+    data: unprocessedTransactions?.data ?? '',
+    method: unprocessedTransactions.contractMethod
       ? transformSafeMethodToFunctionFragment(
           unprocessedTransactions.contractMethod
         )
       : undefined,
-    parameters: unprocessedTransactions.contractInputsValues
+    parameters: unprocessedTransactions.contractInputsValues,
+    formatted: ['', 0, '0', '0x']
   };
 }
 
 export function encodeSafeMethodAndParams(
-  method: CreateSafeTransactionParams['functionFragment'],
-  params: CreateSafeTransactionParams['parameters']
+  method: SafeImportTransaction['method'],
+  params: SafeImportTransaction['parameters']
 ) {
   if (!params || !method) return;
   const missingParams = Object.values(params).length !== method.inputs.length;

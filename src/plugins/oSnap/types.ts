@@ -108,9 +108,8 @@ export type BaseTransaction = {
 export type SafeImportTransaction = BaseTransaction & {
   type: 'safeImport';
   abi?: string; // represents partial ABI only
-  methodName?: string;
-  method?: GnosisSafe.BatchTransaction['contractMethod'];
-  parameters?: GnosisSafe.BatchTransaction['contractInputsValues'];
+  method?: FunctionFragment;
+  parameters?: { [key: string]: string };
 };
 
 /**
