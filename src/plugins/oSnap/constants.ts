@@ -1100,6 +1100,7 @@ export const safePrefixes = {
 export const EXPLORER_API_URLS = {
   '1': 'https://api.etherscan.io/api',
   '5': 'https://api-goerli.etherscan.io/api',
+  '10': 'https://api-optimistic.etherscan.io/api',
   '100': 'https://gnosis.blockscout.com/api',
   '73799': 'https://volta-explorer.energyweb.org/api',
   '246': 'https://explorer.energyweb.org/api',
@@ -1113,6 +1114,7 @@ export const EXPLORER_API_URLS = {
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '1': 'https://safe-transaction-mainnet.safe.global/api',
   '5': 'https://safe-transaction-goerli.safe.global/api',
+  '10': 'https://safe-transaction-optimism.safe.global/api',
   '100': 'https://safe-transaction-gnosis-chain.safe.global/api',
   '73799': 'https://safe-transaction-volta.safe.global/api',
   '246': 'https://safe-transaction-ewc.safe.global/api',

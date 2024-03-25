@@ -47,6 +47,8 @@ async function callGnosisSafeTransactionApi<TResult = any>(
   network: Network,
   url: string
 ) {
+  if(!GNOSIS_SAFE_TRANSACTION_API_URLS[network])
+    throw new Error(`No gnosis safe api defined for network ${network}`)
   const apiUrl = GNOSIS_SAFE_TRANSACTION_API_URLS[network];
   const response = await fetch(apiUrl + url);
   return response.json() as TResult;
