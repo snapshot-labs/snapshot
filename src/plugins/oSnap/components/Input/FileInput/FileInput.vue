@@ -32,7 +32,7 @@ const handleFileChange = (event: Event | DragEvent) => {
     file.value = null;
   } else {
     file.value = _file;
-    fileInputState.value = 'VALID'; // Assume file parsing success, handle errors appropriately
+    fileInputState.value = 'VALID';
   }
 };
 

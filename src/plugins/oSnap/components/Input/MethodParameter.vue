@@ -52,6 +52,7 @@ const errorMessageForDisplay = computed(() => {
   }
 });
 
+// only suggest padding with zeros if too short but still valid bytes (even characters & starts with "0x")
 const allowQuickFixForBytes32 = computed(() => {
   if (errorMessageForDisplay?.value?.includes('short')) {
     return true;
