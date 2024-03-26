@@ -1,6 +1,6 @@
 import { BOOST_WHITELIST_SETTINGS, claimTokens } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
-import { Proposal } from '@/helpers/interfaces';
+import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
 import { TWO_WEEKS } from '@/helpers/constants';
 import { getVouchers } from '@/helpers/boost/api';
 import { toChecksumAddress } from '@/helpers/utils';
@@ -15,21 +15,17 @@ export function useBoost() {
   const loadingClaim = ref(false);
 
   function isWhitelisted(spaceId: string) {
-    return !!BOOST_WHITELIST_SETTINGS[env][spaceId];
-  }
-
-  function bribeDisabled(spaceId: string) {
-    return BOOST_WHITELIST_SETTINGS[env][spaceId]?.bribeDisabled;
+    return (BOOST_WHITELIST_SETTINGS[env] ?? []).includes(spaceId);
   }
 
   function sanitizeBoosts(
     boosts: BoostSubgraph[],
     proposals: Proposal[],
-    spaceId: string
+    space: ExtendedSpace
   ) {
     return boosts.filter(boost => {
       if (
-        bribeDisabled(spaceId) &&
+        !space.boost.bribeEnabled &&
         boost.strategy.eligibility.type === 'bribe'
       ) {
         return false;
@@ -91,7 +87,6 @@ export function useBoost() {
 
   return {
     isWhitelisted,
-    bribeDisabled,
     sanitizeBoosts,
     loadVouchers,
     handleClaim,

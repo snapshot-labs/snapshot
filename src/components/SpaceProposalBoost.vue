@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { getClaims, getBoosts } from '@/helpers/boost/subgraph';
-import { Proposal } from '@/helpers/interfaces';
+import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
 import { useStorage } from '@vueuse/core';
 import { getRewards } from '@/helpers/boost/api';
 import { toChecksumAddress } from '@/helpers/utils';
@@ -16,6 +16,7 @@ const INITIAL_VISIBLE_BOOSTS = 3;
 
 const props = defineProps<{
   proposal: Proposal;
+  space: ExtendedSpace;
 }>();
 
 const createModalOpen = ref(false);
@@ -118,7 +119,7 @@ async function loadBoosts() {
     const sanitizedBoosts = sanitizeBoosts(
       response,
       [props.proposal],
-      props.proposal.space.id
+      props.space
     );
     boosts.value = sanitizedBoosts;
   } catch (e) {

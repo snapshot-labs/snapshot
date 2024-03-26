@@ -152,13 +152,14 @@ watch(
 </script>
 
 <template>
-  <BaseModal :open="open" hide-close class="flex" @close="$emit('close')">
-    <div class="flex flex-auto flex-col">
-      <h4 class="m-4 mb-0 text-center">
+  <TuneModal :open="open" hide-close @close="$emit('close')">
+    <div class="mx-3">
+      <TuneModalTitle class="mt-3 mx-1">
         {{ $tc('proposal.castVote') }}
-      </h4>
-      <div slim class="m-4 space-y-4 text-skin-link">
-        <div>
+      </TuneModalTitle>
+
+      <div class="space-y-3 text-skin-link">
+        <div class="mx-1">
           <div class="flex">
             <span class="mr-1 flex-auto text-skin-text" v-text="$t('choice')" />
             <span
@@ -328,22 +329,19 @@ watch(
           </div>
         </template>
       </div>
-    </div>
 
-    <template #footer>
-      <div class="float-left w-2/4 pr-2">
+      <div class="mb-3 mt-5 flex gap-x-[12px]">
         <TuneButton type="button" class="w-full" @click="$emit('close')">
           {{ $t('cancel') }}
         </TuneButton>
-      </div>
-      <div class="float-left w-2/4 pl-2">
         <TuneButton
           :disabled="
             votingPower === 0 ||
             !isValidVoter ||
             isSending ||
             isLoadingShutter ||
-            isGnosisAndNotSpaceNetwork
+            isGnosisAndNotSpaceNetwork ||
+            isValidationAndPowerLoading
           "
           :loading="isSending || isLoadingShutter"
           class="w-full"
@@ -354,6 +352,6 @@ watch(
           {{ $t('confirm') }}
         </TuneButton>
       </div>
-    </template>
-  </BaseModal>
+    </div>
+  </TuneModal>
 </template>

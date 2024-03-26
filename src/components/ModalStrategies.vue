@@ -11,11 +11,13 @@ defineEmits(['close']);
 </script>
 
 <template>
-  <BaseModal :open="open" @close="$emit('close')">
-    <template #header>
-      <h3>{{ $t('strategiesPage') }}</h3>
-    </template>
-    <div class="m-4">
+  <TuneModal :open="open" @close="$emit('close')">
+    <TuneModalTitle class="my-3 px-3">
+      {{ $t('strategiesPage') }}
+    </TuneModalTitle>
+    <div
+      class="max-h-[calc(100vh-100px)] md:max-h-[488px] overflow-y-auto space-y-3 px-3 pb-3"
+    >
       <StrategiesListItem
         v-for="(strategy, i) in strategies"
         :key="i"
@@ -23,5 +25,5 @@ defineEmits(['close']);
         :proposal="proposal"
       />
     </div>
-  </BaseModal>
+  </TuneModal>
 </template>

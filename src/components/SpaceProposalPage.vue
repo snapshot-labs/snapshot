@@ -58,8 +58,9 @@ const boostEnabled = computed(() => {
   return (
     (props.proposal.type === 'basic' ||
       props.proposal.type === 'single-choice') &&
+    props.proposal.privacy !== 'shutter' &&
     isWhitelisted(props.space.id) &&
-    props.proposal.privacy !== 'shutter'
+    props.space.boost.enabled
   );
 });
 
@@ -172,7 +173,11 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             @click-vote="clickVote"
           />
 
-          <SpaceProposalBoost v-if="boostEnabled" :proposal="proposal" />
+          <SpaceProposalBoost
+            v-if="boostEnabled"
+            :proposal="proposal"
+            :space="space"
+          />
 
           <SpaceProposalVotes :space="space" :proposal="proposal" />
 

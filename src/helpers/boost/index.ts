@@ -9,7 +9,8 @@ export const BOOST_VERSION = '0.0.1';
 
 export const BOOST_CONTRACTS = {
   '1': '0x8E8913197114c911F13cfBfCBBD138C1DC74B964',
-  '11155111': '0x8E8913197114c911F13cfBfCBBD138C1DC74B964'
+  '11155111': '0x8E8913197114c911F13cfBfCBBD138C1DC74B964',
+  '137': '0x8E8913197114c911F13cfBfCBBD138C1DC74B964'
 };
 
 export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
@@ -19,19 +20,24 @@ export const SNAPSHOT_GUARD_ADDRESS =
 
 export const BOOST_WHITELIST_SETTINGS = {
   demo: [],
-  production: {
+  production: [
     // External testers
-    'community.daosquare.eth': {},
+    'community.daosquare.eth',
+    'nsfwgov.eth',
+    'worldassociation.eth',
+    'kumaprotocol.eth',
+    'mimo.eth',
+    'vote.vitadao.eth',
     // Internal testers
-    'testsnap.eth': {},
-    'fabien.eth': {},
-    'pscott.eth': {},
-    'gillvill.eth': {},
-    '0cf5e.eth': {},
-    'thanku.eth': {},
-    'test.wa0x6e.eth': {},
-    'aurelianob.eth': {}
-  }
+    'testsnap.eth',
+    'fabien.eth',
+    'pscott.eth',
+    'gillvill.eth',
+    '0cf5e.eth',
+    'thanku.eth',
+    'test.wa0x6e.eth',
+    'aurelianob.eth'
+  ]
 };
 
 export async function createBoost(
