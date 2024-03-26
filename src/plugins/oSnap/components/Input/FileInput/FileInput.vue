@@ -56,9 +56,9 @@ const toggleDropping = () => {
     @dragleave.prevent="toggleDropping"
     @dragover.prevent
     @drop.prevent="handleFileChange($event)"
-    class="my-2 w-full group hover:bg-transparent hover:border-skin-text hover:cursor-pointer inline-block border border-dashed py-2 px-4 rounded-xl"
+    class="my-2 w-full group hover:bg-transparent hover:border-skin-text hover:text-skin-link hover:cursor-pointer inline-block border-2 border-dashed py-2 px-4 rounded-xl"
     :class="{
-      'border-solid border-skin-text text-skin-text bg-transparent': isDropping,
+      'border-solid border-skin-text text-skin-link bg-transparent': isDropping,
       'bg-red/10 border-red/50 text-red/80':
         fileInputState === 'INVALID_TYPE' || props.error,
       'bg-green/10 border-green/50 text-green/80': fileInputState === 'VALID'
