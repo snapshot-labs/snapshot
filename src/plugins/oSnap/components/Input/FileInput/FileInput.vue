@@ -15,13 +15,21 @@ const emit = defineEmits<{
     state: 'IDLE' | 'ERROR' | 'INVALID_TYPE' | 'VALID'
   ): void;
 }>();
-
-const file = ref<File | null>(null);
+const inputRef = ref<HTMLInputElement>();
+const file = ref<File | null>();
 const fileInputState = ref<'IDLE' | 'ERROR' | 'VALID' | 'INVALID_TYPE'>(
   props.error ? 'ERROR' : 'IDLE'
 );
 
 const isDropping = ref(false);
+
+const isError = computed(() => {
+  return !!props.error || fileInputState.value === 'INVALID_TYPE';
+});
+
+const isAccepted = computed(() => {
+  return fileInputState.value === 'VALID' && !props?.error;
+});
 
 const handleFileChange = (event: Event | DragEvent) => {
   isDropping.value = false;
@@ -33,12 +41,16 @@ const handleFileChange = (event: Event | DragEvent) => {
   } else {
     file.value = _file;
     fileInputState.value = 'VALID';
+    emit('update:file', _file);
   }
+  clearInputValue();
 };
 
-watch(file, newFile => {
-  emit('update:file', newFile);
-});
+function clearInputValue() {
+  if (inputRef?.value) {
+    inputRef.value.value = '';
+  }
+}
 
 watch(fileInputState, newState => {
   emit('update:fileInputState', newState);
@@ -59,9 +71,8 @@ const toggleDropping = () => {
     class="my-2 w-full group hover:bg-transparent hover:border-skin-text hover:text-skin-link hover:cursor-pointer inline-block border-2 border-dashed py-2 px-4 rounded-xl"
     :class="{
       'border-solid border-skin-text text-skin-link bg-transparent': isDropping,
-      'bg-red/10 border-red/50 text-red/80':
-        fileInputState === 'INVALID_TYPE' || props.error,
-      'bg-green/10 border-green/50 text-green/80': fileInputState === 'VALID'
+      'bg-red/10 border-red/50 text-red/80': isError,
+      'bg-green/10 border-green/50 text-green/80': isAccepted
     }"
   >
     <div
@@ -85,7 +96,7 @@ const toggleDropping = () => {
     </div>
 
     <input
-      size=""
+      ref="inputRef"
       id="file_input"
       class="hidden"
       :accept="props.fileType"
