@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, defineProps, watch } from 'vue';
-import { getFileFromEvent, isFileOfType } from './utils';
+import { getFilesFromEvent, isFileOfType } from './utils';
+
+type InputState = 'IDLE' | 'INVALID_TYPE' | 'VALID' | 'INVALID_QUANTITY';
 
 const props = defineProps<{
   fileType: File['type'];
@@ -10,21 +12,19 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:file', file: File | null): void;
-  (
-    event: 'update:fileInputState',
-    state: 'IDLE' | 'ERROR' | 'INVALID_TYPE' | 'VALID'
-  ): void;
+  (event: 'update:fileInputState', state: InputState): void;
 }>();
 const inputRef = ref<HTMLInputElement>();
 const file = ref<File | null>();
-const fileInputState = ref<'IDLE' | 'ERROR' | 'VALID' | 'INVALID_TYPE'>(
-  props.error ? 'ERROR' : 'IDLE'
-);
-
+const fileInputState = ref<InputState>('IDLE');
 const isDropping = ref(false);
 
 const isError = computed(() => {
-  return !!props.error || fileInputState.value === 'INVALID_TYPE';
+  return (
+    !!props.error ||
+    fileInputState.value === 'INVALID_TYPE' ||
+    fileInputState.value === 'INVALID_QUANTITY'
+  );
 });
 
 const isAccepted = computed(() => {
@@ -33,8 +33,19 @@ const isAccepted = computed(() => {
 
 const handleFileChange = (event: Event | DragEvent) => {
   isDropping.value = false;
-  const _file = getFileFromEvent(event);
-  if (!_file) return;
+  const _files = getFilesFromEvent(event);
+  if (!_files?.length) return;
+
+  // enforce single drop based on props
+  if (!props.multiple) {
+    if (_files?.length && _files?.length > 1) {
+      fileInputState.value = 'INVALID_QUANTITY';
+      file.value = null;
+      clearInputValue();
+      return;
+    }
+  }
+  const _file = _files[0];
   if (!isFileOfType(_file, props.fileType)) {
     fileInputState.value = 'INVALID_TYPE';
     file.value = null;
@@ -85,7 +96,9 @@ const toggleDropping = () => {
           >File type must be <strong>{{ props.fileType }}</strong
           >. Please choose another.</template
         >
-
+        <template v-else-if="fileInputState === 'INVALID_QUANTITY'"
+          >Drop only <strong>1</strong> file at a time
+        </template>
         <template v-else-if="fileInputState === 'VALID' && file">{{
           file.name
         }}</template>
