@@ -95,7 +95,7 @@ async function fetchBalances(network: Network, safeAddress: string) {
 
     return enhanceTokensWithBalances(balancesWithNative, tokens, network);
   } catch (e) {
-    console.warn('Error fetching balances',e);
+    console.warn('Error fetching balances', e);
     return [];
   }
 }
