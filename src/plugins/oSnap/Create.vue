@@ -95,7 +95,7 @@ async function fetchBalances(network: Network, safeAddress: string) {
 
     return enhanceTokensWithBalances(balancesWithNative, tokens, network);
   } catch (e) {
-    console.warn('Error fetching balances');
+    console.warn('Error fetching balances', e);
     return [];
   }
 }
@@ -105,7 +105,6 @@ function enhanceTokensWithBalances(
   tokens: Token[],
   network: Network
 ) {
-  console.log({ balances, tokens });
   return balances
     .filter(
       (balance): balance is BalanceResponse =>
@@ -153,7 +152,6 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
       network,
       gnosisSafeAddress
     );
-    console.log({ response });
     return response.results;
   } catch (error) {
     console.warn('Error fetching collectibles');
