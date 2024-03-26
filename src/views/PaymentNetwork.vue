@@ -106,7 +106,7 @@ watch(paymentTx, () => {
             class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.svg')]"
           >
             Save
-            <BasePill class="py-1 !bg-skin-primary"
+            <BasePill class="py-1 !bg-skin-primary !text-skin-bg"
               >{{ Math.floor(plan.discount) }}%</BasePill
             >
           </div>
