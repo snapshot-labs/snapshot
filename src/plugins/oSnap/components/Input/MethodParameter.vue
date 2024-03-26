@@ -52,9 +52,8 @@ const errorMessageForDisplay = computed(() => {
   }
 });
 
-// only suggest padding with zeros if too short but still valid bytes (even characters & starts with "0x")
 const allowQuickFixForBytes32 = computed(() => {
-  if (errorMessageForDisplay?.value?.includes('short')) {
+  if (!errorMessageForDisplay?.value?.includes('long')) {
     return true;
   }
   return false;
@@ -97,13 +96,15 @@ function validateBytes32Input(value: string) {
   try {
     const data = value?.slice(2) || '';
 
-    if (!isBytesLike(value)) {
-      throw new Error('Invalid bytes32');
-    }
     if (data.length < 64) {
       validationErrorMessage.value = 'Value too short';
       throw new Error('Less than 32 bytes');
     }
+
+    if (!isBytesLike(value)) {
+      throw new Error('Invalid bytes32');
+    }
+
     if (data.length > 64) {
       validationErrorMessage.value = 'Value too long';
       throw new Error('More than 32 bytes');
