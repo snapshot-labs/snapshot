@@ -97,7 +97,7 @@ const toggleDropping = () => {
           >. Please choose another.</template
         >
         <template v-else-if="fileInputState === 'INVALID_QUANTITY'"
-          >Drop only <strong>1</strong> file at a time
+          >Drop only <strong class="underline">one</strong> file at a time
         </template>
         <template v-else-if="fileInputState === 'VALID' && file">{{
           file.name
