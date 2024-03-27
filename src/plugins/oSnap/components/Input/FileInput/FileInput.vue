@@ -52,7 +52,6 @@ const handleFileChange = (event: Event | DragEvent) => {
   } else {
     file.value = _file;
     fileInputState.value = 'VALID';
-    emit('update:file', _file);
   }
   clearInputValue();
 };
@@ -63,13 +62,19 @@ function clearInputValue() {
   }
 }
 
+function toggleDropping() {
+  isDropping.value = !isDropping.value;
+}
+
+watch(file, newFile => {
+  if (newFile) {
+    emit('update:file', newFile);
+  }
+});
+
 watch(fileInputState, newState => {
   emit('update:fileInputState', newState);
 });
-
-const toggleDropping = () => {
-  isDropping.value = !isDropping.value;
-};
 </script>
 
 <template>
