@@ -1,19 +1,6 @@
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-
-const NETWORKS = {
-  '1': {
-    name: 'Ethereum Mainnet',
-    chainId: '0x1'
-  },
-  '5': {
-    name: 'Goerli Testnet',
-    chainId: '0x5'
-  },
-  '11155111': {
-    name: 'Sepolia Testnet',
-    chainId: '0xaa36a7'
-  }
-};
+import { hexlify } from '@ethersproject/bytes';
 
 export function useChangeNetwork() {
   const changingNetwork = ref(false);
@@ -24,7 +11,7 @@ export function useChangeNetwork() {
       method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: NETWORKS[network].chainId
+          chainId: hexlify(Number(networks[network].chainId))
         }
       ]
     });
@@ -33,7 +20,6 @@ export function useChangeNetwork() {
   }
 
   return {
-    NETWORKS,
     changingNetwork,
     changeNetwork
   };

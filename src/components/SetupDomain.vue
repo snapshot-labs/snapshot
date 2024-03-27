@@ -126,7 +126,7 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
       />
 
       <BaseMessageBlock
-        v-if="defaultNetwork === '5'"
+        v-if="defaultNetwork && env === 'demo'"
         level="info"
         class="mb-4"
         is-responsive

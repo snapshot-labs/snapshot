@@ -5,7 +5,7 @@ const { validationErrors, forceShowError } = useFormSpaceSettings('setup');
 
 function nextStep() {
   if (
-    ['name', 'website', 'terms', 'twitter', 'github', 'coingecko'].some(item =>
+    ['name', 'website', 'terms', 'x', 'github', 'coingecko'].some(item =>
       Object.keys(validationErrors.value).includes(item)
     )
   )

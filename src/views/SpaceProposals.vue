@@ -36,7 +36,7 @@ const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
 const { isFollowing } = useFollowSpace(props.space.id);
-const { isWhitelisted, bribeDisabled } = useBoost({ spaceId: props.space.id });
+const { isWhitelisted, sanitizeBoosts } = useBoost();
 const {
   store,
   userVotedProposalIds,
@@ -87,7 +87,7 @@ async function getProposals(skip = 0) {
 }
 
 async function loadBoosts(proposals: Proposal[]) {
-  if (!isWhitelisted.value) return;
+  if (!isWhitelisted(props.space.id) || !props.space.boost.enabled) return;
 
   const alreadyLoadedProposals = boosts.value.map(
     boost => boost.strategy.proposal
@@ -99,13 +99,8 @@ async function loadBoosts(proposals: Proposal[]) {
     const response = await getBoosts(
       proposalsToLoad.map(proposal => proposal.id)
     );
-    const cleanBoosts = response.filter(boost => {
-      if (bribeDisabled.value) {
-        return boost.strategy.eligibility.type !== 'bribe';
-      }
-      return true;
-    });
-    boosts.value = boosts.value.concat(cleanBoosts);
+    const sanitizedBoosts = sanitizeBoosts(response, proposals, props.space);
+    boosts.value = boosts.value.concat(sanitizedBoosts);
   } catch (e) {
     console.error('Load boosts error:', e);
   }

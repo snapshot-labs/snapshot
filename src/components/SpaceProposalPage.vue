@@ -24,7 +24,7 @@ useMeta({
 const route = useRoute();
 const { web3, web3Account } = useWeb3();
 const { modalEmailOpen } = useModal();
-const { isWhitelisted } = useBoost({ spaceId: props.space.id });
+const { isWhitelisted } = useBoost();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -58,8 +58,9 @@ const boostEnabled = computed(() => {
   return (
     (props.proposal.type === 'basic' ||
       props.proposal.type === 'single-choice') &&
-    isWhitelisted.value &&
-    props.proposal.privacy !== 'shutter'
+    props.proposal.privacy !== 'shutter' &&
+    isWhitelisted(props.space.id) &&
+    props.space.boost.enabled
   );
 });
 
@@ -172,12 +173,16 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
             @click-vote="clickVote"
           />
 
-          <SpaceProposalBoost v-if="boostEnabled" :proposal="proposal" />
+          <SpaceProposalBoost
+            v-if="boostEnabled"
+            :proposal="proposal"
+            :space="space"
+          />
 
           <SpaceProposalVotes :space="space" :proposal="proposal" />
 
           <SpaceProposalPlugins
-            v-if="proposal?.plugins && loadedResults && results"
+            v-if="Object.keys(space.plugins).length && loadedResults && results"
             :id="proposalId"
             :space="space"
             :proposal="proposal"
@@ -208,7 +213,7 @@ onMounted(() => setMessageVisibility(props.proposal.flagged));
           @reload="reloadProposal"
         />
         <SpaceProposalPluginsSidebar
-          v-if="proposal.plugins && loadedResults && results"
+          v-if="Object.keys(space.plugins).length && loadedResults && results"
           :id="proposalId"
           :space="space"
           :proposal="proposal"

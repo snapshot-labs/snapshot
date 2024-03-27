@@ -132,10 +132,10 @@ const amountPerWinner = computed(() => {
     BigNumber.from(props.boost.strategy.distribution.numWinners)
   );
 
-  return `${formatNumber(
+  return formatNumber(
     Number(formatUnits(amount, props.boost.token.decimals)),
     getNumberFormatter({ maximumFractionDigits: 8 }).value
-  )} ${props.boost.token.symbol}`;
+  );
 });
 
 const lotteryNoRewardFinal = computed(() => {
@@ -271,13 +271,12 @@ const { pause } = useIntervalFn(() => {
             </div>
             <div v-else-if="isLottery" class="mt-1 mr-1 flex items-center">
               can win
-              <!-- TODO: Show final reward when final -->
               <div>
                 <TuneTag
                   v-tippy="{
                     content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power. If the maximum amount of winners is not reached, the reward will be increased equally.`
                   }"
-                  :label="amountPerWinner"
+                  :label="`${amountPerWinner} ${props.boost.token.symbol}`"
                   class="text-skin-heading ml-1 cursor-help"
                 />
               </div>
@@ -394,14 +393,13 @@ const { pause } = useIntervalFn(() => {
                 View winners
               </button>
             </div>
-
             <div
               v-else-if="isEligible"
               class="flex flex-wrap items-center justify-center gap-x-1"
             >
               <i-ho-fire class="text-xs" />
               <template v-if="reward && isFinal">
-                You can claim
+                Reward
                 {{ `${rewardFormatted} ${boost.token.symbol}` }}
                 <button
                   v-if="isLottery"
@@ -415,12 +413,25 @@ const { pause } = useIntervalFn(() => {
               <template v-else> You are eligible </template>
             </div>
           </div>
+          <BaseMessage
+            v-if="
+              isLottery &&
+              Number(rewardFormatted) > 0 &&
+              Number(amountPerWinner) < Number(rewardFormatted)
+            "
+            level="info"
+            class="border bg-[--border-color-subtle] p-3 rounded-xl text-skin-text mt-2"
+          >
+            The reward increased due to not enough eligible voters to hit the
+            {{ boost.strategy.distribution.numWinners }} winner cap for this
+            boost.
+          </BaseMessage>
         </div>
         <SpaceProposalBoostItemMenu
           :boost="boost"
           :claimed-transaction-hash="claimedTransactionHash"
           :show-winners="
-            !lotteryEpochNotFinalized && isLottery && !winnersError
+            !lotteryEpochNotFinalized && isLottery && !winnersError && isFinal
           "
           @open-winners-modal="openWinnersModal = true"
         />
