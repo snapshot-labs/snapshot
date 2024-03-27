@@ -111,7 +111,7 @@ watch(paymentTx, () => {
             >
           </div>
           <label
-            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-pointer"
+            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-not-allowed"
             :class="{
               '!ring-skin-primary': planId === data.plan,
               'ring-transparent': plan.discount
