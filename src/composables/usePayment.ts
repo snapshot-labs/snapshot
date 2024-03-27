@@ -3,15 +3,15 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
-const BASE_PRICE = 2000;
+const BASE_PRICE = 1666.66666667;
 const BASE_UNIT = 1;
 const BASE_CURRENCY = {
   symbol: '$'
 };
 
 const PLANS = {
-  y1: { label: '1 year', unit: 12, discount: 16.667 },
-  m6: { label: '6 months', unit: 6, discount: 0 }
+  y1: { label: '1 year', unit: 12, discount: 0 }
+  // m6: { label: '6 months', unit: 6, discount: 0 }
 };
 const CURRENCIES = {
   ethereum: {

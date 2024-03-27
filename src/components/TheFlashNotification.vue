@@ -17,7 +17,10 @@ const { items } = useFlashNotification();
           :class="`!bg-${item.type}`"
         >
           <div class="flex items-center gap-2">
-            <i-ho-x v-if="item.type === 'red'" class="shrink-0 text-base" />
+            <i-ho-exclamation-circle
+              v-if="item.type === 'red'"
+              class="shrink-0 text-base"
+            />
             <i-ho-check
               v-if="item.type === 'green'"
               class="shrink-0 text-base"
