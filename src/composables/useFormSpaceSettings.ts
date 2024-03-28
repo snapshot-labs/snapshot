@@ -93,6 +93,9 @@ export function useFormSpaceSettings(
     ) {
       delete formData.delegationPortal;
     }
+    if (formData.voting.quorumType === 'default') {
+      delete formData.voting.quorumType;
+    }
     return formData;
   });
 
@@ -153,6 +156,7 @@ export function useFormSpaceSettings(
       period: formData.voting.period || undefined,
       type: formData.voting.type || undefined,
       quorum: formData.voting?.quorum || undefined,
+      quorumType: formData.voting.quorumType || 'default',
       privacy: formData.voting.privacy || undefined
     };
     formData.children = formData.children

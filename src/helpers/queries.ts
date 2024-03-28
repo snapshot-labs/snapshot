@@ -484,6 +484,7 @@ export const SPACE_QUERY = gql`
         period
         type
         quorum
+        quorumType
         privacy
         hideAbstain
       }
