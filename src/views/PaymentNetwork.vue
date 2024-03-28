@@ -106,12 +106,12 @@ watch(paymentTx, () => {
             class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.svg')]"
           >
             Save
-            <BasePill class="py-1 !bg-skin-primary"
+            <BasePill class="py-1 !bg-skin-primary !text-skin-bg"
               >{{ Math.floor(plan.discount) }}%</BasePill
             >
           </div>
           <label
-            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-pointer"
+            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-not-allowed"
             :class="{
               '!ring-skin-primary': planId === data.plan,
               'ring-transparent': plan.discount
