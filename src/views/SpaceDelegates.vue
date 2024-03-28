@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
+import { DelegationTypes } from '@/helpers/delegationV2';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -26,6 +27,7 @@ const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
 const { getStatement } = useStatement();
+console.log('space', props.space);
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -270,6 +272,19 @@ onMounted(() => {
     </template>
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
+        v-if="space.delegationPortal != null"
+        :open="route.query.delegate !== undefined"
+        :space="space"
+        :address="(route.query.delegate as string) || ''"
+        @close="handleCloseModalDelegate"
+        @reload="loadDelegates(matchFilter)"
+      />
+      <SpaceDelegatesDelegateRegistryV2Modal
+        v-if="
+          space.strategies?.some(
+            ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+          )
+        "
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

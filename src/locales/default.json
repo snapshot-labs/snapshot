@@ -251,7 +251,7 @@
     },
     "delegateModal": {
       "title": "Delegate",
-      "sub": "You are about to delegate "
+      "sub": "You are about to delegate all of your voting power."
     },
     "profileModal": {
       "title": "Profile"
