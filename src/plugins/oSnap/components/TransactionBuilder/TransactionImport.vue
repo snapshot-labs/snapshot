@@ -33,8 +33,6 @@ function resetState() {
   error.value = undefined;
 }
 
-// TODO: allow multiple files at once
-
 watch(file, async () => {
   if (!file.value) return;
   parseGnosisSafeFile(file.value, props.safe)

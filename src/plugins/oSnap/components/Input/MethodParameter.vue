@@ -101,13 +101,13 @@ function validateBytes32Input(value: string) {
       throw new Error('Less than 32 bytes');
     }
 
-    if (!isBytesLike(value)) {
-      throw new Error('Invalid bytes32');
-    }
-
     if (data.length > 64) {
       validationErrorMessage.value = 'Value too long';
       throw new Error('More than 32 bytes');
+    }
+
+    if (!isBytesLike(value)) {
+      throw new Error('Invalid bytes32');
     }
     return true;
   } catch {
