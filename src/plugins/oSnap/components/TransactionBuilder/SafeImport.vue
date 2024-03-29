@@ -16,35 +16,34 @@ const emit = defineEmits<{
 }>();
 
 const isValueValid = ref(true);
-const finalTransaction = ref<SafeImportTransaction>(props.transaction); // decoded method, extracted args
 
 const isToValid = computed(() => {
-  if (!finalTransaction?.value?.to) {
+  if (!props.transaction?.to) {
     return true;
   }
-  return isAddress(finalTransaction.value.to);
+  return isAddress(props.transaction.to);
 });
 
 function updateFinalTransaction(tx: Partial<SafeImportTransaction>) {
-  finalTransaction.value = {
-    ...finalTransaction.value,
+  emit('updateTransaction', {
+    ...props.transaction,
     ...tx
-  } as SafeImportTransaction;
+  });
 }
 
 function updateParams(paramsToUpdate: SafeImportTransaction['parameters']) {
-  finalTransaction.value = {
-    ...finalTransaction.value,
+  emit('updateTransaction', {
+    ...props.transaction,
     parameters: {
-      ...finalTransaction.value?.parameters,
+      ...props.transaction?.parameters,
       ...paramsToUpdate
     }
-  } as SafeImportTransaction;
+  });
 }
 
 function updateValue(newValue: string) {
   try {
-    if (!finalTransaction.value) {
+    if (!props.transaction) {
       return;
     }
     const parsed = parseValueInput(newValue);
@@ -61,7 +60,7 @@ function updateValue(newValue: string) {
 
 function updateTransaction() {
   try {
-    if (!finalTransaction.value) {
+    if (!props.transaction) {
       throw new Error('No Transaction selected');
     }
 
@@ -72,8 +71,8 @@ function updateTransaction() {
     if (!isToValid.value) {
       throw new Error('"To" field is invalid');
     }
-
-    const tx = createSafeImportTransaction(finalTransaction.value);
+    // attempt to finalize and format
+    const tx = createSafeImportTransaction(props.transaction);
     console.log(tx);
     emit('updateTransaction', tx);
   } catch (error) {
@@ -82,7 +81,6 @@ function updateTransaction() {
   }
 }
 
-watch(finalTransaction, updateTransaction, { deep: true });
 onMounted(updateTransaction);
 </script>
 
@@ -95,10 +93,10 @@ onMounted(updateTransaction);
     }}
   </div>
 
-  <div v-if="finalTransaction" class="flex flex-col gap-2 mt-2">
+  <div v-if="props.transaction" class="flex flex-col gap-2 mt-2">
     <AddressInput
       @update:model-value="(e: string) => updateFinalTransaction({ to: e })"
-      :model-value="finalTransaction.to"
+      :model-value="props.transaction.to"
       :label="$t('safeSnap.to')"
       :error="!isToValid ? 'Invalid address' : undefined"
     />
@@ -106,7 +104,7 @@ onMounted(updateTransaction);
     <UiInput
       placeholder="123456"
       :error="!isValueValid && 'Invalid value'"
-      :model-value="finalTransaction.value"
+      :model-value="props.transaction.value"
       @update:model-value="(e: string) => updateValue(e)"
     >
       <template #label>Value (wei)</template>
@@ -115,16 +113,16 @@ onMounted(updateTransaction);
     <!-- ContractInteraction Parameters -->
     <div
       class="flex flex-col gap-2"
-      v-if="finalTransaction.method?.inputs?.length"
+      v-if="props.transaction.method?.inputs?.length"
     >
       <div class="text-left mt-3">Function Parameters</div>
       <div class="divider h-[1px] bg-skin-border mb-3" />
       <MethodParameterInput
-        v-for="input in finalTransaction.method.inputs"
+        v-for="input in props.transaction.method.inputs"
         :key="input.name"
         :validateOnMount="true"
         :parameter="input"
-        :value="finalTransaction?.parameters?.[input.name] ?? ''"
+        :value="props.transaction?.parameters?.[input.name] ?? ''"
         @update-parameter-value="
           (e: string) => updateParams({ [input.name]: e })
         "

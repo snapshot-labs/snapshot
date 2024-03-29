@@ -49,19 +49,16 @@ const collectables = ref<NFT[]>([]);
 function addTransaction(transaction: Transaction) {
   if (newPluginData.value.safe === null) return;
   newPluginData.value.safe.transactions.push(transaction);
-  update(newPluginData.value);
 }
 
 function removeTransaction(transactionIndex: number) {
   if (!newPluginData.value.safe) return;
   newPluginData.value.safe.transactions.splice(transactionIndex, 1);
-  update(newPluginData.value);
 }
 
 function updateTransaction(transaction: Transaction, transactionIndex: number) {
   if (!newPluginData.value.safe) return;
   newPluginData.value.safe.transactions[transactionIndex] = transaction;
-  update(newPluginData.value);
 }
 
 async function fetchTokens(url: string): Promise<Token[]> {
@@ -227,6 +224,15 @@ watch(
     await loadBalancesAndCollectibles();
     update(newPluginData.value);
   }
+);
+
+watch(
+  newPluginData,
+  plugin => {
+    debugger;
+    update(plugin);
+  },
+  { deep: true }
 );
 
 onMounted(async () => {

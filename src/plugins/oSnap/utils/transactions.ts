@@ -171,7 +171,7 @@ export function parseValueInput(input: string) {
 export function createSafeImportTransaction(
   params: SafeImportTransaction
 ): SafeImportTransaction {
-  const abi = JSON.stringify(Array(params.method));
+  const abi = params.method ? JSON.stringify(Array(params.method)) : undefined;
   // is native transfer funds
   if (!params.method) {
     const data = '0x';
@@ -199,7 +199,7 @@ export function createSafeImportTransaction(
     return {
       ...params,
       isValid: true,
-      abi,
+
       formatted,
       data
     };
