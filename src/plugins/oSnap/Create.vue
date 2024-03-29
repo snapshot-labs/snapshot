@@ -229,7 +229,6 @@ watch(
 watch(
   newPluginData,
   plugin => {
-    debugger;
     update(plugin);
   },
   { deep: true }
