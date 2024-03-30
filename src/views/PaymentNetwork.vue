@@ -13,8 +13,8 @@ const {
   DEFAULT_PLAN,
   CURRENCIES,
   PLANS,
+  YEARLY_PRICE,
   BASE_PRICE,
-  BASE_UNIT,
   BASE_CURRENCY,
   fxRates,
   transfer,
@@ -66,10 +66,6 @@ function computePrice(
   return currencyId === 'ethereum' ? price : Math.round(price);
 }
 
-function computePlanFiatPrice(plan, unit?: number): number {
-  return computePrice(null, unit ?? plan.unit, plan.discount);
-}
-
 function formatFiatCurrency(amount: number): string {
   return `${BASE_CURRENCY.symbol}${Math.round(amount).toLocaleString()}`;
 }
@@ -84,61 +80,16 @@ watch(paymentTx, () => {
   <p class="mb-4 leading-[20px]">Pay to support your network on Snapshot</p>
 
   <form v-if="fxLoadStatus === 1" class="flex flex-col gap-4" @submit="pay">
-    <fieldset>
-      <legend
-        class="text-md mb-[12px] leading-none text-skin-heading font-semibold"
-      >
-        Select your plan duration
-      </legend>
-      <ol class="flex flex-col gap-2">
-        <li
-          v-for="(plan, planId) in PLANS"
-          :key="planId"
-          :class="[
-            {
-              'bg-[#384aff]/20 rounded-xl px-[1px] pb-[1px] mb-[-1px] overflow-hidden':
-                plan.discount
-            }
-          ]"
-        >
-          <div
-            v-if="plan.discount"
-            class="p-2 text-center text-skin-primary bg-[url('@/assets/images/stars.svg')]"
-          >
-            Save
-            <BasePill class="py-1 !bg-skin-primary !text-skin-bg"
-              >{{ Math.floor(plan.discount) }}%</BasePill
-            >
-          </div>
-          <label
-            class="flex relative bg-skin-bg gap-3 ring-1 ring-skin-border hover:ring-skin-text rounded-xl py-[12px] px-3 cursor-not-allowed"
-            :class="{
-              '!ring-skin-primary': planId === data.plan,
-              'ring-transparent': plan.discount
-            }"
-            tabindex="0"
-            @click="setData('plan', planId)"
-            @keyup.space="setData('plan', planId)"
-          >
-            <div class="flex-grow leading-none gap-[2px] flex flex-col">
-              <div>{{ plan.label }}</div>
-              <div>
-                <b class="text-skin-heading leading-none text-lg">{{
-                  formatFiatCurrency(computePlanFiatPrice(plan, BASE_UNIT))
-                }}</b
-                >/mo
-              </div>
-            </div>
-            <span
-              v-if="planId === data.plan"
-              :class="['absolute right-0 pr-3']"
-            >
-              <i-ho-check class="text-skin-primary text-sm" />
-            </span>
-          </label>
-        </li>
-      </ol>
-    </fieldset>
+    <div class="border border-skin-border rounded-xl py-[12px] px-3">
+      <div class="leading-none gap-[2px] flex flex-col">
+        <div>Yearly</div>
+        <div>
+          <b class="text-skin-heading leading-none text-lg">{{
+            formatFiatCurrency(YEARLY_PRICE)
+          }}</b>
+        </div>
+      </div>
+    </div>
 
     <fieldset>
       <legend
