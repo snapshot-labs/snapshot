@@ -226,14 +226,6 @@ watch(
   }
 );
 
-watch(
-  newPluginData,
-  plugin => {
-    update(plugin);
-  },
-  { deep: true }
-);
-
 onMounted(async () => {
   isLoading.value = true;
   safes.value = await createOsnapEnabledSafes();

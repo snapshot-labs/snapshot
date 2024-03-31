@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cloneDeep } from 'lodash';
 import {
   ContractInteractionTransaction,
   TransferNftTransaction,
@@ -113,7 +112,6 @@ function setTransactionAsInvalid() {
       v-if="transaction.type === 'safeImport'"
       :transaction="transaction as SafeImportTransaction"
       :network="network"
-      :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
   </div>

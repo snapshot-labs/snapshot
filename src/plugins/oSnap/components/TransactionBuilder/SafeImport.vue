@@ -8,13 +8,13 @@ import { isAddress } from '@ethersproject/address';
 const props = defineProps<{
   transaction: SafeImportTransaction;
   network: Network;
-  setTransactionAsInvalid(): void;
 }>();
 
 const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
+const transaction = ref<SafeImportTransaction>(props.transaction);
 const isValueValid = ref(true);
 
 const isToValid = computed(() => {
@@ -25,20 +25,23 @@ const isToValid = computed(() => {
 });
 
 function updateFinalTransaction(tx: Partial<SafeImportTransaction>) {
-  emit('updateTransaction', {
-    ...props.transaction,
+  const _tx = {
+    ...transaction.value,
     ...tx
-  });
+  };
+  transaction.value = _tx;
+  formatTransaction();
 }
 
 function updateParams(paramsToUpdate: SafeImportTransaction['parameters']) {
-  emit('updateTransaction', {
-    ...props.transaction,
+  const tx = {
+    ...transaction.value,
     parameters: {
-      ...props.transaction?.parameters,
+      ...transaction.value?.parameters,
       ...paramsToUpdate
     }
-  });
+  };
+  updateFinalTransaction(tx);
 }
 
 function updateValue(newValue: string) {
@@ -54,16 +57,12 @@ function updateValue(newValue: string) {
   } catch (error) {
     isValueValid.value = false;
   } finally {
-    updateTransaction();
+    formatTransaction();
   }
 }
 
-function updateTransaction() {
+function formatTransaction() {
   try {
-    if (!props.transaction) {
-      throw new Error('No Transaction selected');
-    }
-
     if (!isValueValid.value) {
       throw new Error('"Value" field is invalid');
     }
@@ -71,17 +70,20 @@ function updateTransaction() {
     if (!isToValid.value) {
       throw new Error('"To" field is invalid');
     }
-    // attempt to finalize and format
-    const tx = createSafeImportTransaction(props.transaction);
+    const tx = createSafeImportTransaction(transaction.value);
     console.log(tx);
     emit('updateTransaction', tx);
-  } catch (error) {
-    console.error(error);
-    props.setTransactionAsInvalid();
+  } catch {
+    emit('updateTransaction', {
+      ...transaction.value,
+      isValid: false
+    });
   }
 }
 
-onMounted(updateTransaction);
+onMounted(formatTransaction);
+watch(isToValid, formatTransaction);
+watch(isValueValid, formatTransaction);
 </script>
 
 <template>
