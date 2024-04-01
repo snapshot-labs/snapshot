@@ -11,6 +11,8 @@ import {
   SafeImportTransaction
 } from '../types';
 import { encodeMethodAndParams, encodeSafeMethodAndParams } from './abi';
+import { isAddress } from '@ethersproject/address';
+import { validateTransaction } from './validators';
 
 /**
  * Creates a formatted transaction for the Optimistic Governor to execute
@@ -171,57 +173,72 @@ export function parseValueInput(input: string) {
 export function createSafeImportTransaction(
   params: SafeImportTransaction
 ): SafeImportTransaction {
-  const abi = params.method ? JSON.stringify(Array(params.method)) : undefined;
-  // is native transfer funds
-  if (!params.method) {
-    const data = '0x';
+  try {
+    // check "value" & "to"
+    if (!validateTransaction(params)) {
+      throw new Error('Invalid transaction');
+    }
+    const abi = params.method
+      ? JSON.stringify(Array(params.method))
+      : undefined;
+    // is native transfer funds
+    if (!params.method) {
+      const data = '0x';
+      const formatted = createFormattedOptimisticGovernorTransaction({
+        to: params.to,
+        value: params.value,
+        data
+      });
+      return {
+        ...params,
+        isValid: true,
+        abi,
+        formatted,
+        data
+      };
+    }
+    // is contract interaction with NO args
+    if (!params.parameters) {
+      const data = params?.data || '0x';
+      const formatted = createFormattedOptimisticGovernorTransaction({
+        to: params.to,
+        value: params.value,
+        data
+      });
+      return {
+        ...params,
+        isValid: true,
+
+        formatted,
+        data
+      };
+    }
+
+    // is contract interaction WITH args
+    // will throw if args are invalid
+    const encodedData =
+      params?.data ||
+      encodeSafeMethodAndParams(params.method, params.parameters) ||
+      '0x';
+
     const formatted = createFormattedOptimisticGovernorTransaction({
       to: params.to,
       value: params.value,
-      data
+      data: encodedData
     });
+
     return {
       ...params,
       isValid: true,
       abi,
       formatted,
-      data
+      data: encodedData
     };
-  }
-  // is contract interaction with NO args
-  if (!params.parameters) {
-    const data = params?.data || '0x';
-    const formatted = createFormattedOptimisticGovernorTransaction({
-      to: params.to,
-      value: params.value,
-      data
-    });
+  } catch (error) {
+    console.error(error);
     return {
       ...params,
-      isValid: true,
-
-      formatted,
-      data
+      isValid: false
     };
   }
-
-  // is contract interaction WITH args
-  const encodedData =
-    params?.data ||
-    encodeSafeMethodAndParams(params.method, params.parameters) ||
-    '0x';
-
-  const formatted = createFormattedOptimisticGovernorTransaction({
-    to: params.to,
-    value: params.value,
-    data: encodedData
-  });
-
-  return {
-    ...params,
-    isValid: true,
-    abi,
-    formatted,
-    data: encodedData
-  };
 }

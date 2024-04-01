@@ -14,7 +14,6 @@ const emit = defineEmits<{
   updateTransaction: [transaction: SafeImportTransaction];
 }>();
 
-const transaction = ref<SafeImportTransaction>(props.transaction);
 const isValueValid = ref(true);
 
 const isToValid = computed(() => {
@@ -26,22 +25,22 @@ const isToValid = computed(() => {
 
 function updateFinalTransaction(tx: Partial<SafeImportTransaction>) {
   const _tx = {
-    ...transaction.value,
+    ...props.transaction,
     ...tx
   };
-  transaction.value = _tx;
-  formatTransaction();
+  const formatted = createSafeImportTransaction(_tx);
+  emit('updateTransaction', formatted);
 }
 
 function updateParams(paramsToUpdate: SafeImportTransaction['parameters']) {
-  const tx = {
-    ...transaction.value,
+  const _tx = {
+    ...props.transaction,
     parameters: {
-      ...transaction.value?.parameters,
+      ...props.transaction?.parameters,
       ...paramsToUpdate
     }
   };
-  updateFinalTransaction(tx);
+  updateFinalTransaction(_tx);
 }
 
 function updateValue(newValue: string) {
@@ -56,34 +55,8 @@ function updateValue(newValue: string) {
     isValueValid.value = true;
   } catch (error) {
     isValueValid.value = false;
-  } finally {
-    formatTransaction();
   }
 }
-
-function formatTransaction() {
-  try {
-    if (!isValueValid.value) {
-      throw new Error('"Value" field is invalid');
-    }
-
-    if (!isToValid.value) {
-      throw new Error('"To" field is invalid');
-    }
-    const tx = createSafeImportTransaction(transaction.value);
-    console.log(tx);
-    emit('updateTransaction', tx);
-  } catch {
-    emit('updateTransaction', {
-      ...transaction.value,
-      isValid: false
-    });
-  }
-}
-
-onMounted(formatTransaction);
-watch(isToValid, formatTransaction);
-watch(isValueValid, formatTransaction);
 </script>
 
 <template>

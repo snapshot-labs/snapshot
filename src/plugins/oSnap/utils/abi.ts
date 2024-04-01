@@ -7,6 +7,7 @@ import {
   mustBeEthereumContractAddress
 } from './validators';
 import { GnosisSafe, SafeImportTransaction } from '../types';
+import { createSafeImportTransaction } from './transactions';
 
 /**
  * Checks if the `parameter` of a contract method `method` takes an array or tuple as input, based on the `baseType` of the parameter.
@@ -142,7 +143,7 @@ export function transformSafeMethodToFunctionFragment(
 export function initializeSafeImportTransaction(
   unprocessedTransactions: GnosisSafe.BatchTransaction
 ): SafeImportTransaction {
-  return {
+  return createSafeImportTransaction({
     type: 'safeImport',
     to: unprocessedTransactions.to,
     value: unprocessedTransactions.value,
@@ -154,7 +155,7 @@ export function initializeSafeImportTransaction(
       : undefined,
     parameters: unprocessedTransactions.contractInputsValues,
     formatted: ['', 0, '0', '0x']
-  };
+  });
 }
 
 export function encodeSafeMethodAndParams(
