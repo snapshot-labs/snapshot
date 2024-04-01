@@ -67,10 +67,10 @@ watch(safeFile, safeFile => {
 </script>
 
 <template>
-  <div class="text-skin-link mt-2">Import from Safe, or use the builder</div>
   <FileInput
     :error="error"
     @update:file="handleFileChange"
     :file-type="'application/json'"
+    :defaultLabel="'Import transactions from Safe file, drag and drop'"
   />
 </template>

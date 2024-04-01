@@ -8,6 +8,7 @@ const props = defineProps<{
   fileType: File['type'];
   error?: string | undefined;
   multiple?: boolean;
+  defaultLabel?: string;
 }>();
 
 const emit = defineEmits<{
@@ -107,9 +108,9 @@ watch(fileInputState, newState => {
         <template v-else-if="fileInputState === 'VALID' && file">{{
           file.name
         }}</template>
-        <template v-else="fileInputState === 'IDLE'"
-          >Click to select file, or drag n drop</template
-        >
+        <template v-else="fileInputState === 'IDLE'">{{
+          props.defaultLabel ?? 'Click to select file, or drag n drop'
+        }}</template>
       </span>
     </div>
 
