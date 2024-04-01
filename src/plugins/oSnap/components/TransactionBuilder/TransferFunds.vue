@@ -90,9 +90,10 @@ watch(selectedTokenAddress, updateTransaction);
             : selectedToken.address
         "
         class="ml-2"
+        v-if="selectedToken"
       />
       <span v-if="selectedToken">{{ selectedToken.symbol }}</span>
-      <span>
+      <span v-if="selectedToken">
         {{
           selectedToken.address === 'main'
             ? ''
