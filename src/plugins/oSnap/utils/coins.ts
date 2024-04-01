@@ -52,11 +52,22 @@ const CORE_COIN = {
     'https://cloudflare-ipfs.com/ipfs/bafkreigjv5yb7uhlrryzib7j2f73nnwqan2tmfnwjdu26vkk365fyesoiu'
 } as const;
 
+const OPTIMISM_COIN = {
+  name: 'OPTIMISM',
+  symbol: 'OP',
+  address: 'main',
+  decimals: 18,
+  logoUri:
+    'https://optimistic.etherscan.io/images/svg/brands/optimism.svg?v=24.3.2.1'
+} as const;
+
 export function getNativeAsset(network: Network) {
   switch (parseInt(network)) {
     case 137:
     case 80001:
       return MATIC_COIN;
+    case 10:
+      return OPTIMISM_COIN;
     case 100:
       return XDAI_COIN;
     case 246:

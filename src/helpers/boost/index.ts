@@ -28,6 +28,7 @@ export const BOOST_WHITELIST_SETTINGS = {
     'kumaprotocol.eth',
     'mimo.eth',
     'vote.vitadao.eth',
+    'shutterdao0x36.eth',
     // Internal testers
     'testsnap.eth',
     'fabien.eth',

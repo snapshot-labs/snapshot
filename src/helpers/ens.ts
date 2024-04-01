@@ -1,13 +1,12 @@
+import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import {
   ApolloClient,
   createHttpLink,
   InMemoryCache
 } from '@apollo/client/core';
 
-const uri =
-  import.meta.env.VITE_DEFAULT_NETWORK === '5'
-    ? 'https://api.thegraph.com/subgraphs/name/ensdomains/ensgoerli'
-    : 'https://api.thegraph.com/subgraphs/name/ensdomains/ens';
+const env = import.meta.env.VITE_DEFAULT_NETWORK;
+const uri = networks[env].ensSubgraph;
 
 const httpLink = createHttpLink({ uri });
 
