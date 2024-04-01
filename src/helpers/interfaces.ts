@@ -230,7 +230,7 @@ export interface Proposal {
   validation: VoteValidation;
   discussion: string;
   quorum: number;
-  quorumType: string;
+  quorumType: 'default' | 'optimistic';
   scores: number[];
   scores_state: string;
   scores_total: number;
