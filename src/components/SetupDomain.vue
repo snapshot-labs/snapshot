@@ -57,7 +57,8 @@ const availableDomains = computed(() => {
     d =>
       !spaceIds.includes(d.name) &&
       !d.isInvalid &&
-      !deletedSpaces.value.includes(d.name)
+      !deletedSpaces.value.includes(d.name) &&
+      d.name.length <= 64
   );
 });
 
