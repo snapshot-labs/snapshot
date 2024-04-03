@@ -1,5 +1,6 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
 import { DelegationReader } from '@/helpers/delegationV2/delegation';
+import { formatUnits } from '@ethersproject/units';
 
 const DELEGATE_REGISTRY_BACKEND_URL =
   'https://delegate-registry-backend.vercel.app';
@@ -37,13 +38,16 @@ const getDelegations =
     if (matchFilter === 'tokenHoldersRepresentedAmount') {
       orderBy = 'count';
     }
+    console.log('SPACE', space);
     const response = (await fetch(
       `${DELEGATE_REGISTRY_BACKEND_URL}/api/${space.id}/latest/delegates/top?by=${orderBy}&limit=${first}&offset=${skip}`
     ).then(res => res.json())) as { topDelegates: DelegateFromDRV2[] };
 
     const formatted: DelegateWithPercent[] = response.topDelegates.map(d => ({
       id: d.to_address,
-      delegatedVotes: d.delegated_amount?.toString() ?? '0',
+      delegatedVotes: d.delegated_amount
+        ? formatUnits(d.delegated_amount)
+        : '0',
       tokenHoldersRepresentedAmount: d.number_of_delegations ?? 0,
       delegatorsPercentage: 0,
       votesPercentage: 0
