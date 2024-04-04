@@ -32,8 +32,7 @@ const definition = computed(() => {
         examples: ['Address, ENS or Lens']
       },
       weight: {
-        type: 'number',
-        format: 'percentage'
+        type: 'number'
       }
     },
     required: ['to', 'weight'],
