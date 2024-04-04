@@ -38,10 +38,18 @@ watch(
 );
 
 const triggerEnsUnavailableTooltip = (key: string, error_code: string) => {
-  const text =
-    error_code === 'deleted-space'
-      ? 'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space. <a target="_blank" href="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name">Learn more.</a>'
-      : t('setup.domain.invalidEns');
+  let text;
+  switch (error_code) {
+    case 'deleted-space':
+      text =
+        'This ENS name is used by a previously deleted space, and can not be used anymore to create a new space. <a target="_blank" href="https://docs.snapshot.org/faq#why-cant-i-create-a-new-space-with-my-previous-deleted-space-ens-name">Learn more.</a>';
+      break;
+    case 'invalid-ens-length':
+      text = 'The ENS name is too long. It must be less than 64 characters.';
+      break;
+    default:
+      text = t('setup.domain.invalidEns');
+  }
 
   useTippy(refEnsUnavailableTooltip.value[key], {
     content: text,
@@ -57,7 +65,8 @@ const availableDomains = computed(() => {
     d =>
       !spaceIds.includes(d.name) &&
       !d.isInvalid &&
-      !deletedSpaces.value.includes(d.name)
+      !deletedSpaces.value.includes(d.name) &&
+      d.name.length <= 64
   );
 });
 
@@ -66,7 +75,9 @@ const unavailableDomains = computed(() => {
   return ownedEnsDomains.value.filter(
     d =>
       !spaceIds.includes(d.name) &&
-      (d.isInvalid || deletedSpaces.value.includes(d.name))
+      (d.isInvalid ||
+        deletedSpaces.value.includes(d.name) ||
+        d.name.length > 64)
   );
 });
 
@@ -189,7 +200,37 @@ onUnmounted(() => clearInterval(waitingForRegistrationInterval));
                     </div>
                   </TuneButton>
                 </template>
-
+                <template v-else-if="ens.name.length > 64">
+                  <TuneButton class="flex w-full items-center justify-between">
+                    {{ shortenInvalidEns(ens.name) }}
+                    <div
+                      @mouseenter="
+                        triggerEnsUnavailableTooltip(
+                          ens.name,
+                          'invalid-ens-length'
+                        )
+                      "
+                      @focus="
+                        triggerEnsUnavailableTooltip(
+                          ens.name,
+                          'invalid-ens-length'
+                        )
+                      "
+                    >
+                      <div
+                        :ref="
+                          v => {
+                            refEnsUnavailableTooltip[ens.name] = v;
+                          }
+                        "
+                      >
+                        <i-ho-exclamation-circle
+                          class="-mr-2 text-red cursor-help"
+                        />
+                      </div>
+                    </div>
+                  </TuneButton>
+                </template>
                 <template v-else-if="ens.isInvalid">
                   <TuneButton class="flex w-full items-center justify-between">
                     {{ shortenInvalidEns(ens.name) }}
