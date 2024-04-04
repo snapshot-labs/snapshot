@@ -179,6 +179,7 @@ export interface ExtendedSpace {
     hideAbstain: boolean;
     period: number | null;
     quorum: number | null;
+    quorumType: 'default' | 'optimistic';
     type: string | null;
     privacy: string | null;
   };
