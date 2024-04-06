@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { debouncedWatch } from '@vueuse/core';
+import config from '../../iframely.config.js';
 
 const props = withDefaults(
   defineProps<{
@@ -45,7 +46,7 @@ async function update(val: string) {
     loaded.value = false;
     preview.value = null;
     new URL(val);
-    const IFRAMELY_API_KEY = 'd155718c86be7d5305ccb6';
+    const IFRAMELY_API_KEY = config.apiKey;
     const url = `https://cdn.iframe.ly/api/iframely?url=${encodeURI(
       val
     )}&api_key=${IFRAMELY_API_KEY}`;
