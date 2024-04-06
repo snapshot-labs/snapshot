@@ -128,7 +128,6 @@ const delegationStrategies = [
 ];
 
 async function getDelegatesWithScore() {
-  console.log('getDelegatesWithScore');
   const delegationStrategy = space.value.strategies.filter(strategy =>
     delegationStrategies.includes(strategy.name)
   );
