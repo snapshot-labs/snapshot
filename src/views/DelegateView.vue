@@ -32,6 +32,7 @@ const form = ref({
   address: (route.params.to as string) || '',
   id: (route.params.key as string) || ''
 });
+const delegationLoadingError = ref(false);
 
 const { profiles, loadProfiles } = useProfiles();
 
@@ -97,6 +98,7 @@ const getDelegationsAndDelegatesLoading = ref(false);
 async function getDelegationsAndDelegates() {
   if (web3Account.value) {
     try {
+      delegationLoadingError.value = false;
       getDelegationsAndDelegatesLoading.value = true;
       const [delegatesObj, delegatorsObj] = await Promise.all([
         getDelegates(networkKey.value, web3Account.value),
@@ -108,6 +110,7 @@ async function getDelegationsAndDelegates() {
       delegates.value = [];
       delegators.value = [];
       console.log(error);
+      delegationLoadingError.value = true;
     } finally {
       getDelegationsAndDelegatesLoading.value = false;
     }
@@ -124,6 +127,7 @@ async function getDelegatesWithScore() {
   );
   if (delegationStrategy.length === 0) return;
 
+  delegationLoadingError.value = false;
   delegatesLoading.value = true;
   try {
     const delegations: any = await getDelegatesBySpace(
@@ -166,6 +170,7 @@ async function getDelegatesWithScore() {
     delegatesLoading.value = false;
   } catch (e) {
     delegatesLoading.value = false;
+    delegationLoadingError.value = true;
     console.log(e);
     return e;
   }
@@ -327,7 +332,6 @@ onMounted(async () => {
             />
           </div>
         </BaseBlock>
-
         <BaseBlock
           v-if="space?.id && specifySpaceChecked"
           :title="$tc('delegate.topDelegates')"
@@ -357,8 +361,16 @@ onMounted(async () => {
               "
             />
           </div>
+
           <div
-            v-if="!delegatesLoading && delegatesWithScore.length < 1"
+            v-if="delegationLoadingError"
+            class="mx-4 flex items-center py-3 text-red"
+          >
+            <BaseIcon name="warning" class="mr-1" /> Error while retrieving the
+            delegates list
+          </div>
+          <div
+            v-else-if="!delegatesLoading && delegatesWithScore.length < 1"
             class="mx-4 flex items-center py-3"
           >
             {{ $tc('delegate.noDelegatesFoundFor', [space.id]) }}
