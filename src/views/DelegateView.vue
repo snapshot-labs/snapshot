@@ -124,7 +124,8 @@ async function getDelegationsAndDelegates() {
 const delegationStrategies = [
   'delegation',
   'erc20-balance-of-delegation',
-  'delegation-with-cap'
+  'delegation-with-cap',
+  'delegation-with-overrides'
 ];
 
 async function getDelegatesWithScore() {
