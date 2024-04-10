@@ -121,9 +121,16 @@ async function getDelegationsAndDelegates() {
   }
 }
 
+const delegationStrategies = [
+  'delegation',
+  'erc20-balance-of-delegation',
+  'delegation-with-cap',
+  'delegation-with-overrides'
+];
+
 async function getDelegatesWithScore() {
-  const delegationStrategy = space.value.strategies.filter(
-    strategy => strategy.name === 'delegation'
+  const delegationStrategy = space.value.strategies.filter(strategy =>
+    delegationStrategies.includes(strategy.name)
   );
   if (delegationStrategy.length === 0) return;
 
