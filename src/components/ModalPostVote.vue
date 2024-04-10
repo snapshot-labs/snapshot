@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { getChoiceString } from '@/helpers/utils';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
+import { getSafeAppLink } from '@/plugins/oSnap/utils';
 
 const { shareVote, shareProposalX, shareProposalHey } = useSharing();
-const { web3Account } = useWeb3();
+const { web3, web3Account } = useWeb3();
 const { userState, loadEmailSubscriptions, initialized } =
   useEmailSubscription();
 
@@ -100,10 +101,13 @@ onMounted(() => {
         <i-ho-mail class="text-skin-link" />
         {{ $t('proposal.postVoteModal.subscribe') }}
       </TuneButton>
-
       <div v-if="props.waitingForSigners">
         <BaseLink
-          :link="`https://gnosis-safe.io/app/eth:${web3Account}/transactions/queue`"
+          :link="
+            getSafeAppLink(web3.network.chainId, web3Account, {
+              path: 'transactions/queue'
+            })
+          "
           hide-external-icon
         >
           <TuneButton tabindex="-1" class="w-full">
