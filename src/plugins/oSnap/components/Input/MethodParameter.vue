@@ -37,7 +37,10 @@ const inputType = computed(() => {
   return 'text';
 });
 
-const label = `${props.parameter.name} (${props.parameter.type})`;
+// function name may be null or empty string
+const label = `${
+  props.parameter.name?.length ? props.parameter.name + ' ' : ''
+}(${props.parameter.type})`;
 const arrayPlaceholder = `E.g. ["text", 123, 0x123]`;
 const newValue = ref(props.value);
 
