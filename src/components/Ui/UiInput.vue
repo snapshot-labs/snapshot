@@ -65,7 +65,7 @@ onMounted(() => {
     </div>
     <div
       :class="[
-        's-error relative z-0 flex justify-start',
+        's-error relative z-0',
         !!error ? '-mt-[20px] opacity-100' : '-mt-[48px] opacity-0'
       ]"
     >
@@ -73,11 +73,7 @@ onMounted(() => {
       <!-- The fact that error can be bool or string makes this necessary -->
       {{ error || '' }}
       <!-- Allow parent to format value with action -->
-      <button
-        v-if="quickFix"
-        class="ml-auto flex items-center gap-1 h-full px-1 rounded-full"
-        @click="quickFix"
-      >
+      <button v-if="quickFix" class="ml-auto" @click="quickFix">
         Quick Fix
         <i-ho-sparkles class="inline" />
       </button>
