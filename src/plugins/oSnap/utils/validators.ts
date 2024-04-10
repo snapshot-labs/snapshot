@@ -145,6 +145,85 @@ export const checkIsContract = useMemoize(
     await isContractAddress(address, network)
 );
 
+export type InputTypes =
+  | 'bool'
+  | 'string'
+  | 'address'
+  | 'int'
+  | 'bytes'
+  | 'bytes32';
+
+export function isBool(value: string): boolean {
+  if (value === 'true' || value === 'false') {
+    return true;
+  }
+  return false;
+}
+
+export function validateInput(inputValue: string, type: InputTypes): boolean {
+  switch (type) {
+    case 'address':
+      return isAddress(inputValue);
+    case 'bytes':
+      return isBytesLike(inputValue);
+    case 'bytes32':
+      return isBytesLike(inputValue);
+    case 'int':
+      return isBigNumberish(inputValue);
+    case 'bool':
+      return isBool(inputValue);
+    // skip validation for string
+    default:
+      return true;
+  }
+}
+
+function parseArray(arrayString: string): Array<string> | undefined {
+  try {
+    const parsedValue = arrayString
+      .slice(1, -1)
+      .split(',')
+      .map(item => item.trim());
+
+    if (!Array.isArray(parsedValue)) {
+      return;
+    }
+    return parsedValue;
+  } catch (e) {
+    return;
+  }
+}
+
+export function validateArrayInput(
+  value: string,
+  type: InputTypes,
+  length?: number
+): boolean {
+  if (!value) return false;
+  const parsed = parseArray(value);
+  if (!parsed) {
+    return false;
+  }
+  if (length && parsed.length !== length) {
+    return false;
+  }
+  return parsed.every(value => validateInput(value, type));
+}
+
+export function validateTupleInput(
+  value: string,
+  types: InputTypes[]
+): boolean {
+  const parsed = parseArray(value);
+  if (!parsed) {
+    return false;
+  }
+  if (parsed.length !== types.length) {
+    return false;
+  }
+  return parsed.every((value, i) => validateInput(value, types[i]));
+}
+
 // check if json is a safe json type
 export const isSafeFile = (input: any): input is GnosisSafe.BatchFile => {
   const $io0 = (input: any): boolean =>
