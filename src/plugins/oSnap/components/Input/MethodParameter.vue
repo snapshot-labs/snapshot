@@ -4,6 +4,7 @@ import { isAddress } from '@ethersproject/address';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import AddressInput from './Address.vue';
 import { hexZeroPad, isBytesLike } from '@ethersproject/bytes';
+import { isBytesLikeSafe } from '../../utils';
 
 const props = defineProps<{
   parameter: ParamType;
@@ -53,7 +54,7 @@ const errorMessageForDisplay = computed(() => {
 });
 
 const allowQuickFixForBytes32 = computed(() => {
-  if (!errorMessageForDisplay?.value?.includes('long')) {
+  if (errorMessageForDisplay?.value?.includes('short')) {
     return true;
   }
   return false;
@@ -97,20 +98,24 @@ function validateBytes32Input(value: string) {
     const data = value?.slice(2) || '';
 
     if (data.length < 64) {
-      validationErrorMessage.value = 'Value too short';
-      throw new Error('Less than 32 bytes');
+      const padded = hexZeroPad(value, 32);
+      if (isBytesLikeSafe(padded)) {
+        validationErrorMessage.value = 'Value too short';
+        return false;
+      }
     }
 
     if (data.length > 64) {
       validationErrorMessage.value = 'Value too long';
-      throw new Error('More than 32 bytes');
+      return false;
     }
-
-    if (!isBytesLike(value)) {
-      throw new Error('Invalid bytes32');
+    if (!isBytesLikeSafe(value)) {
+      validationErrorMessage.value = undefined;
+      return false;
     }
     return true;
   } catch {
+    validationErrorMessage.value = undefined;
     return false;
   }
 }

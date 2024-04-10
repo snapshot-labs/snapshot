@@ -6,7 +6,7 @@ import {
 import memoize from 'lodash/memoize';
 import { Contract } from '@ethersproject/contracts';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
-import { isHexString } from '@ethersproject/bytes';
+import { isBytesLike, isHexString } from '@ethersproject/bytes';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
 import { BaseTransaction, NFT, Token, Transaction, GnosisSafe } from '../types';
@@ -114,6 +114,14 @@ export function amountPositive(amount: string, decimals = 18) {
     const isBigNumber = isBigNumberish(parseUnits(amount, decimals)); // checks for underflow
     const isPositive = parseFloat(amount) > 0;
     return isBigNumber && isPositive;
+  } catch {
+    return false;
+  }
+}
+
+export function isBytesLikeSafe(value: string): boolean {
+  try {
+    return isBytesLike(value);
   } catch {
     return false;
   }
