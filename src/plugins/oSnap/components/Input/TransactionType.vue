@@ -16,7 +16,7 @@ const transactionTypesWithDetails: {
   type: TransactionType;
   title: string;
   description: string;
-  readOnly?: boolean;
+  hidden?: boolean;
 }[] = [
   {
     type: 'transferFunds',
@@ -40,10 +40,10 @@ const transactionTypesWithDetails: {
   },
   {
     type: 'safeImport',
-    title: 'Import Safe File',
+    title: 'Import Safe file',
     description:
       'Import JSON file exported from Gnosis Safe transaction builder',
-    readOnly: true
+    hidden: true
   }
 ];
 </script>

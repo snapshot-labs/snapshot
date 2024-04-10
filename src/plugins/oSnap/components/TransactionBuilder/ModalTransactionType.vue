@@ -8,7 +8,7 @@ defineProps<{
     type: TransactionType;
     title: string;
     description: string;
-    readOnly?: boolean;
+    hidden?: boolean;
   }[];
 }>();
 
@@ -31,7 +31,7 @@ function select(type: TransactionType) {
     <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
       <template v-for="(typeAndDetails, key) in transactionTypesWithDetails">
         <button
-          v-if="!typeAndDetails.readOnly"
+          v-if="!typeAndDetails.hidden"
           :key="key"
           @click="select(typeAndDetails.type)"
         >
