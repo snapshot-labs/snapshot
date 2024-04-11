@@ -25,7 +25,7 @@ const isDirty = ref(false);
 const placeholders = {
   string: 'a string of text',
   address: '0x123...abc',
-  int: '123456',
+  int: '123',
   bytes: '0x123abc',
   bytes32: '0x123abc',
   bool: 'true'
@@ -89,7 +89,12 @@ const paramType = computed(() => {
   if (inputType.value.input === 'single') {
     return `(${inputType.value.type})`;
   }
-  return `( ${inputType.value.type}[ ] )`;
+  if (inputType.value.input === 'array') {
+    return `(${inputType.value.type}[])`;
+  }
+  return inputType.value.type.length > 2
+    ? `( ${inputType.value.type.slice(0, 2)}...[ ] )`
+    : inputType.value.type;
 });
 
 const label = paramName + paramType.value;
