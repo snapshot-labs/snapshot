@@ -50,7 +50,7 @@ function isEligible(boost: BoostSubgraph) {
   const choice = boost.strategy.eligibility.choice;
 
   if (!web3Account.value) return false;
-  if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
+  if (!isFinal.value) return false;
   if (!userVote.value) return false;
   if (choice === null) return true;
 
