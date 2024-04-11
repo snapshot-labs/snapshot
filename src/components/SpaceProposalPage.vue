@@ -57,7 +57,8 @@ const strategies = computed(
 const boostEnabled = computed(() => {
   return (
     (props.proposal.type === 'basic' ||
-      props.proposal.type === 'single-choice') &&
+      props.proposal.type === 'single-choice' ||
+      props.proposal.type === 'ranked-choice') &&
     isWhitelisted(props.space.id) &&
     props.space.boost.enabled
   );
