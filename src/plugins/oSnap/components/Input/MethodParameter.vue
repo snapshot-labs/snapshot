@@ -92,6 +92,7 @@ const paramType = computed(() => {
   if (inputType.value.input === 'array') {
     return `(${inputType.value.type}[])`;
   }
+  // tuple type labels can be too long and take up too much space, limit to 2
   return inputType.value.type.length > 2
     ? `( ${inputType.value.type.slice(0, 2)}...[ ] )`
     : inputType.value.type;
