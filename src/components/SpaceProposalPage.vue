@@ -56,7 +56,6 @@ const strategies = computed(
 );
 
 const boostEnabled = computed(() => {
-  // Check if props.proposal.type is in BOOST_ENABLED_VOTING_TYPES
   return (
     BOOST_ENABLED_VOTING_TYPES.includes(props.proposal.type) &&
     isWhitelisted(props.space.id) &&
