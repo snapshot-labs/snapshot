@@ -3,6 +3,7 @@ import { shorten, getChoiceString, explorerUrl } from '@/helpers/utils';
 import { getPower, voteValidation } from '@/helpers/snapshot';
 import { ExtendedSpace, Proposal } from '@/helpers/interfaces';
 import shutterEncryptChoice from '@/helpers/shutter';
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 
 const { web3Account } = useWeb3();
 
@@ -273,8 +274,8 @@ watch(
               tag="span"
               scope="global"
             >
-              <template #discord>
-                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              <template #help>
+                <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
               </template>
             </i18n-t>
           </BaseMessageBlock>
@@ -291,8 +292,8 @@ watch(
               tag="span"
               scope="global"
             >
-              <template #discord>
-                <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+              <template #help>
+                <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
               </template>
             </i18n-t>
           </BaseMessageBlock>

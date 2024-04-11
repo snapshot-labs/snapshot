@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import {
   ExtendedSpace,
   Proposal,
@@ -72,7 +73,7 @@ onMounted(() => {
       </BaseMessage>
       <BaseLink
         v-if="isAdmin"
-        link="https://discord.snapshot.org/"
+        :link="SNAPSHOT_HELP_LINK"
         class="mt-3 block"
         hide-external-icon
       >

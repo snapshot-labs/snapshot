@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { Proposal, Choice } from '@/helpers/interfaces';
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 
@@ -120,8 +121,8 @@ watch(
       class="border px-3 py-[12px] rounded-xl bg-[--border-color-subtle]"
     >
       Oops, we were unable to validate your vote. Please try voting again or
-      consider opening a ticket with our support team on
-      <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+      consider contacting our support team on
+      <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
     </BaseMessage>
     <div v-else>
       <SpaceProposalVoteSingleChoice
