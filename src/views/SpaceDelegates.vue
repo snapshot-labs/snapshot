@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
 
@@ -210,9 +211,8 @@ onMounted(() => {
         </div>
         <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
           An error occurred while loading delegates. Please try again later. If
-          the problem persists, consider contacting the space admin or our
-          support team on
-          <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+          the problem persists, consider contacting our support team on
+          <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
         </BaseMessageBlock>
         <template v-else-if="searchInputDebounced">
           <div

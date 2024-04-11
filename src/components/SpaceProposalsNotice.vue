@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { useStorage } from '@vueuse/core';
 
 defineProps<{
@@ -49,8 +50,8 @@ const createdSpaces = useStorage(
                 documentation</BaseLink
               >
             </template>
-            <template #discord>
-              <BaseLink link="https://discord.snapshot.org/"> Discord</BaseLink>
+            <template #help>
+              <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
             </template>
           </i18n-t>
         </div>

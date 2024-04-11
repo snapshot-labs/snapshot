@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -63,7 +64,7 @@ const strategySymbolsString = computed(() => {
       is-responsive
     >
       {{ $t('create.errorGettingSnapshot') }}
-      <BaseLink link="https://discord.snapshot.org/">
+      <BaseLink :link="SNAPSHOT_HELP_LINK">
         {{ $t('learnMore') }}
       </BaseLink>
     </BaseMessageBlock>
