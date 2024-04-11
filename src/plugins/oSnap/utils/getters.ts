@@ -37,6 +37,7 @@ import {
 } from '../types';
 import { getPagedEvents } from './events';
 import { toChecksumAddress } from '@/helpers/utils';
+import app from '../../../main';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -745,10 +746,10 @@ export function getSafeNetworkPrefix(network: Network): SafeNetworkPrefix {
 export function getSafeAppLink(
   network: Network,
   safeAddress: string,
-  appUrl = 'https://gnosis-safe.io/app/'
+  {appUrl = 'https://app.safe.global', path = '/home' } = {appUrl: 'https://app.safe.global', path: '/home'}
 ) {
   const prefix = getSafeNetworkPrefix(network);
-  return `${appUrl}${prefix}:${safeAddress}`;
+  return new URL(`${path}?safe=${prefix}:${safeAddress}`, appUrl).toString();
 }
 
 /**

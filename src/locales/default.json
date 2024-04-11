@@ -936,6 +936,12 @@
     "title": "Track proposals for {spaceName}",
     "text": "Receive notifications every time a {space} proposal is created or ends"
   },
+  "domino": {
+    "title": "Automations",
+    "information": "Create automated workflows with just a single click using Domino.",
+    "viewMore": "View More",
+    "createCustomWorkflow": "Create custom workflow"
+  },
   "timeUnits": {
     "second": "1 second | {n} seconds",
     "minute": "1 minute | {n} minutes",
