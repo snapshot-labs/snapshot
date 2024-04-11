@@ -41,21 +41,21 @@ function reduceInt(type: string) {
 const inputType = computed(() => {
   const baseType = props.parameter.baseType;
 
+  if (baseType === 'tuple') {
+    return {
+      input: 'tuple',
+      type: props.parameter.components.map(
+        item => reduceInt(item.baseType) as InputTypes
+      )
+      // ["string","int","address"]
+    } as const;
+  }
+
   if (baseType === 'array') {
-    if (props.parameter.type.includes('tuple')) {
-      return {
-        input: 'tuple',
-        type: props.parameter.components.map(
-          item => reduceInt(item.baseType) as InputTypes
-        )
-        // ["string","int","address"]
-      } as const;
-    } else {
-      return {
-        input: 'array',
-        type: reduceInt(props.parameter.arrayChildren.baseType) as InputTypes
-      } as const;
-    }
+    return {
+      input: 'array',
+      type: reduceInt(props.parameter.arrayChildren.baseType) as InputTypes
+    } as const;
   }
 
   return { type: reduceInt(baseType) as InputTypes, input: 'single' } as const;
