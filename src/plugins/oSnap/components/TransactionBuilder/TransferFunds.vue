@@ -5,7 +5,6 @@ import { Network, Token, TransferFundsTransaction } from '../../types';
 import {
   createTransferFundsTransaction,
   getERC20TokenTransferTransactionData,
-  getNativeAsset,
   isTransferFundsValid
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
