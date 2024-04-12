@@ -4,12 +4,12 @@ import AddressInput from './Address.vue';
 import { hexZeroPad } from '@ethersproject/bytes';
 import { isBytesLikeSafe } from '../../utils';
 import {
-  InputTypes,
   validateArrayInput,
   validateInput,
   validateTupleInput,
   isBytesLikeSafe
 } from '../../utils';
+import { InputTypes } from '../../types';
 
 const props = defineProps<{
   parameter: ParamType;
@@ -32,22 +32,13 @@ const placeholders = {
   bool: 'true'
 } as const;
 
-function reduceInt(type: string) {
-  if (type.includes('int')) {
-    return 'int';
-  }
-  return type;
-}
-
 const inputType = computed(() => {
   const baseType = props.parameter.baseType;
 
   if (baseType === 'tuple') {
     return {
       input: 'tuple',
-      type: props.parameter.components.map(
-        item => reduceInt(item.baseType) as InputTypes
-      )
+      type: props.parameter.components.map(item => item.baseType as InputTypes)
       // ["string","int","address"]
     } as const;
   }
@@ -55,11 +46,11 @@ const inputType = computed(() => {
   if (baseType === 'array') {
     return {
       input: 'array',
-      type: reduceInt(props.parameter.arrayChildren.baseType) as InputTypes
+      type: props.parameter.arrayChildren.baseType as InputTypes
     } as const;
   }
 
-  return { type: reduceInt(baseType) as InputTypes, input: 'single' } as const;
+  return { type: baseType as InputTypes, input: 'single' } as const;
 });
 
 const isBooleanInput = computed(
@@ -72,7 +63,8 @@ const isAddressInput = computed(
   () => inputType.value.input === 'single' && inputType.value.type === 'address'
 );
 const isNumberInput = computed(
-  () => inputType.value.input === 'single' && inputType.value.type === 'int'
+  () =>
+    inputType.value.input === 'single' && inputType.value.type.includes('int')
 );
 const isBytesInput = computed(
   () => inputType.value.input === 'single' && inputType.value.type === 'bytes'

@@ -5,11 +5,22 @@ import {
 } from '@ethersproject/providers';
 import memoize from 'lodash/memoize';
 import { Contract } from '@ethersproject/contracts';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import {
+  BigNumber,
+  isBigNumberish
+} from '@ethersproject/bignumber/lib/bignumber';
 import { isBytesLike, isHexString } from '@ethersproject/bytes';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
-import { BaseTransaction, NFT, Token, Transaction, GnosisSafe } from '../types';
+import {
+  BaseTransaction,
+  NFT,
+  Token,
+  Transaction,
+  GnosisSafe,
+  InputTypes,
+  isIntegerType
+} from '../types';
 import { parseUnits } from '@ethersproject/units';
 import { useMemoize } from '@vueuse/core';
 
@@ -145,14 +156,6 @@ export const checkIsContract = useMemoize(
     await isContractAddress(address, network)
 );
 
-export type InputTypes =
-  | 'bool'
-  | 'string'
-  | 'address'
-  | 'int'
-  | 'bytes'
-  | 'bytes32';
-
 export function isBool(value: string): boolean {
   if (value === 'true' || value === 'false') {
     return true;
@@ -161,20 +164,58 @@ export function isBool(value: string): boolean {
 }
 
 export function validateInput(inputValue: string, type: InputTypes): boolean {
-  switch (type) {
-    case 'address':
-      return isAddress(inputValue);
-    case 'bytes':
-      return isBytesLike(inputValue);
-    case 'bytes32':
-      return isBytesLike(inputValue);
-    case 'int':
-      return isBigNumberish(inputValue);
-    case 'bool':
-      return isBool(inputValue);
-    // skip validation for string
-    default:
-      return true;
+  if (type === 'address') {
+    return isAddress(inputValue);
+  }
+  if (type === 'bytes') {
+    return isBytesLike(inputValue);
+  }
+  if (type === 'bytes32') {
+    return isBytesLike(inputValue);
+  }
+  if (isIntegerType(type)) {
+    return isValidInt(inputValue, type);
+  }
+  if (type === 'bool') {
+    return isBool(inputValue);
+  }
+  return true;
+}
+
+type Integer = `int${number}` | `uint${number}`;
+
+function isValidInt(value: string, type: Integer) {
+  // check if is number like
+  if (!isBigNumberish(value)) {
+    return false;
+  }
+
+  const unsigned = type.startsWith('uint');
+  const signed = type.startsWith('int');
+  if (!unsigned && !signed) {
+    throw new Error(
+      'Invalid type specified. Type must be either an unsigned integer (uint) or a signed integer (int).'
+    );
+  }
+
+  const bits = parseInt(type.slice(unsigned ? 4 : 3));
+
+  if (isNaN(bits) || bits % 8 !== 0 || bits < 8 || bits > 256) {
+    throw new Error(
+      'Invalid integer type specified. Bit size must be a multiple of 8 with a max of 256'
+    );
+  }
+
+  const number = BigNumber.from(value);
+  // range checks
+  if (unsigned) {
+    const max = BigNumber.from(2).pow(bits).sub(1);
+    return number.gte(0) && number.lte(max);
+  } else {
+    const halfRange = BigNumber.from(2).pow(bits - 1);
+    const min = halfRange.mul(-1);
+    const max = halfRange.sub(1);
+    return number.gte(min) && number.lte(max);
   }
 }
 

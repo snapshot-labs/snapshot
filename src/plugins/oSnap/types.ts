@@ -533,3 +533,17 @@ export namespace GnosisSafe {
     components?: ContractInput[];
   }
 }
+
+export type InputTypes =
+  | 'bool'
+  | 'string'
+  | 'address'
+  | Integer
+  | 'bytes'
+  | 'bytes32';
+
+export type Integer = `int${number}` | `uint${number}`;
+
+export function isIntegerType(type: InputTypes): type is Integer {
+  return type.includes('int');
+}
