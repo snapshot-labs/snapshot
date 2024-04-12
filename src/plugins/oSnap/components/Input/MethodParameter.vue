@@ -7,7 +7,8 @@ import {
   InputTypes,
   validateArrayInput,
   validateInput,
-  validateTupleInput
+  validateTupleInput,
+  isBytesLikeSafe
 } from '../../utils';
 
 const props = defineProps<{
@@ -160,11 +161,12 @@ watch(newValue, () => {
 watch(newValue, value => {
   if (isBytes32Input.value && !isArrayInput.value) {
     const data = value?.slice(2) || '';
+
     if (data.length < 64) {
       const padded = hexZeroPad(value, 32);
       if (isBytesLikeSafe(padded)) {
-        validationErrorMessage.value = 'Value too short';
-        return false;
+        validationErrorMessage.value = 'bytes32 too short';
+        return;
       }
     }
 
@@ -172,31 +174,10 @@ watch(newValue, value => {
       validationErrorMessage.value = 'Value too long';
       return false;
     }
-    if (!isBytesLikeSafe(value)) {
-      validationErrorMessage.value = undefined;
-      return false;
-    }
-    return true;
-  } catch {
-    validationErrorMessage.value = undefined;
-    return false;
-  }
-}
 
-function validateArrayInput(value: string) {
-  try {
-    const parsedValue = JSON.parse(value) as Array<string> | unknown;
-    if (!Array.isArray(parsedValue)) return false;
-    if (
-      props.parameter.arrayLength !== -1 &&
-      parsedValue.length !== props.parameter.arrayLength
-    )
-      return false;
-    return true;
-  } catch (e) {
-    return false;
+    validationErrorMessage.value = undefined;
   }
-}
+});
 
 function onChange(value: string) {
   newValue.value = value;
