@@ -68,7 +68,7 @@ const getDelegate =
     const formatted: DelegateWithPercent = {
       id: address,
       delegatedVotes: response.voteWeightDelegated.toString(),
-      tokenHoldersRepresentedAmount: 0,
+      tokenHoldersRepresentedAmount: response.numberOfDelegators,
       delegatorsPercentage: 0,
       votesPercentage: 0
     };
