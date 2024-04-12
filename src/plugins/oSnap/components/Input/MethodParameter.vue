@@ -2,7 +2,6 @@
 import { ParamType } from '@ethersproject/abi';
 import AddressInput from './Address.vue';
 import { hexZeroPad } from '@ethersproject/bytes';
-import { isBytesLikeSafe } from '../../utils';
 import {
   validateArrayInput,
   validateInput,
