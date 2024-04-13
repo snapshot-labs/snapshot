@@ -9,6 +9,7 @@ const props = defineProps<{
   additionalInputClass?: string;
   focusOnMount?: boolean;
   readonly?: boolean;
+  quickFix?(): void;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'blur']);
@@ -69,8 +70,13 @@ onMounted(() => {
       ]"
     >
       <BaseIcon name="warning" class="text-red-500 mr-2" />
-      {{ error || '' }}
       <!-- The fact that error can be bool or string makes this necessary -->
+      {{ error || '' }}
+      <!-- Allow parent to format value with action -->
+      <button v-if="quickFix" class="ml-auto" @click="quickFix">
+        Quick Fix
+        <i-ho-sparkles class="inline" />
+      </button>
     </div>
   </div>
 </template>

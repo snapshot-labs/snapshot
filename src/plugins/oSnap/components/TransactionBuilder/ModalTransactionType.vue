@@ -8,6 +8,7 @@ defineProps<{
     type: TransactionType;
     title: string;
     description: string;
+    hidden?: boolean;
   }[];
 }>();
 
@@ -28,17 +29,19 @@ function select(type: TransactionType) {
       <h3>Select transaction type</h3>
     </template>
     <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
-      <button
-        v-for="(typeAndDetails, key) in transactionTypesWithDetails"
-        :key="key"
-        @click="select(typeAndDetails.type)"
-      >
-        <BaseModalSelectItem
-          :selected="typeAndDetails.type === selected"
-          :title="typeAndDetails.title"
-          :description="typeAndDetails.description"
-        />
-      </button>
+      <template v-for="(typeAndDetails, key) in transactionTypesWithDetails">
+        <button
+          v-if="!typeAndDetails.hidden"
+          :key="key"
+          @click="select(typeAndDetails.type)"
+        >
+          <BaseModalSelectItem
+            :selected="typeAndDetails.type === selected"
+            :title="typeAndDetails.title"
+            :description="typeAndDetails.description"
+          />
+        </button>
+      </template>
     </div>
   </BaseModal>
 </template>

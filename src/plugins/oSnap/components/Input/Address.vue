@@ -7,6 +7,7 @@ const props = defineProps<{
   error?: string;
   disabled?: boolean;
 }>();
+
 const emit = defineEmits<{
   'update:modelValue': [value: string];
 }>();
@@ -24,6 +25,7 @@ const validate = () => {
     error.value = 'Address is required';
     return;
   }
+
   if (!mustBeEthereumAddress(input.value)) {
     error.value = 'Invalid address';
     return;
@@ -49,6 +51,11 @@ onMounted(() => {
 const handleInput = () => {
   emit('update:modelValue', input.value);
 };
+
+const handleBlur = () => {
+  dirty.value = true;
+  validate();
+};
 </script>
 
 <template>
@@ -57,7 +64,7 @@ const handleInput = () => {
     :disabled="disabled"
     :error="props.error ?? (error || '')"
     @input="handleInput()"
-    @blur="dirty = true"
+    @blur="handleBlur"
   >
     <template v-if="label" #label>{{ label }}</template>
   </UiInput>
