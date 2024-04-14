@@ -66,7 +66,7 @@ const customWorkflowUrl = computed(() => {
     <div>
       <ul class="space-y-2">
         <li v-for="(item, index) in automationTemplates" :key="index" class="flex items-center justify-between gap-4 group">
-          <a :href="`${item.url}`" target="_blank" class="flex items-center gap-2">
+          <a :href="item.url" target="_blank" class="flex items-center gap-2">
             <img
               class="mx-auto rounded-xl border border-skin-border opacity-95 group-hover:opacity-100"
               :src="item.imageUrl"
@@ -75,14 +75,14 @@ const customWorkflowUrl = computed(() => {
               height="36"
             />
 
-            <div class="text-sm leading-tight group-hover:text-gray-800">{{ item.name }}</div>
+            <div class="text-sm leading-tight">{{ item.name }}</div>
           </a>
         </li>
         
         <li class="text-center">
           <a href="https://domino.run/explore/apps/snapshot-tmkg6ni3l3r" target="_blank">
 
-            <div class="text-sm leading-tight group-hover:text-gray-800 text-skin-link">
+            <div class="text-sm leading-tight text-skin-link">
               {{ $t('domino.viewMore') }}
             </div>
           </a>
