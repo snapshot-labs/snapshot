@@ -235,6 +235,9 @@ function validateMaybeArray(
           validateInput(value as string, typesMaybeArray)
         );
       } else {
+        if (valuesMaybeArray.length !== typesMaybeArray.length) {
+          throw new Error("Types and values don't match");
+        }
         // handle array of arrays
         return valuesMaybeArray.map(
           (value: MaybeNestedArrays<string>, index: number) =>
