@@ -18,7 +18,7 @@ export function useQuorum(props: QuorumProps) {
   const quorumType = ref('default');
 
   const totalQuorumScore = computed(() => {
-    if (props.proposal.quorumType === 'optimistic') {
+    if (props.proposal.quorumType === 'rejection') {
       return props.results.scores
         .filter((c, i) => i === 1)
         .reduce((a, b) => a + b, 0);

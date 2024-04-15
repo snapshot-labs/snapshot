@@ -179,7 +179,7 @@ export interface ExtendedSpace {
     hideAbstain: boolean;
     period: number | null;
     quorum: number | null;
-    quorumType: 'default' | 'optimistic';
+    quorumType: 'default' | 'rejection';
     type: string | null;
     privacy: string | null;
   };
@@ -230,7 +230,7 @@ export interface Proposal {
   validation: VoteValidation;
   discussion: string;
   quorum: number;
-  quorumType: 'default' | 'optimistic';
+  quorumType: 'default' | 'rejection';
   scores: number[];
   scores_state: string;
   scores_total: number;
