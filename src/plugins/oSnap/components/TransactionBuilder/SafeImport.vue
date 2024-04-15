@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SafeImportTransaction, Network } from '../../types';
 import { createSafeImportTransaction, parseValueInput } from '../../utils';
-import MethodParameterInput from '../../components/Input/MethodParameter.vue';
+import MethodParameterInput from '../../components/Input/MethodParameter/MethodParameter.vue';
 import AddressInput from '../../components/Input/Address.vue';
 import { isAddress } from '@ethersproject/address';
 

@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { ParamType } from '@ethersproject/abi';
-import AddressInput from './Address.vue';
 import { hexZeroPad } from '@ethersproject/bytes';
-import {
-  validateArrayInput,
-  validateInput,
-  validateTupleInput,
-  isBytesLikeSafe
-} from '../../utils';
-import { InputTypes } from '../../types';
+import { ref, computed, watch, onMounted } from 'vue';
+import { extractTypes, getParamLabel, getParamPlaceholder } from './utils';
+import { isBytesLikeSafe, validateSingleOrArray } from '@/plugins/oSnap/utils';
 
 const props = defineProps<{
   parameter: ParamType;
@@ -22,35 +17,7 @@ const emit = defineEmits<{
 
 const isDirty = ref(false);
 
-const placeholders = {
-  string: 'a string of text',
-  address: '0x123...abc',
-  int: '123',
-  bytes: '0x123abc',
-  bytes32: '0x123abc',
-  bool: 'true'
-} as const;
-
-const inputType = computed(() => {
-  const baseType = props.parameter.baseType;
-
-  if (baseType === 'tuple') {
-    return {
-      input: 'tuple',
-      type: props.parameter.components.map(item => item.baseType as InputTypes)
-      // ["string","int","address"]
-    } as const;
-  }
-
-  if (baseType === 'array') {
-    return {
-      input: 'array',
-      type: props.parameter.arrayChildren.baseType as InputTypes
-    } as const;
-  }
-
-  return { type: baseType as InputTypes, input: 'single' } as const;
-});
+const inputType = computed(() => extractTypes(props.parameter));
 
 const isBooleanInput = computed(
   () => inputType.value.input === 'single' && inputType.value.type === 'bool'
@@ -73,33 +40,8 @@ const isBytes32Input = computed(
 );
 const isArrayInput = computed(() => inputType.value.input !== 'single');
 
-// param name may be null or empty string
-const paramName = `${
-  props.parameter.name?.length ? props.parameter.name + ' ' : ''
-}`;
-const paramType = computed(() => {
-  if (inputType.value.input === 'single') {
-    return `(${inputType.value.type})`;
-  }
-  if (inputType.value.input === 'array') {
-    return `(${inputType.value.type}[])`;
-  }
-  // tuple type labels can be too long and take up too much space, limit to 2
-  return inputType.value.type.length > 2
-    ? `( ${inputType.value.type.slice(0, 2)}...[ ] )`
-    : inputType.value.type;
-});
-
-const label = paramName + paramType.value;
-
-const arrayPlaceholder = computed(() => {
-  if (inputType.value.input === 'array') {
-    return `E.g. [${placeholders[inputType.value.type]}]`;
-  }
-  if (inputType.value.input === 'tuple') {
-    return `E.g. [${inputType.value.type.map(type => placeholders[type])}]`;
-  }
-});
+const label = computed(() => getParamLabel(props.parameter));
+const placeholder = computed(() => getParamPlaceholder(props.parameter));
 
 const newValue = ref(props.value);
 
@@ -125,13 +67,7 @@ const allowQuickFixForBytes32 = computed(() => {
 
 function validate() {
   if (!isDirty.value) return true;
-  if (inputType.value.input === 'array') {
-    return validateArrayInput(newValue.value, inputType.value.type);
-  }
-  if (inputType.value.input === 'tuple') {
-    return validateTupleInput(newValue.value, inputType.value.type);
-  }
-  return validateInput(newValue.value, inputType.value.type);
+  return validateSingleOrArray(newValue.value, inputType.value.type);
 }
 
 watch(props.parameter, () => {
@@ -192,7 +128,7 @@ onMounted(() => {
 <template>
   <UiInput
     v-if="isArrayInput"
-    :placeholder="arrayPlaceholder"
+    :placeholder="placeholder"
     :error="errorMessageForDisplay"
     :model-value="value"
     @update:model-value="onChange($event)"
@@ -218,7 +154,7 @@ onMounted(() => {
 
   <UiInput
     v-if="isNumberInput"
-    :placeholder="placeholders.int"
+    :placeholder="placeholder"
     :error="errorMessageForDisplay"
     :model-value="value"
     @update:model-value="onChange($event)"
@@ -227,7 +163,7 @@ onMounted(() => {
   </UiInput>
   <UiInput
     v-if="isBytesInput"
-    :placeholder="placeholders.bytes"
+    :placeholder="placeholder"
     :error="errorMessageForDisplay"
     :model-value="value"
     @update:model-value="onChange($event)"
@@ -236,7 +172,7 @@ onMounted(() => {
   </UiInput>
   <UiInput
     v-if="isBytes32Input"
-    :placeholder="placeholders.bytes"
+    :placeholder="placeholder"
     :error="errorMessageForDisplay"
     :model-value="value"
     :quick-fix="allowQuickFixForBytes32 ? formatBytes32 : undefined"
@@ -247,7 +183,7 @@ onMounted(() => {
   </UiInput>
   <UiInput
     v-if="isStringInput"
-    :placeholder="placeholders.string"
+    :placeholder="placeholder"
     :model-value="value"
     @update:model-value="onChange($event)"
   >

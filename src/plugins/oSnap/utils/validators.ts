@@ -23,6 +23,7 @@ import {
 } from '../types';
 import { parseUnits } from '@ethersproject/units';
 import { useMemoize } from '@vueuse/core';
+import { parseInputArray } from '../components/Input/MethodParameter/utils';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -219,50 +220,55 @@ function isValidInt(value: string, type: Integer) {
   }
 }
 
-function parseArray(arrayString: string): Array<string> | undefined {
+// recursive type
+export type MaybeNestedArrays<T> = T | T[] | MaybeNestedArrays<T>[];
+
+function validateMaybeArray(
+  valuesMaybeArray: MaybeNestedArrays<string>,
+  typesMaybeArray: MaybeNestedArrays<InputTypes>
+): MaybeNestedArrays<boolean> {
   try {
-    const parsedValue = arrayString
-      .slice(1, -1)
-      .split(',')
-      .map(item => item.trim());
-
-    if (!Array.isArray(parsedValue)) {
-      return;
+    if (Array.isArray(valuesMaybeArray)) {
+      // handle single type arrays
+      if (!Array.isArray(typesMaybeArray)) {
+        return valuesMaybeArray.map(value =>
+          validateInput(value as string, typesMaybeArray)
+        );
+      } else {
+        // handle array of arrays
+        return valuesMaybeArray.map(
+          (value: MaybeNestedArrays<string>, index: number) =>
+            validateMaybeArray(value, typesMaybeArray[index])
+        );
+      }
+    } else {
+      if (Array.isArray(typesMaybeArray)) {
+        throw new Error("Types and values don't match");
+      }
+      // handle single item
+      return validateInput(valuesMaybeArray, typesMaybeArray);
     }
-    return parsedValue;
-  } catch (e) {
-    return;
+  } catch {
+    return false;
   }
 }
 
-export function validateArrayInput(
+export function validateSingleOrArray(
   value: string,
-  type: InputTypes,
-  length?: number
+  types: MaybeNestedArrays<InputTypes> //   ['bool', 'uint256'] | ['bool','uint32', ['bool', 'string', 'address'] ]
 ): boolean {
-  if (!value) return false;
-  const parsed = parseArray(value);
+  const parsed = parseInputArray(value);
   if (!parsed) {
     return false;
   }
-  if (length && parsed.length !== length) {
-    return false;
-  }
-  return parsed.every(value => validateInput(value, type));
-}
 
-export function validateTupleInput(
-  value: string,
-  types: InputTypes[]
-): boolean {
-  const parsed = parseArray(value);
-  if (!parsed) {
-    return false;
+  const res = validateMaybeArray(parsed, types);
+
+  if (Array.isArray(res)) {
+    return res.flat().every(Boolean);
   }
-  if (parsed.length !== types.length) {
-    return false;
-  }
-  return parsed.every((value, i) => validateInput(value, types[i]));
+
+  return res;
 }
 
 // check if json is a safe json type
