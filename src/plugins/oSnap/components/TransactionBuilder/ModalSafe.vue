@@ -33,7 +33,10 @@ function makeSafeDescription(safe: GnosisSafe) {
     <div class="mx-0 my-4 flex flex-col space-y-3 md:mx-4">
       <button v-for="(safe, key) in safes" :key="key" @click="select(safe)">
         <BaseModalSelectItem
-          :selected="safe.safeAddress === selected?.safeAddress"
+          :selected="
+            safe.safeAddress === selected?.safeAddress &&
+            safe.network === selected.network
+          "
           :title="safe.safeName"
           :description="makeSafeDescription(safe)"
         />
