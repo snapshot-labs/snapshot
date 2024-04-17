@@ -33,7 +33,7 @@ export const EXPLORER_API_URLS = {
   '56': 'https://api.bscscan.com/api',
   '42161': 'https://api.arbiscan.io/api',
   // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
-  '11155111': 'https://api-sepolia.etherscan.io/api',
+  '11155111': 'https://api-sepolia.etherscan.io/api'
 };
 
 export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
@@ -46,7 +46,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '56': 'https://safe-transaction-bsc.safe.global/api',
   '42161': 'https://safe-transaction-arbitrum.safe.global/api',
   '1116': 'https://safetx.coredao.org/api',
-  '11155111': 'https://safe-transaction-sepolia.safe.global/api',
+  '11155111': 'https://safe-transaction-sepolia.safe.global/api'
 };
 
 // ABIs
@@ -400,7 +400,7 @@ export type ContractData = {
   network: string;
   name: string;
   address?: string;
-  deployBlockNumber?: number;
+  deployBlock?: number;
   subgraph?: string;
 };
 // contract addresses pulled from https://github.com/UMAprotocol/protocol/tree/master/packages/core/networks
@@ -567,5 +567,5 @@ export const contractData: ContractData[] = [
     deployBlock: 5421242,
     subgraph:
       'https://api.thegraph.com/subgraphs/name/reinis-frp/sepolia-optimistic-governor'
-  },
+  }
 ];
