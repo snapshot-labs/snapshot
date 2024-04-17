@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { parseAmount } from '@/helpers/utils';
 import { isAddress } from '@ethersproject/address';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { isHexString } from '@ethersproject/bytes';
 import { RawTransaction } from '../../types';
 import { createRawTransaction, parseValueInput } from '../../utils';
@@ -76,7 +74,7 @@ function updateValue(newValue: string) {
     <AddressInput
       v-model="to"
       :input-props="{ required: false }"
-      :error="!isToValid && $t('safeSnap.invalidAddress')"
+      :error="!isToValid ? $t('safeSnap.invalidAddress') : undefined"
       :label="$t('safeSnap.to')"
     />
 

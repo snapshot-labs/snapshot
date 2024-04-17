@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import defaults from '@/locales/default.json';
 
 const { items } = useModalNotification();
@@ -20,8 +21,8 @@ const { items } = useModalNotification();
             tag="span"
             scope="global"
           >
-            <template #discord>
-              <BaseLink link="https://discord.snapshot.org">Discord</BaseLink>
+            <template #help>
+              <BaseLink :link="SNAPSHOT_HELP_LINK">Discord</BaseLink>
             </template>
           </i18n-t>
         </template>

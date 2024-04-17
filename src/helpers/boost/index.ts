@@ -37,7 +37,8 @@ export const BOOST_WHITELIST_SETTINGS = {
     '0cf5e.eth',
     'thanku.eth',
     'test.wa0x6e.eth',
-    'aurelianob.eth'
+    'aurelianob.eth',
+    'pscott.eth'
   ]
 };
 

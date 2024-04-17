@@ -7,7 +7,9 @@ const props = defineProps<{
   results: Results;
 }>();
 
-const { totalQuorumScore, quorum, loadingQuorum } = useQuorum(props);
+const { totalQuorumScore, quorum, quorumType, loadingQuorum } =
+  useQuorum(props);
+
 const { formatCompactNumber, formatPercentNumber } = useIntl();
 </script>
 
@@ -15,14 +17,23 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
   <div class="pt-2 text-skin-link">
     <div class="flex justify-between">
       <div class="flex items-center gap-1">
-        {{ $t('settings.quorum.label') }}
+        {{ quorumType === 'rejection' ? 'Quorum of rejection' : 'Quorum' }}
       </div>
       <LoadingSpinner v-if="loadingQuorum" class="mr-1" />
       <div v-else class="flex gap-2">
         <i-ho-check
-          v-if="quorum && totalQuorumScore >= quorum"
-          class="text-skin-success text-green"
+          v-if="
+            quorum && quorumType === 'default' && totalQuorumScore >= quorum
+          "
+          class="text-green"
         />
+        <i-ho-x
+          v-if="
+            quorum && quorumType === 'rejection' && totalQuorumScore >= quorum
+          "
+          class="text-red"
+        />
+
         <span
           v-tippy="{ content: formatPercentNumber(totalQuorumScore / quorum) }"
         >

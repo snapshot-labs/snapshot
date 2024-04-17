@@ -16,6 +16,7 @@ const transactionTypesWithDetails: {
   type: TransactionType;
   title: string;
   description: string;
+  hidden?: boolean;
 }[] = [
   {
     type: 'transferFunds',
@@ -36,6 +37,13 @@ const transactionTypesWithDetails: {
     type: 'raw',
     title: 'Raw transaction',
     description: 'Send a raw transaction'
+  },
+  {
+    type: 'safeImport',
+    title: 'Import Safe file',
+    description:
+      'Import JSON file exported from Gnosis Safe transaction builder',
+    hidden: true
   }
 ];
 </script>

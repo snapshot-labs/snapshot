@@ -93,3 +93,5 @@ export const CHAIN_CURRENCIES: Record<string, ChainCurrency> = {
 
 export const TWO_WEEKS = 1209600;
 export const ONE_DAY = 86400;
+
+export const SNAPSHOT_HELP_LINK = 'https://help.snapshot.org/en';

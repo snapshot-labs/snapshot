@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
+
 const yearNow = new Date().getFullYear();
 
 const snapshotTextLinks = [
@@ -31,7 +33,7 @@ const resourcesTextLinks = [
   },
   {
     text: 'support',
-    link: 'https://discord.snapshot.org/'
+    link: SNAPSHOT_HELP_LINK
   }
 ];
 </script>

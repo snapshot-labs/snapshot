@@ -15,8 +15,14 @@ const broviderUrl = import.meta.env.VITE_BROVIDER_URL;
 export function useQuorum(props: QuorumProps) {
   const loading = ref(false);
   const quorum = ref(0);
+  const quorumType = ref('default');
 
   const totalQuorumScore = computed(() => {
+    if (props.proposal.quorumType === 'rejection') {
+      return props.results.scores
+        .filter((c, i) => i === 1)
+        .reduce((a, b) => a + b, 0);
+    }
     const basicCount = props.space.plugins?.quorum?.basicCount;
     if (basicCount && props.proposal.type === 'basic')
       return props.results.scores
@@ -106,6 +112,7 @@ export function useQuorum(props: QuorumProps) {
       props.space.plugins.quorum,
       props.proposal.snapshot
     );
+    quorumType.value = props.proposal.quorumType;
     loading.value = false;
   }
 
@@ -114,6 +121,7 @@ export function useQuorum(props: QuorumProps) {
   return {
     loadingQuorum: loading,
     totalQuorumScore,
-    quorum
+    quorum,
+    quorumType
   };
 }

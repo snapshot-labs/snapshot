@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { cloneDeep } from 'lodash';
 import {
   ContractInteractionTransaction,
   TransferNftTransaction,
@@ -9,13 +8,15 @@ import {
   type Transaction as TTransaction,
   type TransactionType as TTransactionType,
   type Token,
-  type TransferFundsTransaction
+  type TransferFundsTransaction,
+  SafeImportTransaction
 } from '../../types';
 import TransactionType from '../Input/TransactionType.vue';
 import ContractInteraction from './ContractInteraction.vue';
 import RawTransaction from './RawTransaction.vue';
 import TransferFunds from './TransferFunds.vue';
 import TransferNFT from './TransferNFT.vue';
+import SafeImport from './SafeImport.vue';
 
 const props = defineProps<{
   transaction: TTransaction;
@@ -32,27 +33,27 @@ const emit = defineEmits<{
   removeTransaction: [transactionIndex: number];
 }>();
 
-const newTransaction = ref<TTransaction>(cloneDeep(props.transaction));
-
 function updateTransactionType(transactionType: TTransactionType) {
-  newTransaction.value = {
-    type: transactionType,
-    to: '',
-    value: '0',
-    data: '0x',
-    formatted: ['', 0, '0', '0x']
-  };
-  emit('updateTransaction', newTransaction.value, props.transactionIndex);
+  emit(
+    'updateTransaction',
+    {
+      type: transactionType,
+      to: '',
+      value: '0',
+      data: '0x',
+      formatted: ['', 0, '0', '0x']
+    },
+    props.transactionIndex
+  );
 }
 
 function updateTransaction(transaction: TTransaction) {
-  newTransaction.value = transaction;
-  emit('updateTransaction', newTransaction.value, props.transactionIndex);
+  emit('updateTransaction', transaction, props.transactionIndex);
 }
 
 function setTransactionAsInvalid() {
   const tx: TTransaction = {
-    ...newTransaction.value,
+    ...props.transaction,
     isValid: false
   };
   emit('updateTransaction', tx, props.transactionIndex);
@@ -65,10 +66,7 @@ function setTransactionAsInvalid() {
       <h3 class="text-left text-base">
         Transaction {{ transactionIndex + 1 }}
       </h3>
-      <button
-        v-if="transactionIndex !== 0"
-        @click="emit('removeTransaction', transactionIndex)"
-      >
+      <button @click="emit('removeTransaction', transactionIndex)">
         Remove
       </button>
     </div>
@@ -78,7 +76,7 @@ function setTransactionAsInvalid() {
     />
     <ContractInteraction
       v-if="transaction.type === 'contractInteraction'"
-      :transaction="newTransaction as ContractInteractionTransaction"
+      :transaction="transaction as ContractInteractionTransaction"
       :network="network"
       :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
@@ -88,7 +86,7 @@ function setTransactionAsInvalid() {
       v-if="transaction.type === 'transferFunds'"
       :network="network"
       :tokens="tokens"
-      :transaction="newTransaction as TransferFundsTransaction"
+      :transaction="transaction as TransferFundsTransaction"
       :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
@@ -98,15 +96,22 @@ function setTransactionAsInvalid() {
       :network="network"
       :safe-address="safeAddress"
       :collectables="collectables"
-      :transaction="newTransaction as TransferNftTransaction"
+      :transaction="transaction as TransferNftTransaction"
       :setTransactionAsInvalid="setTransactionAsInvalid"
       @update-transaction="updateTransaction"
     />
 
     <RawTransaction
       v-if="transaction.type === 'raw'"
-      :transaction="newTransaction as TRawTransaction"
+      :transaction="transaction as TRawTransaction"
       :setTransactionAsInvalid="setTransactionAsInvalid"
+      @update-transaction="updateTransaction"
+    />
+
+    <SafeImport
+      v-if="transaction.type === 'safeImport'"
+      :transaction="transaction as SafeImportTransaction"
+      :network="network"
       @update-transaction="updateTransaction"
     />
   </div>
