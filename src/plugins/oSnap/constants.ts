@@ -1107,6 +1107,7 @@ export const EXPLORER_API_URLS = {
   '137': 'https://api.polygonscan.com/api',
   '56': 'https://api.bscscan.com/api',
   '42161': 'https://api.arbiscan.io/api',
+  '8453' : 'https://api.basescan.org/api',
   // '1116': Add 'https://openapi.coredao.org/api' if API key requirement is removed
   '11155111': 'https://api-sepolia.etherscan.io/api',
 } as const;
@@ -1116,6 +1117,7 @@ export const GNOSIS_SAFE_TRANSACTION_API_URLS = {
   '5': 'https://safe-transaction-goerli.safe.global/api',
   '10': 'https://safe-transaction-optimism.safe.global/api',
   '100': 'https://safe-transaction-gnosis-chain.safe.global/api',
+  '8453': 'https://safe-transaction-base.safe.global/api',
   '73799': 'https://safe-transaction-volta.safe.global/api',
   '246': 'https://safe-transaction-ewc.safe.global/api',
   '137': 'https://safe-transaction-polygon.safe.global/api',
@@ -1135,6 +1137,7 @@ export const SAFE_APP_URLS = {
   '56': 'https://app.safe.global/apps/open',
   '42161': 'https://app.safe.global/apps/open',
   '1116': 'https://safe.coredao.org/apps/open',
+  '8453': 'https://app.safe.global/apps/open',
   '11155111': 'https://app.safe.global/apps/open',
 } as const;
 
@@ -1446,6 +1449,15 @@ export const contractData = [
     deployBlock: 11341063
   },
   {
+    // base
+    network: '8453',
+    name: 'OptimisticOracleV3',
+    address: '0x2aBf1Bd76655de80eDB3086114315Eec75AF500c',
+    subgraph:
+      'https://api.studio.thegraph.com/query/1057/base-optimistic-oracle-v3/version/latest',
+    deployBlock: 12066343
+  },
+  {
     // sepolia
     network: '11155111',
     name: 'OptimisticOracleV3',
@@ -1526,6 +1538,15 @@ export const contractData = [
     deployBlock: 11341122,
     subgraph:
     'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
+  },
+  {
+    // base
+    network: '8453',
+    name: 'OptimisticGovernor',
+    address: '0x80bCA2E1c272239AdFDCdc87779BC8Af6E12e633',
+    deployBlock: 13062540,
+    subgraph:
+    'https://api.studio.thegraph.com/query/1057/base-optimistic-governor/version/latest'
   },
   {
     // sepolia

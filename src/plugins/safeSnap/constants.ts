@@ -358,6 +358,7 @@ export const MULTI_SEND_V1_3_0 = {
   '1285': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '1287': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '4002': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
+  '8453': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '42161': '0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761',
   '42220': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
   '43114': '0x998739BFdAAdde7C933B942a68053933098f9EDa',
@@ -400,7 +401,7 @@ export type ContractData = {
   network: string;
   name: string;
   address?: string;
-  deployBlockNumber?: number;
+  deployBlock?: number;
   subgraph?: string;
 };
 // contract addresses pulled from https://github.com/UMAprotocol/protocol/tree/master/packages/core/networks
@@ -476,6 +477,15 @@ export const contractData: ContractData[] = [
     subgraph:
       'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-oracle-v3',
     deployBlock: 11341063
+  },
+  {
+    // base
+    network: '8453',
+    name: 'OptimisticOracleV3',
+    address: '0x2aBf1Bd76655de80eDB3086114315Eec75AF500c',
+    subgraph:
+      'https://api.studio.thegraph.com/query/1057/base-optimistic-oracle-v3/version/latest',
+    deployBlock: 12066343
   },
   {
     // sepolia
@@ -558,6 +568,15 @@ export const contractData: ContractData[] = [
     deployBlock: 11341122,
     subgraph:
       'https://thegraph.coredao.org/subgraphs/name/umaprotocol/core-optimistic-governor'
+  },
+  {
+    // base
+    network: '8453',
+    name: 'OptimisticGovernor',
+    address: '0x80bCA2E1c272239AdFDCdc87779BC8Af6E12e633',
+    deployBlock: 13062540,
+    subgraph:
+    'https://api.studio.thegraph.com/query/1057/base-optimistic-governor/version/latest'
   },
   {
     // sepolia
