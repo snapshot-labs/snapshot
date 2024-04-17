@@ -40,8 +40,8 @@ const { form, validationErrors } = useFormSpaceSettings(props.context);
               name: 'Default'
             },
             {
-              value: 'optimistic',
-              name: 'Optimistic'
+              value: 'rejection',
+              name: 'Quorum of rejection'
             }
           ]"
           :disabled="isViewOnly"
