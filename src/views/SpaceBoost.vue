@@ -667,15 +667,13 @@ watch(
             />
             <TuneBlockFooter v-if="!bribeEnabled">
               <BaseMessage level="info">
-                Selecting a specific choice is disabled for the
-                <span class="font-semibold">
-                  {{ space.name }}
-                </span>
-                space.
-
                 <template v-if="!space.boost.bribeEnabled">
-                  Please enable strategic incentivization in the space settings
-                  to enable this feature.
+                  Selecting a specific choice is disabled for the
+                  <span class="font-semibold">
+                    {{ space.name }}
+                  </span>
+                  space. Please enable strategic incentivization in the space
+                  settings to enable this feature.
                 </template>
                 <template v-else-if="proposal.privacy === 'shutter'">
                   Strategic incentivization is disabled for proposal with
