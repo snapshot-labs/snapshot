@@ -37,7 +37,6 @@ import {
 } from '../types';
 import { getPagedEvents } from './events';
 import { shortenAddress, toChecksumAddress } from '@/helpers/utils';
-import app from '../../../main';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -100,6 +99,17 @@ function getDeployBlock(params: { network: Network; name: string }): number {
   return 0;
 }
 
+export class ConfigError extends Error {
+  constructor(message: string, responsibleVar: string) {
+    super(message);
+    this.name = 'CONFIG_ERROR';
+  }
+}
+
+export function logIfErrorMessage(e: unknown, overrideMessage: string) {
+  console.error(e instanceof Error ? e.message : overrideMessage);
+}
+
 /**
  * Fetches the subgraph url for a given contract on a given network.
  */
@@ -109,17 +119,17 @@ function getContractSubgraph(params: { network: Network; name: string }) {
       contract.network === params.network && contract.name === params.name
   );
   if (results.length > 1)
-    throw new Error(
-      `Too many results finding ${params.name} subgraph on network ${params.network}`
+    throw new ConfigError(
+      `Too many results finding ${params.name} subgraph on network ${params.network}`,
+      'subgraph'
     );
-  if (results.length < 1)
-    throw new Error(
-      `No results finding ${params.name} subgraph on network ${params.network}`
+
+  if (results.length < 1 || !results[0].subgraph)
+    throw new ConfigError(
+      `No subgraph url defined for ${params.name} on network ${params.network}`,
+      'subgraph'
     );
-  if (!results[0].subgraph)
-    throw new Error(
-      `No subgraph url defined for ${params.name} on network ${params.network}`
-    );
+
   return results[0].subgraph;
 }
 
@@ -199,12 +209,11 @@ export const getModuleAddressForTreasury = async (
     const result = await queryGql<Result>(subgraph, query);
     return result?.safe?.optimisticGovernor?.id ?? '';
   } catch (error) {
-    console.error(
-      error instanceof Error
-        ? error.message
-        : `Unable to get module address for treasury ${shortenAddress(
-            treasuryAddress
-          )} on network ${network}`
+    logIfErrorMessage(
+      error,
+      `Unable to get module address for treasury ${shortenAddress(
+        treasuryAddress
+      )} on network ${network}`
     );
 
     throw error;
@@ -233,12 +242,11 @@ export const getIsOsnapEnabled = async (
     const result = await queryGql<Result>(subgraph, query);
     return result?.safe?.isOptimisticGovernorEnabled ?? false;
   } catch (error) {
-    console.error(
-      error instanceof Error
-        ? error.message
-        : `Unable to check if oSnap is enable for address ${shortenAddress(
-            safeAddress
-          )} on network ${network}`
+    logIfErrorMessage(
+      error,
+      `Unable to check if oSnap is enable for address ${shortenAddress(
+        safeAddress
+      )} on network ${network}`
     );
     throw error;
   }
