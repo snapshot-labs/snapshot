@@ -61,7 +61,7 @@ onUnmounted(() => {
           !isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)
         "
       />
-      <div v-else>Unsupported chain</div>
+      <div v-else>oSnap unavailable</div>
     </div>
     <BaseButtonIcon
       v-show="!isViewOnly"
