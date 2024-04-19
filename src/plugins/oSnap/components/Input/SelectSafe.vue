@@ -18,8 +18,11 @@ const isModalOpen = ref(false);
   <div class="mb-2">
     <TuneButtonSelect
       :model-value="
-        safes.find(safe => safe.safeAddress === selectedSafe?.safeAddress)
-          ?.safeName || 'Select Safe'
+        safes.find(
+          safe =>
+            safe.safeAddress === selectedSafe?.safeAddress &&
+            safe.network === selectedSafe.network
+        )?.safeName || 'Select Safe'
       "
       @select="isModalOpen = true"
     />

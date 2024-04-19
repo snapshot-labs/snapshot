@@ -547,3 +547,7 @@ export type Integer = `int${number}` | `uint${number}`;
 export function isIntegerType(type: InputTypes): type is Integer {
   return type.includes('int');
 }
+
+export function nonNullable<T>(value: T): value is NonNullable<T> {
+  return value !== null;
+}
