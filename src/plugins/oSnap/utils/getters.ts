@@ -36,8 +36,7 @@ import {
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
-import { toChecksumAddress } from '@/helpers/utils';
-import app from '../../../main';
+import { shortenAddress, toChecksumAddress } from '@/helpers/utils';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -48,8 +47,8 @@ async function callGnosisSafeTransactionApi<TResult = any>(
   network: Network,
   url: string
 ) {
-  if(!GNOSIS_SAFE_TRANSACTION_API_URLS[network])
-    throw new Error(`No gnosis safe api defined for network ${network}`)
+  if (!GNOSIS_SAFE_TRANSACTION_API_URLS[network])
+    throw new Error(`No gnosis safe api defined for network ${network}`);
   const apiUrl = GNOSIS_SAFE_TRANSACTION_API_URLS[network];
   const response = await fetch(apiUrl + url);
   return response.json() as TResult;
@@ -100,6 +99,17 @@ function getDeployBlock(params: { network: Network; name: string }): number {
   return 0;
 }
 
+export class ConfigError extends Error {
+  constructor(message: string, responsibleVar: string) {
+    super(message);
+    this.name = 'CONFIG_ERROR';
+  }
+}
+
+export function logIfErrorMessage(e: unknown, overrideMessage: string) {
+  console.error(e instanceof Error ? e.message : overrideMessage);
+}
+
 /**
  * Fetches the subgraph url for a given contract on a given network.
  */
@@ -109,17 +119,17 @@ function getContractSubgraph(params: { network: Network; name: string }) {
       contract.network === params.network && contract.name === params.name
   );
   if (results.length > 1)
-    throw new Error(
-      `Too many results finding ${params.name} subgraph on network ${params.network}`
+    throw new ConfigError(
+      `Too many results finding ${params.name} subgraph on network ${params.network}`,
+      'subgraph'
     );
-  if (results.length < 1)
-    throw new Error(
-      `No results finding ${params.name} subgraph on network ${params.network}`
+
+  if (results.length < 1 || !results[0].subgraph)
+    throw new ConfigError(
+      `No subgraph url defined for ${params.name} on network ${params.network}`,
+      'subgraph'
     );
-  if (!results[0].subgraph)
-    throw new Error(
-      `No subgraph url defined for ${params.name} on network ${params.network}`
-    );
+
   return results[0].subgraph;
 }
 
@@ -180,23 +190,34 @@ export const getModuleAddressForTreasury = async (
   network: Network,
   treasuryAddress: string
 ) => {
-  const subgraph = getOptimisticGovernorSubgraph(network);
-  const query = `
-  query getModuleAddressForTreasury {
-      safe(id: "${treasuryAddress.toLowerCase()}") {
-        optimisticGovernor {
-          id
+  try {
+    const subgraph = getOptimisticGovernorSubgraph(network);
+    const query = `
+    query getModuleAddressForTreasury {
+        safe(id: "${treasuryAddress.toLowerCase()}") {
+          optimisticGovernor {
+            id
+          }
         }
-      }
+    }
+    `;
+
+    type Result = {
+      safe: { optimisticGovernor: { id: string } };
+    };
+
+    const result = await queryGql<Result>(subgraph, query);
+    return result?.safe?.optimisticGovernor?.id ?? '';
+  } catch (error) {
+    logIfErrorMessage(
+      error,
+      `Unable to get module address for treasury ${shortenAddress(
+        treasuryAddress
+      )} on network ${network}`
+    );
+
+    throw error;
   }
-  `;
-
-  type Result = {
-    safe: { optimisticGovernor: { id: string } };
-  };
-
-  const result = await queryGql<Result>(subgraph, query);
-  return result?.safe?.optimisticGovernor?.id ?? '';
 };
 
 /**
@@ -206,19 +227,29 @@ export const getIsOsnapEnabled = async (
   network: Network,
   safeAddress: string
 ) => {
-  const subgraph = getOptimisticGovernorSubgraph(network);
-  const query = `
-      query isOSnapEnabled {
-        safe(id:"${safeAddress.toLowerCase()}"){
-          isOptimisticGovernorEnabled
+  try {
+    const subgraph = getOptimisticGovernorSubgraph(network);
+    const query = `
+        query isOSnapEnabled {
+          safe(id:"${safeAddress.toLowerCase()}"){
+            isOptimisticGovernorEnabled
+          }
         }
-      }
-    `;
-  type Result = {
-    safe: { isOptimisticGovernorEnabled: boolean };
-  };
-  const result = await queryGql<Result>(subgraph, query);
-  return result?.safe?.isOptimisticGovernorEnabled ?? false;
+      `;
+    type Result = {
+      safe: { isOptimisticGovernorEnabled: boolean };
+    };
+    const result = await queryGql<Result>(subgraph, query);
+    return result?.safe?.isOptimisticGovernorEnabled ?? false;
+  } catch (error) {
+    logIfErrorMessage(
+      error,
+      `Unable to check if oSnap is enable for address ${shortenAddress(
+        safeAddress
+      )} on network ${network}`
+    );
+    throw error;
+  }
 };
 
 /**
@@ -672,7 +703,11 @@ export async function getOGProposalStateGql(params: {
   }
 
   // request execution if there is no settlement yet and liveness has expired
-  return { status: 'can-request-tx-execution', assertionHash, assertionLogIndex };
+  return {
+    status: 'can-request-tx-execution',
+    assertionHash,
+    assertionLogIndex
+  };
 }
 
 /**
@@ -746,7 +781,10 @@ export function getSafeNetworkPrefix(network: Network): SafeNetworkPrefix {
 export function getSafeAppLink(
   network: Network,
   safeAddress: string,
-  {appUrl = 'https://app.safe.global', path = '/home' } = {appUrl: 'https://app.safe.global', path: '/home'}
+  { appUrl = 'https://app.safe.global', path = '/home' } = {
+    appUrl: 'https://app.safe.global',
+    path: '/home'
+  }
 ) {
   const prefix = getSafeNetworkPrefix(network);
   return new URL(`${path}?safe=${prefix}:${safeAddress}`, appUrl).toString();
