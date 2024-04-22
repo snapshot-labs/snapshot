@@ -53,9 +53,9 @@ onUnmounted(() => {
     <div class="flex items-center gap-2 truncate pr-[20px] text-left">
       <h4 class="truncate">{{ treasury.name }}</h4>
     </div>
-    <div class="ml-auto mr-3">
+    <div v-if="hasOsnapPlugin" class="ml-auto mr-3">
       <SettingsTreasuryActivateOsnapButton
-        v-if="hasOsnapPlugin && isChainSupported"
+        v-if="isChainSupported"
         :is-osnap-enabled="isOsnapEnabled"
         @click.stop="
           !isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)
