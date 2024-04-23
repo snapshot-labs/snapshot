@@ -121,7 +121,7 @@ export async function withdrawAndBurn(
 ): Promise<any> {
   const signer = web3.getSigner();
   const contract = new Contract(BOOST_CONTRACTS[networkId], ABI, signer);
-  return await contract.burn(boostId, to);
+  return await contract.withdrawAndBurn(boostId, to);
 }
 
 export async function getFees(web3: Web3Provider, networkId: string) {
