@@ -17,7 +17,7 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
   <div class="pt-2 text-skin-link">
     <div class="flex justify-between">
       <div class="flex items-center gap-1">
-        {{ quorumType === 'optimistic' ? 'Optimistic Quorum' : 'Quorum' }}
+        {{ quorumType === 'rejection' ? 'Quorum of rejection' : 'Quorum' }}
       </div>
       <LoadingSpinner v-if="loadingQuorum" class="mr-1" />
       <div v-else class="flex gap-2">
@@ -29,7 +29,7 @@ const { formatCompactNumber, formatPercentNumber } = useIntl();
         />
         <i-ho-x
           v-if="
-            quorum && quorumType === 'optimistic' && totalQuorumScore >= quorum
+            quorum && quorumType === 'rejection' && totalQuorumScore >= quorum
           "
           class="text-red"
         />

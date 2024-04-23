@@ -12,9 +12,9 @@ const quorumText = computed(() => {
     return '';
   }
 
-  const optimisticQuorum = props.proposal.quorumType === 'optimistic';
+  const quorumOfRejection = props.proposal.quorumType === 'rejection';
   const percentage = formatPercentNumber(
-    optimisticQuorum
+    quorumOfRejection
       ? Number(
           props.proposal.scores
             .filter((c, i) => i === 1)
@@ -22,7 +22,7 @@ const quorumText = computed(() => {
         )
       : Number(props.proposal.scores_total / props.proposal.quorum)
   );
-  return optimisticQuorum
+  return quorumOfRejection
     ? `${percentage} quorum rejection`
     : `${percentage} quorum reached`;
 });

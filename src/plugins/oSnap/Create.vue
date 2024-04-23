@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ExtendedSpace, TreasuryWallet } from '@/helpers/interfaces';
+import { ExtendedSpace } from '@/helpers/interfaces';
 import { formatUnits } from '@ethersproject/units';
 import { cloneDeep } from 'lodash';
 import SelectSafe from './components/Input/SelectSafe.vue';
@@ -11,7 +11,8 @@ import {
   Network,
   OsnapPluginData,
   Token,
-  Transaction
+  Transaction,
+  nonNullable
 } from './types';
 import {
   getGnosisSafeBalances,
@@ -159,33 +160,41 @@ async function fetchCollectibles(network: Network, gnosisSafeAddress: string) {
 // maps over the treasuries and creates a safe for each one
 // only returns safes that have oSnap enabled
 async function createOsnapEnabledSafes() {
-  const treasuriesWithOsnapEnabled = (
-    await Promise.all(
-      props.space.treasuries.map(async treasury => {
-        const isOsnapEnabled = await getIsOsnapEnabled(
-          treasury.network as Network,
-          treasury.address
-        );
-        return isOsnapEnabled ? treasury : null;
-      })
-    )
-  ).filter(treasury => treasury !== null) as TreasuryWallet[];
+  const treasuryPromises = await Promise.allSettled(
+    props.space.treasuries.map(async treasury => {
+      const isOsnapEnabled = await getIsOsnapEnabled(
+        treasury.network as Network,
+        treasury.address
+      );
+      return isOsnapEnabled ? treasury : null;
+    })
+  );
 
-  const safes: GnosisSafe[] = await Promise.all(
+  const treasuriesWithOsnapEnabled = treasuryPromises
+    .map(res => (res.status === 'fulfilled' ? res.value : null))
+    .filter(nonNullable);
+
+  const safePromises = await Promise.allSettled(
     treasuriesWithOsnapEnabled.map(async treasury => {
       const moduleAddress = await getModuleAddressForTreasury(
         treasury.network as Network,
         treasury.address
       );
-      return {
-        safeName: treasury.name,
-        safeAddress: toChecksumAddress(treasury.address),
-        network: treasury.network as Network,
-        transactions: [] as Transaction[],
-        moduleAddress
-      };
+      return moduleAddress
+        ? {
+            safeName: treasury.name,
+            safeAddress: toChecksumAddress(treasury.address),
+            network: treasury.network as Network,
+            transactions: [] as Transaction[],
+            moduleAddress
+          }
+        : null;
     })
   );
+
+  const safes = safePromises
+    .map(res => (res.status === 'fulfilled' ? res.value : null))
+    .filter(nonNullable);
 
   return safes;
 }
