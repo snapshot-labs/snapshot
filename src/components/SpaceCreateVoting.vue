@@ -3,6 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import draggable from 'vuedraggable';
 import SpaceCreateLegacyOsnap from './SpaceCreateLegacyOsnap.vue';
 import SpaceCreateOsnap from './SpaceCreateOsnap.vue';
+import { BOOST_ENABLED_VOTING_TYPES } from '@/helpers/constants';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -122,20 +123,11 @@ defineEmits<{
       />
       <template v-if="isWhitelisted(space.id)">
         <BaseMessage
-          v-if="form.type !== 'single-choice' && form.type !== 'basic'"
+          v-if="!BOOST_ENABLED_VOTING_TYPES.includes(form.type)"
           level="info"
           class="mt-2 border bg-[--border-color-subtle] p-3 rounded-xl"
         >
-          Note that Boost is not available for this voting type. Please use
-          Basic or Single Choice if you want to use Boost.
-        </BaseMessage>
-        <BaseMessage
-          v-else-if="space.voting.privacy === 'shutter'"
-          level="info"
-          class="mt-2 border bg-[--border-color-subtle] p-3 rounded-xl"
-        >
-          Note that Boost is not available with Shutter encrypted voting. Please
-          disable it in the space settings if you want to use Boost.
+          Note that Boost is not available for this voting type.
         </BaseMessage>
       </template>
 
