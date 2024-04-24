@@ -259,7 +259,7 @@ export type GnosisSafe = {
  * @field `safe` field is the safe that the plugin is currently working with.
  */
 export type OsnapPluginData = {
-  safe: GnosisSafe | null;
+  safes: GnosisSafe[] | null;
 };
 
 /**

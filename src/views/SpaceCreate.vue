@@ -141,16 +141,19 @@ const isFormValid = computed(() => {
     : true;
 
   const isOsnapPluginValid = (() => {
-    const osnapData = form.value.metadata.plugins.oSnap?.safe;
-    if (!osnapData) {
+    const safes = form.value.metadata.plugins.oSnap?.safes;
+    if (!safes) {
       //  not using osnap plugin
       return true;
     }
-    if (osnapData && !(osnapData.transactions.length > 0)) {
-      //  using osnap, but no transactions
+    if (safes.length && safes.some(safe => !(safe.transactions.length > 0))) {
+      //  using osnap, but some have no transactions
       return false;
     }
-    if (osnapData && !osnapData.transactions.every(tx => tx.isValid)) {
+    if (
+      safes &&
+      !safes.every(safe => safe.transactions.every(tx => tx.isValid))
+    ) {
       //  all transactions must be valid
       return false;
     }
