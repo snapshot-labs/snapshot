@@ -172,11 +172,11 @@ onMounted(async () => {
     <CreateSafe
       v-for="(safe, i) in newPluginData.safes"
       :key="`${safe.network}:${safe.safeAddress}`"
-      :safe-index="i"
       :safe="safe"
-      @remove-safe="removeSafe"
-      @update-safe="updateSafe"
       :all-safes="allSafes"
+      :unconfigured-safes="unconfiguredSafes"
+      @remove-safe="() => removeSafe(i)"
+      @update-safe="safe => updateSafe(safe, i)"
     />
   </div>
   <TuneButton

@@ -10,12 +10,12 @@ import BotSupportWarning from './components/BotSupportWarning.vue';
 // PROPS
 const props = defineProps<{
   allSafes: GnosisSafe[];
+  unconfiguredSafes: GnosisSafe[];
   safe: GnosisSafe;
-  safeIndex: number;
 }>();
 
 // VARS
-const configuredSafe = ref<GnosisSafe | null>(null);
+const configuredSafe = ref<GnosisSafe>();
 const tokens = ref<Token[]>([]);
 const collectibles = ref<NFT[]>([]);
 const isLoading = ref(false);
@@ -24,20 +24,20 @@ const isLoading = ref(false);
 
 // emits an event with the shape expected by the parent of the plugin component
 const emit = defineEmits<{
-  updateSafe: [value: GnosisSafe, index: number];
+  updateSafe: [value: GnosisSafe];
   addSafe: [value: GnosisSafe];
-  removeSafe: [value: number];
+  removeSafe: [];
 }>();
 
 // METHODS
 function update(newlyConfiguredSafe: GnosisSafe) {
-  emit('updateSafe', newlyConfiguredSafe, props.safeIndex);
+  emit('updateSafe', newlyConfiguredSafe);
 }
 
 // METHODS
 function removeSafe() {
   if (configuredSafe.value) {
-    emit('removeSafe', props.safeIndex);
+    emit('removeSafe');
   }
 }
 
@@ -49,7 +49,7 @@ function replaceSafe(safe: GnosisSafe | null) {
 }
 
 function addTransaction(transaction: Transaction) {
-  if (configuredSafe.value === null) return;
+  if (!configuredSafe.value) return;
   configuredSafe.value.transactions.push(transaction);
 }
 
@@ -108,8 +108,8 @@ onMounted(async () => {
     <h2 class="text-md">Add oSnap transactions</h2>
     <h3 class="text-base">Pick a safe</h3>
     <SelectSafe
-      :safes="allSafes"
-      :selectedSafe="configuredSafe"
+      :safes="[...unconfiguredSafes, configuredSafe ?? props.safe]"
+      :selectedSafe="configuredSafe ?? props.safe"
       @updateSafe="replaceSafe($event)"
     />
     <BotSupportWarning
