@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
-import { getIpfsUrl } from '@/helpers/utils';
 import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
 import { formatEther, formatUnits } from '@ethersproject/units';
 import HandleOutcome from './components/HandleOutcome/HandleOutcome.vue';
@@ -40,8 +39,6 @@ const props = defineProps<{
   proposal: Proposal;
   results: Results;
 }>();
-
-const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
 
 const safes = computed<GnosisSafe[]>(() => {
   if (isLegacySingleSafe(props.proposal.plugins.oSnap)) {
