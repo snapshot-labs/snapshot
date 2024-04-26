@@ -6,7 +6,7 @@ import { formatEther, formatUnits } from '@ethersproject/units';
 import HandleOutcome from './components/HandleOutcome/HandleOutcome.vue';
 import ReadOnly from './components/Input/ReadOnly.vue';
 import SafeLinkWithAvatar from './components/SafeLinkWithAvatar.vue';
-import { GnosisSafe, Transaction } from './types';
+import { GnosisSafe, Transaction, isLegacySingleSafe } from './types';
 import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 import TenderlySimulation from './components/TransactionBuilder/TenderlySimulation.vue';
 import BotSupportWarning from './components/BotSupportWarning.vue';
@@ -40,9 +40,15 @@ const props = defineProps<{
   proposal: Proposal;
   results: Results;
 }>();
+
 const ipfs = getIpfsUrl(props.proposal.ipfs) as string;
-const safe = props.proposal.plugins.oSnap?.safe as GnosisSafe;
-const transactionsForDisplay = enrichTransactionsForDisplay(safe.transactions);
+
+const safes = computed<GnosisSafe[]>(() => {
+  if (isLegacySingleSafe(props.proposal.plugins.oSnap)) {
+    return [props.proposal.plugins.oSnap.safe] as GnosisSafe[];
+  }
+  return props.proposal.plugins.oSnap.safes as GnosisSafe[];
+});
 
 function enrichTransactionsForDisplay(transactions: Transaction[]) {
   // handle here
@@ -99,55 +105,58 @@ function enrichTransactionForDisplay(transaction: Transaction) {
 </script>
 
 <template>
-  <template v-if="safe.transactions.length > 0">
-    <div
-      class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 relative"
-    >
-      <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
-      <h2 class="text-lg">oSnap Transactions</h2>
-      <div class="flex flex-col items-center gap-3 md:flex-row">
-        <SafeLinkWithAvatar :safe="safe" />
-      </div>
-
-      <BotSupportWarning
-        :chain-id="safe.network"
-        :safe-address="safe.safeAddress"
-      />
-
-      <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
+  <div v-if="safes.length > 0" class="flex flex-col gap-4">
+    <template v-for="safe in safes">
       <div
-        v-for="({ type, ...details }, index) in transactionsForDisplay"
-        class="flex flex-col gap-2"
+        class="flex w-full flex-col gap-4 rounded-2xl border border-skin-border p-3 relative"
       >
-        <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
+        <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
+        <h2 class="text-lg">oSnap Transactions</h2>
+        <div class="flex flex-col items-center gap-3 md:flex-row">
+          <SafeLinkWithAvatar :safe="safe" />
+        </div>
 
-        <ReadOnly v-for="[key, value] in objectFromEntriesSorted(details)">
-          <strong
-            class="mr-2 inline-block whitespace-nowrap first-letter:capitalize"
-            >{{ key }}</strong
-          >
-          <span class="break-all">{{ value }}</span>
-        </ReadOnly>
+        <BotSupportWarning
+          :chain-id="safe.network"
+          :safe-address="safe.safeAddress"
+        />
+
+        <div class="divider mx-auto h-[1px] w-full bg-skin-border" />
+        <div
+          v-for="({ type, ...details }, index) in enrichTransactionsForDisplay(
+            safe.transactions
+          )"
+          class="flex flex-col gap-2"
+        >
+          <h4 class="mb-2">Transaction #{{ index + 1 }} — {{ type }}</h4>
+
+          <ReadOnly v-for="[key, value] in objectFromEntriesSorted(details)">
+            <strong
+              class="mr-2 inline-block whitespace-nowrap first-letter:capitalize"
+              >{{ key }}</strong
+            >
+            <span class="break-all">{{ value }}</span>
+          </ReadOnly>
+        </div>
+
+        <TenderlySimulation
+          :transactions="safe.transactions"
+          :safe="safe"
+          :network="safe.network"
+        />
+
+        <HandleOutcome
+          v-if="!!results"
+          :space="space"
+          :proposal="proposal"
+          :transactions="safe.transactions"
+          :results="results"
+          :module-address="safe.moduleAddress"
+          :network="safe.network"
+        />
       </div>
-
-      <TenderlySimulation
-        :transactions="safe.transactions"
-        :safe="safe"
-        :network="safe.network"
-      />
-
-      <HandleOutcome
-        v-if="!!results"
-        :space="space"
-        :proposal="proposal"
-        :transactions="safe.transactions"
-        :results="results"
-        :module-address="safe.moduleAddress"
-        :network="safe.network"
-      />
-    </div>
-  </template>
-
+    </template>
+  </div>
   <template v-else>
     <p>There are no transactions associated with this proposal.</p>
   </template>
