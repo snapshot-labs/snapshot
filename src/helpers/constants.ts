@@ -16,7 +16,8 @@ export const KNOWN_HOSTS = [
   'pilot.gnosisguild.org',
   'metissafe.tech',
   'multisig.mantle.xyz',
-  'wallet.ambire.com'
+  'wallet.ambire.com',
+  'multisig.moonbeam.network'
 ];
 
 export const SPACE_CATEGORIES = [
