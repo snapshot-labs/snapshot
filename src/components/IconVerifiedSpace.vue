@@ -15,7 +15,7 @@ withDefaults(
   <div class="cursor-help">
     <BaseIcon
       v-tippy="{
-        content: $t('verifiedSpace'),
+        content: turbo ? 'Turbo space' : $t('verifiedSpace'),
         placement: 'right'
       }"
       name="check"
