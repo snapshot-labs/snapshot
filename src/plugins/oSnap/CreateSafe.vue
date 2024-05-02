@@ -4,7 +4,6 @@ import { fetchBalances, fetchCollectibles } from './utils';
 import { cloneDeep } from 'lodash';
 import SelectSafe from './components/Input/SelectSafe.vue';
 import TransactionBuilder from './components/TransactionBuilder/TransactionBuilder.vue';
-import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 import BotSupportWarning from './components/BotSupportWarning.vue';
 
 // PROPS
@@ -102,9 +101,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="rounded-2xl border p-4 relative">
-    <OsnapMarketingWidget class="absolute top-[-16px] right-[16px]" />
-    <button class="text-red" @click="removeSafe">Remove Batch</button>
+  <div class="flex p-4 flex-col gap-0 relative pb-4">
+    <button class="text-red ml-auto" @click="removeSafe">
+      Remove treasury
+    </button>
     <h2 class="text-md">Add oSnap transactions</h2>
     <h3 class="text-base">Pick a safe</h3>
     <SelectSafe

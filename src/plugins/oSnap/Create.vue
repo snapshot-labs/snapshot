@@ -11,6 +11,7 @@ import {
 import { getIsOsnapEnabled, getModuleAddressForTreasury } from './utils';
 import CreateSafe from './CreateSafe.vue';
 import { toChecksumAddress } from '@/helpers/utils';
+import OsnapMarketingWidget from './components/OsnapMarketingWidget.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -131,58 +132,67 @@ onMounted(async () => {
 </script>
 
 <template>
-  <template v-if="!space.treasuries.length">
-    <h2>Warning: no treasuries</h2>
-    <p>
-      You have installed the oSnap plugin, but you don't have any treasuries.
-    </p>
-    <p>
-      Please add a Safe as a treasury and enable oSnap on it to use the oSnap
-      plugin.
-    </p>
-  </template>
-  <template v-else-if="hasLegacyPluginInstalled">
-    <div class="rounded-2xl border p-4 text-md">
+  <div class="rounded-2xl border border-skin-border relative">
+    <div v-if="!space.treasuries.length" class="rounded-2xl border p-4 text-md">
+      <h2>Warning: no treasuries</h2>
+      <p>
+        You have installed the oSnap plugin, but you don't have any treasuries.
+      </p>
+      <p>
+        Please add a Safe as a treasury and enable oSnap on it to use the oSnap
+        plugin.
+      </p>
+    </div>
+    <div
+      v-else-if="hasLegacyPluginInstalled"
+      class="rounded-2xl border p-4 text-md"
+    >
       <h2 class="mb-2">Warning: Multiple oSnap enabled plugins detected</h2>
       <p class="mb-2">
         For best experience using oSnap, please remove the SafeSnap plugin from
         your space.
       </p>
     </div>
-  </template>
 
-  <template v-else-if="isLoading">
-    <div class="grid min-h-[180px] place-items-center">
+    <div v-else-if="isLoading" class="grid min-h-[180px] place-items-center">
       <h2 class="text-center">
         Loading oSnap Safes <LoadingSpinner class="ml-2 inline" big />
       </h2>
     </div>
-  </template>
-  <template v-else-if="!allSafes.length">
-    <h2>Warning: no oSnap safes found</h2>
-    <p>
-      You have installed the oSnap plugin, but you don't have any oSnap safes.
-    </p>
-    <p>
-      Please add a Safe as a treasury and enable oSnap on it to use the oSnap
-      plugin.
-    </p>
-  </template>
-  <div class="flex flex-col gap-6" v-else>
-    <CreateSafe
-      v-for="(safe, i) in newPluginData.safes"
-      :key="`${safe.network}:${safe.safeAddress}`"
-      :safe="safe"
-      :all-safes="allSafes"
-      :unconfigured-safes="unconfiguredSafes"
-      @remove-safe="() => removeSafe(i)"
-      @update-safe="safe => updateSafe(safe, i)"
-    />
+    <div v-else-if="!allSafes.length">
+      <h2>Warning: no oSnap safes found</h2>
+      <p>
+        You have installed the oSnap plugin, but you don't have any oSnap safes.
+      </p>
+      <p>
+        Please add a Safe as a treasury and enable oSnap on it to use the oSnap
+        plugin.
+      </p>
+    </div>
+    <div
+      v-else-if="!newPluginData.safes?.length"
+      class="rounded-2xl border p-4 text-md"
+    >
+      <h4>Add treasuries to start building</h4>
+    </div>
+    <template v-else>
+      <CreateSafe
+        v-for="(safe, i) in newPluginData.safes"
+        :class="{ 'border-t border-skin-border': i !== 0 }"
+        :key="`${safe.network}:${safe.safeAddress}`"
+        :safe="safe"
+        :all-safes="allSafes"
+        :unconfigured-safes="unconfiguredSafes"
+        @remove-safe="() => removeSafe(i)"
+        @update-safe="safe => updateSafe(safe, i)"
+      />
+    </template>
+    <OsnapMarketingWidget class="absolute z-2 top-[-16px] right-[16px]" />
   </div>
   <TuneButton
     v-if="unconfiguredSafes.length"
     class="mt-4 w-full"
     @click="addNewSafe"
-    >Add Batch</TuneButton
+    >Add treasury +</TuneButton
   >
 </template>
