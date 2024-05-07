@@ -19,7 +19,7 @@ const hasDelegatesSettings = computed(() => {
   return (
     props.space.delegationPortal?.delegationType ||
     props.space.strategies?.some(
-      ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+      ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
     )
   );
 });
@@ -37,7 +37,7 @@ const isLegacySpace = computed(() => {
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link
-      v-if="hasDelegationStrategy"
+      v-if="hasDelegationStrategy && !hasDelegatesSettings"
       v-slot="{ isExactActive }"
       :to="{ name: 'delegate', params: { key: space.id } }"
     >

@@ -282,7 +282,7 @@ onMounted(() => {
       <SpaceDelegatesDelegateRegistryV2Modal
         v-if="
           space.strategies?.some(
-            ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+            ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
           )
         "
         :open="route.query.delegate !== undefined"
