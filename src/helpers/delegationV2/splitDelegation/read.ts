@@ -7,24 +7,19 @@ type DelegateFromSD = {
   address: string;
   votingPower: number;
   percentOfVotingPower: number;
-  delegatorCount: number;
+  delegators: string[];
   percentOfDelegators: number;
 };
 
-type DelegateDetailsFromSD = {
-  votingPower: number;
-  percentOfVotingPower: number;
-  delegatorCount: number;
-  percentOfDelegators: number;
-};
+// const emptyDelegate = (address: string): DelegateWithPercent => ({
+//   id: address,
+//   delegatedVotes: '0',
+//   tokenHoldersRepresentedAmount: 0,
+//   delegatorsPercentage: 0,
+//   votesPercentage: 0
+// });
 
-const emptyDelegate = (address: string): DelegateWithPercent => ({
-  id: address,
-  delegatedVotes: '0',
-  tokenHoldersRepresentedAmount: 0,
-  delegatorsPercentage: 0,
-  votesPercentage: 0
-});
+const bpsToPercent = (bps: number): number => bps / 10000;
 
 const getDelegations =
   (space: ExtendedSpace): DelegationReader['getDelegates'] =>
@@ -57,9 +52,9 @@ const getDelegations =
     const formatted: DelegateWithPercent[] = response.delegates.map(d => ({
       id: d.address,
       delegatedVotes: d.votingPower.toString(),
-      tokenHoldersRepresentedAmount: d.delegatorCount,
-      delegatorsPercentage: d.percentOfDelegators,
-      votesPercentage: d.percentOfVotingPower
+      tokenHoldersRepresentedAmount: d.delegators.length,
+      delegatorsPercentage: bpsToPercent(d.percentOfDelegators),
+      votesPercentage: bpsToPercent(d.percentOfVotingPower)
     }));
 
     return formatted;
@@ -85,16 +80,14 @@ const getDelegate =
           network: space.network
         })
       }
-    ).then(res => res.json())) as DelegateDetailsFromSD;
-
-    if (response.delegatorCount > 0) return emptyDelegate(address);
+    ).then(res => res.json())) as DelegateFromSD;
 
     const formatted: DelegateWithPercent = {
       id: address,
       delegatedVotes: response.votingPower.toString(),
-      tokenHoldersRepresentedAmount: response.delegatorCount,
-      delegatorsPercentage: response.percentOfDelegators,
-      votesPercentage: response.percentOfVotingPower
+      tokenHoldersRepresentedAmount: response.delegators.length,
+      delegatorsPercentage: bpsToPercent(response.percentOfDelegators),
+      votesPercentage: bpsToPercent(response.percentOfVotingPower)
     };
 
     return formatted;
@@ -120,7 +113,7 @@ const getBalance =
           network: space.network
         })
       }
-    ).then(res => res.json())) as DelegateDetailsFromSD;
+    ).then(res => res.json())) as DelegateFromSD;
 
     return response.votingPower.toString();
   };
