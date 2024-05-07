@@ -3,12 +3,12 @@ import {
   DelegationWriter
 } from '@/helpers/delegationV2/delegation';
 import * as compound from '@/helpers/delegationV2/compound';
-import * as delegateRegistry2 from '@/helpers/delegationV2/delegateRegistryV2';
+import * as splitDelegation from '@/helpers/delegationV2/splitDelegation';
 import { ExtendedSpace } from '@/helpers/interfaces';
 
 export enum DelegationTypes {
   COMPOUND = 'compound-governor',
-  DELEGATE_REGISTRY_V2 = 'delegate-registry-v2'
+  SPLIT_DELEGATION = 'split-delegation'
 }
 
 export function setupDelegation(
@@ -25,12 +25,12 @@ export function setupDelegation(
     };
   } else if (
     space.strategies.some(
-      ({ name }) => name === DelegationTypes.DELEGATE_REGISTRY_V2
+      ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
     )
   ) {
     return {
-      reader: delegateRegistry2.getDelegationReader(space),
-      writer: delegateRegistry2.getDelegationWriter(space, auth)
+      reader: splitDelegation.getDelegationReader(space),
+      writer: splitDelegation.getDelegationWriter(space, auth)
     };
   } else {
     throw new Error(
