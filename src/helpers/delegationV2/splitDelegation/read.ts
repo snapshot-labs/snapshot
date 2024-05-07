@@ -52,9 +52,9 @@ const getDelegations =
           network: space.network
         })
       }
-    ).then(res => res.json())) as { topDelegates: DelegateFromSD[] };
+    ).then(res => res.json())) as { delegates: DelegateFromSD[] };
 
-    const formatted: DelegateWithPercent[] = response.topDelegates.map(d => ({
+    const formatted: DelegateWithPercent[] = response.delegates.map(d => ({
       id: d.address,
       delegatedVotes: d.votingPower.toString(),
       tokenHoldersRepresentedAmount: d.delegatorCount,
