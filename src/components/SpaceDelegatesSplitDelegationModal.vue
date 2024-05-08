@@ -26,16 +26,13 @@ const { resolveName } = useResolveName();
 const { setDelegates, loadDelegateBalance } = useDelegates(props.space);
 const { web3Account } = useWeb3();
 
-const defaultSpaceDelegates = {
+const defaultDelegate = {
   address: props.address,
-  space: props.space,
   weight: 100
 };
 
-const spaceDelegates = ref([defaultSpaceDelegates]);
-const form = ref({
-  to: ''
-});
+const delegates = ref([defaultDelegate]);
+
 const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const addressRef = ref();
@@ -43,42 +40,16 @@ const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
 const expirationDate = ref<number>(calculateInitialDate());
 const isSpaceDelegatesValid = computed(() => {
-  const allDelegatesHaveAddress = spaceDelegates.value.every(
+  const allDelegatesHaveAddress = delegates.value.every(
     delegate => delegate.address
   );
 
-  const totalWeight = spaceDelegates.value.reduce(
+  const totalWeight = delegates.value.reduce(
     (total, delegate) => total + delegate.weight,
     0
   );
 
   return !allDelegatesHaveAddress || totalWeight !== 100;
-});
-
-const validationErrors = computed(() => {
-  return validateForm(
-    definition.value || {},
-    clone({
-      to: resolvedAddress.value
-    })
-  );
-});
-
-const definition = computed(() => {
-  return {
-    type: 'object',
-    properties: {
-      to: {
-        type: 'string',
-        format: 'address',
-        title: 'Delegate to',
-        description: 'The address, ENS or Lens of who you want to delegate to',
-        examples: ['Address, ENS or Lens']
-      }
-    },
-    required: ['to'],
-    additionalProperties: false
-  };
 });
 
 const dateString = computed(() =>
@@ -97,42 +68,41 @@ function calculateInitialDate(): number {
 }
 
 function deleteDelegate(index: number) {
-  const delegates = clone(spaceDelegates.value);
-  delegates.splice(index, 1);
-  spaceDelegates.value = delegates;
+  const newDelegates = clone(delegates.value);
+  newDelegates.splice(index, 1);
+  delegates.value = newDelegates;
 }
 
 function updateDelegate(index: number, form: { to: string; weight: number }) {
-  const delegates = clone(spaceDelegates.value);
-  delegates[index] = {
-    ...delegates[index],
+  const newDelegates = clone(delegates.value);
+  newDelegates[index] = {
+    ...newDelegates[index],
     address: form.to,
     weight: form.weight
   };
-  spaceDelegates.value = delegates;
+  delegates.value = newDelegates;
 }
 
 function deleteAllDelegates() {
-  spaceDelegates.value = [defaultSpaceDelegates];
+  delegates.value = [defaultDelegate];
 }
 
 function addDelegate() {
   const newDelegate = {
     address: '',
-    space: props.space,
     weight: 0
   };
 
-  spaceDelegates.value.push(newDelegate);
+  delegates.value.push(newDelegate);
 }
 
 function divideEqually() {
-  const numDelegates = spaceDelegates.value.length;
+  const numDelegates = delegates.value.length;
   if (numDelegates === 0) return;
 
   const equalWeight = 100 / numDelegates;
 
-  const updatedDelegates = spaceDelegates.value.map(delegate => ({
+  const updatedDelegates = delegates.value.map(delegate => ({
     ...delegate,
     weight: equalWeight
   }));
@@ -140,11 +110,21 @@ function divideEqually() {
   const remainingWeight = 100 - equalWeight * numDelegates;
   updatedDelegates[0].weight += remainingWeight;
 
-  spaceDelegates.value = updatedDelegates;
+  delegates.value = updatedDelegates;
 }
 
 const isValid = computed(() => {
-  return Object.values(validationErrors.value).length === 0;
+  const addresses = delegates.value.map(delegation => delegation.address);
+
+  const weights = delegates.value
+    .map(delegation => Math.floor(delegation.weight))
+    .filter(weight => weight > 0);
+
+  return (
+    addresses.length > 0 &&
+    weights.length > 0 &&
+    addresses.length === weights.length
+  );
 });
 
 async function handleConfirm() {
@@ -157,11 +137,9 @@ async function handleConfirm() {
 
   try {
     isAwaitingSignature.value = true;
-    const addresses = spaceDelegates.value.map(
-      delegation => delegation.address
-    );
+    const addresses = delegates.value.map(delegation => delegation.address);
 
-    const weights = spaceDelegates.value.map(delegation =>
+    const weights = delegates.value.map(delegation =>
       Math.floor(delegation.weight)
     );
 
@@ -185,32 +163,14 @@ async function handleConfirm() {
   }
 }
 
-async function resolveToAddress(value: string) {
-  if (value) {
-    isResolvingName.value = true;
-    resolvedAddress.value = '';
-    resolvedAddress.value = (await resolveName(value)) || '';
-    isResolvingName.value = false;
-  }
-}
-
 async function loadAccountBalance() {
   const balance = await loadDelegateBalance(web3Account.value);
   accountBalance.value = balance || '0';
 }
 
-watchDebounced(
-  () => form.value.to,
-  async value => {
-    resolveToAddress(value);
-  },
-  { debounce: 300 }
-);
-
 watch(
   () => props.address,
   newAddress => {
-    form.value.to = newAddress;
     resolvedAddress.value = newAddress;
   },
   { immediate: true }
@@ -229,10 +189,10 @@ watch(
   newDelegateAddress => {
     if (newDelegateAddress) {
       const delegateAddress = newDelegateAddress.query.delegate;
-      if (spaceDelegates.value.length === 1) {
-        const space = clone(spaceDelegates.value);
+      if (delegates.value.length === 1) {
+        const space = clone(delegates.value);
         space[0].address = delegateAddress;
-        spaceDelegates.value = space;
+        delegates.value = space;
       }
     }
   },
@@ -240,7 +200,7 @@ watch(
 );
 
 const handleCloseModal = () => {
-  spaceDelegates.value = [defaultSpaceDelegates];
+  delegates.value = [defaultDelegate];
   resolvedAddress.value = '';
   isResolvingName.value = false;
   addressRef.value = undefined;
@@ -282,9 +242,11 @@ const handleCloseModal = () => {
         />
       </div>
       <div class="space-y-1">
-        <div v-if="spaceDelegates.length > 0" class="flex justify-between">
-          <TuneLabelInput :hint="definition.properties.to.description">
-            {{ definition.properties.to.title }}
+        <div v-if="delegates.length > 0" class="flex justify-between">
+          <TuneLabelInput
+            hint="Add addresses and the percentage of your voting power you want to delegate to them"
+          >
+            {{ 'Delegate to' }}
           </TuneLabelInput>
           <button
             class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
@@ -294,7 +256,7 @@ const handleCloseModal = () => {
           </button>
         </div>
         <div
-          v-for="(delegate, index) in spaceDelegates"
+          v-for="(delegate, index) in delegates"
           :key="`delegate-registry-row-${index}`"
         >
           <SpaceSplitDelegationRow
@@ -313,7 +275,7 @@ const handleCloseModal = () => {
             Add Delegate
           </TuneButton>
           <button
-            v-if="spaceDelegates.length > 0"
+            v-if="delegates.length > 0"
             class="text-red underline hover:opacity-50 text-xs bg-none"
             @click="deleteAllDelegates"
           >
