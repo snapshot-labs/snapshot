@@ -143,6 +143,7 @@ const getDelegatingTo =
     const response = (await fetch(
       `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegate/${address}`,
       {
+        method: 'POST',
         body: JSON.stringify({
           totalSupply: splitDelStrategy.params.totalSupply,
           strategies: splitDelStrategy.params.strategies,
