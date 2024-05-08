@@ -294,7 +294,7 @@ onBeforeRouteLeave(async () => {
         @close="showDelegateModal = false"
         @reload="handleReload"
       />
-      <SpaceDelegatesDelegateRegistryV2Modal
+      <SpaceDelegatesSplitDelegationModal
         v-if="
           space.strategies?.some(
             ({ name }) => name === DelegationTypes.SPLIT_DELEGATION

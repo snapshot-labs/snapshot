@@ -278,7 +278,7 @@ onMounted(() => {
         @close="handleCloseModalDelegate"
         @reload="loadDelegates(matchFilter)"
       />
-      <SpaceDelegatesDelegateRegistryV2Modal
+      <SpaceDelegatesSplitDelegationModal
         v-if="
           space.strategies?.some(
             ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
