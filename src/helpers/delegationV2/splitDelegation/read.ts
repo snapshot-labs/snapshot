@@ -5,10 +5,10 @@ const SPLIT_DELEGATE_BACKEND_URL = 'https://delegate-api.gnosisguild.org';
 
 type DelegateFromSD = {
   address: string;
+  delegatorCount: number;
+  percentOfDelegators: number;
   votingPower: number;
   percentOfVotingPower: number;
-  delegators: string[];
-  percentOfDelegators: number;
 };
 
 // const emptyDelegate = (address: string): DelegateWithPercent => ({
@@ -52,7 +52,7 @@ const getDelegations =
     const formatted: DelegateWithPercent[] = response.delegates.map(d => ({
       id: d.address,
       delegatedVotes: d.votingPower.toString(),
-      tokenHoldersRepresentedAmount: d.delegators.length,
+      tokenHoldersRepresentedAmount: d.delegatorCount,
       delegatorsPercentage: bpsToPercent(d.percentOfDelegators),
       votesPercentage: bpsToPercent(d.percentOfVotingPower)
     }));
@@ -85,7 +85,7 @@ const getDelegate =
     const formatted: DelegateWithPercent = {
       id: address,
       delegatedVotes: response.votingPower.toString(),
-      tokenHoldersRepresentedAmount: response.delegators.length,
+      tokenHoldersRepresentedAmount: response.delegatorCount,
       delegatorsPercentage: bpsToPercent(response.percentOfDelegators),
       votesPercentage: bpsToPercent(response.percentOfVotingPower)
     };
@@ -118,16 +118,10 @@ const getBalance =
     return response.votingPower.toString();
   };
 
-type DelegateToFromDRV2 = {
-  delegators: {
-    from_address: string;
-    delegated_amount: string;
-    to_address_own_amount: string;
-  }[];
-  voteWeightDelegated: string;
-  numberOfDelegators: number;
-  delegatesOwnVoteWeight: string;
-  totalVoteWeight: string;
+type DelegatorResponse = {
+  delegates: DelegateFromSD[];
+  delegator: string;
+  blockNumber: number;
 };
 
 const getDelegatingTo =
@@ -141,7 +135,7 @@ const getDelegatingTo =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegate/${address}`,
+      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegator/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -150,9 +144,9 @@ const getDelegatingTo =
           network: space.network
         })
       }
-    ).then(res => res.json())) as DelegateToFromDRV2;
+    ).then(res => res.json())) as DelegatorResponse;
 
-    return response.delegators.map(d => d.from_address);
+    return response.delegates.map(d => d.address);
   };
 
 export const getDelegationReader = (
