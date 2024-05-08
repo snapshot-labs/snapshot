@@ -10,30 +10,24 @@ const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
     if (addresses.length <= 0) {
-      throw new Error(
-        'Delegate Registry V2 delegation must have at least one delegate'
-      );
+      throw new Error('Delegation must have at least one delegate');
     }
 
     if (addresses.length !== ratio?.length) {
       throw new Error(
-        'Delegate Registry V2 delegation must have the same number of delegates and ratios'
+        'Delegation must have the same number of delegates and ratios'
       );
     }
 
     if (expirationTimestamp == null) {
-      throw new Error(
-        'Delegate Registry V2 delegation must have an expiration timestamp'
-      );
+      throw new Error('Delegation must have an expiration timestamp');
     }
 
     if (
       expirationTimestamp &&
       expirationTimestamp < Math.floor(Date.now() / 1000)
     ) {
-      throw new Error(
-        'Delegate Registry V2 delegation expiration must be in the future'
-      );
+      throw new Error('Delegation expiration must be in the future');
     }
 
     const delegations = addresses.map((address, index) => ({

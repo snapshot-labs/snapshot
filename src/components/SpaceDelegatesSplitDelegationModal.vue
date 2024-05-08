@@ -297,7 +297,7 @@ const handleCloseModal = () => {
           v-for="(delegate, index) in spaceDelegates"
           :key="`delegate-registry-row-${index}`"
         >
-          <SpaceDelegateRegistryV2Row
+          <SpaceSplitDelegationRow
             :address="delegate.address"
             :weight="delegate.weight"
             @delete-delegate="deleteDelegate(index)"
