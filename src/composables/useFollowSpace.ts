@@ -76,12 +76,14 @@ export function useFollowSpace(spaceId: any = {}) {
           }
           await client.unfollow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
-            space
+            space,
+            network: 's'
           });
         } else {
           await client.follow(aliasWallet.value, aliasWallet.value.address, {
             from: web3Account.value,
-            space
+            space,
+            network: 's'
           });
         }
         await loadFollows();
