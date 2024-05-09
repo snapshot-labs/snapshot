@@ -9,6 +9,7 @@ const DELEGATION_CONTRACT = '0xDE1e8A7E184Babd9F0E3af18f40634e9Ed6F0905'; //All 
 const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
+    console.log('sendSetDelegationTx', addresses, ratio, expirationTimestamp);
     if (addresses.length <= 0) {
       throw new Error('Delegation must have at least one delegate');
     }
@@ -30,10 +31,15 @@ const sendSetDelegationTx =
       throw new Error('Delegation expiration must be in the future');
     }
 
-    const delegations = addresses.map((address, index) => ({
-      delegate: hexZeroPad(address, 32),
-      ratio: ratio[index]
-    }));
+    const delegations = addresses
+      .map((address, index) => ({
+        delegate: hexZeroPad(address, 32),
+        ratio: ratio[index]
+      }))
+      .sort((a, b) => {
+        return BigInt(a.delegate) < BigInt(b.delegate) ? -1 : 1;
+      });
+    console.log('delegations', delegations);
     const tx = await sendTransaction(
       auth.web3,
       DELEGATION_CONTRACT,
