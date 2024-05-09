@@ -75,8 +75,8 @@ const getDelegate =
       {
         method: 'POST',
         body: JSON.stringify({
-          totalSupply: 10000000,
-          strategies: space.strategies,
+          totalSupply: splitDelStrategy.params.totalSupply,
+          strategies: splitDelStrategy.params.strategies,
           network: space.network
         })
       }
