@@ -17,6 +17,8 @@ const injected = computed(() => getInjected());
 
 const filteredConnectors = computed(() => {
   const baseConnectors = ['injected', 'walletconnect', 'walletlink'];
+  // If injected is Coinbase, hide WalletLink
+  if (injected.value?.name === 'Coinbase') connectors.walletlink.hidden = true;
   if (isShowingAllConnectors.value) return Object.keys(connectors);
   return Object.keys(connectors).filter(cId => baseConnectors.includes(cId));
 });
