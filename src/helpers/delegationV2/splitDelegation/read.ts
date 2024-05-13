@@ -11,6 +11,27 @@ type DelegateFromSD = {
   percentOfVotingPower: number;
 };
 
+type AddressResponse = {
+  chainId: number;
+  blockNumber: number;
+  address: string;
+  votingPower: number;
+  percentOfVotingPower: number;
+  percentOfDelegators: number;
+  delegates: {
+    address: string;
+    direct: boolean;
+    votingPower: number;
+    percentPowerOut: number;
+  }[];
+  delegators: {
+    address: string;
+    direct: boolean;
+    votingPower: number;
+    percentPowerIn: number;
+  }[];
+};
+
 // const emptyDelegate = (address: string): DelegateWithPercent => ({
 //   id: address,
 //   delegatedVotes: '0',
@@ -71,7 +92,7 @@ const getDelegate =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegate/${address}`,
+      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -80,12 +101,12 @@ const getDelegate =
           network: space.network
         })
       }
-    ).then(res => res.json())) as DelegateFromSD;
+    ).then(res => res.json())) as AddressResponse;
 
     const formatted: DelegateWithPercent = {
       id: address,
       delegatedVotes: response.votingPower.toString(),
-      tokenHoldersRepresentedAmount: response.delegatorCount,
+      tokenHoldersRepresentedAmount: response.delegates.length,
       delegatorsPercentage: bpsToPercent(response.percentOfDelegators),
       votesPercentage: bpsToPercent(response.percentOfVotingPower)
     };
@@ -104,7 +125,7 @@ const getBalance =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegate/${address}`,
+      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -118,12 +139,6 @@ const getBalance =
     return response.votingPower.toString();
   };
 
-type DelegatorResponse = {
-  delegates: DelegateFromSD[];
-  delegator: string;
-  blockNumber: number;
-};
-
 const getDelegatingTo =
   (space: ExtendedSpace): DelegationReader['getDelegatingTo'] =>
   async (address: string) => {
@@ -135,7 +150,7 @@ const getDelegatingTo =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/delegator/${address}`,
+      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -144,7 +159,7 @@ const getDelegatingTo =
           network: space.network
         })
       }
-    ).then(res => res.json())) as DelegatorResponse;
+    ).then(res => res.json())) as AddressResponse;
 
     return response.delegates.map(d => d.address);
   };
