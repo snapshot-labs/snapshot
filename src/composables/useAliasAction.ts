@@ -54,9 +54,10 @@ export function useAliasAction() {
 
   async function setAlias() {
     const rndWallet = Wallet.createRandom();
-    aliases.value = Object.assign(aliases.value, {
+    aliases.value = {
+      ...aliases.value,
       [web3.value.account]: rndWallet.privateKey
-    });
+    };
     lsSet('aliases', aliases.value);
 
     if (aliasWallet.value?.address) {
