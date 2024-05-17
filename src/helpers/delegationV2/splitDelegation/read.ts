@@ -15,7 +15,7 @@ type AddressResponse = {
   chainId: number;
   blockNumber: number;
   address: string;
-  votingPower: number;
+  votingPower: Record<string, number>;
   percentOfVotingPower: number;
   percentOfDelegators: number;
   delegates: {
@@ -106,7 +106,7 @@ const getDelegate =
     const formatted: DelegateWithPercent = {
       id: address,
       delegatedVotes: response.votingPower.toString(),
-      tokenHoldersRepresentedAmount: response.delegates.length,
+      tokenHoldersRepresentedAmount: response.delegators.length,
       delegatorsPercentage: bpsToPercent(response.percentOfDelegators),
       votesPercentage: bpsToPercent(response.percentOfVotingPower)
     };
