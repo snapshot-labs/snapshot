@@ -38,7 +38,7 @@ const props = defineProps<{
 
 type Form = {
   eligibility: {
-    choice: 'any' | number;
+    choice: 'any' | 'prediction' | number;
   };
   distribution: {
     type: 'lottery' | 'weighted';
@@ -123,6 +123,10 @@ const eligibilityOptions = computed(() => {
       value: 'any',
       label: 'Anyone who votes'
     },
+    {
+      value: 'prediction',
+      label: 'Who vote for the winning choice'
+    },
     ...proposalChoices
   ];
 });
@@ -206,13 +210,20 @@ const strategyDistributionLimit = computed(() => {
 });
 
 const strategy = computed<BoostStrategy>(() => {
-  const choice =
-    form.value.eligibility.choice === 'any'
-      ? undefined
-      : form.value.eligibility.choice.toString();
+  let choice;
+  let eligibilityType;
 
-  const eligibilityType =
-    form.value.eligibility.choice === 'any' ? 'incentive' : 'bribe';
+  switch (form.value.eligibility.choice) {
+    case 'any':
+      eligibilityType = 'incentive';
+      break;
+    case 'prediction':
+      eligibilityType = 'prediction';
+      break;
+    default:
+      choice = form.value.eligibility.choice.toString();
+      eligibilityType = 'bribe';
+  }
 
   return {
     name: 'Boost',
