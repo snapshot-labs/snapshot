@@ -125,7 +125,7 @@ const eligibilityOptions = computed(() => {
     },
     {
       value: 'prediction',
-      label: 'Who vote for the winning choice'
+      label: 'Anyone who votes for the winning choice'
     },
     ...proposalChoices
   ];
