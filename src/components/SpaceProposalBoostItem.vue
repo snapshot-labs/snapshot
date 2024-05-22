@@ -238,12 +238,12 @@ const { pause } = useIntervalFn(() => {
         { 'border-green/30 bg-green/5': hasClaimed }
       ]"
     >
-      <div class="flex justify-between relative">
+      <div class="relative flex justify-between">
         <div class="w-full">
-          <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
-            <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
+          <div class="flex flex-wrap pr-5 -mt-1 text-skin-heading">
+            <div class="flex items-center mt-1 mr-1 whitespace-nowrap">
               <template v-if="boost.strategy.eligibility.type === 'prediction'">
-                Anyone who votes on winning choice
+                Anyone who votes for the winning choice
               </template>
               <template v-else-if="boost.strategy.eligibility.choice !== null">
                 Who votes
@@ -254,7 +254,7 @@ const { pause } = useIntervalFn(() => {
                         Number(boost.strategy.eligibility.choice) - 1
                       ]
                     "
-                    class="text-skin-heading ml-1"
+                    class="ml-1 text-skin-heading"
                   />
                 </div>
               </template>
@@ -262,17 +262,17 @@ const { pause } = useIntervalFn(() => {
             </div>
             <div
               v-if="boost.strategy.distribution.type === 'weighted'"
-              class="whitespace-nowrap mt-1 mr-1 flex items-center"
+              class="flex items-center mt-1 mr-1 whitespace-nowrap"
             >
               shares a pool of
               <div>
                 <TuneTag
                   :label="`${boostBalanceFormatted} ${boost.token.symbol}`"
-                  class="text-skin-heading ml-1"
+                  class="ml-1 text-skin-heading"
                 />
               </div>
             </div>
-            <div v-else-if="isLottery" class="mt-1 mr-1 flex items-center">
+            <div v-else-if="isLottery" class="flex items-center mt-1 mr-1">
               can win
               <div>
                 <TuneTag
@@ -280,15 +280,15 @@ const { pause } = useIntervalFn(() => {
                     content: `The pool of ${boostBalanceFormatted} ${boost.token.symbol} will be equally distributed among ${boost.strategy.distribution.numWinners} winners. Chances of winning are proportional to the amount of voting-power. If the maximum amount of winners is not reached, the reward will be increased equally.`
                   }"
                   :label="`${amountPerWinner} ${props.boost.token.symbol}`"
-                  class="text-skin-heading ml-1 cursor-help"
+                  class="ml-1 text-skin-heading cursor-help"
                 />
               </div>
             </div>
-            <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
+            <div class="flex items-center mt-1 mr-1 whitespace-nowrap">
               <span v-if="isLottery" class="mr-1"> chances </span>
               based on
               <div>
-                <TuneTag label="Voting power" class="text-skin-heading ml-1" />
+                <TuneTag label="Voting power" class="ml-1 text-skin-heading" />
               </div>
             </div>
             <div
@@ -321,7 +321,7 @@ const { pause } = useIntervalFn(() => {
               </div>
             </div>
           </div>
-          <div class="mt-1 flex items-center">
+          <div class="flex items-center mt-1">
             <span
               v-tippy="{
                 content:
@@ -358,7 +358,7 @@ const { pause } = useIntervalFn(() => {
             <BaseLink
               v-if="claimedTransactionHash"
               :link="explorerUrl(boost.chainId, claimedTransactionHash, 'tx')"
-              class="flex items-center gap-1 text-green hover:text-skin-link justify-center"
+              class="flex items-center justify-center gap-1 text-green hover:text-skin-link"
             >
               <i-ho-cash class="text-xs" />
               Claimed {{ claimedAmount }} {{ boost.token.symbol }}
@@ -454,17 +454,17 @@ const { pause } = useIntervalFn(() => {
         </div>
         <div
           v-if="claimPeriodEnded"
-          class="sm:flex justify-between items-center"
+          class="items-center justify-between sm:flex"
         >
           <div class="leading-none">
-            <div class="font-semibold text-skin-heading flex items-center">
+            <div class="flex items-center font-semibold text-skin-heading">
               Withdraw
               <i-ho-information-circle
                 v-tippy="{
                   content:
                     'You can withdraw your remaining unclaimed tokens and burn the boost NFT or you give voters more time to claim their rewards and withdraw your remaining tokens later.'
                 }"
-                class="text-xs ml-1 text-skin-text"
+                class="ml-1 text-xs text-skin-text"
               />
             </div>
             <div>
@@ -482,7 +482,7 @@ const { pause } = useIntervalFn(() => {
             Withdraw {{ withdrawalAmount }} {{ boost.token.symbol }}
           </TuneButton>
         </div>
-        <div v-else class="md:flex items-center">
+        <div v-else class="items-center md:flex">
           <div>
             Amount remaining:
             <span class="text-skin-heading">
