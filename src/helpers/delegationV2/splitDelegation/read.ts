@@ -8,6 +8,7 @@ type DelegateFromSD = {
   delegatorCount: number;
   percentOfDelegators: number;
   votingPower: number;
+  delegatedPower: number;
   percentOfVotingPower: number;
 };
 
@@ -63,9 +64,7 @@ const getDelegations =
       {
         method: 'POST',
         body: JSON.stringify({
-          totalSupply: splitDelStrategy.params.totalSupply,
-          strategies: splitDelStrategy.params.strategies,
-          network: space.network
+          strategy: splitDelStrategy
         })
       }
     ).then(res => res.json())) as { delegates: DelegateFromSD[] };
@@ -96,9 +95,7 @@ const getDelegate =
       {
         method: 'POST',
         body: JSON.stringify({
-          totalSupply: splitDelStrategy.params.totalSupply,
-          strategies: splitDelStrategy.params.strategies,
-          network: space.network
+          strategy: splitDelStrategy
         })
       }
     ).then(res => res.json())) as AddressResponse;
@@ -129,9 +126,7 @@ const getBalance =
       {
         method: 'POST',
         body: JSON.stringify({
-          totalSupply: splitDelStrategy.params.totalSupply,
-          strategies: splitDelStrategy.params.strategies,
-          network: space.network
+          strategy: splitDelStrategy
         })
       }
     ).then(res => res.json())) as DelegateFromSD;
@@ -154,9 +149,7 @@ const getDelegatingTo =
       {
         method: 'POST',
         body: JSON.stringify({
-          totalSupply: splitDelStrategy.params.totalSupply,
-          strategies: splitDelStrategy.params.strategies,
-          network: space.network
+          strategy: splitDelStrategy
         })
       }
     ).then(res => res.json())) as AddressResponse;
