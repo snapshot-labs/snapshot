@@ -9,7 +9,7 @@ import options from '@/helpers/auth';
 import VueTippy from 'vue-tippy';
 import VueViewer from 'v-viewer';
 import { apolloClient } from '@/helpers/apollo';
-import { initSentry } from '@/sentry';
+// import { initSentry } from '@/sentry';
 import { KNOWN_HOSTS } from '@/helpers/constants';
 import i18n from '@/helpers/i18n';
 import router from '@/router';
