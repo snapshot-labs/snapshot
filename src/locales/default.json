@@ -717,7 +717,7 @@
     "label": "Privacy",
     "title": "Select voting privacy",
     "information": "The type of privacy used on proposals. (Enforced on all future proposals)",
-    "any": "Any",
+    "any": "No privacy",
     "none": "None",
     "shutter": {
       "label": "Shutter",
