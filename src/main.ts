@@ -38,7 +38,7 @@ const app = createApp({
   render: () => h(App)
 });
 
-initSentry(app, router);
+// initSentry(app, router);
 
 app
   .use(head)
