@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import voting from '@snapshot-labs/snapshot.js/src/voting';
 import { ExtendedSpace, Proposal, Results } from '@/helpers/interfaces';
+import { BOOST_ENABLED_VOTING_TYPES } from '@/helpers/constants';
 
 const props = defineProps<{ space: ExtendedSpace; proposal: Proposal }>();
 const emit = defineEmits(['reload-proposal']);
@@ -56,9 +57,7 @@ const strategies = computed(
 
 const boostEnabled = computed(() => {
   return (
-    (props.proposal.type === 'basic' ||
-      props.proposal.type === 'single-choice') &&
-    props.proposal.privacy !== 'shutter' &&
+    BOOST_ENABLED_VOTING_TYPES.includes(props.proposal.type) &&
     isWhitelisted(props.space.id) &&
     props.space.boost.enabled
   );

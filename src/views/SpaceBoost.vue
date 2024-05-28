@@ -38,7 +38,7 @@ const props = defineProps<{
 
 type Form = {
   eligibility: {
-    choice: 'any' | number;
+    choice: 'any' | 'prediction' | number;
   };
   distribution: {
     type: 'lottery' | 'weighted';
@@ -97,13 +97,23 @@ const isWrongNetwork = computed(() => {
   return form.value.network !== web3.value.network.key.toString();
 });
 
+const bribeEnabled = computed(() => {
+  return (
+    proposal.value.privacy !== 'shutter' &&
+    props.space.boost.bribeEnabled &&
+    ['basic', 'single-choice'].includes(proposal.value.type)
+  );
+});
+
 const eligibilityOptions = computed(() => {
   const proposalChoices = proposal.value?.choices.map(
     (choice: string, index: number) => {
       return {
         value: index + 1,
         label: `Who votes '${choice}'`,
-        extras: { disabled: !props.space.boost.bribeEnabled }
+        extras: {
+          disabled: !bribeEnabled.value
+        }
       };
     }
   );
@@ -112,6 +122,10 @@ const eligibilityOptions = computed(() => {
     {
       value: 'any',
       label: 'Anyone who votes'
+    },
+    {
+      value: 'prediction',
+      label: 'Anyone who votes for the winning choice'
     },
     ...proposalChoices
   ];
@@ -196,13 +210,20 @@ const strategyDistributionLimit = computed(() => {
 });
 
 const strategy = computed<BoostStrategy>(() => {
-  const choice =
-    form.value.eligibility.choice === 'any'
-      ? undefined
-      : form.value.eligibility.choice.toString();
+  let choice;
+  let eligibilityType;
 
-  const eligibilityType =
-    form.value.eligibility.choice === 'any' ? 'incentive' : 'bribe';
+  switch (form.value.eligibility.choice) {
+    case 'any':
+      eligibilityType = 'incentive';
+      break;
+    case 'prediction':
+      eligibilityType = 'prediction';
+      break;
+    default:
+      choice = form.value.eligibility.choice.toString();
+      eligibilityType = 'bribe';
+  }
 
   return {
     name: 'Boost',
@@ -655,14 +676,28 @@ watch(
               :items="eligibilityOptions"
               label="Eligible to"
             />
-            <TuneBlockFooter v-if="!space.boost.bribeEnabled">
+            <TuneBlockFooter v-if="!bribeEnabled">
               <BaseMessage level="info">
-                Selecting a specific choice is disabled for the
-                <span class="font-semibold">
-                  {{ space.name }}
-                </span>
-                space. Please enable strategic incentivization in the space
-                settings to enable this feature.
+                <template v-if="!space.boost.bribeEnabled">
+                  Selecting a specific choice is disabled for the
+                  <span class="font-semibold">
+                    {{ space.name }}
+                  </span>
+                  space. Please enable strategic incentivization in the space
+                  settings to enable this feature.
+                </template>
+                <template v-else-if="proposal.privacy === 'shutter'">
+                  Strategic incentivization is disabled for proposal with
+                  shutter on.
+                </template>
+                <template
+                  v-else-if="
+                    !['basic', 'single-choice'].includes(proposal.type)
+                  "
+                >
+                  Strategic incentivization is available only for basic and
+                  single choice voting type.
+                </template>
               </BaseMessage>
             </TuneBlockFooter>
           </TuneBlock>

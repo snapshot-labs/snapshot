@@ -71,7 +71,7 @@ export type BoostSubgraph = {
     name: string;
     proposal: string;
     eligibility: {
-      type: 'incentive' | 'bribe';
+      type: 'incentive' | 'prediction' | 'bribe';
       choice: string | null;
     };
     distribution: {

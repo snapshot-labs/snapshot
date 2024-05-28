@@ -46,14 +46,24 @@ const newBoostLink = computed(() => ({
 const isActive = computed(() => props.proposal.state === 'active');
 const isFinal = computed(() => props.proposal.scores_state === 'final');
 
+const winningChoice = computed(() => {
+  const maxScore = Math.max(...props.proposal.scores);
+  const maxScoreCount = props.proposal.scores.filter(
+    score => score === maxScore
+  ).length;
+  return maxScoreCount > 1 ? 0 : props.proposal.scores.indexOf(maxScore) + 1;
+});
+
 function isEligible(boost: BoostSubgraph) {
+  const type = boost.strategy.eligibility.type;
   const choice = boost.strategy.eligibility.choice;
 
   if (!web3Account.value) return false;
-  if (props.proposal.privacy === 'shutter' && !isFinal.value) return false;
+  if (!isFinal.value) return false;
   if (!userVote.value) return false;
-  if (choice === null) return true;
-
+  if (type === 'prediction')
+    return userVote.value.choice.toString() === winningChoice.value.toString();
+  if (type === 'incentive' && choice === null) return true;
   return userVote.value.choice.toString() === choice;
 }
 

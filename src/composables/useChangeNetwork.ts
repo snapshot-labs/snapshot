@@ -1,6 +1,5 @@
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { hexlify } from '@ethersproject/bytes';
 
 export function useChangeNetwork() {
   const changingNetwork = ref(false);
@@ -11,7 +10,7 @@ export function useChangeNetwork() {
       method: 'wallet_switchEthereumChain',
       params: [
         {
-          chainId: hexlify(Number(networks[network].chainId))
+          chainId: `0x${Number(networks[network].chainId).toString(16)}`
         }
       ]
     });

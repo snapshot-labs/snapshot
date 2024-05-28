@@ -192,8 +192,10 @@ export const SUBSCRIPTIONS_QUERY = gql`
 `;
 
 export const ALIASES_QUERY = gql`
-  query Aliases($address: String!, $alias: String!) {
-    aliases(where: { address: $address, alias: $alias }) {
+  query Aliases($address: String!, $alias: String!, $created_gt: Int) {
+    aliases(
+      where: { address: $address, alias: $alias, created_gt: $created_gt }
+    ) {
       address
       alias
     }

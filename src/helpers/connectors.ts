@@ -11,7 +11,7 @@ const connectors = {
       projectId: 'e6454bd61aba40b786e866a69bd4c5c6',
       chains: [1],
       optionalChains: [
-        4, 5, 10, 42, 56, 100, 137, 246, 1088, 42161, 73799, 1115511
+        4, 5, 10, 42, 56, 100, 137, 246, 1088, 42161, 73799, 11155111
       ],
       methods: ['eth_sendTransaction', 'personal_sign', 'eth_signTypedData_v4'],
       optionalMethods: ['eth_accounts'],
@@ -43,7 +43,8 @@ const connectors = {
       chainId: 1,
       ethJsonrpcUrl: `${import.meta.env.VITE_BROVIDER_URL}/1`
     },
-    icon: 'ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q'
+    icon: 'ipfs://QmbJKEaeMz6qR3DmJSTxtYtrZeQPptVfnnYK72QBsvAw5q',
+    hidden: false
   },
   portis: {
     id: 'portis',

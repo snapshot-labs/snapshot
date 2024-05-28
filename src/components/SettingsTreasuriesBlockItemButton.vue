@@ -2,6 +2,7 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { Network } from '@/plugins/oSnap/types';
 import { ConfigError, getIsOsnapEnabled } from '@/plugins/oSnap/utils/getters';
+import { ConfigError, getIsOsnapEnabled } from '@/plugins/oSnap/utils/getters';
 
 const props = defineProps<{
   treasury: TreasuryWallet;
@@ -17,6 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const isOsnapEnabled = ref(false);
+const isChainSupported = ref(true);
 const isChainSupported = ref(true);
 
 async function updateIsOsnapEnabled() {
@@ -53,7 +55,7 @@ onUnmounted(() => {
     <div class="flex items-center gap-2 truncate pr-[20px] text-left">
       <h4 class="truncate">{{ treasury.name }}</h4>
     </div>
-    <div class="ml-auto mr-3">
+    <div v-if="hasOsnapPlugin" class="ml-auto mr-3">
       <SettingsTreasuryActivateOsnapButton
         v-if="hasOsnapPlugin && isChainSupported"
         :is-osnap-enabled="isOsnapEnabled"
