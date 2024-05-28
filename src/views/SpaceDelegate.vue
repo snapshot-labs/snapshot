@@ -2,7 +2,6 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { DelegationTypes } from '@/helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -288,18 +287,6 @@ onBeforeRouteLeave(async () => {
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
         v-if="space.delegationPortal != null"
-        :open="showDelegateModal"
-        :space="space"
-        :address="showUndelegate ? web3Account : address"
-        @close="showDelegateModal = false"
-        @reload="handleReload"
-      />
-      <SpaceDelegatesSplitDelegationModal
-        v-if="
-          space.strategies?.some(
-            ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
-          )
-        "
         :open="showDelegateModal"
         :space="space"
         :address="showUndelegate ? web3Account : address"

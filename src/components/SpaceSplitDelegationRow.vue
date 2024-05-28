@@ -29,7 +29,7 @@ const definition = computed(() => {
         format: 'address',
         title: 'Delegate to',
         description: 'The address, ENS or Lens of who you want to delegate to',
-        examples: ['Address, ENS or Lens']
+        examples: ['Address']
       },
       weight: {
         type: 'number'

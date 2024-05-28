@@ -232,7 +232,7 @@ const handleCloseModal = () => {
       </div>
       <div>
         <TuneLabelInput hint="Your delegations will expire after this date">
-          Set Expiration
+          Set expiration
         </TuneLabelInput>
         <InputDate
           :tooltip="$t('create.delayEnforced')"
