@@ -1,7 +1,7 @@
 import {
   DelegationReader,
   DelegationWriter
-} from '@/helpers/delegationV2/delegation';
+} from '@/helpers/delegationV2/types';
 import * as compound from '@/helpers/delegationV2/compound';
 import * as splitDelegation from '@/helpers/delegationV2/splitDelegation';
 import { ExtendedSpace } from '@/helpers/interfaces';
@@ -18,12 +18,7 @@ export function setupDelegation(
   reader: DelegationReader;
   writer: DelegationWriter;
 } {
-  if (space.delegationPortal?.delegationType === DelegationTypes.COMPOUND) {
-    return {
-      reader: compound.getDelegationReader(space),
-      writer: compound.getDelegationWriter(space, auth)
-    };
-  } else if (
+  if (
     space.strategies.some(
       ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
     )
@@ -31,6 +26,13 @@ export function setupDelegation(
     return {
       reader: splitDelegation.getDelegationReader(space),
       writer: splitDelegation.getDelegationWriter(space, auth)
+    };
+  } else if (
+    space.delegationPortal?.delegationType === DelegationTypes.COMPOUND
+  ) {
+    return {
+      reader: compound.getDelegationReader(space),
+      writer: compound.getDelegationWriter(space, auth)
     };
   } else {
     throw new Error(

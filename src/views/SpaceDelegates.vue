@@ -33,6 +33,12 @@ const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 
+const hasSplitDelegation = computed(() => {
+  return props.space.strategies?.some(
+    ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
+  );
+});
+
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
     case 'mostDelegators':
@@ -271,7 +277,7 @@ onMounted(() => {
     </template>
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
-        v-if="space.delegationPortal != null"
+        v-if="space.delegationPortal != null && !hasSplitDelegation"
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"
@@ -279,11 +285,7 @@ onMounted(() => {
         @reload="loadDelegates(matchFilter)"
       />
       <SpaceDelegatesSplitDelegationModal
-        v-if="
-          space.strategies?.some(
-            ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
-          )
-        "
+        v-if="hasSplitDelegation"
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

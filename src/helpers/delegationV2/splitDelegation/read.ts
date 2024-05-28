@@ -1,5 +1,5 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
-import { DelegationReader } from '@/helpers/delegationV2/delegation';
+import { DelegationReader } from '@/helpers/delegationV2/types';
 
 const SPLIT_DELEGATE_BACKEND_URL = 'https://delegate-api.gnosisguild.org';
 
