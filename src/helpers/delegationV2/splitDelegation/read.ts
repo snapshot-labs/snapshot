@@ -60,7 +60,11 @@ const getDelegations =
     }
 
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/top-delegates?by=${orderBy}&limit=${first}&offset=${skip}`,
+      `${
+        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+      }/api/v1/${
+        space.id
+      }/pin/top-delegates?by=${orderBy}&limit=${first}&offset=${skip}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -91,7 +95,9 @@ const getDelegate =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
+      `${
+        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+      }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -122,7 +128,9 @@ const getBalance =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
+      `${
+        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+      }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -145,7 +153,9 @@ const getDelegatingTo =
       throw new Error('Split delegation strategy not found');
     }
     const response = (await fetch(
-      `${SPLIT_DELEGATE_BACKEND_URL}/api/v1/${space.id}/pin/${address}`,
+      `${
+        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+      }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
         body: JSON.stringify({
