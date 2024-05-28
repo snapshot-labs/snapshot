@@ -2,7 +2,6 @@
 import { TreasuryWallet } from '@/helpers/interfaces';
 import { Network } from '@/plugins/oSnap/types';
 import { ConfigError, getIsOsnapEnabled } from '@/plugins/oSnap/utils/getters';
-import { ConfigError, getIsOsnapEnabled } from '@/plugins/oSnap/utils/getters';
 
 const props = defineProps<{
   treasury: TreasuryWallet;
@@ -18,7 +17,6 @@ const emit = defineEmits<{
 }>();
 
 const isOsnapEnabled = ref(false);
-const isChainSupported = ref(true);
 const isChainSupported = ref(true);
 
 async function updateIsOsnapEnabled() {
