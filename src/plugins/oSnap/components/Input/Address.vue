@@ -62,6 +62,7 @@ const handleBlur = () => {
   <UiInput
     v-model="input"
     :disabled="disabled"
+    placeholder="0x123...abc"
     :error="props.error ?? (error || '')"
     @input="handleInput()"
     @blur="handleBlur"

@@ -5,13 +5,25 @@ import {
 } from '@ethersproject/providers';
 import memoize from 'lodash/memoize';
 import { Contract } from '@ethersproject/contracts';
-import { isBigNumberish } from '@ethersproject/bignumber/lib/bignumber';
+import {
+  BigNumber,
+  isBigNumberish
+} from '@ethersproject/bignumber/lib/bignumber';
 import { isBytesLike, isHexString } from '@ethersproject/bytes';
 import getProvider from '@snapshot-labs/snapshot.js/src/utils/provider';
 import { OPTIMISTIC_GOVERNOR_ABI } from '../constants';
-import { BaseTransaction, NFT, Token, Transaction, GnosisSafe } from '../types';
+import {
+  BaseTransaction,
+  NFT,
+  Token,
+  Transaction,
+  GnosisSafe,
+  InputTypes,
+  isIntegerType
+} from '../types';
 import { parseUnits } from '@ethersproject/units';
 import { useMemoize } from '@vueuse/core';
+import { parseInputArray } from '../components/Input/MethodParameter/utils';
 
 /**
  * Validates that the given `address` is a valid Ethereum address
@@ -144,6 +156,123 @@ export const checkIsContract = useMemoize(
   async (address: string, network: string) =>
     await isContractAddress(address, network)
 );
+
+export function isBool(value: string): boolean {
+  if (value === 'true' || value === 'false') {
+    return true;
+  }
+  return false;
+}
+
+export function validateInput(inputValue: string, type: InputTypes): boolean {
+  if (type === 'address') {
+    return isAddress(inputValue);
+  }
+  if (type === 'bytes') {
+    return isBytesLike(inputValue);
+  }
+  if (type === 'bytes32') {
+    return isBytesLike(inputValue);
+  }
+  if (isIntegerType(type)) {
+    return isValidInt(inputValue, type);
+  }
+  if (type === 'bool') {
+    return isBool(inputValue);
+  }
+  return true;
+}
+
+type Integer = `int${number}` | `uint${number}`;
+
+function isValidInt(value: string, type: Integer) {
+  // check if is number like
+  if (!isBigNumberish(value)) {
+    return false;
+  }
+
+  const unsigned = type.startsWith('uint');
+  const signed = type.startsWith('int');
+  if (!unsigned && !signed) {
+    throw new Error(
+      'Invalid type specified. Type must be either an unsigned integer (uint) or a signed integer (int).'
+    );
+  }
+
+  const bits = parseInt(type.slice(unsigned ? 4 : 3));
+
+  if (isNaN(bits) || bits % 8 !== 0 || bits < 8 || bits > 256) {
+    throw new Error(
+      'Invalid integer type specified. Bit size must be a multiple of 8 with a max of 256'
+    );
+  }
+
+  const number = BigNumber.from(value);
+  // range checks
+  if (unsigned) {
+    const max = BigNumber.from(2).pow(bits).sub(1);
+    return number.gte(0) && number.lte(max);
+  } else {
+    const halfRange = BigNumber.from(2).pow(bits - 1);
+    const min = halfRange.mul(-1);
+    const max = halfRange.sub(1);
+    return number.gte(min) && number.lte(max);
+  }
+}
+
+// recursive type
+export type MaybeNestedArrays<T> = T | T[] | MaybeNestedArrays<T>[];
+
+function validateMaybeArray(
+  valuesMaybeArray: MaybeNestedArrays<string>,
+  typesMaybeArray: MaybeNestedArrays<InputTypes>
+): MaybeNestedArrays<boolean> {
+  try {
+    if (Array.isArray(valuesMaybeArray)) {
+      // handle single type arrays
+      if (!Array.isArray(typesMaybeArray)) {
+        return valuesMaybeArray.map(value =>
+          validateInput(value as string, typesMaybeArray)
+        );
+      } else {
+        if (valuesMaybeArray.length !== typesMaybeArray.length) {
+          throw new Error("Types and values don't match");
+        }
+        // handle array of arrays
+        return valuesMaybeArray.map(
+          (value: MaybeNestedArrays<string>, index: number) =>
+            validateMaybeArray(value, typesMaybeArray[index])
+        );
+      }
+    } else {
+      if (Array.isArray(typesMaybeArray)) {
+        throw new Error("Types and values don't match");
+      }
+      // handle single item
+      return validateInput(valuesMaybeArray, typesMaybeArray);
+    }
+  } catch {
+    return false;
+  }
+}
+
+export function validateSingleOrArray(
+  value: string,
+  types: MaybeNestedArrays<InputTypes> //   ['bool', 'uint256'] | ['bool','uint32', ['bool', 'string', 'address'] ]
+): boolean {
+  const parsed = parseInputArray(value);
+  if (!parsed) {
+    return false;
+  }
+
+  const res = validateMaybeArray(parsed, types);
+
+  if (Array.isArray(res)) {
+    return res.flat().every(Boolean);
+  }
+
+  return res;
+}
 
 // check if json is a safe json type
 export const isSafeFile = (input: any): input is GnosisSafe.BatchFile => {

@@ -55,7 +55,7 @@ onUnmounted(() => {
     </div>
     <div v-if="hasOsnapPlugin" class="ml-auto mr-3">
       <SettingsTreasuryActivateOsnapButton
-        v-if="isChainSupported"
+        v-if="hasOsnapPlugin && isChainSupported"
         :is-osnap-enabled="isOsnapEnabled"
         @click.stop="
           !isViewOnly && emit('configureOsnap', treasuryIndex, isOsnapEnabled)
