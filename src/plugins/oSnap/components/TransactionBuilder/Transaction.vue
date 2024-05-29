@@ -61,13 +61,20 @@ function setTransactionAsInvalid() {
 </script>
 
 <template>
-  <div class="mt-4 border-b pb-4 first:mt-0">
-    <div class="flex items-center justify-between text-[#FF5353]">
+  <div class="mt-4 pb-4 first:mt-0">
+    <div class="flex items-center justify-between">
       <h3 class="text-left text-base">
         Transaction {{ transactionIndex + 1 }}
       </h3>
-      <button @click="emit('removeTransaction', transactionIndex)">
-        Remove
+      <button
+        class="p-[6px] transition-colors duration-200 group"
+        @click="emit('removeTransaction', transactionIndex)"
+      >
+        <BaseIcon
+          class="text-red/80 group-hover:text-red"
+          name="close"
+          size="14"
+        />
       </button>
     </div>
     <TransactionType
