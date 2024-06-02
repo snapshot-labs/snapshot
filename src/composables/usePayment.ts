@@ -3,6 +3,7 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import { parseUnits } from '@ethersproject/units';
 import { BigNumber } from '@ethersproject/bignumber';
 
+const YEARLY_PRICE = 20000;
 const BASE_PRICE = 1666.66666667;
 const BASE_UNIT = 1;
 const BASE_CURRENCY = {
@@ -154,6 +155,7 @@ export function usePayment(network: number) {
   }
 
   return {
+    YEARLY_PRICE,
     BASE_PRICE,
     BASE_UNIT,
     BASE_CURRENCY,
