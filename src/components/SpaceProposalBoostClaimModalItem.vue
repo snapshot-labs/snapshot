@@ -32,10 +32,7 @@ const reward = computed(() => {
     props.boost.token.decimals
   );
 
-  return formatNumber(
-    Number(amountDecimal),
-    getNumberFormatter({ maximumFractionDigits: 8 }).value
-  );
+  return amountDecimal;
 });
 
 const claim = computed(() => {
@@ -84,7 +81,13 @@ async function handleClaimAndReload() {
           {{ hasClaimed ? 'Claimed' : 'Reward' }}
         </span>
         <TuneTag class="text-skin-heading text-base">
-          {{ reward }} {{ props.boost.token.symbol }}
+          {{
+            formatNumber(
+              Number(reward),
+              getNumberFormatter({ maximumFractionDigits: 8 }).value
+            )
+          }}
+          {{ props.boost.token.symbol }}
         </TuneTag>
         <div class="mt-1 flex items-center flex-wrap">
           <span

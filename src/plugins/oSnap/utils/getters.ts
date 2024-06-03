@@ -33,10 +33,13 @@ import {
   ProposalExecutedEvent,
   SafeNetworkPrefix,
   SpaceConfigResponse,
+  Token,
   TransactionsProposedEvent
 } from '../types';
 import { getPagedEvents } from './events';
 import { shortenAddress, toChecksumAddress } from '@/helpers/utils';
+import { getNativeAsset } from './coins';
+import { formatUnits } from '@ethersproject/units';
 
 /**
  * Calls the Gnosis Safe Transaction API
@@ -829,4 +832,102 @@ export async function isConfigCompliant(safeAddress: string, chainId: string) {
   }
   const data = await res.json();
   return data as unknown as SpaceConfigResponse;
+}
+
+export async function fetchBalances(network: Network, safeAddress: string) {
+  if (!safeAddress) {
+    return [];
+  }
+  try {
+    const balances = await getGnosisSafeBalances(network, safeAddress);
+    const balancesWithNative = balances.map(balance => {
+      if (!balance.tokenAddress || !balance.token) {
+        return {
+          ...balance,
+          token: getNativeAsset(network),
+          tokenAddress: 'main'
+        };
+      }
+      return balance;
+    });
+
+    const tokens = await fetchTokens('https://tokens.uniswap.org');
+
+    return enhanceTokensWithBalances(balancesWithNative, tokens, network);
+  } catch (e) {
+    console.warn('Error fetching balances', e);
+    return [];
+  }
+}
+
+export async function fetchTokens(url: string): Promise<Token[]> {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.verifiedTokens?.tokens || data.tokens || [];
+  } catch {
+    return [];
+  }
+}
+
+export function enhanceTokensWithBalances(
+  balances: Partial<BalanceResponse>[],
+  tokens: Token[],
+  network: Network
+) {
+  return balances
+    .filter(
+      (balance): balance is BalanceResponse =>
+        !!balance.token && !!balance.tokenAddress && !!balance.balance
+    )
+    .map(balance => enhanceTokenWithBalance(balance, tokens, network))
+    .sort((a, b) => {
+      if (a.address === 'main' && b.address !== 'main') return -1;
+      if (!(a.address === 'main') && b.address === 'main') return 1;
+      if (a.verified && !b.verified) return -1;
+      if (!a.verified && b.verified) return +1;
+      if (!a.balance || !b.balance) return 0;
+      if (parseFloat(a.balance) > parseFloat(b.balance)) return -1;
+      return 0;
+    });
+}
+
+// gets token balances and also determines if the token is verified
+function enhanceTokenWithBalance(
+  balance: BalanceResponse,
+  tokens: Token[],
+  network: Network
+): Token {
+  const verifiedToken = getVerifiedToken(balance.tokenAddress, tokens);
+  return {
+    ...balance.token,
+    address: balance.tokenAddress,
+    balance: balance.balance
+      ? formatUnits(balance.balance, balance.token.decimals)
+      : '0',
+    verified: !!verifiedToken,
+    chainId: network
+  };
+}
+
+function getVerifiedToken(tokenAddress: string, tokens: Token[]) {
+  return tokens.find(
+    token => token.address.toLowerCase() === tokenAddress.toLowerCase()
+  );
+}
+
+export async function fetchCollectibles(
+  network: Network,
+  gnosisSafeAddress: string
+) {
+  try {
+    const response = await getGnosisSafeCollectibles(
+      network,
+      gnosisSafeAddress
+    );
+    return response.results;
+  } catch (error) {
+    console.warn('Error fetching collectibles');
+  }
+  return [];
 }

@@ -33,6 +33,7 @@ export function useWeb3() {
 
   function logout() {
     auth = getInstance();
+    if (auth.provider?.value?.isCoinbaseWallet) auth.provider.value.close();
     auth.logout();
     state.account = '';
   }

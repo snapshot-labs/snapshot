@@ -254,11 +254,19 @@ export type GnosisSafe = {
  *
  * Holds one object with this shape per proposal created. This is the shape of the data that is persisted by the plugin.
  *
- * `safe` is null when first creating a plugin, but is then immediately populated once the user picks a safe.
+ * `safes` is null when first creating a plugin, but is then immediately populated once the user picks a safe.
  *
- * @field `safe` field is the safe that the plugin is currently working with.
+ * @field `safes` field is the array of safes that the plugin is currently working with.
  */
-export type OsnapPluginData = {
+export type OsnapPluginData = MultiSafe;
+
+export type LegacyOsnapPluginData = SingleSafe;
+
+type MultiSafe = {
+  safes: GnosisSafe[] | null;
+};
+
+type SingleSafe = {
   safe: GnosisSafe | null;
 };
 
@@ -534,6 +542,27 @@ export namespace GnosisSafe {
   }
 }
 
+export type InputTypes =
+  | 'bool'
+  | 'string'
+  | 'address'
+  | Integer
+  | 'bytes'
+  | 'bytes32';
+
+export type Integer = `int${number}` | `uint${number}`;
+
+export function isIntegerType(type: InputTypes): type is Integer {
+  return type.includes('int');
+}
+
 export function nonNullable<T>(value: T): value is NonNullable<T> {
   return value !== null;
+}
+
+//  for backwards compatibility
+export function isLegacySingleSafe(
+  pluginData: LegacyOsnapPluginData | OsnapPluginData
+): pluginData is LegacyOsnapPluginData {
+  return 'safe' in pluginData;
 }

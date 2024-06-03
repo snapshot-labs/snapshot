@@ -242,7 +242,10 @@ const { pause } = useIntervalFn(() => {
         <div class="w-full">
           <div class="text-skin-heading flex flex-wrap -mt-1 pr-5">
             <div class="whitespace-nowrap mt-1 mr-1 flex items-center">
-              <template v-if="boost.strategy.eligibility.choice !== null">
+              <template v-if="boost.strategy.eligibility.type === 'prediction'">
+                Anyone who votes for the winning choice
+              </template>
+              <template v-else-if="boost.strategy.eligibility.choice !== null">
                 Who votes
                 <div>
                   <TuneTag

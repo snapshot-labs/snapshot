@@ -13,8 +13,8 @@ import {
   parseValueInput
 } from '../../utils';
 import AddressInput from '../Input/Address.vue';
-import MethodParameterInput from '../Input/MethodParameter.vue';
 import { sleep } from '@snapshot-labs/snapshot.js/src/utils';
+import MethodParameterInput from '../Input/MethodParameter/MethodParameter.vue';
 
 const props = defineProps<{
   network: Network;

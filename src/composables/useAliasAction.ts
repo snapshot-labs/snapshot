@@ -39,7 +39,8 @@ export function useAliasAction() {
           query: ALIASES_QUERY,
           variables: {
             address: web3.value.account,
-            alias: aliasWallet.value.address
+            alias: aliasWallet.value.address,
+            created_gt: Math.floor(Date.now() / 1000) - 30 * 60 * 60 * 24
           }
         },
         'aliases'
@@ -53,12 +54,10 @@ export function useAliasAction() {
 
   async function setAlias() {
     const rndWallet = Wallet.createRandom();
-    aliases.value = Object.assign(
-      {
-        [web3.value.account]: rndWallet.privateKey
-      },
-      aliases.value
-    );
+    aliases.value = {
+      ...aliases.value,
+      [web3.value.account]: rndWallet.privateKey
+    };
     lsSet('aliases', aliases.value);
 
     if (aliasWallet.value?.address) {

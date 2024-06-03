@@ -30,6 +30,7 @@ export const BOOST_WHITELIST_SETTINGS = {
     'vote.vitadao.eth',
     'shutterdao0x36.eth',
     'testeteste123.eth',
+    'alkimiexchange.eth',
     // Internal testers
     'testsnap.eth',
     'fabien.eth',
