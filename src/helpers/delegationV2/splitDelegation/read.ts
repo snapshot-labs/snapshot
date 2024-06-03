@@ -1,5 +1,9 @@
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
-import { DelegationReader } from '@/helpers/delegationV2/types';
+import {
+  DelegateTreeItem,
+  DelegationReader,
+  DelegatorTreeItem
+} from '@/helpers/delegationV2/types';
 
 const SPLIT_DELEGATE_BACKEND_URL = 'https://delegate-api.gnosisguild.org';
 
@@ -8,7 +12,6 @@ type DelegateFromSD = {
   delegatorCount: number;
   percentOfDelegators: number;
   votingPower: number;
-  delegatedPower: number;
   percentOfVotingPower: number;
 };
 
@@ -19,18 +22,10 @@ type AddressResponse = {
   votingPower: Record<string, number>;
   percentOfVotingPower: number;
   percentOfDelegators: number;
-  delegates: {
-    address: string;
-    direct: boolean;
-    votingPower: number;
-    percentPowerOut: number;
-  }[];
-  delegators: {
-    address: string;
-    direct: boolean;
-    votingPower: number;
-    percentPowerIn: number;
-  }[];
+  delegates: string[];
+  delegateTree: DelegateTreeItem[];
+  delegators: string[];
+  delegatorTree: DelegatorTreeItem[];
 };
 
 // const emptyDelegate = (address: string): DelegateWithPercent => ({
@@ -164,7 +159,10 @@ const getDelegatingTo =
       }
     ).then(res => res.json())) as AddressResponse;
 
-    return response.delegates.map(d => d.address);
+    return {
+      delegates: response.delegates,
+      delegateTree: response.delegateTree
+    };
   };
 
 export const getDelegationReader = (

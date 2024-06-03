@@ -8,7 +8,7 @@ export type DelegationReader = {
   ): Promise<DelegateWithPercent[]>;
   getDelegate(id: string): Promise<DelegateWithPercent>;
   getBalance(id: string): Promise<string>;
-  getDelegatingTo(address: string): Promise<string[]>;
+  getDelegatingTo(address: string): Promise<DelegatingTo>;
 };
 
 export type DelegationWriter = {
@@ -17,4 +17,23 @@ export type DelegationWriter = {
     ratio?: number[],
     expirationTimestamp?: number
   ) => Promise<any>;
+};
+
+export type DelegatingTo = {
+  delegates: string[];
+  delegateTree?: DelegateTreeItem[];
+};
+
+export type DelegateTreeItem = {
+  delegate: string;
+  weight: number;
+  delegatedPower: number;
+  children: DelegateTreeItem[];
+};
+
+export type DelegatorTreeItem = {
+  delegator: string;
+  weight: number;
+  delegatedPower: number;
+  parents: [];
 };

@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import { DelegateTreeItem } from '@/helpers/delegationV2/types';
 import { ExtendedSpace } from '@/helpers/interfaces';
-import { watchDebounced } from '@vueuse/core';
-import { validateForm } from '@/helpers/validation';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
 const { d } = useI18n();
@@ -23,17 +22,23 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegates, loadDelegateBalance } = useDelegates(props.space);
+const { setDelegates, loadDelegateBalance, fetchDelegatingTo } = useDelegates(
+  props.space
+);
 const { web3Account } = useWeb3();
 
 const defaultDelegate = {
-  address: props.address,
+  address: '',
   weight: 100
 };
 
-const delegates = ref([defaultDelegate]);
+const currentDelegations: Ref<{ address: string; weight: number }[]> = ref([]);
+const delegates = ref(
+  currentDelegations.value.length > 0
+    ? clone(currentDelegations.value)
+    : [defaultDelegate]
+);
 
-const resolvedAddress = ref('');
 const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
@@ -168,18 +173,36 @@ async function loadAccountBalance() {
   accountBalance.value = balance || '0';
 }
 
-watch(
-  () => props.address,
-  newAddress => {
-    resolvedAddress.value = newAddress;
-  },
-  { immediate: true }
-);
+async function loadDelegatingTo() {
+  const delegatingTo = await fetchDelegatingTo(web3Account.value);
+  const delegations = delegatingTo?.delegateTree?.map(
+    ({ delegate, weight }) => ({
+      address: delegate,
+      weight: weight / 100 // delegate weight comes from api as BPS
+    })
+  );
+  currentDelegations.value = clone(delegations) || [];
+  console.log('loadDelegatingTo', props.address, delegations);
+  if (props.address) {
+    const newDelegate = {
+      address: props.address,
+      weight:
+        100 -
+        currentDelegations.value.reduce(
+          (acc, delegate) => acc + delegate.weight,
+          0
+        )
+    };
+    delegations?.push(newDelegate);
+  }
+  delegates.value = clone(delegations) || [defaultDelegate];
+}
 
 watch(
   web3Account,
   () => {
     loadAccountBalance();
+    loadDelegatingTo();
   },
   { immediate: true }
 );
@@ -187,12 +210,29 @@ watch(
 watch(
   route,
   newDelegateAddress => {
-    if (newDelegateAddress) {
-      const delegateAddress = newDelegateAddress.query.delegate;
-      if (delegates.value.length === 1) {
-        const space = clone(delegates.value);
-        space[0].address = delegateAddress;
-        delegates.value = space;
+    const delegateAddress = newDelegateAddress.query.delegate;
+    if (delegateAddress) {
+      console.log('delegateAddress', delegateAddress, clone(delegates.value));
+      if (delegates.value.length === 1 && !delegates.value[0].address) {
+        console.log('delegate default watch');
+        // delegates has default value, replace with the passed address
+        const _delegates = clone(delegates.value);
+        _delegates[0].address = delegateAddress;
+        delegates.value = _delegates;
+      } else {
+        // if delegates already has a value, add to the end of the list,
+        // with the remaining weight of 100
+        const newDelegate = {
+          address: delegateAddress as string,
+          weight:
+            100 -
+            currentDelegations.value.reduce(
+              (acc, delegate) => acc + delegate.weight,
+              0
+            )
+        };
+        console.log('delegate watch', newDelegate, clone(delegates.value));
+        delegates.value.push(newDelegate);
       }
     }
   },
@@ -200,8 +240,11 @@ watch(
 );
 
 const handleCloseModal = () => {
-  delegates.value = [defaultDelegate];
-  resolvedAddress.value = '';
+  console.log('closing modal', currentDelegations.value.length);
+  delegates.value =
+    currentDelegations.value.length > 0
+      ? clone(currentDelegations.value)
+      : [defaultDelegate];
   isResolvingName.value = false;
   addressRef.value = undefined;
   isAwaitingSignature.value = false;
@@ -215,7 +258,10 @@ const handleCloseModal = () => {
   <BaseModal :open="open" @close="handleCloseModal">
     <template #header>
       <div class="px-4 pt-1 text-left text-skin-heading">
-        <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
+        <h3 class="m-0">
+          {{ $t('delegates.delegateModal.title') }}
+        </h3>
+
         <span class="text-gray-500">{{
           $t('delegates.delegateModal.sub')
         }}</span>
