@@ -39,6 +39,8 @@ const delegates = ref(
     : [defaultDelegate]
 );
 
+const delegationWeightError = ref('');
+
 const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
@@ -73,12 +75,14 @@ function calculateInitialDate(): number {
 }
 
 function deleteDelegate(index: number) {
+  delegationWeightError.value = '';
   const newDelegates = clone(delegates.value);
   newDelegates.splice(index, 1);
   delegates.value = newDelegates;
 }
 
 function updateDelegate(index: number, form: { to: string; weight: number }) {
+  delegationWeightError.value = '';
   const newDelegates = clone(delegates.value);
   newDelegates[index] = {
     ...newDelegates[index],
@@ -86,6 +90,15 @@ function updateDelegate(index: number, form: { to: string; weight: number }) {
     weight: form.weight
   };
   delegates.value = newDelegates;
+
+  // show error if weights add to more than 100
+  const totalWeight = newDelegates.reduce(
+    (total, delegate) => total + delegate.weight,
+    0
+  );
+  if (totalWeight > 100) {
+    delegationWeightError.value = 'Total weight cannot exceed 100';
+  }
 }
 
 function deleteAllDelegates() {
@@ -102,6 +115,7 @@ function addDelegate() {
 }
 
 function divideEqually() {
+  delegationWeightError.value = '';
   const numDelegates = delegates.value.length;
   if (numDelegates === 0) return;
 
@@ -292,7 +306,7 @@ const handleCloseModal = () => {
           <TuneLabelInput
             hint="Add addresses and the percentage of your voting power you want to delegate to them"
           >
-            {{ 'Delegate to' }}
+            {{ 'Delegations' }}
           </TuneLabelInput>
           <button
             class="text-gray-500 underline hover:opacity-50 text-xs bg-none"
@@ -328,13 +342,17 @@ const handleCloseModal = () => {
             Clear all delegations
           </button>
         </div>
+        <TuneErrorInput
+          v-if="Boolean(delegationWeightError)"
+          :error="delegationWeightError"
+        />
       </div>
     </div>
     <template #footer>
       <TuneButton
         class="w-full"
         type="button"
-        :disabled="isSpaceDelegatesValid"
+        :disabled="isSpaceDelegatesValid || Boolean(delegationWeightError)"
         :loading="isResolvingName || isAwaitingSignature"
         @click="handleConfirm"
       >
