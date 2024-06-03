@@ -9,7 +9,7 @@ const connectors = {
     network: '1',
     options: {
       projectId: 'e6454bd61aba40b786e866a69bd4c5c6',
-      chains: [1, 10],
+      chains: [],
       optionalChains: [
         4, 5, 42, 56, 100, 137, 246, 1088, 42161, 73799, 11155111
       ],
