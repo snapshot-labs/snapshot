@@ -9,6 +9,8 @@ const DELEGATION_CONTRACT = '0xDE1e8A7E184Babd9F0E3af18f40634e9Ed6F0905'; //All 
 const sendSetDelegationTx =
   (space: ExtendedSpace, auth: any): DelegationWriter['sendSetDelegationTx'] =>
   async (addresses, ratio, expirationTimestamp) => {
+    const delegationContract =
+      space.delegationPortal.delegationContract || DELEGATION_CONTRACT;
     console.log('sendSetDelegationTx', addresses, ratio, expirationTimestamp);
     if (addresses.length <= 0) {
       throw new Error('Delegation must have at least one delegate');
@@ -42,7 +44,7 @@ const sendSetDelegationTx =
     console.log('delegations', delegations);
     const tx = await sendTransaction(
       auth.web3,
-      DELEGATION_CONTRACT,
+      delegationContract,
       abi,
       'setDelegation',
       [space.id, delegations, expirationTimestamp] //space.id should be the ENS name
