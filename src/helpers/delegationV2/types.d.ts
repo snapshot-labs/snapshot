@@ -17,6 +17,7 @@ export type DelegationWriter = {
     ratio?: number[],
     expirationTimestamp?: number
   ) => Promise<any>;
+  sendClearDelegationsTx?: () => Promise<any>;
 };
 
 export type DelegatingTo = {

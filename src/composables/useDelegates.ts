@@ -112,6 +112,14 @@ export function useDelegates(space: ExtendedSpace) {
     return writer.sendSetDelegationTx(addresses, ratio, expirationTimestamp);
   }
 
+  async function clearDelegations() {
+    if (!writer.sendClearDelegationsTx) {
+      throw new Error('Clear delegations not supported');
+      return;
+    }
+    return writer.sendClearDelegationsTx();
+  }
+
   async function fetchDelegatingTo(address: string) {
     if (!address) return;
     isLoadingDelegatingTo.value = true;
@@ -183,6 +191,7 @@ export function useDelegates(space: ExtendedSpace) {
     loadDelegates,
     fetchMoreDelegates,
     setDelegates,
+    clearDelegations,
     loadDelegateBalance,
     fetchDelegateVotesAndProposals,
     fetchDelegatingTo

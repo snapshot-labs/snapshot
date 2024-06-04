@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { DelegateTreeItem } from '@/helpers/delegationV2/types';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
 import { useRoute } from 'vue-router';
@@ -22,9 +21,12 @@ const {
 const { notify } = useFlashNotification();
 const { t } = useI18n();
 const { resolveName } = useResolveName();
-const { setDelegates, loadDelegateBalance, fetchDelegatingTo } = useDelegates(
-  props.space
-);
+const {
+  setDelegates,
+  loadDelegateBalance,
+  fetchDelegatingTo,
+  clearDelegations
+} = useDelegates(props.space);
 const { web3Account } = useWeb3();
 
 const defaultDelegate = {
@@ -101,8 +103,28 @@ function updateDelegate(index: number, form: { to: string; weight: number }) {
   }
 }
 
-function deleteAllDelegates() {
-  delegates.value = [defaultDelegate];
+async function deleteAllDelegates() {
+  const txPendingId = createPendingTransaction();
+
+  try {
+    isAwaitingSignature.value = true;
+
+    const tx = await clearDelegations();
+    isAwaitingSignature.value = false;
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
+    emit('close');
+    notify(t('notify.transactionSent'));
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    notify(t('notify.delegationCleared'));
+    removePendingTransaction(txPendingId);
+    emit('reload');
+  } catch (e) {
+    console.log(e);
+    isAwaitingSignature.value = false;
+    removePendingTransaction(txPendingId);
+  }
 }
 
 function addDelegate() {
@@ -172,7 +194,7 @@ async function handleConfirm() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.delegationAdded'));
+    notify(t('notify.delegationRemoved'));
     removePendingTransaction(txPendingId);
     emit('reload');
   } catch (e) {
