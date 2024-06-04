@@ -52,9 +52,28 @@ const sendSetDelegationTx =
     return tx;
   };
 
+const sendClearDelegationsTx =
+  (
+    space: ExtendedSpace,
+    auth: any
+  ): DelegationWriter['sendClearDelegationsTx'] =>
+  async () => {
+    const delegationContract =
+      space.delegationPortal.delegationContract || DELEGATION_CONTRACT;
+    const tx = await sendTransaction(
+      auth.web3,
+      delegationContract,
+      abi,
+      'clearDelegation',
+      [space.id] //space.id should be the ENS name
+    );
+    return tx;
+  };
+
 export const getDelegationWriter = (
   space: ExtendedSpace,
   auth: any
 ): DelegationWriter => ({
-  sendSetDelegationTx: sendSetDelegationTx(space, auth)
+  sendSetDelegationTx: sendSetDelegationTx(space, auth),
+  sendClearDelegationsTx: sendClearDelegationsTx(space, auth)
 });
