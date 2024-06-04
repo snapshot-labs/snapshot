@@ -50,13 +50,18 @@ const getDelegations =
       strat => strat.name === 'split-delegation'
     );
 
-    if (!splitDelStrategy) {
-      throw new Error('Split delegation strategy not found');
+    if (
+      !splitDelStrategy ||
+      space.delegationPortal.delegationType !== 'split-delegation'
+    ) {
+      throw new Error(
+        'Split delegation strategy or delegate setting not found'
+      );
     }
 
     const response = (await fetch(
       `${
-        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+        space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
       }/api/v1/${
         space.id
       }/pin/top-delegates?by=${orderBy}&limit=${first}&offset=${skip}`,
@@ -86,12 +91,17 @@ const getDelegate =
       strat => strat.name === 'split-delegation'
     );
 
-    if (!splitDelStrategy) {
-      throw new Error('Split delegation strategy not found');
+    if (
+      !splitDelStrategy ||
+      space.delegationPortal.delegationType !== 'split-delegation'
+    ) {
+      throw new Error(
+        'Split delegation strategy or delegate setting not found'
+      );
     }
     const response = (await fetch(
       `${
-        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+        space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
       }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
@@ -119,12 +129,17 @@ const getBalance =
       strat => strat.name === 'split-delegation'
     );
 
-    if (!splitDelStrategy) {
-      throw new Error('Split delegation strategy not found');
+    if (
+      !splitDelStrategy ||
+      space.delegationPortal.delegationType !== 'split-delegation'
+    ) {
+      throw new Error(
+        'Split delegation strategy or delegate setting not found'
+      );
     }
     const response = (await fetch(
       `${
-        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+        space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
       }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',
@@ -149,7 +164,7 @@ const getDelegatingTo =
     }
     const response = (await fetch(
       `${
-        splitDelStrategy.params.backendUrl || SPLIT_DELEGATE_BACKEND_URL
+        space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
       }/api/v1/${space.id}/pin/${address}`,
       {
         method: 'POST',

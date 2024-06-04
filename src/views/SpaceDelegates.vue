@@ -34,8 +34,9 @@ const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 
 const hasSplitDelegation = computed(() => {
-  return props.space.strategies?.some(
-    ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
+  return (
+    props.space.delegationPortal.delegationType ===
+    DelegationTypes.SPLIT_DELEGATION
   );
 });
 
