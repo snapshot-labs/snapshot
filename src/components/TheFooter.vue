@@ -14,7 +14,9 @@ const snapshotTextLinks = [
   },
   {
     text: 'network-support',
-    link: '#/network'
+    link: {
+      name: 'network'
+    }
   }
 ];
 
@@ -68,6 +70,7 @@ const resourcesTextLinks = [
             v-for="item in snapshotTextLinks"
             :key="item.text"
             :link="item.link"
+            :is-external="item.isExternal || true"
           >
             {{ $t(`footerView.${item.text}`) }}
             <BasePill
