@@ -16,7 +16,8 @@ module.exports = {
         'skin-header-bg': 'var(--header-bg)',
         'skin-heading': 'var(--heading-color)',
         green: '#21b66f',
-        red: '#ff3856'
+        red: '#ff3856',
+        'skin-success': '#57B375'
       },
       keyframes: {
         fadeIn: {
