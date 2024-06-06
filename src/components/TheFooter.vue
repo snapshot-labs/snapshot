@@ -11,6 +11,10 @@ const snapshotTextLinks = [
   {
     text: 'blog',
     link: 'https://snapshot.mirror.xyz/'
+  },
+  {
+    text: 'network-support',
+    link: '#/network'
   }
 ];
 
