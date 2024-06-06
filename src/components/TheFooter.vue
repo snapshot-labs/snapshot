@@ -14,7 +14,9 @@ const snapshotTextLinks = [
   },
   {
     text: 'network-support',
-    link: '#/network'
+    link: {
+      name: 'network'
+    }
   }
 ];
 
