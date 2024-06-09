@@ -3,6 +3,8 @@ import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
 import { DelegationTypes } from '@/helpers/delegationV2';
+import SpaceDelegatesSplitDelegationModal from '@/components/SpaceDelegatesSplitDelegationModal.vue';
+import SpaceDelegatesDelegateModal from '@/components/SpaceDelegatesDelegateModal.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -34,7 +36,7 @@ const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
 
-const hasSplitDelegation = computed(() => {
+const isSplitDelegation = computed(() => {
   return (
     props.space.delegationPortal.delegationType ===
     DelegationTypes.SPLIT_DELEGATION
@@ -292,16 +294,12 @@ onMounted(() => {
       </div>
     </template>
     <Teleport to="#modal">
-      <SpaceDelegatesDelegateModal
-        v-if="!hasSplitDelegation"
-        :open="route.query.delegate !== undefined"
-        :space="space"
-        :address="(route.query.delegate as string) || ''"
-        @close="handleCloseModalDelegate"
-        @reload="loadDelegates(matchFilter)"
-      />
-      <SpaceDelegatesSplitDelegationModal
-        v-else
+      <component
+        :is="
+          isSplitDelegation
+            ? SpaceDelegatesSplitDelegationModal
+            : SpaceDelegatesDelegateModal
+        "
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"
