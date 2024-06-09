@@ -18,7 +18,8 @@ const {
   isLoadingDelegate,
   hasMoreDelegates,
   delegatesStats,
-  hasDelegatesLoadFailed
+  hasDelegatesLoadFailed,
+  hasDelegationPortal
 } = useDelegates(props.space);
 const { profiles } = useProfiles();
 const { modalAccountOpen } = useModal();
@@ -136,6 +137,8 @@ watch(matchFilter, () => {
 });
 
 onMounted(() => {
+  if (!hasDelegationPortal) return;
+
   if (searchInput.value) loadDelegate(searchInput.value);
   loadDelegates(matchFilter.value);
 });
@@ -162,10 +165,15 @@ onMounted(() => {
                   :model-value="searchInput"
                   :placeholder="$t('searchPlaceholderVotes')"
                   class="flex-auto pr-2"
+                  :disabled="!hasDelegationPortal"
                   @update:model-value="handleSearchInput"
                 />
               </div>
-              <BaseMenu :items="filterItems" @select="handleSelectFilter">
+              <BaseMenu
+                :items="filterItems"
+                :disabled="!hasDelegationPortal"
+                @select="handleSelectFilter"
+              >
                 <template #button>
                   <div>
                     <TuneButton class="hidden items-center sm:flex">
@@ -206,6 +214,7 @@ onMounted(() => {
                     @click="handleClickProfile(web3Account)"
                   />
                   <TuneButton
+                    :disabled="!hasDelegationPortal"
                     :primary="isFollowing"
                     class="w-full md:w-auto"
                     @click="handleClickDelegate()"
@@ -217,7 +226,13 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
+        <BaseMessageBlock v-if="!hasDelegationPortal" level="warning-red">
+          This space has not configured a delegation portal
+        </BaseMessageBlock>
+        <BaseMessageBlock
+          v-else-if="hasDelegatesLoadFailed"
+          level="warning-red"
+        >
           An error occurred while loading delegates. Please try again later. If
           the problem persists, consider contacting our support team on
           <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
@@ -278,7 +293,7 @@ onMounted(() => {
     </template>
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
-        v-if="space.delegationPortal != null && !hasSplitDelegation"
+        v-if="!hasSplitDelegation"
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"
@@ -286,7 +301,7 @@ onMounted(() => {
         @reload="loadDelegates(matchFilter)"
       />
       <SpaceDelegatesSplitDelegationModal
-        v-if="hasSplitDelegation"
+        v-else
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

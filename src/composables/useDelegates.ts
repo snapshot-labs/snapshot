@@ -4,7 +4,10 @@ import {
   DelegatesProposal,
   ExtendedSpace
 } from '@/helpers/interfaces';
-import { setupDelegation as getDelegationAdapter } from '@/helpers/delegationV2';
+import {
+  DelegationTypes,
+  setupDelegation as getDelegationAdapter
+} from '@/helpers/delegationV2';
 import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
@@ -33,6 +36,14 @@ export function useDelegates(space: ExtendedSpace) {
   const hasMoreDelegates = ref(false);
   const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
+
+  const hasDelegationPortal =
+    space.delegationPortal.delegationType === DelegationTypes.COMPOUND ||
+    (space.delegationPortal.delegationType ===
+      DelegationTypes.SPLIT_DELEGATION &&
+      space.strategies.some(
+        ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
+      ));
 
   async function fetchDelegateBatch(orderBy: string, skip = 0) {
     hasDelegatesLoadFailed.value = false;
@@ -181,6 +192,7 @@ export function useDelegates(space: ExtendedSpace) {
     isLoadingDelegates,
     isLoadingMoreDelegates,
     hasDelegatesLoadFailed,
+    hasDelegationPortal,
     isLoadingDelegateBalance,
     isLoadingDelegatingTo,
     hasMoreDelegates,
