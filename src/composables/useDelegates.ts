@@ -58,8 +58,8 @@ export function useDelegates(space: ExtendedSpace) {
       const response = await fetchDelegateBatch(orderBy);
       delegates.value = response;
       hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
       hasDelegatesLoadFailed.value = true;
     } finally {
       isLoadingDelegates.value = false;
@@ -78,8 +78,8 @@ export function useDelegates(space: ExtendedSpace) {
       );
       delegates.value = [...delegates.value, ...response];
       hasMoreDelegates.value = response.length === DELEGATES_LIMIT;
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
       hasDelegatesLoadFailed.value = true;
     } finally {
       isLoadingMoreDelegates.value = false;
@@ -97,8 +97,8 @@ export function useDelegates(space: ExtendedSpace) {
       if (!resolvedAddress.value) return;
       const response = await reader.getDelegate(resolvedAddress.value);
       delegate.value = response;
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
       hasDelegatesLoadFailed.value = true;
     } finally {
       isLoadingDelegate.value = false;
@@ -109,8 +109,8 @@ export function useDelegates(space: ExtendedSpace) {
     try {
       isLoadingDelegateBalance.value = true;
       return await reader.getBalance(id.toLowerCase());
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
     } finally {
       isLoadingDelegateBalance.value = false;
     }
@@ -136,8 +136,8 @@ export function useDelegates(space: ExtendedSpace) {
     isLoadingDelegatingTo.value = true;
     try {
       return await reader.getDelegatingTo(address);
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      console.error(e);
     } finally {
       isLoadingDelegatingTo.value = false;
     }
