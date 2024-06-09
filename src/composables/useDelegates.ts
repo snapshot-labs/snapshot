@@ -46,13 +46,13 @@ export function useDelegates(space: ExtendedSpace) {
       ));
 
   async function fetchDelegateBatch(orderBy: string, skip = 0) {
-    hasDelegatesLoadFailed.value = false;
     return reader.getDelegates(DELEGATES_LIMIT, skip, orderBy);
   }
 
   async function loadDelegates(orderBy: string) {
     if (isLoadingDelegates.value) return;
     isLoadingDelegates.value = true;
+    hasDelegatesLoadFailed.value = false;
 
     try {
       const response = await fetchDelegateBatch(orderBy);
@@ -69,6 +69,7 @@ export function useDelegates(space: ExtendedSpace) {
   async function fetchMoreDelegates(orderBy: string) {
     if (!delegates.value.length || isLoadingMoreDelegates.value) return;
     isLoadingMoreDelegates.value = true;
+    hasDelegatesLoadFailed.value = false;
 
     try {
       const response = await fetchDelegateBatch(
