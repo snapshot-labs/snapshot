@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { validateForm } from '@/helpers/validation';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 
