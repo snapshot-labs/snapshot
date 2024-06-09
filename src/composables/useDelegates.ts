@@ -8,7 +8,6 @@ import {
   DelegationTypes,
   setupDelegation as getDelegationAdapter
 } from '@/helpers/delegationV2';
-import { DELEGATE_VOTES_AND_PROPOSALS } from '@/helpers/queries';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 type DelegatesStats = Record<
@@ -21,7 +20,6 @@ const DELEGATES_LIMIT = 18;
 export function useDelegates(space: ExtendedSpace) {
   const auth = getInstance();
   const { resolveName } = useResolveName();
-  const { apolloQuery } = useApolloQuery();
 
   const { reader, writer } = getDelegationAdapter(space, auth);
 
@@ -142,50 +140,6 @@ export function useDelegates(space: ExtendedSpace) {
     }
   }
 
-  async function fetchDelegateVotesAndProposals(
-    space: string,
-    delegates: string[]
-  ) {
-    const filteredDelegates = delegates.filter(
-      delegate => !delegatesStats.value[delegate]
-    );
-
-    const response: { votes: DelegatesVote[]; proposals: DelegatesProposal[] } =
-      await apolloQuery({
-        query: DELEGATE_VOTES_AND_PROPOSALS,
-        variables: {
-          delegates: filteredDelegates,
-          space
-        }
-      });
-
-    if (!response) return {};
-
-    const votesAndProposals: DelegatesStats = {};
-
-    filteredDelegates.forEach(delegate => {
-      votesAndProposals[delegate] = {
-        votes: [],
-        proposals: []
-      };
-    });
-
-    response.votes.forEach(vote => {
-      const delegate = vote.voter.toLowerCase();
-      votesAndProposals[delegate]?.votes.push(vote);
-    });
-
-    response.proposals.forEach(proposal => {
-      const delegate = proposal.author.toLowerCase();
-      votesAndProposals[delegate]?.proposals.push(proposal);
-    });
-
-    delegatesStats.value = {
-      ...delegatesStats.value,
-      ...votesAndProposals
-    };
-  }
-
   return {
     isLoadingDelegate,
     isLoadingDelegates,
@@ -204,7 +158,6 @@ export function useDelegates(space: ExtendedSpace) {
     setDelegates,
     clearDelegations,
     loadDelegateBalance,
-    fetchDelegateVotesAndProposals,
     fetchDelegatingTo
   };
 }
