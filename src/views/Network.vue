@@ -149,7 +149,7 @@ useMeta({
     <BaseContainer class="!max-w-[880px] text-center">
       <div class="eyebrow mb-4">Trusted by</div>
       <div class="overflow-y-scroll no-scrollbar">
-        <div class="grid grid-flow-col auto-cols-max justify-center gap-4">
+        <div class="flex flex-wrap gap-4 justify-center">
           <a
             v-for="(customer, i) in CUSTOMERS"
             :key="i"
