@@ -34,7 +34,6 @@ export function useDelegates(space: ExtendedSpace) {
   const isLoadingDelegatingTo = ref(false);
   const isLoadingDelegateBalance = ref(false);
   const hasMoreDelegates = ref(false);
-  const resolvedAddress = ref<string | null>(null);
   const delegatesStats = ref<DelegatesStats>({});
 
   const hasDelegationPortal =
@@ -87,15 +86,15 @@ export function useDelegates(space: ExtendedSpace) {
   }
 
   async function loadDelegate(addressOrEns: string) {
-    hasDelegatesLoadFailed.value = false;
-
     if (isLoadingDelegate.value) return;
-    delegate.value = null;
+    hasDelegatesLoadFailed.value = false;
     isLoadingDelegate.value = true;
+    delegate.value = null;
+
     try {
-      resolvedAddress.value = await resolveName(addressOrEns);
-      if (!resolvedAddress.value) return;
-      const response = await reader.getDelegate(resolvedAddress.value);
+      const resolvedAddress = await resolveName(addressOrEns);
+      if (!resolvedAddress) return;
+      const response = await reader.getDelegate(resolvedAddress);
       delegate.value = response;
     } catch (e) {
       console.error(e);
