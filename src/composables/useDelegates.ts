@@ -127,7 +127,6 @@ export function useDelegates(space: ExtendedSpace) {
   async function clearDelegations() {
     if (!writer.sendClearDelegationsTx) {
       throw new Error('Clear delegations not supported');
-      return;
     }
     return writer.sendClearDelegationsTx();
   }
