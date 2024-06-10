@@ -8,7 +8,7 @@ import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
 import TimelineView from '@/views/TimelineView.vue';
 import RankingView from '@/views/RankingView.vue';
-import PaymentView from '@/views/PaymentView.vue';
+import Network from '@/views/Network.vue';
 
 import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
@@ -24,8 +24,6 @@ import SpaceTreasury from '@/views/SpaceTreasury.vue';
 import SpaceDelegates from '@/views/SpaceDelegates.vue';
 import SpaceDelegate from '@/views/SpaceDelegate.vue';
 import SpaceBoost from '@/views/SpaceBoost.vue';
-
-import PaymentNetwork from '@/views/PaymentNetwork.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -97,14 +95,6 @@ const profileRoutes = [
   }
 ];
 
-const paymentRoutes = [
-  {
-    path: 'network',
-    name: 'paymentNetwork',
-    component: PaymentNetwork
-  }
-];
-
 // If accessed through custom domain, mount space routes under /.
 // Requests starting with /:key will be redirected.
 // E.g. /balancer/proposal/:proposalId becomes /proposal/:proposalId
@@ -137,12 +127,6 @@ if (domain) {
     { path: '/timeline', name: 'timeline', component: TimelineView },
     { path: '/ranking', name: 'ranking', component: RankingView },
     {
-      path: '/payment',
-      name: 'payment',
-      component: PaymentView,
-      children: paymentRoutes
-    },
-    {
       path: '/playground/:name',
       name: 'playground',
       component: PlaygroundView
@@ -166,7 +150,8 @@ if (domain) {
           to.params.key = to.params.key.toLowerCase();
         }
       }
-    }
+    },
+    { path: '/network', name: 'network', component: Network }
   );
 }
 

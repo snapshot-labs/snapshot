@@ -37,7 +37,7 @@ const resultsStr = computed(() => {
 
 const createLink = computed(() => {
   if (isStrategies.value) return 'https://docs.snapshot.org/strategies/create';
-  if (isNetworks.value) return 'https://docs.snapshot.org/networks';
+  if (isNetworks.value) return { name: 'network' };
   if (isPlugins.value) return 'https://docs.snapshot.org/plugins/create';
   return 'https://docs.snapshot.org/strategies/create';
 });

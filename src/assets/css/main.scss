@@ -22,6 +22,7 @@
   --border-color-soft: rgba(45, 45, 45, 0.8);
   --border-color-subtle: rgba(45, 45, 45, 0.5);
   --border-color-faint: rgba(45, 45, 45, 0.3);
+  --network-blocks: url('@/assets/images/blocks-dark.svg');
 }
 
 [data-color-scheme='light'] {
@@ -38,6 +39,7 @@
   --border-color-soft: rgb(224, 224, 224, 0.6);
   --border-color-subtle: rgb(224, 224, 224, 0.32);
   --border-color-faint: rgb(224, 224, 224, 0.12);
+  --network-blocks: url('@/assets/images/blocks-light.svg');
 }
 
 @layer base {
@@ -58,6 +60,27 @@
   @font-face {
     font-family: 'SpaceMono';
     src: url('../fonts/space-mono-v11-latin-700.woff2') format('woff2');
+  }
+
+  @font-face {
+    font-family: 'Space Mono';
+    font-style: normal;
+    font-weight: 700;
+    src: url('../fonts/SpaceMono-Bold.woff2') format('woff2');
+  }
+
+  .mono {
+    font-size: 44px;
+    font-family: 'Space Mono', Helvetica, Arial, sans-serif;
+    letter-spacing: -1px;
+    font-weight: 700;
+    line-height: 1.1em;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 16px;
   }
 
   html {
@@ -225,4 +248,10 @@ input[type='number'] {
   .viewer-close {
     margin-right: 50px !important;
   }
+}
+
+.network-blocks {
+  background-repeat: repeat-x;
+  background-position: top -40px center;
+  background-image: var(--network-blocks);
 }
