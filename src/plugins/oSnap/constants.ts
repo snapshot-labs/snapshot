@@ -1556,7 +1556,7 @@ export const contractData = [
     deployBlock: 5421242,
     subgraph:
       'https://subgrapher.snapshot.org/subgraph/arbitrum/5pwrjCkpcpCd79k9MBS5yVgnsHQiw6afvXUfzqHjdRFw'
-  }
+  },
 ] as const;
 
 export const transactionTypes = [
