@@ -1366,6 +1366,14 @@ export const ERC721_ABI = [
   'function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable'
 ] as const;
 
+// Check if Graph Studio API key is provided to use production URL, otherwise will fallback to development URL.
+const hasGraphStudioApiKey = !!import.meta.env.VITE_OSNAP_GRAPH_STUDIO_API_KEY;
+const graphStudioBaseUrl = hasGraphStudioApiKey
+  ? 'https://gateway-arbitrum.network.thegraph.com/api/' +
+    import.meta.env.VITE_OSNAP_GRAPH_STUDIO_API_KEY +
+    '/subgraphs/id/'
+  : '';
+
 // to potentially cut down on event ranges we query, hard code some deploy blocks for contracts
 export type ContractData = {
   network: string;
@@ -1381,8 +1389,9 @@ export const contractData = [
     network: '1',
     name: 'OptimisticOracleV3',
     address: '0xfb55F43fB9F48F63f9269DB7Dde3BbBe1ebDC0dE',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/mainnet-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'Bm3ytsa1YvcyFJahdfQQgscFQVCcMvoXujzkd3Cz6aof'
+      : 'https://api.studio.thegraph.com/query/1057/mainnet-optimistic-oracle-v3/version/latest',
     deployBlock: 16636058
   },
   {
@@ -1399,8 +1408,9 @@ export const contractData = [
     network: '10',
     name: 'OptimisticOracleV3',
     address: '0x072819Bb43B50E7A251c64411e7aA362ce82803B',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/optimism-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'FyJQyV5TLNeowZrL6kLUTB9JNPyWQNCNXJoxJWGEtBcn'
+      : 'https://api.studio.thegraph.com/query/1057/optimism-optimistic-oracle-v3/version/latest',
     deployBlock: 74537234
   },
   {
@@ -1408,8 +1418,9 @@ export const contractData = [
     network: '100',
     name: 'OptimisticOracleV3',
     address: '0x22A9AaAC9c3184f68C7B7C95b1300C4B1D2fB95C',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/gnosis-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '9K2nctaB2rAh7Cgzx3wKtdHwWoEeEQ9AThGATak6Ngm9'
+      : 'https://api.studio.thegraph.com/query/1057/gnosis-optimistic-oracle-v3/version/latest',
     deployBlock: 27087150
   },
   {
@@ -1417,8 +1428,9 @@ export const contractData = [
     network: '137',
     name: 'OptimisticOracleV3',
     address: '0x5953f2538F613E05bAED8A5AeFa8e6622467AD3D',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/polygon-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '7KWbDhUE5Eqcfn3LXQtLbCfJLkNucnhzJLpi2jKhqNuf'
+      : 'https://api.studio.thegraph.com/query/1057/polygon-optimistic-oracle-v3/version/latest',
     deployBlock: 39331673
   },
   {
@@ -1426,8 +1438,9 @@ export const contractData = [
     network: '42161',
     name: 'OptimisticOracleV3',
     address: '0xa6147867264374F324524E30C02C331cF28aa879',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/arbitrum-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '9wpkM5tHgJBHYTzKEKk4tK8a7q6MimfS9QnW7Japa8hW'
+      : 'https://api.studio.thegraph.com/query/1057/arbitrum-optimistic-oracle-v3/version/latest',
     deployBlock: 61236565
   },
   {
@@ -1435,8 +1448,9 @@ export const contractData = [
     network: '43114',
     name: 'OptimisticOracleV3',
     address: '0xa4199d73ae206d49c966cF16c58436851f87d47F',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '3k8gzGzTMV2vDZAGBFM2q642SUyVbE31bAUL8SjFQkre'
+      : 'https://api.studio.thegraph.com/query/1057/avalanche-optimistic-oracle-v3/version/latest',
     deployBlock: 27816737
   },
   {
@@ -1453,8 +1467,9 @@ export const contractData = [
     network: '8453',
     name: 'OptimisticOracleV3',
     address: '0x2aBf1Bd76655de80eDB3086114315Eec75AF500c',
-    subgraph:
-      'https://api.studio.thegraph.com/query/1057/base-optimistic-oracle-v3/version/latest',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '2Q4i8YgVZd6bAmLyDxXgrKPL2B6QwySiEUqbTyQ4vm4C'
+      : 'https://api.studio.thegraph.com/query/1057/base-optimistic-oracle-v3/version/latest',
     deployBlock: 12066343
   },
   {
@@ -1462,8 +1477,9 @@ export const contractData = [
     network: '11155111',
     name: 'OptimisticOracleV3',
     address: '0xFd9e2642a170aDD10F53Ee14a93FcF2F31924944',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/reinis-frp/sepolia-optimistic-oracle-v3',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '78JbrMhcC9CVDZHDADvNcyhRrrccTJG4vCVBztyer1Xa'
+      : 'https://api.studio.thegraph.com/query/1057/sepolia-optimistic-oracle-v3/version/latest',
     deployBlock: 5421195
   },
   {
@@ -1471,8 +1487,9 @@ export const contractData = [
     network: '1',
     name: 'OptimisticGovernor',
     address: '0x28CeBFE94a03DbCA9d17143e9d2Bd1155DC26D5d',
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/mainnet-optimistic-governor',
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'DQpwhiRSPQJEuc8y6ZBGsFfNpfwFQ8NjmjLmfv8kBkLu'
+      : 'https://api.studio.thegraph.com/query/1057/mainnet-optimistic-governor/version/latest',
     deployBlock: 16890621
   },
   // Keep in mind, OG addresses are not the module addresses for each individual space, these addresses typically
@@ -1492,16 +1509,18 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0x357fe84E438B3150d2F68AB9167bdb8f881f3b9A',
     deployBlock: 83168480,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/optimism-optimistic-governor'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'Fd5RvSfkajAJ8Mi9sPxFSMVPFf56SDivDQW3ocqTAW5'
+      : 'https://api.studio.thegraph.com/query/1057/optimism-optimistic-governor/version/latest'
   },
   {
     // gnosis
     network: '100',
     name: 'OptimisticGovernor',
     deployBlock: 27102135,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/gnosis-optimistic-governor'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'RrkjZ6wTgLJkcjX68auzrEZHMRYwDx8kR5sFQQy4Phz'
+      : 'https://api.studio.thegraph.com/query/1057/gnosis-optimistic-governor/version/latest'
   },
   {
     // polygon
@@ -1509,8 +1528,9 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0x3Cc4b597E9c3f51288c6Cd0c087DC14c3FfdD966',
     deployBlock: 40677035,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/polygon-optimistic-governor'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '7L2JM14PnZgxGnRX7xaz54zWS6KVK6ZqVRCxEKJrJTDG'
+      : 'https://api.studio.thegraph.com/query/1057/polygon-optimistic-governor/version/latest'
   },
   {
     // arbitrum
@@ -1518,8 +1538,9 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0x30679ca4ea452d3df8a6c255a806e08810321763',
     deployBlock: 72850751,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/arbitrum-optimistic-governor'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'BfK867bnkQhnx1LspA99ypqiqxbAReQ92aZz66Ubv4tz'
+      : 'https://api.studio.thegraph.com/query/1057/arbitrum-optimistic-governor/version/latest'
   },
   {
     // avalanche
@@ -1527,8 +1548,9 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0xEF8b46765ae805537053C59f826C3aD61924Db45',
     deployBlock: 28050250,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/umaprotocol/avalanche-optimistic-governor'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '5F8875fmvtnv8Vv4aeedUcwNWjuxUg54aTHdapFuMJi3'
+      : 'https://api.studio.thegraph.com/query/1057/avalanche-optimistic-governor/version/latest'
   },
   {
     // core
@@ -1545,8 +1567,9 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0x80bCA2E1c272239AdFDCdc87779BC8Af6E12e633',
     deployBlock: 13062540,
-    subgraph:
-    'https://api.studio.thegraph.com/query/1057/base-optimistic-governor/version/latest'
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + 'H1WyWZqh5pHebWRDCXs7GhvGj7XznSP7arPY6pYcCqLn'
+      : 'https://api.studio.thegraph.com/query/1057/base-optimistic-governor/version/latest'
   },
   {
     // sepolia
@@ -1554,9 +1577,10 @@ export const contractData = [
     name: 'OptimisticGovernor',
     address: '0x40153DdFAd90C49dbE3F5c9F96f2a5B25ec67461',
     deployBlock: 5421242,
-    subgraph:
-      'https://api.thegraph.com/subgraphs/name/reinis-frp/sepolia-optimistic-governor'
-  },
+    subgraph: hasGraphStudioApiKey
+      ? graphStudioBaseUrl + '5pwrjCkpcpCd79k9MBS5yVgnsHQiw6afvXUfzqHjdRFw'
+      : 'https://api.studio.thegraph.com/query/1057/sepolia-optimistic-governor/version/latest'
+  }
 ] as const;
 
 export const transactionTypes = [
