@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import { getAddress } from '@ethersproject/address';
 const route = useRoute();
 
 const modalProfileFormOpen = ref(false);
 
-const userAddress = computed(
-  () => route.params.address.toLowerCase() as string
-);
+let userAddress = computed(() => {
+  const address = route.params.address as string;
+  try {
+    return getAddress(address);
+  } catch (error) {
+    console.error(error);
+    return '';
+  }
+});
 
 const { profiles, loadProfiles } = useProfiles();
 
@@ -13,7 +20,10 @@ onMounted(() => loadProfiles([userAddress.value]));
 </script>
 
 <template>
-  <TheLayout>
+  <BaseBlock v-if="!userAddress" class="text-center m-4">
+    Invalid address
+  </BaseBlock>
+  <TheLayout v-else>
     <template #sidebar-left>
       <ProfileSidebar
         :profiles="profiles"
