@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { clone, sleep } from '@snapshot-labs/snapshot.js/src/utils';
-import { useRoute } from 'vue-router';
-const { d } = useI18n();
-const route = useRoute();
+
+const defaultDelegate = {
+  address: '',
+  weight: 100
+};
 
 const props = defineProps<{
   open: boolean;
@@ -18,9 +20,9 @@ const {
   updatePendingTransaction,
   removePendingTransaction
 } = useTxStatus();
+const route = useRoute();
 const { notify } = useFlashNotification();
-const { t } = useI18n();
-const { resolveName } = useResolveName();
+const { d, t } = useI18n();
 const {
   setDelegates,
   loadDelegateBalance,
@@ -29,25 +31,18 @@ const {
 } = useDelegates(props.space);
 const { web3Account } = useWeb3();
 
-const defaultDelegate = {
-  address: '',
-  weight: 100
-};
-
-const currentDelegations: Ref<{ address: string; weight: number }[]> = ref([]);
+const currentDelegations = ref<{ address: string; weight: number }[]>([]);
 const delegates = ref(
   currentDelegations.value.length > 0
     ? clone(currentDelegations.value)
     : [defaultDelegate]
 );
-
 const delegationWeightError = ref('');
-
-const isResolvingName = ref(false);
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
 const expirationDate = ref<number>(calculateInitialDate());
+
 const isSpaceDelegatesValid = computed(() => {
   const allDelegatesHaveAddress = delegates.value.every(
     delegate => delegate.address
@@ -65,9 +60,72 @@ const dateString = computed(() =>
   d(expirationDate.value * 1e3, 'short', 'en-US')
 );
 
-const handleExpirationDate = (date: number) => {
+const isValid = computed(() => {
+  const addresses = delegates.value.map(delegation => delegation.address);
+
+  const weights = delegates.value
+    .map(delegation => Math.floor(delegation.weight))
+    .filter(weight => weight > 0);
+
+  return (
+    addresses.length > 0 &&
+    weights.length > 0 &&
+    addresses.length === weights.length
+  );
+});
+
+const handleExpirationDateUpdate = (date: number) => {
   console.log('newDate', d(date * 1e3, 'short', 'en-US'));
   expirationDate.value = date;
+};
+
+async function handleConfirm() {
+  if (!isValid.value) {
+    addressRef?.value?.forceShowError();
+    return;
+  }
+
+  const txPendingId = createPendingTransaction();
+
+  try {
+    isAwaitingSignature.value = true;
+    const addresses = delegates.value.map(delegation => delegation.address);
+
+    const weights = delegates.value.map(delegation =>
+      Math.floor(delegation.weight)
+    );
+
+    const expirationTime = expirationDate.value;
+
+    const tx = await setDelegates(addresses, weights, expirationTime);
+    isAwaitingSignature.value = false;
+    updatePendingTransaction(txPendingId, { hash: tx.hash });
+    emit('close');
+    notify(t('notify.transactionSent'));
+    const receipt = await tx.wait();
+    console.log('Receipt', receipt);
+    await sleep(3e3);
+    notify(t('notify.delegationRemoved'));
+    removePendingTransaction(txPendingId);
+    emit('reload');
+  } catch (e) {
+    console.log(e);
+    isAwaitingSignature.value = false;
+    removePendingTransaction(txPendingId);
+  }
+}
+
+const handleCloseModal = () => {
+  console.log('closing modal', currentDelegations.value.length);
+  delegates.value =
+    currentDelegations.value.length > 0
+      ? clone(currentDelegations.value)
+      : [defaultDelegate];
+  addressRef.value = undefined;
+  isAwaitingSignature.value = false;
+  accountBalance.value = '';
+  expirationDate.value = calculateInitialDate();
+  emit('close');
 };
 
 function calculateInitialDate(): number {
@@ -154,56 +212,6 @@ function divideEqually() {
   delegates.value = updatedDelegates;
 }
 
-const isValid = computed(() => {
-  const addresses = delegates.value.map(delegation => delegation.address);
-
-  const weights = delegates.value
-    .map(delegation => Math.floor(delegation.weight))
-    .filter(weight => weight > 0);
-
-  return (
-    addresses.length > 0 &&
-    weights.length > 0 &&
-    addresses.length === weights.length
-  );
-});
-
-async function handleConfirm() {
-  if (!isValid.value) {
-    addressRef?.value?.forceShowError();
-    return;
-  }
-
-  const txPendingId = createPendingTransaction();
-
-  try {
-    isAwaitingSignature.value = true;
-    const addresses = delegates.value.map(delegation => delegation.address);
-
-    const weights = delegates.value.map(delegation =>
-      Math.floor(delegation.weight)
-    );
-
-    const expirationTime = expirationDate.value;
-
-    const tx = await setDelegates(addresses, weights, expirationTime);
-    isAwaitingSignature.value = false;
-    updatePendingTransaction(txPendingId, { hash: tx.hash });
-    emit('close');
-    notify(t('notify.transactionSent'));
-    const receipt = await tx.wait();
-    console.log('Receipt', receipt);
-    await sleep(3e3);
-    notify(t('notify.delegationRemoved'));
-    removePendingTransaction(txPendingId);
-    emit('reload');
-  } catch (e) {
-    console.log(e);
-    isAwaitingSignature.value = false;
-    removePendingTransaction(txPendingId);
-  }
-}
-
 async function loadAccountBalance() {
   const balance = await loadDelegateBalance(web3Account.value);
   accountBalance.value = balance || '0';
@@ -274,42 +282,26 @@ watch(
   },
   { immediate: true }
 );
-
-const handleCloseModal = () => {
-  console.log('closing modal', currentDelegations.value.length);
-  delegates.value =
-    currentDelegations.value.length > 0
-      ? clone(currentDelegations.value)
-      : [defaultDelegate];
-  isResolvingName.value = false;
-  addressRef.value = undefined;
-  isAwaitingSignature.value = false;
-  accountBalance.value = '';
-  expirationDate.value = calculateInitialDate();
-  emit('close');
-};
 </script>
 
 <template>
   <BaseModal :open="open" @close="handleCloseModal">
     <template #header>
       <div class="px-4 pt-1 text-left text-skin-heading">
-        <h3 class="m-0">
-          {{ $t('delegates.delegateModal.title') }}
-        </h3>
-
-        <span class="text-gray-500">{{
-          $t('delegates.delegateModal.sub')
-        }}</span>
+        <h3 class="m-0" v-text="$t('delegates.delegateModal.title')" />
+        <span
+          class="text-gray-500"
+          v-text="$t('delegates.delegateModal.sub')"
+        />
       </div>
     </template>
 
     <div class="space-y-3 p-4">
       <div>
         <LabelInput> Delegation scope </LabelInput>
-        <div class="mt-1 flex items-center gap-1">
+        <div class="mt-1 flex items-center space-x-1">
           <AvatarSpace :space="space" />
-          <span class="text-skin-heading"> {{ space.name }} </span>
+          <span class="text-skin-heading" v-text="space.name" />
         </div>
       </div>
       <div>
@@ -320,7 +312,7 @@ const handleCloseModal = () => {
           :tooltip="$t('create.delayEnforced')"
           :date="expirationDate"
           :date-string="dateString"
-          @update:date="handleExpirationDate"
+          @update:date="handleExpirationDateUpdate"
         />
       </div>
       <div class="space-y-1">
@@ -350,11 +342,11 @@ const handleCloseModal = () => {
         </div>
         <div class="flex justify-between">
           <TuneButton
-            class="flex text-skin-link items-center"
+            class="flex text-skin-link items-center space-x-2"
             @click="addDelegate"
           >
-            <i-ho-plus class="text-xs mr-2" />
-            Add Delegate
+            <i-ho-plus class="text-xs" />
+            <span>Add delegate</span>
           </TuneButton>
           <button
             v-if="delegates.length > 0"
@@ -375,7 +367,7 @@ const handleCloseModal = () => {
         class="w-full"
         type="button"
         :disabled="isSpaceDelegatesValid || Boolean(delegationWeightError)"
-        :loading="isResolvingName || isAwaitingSignature"
+        :loading="isAwaitingSignature"
         @click="handleConfirm"
       >
         {{ $t('confirm') }}
