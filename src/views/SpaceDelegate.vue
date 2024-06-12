@@ -24,7 +24,8 @@ const {
   delegate,
   delegatesStats,
   isLoadingDelegate,
-  isLoadingDelegatingTo
+  isLoadingDelegatingTo,
+  hasDelegationPortal
 } = useDelegates(props.space);
 const { reloadStatement, getStatement, formatPercentageNumber } =
   useStatement();
@@ -286,7 +287,7 @@ onBeforeRouteLeave(async () => {
     </div>
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
-        v-if="space.delegationPortal != null"
+        v-if="hasDelegationPortal"
         :open="showDelegateModal"
         :space="space"
         :address="showUndelegate ? web3Account : address"
