@@ -26,7 +26,7 @@ export const getDelegatesQuery = (
     __args: {
       first,
       skip,
-      orderBy: orderBy ? orderBy : 'delegatedVotes',
+      orderBy: orderBy || 'delegatedVotes',
       orderDirection: 'desc'
     },
     id: true,

@@ -1,3 +1,4 @@
+import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 import {
   DelegateWithPercent,
   DelegatesVote,
@@ -8,7 +9,6 @@ import {
   DelegationTypes,
   setupDelegation as getDelegationAdapter
 } from '@/helpers/delegationV2';
-import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 type DelegatesStats = Record<
   string,

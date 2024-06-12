@@ -1,8 +1,8 @@
 import { sendTransaction } from '@snapshot-labs/snapshot.js/src/utils';
+import { hexZeroPad } from '@ethersproject/bytes';
 import { DelegationWriter } from '@/helpers/delegationV2/types';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { abi } from './abi';
-import { hexZeroPad } from '@ethersproject/bytes';
 
 const DELEGATION_CONTRACT = '0xDE1e8A7E184Babd9F0E3af18f40634e9Ed6F0905'; //All chains
 
