@@ -94,9 +94,7 @@ const getDelegations =
       query
     );
 
-    const formattedResponse = formatDelegatesResponse(response);
-
-    return formattedResponse;
+    return formatDelegatesResponse(response);
   };
 
 const getDelegate =
@@ -111,8 +109,7 @@ const getDelegate =
 
     if (!response.delegate) return emptyDelegate(address);
 
-    const formattedResponse = formatDelegateResponse(response);
-    return formattedResponse;
+    return formatDelegateResponse(response);
   };
 
 const getBalance =
