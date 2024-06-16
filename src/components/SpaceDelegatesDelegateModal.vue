@@ -87,6 +87,7 @@ async function handleConfirm() {
   } catch (e) {
     console.log(e);
     isAwaitingSignature.value = false;
+    notify(['red', 'An error occurred while building the transaction.']);
     removePendingTransaction(txPendingId);
   }
 }
