@@ -138,19 +138,25 @@ watch(
       <div class="px-4 pt-1 text-left text-skin-heading">
         <h3 class="m-0">{{ $t('delegates.delegateModal.title') }}</h3>
         <span>{{ $t('delegates.delegateModal.sub') }}</span>
-        <LoadingSpinner
-          v-if="isLoadingDelegateBalance"
-          class="inline-block pl-2"
-          small
-        />
-        <span v-else>
-          {{ formatCompactNumber(Number(accountBalance)) }}
-          {{ space.symbol }}
-        </span>
       </div>
     </template>
 
     <div class="space-y-3 p-4">
+      <div>
+        <LabelInput> Voting power </LabelInput>
+        <div class="mt-1 flex items-center gap-1 text-skin-heading">
+          <LoadingSpinner
+            v-if="isLoadingDelegateBalance"
+            class="inline-block"
+            small
+          />
+          <span v-else>
+            {{ formatCompactNumber(Number(accountBalance)) }}
+            {{ space.symbol }}
+          </span>
+        </div>
+      </div>
+
       <div>
         <LabelInput> Delegation scope </LabelInput>
         <div class="mt-1 flex items-center gap-1">

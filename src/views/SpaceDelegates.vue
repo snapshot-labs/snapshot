@@ -167,7 +167,7 @@ onMounted(() => {
                   :model-value="searchInput"
                   :placeholder="$t('searchPlaceholderVotes')"
                   class="flex-auto pr-2"
-                  :disabled="!hasDelegationPortal"
+                  :is-disabled="!hasDelegationPortal"
                   @update:model-value="handleSearchInput"
                 />
               </div>
@@ -178,7 +178,10 @@ onMounted(() => {
               >
                 <template #button>
                   <div>
-                    <TuneButton class="hidden items-center sm:flex">
+                    <TuneButton
+                      class="hidden items-center sm:flex"
+                      :disabled="!hasDelegationPortal"
+                    >
                       <div class="whitespace-nowrap">
                         {{
                           filterItems.find(i => i.action === selectedFilter)
@@ -186,7 +189,8 @@ onMounted(() => {
                         }}
                       </div>
                       <i-ho-chevron-down
-                        class="-mr-1 ml-1 text-xs text-skin-link"
+                        class="-mr-1 ml-1 text-xs"
+                        :class="{ 'text-skin-link': hasDelegationPortal }"
                       />
                     </TuneButton>
 
@@ -229,7 +233,7 @@ onMounted(() => {
           </div>
         </div>
         <BaseMessageBlock v-if="!hasDelegationPortal" level="warning-red">
-          This space has not configured a delegation portal
+          This space has misconfigured or not setup their delegation portal
         </BaseMessageBlock>
         <BaseMessageBlock
           v-else-if="hasDelegatesLoadFailed"
@@ -300,6 +304,7 @@ onMounted(() => {
             ? SpaceDelegatesSplitDelegationModal
             : SpaceDelegatesDelegateModal
         "
+        v-if="hasDelegationPortal"
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

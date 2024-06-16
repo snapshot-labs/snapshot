@@ -50,15 +50,6 @@ const getDelegations =
       strat => strat.name === 'split-delegation'
     );
 
-    if (
-      !splitDelStrategy ||
-      space.delegationPortal.delegationType !== 'split-delegation'
-    ) {
-      throw new Error(
-        'Split delegation strategy or delegate setting not found'
-      );
-    }
-
     const response = (await fetch(
       `${
         space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
@@ -91,14 +82,6 @@ const getDelegate =
       strat => strat.name === 'split-delegation'
     );
 
-    if (
-      !splitDelStrategy ||
-      space.delegationPortal.delegationType !== 'split-delegation'
-    ) {
-      throw new Error(
-        'Split delegation strategy or delegate setting not found'
-      );
-    }
     const response = (await fetch(
       `${
         space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
@@ -129,14 +112,6 @@ const getBalance =
       strat => strat.name === 'split-delegation'
     );
 
-    if (
-      !splitDelStrategy ||
-      space.delegationPortal.delegationType !== 'split-delegation'
-    ) {
-      throw new Error(
-        'Split delegation strategy or delegate setting not found'
-      );
-    }
     const response = (await fetch(
       `${
         space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL
@@ -159,9 +134,6 @@ const getDelegatingTo =
       strat => strat.name === 'split-delegation'
     );
 
-    if (!splitDelStrategy) {
-      throw new Error('Split delegation strategy not found');
-    }
     const response = (await fetch(
       `${
         space.delegationPortal.delegationApi || SPLIT_DELEGATE_BACKEND_URL

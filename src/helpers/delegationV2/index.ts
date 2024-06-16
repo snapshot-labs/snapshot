@@ -15,10 +15,12 @@ export function setupDelegation(
   space: ExtendedSpace,
   auth?: any
 ): {
-  reader: DelegationReader;
-  writer: DelegationWriter;
+  reader?: DelegationReader;
+  writer?: DelegationWriter;
 } {
   if (
+    space.delegationPortal?.delegationType ===
+      DelegationTypes.SPLIT_DELEGATION &&
     space.strategies.some(
       ({ name }) => name === DelegationTypes.SPLIT_DELEGATION
     )
@@ -34,9 +36,10 @@ export function setupDelegation(
       reader: compound.getDelegationReader(space),
       writer: compound.getDelegationWriter(space, auth)
     };
-  } else {
-    throw new Error(
-      `Unsupported standard: ${space.delegationPortal.delegationType}`
-    );
   }
+
+  return {
+    reader: undefined,
+    writer: undefined
+  };
 }
