@@ -134,13 +134,17 @@ function handleClickDelegate() {
   showDelegateModal.value = true;
 }
 
-watch(address, init, {
-  immediate: true
-});
+watch(
+  address,
+  addr => {
+    showEdit.value = false;
 
-watch(address, () => {
-  showEdit.value = false;
-});
+    if (addr) init();
+  },
+  {
+    immediate: true
+  }
+);
 
 watch(web3Account, async () => {
   loadDelegatingTo();
