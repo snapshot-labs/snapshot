@@ -28,8 +28,12 @@ const {
   isLoadingDelegatingTo,
   hasDelegationPortal
 } = useDelegates(props.space);
-const { reloadStatement, getStatement, formatPercentageNumber } =
-  useStatement();
+const {
+  reloadStatement,
+  getStatement,
+  formatPercentageNumber,
+  loadingStatements
+} = useStatement();
 const { modalAccountOpen } = useModal();
 
 const showEdit = ref(false);
@@ -116,7 +120,7 @@ async function init() {
   loadDelegatingTo();
   await loadDelegate(address.value);
 
-  reloadStatement(props.space.id, address.value);
+  await reloadStatement(props.space.id, address.value);
   statementForm.value = getStatement(address.value);
   fetchedStatement.value = getStatement(address.value);
 }
@@ -193,7 +197,7 @@ onBeforeRouteLeave(async () => {
       <TheLayout v-else reverse class="pt-[12px]">
         <template #content-left>
           <div class="px-4 md:px-0">
-            <LoadingPage v-if="isLoadingDelegate" slim />
+            <LoadingPage v-if="isLoadingDelegate || loadingStatements" slim />
             <div v-else class="space-y-[40px]">
               <div>
                 <h3 class="mb-2 mt-0">About</h3>
