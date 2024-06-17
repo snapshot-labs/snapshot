@@ -3,7 +3,6 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { DelegatingTo } from '../helpers/delegationV2/types';
-import { DelegationTypes } from '../helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -116,6 +115,8 @@ async function handleReload() {
 async function init() {
   loadDelegatingTo();
   await loadDelegate(address.value);
+
+  reloadStatement(props.space.id, address.value);
   statementForm.value = getStatement(address.value);
   fetchedStatement.value = getStatement(address.value);
 }
