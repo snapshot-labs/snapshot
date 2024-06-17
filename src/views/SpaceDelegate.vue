@@ -2,6 +2,8 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { DelegatingTo } from '../helpers/delegationV2/types';
+import { DelegationTypes } from '../helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -33,7 +35,7 @@ const { modalAccountOpen } = useModal();
 
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
-const web3AccountDelegatingTo = ref('');
+const web3AccountDelegatingTo = ref<DelegatingTo | undefined>();
 const fetchedStatement = ref(INITIAL_STATEMENT);
 const statementForm = ref(INITIAL_STATEMENT);
 
@@ -52,7 +54,7 @@ const isLoggedUser = computed(() => {
 
 const showUndelegate = computed(() => {
   return (
-    web3AccountDelegatingTo.value?.toLowerCase() ===
+    web3AccountDelegatingTo.value?.[0]?.toLowerCase() ===
     address.value?.toLowerCase()
   );
 });
