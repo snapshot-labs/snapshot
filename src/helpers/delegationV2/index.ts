@@ -15,8 +15,8 @@ export function setupDelegation(
   space: ExtendedSpace,
   auth?: any
 ): {
-  reader?: DelegationReader;
-  writer?: DelegationWriter;
+  reader: DelegationReader;
+  writer: DelegationWriter;
 } {
   if (
     space.delegationPortal?.delegationType ===
@@ -29,17 +29,10 @@ export function setupDelegation(
       reader: splitDelegation.getDelegationReader(space),
       writer: splitDelegation.getDelegationWriter(space, auth)
     };
-  } else if (
-    space.delegationPortal?.delegationType === DelegationTypes.COMPOUND
-  ) {
-    return {
-      reader: compound.getDelegationReader(space),
-      writer: compound.getDelegationWriter(space, auth)
-    };
   }
 
   return {
-    reader: undefined,
-    writer: undefined
+    reader: compound.getDelegationReader(space),
+    writer: compound.getDelegationWriter(space, auth)
   };
 }
