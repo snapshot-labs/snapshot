@@ -5,15 +5,13 @@ import {
 } from '@snapshot-labs/snapshot.js/src/utils';
 
 const UNISWAP_V2_SUBGRAPH_URL = {
-  '1': 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2',
-  '4': 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2-rinkeby',
-  '100': 'https://api.thegraph.com/subgraphs/name/1hive/uniswap-v2'
+  '1': 'https://subgrapher.snapshot.org/subgraph/arbitrum/EYCKATKGBKLWvSfwvBjzfCBmGwYNdVkduYXVivCsLRFu',
+  '100': 'https://subgrapher.snapshot.org/subgraph/arbitrum/F5u74NSaLF92s1qUSacQU4fmWizmK9yqDhXAq6RPtgky',
 };
 
 const OMEN_SUBGRAPH_URL = {
-  '1': 'https://api.thegraph.com/subgraphs/name/protofire/omen',
-  '4': 'https://api.thegraph.com/subgraphs/name/protofire/omen-rinkeby',
-  '100': 'https://api.thegraph.com/subgraphs/name/protofire/omen-xdai'
+  '1': 'https://subgrapher.snapshot.org/subgraph/arbitrum/7JbjEfSTme3LioqJ7SJZ9Y1GhSD55X98Btd8fg7iYUPT',
+  '100': 'https://subgrapher.snapshot.org/subgraph/arbitrum/9fUVQpFwzpdWS9bq5WkAnmKbNNcoBwatMR4yZq81pbbz'
 };
 
 const WETH_ADDRESS = {
