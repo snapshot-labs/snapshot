@@ -72,6 +72,12 @@ export const CHAIN_CURRENCIES: Record<string, ChainCurrency> = {
     decimals: 18,
     contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
   },
+  '8453': {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
+  },
   '11155111': {
     name: 'Sepolia Ether',
     symbol: 'SepoliaETH',
