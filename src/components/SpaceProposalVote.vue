@@ -59,6 +59,7 @@ const votedAndShutter = computed(
 );
 
 function emitChoice(c) {
+  if (c === null) return;
   emit('update:modelValue', c);
 }
 
