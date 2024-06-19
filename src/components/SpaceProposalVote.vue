@@ -25,6 +25,14 @@ const selectedChoices = computed(() => {
 });
 
 const validatedUserChoice = computed(() => {
+  if (selectedChoices.value) {
+    return voting[props.proposal.type].isValidChoice(
+      selectedChoices.value,
+      props.proposal.choices
+    )
+      ? selectedChoices.value
+      : null;
+  }
   if (!userVote.value?.choice) return null;
   if (
     voting[props.proposal.type].isValidChoice(
