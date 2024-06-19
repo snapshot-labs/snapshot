@@ -148,6 +148,9 @@ watch(
   async () => {
     if (props.open === false) return;
     loadValidationAndPower();
+  },
+  {
+    immediate: true
   }
 );
 </script>
