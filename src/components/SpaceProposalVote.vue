@@ -27,10 +27,10 @@ const selectedChoices = computed(() => {
 const validatedUserChoice = computed(() => {
   if (selectedChoices.value) {
     return voting[props.proposal.type].isValidChoice(
-      selectedChoices.value,
+      props.modelValue,
       props.proposal.choices
     )
-      ? selectedChoices.value
+      ? props.modelValue
       : null;
   }
   if (!userVote.value?.choice) return null;
