@@ -56,7 +56,7 @@ const isSpaceDelegatesValid = computed(() => {
   return (
     delegates.value.length > 0 &&
     allDelegatesHaveAddress &&
-    totalWeight <= 100 &&
+    Math.floor(totalWeight) <= 100 &&
     totalWeight > 0
   );
 });
@@ -101,7 +101,9 @@ async function handleConfirm() {
     );
 
     const delegateToSelf =
-      weights.reduce((acc, weight) => acc + weight, 0) < 100;
+      delegates.value
+        .map(delegation => delegation.weight)
+        .reduce((acc, weight) => acc + weight, 0) < 100;
 
     if (delegateToSelf) {
       addresses.push(web3Account.value);
@@ -109,7 +111,6 @@ async function handleConfirm() {
     }
 
     const expirationTime = expirationDate.value;
-    console.log('weights', weights, 'addresses', addresses, expirationTime);
     const tx = await setDelegates(addresses, weights, expirationTime);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
