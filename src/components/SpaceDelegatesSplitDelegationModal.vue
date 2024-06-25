@@ -53,7 +53,12 @@ const isSpaceDelegatesValid = computed(() => {
     0
   );
 
-  return !allDelegatesHaveAddress || totalWeight !== 100;
+  return (
+    delegates.value.length > 0 &&
+    allDelegatesHaveAddress &&
+    totalWeight <= 100 &&
+    totalWeight > 0
+  );
 });
 
 const dateString = computed(() =>
@@ -95,8 +100,16 @@ async function handleConfirm() {
       Math.floor(delegation.weight)
     );
 
-    const expirationTime = expirationDate.value;
+    const delegateToSelf =
+      weights.reduce((acc, weight) => acc + weight, 0) < 100;
 
+    if (delegateToSelf) {
+      addresses.push(web3Account.value);
+      weights.push(100 - weights.reduce((acc, weight) => acc + weight, 0));
+    }
+
+    const expirationTime = expirationDate.value;
+    console.log('weights', weights, 'addresses', addresses, expirationTime);
     const tx = await setDelegates(addresses, weights, expirationTime);
     isAwaitingSignature.value = false;
     updatePendingTransaction(txPendingId, { hash: tx.hash });
@@ -105,7 +118,7 @@ async function handleConfirm() {
     const receipt = await tx.wait();
     console.log('Receipt', receipt);
     await sleep(3e3);
-    notify(t('notify.delegationRemoved'));
+    notify(t('notify.delegationSuccess'));
     removePendingTransaction(txPendingId);
     emit('reload');
   } catch (e) {
@@ -289,10 +302,12 @@ watch(
     <template #header>
       <div class="px-4 pt-1 text-left text-skin-heading">
         <h3 class="m-0" v-text="$t('delegates.delegateModal.title')" />
-        <span
-          class="text-gray-500"
-          v-text="$t('delegates.delegateModal.sub')"
-        />
+        <p class="text-gray-500">
+          Delegate your voting power to multiple addresses.
+        </p>
+        <p class="text-gray-500 mt-2">
+          Any unallocated power (100% - any delegations) will remain with you.
+        </p>
       </div>
     </template>
 
@@ -366,7 +381,7 @@ watch(
       <TuneButton
         class="w-full"
         type="button"
-        :disabled="isSpaceDelegatesValid || Boolean(delegationWeightError)"
+        :disabled="!isSpaceDelegatesValid || Boolean(delegationWeightError)"
         :loading="isAwaitingSignature"
         @click="handleConfirm"
       >
