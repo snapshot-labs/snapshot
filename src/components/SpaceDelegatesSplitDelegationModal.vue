@@ -290,16 +290,16 @@ watch(
         <p class="text-gray-500">
           Delegate your voting power to multiple addresses.
         </p>
-        <p class="text-gray-500 mt-2">
-          Any unallocated power (100% - any delegations) will remain with you.
-        </p>
       </div>
     </template>
 
     <div class="space-y-3 p-4">
-      <div>
+      <p>
+        Any unallocated power (100% - any delegations) will remain with you.
+      </p>
+      <div class="flex flex-col space-y-1">
         <LabelInput> Delegation scope </LabelInput>
-        <div class="mt-1 flex items-center space-x-1">
+        <div class="flex items-center space-x-1">
           <AvatarSpace :space="space" />
           <span class="text-skin-heading" v-text="space.name" />
         </div>
@@ -341,10 +341,7 @@ watch(
           />
         </div>
         <div class="flex justify-between">
-          <TuneButton
-            class="flex text-skin-link items-center space-x-2"
-            @click="addDelegate"
-          >
+          <TuneButton class="flex items-center space-x-2" @click="addDelegate">
             <i-ho-plus class="text-xs" />
             <span>Add delegate</span>
           </TuneButton>
