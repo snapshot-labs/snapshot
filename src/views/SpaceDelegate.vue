@@ -3,6 +3,7 @@ import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
 import { DelegatingTo } from '../helpers/delegationV2/types';
+import { DelegationTypes } from '@/helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -262,7 +263,13 @@ onBeforeRouteLeave(async () => {
                 </div>
               </div>
             </div>
-            <TheActionbar break-point="md">
+            <TheActionbar
+              v-if="
+                space.delegationPortal.delegationType !==
+                DelegationTypes.SPLIT_DELEGATION
+              "
+              break-point="md"
+            >
               <div
                 class="flex h-full items-center px-[20px] py-[16px] md:px-0 md:pb-0"
               >
