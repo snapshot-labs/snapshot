@@ -65,22 +65,7 @@ const dateString = computed(() =>
   d(expirationDate.value * 1e3, 'short', 'en-US')
 );
 
-const isValid = computed(() => {
-  const addresses = delegates.value.map(delegation => delegation.address);
-
-  const weights = delegates.value
-    .map(delegation => Math.floor(delegation.weight))
-    .filter(weight => weight > 0);
-
-  return (
-    addresses.length > 0 &&
-    weights.length > 0 &&
-    addresses.length === weights.length
-  );
-});
-
 const handleExpirationDateUpdate = (date: number) => {
-  console.log('newDate', d(date * 1e3, 'short', 'en-US'));
   expirationDate.value = date;
 };
 
@@ -125,7 +110,6 @@ async function handleConfirm() {
 }
 
 const handleCloseModal = () => {
-  console.log('closing modal', currentDelegations.value.length);
   delegates.value =
     currentDelegations.value.length > 0
       ? clone(currentDelegations.value)
@@ -178,8 +162,6 @@ function validateDelegations() {
   delegationAddressError.value = hasDuplicates
     ? 'Duplicate addresses not allowed'
     : '';
-
-  console.log(new Set(delegates.value));
 }
 
 async function deleteAllDelegates() {
@@ -227,9 +209,6 @@ function divideEqually() {
     weight: equalWeight
   }));
 
-  const remainingWeight = 100 - equalWeight * numDelegates;
-  updatedDelegates[0].weight += remainingWeight;
-
   delegates.value = updatedDelegates;
 }
 
@@ -247,7 +226,7 @@ async function loadDelegatingTo() {
     })
   );
   currentDelegations.value = clone(delegations) || [];
-  console.log('loadDelegatingTo', props.address, delegations);
+
   if (props.address) {
     const newDelegate = {
       address: props.address,
@@ -278,9 +257,7 @@ watch(
   newDelegateAddress => {
     const delegateAddress = newDelegateAddress.query.delegate;
     if (delegateAddress) {
-      console.log('delegateAddress', delegateAddress, clone(delegates.value));
       if (delegates.value.length === 1 && !delegates.value[0].address) {
-        console.log('delegate default watch');
         // delegates has default value, replace with the passed address
         const _delegates = clone(delegates.value);
         _delegates[0].address = delegateAddress;
@@ -297,7 +274,6 @@ watch(
               0
             )
         };
-        console.log('delegate watch', newDelegate, clone(delegates.value));
         delegates.value.push(newDelegate);
       }
     }
