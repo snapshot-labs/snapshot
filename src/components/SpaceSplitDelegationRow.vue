@@ -27,11 +27,13 @@ const definition = computed(() => {
         type: 'string',
         format: 'address',
         title: 'Delegate to',
-        description: 'The address, ENS or Lens of who you want to delegate to',
+        description: 'The address of who you want to delegate to',
         examples: ['Address']
       },
       weight: {
-        type: 'number'
+        type: 'number',
+        minimum: 0,
+        maximum: 100
       }
     },
     required: ['to', 'weight'],
