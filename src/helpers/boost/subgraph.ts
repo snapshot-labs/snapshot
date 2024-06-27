@@ -7,7 +7,9 @@ const SUBGRAPH_URLS = {
   '11155111':
     'https://api.studio.thegraph.com/query/23545/boost-sepolia/version/latest',
   '137':
-    'https://api.studio.thegraph.com/query/23545/boost-polygon/version/latest'
+    'https://api.studio.thegraph.com/query/23545/boost-polygon/version/latest',
+  '8453':
+    'https://api.studio.thegraph.com/query/23545/boost-base/version/latest'
 };
 
 export async function getClaims(recipient: string) {

@@ -12,7 +12,8 @@ const NETWORKS = {
   1: 'eth-mainnet',
   11155111: 'eth-sepolia',
   137: 'polygon-mainnet',
-  42161: 'arb-mainnet'
+  42161: 'arb-mainnet',
+  8453: 'base-mainnet'
 };
 
 function getApiUrl(networkId: number) {
