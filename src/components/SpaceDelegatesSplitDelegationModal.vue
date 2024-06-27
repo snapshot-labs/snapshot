@@ -38,6 +38,7 @@ const delegates = ref(
     : [defaultDelegate]
 );
 const delegationWeightError = ref('');
+const delegationAddressError = ref('');
 const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
@@ -149,14 +150,14 @@ function calculateInitialDate(): number {
 }
 
 function deleteDelegate(index: number) {
-  delegationWeightError.value = '';
   const newDelegates = clone(delegates.value);
   newDelegates.splice(index, 1);
   delegates.value = newDelegates;
+
+  validateDelegations();
 }
 
 function updateDelegate(index: number, form: { to: string; weight: number }) {
-  delegationWeightError.value = '';
   const newDelegates = clone(delegates.value);
   newDelegates[index] = {
     ...newDelegates[index],
@@ -165,14 +166,27 @@ function updateDelegate(index: number, form: { to: string; weight: number }) {
   };
   delegates.value = newDelegates;
 
+  validateDelegations();
+}
+
+function validateDelegations() {
   // show error if weights add to more than 100
-  const totalWeight = newDelegates.reduce(
+  const totalWeight = delegates.value.reduce(
     (total, delegate) => total + delegate.weight,
     0
   );
-  if (totalWeight > 100) {
-    delegationWeightError.value = 'Total weight cannot exceed 100';
-  }
+  delegationWeightError.value =
+    totalWeight > 100 ? 'Total weight cannot exceed 100' : '';
+
+  // Show error if duplicate addresses
+  const hasDuplicates =
+    new Set(delegates.value.map(d => d.address)).size !==
+    delegates.value.length;
+  delegationAddressError.value = hasDuplicates
+    ? 'Duplicate addresses not allowed'
+    : '';
+
+  console.log(new Set(delegates.value));
 }
 
 async function deleteAllDelegates() {
@@ -377,13 +391,21 @@ watch(
           v-if="Boolean(delegationWeightError)"
           :error="delegationWeightError"
         />
+        <TuneErrorInput
+          v-if="Boolean(delegationAddressError)"
+          :error="delegationAddressError"
+        />
       </div>
     </div>
     <template #footer>
       <TuneButton
         class="w-full"
         type="button"
-        :disabled="!isSpaceDelegatesValid || Boolean(delegationWeightError)"
+        :disabled="
+          !isSpaceDelegatesValid ||
+          Boolean(delegationWeightError) ||
+          Boolean(delegationAddressError)
+        "
         :loading="isAwaitingSignature"
         @click="handleConfirm"
       >
