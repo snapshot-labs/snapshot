@@ -29,7 +29,7 @@ const {
   fetchDelegatingTo,
   clearDelegations
 } = useDelegates(props.space);
-const { web3Account } = useWeb3();
+const { web3 } = useWeb3();
 
 const currentDelegations = ref<{ address: string; weight: number }[]>([]);
 const delegates = ref(
@@ -40,7 +40,6 @@ const delegates = ref(
 const delegationWeightError = ref('');
 const delegationAddressError = ref('');
 const isAwaitingSignature = ref(false);
-const accountBalance = ref('');
 const expirationDate = ref<number>(calculateInitialDate());
 
 const isSpaceDelegatesValid = computed(() => {
@@ -70,6 +69,13 @@ const handleExpirationDateUpdate = (date: number) => {
 };
 
 async function handleConfirm() {
+  if (web3.value.network.chainId !== 1 || web3.value.network.chainId !== 100) {
+    notify([
+      'red',
+      'Change your network to Mainnet or Gnosis Chain to delegate your voting power.'
+    ]);
+    return;
+  }
   const txPendingId = createPendingTransaction();
 
   try {
@@ -86,7 +92,7 @@ async function handleConfirm() {
         .reduce((acc, weight) => acc + weight, 0) < 100;
 
     if (delegateToSelf) {
-      addresses.push(web3Account.value);
+      addresses.push(web3.value.account);
       weights.push(100 - weights.reduce((acc, weight) => acc + weight, 0));
     }
 
@@ -115,7 +121,6 @@ const handleCloseModal = () => {
       ? clone(currentDelegations.value)
       : [defaultDelegate];
   isAwaitingSignature.value = false;
-  accountBalance.value = '';
   expirationDate.value = calculateInitialDate();
   emit('close');
 };
@@ -212,13 +217,8 @@ function divideEqually() {
   delegates.value = updatedDelegates;
 }
 
-async function loadAccountBalance() {
-  const balance = await loadDelegateBalance(web3Account.value);
-  accountBalance.value = balance || '0';
-}
-
 async function loadDelegatingTo() {
-  const delegatingTo = await fetchDelegatingTo(web3Account.value);
+  const delegatingTo = await fetchDelegatingTo(web3.value.account);
   const delegations = delegatingTo?.delegateTree?.map(
     ({ delegate, weight }) => ({
       address: delegate,
@@ -244,9 +244,8 @@ async function loadDelegatingTo() {
 }
 
 watch(
-  web3Account,
+  web3,
   () => {
-    loadAccountBalance();
     loadDelegatingTo();
   },
   { immediate: true }
