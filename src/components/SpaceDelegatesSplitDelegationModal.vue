@@ -253,7 +253,8 @@ async function loadDelegatingTo() {
     };
     delegations?.push(newDelegate);
   }
-  delegates.value = clone(delegations) || [defaultDelegate];
+  delegates.value =
+    delegations && delegations.length ? clone(delegations) : [defaultDelegate];
 }
 
 watch(
