@@ -179,9 +179,9 @@ function validateDelegations() {
     totalWeight > 100 ? 'Total weight cannot exceed 100' : '';
 
   // Show error if duplicate addresses
+  const nonEmptyAddresses = delegates.value.map(d => d.address).filter(Boolean);
   const hasDuplicates =
-    new Set(delegates.value.map(d => d.address)).size !==
-    delegates.value.length;
+    new Set(nonEmptyAddresses).size !== nonEmptyAddresses.length;
   delegationAddressError.value = hasDuplicates
     ? 'Duplicate addresses not allowed'
     : '';
