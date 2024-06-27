@@ -39,7 +39,6 @@ const delegates = ref(
 );
 const delegationWeightError = ref('');
 const delegationAddressError = ref('');
-const addressRef = ref();
 const isAwaitingSignature = ref(false);
 const accountBalance = ref('');
 const expirationDate = ref<number>(calculateInitialDate());
@@ -86,11 +85,6 @@ const handleExpirationDateUpdate = (date: number) => {
 };
 
 async function handleConfirm() {
-  if (!isValid.value) {
-    addressRef?.value?.forceShowError();
-    return;
-  }
-
   const txPendingId = createPendingTransaction();
 
   try {
@@ -136,7 +130,6 @@ const handleCloseModal = () => {
     currentDelegations.value.length > 0
       ? clone(currentDelegations.value)
       : [defaultDelegate];
-  addressRef.value = undefined;
   isAwaitingSignature.value = false;
   accountBalance.value = '';
   expirationDate.value = calculateInitialDate();
