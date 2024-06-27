@@ -7,6 +7,26 @@ type DelegateRowForm = {
   weight: number;
 };
 
+const definition = {
+  type: 'object',
+  properties: {
+    to: {
+      type: 'string',
+      format: 'address',
+      title: 'Delegate to',
+      description: 'The address of who you want to delegate to',
+      examples: ['Address']
+    },
+    weight: {
+      type: 'number',
+      minimum: 0,
+      maximum: 100
+    }
+  },
+  required: ['to', 'weight'],
+  additionalProperties: false
+};
+
 const props = defineProps<{
   address: string;
   weight: number;
@@ -19,30 +39,8 @@ const form = ref<DelegateRowForm>({
   weight: props.weight ?? 0
 });
 
-const definition = computed(() => {
-  return {
-    type: 'object',
-    properties: {
-      to: {
-        type: 'string',
-        format: 'address',
-        title: 'Delegate to',
-        description: 'The address of who you want to delegate to',
-        examples: ['Address']
-      },
-      weight: {
-        type: 'number',
-        minimum: 0,
-        maximum: 100
-      }
-    },
-    required: ['to', 'weight'],
-    additionalProperties: false
-  };
-});
-
 const validationErrors = computed(() => {
-  return validateForm(definition.value || {}, clone(form.value));
+  return validateForm(definition, clone(form.value));
 });
 
 const roundedWeight = computed(() => {
@@ -81,7 +79,7 @@ watch(
 
 <template>
   <div class="items-end flex space-x-1">
-    <div class="min-w-[66.7%] relative">
+    <div class="min-w-[66.7%]">
       <TuneInput
         :model-value="form.to"
         :placeholder="definition.properties.to.examples[0]"
@@ -100,12 +98,9 @@ watch(
         @update:model-value="
           event => updateFormValue(parseFloat(event), 'weight')
         "
-      />
-      <div
-        class="text-white absolute w-4 h-4 right-2 top-1/2 transform -translate-y-1/2"
       >
-        %
-      </div>
+        <template #after><span class="-mr-2">%</span></template>
+      </TuneInput>
     </div>
     <BaseButtonIcon
       class="h-[42px] min-w-[42px] rounded-full border border-skin-border flex items-center justify-center tune-button"
