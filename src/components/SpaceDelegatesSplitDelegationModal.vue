@@ -23,12 +23,9 @@ const {
 const route = useRoute();
 const { notify } = useFlashNotification();
 const { d, t } = useI18n();
-const {
-  setDelegates,
-  loadDelegateBalance,
-  fetchDelegatingTo,
-  clearDelegations
-} = useDelegates(props.space);
+const { setDelegates, fetchDelegatingTo, clearDelegations } = useDelegates(
+  props.space
+);
 const { web3 } = useWeb3();
 
 const currentDelegations = ref<{ address: string; weight: number }[]>([]);
@@ -225,7 +222,7 @@ async function loadDelegatingTo() {
       weight: weight / 100 // delegate weight comes from api as BPS
     })
   );
-  currentDelegations.value = clone(delegations) || [];
+  currentDelegations.value = delegations ? clone(delegations) : [];
 
   if (props.address) {
     const newDelegate = {
@@ -243,13 +240,7 @@ async function loadDelegatingTo() {
     delegations && delegations.length ? clone(delegations) : [defaultDelegate];
 }
 
-watch(
-  web3,
-  () => {
-    loadDelegatingTo();
-  },
-  { immediate: true }
-);
+watch(() => web3.value.account, loadDelegatingTo, { immediate: true });
 
 watch(
   route,
