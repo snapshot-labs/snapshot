@@ -1666,10 +1666,10 @@
   resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.15.tgz#07e5ae35ed36304250462218e115bab1c1609812"
   integrity sha512-va6zYSl8oIraBJeIZWEatOI292rfJQouyyvEeHv8qi9ns+LgxMsKayQtXSqn9GcmAfdWQVs/P9bDaCQ77FyJYw==
 
-"@snapshot-labs/snapshot.js@^0.11.37":
-  version "0.11.37"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.11.37.tgz#ba4c4b484d6eac2eabc172ec543053d5e0355798"
-  integrity sha512-fnyoTyaa+Ifl1Yh/6qdzF0EJfYBb6HINAl88WLiu9l+lGu+o5c1iHjoSvRJzFnKNE96rtu8ivmtDtrA4QAFIOg==
+"@snapshot-labs/snapshot.js@^0.11.38":
+  version "0.11.38"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.11.38.tgz#bc7e35b6cf5df056ebdb474ef77e851a209b1bab"
+  integrity sha512-Pkiz+7uo5WAGKKJryT1ZyDY5we3QRVGLwQQGV6RDYLto1EmHGu1pEUX2AN/UUXnRzu7b+SPOynjBkAbJLZZq3A==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
