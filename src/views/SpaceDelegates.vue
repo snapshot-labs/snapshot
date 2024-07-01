@@ -2,6 +2,9 @@
 import { SNAPSHOT_HELP_LINK } from '@/helpers/constants';
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useInfiniteScroll, refDebounced } from '@vueuse/core';
+import { DelegationTypes } from '@/helpers/delegationV2';
+import SpaceDelegatesSplitDelegationModal from '@/components/SpaceDelegatesSplitDelegationModal.vue';
+import SpaceDelegatesDelegateModal from '@/components/SpaceDelegatesDelegateModal.vue';
 
 const props = defineProps<{
   space: ExtendedSpace;
@@ -17,7 +20,8 @@ const {
   isLoadingDelegate,
   hasMoreDelegates,
   delegatesStats,
-  hasDelegatesLoadFailed
+  hasDelegatesLoadFailed,
+  hasDelegationPortal
 } = useDelegates(props.space);
 const { profiles } = useProfiles();
 const { modalAccountOpen } = useModal();
@@ -31,6 +35,13 @@ const { getStatement } = useStatement();
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
 const selectedFilter = ref(route.query.filter || 'mostVotingPower');
+
+const isSplitDelegation = computed(() => {
+  return (
+    props.space.delegationPortal.delegationType ===
+    DelegationTypes.SPLIT_DELEGATION
+  );
+});
 
 const matchFilter = computed(() => {
   switch (selectedFilter.value) {
@@ -128,6 +139,8 @@ watch(matchFilter, () => {
 });
 
 onMounted(() => {
+  if (!hasDelegationPortal) return;
+
   if (searchInput.value) loadDelegate(searchInput.value);
   loadDelegates(matchFilter.value);
 });
@@ -154,13 +167,21 @@ onMounted(() => {
                   :model-value="searchInput"
                   :placeholder="$t('searchPlaceholderVotes')"
                   class="flex-auto pr-2"
+                  :is-disabled="!hasDelegationPortal"
                   @update:model-value="handleSearchInput"
                 />
               </div>
-              <BaseMenu :items="filterItems" @select="handleSelectFilter">
+              <BaseMenu
+                :items="filterItems"
+                :disabled="!hasDelegationPortal"
+                @select="handleSelectFilter"
+              >
                 <template #button>
                   <div>
-                    <TuneButton class="hidden items-center sm:flex">
+                    <TuneButton
+                      class="hidden items-center sm:flex"
+                      :disabled="!hasDelegationPortal"
+                    >
                       <div class="whitespace-nowrap">
                         {{
                           filterItems.find(i => i.action === selectedFilter)
@@ -168,7 +189,8 @@ onMounted(() => {
                         }}
                       </div>
                       <i-ho-chevron-down
-                        class="-mr-1 ml-1 text-xs text-skin-link"
+                        class="-mr-1 ml-1 text-xs"
+                        :class="{ 'text-skin-link': hasDelegationPortal }"
                       />
                     </TuneButton>
 
@@ -198,6 +220,7 @@ onMounted(() => {
                     @click="handleClickProfile(web3Account)"
                   />
                   <TuneButton
+                    :disabled="!hasDelegationPortal"
                     :primary="isFollowing"
                     class="w-full md:w-auto"
                     @click="handleClickDelegate()"
@@ -209,7 +232,13 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <BaseMessageBlock v-if="hasDelegatesLoadFailed" level="warning-red">
+        <BaseMessageBlock v-if="!hasDelegationPortal" level="warning-red">
+          This space has misconfigured or not setup their delegation portal
+        </BaseMessageBlock>
+        <BaseMessageBlock
+          v-else-if="hasDelegatesLoadFailed"
+          level="warning-red"
+        >
           An error occurred while loading delegates. Please try again later. If
           the problem persists, consider contacting our support team on
           <BaseLink :link="SNAPSHOT_HELP_LINK">Help Center</BaseLink>
@@ -269,7 +298,13 @@ onMounted(() => {
       </div>
     </template>
     <Teleport to="#modal">
-      <SpaceDelegatesDelegateModal
+      <component
+        :is="
+          isSplitDelegation
+            ? SpaceDelegatesSplitDelegationModal
+            : SpaceDelegatesDelegateModal
+        "
+        v-if="hasDelegationPortal"
         :open="route.query.delegate !== undefined"
         :space="space"
         :address="(route.query.delegate as string) || ''"

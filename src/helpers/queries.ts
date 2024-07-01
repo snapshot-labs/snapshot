@@ -526,19 +526,3 @@ export const SPACE_QUERY = gql`
     }
   }
 `;
-
-export const DELEGATE_VOTES_AND_PROPOSALS = gql`
-  query VotesAndProposals($delegates: [String]!, $space: String!) {
-    votes(first: 1000, where: { voter_in: $delegates, space: $space }) {
-      created
-      voter
-      choice
-      vp
-    }
-    proposals(first: 1000, where: { author_in: $delegates, space: $space }) {
-      created
-      author
-      title
-    }
-  }
-`;

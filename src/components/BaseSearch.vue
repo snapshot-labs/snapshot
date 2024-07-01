@@ -4,6 +4,7 @@ const props = defineProps<{
   placeholder?: string;
   modal?: boolean;
   focusOnMount?: boolean;
+  isDisabled?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue']);
@@ -49,6 +50,8 @@ watch(
       autocorrect="off"
       autocapitalize="none"
       class="input w-full border-none"
+      :class="{ '!cursor-not-allowed': isDisabled }"
+      :disabled="isDisabled"
       @input="handleInput"
     />
     <i-ho-x-circle

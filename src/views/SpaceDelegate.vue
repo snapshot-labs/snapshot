@@ -2,6 +2,8 @@
 import { ExtendedSpace } from '@/helpers/interfaces';
 import { useConfirmDialog } from '@vueuse/core';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { DelegatingTo } from '../helpers/delegationV2/types';
+import { DelegationTypes } from '@/helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
@@ -24,15 +26,20 @@ const {
   delegate,
   delegatesStats,
   isLoadingDelegate,
-  isLoadingDelegatingTo
+  isLoadingDelegatingTo,
+  hasDelegationPortal
 } = useDelegates(props.space);
-const { reloadStatement, getStatement, formatPercentageNumber } =
-  useStatement();
+const {
+  reloadStatement,
+  getStatement,
+  formatPercentageNumber,
+  loadingStatements
+} = useStatement();
 const { modalAccountOpen } = useModal();
 
 const showEdit = ref(false);
 const showDelegateModal = ref(false);
-const web3AccountDelegatingTo = ref('');
+const web3AccountDelegatingTo = ref<DelegatingTo | undefined>();
 const fetchedStatement = ref(INITIAL_STATEMENT);
 const statementForm = ref(INITIAL_STATEMENT);
 
@@ -51,7 +58,7 @@ const isLoggedUser = computed(() => {
 
 const showUndelegate = computed(() => {
   return (
-    web3AccountDelegatingTo.value?.toLowerCase() ===
+    web3AccountDelegatingTo.value?.[0]?.toLowerCase() ===
     address.value?.toLowerCase()
   );
 });
@@ -113,6 +120,8 @@ async function handleReload() {
 async function init() {
   loadDelegatingTo();
   await loadDelegate(address.value);
+
+  await reloadStatement(props.space.id, address.value);
   statementForm.value = getStatement(address.value);
   fetchedStatement.value = getStatement(address.value);
 }
@@ -126,13 +135,17 @@ function handleClickDelegate() {
   showDelegateModal.value = true;
 }
 
-watch(address, init, {
-  immediate: true
-});
+watch(
+  address,
+  addr => {
+    showEdit.value = false;
 
-watch(address, () => {
-  showEdit.value = false;
-});
+    if (addr) init();
+  },
+  {
+    immediate: true
+  }
+);
 
 watch(web3Account, async () => {
   loadDelegatingTo();
@@ -189,7 +202,7 @@ onBeforeRouteLeave(async () => {
       <TheLayout v-else reverse class="pt-[12px]">
         <template #content-left>
           <div class="px-4 md:px-0">
-            <LoadingPage v-if="isLoadingDelegate" slim />
+            <LoadingPage v-if="isLoadingDelegate || loadingStatements" slim />
             <div v-else class="space-y-[40px]">
               <div>
                 <h3 class="mb-2 mt-0">About</h3>
@@ -250,7 +263,13 @@ onBeforeRouteLeave(async () => {
                 </div>
               </div>
             </div>
-            <TheActionbar break-point="md">
+            <TheActionbar
+              v-if="
+                space.delegationPortal.delegationType !==
+                DelegationTypes.SPLIT_DELEGATION
+              "
+              break-point="md"
+            >
               <div
                 class="flex h-full items-center px-[20px] py-[16px] md:px-0 md:pb-0"
               >
@@ -286,6 +305,7 @@ onBeforeRouteLeave(async () => {
     </div>
     <Teleport to="#modal">
       <SpaceDelegatesDelegateModal
+        v-if="hasDelegationPortal"
         :open="showDelegateModal"
         :space="space"
         :address="showUndelegate ? web3Account : address"
