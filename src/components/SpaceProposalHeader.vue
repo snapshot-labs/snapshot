@@ -100,7 +100,8 @@ watch(
   () => {
     if (!props.proposal) return;
     loadProfiles([props.proposal.author]);
-  }
+  },
+  { immediate: true }
 );
 </script>
 
