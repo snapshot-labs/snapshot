@@ -489,7 +489,7 @@ watchEffect(async () => {
 });
 
 watch(
-  () => form.value.distribution,
+  [() => form.value.distribution.type],
   () => {
     if (!form.value.distribution.hasWeightedLimit) {
       form.value.distribution.weightedLimit = '';
@@ -500,11 +500,12 @@ watch(
     if (form.value.distribution.type === 'lottery') {
       form.value.distribution.hasWeightedLimit = false;
       form.value.distribution.weightedLimit = '';
+      form.value.distribution.numWinners ??= '1';
     }
     if (form.value.distribution.type === 'weighted') {
       form.value.distribution.hasLotteryLimit = false;
       form.value.distribution.lotteryLimit = '';
-      form.value.distribution.numWinners = '';
+      form.value.distribution.numWinners = undefined;
     }
   },
   { deep: true }
