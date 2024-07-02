@@ -84,7 +84,7 @@ const form = ref<Form>({
     weightedLimit: '',
     hasLotteryLimit: false,
     lotteryLimit: '',
-    numWinners: 1
+    numWinners: '1'
   },
   network: '1',
   token: undefined,
@@ -227,7 +227,7 @@ const strategy = computed<BoostStrategy>(() => {
 
   const numWinners =
     form.value.distribution.type === 'lottery'
-      ? form.value.distribution.numWinners
+      ? Number(form.value.distribution.numWinners)
       : undefined;
 
   return {
@@ -500,12 +500,11 @@ watch(
     if (form.value.distribution.type === 'lottery') {
       form.value.distribution.hasWeightedLimit = false;
       form.value.distribution.weightedLimit = '';
-      form.value.distribution.numWinners = 1;
     }
     if (form.value.distribution.type === 'weighted') {
       form.value.distribution.hasLotteryLimit = false;
       form.value.distribution.lotteryLimit = '';
-      form.value.distribution.numWinners = undefined;
+      form.value.distribution.numWinners = ''
     }
   },
   { deep: true }
@@ -625,7 +624,7 @@ watch(
               <template v-if="form.distribution.type === 'lottery'">
                 <TuneInput
                   v-model="form.distribution.numWinners"
-                  default="1"
+                  label="Number of winners"
                   type="number"
                   placeholder="5"
                   always-show-error
