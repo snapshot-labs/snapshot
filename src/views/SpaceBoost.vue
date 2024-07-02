@@ -84,7 +84,7 @@ const form = ref<Form>({
     weightedLimit: '',
     hasLotteryLimit: false,
     lotteryLimit: '',
-    numWinners: ''
+    numWinners: 1
   },
   network: '1',
   token: undefined,
@@ -225,6 +225,11 @@ const strategy = computed<BoostStrategy>(() => {
       eligibilityType = 'bribe';
   }
 
+  const numWinners =
+    form.value.distribution.type === 'lottery'
+      ? form.value.distribution.numWinners
+      : undefined;
+
   return {
     name: 'Boost',
     description: 'Snapshot.org proposal boost',
@@ -242,7 +247,7 @@ const strategy = computed<BoostStrategy>(() => {
       distribution: {
         type: form.value.distribution.type,
         limit: strategyDistributionLimit.value,
-        numWinners: form.value.distribution.numWinners || undefined
+        numWinners
       }
     }
   };
@@ -495,11 +500,12 @@ watch(
     if (form.value.distribution.type === 'lottery') {
       form.value.distribution.hasWeightedLimit = false;
       form.value.distribution.weightedLimit = '';
+      form.value.distribution.numWinners = 1;
     }
     if (form.value.distribution.type === 'weighted') {
       form.value.distribution.hasLotteryLimit = false;
       form.value.distribution.lotteryLimit = '';
-      form.value.distribution.numWinners = '';
+      form.value.distribution.numWinners = undefined;
     }
   },
   { deep: true }
@@ -619,7 +625,7 @@ watch(
               <template v-if="form.distribution.type === 'lottery'">
                 <TuneInput
                   v-model="form.distribution.numWinners"
-                  label="Number of winners"
+                  default="1"
                   type="number"
                   placeholder="5"
                   always-show-error
