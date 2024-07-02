@@ -84,7 +84,7 @@ const form = ref<Form>({
     weightedLimit: '',
     hasLotteryLimit: false,
     lotteryLimit: '',
-    numWinners: ''
+    numWinners: '1'
   },
   network: '1',
   token: undefined,
@@ -225,6 +225,11 @@ const strategy = computed<BoostStrategy>(() => {
       eligibilityType = 'bribe';
   }
 
+  const numWinners =
+    form.value.distribution.type === 'lottery'
+      ? Number(form.value.distribution.numWinners)
+      : undefined;
+
   return {
     name: 'Boost',
     description: 'Snapshot.org proposal boost',
@@ -242,7 +247,7 @@ const strategy = computed<BoostStrategy>(() => {
       distribution: {
         type: form.value.distribution.type,
         limit: strategyDistributionLimit.value,
-        numWinners: form.value.distribution.numWinners || undefined
+        numWinners
       }
     }
   };
@@ -484,7 +489,7 @@ watchEffect(async () => {
 });
 
 watch(
-  () => form.value.distribution,
+  [() => form.value.distribution.type],
   () => {
     if (!form.value.distribution.hasWeightedLimit) {
       form.value.distribution.weightedLimit = '';
@@ -495,11 +500,12 @@ watch(
     if (form.value.distribution.type === 'lottery') {
       form.value.distribution.hasWeightedLimit = false;
       form.value.distribution.weightedLimit = '';
+      form.value.distribution.numWinners ??= '1';
     }
     if (form.value.distribution.type === 'weighted') {
       form.value.distribution.hasLotteryLimit = false;
       form.value.distribution.lotteryLimit = '';
-      form.value.distribution.numWinners = '';
+      form.value.distribution.numWinners = undefined;
     }
   },
   { deep: true }
