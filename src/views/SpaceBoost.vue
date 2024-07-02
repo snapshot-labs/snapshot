@@ -504,7 +504,7 @@ watch(
     if (form.value.distribution.type === 'weighted') {
       form.value.distribution.hasLotteryLimit = false;
       form.value.distribution.lotteryLimit = '';
-      form.value.distribution.numWinners = ''
+      form.value.distribution.numWinners = '';
     }
   },
   { deep: true }
