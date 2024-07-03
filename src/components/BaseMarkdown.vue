@@ -29,6 +29,8 @@ const markdown = computed(() => {
   }
   body = body.replace(/!\[.*?\]\((ipfs:\/\/[a-zA-Z0-9]+?)\)/g, replaceIpfsUrl);
 
+  // if body contains a link that contain `_` , replace it with `\_` to escape it
+  body = body.replace(/(http.*?)(?=_)/g, '$1\\');
   return remarkable.render(body);
 });
 
