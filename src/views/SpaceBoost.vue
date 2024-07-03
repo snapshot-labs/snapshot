@@ -63,7 +63,6 @@ const { getRelativeProposalPeriod } = useIntl();
 const { env } = useApp();
 const { formatNumber, getNumberFormatter } = useIntl();
 const { loadBalances, tokens, loading: loadingBalances } = useBalances();
-const { isWhitelisted } = useBoost();
 
 const proposal = ref();
 const createStatus = ref('');
@@ -726,11 +725,7 @@ watch(
             </div>
             <TuneButton
               :loading="isLoading"
-              :disabled="
-                !isWhitelisted(space.id) ||
-                !space.boost.enabled ||
-                proposal.state === 'closed'
-              "
+              :disabled="!space.boost.enabled || proposal.state === 'closed'"
               primary
               class="w-full mt-3"
               @click="handleCreate"
@@ -745,9 +740,7 @@ watch(
                 <i-ho-exclamation-circle />
                 This proposal is closed
               </template>
-              <template
-                v-else-if="!isWhitelisted(space.id) || !space.boost.enabled"
-              >
+              <template v-else-if="!space.boost.enabled">
                 <i-ho-exclamation-circle />
                 Boost is not enabled in this space
               </template>
