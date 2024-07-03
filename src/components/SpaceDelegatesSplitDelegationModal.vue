@@ -66,7 +66,7 @@ const handleExpirationDateUpdate = (date: number) => {
 };
 
 async function handleConfirm() {
-  if (web3.value.network.chainId !== 1 || web3.value.network.chainId !== 100) {
+  if (web3.value.network.chainId !== 1 && web3.value.network.chainId !== 100) {
     notify([
       'red',
       'Change your network to Mainnet or Gnosis Chain to delegate your voting power.'
