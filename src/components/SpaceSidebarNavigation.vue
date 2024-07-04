@@ -31,7 +31,7 @@ const isLegacySpace = computed(() => {
       </BaseSidebarNavigationItem>
     </router-link>
     <router-link
-      v-if="hasDelegationStrategy"
+      v-if="hasDelegationStrategy && !hasDelegatesSettings"
       v-slot="{ isExactActive }"
       :to="{ name: 'delegate', params: { key: space.id } }"
     >
