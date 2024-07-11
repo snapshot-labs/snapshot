@@ -3,7 +3,7 @@ const CUSTOMERS = [
   {
     name: 'Blast',
     avatar:
-      'https://pbs.twimg.com/profile_images/1726739354700173312/OeT9Ef1J_400x400.jpg',
+      'https://pbs.twimg.com/profile_images/1805963937449381888/aNF8BIJo_400x400.jpg',
     website: 'https://blast.io'
   },
   {
