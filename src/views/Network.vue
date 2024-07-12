@@ -40,7 +40,8 @@ const CUSTOMERS = [
   },
   {
     name: 'Sei',
-    avatar: 'ipfs://bafkreiammyt7uztbztqbcqv4bydnczsh2fqmnjf6jxj4xnskzzl6sjrigq',
+    avatar:
+      'ipfs://bafkreiammyt7uztbztqbcqv4bydnczsh2fqmnjf6jxj4xnskzzl6sjrigq',
     website: 'https://www.sei.io'
   },
   {
