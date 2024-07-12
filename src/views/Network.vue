@@ -1,45 +1,52 @@
 <script setup lang="ts">
+import { getIpfsUrl } from '@/helpers/utils';
+
 const CUSTOMERS = [
   {
     name: 'Blast',
     avatar:
-      'https://pbs.twimg.com/profile_images/1805963937449381888/aNF8BIJo_400x400.jpg',
+      'ipfs://bafkreicqhrimt2zyp2kvhmbpvffxlmxovkg5vw6zkissyzibcfy45kbvrm',
     website: 'https://blast.io'
   },
   {
     name: 'Starknet',
     avatar:
-      'https://pbs.twimg.com/profile_images/1656626805816565763/WyFDMG6u_400x400.png',
+      'ipfs://bafkreib5g7a6ufzpo5ebeosetgzoy5geduwcgmch7vighsbasth3wty77q',
     website: 'https://starknet.io'
   },
   {
     name: 'Linea',
     avatar:
-      'https://pbs.twimg.com/profile_images/1639402103486521344/erDLnbwE_400x400.jpg',
+      'ipfs://bafkreihtyzolub3sejuwc32hpdpjnt7ksowaguni2yuho3kyihhcqrtqce',
     website: 'https://linea.build'
   },
   {
     name: 'Merlin',
     avatar:
-      'https://pbs.twimg.com/profile_images/1752499460175962112/C4IPI-zt_400x400.jpg',
+      'ipfs://bafkreicew2qv3m756m7xs2nrjezinghps7rlessrqjqetvox74w4hov2xe',
     website: 'https://merlinchain.io'
   },
   {
     name: 'Immutable zkEVM',
     avatar:
-      'https://pbs.twimg.com/profile_images/1652027246398550018/3yQcX1ZE_400x400.jpg',
+      'ipfs://bafkreiepnhfv3hgexddjpyaeemxo3byhtxxit6t4zsponyczee6ddjqxwi',
     website: 'https://www.immutable.com'
   },
   {
     name: 'Cyber',
     avatar:
-      'https://pbs.twimg.com/profile_images/1790617734281154560/MqaxhdzZ_400x400.jpg',
+      'ipfs://bafkreifm2bbehoqpz4454o7gixnxfi6cgvqlxigqr3f6ipj7l2omtgfgnm',
     website: 'https://cyber.co'
+  },
+  {
+    name: 'Sei',
+    avatar: 'ipfs://bafkreiammyt7uztbztqbcqv4bydnczsh2fqmnjf6jxj4xnskzzl6sjrigq',
+    website: 'https://www.sei.io'
   },
   {
     name: 'Gravity',
     avatar:
-      'https://pbs.twimg.com/profile_images/1795917311620378625/Dnrm-QVf_400x400.jpg',
+      'ipfs://bafkreia7lrda6v2fc5dthazn3qdost4yd2qrn3r4ntrd6lgmc2gvtvvhoa',
     website: 'https://gravity.xyz'
   }
 ];
@@ -148,21 +155,19 @@ useMeta({
     </BaseContainer>
     <BaseContainer class="!max-w-[880px] text-center">
       <div class="eyebrow mb-4">Trusted by</div>
-      <div class="overflow-y-scroll no-scrollbar">
-        <div class="flex flex-wrap gap-4 justify-center">
-          <a
-            v-for="(customer, i) in CUSTOMERS"
-            :key="i"
-            target="_blank"
-            :href="customer.website"
-          >
-            <img
-              :alt="customer.name"
-              :src="customer.avatar"
-              class="w-[54px] h-[54px] rounded-lg"
-            />
-          </a>
-        </div>
+      <div class="flex flex-wrap gap-4 justify-center">
+        <a
+          v-for="(customer, i) in CUSTOMERS"
+          :key="i"
+          target="_blank"
+          :href="customer.website"
+        >
+          <img
+            :alt="customer.name"
+            :src="getIpfsUrl(customer.avatar)"
+            class="w-[54px] h-[54px] rounded-lg"
+          />
+        </a>
       </div>
     </BaseContainer>
 
