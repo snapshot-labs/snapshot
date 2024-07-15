@@ -3,13 +3,13 @@ import { SUPPORTED_NETWORKS } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
 
 const SUBGRAPH_URLS = {
-  '1': 'https://api.studio.thegraph.com/query/23545/boost/version/latest',
+  '1': 'https://subgrapher.snapshot.org/subgraph/arbitrum/A6EEuSAB7mFrWvLBnL1HZXwfiGfqFYnFJjc14REtMNkd',
   '11155111':
-    'https://api.studio.thegraph.com/query/23545/boost-sepolia/version/latest',
+    'https://subgrapher.snapshot.org/subgraph/arbitrum/6T64qrPe7S46zhArSoBF8CAmc5cG3PyKa92Nt4Jhymcy',
   '137':
-    'https://api.studio.thegraph.com/query/23545/boost-polygon/version/latest',
+    'https://subgrapher.snapshot.org/subgraph/arbitrum/CkNpf5gY7XPCinJWP1nh8K7u6faXwDjchGGV4P9rgJ7',
   '8453':
-    'https://api.studio.thegraph.com/query/23545/boost-base/version/latest'
+    'https://subgrapher.snapshot.org/subgraph/arbitrum/52uVpyUHkkMFieRk1khbdshUw26CNHWAEuqLojZzcyjd'
 };
 
 export async function getClaims(recipient: string) {
