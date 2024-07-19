@@ -15,6 +15,8 @@ function getErrorMessage(errorObject): string {
         return 'Must be a valid URL.';
       case 'uri':
         return 'Must be a valid URL.';
+      case 'percentage':
+        return 'Percentage must be between 0 and 100.';
       default:
         return 'Invalid format.';
     }

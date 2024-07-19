@@ -46,7 +46,7 @@ type Form = {
     weightedLimit: string;
     hasLotteryLimit: boolean;
     lotteryLimit: string;
-    numWinners: string;
+    numWinners: string | undefined;
   };
   network: string;
   token?: Token;
@@ -226,7 +226,7 @@ const strategy = computed<BoostStrategy>(() => {
 
   const numWinners =
     form.value.distribution.type === 'lottery'
-      ? Number(form.value.distribution.numWinners)
+      ? form.value.distribution.numWinners
       : undefined;
 
   return {
