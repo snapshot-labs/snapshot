@@ -577,7 +577,7 @@
       "label": "快门",
       "description": "选择是加密的，只有在投票期结束后才能看到",
       "tooltip": "该提案已启用快门隐私。所有的投票都将被加密，直到投票期结束并计算出最终的分数",
-      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+      "url": "https://blog.shutter.network/shielded-voting/"
     }
   },
   "validation": {
