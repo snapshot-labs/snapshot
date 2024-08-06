@@ -576,7 +576,7 @@
       "label": "シャッター",
       "description": "選択肢は暗号化され、投票期間が終了して最終スコアが計算されるまで表示されません",
       "tooltip": "この提案にはShutterプライバシーが有効になっています。すべての投票は、投票期間が終了して最終スコアが計算されるまで暗号化されます",
-      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+      "url": "https://blog.shutter.network/shielded-voting/"
     }
   },
   "validation": {

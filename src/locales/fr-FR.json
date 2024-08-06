@@ -578,7 +578,7 @@
       "label": "Shutter",
       "description": "Les choix sont chiffrés et visibles seulement après la fin de la période de vote",
       "tooltip": "La confidentialité est activée pour cette proposition. Tous les votes seront cryptés jusqu'à ce que la période de vote soit terminée et le score final soit calculé",
-      "url": "https://blog.shutter.network/announcing-shutter-governance-shielded-voting-for-daos/"
+      "url": "https://blog.shutter.network/shielded-voting/"
     }
   },
   "validation": {
