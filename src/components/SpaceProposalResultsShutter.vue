@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="-mb-2 mt-2 text-xs">{{ $t('poweredBy') }}</div>
-
-    <div class="flex items-center">
+    <div class="flex items-center mt-3">
       <BaseLink
         v-tippy="{
           content: $t('privacy.shutter.tooltip')
@@ -11,7 +9,7 @@
         hide-external-icon
         class="inline-block cursor-pointer"
       >
-        <i-s-shutter class="h-[36px] text-[70px]" />
+        <i-s-shutter class="w-[80px]" />
       </BaseLink>
     </div>
   </div>
