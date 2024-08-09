@@ -19,32 +19,6 @@ export const SUPPORTED_NETWORKS = Object.keys(BOOST_CONTRACTS);
 export const SNAPSHOT_GUARD_ADDRESS =
   '0x064417ab192edC00E791d5911ecDbb7c9a718383';
 
-export const BOOST_WHITELIST_SETTINGS = {
-  demo: [],
-  production: [
-    // External testers
-    'community.daosquare.eth',
-    'nsfwgov.eth',
-    'worldassociation.eth',
-    'kumaprotocol.eth',
-    'mimo.eth',
-    'vote.vitadao.eth',
-    'shutterdao0x36.eth',
-    'testeteste123.eth',
-    'alkimiexchange.eth',
-    // Internal testers
-    'testsnap.eth',
-    'fabien.eth',
-    'pscott.eth',
-    'gillvill.eth',
-    '0cf5e.eth',
-    'thanku.eth',
-    'test.wa0x6e.eth',
-    'aurelianob.eth',
-    'pscott.eth'
-  ]
-};
-
 export async function createBoost(
   web3: Web3Provider,
   networkId: string,

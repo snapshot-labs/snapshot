@@ -1,4 +1,4 @@
-import { BOOST_WHITELIST_SETTINGS, claimTokens } from '@/helpers/boost';
+import { claimTokens } from '@/helpers/boost';
 import { BoostSubgraph } from '@/helpers/boost/types';
 import { Proposal, ExtendedSpace } from '@/helpers/interfaces';
 import { TWO_WEEKS } from '@/helpers/constants';
@@ -8,15 +8,9 @@ import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
 
 export function useBoost() {
   const auth = getInstance();
-  const { env } = useApp();
   const { web3Account, web3 } = useWeb3();
   const { changeNetwork } = useChangeNetwork();
-
   const loadingClaim = ref(false);
-
-  function isWhitelisted(spaceId: string) {
-    return (BOOST_WHITELIST_SETTINGS[env] ?? []).includes(spaceId);
-  }
 
   function sanitizeBoosts(
     boosts: BoostSubgraph[],
@@ -86,7 +80,6 @@ export function useBoost() {
   }
 
   return {
-    isWhitelisted,
     sanitizeBoosts,
     loadVouchers,
     handleClaim,

@@ -36,7 +36,7 @@ const { profiles, loadProfiles } = useProfiles();
 const { apolloQuery } = useApolloQuery();
 const { web3Account } = useWeb3();
 const { isFollowing } = useFollowSpace(props.space.id);
-const { isWhitelisted, sanitizeBoosts } = useBoost();
+const { sanitizeBoosts } = useBoost();
 const {
   store,
   userVotedProposalIds,
@@ -87,7 +87,7 @@ async function getProposals(skip = 0) {
 }
 
 async function loadBoosts(proposals: Proposal[]) {
-  if (!isWhitelisted(props.space.id) || !props.space.boost.enabled) return;
+  if (!props.space.boost.enabled) return;
 
   const alreadyLoadedProposals = boosts.value.map(
     boost => boost.strategy.proposal

@@ -25,7 +25,6 @@ useMeta({
 const route = useRoute();
 const { web3, web3Account } = useWeb3();
 const { modalEmailOpen } = useModal();
-const { isWhitelisted } = useBoost();
 const { isMessageVisible, setMessageVisibility } = useFlaggedMessageStatus(
   route.params.id as string
 );
@@ -58,7 +57,6 @@ const strategies = computed(
 const boostEnabled = computed(() => {
   return (
     BOOST_ENABLED_VOTING_TYPES.includes(props.proposal.type) &&
-    isWhitelisted(props.space.id) &&
     props.space.boost.enabled
   );
 });
