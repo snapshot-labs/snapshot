@@ -17,6 +17,12 @@ const snapshotTextLinks = [
     link: {
       name: 'network'
     }
+  },
+  {
+    text: 'terms',
+    link: {
+      name: 'terms-and-conditions'
+    }
   }
 ];
 

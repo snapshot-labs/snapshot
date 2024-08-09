@@ -24,6 +24,7 @@ import SpaceTreasury from '@/views/SpaceTreasury.vue';
 import SpaceDelegates from '@/views/SpaceDelegates.vue';
 import SpaceDelegate from '@/views/SpaceDelegate.vue';
 import SpaceBoost from '@/views/SpaceBoost.vue';
+import TermsView from '@/views/TermsView.vue';
 
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
@@ -151,7 +152,12 @@ if (domain) {
         }
       }
     },
-    { path: '/network', name: 'network', component: Network }
+    { path: '/network', name: 'network', component: Network },
+    {
+      path: '/terms-and-conditions',
+      name: 'terms-and-conditions',
+      component: TermsView
+    }
   );
 }
 

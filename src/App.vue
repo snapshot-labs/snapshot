@@ -41,7 +41,10 @@ onMounted(async () => {
           </KeepAlive>
         </router-view>
       </div>
-      <footer v-if="route.name === 'home'" class="mt-auto">
+      <footer
+        v-if="route.name === 'home' || route.name === 'terms-and-conditions'"
+        class="mt-auto"
+      >
         <TheFooter />
       </footer>
       <div id="action-bar" />
