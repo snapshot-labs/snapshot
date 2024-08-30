@@ -6,7 +6,6 @@ export function useClient() {
   const { notify } = useFlashNotification();
   const { notifyModal } = useModalNotification();
   const { isGnosisSafe } = useGnosis();
-  const { mixpanel } = useMixpanel();
   const { web3 } = useWeb3();
   const auth = getInstance();
   const route = useRoute();
@@ -60,10 +59,6 @@ export function useClient() {
         app: DEFINED_APP
       });
 
-      mixpanel.track('Propose', {
-        space: space.id
-      });
-
       return receipt;
     } else if (type === 'update-proposal') {
       const receipt = await client.updateProposal(
@@ -80,12 +75,6 @@ export function useClient() {
           plugins: JSON.stringify(plugins)
         }
       );
-
-      mixpanel.track('Update proposal', {
-        space: space.id,
-        proposalId: payload.id
-      });
-
       return receipt;
     } else if (type === 'vote') {
       const receipt = await client.vote(auth.web3, web3.value.account, {
@@ -97,12 +86,6 @@ export function useClient() {
         app: DEFINED_APP,
         reason: payload.reason
       });
-
-      mixpanel.track('Vote', {
-        space: space.id,
-        proposalId: payload.proposal.id
-      });
-
       return receipt;
     } else if (type === 'delete-proposal') {
       const receipt = await client.cancelProposal(
@@ -113,33 +96,17 @@ export function useClient() {
           proposal: payload.proposal.id
         }
       );
-
-      mixpanel.track('Delete proposal', {
-        space: space.id,
-        proposalId: payload.proposal.id
-      });
-
       return receipt;
     } else if (type === 'settings') {
       const receipt = await client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
-
-      mixpanel.track('Update space settings', {
-        space: space.id
-      });
-
       return receipt;
     } else if (type === 'delete-space') {
       const receipt = await client.deleteSpace(auth.web3, web3.value.account, {
         space: space.id
       });
-
-      mixpanel.track('Delete space', {
-        space: space.id
-      });
-
       return receipt;
     } else if (type === 'set-statement') {
       const receipt = await client.statement(auth.web3, web3.value.account, {
@@ -147,23 +114,12 @@ export function useClient() {
         about: payload.about,
         statement: payload.statement
       });
-
-      mixpanel.track('Set statement', {
-        space: space.id
-      });
-
       return receipt;
     } else if (type === 'flag-proposal') {
       const receipt = await client.flagProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
-
-      mixpanel.track('Flag proposal', {
-        space: space.id,
-        proposalId: payload.proposal.id
-      });
-
       return receipt;
     }
   }
