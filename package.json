@@ -58,7 +58,6 @@
     "kubo-rpc-client": "^3.0.2",
     "lodash": "^4.17.21",
     "minisearch": "^6.2.0",
-    "mixpanel-browser": "^2.48.1",
     "remarkable": "^2.0.1",
     "remove-markdown": "^0.5.0",
     "typescript": "^5.2.2",

@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory, RouteLocation } from 'vue-router';
-import { useMixpanel } from '@/composables/useMixpanel';
 
 import DelegateView from '@/views/DelegateView.vue';
 import ExploreView from '@/views/ExploreView.vue';
@@ -29,7 +28,6 @@ import TermsView from '@/views/TermsView.vue';
 // The frontend shows all spaces or just a single one, when being accessed
 // through that space's custom domain.
 const { domain, domainAlias } = useApp();
-const { mixpanel } = useMixpanel();
 
 const routes: any[] = [];
 
@@ -187,13 +185,6 @@ const router = createRouter({
 
     return { top: 0 };
   }
-});
-
-router.afterEach(to => {
-  mixpanel.track_pageview({
-    page_name: to.name,
-    page_path: to.path
-  });
 });
 
 export { routes };
