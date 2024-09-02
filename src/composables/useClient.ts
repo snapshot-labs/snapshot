@@ -45,7 +45,7 @@ export function useClient() {
       plugins = payload.metadata.plugins;
 
     if (type === 'create-proposal') {
-      const receipt = await client.proposal(auth.web3, web3.value.account, {
+      return await client.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -58,26 +58,19 @@ export function useClient() {
         plugins: JSON.stringify(plugins),
         app: DEFINED_APP
       });
-
-      return receipt;
     } else if (type === 'update-proposal') {
-      const receipt = await client.updateProposal(
-        auth.web3,
-        web3.value.account,
-        {
-          proposal: payload.id,
-          space: space.id,
-          type: payload.type,
-          title: payload.name,
-          body: payload.body,
-          discussion: payload.discussion,
-          choices: payload.choices,
-          plugins: JSON.stringify(plugins)
-        }
-      );
-      return receipt;
+      return await client.updateProposal(auth.web3, web3.value.account, {
+        proposal: payload.id,
+        space: space.id,
+        type: payload.type,
+        title: payload.name,
+        body: payload.body,
+        discussion: payload.discussion,
+        choices: payload.choices,
+        plugins: JSON.stringify(plugins)
+      });
     } else if (type === 'vote') {
-      const receipt = await client.vote(auth.web3, web3.value.account, {
+      return await client.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -86,41 +79,31 @@ export function useClient() {
         app: DEFINED_APP,
         reason: payload.reason
       });
-      return receipt;
     } else if (type === 'delete-proposal') {
-      const receipt = await client.cancelProposal(
-        auth.web3,
-        web3.value.account,
-        {
-          space: space.id,
-          proposal: payload.proposal.id
-        }
-      );
-      return receipt;
+      return await client.cancelProposal(auth.web3, web3.value.account, {
+        space: space.id,
+        proposal: payload.proposal.id
+      });
     } else if (type === 'settings') {
-      const receipt = await client.space(auth.web3, web3.value.account, {
+      return await client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
-      return receipt;
     } else if (type === 'delete-space') {
-      const receipt = await client.deleteSpace(auth.web3, web3.value.account, {
+      return await client.deleteSpace(auth.web3, web3.value.account, {
         space: space.id
       });
-      return receipt;
     } else if (type === 'set-statement') {
-      const receipt = await client.statement(auth.web3, web3.value.account, {
+      return await client.statement(auth.web3, web3.value.account, {
         space: space.id,
         about: payload.about,
         statement: payload.statement
       });
-      return receipt;
     } else if (type === 'flag-proposal') {
-      const receipt = await client.flagProposal(auth.web3, web3.value.account, {
+      return await client.flagProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
-      return receipt;
     }
   }
 
