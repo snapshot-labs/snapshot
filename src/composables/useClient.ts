@@ -45,7 +45,7 @@ export function useClient() {
       plugins = payload.metadata.plugins;
 
     if (type === 'create-proposal') {
-      return await client.proposal(auth.web3, web3.value.account, {
+      return client.proposal(auth.web3, web3.value.account, {
         space: space.id,
         type: payload.type,
         title: payload.name,
@@ -59,7 +59,7 @@ export function useClient() {
         app: DEFINED_APP
       });
     } else if (type === 'update-proposal') {
-      return await client.updateProposal(auth.web3, web3.value.account, {
+      return client.updateProposal(auth.web3, web3.value.account, {
         proposal: payload.id,
         space: space.id,
         type: payload.type,
@@ -70,7 +70,7 @@ export function useClient() {
         plugins: JSON.stringify(plugins)
       });
     } else if (type === 'vote') {
-      return await client.vote(auth.web3, web3.value.account, {
+      return client.vote(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id,
         type: payload.proposal.type,
@@ -80,27 +80,27 @@ export function useClient() {
         reason: payload.reason
       });
     } else if (type === 'delete-proposal') {
-      return await client.cancelProposal(auth.web3, web3.value.account, {
+      return client.cancelProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
     } else if (type === 'settings') {
-      return await client.space(auth.web3, web3.value.account, {
+      return client.space(auth.web3, web3.value.account, {
         space: space.id,
         settings: JSON.stringify(payload)
       });
     } else if (type === 'delete-space') {
-      return await client.deleteSpace(auth.web3, web3.value.account, {
+      return client.deleteSpace(auth.web3, web3.value.account, {
         space: space.id
       });
     } else if (type === 'set-statement') {
-      return await client.statement(auth.web3, web3.value.account, {
+      return client.statement(auth.web3, web3.value.account, {
         space: space.id,
         about: payload.about,
         statement: payload.statement
       });
     } else if (type === 'flag-proposal') {
-      return await client.flagProposal(auth.web3, web3.value.account, {
+      return client.flagProposal(auth.web3, web3.value.account, {
         space: space.id,
         proposal: payload.proposal.id
       });
