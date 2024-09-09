@@ -932,10 +932,6 @@
       }
     }
   },
-  "hal": {
-    "title": "Track proposals for {spaceName}",
-    "text": "Receive notifications every time a {space} proposal is created or ends"
-  },
   "domino": {
     "title": "Automations",
     "information": "Create automated workflows with just a single click using Domino.",

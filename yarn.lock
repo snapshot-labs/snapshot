@@ -1721,10 +1721,10 @@
   resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.15.tgz#07e5ae35ed36304250462218e115bab1c1609812"
   integrity sha512-va6zYSl8oIraBJeIZWEatOI292rfJQouyyvEeHv8qi9ns+LgxMsKayQtXSqn9GcmAfdWQVs/P9bDaCQ77FyJYw==
 
-"@snapshot-labs/snapshot.js@^0.12.4":
-  version "0.12.4"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.12.4.tgz#d2cf1e2bb04714638f3b746bb212f9d93d2ab624"
-  integrity sha512-O9qxZ3qzH2CDBiMDGX4orQIFYKLKJMvpoF8uMsRhWVnp/CiH1eu5obxJCzys2n4o6KvvgtDQjS45b+7mh/85gA==
+"@snapshot-labs/snapshot.js@^0.12.10":
+  version "0.12.10"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.12.10.tgz#69880cec8546fd271c1ede15134906ab2625e78f"
+  integrity sha512-NNypHVuNd9xsbAA/oGLntBMfVA7TfT2ARygVJ+zqmmgvkeofkoGi9u0bCXRqXWSyylP8tfvtkPQ9eFVGk4U1RQ==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
@@ -6756,11 +6756,6 @@ minisearch@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/minisearch/-/minisearch-6.2.0.tgz#310b50508551f22e10815f5baedeeeded03a6b5d"
   integrity sha512-BECkorDF1TY2rGKt9XHdSeP9TP29yUbrAaCh/C03wpyf1vx3uYcP/+8XlMcpTkgoU0rBVnHMAOaP83Rc9Tm+TQ==
-
-mixpanel-browser@^2.48.1:
-  version "2.48.1"
-  resolved "https://registry.yarnpkg.com/mixpanel-browser/-/mixpanel-browser-2.48.1.tgz#0fec03d87f57fe2e72c6a4b1df5924436840ece7"
-  integrity sha512-vXTuUzZMg+ht7sRqyjtc3dUDy/81Z/H6FLFgFkUZJqKFaAqcx1JSXmOdY/2kmsxCkUdy5JN5zW9m9TMCk+rxGQ==
 
 mlly@^1.1.1, mlly@^1.2.0:
   version "1.2.0"

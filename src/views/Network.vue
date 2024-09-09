@@ -49,6 +49,16 @@ const CUSTOMERS = [
     avatar:
       'ipfs://bafkreia7lrda6v2fc5dthazn3qdost4yd2qrn3r4ntrd6lgmc2gvtvvhoa',
     website: 'https://gravity.xyz'
+  },
+  {
+    name: 'zkLink',
+    avatar: 'bafkreic6c3iems5235qapyhyrygha7akqrsfact2nok3y2uhljpzxrdu74',
+    website: 'https://zklink.io'
+  },
+  {
+    name: 'Fantom',
+    avatar: 'ipfs://QmVEgNeQDKnXygeGxfY9FywZpNGQu98ktZtRJ9bToYF6g7',
+    website: 'https://fantom.foundation'
   }
 ];
 const FAQ = [
