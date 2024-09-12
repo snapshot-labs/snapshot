@@ -431,6 +431,9 @@ export const STATEMENTS_QUERY = gql`
       about
       ipfs
       id
+      discourse
+      network
+      status
     }
   }
 `;

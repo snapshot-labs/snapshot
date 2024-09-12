@@ -97,7 +97,10 @@ export function useClient() {
       return client.statement(auth.web3, web3.value.account, {
         space: space.id,
         about: payload.about,
-        statement: payload.statement
+        statement: payload.statement,
+        discourse: payload.discourse,
+        network: payload.network,
+        status: payload.status
       });
     } else if (type === 'flag-proposal') {
       return client.flagProposal(auth.web3, web3.value.account, {

@@ -7,7 +7,10 @@ import { DelegationTypes } from '@/helpers/delegationV2';
 
 const INITIAL_STATEMENT = {
   about: '',
-  statement: ''
+  statement: '',
+  discourse: '',
+  network: 'INACTIVE',
+  status: 's'
 };
 
 const props = defineProps<{
