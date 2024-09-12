@@ -18,7 +18,8 @@ export const KNOWN_HOSTS = [
   'multisig.mantle.xyz',
   'wallet.ambire.com',
   'multisig.moonbeam.network',
-  'worldassociation.org'
+  'worldassociation.org',
+  'safe.mainnet.frax.com'
 ];
 
 export const SPACE_CATEGORIES = [
