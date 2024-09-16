@@ -14,9 +14,7 @@ const snapshotTextLinks = [
   },
   {
     text: 'network-support',
-    link: {
-      name: 'network'
-    }
+    link: 'https://snapshot.box/#/network'
   },
   {
     text: 'terms',
