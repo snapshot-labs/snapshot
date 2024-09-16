@@ -7,7 +7,6 @@ import SetupView from '@/views/SetupView.vue';
 import StrategyView from '@/views/StrategyView.vue';
 import TimelineView from '@/views/TimelineView.vue';
 import RankingView from '@/views/RankingView.vue';
-import Network from '@/views/Network.vue';
 
 import ProfileView from '@/views/ProfileView.vue';
 import ProfileAbout from '@/views/ProfileAbout.vue';
@@ -150,7 +149,15 @@ if (domain) {
         }
       }
     },
-    { path: '/network', name: 'network', component: Network },
+    {
+      path: '/network',
+      component: {
+        // To redirect existing links to snapshot.box
+        beforeRouteEnter() {
+          window.location.href = 'https://snapshot.box/#/network';
+        }
+      }
+    },
     {
       path: '/terms-and-conditions',
       name: 'terms-and-conditions',
