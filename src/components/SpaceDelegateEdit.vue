@@ -9,6 +9,9 @@ const props = defineProps<{
   statement: {
     about: string;
     statement: string;
+    discourse: string;
+    network: string;
+    status: string;
   };
   edited: boolean;
   saving: boolean;

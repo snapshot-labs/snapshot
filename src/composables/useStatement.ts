@@ -91,8 +91,8 @@ export function useStatement() {
     const defaultStatement = {
       about: '',
       statement: '',
-      network: '',
-      status: 's',
+      network: 's',
+      status: 'INACTIVE',
       discourse: ''
     };
     return clone(statements.value?.[id?.toLowerCase()] || defaultStatement);
