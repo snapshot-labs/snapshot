@@ -69,7 +69,7 @@ function handleDropdownAction(action: string) {
           <div class="font-semibold text-skin-heading">
             {{ getUsername(delegate.id, profiles[delegate.id]) }}
           </div>
-          <div class="flex gap-[6px]">
+          <div class="flex flex-wrap gap-[6px]">
             <div
               v-tippy="{
                 content: `${formatNumber(
