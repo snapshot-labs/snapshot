@@ -239,7 +239,7 @@ onBeforeRouteLeave(async () => {
               <div>
                 <AvatarUser :address="address" size="40" />
               </div>
-              <div class="ml-2">
+              <div class="ml-2 truncate">
                 <ProfileName
                   :profile="getProfile(address)"
                   :address="address"
