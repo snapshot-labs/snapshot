@@ -69,7 +69,7 @@ const isCollapsed = ref(true);
       <div
         v-if="!loading && (!isCollapsed || !isCollapsable)"
         :class="!slim && 'p-4'"
-        class="leading-5 sm:leading-6"
+        class="leading-5 sm:leading-6 break-words"
       >
         <slot />
         <div

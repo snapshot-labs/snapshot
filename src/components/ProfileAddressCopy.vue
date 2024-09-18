@@ -24,7 +24,7 @@ const { copyToClipboard } = useCopy();
       </div>
     </button>
     <button
-      class="flex cursor-pointer items-center rounded border px-1 text-xs"
+      class="flex cursor-pointer items-center rounded border px-1 text-xs shrink-0"
       @click="copyToClipboard(userAddress)"
     >
       {{ shorten(userAddress) }}

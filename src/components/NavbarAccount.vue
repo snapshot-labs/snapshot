@@ -47,7 +47,7 @@ watch(
         />
         <span
           v-if="profile?.name || profile?.ens"
-          class="hidden sm:block"
+          class="hidden sm:block max-w-[120px] truncate"
           v-text="profile.name || profile.ens"
         />
         <span v-else class="hidden sm:block" v-text="shorten(web3Account)" />
