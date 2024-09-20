@@ -43,17 +43,18 @@ const showBanner = computed(() => {
       </div>
       <div
         v-if="showBanner"
-        class="relative flex items-center justify-center gap-1 mb-2 bg-purple-300/20 text-purple-400 px-3 py-2"
+        class="relative flex items-center justify-center gap-2 mb-2 bg-skin-border px-4 py-[10px]"
       >
-        <i-ho-speakerphone class="shrink-0" />
-        <div class="leading-6">
-          Snapshot v2 is now available at
-          <a
-            class="text-purple-400 underline font-semibold"
-            href="https://snapshot.box/#/home"
-            >snapshot.box</a
-          >
-        </div>
+        <a
+          class="flex gap-2"
+          target="_blank"
+          href="https://snapshot.box/#/home"
+        >
+          <i-ho-speakerphone class="shrink-0" />
+          <div class="leading-6">
+            Snapshot v2 is here! Experience our new and improved interface now.
+          </div>
+        </a>
         <button class="xs:absolute xs:right-3" @click="bannerClosed = true">
           <i-ho-x />
         </button>
