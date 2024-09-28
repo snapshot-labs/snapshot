@@ -11,7 +11,7 @@ const DEFAULT_TOKEN = {
   logo: '',
   standard: 'ERC-20',
   symbol: '',
-  decimals: 18
+  decimals: '18'
 };
 
 const emit = defineEmits(['next']);
