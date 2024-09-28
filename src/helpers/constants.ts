@@ -13,6 +13,7 @@ export const SNAPSHOT_BREAKPOINTS = {
 
 export const KNOWN_HOSTS = [
   'app.safe.global',
+  'horizen-eon.safe.onchainden.com',
   'pilot.gnosisguild.org',
   'metissafe.tech',
   'multisig.mantle.xyz',
