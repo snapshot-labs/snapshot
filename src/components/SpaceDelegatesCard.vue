@@ -65,7 +65,7 @@ function handleDropdownAction(action: string) {
     <div class="flex w-full">
       <div class="flex items-center text-left gap-3 flex-auto min-w-0">
         <AvatarUser :address="delegate.id" size="40" class="shrink-0" />
-        <div class="flex flex-col truncate">
+        <div class="flex flex-col truncate grow">
           <div class="flex truncate gap-1">
             <div class="font-semibold text-skin-heading truncate flex-auto">
               {{ getUsername(delegate.id, profiles[delegate.id]) }}
