@@ -1,4 +1,5 @@
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { getAddress } from '@ethersproject/address';
 import {
   DelegateWithPercent,
   DelegatesVote,
@@ -92,7 +93,7 @@ export function useDelegates(space: ExtendedSpace) {
     try {
       const resolvedAddress = await resolveName(addressOrEns);
       if (!resolvedAddress) return;
-      const response = await reader.getDelegate(resolvedAddress);
+      const response = await reader.getDelegate(getAddress(resolvedAddress));
       delegate.value = response;
     } catch (e) {
       console.error(e);
