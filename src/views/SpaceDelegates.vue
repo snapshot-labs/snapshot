@@ -30,7 +30,7 @@ const router = useRouter();
 const { t } = useI18n();
 const { isFollowing } = useFollowSpace(props.space.id);
 const { web3Account } = useWeb3();
-const { getStatement } = useStatement();
+const { getStatement, loadStatements } = useStatement();
 
 const searchInput = ref((route.query.search as string) || '');
 const searchInputDebounced = refDebounced(searchInput, 300);
@@ -136,6 +136,13 @@ watch(searchInputDebounced, () => {
 
 watch(matchFilter, () => {
   loadDelegates(matchFilter.value);
+});
+
+watch(delegates, delegates => {
+  loadStatements(
+    props.space.id,
+    delegates.map(d => d.id)
+  );
 });
 
 onMounted(() => {
