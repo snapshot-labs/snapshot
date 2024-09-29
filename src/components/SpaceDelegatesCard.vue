@@ -3,9 +3,7 @@ import { explorerUrl } from '@/helpers/utils';
 import {
   DelegateWithPercent,
   Profile,
-  ExtendedSpace,
-  DelegatesVote,
-  DelegatesProposal
+  ExtendedSpace
 } from '@/helpers/interfaces';
 
 const props = defineProps<{
@@ -13,8 +11,8 @@ const props = defineProps<{
   profiles: Record<string, Profile>;
   space: ExtendedSpace;
   stats?: {
-    votes: DelegatesVote[];
-    proposals: DelegatesProposal[];
+    votes: number;
+    proposals: number;
   };
   about?: string;
 }>();
@@ -134,12 +132,12 @@ function handleDropdownAction(action: string) {
 
     <div class="mt-3 flex gap-[6px]">
       <div>
-        {{ formatCompactNumber(stats?.votes.length || 0) }}
+        {{ formatCompactNumber(stats?.votes || 0) }}
         votes
       </div>
       ·
       <div>
-        {{ formatCompactNumber(stats?.proposals.length || 0) }}
+        {{ formatCompactNumber(stats?.proposals || 0) }}
         proposals
       </div>
     </div>
