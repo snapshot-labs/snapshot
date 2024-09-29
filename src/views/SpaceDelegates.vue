@@ -23,7 +23,7 @@ const {
   hasDelegatesLoadFailed,
   hasDelegationPortal
 } = useDelegates(props.space);
-const { profiles } = useProfiles();
+const { profiles, loadProfiles } = useProfiles();
 const { modalAccountOpen } = useModal();
 const route = useRoute();
 const router = useRouter();
@@ -139,10 +139,9 @@ watch(matchFilter, () => {
 });
 
 watch(delegates, delegates => {
-  loadStatements(
-    props.space.id,
-    delegates.map(d => d.id)
-  );
+  const ids = delegates.map(d => d.id);
+  loadStatements(props.space.id, ids);
+  loadProfiles(ids);
 });
 
 onMounted(() => {
