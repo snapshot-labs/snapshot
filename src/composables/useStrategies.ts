@@ -22,8 +22,7 @@ export function useStrategies() {
   });
 
   const filterStrategies = (q = '') =>
-    strategies.value
-      .filter(s => s.id.toLowerCase().includes(q.toLowerCase()));
+    strategies.value.filter(s => s.id.toLowerCase().includes(q.toLowerCase()));
 
   const { apolloQuery } = useApolloQuery();
 
