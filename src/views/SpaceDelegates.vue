@@ -130,8 +130,8 @@ useInfiniteScroll(
   { distance: 500 }
 );
 
-watch(searchInputDebounced, () => {
-  loadDelegate(searchInput.value);
+watch(searchInputDebounced, async () => {
+  await loadDelegate(searchInput.value);
 });
 
 watch(matchFilter, () => {

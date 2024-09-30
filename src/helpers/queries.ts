@@ -529,3 +529,15 @@ export const SPACE_QUERY = gql`
     }
   }
 `;
+
+export const LEADERBOARD_QUERY = gql`
+  query Leaderboard($space: String!, $user_in: [String]) {
+    leaderboards(where: { space: $space, user_in: $user_in }) {
+      space
+      user
+      proposalsCount
+      votesCount
+      lastVote
+    }
+  }
+`;
