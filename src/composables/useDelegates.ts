@@ -1,5 +1,6 @@
 import { LEADERBOARD_QUERY } from '@/helpers/queries';
 import { getInstance } from '@snapshot-labs/lock/plugins/vue3';
+import { getAddress } from '@ethersproject/address';
 import { DelegateWithPercent, ExtendedSpace } from '@/helpers/interfaces';
 import {
   DelegationTypes,
@@ -88,7 +89,7 @@ export function useDelegates(space: ExtendedSpace) {
     try {
       const resolvedAddress = await resolveName(addressOrEns);
       if (!resolvedAddress) return;
-      const response = await reader.getDelegate(resolvedAddress);
+      const response = await reader.getDelegate(getAddress(resolvedAddress));
       loadStats([response.id]);
       delegate.value = response;
     } catch (e) {
