@@ -23,6 +23,9 @@ export const KNOWN_HOSTS = [
   'safe.mainnet.frax.com'
 ];
 
+// All subdomains of these domains are allowed
+export const KNOWN_DOMAINS = ['blockscout.com'];
+
 export const SPACE_CATEGORIES = [
   'protocol',
   'social',
