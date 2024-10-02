@@ -13,8 +13,12 @@ const connectors = {
       optionalChains: [
         1, 4, 5, 10, 42, 56, 100, 137, 246, 1088, 42161, 73799, 11155111
       ],
-      methods: ['eth_sendTransaction', 'personal_sign'],
-      optionalMethods: ['eth_accounts', 'eth_signTypedData_v4'],
+      optionalMethods: [
+        'eth_sendTransaction',
+        'personal_sign',
+        'eth_accounts',
+        'eth_signTypedData_v4'
+      ],
       rpcMap: {
         '1': `${import.meta.env.VITE_BROVIDER_URL}/1`,
         '4': `${import.meta.env.VITE_BROVIDER_URL}/4`,
