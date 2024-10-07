@@ -52,6 +52,7 @@ export function useClient() {
         body: payload.body,
         discussion: payload.discussion,
         choices: payload.choices,
+        labels: [],
         start: payload.start,
         end: payload.end,
         snapshot: payload.snapshot,
@@ -67,6 +68,7 @@ export function useClient() {
         body: payload.body,
         discussion: payload.discussion,
         choices: payload.choices,
+        labels: [],
         plugins: JSON.stringify(plugins)
       });
     } else if (type === 'vote') {
