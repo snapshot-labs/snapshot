@@ -60,7 +60,6 @@ const link = computed(() => {
 <template>
   <a
     v-if="!domain"
-    target="_blank"
     :href="link"
     class="flex bg-blue-700 text-white rounded-full px-[10px] py-[2px] gap-1"
   >
