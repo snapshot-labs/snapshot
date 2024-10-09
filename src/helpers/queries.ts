@@ -515,6 +515,7 @@ export const SPACE_QUERY = gql`
       delegationPortal {
         delegationType
         delegationContract
+        delegationNetwork
         delegationApi
       }
       treasuries {
