@@ -1653,10 +1653,10 @@
     "@snapshot-labs/eslint-config-base" "^0.1.0-beta.15"
     eslint-plugin-vue "^9.18.1"
 
-"@snapshot-labs/lock@^0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.7.tgz#4727ea082ced4958061bb643462049f767e8b6d2"
-  integrity sha512-wkUiuOEJxYYUgFyZ83xRrCl897m/o08y8UCHg3TlBh12OkfCeV7XnaIdumRCgSp+Wh35fR2pd27y83Ev9A88Ow==
+"@snapshot-labs/lock@^0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/lock/-/lock-0.2.8.tgz#4eb81af37e57c6eac6135e7db3acfbb511e9ab1c"
+  integrity sha512-5Izr4uAIU1lf2CHa155SW4oqZhyndFQf7AQNpyazk0AtffgDmEa6T5KxU7ktRXL9SwuRyAlo7MJrnjxMDmqZWA==
   dependencies:
     "@coinbase/wallet-sdk" "^4.0.4"
     "@portis/web3" "^4.0.6"
@@ -1679,10 +1679,10 @@
   resolved "https://registry.yarnpkg.com/@snapshot-labs/prettier-config/-/prettier-config-0.1.0-beta.15.tgz#07e5ae35ed36304250462218e115bab1c1609812"
   integrity sha512-va6zYSl8oIraBJeIZWEatOI292rfJQouyyvEeHv8qi9ns+LgxMsKayQtXSqn9GcmAfdWQVs/P9bDaCQ77FyJYw==
 
-"@snapshot-labs/snapshot.js@^0.12.20":
-  version "0.12.20"
-  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.12.20.tgz#8b8a49c8c24fdb0f677cb8a1852ece7ee9eb9451"
-  integrity sha512-vH/YVUogNlW6sPBVT7mmwT5oH6vnzX/CTDiTLbe5xL2hhPO9qJe4JtBcdJu7UAT7YCHXSSWQJPLB5STEZyhFXA==
+"@snapshot-labs/snapshot.js@^0.12.23":
+  version "0.12.23"
+  resolved "https://registry.yarnpkg.com/@snapshot-labs/snapshot.js/-/snapshot.js-0.12.23.tgz#31fea49f8cb1d3fccf9d5898f05edd9c68500d69"
+  integrity sha512-n3qJUblvZFhaGzqW+TUL32YkNnPl7uAKwrofx1rG6em3E/LjE9Wr2HdbFtdBzIK0QiZQPYdHzQNokjE6jJJ+tw==
   dependencies:
     "@ensdomains/eth-ens-namehash" "^2.0.15"
     "@ethersproject/abi" "^5.6.4"
