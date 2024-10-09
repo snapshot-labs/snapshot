@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core';
-
 const { domain, init, isReady, showSidebar } = useApp();
 const route = useRoute();
 const { restorePendingTransactions } = useTxStatus();
@@ -8,11 +6,6 @@ const { restorePendingTransactions } = useTxStatus();
 onMounted(async () => {
   await init();
   restorePendingTransactions();
-});
-const bannerClosed = useStorage('snapshot.v2-banner-closed', false);
-const showBanner = computed(() => {
-  const showInPages = ['home', 'timeline'];
-  return showInPages.includes(route.name as string) && !bannerClosed.value;
 });
 </script>
 
@@ -40,24 +33,6 @@ const showBanner = computed(() => {
         class="sticky top-0 z-40 border-b border-skin-border bg-skin-bg"
       >
         <TheNavbar />
-      </div>
-      <div
-        v-if="showBanner"
-        class="relative flex items-center justify-center gap-2 mb-2 bg-skin-border px-4 py-[10px]"
-      >
-        <a
-          class="flex gap-2"
-          target="_blank"
-          href="https://snapshot.box/#/home"
-        >
-          <i-ho-speakerphone class="shrink-0" />
-          <div class="leading-6">
-            Snapshot v2 is here! Experience our new and improved interface now.
-          </div>
-        </a>
-        <button class="xs:absolute xs:right-3" @click="bannerClosed = true">
-          <i-ho-x />
-        </button>
       </div>
       <div id="content" class="pb-6 pt-4">
         <router-view v-slot="{ Component }">
