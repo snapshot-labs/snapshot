@@ -44,11 +44,11 @@ const avatarNotReactive = ref(form.value.avatar);
                     <AvatarOverlayEdit
                       :loading="uploading"
                       :avatar="form?.avatar"
-                      :is-view-only="isViewOnly || env === 'demo'"
+                      :is-view-only="isViewOnly"
                     />
                     <div
                       :class="{
-                        'cursor-not-allowed': isViewOnly || env === 'demo'
+                        'cursor-not-allowed': isViewOnly
                       }"
                       class="absolute bottom-[2px] right-0 rounded-full bg-skin-heading p-1"
                     >
