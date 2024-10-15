@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /settings
+Disallow: /#/*/settings
+
+Sitemap: https://snapshot.org/sitemap.xml
