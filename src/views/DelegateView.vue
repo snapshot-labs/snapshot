@@ -151,11 +151,11 @@ async function getDelegatesWithScore() {
       .map(delegate => {
         return delegations.find(a => a.delegate === delegate);
       })
-      .map(delegate => {
+      .map(delegation => {
         return {
-          ...delegate,
-          delegate: getAddress(delegate.delegate),
-          delegator: getAddress(delegate.delegator)
+          ...delegation,
+          delegate: getAddress(delegation.delegate),
+          delegator: getAddress(delegation.delegator)
         };
       });
 
