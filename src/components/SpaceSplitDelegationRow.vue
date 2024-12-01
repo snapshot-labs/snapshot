@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { validateForm } from '@/helpers/validation';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
-import { prop } from 'lodash/fp';
 
 type DelegateRowForm = {
   to: string;
