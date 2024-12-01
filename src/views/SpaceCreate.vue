@@ -298,6 +298,7 @@ function setSourceProposal(proposal) {
     body: proposal.body,
     discussion: proposal.discussion,
     choices: proposal.choices,
+    labels: proposal.labels,
     start: proposal.start,
     end: proposal.end,
     snapshot: proposal.snapshot,

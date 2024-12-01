@@ -68,7 +68,7 @@ export function useClient() {
         body: payload.body,
         discussion: payload.discussion,
         choices: payload.choices,
-        labels: [],
+        labels: payload.labels,
         plugins: JSON.stringify(plugins)
       });
     } else if (type === 'vote') {
