@@ -189,6 +189,7 @@ export interface ExtendedSpace {
 export interface DelegatesConfig {
   delegationType: DelegationTypes;
   delegationContract: string;
+  delegationNetwork: string;
   delegationApi: string;
 }
 export interface SpaceValidation {
