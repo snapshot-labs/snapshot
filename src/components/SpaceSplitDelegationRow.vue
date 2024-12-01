@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { validateForm } from '@/helpers/validation';
 import { clone } from '@snapshot-labs/snapshot.js/src/utils';
+import { prop } from 'lodash/fp';
 
 type DelegateRowForm = {
   to: string;
@@ -24,7 +25,12 @@ const definition = {
     }
   },
   required: ['to', 'weight'],
-  additionalProperties: false
+  additionalProperties: false,
+  errorMessage: {
+    properties: {
+      to: 'Must be a valid checksum address'
+    }
+  }
 };
 
 const props = defineProps<{
